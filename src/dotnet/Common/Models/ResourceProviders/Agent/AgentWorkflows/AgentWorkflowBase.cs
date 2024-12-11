@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
 {
@@ -18,29 +19,34 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
         public virtual string? Type { get; set; }
 
         /// <summary>
-        /// The workflow resource associated with the agent.
+        /// The name of the workflow.
         /// </summary>
-        [JsonPropertyName("workflow_object_id")]
-        public required string WorkflowObjectId { get; set; }
-
-        /// <summary>
-        /// The name of the workflow resource associated with the agent.
-        /// </summary>
+        /// <remarks>
+        /// This value is always derived from the <see cref="ResourceObjectIds"/> property.
+        /// </remarks>
         [JsonPropertyName("workflow_name")]
-        public required string WorkflowName { get; set; }
+        public string? WorkflowName { get; set; }
 
         /// <summary>
-        /// The collection of AI models available to the workflow.
-        /// The well-known key "main-model" is used to specify the model for the main workflow.
+        /// The host of the workflow environment.
         /// </summary>
-        [JsonPropertyName("agent_workflow_ai_models")]
-        public Dictionary<string, AgentWorkflowAIModel> AgentWorkflowAIModels { get; set; } = [];
+        [JsonPropertyName("workflow_host")]
+        public string? WorkflowHost { get; set; }
 
         /// <summary>
-        /// The collection of prompt resources available to the workflow.
-        /// The well-known key "main-prompt" is used to specify the prompt for the main workflow.
+        /// Gets or sets a dictionary of resource objects.
         /// </summary>
-        [JsonPropertyName("prompt_object_ids")]
-        public Dictionary<string, string> PromptObjectIds { get; set; } = [];
+        [JsonPropertyName("resource_object_ids")]
+        public Dictionary<string, ResourceObjectIdProperties> ResourceObjectIds { get; set; } = [];
+
+        /// <summary>
+        /// Gets the main AI model object identifier.
+        /// </summary>
+        [JsonIgnore]
+        public string? MainAIModelObjectId =>
+            ResourceObjectIds.Values
+                .FirstOrDefault(
+                    roid => roid.HasObjectRole(ResourceObjectIdPropertyValues.MainModel))
+                ?.ObjectId;
     }
 }

@@ -1,6 +1,6 @@
 ﻿import uuid
 from langchain_community.callbacks import get_openai_callback
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage, ToolMessage
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
@@ -9,12 +9,20 @@ from foundationallm.langchain.agents import LangChainAgentBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, ContentArtifactRetrievalBase
 from foundationallm.models.agents import AzureOpenAIAssistantsAgentWorkflow, LangGraphReactAgentWorkflow
-from foundationallm.models.constants import AgentCapabilityCategories
+from foundationallm.models.constants import (
+    AgentCapabilityCategories,
+    ResourceObjectIdPropertyNames,
+    ResourceObjectIdPropertyValues,
+    ResourceProviderNames,
+    AIModelResourceTypeNames,
+    PromptResourceTypeNames
+)
 from foundationallm.models.operations import OperationTypes
 from foundationallm.models.orchestration import (
     CompletionRequestObjectKeys,
     CompletionResponse,
-    OpenAITextMessageContentItem
+    OpenAITextMessageContentItem,
+    ContentArtifact
 )
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.models.agents import (
@@ -40,14 +48,13 @@ from foundationallm.services import (
 from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
 from openai.types import CompletionUsage
 
+from foundationallm.langchain.tools import ToolFactory
+
 class LangChainKnowledgeManagementAgent(LangChainAgentBase):
     """
     The LangChain Knowledge Management agent.
     """
-    
-    MAIN_MODEL_KEY = "main_model"
-    MAIN_PROMPT_KEY = "main_prompt"
-    
+
     def _get_document_retriever(
         self,
         request: KnowledgeManagementCompletionRequest,
@@ -61,15 +68,15 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             text_embedding_profile = AzureOpenAIEmbeddingProfile.from_object(
                 request.objects[agent.vectorization.text_embedding_profile_object_id]
             )
-            
+
             # text_embedding_profile has the embedding model name in Settings.
             text_embedding_model_name = text_embedding_profile.settings.get(EmbeddingProfileSettingsKeys.MODEL_NAME)
-            
+
             # objects dictionary has the gateway API endpoint configuration.
             gateway_endpoint_configuration = APIEndpointConfiguration.from_object(
                 request.objects[CompletionRequestObjectKeys.GATEWAY_API_ENDPOINT_CONFIGURATION]
             )
-            
+
             gateway_embedding_service = GatewayTextEmbeddingService(
                 instance_id= self.instance_id,
                 user_identity=self.user_identity,
@@ -77,7 +84,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 model_name = text_embedding_model_name,
                 config=self.config
                 )
-            
+
             # array of objects containing the indexing profile and associated endpoint configuration
             index_configurations = []
 
@@ -87,17 +94,17 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     indexing_profile = AzureAISearchIndexingProfile.from_object(
                             request.objects[profile_id]
                         )
-                    # indexing profile has indexing_api_endpoint_configuration_object_id in Settings.                    
+                    # indexing profile has indexing_api_endpoint_configuration_object_id in Settings.
                     indexing_api_endpoint_configuration = APIEndpointConfiguration.from_object(
                         request.objects[indexing_profile.settings.api_endpoint_configuration_object_id]
                     )
-      
+
                     index_configurations.append(
                         KnowledgeManagementIndexConfiguration(
                             indexing_profile = indexing_profile,
                             api_endpoint_configuration = indexing_api_endpoint_configuration
                         )
-                    )                
+                    )
 
                 retriever_factory = RetrieverFactory(
                                 index_configurations=index_configurations,
@@ -170,24 +177,35 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         if request.agent is None:
             raise LangChainException("The agent property on the completion request cannot be null.", 400)
 
-        if request.agent.orchestration_settings is None:
-            raise LangChainException("The Orchestration_settings property on the agent cannot be null.", 400)
-
         if request.objects is None:
             raise LangChainException("The objects property on the completion request cannot be null.", 400)
 
         if request.agent.workflow is not None:
-            if request.agent.workflow.agent_workflow_ai_models[self.MAIN_MODEL_KEY] is None:
+            
+            ai_model_object_id = request.agent.workflow.get_resource_object_id_properties(
+                ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
+                AIModelResourceTypeNames.AI_MODELS,
+                ResourceObjectIdPropertyNames.OBJECT_ROLE,
+                ResourceObjectIdPropertyValues.MAIN_MODEL
+            )
+            if ai_model_object_id is None:
                 raise LangChainException("The agent's workflow AI models requires a main_model.", 400)
-            if request.agent.workflow.prompt_object_ids[self.MAIN_PROMPT_KEY] is None:
+            self.ai_model = self._get_ai_model_from_object_id(ai_model_object_id.object_id, request.objects)
+            
+            prompt_object_id = request.agent.workflow.get_resource_object_id_properties(
+                ResourceProviderNames.FOUNDATIONALLM_PROMPT,
+                PromptResourceTypeNames.PROMPTS,
+                ResourceObjectIdPropertyNames.OBJECT_ROLE,
+                ResourceObjectIdPropertyValues.MAIN_PROMPT
+            )
+            if prompt_object_id is None:
                 raise LangChainException("The agent's workflow prompt object dictionary requires a main_prompt.", 400)
-            self.ai_model = self._get_ai_model_from_object_id(request.agent.workflow.agent_workflow_ai_models[self.MAIN_MODEL_KEY].ai_model_object_id, request.objects)
-            self.prompt = self._get_prompt_from_object_id(request.agent.workflow.prompt_object_ids[self.MAIN_PROMPT_KEY], request.objects)
+            self.prompt = self._get_prompt_from_object_id(prompt_object_id.object_id, request.objects)
         else:
             # Legacy code
             self.ai_model = self._get_ai_model_from_object_id(request.agent.ai_model_object_id, request.objects)
             self.prompt = self._get_prompt_from_object_id(request.agent.prompt_object_id, request.objects)
-        
+
         if self.ai_model.endpoint_object_id is None or self.ai_model.endpoint_object_id == '':
             raise LangChainException("The AI model object provided in the request's objects dictionary is invalid because it is missing an endpoint_object_id value.", 400)
         if self.ai_model.deployment_name is None or self.ai_model.deployment_name == '':
@@ -219,7 +237,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         except ValueError:
             raise LangChainException(f"The authentication_type {self.api_endpoint.authentication_type} is not supported.", 400)
 
-        
+
         if self.prompt.prefix is None or self.prompt.prefix == '':
             raise LangChainException("The Prompt object provided in the request's objects dictionary is invalid because it is missing a prefix value.", 400)
 
@@ -250,7 +268,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         #   AssistantId, AssistantThreadId
         if request.agent.workflow is not None and isinstance(request.agent.workflow, AzureOpenAIAssistantsAgentWorkflow):
             if request.agent.workflow.assistant_id is None or request.agent.workflow.assistant_id == '':
-                raise LangChainException("The AzureOpenAIAssistantsAgentWorkflow object provided in the request's agent property is invalid because it is missing an assistant_id value.", 400)            
+                raise LangChainException("The AzureOpenAIAssistantsAgentWorkflow object provided in the request's agent property is invalid because it is missing an assistant_id value.", 400)
         else:
             # Legacy code
             if "OpenAI.Assistants" in request.agent.capabilities:
@@ -302,17 +320,17 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             audio_analysis_results = audio_service.classify(request, audio_attachments)
 
         # Start Assistants API implementation
-        # Check for Assistants API capability   
+        # Check for Assistants API capability
         if (agent.workflow is not None and isinstance(agent.workflow, AzureOpenAIAssistantsAgentWorkflow))\
-            or (AgentCapabilityCategories.OPENAI_ASSISTANTS in agent.capabilities): # or condition for legacy code            
-            
+            or (AgentCapabilityCategories.OPENAI_ASSISTANTS in agent.capabilities): # or condition for legacy code
+
             assistant_id = None
             if agent.workflow is not None and isinstance(agent.workflow, AzureOpenAIAssistantsAgentWorkflow):
-                assistant_id = agent.workflow.assistant_id                
+                assistant_id = agent.workflow.assistant_id
             else:
                 # Legacy code
                 assistant_id = request.objects[CompletionRequestObjectKeys.OPENAI_ASSISTANT_ID]
-           
+
             operation_type_override = OperationTypes.ASSISTANTS_API
             # create the service
             assistant_svc = OpenAIAssistantsApiService(
@@ -375,17 +393,24 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 )
 
             image_service = None
-            if "dalle-image-generation" in request.agent.tools:
-                dalle_tool = request.agent.tools["dalle-image-generation"]
-                model_object_id = dalle_tool["ai_model_object_ids"][self.MAIN_MODEL_KEY]
-                image_generation_deployment_model = request.objects[model_object_id]["deployment_name"]
-                api_endpoint_object_id = request.objects[model_object_id]["endpoint_object_id"]
+            if any(tool.name == "DALLEImageGeneration" for tool in request.agent.tools):
+                dalle_tool = next((tool for tool in request.agent.tools if tool.name == "DALLEImageGeneration"), None)
+
+                model_object_id = dalle_tool.get_resource_object_id_properties(
+                    ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
+                    AIModelResourceTypeNames.AI_MODELS,
+                    ResourceObjectIdPropertyNames.OBJECT_ROLE,
+                    ResourceObjectIdPropertyValues.MAIN_MODEL
+                )
+                
+                image_generation_deployment_model = request.objects[model_object_id.object_id]["deployment_name"]
+                api_endpoint_object_id = request.objects[model_object_id.object_id]["endpoint_object_id"]
                 image_generation_client = self._get_image_gen_language_model(api_endpoint_object_id=api_endpoint_object_id, objects=request.objects)
                 image_service=ImageService(
                     config=self.config,
                     client=image_generation_client,
                     deployment_name=image_generation_deployment_model,
-                    image_generator_tool_description=dalle_tool["description"])
+                    image_generator_tool_description=dalle_tool.description)
 
             # invoke/run the service
             assistant_response = await assistant_svc.run_async(
@@ -396,9 +421,9 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             # Verify the Assistants API response
             if assistant_response is None:
                 print("Assistants API response was None.")
-                return CompletionResponse(                    
+                return CompletionResponse(
                     operation_id = request.operation_id,
-                    full_prompt = self.prompt.prefix,                  
+                    full_prompt = self.prompt.prefix,
                     user_prompt = request.user_prompt,
                     errors = [ "Assistants API response was None." ]
                 )
@@ -419,29 +444,32 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         # End Assistants API implementation
 
         # Start LangGraph ReAct Agent workflow implementation
-        if (agent.workflow is not None and isinstance(agent.workflow, LangGraphReactAgentWorkflow)):            
-            # Temporary placeholder
-            from typing import Literal
-            from langchain_core.tools import tool
-            @tool
-            def get_weather(city: Literal["nyc", "sf"]):
-                """Use this to get weather information."""
-                if city == "nyc":
-                    return "It might be cloudy in nyc"
-                elif city == "sf":
-                    return "It's always sunny in sf"
-                else:
-                    raise AssertionError("Unknown city")
-            tools = [get_weather]
-            # End temporary placeholder
+        if (agent.workflow is not None and isinstance(agent.workflow, LangGraphReactAgentWorkflow)):
+            tool_factory = ToolFactory(self.plugin_manager)
+            tools = []
 
-            # Define the graph          
+            # Populate tools list from agent configuration
+            for tool in agent.tools:
+                tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
+
+            # Define the graph
             graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)
             messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
             messages.append(HumanMessage(content=request.user_prompt))
-            response = await graph.ainvoke({'messages': messages})
+            response = await graph.ainvoke({'messages': messages}, config={"configurable": {"original_user_prompt": request.user_prompt}})
             # TODO: process tool messages with analysis results AIMessage with content='' but has addition_kwargs={'tool_calls';[...]}
-            # print(response)
+
+            # Get ContentArtifact items from ToolMessages
+            content_artifacts = []
+            tool_messages = [message for message in response["messages"] if isinstance(message, ToolMessage)]
+            for tool_message in tool_messages:
+                if tool_message.artifact is not None:
+                    # if the tool message artifact is a list, check if it contains a ContentArtifact item
+                    if isinstance(tool_message.artifact, list):
+                        for item in tool_message.artifact:
+                            if isinstance(item, ContentArtifact):
+                                content_artifacts.append(item)
+
             final_message = response["messages"][-1]
             response_content = OpenAITextMessageContentItem(
                 value = final_message.content,
@@ -450,7 +478,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             return CompletionResponse(
                         operation_id = request.operation_id,
                         content = [response_content],
-                        content_artifacts = [],
+                        content_artifacts = content_artifacts,
                         user_prompt = request.user_prompt,
                         full_prompt = self.prompt.prefix,
                         completion_tokens = final_message.usage_metadata["output_tokens"] or 0,
@@ -458,10 +486,10 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                         total_tokens = final_message.usage_metadata["total_tokens"] or 0,
                         total_cost = 0
                     )
-        # End LangGraph ReAct Agent workflow implementation            
-        
+        # End LangGraph ReAct Agent workflow implementation
+
         # Start LangChain Expression Language (LCEL) implementation
-       
+
         # Get the vector document retriever, if it exists.
         retriever = self._get_document_retriever(request, agent)
         if retriever is not None:
@@ -514,7 +542,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             )
             retvalue = CompletionResponse(
                 operation_id = request.operation_id,
-                content = [response_content],                        
+                content = [response_content],
                 user_prompt = request.user_prompt,
                 full_prompt = self.full_prompt.text,
                 completion_tokens = completion.usage_metadata["output_tokens"] + image_analysis_token_usage.completion_tokens,
@@ -532,14 +560,14 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                         completion = chain.invoke(request.user_prompt)
                     else:
                         completion = await chain.ainvoke(request.user_prompt)
-                                
+
                     response_content = OpenAITextMessageContentItem(
                         value = completion,
                         agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-                    )                  
+                    )
                     retvalue =  CompletionResponse(
                         operation_id = request.operation_id,
-                        content = [response_content],                        
+                        content = [response_content],
                         user_prompt = request.user_prompt,
                         full_prompt = self.full_prompt.text,
                         completion_tokens = cb.completion_tokens + image_analysis_token_usage.completion_tokens,

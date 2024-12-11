@@ -2,7 +2,7 @@
 	<div>
 		<!-- Loading overlay -->
 		<template v-if="loading">
-			<div class="grid__loading-overlay">
+			<div class="grid__loading-overlay" role="status" aria-live="polite">
 				<LoadingGrid />
 				<div>{{ loadingStatusText }}</div>
 			</div>
@@ -16,7 +16,7 @@
 
 		<!-- Private Storage dialog -->
 		<Dialog
-			:visible="privateStorageDialogOpen"
+			v-model:visible="privateStorageDialogOpen"
 			modal
 			:header="'Private Storage'"
 			:style="{ minWidth: '70%' }"

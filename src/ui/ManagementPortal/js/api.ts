@@ -6,6 +6,8 @@ import type {
 	AppConfigUnion,
 	AgentIndex,
 	// AgentGatekeeper,
+	AgentAccessToken,
+	ResourceProviderUpsertResult,
 	AIModel,
 	FilterRequest,
 	CreateAgentRequest,
@@ -811,12 +813,40 @@ export default {
 		);
 	},
 
-	/*
+    /*
 		Workflows
 	 */
 	async getAgentWorkflows(): Promise<any> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/workflows?api-version=${this.apiVersion}`,
+		);
+	},
+
+	/*
+		Agent Access Tokens
+	 */
+	async getAgentAccessTokens(agentName: string) {
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentAccessTokens?api-version=${this.apiVersion}`,
+		)) as ResourceProviderGetResult<AgentAccessToken>[];
+	},
+
+	async createAgentAccessToken(agentName: string, body: AgentAccessToken): Promise<ResourceProviderUpsertResult> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentAccessTokens/${body.id}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body,
+			},
+		) as ResourceProviderUpsertResult;
+	},
+
+	async deleteAgentAccessToken(agentName: string, accessTokenId: string): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentAccessTokens/${accessTokenId}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
+			},
 		);
 	},
 };

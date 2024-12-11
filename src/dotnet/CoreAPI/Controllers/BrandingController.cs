@@ -1,4 +1,6 @@
-﻿using FoundationaLLM.Common.Models.Configuration.Branding;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Models.Configuration.Branding;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -8,7 +10,9 @@ namespace FoundationaLLM.Core.API.Controllers
     /// <summary>
     /// Provides branding information for the client.
     /// </summary>
-    [Authorize(Policy = "DefaultPolicy")]
+    [Authorize(
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        Policy = AuthorizationPolicyNames.MicrosoftEntraIDStandard)]
     [ApiController]
     [Route("instances/{instanceId}/[controller]")]
     public class BrandingController : ControllerBase

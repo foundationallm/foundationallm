@@ -422,7 +422,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer",
-            "value": "",
+            "value": "external-modules-python",
             "label": null,
             "content_type": "",
             "tags": {}
@@ -857,6 +857,34 @@
         {
             "key": "FoundationaLLM:UserPortal:Authentication:Entra:ClientId",
             "value": "${env:ENTRA_CHAT_UI_CLIENT_ID}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup",
+            "value": "false",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Configuration:ShowMessageRating",
+            "value": "true",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Configuration:ShowMessageTokens",
+            "value": "true",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Configuration:ShowViewPrompt",
+            "value": "true",
             "label": null,
             "content_type": "",
             "tags": {}

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<main id="main-content">
 		<div style="display: flex">
 			<!-- Title -->
 			<div style="flex: 1">
@@ -24,7 +24,7 @@
 		<div class="steps" :class="{ 'steps--loading': loading }">
 			<!-- Loading overlay -->
 			<template v-if="loading">
-				<div class="steps__loading-overlay">
+				<div class="steps__loading-overlay" role="status" aria-live="polite">
 					<LoadingGrid />
 					<div>{{ loadingStatusText }}</div>
 				</div>
@@ -51,6 +51,7 @@
 						v-if="nameValidationStatus === 'valid'"
 						class="icon valid"
 						title="Name is available"
+						aria-label="Name is available"
 					>
 						✔️
 					</span>
@@ -58,6 +59,7 @@
 						v-else-if="nameValidationStatus === 'invalid'"
 						:title="validationMessage"
 						class="icon invalid"
+						:aria-label="validationMessage"
 					>
 						❌
 					</span>
@@ -173,7 +175,8 @@
 						v-create-chip-on-blur:folders
 						class="w-100"
 						separator=","
-						aria-labelledby="aria-folders aria-folders-desc"
+						aria-labelledby="aria-folders"
+						aria-describedby="aria-folders-desc"
 						:pt="{ input: { 'aria-labelledby': 'aria-folders aria-folders-desc' } }"
 					/>
 				</div>
@@ -388,7 +391,7 @@
 				/>
 			</div>
 		</div>
-	</div>
+	</main>
 </template>
 
 <script lang="ts">

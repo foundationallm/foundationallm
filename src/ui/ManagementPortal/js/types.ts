@@ -2,6 +2,8 @@
 
 interface ResourceBase {
 	object_id: string;
+	type: string;
+	name: string;
 	display_name: string;
 	description: string;
 	cost_center: string;
@@ -25,6 +27,24 @@ export type ResourceProviderGetResult<T> = {
 	roles: string[];
 };
 
+export type ResourceProviderUpsertResult = {
+    /**
+     * The id of the object that was created or updated.
+     */
+    objectId: string;
+
+    /**
+     * A flag denoting whether the upserted resource already exists.
+     */
+    resourceExists: boolean;
+
+    /**
+     * Gets or sets the resource resulting from the upsert operation.
+     * Each resource provider will decide whether to return the resource in the upsert result or not.
+     */
+    resource?: any;
+};
+
 export type AgentTool = {
 	name: string;
 	description: string;
@@ -34,7 +54,6 @@ export type AgentTool = {
 };
 
 export type Agent = ResourceBase & {
-	name: string;
 	type: 'knowledge-management' | 'analytics';
 	inline_context: boolean;
 	properties?: { [key: string]: string | null };
@@ -53,7 +72,7 @@ export type Agent = ResourceBase & {
 	};
 
 	capabilities: string[];
-	tools: { [key: string]: AgentTool };
+	tools: AgentTool[];
 
 	sessions_enabled: boolean;
 	orchestration_settings: {
@@ -81,9 +100,12 @@ export type Agent = ResourceBase & {
 	prompt_object_id: string;
 };
 
+export type AgentAccessToken = ResourceBase & {
+	id: string;
+	active: boolean;
+}
+
 export type Prompt = ResourceBase & {
-	type: string;
-	name: string;
 	object_id: string;
 	description: string;
 	prefix: string;
@@ -91,14 +113,11 @@ export type Prompt = ResourceBase & {
 };
 
 export type AgentDataSource = ResourceBase & {
-	name: string;
 	content_source: string;
 	object_id: string;
 };
 
 export type ExternalOrchestrationService = ResourceBase & {
-	type: string;
-	name: string;
 	category: string;
 	api_url_configuration_name: string;
 	api_key_configuration_name: string;
@@ -109,8 +128,6 @@ export type ExternalOrchestrationService = ResourceBase & {
 };
 
 export type AIModel = ResourceBase & {
-	name: string;
-	type: string;
 	// The object id of the APIEndpointConfiguration object providing the configuration for the API endpoint used to interact with the model.
 	endpoint_object_id: string;
 	// The version of the AI model.
@@ -127,8 +144,6 @@ export interface ConfigurationReferenceMetadata {
 
 // Data sources
 interface BaseDataSource extends ResourceBase {
-	type: string;
-	name: string;
 	configuration_references: { [key: string]: string };
 	// The resolved configuration references are used to store the resolved values for displaying in the UI and updating the configuration.
 	resolved_configuration_references: { [key: string]: string | null };
@@ -189,9 +204,6 @@ export type DataSource =
 
 // App Configuration
 export interface AppConfigBase extends ResourceBase {
-	type: string;
-	name: string;
-	description: string | null;
 	key: string;
 	value: string;
 	content_type: string | null;
@@ -213,7 +225,6 @@ export type AppConfigUnion = AppConfig | AppConfigKeyVault;
 // End App Configuration
 
 export type AgentIndex = ResourceBase & {
-	name: string;
 	indexer: string;
 	settings: {
 		IndexName: string;
@@ -236,7 +247,6 @@ export type AgentIndex = ResourceBase & {
 
 export type TextPartitioningProfile = ResourceBase & {
 	text_splitter: string;
-	name: string;
 	settings: {
 		Tokenizer: string;
 		TokenizerEncoder: string;
@@ -246,9 +256,7 @@ export type TextPartitioningProfile = ResourceBase & {
 };
 
 export type TextEmbeddingProfile = ResourceBase & {
-	type: string;
 	text_embedding: string;
-	name: string;
 	configuration_references: {
 		APIKey: string;
 		APIVersion: string;
@@ -312,7 +320,6 @@ export type MockCreateAgentRequest = {
 
 export type CreateAgentRequest = ResourceBase & {
 	type: 'knowledge-management' | 'analytics';
-	name: string;
 	inline_context: boolean;
 	properties?: { [key: string]: string | null };
 
@@ -331,7 +338,7 @@ export type CreateAgentRequest = ResourceBase & {
 	};
 
 	capabilities: string[];
-	tools: { [key: string]: AgentTool };
+	tools: AgentTool[];
 
 	vectorization: {
 		dedicated_pipeline: boolean;
@@ -361,14 +368,12 @@ export type CreateAgentRequest = ResourceBase & {
 
 export type CreatePromptRequest = ResourceBase & {
 	type: 'basic' | 'multipart';
-	name: string;
 	prefix: string;
 	suffix: string;
 };
 
 export type CreateTextPartitioningProfileRequest = ResourceBase & {
 	text_splitter: string;
-	name: string;
 	settings: {
 		Tokenizer: string;
 		TokenizerEncoder: string;

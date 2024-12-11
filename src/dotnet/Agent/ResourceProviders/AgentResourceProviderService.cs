@@ -15,6 +15,7 @@ using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
@@ -33,7 +34,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
     /// Implements the FoundationaLLM.Agent resource provider.
     /// </summary>
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>
-    /// <param name="authorizationService">The <see cref="IAuthorizationService"/> providing authorization services.</param>
+    /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
@@ -41,7 +42,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to provide loggers for logging.</param>
     public class AgentResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
-        IAuthorizationService authorizationService,
+        IAuthorizationServiceClient authorizationService,
         [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Agent)] IStorageService storageService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
@@ -95,6 +96,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     {
                         IncludeRoles = resourcePath.IsResourceTypePath,
                     }),
+                AgentResourceTypeNames.AgentAccessTokens => await LoadAgentAccessTokens(
+                    resourcePath)!,
                 AgentResourceTypeNames.Files => await LoadAgentFiles(
                     resourcePath.MainResourceId!)!,
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
@@ -107,6 +110,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             {
                 AgentResourceTypeNames.Agents => await UpdateAgent(resourcePath, serializedResource!, userIdentity),
                 AgentResourceTypeNames.Workflows => await UpdateWorkflow(resourcePath, serializedResource!, userIdentity),
+                AgentResourceTypeNames.AgentAccessTokens => await UpdateAgentAccessToken(resourcePath, serializedResource!),
                 AgentResourceTypeNames.Files => await UpdateAgentFile(resourcePath, formFile!, userIdentity),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
@@ -136,6 +140,15 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
+                AgentResourceTypeNames.AgentAccessTokens => resourcePath.Action switch
+                {
+                    ResourceProviderActions.Validate => await ValidateAgentAccessToken(
+                        resourcePath,
+                        JsonSerializer.Deserialize<AgentAccessTokenValidationRequest>(serializedAction)!,
+                        userIdentity),
+                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+                },
                 _ => throw new ResourceProviderException()
             };
 
@@ -152,6 +165,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     break;
                 case AgentResourceTypeNames.Files:
                     await DeleteAgentFile(resourcePath);
+                    break;
+                case AgentResourceTypeNames.AgentAccessTokens:
+                    await DeleteAgentAccessToken(resourcePath);
                     break;
                 default:
                     throw new ResourceProviderException(
@@ -362,6 +378,10 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 }
             }
 
+            // Ensure the agent has a valid virtual security group identifier.
+            if (string.IsNullOrWhiteSpace(agent.VirtualSecurityGroupId))
+                agent.VirtualSecurityGroupId = Guid.NewGuid().ToString().ToLower();
+
             UpdateBaseProperties(agent, userIdentity, isNew: existingAgentReference == null);
             if (existingAgentReference == null)
                 await CreateResource<AgentBase>(agentReference, agent);
@@ -420,6 +440,146 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 ObjectId = workflow!.ObjectId,
                 ResourceExists = existingReference != null
             };
+        }
+
+        private async Task<List<ResourceProviderGetResult<AgentAccessToken>>> LoadAgentAccessTokens(ResourcePath resourcePath)
+        {
+            var agentClientSecretKey = new AgentClientSecretKey
+            {
+                InstanceId = resourcePath.InstanceId!,
+                ContextId = string.Empty,
+                Id = string.Empty,
+                ClientSecret = string.Empty
+            };
+            agentClientSecretKey.SetContextId(resourcePath.MainResourceId!);
+
+            var secretKeys = await _authorizationServiceClient.GetSecretKeys(
+                agentClientSecretKey.InstanceId,
+                agentClientSecretKey.ContextId);
+
+            return secretKeys.Select(k => new ResourceProviderGetResult<AgentAccessToken>()
+            {
+                Actions = [],
+                Roles = [],
+                Resource = new AgentAccessToken()
+                {
+                    Id = new Guid(k.Id),
+                    Name = k.Id,
+                    Description = k.Description,
+                    Active = k.Active,
+                    ExpirationDate = k.ExpirationDate
+                }
+            }).ToList();
+        }
+
+        private async Task<ResourceProviderUpsertResult> UpdateAgentAccessToken(ResourcePath resourcePath, string serializedAgentAccessToken)
+        {
+            var agentAccessToken = JsonSerializer.Deserialize<AgentAccessToken>(serializedAgentAccessToken)
+                ?? throw new ResourceProviderException("The object definition is invalid.",
+                    StatusCodes.Status400BadRequest);
+
+            var agentClientSecretKey = new AgentClientSecretKey
+            {
+                InstanceId = resourcePath.InstanceId!,
+                ContextId = string.Empty,
+                Id = resourcePath.ResourceId!,
+                ClientSecret = string.Empty
+            };
+            agentClientSecretKey.SetContextId(resourcePath.MainResourceId!);
+
+            var secretKeyValue = await _authorizationServiceClient.UpsertSecretKey(_instanceSettings.Id, new SecretKey()
+            {
+                Id = agentClientSecretKey.Id,
+                InstanceId = agentClientSecretKey.InstanceId,
+                ContextId = agentClientSecretKey.ContextId,
+                Description = agentAccessToken.Description!,
+                Active = agentAccessToken.Active,
+                ExpirationDate = agentAccessToken.ExpirationDate!.Value
+            });
+
+            agentAccessToken.ObjectId = resourcePath.RawResourcePath;
+
+            return new ResourceProviderUpsertResult
+            {
+                ObjectId = agentAccessToken!.ObjectId,
+                ResourceExists = string.IsNullOrWhiteSpace(secretKeyValue),
+                Resource = secretKeyValue
+            };
+        }
+
+        private async Task DeleteAgentAccessToken(ResourcePath resourcePath)
+        {
+            var agentClientSecretKey = new AgentClientSecretKey
+            {
+                InstanceId = resourcePath.InstanceId!,
+                ContextId = string.Empty,
+                Id = resourcePath.ResourceId!,
+                ClientSecret = string.Empty
+            };
+            agentClientSecretKey.SetContextId(resourcePath.MainResourceId!);
+
+            await _authorizationServiceClient.DeleteSecretKey(
+                agentClientSecretKey.InstanceId,
+                agentClientSecretKey.ContextId,
+                agentClientSecretKey.Id);
+        }
+
+        private async Task<AgentAccessTokenValidationResult> ValidateAgentAccessToken(
+            ResourcePath resourcePath,
+            AgentAccessTokenValidationRequest agentAccessTokenValidationRequest,
+            UnifiedUserIdentity userIdentity)
+        {
+            var fallbackResult = new AgentAccessTokenValidationResult()
+            {
+                Valid = false
+            };
+
+            if (!ClientSecretKey.TryParse(agentAccessTokenValidationRequest.AccessToken, out var clientSecretKey)
+                || clientSecretKey == null)
+                return fallbackResult;
+
+            var agentClientSecretKey = AgentClientSecretKey.FromClientSecretKey(clientSecretKey);
+
+            if (!StringComparer.OrdinalIgnoreCase.Equals(agentClientSecretKey.AgentName, resourcePath.MainResourceId))
+                return fallbackResult;
+
+            var result = await _authorizationServiceClient.ValidateSecretKey(
+                resourcePath.InstanceId!,
+                agentClientSecretKey.ContextId,
+                agentAccessTokenValidationRequest.AccessToken);
+
+            if (result.Valid)
+            {
+                // Set virtual identity
+                var agent = await GetResourceAsync<AgentBase>($"/instances/{resourcePath.InstanceId}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentClientSecretKey.AgentName}", userIdentity);
+                var upn =
+                    $"aat_{agentClientSecretKey.AgentName}_{agentClientSecretKey.Id}@foundationallm.internal_";
+
+                // Warn if the agent's virtual security group identifier is not set.
+                if (string.IsNullOrEmpty(agent.VirtualSecurityGroupId))
+                {
+                    _logger.LogWarning("An agent access token was used for the agent {AgentName} in instance {InstanceId} but the agent's virtual security group identifier is not set.",
+                        agentClientSecretKey.AgentName,
+                        resourcePath.InstanceId);
+                }
+
+                return new AgentAccessTokenValidationResult()
+                {
+                    Valid = result.Valid,
+                    VirtualIdentity = new UnifiedUserIdentity()
+                    {
+                        UserId = agentClientSecretKey.Id,
+                        Name = agentClientSecretKey.Id,
+                        Username = agentClientSecretKey.Id,
+                        UPN = upn,
+                        GroupIds = string.IsNullOrWhiteSpace(agent.VirtualSecurityGroupId)
+                            ? []
+                            : [agent.VirtualSecurityGroupId],
+                    }
+                };
+            }
+
+            return fallbackResult;
         }
 
         private async Task<List<ResourceProviderGetResult<AgentFile>>> LoadAgentFiles(string agentName) =>

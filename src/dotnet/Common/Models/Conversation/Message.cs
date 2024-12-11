@@ -64,6 +64,11 @@ public record Message
     public bool? Rating { get; set; }
 
     /// <summary>
+    /// The comments associated with the rating.
+    /// </summary>
+    public string? RatingComments { get; set; }
+
+    /// <summary>
     /// The UPN of the user who created the chat session.
     /// </summary>
     public string UPN { get; set; }

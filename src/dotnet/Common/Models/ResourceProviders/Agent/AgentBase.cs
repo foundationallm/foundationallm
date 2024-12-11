@@ -64,15 +64,25 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         [JsonPropertyName("workflow")]
         public AgentWorkflowBase? Workflow { get; set; }
 
-
         /// <summary>
-        /// Gets or sets a dictionary of tools that are registered with the agent.
+        /// Gets or sets a list of tools that are registered with the agent.
         /// </summary>
         /// <remarks>
         /// The key is the name of the tool, and the value is the <see cref="AgentTool"/> object.
         /// </remarks>
         [JsonPropertyName("tools")]
-        public Dictionary<string, AgentTool> Tools { get; set; } = [];
+        public AgentTool[] Tools { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the object identifier of the virtual security group associated with the agent.
+        /// </summary>\
+        /// <remarks>
+        /// The virtual security group is used to provide access to the agent for the virtual security principals.
+        /// An example of such a virtual security principal is the virtual identity associated with an
+        /// agent access token.
+        /// </remarks>
+        [JsonPropertyName("virtual_security_group_id")]
+        public string? VirtualSecurityGroupId { get; set; }
 
         /// <summary>
         /// The object type of the agent.

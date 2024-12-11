@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Models.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,7 @@ namespace FoundationaLLM.Authorization.API.Controllers
     /// <summary>
     /// Provides methods for checking the status of the service.
     /// </summary>
-    [Authorize(Policy = "RequiredClaims")]
+    [Authorize(Policy = AuthorizationPolicyNames.MicrosoftEntraIDNoScopes)]
     [ApiController]
     [Route("")]
     [Consumes("application/json")]

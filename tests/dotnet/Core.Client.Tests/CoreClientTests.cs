@@ -37,6 +37,84 @@ namespace FoundationaLLM.Client.Core.Tests
         }
 
         [Fact]
+        public async Task RateMessageAsync_ShouldReturnMessage_WhenSuccessful()
+        {
+            // Arrange
+            var sessionId = "test-session-id";
+            var messageId = "test-message-id";
+            var ratingRequest = new MessageRatingRequest
+            {
+                Rating = true,
+                Comments = "Great response!"
+            };
+            var expectedMessage = new Message
+            {
+                Id = messageId,
+                RatingComments = "This is a test message.",
+                Rating = ratingRequest.Rating
+            };
+
+            _coreRestClient.Sessions
+                .RateMessageAsync(sessionId, messageId, ratingRequest)
+                .Returns(Task.FromResult(expectedMessage));
+
+            // Act
+            var result = await _coreClient.RateMessageAsync(sessionId, messageId, ratingRequest);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(expectedMessage.Id, result.Id);
+            Assert.Equal(expectedMessage.RatingComments, result.RatingComments);
+            Assert.Equal(expectedMessage.Rating, result.Rating);
+
+            await _coreRestClient.Sessions.Received(1).RateMessageAsync(sessionId, messageId, ratingRequest);
+        }
+
+        [Fact]
+        public async Task RateMessageAsync_ShouldThrowException_WhenSessionIdIsNullOrEmpty()
+        {
+            // Arrange
+            string sessionId = null!;
+            var messageId = "test-message-id";
+            var ratingRequest = new MessageRatingRequest
+            {
+                Rating = true,
+                Comments = "Great response!"
+            };
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => _coreClient.RateMessageAsync(sessionId, messageId, ratingRequest));
+        }
+
+        [Fact]
+        public async Task RateMessageAsync_ShouldThrowException_WhenMessageIdIsNullOrEmpty()
+        {
+            // Arrange
+            var sessionId = "test-session-id";
+            string messageId = null!;
+            var ratingRequest = new MessageRatingRequest
+            {
+                Rating = true,
+                Comments = "Great response!"
+            };
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => _coreClient.RateMessageAsync(sessionId, messageId, ratingRequest));
+        }
+
+        [Fact]
+        public async Task RateMessageAsync_ShouldThrowException_WhenRatingRequestIsNull()
+        {
+            // Arrange
+            var sessionId = "test-session-id";
+            var messageId = "test-message-id";
+            MessageRatingRequest ratingRequest = null!;
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => _coreClient.RateMessageAsync(sessionId, messageId, ratingRequest));
+        }
+
+        [Fact]
         public async Task GetCompletionWithSessionAsync_WithNewSession_CreatesSessionAndSendsCompletion()
         {
             // Arrange

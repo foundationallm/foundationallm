@@ -31,7 +31,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
     /// Implements the FoundationaLLM.Vectorization resource provider.
     /// </summary>    
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>    
-    /// <param name="authorizationService">The <see cref="IAuthorizationService"/> providing authorization services.</param>
+    /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>    
@@ -39,7 +39,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
     /// <param name="loggerFactory">The factory responsible for creating loggers.</param>    
     public class VectorizationResourceProviderService(        
         IOptions<InstanceSettings> instanceOptions,
-        IAuthorizationService authorizationService,
+        IAuthorizationServiceClient authorizationService,
         [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization)] IStorageService storageService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,        
@@ -709,7 +709,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             ResourceProviderUpsertOptions? options = null) =>
             resource switch
             {
-                VectorizationRequest vectorizationRequest => (TResult) await UpdateVectorizationRequest(resourcePath, vectorizationRequest, userIdentity),
+                VectorizationRequest vectorizationRequest => (await UpdateVectorizationRequest(resourcePath, vectorizationRequest, userIdentity) as TResult)!,
                 _ => throw new ResourceProviderException(
                     $"The type {nameof(T)} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
@@ -717,7 +717,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
 
         #region Helpers for UpsertResourceAsync<T>
 
-        private async Task<ResourceProviderUpsertResult> UpdateVectorizationRequest(ResourcePath resourcePath, VectorizationRequest request, UnifiedUserIdentity userIdentity)
+        private async Task<ResourceProviderUpsertResult<VectorizationRequest>> UpdateVectorizationRequest(ResourcePath resourcePath, VectorizationRequest request, UnifiedUserIdentity userIdentity)
         {
             request.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
             await PopulateRequestResourceFilePath(request);
@@ -748,7 +748,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                 default,
                 default);
 
-            return new ResourceProviderUpsertResult
+            return new ResourceProviderUpsertResult<VectorizationRequest>
             {
                 ObjectId = request.ObjectId,
                 ResourceExists = false

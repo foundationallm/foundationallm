@@ -400,3 +400,4 @@ deploy/quick-start/tools
 *.lutconfig
 dist
 **/foundationallm-certificates.SecretProviderClass.json
+**/foundationallm_external_modules**

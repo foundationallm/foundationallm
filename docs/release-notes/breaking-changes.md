@@ -9,16 +9,24 @@
 
 The following new App Configuration settings are required:
 
-|Name | Default value |
-|--- | --- |
-|`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:RequireScopes` | `true` |
-|`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:AllowACLAuthorization` | `false` |
-|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName` | `-` |
-|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType` | `-` |
-|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer` | `-` |
-|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules` | `-` |
+|Name | Default value | Description |
+|--- | --- | --- |
+|`FoundationaLLM:PythonSDK:Logging:LogLevel:Default` | `Information` | `-` |
+|`FoundationaLLM:PythonSDK:Logging:EnableConsoleLogging` | `false` | `-` |
+|`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:RequireScopes` | `true` | Indicates whether a scope claim (scp) is required for authorization. Set to `false` to allow authentication from an external proxy API. |
+|`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:AllowACLAuthorization` | `false` | Indicates whether tokens that do not have either of the "scp" or "roles" claims are accepted (True means they are accepted). Set to `true` to allow authentication from an external proxy API. |
+|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName` | `-` | `-` |
+|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType` | `-` | `-` |
+|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer` | `-` | `-` |
+|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules` | `-` | `-` |
+|`FoundationaLLM:UserPortal:Configuration:ShowMessageRating` | `true` | If `true`, rating options on agent messages will appear. |
+|`FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup` | `false` | If `true`, the last conversation will be displayed when the user logs in. Otherwise, a new conversation placeholder appears on page load. |
+|`FoundationaLLM:UserPortal:Configuration:ShowMessageTokens` | `true` | If `true`, the number of consumed tokens on agent and user messages will appear. |
+|`FoundationaLLM:UserPortal:Configuration:ShowViewPrompt` | `true` | If `true`, the "View Prompt" button on agent messages will appear. |
 
 #### Agent Tool configuration changes
+
+Agent tools are now an array of AgentTool objects rather than a dictionary.
 
 When defining tools for an agent, each tool now requires a `package_name` property. This property is used to identify the package that contains the tool's implementation. If the tool is internal, the `package_name` should be set to `FoundationaLLM`, if the tool is external, the `package_name` should be set to the name of the external package.
 
@@ -26,9 +34,26 @@ When defining tools for an agent, each tool now requires a `package_name` proper
 
 The following classes have been renamed:
 
- Original Class | New Class
---- | ---
- `FoundationaLLM.Common.Models.Orchestration.Response.Citation` | `FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact`
+| Original Class | New Class |
+| --- | --- |
+| `FoundationaLLM.Common.Models.Orchestration.Response.Citation` | `FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact` |
+
+#### API endpoint changes
+
+**Core API**
+
+The `/instances/{instanceId}/sessions/{sessionId}/message/{id}/rate` endpoint has been updated to accept the rating in the message body, rather than as a query parameter. Send the following payload in the request body:
+
+```json
+{
+  "rating": true,
+  "comments": "string"
+}
+```
+
+> [!NOTE]
+> Please note that both properties are nullable. Set them to null to clear out the rating and comments.
+
 
 ## Starting with 0.8.4
 

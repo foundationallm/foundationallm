@@ -1,8 +1,4 @@
 # Foundationa**LLM** Common
 
-Foundationa**LLM** Common is a .NET library that the `FoundationaLLM.Client.Core` and `FoundationaLLM.Client.Management` client libraries share as a common dependency.
-
-> [!IMPORTANT]
-> **Do not directly import and use this library.**
-
-To use the Foundationa**LLM** client libraries, install the `FoundationaLLM.Client.Core` or `FoundationaLLM.Client.Management` NuGet package.
+Foundationa**LLM** Common is a .NET library that the official Foundationa**LLM** client libraries, such as `FoundationaLLM.Client.Core` and `FoundationaLLM.Client.Management`, share as a common dependency.
+It contains global constants, models, resource provider metadata, services, and other artifacts referenced across the Foundationa**LLM** stack.

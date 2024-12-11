@@ -108,6 +108,10 @@ main {
 	margin-top: 8px !important;
 }
 
+.mt-4 {
+	margin-top: 16px !important;
+}
+
 .mb-1 {
 	margin-bottom: 4px !important;
 }
@@ -117,7 +121,7 @@ main {
 }
 
 .mb-3 {
-	margin-bottom: 12px !important;
+    margin-bottom: 12px !important;
 }
 
 .mb-4 {
@@ -136,8 +140,16 @@ main {
 	display: flex;
 }
 
+.flex-column {
+	flex-direction: column;
+}
+
 .align-center {
 	align-items: center;
+}
+
+.justify-content-center {
+	justify-content: center;
 }
 
 .justify-content-end {
@@ -160,15 +172,33 @@ main {
 	color: var(--primary-button-bg) !important;
 }
 
-.p-button:not(.p-button-text):not(.color-undo-button) {
-	background-color: var(--primary-button-bg) !important;
-	border-color: var(--primary-button-bg) !important;
-	color: var(--primary-button-text) !important;
+.p-button:not(.p-button-text):not(.p-togglebutton) {
+	background-color: var(--primary-button-bg);
+	border-color: var(--primary-button-bg);
+	color: var(--primary-button-text);
+
+	& > * {
+		color: var(--primary-button-text);
+	}
 }
 
-.p-button-secondary:not(.p-button-text) {
-	background-color: var(--secondary-button-bg) !important;
-	border-color: var(--secondary-button-bg) !important;
-	color: var(--secondary-button-text) !important;
+.p-button-secondary:not(.p-button-text):not(.p-togglebutton) {
+	background-color: var(--secondary-button-bg);
+	border-color: var(--secondary-button-bg);
+	color: var(--secondary-button-text);
+
+	& > * {
+		color: var(--secondary-button-text);
+	}
+}
+
+.p-togglebutton:not(.p-button-text) {
+	background-color: var(--primary-button-bg);
+	border-color: var(--primary-button-bg);
+	color: var(--primary-button-text);
+
+	& > * {
+		color: var(--primary-button-text);
+	}
 }
 </style>

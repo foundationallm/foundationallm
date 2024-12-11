@@ -58,6 +58,7 @@ export interface Message {
 	tokens: number;
 	text: string;
 	rating: boolean | null;
+	ratingComments: string | null;
 	vector: Array<Number>;
 	completionPromptId: string | null;
 	contentArtifacts: Array<ContentArtifact>;
@@ -65,6 +66,12 @@ export interface Message {
 	attachments: Array<string>;
 	attachmentDetails: Array<AttachmentDetail>;
 	analysisResults: Array<AnalysisResult>;
+}
+
+export interface MessageRatingRequest
+{
+    rating: boolean | null;
+	comments: string | null;
 }
 
 export interface Session {

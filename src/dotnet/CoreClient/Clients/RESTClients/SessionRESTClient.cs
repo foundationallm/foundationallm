@@ -3,6 +3,7 @@ using FoundationaLLM.Client.Core.Interfaces;
 using FoundationaLLM.Common.Models.Conversation;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Message = FoundationaLLM.Common.Models.Conversation.Message;
 
 namespace FoundationaLLM.Client.Core.Clients.RESTClients
 {
@@ -40,6 +41,10 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         /// <inheritdoc/>
         public async Task<string> RenameChatSession(string sessionId, ChatSessionProperties chatSessionProperties)
         {
+            if (string.IsNullOrWhiteSpace(sessionId))
+            {
+                throw new ArgumentException("A session ID must be provided when renaming a session.");
+            }
             var coreClient = await GetCoreClientAsync();
             var response = await coreClient.PostAsync(
                 $"instances/{_instanceId}/sessions/{sessionId}/rename",
@@ -56,6 +61,15 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         /// <inheritdoc/>
         public async Task<CompletionPrompt> GetCompletionPromptAsync(string sessionId, string completionPromptId)
         {
+            if (string.IsNullOrWhiteSpace(completionPromptId))
+            {
+                throw new ArgumentException(
+                    "A completion prompt ID must be provided when retrieving a completion prompt.");
+            }
+            if (string.IsNullOrWhiteSpace(sessionId))
+            {
+                throw new ArgumentException("A session ID must be provided when retrieving a completion prompt.");
+            }
             var coreClient = await GetCoreClientAsync();
             var responseMessage = await coreClient.GetAsync($"instances/{_instanceId}/sessions/{sessionId}/completionprompts/{completionPromptId}");
 
@@ -73,6 +87,9 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         /// <inheritdoc/>
         public async Task<IEnumerable<Message>> GetChatSessionMessagesAsync(string sessionId)
         {
+            if (string.IsNullOrWhiteSpace(sessionId)) {
+                throw new ArgumentException("A session ID must be provided when retrieving chat messages.");
+            }
             var coreClient = await GetCoreClientAsync();
             var responseMessage = await coreClient.GetAsync($"instances/{_instanceId}/sessions/{sessionId}/messages");
 
@@ -110,22 +127,45 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         }
 
         /// <inheritdoc/>
-        public async Task RateMessageAsync(string sessionId, string messageId, bool rating)
+        public async Task<Message> RateMessageAsync(string sessionId, string messageId, MessageRatingRequest rating)
         {
+            if (string.IsNullOrWhiteSpace(sessionId))
+            {
+                throw new ArgumentException("A session ID must be provided when rating a message.");
+            }
+            if (string.IsNullOrWhiteSpace(messageId))
+            {
+                throw new ArgumentException("A message ID must be provided when rating a message.");
+            }
+            if (rating == null)
+            {
+                throw new ArgumentException("A rating must be provided when rating a message.");
+            }
             var coreClient = await GetCoreClientAsync();
-            var responseMessage = await coreClient.PostAsync($"instances/{_instanceId}/sessions/{sessionId}/message/{messageId}/rate?rating={rating}", null);
+            var responseMessage = await coreClient.PostAsync($"instances/{_instanceId}/sessions/{sessionId}/message/{messageId}/rate",
+                JsonContent.Create(rating));
 
             if (!responseMessage.IsSuccessStatusCode)
             {
                 throw new Exception($"Failed to rate message. Status code: {responseMessage.StatusCode}. Reason: {responseMessage.ReasonPhrase}");
             }
+
+            var responseContent = await responseMessage.Content.ReadAsStringAsync();
+            var message = JsonSerializer.Deserialize<Message>(responseContent, SerializerOptions);
+            return message ?? throw new InvalidOperationException("The returned Message is invalid.");
         }
 
         /// <inheritdoc/>
         public async Task DeleteSessionAsync(string sessionId)
         {
+            if (string.IsNullOrWhiteSpace(sessionId))
+            {
+                throw new ArgumentException("A session ID must be provided when deleting a session.");
+            }
             var coreClient = await GetCoreClientAsync();
             await coreClient.DeleteAsync($"instances/{_instanceId}/sessions/{sessionId}");
         }
+
+        public Task RateMessageAsync(string sessionId, string messageId, bool rating) => throw new NotImplementedException();
     }
 }

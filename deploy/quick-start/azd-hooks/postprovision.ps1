@@ -69,6 +69,21 @@ $env:POLICYGUID02 = $($(New-Guid).Guid)
 $env:POLICYGUID03 = $($(New-Guid).Guid)
 $env:POLICYGUID04 = $($(New-Guid).Guid)
 
+Invoke-AndRequireSuccess "Create New OpenAI Assistant" {
+    $accountInfo = $(az resource show --ids $env:AZURE_OPENAI_ID --query "{resourceGroup:resourceGroup,name:name}" | ConvertFrom-Json)
+    $oaiApiKey = $(az cognitiveservices account keys list --name $accountInfo.name --resource-group $accountInfo.resourceGroup --query "key1" --output tsv)
+    $promptText = $((Get-Content "./data/resource-provider/FoundationaLLM.Prompt/FoundationaLLM.template.json") | ConvertFrom-Json).prefix
+    $env:OPENAI_ASSISTANT_ID = $(curl "https://$($accountInfo.name).openai.azure.com/openai/assistants?api-version=2024-05-01-preview" `
+        -H "api-key: $oaiApiKey" `
+        -H "Content-Type: application/json" `
+        -d "{
+            `"instructions`": `"$promptText`",
+            `"name`": `"FoundationaLLM - FoundationaLLM`",
+            `"tools`": [{`"type`": `"code_interpreter`"}, {`"type`": `"file_search`"}],
+            `"model`": `"completions4o`"
+        }" | ConvertFrom-Json).id
+}
+
 $envConfiguraitons = @{
     "core-api-event-profile"             = @{
         template     = './config/core-api-event-profile.template.json'
