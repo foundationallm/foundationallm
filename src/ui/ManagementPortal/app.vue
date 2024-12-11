@@ -1,17 +1,16 @@
 <template>
-	<main>
 		<Head>
 			<Title>{{ pageTitle }}</Title>
 			<Meta name="description" :content="pageTitle" />
 			<Link rel="icon" type="image/x-icon" :href="iconLink" />
 		</Head>
 
+	<div class="main-content">
 		<NuxtLayout>
 			<NuxtPage />
 		</NuxtLayout>
-
 		<Toast position="top-center" />
-	</main>
+	</div>
 </template>
 
 <script lang="ts">
@@ -59,7 +58,7 @@ html,
 body,
 #__nuxt,
 #__layout,
-main {
+.main-content {
 	height: 100%;
 	margin: 0;
 	font-family: 'Poppins', sans-serif;
