@@ -2,14 +2,11 @@
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authorization;
-using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
-using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -65,14 +62,20 @@ namespace FoundationaLLM.Common.Authentication
 
                     if (validationResult?.Valid ?? false)
                     {
-                        var claims = new[]
+                        var claims = new List<Claim>
                         {
-                        new Claim(ClaimConstants.Name, validationResult.VirtualIdentity!.Name!),
-                        new Claim(ClaimConstants.Oid, validationResult.VirtualIdentity!.UserId!),
-                        new Claim(ClaimConstants.ObjectId, validationResult.VirtualIdentity!.UserId!),
-                        new Claim(ClaimConstants.PreferredUserName, validationResult.VirtualIdentity!.UPN!)
-                        // TODO: Add group claims here.
-                    };
+                            new Claim(ClaimConstants.Name, validationResult.VirtualIdentity!.Name!),
+                            new Claim(ClaimConstants.Oid, validationResult.VirtualIdentity!.UserId!),
+                            new Claim(ClaimConstants.ObjectId, validationResult.VirtualIdentity!.UserId!),
+                            new Claim(ClaimConstants.PreferredUserName, validationResult.VirtualIdentity!.UPN!),
+                            new Claim(ClaimConstants.Scope, "Data.Read")
+                        };
+
+                        claims.AddRange(
+                            validationResult.VirtualIdentity!.GroupIds
+                                .Select(groupId => new Claim(EntraUserClaimConstants.Groups, groupId))
+                                .ToArray());
+
                         var identity = new ClaimsIdentity(claims, Scheme.Name);
                         var identities = new List<ClaimsIdentity> { identity };
                         var principal = new ClaimsPrincipal(identities);

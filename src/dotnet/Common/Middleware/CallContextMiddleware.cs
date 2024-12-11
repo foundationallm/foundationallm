@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
@@ -51,19 +52,38 @@ namespace FoundationaLLM.Common.Middleware
 
                 // We are only expanding group membership for User objects
                 // Service Principal permissions must be assigned directly and not over group membership.
+                // The Agent Accest Token authentication scheme is 
                 if (userIdentity != null
                     && !claimsProviderService.IsServicePrincipal(context.User))
                 {
-                    switch(instanceSettings.Value.SecurityGroupRetrievalStrategy)
+                    switch (context.User.Identity.AuthenticationType)
                     {
-                        case SecurityGroupRetrievalStrategies.IdentityManagementService:
-                            userIdentity.GroupIds = await identityManagementService.GetGroupsForPrincipal(
-                                userIdentity.UserId!);
+                        case JwtBearerDefaults.AuthenticationScheme:
+
+                            // Retrieve group membership when using the Bearer token authentication scheme.
+                            switch (instanceSettings.Value.SecurityGroupRetrievalStrategy)
+                            {
+                                case SecurityGroupRetrievalStrategies.IdentityManagementService:
+                                    userIdentity.GroupIds = await identityManagementService.GetGroupsForPrincipal(
+                                        userIdentity.UserId!);
+                                    break;
+                                case SecurityGroupRetrievalStrategies.AccessToken:
+                                    userIdentity.GroupIds = claimsProviderService.GetSecurityGroupIds(context.User) ?? [];
+                                    break;
+                                case SecurityGroupRetrievalStrategies.None:
+                                default:
+                                    break;
+                            }
+
                             break;
-                        case SecurityGroupRetrievalStrategies.AccessToken:
+
+                        case AgentAccessTokenDefaults.AuthenticationScheme:
+
+                            // Retrieve group membership when using the Agent Access Token authentication scheme.
                             userIdentity.GroupIds = claimsProviderService.GetSecurityGroupIds(context.User) ?? [];
+
                             break;
-                        case SecurityGroupRetrievalStrategies.None:
+
                         default:
                             break;
                     }

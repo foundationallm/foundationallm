@@ -529,19 +529,19 @@ namespace FoundationaLLM.Agent.ResourceProviders
             AgentAccessTokenValidationRequest agentAccessTokenValidationRequest,
             UnifiedUserIdentity userIdentity)
         {
-            var fallabckResult = new AgentAccessTokenValidationResult()
+            var fallbackResult = new AgentAccessTokenValidationResult()
             {
                 Valid = false
             };
 
             if (!ClientSecretKey.TryParse(agentAccessTokenValidationRequest.AccessToken, out var clientSecretKey)
                 || clientSecretKey == null)
-                return fallabckResult;
+                return fallbackResult;
 
             var agentClientSecretKey = AgentClientSecretKey.FromClientSecretKey(clientSecretKey);
 
             if (!StringComparer.OrdinalIgnoreCase.Equals(agentClientSecretKey.AgentName, resourcePath.MainResourceId))
-                return fallabckResult;
+                return fallbackResult;
 
             var result = await _authorizationServiceClient.ValidateSecretKey(
                 resourcePath.InstanceId!,
@@ -551,24 +551,35 @@ namespace FoundationaLLM.Agent.ResourceProviders
             if (result.Valid)
             {
                 // Set virtual identity
-                var agent = await GetResourceAsync<AgentBase>($"/instances/{_instanceSettings.Id}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentClientSecretKey.AgentName}", userIdentity);
+                var agent = await GetResourceAsync<AgentBase>($"/instances/{resourcePath.InstanceId}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentClientSecretKey.AgentName}", userIdentity);
                 var upn =
                     $"aat_{agentClientSecretKey.AgentName}_{agentClientSecretKey.Id}@foundationallm.internal_";
-                result.VirtualIdentity = new UnifiedUserIdentity()
+
+                // Warn if the agent's virtual security group identifier is not set.
+                if (string.IsNullOrEmpty(agent.VirtualSecurityGroupId))
                 {
-                    UserId = agentClientSecretKey.Id,
-                    Name = agentClientSecretKey.Id,
-                    Username = agentClientSecretKey.Id,
-                    UPN = upn,
-                    GroupIds = [agent.VirtualSecurityGroupId],
+                    _logger.LogWarning("An agent access token was used for the agent {AgentName} in instance {InstanceId} but the agent's virtual security group identifier is not set.",
+                        agentClientSecretKey.AgentName,
+                        resourcePath.InstanceId);
+                }
+
+                return new AgentAccessTokenValidationResult()
+                {
+                    Valid = result.Valid,
+                    VirtualIdentity = new UnifiedUserIdentity()
+                    {
+                        UserId = agentClientSecretKey.Id,
+                        Name = agentClientSecretKey.Id,
+                        Username = agentClientSecretKey.Id,
+                        UPN = upn,
+                        GroupIds = string.IsNullOrWhiteSpace(agent.VirtualSecurityGroupId)
+                            ? []
+                            : [agent.VirtualSecurityGroupId],
+                    }
                 };
             }
 
-            return new AgentAccessTokenValidationResult()
-            {
-                 Valid = result.Valid,
-                 VirtualIdentity = result.VirtualIdentity
-            };
+            return fallbackResult;
         }
 
         private async Task<List<ResourceProviderGetResult<AgentFile>>> LoadAgentFiles(string agentName) =>
