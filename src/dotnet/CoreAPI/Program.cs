@@ -5,18 +5,14 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
-using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Services;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -77,7 +73,7 @@ namespace FoundationaLLM.Core.API
 
             // Add authorization services.
             builder.AddGroupMembership();
-            builder.AddAuthorizationService();
+            builder.AddAuthorizationServiceClient();
 
             // CORS policies
             builder.AddCorsPolicies();
@@ -145,7 +141,7 @@ namespace FoundationaLLM.Core.API
                 allowACLAuthorization = true;
             }
 
-            builder.AddAuthenticationConfiguration(
+            builder.AddMicrosoftEntraIDAuthentication(
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_Instance,
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_TenantId,
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_ClientId,
@@ -153,6 +149,8 @@ namespace FoundationaLLM.Core.API
                 requireScopes: requireScopes,
                 allowACLAuthorization: allowACLAuthorization
             );
+
+            builder.AddFoundationaLLMAgentAccessTokenAuthentication();
 
             // Add OpenTelemetry.
             builder.AddOpenTelemetry(

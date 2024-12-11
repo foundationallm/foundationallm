@@ -3,6 +3,9 @@ using FoundationaLLM.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using FoundationaLLM.Common.Models.Conversation;
+using FoundationaLLM.Common.Constants.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using FoundationaLLM.Common.Authentication;
 
 namespace FoundationaLLM.Core.API.Controllers
 {
@@ -16,7 +19,12 @@ namespace FoundationaLLM.Core.API.Controllers
     /// sessions and messages, and for getting completions from the orchestrator.</param>
     /// <param name="logger">The logging interface used to log under the
     /// <see cref="SessionsController"/> type name.</param>
-    [Authorize(Policy = "DefaultPolicy")]
+    [Authorize(
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        Policy = AuthorizationPolicyNames.MicrosoftEntraIDStandard)]
+    [Authorize(
+        AuthenticationSchemes = AgentAccessTokenDefaults.AuthenticationScheme,
+        Policy = AuthorizationPolicyNames.FoundationaLLMAgentAccessToken)]
     [ApiController]
     [Route("instances/{instanceId}/[controller]")]
     public class SessionsController(ICoreService coreService,

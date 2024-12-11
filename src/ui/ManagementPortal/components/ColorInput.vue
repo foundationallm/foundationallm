@@ -72,20 +72,23 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .color-input-container {
 	display: flex;
 	align-items: center;
 }
+
 .branding-color-input {
 	width: 30ch;
 }
+
 .color-picker {
 	width: 50px;
 }
+
 .color-undo-button {
-	border: 2px solid #e1e1e1;
-	border-width: 2px 2px 2px 0;
+	border: 2px solid #e1e1e1 !important;
+	border-width: 2px 2px 2px 0 !important;
 	width: 50px;
 }
 </style>

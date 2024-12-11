@@ -15,7 +15,7 @@
 
 			<div style="display: flex; align-items: center">
 				<!-- Private storage -->
-				<PrivateStorage v-if="hasOpenAIAssistantCapability" :agent-name="`${agentName}`" />
+				<PrivateStorage v-if="hasOpenAIAssistantCapability" :agent-name="agentName" />
 
 				<!-- Edit access control -->
 				<AccessControl
@@ -720,6 +720,39 @@
 					/>
 				</div>
 			</section>
+			
+			<!-- Security -->
+			<div v-if="virtualSecurityGroupId" class="step-section-header span-2">Security</div>
+
+			<!-- Virtual security group id -->
+			<template v-if="virtualSecurityGroupId">
+				<div class="step-header">Virtual security group ID</div>
+				<div class="span-2" style="display: flex; gap: 16px">
+					<InputText
+						:value="virtualSecurityGroupId"
+						disabled
+						type="text"
+						class="w-50"
+						placeholder="Enter cost center name"
+						aria-labelledby="aria-cost-center"
+					/>
+					<Button
+						label="Copy"
+						severity="primary"
+						@click="handleCopySecurityGroupId"
+					/>
+				</div>
+			</template>
+
+			<!-- Access tokens -->
+			<template v-if="virtualSecurityGroupId">
+				<div class="step-header">Agent access tokens</div>
+				<div class="span-2">
+					<AgentAccessTokens :agent-name="this.agentName" />
+				</div>
+			</template>
+			
+			
 			<div class="button-container column-2 justify-self-end">
 				<!-- Create agent -->
 				<Button
@@ -732,7 +765,6 @@
 				<!-- Cancel -->
 				<Button
 					v-if="editAgent"
-					style="margin-left: 16px"
 					label="Cancel"
 					severity="secondary"
 					@click="handleCancel"
@@ -858,6 +890,8 @@ export default {
 			externalOrchestratorOptions: [] as ExternalOrchestrationService[],
 			aiModelOptions: [] as AIModel[],
 			tools: [] as AgentTool[],
+
+			virtualSecurityGroupId: null as string | null,
 
 			orchestratorOptions: [
 				{
@@ -996,7 +1030,10 @@ export default {
 			this.loadingStatusText = `Retrieving agent "${this.editAgent}"...`;
 			const agentGetResult = await api.getAgent(this.editAgent);
 			this.editable = agentGetResult.actions.includes('FoundationaLLM.Agent/agents/write');
+
 			const agent = agentGetResult.resource;
+			this.virtualSecurityGroupId = agent.virtual_security_group_id;
+
 			if (agent.vectorization && agent.vectorization.text_partitioning_profile_object_id) {
 				this.loadingStatusText = `Retrieving text partitioning profile...`;
 				const textPartitioningProfile = await api.getTextPartitioningProfile(
@@ -1180,6 +1217,17 @@ export default {
 		handleAIModelSelected(aiModel: AIModel) {
 			this.selectedAIModel = aiModel;
 			this.editAIModel = false;
+		},
+
+		handleCopySecurityGroupId() {
+			if (this.virtualSecurityGroupId) {
+				navigator.clipboard.writeText(this.virtualSecurityGroupId);
+				this.$toast.add({
+					severity: 'success',
+					detail: 'Virtual Security Group ID copied to clipboard!',
+					life: 5000,
+				});
+			}
 		},
 
 		async handleCreateAgent() {
@@ -1567,9 +1615,9 @@ input {
 	cursor: default;
 }
 
-.p-button-icon {
-	color: var(--primary-button-text) !important;
-}
+// .p-button-icon {
+// 	color: var(--primary-button-text) !important;
+// }
 
 .valid {
 	color: green;
@@ -1577,5 +1625,10 @@ input {
 
 .invalid {
 	color: red;
+}
+
+.virtual-security-group-id {
+	margin: 0 1rem 0 0;
+	width: auto;
 }
 </style>

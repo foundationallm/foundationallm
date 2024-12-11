@@ -1,9 +1,12 @@
-﻿using FoundationaLLM.Common.Exceptions;
+﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Utils;
 using FoundationaLLM.Core.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -13,7 +16,12 @@ namespace FoundationaLLM.Core.API.Controllers
     /// <summary>
     /// Provides methods for retrieving and managing files.
     /// </summary>
-    [Authorize(Policy = "DefaultPolicy")]
+    [Authorize(
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        Policy = AuthorizationPolicyNames.MicrosoftEntraIDStandard)]
+    [Authorize(
+        AuthenticationSchemes = AgentAccessTokenDefaults.AuthenticationScheme,
+        Policy = AuthorizationPolicyNames.FoundationaLLMAgentAccessToken)]
     [ApiController]
     [Route("instances/{instanceId}/[controller]")]
     public class FilesController : ControllerBase
