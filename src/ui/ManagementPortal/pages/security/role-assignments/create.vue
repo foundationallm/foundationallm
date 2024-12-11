@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<main id="main-content">
 		<!-- Header -->
 		<template v-if="!headless">
 			<h2 class="page-header">{{ editId ? 'Edit Role Assignment' : 'Create Role Assignment' }}</h2>
@@ -16,7 +16,7 @@
 		<div class="steps" :class="{ 'steps--loading': loading }">
 			<!-- Loading overlay -->
 			<template v-if="loading">
-				<div class="steps__loading-overlay">
+				<div class="steps__loading-overlay" role="status" aria-live="polite">
 					<LoadingGrid />
 					<div>{{ loadingStatusText }}</div>
 				</div>
@@ -106,7 +106,12 @@
 						class="w-50"
 						aria-labelledby="aria-principal-id"
 					/>
-					<Button label="Browse" severity="primary" @click="selectPrincipalDialogOpen = true" />
+					<Button 
+						label="Browse"
+						aria-label="Browse for principals"
+						severity="primary"
+						@click="selectPrincipalDialogOpen = true"
+					/>
 				</div>
 
 				<!-- Browse principals dialog -->
@@ -120,6 +125,7 @@
 					<div id="aria-principal-search-type" class="mb-2">Search type</div>
 					<Dropdown
 						v-model="principalSearchType"
+						id="principal-search-type"
 						:options="principalTypeOptions"
 						placeholder="--Select--"
 						class="mb-2 w-100"
@@ -188,7 +194,7 @@
 				/>
 			</div>
 		</div>
-	</div>
+	</main>
 </template>
 
 <script lang="ts">
@@ -260,6 +266,14 @@ export default {
 	watch: {
 		principalSearchType() {
 			this.dialogPrincipal = null;
+		},
+		selectPrincipalDialogOpen(value) {
+			if (value) {
+				this.$nextTick(() => {
+					const input = document.querySelector('#principal-search-type span');
+					input?.focus();
+				});
+			}
 		},
 	},
 

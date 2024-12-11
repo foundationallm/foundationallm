@@ -1,13 +1,14 @@
 <template>
-	<div class="sidebar">
+	<div class="sidebar" role="navigation">
+		<h2 id="sidebar-title" class="visually-hidden">Main Navigation</h2>
 		<!-- Sidebar section header -->
 		<div class="sidebar__header">
 			<template v-if="$appConfigStore.logoUrl">
-				<NuxtLink to="/">
+				<NuxtLink to="/" aria-label="Navigate to homepage">
 					<img
 						:src="$filters.publicDirectory($appConfigStore.logoUrl)"
 						aria-label="Logo as link to home"
-						alt="Logo"
+						:alt="$appConfigStore.logoText"
 					/>
 				</NuxtLink>
 			</template>
@@ -17,23 +18,25 @@
 		</div>
 
 		<!-- Agents -->
-		<div class="sidebar__section-header">
-			<span class="pi pi-users"></span>
+		<h3 class="sidebar__section-header">
+			<span class="pi pi-users" aria-hidden="true"></span>
 			<span>Agents</span>
-		</div>
-
-		<NuxtLink to="/agents/create" class="sidebar__item">Create New Agent</NuxtLink>
-		<NuxtLink to="/agents/public" class="sidebar__item">All Agents</NuxtLink>
-		<NuxtLink to="/agents/private" class="sidebar__item">My Agents</NuxtLink>
+		</h3>
+		<ul>
+			<li><NuxtLink to="/agents/create" class="sidebar__item">Create New Agent</NuxtLink></li>
+			<li><NuxtLink to="/agents/public" class="sidebar__item">All Agents</NuxtLink></li>
+			<li><NuxtLink to="/agents/private" class="sidebar__item">My Agents</NuxtLink></li>
+		</ul>
 		<!-- <div class="sidebar__item">Performance</div> -->
 
 		<!-- Data Catalog -->
-		<div class="sidebar__section-header">
-			<span class="pi pi-database"></span>
+		<h3 class="sidebar__section-header">
+			<span class="pi pi-database" aria-hidden="true"></span>
 			<span>Data Catalog</span>
-		</div>
-
-		<NuxtLink to="/data-sources" class="sidebar__item">Data Sources</NuxtLink>
+		</h3>
+		<ul>
+			<li><NuxtLink to="/data-sources" class="sidebar__item">Data Sources</NuxtLink></li>
+		</ul>
 		<!-- <div class="sidebar__item">Vector Stores</div> -->
 
 		<!-- Quotas -->
@@ -53,27 +56,35 @@
 		<div class="sidebar__item">Language Models & Endpoints</div> -->
 
 		<!-- Security -->
-		<div class="sidebar__section-header">
-			<span class="pi pi-shield"></span>
+		<h3 class="sidebar__section-header">
+			<span class="pi pi-shield" aria-hidden="true"></span>
 			<span>Security</span>
-		</div>
-
-		<NuxtLink to="/security/role-assignments" class="sidebar__item">
-			Instance Access Control
-		</NuxtLink>
+		</h3>
+		<ul>
+			<li>
+				<NuxtLink to="/security/role-assignments" class="sidebar__item">
+					Instance Access Control
+				</NuxtLink>
+			</li>
+		</ul>
 
 		<!-- FLLM Deployment -->
-		<div class="sidebar__section-header">
-			<span class="pi pi-cloud"></span>
+		<h3 class="sidebar__section-header">
+			<span class="pi pi-cloud" aria-hidden="true"></span>
 			<span>FLLM Platform</span>
-		</div>
-
-		<NuxtLink to="/branding" class="sidebar__item">Branding</NuxtLink>
-		<NuxtLink to="/info" class="sidebar__item">Deployment Information</NuxtLink>
+		</h3>
+		<ul>
+			<li><NuxtLink to="/branding" class="sidebar__item">Branding</NuxtLink></li>
+			<li><NuxtLink to="/info" class="sidebar__item">Deployment Information</NuxtLink></li>
+		</ul>
 
 		<!-- Logged in user -->
 		<div v-if="$authStore.currentAccount?.name" class="sidebar__account">
-			<UserAvatar class="sidebar__avatar" size="large" />
+			<UserAvatar
+				class="sidebar__avatar"
+				size="large"
+				:aria-label="`User Avatar for ${$authStore.currentAccount?.name}`"
+			/>
 
 			<div>
 				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
@@ -93,6 +104,7 @@
 					severity="secondary"
 					size="small"
 					@click="$authStore.logout()"
+					aria-label="Sign out of the application"
 				/>
 			</div>
 		</div>
@@ -126,6 +138,17 @@ a {
 	z-index: 3;
 	flex-shrink: 0;
 	overflow-y: scroll;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin: 0;
+  padding: 0;
 }
 
 .sidebar__header {
@@ -209,5 +232,16 @@ a {
 
 .sidebar__sign-out-button {
 	width: 100%;
+}
+
+.visually-hidden {
+	position: absolute;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	width: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
 }
 </style>

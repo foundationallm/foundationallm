@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<main id="main-content">
 		<h2 class="page-header">Welcome to the Management Portal</h2>
 		<div class="page-subheader">Browse the available configuration options in the sidebar.</div>
 
@@ -11,7 +11,7 @@
 				link="/info"
 			/>
 		</div> -->
-	</div>
+	</main>
 </template>
 
 <script lang="ts">

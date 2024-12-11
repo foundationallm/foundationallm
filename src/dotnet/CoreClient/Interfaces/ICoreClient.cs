@@ -97,6 +97,15 @@ namespace FoundationaLLM.Client.Core.Interfaces
         Task<IEnumerable<Message>> GetChatSessionMessagesAsync(string sessionId);
 
         /// <summary>
+        /// Sets the rating for a message.
+        /// </summary>
+        /// <param name="sessionId">The chat session ID that contains the message to rate.</param>
+        /// <param name="messageId">The ID of the message to rate.</param>
+        /// <param name="rating">The rating and optional comments to assign to the message.</param>
+        /// <returns>Returns the Message object, including its updated rating.</returns>
+        Task<Message> RateMessageAsync(string sessionId, string messageId, MessageRatingRequest rating);
+
+        /// <summary>
         /// Retrieves agents available to the user for orchestration and session-based requests.
         /// </summary>
         /// <returns>A list of available agents.</returns>

@@ -37,6 +37,8 @@ const allowedKeys = [
 	'FoundationaLLM:UserPortal:Authentication:Entra:Scopes',
 	'FoundationaLLM:UserPortal:Authentication:Entra:CallbackPath',
 	'FoundationaLLM:UserPortal:Configuration:ShowMessageRating',
+	'FoundationaLLM:UserPortal:Configuration:ShowViewPrompt',
+	'FoundationaLLM:UserPortal:Configuration:ShowMessageTokens',
 	'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
 ];
 

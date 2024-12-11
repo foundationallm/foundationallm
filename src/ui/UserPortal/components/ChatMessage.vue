@@ -16,6 +16,7 @@
 					<!-- Tokens & Timestamp -->
 					<span class="message__header--right">
 						<Chip
+							v-if="$appConfigStore.showMessageTokens"
 							:label="`Tokens: ${message.tokens}`"
 							class="token-chip"
 							:class="message.sender === 'User' ? 'token-chip--out' : 'token-chip--in'"
@@ -143,8 +144,9 @@
 							@click.stop="handleCopyMessageContent"
 						/>
 
-						<!-- View prompt buttom -->
+						<!-- View prompt button -->
 						<Button
+							v-if="$appConfigStore.showViewPrompt"	
 							class="message__button"
 							:disabled="message.type === 'LoadingMessage'"
 							size="small"
