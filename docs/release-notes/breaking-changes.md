@@ -17,6 +17,7 @@ The following new App Configuration settings are required:
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType` | `-` |
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer` | `-` |
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules` | `-` |
+`FoundationaLLM:Instance:EnableResourceProvidersCache` | `Enables caching for resource providers` |
 
 #### Agent Tool configuration changes
 

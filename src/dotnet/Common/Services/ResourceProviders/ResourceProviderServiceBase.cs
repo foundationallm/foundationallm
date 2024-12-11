@@ -14,8 +14,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MimeDetective.Storage;
-using OpenTelemetry.Resources;
 using System.Collections.Immutable;
 using System.Text;
 using System.Text.Json;
@@ -131,7 +129,6 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
         /// <param name="eventNamespacesToSubscribe">The list of Event Service event namespaces to subscribe to for local event processing.</param>
         /// <param name="useInternalReferencesStore">Indicates whether the resource provider should use the internal resource references store or provide one of its own.</param>
-        /// <param name="cacheResources">Determines whether an in-memory cache is used for storing and retrieving resources.</param>
         public ResourceProviderServiceBase(
             InstanceSettings instanceSettings,
             IAuthorizationService authorizationService,
@@ -141,8 +138,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             IServiceProvider serviceProvider,
             ILogger logger,
             List<string>? eventNamespacesToSubscribe = default,
-            bool useInternalReferencesStore = false,
-            bool cacheResources = false)
+            bool useInternalReferencesStore = false)
         {
             _authorizationService = authorizationService;
             _storageService = storageService;
@@ -154,7 +150,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             _eventNamespacesToSubscribe = eventNamespacesToSubscribe;
             _useInternalReferencesStore = useInternalReferencesStore;
 
-            if (cacheResources)
+            if (_instanceSettings.EnableResourceProvidersCache)
             {
                 _resourceCache = new MemoryCache(new MemoryCacheOptions
                 {
