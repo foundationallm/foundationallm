@@ -58,9 +58,16 @@ namespace FoundationaLLM.Common.Middleware
                 {
                     switch (context.User.Identity.AuthenticationType)
                     {
-                        case JwtBearerDefaults.AuthenticationScheme:
+                        case AgentAccessTokenDefaults.AuthenticationScheme:
 
-                            // Retrieve group membership when using the Bearer token authentication scheme.
+                            // Retrieve group membership when using the Agent Access Token authentication scheme.
+                            userIdentity.GroupIds = claimsProviderService.GetSecurityGroupIds(context.User) ?? [];
+
+                            break;
+
+                        default:
+
+                            // Retrieve group membership when using standard authentication schemes.
                             switch (instanceSettings.Value.SecurityGroupRetrievalStrategy)
                             {
                                 case SecurityGroupRetrievalStrategies.IdentityManagementService:
@@ -75,16 +82,6 @@ namespace FoundationaLLM.Common.Middleware
                                     break;
                             }
 
-                            break;
-
-                        case AgentAccessTokenDefaults.AuthenticationScheme:
-
-                            // Retrieve group membership when using the Agent Access Token authentication scheme.
-                            userIdentity.GroupIds = claimsProviderService.GetSecurityGroupIds(context.User) ?? [];
-
-                            break;
-
-                        default:
                             break;
                     }
                 }
