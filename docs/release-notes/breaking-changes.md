@@ -30,6 +30,10 @@ Agent tools are now an array of AgentTool objects rather than a dictionary.
 
 When defining tools for an agent, each tool now requires a `package_name` property. This property is used to identify the package that contains the tool's implementation. If the tool is internal, the `package_name` should be set to `FoundationaLLM`, if the tool is external, the `package_name` should be set to the name of the external package.
 
+#### Security-related changes
+
+The **Authorization API** now requires the ability to write to the Key Vault account contained within the auth resource group. Currently, the Authorization APIs managed identity is assigned to the `Key Vault Secrets User` role on the Key Vault account. This role assignment must be updated to include the `Key Vault Secrets Officer` role in addition to the user role.
+
 #### Renamed classes
 
 The following classes have been renamed:
@@ -53,7 +57,6 @@ The `/instances/{instanceId}/sessions/{sessionId}/message/{id}/rate` endpoint ha
 
 > [!NOTE]
 > Please note that both properties are nullable. Set them to null to clear out the rating and comments.
-
 
 ## Starting with 0.8.4
 
