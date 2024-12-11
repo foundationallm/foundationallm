@@ -37,6 +37,14 @@
 				"value": "",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "EnableResourceProvidersCache",
+				"description": "Enable caching for resource providers.",
+				"secret": "",
+				"value": "false",
+				"content_type": "",
+				"first_version": "0.9.1"
 			}
 		]
 	},

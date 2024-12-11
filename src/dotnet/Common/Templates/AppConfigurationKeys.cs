@@ -41,6 +41,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Instance_IdentitySubstitutionUserPrincipalNamePattern =
             "FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Instance:EnableResourceProvidersCache setting.
+        /// <para>Value description:<br/>Enable caching for resource providers.</para>
+        /// </summary>
+        public const string FoundationaLLM_Instance_EnableResourceProvidersCache =
+            "FoundationaLLM:Instance:EnableResourceProvidersCache";
 
         #endregion
 
