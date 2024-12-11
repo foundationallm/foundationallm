@@ -38,11 +38,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         private readonly bool _useInternalReferencesStore;
         private readonly SemaphoreSlim _lock = new(1, 1);
 
-        private readonly IMemoryCache? _resourceCache;
-        private readonly MemoryCacheEntryOptions _cacheEntryOptions = new MemoryCacheEntryOptions()
-            .SetAbsoluteExpiration(TimeSpan.FromMinutes(10)) // Cache entries are valid for 10 minutes.
-            .SetSlidingExpiration(TimeSpan.FromMinutes(5)) // Reset expiration time if accessed within 5 minutes.
-            .SetSize(1); // Each cache entry is a single resource.
+        private readonly IResourceProviderResourceCacheService? _resourceCache;
 
         /// <summary>
         /// The resource reference store used by the resource provider.
@@ -151,13 +147,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             _useInternalReferencesStore = useInternalReferencesStore;
 
             if (_instanceSettings.EnableResourceProvidersCache)
-            {
-                _resourceCache = new MemoryCache(new MemoryCacheOptions
-                {
-                    SizeLimit = 5000, // Limit cache size to 5000 resources.
-                    ExpirationScanFrequency = TimeSpan.FromMinutes(1) // Scan for expired items every minute.
-                });
-            }
+                _resourceCache = new ResourceProviderResourceCacheService(_logger);
 
             _allowedResourceProviders = [_name];
             _allowedResourceTypes = GetResourceTypes();
@@ -1012,10 +1002,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     $"The resource reference {resourceReference.Name} is not of the expected type {typeof(T).Name}.",
                     StatusCodes.Status400BadRequest);
 
-            if (_resourceCache != null && _resourceCache.TryGetValue(resourceReference.Name, out T? cachedResource))
-            {
+
+            if (_resourceCache != null
+                && _resourceCache.TryGetValue<T>(resourceReference, out T? cachedResource)
+                && cachedResource != null)
                 return cachedResource;
-            }
 
             if (await _storageService.FileExistsAsync(_storageContainerName, resourceReference.Filename, default))
             {
@@ -1030,7 +1021,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                             ?? throw new ResourceProviderException($"Failed to load the resource {resourceReference.Name}. Its content file might be corrupt.",
                                 StatusCodes.Status500InternalServerError);
 
-                    _resourceCache?.Set(resourceReference.Name, resourceObject, _cacheEntryOptions);
+                    _resourceCache?.SetValue<T>(resourceReference, resourceObject);
 
                     return resourceObject;
                 }
@@ -1061,10 +1052,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     ?? throw new ResourceProviderException($"Could not locate the {resourceName} resource.",
                         StatusCodes.Status404NotFound);
 
-                if (_resourceCache != null && _resourceCache.TryGetValue(resourceReference.Name, out T? cachedResource))
-                {
+                if (_resourceCache != null
+                    && _resourceCache.TryGetValue<T>(resourceReference, out T? cachedResource)
+                    && cachedResource != null)
                     return cachedResource;
-                }
 
                 if (await _storageService.FileExistsAsync(_storageContainerName, resourceReference.Filename, default))
                 {
@@ -1076,7 +1067,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                             ?? throw new ResourceProviderException($"Failed to load the resource {resourceReference.Name}. Its content file might be corrupt.",
                                 StatusCodes.Status400BadRequest);
 
-                    _resourceCache?.Set(resourceReference.Name, resourceObject, _cacheEntryOptions);
+                    _resourceCache?.SetValue<T>(resourceReference, resourceObject);
 
                     return resourceObject;
                 }
@@ -1118,7 +1109,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 await _resourceReferenceStore!.AddResourceReference(resourceReference);
 
                 // Add resource to cache if caching is enabled.
-                _resourceCache?.Set(resourceReference.Name, resource, _cacheEntryOptions);
+                _resourceCache?.SetValue<T>(resourceReference, resource);
             }
             finally
             {
@@ -1235,7 +1226,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                    default);
 
                 // Update resource to cache if caching is enabled.
-                _resourceCache?.Set(resourceReference.Name, resource, _cacheEntryOptions);
+                _resourceCache?.SetValue<T>(resourceReference, resource);
             }
             finally
             {
