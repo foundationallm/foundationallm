@@ -79,11 +79,11 @@ namespace FoundationaLLM.Core.API.Controllers
                 parentContext: default,
                 tags: new Dictionary<string, object?>
                 {
-                    { "InstanceId", instanceId },
-                    { "ConversationId", completionRequest.SessionId ?? "N/A" },
-                    { "OperationId", completionRequest.OperationId ?? "N/A" },
-                    { "UPN", _callContext.CurrentUserIdentity?.UPN ?? "N/A" },
-                    { "UserId", _callContext.CurrentUserIdentity?.UPN ?? "N/A" }
+                    { TelemetryActivityTagNames.InstanceId, instanceId },
+                    { TelemetryActivityTagNames.ConversationId, completionRequest.SessionId ?? "N/A" },
+                    { TelemetryActivityTagNames.OperationId, completionRequest.OperationId ?? "N/A" },
+                    { TelemetryActivityTagNames.UPN, _callContext.CurrentUserIdentity?.UPN ?? "N/A" },
+                    { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
                 });
 
             return !string.IsNullOrWhiteSpace(completionRequest.SessionId)
@@ -106,11 +106,11 @@ namespace FoundationaLLM.Core.API.Controllers
                 parentContext: default,
                 tags: new Dictionary<string, object?>
                 {
-                    { "InstanceId", instanceId },
-                    { "ConversationId", completionRequest.SessionId ?? "N/A" },
-                    { "OperationId", completionRequest.OperationId ?? "N/A" },
-                    { "UPN", _callContext.CurrentUserIdentity?.UPN ?? "N/A" },
-                    { "UserId", _callContext.CurrentUserIdentity?.UPN ?? "N/A" }
+                    { TelemetryActivityTagNames.InstanceId, instanceId },
+                    { TelemetryActivityTagNames.ConversationId, completionRequest.SessionId ?? "N/A" },
+                    { TelemetryActivityTagNames.OperationId, completionRequest.OperationId ?? "N/A" },
+                    { TelemetryActivityTagNames.UPN, _callContext.CurrentUserIdentity?.UPN ?? "N/A" },
+                    { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
                 });
 
             var state = await _coreService.StartCompletionOperation(instanceId, completionRequest);
