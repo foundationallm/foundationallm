@@ -154,6 +154,8 @@
 <h4 id="agent-tool-configuration-changes">Agent Tool configuration changes</h4>
 <p>Agent tools are now an array of AgentTool objects rather than a dictionary.</p>
 <p>When defining tools for an agent, each tool now requires a <code>package_name</code> property. This property is used to identify the package that contains the tool's implementation. If the tool is internal, the <code>package_name</code> should be set to <code>FoundationaLLM</code>, if the tool is external, the <code>package_name</code> should be set to the name of the external package.</p>
+<h4 id="security-related-changes">Security-related changes</h4>
+<p>The <strong>Authorization API</strong> now requires the ability to write to the Key Vault account contained within the auth resource group. Currently, the Authorization APIs managed identity is assigned to the <code>Key Vault Secrets User</code> role on the Key Vault account. This role assignment must be updated to include the <code>Key Vault Secrets Officer</code> role in addition to the user role.</p>
 <h4 id="renamed-classes">Renamed classes</h4>
 <p>The following classes have been renamed:</p>
 <table>
