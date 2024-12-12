@@ -819,7 +819,7 @@
 							@click="selectedTool = tool"
 						/>
 
-						<JSONEditorDialog
+						<ConfigureToolDialog
 							v-if="selectedTool?.name === tool.name"
 							v-model="selectedTool"
 							:visible="!!selectedTool"
