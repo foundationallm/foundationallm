@@ -720,7 +720,72 @@
 					/>
 				</div>
 			</section>
-			
+
+			<!-- Workflow -->
+			<div class="step-section-header span-2">Workflow</div>
+			<div id="aria-orchestrator" class="step-header span-2">
+				What workflow should the agent use?
+			</div>
+
+			<!-- Workflow selection -->
+			<div class="span-2">
+				<Dropdown
+					:modelValue="selectedWorkflow?.type"
+					:options="workflowOptions"
+					option-label="type"
+					option-value="type"
+					class="dropdown--agent"
+					placeholder="--Select--"
+					aria-labelledby="aria-orchestrator"
+					@change="selectedWorkflow = JSON.parse(JSON.stringify(workflowOptions.find((workflow) => workflow.type === $event.value)))"
+				/>
+				<Button
+					class="ml-2"
+					severity="primary"
+					:label="showWorkflowConfiguration ? 'Hide Workflow Configuration' : 'Configure Workflow'"
+					:disabled="!selectedWorkflow"
+					@click="showWorkflowConfiguration = !showWorkflowConfiguration"
+				/>
+			</div>
+
+			<!-- Workflow configuration -->
+			<div v-if="showWorkflowConfiguration" class="span-2">
+
+				<!-- Workflow main model -->
+				<div class="mb-6">
+					<div class="step-header mb-2">Workflow main model:</div>
+					<Dropdown
+						:modelValue="workflowMainAIModel?.object_id"
+						:options="aiModelOptions"
+						option-label="name"
+						option-value="object_id"
+						class="dropdown--agent"
+						placeholder="--Select--"
+						aria-labelledby="aria-orchestrator"
+						@change="workflowMainAIModel = JSON.parse(JSON.stringify(aiModelOptions.find((model) => model.object_id === $event.value)))"
+					/>
+				</div>
+
+				<!-- <div class="mb-6">
+					<div class="step-header mb-2">Workflow main prompt:</div>
+					<Textarea
+						v-model="workflowMainPrompt"
+						class="w-100"
+						auto-resize
+						rows="5"
+						type="text"
+						placeholder=""
+						aria-labelledby="aria-persona"
+					/>
+				</div> -->
+
+				<!-- Workflow main model parameters -->
+				<div class="mb-6">
+					<div class="step-header mb-2">Workflow main model parameters:</div>
+					<PropertyBuilder v-model="workflowMainAIModelParameters" />
+				</div>
+			</div>
+
 			<!-- Security -->
 			<div v-if="virtualSecurityGroupId" class="step-section-header span-2">Security</div>
 
@@ -752,7 +817,7 @@
 				</div>
 			</template>
 			
-			
+			<!-- Form buttons -->
 			<div class="span-2 d-flex justify-content-end" style="gap: 16px">
 				<!-- Create agent -->
 				<Button
@@ -853,6 +918,8 @@ const getDefaultFormValues = () => {
 		orchestration_settings: {
 			orchestrator: 'LangChain' as string,
 		},
+
+		selectedWorkflow: null,
 	};
 };
 
@@ -889,7 +956,12 @@ export default {
 			textEmbeddingProfileSources: [] as TextEmbeddingProfile[],
 			externalOrchestratorOptions: [] as ExternalOrchestrationService[],
 			aiModelOptions: [] as AIModel[],
-			tools: [] as AgentTool[],
+
+			workflowOptions: [] as AgentWorkflowAIModel[],
+			showWorkflowConfiguration: false,
+			workflowMainAIModel: null as AIModel | null,
+			// workflowMainPrompt: '' as string,
+			workflowMainAIModelParameters: {} as object,
 
 			virtualSecurityGroupId: null as string | null,
 
@@ -976,6 +1048,18 @@ export default {
 		},
 	},
 
+	watch: {
+		selectedWorkflow() {
+			this.workflowMainAIModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
+				(resource) => resource.properties?.object_role === 'main_model'
+			);
+		},
+
+		workflowMainAIModel() {
+			this.workflowMainAIModelParameters = this.workflowMainAIModel?.model_parameters ?? this.workflowMainAIModel?.properties?.model_parameters;
+		},
+	},
+
 	async created() {
 		this.loading = true;
 		// Uncomment to remove mock loading screen
@@ -1010,6 +1094,9 @@ export default {
 			this.aiModelOptions = aiModelsResult.map((result) => result.resource);
 			// Filter the AIModels so we only display the ones where the type is 'completion'.
 			this.aiModelOptions = this.aiModelOptions.filter((model) => model.type === 'completion');
+
+			this.loadingStatusText = 'Retrieving workflows...';
+			this.workflowOptions = await api.getAgentWorkflows();
 
 			// Update the orchestratorOptions with the externalOrchestratorOptions.
 			this.orchestratorOptions = this.orchestratorOptions.concat(
@@ -1051,9 +1138,13 @@ export default {
 					this.systemPrompt = prompt.resource.prefix;
 				}
 			}
+
+			if (agent.workflow) {
+				this.workflowOptions.push(agent.workflow);
+			}
+
 			this.loadingStatusText = `Mapping agent values to form...`;
 			this.mapAgentToForm(agent);
-			this.tools = agent.tools;
 		} else {
 			this.editable = true;
 		}
@@ -1139,6 +1230,10 @@ export default {
 						agent.capabilities?.includes(localOption.code),
 					) || this.selectedAgentCapabilities;
 			}
+
+			this.agentTools = agent.tools;
+
+			this.selectedWorkflow = agent.workflow;
 		},
 
 		updateAgentWelcomeMessage(newContent: string) {
@@ -1307,6 +1402,20 @@ export default {
 					promptObjectId = promptResponse.objectId;
 				}
 
+				// if (this.selectedWorkflow) {
+				// 	const workflowPromptRequest = {
+				// 		type: 'multipart',
+				// 		name: this.selectedWorkflow.prompt_object_ids.main_prompt,
+				// 		cost_center: null,
+				// 		description: `Workflow prompt for the ${this.selectedWorkflowModelId} model`,
+				// 		prefix: this.workflowMainPrompt,
+				// 		suffix: '',
+				// 	};
+
+				// 	const workflowPromptResponse = await api.createOrUpdatePrompt(this.selectedWorkflow.prompt_object_ids.main_prompt, promptRequest);
+				// 	workflowPromptResponse = promptResponse.objectId;
+				// }
+
 				let textPartitioningProfileObjectId = '';
 				let dataSourceObjectId = '';
 				let indexingProfileObjectId = [''];
@@ -1336,6 +1445,32 @@ export default {
 							indexingProfileObjectId = [defaultAgentIndex.object_id];
 						}
 					}
+				}
+
+				let workflow = null;
+				if (this.selectedWorkflow) {
+					workflow = {
+						...this.selectedWorkflow,
+
+						resource_object_ids: {
+							...this.selectedWorkflow.resource_object_ids,
+
+							[this.workflowMainAIModel.object_id]: {
+								object_id: this.workflowMainAIModel.object_id,
+								properties: {
+									object_role: 'main_model',
+									model_parameters: this.workflowMainAIModelParameters,
+								},
+							},
+
+							// [promptObjectId]: {
+							// 	object_id: promptObjectId,
+							// 	properties: {
+							// 		object_role: 'main_prompt',
+							// 	},
+							// },
+						},
+					};
 				}
 
 				const agentRequest: CreateAgentRequest = {
@@ -1380,7 +1515,9 @@ export default {
 					orchestration_settings: this.orchestration_settings,
 					ai_model_object_id: this.selectedAIModel.object_id,
 
-					tools: this.tools,
+					tools: this.agentTools,
+
+					workflow,
 				};
 
 				if (this.editAgent) {
