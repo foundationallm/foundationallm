@@ -814,6 +814,15 @@ export default {
 	},
 
 	/*
+		Agent Workflows
+	 */
+	async getAgentWorkflows(): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/workflows?api-version=${this.apiVersion}`,
+		);
+	},
+
+	/*
 		Agent Access Tokens
 	 */
 	async getAgentAccessTokens(agentName: string) {
