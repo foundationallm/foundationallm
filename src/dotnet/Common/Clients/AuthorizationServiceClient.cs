@@ -4,6 +4,7 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
+using FoundationaLLM.Common.Services.Cache;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
@@ -21,6 +22,14 @@ namespace FoundationaLLM.Common.Clients
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<AuthorizationServiceClient> _logger;
 
+        private readonly IAuthorizationServiceClientCacheService? _cacheService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizationServiceClient"/> class.
+        /// </summary>
+        /// <param name="httpClientFactory">The centralized factory from which to create HTTP clients.</param>     
+        /// <param name="options"><see cref="AuthorizationServiceClientSettings"/> options.</param>
+        /// <param name="logger">The logger used for logging.</param>
         public AuthorizationServiceClient(
             IHttpClientFactory httpClientFactory,
             IOptions<AuthorizationServiceClientSettings> options,
@@ -29,6 +38,11 @@ namespace FoundationaLLM.Common.Clients
             _settings = options.Value;
             _httpClientFactory = httpClientFactory;
             _logger = logger;
+
+            if (_settings.EnableCache)
+            {
+                _cacheService = new AuthorizationServiceClientCacheService(logger);
+            }
         }
 
         /// <inheritdoc/>
@@ -67,6 +81,11 @@ namespace FoundationaLLM.Common.Clients
                     }
                 };
 
+                if (_cacheService != null
+                    && _cacheService.TryGetValue(authorizationRequest, out var cachedAuthorizationResponse)
+                    && cachedAuthorizationResponse != null)
+                    return cachedAuthorizationResponse;
+
                 var httpClient = await CreateHttpClient();
                 var response = await httpClient.PostAsync(
                     $"/instances/{instanceId}/authorize",
@@ -75,7 +94,16 @@ namespace FoundationaLLM.Common.Clients
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<ActionAuthorizationResult>(responseContent)!;
+                    var result = JsonSerializer.Deserialize<ActionAuthorizationResult>(responseContent);
+                    if (result != null)
+                    {
+                        // Try to cache the result if we have a cache service active.
+                        _cacheService?.SetValue(authorizationRequest, result);
+
+                        return result;
+                    }
+                    _logger.LogError("The response from the Authorization API was invalid and could not be parsed.");
+                    return new ActionAuthorizationResult { AuthorizationResults = defaultResults };
                 }
 
                 _logger.LogError("The call to the Authorization API returned an error: {StatusCode} - {ReasonPhrase}.", response.StatusCode, response.ReasonPhrase);
@@ -295,7 +323,7 @@ namespace FoundationaLLM.Common.Clients
             httpClient.BaseAddress = new Uri(_settings.APIUrl);
 
             var credentials = DefaultAuthentication.AzureCredential;
-            var tokenResult = await credentials.GetTokenAsync(
+            var tokenResult = await credentials!.GetTokenAsync(
                 new([_settings.APIScope]),
                 default);
 
