@@ -714,25 +714,6 @@
 				</div>
 			</section>
 
-			<!-- System prompt -->
-			<section aria-labelledby="system-prompt" class="span-2 steps">
-				<h3 class="step-section-header span-2" id="system-prompt">System Prompt</h3>
-
-				<div id="aria-persona" class="step-header">What is the persona of the agent?</div>
-
-				<div class="span-2">
-					<Textarea
-						v-model="systemPrompt"
-						class="w-100"
-						auto-resize
-						rows="5"
-						type="text"
-						placeholder="You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional."
-						aria-labelledby="aria-persona"
-					/>
-				</div>
-			</section>
-
 			<!-- Workflow -->
 			<div class="step-section-header span-2">Workflow</div>
 			<div id="aria-orchestrator" class="step-header span-2">
@@ -800,7 +781,20 @@
 
 				<!-- Workflow main model parameters -->
 				<div class="step-header mb-3">Workflow main model parameters:</div>
-				<PropertyBuilder v-model="workflowMainAIModelParameters" />
+				<PropertyBuilder v-model="workflowMainAIModelParameters" class="mb-6" />
+
+				<div id="aria-persona" class="step-header mb-3">What is the main model prompt?</div>
+				<div class="span-2">
+					<Textarea
+						v-model="systemPrompt"
+						class="w-100"
+						auto-resize
+						rows="5"
+						type="text"
+						placeholder="You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional."
+						aria-labelledby="aria-persona"
+					/>
+				</div>
 			</div>
 
 			<!-- Tools -->
