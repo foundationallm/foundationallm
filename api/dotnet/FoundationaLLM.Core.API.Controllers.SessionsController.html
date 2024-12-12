@@ -956,7 +956,7 @@ discoverability, and other benefits down the road.</p>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[HttpPost(&quot;{sessionId}/message/{messageId}/rate&quot;, Name = &quot;RateMessage&quot;)]
-public Task&lt;Message&gt; RateMessage(string instanceId, string messageId, string sessionId, MessageRatingRequest ratingRequest)</code></pre>
+public Task RateMessage(string instanceId, string messageId, string sessionId, MessageRatingRequest ratingRequest)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -977,7 +977,7 @@ public Task&lt;Message&gt; RateMessage(string instanceId, string messageId, stri
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
     <dd></dd>
   </dl>
 

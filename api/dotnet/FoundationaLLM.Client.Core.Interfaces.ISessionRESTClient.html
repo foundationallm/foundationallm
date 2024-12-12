@@ -132,7 +132,7 @@ Interface ISessionRESTClient  <a class="header-action link-secondary" title="Vie
 
   <h3 id="FoundationaLLM_Client_Core_Interfaces_ISessionRESTClient_CreateSessionAsync_FoundationaLLM_Common_Models_Conversation_ChatSessionProperties_" data-uid="FoundationaLLM.Client.Core.Interfaces.ISessionRESTClient.CreateSessionAsync(FoundationaLLM.Common.Models.Conversation.ChatSessionProperties)">
   CreateSessionAsync(ChatSessionProperties)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ISessionRESTClient.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ISessionRESTClient.cs/#L29"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new session with the specified name.</p>
@@ -171,7 +171,7 @@ Interface ISessionRESTClient  <a class="header-action link-secondary" title="Vie
 
   <h3 id="FoundationaLLM_Client_Core_Interfaces_ISessionRESTClient_DeleteSessionAsync_System_String_" data-uid="FoundationaLLM.Client.Core.Interfaces.ISessionRESTClient.DeleteSessionAsync(System.String)">
   DeleteSessionAsync(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ISessionRESTClient.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ISessionRESTClient.cs/#L59"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes a chat session.</p>
@@ -240,7 +240,7 @@ Interface ISessionRESTClient  <a class="header-action link-secondary" title="Vie
 
   <h3 id="FoundationaLLM_Client_Core_Interfaces_ISessionRESTClient_GetChatSessionMessagesAsync_System_String_" data-uid="FoundationaLLM.Client.Core.Interfaces.ISessionRESTClient.GetChatSessionMessagesAsync(System.String)">
   GetChatSessionMessagesAsync(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ISessionRESTClient.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ISessionRESTClient.cs/#L52"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the chat messages related to an existing session.</p>
@@ -277,7 +277,7 @@ Interface ISessionRESTClient  <a class="header-action link-secondary" title="Vie
 
   <h3 id="FoundationaLLM_Client_Core_Interfaces_ISessionRESTClient_GetCompletionPromptAsync_System_String_System_String_" data-uid="FoundationaLLM.Client.Core.Interfaces.ISessionRESTClient.GetCompletionPromptAsync(System.String,System.String)">
   GetCompletionPromptAsync(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ISessionRESTClient.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ISessionRESTClient.cs/#L45"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a completion prompt by session ID and completion prompt ID.</p>
@@ -316,7 +316,7 @@ Interface ISessionRESTClient  <a class="header-action link-secondary" title="Vie
 
   <h3 id="FoundationaLLM_Client_Core_Interfaces_ISessionRESTClient_RateMessageAsync_System_String_System_String_FoundationaLLM_Common_Models_Conversation_MessageRatingRequest_" data-uid="FoundationaLLM.Client.Core.Interfaces.ISessionRESTClient.RateMessageAsync(System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)">
   RateMessageAsync(string, string, MessageRatingRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ISessionRESTClient.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ISessionRESTClient.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the rating for a message.</p>
@@ -324,7 +324,7 @@ Interface ISessionRESTClient  <a class="header-action link-secondary" title="Vie
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;Message&gt; RateMessageAsync(string sessionId, string messageId, MessageRatingRequest rating)</code></pre>
+    <pre><code class="lang-csharp hljs">Task RateMessageAsync(string sessionId, string messageId, MessageRatingRequest rating)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -342,9 +342,8 @@ Interface ISessionRESTClient  <a class="header-action link-secondary" title="Vie
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
-    <dd><p>Returns the Message object, including its updated rating.</p>
-</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
   </dl>
 
 
@@ -361,7 +360,7 @@ Interface ISessionRESTClient  <a class="header-action link-secondary" title="Vie
 
   <h3 id="FoundationaLLM_Client_Core_Interfaces_ISessionRESTClient_RenameChatSession_System_String_FoundationaLLM_Common_Models_Conversation_ChatSessionProperties_" data-uid="FoundationaLLM.Client.Core.Interfaces.ISessionRESTClient.RenameChatSession(System.String,FoundationaLLM.Common.Models.Conversation.ChatSessionProperties)">
   RenameChatSession(string, ChatSessionProperties)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ISessionRESTClient.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ISessionRESTClient.cs/#L37"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Renames a chat session.</p>

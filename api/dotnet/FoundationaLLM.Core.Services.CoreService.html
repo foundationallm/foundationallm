@@ -711,7 +711,7 @@ generate a completion response, and log full completion results.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Message&gt; RateMessageAsync(string instanceId, string id, string sessionId, MessageRatingRequest rating)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task RateMessageAsync(string instanceId, string id, string sessionId, MessageRatingRequest rating)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -732,7 +732,7 @@ generate a completion response, and log full completion results.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
     <dd></dd>
   </dl>
 
