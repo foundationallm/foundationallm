@@ -50,6 +50,20 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:PythonSDK:Logging:LogLevel:Default",
+            "value": "Information",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:PythonSDK:Logging:EnableConsoleLogging",
+            "value": "false",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:ResourceProviders:AIModel:Storage:AuthenticationType",
             "value": "AzureIdentity",
             "label": null,
@@ -418,6 +432,13 @@
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:PollingIntervalSeconds",
+            "value": "10",
+            "label": null,
+            "content_type": "",
             "tags": {}
         },
         {
