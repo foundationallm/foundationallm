@@ -26,66 +26,68 @@
 		</div>
 
 		<div class="sidebar__content" v-if="!$appStore.sidebarCollapsed">
-			<!-- Agents -->
-			<h3 class="sidebar__section-header">
-				<span class="pi pi-users" aria-hidden="true"></span>
-				<span>Agents</span>
-			</h3>
-			<ul>
-				<li><NuxtLink to="/agents/create" class="sidebar__item">Create New Agent</NuxtLink></li>
-				<li><NuxtLink to="/agents/public" class="sidebar__item">All Agents</NuxtLink></li>
-				<li><NuxtLink to="/agents/private" class="sidebar__item">My Agents</NuxtLink></li>
-			</ul>
-			<!-- <div class="sidebar__item">Performance</div> -->
+			<div class="sidebar__navigation">
+				<!-- Agents -->
+				<h3 class="sidebar__section-header">
+					<span class="pi pi-users" aria-hidden="true"></span>
+					<span>Agents</span>
+				</h3>
+				<ul>
+					<li><NuxtLink to="/agents/create" class="sidebar__item">Create New Agent</NuxtLink></li>
+					<li><NuxtLink to="/agents/public" class="sidebar__item">All Agents</NuxtLink></li>
+					<li><NuxtLink to="/agents/private" class="sidebar__item">My Agents</NuxtLink></li>
+				</ul>
+				<!-- <div class="sidebar__item">Performance</div> -->
 
-			<!-- Data Catalog -->
-			<h3 class="sidebar__section-header">
-				<span class="pi pi-database" aria-hidden="true"></span>
-				<span>Data Catalog</span>
-			</h3>
-			<ul>
-				<li><NuxtLink to="/data-sources" class="sidebar__item">Data Sources</NuxtLink></li>
-			</ul>
-			<!-- <div class="sidebar__item">Vector Stores</div> -->
+				<!-- Data Catalog -->
+				<h3 class="sidebar__section-header">
+					<span class="pi pi-database" aria-hidden="true"></span>
+					<span>Data Catalog</span>
+				</h3>
+				<ul>
+					<li><NuxtLink to="/data-sources" class="sidebar__item">Data Sources</NuxtLink></li>
+				</ul>
+				<!-- <div class="sidebar__item">Vector Stores</div> -->
 
-			<!-- Quotas -->
-			<!-- <div class="sidebar__section-header">
-				<span class="pi pi-calculator"></span>
-				<span>Quotas</span>
+				<!-- Quotas -->
+				<!-- <div class="sidebar__section-header">
+					<span class="pi pi-calculator"></span>
+					<span>Quotas</span>
+				</div>
+
+				<div class="sidebar__item">Policies</div> -->
+
+				<!-- LLM's -->
+				<!-- <div class="sidebar__section-header">
+					<span class="pi pi-sitemap"></span>
+					<span>LLM's</span>
+				</div>
+
+				<div class="sidebar__item">Language Models & Endpoints</div> -->
+
+				<!-- Security -->
+				<h3 class="sidebar__section-header">
+					<span class="pi pi-shield" aria-hidden="true"></span>
+					<span>Security</span>
+				</h3>
+				<ul>
+					<li>
+						<NuxtLink to="/security/role-assignments" class="sidebar__item">
+							Instance Access Control
+						</NuxtLink>
+					</li>
+				</ul>
+
+				<!-- FLLM Deployment -->
+				<h3 class="sidebar__section-header">
+					<span class="pi pi-cloud" aria-hidden="true"></span>
+					<span>FLLM Platform</span>
+				</h3>
+				<ul>
+					<li><NuxtLink to="/branding" class="sidebar__item">Branding</NuxtLink></li>
+					<li><NuxtLink to="/info" class="sidebar__item">Deployment Information</NuxtLink></li>
+				</ul>
 			</div>
-
-			<div class="sidebar__item">Policies</div> -->
-
-			<!-- LLM's -->
-			<!-- <div class="sidebar__section-header">
-				<span class="pi pi-sitemap"></span>
-				<span>LLM's</span>
-			</div>
-
-			<div class="sidebar__item">Language Models & Endpoints</div> -->
-
-			<!-- Security -->
-			<h3 class="sidebar__section-header">
-				<span class="pi pi-shield" aria-hidden="true"></span>
-				<span>Security</span>
-			</h3>
-			<ul>
-				<li>
-					<NuxtLink to="/security/role-assignments" class="sidebar__item">
-						Instance Access Control
-					</NuxtLink>
-				</li>
-			</ul>
-
-			<!-- FLLM Deployment -->
-			<h3 class="sidebar__section-header">
-				<span class="pi pi-cloud" aria-hidden="true"></span>
-				<span>FLLM Platform</span>
-			</h3>
-			<ul>
-				<li><NuxtLink to="/branding" class="sidebar__item">Branding</NuxtLink></li>
-				<li><NuxtLink to="/info" class="sidebar__item">Deployment Information</NuxtLink></li>
-			</ul>
 
 			<!-- Logged in user -->
 			<div v-if="$authStore.currentAccount?.name" class="sidebar__account">
@@ -140,13 +142,14 @@ a {
 
 .sidebar {
 	width: 300px;
-	max-width: 100%;
+	max-width: 300px;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 	background-color: var(--primary-color);
 	z-index: 3;
-	flex-shrink: 0;
+	flex-shrink: 1;
+	flex-grow: 1;
 	overflow-y: auto;
 }
 
@@ -154,6 +157,7 @@ a {
 	position: absolute;
 	background-color: transparent;
 	width: 100%;
+	max-width: 100%;
 	height: max-content;
 }
 
@@ -195,6 +199,11 @@ a {
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: stretch;
+	overflow: hidden;
+}
+
+.sidebar__navigation {
+	overflow-y: auto;
 }
 
 .sidebar__section-header {
