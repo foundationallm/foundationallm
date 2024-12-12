@@ -129,7 +129,7 @@ body,
 }
 
 .mb-3 {
-    margin-bottom: 12px !important;
+	margin-bottom: 12px !important;
 }
 
 .mb-4 {
@@ -158,6 +158,10 @@ body,
 
 .flex-1 {
 	flex: 1;
+}
+
+.gap-4 {
+	gap: 16px;
 }
 
 .flex-column {

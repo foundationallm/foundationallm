@@ -1,0 +1,13 @@
+[
+	{
+		"telemetry_activity_source": "CoreAPI",
+		"telemetry_activities": [
+			{
+				"name": "AsyncCompletions_StartCompletionOperation"
+			},
+			{
+				"name":  "Completions_GetCompletion"
+			}
+		]
+	}
+]

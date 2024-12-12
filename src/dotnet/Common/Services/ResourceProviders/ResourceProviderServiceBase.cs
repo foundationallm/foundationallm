@@ -11,6 +11,7 @@ using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Services.Events;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Collections.Immutable;
@@ -36,6 +37,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
         private readonly bool _useInternalReferencesStore;
         private readonly SemaphoreSlim _lock = new(1, 1);
+
+        private readonly IResourceProviderResourceCacheService? _resourceCache;
 
         /// <summary>
         /// The resource reference store used by the resource provider.
@@ -142,6 +145,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             _instanceSettings = instanceSettings;
             _eventNamespacesToSubscribe = eventNamespacesToSubscribe;
             _useInternalReferencesStore = useInternalReferencesStore;
+
+            if (_instanceSettings.EnableResourceProvidersCache)
+                _resourceCache = new ResourceProviderResourceCacheService(_logger);
 
             _allowedResourceProviders = [_name];
             _allowedResourceTypes = GetResourceTypes();
@@ -996,6 +1002,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     $"The resource reference {resourceReference.Name} is not of the expected type {typeof(T).Name}.",
                     StatusCodes.Status400BadRequest);
 
+
+            if (_resourceCache != null
+                && _resourceCache.TryGetValue<T>(resourceReference, out T? cachedResource)
+                && cachedResource != null)
+                return cachedResource;
+
             if (await _storageService.FileExistsAsync(_storageContainerName, resourceReference.Filename, default))
             {
                 var fileContent =
@@ -1008,6 +1020,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                         _serializerSettings)
                             ?? throw new ResourceProviderException($"Failed to load the resource {resourceReference.Name}. Its content file might be corrupt.",
                                 StatusCodes.Status500InternalServerError);
+
+                    _resourceCache?.SetValue<T>(resourceReference, resourceObject);
 
                     return resourceObject;
                 }
@@ -1038,6 +1052,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     ?? throw new ResourceProviderException($"Could not locate the {resourceName} resource.",
                         StatusCodes.Status404NotFound);
 
+                if (_resourceCache != null
+                    && _resourceCache.TryGetValue<T>(resourceReference, out T? cachedResource)
+                    && cachedResource != null)
+                    return cachedResource;
+
                 if (await _storageService.FileExistsAsync(_storageContainerName, resourceReference.Filename, default))
                 {
                     var fileContent =
@@ -1047,6 +1066,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                         _serializerSettings)
                             ?? throw new ResourceProviderException($"Failed to load the resource {resourceReference.Name}. Its content file might be corrupt.",
                                 StatusCodes.Status400BadRequest);
+
+                    _resourceCache?.SetValue<T>(resourceReference, resourceObject);
 
                     return resourceObject;
                 }
@@ -1086,6 +1107,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 default);
 
                 await _resourceReferenceStore!.AddResourceReference(resourceReference);
+
+                // Add resource to cache if caching is enabled.
+                _resourceCache?.SetValue<T>(resourceReference, resource);
             }
             finally
             {
@@ -1200,6 +1224,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                    JsonSerializer.Serialize<T>(resource, _serializerSettings),
                    default,
                    default);
+
+                // Update resource to cache if caching is enabled.
+                _resourceCache?.SetValue<T>(resourceReference, resource);
             }
             finally
             {

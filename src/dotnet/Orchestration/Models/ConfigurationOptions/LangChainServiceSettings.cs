@@ -5,6 +5,10 @@
     /// </summary>
     public class LangChainServiceSettings
     {
-        
+        /// <summary>
+        /// The polling interval in seconds to check the status of the LangChain service.
+        /// </summary>
+        public int PollingIntervalSeconds { get; set; } = 10;
+
     }
 }
