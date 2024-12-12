@@ -661,12 +661,12 @@ public partial class CoreService(
     }
 
     /// <inheritdoc/>
-    public async Task<Message> RateMessageAsync(string instanceId, string id, string sessionId, MessageRatingRequest rating)
+    public async Task RateMessageAsync(string instanceId, string id, string sessionId, MessageRatingRequest rating)
     {
         ArgumentNullException.ThrowIfNull(id);
         ArgumentNullException.ThrowIfNull(sessionId);
 
-        return await _cosmosDBService.PatchSessionsItemPropertiesAsync<Message>(
+        await _cosmosDBService.PatchSessionsItemPropertiesAsync<Message>(
             id,
             sessionId,
             new Dictionary<string, object?>

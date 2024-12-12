@@ -127,7 +127,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         }
 
         /// <inheritdoc/>
-        public async Task<Message> RateMessageAsync(string sessionId, string messageId, MessageRatingRequest rating)
+        public async Task RateMessageAsync(string sessionId, string messageId, MessageRatingRequest rating)
         {
             if (string.IsNullOrWhiteSpace(sessionId))
             {
@@ -149,10 +149,6 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
             {
                 throw new Exception($"Failed to rate message. Status code: {responseMessage.StatusCode}. Reason: {responseMessage.ReasonPhrase}");
             }
-
-            var responseContent = await responseMessage.Content.ReadAsStringAsync();
-            var message = JsonSerializer.Deserialize<Message>(responseContent, SerializerOptions);
-            return message ?? throw new InvalidOperationException("The returned Message is invalid.");
         }
 
         /// <inheritdoc/>
