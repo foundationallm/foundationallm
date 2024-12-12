@@ -62,7 +62,11 @@ namespace FoundationaLLM.Common.Clients
 
             try
             {
-                string cacheKey = _cacheService.GenerateCacheKey(
+                string cacheKey = string.Empty; 
+
+                if (_settings.EnableCache)
+                {
+                    cacheKey = _cacheService.GenerateCacheKey(
                                        instanceId,
                                        action,
                                        resourcePaths,
@@ -71,9 +75,9 @@ namespace FoundationaLLM.Common.Clients
                                        includeActions,
                                        userIdentity);
 
-                if (_settings.EnableCache && _cacheService.TryGetValue(cacheKey, out ActionAuthorizationResult? cachedResult))
-                {
-                    if(cachedResult != null)
+                    _cacheService.TryGetValue(cacheKey, out ActionAuthorizationResult? cachedResult);
+
+                    if (cachedResult != null)
                     {
                         return cachedResult;
                     }                        
