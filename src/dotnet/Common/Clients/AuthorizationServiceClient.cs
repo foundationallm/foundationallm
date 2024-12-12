@@ -71,7 +71,7 @@ namespace FoundationaLLM.Common.Clients
                                        includeActions,
                                        userIdentity);
 
-                if (_cacheService.TryGetValue(cacheKey, out ActionAuthorizationResult? cachedResult))
+                if (_settings.EnableCache && _cacheService.TryGetValue(cacheKey, out ActionAuthorizationResult? cachedResult))
                 {
                     if(cachedResult != null)
                     {
@@ -105,7 +105,11 @@ namespace FoundationaLLM.Common.Clients
                     var result = JsonSerializer.Deserialize<ActionAuthorizationResult>(responseContent);
                     if (result != null)
                     {
-                        _cacheService.SetValue(cacheKey, result!);
+                        if (_settings.EnableCache)
+                        {
+                            _cacheService.SetValue(cacheKey, result);
+                        }
+                        
                         return result;
                     }
                     _logger.LogError("The response from the Authorization API was invalid and could not be parsed.");
