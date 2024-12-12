@@ -128,7 +128,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 client,
                 request,
                 $"instances/{instanceId}/async-completions",
-                TimeSpan.FromSeconds(10),
+                TimeSpan.FromSeconds(_settings.PollingIntervalSeconds),
                 client.Timeout.Subtract(TimeSpan.FromSeconds(1)),
                 _logger);
         }
