@@ -9,12 +9,19 @@
 		<JsonEditorVue v-model="json" />
 
 		<template #footer>
+			<!-- Save -->
+			<Button
+				severity="primary"
+				label="Save"
+				@click="handleSave"
+			/>
+
 			<!-- Cancel -->
 			<Button
-				class="sidebar-dialog__button"
+				class="ml-2"
 				label="Close"
 				text
-				@click="$emit('update:visible', false)"
+				@click="handleClose"
 			/>
 		</template>
 	</Dialog>
@@ -36,7 +43,7 @@ export default {
 
 		visible: {
 			type: Boolean,
-			required: true,
+			required: false,
 		},
 	},
 
@@ -55,13 +62,16 @@ export default {
 				this.json = this.modelValue;
 			},
 		},
+	},
 
-		json: {
-			deep: true,
-			handler() {
-				if (JSON.stringify(this.modelValue) === JSON.stringify(this.json)) return;
-				this.modelValue = this.json;
-			},
+	methods: {
+		handleSave() {
+			this.$emit('update:modelValue', this.json);
+			this.handleClose();
+		},
+
+		handleClose() {
+			this.$emit('update:visible', false);
 		},
 	},
 };
