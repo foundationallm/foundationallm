@@ -63,7 +63,7 @@ namespace FoundationaLLM.Client.Core
             return sessionId;
         }
 
-        public async Task<Message> RateMessageAsync(string sessionId, string messageId, MessageRatingRequest rating)
+        public async Task RateMessageAsync(string sessionId, string messageId, MessageRatingRequest rating)
         {
             if (string.IsNullOrWhiteSpace(sessionId))
                 throw new ArgumentException("A session ID must be provided when rating a message.");
@@ -71,8 +71,7 @@ namespace FoundationaLLM.Client.Core
                 throw new ArgumentException("A message ID must be provided when rating a message.");
             if (rating == null)
                 throw new ArgumentException("A rating must be provided when rating a message.");
-            var message = await _coreRestClient.Sessions.RateMessageAsync(sessionId, messageId, rating);
-            return message;
+            await _coreRestClient.Sessions.RateMessageAsync(sessionId, messageId, rating);
         }
 
         /// <inheritdoc/>
