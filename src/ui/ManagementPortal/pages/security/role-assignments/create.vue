@@ -106,7 +106,7 @@
 						class="w-50"
 						aria-labelledby="aria-principal-id"
 					/>
-					<Button 
+					<Button
 						label="Browse"
 						aria-label="Browse for principals"
 						severity="primary"

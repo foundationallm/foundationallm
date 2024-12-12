@@ -1,25 +1,19 @@
 <template>
 	<div class="d-flex flex-column" style="gap: 16px">
-		<div v-for="(propertyValue, propertyKey) in properties" :key="propertyKey" class="d-flex justify-content-between" style="gap: 16px">
-
+		<div
+			v-for="(propertyValue, propertyKey) in properties"
+			:key="propertyKey"
+			class="d-flex justify-content-between"
+			style="gap: 16px"
+		>
 			<div class="d-flex flex-1" style="gap: 16px">
 				<!-- Property name -->
-				<InputText
-					:value="propertyKey"
-					type="text"
-					placeholder="Property Name"
-					disabled
-				/>
+				<InputText :value="propertyKey" type="text" placeholder="Property Name" disabled />
 
 				<span class="d-flex align-center">=</span>
 
 				<!-- Property value -->
-				<InputText
-					:value="propertyValue"
-					type="text"
-					placeholder="Property Value"
-					disabled
-				/>
+				<InputText :value="propertyValue" type="text" placeholder="Property Value" disabled />
 			</div>
 
 			<!-- Delete property -->
@@ -32,18 +26,10 @@
 	<div class="d-flex mt-4" style="gap: 16px">
 		<div class="d-flex flex-1" style="gap: 16px">
 			<!-- Property name -->
-			<InputText
-				v-model="propertyName"
-				type="text"
-				placeholder="Property Name"
-			/>
+			<InputText v-model="propertyName" type="text" placeholder="Property Name" />
 
 			<!-- Property value -->
-			<InputText
-				v-model="propertyValue"
-				type="text"
-				placeholder="Property Value"
-			/>
+			<InputText v-model="propertyValue" type="text" placeholder="Property Value" />
 		</div>
 
 		<!-- Add property -->
@@ -54,7 +40,6 @@
 			@click="handleAddProperty"
 		/>
 	</div>
-
 </template>
 
 <script lang="ts">
@@ -121,9 +106,7 @@ export default {
 			this.$emit('update:modelValue', this.properties);
 		},
 	},
-}
+};
 </script>
 
-<style lang="scss">
-	
-</style>
+<style lang="scss"></style>

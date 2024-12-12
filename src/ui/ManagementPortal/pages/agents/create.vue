@@ -150,7 +150,10 @@
 
 					<!-- Data source -->
 					<div v-if="dedicated_pipeline">
-						<CreateAgentStepItem v-model="editDataSource" focusQuery=".step-container__edit__option">
+						<CreateAgentStepItem
+							v-model="editDataSource"
+							focusQuery=".step-container__edit__option"
+						>
 							<template v-if="selectedDataSource">
 								<div class="step-container__header">{{ selectedDataSource.type }}</div>
 								<div>
@@ -274,11 +277,16 @@
 					</template>
 
 					<!-- Text embedding profiles -->
-					<CreateAgentStepItem v-model="editTextEmbeddingProfile" focusQuery=".step-container__edit__option">
+					<CreateAgentStepItem
+						v-model="editTextEmbeddingProfile"
+						focusQuery=".step-container__edit__option"
+					>
 						<template v-if="selectedTextEmbeddingProfile">
 							<div v-if="selectedTextEmbeddingProfile.object_id !== ''">
 								<div class="step-container__header">{{ selectedTextEmbeddingProfile.name }}</div>
-								<div v-if="selectedTextEmbeddingProfile.resolved_configuration_references?.Endpoint">
+								<div
+									v-if="selectedTextEmbeddingProfile.resolved_configuration_references?.Endpoint"
+								>
 									<span class="step-option__header">URL:</span>
 									<span>{{
 										selectedTextEmbeddingProfile.resolved_configuration_references.Endpoint
@@ -319,7 +327,9 @@
 									<div class="step-container__header">{{ textEmbeddingProfile.name }}</div>
 									<div v-if="textEmbeddingProfile.resolved_configuration_references?.Endpoint">
 										<span class="step-option__header">URL:</span>
-										<span>{{ textEmbeddingProfile.resolved_configuration_references.Endpoint }}</span
+										<span>{{
+											textEmbeddingProfile.resolved_configuration_references.Endpoint
+										}}</span
 										><br />
 										<span class="step-option__header">Deployment:</span>
 										<span>{{
@@ -477,7 +487,9 @@
 						</div>
 
 						<div class="d-flex align-center mt-2">
-							<span id="aria-conversation-history-enabled" class="step-option__header">Enabled:</span>
+							<span id="aria-conversation-history-enabled" class="step-option__header"
+								>Enabled:</span
+							>
 							<span>
 								<ToggleButton
 									v-model="conversationHistory"
@@ -737,7 +749,11 @@
 					class="dropdown--agent"
 					placeholder="--Select--"
 					aria-labelledby="aria-orchestrator"
-					@change="selectedWorkflow = JSON.parse(JSON.stringify(workflowOptions.find((workflow) => workflow.type === $event.value)))"
+					@change="
+						selectedWorkflow = JSON.parse(
+							JSON.stringify(workflowOptions.find((workflow) => workflow.type === $event.value)),
+						)
+					"
 				/>
 				<Button
 					class="ml-2"
@@ -750,7 +766,6 @@
 
 			<!-- Workflow configuration -->
 			<div v-if="showWorkflowConfiguration" class="span-2">
-
 				<!-- Workflow main model -->
 				<div class="mb-6">
 					<div class="step-header mb-3">Workflow main model:</div>
@@ -762,7 +777,11 @@
 						class="dropdown--agent"
 						placeholder="--Select--"
 						aria-labelledby="aria-orchestrator"
-						@change="workflowMainAIModel = JSON.parse(JSON.stringify(aiModelOptions.find((model) => model.object_id === $event.value)))"
+						@change="
+							workflowMainAIModel = JSON.parse(
+								JSON.stringify(aiModelOptions.find((model) => model.object_id === $event.value)),
+							)
+						"
 					/>
 				</div>
 
@@ -794,7 +813,11 @@
 				</div>
 
 				<div class="span-2">
-					<div v-for="(tool, index) in agentTools" class="d-flex justify-content-between mb-2" :key="index">
+					<div
+						v-for="(tool, index) in agentTools"
+						class="d-flex justify-content-between mb-2"
+						:key="index"
+					>
 						<div>{{ tool.name }}</div>
 
 						<Button
@@ -830,11 +853,7 @@
 						placeholder="Enter cost center name"
 						aria-labelledby="aria-cost-center"
 					/>
-					<Button
-						label="Copy"
-						severity="primary"
-						@click="handleCopySecurityGroupId"
-					/>
+					<Button label="Copy" severity="primary" @click="handleCopySecurityGroupId" />
 				</div>
 			</template>
 
@@ -845,7 +864,7 @@
 					<AgentAccessTokens :agent-name="this.agentName" />
 				</div>
 			</template>
-			
+
 			<!-- Form buttons -->
 			<div class="span-2 d-flex justify-content-end" style="gap: 16px">
 				<!-- Create agent -->
@@ -857,12 +876,7 @@
 				/>
 
 				<!-- Cancel -->
-				<Button
-					v-if="editAgent"
-					label="Cancel"
-					severity="secondary"
-					@click="handleCancel"
-				/>
+				<Button v-if="editAgent" label="Cancel" severity="secondary" @click="handleCancel" />
 			</div>
 		</div>
 	</main>
@@ -1083,12 +1097,14 @@ export default {
 	watch: {
 		selectedWorkflow() {
 			this.workflowMainAIModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
-				(resource) => resource.properties?.object_role === 'main_model'
+				(resource) => resource.properties?.object_role === 'main_model',
 			);
 		},
 
 		workflowMainAIModel() {
-			this.workflowMainAIModelParameters = this.workflowMainAIModel?.model_parameters ?? this.workflowMainAIModel?.properties?.model_parameters;
+			this.workflowMainAIModelParameters =
+				this.workflowMainAIModel?.model_parameters ??
+				this.workflowMainAIModel?.properties?.model_parameters;
 		},
 	},
 

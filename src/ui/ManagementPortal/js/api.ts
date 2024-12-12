@@ -834,14 +834,17 @@ export default {
 		)) as ResourceProviderGetResult<AgentAccessToken>[];
 	},
 
-	async createAgentAccessToken(agentName: string, body: AgentAccessToken): Promise<ResourceProviderUpsertResult> {
-		return await this.fetch(
+	async createAgentAccessToken(
+		agentName: string,
+		body: AgentAccessToken,
+	): Promise<ResourceProviderUpsertResult> {
+		return (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentAccessTokens/${body.id}?api-version=${this.apiVersion}`,
 			{
 				method: 'POST',
 				body,
 			},
-		) as ResourceProviderUpsertResult;
+		)) as ResourceProviderUpsertResult;
 	},
 
 	async deleteAgentAccessToken(agentName: string, accessTokenId: string): Promise<any> {

@@ -10,19 +10,10 @@
 
 		<template #footer>
 			<!-- Save -->
-			<Button
-				severity="primary"
-				label="Save"
-				@click="handleSave"
-			/>
+			<Button severity="primary" label="Save" @click="handleSave" />
 
 			<!-- Cancel -->
-			<Button
-				class="ml-2"
-				label="Close"
-				text
-				@click="handleClose"
-			/>
+			<Button class="ml-2" label="Close" text @click="handleClose" />
 		</template>
 	</Dialog>
 </template>
@@ -77,6 +68,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-	
-</style>
+<style lang="scss" scoped></style>
