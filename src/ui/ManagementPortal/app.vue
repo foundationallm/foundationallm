@@ -116,6 +116,10 @@ body,
 	margin-top: 16px !important;
 }
 
+.mt-6 {
+	margin-top: 24px !important;
+}
+
 .mb-1 {
 	margin-bottom: 4px !important;
 }
@@ -182,6 +186,10 @@ body,
 
 .justify-self-end {
 	justify-self: end;
+}
+
+.font-weight-bold {
+	font-weight: bold;
 }
 
 .cursor-pointer {
