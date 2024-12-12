@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Clients_AuthorizationServiceClient" data-uid="FoundationaLLM.Common.Clients.AuthorizationServiceClient" class="text-break">
-Class AuthorizationServiceClient  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L18"><i class="bi bi-code-slash"></i></a>
+Class AuthorizationServiceClient  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L19"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -170,10 +170,11 @@ Class AuthorizationServiceClient  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Common_Clients_AuthorizationServiceClient__ctor_System_Net_Http_IHttpClientFactory_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Authorization_AuthorizationServiceClientSettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Clients_AuthorizationServiceClient__" data-uid="FoundationaLLM.Common.Clients.AuthorizationServiceClient.#ctor(System.Net.Http.IHttpClientFactory,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Authorization.AuthorizationServiceClientSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Clients.AuthorizationServiceClient})">
   AuthorizationServiceClient(IHttpClientFactory, IOptions&lt;AuthorizationServiceClientSettings&gt;, ILogger&lt;AuthorizationServiceClient&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Common.Clients.AuthorizationServiceClient.html">AuthorizationServiceClient</a> class.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -183,11 +184,14 @@ Class AuthorizationServiceClient  <a class="header-action link-secondary" title=
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>httpClientFactory</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.ihttpclientfactory">IHttpClientFactory</a></dt>
-    <dd></dd>
+    <dd><p>The centralized factory from which to create HTTP clients.</p>
+</dd>
     <dt><code>options</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Configuration.Authorization.AuthorizationServiceClientSettings.html">AuthorizationServiceClientSettings</a>&gt;</dt>
-    <dd></dd>
+    <dd><p><a class="xref" href="FoundationaLLM.Common.Models.Configuration.Authorization.AuthorizationServiceClientSettings.html">AuthorizationServiceClientSettings</a> options.</p>
+</dd>
     <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="FoundationaLLM.Common.Clients.AuthorizationServiceClient.html">AuthorizationServiceClient</a>&gt;</dt>
-    <dd></dd>
+    <dd><p>The logger used for logging.</p>
+</dd>
   </dl>
 
 
@@ -209,7 +213,7 @@ Class AuthorizationServiceClient  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Common_Clients_AuthorizationServiceClient_CreateRoleAssignment_System_String_FoundationaLLM_Common_Models_Authorization_RoleAssignmentRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Clients.AuthorizationServiceClient.CreateRoleAssignment(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   CreateRoleAssignment(string, RoleAssignmentRequest, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L121"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new role assignment.</p>
@@ -254,7 +258,7 @@ Class AuthorizationServiceClient  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Common_Clients_AuthorizationServiceClient_DeleteRoleAssignment_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Clients.AuthorizationServiceClient.DeleteRoleAssignment(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   DeleteRoleAssignment(string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L156"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L184"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes a role assignment.</p>
@@ -299,7 +303,7 @@ Class AuthorizationServiceClient  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Common_Clients_AuthorizationServiceClient_DeleteSecretKey_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Clients.AuthorizationServiceClient.DeleteSecretKey(System.String,System.String,System.String)">
   DeleteSecretKey(string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L242"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L270"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes a specified secret key.</p>
@@ -343,7 +347,7 @@ Class AuthorizationServiceClient  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Common_Clients_AuthorizationServiceClient_GetRoleAssignments_System_String_FoundationaLLM_Common_Models_Authorization_RoleAssignmentQueryParameters_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Clients.AuthorizationServiceClient.GetRoleAssignments(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetRoleAssignments(string, RoleAssignmentQueryParameters, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L155"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns a list of role assignments.</p>
@@ -388,7 +392,7 @@ Class AuthorizationServiceClient  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Common_Clients_AuthorizationServiceClient_GetSecretKeys_System_String_System_String_" data-uid="FoundationaLLM.Common.Clients.AuthorizationServiceClient.GetSecretKeys(System.String,System.String)">
   GetSecretKeys(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L191"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L219"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a list of <a class="xref" href="FoundationaLLM.Common.Models.Authorization.SecretKey.html">SecretKey</a> items that are associated with the specified instance and context.</p>
@@ -434,7 +438,7 @@ For example, FoundationaLLM resource providers could use the resource object ide
 
   <h3 id="FoundationaLLM_Common_Clients_AuthorizationServiceClient_ProcessAuthorizationRequest_System_String_System_String_System_Collections_Generic_List_System_String__System_Boolean_System_Boolean_System_Boolean_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Clients.AuthorizationServiceClient.ProcessAuthorizationRequest(System.String,System.String,System.Collections.Generic.List{System.String},System.Boolean,System.Boolean,System.Boolean,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   ProcessAuthorizationRequest(string, string, List&lt;string&gt;, bool, bool, bool, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L49"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Processes an action authorization request.</p>
@@ -504,7 +508,7 @@ the response will include the autorizable actions assigned directly or indirectl
 
   <h3 id="FoundationaLLM_Common_Clients_AuthorizationServiceClient_UpsertSecretKey_System_String_FoundationaLLM_Common_Models_Authorization_SecretKey_" data-uid="FoundationaLLM.Common.Clients.AuthorizationServiceClient.UpsertSecretKey(System.String,FoundationaLLM.Common.Models.Authorization.SecretKey)">
   UpsertSecretKey(string, SecretKey)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L216"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L244"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new or updates an existing <a class="xref" href="FoundationaLLM.Common.Models.Authorization.SecretKey.html">SecretKey</a> item.</p>
@@ -546,7 +550,7 @@ the response will include the autorizable actions assigned directly or indirectl
 
   <h3 id="FoundationaLLM_Common_Clients_AuthorizationServiceClient_ValidateSecretKey_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Clients.AuthorizationServiceClient.ValidateSecretKey(System.String,System.String,System.String)">
   ValidateSecretKey(string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L262"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L290"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Validates a secret key value.</p>
@@ -595,7 +599,7 @@ It is the responsibility of the caller to use the virtual identity to authorize 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L18" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L19" class="edit-link">Edit this page</a>
         </div>
 
 
