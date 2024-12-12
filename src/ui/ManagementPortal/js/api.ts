@@ -690,6 +690,15 @@ export default {
 		);
 	},
 
+	async deleteRoleAssignment(roleAssignmentId): void {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/${roleAssignmentId}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
+			},
+		);
+	},
+
 	/*
 		Role Definitions
 	 */
@@ -703,15 +712,6 @@ export default {
 		return (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleDefinitions/${roleAssignmentId}?api-version=${this.apiVersion}`,
 		)) as RoleAssignment[];
-	},
-
-	async deleteRoleAssignment(roleAssignmentId): void {
-		return await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleDefinitions/${roleAssignmentId}?api-version=${this.apiVersion}`,
-			{
-				method: 'DELETE',
-			},
-		);
 	},
 
 	/*
