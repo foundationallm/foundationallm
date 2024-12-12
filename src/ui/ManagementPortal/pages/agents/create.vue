@@ -799,10 +799,8 @@
 				</div> -->
 
 				<!-- Workflow main model parameters -->
-				<div class="mb-6">
-					<div class="step-header mb-3">Workflow main model parameters:</div>
-					<PropertyBuilder v-model="workflowMainAIModelParameters" />
-				</div>
+				<div class="step-header mb-3">Workflow main model parameters:</div>
+				<PropertyBuilder v-model="workflowMainAIModelParameters" />
 			</div>
 
 			<!-- Tools -->
