@@ -753,7 +753,7 @@
 
 				<!-- Workflow main model -->
 				<div class="mb-6">
-					<div class="step-header mb-2">Workflow main model:</div>
+					<div class="step-header mb-3">Workflow main model:</div>
 					<Dropdown
 						:modelValue="workflowMainAIModel?.object_id"
 						:options="aiModelOptions"
@@ -767,7 +767,7 @@
 				</div>
 
 				<!-- <div class="mb-6">
-					<div class="step-header mb-2">Workflow main prompt:</div>
+					<div class="step-header mb-3">Workflow main prompt:</div>
 					<Textarea
 						v-model="workflowMainPrompt"
 						class="w-100"
@@ -781,10 +781,39 @@
 
 				<!-- Workflow main model parameters -->
 				<div class="mb-6">
-					<div class="step-header mb-2">Workflow main model parameters:</div>
+					<div class="step-header mb-3">Workflow main model parameters:</div>
 					<PropertyBuilder v-model="workflowMainAIModelParameters" />
 				</div>
 			</div>
+
+			<!-- Tools -->
+			<template v-if="agentTools.length > 0">
+				<div class="step-section-header span-2">Tools</div>
+				<div id="aria-orchestrator" class="step-header span-2">
+					What tools should the agent use?
+				</div>
+
+				<div class="span-2">
+					<div v-for="(tool, index) in agentTools" class="d-flex justify-content-between mb-2" :key="index">
+						<div>{{ tool.name }}</div>
+
+						<Button
+							class="ml-2"
+							severity="primary"
+							label="Configure Tool"
+							@click="selectedTool = tool"
+						/>
+
+						<JSONEditorDialog
+							v-if="selectedTool?.name === tool.name"
+							v-model="selectedTool"
+							:visible="!!selectedTool"
+							@update:visible="selectedTool = null"
+							@update:modelValue="agentTools[index] = selectedTool"
+						/>
+					</div>
+				</div>
+			</template>
 
 			<!-- Security -->
 			<div v-if="virtualSecurityGroupId" class="step-section-header span-2">Security</div>
@@ -920,6 +949,9 @@ const getDefaultFormValues = () => {
 		},
 
 		selectedWorkflow: null,
+
+		selectedTool: null,
+		agentTools: [] as AgentTool[],
 	};
 };
 
