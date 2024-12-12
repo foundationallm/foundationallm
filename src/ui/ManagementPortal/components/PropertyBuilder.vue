@@ -12,7 +12,7 @@
 				<span class="d-flex align-center">=</span>
 
 				<!-- Property value -->
-				<InputText :value="propertyValue" type="text" placeholder="Property Value" disabled />
+				<InputText :value="JSON.stringify(propertyValue)" type="text" placeholder="Property Value" disabled />
 			</div>
 
 			<!-- Delete property -->
