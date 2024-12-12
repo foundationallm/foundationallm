@@ -842,7 +842,7 @@
 			<!-- Virtual security group id -->
 			<template v-if="virtualSecurityGroupId">
 				<div class="step-header">Virtual security group ID</div>
-				<div class="span-2" style="display: flex; gap: 16px">
+				<div class="span-2 d-flex gap-4">
 					<InputText
 						:value="virtualSecurityGroupId"
 						disabled
@@ -864,7 +864,7 @@
 			</template>
 
 			<!-- Form buttons -->
-			<div class="span-2 d-flex justify-content-end" style="gap: 16px">
+			<div class="span-2 d-flex justify-content-end gap-4">
 				<!-- Create agent -->
 				<Button
 					:label="editAgent ? 'Save Changes' : 'Create Agent'"

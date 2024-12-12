@@ -1,12 +1,11 @@
 <template>
-	<div class="d-flex flex-column" style="gap: 16px">
+	<div class="d-flex flex-column gap-4">
 		<div
 			v-for="(propertyValue, propertyKey) in properties"
 			:key="propertyKey"
-			class="d-flex justify-content-between"
-			style="gap: 16px"
+			class="d-flex justify-content-between gap-4"
 		>
-			<div class="d-flex flex-1" style="gap: 16px">
+			<div class="d-flex flex-1">
 				<!-- Property name -->
 				<InputText :value="propertyKey" type="text" placeholder="Property Name" disabled />
 
@@ -22,8 +21,8 @@
 			</Button>
 		</div>
 
-		<div class="d-flex" style="gap: 16px">
-			<div class="d-flex flex-1" style="gap: 16px">
+		<div class="d-flex gap-4">
+			<div class="d-flex flex-1 gap-4">
 				<!-- Property name -->
 				<InputText v-model="propertyName" type="text" placeholder="Property Name" />
 
