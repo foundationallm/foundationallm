@@ -164,6 +164,10 @@ body,
 	justify-content: end;
 }
 
+.justify-content-between {
+	justify-content: space-between;
+}
+
 .justify-self-end {
 	justify-self: end;
 }
