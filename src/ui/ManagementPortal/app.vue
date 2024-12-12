@@ -107,6 +107,11 @@ body,
 	margin-right: 4px !important;
 }
 
+.mx-2 {
+	margin-left: 8px !important;
+	margin-right: 8px !important;
+}
+
 .mt-2 {
 	margin-top: 8px !important;
 }
@@ -151,6 +156,10 @@ body,
 	display: flex;
 }
 
+.flex-1 {
+	flex: 1;
+}
+
 .flex-column {
 	flex-direction: column;
 }
@@ -165,6 +174,10 @@ body,
 
 .justify-content-end {
 	justify-content: end;
+}
+
+.justify-content-between {
+	justify-content: space-between;
 }
 
 .justify-self-end {
