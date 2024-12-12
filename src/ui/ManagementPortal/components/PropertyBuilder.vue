@@ -21,24 +21,24 @@
 				<i class="pi pi-trash" style="font-size: 1.2rem"></i>
 			</Button>
 		</div>
-	</div>
 
-	<div class="d-flex mt-4" style="gap: 16px">
-		<div class="d-flex flex-1" style="gap: 16px">
-			<!-- Property name -->
-			<InputText v-model="propertyName" type="text" placeholder="Property Name" />
+		<div class="d-flex" style="gap: 16px">
+			<div class="d-flex flex-1" style="gap: 16px">
+				<!-- Property name -->
+				<InputText v-model="propertyName" type="text" placeholder="Property Name" />
 
-			<!-- Property value -->
-			<InputText v-model="propertyValue" type="text" placeholder="Property Value" />
+				<!-- Property value -->
+				<InputText v-model="propertyValue" type="text" placeholder="Property Value" />
+			</div>
+
+			<!-- Add property -->
+			<Button
+				label="Add Property"
+				severity="primary"
+				style="word-wrap: none"
+				@click="handleAddProperty"
+			/>
 		</div>
-
-		<!-- Add property -->
-		<Button
-			label="Add Property"
-			severity="primary"
-			style="word-wrap: none"
-			@click="handleAddProperty"
-		/>
 	</div>
 </template>
 
