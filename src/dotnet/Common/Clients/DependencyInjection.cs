@@ -24,7 +24,7 @@ namespace FoundationaLLM
         {
             builder.Services.AddOptions<AuthorizationServiceClientSettings>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials));
-            builder.Services.AddSingleton<IAuthorizationServiceClientCacheService, AuthorizationServiceClientCacheService>();
+            //builder.Services.AddSingleton<IAuthorizationServiceClientCacheService, AuthorizationServiceClientCacheService>();
             builder.Services.AddSingleton<IAuthorizationServiceClient, AuthorizationServiceClient>();
         }
 
@@ -37,7 +37,7 @@ namespace FoundationaLLM
         {
             services.AddOptions<AuthorizationServiceClientSettings>()
                 .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials));
-            services.AddSingleton<IAuthorizationServiceClientCacheService, AuthorizationServiceClientCacheService>();
+            //services.AddSingleton<IAuthorizationServiceClientCacheService, AuthorizationServiceClientCacheService>();
             services.AddSingleton<IAuthorizationServiceClient, AuthorizationServiceClient>();
         }
     }
