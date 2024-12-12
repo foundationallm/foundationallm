@@ -25,6 +25,8 @@
     <Compile Include="foundationallm\config\context.py" />
     <Compile Include="foundationallm\config\environment_variables.py" />
     <Compile Include="foundationallm\config\user_identity.py" />
+    <Compile Include="foundationallm\event_grid\azure_event_grid_service.py" />
+    <Compile Include="foundationallm\event_grid\__init__.py" />
     <Compile Include="foundationallm\event_handlers\__init__.py" />
     <Compile Include="foundationallm\exceptions\foundationallm_exception.py" />
     <Compile Include="foundationallm\exceptions\__init__.py" />
@@ -190,6 +192,7 @@
     <Folder Include="foundationallm\models\constants\" />
     <Folder Include="foundationallm\event_handlers\" />
     <Folder Include="foundationallm\models\messages\" />
+    <Folder Include="foundationallm\event_grid\" />
     <Folder Include="foundationallm\plugins\" />
     <Folder Include="foundationallm\plugins\tools\" />
     <Folder Include="foundationallm\services\" />

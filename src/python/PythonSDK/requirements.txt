@@ -1,4 +1,6 @@
 azure-appconfiguration-provider==1.2.0
+azure-core==1.32.0
+azure-eventgrid==4.21.0
 azure-identity==1.17.1
 azure-keyvault-secrets==4.8.0
 azure-monitor-opentelemetry==1.6.2
