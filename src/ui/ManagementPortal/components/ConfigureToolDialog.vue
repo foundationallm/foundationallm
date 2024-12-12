@@ -84,11 +84,6 @@ export default {
 			type: Boolean,
 			required: false,
 		},
-
-		models: {
-			type: Array,
-			required: true,
-		},
 	},
 
 	data() {
