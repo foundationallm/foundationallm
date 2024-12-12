@@ -5,7 +5,7 @@
 			:key="propertyKey"
 			class="d-flex justify-content-between gap-4"
 		>
-			<div class="d-flex flex-1">
+			<div class="d-flex flex-1 gap-4">
 				<!-- Property name -->
 				<InputText :value="propertyKey" type="text" placeholder="Property Name" disabled />
 
