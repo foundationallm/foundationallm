@@ -151,8 +151,8 @@ a {
 }
 
 .sidebar-collapsed {
-	// position: absolute;
-	background-color: #fff;
+	position: absolute;
+	background-color: transparent;
 	width: 100%;
 	height: max-content;
 }
@@ -273,12 +273,9 @@ a {
 	border: 0;
 }
 
-@media only screen and (max-width: 620px) {
+@media only screen and (max-width: 960px) {
 	.sidebar {
 		position: absolute;
-	}
-	.sidebar-collapsed {
-		position: static !important;
 	}
 }
 </style>
