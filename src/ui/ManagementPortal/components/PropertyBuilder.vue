@@ -1,5 +1,5 @@
 <template>
-	<div class="span-2 d-flex flex-column" style="gap: 16px">
+	<div class="d-flex flex-column" style="gap: 16px">
 		<div v-for="(propertyValue, propertyKey) in properties" :key="propertyKey" class="d-flex justify-content-between" style="gap: 16px">
 
 			<div class="d-flex flex-1" style="gap: 16px">
@@ -29,7 +29,7 @@
 		</div>
 	</div>
 
-	<div class="span-2 d-flex mt-4" style="gap: 16px">
+	<div class="d-flex mt-4" style="gap: 16px">
 		<div class="d-flex flex-1" style="gap: 16px">
 			<!-- Property name -->
 			<InputText
