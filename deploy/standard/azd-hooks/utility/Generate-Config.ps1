@@ -541,6 +541,8 @@ $($ingress.frontendIngress).PSBase.Keys | ForEach-Object {
     PopulateTemplate $tokens "..,config,helm,service-ingress.template.yml" "..,config,helm,$($_)-ingress.yml"
 }
 
+$tokens.serviceNamespaceName = $serviceNamespaceName
+
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,FoundationaLLM.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,FoundationaLLM.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,completion-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,completion-model.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,completion-4-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,completion-4-model.json"
