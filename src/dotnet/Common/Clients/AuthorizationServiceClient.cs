@@ -4,6 +4,7 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
+using FoundationaLLM.Common.Services.Cache;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
@@ -19,26 +20,29 @@ namespace FoundationaLLM.Common.Clients
     {
         private readonly AuthorizationServiceClientSettings _settings;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IAuthorizationServiceClientCacheService _cacheService;
-        private readonly ILogger<AuthorizationServiceClient> _logger;        
+        private readonly ILogger<AuthorizationServiceClient> _logger;
+
+        private readonly IAuthorizationServiceClientCacheService? _cacheService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorizationServiceClient"/> class.
         /// </summary>
         /// <param name="httpClientFactory">The centralized factory from which to create HTTP clients.</param>     
         /// <param name="options"><see cref="AuthorizationServiceClientSettings"/> options.</param>
-        /// <param name="cacheService">The cache service used to store authorization results for quick retrieval.</param>
         /// <param name="logger">The logger used for logging.</param>
         public AuthorizationServiceClient(
             IHttpClientFactory httpClientFactory,
             IOptions<AuthorizationServiceClientSettings> options,
-            IAuthorizationServiceClientCacheService cacheService,
             ILogger<AuthorizationServiceClient> logger)
         {
             _settings = options.Value;
             _httpClientFactory = httpClientFactory;
-            _cacheService = cacheService;
             _logger = logger;
+
+            if (_settings.EnableCache)
+            {
+                _cacheService = new AuthorizationServiceClientCacheService(logger);
+            }
         }
 
         /// <inheritdoc/>
@@ -62,27 +66,6 @@ namespace FoundationaLLM.Common.Clients
 
             try
             {
-                string cacheKey = string.Empty; 
-
-                if (_settings.EnableCache)
-                {
-                    cacheKey = _cacheService.GenerateCacheKey(
-                                       instanceId,
-                                       action,
-                                       resourcePaths,
-                                       expandResourceTypePaths,
-                                       includeRoleAssignments,
-                                       includeActions,
-                                       userIdentity);
-
-                    _cacheService.TryGetValue(cacheKey, out ActionAuthorizationResult? cachedResult);
-
-                    if (cachedResult != null)
-                    {
-                        return cachedResult;
-                    }                        
-                }
-
                 var authorizationRequest = new ActionAuthorizationRequest
                 {
                     Action = action,
@@ -98,6 +81,11 @@ namespace FoundationaLLM.Common.Clients
                     }
                 };
 
+                if (_cacheService != null
+                    && _cacheService.TryGetValue(authorizationRequest, out var cachedAuthorizationResponse)
+                    && cachedAuthorizationResponse != null)
+                    return cachedAuthorizationResponse;
+
                 var httpClient = await CreateHttpClient();
                 var response = await httpClient.PostAsync(
                     $"/instances/{instanceId}/authorize",
@@ -109,11 +97,9 @@ namespace FoundationaLLM.Common.Clients
                     var result = JsonSerializer.Deserialize<ActionAuthorizationResult>(responseContent);
                     if (result != null)
                     {
-                        if (_settings.EnableCache)
-                        {
-                            _cacheService.SetValue(cacheKey, result);
-                        }
-                        
+                        // Try to cache the result if we have a cache service active.
+                        _cacheService?.SetValue(authorizationRequest, result);
+
                         return result;
                     }
                     _logger.LogError("The response from the Authorization API was invalid and could not be parsed.");

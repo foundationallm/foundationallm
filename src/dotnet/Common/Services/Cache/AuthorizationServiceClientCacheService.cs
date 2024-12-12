@@ -1,5 +1,4 @@
 ﻿using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
@@ -12,11 +11,10 @@ namespace FoundationaLLM.Common.Services.Cache
     /// Provides the caching services used by the FoundationaLLM authorization service client.
     /// </summary>
     /// <param name="logger">The <see cref="ILogger"/> used to log information.</param>
-    public class AuthorizationServiceClientMemoryCacheService(
-        ILogger<AuthorizationServiceClientMemoryCacheService> logger) : IAuthorizationServiceClientCacheService
+    public class AuthorizationServiceClientCacheService(
+        ILogger logger) : IAuthorizationServiceClientCacheService
     {
         private readonly ILogger _logger = logger;
-
         private readonly IMemoryCache _cache = new MemoryCache(new MemoryCacheOptions
         {
             SizeLimit = 10000, // Limit cache size to 10000 resources.
@@ -29,15 +27,18 @@ namespace FoundationaLLM.Common.Services.Cache
            .SetSize(1); // Each cache entry is a single authorization result.
 
         private readonly SemaphoreSlim _cacheLock = new(1, 1);
+        private readonly MD5 _md5 = MD5.Create();
 
         /// <inheritdoc/>
-        public async void SetValue(string cacheKey, ActionAuthorizationResult result)
+        public async void SetValue(ActionAuthorizationRequest authorizationRequest, ActionAuthorizationResult result)
         {
             await _cacheLock.WaitAsync();
             try
             {
-                _cache.Set(cacheKey, result, _cacheEntryOptions);
-                _logger.LogInformation("The authorization result has been set in the cache.");
+                _cache.Set(GetCacheKey(authorizationRequest), result, _cacheEntryOptions);
+                _logger.LogInformation(
+                    "An action authorization result for the authorizable action {AuthorizableAction} has been set in the cache.",
+                    authorizationRequest.Action);
             }
             catch (Exception ex)
             {
@@ -50,15 +51,15 @@ namespace FoundationaLLM.Common.Services.Cache
         }
 
         /// <inheritdoc/>
-        public bool TryGetValue(string cacheKey, out ActionAuthorizationResult? result)
+        public bool TryGetValue(ActionAuthorizationRequest authorizationRequest, out ActionAuthorizationResult? authorizationResult)
         {
-            result = default;
+            authorizationResult = default;
             try
             {
-                if (_cache.TryGetValue(cacheKey, out ActionAuthorizationResult? cachedValue)
+                if (_cache.TryGetValue(GetCacheKey(authorizationRequest), out ActionAuthorizationResult? cachedValue)
                     && cachedValue != null)
                 {
-                    result = cachedValue;
+                    authorizationResult = cachedValue;
                     _logger.LogInformation("Cache hit for the authorization request");
                     return true;
                 }
@@ -67,26 +68,21 @@ namespace FoundationaLLM.Common.Services.Cache
             {
                 _logger.LogError(ex, "There was an error getting the ActionAuthorizationResult from the cache.");
             }
+
             return false;
         }
 
-        /// <inheritdoc/>
-        public string GenerateCacheKey(
-            string instanceId,
-            string action,
-            List<string> resourcePaths,
-            bool expandResourceTypePaths,
-            bool includeRoleAssignments,
-            bool includeActions,
-            UnifiedUserIdentity userIdentity)
+        private string GetCacheKey(
+            ActionAuthorizationRequest authorizationRequest)
         {
-            var sortedResourcePaths = string.Join(",", resourcePaths.Distinct().OrderBy(rp => rp));
+            var resourcePaths = string.Join(",", authorizationRequest.ResourcePaths);
+            var groupIds = string.Join(",", authorizationRequest.UserContext.SecurityGroupIds);
+            var userIdentity = $"{authorizationRequest.UserContext.SecurityPrincipalId}:{authorizationRequest.UserContext.UserPrincipalName}:{groupIds}";
 
-            var keyString = $"{instanceId}:{action}:{sortedResourcePaths}:{expandResourceTypePaths}:{includeRoleAssignments}:{includeActions}:{userIdentity.UserId}:{userIdentity.UPN}:{string.Join(",", userIdentity.GroupIds)}";
+            var keyString = $"{authorizationRequest.Action}:{resourcePaths}:{authorizationRequest.ExpandResourceTypePaths}:{authorizationRequest.IncludeRoles}:{authorizationRequest.IncludeActions}:{userIdentity}";
 
-            using var sha256 = SHA256.Create();
-            var hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(keyString));
+            var hashBytes = _md5.ComputeHash(Encoding.UTF8.GetBytes(keyString));
             return Convert.ToBase64String(hashBytes);
-        }        
+        }
     }
 }
