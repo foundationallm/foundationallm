@@ -124,7 +124,7 @@ class FoundationaLLMDataAnalysisTool(FoundationaLLMToolBase):
         
         code_result = self.code_interpreter_tool.invoke(result.content)
 
-        return code_result.content
+        return code_result
 
     async def _arun(self,
         prompt: str = None,
@@ -137,4 +137,4 @@ class FoundationaLLMDataAnalysisTool(FoundationaLLMToolBase):
 
         code_result = self.code_interpreter_tool.invoke(result.content)
 
-        return code_result.content
+        return code_result

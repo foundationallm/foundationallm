@@ -86,4 +86,3 @@ def print_stream(stream):
             message.pretty_print()
 
 print_stream(graph.stream(inputs, stream_mode="values"))
-
