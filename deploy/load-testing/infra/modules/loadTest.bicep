@@ -26,3 +26,4 @@ resource loadTestingResource 'Microsoft.LoadTestService/loadTests@2023-12-01-pre
 }
 
 output loadTestResourceId string = loadTestingResource.id
+output loadTestIdentity string = loadTestingResource.identity.principalId

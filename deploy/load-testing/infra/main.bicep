@@ -17,6 +17,13 @@ var tags = {
   'project-name': project
 }
 
+var clientSecrets = [
+  {
+    name: 'bearer-token'
+    value: 'PLACEHOLDER'
+  }
+]
+
 // Functions
 func namer(resourceAbbr string, env string, region string, workloadName string, projectId string) string =>
   '${resourceAbbr}${env}-${region}-${workloadName}-${projectId}'
@@ -29,7 +36,21 @@ resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
 }
 
 /** Nested Modules **/
-module loadtest './core/load-test/loadTest.bicep' = {
+module keyVault './modules/keyVault.bicep' = {
+  name: 'keyvault-${timestamp}'
+  params: {
+    abbrs: abbrs
+    environmentName:environmentName
+    location: location
+    project: project
+    tags: tags
+    secrets: clientSecrets
+    principalId: loadtest.outputs.loadTestIdentity
+  }
+  scope: rg
+}
+
+module loadtest './modules/loadTest.bicep' = {
   name: 'loadtest-${timestamp}'
   params: {
     abbrs: abbrs
