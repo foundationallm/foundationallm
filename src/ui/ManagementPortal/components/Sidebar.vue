@@ -26,6 +26,7 @@
 			<li><NuxtLink to="/agents/create" class="sidebar__item">Create New Agent</NuxtLink></li>
 			<li><NuxtLink to="/agents/public" class="sidebar__item">All Agents</NuxtLink></li>
 			<li><NuxtLink to="/agents/private" class="sidebar__item">My Agents</NuxtLink></li>
+			<li><NuxtLink to="/prompts" class="sidebar__item">Agent Prompts</NuxtLink></li>
 		</ul>
 		<!-- <div class="sidebar__item">Performance</div> -->
 
