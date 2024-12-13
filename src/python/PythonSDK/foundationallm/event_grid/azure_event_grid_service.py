@@ -2,11 +2,13 @@ import logging
 import os
 import sys
 import time
+from typing import List
 from azure.identity import DefaultAzureCredential
 from azure.core.credentials import AzureKeyCredential
 from azure.core.exceptions import AzureError
 from azure.core.messaging import CloudEvent
 from azure.eventgrid import EventGridPublisherClient, EventGridConsumerClient
+from foundationallm.event_grid.models import AzureEventGridEventServiceProfile
 
 logger = logging.getLogger('azure.identity')
 logger.setLevel(logging.INFO)
@@ -18,14 +20,10 @@ logger.addHandler(handler)
 
 class AzureEventGridService:
     """Provides services to integrate with the Azure Event Grid eventing platform."""
-    def __init__(self, endpoint=None, topic_name=None, subscription_name=None):
+
+    def __init__(self, endpoint: str, topic_name: str, subscription_name: str, profile: AzureEventGridEventServiceProfile = None):
         #credential = DefaultAzureCredential()
         credential = AzureKeyCredential(os.environ["EVENTGRID_KEY"])
-
-        # debug defaults
-        endpoint = os.environ["EVENTGRID_ENDPOINT"]
-        topic_name = "python-test"
-        subscription_name = "python-test"
 
         # send a CloudEvent
         publisher_client = EventGridPublisherClient(endpoint, credential, namespace_topic=topic_name)
@@ -36,21 +34,24 @@ class AzureEventGridService:
             subject="PythonTest",
             specversion="1.0"
         )
-
         publisher_client.send(event)
 
+        self.profile = profile
         self.consumer_client = EventGridConsumerClient(endpoint, credential, namespace_topic=topic_name, subscription=subscription_name)
 
     async def start_async(self):
         """Starts the event service, allowing it to initialize."""
+
         raise NotImplementedError
 
     async def stop_async(self):
         """Stops the event service, allowing it to cleanup."""
+
         raise NotImplementedError
 
     def execute(self):
         """Executes the event service in a loop."""
+
         if self.consumer_client:
             while True:
                 try:
@@ -79,16 +80,19 @@ class AzureEventGridService:
 
     def subscribe_to_event(self):
         """Adds an event set event delgate to the list of event handlers for a specified event set namespace."""
+
         raise NotImplementedError
 
     def unsubscribe_from_event(self):
         """Removes an event set event delegate from the list of event handlers for a specified event set namespace."""
+
         raise NotImplementedError
 
     def process_event(self, event: CloudEvent):
+        """Process a single CloundEvent"""
+
         try:
             # add logic to handle the event
-
             if event.type == "finished.loading":
                 print("Detected 'finished.loading' event. Triggering reload_data on the agent tool.")
                 test_agent_tool = TestAgentTool()
@@ -99,12 +103,18 @@ class AzureEventGridService:
             print("Failed to process event: %s", str(e))
 
 class TestAgentTool:
+    """Test helper - to be replaced"""
+
     def reload_data(self):
-        print("Reloading data triggered by finished.loading event.")
         # replace with actual tool data cache refresh
+        print("Reloading data triggered by finished.loading event.")
         pass
 
 # Uncomment this lines to execute this file as a script
-# if __name__ == "__main__":
-#     azure_event_grid_service = AzureEventGridService()
-#     azure_event_grid_service.execute()
+if __name__ == "__main__":
+    azure_event_grid_service = AzureEventGridService(
+        endpoint=os.environ["EVENTGRID_ENDPOINT"],
+        topic_name="python-test",
+        subscription_name="python-test",
+        profile=None)
+    azure_event_grid_service.execute()

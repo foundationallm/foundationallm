@@ -25,9 +25,13 @@
     <Compile Include="foundationallm\config\context.py" />
     <Compile Include="foundationallm\config\environment_variables.py" />
     <Compile Include="foundationallm\config\user_identity.py" />
-    <Compile Include="foundationallm\event_grid\azure_event_grid_event_service_profile.py" />
+    <Compile Include="foundationallm\event_grid\models\azure_event_grid_event_service_profile.py" />
     <Compile Include="foundationallm\event_grid\azure_event_grid_service.py" />
-    <Compile Include="foundationallm\event_grid\event_set_event_args.py" />
+    <Compile Include="foundationallm\event_grid\models\event_grid_event_set.py" />
+    <Compile Include="foundationallm\event_grid\models\event_grid_event_type_profile.py" />
+    <Compile Include="foundationallm\event_grid\models\event_grid_topic_profile.py" />
+    <Compile Include="foundationallm\event_grid\models\event_set_event_args.py" />
+    <Compile Include="foundationallm\event_grid\models\__init__.py" />
     <Compile Include="foundationallm\event_grid\__init__.py" />
     <Compile Include="foundationallm\event_handlers\__init__.py" />
     <Compile Include="foundationallm\exceptions\foundationallm_exception.py" />
@@ -182,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="foundationallm\" />
+    <Folder Include="foundationallm\event_grid\models\" />
     <Folder Include="foundationallm\exceptions\" />
     <Folder Include="foundationallm\langchain\" />
     <Folder Include="foundationallm\langchain\agents\" />
