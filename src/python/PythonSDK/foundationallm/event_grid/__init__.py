@@ -1,1 +1,3 @@
 from .azure_event_grid_service import AzureEventGridService
+from .azure_event_grid_event_service_profile import AzureEventGridEventServiceProfile, EventGridTopicProfile, EventGridEventTypeProfile, EventGridEventSet
+from .event_set_event_args import EventSetEventArgs

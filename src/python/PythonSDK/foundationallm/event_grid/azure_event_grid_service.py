@@ -17,6 +17,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 class AzureEventGridService:
+    """Provides services to integrate with the Azure Event Grid eventing platform."""
     def __init__(self, endpoint=None, topic_name=None, subscription_name=None):
         #credential = DefaultAzureCredential()
         credential = AzureKeyCredential(os.environ["EVENTGRID_KEY"])
@@ -41,12 +42,15 @@ class AzureEventGridService:
         self.consumer_client = EventGridConsumerClient(endpoint, credential, namespace_topic=topic_name, subscription=subscription_name)
 
     async def start_async(self):
+        """Starts the event service, allowing it to initialize."""
         raise NotImplementedError
 
     async def stop_async(self):
+        """Stops the event service, allowing it to cleanup."""
         raise NotImplementedError
 
     def execute(self):
+        """Executes the event service in a loop."""
         if self.consumer_client:
             while True:
                 try:
@@ -74,9 +78,11 @@ class AzureEventGridService:
         raise ValueError("The Azure Event Grid events service is not properly initialized and will not execute.")
 
     def subscribe_to_event(self):
+        """Adds an event set event delgate to the list of event handlers for a specified event set namespace."""
         raise NotImplementedError
 
     def unsubscribe_from_event(self):
+        """Removes an event set event delegate from the list of event handlers for a specified event set namespace."""
         raise NotImplementedError
 
     def process_event(self, event: CloudEvent):
