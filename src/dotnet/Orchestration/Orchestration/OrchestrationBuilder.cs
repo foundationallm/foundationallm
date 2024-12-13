@@ -423,6 +423,14 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             }
 
                             break;
+                        case PromptResourceTypeNames.Prompts:
+                            var prompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
+                                resourceObjectId.ObjectId,
+                                currentUserIdentity);
+                            explodedObjectsManager.TryAdd(
+                                resourceObjectId.ObjectId,
+                                prompt);
+                            break;
 
                         default:
                             throw new OrchestrationException($"Unknown resource type '{resourcePath.MainResourceTypeName}'.");
