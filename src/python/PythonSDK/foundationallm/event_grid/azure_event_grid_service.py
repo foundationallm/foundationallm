@@ -1,30 +1,41 @@
+import logging
+import os
+import sys
 import time
-import uuid
 from azure.identity import DefaultAzureCredential
+from azure.core.credentials import AzureKeyCredential
 from azure.core.exceptions import AzureError
 from azure.core.messaging import CloudEvent
 from azure.eventgrid import EventGridPublisherClient, EventGridConsumerClient
-from azure.eventgrid.models import EventGridEvent
+
+logger = logging.getLogger('azure.identity')
+logger.setLevel(logging.INFO)
+
+handler = logging.StreamHandler(stream=sys.stdout)
+formatter = logging.Formatter('[%(levelname)s %(name)s] %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 class AzureEventGridService:
     def __init__(self, endpoint=None, topic_name=None, subscription_name=None):
-        credential = DefaultAzureCredential()
+        #credential = DefaultAzureCredential()
+        credential = AzureKeyCredential(os.environ["EVENTGRID_KEY"])
 
         # debug defaults
-        endpoint = "evgd-ftpisrjz2rvjc.eastus2-1.eventgrid.azure.net"
+        endpoint = os.environ["EVENTGRID_ENDPOINT"]
         topic_name = "python-test"
         subscription_name = "python-test"
 
         # send a CloudEvent
-        publisher_client = EventGridPublisherClient(endpoint, credential)
+        publisher_client = EventGridPublisherClient(endpoint, credential, namespace_topic=topic_name)
         event = CloudEvent(
             type="finished.loading",
             source="/python/test",
-            data={"todo": "acknowledge"},
+            data={"test": "python"},
             subject="PythonTest",
-            specversion="1.0",
-            id=uuid.uuid4()
+            specversion="1.0"
         )
+
         publisher_client.send(event)
 
         self.consumer_client = EventGridConsumerClient(endpoint, credential, namespace_topic=topic_name, subscription=subscription_name)
@@ -38,48 +49,29 @@ class AzureEventGridService:
     def execute(self):
         if self.consumer_client:
             while True:
-                received_details = self.consumer_client.receive(max_wait_time=10)
+                try:
+                    received_details = self.consumer_client.receive(max_wait_time=10)
 
-                release_events = []
-                acknowledge_events = []
-                reject_events = []
+                    acknowledge_events = []
 
-                for detail in received_details:
-                    data = detail.event.data
-                    broker_properties = detail.broker_properties
-                    if data["todo"] == "release":
-                        release_events.append(broker_properties.lock_token)
-                    elif data["todo"] == "acknowledge":
-                        acknowledge_events.append(broker_properties.lock_token)
-                    else:
-                        reject_events.append(broker_properties.lock_token)
+                    for detail in received_details:
+                        acknowledge_events.append(detail.broker_properties.lock_token)
+                        self.process_event(detail.event)
 
-                    self.process_event(detail.event)
+                    # Acknowledge
+                    ack_result = self.consumer_client.acknowledge(
+                        lock_tokens=acknowledge_events,
+                    )
 
-                    # Renew
-                    # renew_tokens = broker_properties.lock_token
-                    # self.renew_result = self.consumer_client.renew_locks(
-                    #     lock_tokens=renew_tokens,
-                    # )
+                    for ack_failure in ack_result.failed_lock_tokens:
+                        print("Failed to acknowledge Event Grid message. Lock token: %s. Error code: %s. Error description: %s.",
+                              str(ack_failure.lock_token), str(ack_failure.error), str(ack_failure))
 
-                # Release
-                # self.release_result = self.consumer_client.release(
-                #     lock_tokens=release_events,
-                # )
+                    time.sleep(60) # seconds
+                except AzureError as e:
+                    print("An error occured while trying to receive events: %s", str(e))
 
-                # Acknowledge
-                self.ack_result = self.consumer_client.acknowledge(
-                    lock_tokens=acknowledge_events,
-                )
-
-                # Reject
-                # self.reject_result = self.consumer_client.reject(
-                #     lock_tokens=reject_events,
-                # )
-
-                time.sleep(60) # seconds
-
-        raise ValueError("Client is not initialized")
+        raise ValueError("The Azure Event Grid events service is not properly initialized and will not execute.")
 
     def subscribe_to_event(self):
         raise NotImplementedError
@@ -87,7 +79,7 @@ class AzureEventGridService:
     def unsubscribe_from_event(self):
         raise NotImplementedError
 
-    def process_event(event: CloudEvent):
+    def process_event(self, event: CloudEvent):
         try:
             # add logic to handle the event
 
@@ -96,7 +88,7 @@ class AzureEventGridService:
                 test_agent_tool = TestAgentTool()
                 test_agent_tool.reload_data()
 
-            print(f"Event ID: {event.id}, Type: {event.type}, Source: {event.source}")
+            print(f"Event ID: {event.id}, Type: {event.type}, Source: {event.source}, Data: {event.data}")
         except AzureError as e:
             print("Failed to process event: %s", str(e))
 
@@ -105,3 +97,8 @@ class TestAgentTool:
         print("Reloading data triggered by finished.loading event.")
         # replace with actual tool data cache refresh
         pass
+
+# Uncomment this lines to execute this file as a script
+# if __name__ == "__main__":
+#     azure_event_grid_service = AzureEventGridService()
+#     azure_event_grid_service.execute()
