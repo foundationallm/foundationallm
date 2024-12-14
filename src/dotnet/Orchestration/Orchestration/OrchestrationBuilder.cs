@@ -15,6 +15,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
+using FoundationaLLM.Common.Services.TokenReplacement;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -256,6 +257,17 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 var retrievedPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
                                            resourceObjectId.ObjectId,
                                            currentUserIdentity);
+
+                                if (retrievedPrompt is MultipartPrompt multipartPrompt)
+                                {
+                                    //check for token replacements, multipartPrompt variable has the same reference as retrievedPrompt therefore this edits the prefix/suffix in place
+                                    if (multipartPrompt is not null)
+                                    {
+                                        
+                                        multipartPrompt.Prefix = TokenReplacementEngine.ReplaceTokens(multipartPrompt.Prefix!);
+                                        multipartPrompt.Suffix = TokenReplacementEngine.ReplaceTokens(multipartPrompt.Suffix!);
+                                    }
+                                }
                                 explodedObjectsManager.TryAdd(
                                     retrievedPrompt.ObjectId!,
                                     retrievedPrompt);
