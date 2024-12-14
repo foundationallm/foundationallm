@@ -21,6 +21,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Prompt
         public string? Suffix { get; set; }
 
         /// <summary>
+        /// Optional string token replacements for the prompt.
+        /// </summary>
+        [JsonPropertyName("token_replacements")]
+        public TokenReplacementDefinition[] TokenReplacements { get; set; } = [];
+
+        /// <summary>
         /// Set default property values.
         /// </summary>
         public MultipartPrompt() =>

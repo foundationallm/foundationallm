@@ -16,6 +16,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Orchestration.Core.Interfaces;
+using FoundationaLLM.Orchestration.Core.Services.TokenReplacement;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -204,7 +205,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             var agentWorkflow = agentBase.Workflow;
             AIModelBase? mainAIModel = null;
             APIEndpointConfiguration? mainAIModelAPIEndpointConfiguration = null;
-                      
+                        
             if (agentWorkflow is not null)
             {
                 foreach (var resourceObjectId in agentWorkflow.ResourceObjectIds.Values)
@@ -256,6 +257,18 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 var retrievedPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
                                            resourceObjectId.ObjectId,
                                            currentUserIdentity);
+
+                                if(retrievedPrompt is MultipartPrompt multipartPrompt)
+                                {
+                                    //check for token replacements, multipartPrompt variable has the same reference as retrievedPrompt therefore this edits the prefix/suffix in place
+                                    if (multipartPrompt is not null && multipartPrompt.TokenReplacements != null && multipartPrompt.TokenReplacements.Length > 0)
+                                    {
+                                        var tokenReplacementEngine = new TokenReplacementEngine(multipartPrompt.TokenReplacements.ToList());
+                                        multipartPrompt.Prefix = await tokenReplacementEngine.ReplaceTokensAsync(multipartPrompt.Prefix!);
+                                        multipartPrompt.Suffix = await tokenReplacementEngine.ReplaceTokensAsync(multipartPrompt.Suffix!);
+                                    }
+                                }
+                                
                                 explodedObjectsManager.TryAdd(
                                     retrievedPrompt.ObjectId!,
                                     retrievedPrompt);
