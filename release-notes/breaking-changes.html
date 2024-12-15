@@ -77,6 +77,29 @@
 <h5>Note</h5>
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
+<h2 id="starting-with-091">Starting with 0.9.1</h2>
+<p>Prompt prefixes and suffixes support FoundationaLLM variables for dynamic replacement at runtime. The variable format is <code>{{foundationallm:variable_name[:format]}}</code> where</p>
+<ul>
+<li><code>variable_name</code> is the name of the well-known variable.</li>
+<li><code>format</code> is the optional formatting applied to the value of the variable.</li>
+</ul>
+<p>The following variables are supported:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>current_datetime_utc</code></td>
+<td>The current UTC date and time.</td>
+<td><code>The current date is {{foundationallm:current_datetime_utc:dddd, MMMM dd, yyyy}}. This looks great.</code> -&gt; <code>The current date is Sunday, December 15, 2024. This looks great.</code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="starting-with-090">Starting with 0.9.0</h2>
 <h3 id="configuration-changes">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
