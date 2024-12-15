@@ -78,7 +78,7 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
 
             endpoint = index_config.api_endpoint_configuration.url
 
-            if self.use_top_n_override:
+            if self.top_n_override:
                 top_n = self.top_n_override
             else:
                 top_n = int(index_config.indexing_profile.settings.top_n)
