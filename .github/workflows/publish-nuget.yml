@@ -1,10 +1,11 @@
-name: Publish NuGet Packages
+name: Publish NuGet & PyPi Packages
 
 on:
   workflow_dispatch:
 
 env:
   DOTNET_VERSION: '8.0.x'
+  PYTHON_VERSION: '3.11.x'
 
 jobs:
   build-and-publish:
@@ -27,10 +28,16 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
     - name: Run versioning script
       run: bash ./versioning.sh
       id: versioning
 
+    # .NET Build and Pack Steps
     - name: Build Common
       working-directory: ./src/dotnet/Common
       run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
@@ -63,6 +70,7 @@ jobs:
       working-directory: ./src/dotnet/ManagementClient
       run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
+    # .NET Publish Steps
     - name: Publish Common to NuGet
       working-directory: ./src/dotnet/Common
       run: dotnet nuget push ./nupkg/*.Common.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
@@ -78,3 +86,19 @@ jobs:
     - name: Publish ManagementClient to NuGet
       working-directory: ./src/dotnet/ManagementClient
       run: dotnet nuget push ./nupkg/*.Client.Management.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+
+    # Python Build and Publish Steps
+    - name: Build Python Package
+      run: |
+        cd ./src/python/PythonSDK
+        python -m pip install --upgrade build
+        python -m build
+
+    - name: Publish Python Package to PyPI
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_KEY }}
+      run: |
+        cd ./src/python/PythonSDK
+        python -m pip install --upgrade twine
+        python -m twine upload --repository-url https://upload.pypi.org/legacy/ *.tar.gz *.whl
