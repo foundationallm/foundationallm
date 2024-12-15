@@ -25,6 +25,7 @@ public class OrchestrationService : IOrchestrationService
 {
     private readonly ILLMOrchestrationServiceManager _llmOrchestrationServiceManager;
     private readonly IAzureCosmosDBService _cosmosDBService;
+    private readonly ITemplatingService _templatingService;
     private readonly ICallContext _callContext;
     private readonly IConfiguration _configuration;
     private readonly ILogger<OrchestrationService> _logger;
@@ -39,6 +40,7 @@ public class OrchestrationService : IOrchestrationService
     /// <param name="resourceProviderServices">A list of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
     /// <param name="llmOrchestrationServiceManager">The <see cref="ILLMOrchestrationServiceManager"/> managing the internal and external LLM orchestration services.</param>
     /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> used to interact with the Cosmos DB database.</param>
+    /// <param name="templatingService">The <see cref="ITemplatingService"/> used to render templates.</param>
     /// <param name="callContext">The call context of the request being handled.</param>
     /// <param name="configuration">The <see cref="IConfiguration"/> used to retrieve app settings from configuration.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> provding dependency injection services for the current scope.</param>
@@ -47,6 +49,7 @@ public class OrchestrationService : IOrchestrationService
         IEnumerable<IResourceProviderService> resourceProviderServices,
         ILLMOrchestrationServiceManager llmOrchestrationServiceManager,
         IAzureCosmosDBService cosmosDBService,
+        ITemplatingService templatingService,
         ICallContext callContext,
         IConfiguration configuration,
         IServiceProvider serviceProvider,
@@ -56,6 +59,7 @@ public class OrchestrationService : IOrchestrationService
                 rps => rps.Name);
         _llmOrchestrationServiceManager = llmOrchestrationServiceManager;
         _cosmosDBService = cosmosDBService;
+        _templatingService = templatingService;
 
         _callContext = callContext;
         _configuration = configuration;
@@ -100,6 +104,7 @@ public class OrchestrationService : IOrchestrationService
                 _resourceProviderServices,
                 _llmOrchestrationServiceManager,
                 _cosmosDBService,
+                _templatingService,
                 _serviceProvider,
                 _loggerFactory)
                 ?? throw new OrchestrationException($"The orchestration builder was not able to create an orchestration for agent [{completionRequest.AgentName ?? string.Empty}].");
@@ -139,6 +144,7 @@ public class OrchestrationService : IOrchestrationService
                 _resourceProviderServices,
                 _llmOrchestrationServiceManager,
                 _cosmosDBService,
+                _templatingService,
                 _serviceProvider,
                 _loggerFactory)
                 ?? throw new OrchestrationException($"The orchestration builder was not able to create an orchestration for agent [{completionRequest.AgentName ?? string.Empty}].");
@@ -225,6 +231,7 @@ public class OrchestrationService : IOrchestrationService
                 _resourceProviderServices,
                 _llmOrchestrationServiceManager,
                 _cosmosDBService,
+                _templatingService,
                 _serviceProvider,
                 _loggerFactory);
 
