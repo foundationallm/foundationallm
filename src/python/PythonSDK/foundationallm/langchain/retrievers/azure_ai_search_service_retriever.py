@@ -116,9 +116,9 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
                         page_content=result[index_config.indexing_profile.settings.text_field_name],
                         metadata=metadata,
                         score=result["@search.score"],
-                        rerank_score=result.get("@search.rerankScore", 0.0)
+                        rerank_score=result.get("@search.rerankerScore", 0.0)
                 )
-                if('@search.rerankScore' in result):                    
+                if('@search.rerankerScore' in result):                    
                     rerank_available = True
                     
                 document.score = result["@search.score"]
