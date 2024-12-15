@@ -3,6 +3,7 @@ Main entry-point for the FoundationaLLM LangChainAPI.
 Runs web server exposing the API.
 """
 from fastapi import FastAPI
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from app.dependencies import API_NAME, get_config
 from app.routers import (
     manage,
@@ -41,6 +42,8 @@ app = FastAPI(
     config=config,
     plugin_manager=plugin_manager
 )
+
+FastAPIInstrumentor.instrument_app(app)
 
 app.include_router(manage.router)
 app.include_router(completions.router)
