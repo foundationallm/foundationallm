@@ -724,7 +724,7 @@
 					class="ml-2"
 					severity="primary"
 					:label="showWorkflowConfiguration ? 'Hide Workflow Configuration' : 'Configure Workflow'"
-					:disabled="!selectedWorkflow"
+					:disabled="!selectedWorkflow?.object_id"
 					@click="showWorkflowConfiguration = !showWorkflowConfiguration"
 				/>
 			</div>
@@ -1076,15 +1076,20 @@ export default {
 
 	watch: {
 		selectedWorkflow() {
-			this.workflowMainAIModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
-				(resource) => resource.properties?.object_role === 'main_model',
-			);
+			if (this.selectedWorkflow?.resource_object_ids) {
+				const existingMainModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
+					(resource) => resource.properties?.object_role === 'main_model',
+				);
+				this.workflowMainAIModel = existingMainModel ?? null;
+			} else {
+				this.workflowMainAIModel = null;
+			}
 		},
 
 		workflowMainAIModel() {
-			this.workflowMainAIModelParameters =
-				this.workflowMainAIModel?.model_parameters ??
-				this.workflowMainAIModel?.properties?.model_parameters;
+			const mainModel = this.workflowMainAIModel;
+			const existingMainModelParamters = mainModel?.model_parameters ?? mainModel?.properties?.model_parameters;
+			this.workflowMainAIModelParameters = existingMainModelParamters ?? {};
 		},
 	},
 
@@ -1124,7 +1129,17 @@ export default {
 			this.aiModelOptions = this.aiModelOptions.filter((model) => model.type === 'completion');
 
 			this.loadingStatusText = 'Retrieving workflows...';
-			this.workflowOptions = await api.getAgentWorkflows();
+			this.workflowOptions = [
+				{
+					type: 'None',
+					object_id: null,
+				},
+				{
+					type: 'custom-workflow',
+					object_id: 'custom',
+				},
+				...(await api.getAgentWorkflows()),
+			];
 
 			// Update the orchestratorOptions with the externalOrchestratorOptions.
 			this.orchestratorOptions = this.orchestratorOptions.concat(
@@ -1380,6 +1395,10 @@ export default {
 				errors.push('Please select an AI model for the orchestrator.');
 			}
 
+			if (this.selectedWorkflow && !this.workflowMainAIModel) {
+				errors.push('Please select an AI model for the workflow.');
+			}
+
 			// if (!this.selectedDataSource) {
 			// 	errors.push('Please select a data source.');
 			// }
@@ -1479,8 +1498,9 @@ export default {
 				if (this.selectedWorkflow) {
 					workflow = {
 						...this.selectedWorkflow,
-
+						object_id: undefined,
 						workflow_host: this.orchestration_settings.orchestrator,
+						// workflow_name: '',
 
 						resource_object_ids: {
 							...this.selectedWorkflow.resource_object_ids,
