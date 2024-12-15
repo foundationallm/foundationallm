@@ -604,22 +604,6 @@
 					</template>
 				</CreateAgentStepItem>
 
-				<!-- Orchestrator -->
-				<div id="aria-orchestrator" class="step-header span-2">
-					How should the agent communicate with the AI model?
-				</div>
-				<div class="span-2">
-					<Dropdown
-						v-model="orchestration_settings.orchestrator"
-						:options="orchestratorOptions"
-						option-label="label"
-						option-value="value"
-						class="dropdown--agent"
-						placeholder="--Select--"
-						aria-labelledby="aria-orchestrator"
-					/>
-				</div>
-
 				<div class="step-header">Which AI model should the orchestrator use?</div>
 				<div class="step-header">Which capabilities should the agent have?</div>
 
@@ -778,6 +762,24 @@
 						aria-labelledby="aria-persona"
 					/>
 				</div> -->
+
+				<!-- Orchestrator -->
+				<div class="mb-6">
+					<div id="aria-orchestrator" class="step-header mb-3">
+						How should the agent communicate with the model?
+					</div>
+					<div class="span-2">
+						<Dropdown
+							v-model="orchestration_settings.orchestrator"
+							:options="orchestratorOptions"
+							option-label="label"
+							option-value="value"
+							class="dropdown--agent"
+							placeholder="--Select--"
+							aria-labelledby="aria-orchestrator"
+						/>
+					</div>
+				</div>
 
 				<!-- Workflow main model parameters -->
 				<div class="step-header mb-3">Workflow main model parameters:</div>
@@ -1491,6 +1493,8 @@ export default {
 				if (this.selectedWorkflow) {
 					workflow = {
 						...this.selectedWorkflow,
+
+						workflow_host: this.orchestration_settings.orchestrator,
 
 						resource_object_ids: {
 							...this.selectedWorkflow.resource_object_ids,
