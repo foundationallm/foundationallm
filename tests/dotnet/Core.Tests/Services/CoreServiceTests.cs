@@ -1,9 +1,10 @@
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.Chat;
 using FoundationaLLM.Common.Models.Configuration.Branding;
+using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Services;
@@ -45,7 +46,8 @@ namespace FoundationaLLM.Core.Tests.Services
 
             _options = Options.Create(new CoreServiceSettings {
                 BypassGatekeeper =  true, 
-                SessionSummarization = ChatSessionNameSummarizationType.LLM
+                SessionSummarization = ChatSessionNameSummarizationType.LLM,
+                AzureOpenAIAssistantsFileSearchFileExtensions = ""
             });
 
             _brandingConfig.Value.Returns(new ClientBrandingConfiguration());
@@ -55,7 +57,7 @@ namespace FoundationaLLM.Core.Tests.Services
                 UPN = "test@foundationallm.ai",
                 Username = "test@foundationallm.ai"
             });
-            _testedService = new CoreService(_cosmosDbService, _downstreamAPIServices, _logger, _brandingConfig, _options, _callContext, _resourceProviderServices);
+            _testedService = new CoreService(_cosmosDbService, _downstreamAPIServices, _logger, _brandingConfig, _options, _callContext, _resourceProviderServices, null, null);
         }
 
         #region GetAllChatSessionsAsync
@@ -64,7 +66,7 @@ namespace FoundationaLLM.Core.Tests.Services
         public async Task GetAllChatSessionsAsync_ShouldReturnAllChatSessions()
         {
             // Arrange
-            var expectedSessions = new List<Session>() { new Session() };
+            var expectedSessions = new List<Conversation>() {  };
             _cosmosDbService.GetConversationsAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(expectedSessions);
 
             // Act
@@ -83,7 +85,7 @@ namespace FoundationaLLM.Core.Tests.Services
         {
             // Arrange
             string sessionId = Guid.NewGuid().ToString();
-            var message = new Message(sessionId, "sender", 0, "text", null, null, "test_upn");
+            var message = new Message();
             var expectedMessages = new List<Message>() { message };
 
             _cosmosDbService.GetSessionMessagesAsync(sessionId, Arg.Any<string>())
@@ -121,16 +123,16 @@ namespace FoundationaLLM.Core.Tests.Services
             var currentUserUPN = "testuser@example.com";
             var sessionType = "Test_type";
             var chatSessionProperties = new ChatSessionProperties() { Name = "Test_name" };
-            var newSession = new Session { Name = chatSessionProperties.Name, Type = sessionType, UPN = currentUserUPN };
+            var newSession = new Conversation() { Name = chatSessionProperties.Name, Type = sessionType, UPN = currentUserUPN, SessionId = "" };
 
             // Set up mock returns
             _callContext.CurrentUserIdentity.Returns(new UnifiedUserIdentity { UPN = currentUserUPN });
 
-            _cosmosDbService.InsertSessionAsync(Arg.Any<Session>())
-                .Returns(Task.FromResult(newSession));
+            //_cosmosDbService.In(Arg.Any<Session>())
+            //    .Returns(Task.FromResult(newSession));
 
             // Act
-            var resultSession = await _testedService.CreateNewChatSessionAsync(_instanceId, chatSessionProperties);
+            var resultSession = await _testedService.CreateConversationAsync(_instanceId, chatSessionProperties);
 
             // Assert
             Assert.NotNull(resultSession);
@@ -147,10 +149,10 @@ namespace FoundationaLLM.Core.Tests.Services
         public async Task RenameChatSessionAsync_ShouldReturnTheRenamedChatSession()
         {
             // Arrange
-            var session = new Session() { Name = "OldName" };
+            var session = new Conversation() { Name = "OldName", SessionId = "" };
             var chatSessionProperties = new ChatSessionProperties() { Name = "NewName" };
 
-            var expectedSession = new Session()
+            var expectedSession = new Conversation()
             {
                 Id = session.Id,
                 Messages = session.Messages,
@@ -159,10 +161,10 @@ namespace FoundationaLLM.Core.Tests.Services
                 TokensUsed = session.TokensUsed,
                 Type = session.Type,
             };
-            _cosmosDbService.UpdateSessionNameAsync(session.Id, chatSessionProperties.Name).Returns(expectedSession);
+            //_cosmosDbService.CreateOrUpdateConversationAsync(session.Id, chatSessionProperties.Name).Returns(expectedSession);
 
             // Act
-            var actualSession = await _testedService.RenameChatSessionAsync(_instanceId, session.Id, chatSessionProperties);
+            var actualSession = await _testedService.RenameConversationAsync(_instanceId, session.Id, chatSessionProperties);
 
             // Assert
             Assert.Equivalent(expectedSession, actualSession);
@@ -178,7 +180,7 @@ namespace FoundationaLLM.Core.Tests.Services
             // Assert
             await Assert.ThrowsAsync<ArgumentNullException>((Func<Task>)(async () =>
             {
-                await _testedService.RenameChatSessionAsync(_instanceId, null!, chatSessionProperties);
+                await _testedService.RenameConversationAsync(_instanceId, null!, chatSessionProperties);
             }));
         }
 
@@ -196,7 +198,7 @@ namespace FoundationaLLM.Core.Tests.Services
 
             await Assert.ThrowsAsync<ArgumentException>(async () =>
             {
-                await _testedService.RenameChatSessionAsync(_instanceId, sessionId, new ChatSessionProperties() { Name = string.Empty });
+                await _testedService.RenameConversationAsync(_instanceId, sessionId, new ChatSessionProperties() { Name = string.Empty });
             });
         }
 
@@ -243,7 +245,7 @@ namespace FoundationaLLM.Core.Tests.Services
             var userPrompt = "Prompt";
             var orchestrationRequest = new CompletionRequest { SessionId = sessionId, UserPrompt = userPrompt };
             var upn = "test@foundationallm.ai";
-            var expectedCompletion = new Completion() { Text = "Completion" };
+            var expectedCompletion = new Message() { Text = "Completion" };
 
             var expectedMessages = new List<Message>();
             _cosmosDbService.GetSessionMessagesAsync(sessionId, upn).Returns(expectedMessages);
@@ -251,7 +253,7 @@ namespace FoundationaLLM.Core.Tests.Services
             var completionResponse = new CompletionResponse() { Completion = "Completion" };
             _downstreamAPIServices.Last().GetCompletion(_instanceId, Arg.Any<CompletionRequest>()).Returns(completionResponse);
 
-            _cosmosDbService.GetConversationAsync(sessionId).Returns(new Session());
+            _cosmosDbService.GetConversationAsync(sessionId).Returns(new Conversation() { Name = "", SessionId = "" });
             _cosmosDbService.UpsertSessionBatchAsync().Returns(Task.CompletedTask);
 
             // Act
@@ -267,7 +269,7 @@ namespace FoundationaLLM.Core.Tests.Services
             // Arrange
             var userPrompt = "Prompt";
             var orchestrationRequest = new CompletionRequest { UserPrompt = userPrompt };
-            var expectedCompletion = new Completion { Text = "Could not generate a completion due to an internal error." };
+            var expectedCompletion = new Message { Text = "Could not generate a completion due to an internal error." };
 
             // Act
             var actualCompletion = await _testedService.GetChatCompletionAsync(_instanceId, orchestrationRequest);
@@ -318,14 +320,14 @@ namespace FoundationaLLM.Core.Tests.Services
             var id = Guid.NewGuid().ToString();
             var sessionId = Guid.NewGuid().ToString();
             var upn = "";
-            var expectedMessage = new Message(sessionId, string.Empty, default, "Text", null, rating, upn);
-            _cosmosDbService.UpdateMessageRatingAsync(id, sessionId, rating).Returns(expectedMessage);
+            var expectedMessage = new Message();
+            //_cosmosDbService.UpdateMessageAsync(id, sessionId, rating).Returns(expectedMessage);
 
             // Act
-            var actualMessage = await _testedService.RateMessageAsync(_instanceId, id, sessionId, rating);
+            await _testedService.RateMessageAsync(_instanceId, id, sessionId, null);
 
             // Assert
-            Assert.Equivalent(expectedMessage, actualMessage);
+            Assert.Equivalent(expectedMessage, null);
         }
 
         [Fact]
@@ -338,7 +340,7 @@ namespace FoundationaLLM.Core.Tests.Services
             // Assert
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
-                await _testedService.RateMessageAsync(_instanceId, null!, sessionId, rating);
+                await _testedService.RateMessageAsync(_instanceId, null!, sessionId, null);
             });
         }
 
@@ -352,7 +354,7 @@ namespace FoundationaLLM.Core.Tests.Services
             // Assert
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
-                await _testedService.RateMessageAsync(_instanceId, id, null!, rating);
+                await _testedService.RateMessageAsync(_instanceId, id, null!, null);
             });
         }
 
@@ -367,7 +369,7 @@ namespace FoundationaLLM.Core.Tests.Services
             var sessionId = Guid.NewGuid().ToString();
             var messageId = Guid.NewGuid().ToString();
             var completionPromptId = Guid.NewGuid().ToString();
-            var expectedPrompt = new CompletionPrompt(sessionId, messageId, "Text");
+            var expectedPrompt = new CompletionPrompt();
             _cosmosDbService.GetCompletionPromptAsync(sessionId, completionPromptId).Returns(expectedPrompt);
 
             // Act

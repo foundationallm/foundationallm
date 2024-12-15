@@ -117,6 +117,9 @@ namespace FoundationaLLM.Orchestration.API
             builder.AddGroupMembership();
             builder.AddAuthorizationServiceClient();
 
+            // Add the templating engine.
+            builder.AddRegexTemplatingEngine();
+
             //----------------------------
             // Resource providers
             //----------------------------
