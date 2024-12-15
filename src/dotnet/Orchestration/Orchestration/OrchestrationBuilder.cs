@@ -15,7 +15,6 @@ using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
-using FoundationaLLM.Common.Services.TokenReplacement;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,6 +40,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
         /// <param name="llmOrchestrationServiceManager">The <see cref="ILLMOrchestrationServiceManager"/> that manages internal and external orchestration services.</param>
         /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> used to interact with the Cosmos DB database.</param>
+        /// <param name="templatingService">The <see cref="ITemplatingService"/> used to render templates.</param>
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/> provding dependency injection services for the current scope.</param>
         /// <param name="loggerFactory">The logger factory used to create new loggers.</param>
         /// <returns></returns>
@@ -54,6 +54,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             Dictionary<string, IResourceProviderService> resourceProviderServices,
             ILLMOrchestrationServiceManager llmOrchestrationServiceManager,
             IAzureCosmosDBService cosmosDBService,
+            ITemplatingService templatingService,
             IServiceProvider serviceProvider,
             ILoggerFactory loggerFactory)
         {
@@ -65,6 +66,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 originalRequest.SessionId,
                 originalRequest.Settings?.ModelParameters,
                 resourceProviderServices,
+                templatingService,
                 callContext.CurrentUserIdentity!,
                 logger);
 
@@ -177,6 +179,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             string? sessionId,
             Dictionary<string, object>? modelParameterOverrides,
             Dictionary<string, IResourceProviderService> resourceProviderServices,
+            ITemplatingService templatingService,
             UnifiedUserIdentity currentUserIdentity,
             ILogger<OrchestrationBuilder> logger)
         {
@@ -264,8 +267,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                     if (multipartPrompt is not null)
                                     {
                                         
-                                        multipartPrompt.Prefix = TokenReplacementEngine.ReplaceTokens(multipartPrompt.Prefix!);
-                                        multipartPrompt.Suffix = TokenReplacementEngine.ReplaceTokens(multipartPrompt.Suffix!);
+                                        multipartPrompt.Prefix = templatingService.Transform(multipartPrompt.Prefix!);
+                                        multipartPrompt.Suffix = templatingService.Transform(multipartPrompt.Suffix!);
                                     }
                                 }
                                 explodedObjectsManager.TryAdd(
