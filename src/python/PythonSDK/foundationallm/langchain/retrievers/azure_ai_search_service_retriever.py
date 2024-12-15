@@ -91,7 +91,7 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
                 vector_queries=[vector_query],
                 query_type=self.query_type,
                 semantic_configuration_name = self.semantic_configuration_name,
-                top=index_config.indexing_profile.settings.top_n                
+                top=top_n                
             )
 
             rerank_available = False
