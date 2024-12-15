@@ -815,7 +815,6 @@
 						<div>{{ tool.name }}</div>
 
 						<Button
-							class="ml-2"
 							severity="primary"
 							label="Configure Tool"
 							@click="selectedTool = tool"
