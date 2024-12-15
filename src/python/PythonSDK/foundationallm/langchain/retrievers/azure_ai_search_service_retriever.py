@@ -47,7 +47,10 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
     index_configurations: List[KnowledgeManagementIndexConfiguration]
     gateway_text_embedding_service: GatewayTextEmbeddingService
     search_results: Optional[VectorDocument] = [] # Tuple of document id and document
-
+    query_type: Optional[str] = "simple"
+    semantic_configuration_name: Optional[str] = None
+    top_n_override: Optional[int] = None
+    
     def __get_embeddings(self, text: str) -> List[float]:
         """
         Returns embeddings vector for a given text.
@@ -63,7 +66,7 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
         """
 
         self.search_results.clear()
-
+        
         #search each indexing profile
         for index_config in self.index_configurations:
 
@@ -75,6 +78,12 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
 
             endpoint = index_config.api_endpoint_configuration.url
 
+            if self.use_top_n_override:
+                top_n = self.top_n_override
+            else:
+                top_n = int(index_config.indexing_profile.settings.top_n)
+
+
             search_client = SearchClient(endpoint, index_config.indexing_profile.settings.index_name, credential)
             vector_query = VectorizedQuery(vector=self.__get_embeddings(query),
                                             k_nearest_neighbors=3,
@@ -84,11 +93,12 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
                 search_text=query,
                 filter=index_config.indexing_profile.settings.filters,
                 vector_queries=[vector_query],
-                #query_type="semantic",
-                #semantic_configuration_name = "fllm",
-                top=index_config.indexing_profile.settings.top_n,
-                #select=[self.id_field_name, self.text_field_name, self.metadata_field_name]
+                query_type=self.query_type,
+                semantic_configuration_name = self.semantic_configuration_name,
+                top=top_n                
             )
+
+            rerank_available = False
 
             #load search results into VectorDocument objects for score processing
             for result in results:
@@ -105,16 +115,23 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
                         id=result[index_config.indexing_profile.settings.id_field_name],
                         page_content=result[index_config.indexing_profile.settings.text_field_name],
                         metadata=metadata,
-                        score=result["@search.score"]
+                        score=result["@search.score"],
+                        rerank_score=result.get("@search.rerankScore", 0.0)
                 )
+                if('@search.rerankScore' in result):                    
+                    rerank_available = True
+                    
                 document.score = result["@search.score"]
                 self.search_results.append(document)
 
         #sort search results by score
-        self.search_results.sort(key=lambda x: x.score, reverse=True)
+        if(rerank_available):
+            self.search_results.sort(key=lambda x: (x.rerank_score, x.score), reverse=True)
+        else:
+            self.search_results.sort(key=lambda x: x.score, reverse=True)
 
-        #take top n of search_results
-        self.search_results = self.search_results[:int(index_config.indexing_profile.settings.top_n)]
+        #take top n of search_results          
+        self.search_results = self.search_results[:top_n]
 
         return self.search_results
 
