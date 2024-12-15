@@ -442,6 +442,16 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             var prompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
                                 resourceObjectId.ObjectId,
                                 currentUserIdentity);
+                            if (prompt is MultipartPrompt multipartPrompt)
+                            {
+                                // prompt template token replacement
+                                if (multipartPrompt is not null)
+                                {
+
+                                    multipartPrompt.Prefix = templatingService.Transform(multipartPrompt.Prefix!);
+                                    multipartPrompt.Suffix = templatingService.Transform(multipartPrompt.Suffix!);
+                                }
+                            }
                             explodedObjectsManager.TryAdd(
                                 resourceObjectId.ObjectId,
                                 prompt);
