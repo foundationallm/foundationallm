@@ -78,7 +78,11 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
 
             endpoint = index_config.api_endpoint_configuration.url
 
-            top_n = self.top_n_override or int(index_config.indexing_profile.settings.top_n)
+            if self.use_top_n_override:
+                top_n = self.top_n_override
+            else:
+                top_n = int(index_config.indexing_profile.settings.top_n)
+
 
             search_client = SearchClient(endpoint, index_config.indexing_profile.settings.index_name, credential)
             vector_query = VectorizedQuery(vector=self.__get_embeddings(query),
