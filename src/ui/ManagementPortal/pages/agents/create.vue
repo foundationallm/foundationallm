@@ -750,19 +750,6 @@
 					/>
 				</div>
 
-				<!-- <div class="mb-6">
-					<div class="step-header mb-3">Workflow main prompt:</div>
-					<Textarea
-						v-model="workflowMainPrompt"
-						class="w-100"
-						auto-resize
-						rows="5"
-						type="text"
-						placeholder=""
-						aria-labelledby="aria-persona"
-					/>
-				</div> -->
-
 				<!-- Orchestrator -->
 				<div class="mb-6">
 					<div id="aria-orchestrator" class="step-header mb-3">
