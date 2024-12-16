@@ -840,8 +840,27 @@
 								v-model="selectedTool"
 								:visible="!!selectedTool"
 								@update:visible="selectedTool = null"
-								@update:modelValue="handleUpdateTool($event, index)"
+								@update:modelValue="handleUpdateTool"
 							/>
+						</template>
+					</Column>
+
+					<!-- Delete tool -->
+					<Column
+						header="Delete"
+						header-style="width:6rem"
+						style="text-align: center"
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							headerContent: { style: { justifyContent: 'center' } },
+						}"
+					>
+						<template #body="{ data }">
+							<Button link @click="handleRemoveTool(data)">
+								<i class="pi pi-trash" style="font-size: 1.2rem"></i>
+							</Button>
 						</template>
 					</Column>
 				</DataTable>
@@ -1422,9 +1441,15 @@ export default {
 			this.showNewToolDialog = false;
 		},
 
-		handleUpdateNewTool(updatedTool, index) {
-			this.agentTools[index] = updatedTool
+		handleUpdateTool(updatedTool) {
+			const index = this.agentTools.findIndex((tool) => tool.object_id === updatedTool.object_id);
+			this.agentTools[index] = updatedTool;
 			this.showNewToolDialog = false;
+		},
+
+		handleRemoveTool(toolToRemove) {
+			const index = this.agentTools.findIndex((tool) => tool.object_id === toolToRemove.object_id);
+			this.agentTools.splice(index, 1);
 		},
 
 		async handleCreateAgent() {
