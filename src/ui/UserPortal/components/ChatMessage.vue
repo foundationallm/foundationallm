@@ -201,8 +201,9 @@
 			v-model:visible="selectedContentArtifact"
 			:header="selectedContentArtifact?.title"
 			modal
+			style="max-width: 85%;"
 		>
-			<p tabindex="0">
+			<p tabindex="0" style="overflow-x: scroll;">
 				<pre>{{ JSON.stringify(selectedContentArtifact, null, 2) }}</pre>
 			</p>
 
