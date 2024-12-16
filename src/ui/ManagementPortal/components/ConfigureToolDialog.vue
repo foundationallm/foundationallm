@@ -51,11 +51,10 @@
 			@update:visible="showCreateResourceObjectDialog = false"
 			@update:modelValue="handleAddResourceObject"
 		/>
-		<Button severity="primary" label="Add Resource Object" @click="showCreateResourceObjectDialog = true" />
+		<div class="d-flex justify-content-end mt-4">
+			<Button severity="primary" label="Add Resource Object" @click="showCreateResourceObjectDialog = true" />
+		</div>
 
-		<!-- <PropertyBuilder v-model="toolObject.properties" /> -->
-
-		<!-- <JsonEditorVue v-model="json" /> -->
 		<div class="mt-6 mb-2 font-weight-bold">Tool properties:</div>
 		<PropertyBuilder v-model="toolObject.properties" />
 
