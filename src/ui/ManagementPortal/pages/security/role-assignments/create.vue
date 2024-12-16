@@ -58,7 +58,7 @@
 			<div class="span-2">
 				<!-- Type -->
 				<div id="aria-principal-type" class="mb-2">Principal Type:</div>
-				<div class="d-flex gap-4"">
+				<div class="d-flex gap-4">
 					<!-- <InputText
 						v-model="principal.object_type"
 						readonly
