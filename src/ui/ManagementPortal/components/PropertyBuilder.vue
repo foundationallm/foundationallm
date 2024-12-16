@@ -15,6 +15,11 @@
 				<InputText :value="JSON.stringify(propertyValue)" type="text" placeholder="Property Value" disabled />
 			</div>
 
+			<!-- Edit property -->
+			<Button link @click="handleEditProperty(propertyKey)">
+				<i class="pi pi-cog" style="font-size: 1.2rem"></i>
+			</Button>
+
 			<!-- Delete property -->
 			<Button link @click="handleDeleteProperty(propertyKey)">
 				<i class="pi pi-trash" style="font-size: 1.2rem"></i>
@@ -22,20 +27,21 @@
 		</div>
 
 		<div class="d-flex gap-4">
-			<div class="d-flex flex-1 gap-4">
-				<!-- Property name -->
-				<InputText v-model="propertyName" type="text" placeholder="Property Name" />
-
-				<!-- Property value -->
-				<InputText v-model="propertyValue" type="text" placeholder="Property Value" />
-			</div>
+			<PropertyDialog
+				v-if="showCreateOrEditPropertyDialog"
+				v-model="propertyToEdit"
+				:title="propertyToEdit ? 'Edit Property' : 'Create Property'"
+				:visible="showCreateOrEditPropertyDialog"
+				@update:modelValue="handleAddProperty($event)"
+				@update:visible="showCreateOrEditPropertyDialog = false"
+			/>
 
 			<!-- Add property -->
 			<Button
 				label="Add Property"
 				severity="primary"
 				style="word-wrap: none"
-				@click="handleAddProperty"
+				@click="showCreateOrEditPropertyDialog = true"
 			/>
 		</div>
 	</div>
@@ -46,15 +52,17 @@ export default {
 	props: {
 		modelValue: {
 			type: Object,
-			required: true,
+			required: false,
+			default: () => ({}),
 		},
 	},
 
 	data() {
 		return {
+			showCreateOrEditPropertyDialog: false,
+			propertyToEdit: null,
+
 			properties: {},
-			propertyName: '' as string,
-			propertyValue: '' as string,
 		};
 	},
 
@@ -69,23 +77,29 @@ export default {
 	},
 
 	methods: {
-		handleDeleteProperty(propertyName) {
-			delete this.properties[propertyName];
+		handleEditProperty(propertyKey) {
+			this.propertyToEdit = { key: propertyKey, value: this.properties[propertyKey] };
+			this.showCreateOrEditPropertyDialog = true;
+		},
+
+		handleDeleteProperty(propertyKey) {
+			delete this.properties[propertyKey];
 			this.$emit('update:modelValue', this.properties);
 		},
 
-		handleAddProperty() {
+		handleAddProperty(propertyObject) {
 			const errors = [];
 
-			if (!this.propertyName) {
-				errors.push('Please input a property name.');
-			}
+			// if (!this.propertyKey) {
+			// 	errors.push('Please input a property name.');
+			// }
 
-			if (!this.propertyValue) {
-				errors.push('Please input a property value.');
-			}
+			// if (!this.propertyValue) {
+			// 	errors.push('Please input a property value.');
+			// }
 
-			if (this.properties[this.propertyName]) {
+			// If we are not editing a property, prevent overwriting an existing one
+			if (!this.propertyToEdit && this.properties[propertyObject.key] !== undefined) {
 				errors.push('This property name already exists.');
 			}
 
@@ -99,9 +113,9 @@ export default {
 				return;
 			}
 
-			this.properties[this.propertyName] = this.propertyValue;
-			this.propertyName = '';
-			this.propertyValue = '';
+			this.properties[propertyObject.key] = propertyObject.value;
+			this.showCreateOrEditPropertyDialog = false;
+			this.propertyToEdit = null;
 			this.$emit('update:modelValue', this.properties);
 		},
 	},
