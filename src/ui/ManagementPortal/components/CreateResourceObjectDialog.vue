@@ -97,7 +97,7 @@ export default {
 				{
 					label: 'Indexing Profile',
 					value: 'indexingProfile',
-				}
+				},
 			],
 
 			resourceOption: null,

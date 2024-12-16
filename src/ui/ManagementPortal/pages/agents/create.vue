@@ -788,9 +788,7 @@
 
 			<!-- Tools -->
 			<div class="step-section-header span-2">Tools</div>
-			<div id="aria-orchestrator" class="step-header span-2">
-				What tools should the agent use?
-			</div>
+			<div id="aria-orchestrator" class="step-header span-2">What tools should the agent use?</div>
 
 			<!-- Tools table -->
 			<div class="span-2">
@@ -1155,7 +1153,8 @@ export default {
 
 		workflowMainAIModel() {
 			const mainModel = this.workflowMainAIModel;
-			const existingMainModelParamters = mainModel?.model_parameters ?? mainModel?.properties?.model_parameters;
+			const existingMainModelParamters =
+				mainModel?.model_parameters ?? mainModel?.properties?.model_parameters;
 			this.workflowMainAIModelParameters = existingMainModelParamters ?? {};
 		},
 	},

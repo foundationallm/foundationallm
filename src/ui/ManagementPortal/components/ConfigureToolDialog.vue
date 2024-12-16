@@ -38,7 +38,9 @@
 		<div class="mt-6 mb-2 font-weight-bold">Resource objects:</div>
 		<div v-for="(resourceObject, resourceObjectId) in toolObject.resource_object_ids" class="ml-2">
 			<div class="mt-6 mb-2">
-				<span id="aria-resource-object-id" class="font-weight-bold">{{ getResourceTypeFromId(resourceObjectId) }}: </span>
+				<span id="aria-resource-object-id" class="font-weight-bold"
+					>{{ getResourceTypeFromId(resourceObjectId) }}:
+				</span>
 				<span id="aria-resource-object-name">{{ getResourceNameFromId(resourceObjectId) }}</span>
 			</div>
 
@@ -52,7 +54,11 @@
 			@update:modelValue="handleAddResourceObject"
 		/>
 		<div class="d-flex justify-content-end mt-4">
-			<Button severity="primary" label="Add Resource Object" @click="showCreateResourceObjectDialog = true" />
+			<Button
+				severity="primary"
+				label="Add Resource Object"
+				@click="showCreateResourceObjectDialog = true"
+			/>
 		</div>
 
 		<div class="mt-6 mb-2 font-weight-bold">Tool properties:</div>

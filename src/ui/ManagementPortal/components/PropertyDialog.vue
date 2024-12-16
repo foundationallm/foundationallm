@@ -1,11 +1,5 @@
 <template>
-	<Dialog
-		:visible="visible"
-		modal
-		:header="title"
-		:style="{ minWidth: '50%' }"
-		:closable="false"
-	>
+	<Dialog :visible="visible" modal :header="title" :style="{ minWidth: '50%' }" :closable="false">
 		<!-- Property name -->
 		<div class="mb-1">Property Key:</div>
 		<InputText v-model="propertyKey" type="text" placeholder="Property Key" />

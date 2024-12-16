@@ -545,7 +545,9 @@ export default {
 	 */
 	async getPrompts(): Promise<ResourceProviderGetResult<Prompt>[] | null> {
 		try {
-			const data = await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts?api-version=${this.apiVersion}`);
+			const data = await this.fetch(
+				`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts?api-version=${this.apiVersion}`,
+			);
 			return data as ResourceProviderGetResult<Prompt>[];
 		} catch (error) {
 			return null;
@@ -555,7 +557,9 @@ export default {
 	async getPromptByName(promptName: string): Promise<ResourceProviderGetResult<Prompt> | null> {
 		// Attempt to retrieve the prompt. If it doesn't exist, return an empty object.
 		try {
-			const data = await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptName}?api-version=${this.apiVersion}`);
+			const data = await this.fetch(
+				`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptName}?api-version=${this.apiVersion}`,
+			);
 			return data[0];
 		} catch (error) {
 			return null;
