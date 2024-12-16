@@ -31,6 +31,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:PythonSDK";
         
         /// <summary>
+        /// Configuration section used to identify settings for code execution services.
+        /// </summary>
+        public const string FoundationaLLM_Code_CodeExecution =
+            "FoundationaLLM:Code:CodeExecution";
+        
+        /// <summary>
         /// Configuration section used to identify the storage settings for the FoundationaLLM.AIModel resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_AIModel_Storage =

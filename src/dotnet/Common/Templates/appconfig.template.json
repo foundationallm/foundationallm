@@ -64,6 +64,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions",
+            "value": "{"DynamicSessionsEndpoints": []}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:ResourceProviders:AIModel:Storage:AuthenticationType",
             "value": "AzureIdentity",
             "label": null,

@@ -5,6 +5,20 @@
 
 ## Starting with 0.9.1
 
+### Configuration changes
+
+The following new App Configuration settings are required:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+|`FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions` | `{"DynamicSessionsEndpoints": []}` | Provides the configuration for the Azure Container Apps Dynamic Sessions code execution service. `DynamicSessionsEnpoints` is a list of Dynamic Sessions endpoints that are used to run code execution sessions. Must contain at least one value. |
+
+### Agent tool configuration changes
+
+Each agent tool should have an entry in the `properties` dictionary named `foundationallm_aca_code_execution_enabled` (`true` or `false`) to indicate whether the tool requires code execution sessions based on the the Azure Container Apps Dynamic Sessions service.
+
+### Prompt definition changes
+
 Prompt prefixes and suffixes support FoundationaLLM variables for dynamic replacement at runtime. The variable format is `{{foundationallm:variable_name[:format]}}` where
 - `variable_name` is the name of the well-known variable.
 - `format` is the optional formatting applied to the value of the variable.
