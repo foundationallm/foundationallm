@@ -25,6 +25,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:Configuration";
         
         /// <summary>
+        /// Configuration section used to identify the Python SDK settings.
+        /// </summary>
+        public const string FoundationaLLM_PythonSDK =
+            "FoundationaLLM:PythonSDK";
+        
+        /// <summary>
         /// Configuration section used to identify the storage settings for the FoundationaLLM.AIModel resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_AIModel_Storage =

@@ -3,6 +3,18 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting with 0.9.1
+
+Prompt prefixes and suffixes support FoundationaLLM variables for dynamic replacement at runtime. The variable format is `{{foundationallm:variable_name[:format]}}` where
+- `variable_name` is the name of the well-known variable.
+- `format` is the optional formatting applied to the value of the variable.
+
+The following variables are supported:
+
+| Name | Value | Example
+| --- | --- | --- |
+| `current_datetime_utc` | The current UTC date and time. | `The current date is {{foundationallm:current_datetime_utc:dddd, MMMM dd, yyyy}}. This looks great.` -> `The current date is Sunday, December 15, 2024. This looks great.`
+
 ## Starting with 0.9.0
 
 ### Configuration changes
@@ -25,6 +37,7 @@ The following new App Configuration settings are required:
 |`FoundationaLLM:UserPortal:Configuration:ShowMessageTokens` | `true` | If `true`, the number of consumed tokens on agent and user messages will appear. |
 |`FoundationaLLM:UserPortal:Configuration:ShowViewPrompt` | `true` | If `true`, the "View Prompt" button on agent messages will appear. |
 |`FoundationaLLM:Instance:EnableResourceProvidersCache` | `false` | If `true`, the caching of resource providers will be enabled. |
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:EnableCache` | `false` | If `true`, the caching of authorization call results will be enabled. |
 
 #### Agent Tool configuration changes
 

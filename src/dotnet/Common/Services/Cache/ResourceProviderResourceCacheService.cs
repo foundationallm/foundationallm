@@ -3,7 +3,7 @@ using FoundationaLLM.Common.Models.ResourceProviders;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
-namespace FoundationaLLM.Common.Services.ResourceProviders
+namespace FoundationaLLM.Common.Services.Cache
 {
     /// <summary>
     /// Provides the resource caching services used by FoundationaLLM resource providers.
@@ -15,10 +15,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         private readonly ILogger _logger = logger;
 
         private readonly IMemoryCache _cache = new MemoryCache(new MemoryCacheOptions
-            {
-                SizeLimit = 10000, // Limit cache size to 5000 resources.
-                ExpirationScanFrequency = TimeSpan.FromMinutes(5) // Scan for expired items every five minutes.
-            });
+        {
+            SizeLimit = 10000, // Limit cache size to 5000 resources.
+            ExpirationScanFrequency = TimeSpan.FromMinutes(5) // Scan for expired items every five minutes.
+        });
         private readonly MemoryCacheEntryOptions _cacheEntryOptions = new MemoryCacheEntryOptions()
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(60)) // Cache entries are valid for 60 minutes.
             .SetSlidingExpiration(TimeSpan.FromMinutes(30)) // Reset expiration time if accessed within 5 minutes.
@@ -29,7 +29,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         {
             try
             {
-                _cache.Set<T>(GetCacheKey(resourceReference), resourceValue, _cacheEntryOptions);
+                _cache.Set(GetCacheKey(resourceReference), resourceValue, _cacheEntryOptions);
                 _logger.LogInformation("The resource {ResourceName} of type {ResourceType} has been set in the cache.",
                     resourceReference.Name,
                     resourceReference.Type);
@@ -49,7 +49,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             try
             {
-                if (_cache.TryGetValue<T>(GetCacheKey(resourceReference), out T? cachedValue)
+                if (_cache.TryGetValue(GetCacheKey(resourceReference), out T? cachedValue)
                     && cachedValue != null)
                 {
                     resourceValue = cachedValue;

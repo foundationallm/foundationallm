@@ -35,6 +35,7 @@ namespace FoundationaLLM.Orchestration.Tests.Services
                 _resourceProviderServices,
                 null,
                 _cosmosDBService,
+                null,
                 _callContext,
                 _configuration,
                 null,

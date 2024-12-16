@@ -40,6 +40,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
         /// <param name="llmOrchestrationServiceManager">The <see cref="ILLMOrchestrationServiceManager"/> that manages internal and external orchestration services.</param>
         /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> used to interact with the Cosmos DB database.</param>
+        /// <param name="templatingService">The <see cref="ITemplatingService"/> used to render templates.</param>
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/> provding dependency injection services for the current scope.</param>
         /// <param name="loggerFactory">The logger factory used to create new loggers.</param>
         /// <returns></returns>
@@ -53,6 +54,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             Dictionary<string, IResourceProviderService> resourceProviderServices,
             ILLMOrchestrationServiceManager llmOrchestrationServiceManager,
             IAzureCosmosDBService cosmosDBService,
+            ITemplatingService templatingService,
             IServiceProvider serviceProvider,
             ILoggerFactory loggerFactory)
         {
@@ -64,6 +66,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 originalRequest.SessionId,
                 originalRequest.Settings?.ModelParameters,
                 resourceProviderServices,
+                templatingService,
                 callContext.CurrentUserIdentity!,
                 logger);
 
@@ -176,6 +179,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             string? sessionId,
             Dictionary<string, object>? modelParameterOverrides,
             Dictionary<string, IResourceProviderService> resourceProviderServices,
+            ITemplatingService templatingService,
             UnifiedUserIdentity currentUserIdentity,
             ILogger<OrchestrationBuilder> logger)
         {
@@ -256,6 +260,17 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 var retrievedPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
                                            resourceObjectId.ObjectId,
                                            currentUserIdentity);
+
+                                if (retrievedPrompt is MultipartPrompt multipartPrompt)
+                                {
+                                    //check for token replacements, multipartPrompt variable has the same reference as retrievedPrompt therefore this edits the prefix/suffix in place
+                                    if (multipartPrompt is not null)
+                                    {
+                                        
+                                        multipartPrompt.Prefix = templatingService.Transform(multipartPrompt.Prefix!);
+                                        multipartPrompt.Suffix = templatingService.Transform(multipartPrompt.Suffix!);
+                                    }
+                                }
                                 explodedObjectsManager.TryAdd(
                                     retrievedPrompt.ObjectId!,
                                     retrievedPrompt);
@@ -422,6 +437,24 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                     indexingProfileApiEndpoint);
                             }
 
+                            break;
+                        case PromptResourceTypeNames.Prompts:
+                            var prompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
+                                resourceObjectId.ObjectId,
+                                currentUserIdentity);
+                            if (prompt is MultipartPrompt multipartPrompt)
+                            {
+                                // prompt template token replacement
+                                if (multipartPrompt is not null)
+                                {
+
+                                    multipartPrompt.Prefix = templatingService.Transform(multipartPrompt.Prefix!);
+                                    multipartPrompt.Suffix = templatingService.Transform(multipartPrompt.Suffix!);
+                                }
+                            }
+                            explodedObjectsManager.TryAdd(
+                                resourceObjectId.ObjectId,
+                                prompt);
                             break;
 
                         default:

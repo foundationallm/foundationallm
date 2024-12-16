@@ -145,7 +145,7 @@ public interface ICoreService
     /// <param name="id">The message id to rate.</param>
     /// <param name="sessionId">The session id to which the message belongs.</param>
     /// <param name="rating">The rating and optional comments to assign to the message.</param>
-    Task<Message> RateMessageAsync(string instanceId, string id, string sessionId, MessageRatingRequest rating);
+    Task RateMessageAsync(string instanceId, string id, string sessionId, MessageRatingRequest rating);
 
     /// <summary>
     /// Returns the completion prompt for a given session and completion prompt id.
