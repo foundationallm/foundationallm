@@ -831,15 +831,15 @@
 						}"
 					>
 						<template #body="{ data }">
-							<Button link @click="selectedTool = data">
+							<Button link @click="toolToEdit = data">
 								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
 							</Button>
 
 							<ConfigureToolDialog
-								v-if="selectedTool?.name === data.name"
-								v-model="selectedTool"
-								:visible="!!selectedTool"
-								@update:visible="selectedTool = null"
+								v-if="toolToEdit?.name === data.name"
+								v-model="toolToEdit"
+								:visible="!!toolToEdit"
+								@update:visible="toolToEdit = null"
 								@update:modelValue="handleUpdateTool"
 							/>
 						</template>
@@ -1004,9 +1004,8 @@ const getDefaultFormValues = () => {
 
 		selectedWorkflow: null,
 
-		selectedTool: null,
+		toolToEdit: null,
 		agentTools: [] as AgentTool[],
-		newTool: null,
 	};
 };
 
@@ -1444,7 +1443,7 @@ export default {
 		handleUpdateTool(updatedTool) {
 			const index = this.agentTools.findIndex((tool) => tool.object_id === updatedTool.object_id);
 			this.agentTools[index] = updatedTool;
-			this.showNewToolDialog = false;
+			this.toolToEdit = null;
 		},
 
 		handleRemoveTool(toolToRemove) {
