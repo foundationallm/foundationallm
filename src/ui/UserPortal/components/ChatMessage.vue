@@ -203,7 +203,7 @@
 			modal
 			style="max-width: 85%;"
 		>
-			<p tabindex="0" style="overflow-x: scroll;">
+			<p tabindex="0" style="overflow-x: auto;">
 				<pre>{{ JSON.stringify(selectedContentArtifact, null, 2) }}</pre>
 			</p>
 
