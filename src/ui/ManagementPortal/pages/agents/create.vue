@@ -1147,7 +1147,7 @@ export default {
 				this.workflowMainAIModel = null;
 			}
 
-			if (this.selectedWorkflow.type === 'None') {
+			if (this.selectedWorkflow?.type === 'None') {
 				this.showWorkflowConfiguration = false;
 				this.selectedWorkflow = null;
 			}
