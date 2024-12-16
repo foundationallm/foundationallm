@@ -6,16 +6,16 @@
 		:style="{ minWidth: '80%' }"
 		:closable="false"
 	>
-		<div id="aria-description" class="mb-2 font-weight-bold">Tool name:</div>
+		<div id="aria-tool-name" class="mb-2 font-weight-bold">Tool name:</div>
 		<InputText
 			v-model="toolObject.name"
 			type="text"
 			class="w-100"
 			placeholder="Enter tool name"
-			aria-labelledby="aria-cost-center"
+			aria-labelledby="aria-tool-name"
 		/>
 
-		<div id="aria-description" class="mt-6 mb-2 font-weight-bold">Tool description:</div>
+		<div id="aria-tool-description" class="mt-6 mb-2 font-weight-bold">Tool description:</div>
 		<Textarea
 			v-model="toolObject.description"
 			auto-resize
@@ -23,23 +23,23 @@
 			type="text"
 			class="w-100"
 			placeholder="Enter tool description"
-			aria-labelledby="aria-cost-center"
+			aria-labelledby="aria-tool-description"
 		/>
 
-		<div id="aria-description" class="mt-6 mb-2 font-weight-bold">Tool package name:</div>
+		<div id="aria-tool-package-name" class="mt-6 mb-2 font-weight-bold">Tool package name:</div>
 		<InputText
 			v-model="toolObject.package_name"
 			type="text"
 			class="w-100"
 			placeholder="Enter tool package name"
-			aria-labelledby="aria-cost-center"
+			aria-labelledby="aria-tool-package-name"
 		/>
 
-		<div id="aria-description" class="mt-6 mb-2 font-weight-bold">Resource objects:</div>
+		<div class="mt-6 mb-2 font-weight-bold">Resource objects:</div>
 		<div v-for="(resourceObject, resourceObjectId) in toolObject.resource_object_ids" class="ml-2">
-			<div id="aria-resource-object-id" class="mt-6 mb-2">
-				<span class="font-weight-bold">{{ getResourceTypeFromId(resourceObjectId) }}: </span>
-				<span>{{ getResourceNameFromId(resourceObjectId) }}</span>
+			<div class="mt-6 mb-2">
+				<span id="aria-resource-object-id" class="font-weight-bold">{{ getResourceTypeFromId(resourceObjectId) }}: </span>
+				<span id="aria-resource-object-name">{{ getResourceNameFromId(resourceObjectId) }}</span>
 			</div>
 
 			<PropertyBuilder v-model="toolObject.resource_object_ids[resourceObjectId].properties" />
@@ -56,7 +56,7 @@
 		<!-- <PropertyBuilder v-model="toolObject.properties" /> -->
 
 		<!-- <JsonEditorVue v-model="json" /> -->
-		<div id="aria-description" class="mt-6 mb-2 font-weight-bold">Tool properties:</div>
+		<div class="mt-6 mb-2 font-weight-bold">Tool properties:</div>
 		<PropertyBuilder v-model="toolObject.properties" />
 
 		<template #footer>
