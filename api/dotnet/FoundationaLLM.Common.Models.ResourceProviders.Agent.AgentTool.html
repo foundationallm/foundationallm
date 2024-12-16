@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool" class="text-break">
-Class AgentTool  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L8"><i class="bi bi-code-slash"></i></a>
+Class AgentTool  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L9"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -164,7 +164,7 @@ Class AgentTool  <a class="header-action link-secondary" title="View source" hre
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_Description" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Description">
   Description
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the description of the tool.</p>
@@ -197,7 +197,7 @@ public required string Description { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_Name" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Name">
   Name
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L14"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the name of the tool.</p>
@@ -230,7 +230,7 @@ public required string Name { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_PackageName" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.PackageName">
   PackageName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L28"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the package name of the tool.
@@ -265,7 +265,7 @@ public required string PackageName { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_Properties" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Properties">
   Properties
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a dictionary of properties that are specific to the tool.</p>
@@ -298,7 +298,7 @@ public Dictionary&lt;string, object&gt; Properties { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_ResourceObjectIds" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.ResourceObjectIds">
   ResourceObjectIds
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L34"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a dictionary of resource objects.</p>
@@ -327,11 +327,63 @@ public Dictionary&lt;string, ResourceObjectIdProperties&gt; ResourceObjectIds { 
 
 
 
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_TryGetPropertyValue_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.TryGetPropertyValue*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_TryGetPropertyValue__1_System_String___0__" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.TryGetPropertyValue``1(System.String,``0@)">
+  TryGetPropertyValue&lt;T&gt;(string, out T?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to get the value of a property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetPropertyValue&lt;T&gt;(string propertyName, out T? propertyValue)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>propertyName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the property being retrieved.</p>
+</dd>
+    <dt><code>propertyValue</code> <span class="xref">T</span></dt>
+    <dd><p>The resultig property value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the property value was successfull retrieved, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> otherwise.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of the property being retrieved.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L8" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L9" class="edit-link">Edit this page</a>
         </div>
 
 

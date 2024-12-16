@@ -78,6 +78,27 @@
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
 <h2 id="starting-with-091">Starting with 0.9.1</h2>
+<h3 id="configuration-changes">Configuration changes</h3>
+<p>The following new App Configuration settings are required:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</code></td>
+<td><code>{&quot;DynamicSessionsEndpoints&quot;: []}</code></td>
+<td>Provides the configuration for the Azure Container Apps Dynamic Sessions code execution service. <code>DynamicSessionsEnpoints</code> is a list of Dynamic Sessions endpoints that are used to run code execution sessions. Must contain at least one value.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agent-tool-configuration-changes">Agent tool configuration changes</h3>
+<p>Each agent tool should have an entry in the <code>properties</code> dictionary named <code>foundationallm_aca_code_execution_enabled</code> (<code>true</code> or <code>false</code>) to indicate whether the tool requires code execution sessions based on the the Azure Container Apps Dynamic Sessions service.</p>
+<h3 id="prompt-definition-changes">Prompt definition changes</h3>
 <p>Prompt prefixes and suffixes support FoundationaLLM variables for dynamic replacement at runtime. The variable format is <code>{{foundationallm:variable_name[:format]}}</code> where</p>
 <ul>
 <li><code>variable_name</code> is the name of the well-known variable.</li>
@@ -101,7 +122,7 @@
 </tbody>
 </table>
 <h2 id="starting-with-090">Starting with 0.9.0</h2>
-<h3 id="configuration-changes">Configuration changes</h3>
+<h3 id="configuration-changes-1">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -189,7 +210,7 @@
 </tr>
 </tbody>
 </table>
-<h4 id="agent-tool-configuration-changes">Agent Tool configuration changes</h4>
+<h4 id="agent-tool-configuration-changes-1">Agent Tool configuration changes</h4>
 <p>Agent tools are now an array of AgentTool objects rather than a dictionary.</p>
 <p>When defining tools for an agent, each tool now requires a <code>package_name</code> property. This property is used to identify the package that contains the tool's implementation. If the tool is internal, the <code>package_name</code> should be set to <code>FoundationaLLM</code>, if the tool is external, the <code>package_name</code> should be set to the name of the external package.</p>
 <h4 id="security-related-changes">Security-related changes</h4>
@@ -223,7 +244,7 @@
 <p>Please note that both properties are nullable. Set them to null to clear out the rating and comments.</p>
 </div>
 <h2 id="starting-with-084">Starting with 0.8.4</h2>
-<h3 id="configuration-changes-1">Configuration changes</h3>
+<h3 id="configuration-changes-2">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -414,7 +435,7 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 <li><code>FoundationaLLM.AzureOpenAI/assistantUserContexts</code></li>
 <li><code>FoundationaLLM.Conversation/conversations</code></li>
 </ul>
-<h3 id="configuration-changes-2">Configuration changes</h3>
+<h3 id="configuration-changes-3">Configuration changes</h3>
 <h4 id="resource-provider-templates">Resource provider templates</h4>
 <p>The <code>AzureOpenAI.template.json</code> files within <code>deploy/quick-start/data/resource-provider/FoundationaLLM.Configuration</code> and <code>deploy/standard/data/resource-provider/FoundationaLLM.Configuration</code> have been updated to set the <code>category</code> field to the value <code>LLM</code>. This discriminator allows the Management Portal to filter the list of API endpoints by category and provide options to add AI Models to endpoints with the <code>LLM</code> category.</p>
 <p>The existing <code>category</code> property needs to be set to <code>LLM</code> on existing API endpoint configurations in the <code>FoundationaLLM.Configuration</code> resource provider that fit this description, including the <code>AzureOpenAI</code> endpoint configuration.</p>
@@ -466,7 +487,7 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 }
 </code></pre>
 <h2 id="starting-with-082">Starting with 0.8.2</h2>
-<h3 id="configuration-changes-3">Configuration changes</h3>
+<h3 id="configuration-changes-4">Configuration changes</h3>
 <p>The following settings are required:</p>
 <table>
 <thead>
