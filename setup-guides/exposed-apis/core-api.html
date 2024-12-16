@@ -106,22 +106,80 @@
 <h5>Note</h5>
 <p>The <code>settings</code> object provides to override various parameters at runtime, and is optional. Within <code>settings</code> both <code>model_parameters</code> and <code>settings.agent_parameters</code> (along with their members) are optional. If not provided, the Core API will use the default model and agent settings.</p>
 </div>
-<p><strong>model_parameters:</strong>
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| <code>temperature</code> | <code>float</code> | Controls randomness. Lowering the temperature means that the model will produce more repetitive and deterministic responses. Increasing the temperature will result in more unexpected or creative responses. Try adjusting temperature or Top P but not both. This value should be a float between 0.0 and 1.0. |
-| <code>deployment_name</code> | <code>string</code> | The deployment name for the language model. |
-| <code>top_k</code> | <code>int</code> | The number of highest probability vocabulary tokens to keep for top-k-filtering. Default value is null, which disables top-k-filtering. |
-| <code>top_p</code> | <code>float</code> | The cumulative probability of parameter highest probability vocabulary tokens to keep for nucleus sampling. Top P (or Top Probabilities) is imilar to temperature, this controls randomness but uses a different method. Lowering Top P will narrow the model’s token selection to likelier tokens. Increasing Top P will let the model choose from tokens with both high and low likelihood. Try adjusting temperature or Top P but not both. |
-| <code>do_sample</code> | <code>bool</code> | Whether or not to use sampling; use greedy decoding otherwise. |
-| <code>max_new_tokens</code> | <code>int</code> | Sets a limit on the number of tokens per model response. The API supports a maximum of number of tokens (depending on the deployment) shared between the prompt (including system message, examples, message history, and user query) and the model's response. One token is roughly 4 characters for typical English text. |
-| <code>return_full_text</code> | <code>bool</code> | Whether or not to return the full text (prompt + response) or only the generated part (response). Default value is false. |
-| <code>ignore_eos</code> | <code>bool</code> | Whether to ignore the End of Sequence(EOS) token and continue generating tokens after the EOS token is generated. Defaults to False. |</p>
-<p><strong>agent_parameters:</strong>
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| <code>index_filter_expression</code> | <code>string</code> | This value should be a string representing the search filter expression to limit documents to be searched by the index retriever |
-| <code>index_top_n</code> | <code>int</code> | Controls the number of search results to return from an index for prompt augmentation. |</p>
+<p><strong>model_parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>temperature</code></td>
+<td><code>float</code></td>
+<td>Controls randomness. Lowering the temperature means that the model will produce more repetitive and deterministic responses. Increasing the temperature will result in more unexpected or creative responses. Try adjusting temperature or Top P but not both. This value should be a float between 0.0 and 1.0.</td>
+</tr>
+<tr>
+<td><code>deployment_name</code></td>
+<td><code>string</code></td>
+<td>The deployment name for the language model.</td>
+</tr>
+<tr>
+<td><code>top_k</code></td>
+<td><code>int</code></td>
+<td>The number of highest probability vocabulary tokens to keep for top-k-filtering. Default value is null, which disables top-k-filtering.</td>
+</tr>
+<tr>
+<td><code>top_p</code></td>
+<td><code>float</code></td>
+<td>The cumulative probability of parameter highest probability vocabulary tokens to keep for nucleus sampling. Top P (or Top Probabilities) is imilar to temperature, this controls randomness but uses a different method. Lowering Top P will narrow the model’s token selection to likelier tokens. Increasing Top P will let the model choose from tokens with both high and low likelihood. Try adjusting temperature or Top P but not both.</td>
+</tr>
+<tr>
+<td><code>do_sample</code></td>
+<td><code>bool</code></td>
+<td>Whether or not to use sampling; use greedy decoding otherwise.</td>
+</tr>
+<tr>
+<td><code>max_new_tokens</code></td>
+<td><code>int</code></td>
+<td>Sets a limit on the number of tokens per model response. The API supports a maximum of number of tokens (depending on the deployment) shared between the prompt (including system message, examples, message history, and user query) and the model's response. One token is roughly 4 characters for typical English text.</td>
+</tr>
+<tr>
+<td><code>return_full_text</code></td>
+<td><code>bool</code></td>
+<td>Whether or not to return the full text (prompt + response) or only the generated part (response). Default value is false.</td>
+</tr>
+<tr>
+<td><code>ignore_eos</code></td>
+<td><code>bool</code></td>
+<td>Whether to ignore the End of Sequence(EOS) token and continue generating tokens after the EOS token is generated. Defaults to False.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>agent_parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>index_filter_expression</code></td>
+<td><code>string</code></td>
+<td>This value should be a string representing the search filter expression to limit documents to be searched by the index retriever</td>
+</tr>
+<tr>
+<td><code>index_top_n</code></td>
+<td><code>int</code></td>
+<td>Controls the number of search results to return from an index for prompt augmentation.</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Payload Headers:</strong></p>
 <table>
 <thead>
