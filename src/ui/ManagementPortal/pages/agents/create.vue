@@ -1244,11 +1244,25 @@ export default {
 					this.overlapSize = Number(textPartitioningProfile.resource.settings.OverlapSizeTokens);
 				}
 			}
-			if (agent.prompt_object_id !== '') {
+
+			if (agent.prompt_object_id) {
 				this.loadingStatusText = `Retrieving prompt...`;
 				const prompt = await api.getPrompt(agent.prompt_object_id);
 				if (prompt && prompt.resource) {
 					this.systemPrompt = prompt.resource.prefix;
+				}
+			} else if (agent.workflow?.resource_object_ids) {
+				this.loadingStatusText = `Retrieving prompt...`;
+
+				const existingMainPrompt = Object.values(agent.workflow.resource_object_ids).find(
+					(resource) => resource.properties?.object_role === 'main_prompt',
+				);
+
+				if (existingMainPrompt) {
+					const prompt = await api.getPrompt(existingMainPrompt.object_id);
+					if (prompt && prompt.resource) {
+						this.systemPrompt = prompt.resource.prefix;
+					}
 				}
 			}
 
