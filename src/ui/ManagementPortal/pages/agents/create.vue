@@ -787,36 +787,49 @@
 			</div>
 
 			<!-- Tools -->
-			<template v-if="agentTools.length > 0">
-				<div class="step-section-header span-2">Tools</div>
-				<div id="aria-orchestrator" class="step-header span-2">
-					What tools should the agent use?
+			<div class="step-section-header span-2">Tools</div>
+			<div id="aria-orchestrator" class="step-header span-2">
+				What tools should the agent use?
+			</div>
+
+			<div class="span-2">
+				<!-- Tools list -->
+				<div
+					v-for="(tool, index) in agentTools"
+					class="d-flex justify-content-between mb-2"
+					:key="index"
+				>
+					<div>{{ tool.name }}</div>
+
+					<Button
+						severity="primary"
+						label="Configure Tool"
+						@click="selectedTool = tool"
+					/>
+
+					<ConfigureToolDialog
+						v-if="selectedTool?.name === tool.name"
+						v-model="selectedTool"
+						:visible="!!selectedTool"
+						@update:visible="selectedTool = null"
+						@update:modelValue="handleUpdateTool($event, index)"
+					/>
 				</div>
 
-				<div class="span-2">
-					<div
-						v-for="(tool, index) in agentTools"
-						class="d-flex justify-content-between mb-2"
-						:key="index"
-					>
-						<div>{{ tool.name }}</div>
+				<ConfigureToolDialog
+					v-if="showNewToolDialog"
+					:visible="!!showNewToolDialog"
+					@update:visible="showNewToolDialog = false"
+					@update:modelValue="handleAddNewTool"
+				/>
 
-						<Button
-							severity="primary"
-							label="Configure Tool"
-							@click="selectedTool = tool"
-						/>
-
-						<ConfigureToolDialog
-							v-if="selectedTool?.name === tool.name"
-							v-model="selectedTool"
-							:visible="!!selectedTool"
-							@update:visible="selectedTool = null"
-							@update:modelValue="agentTools[index] = selectedTool"
-						/>
-					</div>
-				</div>
-			</template>
+				<!-- Add new tool to agent -->
+				<Button
+					severity="primary"
+					label="Add Tool"
+					@click="showNewToolDialog = true"
+				/>
+			</div>
 
 			<!-- Security -->
 			<div v-if="virtualSecurityGroupId" class="step-section-header span-2">Security</div>
@@ -946,6 +959,7 @@ const getDefaultFormValues = () => {
 
 		selectedTool: null,
 		agentTools: [] as AgentTool[],
+		newTool: null,
 	};
 };
 
@@ -990,6 +1004,8 @@ export default {
 			workflowMainAIModelParameters: {} as object,
 
 			virtualSecurityGroupId: null as string | null,
+
+			showNewToolDialog: false,
 
 			orchestratorOptions: [
 				{
@@ -1083,6 +1099,11 @@ export default {
 				this.workflowMainAIModel = existingMainModel ?? null;
 			} else {
 				this.workflowMainAIModel = null;
+			}
+
+			if (this.selectedWorkflow.type === 'None') {
+				this.showWorkflowConfiguration = false;
+				this.selectedWorkflow = null;
 			}
 		},
 
@@ -1366,6 +1387,16 @@ export default {
 					life: 5000,
 				});
 			}
+		},
+
+		handleAddNewTool(newTool) {
+			this.agentTools.push(newTool);
+			this.showNewToolDialog = false;
+		},
+
+		handleUpdateNewTool(updatedTool, index) {
+			this.agentTools[index] = updatedTool
+			this.showNewToolDialog = false;
 		},
 
 		async handleCreateAgent() {
