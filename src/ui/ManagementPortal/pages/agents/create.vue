@@ -707,12 +707,18 @@
 			<!-- Workflow selection -->
 			<div class="span-2">
 				<Dropdown
-					v-model="selectedWorkflow"
+					:modelValue="selectedWorkflow?.type"
 					:options="workflowOptions"
 					option-label="workflow_name"
+					option-value="type"
 					class="dropdown--agent"
 					placeholder="--Select--"
 					aria-labelledby="aria-workflow"
+					@change="
+						selectedWorkflow = JSON.parse(
+							JSON.stringify(workflowOptions.find((workflow) => workflow.type === $event.value)),
+						)
+					"
 				/>
 				<Button
 					class="ml-2"
@@ -1247,7 +1253,10 @@ export default {
 			}
 
 			if (agent.workflow) {
-				this.workflowOptions.push(agent.workflow);
+				const existingMainModel = Object.values(agent.workflow.resource_object_ids).find(
+					(resource) => resource.properties?.object_role === 'main_model',
+				);
+				this.workflowMainAIModel = existingMainModel ?? null;
 			}
 
 			this.loadingStatusText = `Mapping agent values to form...`;
