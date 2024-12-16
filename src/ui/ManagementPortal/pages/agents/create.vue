@@ -792,28 +792,63 @@
 				What tools should the agent use?
 			</div>
 
+			<!-- Tools table -->
 			<div class="span-2">
-				<!-- Tools list -->
-				<div
-					v-for="(tool, index) in agentTools"
-					class="d-flex justify-content-between mb-2"
-					:key="index"
+				<DataTable
+					:value="agentTools"
+					striped-rows
+					scrollable
+					table-style="max-width: 100%"
+					size="small"
 				>
-					<div>{{ tool.name }}</div>
+					<template #empty>No agent tools added.</template>
 
-					<Button
-						severity="primary"
-						label="Configure Tool"
-						@click="selectedTool = tool"
+					<template #loading>Loading agent tools. Please wait.</template>
+
+					<!-- Tool name -->
+					<Column
+						field="name"
+						header="Name"
+						sortable
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							sortIcon: { style: { color: 'var(--primary-text)' } },
+						}"
 					/>
 
-					<ConfigureToolDialog
-						v-if="selectedTool?.name === tool.name"
-						v-model="selectedTool"
-						:visible="!!selectedTool"
-						@update:visible="selectedTool = null"
-						@update:modelValue="handleUpdateTool($event, index)"
-					/>
+					<!-- Edit tool -->
+					<Column
+						header="Edit"
+						header-style="width:6rem"
+						style="text-align: center"
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							headerContent: { style: { justifyContent: 'center' } },
+						}"
+					>
+						<template #body="{ data }">
+							<Button link @click="selectedTool = data">
+								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
+							</Button>
+
+							<ConfigureToolDialog
+								v-if="selectedTool?.name === data.name"
+								v-model="selectedTool"
+								:visible="!!selectedTool"
+								@update:visible="selectedTool = null"
+								@update:modelValue="handleUpdateTool($event, index)"
+							/>
+						</template>
+					</Column>
+				</DataTable>
+
+				<!-- Add new tool -->
+				<div class="d-flex justify-content-end mt-4">
+					<Button @click="showNewToolDialog = true">Add New Tool</Button>
 				</div>
 
 				<ConfigureToolDialog
@@ -821,13 +856,6 @@
 					:visible="!!showNewToolDialog"
 					@update:visible="showNewToolDialog = false"
 					@update:modelValue="handleAddNewTool"
-				/>
-
-				<!-- Add new tool to agent -->
-				<Button
-					severity="primary"
-					label="Add Tool"
-					@click="showNewToolDialog = true"
 				/>
 			</div>
 
