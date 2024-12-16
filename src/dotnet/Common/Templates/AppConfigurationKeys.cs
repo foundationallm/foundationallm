@@ -80,6 +80,17 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:Code:CodeExecution
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions setting.
+        /// <para>Value description:<br/>The settings for the Azure Container Apps Dynamic Sessions code execution service.</para>
+        /// </summary>
+        public const string FoundationaLLM_Code_CodeExecution_AzureContainerAppsDynamicSessions =
+            "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions";
+
+        #endregion
+
         #region FoundationaLLM:ResourceProviders:AIModel
 
         #endregion

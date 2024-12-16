@@ -78,7 +78,7 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
 
             endpoint = index_config.api_endpoint_configuration.url
 
-            if self.use_top_n_override:
+            if self.top_n_override:
                 top_n = self.top_n_override
             else:
                 top_n = int(index_config.indexing_profile.settings.top_n)
@@ -116,9 +116,9 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
                         page_content=result[index_config.indexing_profile.settings.text_field_name],
                         metadata=metadata,
                         score=result["@search.score"],
-                        rerank_score=result.get("@search.rerankScore", 0.0)
+                        rerank_score=result.get("@search.reranker_score", 0.0)
                 )
-                if('@search.rerankScore' in result):                    
+                if('@search.reranker_score' in result):                    
                     rerank_available = True
                     
                 document.score = result["@search.score"]

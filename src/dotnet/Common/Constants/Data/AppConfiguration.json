@@ -91,6 +91,23 @@
 		]
 	},
 	{
+		"namespace": "Code:CodeExecution",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify settings for code execution services."
+		},
+		"configuration_keys": [
+			{
+				"name": "AzureContainerAppsDynamicSessions",
+				"description": "The settings for the Azure Container Apps Dynamic Sessions code execution service.",
+				"secret": "",
+				"value": "{\"DynamicSessionsEndpoints\": []}",
+				"content_type": "application/json",
+				"first_version": "0.9.1"
+			}
+		]
+	},
+	{
 		"namespace": "ResourceProviders:AIModel",
 		"dependency_injection_key": {
 			"description": "Dependency injection key used by the FoundationaLLM.AIModel resource provider."
