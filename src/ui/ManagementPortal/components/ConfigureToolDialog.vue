@@ -3,12 +3,12 @@
 		:visible="visible"
 		modal
 		header="Configure Tool"
-		:style="{ minWidth: '50%' }"
+		:style="{ minWidth: '80%' }"
 		:closable="false"
 	>
 		<div id="aria-description" class="mb-2 font-weight-bold">Tool name:</div>
 		<InputText
-			v-model="modelValue.name"
+			v-model="toolObject.name"
 			type="text"
 			class="w-100"
 			placeholder="Enter tool name"
@@ -17,7 +17,7 @@
 
 		<div id="aria-description" class="mt-6 mb-2 font-weight-bold">Tool description:</div>
 		<Textarea
-			v-model="modelValue.description"
+			v-model="toolObject.description"
 			auto-resize
 			rows="5"
 			type="text"
@@ -28,7 +28,7 @@
 
 		<div id="aria-description" class="mt-6 mb-2 font-weight-bold">Tool package name:</div>
 		<InputText
-			v-model="modelValue.package_name"
+			v-model="toolObject.package_name"
 			type="text"
 			class="w-100"
 			placeholder="Enter tool package name"
@@ -36,25 +36,28 @@
 		/>
 
 		<div id="aria-description" class="mt-6 mb-2 font-weight-bold">Resource objects:</div>
-		<div v-for="(resourceObject, resourceObjectId) in modelValue.resource_object_ids">
-			<div id="aria-resource-object-id" class="mt-6 mb-2">{{ resourceObjectId }}</div>
+		<div v-for="(resourceObject, resourceObjectId) in toolObject.resource_object_ids" class="ml-2">
+			<div id="aria-resource-object-id" class="mt-6 mb-2">
+				<span class="font-weight-bold">{{ getResourceTypeFromId(resourceObjectId) }}: </span>
+				<span>{{ getResourceNameFromId(resourceObjectId) }}</span>
+			</div>
 
-			<!-- <InputText
-				v-model="modelValue.resource_object_ids[resourceObjectId].object_id"
-				type="text"
-				class="w-100"
-				placeholder="Enter tool package name"
-				aria-labelledby="aria-cost-center"
-			/> -->
-
-			<PropertyBuilder v-model="modelValue.resource_object_ids[resourceObjectId].properties" />
+			<PropertyBuilder v-model="toolObject.resource_object_ids[resourceObjectId].properties" />
 		</div>
 
-		<!-- <PropertyBuilder v-model="modelValue.properties" /> -->
+		<CreateResourceObjectDialog
+			v-if="showCreateResourceObjectDialog"
+			:visible="showCreateResourceObjectDialog"
+			@update:visible="showCreateResourceObjectDialog = false"
+			@update:modelValue="handleAddResourceObject"
+		/>
+		<Button severity="primary" label="Add Resource Object" @click="showCreateResourceObjectDialog = true" />
+
+		<!-- <PropertyBuilder v-model="toolObject.properties" /> -->
 
 		<!-- <JsonEditorVue v-model="json" /> -->
 		<div id="aria-description" class="mt-6 mb-2 font-weight-bold">Tool properties:</div>
-		<PropertyBuilder v-model="modelValue.properties" />
+		<PropertyBuilder v-model="toolObject.properties" />
 
 		<template #footer>
 			<!-- Save -->
@@ -66,7 +69,7 @@
 	</Dialog>
 </template>
 
-<script>
+<script lang="ts">
 import JsonEditorVue from 'json-editor-vue';
 
 export default {
@@ -77,7 +80,13 @@ export default {
 	props: {
 		modelValue: {
 			type: [Object, String],
-			required: true,
+			required: false,
+			default: () => ({
+				name: '' as string,
+				description: '' as string,
+				package_name: '' as string,
+				resource_object_ids: {},
+			}),
 		},
 
 		visible: {
@@ -88,7 +97,13 @@ export default {
 
 	data() {
 		return {
-			json: {},
+			toolObject: {
+				name: '' as string,
+				description: '' as string,
+				package_name: '' as string,
+				resource_object_ids: {},
+			},
+			showCreateResourceObjectDialog: false,
 		};
 	},
 
@@ -97,16 +112,40 @@ export default {
 			immediate: true,
 			deep: true,
 			handler() {
-				if (JSON.stringify(this.modelValue) === JSON.stringify(this.json)) return;
-				this.json = this.modelValue;
+				if (JSON.stringify(this.modelValue) === JSON.stringify(this.toolObject)) return;
+				this.toolObject = this.modelValue;
 			},
 		},
 	},
 
 	methods: {
+		getResourceNameFromId(resourceId) {
+			const parts = resourceId.split('/').filter(Boolean);
+			return parts.slice(-1)[0];
+		},
+
+		getResourceTypeFromId(resourceId) {
+			const parts = resourceId.split('/').filter(Boolean);
+			const type = parts.slice(-2)[0];
+
+			if (type === 'prompts') {
+				return 'Prompt';
+			} else if (type === 'aiModels') {
+				return 'AI Model';
+			} else if (type === 'indexingProfiles') {
+				return 'Indexing Profile';
+			}
+
+			return type;
+		},
+
+		handleAddResourceObject(resourceObject) {
+			this.toolObject.resource_object_ids[resourceObject.object_id] = resourceObject;
+			this.showCreateResourceObjectDialog = false;
+		},
+
 		handleSave() {
-			this.$emit('update:modelValue', this.json);
-			this.handleClose();
+			this.$emit('update:modelValue', this.toolObject);
 		},
 
 		handleClose() {
