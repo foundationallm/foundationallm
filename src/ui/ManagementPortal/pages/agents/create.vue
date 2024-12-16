@@ -1145,10 +1145,12 @@ export default {
 				this.workflowMainAIModel = null;
 			}
 
-			if (!this.selectedWorkflow?.type) {
-				this.showWorkflowConfiguration = false;
-				this.selectedWorkflow = null;
-			}
+			this.showWorkflowConfiguration = true;
+
+			// if (!this.selectedWorkflow?.type) {
+			// 	this.showWorkflowConfiguration = false;
+			// 	this.selectedWorkflow = null;
+			// }
 		},
 
 		workflowMainAIModel() {
@@ -1196,10 +1198,10 @@ export default {
 
 			this.loadingStatusText = 'Retrieving workflows...';
 			this.workflowOptions = [
-				{
-					type: null,
-					workflow_name: 'None',
-				},
+				// {
+				// 	type: null,
+				// 	workflow_name: 'None',
+				// },
 				{
 					type: 'langgraph-react-agent-workflow',
 					workflow_name: 'LangGraph ReAct Agent Workflow',
@@ -1486,10 +1488,6 @@ export default {
 				this.text_embedding_profile_object_id = this.selectedTextEmbeddingProfile?.object_id ?? '';
 			}
 
-			if (this.systemPrompt === '') {
-				errors.push('Please provide a system prompt.');
-			}
-
 			if (!this.orchestration_settings.orchestrator) {
 				errors.push('Please select an orchestrator.');
 			}
@@ -1498,8 +1496,16 @@ export default {
 				errors.push('Please select an AI model for the orchestrator.');
 			}
 
-			if (this.selectedWorkflow && !this.workflowMainAIModel) {
+			if (!this.selectedWorkflow) {
+				errors.push('Please select a workflow.');
+			}
+
+			if (!this.workflowMainAIModel) {
 				errors.push('Please select an AI model for the workflow.');
+			}
+
+			if (this.systemPrompt === '') {
+				errors.push('Please provide a system prompt.');
 			}
 
 			// if (!this.selectedDataSource) {
@@ -1616,12 +1622,14 @@ export default {
 								},
 							},
 
-							// [promptObjectId]: {
-							// 	object_id: promptObjectId,
-							// 	properties: {
-							// 		object_role: 'main_prompt',
-							// 	},
-							// },
+							...(promptObjectId ? {
+								[promptObjectId]: {
+									object_id: promptObjectId,
+									properties: {
+										object_role: 'main_prompt',
+									},
+								},
+							} : {}),
 						},
 					};
 				}
