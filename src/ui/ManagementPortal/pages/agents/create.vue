@@ -700,31 +700,25 @@
 
 			<!-- Workflow -->
 			<div class="step-section-header span-2">Workflow</div>
-			<div id="aria-orchestrator" class="step-header span-2">
+			<div id="aria-workflow" class="step-header span-2">
 				What workflow should the agent use?
 			</div>
 
 			<!-- Workflow selection -->
 			<div class="span-2">
 				<Dropdown
-					:modelValue="selectedWorkflow?.type"
+					v-model="selectedWorkflow"
 					:options="workflowOptions"
-					option-label="type"
-					option-value="type"
+					option-label="workflow_name"
 					class="dropdown--agent"
 					placeholder="--Select--"
-					aria-labelledby="aria-orchestrator"
-					@change="
-						selectedWorkflow = JSON.parse(
-							JSON.stringify(workflowOptions.find((workflow) => workflow.type === $event.value)),
-						)
-					"
+					aria-labelledby="aria-workflow"
 				/>
 				<Button
 					class="ml-2"
 					severity="primary"
 					:label="showWorkflowConfiguration ? 'Hide Workflow Configuration' : 'Configure Workflow'"
-					:disabled="!selectedWorkflow?.object_id"
+					:disabled="!selectedWorkflow?.type"
 					@click="showWorkflowConfiguration = !showWorkflowConfiguration"
 				/>
 			</div>
@@ -1145,7 +1139,7 @@ export default {
 				this.workflowMainAIModel = null;
 			}
 
-			if (this.selectedWorkflow?.type === 'None') {
+			if (!this.selectedWorkflow?.type) {
 				this.showWorkflowConfiguration = false;
 				this.selectedWorkflow = null;
 			}
@@ -1197,14 +1191,18 @@ export default {
 			this.loadingStatusText = 'Retrieving workflows...';
 			this.workflowOptions = [
 				{
-					type: 'None',
-					object_id: null,
+					type: null,
+					workflow_name: 'None',
 				},
 				{
-					type: 'custom-workflow',
-					object_id: 'custom',
+					type: 'langgraph-react-agent-workflow',
+					workflow_name: 'LangGraph ReAct Agent Workflow',
 				},
-				...(await api.getAgentWorkflows()),
+				{
+					type: 'azure-openai-assistants-workflow',
+					workflow_name: 'Azure OpenAI Assistants Workflow',
+				},
+				// ...(await api.getAgentWorkflows()),
 			];
 
 			// Update the orchestratorOptions with the externalOrchestratorOptions.
