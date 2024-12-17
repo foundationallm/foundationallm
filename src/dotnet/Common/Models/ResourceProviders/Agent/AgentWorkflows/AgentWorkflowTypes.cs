@@ -16,8 +16,14 @@
         public const string LangChainExpressionLanguage = "langchain-expression-language-workflow";
 
         /// <summary>
+        /// The LangChain simple tool workflow.
+        /// </summary>
+        public const string LangChainSimpleTool = "langchain-simple-tool-workflow";
+
+        /// <summary>
         /// The LangGraph ReAct agent workflow.
         /// </summary>
         public const string LangGraphReactAgent = "langgraph-react-agent-workflow";
+
     }
 }

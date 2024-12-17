@@ -1,14 +1,20 @@
-﻿import uuid
+﻿from tabnanny import verbose
+import uuid
+from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_community.callbacks import get_openai_callback
 from langchain_core.messages import HumanMessage, ToolMessage
-from langchain_core.prompts import PromptTemplate
-from langchain_core.runnables import RunnablePassthrough, RunnableLambda
+from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
+from langchain_core.runnables import RunnableConfig, RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
 from langgraph.prebuilt import create_react_agent
 from foundationallm.langchain.agents import LangChainAgentBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, ContentArtifactRetrievalBase
-from foundationallm.models.agents import AzureOpenAIAssistantsAgentWorkflow, LangGraphReactAgentWorkflow
+from foundationallm.models.agents import (
+    AzureOpenAIAssistantsAgentWorkflow,
+    LangChainSimpleToolAgentWorkflow,
+    LangGraphReactAgentWorkflow
+)
 from foundationallm.models.constants import (
     AgentCapabilityCategories,
     ResourceObjectIdPropertyNames,
@@ -443,24 +449,25 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             )
         # End Assistants API implementation
 
-        # Start LangGraph ReAct Agent workflow implementation
-        if (agent.workflow is not None and isinstance(agent.workflow, LangGraphReactAgentWorkflow)):
+        # Start LangGraph ReAct Agent workflow AND LangChain simple tool implementation
+        if agent.workflow is not None and isinstance(agent.workflow, LangGraphReactAgentWorkflow):
             tool_factory = ToolFactory(self.plugin_manager)
             tools = []
 
             # Populate tools list from agent configuration
             for tool in agent.tools:
                 tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
-
+            
+            # Build message history
+            messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
+            messages.append(HumanMessage(content=request.user_prompt))                        
+                
             # Define the graph
             graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)
-            messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
-            messages.append(HumanMessage(content=request.user_prompt))
-
             response = await graph.ainvoke(
                 {'messages': messages}, 
                 config={"configurable": {"original_user_prompt": request.user_prompt, **({"recursion_limit": agent.workflow.graph_recursion_limit} if agent.workflow.graph_recursion_limit is not None else {})}}
-            )
+            )           
             # TODO: process tool messages with analysis results AIMessage with content='' but has addition_kwargs={'tool_calls';[...]}
 
             # Get ContentArtifact items from ToolMessages
@@ -492,8 +499,42 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     )
         # End LangGraph ReAct Agent workflow implementation
 
-        # Start LangChain Expression Language (LCEL) implementation
+        # Begin LangChain simple tool workflow implementation
+        if (agent.workflow is not None and isinstance(agent.workflow, LangChainSimpleToolAgentWorkflow)):           
+            tool_factory = ToolFactory(self.plugin_manager)
+            tools = []
+            # Populate tools list from agent configuration
+            for tool in agent.tools:
+                tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))                     
+            # Build message history
+            messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
+            messages.append(HumanMessage(content=request.user_prompt))
+            chatPromptTemplate = ChatPromptTemplate.from_messages([
+                    ("system", self.prompt.prefix),
+                    ("placeholder", "{chat_history}"),
+                    ("human", "{input}"),
+                    ("placeholder", "{agent_scratchpad}")
+                ]
+            )
+            print("GOT HERE 2")
+            tool_agent = create_tool_calling_agent(llm, tools=tools, prompt=chatPromptTemplate)
+            print("GOT HERE 3")
+            agent_executor = AgentExecutor(agent=tool_agent, tools=tools)
+            print("GOT HERE 4")
+            response = await agent_executor.ainvoke(
+                    input={
+                        "input": request.user_prompt,
+                        "chat_history": messages
+                    },
+                    config=RunnableConfig(configurable = {"original_user_prompt": request.user_prompt})
+                )      
 
+            print("********************************")
+            print(f"Response: {response}")
+            print("********************************")   
+        # End LangChain simple tool workflow implementation
+            
+        # Start LangChain Expression Language (LCEL) implementation
         # Get the vector document retriever, if it exists.
         retriever = self._get_document_retriever(request, agent)
         if retriever is not None:

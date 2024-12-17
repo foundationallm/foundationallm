@@ -36,6 +36,7 @@
     <Compile Include="foundationallm\models\agents\agent_workflows\agent_workflow_base.py" />
     <Compile Include="foundationallm\models\agents\agent_workflows\azure_openai_assistants_agent_workflow.py" />
     <Compile Include="foundationallm\models\agents\agent_workflows\langchain_expression_language_agent_workflow.py" />
+    <Compile Include="foundationallm\models\agents\agent_workflows\langchain_simple_tool_agent_workflow.py" />
     <Compile Include="foundationallm\models\agents\agent_workflows\langgraph_react_agent_workflow.py" />
     <Compile Include="foundationallm\models\attachments\attachment_properties.py" />
     <Compile Include="foundationallm\models\attachments\attachment_providers.py" />
