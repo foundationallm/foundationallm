@@ -47,5 +47,5 @@ public class ContentArtifact
     /// The metadata associated with the content.
     /// </summary>
     [JsonPropertyName("metadata")]
-    public Dictionary<string, object>? Metadata { get; set; }
+    public Dictionary<string, string>? Metadata { get; set; }
 }
