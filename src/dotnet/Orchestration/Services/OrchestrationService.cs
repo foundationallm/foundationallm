@@ -3,18 +3,23 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Models.Infrastructure;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
-using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Services.Storage;
+using FoundationaLLM.Common.Services.Users;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using FoundationaLLM.Orchestration.Core.Models;
+using FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions;
 using FoundationaLLM.Orchestration.Core.Orchestration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Text;
+using System.Text.Json;
 
 namespace FoundationaLLM.Orchestration.Core.Services;
 
@@ -23,10 +28,12 @@ namespace FoundationaLLM.Orchestration.Core.Services;
 /// </summary>
 public class OrchestrationService : IOrchestrationService
 {
+    private readonly OrchestrationServiceSettings _settings;
     private readonly ILLMOrchestrationServiceManager _llmOrchestrationServiceManager;
     private readonly IAzureCosmosDBService _cosmosDBService;
     private readonly ITemplatingService _templatingService;
     private readonly ICodeExecutionService _codeExecutionService;
+    private readonly IUserProfileService _userProfileService;
     private readonly ICallContext _callContext;
     private readonly IConfiguration _configuration;
     private readonly ILogger<OrchestrationService> _logger;
@@ -35,35 +42,43 @@ public class OrchestrationService : IOrchestrationService
 
     private readonly Dictionary<string, IResourceProviderService> _resourceProviderServices;
 
+    private readonly IStorageService _completionRequestsStorage;
+
     /// <summary>
     /// Constructor for the Orchestration Service.
     /// </summary>
+    /// <param name="options">The options for configuring the service.</param>
     /// <param name="resourceProviderServices">A list of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
     /// <param name="llmOrchestrationServiceManager">The <see cref="ILLMOrchestrationServiceManager"/> managing the internal and external LLM orchestration services.</param>
     /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> used to interact with the Cosmos DB database.</param>
     /// <param name="templatingService">The <see cref="ITemplatingService"/> used to render templates.</param>
     /// <param name="codeExecutionService">The <see cref="ICodeExecutionService"/> used to execute code.</param>
+    /// <param name="userProfileService">The <see cref="IUserProfileService"/> used to interact with user profiles.</param>
     /// <param name="callContext">The call context of the request being handled.</param>
     /// <param name="configuration">The <see cref="IConfiguration"/> used to retrieve app settings from configuration.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> provding dependency injection services for the current scope.</param>
     /// <param name="loggerFactory">The logger factory used to create loggers.</param>
     public OrchestrationService(
+        IOptions<OrchestrationServiceSettings> options,
         IEnumerable<IResourceProviderService> resourceProviderServices,
         ILLMOrchestrationServiceManager llmOrchestrationServiceManager,
         IAzureCosmosDBService cosmosDBService,
         ITemplatingService templatingService,
         ICodeExecutionService codeExecutionService,
+        IUserProfileService userProfileService,
         ICallContext callContext,
         IConfiguration configuration,
         IServiceProvider serviceProvider,
         ILoggerFactory loggerFactory)
     {
+        _settings = options.Value;
         _resourceProviderServices = resourceProviderServices.ToDictionary<IResourceProviderService, string>(
                 rps => rps.Name);
         _llmOrchestrationServiceManager = llmOrchestrationServiceManager;
         _cosmosDBService = cosmosDBService;
         _templatingService = templatingService;
         _codeExecutionService = codeExecutionService;
+        _userProfileService = userProfileService;
 
         _callContext = callContext;
         _configuration = configuration;
@@ -71,6 +86,10 @@ public class OrchestrationService : IOrchestrationService
 
         _loggerFactory = loggerFactory;
         _logger = _loggerFactory.CreateLogger<OrchestrationService>();
+
+        _completionRequestsStorage = new BlobStorageService(
+            Options.Create<BlobStorageServiceSettings>(_settings.CompletionRequestsStorage),
+            _loggerFactory.CreateLogger<BlobStorageService>());
     }
 
     /// <inheritdoc/>
@@ -111,7 +130,8 @@ public class OrchestrationService : IOrchestrationService
                 _templatingService,
                 _codeExecutionService,
                 _serviceProvider,
-                _loggerFactory)
+                _loggerFactory,
+                ObserveCompletionRequest)
                 ?? throw new OrchestrationException($"The orchestration builder was not able to create an orchestration for agent [{completionRequest.AgentName ?? string.Empty}].");
 
             var completionResponse = await orchestration.GetCompletion(completionRequest);
@@ -152,7 +172,8 @@ public class OrchestrationService : IOrchestrationService
                 _templatingService,
                 _codeExecutionService,
                 _serviceProvider,
-                _loggerFactory)
+                _loggerFactory,
+                ObserveCompletionRequest)
                 ?? throw new OrchestrationException($"The orchestration builder was not able to create an orchestration for agent [{completionRequest.AgentName ?? string.Empty}].");
 
             var operationResponse = await orchestration.StartCompletionOperation(completionRequest);
@@ -214,6 +235,33 @@ public class OrchestrationService : IOrchestrationService
                 Status = OperationStatus.Failed,
                 StatusMessage = "Could not retrieve the status of the operation."
             };
+        }
+    }
+
+    private async Task ObserveCompletionRequest(LLMCompletionRequest completionRequest)
+    {
+        try
+        {
+            var userProfile = await _userProfileService.GetUserProfileForUserAsync(
+                _callContext.InstanceId!,
+                _callContext.CurrentUserIdentity!.UPN!);
+            var persistCompletionRequest = userProfile?.Flags.GetValueOrDefault(UserProfileFlags.PersistOrchestrationCompletionRequests, false) ?? false;
+
+            if (persistCompletionRequest)
+            {
+                _logger.LogInformation("Persisting completion request for operation {OperationId}.", completionRequest.OperationId);
+                await _completionRequestsStorage.WriteFileAsync(
+                    _completionRequestsStorage.StorageContainerName!,
+                    $"{_callContext.CurrentUserIdentity.UPN}/{DateTimeOffset.UtcNow:yyyy-MM-dd-HHmmss}-completion-request.json",
+                    JsonSerializer.Serialize(completionRequest),
+                    "application/json",
+                    default);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error observing the completion request for operation {OperationId}.",
+                completionRequest.OperationId);
         }
     }
 
