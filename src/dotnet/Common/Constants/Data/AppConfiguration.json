@@ -752,6 +752,39 @@
 		]
 	},
 	{
+		"namespace": "APIEndpoints:OrchestrationAPI:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for storing persisted completion requests."
+		},
+		"configuration_keys": [
+			{
+				"name": "CompletionRequestsStorage:AccountName",
+				"description": "The Azure Storage account for persisted completion requests.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.9.1"
+			},
+			{
+				"name": "CompletionRequestsStorage:AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.9.0"
+			},
+			{
+				"name": "CompletionRequestsStorage:ContainerName",
+				"description": "The name of the root container in the Azure Storage account.",
+				"secret": "",
+				"value": "orchestration-completion-requests",
+				"content_type": "",
+				"first_version": "0.9.1"
+			}
+		]
+	},
+	{
 		"namespace": "APIEndpoints:LangChainAPI:Essentials",
 		"dependency_injection_key": null,
 		"configuration_section": {

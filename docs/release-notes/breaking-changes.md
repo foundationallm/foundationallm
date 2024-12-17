@@ -3,7 +3,32 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
-## Starting with 0.9.1
+## Starting with 0.9.1-rc102
+
+### Configuration changes
+
+The following new App Configuration settings are required:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+|`FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AccountName` | `<main_storage_account_name>` | Provides the storage account used by the Orchestration API to persist completion requests. |
+|`FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AuthenticationType` | `AzureIdentity` | Indicates that managed identity authentication should be used to access the storage account. |
+|`FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:ContainerName` | `orchestration-completion-requests` | Provides the storage container name used by the Orchestration API to persist completion requests. Should always be `orchestration-completion-requests` |
+
+### User profile changes
+
+A new flag named `persistOrchestrationCompletionRequests` is added to the user profile. This flag is used to determine whether the user's completion requests should be persisted in the storage account. The default value is `false`.
+
+Sample configuration:
+
+```json
+"flags": {
+        "oneDriveWorkSchoolEnabled": true,
+        "persistOrchestrationCompletionRequests": true
+    },
+```
+
+## Starting with 0.9.1-rc101
 
 ### Configuration changes
 

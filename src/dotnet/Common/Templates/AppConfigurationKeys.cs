@@ -556,6 +556,31 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AccountName setting.
+        /// <para>Value description:<br/>The Azure Storage account for persisted completion requests.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_OrchestrationAPI_Configuration_CompletionRequestsStorage_AccountName =
+            "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AccountName";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_OrchestrationAPI_Configuration_CompletionRequestsStorage_AuthenticationType =
+            "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AuthenticationType";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:ContainerName setting.
+        /// <para>Value description:<br/>The name of the root container in the Azure Storage account.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_OrchestrationAPI_Configuration_CompletionRequestsStorage_ContainerName =
+            "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:ContainerName";
+
+        #endregion
+
         #region FoundationaLLM:APIEndpoints:LangChainAPI:Essentials
         
         /// <summary>

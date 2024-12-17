@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Core.Interfaces;

@@ -14,7 +14,10 @@ namespace FoundationaLLM.Common.Services.Storage
         public string? InstanceName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <inheritdoc/>
-        public string StorageAccountName => throw new NotImplementedException();
+        public string? StorageAccountName => throw new NotImplementedException();
+
+        /// <inheritdoc/>
+        public string? StorageContainerName => throw new NotImplementedException();
 
         /// <inheritdoc/>
         public Task DeleteFileAsync(string containerName, string filePath, CancellationToken cancellationToken = default) => throw new NotImplementedException();
