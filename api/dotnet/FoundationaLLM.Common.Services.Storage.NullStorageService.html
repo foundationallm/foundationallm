@@ -213,7 +213,39 @@ Class NullStorageService  <a class="header-action link-secondary" title="View so
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string StorageAccountName { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string? StorageAccountName { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Services_Storage_NullStorageService_StorageContainerName_" data-uid="FoundationaLLM.Common.Services.Storage.NullStorageService.StorageContainerName*"></a>
+
+  <h3 id="FoundationaLLM_Common_Services_Storage_NullStorageService_StorageContainerName" data-uid="FoundationaLLM.Common.Services.Storage.NullStorageService.StorageContainerName">
+  StorageContainerName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/NullStorageService.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The name of the storage container.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? StorageContainerName { get; }</code></pre>
   </div>
 
 
@@ -241,7 +273,7 @@ Class NullStorageService  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Common_Services_Storage_NullStorageService_DeleteFileAsync_System_String_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.Storage.NullStorageService.DeleteFileAsync(System.String,System.String,System.Threading.CancellationToken)">
   DeleteFileAsync(string, string, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/NullStorageService.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/NullStorageService.cs/#L23"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes a file from storage.</p>
@@ -285,7 +317,7 @@ Class NullStorageService  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Common_Services_Storage_NullStorageService_FileExistsAsync_System_String_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.Storage.NullStorageService.FileExistsAsync(System.String,System.String,System.Threading.CancellationToken)">
   FileExistsAsync(string, string, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/NullStorageService.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/NullStorageService.cs/#L26"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Checks if a file exists on the storage.</p>
@@ -329,7 +361,7 @@ Class NullStorageService  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Common_Services_Storage_NullStorageService_GetFilePathsAsync_System_String_System_String_System_Boolean_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.Storage.NullStorageService.GetFilePathsAsync(System.String,System.String,System.Boolean,System.Threading.CancellationToken)">
   GetFilePathsAsync(string, string?, bool, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/NullStorageService.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/NullStorageService.cs/#L29"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a list file paths in the specific directory.</p>
@@ -377,7 +409,7 @@ Class NullStorageService  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Common_Services_Storage_NullStorageService_ReadFileAsync_System_String_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.Storage.NullStorageService.ReadFileAsync(System.String,System.String,System.Threading.CancellationToken)">
   ReadFileAsync(string, string, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/NullStorageService.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/NullStorageService.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Reads the binary content of a specified file from the storage.</p>
@@ -422,7 +454,7 @@ Class NullStorageService  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Common_Services_Storage_NullStorageService_WriteFileAsync_System_String_System_String_System_IO_Stream_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.Storage.NullStorageService.WriteFileAsync(System.String,System.String,System.IO.Stream,System.String,System.Threading.CancellationToken)">
   WriteFileAsync(string, string, Stream, string?, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/NullStorageService.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/NullStorageService.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Writes the binary content to a specified file from the storage.</p>
@@ -472,7 +504,7 @@ Class NullStorageService  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Common_Services_Storage_NullStorageService_WriteFileAsync_System_String_System_String_System_String_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.Storage.NullStorageService.WriteFileAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)">
   WriteFileAsync(string, string, string, string?, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/NullStorageService.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/NullStorageService.cs/#L38"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Writes the string content to a specified file from the storage.</p>

@@ -1650,7 +1650,7 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
   <h3 id="FoundationaLLM_DependencyInjection_AddLLMOrchestrationServices_Microsoft_Extensions_Hosting_IHostApplicationBuilder_" data-uid="FoundationaLLM.DependencyInjection.AddLLMOrchestrationServices(Microsoft.Extensions.Hosting.IHostApplicationBuilder)">
   AddLLMOrchestrationServices(IHostApplicationBuilder)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/DependencyInjection.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/DependencyInjection.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds all internal LLM orchestration services and the LLM orchestration service manager to the dependency injection container.</p>
@@ -1823,7 +1823,7 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
   <h3 id="FoundationaLLM_DependencyInjection_AddOrchestrationService_Microsoft_Extensions_Hosting_IHostApplicationBuilder_" data-uid="FoundationaLLM.DependencyInjection.AddOrchestrationService(Microsoft.Extensions.Hosting.IHostApplicationBuilder)">
   AddOrchestrationService(IHostApplicationBuilder)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/DependencyInjection.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/DependencyInjection.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds the Orchestration service to the dependency injection container.</p>
@@ -2171,6 +2171,75 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
   <dl class="parameters">
     <dt><code>builder</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a></dt>
     <dd><p>The host application builder.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_DependencyInjection_AddUserProfileService_" data-uid="FoundationaLLM.DependencyInjection.AddUserProfileService*"></a>
+
+  <h3 id="FoundationaLLM_DependencyInjection_AddUserProfileService_Microsoft_Extensions_DependencyInjection_IServiceCollection_Microsoft_Extensions_Configuration_IConfigurationManager_" data-uid="FoundationaLLM.DependencyInjection.AddUserProfileService(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationManager)">
+  AddUserProfileService(IServiceCollection, IConfigurationManager)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Users/DependencyInjection.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Registers the <a class="xref" href="FoundationaLLM.Common.Interfaces.IUserProfileService.html">IUserProfileService</a> implementation with the dependency injection container.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddUserProfileService(this IServiceCollection services, IConfigurationManager configuration)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>services</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a> dependency injection container service collection.</p>
+</dd>
+    <dt><code>configuration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfigurationmanager">IConfigurationManager</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfigurationmanager">IConfigurationManager</a> application configuration manager.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_DependencyInjection_AddUserProfileService_" data-uid="FoundationaLLM.DependencyInjection.AddUserProfileService*"></a>
+
+  <h3 id="FoundationaLLM_DependencyInjection_AddUserProfileService_Microsoft_Extensions_Hosting_IHostApplicationBuilder_" data-uid="FoundationaLLM.DependencyInjection.AddUserProfileService(Microsoft.Extensions.Hosting.IHostApplicationBuilder)">
+  AddUserProfileService(IHostApplicationBuilder)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Users/DependencyInjection.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Registers the <a class="xref" href="FoundationaLLM.Common.Interfaces.IUserProfileService.html">IUserProfileService</a> implementation with the dependency injection container.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddUserProfileService(this IHostApplicationBuilder builder)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>builder</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a> application builder managing the dependency injection container.</p>
 </dd>
   </dl>
 

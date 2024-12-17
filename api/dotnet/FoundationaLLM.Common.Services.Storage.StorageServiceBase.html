@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Services_Storage_StorageServiceBase" data-uid="FoundationaLLM.Common.Services.Storage.StorageServiceBase" class="text-break">
-Class StorageServiceBase  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L13"><i class="bi bi-code-slash"></i></a>
+Class StorageServiceBase  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L14"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -171,7 +171,7 @@ Class StorageServiceBase  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Common_Services_Storage_StorageServiceBase__ctor_FoundationaLLM_Common_Models_Configuration_Storage_BlobStorageServiceSettings_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Storage_StorageServiceBase__" data-uid="FoundationaLLM.Common.Services.Storage.StorageServiceBase.#ctor(FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Storage.StorageServiceBase})">
   StorageServiceBase(BlobStorageServiceSettings, ILogger&lt;StorageServiceBase&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L58"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Common.Services.Storage.StorageServiceBase.html">StorageServiceBase</a> with the specified settings and logger.</p>
@@ -207,7 +207,7 @@ Class StorageServiceBase  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Common_Services_Storage_StorageServiceBase__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Storage_BlobStorageServiceSettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Storage_StorageServiceBase__" data-uid="FoundationaLLM.Common.Services.Storage.StorageServiceBase.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Storage.StorageServiceBase})">
   StorageServiceBase(IOptions&lt;BlobStorageServiceSettings&gt;, ILogger&lt;StorageServiceBase&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L43"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Common.Services.Storage.StorageServiceBase.html">StorageServiceBase</a> with the specified options and logger.</p>
@@ -246,7 +246,7 @@ Class StorageServiceBase  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Common_Services_Storage_StorageServiceBase__logger" data-uid="FoundationaLLM.Common.Services.Storage.StorageServiceBase._logger">
   _logger
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L23"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The logger used for logging.</p>
@@ -274,6 +274,37 @@ Class StorageServiceBase  <a class="header-action link-secondary" title="View so
 
 
 
+
+  <h3 id="FoundationaLLM_Common_Services_Storage_StorageServiceBase__settings" data-uid="FoundationaLLM.Common.Services.Storage.StorageServiceBase._settings">
+  _settings
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The <a class="xref" href="FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.html">BlobStorageServiceSettings</a> used to configure the storage service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected readonly BlobStorageServiceSettings _settings</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.html">BlobStorageServiceSettings</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
   <h2 class="section" id="properties">Properties
 </h2>
 
@@ -282,7 +313,7 @@ Class StorageServiceBase  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Common_Services_Storage_StorageServiceBase_InstanceName" data-uid="FoundationaLLM.Common.Services.Storage.StorageServiceBase.InstanceName">
   InstanceName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L28"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The optional instance name of the storage service.</p>
@@ -310,6 +341,69 @@ Class StorageServiceBase  <a class="header-action link-secondary" title="View so
 
 
 
+  <a id="FoundationaLLM_Common_Services_Storage_StorageServiceBase_StorageAccountName_" data-uid="FoundationaLLM.Common.Services.Storage.StorageServiceBase.StorageAccountName*"></a>
+
+  <h3 id="FoundationaLLM_Common_Services_Storage_StorageServiceBase_StorageAccountName" data-uid="FoundationaLLM.Common.Services.Storage.StorageServiceBase.StorageAccountName">
+  StorageAccountName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The name of the storage account.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? StorageAccountName { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Services_Storage_StorageServiceBase_StorageContainerName_" data-uid="FoundationaLLM.Common.Services.Storage.StorageServiceBase.StorageContainerName*"></a>
+
+  <h3 id="FoundationaLLM_Common_Services_Storage_StorageServiceBase_StorageContainerName" data-uid="FoundationaLLM.Common.Services.Storage.StorageServiceBase.StorageContainerName">
+  StorageContainerName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? StorageContainerName { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
@@ -318,7 +412,7 @@ Class StorageServiceBase  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Common_Services_Storage_StorageServiceBase_CreateClientFromAccountKey_System_String_System_String_" data-uid="FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromAccountKey(System.String,System.String)">
   CreateClientFromAccountKey(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L79"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a storage client from an account name and an account key.</p>
@@ -354,7 +448,7 @@ Class StorageServiceBase  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Common_Services_Storage_StorageServiceBase_CreateClientFromConnectionString_System_String_" data-uid="FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromConnectionString(System.String)">
   CreateClientFromConnectionString(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L72"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a storage client from a connection string.</p>
@@ -387,7 +481,7 @@ Class StorageServiceBase  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Common_Services_Storage_StorageServiceBase_CreateClientFromIdentity_System_String_" data-uid="FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromIdentity(System.String)">
   CreateClientFromIdentity(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L85"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Create a storage client from an account name using the default identity for authentication.</p>
@@ -420,7 +514,7 @@ Class StorageServiceBase  <a class="header-action link-secondary" title="View so
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L13" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Storage/StorageServiceBase.cs/#L14" class="edit-link">Edit this page</a>
         </div>
 
 

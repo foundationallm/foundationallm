@@ -2472,6 +2472,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IUserProfileService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IUserProfileService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.yml",
       "output": {
         ".html": {
@@ -5762,6 +5772,26 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Users.UserProfileService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.Users.UserProfileService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Users.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.Users.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.yml",
       "output": {
         ".html": {
@@ -6282,16 +6312,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Core.Interfaces.IUserProfileService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Core.Interfaces.IUserProfileService.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Core.Interfaces.yml",
       "output": {
         ".html": {
@@ -6386,16 +6406,6 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Core.Services.OneDriveWorkSchoolService.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Core.Services.UserProfileService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Core.Services.UserProfileService.html"
         }
       },
       "version": ""
@@ -7476,6 +7486,16 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions.LangChainServiceSettings.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions.OrchestrationServiceSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions.OrchestrationServiceSettings.html"
         }
       },
       "version": ""
