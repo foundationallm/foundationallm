@@ -1,5 +1,10 @@
 <template>
 	<div class="chat-thread">
+		<button
+			label="Export Chat to PDF"
+			icon="pi pi-file-pdf"
+			@click="exportChatToPDF"
+		/>
 		<!-- Message list -->
 		<div
 			ref="messageContainer"
@@ -69,6 +74,7 @@
 
 <script lang="ts">
 import type { Message, Session } from '@/js/types';
+import jsPDF from "jspdf";
 
 export default {
 	name: 'ChatThread',
@@ -210,6 +216,58 @@ export default {
 
 			// this.isMessagePending = false;
 		},
+
+		async exportChatToPDF() {
+			const doc = new jsPDF({ unit: "mm", format: "a4" });
+			let y = 15;
+
+			doc.setFont("helvetica", "bold");
+			doc.setFontSize(16);
+			doc.text("Chat Conversation", 105, y, { align: "center" });
+			y += 10;
+
+			for (const message of this.messages) {
+				const sender = message.sender === "User" ? "You" : message.senderDisplayName || "Agent";
+				const timestamp = new Date(message.timeStamp).toLocaleString();
+				const textContent = message.text || message.content?.map(c => c.value).join("\n") || "[No content]";
+
+				doc.setFont("helvetica", "bold");
+				doc.setFontSize(12);
+				doc.setTextColor(30, 30, 30);
+				doc.text(`${timestamp} - ${sender}:`, 10, y);
+				y += 6;
+
+				doc.setFont("helvetica", "normal");
+				doc.setFontSize(10);
+				doc.setTextColor(0, 0, 0);
+
+				const wrappedText = doc.splitTextToSize(textContent, 180);
+				for (let line of wrappedText) {
+					doc.text(line, 10, y);
+					y += 5;
+					if (y > 270) {
+						doc.addPage();
+						y = 15;
+					}
+				}
+
+				y += 4;
+
+				if (y > 270) {
+					doc.addPage();
+					y = 15;
+				}
+			}
+
+			const pageCount = doc.internal.getNumberOfPages();
+			for (let i = 1; i <= pageCount; i++) {
+				doc.setPage(i);
+				doc.setFontSize(8);
+				doc.text(`Page ${i} of ${pageCount}`, 105, 285, { align: "center" });
+			}
+
+			doc.save("Improved_Chat_Conversation.pdf");
+		}
 	},
 };
 </script>
