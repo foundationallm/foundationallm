@@ -448,18 +448,25 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             tool_factory = ToolFactory(self.plugin_manager)
             tools = []
 
-            # Populate tools list from agent configuration
-            for tool in agent.tools:
-                tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
+            parsed_user_prompt = request.user_prompt
+
+            explicit_tool = next((tool for tool in agent.tools if parsed_user_prompt.startswith(f'[{tool.name}]:')), None)
+            if explicit_tool is not None:
+                tools.append(tool_factory.get_tool(explicit_tool, request.objects, self.user_identity, self.config))
+                parsed_user_prompt = parsed_user_prompt.split(':', 1)[1].strip()
+            else:
+                # Populate tools list from agent configuration
+                for tool in agent.tools:
+                    tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
 
             # Define the graph
             graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)
             messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
-            messages.append(HumanMessage(content=request.user_prompt))
+            messages.append(HumanMessage(content=parsed_user_prompt))
 
             response = await graph.ainvoke(
                 {'messages': messages}, 
-                config={"configurable": {"original_user_prompt": request.user_prompt, **({"recursion_limit": agent.workflow.graph_recursion_limit} if agent.workflow.graph_recursion_limit is not None else {})}}
+                config={"configurable": {"original_user_prompt": parsed_user_prompt, **({"recursion_limit": agent.workflow.graph_recursion_limit} if agent.workflow.graph_recursion_limit is not None else {})}}
             )
             # TODO: process tool messages with analysis results AIMessage with content='' but has addition_kwargs={'tool_calls';[...]}
 
