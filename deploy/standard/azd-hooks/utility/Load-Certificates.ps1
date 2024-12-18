@@ -22,11 +22,11 @@ foreach ($certificateFolder in $certificates) {
     $keyName = $certificateFolder
 
     $password = Read-Host "Enter password for $($pfx.FullName) certificate (Enter for none): " -AsSecureString
-    if ([string]::IsNullOrWhitespace($password))
+    if ($password.Length -eq 0)
     {
         Invoke-AndRequireSuccess "Load PFX Certificate $($certificateFolder) into Azure Key Vault" {
             az keyvault certificate import `
-                --file $pfx.FullName `
+                --file $pfx `
                 --name $keyName `
                 --vault-name $keyVaultName
         }
@@ -35,7 +35,7 @@ foreach ($certificateFolder in $certificates) {
     {
         Invoke-AndRequireSuccess "Load PFX Certificate $($certificateFolder) into Azure Key Vault" {
             az keyvault certificate import `
-                --file $pfx.FullName `
+                --file $pfx `
                 --name $keyName `
                 --vault-name $keyVaultName `
                 --password $password
