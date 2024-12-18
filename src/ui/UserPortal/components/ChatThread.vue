@@ -218,55 +218,134 @@ export default {
 		},
 
 		async exportChatToPDF() {
-			const doc = new jsPDF({ unit: "mm", format: "a4" });
-			let y = 15;
+		// 	const doc = new jsPDF({ unit: "mm", format: "a4" });
+		// 	let y = 15;
 
-			doc.setFont("helvetica", "bold");
+		// 	const pageHeight = 297;
+		// 	const margin = 10;
+		// 	const maxWidth = 130;
+		// 	const userBgColor = [173, 216, 230];
+		// 	const agentBgColor = [230, 230, 230];
+
+		// 	doc.setFont("helvetica", "bold");
+		// 	doc.setFontSize(16);
+		// 	doc.text("Chat Conversation", 105, y, { align: "center" });
+		// 	y += 10;
+
+		// 	for (const message of this.messages) {
+		// 		const isUser = message.sender === "User";
+		// 		const sender = isUser ? "You" : message.senderDisplayName || "Agent";
+		// 		const timestamp = new Date(message.timeStamp).toLocaleString();
+		// 		const textContent = message.text || message.content?.map(c => c.value).join("\n") || "[No content]";
+		// 		const wrappedText = doc.splitTextToSize(textContent, maxWidth);
+
+		// 		const boxX = isUser ? 210 - maxWidth - margin : margin;
+		// 		const boxWidth = maxWidth + 5;
+		// 		const boxHeight = wrappedText.length * 5 + 8;
+
+		// 		if (y > pageHeight - margin) {
+		// 			doc.addPage();
+		// 			y = margin;
+		// 		}
+
+		// 		doc.setFontSize(8);
+		// 		doc.setTextColor(100, 100, 100);
+		// 		doc.text(`${timestamp} - ${sender}`, isUser ? 210 - margin : margin, y);
+
+		// 		y += 4;
+
+		// 		doc.setFillColor(...(isUser ? userBgColor : agentBgColor));
+        //     	doc.roundedRect(boxX, y, boxWidth, boxHeight, 2, 2, "F");
+
+		// 		doc.setFontSize(10);
+		// 		doc.setTextColor(0, 0, 0);
+		// 		wrappedText.forEach((line, index) => {
+		// 			doc.text(line, boxX + 3, y + 7 + index * 5);
+		// 		});
+
+		// 		y += boxHeight + 5;
+		// 	}
+
+		// 	const pageCount = doc.internal.getNumberOfPages();
+		// 	for (let i = 1; i <= pageCount; i++) {
+		// 		doc.setPage(i);
+		// 		doc.setFontSize(8);
+		// 		doc.text(`Page ${i} of ${pageCount}`, 105, 290, { align: "center" });
+		// 	}
+
+		// 	doc.save("Improved_Chat_Conversation.pdf");
+		// }
+			console.log(this.$appConfigStore.primaryColor);
+
+			const doc = new jsPDF({ unit: "mm", format: "a4" });
+			const pageHeight = 297; // A4 height in mm
+			const margin = 10; // Page margins
+			const messageMargin = 6; // Message bubble padding
+			let y = 15; // Start vertical position
+
+			const maxWidth = 160;
+			const userBgColor = '#FFFFFF'; // Background color for user messages
+			const userTextColor = '#000000'; // Text color for user messages
+			const agentBgColor = this.$appConfigStore.primaryColor; // Background color for agent messages
+			const agentTextColor = this.$appConfigStore.primaryText; // Text colors for agent messages
+
+			doc.setFont("helvetica");
+
+			// Title
 			doc.setFontSize(16);
 			doc.text("Chat Conversation", 105, y, { align: "center" });
 			y += 10;
 
+			// Process messages
 			for (const message of this.messages) {
-				const sender = message.sender === "User" ? "You" : message.senderDisplayName || "Agent";
+				const isUser = message.sender === "User";
+				const sender = isUser ? "You" : message.senderDisplayName || "Agent";
 				const timestamp = new Date(message.timeStamp).toLocaleString();
 				const textContent = message.text || message.content?.map(c => c.value).join("\n") || "[No content]";
+				const wrappedText = doc.splitTextToSize(textContent, maxWidth);
 
-				doc.setFont("helvetica", "bold");
-				doc.setFontSize(12);
-				doc.setTextColor(30, 30, 30);
-				doc.text(`${timestamp} - ${sender}:`, 10, y);
-				y += 6;
+				// Dynamic height calculation
+				const boxHeight = (wrappedText.length * 5) + (messageMargin); // Text height + padding + margin
 
-				doc.setFont("helvetica", "normal");
-				doc.setFontSize(10);
-				doc.setTextColor(0, 0, 0);
-
-				const wrappedText = doc.splitTextToSize(textContent, 180);
-				for (let line of wrappedText) {
-					doc.text(line, 10, y);
-					y += 5;
-					if (y > 270) {
-						doc.addPage();
-						y = 15;
-					}
+				// Handle page overflow before drawing
+				if (y + boxHeight + 10 > pageHeight - margin) {
+					doc.addPage();
+					y = margin;
 				}
 
+				// Timestamp
+				doc.setFontSize(8);
+				doc.setTextColor(100, 100, 100);
+				const textWidth = doc.getTextWidth(`${timestamp} - ${sender}`);
+				const adjustedX = isUser ? 210 - margin - textWidth : margin;
+				doc.text(`${timestamp} - ${sender}`, adjustedX, y);
 				y += 4;
 
-				if (y > 270) {
-					doc.addPage();
-					y = 15;
-				}
+				// Message bubble
+				const bubbleX = isUser ? 210 - maxWidth - (messageMargin * 2) - margin : margin; // Right or left alignment
+				doc.setFillColor(isUser ? userBgColor : agentBgColor);
+				doc.rect(bubbleX, y, maxWidth + (messageMargin * 2), boxHeight, "F");
+
+				// Message text
+				doc.setFontSize(10);
+				doc.setTextColor(isUser ? userTextColor : agentTextColor);
+				wrappedText.forEach((line, index) => {
+					doc.text(line, bubbleX + messageMargin, y + messageMargin + index * 5);
+				});
+
+				y += boxHeight + 5; // Move to the next position
 			}
 
-			const pageCount = doc.internal.getNumberOfPages();
-			for (let i = 1; i <= pageCount; i++) {
+			// Page numbers
+			const totalPages = doc.internal.getNumberOfPages();
+			for (let i = 1; i <= totalPages; i++) {
 				doc.setPage(i);
 				doc.setFontSize(8);
-				doc.text(`Page ${i} of ${pageCount}`, 105, 285, { align: "center" });
+				doc.text(`Page ${i} of ${totalPages}`, 105, 290, { align: "center" });
 			}
 
-			doc.save("Improved_Chat_Conversation.pdf");
+			// Save PDF
+			doc.save("Chat_Conversation_Improved.pdf");
 		}
 	},
 };
