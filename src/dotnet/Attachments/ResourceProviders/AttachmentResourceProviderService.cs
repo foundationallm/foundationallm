@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
+using FoundationaLLM.Common.Constants;
 
 namespace FoundationaLLM.Attachment.ResourceProviders
 {

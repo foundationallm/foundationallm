@@ -1,14 +1,12 @@
 ﻿using Azure.Messaging;
 using FluentValidation;
 using FoundationaLLM.Agent.Models.Resources;
-using FoundationaLLM.Common.Constants.Configuration;
-using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Configuration;
-using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.Events;
+using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
