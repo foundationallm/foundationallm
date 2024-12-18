@@ -31,6 +31,8 @@
     <Compile Include="foundationallm\langchain\agents\langchain_knowledge_management_agent.py" />
     <Compile Include="foundationallm\langchain\common\foundationallm_tool_base.py" />
     <Compile Include="foundationallm\langchain\common\__init__.py" />
+    <Compile Include="foundationallm\langchain\workflows\workflow_factory.py" />
+    <Compile Include="foundationallm\langchain\workflows\__init__.py" />
     <Compile Include="foundationallm\models\agents\agent_tool.py" />
     <Compile Include="foundationallm\models\agents\agent_workflows\agent_workflow_ai_model.py" />
     <Compile Include="foundationallm\models\agents\agent_workflows\agent_workflow_base.py" />
@@ -188,6 +190,7 @@
     <Folder Include="foundationallm\langchain\language_models\" />
     <Folder Include="foundationallm\langchain\language_models\openai\" />
     <Folder Include="foundationallm\langchain\exceptions\" />
+    <Folder Include="foundationallm\langchain\workflows\" />
     <Folder Include="foundationallm\models\agents\agent_workflows\" />
     <Folder Include="foundationallm\models\attachments\" />
     <Folder Include="foundationallm\models\constants\" />
