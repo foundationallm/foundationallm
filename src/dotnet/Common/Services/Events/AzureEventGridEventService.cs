@@ -25,8 +25,6 @@ namespace FoundationaLLM.Common.Services.Events
         private readonly AzureEventGridEventServiceProfile _profile;
         private readonly IAzureResourceManagerService _azureResourceManager;
         private readonly IHttpClientFactoryService _httpClientFactory;
-        private EventGridSenderClient? _eventGridSenderClient;
-        private EventGridReceiverClient? _eventGridReceiverClient;
 
         private readonly TimeSpan _eventProcessingCycle;
         private readonly string _serviceInstanceName;
