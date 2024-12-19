@@ -3,7 +3,7 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
-## Starting with 0.9.1-rc106
+## Starting with 0.9.1-rc105
 
 ### Configuration changes
 
