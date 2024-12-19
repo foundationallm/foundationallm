@@ -4362,6 +4362,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.ExternalAgentWorkflow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.ExternalAgentWorkflow.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainExpressionLanguageAgentWorkflow.yml",
       "output": {
         ".html": {
