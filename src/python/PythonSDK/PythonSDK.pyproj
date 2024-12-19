@@ -30,8 +30,9 @@
     <Compile Include="foundationallm\exceptions\__init__.py" />
     <Compile Include="foundationallm\langchain\agents\langchain_knowledge_management_agent.py" />
     <Compile Include="foundationallm\langchain\common\foundationallm_tool_base.py" />
+    <Compile Include="foundationallm\langchain\common\foundationallm_workflow_base.py" />
     <Compile Include="foundationallm\langchain\common\__init__.py" />
-    <Compile Include="foundationallm\langchain\workflows\workflow_factory.py" />
+    <Compile Include="foundationallm\langchain\workflows\external_workflow_factory.py" />
     <Compile Include="foundationallm\langchain\workflows\__init__.py" />
     <Compile Include="foundationallm\models\agents\agent_tool.py" />
     <Compile Include="foundationallm\models\agents\agent_workflows\agent_workflow_ai_model.py" />
