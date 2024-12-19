@@ -15,8 +15,11 @@ langchain-azure-dynamic-sessions==0.2.0
 langgraph==0.2.53
 openai==1.55.3
 pandas==2.2.2
+pyarrow==18.1.0
 pydantic==2.8.2
 pylint==3.2.6
+pyodbc==5.2.0
+sqlalchemy==2.0.36
 unidecode==1.3.8
-uvicorn==0.30.5
 wikipedia==1.4.0
+uvicorn==0.30.5
