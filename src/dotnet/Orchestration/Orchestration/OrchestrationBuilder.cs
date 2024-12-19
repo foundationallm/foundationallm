@@ -285,7 +285,15 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             }
                             break;
                         case AgentResourceTypeNames.Workflows:
-                            agentWorkflow.WorkflowName = resourcePath.MainResourceId;
+
+                            var retrievedWorkflow = await agentResourceProvider.GetResourceAsync<Workflow>(
+                                resourceObjectId.ObjectId,
+                                currentUserIdentity);
+
+                            explodedObjectsManager.TryAdd(
+                                retrievedWorkflow.ObjectId!,
+                                retrievedWorkflow);
+
                             break;
                     }
                 }
