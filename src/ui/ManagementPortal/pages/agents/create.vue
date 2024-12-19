@@ -709,7 +709,7 @@
 				<Dropdown
 					:modelValue="selectedWorkflow?.type"
 					:options="workflowOptions"
-					option-label="workflow_name"
+					option-label="name"
 					option-value="type"
 					class="dropdown--agent"
 					placeholder="--Select--"
@@ -1202,15 +1202,15 @@ export default {
 				// 	type: null,
 				// 	workflow_name: 'None',
 				// },
-				{
-					type: 'langgraph-react-agent-workflow',
-					workflow_name: 'LangGraph ReAct Agent Workflow',
-				},
-				{
-					type: 'azure-openai-assistants-workflow',
-					workflow_name: 'Azure OpenAI Assistants Workflow',
-				},
-				// ...(await api.getAgentWorkflows()),
+				// {
+				// 	type: 'langgraph-react-agent-workflow',
+				// 	workflow_name: 'LangGraph ReAct Agent Workflow',
+				// },
+				// {
+				// 	type: 'azure-openai-assistants-workflow',
+				// 	workflow_name: 'Azure OpenAI Assistants Workflow',
+				// },
+				...(await api.getAgentWorkflows()).map((workflow) => workflow.resource),
 			];
 
 			// Update the orchestratorOptions with the externalOrchestratorOptions.
@@ -1607,7 +1607,6 @@ export default {
 				if (this.selectedWorkflow) {
 					workflow = {
 						...this.selectedWorkflow,
-						object_id: undefined,
 						workflow_host: this.orchestration_settings.orchestrator,
 						// workflow_name: '',
 
@@ -1628,6 +1627,13 @@ export default {
 									properties: {
 										object_role: 'main_prompt',
 									},
+								},
+							} : {}),
+
+							...(this.selectedWorkflow?.object_id ? {
+								[this.selectedWorkflow.object_id]: {
+									object_id: this.selectedWorkflow.object_id,
+									properties: {},
 								},
 							} : {}),
 						},
