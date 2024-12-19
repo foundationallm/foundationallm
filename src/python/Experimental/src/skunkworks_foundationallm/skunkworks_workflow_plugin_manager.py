@@ -1,20 +1,23 @@
-from abc import ABC, abstractmethod
 from typing import List
+
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.langchain.common import FoundationaLLMWorkflowBase
 from foundationallm.models.agents import AgentTool, ExternalAgentWorkflow
-from foundationallm.plugins import PluginManagerTypes
+from foundationallm.langchain.common import FoundationaLLMWorkflowBase
+from foundationallm.plugins import WorkflowPluginManagerBase
 
-class WorkflowPluginManagerBase(ABC):
-    """
-    The base class for all workflow plugin managers.
-    """
+from skunkworks_foundationallm.workflows import (
+    FoundationaLLMRouterWorkflow
+)
+
+class SkunkworksWorkflowPluginManager(WorkflowPluginManagerBase):
+
+    FOUNDATIONALLM_ROUTER_WORKFLOW_NAME = 'FoundationaLLMRouterWorkflow'
+
     def __init__(self):
-        
-        self.plugin_manager_type = PluginManagerTypes.WORKFLOWS
+        super().__init__()
 
-    @abstractmethod
-    def create_workflow(self,
+    def create_workflow(
+        self,
         workflow_config: ExternalAgentWorkflow,
         objects: dict,
         tools: List[AgentTool],
@@ -35,8 +38,11 @@ class WorkflowPluginManagerBase(ABC):
             config : Configuration
                 The application configuration for FoundationaLLM.
         """
-        pass
+        match workflow_config.name:
+            case SkunkworksWorkflowPluginManager.FOUNDATIONALLM_ROUTER_WORKFLOW_NAME:
+                return FoundationaLLMRouterWorkflow(workflow_config, objects, tools, user_identity, config)
+            case _:
+                raise ValueError(f"Unknown tool name: {workflow_config.name}")
 
-    @abstractmethod
     def refresh_tools():
-        pass
+        print('Refreshing tools...')

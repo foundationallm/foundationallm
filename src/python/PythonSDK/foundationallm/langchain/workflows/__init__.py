@@ -1,1 +1,1 @@
-from .external_workflow_factory import ExternalWorkflowFactory
+from .workflow_factory import WorkflowFactory

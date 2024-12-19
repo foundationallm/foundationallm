@@ -3,9 +3,17 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
-## Starting with 0.9.1-rc103
+## Starting with 0.9.1-rc106
 
 ### Configuration changes
+
+The following new App Configuration settings are required:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+|`FoundationaLLM:PythonSDK:Logging:LogLevel:Azure` | `Warning` | Provides the default level of logging for Azure modules in the Python SDK. |
+
+### Agent workflow configuration changes
 
 Agent resource configuration files that have a `workflow` property now requires a `name` and `package_name` property. This is to support loading external workflows via plugins. For internal workflows, the `package_name` should be set to `FoundationaLLM`. Example below truncated for brevity.
 
@@ -19,6 +27,26 @@ Agent resource configuration files that have a `workflow` property now requires 
         "graph_recursion_limit": 10,
         "resource_object_ids": {}
     }
+}
+```
+
+A new `Workflow` resource must be added to the `FoundationaLLM.Agent` resource provider:
+
+```json
+{
+  "type": "external-agent-workflow",
+  "name": "ExternalAgentWorkflow",
+  "object_id": "/instances/<instance_id>/providers/FoundationaLLM.Agent/workflows/ExternalAgentWorkflow",
+  "display_name": "ExternalAgentWorkflow",
+  "description": "External Agent workflow",
+  "cost_center": null,
+  "properties": null,
+  "created_on": "2024-11-13T18:12:07.0223039+00:00",
+  "updated_on": "0001-01-01T00:00:00+00:00",
+  "created_by": "dev@foundationaLLM.ai",
+  "updated_by": null,
+  "deleted": false,
+  "expiration_date": null
 }
 ```
 

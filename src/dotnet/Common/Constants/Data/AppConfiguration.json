@@ -81,6 +81,14 @@
 				"first_version": "0.9.0"
 			},
 			{
+				"name": "Logging:LogLevel:Azure",
+				"description": "The default logging level used by the Python SDK.",
+				"secret": "",
+				"value": "Warning",
+				"content_type": "",
+				"first_version": "0.9.1"
+			},
+			{
 				"name": "Logging:EnableConsoleLogging",
 				"description": "The flag indicating whether the Python SDK sends logs to the console or not.",
 				"secret": "",

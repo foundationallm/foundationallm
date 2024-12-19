@@ -5,13 +5,16 @@ Description: FoundationaLLM base class for tools that uses the agent workflow mo
 from abc import ABC, abstractmethod
 from azure.identity import DefaultAzureCredential
 from langchain_core.messages import BaseMessage
+from pydantic import BaseModel
 from typing import List
 from foundationallm.config import Configuration, UserIdentity
+from foundationallm.langchain.common import FoundationaLLMWorkflowBase
 from foundationallm.models.agents import AgentTool, ExternalAgentWorkflow
-from foundationallm.models.orchestration import CompletionResponse
+from foundationallm.models.constants import AgentCapabilityCategories
+from foundationallm.models.orchestration import CompletionResponse, OpenAITextMessageContentItem
 from foundationallm.telemetry import Telemetry
 
-class FoundationaLLMWorkflowBase(ABC):
+class FoundationaLLMRouterWorkflow(FoundationaLLMWorkflowBase):
     """
     FoundationaLLM base class for workflows that uses the agent workflow model for its configuration.
     """
@@ -37,16 +40,8 @@ class FoundationaLLMWorkflowBase(ABC):
         config : Configuration
             The application configuration for FoundationaLLM.
         """
-        self.workflow_config = workflow_config
-        self.objects = objects
-        self.tools = tools if tools is not None else []
-        self.user_identity = user_identity
-        self.config = config
-        self.logger = Telemetry.get_logger(self.workflow_config.name)
-        self.tracer = Telemetry.get_tracer(self.workflow_config.name)
-        self.default_credential = DefaultAzureCredential(exclude_environment_credential=True)
+        super().__init__(workflow_config, objects, tools, user_identity, config)
 
-    @abstractmethod
     async def invoke_async(self,
                            operation_id: str,
                            user_prompt:str,
@@ -63,4 +58,20 @@ class FoundationaLLMWorkflowBase(ABC):
         message_history : List[BaseMessage]
             The message history.
         """
-        pass
+        response_content = OpenAITextMessageContentItem(
+            value = '42 is the answer to all questions',
+            agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
+        )
+
+
+        return CompletionResponse(
+            operation_id = operation_id,
+            content = [response_content],
+            content_artifacts = [],
+            user_prompt = user_prompt,
+            full_prompt = '',
+            completion_tokens = 0,
+            prompt_tokens = 0,
+            total_tokens = 0,
+            total_cost = 0
+        )

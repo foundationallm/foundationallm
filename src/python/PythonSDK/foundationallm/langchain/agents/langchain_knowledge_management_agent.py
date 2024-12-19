@@ -8,7 +8,7 @@ from langgraph.prebuilt import create_react_agent
 from foundationallm.langchain.agents import LangChainAgentBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, ContentArtifactRetrievalBase
-from foundationallm.langchain.workflows import ExternalWorkflowFactory
+from foundationallm.langchain.workflows import WorkflowFactory
 from foundationallm.models.agents import AzureOpenAIAssistantsAgentWorkflow, ExternalAgentWorkflow, LangGraphReactAgentWorkflow
 from foundationallm.models.constants import (
     AgentCapabilityCategories,
@@ -518,8 +518,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
 
             # create the workflow
-            workflow_factory = ExternalWorkflowFactory(self.plugin_manager)
-            workflow = workflow_factory.create_workflow(
+            workflow_factory = WorkflowFactory(self.plugin_manager)
+            workflow = workflow_factory.get_workflow(
                 agent.workflow,
                 request.objects,
                 tools,
@@ -530,6 +530,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)            
 
             response = await workflow.invoke_async(
+                operation_id=request.operation_id,
                 user_prompt=parsed_user_prompt,
                 message_history=messages
             )

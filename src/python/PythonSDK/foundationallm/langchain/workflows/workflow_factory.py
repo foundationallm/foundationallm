@@ -7,9 +7,9 @@ from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMWorkflowBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.models.agents import AgentTool, ExternalAgentWorkflow
-from foundationallm.plugins import PluginManager
+from foundationallm.plugins import PluginManager, PluginManagerTypes
 
-class ExternalWorkflowFactory:
+class WorkflowFactory:
     """
     Factory class for creating an external agent workflow instance based on the Agent workflow configuration.
     """   
@@ -33,7 +33,7 @@ class ExternalWorkflowFactory:
         config: Configuration
     ) -> FoundationaLLMWorkflowBase:
         """
-        Creates an instance of an external agent workflow based on the agent workflow configuration.
+        Creates an instance of an agent workflow based on the agent workflow configuration.
 
         Parameters
         ----------
@@ -47,10 +47,22 @@ class ExternalWorkflowFactory:
             The user identity of the user initiating the request.
         config : Configuration
             The application configuration for FoundationaLLM.
-        """        
-        workflow_plugin_manager = None
-        if workflow_config.package_name in self.plugin_manager.external_modules:
-            workflow_plugin_manager = self.plugin_manager.external_modules[workflow_config.package_name].plugin_manager
-            return workflow_plugin_manager.create_workflow(workflow_config, objects, tools, user_identity, config)
+        """
+
+        if workflow_config.package_name == "FoundationaLLM":
+            # internal workflows
+            # TODO: Refactor internal workflows to use the plugin manager
+            raise LangChainException("Internal workflows are not supported by the plugin manager.")
         else:
-            raise LangChainException(f"Package {workflow_config.package_name} not found in the list of external modules loaded by the package manager.")
+            workflow_plugin_manager = None
+
+            if workflow_config.package_name in self.plugin_manager.external_modules:
+                workflow_plugin_manager = next(( \
+                    wm for wm \
+                    in self.plugin_manager.external_modules[workflow_config.package_name].plugin_managers \
+                    if wm.plugin_manager_type == PluginManagerTypes.WORKFLOWS), None)
+                if workflow_plugin_manager is None:
+                    raise LangChainException(f"Workflow plugin manager not found for package {workflow_config.package_name}")
+                return workflow_plugin_manager.create_workflow(workflow_config, objects, tools, user_identity, config)
+            else:
+                raise LangChainException(f"Package {workflow_config.package_name} not found in the list of external modules loaded by the package manager.")
