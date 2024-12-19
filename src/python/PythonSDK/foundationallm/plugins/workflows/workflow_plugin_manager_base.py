@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.langchain.common import FoundationaLLMToolBase
+from foundationallm.langchain.common import FoundationaLLMWorkflowBase
 from foundationallm.models.agents import AgentTool, ExternalAgentWorkflow
 
 class WorkflowPluginManagerBase(ABC):
@@ -17,7 +17,7 @@ class WorkflowPluginManagerBase(ABC):
         objects: dict,
         tools: List[AgentTool],
         user_identity: UserIdentity,
-        config: Configuration) -> FoundationaLLMToolBase:
+        config: Configuration) -> FoundationaLLMWorkflowBase:
         """
         Create a workflow instance based on the given configuration and tools.
         Parameters
