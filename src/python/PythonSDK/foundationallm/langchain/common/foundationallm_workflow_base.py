@@ -3,13 +3,18 @@ Class: FoundationaLLMWorkflowBase
 Description: FoundationaLLM base class for tools that uses the agent workflow model for its configuration.
 """
 from abc import ABC, abstractmethod
-from azure.identity import DefaultAzureCredential
-from langchain_core.messages import BaseMessage
 from typing import List
+
+from azure.identity import DefaultAzureCredential
+
+from langchain_core.messages import BaseMessage
+
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import AgentTool, ExternalAgentWorkflow
 from foundationallm.models.orchestration import CompletionResponse
 from foundationallm.telemetry import Telemetry
+
+from .foundationallm_tool_base import FoundationaLLMToolBase
 
 class FoundationaLLMWorkflowBase(ABC):
     """
@@ -18,7 +23,7 @@ class FoundationaLLMWorkflowBase(ABC):
     def __init__(self,
                  workflow_config: ExternalAgentWorkflow,
                  objects: dict,
-                 tools: List[AgentTool],
+                 tools: List[FoundationaLLMToolBase],
                  user_identity: UserIdentity,
                  config: Configuration):
         """
@@ -30,7 +35,7 @@ class FoundationaLLMWorkflowBase(ABC):
             The workflow assigned to the agent.
         objects : dict
             The exploded objects assigned from the agent.
-        tools : List[AgentTool]
+        tools : List[FoundationaLLMToolBase]
             The tools assigned to the agent.
         user_identity : UserIdentity
             The user identity of the user initiating the request.
