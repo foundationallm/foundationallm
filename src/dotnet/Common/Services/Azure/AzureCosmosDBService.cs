@@ -14,6 +14,7 @@ using Polly;
 using Polly.Retry;
 using System.Diagnostics;
 using System.Net;
+using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 
 namespace FoundationaLLM.Common.Services
 {
@@ -130,6 +131,25 @@ namespace FoundationaLLM.Common.Services
             var query = new QueryDefinition($"SELECT DISTINCT * FROM c WHERE c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c._ts DESC")
                 .WithParameter("@type", type)
                 .WithParameter("@upn", upn);
+
+            var response = _userSessions.GetItemQueryIterator<Conversation>(query);
+
+            List<Conversation> output = [];
+            while (response.HasMoreResults)
+            {
+                var results = await response.ReadNextAsync(cancellationToken);
+                output.AddRange(results);
+            }
+
+            return output;
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<Conversation>> GetConversationsAsync(string type, CancellationToken cancellationToken = default)
+        {
+            var query = new QueryDefinition(
+                    $"SELECT DISTINCT * FROM c WHERE c.type = @type AND {SoftDeleteQueryRestriction} ORDER BY c._ts DESC")
+                .WithParameter("@type", type);
 
             var response = _userSessions.GetItemQueryIterator<Conversation>(query);
 
@@ -317,6 +337,26 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
+        public async Task<List<Message>> GetSessionMessagesAsync(string sessionId, CancellationToken cancellationToken = default)
+        {
+            var query =
+                new QueryDefinition($"SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type AND {SoftDeleteQueryRestriction}")
+                    .WithParameter("@sessionId", sessionId)
+                    .WithParameter("@type", nameof(Message));
+
+            var results = _sessions.GetItemQueryIterator<Message>(query);
+
+            List<Message> output = new();
+            while (results.HasMoreResults)
+            {
+                var response = await results.ReadNextAsync(cancellationToken);
+                output.AddRange(response);
+            }
+
+            return output;
+        }
+
+        /// <inheritdoc/>
         public async Task<Message> GetMessageAsync(string id, string sessionId, CancellationToken cancellationToken = default) =>
             await _sessions.ReadItemAsync<Message>(
                 id: id,
@@ -444,6 +484,27 @@ namespace FoundationaLLM.Common.Services
             await _sessions.ReadItemAsync<CompletionPrompt>(
                 id: completionPromptId,
                 partitionKey: new PartitionKey(sessionId));
+
+        /// <inheritdoc/>
+        public async Task<List<CompletionPrompt>> GetCompletionPromptsAsync(string sessionId,
+            CancellationToken cancellationToken = default)
+        {
+            var query = new QueryDefinition(
+                $"SELECT DISTINCT * FROM c WHERE c.type = @type AND c.sessionId = @sessionId AND {SoftDeleteQueryRestriction} ORDER BY c._ts DESC")
+                .WithParameter("@type", "CompletionPrompt")
+                .WithParameter("@sessionId", sessionId);
+
+            var response = _sessions.GetItemQueryIterator<CompletionPrompt>(query);
+
+            List<CompletionPrompt> output = [];
+            while (response.HasMoreResults)
+            {
+                var results = await response.ReadNextAsync(cancellationToken);
+                output.AddRange(results);
+            }
+
+            return output;
+        }
 
         /// <inheritdoc/>
         public async Task<UserProfile> GetUserProfileAsync(string upn, CancellationToken cancellationToken = default)
@@ -587,6 +648,48 @@ namespace FoundationaLLM.Common.Services
                item: attachmentReference,
                partitionKey: partitionKey,
                cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<AzureOpenAIConversationMapping>> GetConversationMappingsAsync(string sessionId,
+            CancellationToken cancellationToken = default)
+        {
+            var query = new QueryDefinition(
+                $"SELECT DISTINCT * FROM c WHERE c.type = @type AND c.conversationId = @sessionId AND {SoftDeleteQueryRestriction}")
+                .WithParameter("@type", "AzureOpenAIConversationMapping")
+                .WithParameter("@sessionId", sessionId);
+
+            var response = _externalResources.GetItemQueryIterator<AzureOpenAIConversationMapping>(query);
+
+            List<AzureOpenAIConversationMapping> output = [];
+            while (response.HasMoreResults)
+            {
+                var results = await response.ReadNextAsync(cancellationToken);
+                output.AddRange(results);
+            }
+
+            return output;
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<AzureOpenAIFileMapping>> GetFileMappingsAsync(string partitionKey,
+            CancellationToken cancellationToken = default)
+        {
+            var query = new QueryDefinition(
+                $"SELECT DISTINCT * FROM c WHERE c.type = @type AND c.partitionKey = @partitionKey AND {SoftDeleteQueryRestriction}")
+                .WithParameter("@type", "AzureOpenAIFileMapping")
+                .WithParameter("@partitionKey", partitionKey);
+
+            var response = _externalResources.GetItemQueryIterator<AzureOpenAIFileMapping>(query);
+
+            List<AzureOpenAIFileMapping> output = [];
+            while (response.HasMoreResults)
+            {
+                var results = await response.ReadNextAsync(cancellationToken);
+                output.AddRange(results);
+            }
+
+            return output;
         }
     }
 }

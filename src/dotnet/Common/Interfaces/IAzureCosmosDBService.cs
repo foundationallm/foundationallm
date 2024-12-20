@@ -4,6 +4,7 @@ using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
+using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 
 namespace FoundationaLLM.Common.Interfaces;
 
@@ -59,6 +60,14 @@ public interface IAzureCosmosDBService
     Task<List<Conversation>> GetConversationsAsync(string type, string upn, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Gets a list of all current conversations.
+    /// </summary>
+    /// <param name="type">The conversation type to return.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>List of distinct conversation items.</returns>
+    Task<List<Conversation>> GetConversationsAsync(string type, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Performs a point read to retrieve a single conversation item.
     /// </summary>
     /// <returns>The conversation item. Returns null if the conversation does not exist.</returns>
@@ -98,6 +107,15 @@ public interface IAzureCosmosDBService
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns>List of chat message items for the specified session.</returns>
     Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a list of all current chat messages for a specified session identifier.
+    /// </summary>
+    /// <param name="sessionId">Chat session identifier used to filter messages.</param>
+    /// the signed in user.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>List of chat message items for the specified session.</returns>
+    Task<List<Message>> GetSessionMessagesAsync(string sessionId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets a single conversation message by its identifier.
@@ -171,6 +189,14 @@ public interface IAzureCosmosDBService
     /// <param name="completionPromptId">The id of the completion prompt to retrieve.</param>
     /// <returns></returns>
     Task<CompletionPrompt> GetCompletionPromptAsync(string sessionId, string completionPromptId);
+
+    /// <summary>
+    /// Returns the completion prompt for a given session and completion prompt id.
+    /// </summary>
+    /// <param name="sessionId">The session id from which to retrieve the completion prompts.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns></returns>
+    Task<List<CompletionPrompt>> GetCompletionPromptsAsync(string sessionId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Returns the user profile for a given user via their UPN.
@@ -258,4 +284,20 @@ public interface IAzureCosmosDBService
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns></returns>
     Task DeleteAttachment(AttachmentReference attachment, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets conversation mappings.
+    /// </summary>
+    /// <param name="sessionId">The session id for which to retrieve conversation mappings.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns></returns>
+    Task<List<AzureOpenAIConversationMapping>> GetConversationMappingsAsync(string sessionId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets file mappings.
+    /// </summary>
+    /// <param name="partitionKey">The partition key id for which to retrieve file mappings.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns></returns>
+    Task<List<AzureOpenAIFileMapping>> GetFileMappingsAsync(string partitionKey, CancellationToken cancellationToken = default);
 }

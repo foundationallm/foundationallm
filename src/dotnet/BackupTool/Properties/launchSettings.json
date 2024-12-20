@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "BackupTool": {
+      "commandName": "Project",
+      "launchBrowser": false,
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development",
+				"DOTNET_ENVIRONMENT": "Development",
+				"FOUNDATIONALLM_VERSION": "0.9.1",
+				"FoundationaLLM_AppConfig_ConnectionString": ""
+			}
+    }
+  }
+}
