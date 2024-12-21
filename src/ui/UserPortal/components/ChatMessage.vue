@@ -409,7 +409,7 @@ export default {
 		messageDisplayStatus() {
 			if (
 				this.message.status === 'Failed' ||
-				(this.message.status === 'Completed' && !this.isRenderingMessage)
+				(this.message.status === 'Completed')
 			)
 				return null;
 
