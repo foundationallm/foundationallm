@@ -33,7 +33,7 @@ async def refresh_cache(name: str):
         The name of the cache object to refresh.
         "config", for example.
     """
-    #with tracer.start_as_current_span('refresh_cache') as span:
+    #with tracer.start_span('refresh_cache') as span:
     #    span.set_attribute('cache_name', name)
     #    span.add_event(f'{API_NAME} {name} cache refresh requested.')
 
