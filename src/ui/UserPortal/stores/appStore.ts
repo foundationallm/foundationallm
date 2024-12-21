@@ -297,6 +297,15 @@ export const useAppStore = defineStore('app', {
 					this.startPolling(latestMessage, this.currentSession.id);
 				}
 			}
+
+			// Calculate the processing time for each message
+			this.currentMessages.forEach((message, index) => {
+				if (message.sender === 'Agent' && this.currentMessages[index - 1]?.sender === 'User') {
+					const previousMessageTimeStamp = new Date(this.currentMessages[index - 1].timeStamp).getTime();
+					const currentMessageTimeStamp = new Date(message.timeStamp).getTime();
+					message.processingTime = currentMessageTimeStamp - previousMessageTimeStamp;
+				}
+			});
 		},
 
 		async getMessage(messageId: string) {

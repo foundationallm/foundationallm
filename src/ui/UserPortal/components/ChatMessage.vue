@@ -34,7 +34,7 @@
 							}}</span>
 							<template #popper>
 								<div role="tooltip">
-									{{ formatTimeStamp(message.timeStamp) }}
+									{{ buildTimeStampTooltip(message.timeStamp, message.processingTime) }}
 								</div>
 							</template>
 						</VTooltip>
@@ -409,7 +409,7 @@ export default {
 		messageDisplayStatus() {
 			if (
 				this.message.status === 'Failed' ||
-				(this.message.status === 'Completed' && !this.isRenderingMessage)
+				(this.message.status === 'Completed')
 			)
 				return null;
 
@@ -679,6 +679,12 @@ export default {
 				timeZoneName: 'short',
 			};
 			return date.toLocaleString(undefined, options);
+		},
+
+		buildTimeStampTooltip(timeStamp: string, processingTime: number) {
+			const date = this.formatTimeStamp(timeStamp);
+			const processingTimeSeconds = processingTime / 1000;
+			return `Message sent at ${date}\nProcessing time: ${processingTimeSeconds.toFixed(2)} seconds`;
 		},
 
 		getDisplayName() {

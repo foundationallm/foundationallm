@@ -66,6 +66,7 @@ export interface Message {
 	attachments: Array<string>;
 	attachmentDetails: Array<AttachmentDetail>;
 	analysisResults: Array<AnalysisResult>;
+	processingTime: number; // Calculated in milliseconds - not from the API
 }
 
 export interface MessageRatingRequest
