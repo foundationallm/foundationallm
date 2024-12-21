@@ -864,7 +864,8 @@ public partial class CoreService(
                     { "/contentArtifacts", completionResponse.ContentArtifacts },
                     { "/content", newContent },
                     { "/analysisResults", completionResponse.AnalysisResults },
-                    { "/status", operationStatus }
+                    { "/status", operationStatus },
+                    { "/timeStamp", DateTime.UtcNow }
                 }
             },
             new PatchOperationItem<CompletionPrompt>
