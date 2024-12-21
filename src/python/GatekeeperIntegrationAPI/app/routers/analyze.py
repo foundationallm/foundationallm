@@ -34,7 +34,7 @@ async def analyze(request: AnalyzeRequest) -> AnalyzeResponse:
         If the request includes anonymize=True, the original content
         will be returned anonymized.
     """
-    #with tracer.start_as_current_span('analyze') as span:
+    #with tracer.start_span('analyze') as span:
     try:
         analyzer = Analyzer(request)
         return analyzer.analyze()

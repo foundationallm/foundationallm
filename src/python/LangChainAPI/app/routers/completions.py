@@ -79,7 +79,7 @@ async def submit_completion_request(
     CompletionOperation
         Object containing the operation ID and status.
     """
-    with tracer.start_as_current_span('submit_completion_request') as span:
+    with tracer.start_span('submit_completion_request') as span:
         try:
             # Get the operation_id from the completion request.
             operation_id = completion_request.operation_id
@@ -126,7 +126,7 @@ async def create_completion_response(
     """
     Generates the completion response for the specified completion request.
     """
-    with tracer.start_as_current_span(f'create_completion_response') as span:
+    with tracer.start_span(f'create_completion_response') as span:
         try:
             span.set_attribute('operation_id', operation_id)
             span.set_attribute('instance_id', instance_id)
@@ -209,7 +209,7 @@ async def get_operation_status(
     instance_id: str,
     operation_id: str
 ) -> LongRunningOperation:
-    with tracer.start_as_current_span(f'get_operation_status') as span:
+    with tracer.start_span(f'get_operation_status') as span:
         # Create an operations manager to get the operation status.
         operations_manager = OperationsManager(raw_request.app.extra['config'])
 
@@ -244,7 +244,7 @@ async def get_operation_result(
     instance_id: str,
     operation_id: str
 ) -> CompletionResponse:
-    with tracer.start_as_current_span(f'get_operation_result') as span:
+    with tracer.start_span(f'get_operation_result') as span:
         # Create an operations manager to get the operation result.
         operations_manager = OperationsManager(raw_request.app.extra['config'])
 
@@ -277,7 +277,7 @@ async def get_operation_logs(
     instance_id: str,
     operation_id: str
 ) -> List[LongRunningOperationLogEntry]:
-    with tracer.start_as_current_span(f'get_operation_log') as span:
+    with tracer.start_span(f'get_operation_log') as span:
         # Create an operations manager to get the operation log.
         operations_manager = OperationsManager(raw_request.app.extra['config'])
 
