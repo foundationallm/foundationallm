@@ -462,7 +462,11 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             # Define the graph
             graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)
-            messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
+            if agent.conversation_history_settings.enabled:
+                messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
+            else:
+                messages = []
+                
             messages.append(HumanMessage(content=parsed_user_prompt))
 
             response = await graph.ainvoke(
@@ -526,8 +530,11 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 self.user_identity,
                 self.config)
            
-            # Get message history          
-            messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)            
+            # Get message history
+            if agent.conversation_history_settings.enabled:   
+                messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
+            else:
+                messages = []
 
             response = await workflow.invoke_async(
                 operation_id=request.operation_id,
