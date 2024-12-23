@@ -297,6 +297,19 @@ export const useAppStore = defineStore('app', {
 					this.startPolling(latestMessage, this.currentSession.id);
 				}
 			}
+
+			this.calculateMessageProcessingTime();
+		},
+
+		calculateMessageProcessingTime() {
+			// Calculate the processing time for each message
+			this.currentMessages.forEach((message, index) => {
+				if (message.sender === 'Agent' && this.currentMessages[index - 1]?.sender === 'User') {
+					const previousMessageTimeStamp = new Date(this.currentMessages[index - 1].timeStamp).getTime();
+					const currentMessageTimeStamp = new Date(message.timeStamp).getTime();
+					message.processingTime = currentMessageTimeStamp - previousMessageTimeStamp;
+				}
+			});
 		},
 
 		async getMessage(messageId: string) {
@@ -474,6 +487,8 @@ export const useAppStore = defineStore('app', {
 					) {
 						userMessage.tokens = statusResponse.prompt_tokens;
 					}
+
+					this.calculateMessageProcessingTime();
 
 					if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
 						this.stopPolling(sessionId);
