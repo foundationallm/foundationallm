@@ -57,8 +57,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
             resourceValidatorFactory,
             serviceProvider,
             loggerFactory.CreateLogger<AgentResourceProviderService>(),
-            eventNamespacesToSubscribe: [
-                EventTypes.FoundationaLLM_ResourceProvider_Agent
+            eventTypesToSubscribe: [
+                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ],
             useInternalReferencesStore: true)
     {
@@ -197,7 +197,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
             switch (e.EventType)
             {
-                case EventTypes.FoundationaLLM_ResourceProvider_Agent:
+                case EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand:
                     foreach (var @event in e.Events)
                         await HandleAgentResourceProviderEvent(@event);
                     break;

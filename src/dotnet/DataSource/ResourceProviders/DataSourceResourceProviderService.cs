@@ -48,7 +48,7 @@ namespace FoundationaLLM.DataSource.ResourceProviders
             serviceProvider,
             loggerFactory.CreateLogger<DataSourceResourceProviderService>(),
             [
-                EventTypes.FoundationaLLM_ResourceProvider_DataSource
+                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ],
             useInternalReferencesStore: true)
     {
@@ -172,7 +172,7 @@ namespace FoundationaLLM.DataSource.ResourceProviders
 
             switch (e.EventType)
             {
-                case EventTypes.FoundationaLLM_ResourceProvider_DataSource:
+                case EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand:
                     foreach (var @event in e.Events)
                         await HandleDataSourceResourceProviderEvent(@event);
                     break;

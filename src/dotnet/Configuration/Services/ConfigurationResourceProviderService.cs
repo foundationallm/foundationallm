@@ -58,7 +58,7 @@ namespace FoundationaLLM.Configuration.Services
             serviceProvider,
             logger,
             [
-                EventTypes.FoundationaLLM_ResourceProvider_Configuration
+                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ],
             useInternalReferencesStore: true)
     {
@@ -169,7 +169,7 @@ namespace FoundationaLLM.Configuration.Services
 
             switch (e.EventType)
             {
-                case EventTypes.FoundationaLLM_ResourceProvider_Configuration:
+                case EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand:
                     foreach (var @event in e.Events)
                         await HandleConfigurationResourceProviderEvent(@event);
                     break;

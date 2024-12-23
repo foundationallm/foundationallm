@@ -49,7 +49,7 @@ namespace FoundationaLLM.AIModel.ResourceProviders
             serviceProvider,
             loggerFactory.CreateLogger<AIModelResourceProviderService>(),
             [
-                EventTypes.FoundationaLLM_ResourceProvider_AIModel
+                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ],
             useInternalReferencesStore: true)
     {
@@ -199,7 +199,7 @@ namespace FoundationaLLM.AIModel.ResourceProviders
 
             switch (e.EventType)
             {
-                case EventTypes.FoundationaLLM_ResourceProvider_AIModel:
+                case EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand:
                     foreach (var @event in e.Events)
                         await HandleAIModelResourceProviderEvent(@event);
                     break;

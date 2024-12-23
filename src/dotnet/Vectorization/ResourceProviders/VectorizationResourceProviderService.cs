@@ -55,7 +55,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             serviceProvider,
             loggerFactory.CreateLogger<VectorizationResourceProviderService>(),
             [
-                EventTypes.FoundationaLLM_ResourceProvider_Vectorization
+                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ])
     {
         /// <inheritdoc/>
@@ -872,7 +872,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
 
             switch (e.EventType)
             {
-                case EventTypes.FoundationaLLM_ResourceProvider_Vectorization:
+                case EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand:
                     foreach (var @event in e.Events)
                         await HandleVectorizationResourceProviderEvent(@event);
                     break;

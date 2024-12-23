@@ -51,7 +51,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             serviceProvider,
             loggerFactory.CreateLogger<AttachmentResourceProviderService>(),
             [
-                EventTypes.FoundationaLLM_ResourceProvider_Attachment
+                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ],
             useInternalReferencesStore: false)
     {
@@ -241,7 +241,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
 
             switch (e.EventType)
             {
-                case EventTypes.FoundationaLLM_ResourceProvider_Attachment:
+                case EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand:
                     foreach (var @event in e.Events)
                         await HandleAttachmentResourceProviderEvent(@event);
                     break;

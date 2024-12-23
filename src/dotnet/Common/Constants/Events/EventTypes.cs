@@ -6,58 +6,22 @@
     public static class EventTypes
     {
         /// <summary>
-        /// The event type for FoundationaLLM.Agent events.
+        /// The resource provider cache reset command event type.
         /// </summary>
-        public const string FoundationaLLM_ResourceProvider_Agent = "ResourceProvider.FoundationaLLM.Agent";
+        public const string FoundationaLLM_ResourceProvider_Cache_ResetCommand = "FoundationaLLM.ResourceProvider.Cache.ResetCommand";
 
         /// <summary>
-        /// The event type for FoundationaLLM.Vectorization events.
+        /// The resource provider cache reset command confirmation event type.
         /// </summary>
-        public const string FoundationaLLM_ResourceProvider_Vectorization = "ResourceProvider.FoundationaLLM.Vectorization";
-
-        /// <summary>
-        /// The event type for FoundationaLLM.Configuration events.
-        /// </summary>
-        public const string FoundationaLLM_ResourceProvider_Configuration = "ResourceProvider.FoundationaLLM.Configuration";
-
-        /// <summary>
-        /// The event type for FoundationaLLM.DataSource events.
-        /// </summary>
-        public const string FoundationaLLM_ResourceProvider_DataSource = "ResourceProvider.FoundationaLLM.DataSource";
-
-        /// <summary>
-        /// The event type for FoundationaLLM.Attachment events.
-        /// </summary>
-        public const string FoundationaLLM_ResourceProvider_Attachment = "ResourceProvider.FoundationaLLM.Attachment";
-
-        /// <summary>
-        /// The event type for FoundationaLLM.AIModel events.
-        /// </summary>
-        public const string FoundationaLLM_ResourceProvider_AIModel = "ResourceProvider.FoundationaLLM.AIModel";
-
-        /// <summary>
-        /// The event type for FoundationaLLM.AzureOpenAI events.
-        /// </summary>
-        public const string FoundationaLLM_ResourceProvider_AzureOpenAI = "ResourceProvider.FoundationaLLM.AzureOpenAI";
-
-        /// <summary>
-        /// The event type for FoundationaLLM.Conversation events.
-        /// </summary>
-        public const string FoundationaLLM_ResourceProvider_Conversation = "ResourceProvider.FoundationaLLM.Conversation";
+        public const string FoundationaLLM_ResourceProvider_Cache_ResetCommandConfirmation = "FoundationaLLM.ResourceProvider.Cache.ResetCommandConfirmation";
 
         /// <summary>
         /// All event types.
         /// </summary>
         public static List<string> All =>
             [
-                FoundationaLLM_ResourceProvider_Agent,
-                FoundationaLLM_ResourceProvider_Vectorization,
-                FoundationaLLM_ResourceProvider_Configuration,
-                FoundationaLLM_ResourceProvider_DataSource,
-                FoundationaLLM_ResourceProvider_Attachment,
-                FoundationaLLM_ResourceProvider_AIModel,
-                FoundationaLLM_ResourceProvider_AzureOpenAI,
-                FoundationaLLM_ResourceProvider_Conversation
+                FoundationaLLM_ResourceProvider_Cache_ResetCommand,
+                FoundationaLLM_ResourceProvider_Cache_ResetCommandConfirmation
             ];
     }
 }

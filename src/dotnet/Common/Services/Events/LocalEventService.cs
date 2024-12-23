@@ -29,15 +29,15 @@ namespace FoundationaLLM.Common.Services.Events
         private readonly ConcurrentQueue<EventTypeEventArgs> _eventsQueue = [];
 
         /// <summary>
-        /// Subscribes this instance to a specified list of event namespaces supported by the <see cref="IEventService"/>.
+        /// Subscribes this instance to a specified list of event types supported by the <see cref="IEventService"/>.
         /// </summary>
-        /// <param name="eventNamespaces">The list with the namespace to subscribe to.</param>
-        public void SubscribeToEventNamespaces(List<string> eventNamespaces)
+        /// <param name="eventTypes">The list with the event types to subscribe to.</param>
+        public void SubscribeToEventTypes(List<string> eventTypes)
         {
-            foreach (var eventNamespace in eventNamespaces)
+            foreach (var eventType in eventTypes)
             {
                 _eventService.SubscribeToEventTypeEvent(
-                    eventNamespace,
+                    eventType,
                     IngestEvents);
             }
         }
