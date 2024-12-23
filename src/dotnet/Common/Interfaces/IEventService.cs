@@ -56,9 +56,9 @@ namespace FoundationaLLM.Common.Interfaces
         /// <summary>
         /// Sends an event to the event service.
         /// </summary>
-        /// <param name="eventCategory">The category of the event.</param>
+        /// <param name="topicName">The name of the topic where the event should be sent.</param>
         /// <param name="cloudEvent">The <see cref="CloudEvent"/> object containing the details of the event.</param>
         /// <returns></returns>
-        Task SendEvent(string eventCategory, CloudEvent cloudEvent);
+        Task SendEvent(string topicName, CloudEvent cloudEvent);
     }
 }

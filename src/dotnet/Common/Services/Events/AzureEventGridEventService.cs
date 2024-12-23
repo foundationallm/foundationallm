@@ -57,10 +57,9 @@ namespace FoundationaLLM.Common.Services.Events
             IHttpClientFactoryService httpClientFactory,
             ILogger<AzureEventGridEventService> logger)
         {
-            _serviceInstanceName =
-                Environment.GetEnvironmentVariable(EnvironmentVariables.AKS_Pod_Name)
+            _serviceInstanceName = $"https://foundationallm.ai/events/serviceinstances/{Environment.GetEnvironmentVariable(EnvironmentVariables.AKS_Pod_Name)
                 ?? Environment.GetEnvironmentVariable(EnvironmentVariables.ACA_Container_App_Replica_Name)
-                ?? Guid.NewGuid().ToString();
+                ?? Guid.NewGuid().ToString().ToLower()}";
 
             _settings = settingsOptions.Value;
             _profile = profileOptions.Value;
@@ -182,7 +181,7 @@ namespace FoundationaLLM.Common.Services.Events
         }
 
         /// <inheritdoc/>
-        public async Task SendEvent(string eventCategory, CloudEvent cloudEvent)
+        public async Task SendEvent(string topicName, CloudEvent cloudEvent)
         {
             if (!_active)
             {
@@ -191,10 +190,13 @@ namespace FoundationaLLM.Common.Services.Events
                 return;
             }
 
-            if (!_senderClients.TryGetValue(eventCategory, out var senderClient))
+            // Enforce the correct event source when sending through the Azure Event Grid service.
+            cloudEvent.Source = _serviceInstanceName;
+
+            if (!_senderClients.TryGetValue(topicName, out var senderClient))
             {
-                _logger.LogError("Could not send event {EventId} of type {EventType} from source {EventSource}. The Azure Event Grid event service does not have a sender client for the event category {EventCategory}.",
-                    cloudEvent.Id, cloudEvent.Type, cloudEvent.Source, eventCategory);
+                _logger.LogError("Could not send event {EventId} of type {EventType} from source {EventSource}. The Azure Event Grid event service does not have a sender client for the topic {EventTopic}.",
+                    cloudEvent.Id, cloudEvent.Type, cloudEvent.Source, topicName);
                 return;
             }
 
