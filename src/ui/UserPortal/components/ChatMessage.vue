@@ -29,9 +29,9 @@
 							}"
 						/>
 						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-							<span class="time-stamp" tabindex="0" @keydown.esc="hideAllPoppers">{{
-								$filters.timeAgo(new Date(message.timeStamp))
-							}}</span>
+							<span class="time-stamp" tabindex="0" @keydown.esc="hideAllPoppers">
+								<TimeAgo :date="new Date(message.timeStamp)" />
+							</span>
 							<template #popper>
 								<div role="tooltip">
 									{{ buildTimeStampTooltip(message.timeStamp, message.processingTime) }}
@@ -186,7 +186,7 @@
 
 		<!-- Date Divider -->
 		<Divider v-if="message.sender == 'User'" align="center" type="solid" class="date-separator">
-			{{ $filters.timeAgo(new Date(message.timeStamp)) }}
+			<TimeAgo :date="new Date(message.timeStamp)" />
 		</Divider>
 
 		<!-- Analysis Modal -->
@@ -297,6 +297,7 @@ import { hideAllPoppers } from 'floating-vue';
 import type { Message, MessageContent, CompletionPrompt } from '@/js/types';
 import api from '@/js/api';
 import { fetchBlobUrl } from '@/js/fileService';
+import TimeAgo from '~/components/TimeAgo.vue';
 
 function processLatex(content) {
 	const blockLatexPattern = /\\\[\s*([\s\S]+?)\s*\\\]/g;
@@ -683,8 +684,9 @@ export default {
 
 		buildTimeStampTooltip(timeStamp: string, processingTime: number) {
 			const date = this.formatTimeStamp(timeStamp);
+			if (!processingTime) return date;
 			const processingTimeSeconds = processingTime / 1000;
-			return `Message sent at ${date}\nProcessing time: ${processingTimeSeconds.toFixed(2)} seconds`;
+			return `${date}\n(${processingTimeSeconds.toFixed(2)} seconds)`;
 		},
 
 		getDisplayName() {
