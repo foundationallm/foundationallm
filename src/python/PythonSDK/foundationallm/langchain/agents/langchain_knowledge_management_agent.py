@@ -5,6 +5,9 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
 from langgraph.prebuilt import create_react_agent
+
+from opentelemetry.trace import SpanKind
+
 from foundationallm.langchain.agents import LangChainAgentBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, ContentArtifactRetrievalBase
@@ -182,7 +185,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             raise LangChainException("The objects property on the completion request cannot be null.", 400)
 
         if request.agent.workflow is not None:
-            
+
             ai_model_object_id = request.agent.workflow.get_resource_object_id_properties(
                 ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
                 AIModelResourceTypeNames.AI_MODELS,
@@ -192,7 +195,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             if ai_model_object_id is None:
                 raise LangChainException("The agent's workflow AI models requires a main_model.", 400)
             self.ai_model = self._get_ai_model_from_object_id(ai_model_object_id.object_id, request.objects)
-            
+
             prompt_object_id = request.agent.workflow.get_resource_object_id_properties(
                 ResourceProviderNames.FOUNDATIONALLM_PROMPT,
                 PromptResourceTypeNames.PROMPTS,
@@ -403,7 +406,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     ResourceObjectIdPropertyNames.OBJECT_ROLE,
                     ResourceObjectIdPropertyValues.MAIN_MODEL
                 )
-                
+
                 image_generation_deployment_model = request.objects[model_object_id.object_id]["deployment_name"]
                 api_endpoint_object_id = request.objects[model_object_id.object_id]["endpoint_object_id"]
                 image_generation_client = self._get_image_gen_language_model(api_endpoint_object_id=api_endpoint_object_id, objects=request.objects)
@@ -466,11 +469,11 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
             else:
                 messages = []
-                
+
             messages.append(HumanMessage(content=parsed_user_prompt))
 
             response = await graph.ainvoke(
-                {'messages': messages}, 
+                {'messages': messages},
                 config={"configurable": {"original_user_prompt": parsed_user_prompt, **({"recursion_limit": agent.workflow.graph_recursion_limit} if agent.workflow.graph_recursion_limit is not None else {})}}
             )
             # TODO: process tool messages with analysis results AIMessage with content='' but has addition_kwargs={'tool_calls';[...]}
@@ -507,7 +510,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         # Start External Agent workflow implementation
         if (agent.workflow is not None and isinstance(agent.workflow, ExternalAgentWorkflow)):
             # prepare tools
-            tool_factory = ToolFactory(self.plugin_manager)            
+            tool_factory = ToolFactory(self.plugin_manager)
             tools = []
 
             parsed_user_prompt = request.user_prompt
@@ -529,18 +532,19 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 tools,
                 self.user_identity,
                 self.config)
-           
+
             # Get message history
-            if agent.conversation_history_settings.enabled:   
+            if agent.conversation_history_settings.enabled:
                 messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
             else:
                 messages = []
 
-            response = await workflow.invoke_async(
-                operation_id=request.operation_id,
-                user_prompt=parsed_user_prompt,
-                message_history=messages
-            )
+            with self.tracer.start_span(f'langchain_invoke_external_workflow', kind=SpanKind.CONSUMER) as span:
+                response = await workflow.invoke_async(
+                    operation_id=request.operation_id,
+                    user_prompt=parsed_user_prompt,
+                    message_history=messages
+                )
             return response
         # End External Agent workflow implementation
 
