@@ -276,7 +276,8 @@ public partial class CoreService(
                         PropertyValues = new Dictionary<string, object?>
                         {
                             { "/status", OperationStatus.Failed },
-                            { "/text", "The completion operation has exceeded the maximum time allowed." }
+                            { "/text", "The completion operation has exceeded the maximum time allowed." },
+                            { "/timeStamp", DateTime.UtcNow }
                         }
                     }
                 };
@@ -294,7 +295,9 @@ public partial class CoreService(
                     {
                         OperationId = operationId,
                         Status = OperationStatus.Failed,
-                        Text = "The completion operation has exceeded the maximum time allowed."
+                        Text = "The completion operation has exceeded the maximum time allowed.",
+                        TimeStamp = DateTime.UtcNow,
+                        SenderDisplayName = operationContext.AgentName
                     },
                     Status = OperationStatus.Failed
                 };
@@ -330,7 +333,9 @@ public partial class CoreService(
             {
                 OperationId = operationId,
                 Status = operationStatus.Status,
-                Text = operationStatus.StatusMessage ?? "The completion operation is in progress."
+                Text = operationStatus.StatusMessage ?? "The completion operation is in progress.",
+                TimeStamp = DateTime.UtcNow,
+                SenderDisplayName = operationContext.AgentName
             };
 
             return operationStatus;
@@ -347,7 +352,8 @@ public partial class CoreService(
                 {
                     OperationId = operationId,
                     Status = OperationStatus.Failed,
-                    Text = "Could not retrieve the status of the operation due to an internal error."
+                    Text = "Could not retrieve the status of the operation due to an internal error.",
+                    TimeStamp = DateTime.UtcNow
                 },
                 Status = OperationStatus.Failed
             };
