@@ -82,7 +82,7 @@ async def submit_completion_request(
     CompletionOperation
         Object containing the operation ID and status.
     """
-    with tracer.start_span('langchainapi_submit_completion_request', kind=SpanKind.CONSUMER) as span:
+    with tracer.start_as_current_span('langchainapi_submit_completion_request', kind=SpanKind.SERVER) as span:
         try:
             # Get the operation_id from the completion request.
             operation_id = completion_request.operation_id
@@ -129,7 +129,7 @@ async def create_completion_response(
     """
     Generates the completion response for the specified completion request.
     """
-    with tracer.start_span(f'langchainapi_create_completion_response', kind=SpanKind.CONSUMER) as span:
+    with tracer.start_as_current_span('langchainapi_create_completion_response', kind=SpanKind.SERVER) as span:
         try:
             span.set_attribute('operation_id', operation_id)
             span.set_attribute('instance_id', instance_id)
@@ -212,7 +212,7 @@ async def get_operation_status(
     instance_id: str,
     operation_id: str
 ) -> LongRunningOperation:
-    with tracer.start_span(f'langchainapi_get_operation_status', kind=SpanKind.CONSUMER) as span:
+    with tracer.start_as_current_span('langchainapi_get_operation_status', kind=SpanKind.SERVER) as span:
         # Create an operations manager to get the operation status.
         operations_manager = OperationsManager(raw_request.app.extra['config'])
 
@@ -247,7 +247,7 @@ async def get_operation_result(
     instance_id: str,
     operation_id: str
 ) -> CompletionResponse:
-    with tracer.start_span(f'langchainapi_get_operation_result', kind=SpanKind.CONSUMER) as span:
+    with tracer.start_as_current_span('langchainapi_get_operation_result', kind=SpanKind.SERVER) as span:
         # Create an operations manager to get the operation result.
         operations_manager = OperationsManager(raw_request.app.extra['config'])
 
@@ -280,7 +280,7 @@ async def get_operation_logs(
     instance_id: str,
     operation_id: str
 ) -> List[LongRunningOperationLogEntry]:
-    with tracer.start_span(f'langchainapi_get_operation_log', kind=SpanKind.CONSUMER) as span:
+    with tracer.start_as_current_span('langchainapi_get_operation_log', kind=SpanKind.SERVER) as span:
         # Create an operations manager to get the operation log.
         operations_manager = OperationsManager(raw_request.app.extra['config'])
 

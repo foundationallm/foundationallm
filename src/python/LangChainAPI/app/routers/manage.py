@@ -3,6 +3,8 @@ The endpoint for managing the LangChainAPI.
 """
 import time
 from fastapi import APIRouter, Depends, HTTPException
+from opentelemetry.trace import SpanKind
+
 from foundationallm.telemetry import Telemetry
 from app.dependencies import (
     API_NAME,
@@ -33,7 +35,7 @@ async def refresh_cache(instance_id: str, name: str):
         The name of the cache object to refresh.
         "config", for example.
     """
-    with tracer.start_span('refresh_cache') as span:
+    with tracer.start_as_current_span('refresh_cache', kind=SpanKind.SERVER) as span:
         span.set_attribute('instance_id', instance_id)
         span.set_attribute('cache_name', name)
         span.add_event(f'{API_NAME} {name} cache refresh requested.')

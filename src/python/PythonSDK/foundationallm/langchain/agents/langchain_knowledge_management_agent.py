@@ -539,7 +539,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             else:
                 messages = []
 
-            with self.tracer.start_span(f'langchain_invoke_external_workflow', kind=SpanKind.CONSUMER) as span:
+            with self.tracer.start_as_current_span('langchain_invoke_external_workflow', kind=SpanKind.SERVER) as span:
                 response = await workflow.invoke_async(
                     operation_id=request.operation_id,
                     user_prompt=parsed_user_prompt,
