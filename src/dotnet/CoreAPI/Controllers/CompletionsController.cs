@@ -1,16 +1,19 @@
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Constants.Telemetry;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Telemetry;
 using FoundationaLLM.Core.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace FoundationaLLM.Core.API.Controllers
 {
@@ -68,10 +71,25 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="instanceId">The instance ID of the current request.</param>
         /// <param name="completionRequest">The user prompt for which to generate a completion.</param>
         [HttpPost("completions", Name = "GetCompletion")]
-        public async Task<IActionResult> GetCompletion(string instanceId, [FromBody] CompletionRequest completionRequest) =>
-            !string.IsNullOrWhiteSpace(completionRequest.SessionId)
+        public async Task<IActionResult> GetCompletion(string instanceId, [FromBody] CompletionRequest completionRequest)
+        {
+            using var telemetryActivity = TelemetryActivitySources.CoreAPIActivitySource.StartActivity(
+                TelemetryActivityNames.CoreAPI_Completions_GetCompletion,
+                ActivityKind.Server,
+                parentContext: default,
+                tags: new Dictionary<string, object?>
+                {
+                    { TelemetryActivityTagNames.InstanceId, instanceId },
+                    { TelemetryActivityTagNames.ConversationId, completionRequest.SessionId ?? "N/A" },
+                    { TelemetryActivityTagNames.OperationId, completionRequest.OperationId ?? "N/A" },
+                    { TelemetryActivityTagNames.UPN, _callContext.CurrentUserIdentity?.UPN ?? "N/A" },
+                    { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
+                });
+
+            return !string.IsNullOrWhiteSpace(completionRequest.SessionId)
                 ? Ok(await _coreService.GetChatCompletionAsync(instanceId, completionRequest))
                 : Ok(await _coreService.GetCompletionAsync(instanceId, completionRequest));
+        }
 
         /// <summary>
         /// Begins a completion operation.
@@ -82,6 +100,19 @@ namespace FoundationaLLM.Core.API.Controllers
         [HttpPost("async-completions")]
         public async Task<ActionResult<LongRunningOperation>> StartCompletionOperation(string instanceId, CompletionRequest completionRequest)
         {
+            using var telemetryActivity = TelemetryActivitySources.CoreAPIActivitySource.StartActivity(
+                TelemetryActivityNames.CoreAPI_AsyncCompletions_StartCompletionOperation,
+                ActivityKind.Server,
+                parentContext: default,
+                tags: new Dictionary<string, object?>
+                {
+                    { TelemetryActivityTagNames.InstanceId, instanceId },
+                    { TelemetryActivityTagNames.ConversationId, completionRequest.SessionId ?? "N/A" },
+                    { TelemetryActivityTagNames.OperationId, completionRequest.OperationId ?? "N/A" },
+                    { TelemetryActivityTagNames.UPN, _callContext.CurrentUserIdentity?.UPN ?? "N/A" },
+                    { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
+                });
+
             var state = await _coreService.StartCompletionOperation(instanceId, completionRequest);
             return Accepted(state);
         }

@@ -6,7 +6,7 @@
 					<i
 						class="pi pi-info-circle"
 						tabindex="0"
-						aria-label="info icon"
+						aria-hidden
 						@keydown.esc="hideAllPoppers"
 					></i>
 					<template #popper>
@@ -278,6 +278,7 @@
 			>
 				<p id="chat-input-label" class="sr-only">
 					The agent can make mistakes. Please check important information carefully.
+					Use Shift+Enter to add a new line.
 				</p>
 				<textarea
 					id="chat-input"

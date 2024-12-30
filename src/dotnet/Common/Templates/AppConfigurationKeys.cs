@@ -41,6 +41,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Instance_IdentitySubstitutionUserPrincipalNamePattern =
             "FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Instance:EnableResourceProvidersCache setting.
+        /// <para>Value description:<br/>Enable caching for resource providers.</para>
+        /// </summary>
+        public const string FoundationaLLM_Instance_EnableResourceProvidersCache =
+            "FoundationaLLM:Instance:EnableResourceProvidersCache";
 
         #endregion
 
@@ -52,6 +59,42 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Configuration_KeyVaultURI =
             "FoundationaLLM:Configuration:KeyVaultURI";
+
+        #endregion
+
+        #region FoundationaLLM:PythonSDK
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:PythonSDK:Logging:LogLevel:Default setting.
+        /// <para>Value description:<br/>The default logging level used by the Python SDK.</para>
+        /// </summary>
+        public const string FoundationaLLM_PythonSDK_Logging_LogLevel_Default =
+            "FoundationaLLM:PythonSDK:Logging:LogLevel:Default";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:PythonSDK:Logging:LogLevel:Azure setting.
+        /// <para>Value description:<br/>The default logging level used by the Python SDK.</para>
+        /// </summary>
+        public const string FoundationaLLM_PythonSDK_Logging_LogLevel_Azure =
+            "FoundationaLLM:PythonSDK:Logging:LogLevel:Azure";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:PythonSDK:Logging:EnableConsoleLogging setting.
+        /// <para>Value description:<br/>The flag indicating whether the Python SDK sends logs to the console or not.</para>
+        /// </summary>
+        public const string FoundationaLLM_PythonSDK_Logging_EnableConsoleLogging =
+            "FoundationaLLM:PythonSDK:Logging:EnableConsoleLogging";
+
+        #endregion
+
+        #region FoundationaLLM:Code:CodeExecution
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions setting.
+        /// <para>Value description:<br/>The settings for the Azure Container Apps Dynamic Sessions code execution service.</para>
+        /// </summary>
+        public const string FoundationaLLM_Code_CodeExecution_AzureContainerAppsDynamicSessions =
+            "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions";
 
         #endregion
 
@@ -250,6 +293,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials_APIScope =
             "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:APIScope";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:EnableCache setting.
+        /// <para>Value description:<br/>Setting that indicates whether the Authorization API Client should use caching.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials_EnableCache =
+            "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:EnableCache";
 
         #endregion
 
@@ -513,6 +563,31 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AccountName setting.
+        /// <para>Value description:<br/>The Azure Storage account for persisted completion requests.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_OrchestrationAPI_Configuration_CompletionRequestsStorage_AccountName =
+            "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AccountName";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_OrchestrationAPI_Configuration_CompletionRequestsStorage_AuthenticationType =
+            "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AuthenticationType";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:ContainerName setting.
+        /// <para>Value description:<br/>The name of the root container in the Azure Storage account.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_OrchestrationAPI_Configuration_CompletionRequestsStorage_ContainerName =
+            "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:ContainerName";
+
+        #endregion
+
         #region FoundationaLLM:APIEndpoints:LangChainAPI:Essentials
         
         /// <summary>
@@ -532,6 +607,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         #endregion
 
         #region FoundationaLLM:APIEndpoints:LangChainAPI:Configuration
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:PollingIntervalSeconds setting.
+        /// <para>Value description:<br/>The interval in seconds at which the LangChain API will be polled for status.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_LangChainAPI_Configuration_PollingIntervalSeconds =
+            "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:PollingIntervalSeconds";
 
         #endregion
 

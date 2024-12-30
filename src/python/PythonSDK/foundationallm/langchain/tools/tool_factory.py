@@ -7,7 +7,7 @@ from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.tools import DALLEImageGenerationTool
 from foundationallm.models.agents import AgentTool
-from foundationallm.plugins import PluginManager
+from foundationallm.plugins import PluginManager, PluginManagerTypes
 
 class ToolFactory:
     """
@@ -46,7 +46,12 @@ class ToolFactory:
             tool_plugin_manager = None
 
             if tool_config.package_name in self.plugin_manager.external_modules:
-                tool_plugin_manager = self.plugin_manager.external_modules[tool_config.package_name].tool_plugin_manager
+                tool_plugin_manager = next(( \
+                    pm for pm \
+                    in self.plugin_manager.external_modules[tool_config.package_name].plugin_managers \
+                    if pm.plugin_manager_type == PluginManagerTypes.TOOLS), None)
+                if tool_plugin_manager is None:
+                    raise LangChainException(f"Tool plugin manager not found for package {tool_config.package_name}")
                 return tool_plugin_manager.create_tool(tool_config, objects, user_identity, config)
             else:
                 raise LangChainException(f"Package {tool_config.package_name} not found in the list of external modules loaded by the package manager.")

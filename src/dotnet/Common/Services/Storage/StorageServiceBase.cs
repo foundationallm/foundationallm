@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using System.ComponentModel;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Constants.Authentication;
+using Azure.Storage.Blobs;
 
 namespace FoundationaLLM.Common.Services.Storage
 {
@@ -12,7 +13,10 @@ namespace FoundationaLLM.Common.Services.Storage
     /// </summary>
     public abstract class StorageServiceBase
     {
-        private readonly BlobStorageServiceSettings _settings;
+        /// <summary>
+        /// The <see cref="BlobStorageServiceSettings"/> used to configure the storage service.
+        /// </summary>
+        protected readonly BlobStorageServiceSettings _settings;
         /// <summary>
         /// The logger used for logging.
         /// </summary>
@@ -22,6 +26,14 @@ namespace FoundationaLLM.Common.Services.Storage
         /// The optional instance name of the storage service.
         /// </summary>
         public string? InstanceName { get; set; }
+
+        /// <summary>
+        /// The name of the storage account.
+        /// </summary>
+        public string? StorageAccountName => _settings.AccountName;
+
+        /// <inheritdoc/>
+        public string? StorageContainerName => _settings.ContainerName;
 
         /// <summary>
         ///  Initializes a new instance of the <see cref="StorageServiceBase"/> with the specified options and logger.

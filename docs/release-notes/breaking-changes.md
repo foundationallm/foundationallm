@@ -3,6 +3,104 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting with 0.9.1-rc105
+
+### Configuration changes
+
+The following new App Configuration settings are required:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+|`FoundationaLLM:PythonSDK:Logging:LogLevel:Azure` | `Warning` | Provides the default level of logging for Azure modules in the Python SDK. |
+
+### Agent workflow configuration changes
+
+Agent resource configuration files that have a `workflow` property now requires a `name` and `package_name` property. This is to support loading external workflows via plugins. For internal workflows, the `package_name` should be set to `FoundationaLLM`. Example below truncated for brevity.
+
+```json
+{
+    "workflow": {
+        "type": "langgraph-react-agent-workflow",
+        "name": "LangGraphReactAgent",
+        "package_name": "FoundationaLLM",
+        "workflow_host": "LangChain",
+        "graph_recursion_limit": 10,
+        "resource_object_ids": {}
+    }
+}
+```
+
+A new `Workflow` resource must be added to the `FoundationaLLM.Agent` resource provider:
+
+```json
+{
+  "type": "external-agent-workflow",
+  "name": "ExternalAgentWorkflow",
+  "object_id": "/instances/<instance_id>/providers/FoundationaLLM.Agent/workflows/ExternalAgentWorkflow",
+  "display_name": "ExternalAgentWorkflow",
+  "description": "External Agent workflow",
+  "cost_center": null,
+  "properties": null,
+  "created_on": "2024-11-13T18:12:07.0223039+00:00",
+  "updated_on": "0001-01-01T00:00:00+00:00",
+  "created_by": "dev@foundationaLLM.ai",
+  "updated_by": null,
+  "deleted": false,
+  "expiration_date": null
+}
+```
+
+## Starting with 0.9.1-rc102
+
+### Configuration changes
+
+The following new App Configuration settings are required:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+|`FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AccountName` | `<main_storage_account_name>` | Provides the storage account used by the Orchestration API to persist completion requests. |
+|`FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AuthenticationType` | `AzureIdentity` | Indicates that managed identity authentication should be used to access the storage account. |
+|`FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:ContainerName` | `orchestration-completion-requests` | Provides the storage container name used by the Orchestration API to persist completion requests. Should always be `orchestration-completion-requests` |
+
+### User profile changes
+
+A new flag named `persistOrchestrationCompletionRequests` is added to the user profile. This flag is used to determine whether the user's completion requests should be persisted in the storage account. The default value is `false`.
+
+Sample configuration:
+
+```json
+"flags": {
+        "oneDriveWorkSchoolEnabled": true,
+        "persistOrchestrationCompletionRequests": true
+    },
+```
+
+## Starting with 0.9.1-rc101
+
+### Configuration changes
+
+The following new App Configuration settings are required:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+|`FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions` | `{"DynamicSessionsEndpoints": []}` | Provides the configuration for the Azure Container Apps Dynamic Sessions code execution service. `DynamicSessionsEnpoints` is a list of Dynamic Sessions endpoints that are used to run code execution sessions. Must contain at least one value. |
+
+### Agent tool configuration changes
+
+Each agent tool should have an entry in the `properties` dictionary named `foundationallm_aca_code_execution_enabled` (`true` or `false`) to indicate whether the tool requires code execution sessions based on the the Azure Container Apps Dynamic Sessions service.
+
+### Prompt definition changes
+
+Prompt prefixes and suffixes support FoundationaLLM variables for dynamic replacement at runtime. The variable format is `{{foundationallm:variable_name[:format]}}` where
+- `variable_name` is the name of the well-known variable.
+- `format` is the optional formatting applied to the value of the variable.
+
+The following variables are supported:
+
+| Name | Value | Example
+| --- | --- | --- |
+| `current_datetime_utc` | The current UTC date and time. | `The current date is {{foundationallm:current_datetime_utc:dddd, MMMM dd, yyyy}}. This looks great.` -> `The current date is Sunday, December 15, 2024. This looks great.`
+
 ## Starting with 0.9.0
 
 ### Configuration changes
@@ -19,16 +117,23 @@ The following new App Configuration settings are required:
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType` | `-` | `-` |
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer` | `-` | `-` |
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules` | `-` | `-` |
+|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:PollingIntervalSeconds` | `10` | The interval in seconds at which the LangChain API will be polled for status. |
 |`FoundationaLLM:UserPortal:Configuration:ShowMessageRating` | `true` | If `true`, rating options on agent messages will appear. |
 |`FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup` | `false` | If `true`, the last conversation will be displayed when the user logs in. Otherwise, a new conversation placeholder appears on page load. |
 |`FoundationaLLM:UserPortal:Configuration:ShowMessageTokens` | `true` | If `true`, the number of consumed tokens on agent and user messages will appear. |
 |`FoundationaLLM:UserPortal:Configuration:ShowViewPrompt` | `true` | If `true`, the "View Prompt" button on agent messages will appear. |
+|`FoundationaLLM:Instance:EnableResourceProvidersCache` | `false` | If `true`, the caching of resource providers will be enabled. |
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:EnableCache` | `false` | If `true`, the caching of authorization call results will be enabled. |
 
 #### Agent Tool configuration changes
 
 Agent tools are now an array of AgentTool objects rather than a dictionary.
 
 When defining tools for an agent, each tool now requires a `package_name` property. This property is used to identify the package that contains the tool's implementation. If the tool is internal, the `package_name` should be set to `FoundationaLLM`, if the tool is external, the `package_name` should be set to the name of the external package.
+
+#### Security-related changes
+
+The **Authorization API** now requires the ability to write to the Key Vault account contained within the auth resource group. Currently, the Authorization APIs managed identity is assigned to the `Key Vault Secrets User` role on the Key Vault account. This role assignment must be updated to include the `Key Vault Secrets Officer` role in addition to the user role.
 
 #### Renamed classes
 
@@ -53,7 +158,6 @@ The `/instances/{instanceId}/sessions/{sessionId}/message/{id}/rate` endpoint ha
 
 > [!NOTE]
 > Please note that both properties are nullable. Set them to null to clear out the rating and comments.
-
 
 ## Starting with 0.8.4
 

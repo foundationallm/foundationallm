@@ -4,6 +4,7 @@ import os
 import sys
 
 from .external_module import ExternalModule
+from .plugin_manager_types import PluginManagerTypes
 
 from foundationallm.config import Configuration
 from foundationallm.storage import BlobStorageManager
@@ -14,9 +15,6 @@ PLUGIN_MANAGER_STORAGE_AUTHENTICATION_TYPE = f'{PLUGIN_MANAGER_CONFIGURATION_NAM
 PLUGIN_MANAGER_STORAGE_CONTAINER = f'{PLUGIN_MANAGER_CONFIGURATION_NAMESPACE}:RootStorageContainer'
 PLUGIN_MANAGER_MODULES = f'{PLUGIN_MANAGER_CONFIGURATION_NAMESPACE}:Modules'
 PLUGIN_MANAGER_LOCAL_STORAGE_FOLDER_NAME = 'foundationallm_external_modules'
-
-TOOLS_PLUGIN_MANAGER_TYPE = 'tools'
-
 
 class PluginManager():
     """
@@ -80,18 +78,17 @@ class PluginManager():
                         plugin_manager_type = module_configuration[2]
                         plugin_manager_class_name = module_configuration[3]
 
-                        if (plugin_manager_type != TOOLS_PLUGIN_MANAGER_TYPE):
+                        if (plugin_manager_type != PluginManagerTypes.TOOLS and plugin_manager_type != PluginManagerTypes.WORKFLOWS):
                             raise ValueError(f'The plugin manager type {plugin_manager_type} is not recognized.')
 
                         if module_name in self.external_modules:
-                            self.external_modules[module_name].tool_plugin_manager_class_name = plugin_manager_class_name
+                            self.external_modules[module_name].plugin_manager_class_names.append(plugin_manager_class_name)
                         else:
                             self.external_modules[module_name] = ExternalModule(
                                 module_file=module_file,
                                 module_name=module_name,
-                                tool_plugin_manager_class_name=plugin_manager_class_name
-                            )                    
-
+                                plugin_manager_class_names=[plugin_manager_class_name]
+                            )
                 self.initialized = True
                 self.logger.info('The plugin manager initialized successfully.')
 
@@ -105,6 +102,8 @@ class PluginManager():
         if not self.initialized:
             self.logger.error('The plugin manager is not initialized. No plugins will be loaded.')
             return
+        
+        loaded_modules = set()
 
         for module_name in self.external_modules.keys():
 
@@ -114,20 +113,27 @@ class PluginManager():
             self.logger.info(f'Loading module from {module_file_name}')
 
             try:
-                if (self.storage_manager.file_exists(module_file_name)):
-                    self.logger.info(f'Copying module file to: {local_module_file_name}')
-                    module_file_binary_content = self.storage_manager.read_file_content(module_file_name)
-                    with open(local_module_file_name, 'wb') as f:
-                        f.write(module_file_binary_content)
 
-                sys.path.insert(0, local_module_file_name)
-                external_module.module = import_module(external_module.module_name)
+                if module_name in loaded_modules:
+                    self.logger.info(f'Module {module_name} and all plugin managers are already loaded.')
+                    continue
+                else:
+                    if (self.storage_manager.file_exists(module_file_name)):
+                        self.logger.info(f'Copying module file to: {local_module_file_name}')
+                        module_file_binary_content = self.storage_manager.read_file_content(module_file_name)
+                        with open(local_module_file_name, 'wb') as f:
+                            f.write(module_file_binary_content)
 
-                self.logger.info(f'Module {module_name} loaded successfully.')
-                external_module.module_loaded = True
+                    sys.path.insert(0, local_module_file_name)
+                    external_module.module = import_module(external_module.module_name)
 
-                # Note the () at the end of the getattr call - this is to call the class constructor, not just get the class.
-                external_module.tool_plugin_manager = getattr(external_module.module, external_module.tool_plugin_manager_class_name)()
+                    self.logger.info(f'Module {module_name} loaded successfully.')
+                    external_module.module_loaded = True
+                    loaded_modules.add(module_name)
+
+                    for plugin_manager_class_name in external_module.plugin_manager_class_names:
+                        # Note the () at the end of the getattr call - this is to call the class constructor, not just get the class.
+                        external_module.plugin_managers.append(getattr(external_module.module, plugin_manager_class_name)())
 
             except Exception as e:
                 self.logger.exception(f'An error occurred while loading module: {module_name}')

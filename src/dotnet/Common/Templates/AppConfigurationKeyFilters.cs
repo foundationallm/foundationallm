@@ -25,6 +25,18 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:Configuration:*";
         
         /// <summary>
+        /// Filter for the configuration section used to identify the Python SDK settings.
+        /// </summary>
+        public const string FoundationaLLM_PythonSDK =
+            "FoundationaLLM:PythonSDK:*";
+        
+        /// <summary>
+        /// Filter for the configuration section used to identify settings for code execution services.
+        /// </summary>
+        public const string FoundationaLLM_Code_CodeExecution =
+            "FoundationaLLM:Code:CodeExecution:*";
+        
+        /// <summary>
         /// Filter for the configuration section used to identify the storage settings for the FoundationaLLM.AIModel resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_AIModel_Storage =
@@ -137,6 +149,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_OrchestrationAPI_Essentials =
             "FoundationaLLM:APIEndpoints:OrchestrationAPI:Essentials:*";
+        
+        /// <summary>
+        /// Filter for the configuration section used to identify the settings for storing persisted completion requests.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_OrchestrationAPI_Configuration =
+            "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:*";
         
         /// <summary>
         /// Filter for the configuration section used to identify the essential settings for the LangChain API.

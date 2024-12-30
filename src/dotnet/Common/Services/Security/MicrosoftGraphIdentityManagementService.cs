@@ -133,6 +133,20 @@ namespace FoundationaLLM.Common.Services.Security
                 });
             }
 
+            // Add to the results an `ObjectQueryResult` object for any `parameters.Ids` that are not in the results.
+            foreach (var id in parameters.Ids)
+            {
+                if (results.All(x => x.Id != id))
+                {
+                    results.Add(new ObjectQueryResult
+                    {
+                        Id = id,
+                        DisplayName = id,
+                        ObjectType = ObjectTypes.Other
+                    });
+                }
+            }
+
             return results;
         }
 
