@@ -1,5 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.Authorization;
-using FoundationaLLM.Core.Interfaces;
+using FoundationaLLM.Common.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

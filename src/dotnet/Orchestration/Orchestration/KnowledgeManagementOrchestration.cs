@@ -38,6 +38,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// <param name="resourceProviderServices">The dictionary of <see cref="IResourceProviderService"/></param>
     /// <param name="dataSourceAccessDenied">Inidicates that access was denied to all underlying data sources.</param>
     /// <param name="openAIVectorStoreId">The OpenAI Assistants vector store id.</param>
+    /// <param name="completionRequestObserver">An optional observer for completion requests.</param>
     public class KnowledgeManagementOrchestration(
         string instanceId,
         string agentObjectId,
@@ -50,7 +51,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         IHttpClientFactoryService httpClientFactoryService,
         Dictionary<string, IResourceProviderService> resourceProviderServices,
         bool? dataSourceAccessDenied,
-        string? openAIVectorStoreId) : OrchestrationBase(orchestrationService)
+        string? openAIVectorStoreId,
+        Func<LLMCompletionRequest, Task>? completionRequestObserver = null) : OrchestrationBase(orchestrationService)
     {
         private readonly string _instanceId = instanceId;
         private readonly string _agentObjectId = agentObjectId;
@@ -61,6 +63,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private readonly ILogger<OrchestrationBase> _logger = logger;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
         private readonly bool? _dataSourceAccessDenied = dataSourceAccessDenied;
+        private readonly Func<LLMCompletionRequest, Task>? _completionRequestObserver = completionRequestObserver;
 
         private readonly IResourceProviderService _attachmentResourceProvider =
             resourceProviderServices[ResourceProviderNames.FoundationaLLM_Attachment];
@@ -81,9 +84,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     Result = validationResponse
                 };
 
+            var llmCompletionRequest = await GetLLMCompletionRequest(completionRequest);
+            if (_completionRequestObserver != null)
+                await _completionRequestObserver(llmCompletionRequest);
+
             var result = await _orchestrationService.StartCompletionOperation(
                 _instanceId,
-                await GetLLMCompletionRequest(completionRequest));
+                llmCompletionRequest);
 
             return result;
         }
@@ -115,9 +122,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (validationResponse != null)
                 return validationResponse;
 
+            var llmCompletionRequest = await GetLLMCompletionRequest(completionRequest);
+            if (_completionRequestObserver != null)
+                await _completionRequestObserver(llmCompletionRequest);
+
             var result = await _orchestrationService.GetCompletion(
                 _instanceId,
-                await GetLLMCompletionRequest(completionRequest));
+                llmCompletionRequest);
 
             return await GetCompletionResponse(completionRequest.OperationId!, result);
         }

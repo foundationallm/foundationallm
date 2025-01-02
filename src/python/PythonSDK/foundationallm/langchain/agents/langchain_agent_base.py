@@ -24,6 +24,7 @@ from foundationallm.models.resource_providers.attachments import Attachment
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.models.resource_providers.prompts import MultipartPrompt
 from foundationallm.plugins import PluginManager
+from foundationallm.telemetry import Telemetry
 
 class LangChainAgentBase():
     """
@@ -49,6 +50,8 @@ class LangChainAgentBase():
         self.has_indexing_profiles = False
         self.has_retriever = False
         self.operations_manager = operations_manager
+
+        self.tracer = Telemetry.get_tracer('langchain-agent-base')
 
     @abstractmethod
     async def invoke_async(self, request: CompletionRequestBase) -> CompletionResponse:

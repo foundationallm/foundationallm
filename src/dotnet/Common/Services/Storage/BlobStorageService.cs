@@ -31,11 +31,6 @@ namespace FoundationaLLM.Common.Services.Storage
     {
         private BlobServiceClient _blobServiceClient;
 
-        /// <summary>
-        /// The name of the storage account.
-        /// </summary>
-        public string StorageAccountName => _blobServiceClient.AccountName;
-
         /// <inheritdoc/>
         public async Task<BinaryData> ReadFileAsync(
             string containerName,

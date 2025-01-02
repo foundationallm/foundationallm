@@ -37,7 +37,7 @@ namespace FoundationaLLM.Client.Core.Tests
         }
 
         [Fact]
-        public async Task RateMessageAsync_ShouldReturnMessage_WhenSuccessful()
+        public async Task RateMessageAsync_ShouldSucceed()
         {
             // Arrange
             var sessionId = "test-session-id";
@@ -47,26 +47,11 @@ namespace FoundationaLLM.Client.Core.Tests
                 Rating = true,
                 Comments = "Great response!"
             };
-            var expectedMessage = new Message
-            {
-                Id = messageId,
-                RatingComments = "This is a test message.",
-                Rating = ratingRequest.Rating
-            };
-
-            _coreRestClient.Sessions
-                .RateMessageAsync(sessionId, messageId, ratingRequest)
-                .Returns(Task.FromResult(expectedMessage));
 
             // Act
-            var result = await _coreClient.RateMessageAsync(sessionId, messageId, ratingRequest);
+            await _coreClient.RateMessageAsync(sessionId, messageId, ratingRequest);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal(expectedMessage.Id, result.Id);
-            Assert.Equal(expectedMessage.RatingComments, result.RatingComments);
-            Assert.Equal(expectedMessage.Rating, result.Rating);
-
             await _coreRestClient.Sessions.Received(1).RateMessageAsync(sessionId, messageId, ratingRequest);
         }
 

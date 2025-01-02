@@ -24,6 +24,7 @@ class Telemetry:
     """
 
     log_level : int = logging.WARNING
+    azure_log_level : int = logging.WARNING
     langchain_log_level : int = logging.NOTSET
     api_name : str = None
     telemetry_connection_string : str = None
@@ -118,40 +119,57 @@ class Telemetry:
         span.record_exception(ex)
 
     @staticmethod
+    def translate_log_level(log_level: str) -> int:
+        """
+        Translates a log level string to a logging level.
+
+        Parameters
+        ----------
+        log_level : str
+            The log level to translate.
+
+        Returns
+        -------
+        int
+            Returns the logging level for the specified log level string.
+        """
+        if log_level == "Debug":
+            return logging.DEBUG
+        elif log_level == "Trace":
+            return logging.DEBUG
+        elif log_level == "Information":
+            return logging.INFO
+        elif log_level == "Warning":
+            return logging.WARNING
+        elif log_level == "Error":
+            return logging.ERROR
+        elif log_level == "Critical":
+            return logging.CRITICAL
+        else:
+            return logging.NOTSET
+
+    @staticmethod
     def configure_logging(config: Configuration):
-        #Get dotnet log level
-        str_log_level = config.get_value("FoundationaLLM:PythonSDK:Logging:LogLevel:Default")
+
+        Telemetry.log_level = Telemetry.translate_log_level(
+            config.get_value("FoundationaLLM:PythonSDK:Logging:LogLevel:Default"))
+        
+        Telemetry.azure_log_level = Telemetry.translate_log_level(
+            config.get_value("FoundationaLLM:PythonSDK:Logging:LogLevel:Azure"))
 
         enable_console_logging = config.get_value("FoundationaLLM:PythonSDK:Logging:EnableConsoleLogging")
 
         #Log output handlers
         handlers = []
 
+        set_debug(False)
+        set_verbose(False)
+
         #map log level to python log level - console is only added for Information or higher
-        if str_log_level == "Debug":
-            Telemetry.log_level = logging.DEBUG
+        if Telemetry.log_level == logging.DEBUG:
             set_debug(True)
-            handlers.append(logging.StreamHandler())
-        elif str_log_level == "Trace":
-            Telemetry.log_level = logging.DEBUG
-            handlers.append(logging.StreamHandler())
             set_verbose(True)
-        elif str_log_level == "Information":
-            Telemetry.log_level = logging.INFO
             handlers.append(logging.StreamHandler())
-            set_debug(False)
-        elif str_log_level == "Warning":
-            set_debug(False)
-            Telemetry.log_level = logging.WARNING
-        elif str_log_level == "Error":
-            set_debug(False)
-            Telemetry.log_level = logging.ERROR
-        elif str_log_level == "Critical":
-            set_debug(False)
-            Telemetry.log_level = logging.CRITICAL
-        else:
-            set_debug(False)
-            Telemetry.log_level = logging.NOTSET
 
         #Logging configuration
         LOGGING = {
@@ -200,7 +218,7 @@ class Telemetry:
             },
             'loggers': {
                 'azure': {  # Adjust the logger name accordingly
-                    'level': Telemetry.log_level,  # Set to WARNING or higher
+                    'level': Telemetry.azure_log_level,
                     "class": "opentelemetry.sdk._logs.LoggingHandler",
                     'filters': ['exclude_trace_logs']
                 },

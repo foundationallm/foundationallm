@@ -39,6 +39,7 @@ The sessionless completion endpoint enables users to query agents without first 
 > The `settings` object provides to override various parameters at runtime, and is optional. Within `settings` both `model_parameters` and `settings.agent_parameters` (along with their members) are optional. If not provided, the Core API will use the default model and agent settings.
 
 **model_parameters:**
+
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | `temperature` | `float` | Controls randomness. Lowering the temperature means that the model will produce more repetitive and deterministic responses. Increasing the temperature will result in more unexpected or creative responses. Try adjusting temperature or Top P but not both. This value should be a float between 0.0 and 1.0. |
@@ -51,6 +52,7 @@ The sessionless completion endpoint enables users to query agents without first 
 | `ignore_eos` | `bool` | Whether to ignore the End of Sequence(EOS) token and continue generating tokens after the EOS token is generated. Defaults to False. |
 
 **agent_parameters:**
+
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | `index_filter_expression` | `string` | This value should be a string representing the search filter expression to limit documents to be searched by the index retriever |

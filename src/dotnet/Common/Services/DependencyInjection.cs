@@ -1,5 +1,4 @@
-﻿using Azure.Monitor.OpenTelemetry.AspNetCore;
-using Azure.Monitor.OpenTelemetry.Exporter;
+﻿using Azure.Monitor.OpenTelemetry.Exporter;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authorization;

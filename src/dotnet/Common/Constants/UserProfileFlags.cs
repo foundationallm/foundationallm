@@ -11,10 +11,16 @@
         public const string OneDriveWorkSchoolEnabled = "oneDriveWorkSchoolEnabled";
 
         /// <summary>
+        /// Indicates whether completion requests created by the Orchestration API should be persisted or not.
+        /// </summary>
+        public const string PersistOrchestrationCompletionRequests = "persistOrchestrationCompletionRequests";
+
+        /// <summary>
         /// All user profile flags.
         /// </summary>
         public readonly static string[] All = [
-            OneDriveWorkSchoolEnabled
+            OneDriveWorkSchoolEnabled,
+            PersistOrchestrationCompletionRequests
         ];
     }
 }
