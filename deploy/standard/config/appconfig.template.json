@@ -57,10 +57,24 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:PythonSDK:Logging:LogLevel:Azure",
+            "value": "Warning",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:PythonSDK:Logging:EnableConsoleLogging",
             "value": "false",
             "label": null,
             "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions",
+            "value": "{\"DynamicSessionsEndpoints\": []}",
+            "label": null,
+            "content_type": "application/json",
             "tags": {}
         },
         {
@@ -177,7 +191,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:APIUrl",
-            "value": "http://authorization-api/authorization",
+            "value": "http://authorization-api.{{serviceNamespaceName}}.svc.cluster.local",
             "label": null,
             "content_type": "",
             "tags": {}
@@ -421,6 +435,27 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AccountName",
+            "value": "{{storageAccountAdlsName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:ContainerName",
+            "value": "orchestration-completion-requests",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Essentials:APIKey",
             "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-langchainapi-apikey\"}",
             "label": null,
@@ -618,7 +653,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIUrl",
-            "value": "http://state-api",
+            "value": "http://state-api.{{serviceNamespaceName}}.svc.cluster.local",
             "label": null,
             "content_type": "",
             "tags": {}
