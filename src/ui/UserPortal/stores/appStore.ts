@@ -48,6 +48,7 @@ export const useAppStore = defineStore('app', {
 	actions: {
 		async init(sessionId: string) {
 			const appConfigStore = useAppConfigStore();
+			await this.getAgents();
 
 			// Watch for changes in autoHideToasts and update sessionStorage
 			watch(
