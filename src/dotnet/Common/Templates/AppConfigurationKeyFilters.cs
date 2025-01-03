@@ -151,6 +151,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:OrchestrationAPI:Essentials:*";
         
         /// <summary>
+        /// Filter for the configuration section used to identify the settings for storing persisted completion requests.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_OrchestrationAPI_Configuration =
+            "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:*";
+        
+        /// <summary>
         /// Filter for the configuration section used to identify the essential settings for the LangChain API.
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_LangChainAPI_Essentials =

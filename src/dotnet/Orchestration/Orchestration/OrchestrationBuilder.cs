@@ -44,6 +44,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         /// <param name="codeExecutionService">The <see cref="ICodeExecutionService"/> used to execute code.</param>
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/> provding dependency injection services for the current scope.</param>
         /// <param name="loggerFactory">The logger factory used to create new loggers.</param>
+        /// <param name="completionRequestObserver">An optional observer for completion requests.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
         public static async Task<OrchestrationBase?> Build(
@@ -58,7 +59,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             ITemplatingService templatingService,
             ICodeExecutionService codeExecutionService,
             IServiceProvider serviceProvider,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            Func<LLMCompletionRequest, Task>? completionRequestObserver = null)
         {
             var logger = loggerFactory.CreateLogger<OrchestrationBuilder>();
 
@@ -118,7 +120,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
                     resourceProviderServices,
                     result.DataSourceAccessDenied,
-                    vectorStoreId);
+                    vectorStoreId,
+                    completionRequestObserver);
 
                 return kmOrchestration;
             }
@@ -170,6 +173,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 loggerFactory.CreateLogger<OrchestrationBase>(),
                 serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
                 resourceProviderServices,
+                null,
                 null,
                 null);
 
@@ -281,7 +285,15 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             }
                             break;
                         case AgentResourceTypeNames.Workflows:
-                            agentWorkflow.WorkflowName = resourcePath.MainResourceId;
+
+                            var retrievedWorkflow = await agentResourceProvider.GetResourceAsync<Workflow>(
+                                resourceObjectId.ObjectId,
+                                currentUserIdentity);
+
+                            explodedObjectsManager.TryAdd(
+                                retrievedWorkflow.ObjectId!,
+                                retrievedWorkflow);
+
                             break;
                     }
                 }

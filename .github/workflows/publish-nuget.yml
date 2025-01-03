@@ -1,6 +1,9 @@
 name: Publish NuGet & PyPi Packages
 
 on:
+  push:
+    branches:
+    - release/**
   workflow_dispatch:
 
 env:

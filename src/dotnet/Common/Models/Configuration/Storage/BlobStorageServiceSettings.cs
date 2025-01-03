@@ -30,5 +30,10 @@ namespace FoundationaLLM.Common.Models.Configuration.Storage
         /// This value should be set only if AuthenticationType has a value of ConnectionString.
         /// </summary>
         public string? ConnectionString { get; set; }
+
+        /// <summary>
+        /// The name of the container within the blob storage account.
+        /// </summary>
+        public string? ContainerName { get; set; }
     }
 }

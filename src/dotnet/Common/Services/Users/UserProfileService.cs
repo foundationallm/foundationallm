@@ -1,15 +1,14 @@
 ﻿using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Core.Interfaces;
-using Microsoft.Extensions.Logging;
 using FoundationaLLM.Common.Models.Configuration.Users;
+using Microsoft.Extensions.Logging;
 
-namespace FoundationaLLM.Core.Services
+namespace FoundationaLLM.Common.Services.Users
 {
     /// <inheritdoc/>
     public class UserProfileService : IUserProfileService
     {
         private readonly IAzureCosmosDBService _cosmosDbService;
-        private readonly ILogger<CoreService> _logger;
+        private readonly ILogger<UserProfileService> _logger;
         private readonly ICallContext _callContext;
 
         /// <summary>
@@ -21,7 +20,7 @@ namespace FoundationaLLM.Core.Services
         /// <see cref="UserProfileService"/> type name.</param>
         /// <param name="callContext">Contains contextual data for the calling service.</param>
         public UserProfileService(IAzureCosmosDBService cosmosDbService,
-            ILogger<CoreService> logger,
+            ILogger<UserProfileService> logger,
             ICallContext callContext)
         {
             _cosmosDbService = cosmosDbService;

@@ -8,7 +8,7 @@
         /// <summary>
         /// The polling interval in seconds to check the status of the LangChain service.
         /// </summary>
-        public int PollingIntervalSeconds { get; set; } = 10;
+        public double PollingIntervalSeconds { get; set; } = 10;
 
     }
 }

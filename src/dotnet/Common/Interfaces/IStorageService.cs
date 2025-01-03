@@ -13,7 +13,12 @@
         /// <summary>
         /// The name of the storage account.
         /// </summary>
-        string StorageAccountName { get; }
+        string? StorageAccountName { get; }
+
+        /// <summary>
+        /// The name of the storage container.
+        /// </summary>
+        string? StorageContainerName { get; }
 
         /// <summary>
         /// Reads the binary content of a specified file from the storage.

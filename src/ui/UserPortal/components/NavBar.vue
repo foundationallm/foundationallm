@@ -161,72 +161,15 @@ export default {
 			},
 			deep: true,
 		},
-	},
-
-	async created() {
-		await this.$appStore.getAgents();
-
-		this.agentOptions = this.$appStore.agents.map((agent) => ({
-			label: agent.resource.name,
-			type: agent.resource.type,
-			object_id: agent.resource.object_id,
-			description: agent.resource.description,
-			my_agent: agent.roles.includes('Owner'),
-			value: agent,
-		}));
-
-		if (this.agentOptions.length === 0) {
-			this.emptyAgentsMessage = this.$appConfigStore.noAgentsMessage ?? null;
-		}
-
-		const publicAgentOptions = this.agentOptions.filter((agent) => !agent.my_agent);
-		const privateAgentOptions = this.agentOptions.filter((agent) => agent.my_agent);
-		const noAgentOptions = [
-			{
-				label: 'None',
-				value: null,
-				disabled: true,
-				type: '',
-				object_id: '',
-				description: '',
+		'$appStore.agents': {
+			handler() {
+				this.setAgentOptions();
 			},
-		];
-		this.virtualUser = await this.$appStore.getVirtualUser();
-
-		this.agentOptionsGroup.push({
-			label: '',
-			items: [
-				{
-					label: '--select--',
-					value: null,
-					type: '',
-					object_id: '',
-					description: '',
-				},
-			],
-		});
-
-		if (this.agentOptions.length === 0) {
-			// Append noAgentOptions to the last entry in the agentOptionsGroup
-			this.agentOptionsGroup[this.agentOptionsGroup.length - 1].items.push(...noAgentOptions);
-			return;
-		}
-
-		if (privateAgentOptions.length > 0) {
-			this.agentOptionsGroup.push({
-				label: 'My Agents',
-				items: privateAgentOptions,
-			});
-			this.agentOptionsGroup.push({
-				label: 'Other Agents',
-				items: publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions,
-			});
-		} else {
-			this.agentOptionsGroup[this.agentOptionsGroup.length - 1].items.push(
-				...(publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions),
-			);
-		}
+			deep: true,
+		},
 	},
+
+	async created() {},
 
 	mounted() {
 		this.updateAgentSelection();
@@ -258,6 +201,69 @@ export default {
 
 		handlePrint() {
 			window.print();
+    },
+    
+		async setAgentOptions() {
+			this.agentOptions = this.$appStore.agents.map((agent) => ({
+				label: agent.resource.name,
+				type: agent.resource.type,
+				object_id: agent.resource.object_id,
+				description: agent.resource.description,
+				my_agent: agent.roles.includes('Owner'),
+				value: agent,
+			}));
+
+			if (this.agentOptions.length === 0) {
+				this.emptyAgentsMessage = this.$appConfigStore.noAgentsMessage ?? null;
+			}
+
+			const publicAgentOptions = this.agentOptions.filter((agent) => !agent.my_agent);
+			const privateAgentOptions = this.agentOptions.filter((agent) => agent.my_agent);
+			const noAgentOptions = [
+				{
+					label: 'None',
+					value: null,
+					disabled: true,
+					type: '',
+					object_id: '',
+					description: '',
+				},
+			];
+			this.virtualUser = await this.$appStore.getVirtualUser();
+
+			this.agentOptionsGroup.push({
+				label: '',
+				items: [
+					{
+						label: '--select--',
+						value: null,
+						type: '',
+						object_id: '',
+						description: '',
+					},
+				],
+			});
+
+			if (this.agentOptions.length === 0) {
+				// Append noAgentOptions to the last entry in the agentOptionsGroup
+				this.agentOptionsGroup[this.agentOptionsGroup.length - 1].items.push(...noAgentOptions);
+				return;
+			}
+
+			if (privateAgentOptions.length > 0) {
+				this.agentOptionsGroup.push({
+					label: 'My Agents',
+					items: privateAgentOptions,
+				});
+				this.agentOptionsGroup.push({
+					label: 'Other Agents',
+					items: publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions,
+				});
+			} else {
+				this.agentOptionsGroup[this.agentOptionsGroup.length - 1].items.push(
+					...(publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions),
+				);
+			}
 		},
 
 		// handleCopySession() {

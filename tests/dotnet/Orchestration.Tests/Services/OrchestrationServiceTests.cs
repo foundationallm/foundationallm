@@ -32,9 +32,11 @@ namespace FoundationaLLM.Orchestration.Tests.Services
         public OrchestrationServiceTests()
         {
             _orchestrationService = new OrchestrationService(
+                null,
                 _resourceProviderServices,
                 null,
                 _cosmosDBService,
+                null,
                 null,
                 null,
                 _callContext,

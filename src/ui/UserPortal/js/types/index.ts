@@ -53,7 +53,7 @@ export interface Message {
 	type: string;
 	sessionId: string;
 	timeStamp: string;
-	sender: 'User' | 'Assistant';
+	sender: 'User' | 'Agent';
 	senderDisplayName: string | null;
 	tokens: number;
 	text: string;
@@ -66,6 +66,7 @@ export interface Message {
 	attachments: Array<string>;
 	attachmentDetails: Array<AttachmentDetail>;
 	analysisResults: Array<AnalysisResult>;
+	processingTime: number; // Calculated in milliseconds - not from the API
 }
 
 export interface MessageRatingRequest

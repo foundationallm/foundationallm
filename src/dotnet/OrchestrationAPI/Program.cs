@@ -64,6 +64,7 @@ namespace FoundationaLLM.Orchestration.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Code_CodeExecution);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_OrchestrationAPI_Configuration);
 
                 options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_OrchestrationAPI);
             }));
@@ -107,6 +108,7 @@ namespace FoundationaLLM.Orchestration.API
 
             builder.Services.AddScoped<ICallContext, CallContext>();
             builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
+            builder.AddUserProfileService();
 
             builder.Services.AddSingleton<ICacheService, MemoryCacheService>();
 
