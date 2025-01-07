@@ -189,6 +189,7 @@ export default {
 				object_id: this.prompt.object_id || '',
 				display_name: this.prompt.display_name,
 				expiration_date: this.prompt.expiration_date,
+				properties: this.prompt.properties,
 			};
 
 			try {

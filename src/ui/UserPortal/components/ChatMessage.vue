@@ -106,7 +106,7 @@
 							@click="selectedContentArtifact = artifact"
 						>
 							<i class="pi pi-file"></i>
-							{{ artifact.title.split('/').pop() }}
+							{{ artifact.title ? artifact.title?.split('/').pop() : '(No Title)' }}
 						</span>
 					</div>
 

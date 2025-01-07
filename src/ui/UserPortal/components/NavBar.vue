@@ -83,6 +83,12 @@
 								aria-activedescendant="selected-agent-{{ agentSelection?.label }}"
 								@change="handleAgentChange"
 							/>
+							<Button
+								class="print-button"
+								@click="handlePrint"
+								aria-label="Print"
+								icon="pi pi-print"
+							/>
 						</span>
 					</template>
 				</div>
@@ -193,6 +199,10 @@ export default {
 			await this.$authStore.logout();
 		},
 
+		handlePrint() {
+			window.print();
+    },
+    
 		async setAgentOptions() {
 			this.agentOptions = this.$appStore.agents.map((agent) => ({
 				label: agent.resource.name,
@@ -371,6 +381,10 @@ export default {
 	box-shadow: 0 0 0 0.1rem #fff;
 }
 
+.print-button {
+	margin-left: 8px;
+}
+
 .no-agents {
 	position: fixed;
 	top: 60px;
@@ -415,6 +429,18 @@ export default {
 	}
 	.current_session_name {
 		display: none;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	.dropdown--agent {
+		max-width: 200px;
+	}
+}
+
+@media only screen and (max-width: 450px) {
+	.dropdown--agent {
+		max-width: 160px;
 	}
 }
 
