@@ -57,10 +57,24 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:PythonSDK:Logging:LogLevel:Azure",
+            "value": "Warning",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:PythonSDK:Logging:EnableConsoleLogging",
             "value": "false",
             "label": null,
             "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions",
+            "value": "{"DynamicSessionsEndpoints": []}",
+            "label": null,
+            "content_type": "application/json",
             "tags": {}
         },
         {
@@ -418,6 +432,27 @@
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AccountName",
+            "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:ContainerName",
+            "value": "orchestration-completion-requests",
+            "label": null,
+            "content_type": "",
             "tags": {}
         },
         {

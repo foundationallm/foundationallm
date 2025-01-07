@@ -3,6 +3,8 @@ Class: FoundationaLLMToolBase
 Description: FoundationaLLM base class for tools that uses the AgentTool model for its configuration.
 """
 
+from typing import List, Dict
+
 # Platform imports
 from azure.identity import DefaultAzureCredential
 from logging import Logger
@@ -23,7 +25,7 @@ class FoundationaLLMToolBase(BaseTool):
 
     response_format: str = 'content_and_artifact'
 
-    def __init__(self, tool_config: AgentTool, objects:dict, user_identity:UserIdentity, config: Configuration):
+    def __init__(self, tool_config: AgentTool, objects:Dict, user_identity:UserIdentity, config: Configuration):
         """ Initializes the FoundationaLLMToolBase class with the tool configuration. """
         super().__init__(
             name=tool_config.name,

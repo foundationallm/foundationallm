@@ -41,8 +41,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         /// <param name="llmOrchestrationServiceManager">The <see cref="ILLMOrchestrationServiceManager"/> that manages internal and external orchestration services.</param>
         /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> used to interact with the Cosmos DB database.</param>
         /// <param name="templatingService">The <see cref="ITemplatingService"/> used to render templates.</param>
+        /// <param name="codeExecutionService">The <see cref="ICodeExecutionService"/> used to execute code.</param>
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/> provding dependency injection services for the current scope.</param>
         /// <param name="loggerFactory">The logger factory used to create new loggers.</param>
+        /// <param name="completionRequestObserver">An optional observer for completion requests.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
         public static async Task<OrchestrationBase?> Build(
@@ -55,8 +57,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             ILLMOrchestrationServiceManager llmOrchestrationServiceManager,
             IAzureCosmosDBService cosmosDBService,
             ITemplatingService templatingService,
+            ICodeExecutionService codeExecutionService,
             IServiceProvider serviceProvider,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            Func<LLMCompletionRequest, Task>? completionRequestObserver = null)
         {
             var logger = loggerFactory.CreateLogger<OrchestrationBuilder>();
 
@@ -67,6 +71,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 originalRequest.Settings?.ModelParameters,
                 resourceProviderServices,
                 templatingService,
+                codeExecutionService,
                 callContext.CurrentUserIdentity!,
                 logger);
 
@@ -115,7 +120,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
                     resourceProviderServices,
                     result.DataSourceAccessDenied,
-                    vectorStoreId);
+                    vectorStoreId,
+                    completionRequestObserver);
 
                 return kmOrchestration;
             }
@@ -168,6 +174,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
                 resourceProviderServices,
                 null,
+                null,
                 null);
 
             return kmOrchestration;
@@ -176,10 +183,11 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private static async Task<(AgentBase? Agent, AIModelBase? AIModel, APIEndpointConfiguration? APIEndpointConfiguration,  ExplodedObjectsManager ExplodedObjectsManager, bool DataSourceAccessDenied)> LoadAgent(
             string instanceId,
             string agentName,
-            string? sessionId,
+            string? conversationId,
             Dictionary<string, object>? modelParameterOverrides,
             Dictionary<string, IResourceProviderService> resourceProviderServices,
             ITemplatingService templatingService,
+            ICodeExecutionService codeExecutionService,
             UnifiedUserIdentity currentUserIdentity,
             ILogger<OrchestrationBuilder> logger)
         {
@@ -277,7 +285,15 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             }
                             break;
                         case AgentResourceTypeNames.Workflows:
-                            agentWorkflow.WorkflowName = resourcePath.MainResourceId;
+
+                            var retrievedWorkflow = await agentResourceProvider.GetResourceAsync<Workflow>(
+                                resourceObjectId.ObjectId,
+                                currentUserIdentity);
+
+                            explodedObjectsManager.TryAdd(
+                                retrievedWorkflow.ObjectId!,
+                                retrievedWorkflow);
+
                             break;
                     }
                 }
@@ -360,10 +376,33 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             foreach (var tool in agentBase.Tools)
             {
                 toolNames.Add(tool.Name);
+
+                // Build the tool parameters dictionary.
+                Dictionary<string, object> toolParameters = [];
+
+                if (tool.TryGetPropertyValue<bool>(
+                        AgentToolPropertyNames.FoundationaLLM_AzureContainerApps_CodeExecution_Enabled, out bool requiresCodeExecution)
+                    && requiresCodeExecution)
+                {
+                    var codeExecutionSession = await codeExecutionService.CreateCodeExecutionSession(
+                        instanceId,
+                        tool.Name,
+                        conversationId!,
+                        currentUserIdentity);
+
+                    toolParameters.Add(
+                        AgentToolPropertyNames.FoundationaLLM_AzureContainerApps_CodeExecution_Endpoint,
+                        codeExecutionSession.Endpoint);
+                    toolParameters.Add(
+                        AgentToolPropertyNames.FoundationaLLM_AzureContainerApps_CodeExecution_SessionId,
+                        codeExecutionSession.SessionId);
+                }
+
                 explodedObjectsManager.TryAdd(
                     tool.Name,
-                    tool);
+                    toolParameters);
 
+                // Ensure all resource object identifiers are exploded.
                 foreach (var resourceObjectId in tool.ResourceObjectIds.Values)
                 {
                     var resourcePath = ResourcePath.GetResourcePath(resourceObjectId.ObjectId);
