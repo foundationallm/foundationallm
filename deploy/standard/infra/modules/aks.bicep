@@ -222,7 +222,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
         osDiskSizeGB: 1024
         tags: tags
         type: 'VirtualMachineScaleSets'
-        vmSize: 'Standard_D4s_v3'
+        vmSize: 'Standard_D2_v5'
         vnetSubnetID: subnetId
 
         nodeTaints: [
