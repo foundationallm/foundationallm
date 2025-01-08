@@ -1,7 +1,7 @@
 {
   "type": "knowledge-management",
-  "name": "FoundationaLLM-v2",
-  "object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.Agent/agents/FoundationaLLM-v2",
+  "name": "FoundationaLLM",
+  "object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.Agent/agents/FoundationaLLM",
   "display_name": null,
   "description": "Useful for answering questions about FoundationaLLM.",
   "cost_center": "",
@@ -42,14 +42,16 @@
   },
   "workflow": {
     "type": "azure-openai-assistants-workflow",
+    "name": "OpenAIAssistants",
     "assistant_id": "${env:OPENAI_ASSISTANT_ID}",
+    "package_name": "FoundationaLLM",
     "resource_object_ids": {
 			"/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.Agent/workflows/OpenAIAssistants": {
 				"object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.Agent/workflows/OpenAIAssistants",
 				"properties": {}
 			},
-			"/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.AIModel/aiModels/DefaultCompletionAIModel" : {
-				"object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.AIModel/aiModels/DefaultCompletionAIModel",
+			"/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel" : {
+				"object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel",
 				"properties": {
 					"object_role": "main_model",
 					"model_parameters": {}
