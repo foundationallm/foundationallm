@@ -31,9 +31,14 @@
         public const string CreateOpenAIFile = "OpenAI.File.Create";
 
         /// <summary>
-        /// Indicates the need to add an existing OpenAI assistant file to the OpenAI assistant vector store.
+        /// Indicates the need to add an existing OpenAI assistant file to an OpenAI assistant vector store.
         /// </summary>
         public const string AddOpenAIFileToVectorStore = "OpenAI.File.AddToVectorStore";
+
+        /// <summary>
+        /// Indicates the need to remove an existing OpenAI assistant file from an OpenAI assistant vector store.
+        /// </summary>
+        public const string RemoveOpenAIFileFromVectorStore = "OpenAI.File.RemoveFromVectorStore";
 
         #endregion
 
@@ -84,9 +89,9 @@
         public const string OpenAIVectorStoreId = "OpenAI.VectorStore.Id";
 
         /// <summary>
-        /// Indicates whether the Open AI assistant file vectorization process completed successfully.
+        /// Indicates whether the Open AI assistant file vectorization or file removal process completed successfully.
         /// </summary>
-        public const string AddOpenAIFileToVectorStoreSuccess = "OpenAI.File.AddToVectorStoreSuccess";
+        public const string OpenAIFileActionOnVectorStoreSuccess = "OpenAI.File.FileActionOnVectorStoreSuccess";
 
         #endregion
     }

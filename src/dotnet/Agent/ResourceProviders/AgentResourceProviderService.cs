@@ -1,4 +1,5 @@
 ﻿using Azure.Messaging;
+using Azure.Search.Documents.Indexes.Models;
 using FluentValidation;
 using FoundationaLLM.Agent.Models.Resources;
 using FoundationaLLM.Common.Clients;
@@ -26,7 +27,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Graph.Models;
 using System.Data;
+using System.Net.Mail;
 using System.Text.Json;
 
 namespace FoundationaLLM.Agent.ResourceProviders
@@ -342,10 +345,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                
                 #endregion
 
-                var gatewayClient = new GatewayServiceClient(
-                       await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
-                           .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
-                       _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
+                var gatewayClient = await GetGatewayServiceClient(userIdentity);
 
                 if (string.IsNullOrWhiteSpace(openAIAssistantId))
                 {
@@ -748,6 +748,92 @@ namespace FoundationaLLM.Agent.ResourceProviders
             }
         }
 
+
+        /// <summary>
+        /// Retrieves the GatewayServiceClient.
+        /// </summary>
+        /// <param name="userIdentity">Identity of the user.</param>
+        /// <returns></returns>
+        private async Task<GatewayServiceClient> GetGatewayServiceClient(UnifiedUserIdentity userIdentity)
+        {
+            var gatewayClient = new GatewayServiceClient(
+                       await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
+                           .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
+                       _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
+            return gatewayClient;
+        }
+
+        /// <summary>
+        /// Adds file to the assistant-level vector store.
+        /// Assumes the file is already uploaded and the OpenAI File ID is available.
+        /// </summary>
+        /// <param name="instanceId">Identifies the FoundationaLLM instance.</param>
+        /// <param name="apiEndpointUrl">The API endpoint URL of the OpenAI service.</param>
+        /// <param name="deploymentName">The deployment name of the model in the OpenAI service.</param>
+        /// <param name="vectorStoreId">The assistant vector store ID.</param>
+        /// <param name="fileId">The OpenAI FileId indicating the file to add to the vector store.</param>
+        /// <param name="userIdentity">The identity of the user.</param>
+        /// <returns>Returns true if successful, false otherwise.</returns>
+        private async Task<bool> AddFileToAssistantsVectorStore(string instanceId, string apiEndpointUrl, string deploymentName, string vectorStoreId, string fileId, UnifiedUserIdentity userIdentity)
+        {
+            var gatewayClient = await GetGatewayServiceClient(userIdentity);                      
+
+            Dictionary<string, object> parameters = new()
+            {                
+                { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, apiEndpointUrl },
+                { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, deploymentName },
+                { OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStore, true },
+                { OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, vectorStoreId },
+                { OpenAIAgentCapabilityParameterNames.OpenAIFileId, fileId }
+            };
+            var vectorizationResult = await gatewayClient!.CreateAgentCapability(
+                            instanceId,
+                            AgentCapabilityCategoryNames.OpenAIAssistants,
+                            string.Empty,
+                            parameters);
+
+            vectorizationResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess, out var vectorizationSuccessObject);
+            var vectorizationSuccess = ((JsonElement)vectorizationSuccessObject!).Deserialize<bool>();
+            if (!vectorizationSuccess)
+                throw new OrchestrationException($"The vectorization of file id {fileId} into the vector store with id {vectorStoreId} failed.");
+            return vectorizationSuccess;
+        }
+
+        /// <summary>
+        /// Removes a file from the assistant-level vector store.
+        /// Assumes the file is already uploaded and the OpenAI File ID is available.
+        /// </summary>
+        /// <param name="instanceId">Identifies the FoundationaLLM instance.</param>
+        /// <param name="apiEndpointUrl">The API endpoint URL of the OpenAI service.</param>
+        /// <param name="deploymentName">The deployment name of the model in the OpenAI service.</param>
+        /// <param name="vectorStoreId">The assistant vector store ID.</param>
+        /// <param name="fileId">The OpenAI FileId indicating the file to remove from the vector store.</param>
+        /// <param name="userIdentity">The identity of the user.</param>
+        /// <returns>Returns true if successful, false otherwise.</returns>
+        private async Task<bool> RemoveFileFromAssistantsVectorStore(string instanceId, string apiEndpointUrl, string deploymentName, string vectorStoreId, string fileId, UnifiedUserIdentity userIdentity)
+        {
+            var gatewayClient = await GetGatewayServiceClient(userIdentity);
+
+            Dictionary<string, object> parameters = new()
+            {                
+                { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, apiEndpointUrl },
+                { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, deploymentName },
+                { OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromVectorStore, true },
+                { OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, vectorStoreId },
+                { OpenAIAgentCapabilityParameterNames.OpenAIFileId, fileId }
+            };
+            var removalResult = await gatewayClient!.CreateAgentCapability(
+                            instanceId,
+                            AgentCapabilityCategoryNames.OpenAIAssistants,
+                            string.Empty,
+                            parameters);
+
+            removalResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess, out var vectorStoreSuccessObject);
+            var removalSuccess = ((JsonElement)vectorStoreSuccessObject!).Deserialize<bool>();
+            if (!removalSuccess)
+                throw new OrchestrationException($"The removal of file id {fileId} from the vector store with id {vectorStoreId} failed.");
+            return removalSuccess;
+        }
         #endregion
     }
 }

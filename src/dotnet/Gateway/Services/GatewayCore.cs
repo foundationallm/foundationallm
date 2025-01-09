@@ -220,6 +220,7 @@ namespace FoundationaLLM.Gateway.Services
             var createAssistantThread = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantThread, false);
             var createAssistantFile = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.CreateOpenAIFile, false);
             var addAssistantFileToVectorStore = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStore, false);
+            var removeAssistantFileFromVectorStore = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromVectorStore, false);
 
             if (createAssistant
                 && string.IsNullOrEmpty(capabilityName))
@@ -396,17 +397,35 @@ namespace FoundationaLLM.Gateway.Services
                 {
                     _logger.LogWarning("The maximum polling time ({MaxPollingTime} seconds) was exceeded during the vectorization of file {FileId} in vector store {VectorStoreId}.",
                         _settings.AzureOpenAIAssistantsMaxVectorizationTimeSeconds, fileId, vectorStoreId);
-                    result[OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStoreSuccess] = false;
+                    result[OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess] = false;
                 }
                 else
                 {
                     _logger.LogInformation("Completed vectorization of file {FileId} in vector store {VectorStoreId} in {TotalSeconds} with result {VectorizationResult}.",
                         fileId, vectorStoreId, (DateTimeOffset.UtcNow - startTime).TotalSeconds, fileAssociationResult.Value.Status);
-                    result[OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStoreSuccess] =
+                    result[OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess] =
                         (fileAssociationResult.Value.Status == VectorStoreFileAssociationStatus.Completed);
                 }
             }
 
+            if(removeAssistantFileFromVectorStore)
+            {
+                var vectorStoreClient = GetAzureOpenAIVectorStoreClient(azureOpenAIAccount.Endpoint);
+                var vectorStoreId = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId);
+                // verify the file is in the vector store
+                var associations = vectorStoreClient.GetFileAssociationsAsync(vectorStoreId);
+                bool isRemoved = true; // return true if the file is not found in the vector store
+                // iterate through associations as removing a file that is not in the vector store will throw an exception
+                await foreach (var association in associations)
+                {
+                    if (association.FileId == fileId)
+                    {
+                        var vectorizationResult = await vectorStoreClient.RemoveFileFromStoreAsync(vectorStoreId, fileId);
+                        isRemoved = vectorizationResult.Value.Removed;
+                    }                   
+                }
+                result[OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess] = isRemoved;
+            }
             return result;
         }
 
