@@ -24,19 +24,19 @@ Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
 # AzCopy tool version to be downloaded
-$AZCOPY_VERSION = "10.26.0"
+$AZCOPY_VERSION = "10.27.1"
 
 # Determine OS and set the download URL and file extension accordingly
 if ($IsWindows) {
-	$url = "https://azcopyvnext.azureedge.net/releases/release-10.26.0-20240731/azcopy_windows_amd64_10.26.0.zip"
+	$url = "https://azcopyvnext-awgzd8g7aagqhzhe.b02.azurefd.net/releases/release-10.27.1-20241113/azcopy_windows_amd64_10.27.1.zip"
 	$os = "windows"
 	$ext = "zip"
 }elseif ($IsMacOS) {
-	$url = "https://azcopyvnext.azureedge.net/releases/release-10.26.0-20240731/azcopy_darwin_amd64_10.26.0.zip"
+	$url = "https://azcopyvnext-awgzd8g7aagqhzhe.b02.azurefd.net/releases/release-10.27.1-20241113/azcopy_darwin_amd64_10.27.1.zip"
 	$os = "darwin"
 	$ext = "zip"
 }elseif ($IsLinux) {
-	$url = "https://azcopyvnext.azureedge.net/releases/release-10.26.0-20240731/azcopy_linux_amd64_10.26.0.tar.gz"
+	$url = "https://azcopyvnext-awgzd8g7aagqhzhe.b02.azurefd.net/releases/release-10.27.1-20241113/azcopy_linux_amd64_10.27.1.tar.gz"
 	$os = "linux"
 	$ext = "tar.gz"
 }
