@@ -47,7 +47,7 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
     ```pwsh
       git clone https://github.com/solliancenet/foundationallm.git
-      cd foundationallm/deploy/standard
+      cd foundationallm
       git checkout release/0.8.2
     ```
 
@@ -111,25 +111,7 @@ Follow the steps below to deploy the solution to your Azure subscription.
     ```
     > Note: If hub resources reside in an Azure tenant/subscription other than the target deployment tenant/subscription, you will need to make sure you are logged into that tenant and subscription via `az login` before executing this step.
 
-9. Login to your Azure account and set the deployment subscription:
-
-    ```pwsh
-    cd .\deploy\standard
-    az login
-    az account set --subscription <Azure Subscription ID>
-    azd auth login
-    ..\common\tools\azcopy\azcopy login
-    ```
-
-10. Set up an `azd` environment targeting your Azure subscription and desired deployment region:
-
-    ```pwsh
-    cd .\deploy\standard
-    # Set your target Subscription and Location
-    azd env new --location <Supported Azure Region> --subscription <Azure Subscription ID>
-    ```
-
-11. Provision SSL certificates for the appropriate domains and package them in PFX format.  Place the PFX files in `foundationallm/deploy/standard/config/certbot/certs` following the naming convention below.  The values for `Host Name` and `Domain Name` should match the values you provided in your deployment manifest:
+9.  Provision SSL certificates for the appropriate domains and package them in PFX format.  Place the PFX files in `foundationallm/deploy/standard/certs` following the naming convention below.  The values for `Host Name` and `Domain Name` should match the values you provided in your deployment manifest:
 
     | Service Name      | Host Name         | Domain Name | File Name                         |
     | ----------------- | ----------------- | ----------- | --------------------------------- |
@@ -138,18 +120,18 @@ Follow the steps below to deploy the solution to your Azure subscription.
     | chat-ui           | chat              | example.com | chat.example.com.pfx              |
     | management-ui     | management        | example.com | management.example.com.pfx        |
 
-12. Set the endpoint hostnames using AZD
+10. Set the endpoint hostnames using AZD
 
     ```pwsh
-    azd set FLLM_USER_PORTAL_HOSTNAME chat.example.com
-    azd set FLLM_CORE_API_HOSTNAME api.example.com
-    azd set FLLM_MGMT_PORTAL_HOSTNAME management.example.com
-    azd set FLLM_MGMT_API_HOSTNAME management-api.example.com
+    azd env set FLLM_USER_PORTAL_HOSTNAME chat.example.com
+    azd env set FLLM_CORE_API_HOSTNAME api.example.com
+    azd env set FLLM_MGMT_PORTAL_HOSTNAME management.example.com
+    azd env set FLLM_MGMT_API_HOSTNAME management-api.example.com
     ```
 
 ## Provision Infrastructure
 
-13. Provision platform infrastructure with `AZD`:
+11. Provision platform infrastructure with `AZD`:
 
     ```pwsh
     cd .\deploy\standard
@@ -162,9 +144,9 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
 ## Configure and Deploy
 
-14. Ensure that you have network access to the deployed resources and that DNS resolution to deployed resources is configured (this is environment specific).
+12. Ensure that you have network access to the deployed resources and that DNS resolution to deployed resources is configured (this is environment specific).
 
-15. Deploy to platform infrastructure with `AZD`:
+13. Deploy to platform infrastructure with `AZD`:
 
     ```pwsh
     cd .\deploy\standard
@@ -195,7 +177,7 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
 ### Running script to allow MS Graph access through Role Permissions
 
-16. After the deployment is complete, you will need to run the following script to allow MS Graph access through Role Permissions. (See below)
+14. After the deployment is complete, you will need to run the following script to allow MS Graph access through Role Permissions. (See below)
 
     > [!IMPORTANT]
     > The user running the script will need to have the appropriate permissions to assign roles to the managed identities. The user will need to be a `Global Administrator` or have the `Privileged Role Administrator` role in the Entra ID tenant.
@@ -215,4 +197,4 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
 ## Connect and Test
 
-17. Visit the chat UI in your browser and send a message to verify the deployment.  The message can be very simple like "Who are you?".  The default agent should respond with a message explaining it's persona.
+15. Visit the chat UI in your browser and send a message to verify the deployment.  The message can be very simple like "Who are you?".  The default agent should respond with a message explaining it's persona.
