@@ -216,6 +216,7 @@ namespace FoundationaLLM.Gateway.Services
         {
             Dictionary<string, object> result = [];
             var createAssistant = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant, false);
+            var createAssistantVectorStore = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantVectorStore, false);
             var createAssistantThread = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantThread, false);
             var createAssistantFile = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.CreateOpenAIFile, false);
             var addAssistantFileToVectorStore = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStore, false);
@@ -237,6 +238,20 @@ namespace FoundationaLLM.Gateway.Services
             if (createAssistant)
             {
                 var assistantClient = GetAzureOpenAIAssistantClient(azureOpenAIAccount.Endpoint);
+                var vectorStoreClient = GetAzureOpenAIVectorStoreClient(azureOpenAIAccount.Endpoint);
+
+                // Create the assistant-level vector store and assign it to the file search tool definition for the assistant.
+                var vectorStoreResult = await vectorStoreClient.CreateVectorStoreAsync(true, new VectorStoreCreationOptions
+                {
+                    Name = capabilityName,
+                    ExpirationPolicy = new VectorStoreExpirationPolicy
+                    {
+                        Anchor = VectorStoreExpirationAnchor.LastActiveAt,
+                        Days = 365
+                    }
+                });
+                var fileSearchToolResources = new FileSearchToolResources();
+                fileSearchToolResources.VectorStoreIds.Add(vectorStoreResult.Value!.Id);
 
                 var prompt = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt);
                 var modelDeploymentName = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName);
@@ -250,16 +265,59 @@ namespace FoundationaLLM.Gateway.Services
                 var assistantResult = await assistantClient.CreateAssistantAsync(modelDeploymentName, new AssistantCreationOptions()
                 {
                     Name = capabilityName,
-                    Instructions = prompt,
+                    Instructions = prompt, 
                     Tools =
                     {
                         new CodeInterpreterToolDefinition(),
                         new FileSearchToolDefinition()
+                    },
+                    ToolResources = new ToolResources()
+                    {
+                        FileSearch = fileSearchToolResources
                     }
+                    
                 });
 
                 var assistant = assistantResult.Value;
                 result[OpenAIAgentCapabilityParameterNames.OpenAIAssistantId] = assistant.Id;
+                result[OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId] = vectorStoreResult.Value!.Id;
+            }
+
+            if(createAssistantVectorStore)
+            {
+                var assistantClient = GetAzureOpenAIAssistantClient(azureOpenAIAccount.Endpoint);
+                var vectorStoreClient = GetAzureOpenAIVectorStoreClient(azureOpenAIAccount.Endpoint);
+
+                // retrieve the assistant by assistant id (expects capabilityName to be the assistant id)
+                var assistant = await assistantClient.GetAssistantAsync(capabilityName);
+                if (assistant.Value == null)
+                {
+                    throw new GatewayException($"The assistant with ID {capabilityName} was not found.", StatusCodes.Status404NotFound);
+                }
+
+                var vectorStoreResult = await vectorStoreClient.CreateVectorStoreAsync(true, new VectorStoreCreationOptions
+                {
+                    Name = capabilityName,
+                    ExpirationPolicy = new VectorStoreExpirationPolicy
+                    {
+                        Anchor = VectorStoreExpirationAnchor.LastActiveAt,
+                        Days = 365
+                    }
+                });
+
+                var fileSearchToolResources = new FileSearchToolResources();
+                fileSearchToolResources.VectorStoreIds.Add(vectorStoreResult.Value!.Id);
+
+                // Update the assistant with the new vector store file search tool resource               
+                var updateAssistantResult = await assistantClient.ModifyAssistantAsync(assistant.Value.Id, new AssistantModificationOptions
+                {
+                    ToolResources = new ToolResources()
+                    {
+                        FileSearch = fileSearchToolResources
+                    }
+                });
+
+                result[OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId] = vectorStoreResult.Value!.Id;
             }
 
             if (createAssistantThread)

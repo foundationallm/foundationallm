@@ -16,6 +16,7 @@ using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
@@ -270,7 +271,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
             agent.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
 
-            if ((agent is KnowledgeManagementAgent { Vectorization.DedicatedPipeline: true, InlineContext: false } kmAgent))
+            if (agent is KnowledgeManagementAgent { Vectorization.DedicatedPipeline: true, InlineContext: false } kmAgent)
             {
                 var result = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Vectorization)
                     .HandlePostAsync(
@@ -298,12 +299,53 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         StatusCodes.Status500InternalServerError);
             }
 
-            if (agent.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants))
+            if (agent.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants)
+                || (agent.Workflow!=null && agent.Workflow is AzureOpenAIAssistantsAgentWorkflow))
             {
                 agent.Properties ??= [];
 
                 var openAIAssistantId = agent.Properties.GetValueOrDefault(
                     AgentPropertyNames.AzureOpenAIAssistantId);
+
+                var workflow = agent.Workflow as AzureOpenAIAssistantsAgentWorkflow;
+
+                if(string.IsNullOrWhiteSpace(openAIAssistantId))
+                {
+                    if(workflow != null)
+                    {
+                        openAIAssistantId = workflow.AssistantId;
+                    }
+                }
+
+                #region Resolve various agent properties
+                AIModelBase agentAIModel = null!;
+                APIEndpointConfiguration agentAIModelAPIEndpoint = null!;
+                PromptBase agentPrompt = null!;
+                
+                if(workflow==null)
+                {
+                    // Legacy path
+                    agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
+                        .GetResourceAsync<AIModelBase>(agent.AIModelObjectId!, userIdentity);
+                    agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
+                        .GetResourceAsync<PromptBase>(agent.PromptObjectId!, userIdentity);
+                }
+                else
+                {                    
+                    agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
+                                .GetResourceAsync<AIModelBase>(workflow.MainAIModelObjectId!, userIdentity);
+                    agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
+                                .GetResourceAsync<PromptBase>(workflow.MainPromptObjectId!, userIdentity);
+                }
+                agentAIModelAPIEndpoint = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Configuration)
+                        .GetResourceAsync<APIEndpointConfiguration>(agentAIModel.EndpointObjectId!, userIdentity);
+               
+                #endregion
+
+                var gatewayClient = new GatewayServiceClient(
+                       await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
+                           .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
+                       _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
 
                 if (string.IsNullOrWhiteSpace(openAIAssistantId))
                 {
@@ -315,24 +357,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         "Starting to create the Azure OpenAI assistant for agent {AgentName}",
                         agent.Name);
 
-                    #region Resolve various agent properties
-
-                    var agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
-                        .GetResourceAsync<AIModelBase>(agent.AIModelObjectId!, userIdentity);
-                    var agentAIModelAPIEndpoint = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Configuration)
-                        .GetResourceAsync<APIEndpointConfiguration>(agentAIModel.EndpointObjectId!, userIdentity);
-                    var agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
-                        .GetResourceAsync<PromptBase>(agent.PromptObjectId!, userIdentity);
-
-                    #endregion
-
-                    #region Create Azure OpenAI Assistants assistant
-
-                    var gatewayClient = new GatewayServiceClient(
-                       await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
-                           .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
-                       _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
-
+                    #region Create Azure OpenAI Assistants assistant                   
                     Dictionary<string, object> parameters = new()
                         {
                             { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant, true },
@@ -353,16 +378,83 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         && newOpenAIAssistantIdObject != null)
                         newOpenAIAssistantId = ((JsonElement)newOpenAIAssistantIdObject!).Deserialize<string>();
 
+                    var newOpenAIAssistantVectorStoreId = default(string);
+                    if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject)
+                        && newOpenAIAssistantVectorStoreIdObject != null)
+                        newOpenAIAssistantVectorStoreId = ((JsonElement)newOpenAIAssistantVectorStoreIdObject!).Deserialize<string>();
+
                     if (string.IsNullOrWhiteSpace(newOpenAIAssistantId))
                         throw new ResourceProviderException($"Could not create an Azure OpenAI assistant for the agent {agent} which requires it.",
                             StatusCodes.Status500InternalServerError);
+                    if (string.IsNullOrWhiteSpace(newOpenAIAssistantVectorStoreId))
+                        throw new ResourceProviderException($"Could not create an Azure OpenAI assistant vector store id for the agent {agent} which requires it.",
+                            StatusCodes.Status500InternalServerError);
 
                     _logger.LogInformation(
-                        "The Azure OpenAI assistant {AssistantId} for agent {AgentName} was created successfuly.",
+                        $"The Azure OpenAI assistant {newOpenAIAssistantId} for agent {agent.Name} was created successfully with Vector Store: {newOpenAIAssistantVectorStoreId}.",
                         newOpenAIAssistantId, agent.Name);
-                    agent.Properties[AgentPropertyNames.AzureOpenAIAssistantId] = newOpenAIAssistantId;
 
+                    if(workflow == null)
+                    {
+                        // Legacy path
+                        agent.Properties[AgentPropertyNames.AzureOpenAIAssistantId] = newOpenAIAssistantId;
+                        agent.Properties[AgentPropertyNames.AzureOpenAIAssistantVectorStoreId] = newOpenAIAssistantVectorStoreId;
+                    }
+                    else
+                    {
+                        // Workflow path
+                        workflow.VectorStoreId = newOpenAIAssistantVectorStoreId;
+                        workflow.AssistantId = newOpenAIAssistantId;                        
+                    }                  
                     #endregion
+                }
+                else
+                {
+                    // Verify if the assistant has a vector store id.
+                    // Legacy path
+                    var vectorStoreId = agent.Properties.GetValueOrDefault(
+                            AgentPropertyNames.AzureOpenAIAssistantVectorStoreId);
+                    // Workflow path
+                    if(workflow != null)
+                    {
+                        vectorStoreId = workflow.VectorStoreId;
+                    }
+                    if(string.IsNullOrEmpty(vectorStoreId))
+                    {
+                        // Add vector store to existing assistant
+                        Dictionary<string, object> parameters = new()
+                        {
+                            { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantVectorStore, true },
+                            { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpoint.Url },
+                            { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, agentAIModel.DeploymentName! }                           
+                        };
+
+                        // Pass the existing assistant id as the capability name
+                        var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
+                            _instanceSettings.Id,
+                            AgentCapabilityCategoryNames.OpenAIAssistants,
+                            openAIAssistantId,
+                            parameters);
+
+                        var newOpenAIAssistantVectorStoreId = default(string);
+                        if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject)
+                            && newOpenAIAssistantVectorStoreIdObject != null)
+                            newOpenAIAssistantVectorStoreId = ((JsonElement)newOpenAIAssistantVectorStoreIdObject!).Deserialize<string>();
+                        if (string.IsNullOrWhiteSpace(newOpenAIAssistantVectorStoreId))
+                            throw new ResourceProviderException($"Could not create an Azure OpenAI assistant vector store id for the agent {agent} which requires it.",
+                                StatusCodes.Status500InternalServerError);
+
+                        if (workflow == null)
+                        {
+                            // Legacy path                           
+                            agent.Properties[AgentPropertyNames.AzureOpenAIAssistantVectorStoreId] = newOpenAIAssistantVectorStoreId;
+                        }
+                        else
+                        {
+                            // Workflow path
+                            workflow.VectorStoreId = newOpenAIAssistantVectorStoreId;
+                        }
+                    }
                 }
             }
 

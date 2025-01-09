@@ -16,6 +16,11 @@
         public const string CreateOpenAIAssistant = "OpenAI.Assistants.Assistant.Create";
 
         /// <summary>
+        /// Indicates the need to create a vector store for an existing OpenAI assistant.
+        /// </summary>
+        public const string CreateOpenAIAssistantVectorStore = "OpenAI.Assistants.Assistant.VectorStore.Create";
+
+        /// <summary>
         /// Indicates the need to create a new OpenAI assistant thread.
         /// </summary>
         public const string CreateOpenAIAssistantThread = "OpenAI.Assistants.Thread.Create";
