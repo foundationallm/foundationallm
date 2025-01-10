@@ -90,6 +90,27 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         ])
                     ]
                 }
+            },
+            {
+                AgentResourceTypeNames.Tools,
+                new ResourceTypeDescriptor(
+                        AgentResourceTypeNames.Tools,
+                        typeof(Tool))
+                {
+                    AllowedTypes = [
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<Tool>)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(Tool)], [typeof(ResourceProviderUpsertResult)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
+                    ],
+                    Actions = [
+                        new ResourceTypeAction(ResourceProviderActions.CheckName, false, true, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
+                        ]),
+                        new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
+                        ])
+                    ]
+                }
             }
         };
     }

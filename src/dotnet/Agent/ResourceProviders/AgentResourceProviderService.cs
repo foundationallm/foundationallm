@@ -96,6 +96,13 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     {
                         IncludeRoles = resourcePath.IsResourceTypePath,
                     }),
+                AgentResourceTypeNames.Tools => await LoadResources<Tool>(
+                   resourcePath.ResourceTypeInstances[0],
+                   authorizationResult,
+                   options ?? new ResourceProviderGetOptions
+                   {
+                       IncludeRoles = resourcePath.IsResourceTypePath,
+                   }),
                 AgentResourceTypeNames.AgentAccessTokens => await LoadAgentAccessTokens(
                     resourcePath)!,
                 AgentResourceTypeNames.Files => await LoadAgentFiles(
@@ -110,6 +117,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             {
                 AgentResourceTypeNames.Agents => await UpdateAgent(resourcePath, serializedResource!, userIdentity),
                 AgentResourceTypeNames.Workflows => await UpdateWorkflow(resourcePath, serializedResource!, userIdentity),
+                AgentResourceTypeNames.Tools => await UpdateTool(resourcePath, serializedResource!, userIdentity),
                 AgentResourceTypeNames.AgentAccessTokens => await UpdateAgentAccessToken(resourcePath, serializedResource!),
                 AgentResourceTypeNames.Files => await UpdateAgentFile(resourcePath, formFile!, userIdentity),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
@@ -140,6 +148,14 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
+                AgentResourceTypeNames.Tools => resourcePath.Action switch
+                {
+                    ResourceProviderActions.CheckName => await CheckResourceName<Tool>(
+                        JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
+                    ResourceProviderActions.Purge => await PurgeResource<Tool>(resourcePath),
+                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+                },
                 AgentResourceTypeNames.AgentAccessTokens => resourcePath.Action switch
                 {
                     ResourceProviderActions.Validate => await ValidateAgentAccessToken(
@@ -162,6 +178,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     break;
                 case AgentResourceTypeNames.Workflows:
                     await DeleteResource<Workflow>(resourcePath);
+                    break;
+                case AgentResourceTypeNames.Tools:
+                    await DeleteResource<Tool>(resourcePath);
                     break;
                 case AgentResourceTypeNames.Files:
                     await DeleteAgentFile(resourcePath);
@@ -438,6 +457,53 @@ namespace FoundationaLLM.Agent.ResourceProviders
             return new ResourceProviderUpsertResult
             {
                 ObjectId = workflow!.ObjectId,
+                ResourceExists = existingReference != null
+            };
+        }
+
+        private async Task<ResourceProviderUpsertResult> UpdateTool(ResourcePath resourcePath, string serializedWorkflow, UnifiedUserIdentity userIdentity)
+        {
+            var tool = JsonSerializer.Deserialize<Tool>(serializedWorkflow)
+                ?? throw new ResourceProviderException("The object definition is invalid.",
+                    StatusCodes.Status400BadRequest);
+
+            var existingReference = await _resourceReferenceStore!.GetResourceReference(tool.Name);
+
+            if (resourcePath.ResourceTypeInstances[0].ResourceId != tool.Name)
+                throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
+                    StatusCodes.Status400BadRequest);
+
+            var newReference = new AgentReference
+            {
+                Name = tool.Name!,
+                Type = tool.Type!,
+                Filename = $"/{_name}/{tool.Name}.json",
+                Deleted = false
+            };
+
+            tool.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
+
+            var validator = _resourceValidatorFactory.GetValidator(newReference.ResourceType);
+            if (validator is IValidator toolValidator)
+            {
+                var context = new ValidationContext<object>(tool);
+                var validationResult = await toolValidator.ValidateAsync(context);
+                if (!validationResult.IsValid)
+                {
+                    throw new ResourceProviderException($"Validation failed: {string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage))}",
+                        StatusCodes.Status400BadRequest);
+                }
+            }
+
+            UpdateBaseProperties(tool, userIdentity, isNew: existingReference == null);
+            if (existingReference == null)
+                await CreateResource<Tool>(newReference, tool);
+            else
+                await SaveResource<Tool>(existingReference, tool);
+
+            return new ResourceProviderUpsertResult
+            {
+                ObjectId = tool!.ObjectId,
                 ResourceExists = existingReference != null
             };
         }
