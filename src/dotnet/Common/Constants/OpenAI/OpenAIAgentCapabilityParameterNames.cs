@@ -40,6 +40,15 @@
         /// </summary>
         public const string RemoveOpenAIFileFromVectorStore = "OpenAI.File.RemoveFromVectorStore";
 
+        /// <summary>
+        /// Indicates the need to add an existing OpenAI assistant file to an OpenAI assistant code interpreter tool.
+        /// </summary>
+        public const string AddOpenAIFileToCodeInterpreter = "OpenAI.File.AddToCodeInterpreter";
+
+        /// <summary>
+        /// Indicates the need to remove an existing OpenAI assistant file from an OpenAI assistant code interpreter tool.
+        /// </summary>
+        public const string RemoveOpenAIFileFromCodeInterpreter = "OpenAI.File.RemoveFromCodeInterpreter";
         #endregion
 
         #region Inputs
@@ -92,6 +101,11 @@
         /// Indicates whether the Open AI assistant file vectorization or file removal process completed successfully.
         /// </summary>
         public const string OpenAIFileActionOnVectorStoreSuccess = "OpenAI.File.FileActionOnVectorStoreSuccess";
+
+        /// <summary>
+        /// Indicates whether the Open AI assistant file addition or file removal for the code interpreter completed successfully.
+        /// </summary>
+        public const string OpenAIFileActionOnCodeInterpreterSuccess = "OpenAI.File.FileActionOnCodeInterpreterSuccess";
 
         #endregion
     }

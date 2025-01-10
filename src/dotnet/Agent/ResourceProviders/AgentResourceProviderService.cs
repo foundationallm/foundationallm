@@ -1,5 +1,4 @@
 ﻿using Azure.Messaging;
-using Azure.Search.Documents.Indexes.Models;
 using FluentValidation;
 using FoundationaLLM.Agent.Models.Resources;
 using FoundationaLLM.Common.Clients;
@@ -426,14 +425,15 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         {
                             { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantVectorStore, true },
                             { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpoint.Url },
-                            { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, agentAIModel.DeploymentName! }                           
+                            { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, agentAIModel.DeploymentName! },
+                            { OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, openAIAssistantId }
                         };
 
                         // Pass the existing assistant id as the capability name
                         var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
                             _instanceSettings.Id,
                             AgentCapabilityCategoryNames.OpenAIAssistants,
-                            openAIAssistantId,
+                            string.Empty,
                             parameters);
 
                         var newOpenAIAssistantVectorStoreId = default(string);
@@ -832,6 +832,78 @@ namespace FoundationaLLM.Agent.ResourceProviders
             var removalSuccess = ((JsonElement)vectorStoreSuccessObject!).Deserialize<bool>();
             if (!removalSuccess)
                 throw new OrchestrationException($"The removal of file id {fileId} from the vector store with id {vectorStoreId} failed.");
+            return removalSuccess;
+        }
+
+        /// <summary>
+        /// Adds file to the assistant code interpreter resources.
+        /// Assumes the file is already uploaded and the OpenAI File ID is available.
+        /// </summary>
+        /// <param name="instanceId">Identifies the FoundationaLLM instance.</param>
+        /// <param name="apiEndpointUrl">The API endpoint URL of the OpenAI service.</param>
+        /// <param name="deploymentName">The deployment name of the model in the OpenAI service.</param>
+        /// <param name="assistantId">The unique identifier of the OpenAI Assistant.</param>
+        /// <param name="fileId">The OpenAI FileId indicating the file to add to the code interpreter resources.</param>
+        /// <param name="userIdentity">The identity of the user.</param>
+        /// <returns>Returns true if successful, false otherwise.</returns>
+        private async Task<bool> AddFileToAssistantsCodeInterpreter(string instanceId, string apiEndpointUrl, string deploymentName, string assistantId, string fileId, UnifiedUserIdentity userIdentity)
+        {
+            var gatewayClient = await GetGatewayServiceClient(userIdentity);
+
+            Dictionary<string, object> parameters = new()
+            {
+                { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, apiEndpointUrl },
+                { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, deploymentName },
+                { OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStore, true },
+                { OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, assistantId },
+                { OpenAIAgentCapabilityParameterNames.OpenAIFileId, fileId }
+            };
+            var additionResult = await gatewayClient!.CreateAgentCapability(
+                            instanceId,
+                            AgentCapabilityCategoryNames.OpenAIAssistants,
+                            string.Empty,
+                            parameters);
+
+            additionResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnCodeInterpreterSuccess, out var codeInterpreterSuccessObject);
+            var additionSuccess = ((JsonElement)codeInterpreterSuccessObject!).Deserialize<bool>();
+            if (!additionSuccess)
+                throw new OrchestrationException($"The addition of file id {fileId} into the code interpreter resources of the assistant with id {assistantId} failed.");
+            return additionSuccess;
+        }
+
+        /// <summary>
+        /// Removes a file from the assistant code interpreter resources.
+        /// Assumes the file is already uploaded and the OpenAI File ID is available.
+        /// </summary>
+        /// <param name="instanceId">Identifies the FoundationaLLM instance.</param>
+        /// <param name="apiEndpointUrl">The API endpoint URL of the OpenAI service.</param>
+        /// <param name="deploymentName">The deployment name of the model in the OpenAI service.</param>
+        /// <param name="assistantId">The unique identifier of the OpenAI Assistant.</param>
+        /// <param name="fileId">The OpenAI FileId indicating the file to remove from the code interpreter.</param>
+        /// <param name="userIdentity">The identity of the user.</param>
+        /// <returns>Returns true if successful, false otherwise.</returns>
+        private async Task<bool> RemoveFileFromAssistantsCodeInterpreter(string instanceId, string apiEndpointUrl, string deploymentName, string assistantId, string fileId, UnifiedUserIdentity userIdentity)
+        {
+            var gatewayClient = await GetGatewayServiceClient(userIdentity);
+
+            Dictionary<string, object> parameters = new()
+            {
+                { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, apiEndpointUrl },
+                { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, deploymentName },
+                { OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromCodeInterpreter, true },
+                { OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, assistantId },
+                { OpenAIAgentCapabilityParameterNames.OpenAIFileId, fileId }
+            };
+            var removalResult = await gatewayClient!.CreateAgentCapability(
+                            instanceId,
+                            AgentCapabilityCategoryNames.OpenAIAssistants,
+                            string.Empty,
+                            parameters);
+
+            removalResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnCodeInterpreterSuccess, out var codeInterpreterSuccessObject);
+            var removalSuccess = ((JsonElement)codeInterpreterSuccessObject!).Deserialize<bool>();
+            if (!removalSuccess)
+                throw new OrchestrationException($"The removal of file id {fileId} from the code interpreter resources for assistant with id {assistantId} failed.");
             return removalSuccess;
         }
         #endregion

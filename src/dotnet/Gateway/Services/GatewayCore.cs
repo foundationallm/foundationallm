@@ -221,6 +221,8 @@ namespace FoundationaLLM.Gateway.Services
             var createAssistantFile = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.CreateOpenAIFile, false);
             var addAssistantFileToVectorStore = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStore, false);
             var removeAssistantFileFromVectorStore = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromVectorStore, false);
+            var addAssistantFileToCodeInterpreter = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.AddOpenAIFileToCodeInterpreter, false);
+            var removeAssistantFileFromCodeInterpreter = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromCodeInterpreter, false);
 
             if (createAssistant
                 && string.IsNullOrEmpty(capabilityName))
@@ -288,17 +290,17 @@ namespace FoundationaLLM.Gateway.Services
             {
                 var assistantClient = GetAzureOpenAIAssistantClient(azureOpenAIAccount.Endpoint);
                 var vectorStoreClient = GetAzureOpenAIVectorStoreClient(azureOpenAIAccount.Endpoint);
-
-                // retrieve the assistant by assistant id (expects capabilityName to be the assistant id)
-                var assistant = await assistantClient.GetAssistantAsync(capabilityName);
+                var assistantId = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.OpenAIAssistantId);
+                                
+                var assistant = await assistantClient.GetAssistantAsync(assistantId);
                 if (assistant.Value == null)
                 {
-                    throw new GatewayException($"The assistant with ID {capabilityName} was not found.", StatusCodes.Status404NotFound);
+                    throw new GatewayException($"The assistant with ID {assistantId} was not found.", StatusCodes.Status404NotFound);
                 }
 
                 var vectorStoreResult = await vectorStoreClient.CreateVectorStoreAsync(true, new VectorStoreCreationOptions
                 {
-                    Name = capabilityName,
+                    Name = $"vs_{assistant.Value.Name}",
                     ExpirationPolicy = new VectorStoreExpirationPolicy
                     {
                         Anchor = VectorStoreExpirationAnchor.LastActiveAt,
@@ -425,6 +427,70 @@ namespace FoundationaLLM.Gateway.Services
                     }                   
                 }
                 result[OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess] = isRemoved;
+            }
+
+            if(addAssistantFileToCodeInterpreter)
+            {
+                var assistantClient = GetAzureOpenAIAssistantClient(azureOpenAIAccount.Endpoint);
+                var assistantId = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.OpenAIAssistantId);
+                var file = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.OpenAIFileId);
+
+                var assistant = await assistantClient.GetAssistantAsync(assistantId);
+                if (assistant.Value == null)
+                {
+                    throw new GatewayException($"The assistant with ID {assistantId} was not found.", StatusCodes.Status404NotFound);
+                }
+
+                var codeInterpreterToolResources = assistant.Value.ToolResources.CodeInterpreter;
+
+                if (!codeInterpreterToolResources.FileIds.Contains(file))
+                {
+                    codeInterpreterToolResources.FileIds.Add(file);
+                }
+
+                // Update the assistant with the new file in the code interpreter tool
+                var updateAssistantResult = await assistantClient.ModifyAssistantAsync(assistant.Value.Id, new AssistantModificationOptions
+                {
+                    ToolResources = new ToolResources()
+                    {
+                        CodeInterpreter = codeInterpreterToolResources
+                    }
+                });
+
+                result[OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnCodeInterpreterSuccess] = true;
+
+            }
+
+            if (removeAssistantFileFromCodeInterpreter)
+            {
+                var assistantClient = GetAzureOpenAIAssistantClient(azureOpenAIAccount.Endpoint);
+                var assistantId = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.OpenAIAssistantId);
+                var file = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.OpenAIFileId);
+
+                var assistant = await assistantClient.GetAssistantAsync(assistantId);
+                if (assistant.Value == null)
+                {
+                    throw new GatewayException($"The assistant with ID {assistantId} was not found.", StatusCodes.Status404NotFound);
+                }
+
+                var codeInterpreterToolResources = assistant.Value.ToolResources.CodeInterpreter;
+
+                if (!codeInterpreterToolResources.FileIds.Contains(file))
+                {
+                    codeInterpreterToolResources.FileIds.Remove(file);
+                }
+
+                // Update the assistant with the new file in the code interpreter tool
+                var updateAssistantResult = await assistantClient.ModifyAssistantAsync(assistant.Value.Id, new AssistantModificationOptions
+                {
+                    ToolResources = new ToolResources()
+                    {
+                        CodeInterpreter = codeInterpreterToolResources
+                    }
+                });
+
+                result[OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnCodeInterpreterSuccess] = true;
+
             }
             return result;
         }
