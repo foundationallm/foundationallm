@@ -542,15 +542,11 @@ export default {
 	},
 
 	async setDefaultAgent(agentId: string): Promise<ResourceProviderActionResult> {
-		const payload = {
-			agentId,
-		};
-
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentId}/set-default?api-version=${this.apiVersion}`,
 			{
 				method: 'POST',
-				body: payload,
+				body: {},
 			}
 		) as ResourceProviderActionResult;
 	},
