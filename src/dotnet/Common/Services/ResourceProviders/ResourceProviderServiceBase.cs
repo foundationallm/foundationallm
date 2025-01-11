@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Immutable;
 using System.Text;
 using System.Text.Json;
+using static Microsoft.IO.RecyclableMemoryStreamManager;
 
 namespace FoundationaLLM.Common.Services.ResourceProviders
 {
@@ -1324,6 +1325,46 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <summary>
+        /// Sets a resource as the default for its resource type.
+        /// </summary>
+        /// <typeparam name="T">The resource type.</typeparam>
+        /// <param name="resourcePath">The <see cref="ResourcePath"/> identifying the resource to which the default resource name should be set.</param>
+        /// <returns>A <see cref="ResourceProviderActionResult"/> indicating the outcome of the operation.</returns>
+        /// <exception cref="ResourceProviderException"></exception>
+        protected async Task<ResourceProviderActionResult> SetDefaultResource<T>(ResourcePath resourcePath)
+        {
+            var resourceName = resourcePath.ResourceId
+                               ?? throw new ResourceProviderException("The specified path does not contain a resource identifier.",
+                                   StatusCodes.Status400BadRequest);
+
+            try
+            {
+                await _lock.WaitAsync();
+
+                var result = await _resourceReferenceStore!.TryGetResourceReference(resourceName);
+                if (result.Success && !result.Deleted)
+                {
+                    // Conditions are met to set the resource as the default.
+
+                    // Set the default reference name in the store.
+                    await _resourceReferenceStore!.SetDefaultResourceName(result.ResourceReference!);
+
+                    return new ResourceProviderActionResult(true);
+                }
+                else
+                {
+                    throw new ResourceProviderException(
+                        $"The resource {resourceName} cannot be set as the default because it is either deleted or does not exist.",
+                        StatusCodes.Status400BadRequest);
+                }
+            }
+            finally
+            {
+                _lock.Release();
+            }
+        }
+
+        /// <summary>
         /// Checks if a resource name is available.
         /// </summary>
         /// <typeparam name="T">The type of resource for which the name check is performed.</typeparam>
@@ -1492,6 +1533,23 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                                         .ToList()
                                     : []
                             });
+                }
+            }
+
+            // If a resource name matches the default resource name in the resource reference store, add a new property value to the resource.
+            if (!string.IsNullOrWhiteSpace(_resourceReferenceStore?.DefaultResourceName) && results
+                    .Any(a => a.Resource.Name == _resourceReferenceStore.DefaultResourceName))
+            {
+                var resourceProperties = results.First(a => a.Resource.Name == _resourceReferenceStore.DefaultResourceName)
+                    .Resource.Properties;
+                if (resourceProperties != null)
+                {
+                    resourceProperties[ResourcePropertyNames.DefaultResource] = true.ToString().ToLowerInvariant();
+                }
+
+                foreach (var result in results.Where(r => r.Resource.Name != _resourceReferenceStore.DefaultResourceName))
+                {
+                    result.Resource.Properties?.Remove(ResourcePropertyNames.DefaultResource);
                 }
             }
 
