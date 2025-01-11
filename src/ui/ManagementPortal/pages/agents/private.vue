@@ -33,7 +33,18 @@
 						},
 						sortIcon: { style: { color: 'var(--primary-text)' } },
 					}"
-				></Column>
+				>
+					<template #body="{ data }">
+						<span>{{ data.resource.name }}</span>
+						<template v-if="data.resource.properties?.default_resource === 'true'">
+							<Chip
+								label="Default"
+								icon="pi pi-star"
+								style="margin-left: 8px"
+							/>
+						</template>
+					</template>
+				</Column>
 
 				<!-- Description -->
 				<Column
@@ -121,6 +132,33 @@
 						</VTooltip>
 					</template>
 				</Column>
+
+				<!-- Set Default -->
+				<Column
+					header="Set Default"
+					header-style="width:6rem"
+					style="text-align: center"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						headerContent: { style: { justifyContent: 'center' } },
+					}"
+				>
+					<template #body="{ data }">
+						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+							<Button
+								link
+								:disabled="!data.actions.includes('FoundationaLLM.Agent/agents/delete')"
+								:aria-label="`Set ${data.resource.name} as default`"
+								@click="agentToSetAsDefault = data.resource"
+							>
+								<i class="pi pi-star" style="font-size: 1.2rem" aria-hidden="true"></i>
+							</Button>
+							<template #popper><div role="tooltip">Set {{data.resource.name}} as default agent</div></template>
+						</VTooltip>
+					</template>
+				</Column>
 			</DataTable>
 		</div>
 
@@ -132,12 +170,26 @@
 				<Button label="Delete" severity="danger" autofocus @click="handleDeleteAgent" />
 			</template>
 		</Dialog>
+
+		<!-- Set default agent dialog -->
+		<Dialog :visible="agentToSetAsDefault !== null" modal v-focustrap header="Set Default Agent" :closable="false">
+			<p>Do you want to set the "{{ agentToSetAsDefault.name }}" agent as default?<br />Default agents are automatically
+				selected in the User Portal for new conversations.
+			</p>
+			<template #footer>
+				<Button label="Cancel" text @click="agentToSetAsDefault = null" />
+				<Button label="Set as Default" severity="info" autofocus @click="handleSetDefaultAgent" />
+			</template>
+		</Dialog>
 	</main>
 </template>
 
 <script lang="ts">
 import api from '@/js/api';
-import type { Agent, ResourceProviderGetResult } from '@/js/types';
+import type {
+	Agent,
+	ResourceProviderGetResult,
+	ResourceProviderActionResult } from '@/js/types';
 
 export default {
 	name: 'PrivateAgents',
@@ -148,6 +200,8 @@ export default {
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 			agentToDelete: null as Agent | null,
+			agentToSetAsDefault: null as Agent | null,
+			accessControlModalOpen: false,
 		};
 	},
 
@@ -176,6 +230,34 @@ export default {
 			try {
 				await api.deleteAgent(this.agentToDelete!.name);
 				this.agentToDelete = null;
+			} catch (error) {
+				return this.$toast.add({
+					severity: 'error',
+					detail: error?.response?._data || error,
+					life: 5000,
+				});
+			}
+
+			await this.getAgents();
+		},
+
+		async handleSetDefaultAgent() {
+			try {
+				let result: ResourceProviderActionResult = await api.setDefaultAgent(this.agentToSetAsDefault!.name);
+				if (result.isSuccessResult) {
+					this.$toast.add({
+						severity: 'success',
+						detail: `Agent "${this.agentToSetAsDefault!.name}" set as default.`,
+						life: 5000,
+					});
+				} else {
+					this.$toast.add({
+						severity: 'error',
+						detail: "Could not set the default agent. Please try again.",
+						life: 5000,
+					});
+				}
+				this.agentToSetAsDefault = null;
 			} catch (error) {
 				return this.$toast.add({
 					severity: 'error',
