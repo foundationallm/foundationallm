@@ -46,6 +46,13 @@ export type ResourceProviderUpsertResult = {
     resource?: any;
 };
 
+export type ResourceProviderActionResult = {
+	/**
+	 * Represents the result of an action.
+	 */
+	isSuccessResult: boolean;
+};
+
 export type AgentTool = {
 	name: string;
 	description: string;
