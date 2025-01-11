@@ -10,7 +10,6 @@ using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Services.Storage;
-using FoundationaLLM.Common.Services.Users;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using FoundationaLLM.Orchestration.Core.Models;
 using FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions;
