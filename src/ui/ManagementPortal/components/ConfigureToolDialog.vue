@@ -35,7 +35,7 @@
 			aria-labelledby="aria-tool-package-name"
 		/>
 
-		<div class="mt-6 mb-2 font-weight-bold">Resource objects:</div>
+		<div class="mt-6 mb-2 font-weight-bold">Tool resources:</div>
 		<div v-for="(resourceObject, resourceObjectId) in toolObject.resource_object_ids" class="ml-2">
 			<div class="mt-6 mb-2">
 				<span id="aria-resource-object-id" class="font-weight-bold"
