@@ -299,7 +299,7 @@ namespace FoundationaLLM.Common.Services
         public async Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, CancellationToken cancellationToken = default)
         {
             var query =
-                new QueryDefinition($"SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction}")
+                new QueryDefinition($"SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c.timeStamp")
                     .WithParameter("@sessionId", sessionId)
                     .WithParameter("@type", nameof(Message))
                     .WithParameter("@upn", upn);

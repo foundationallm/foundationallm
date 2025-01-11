@@ -42,6 +42,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> used to interact with the Cosmos DB database.</param>
         /// <param name="templatingService">The <see cref="ITemplatingService"/> used to render templates.</param>
         /// <param name="codeExecutionService">The <see cref="ICodeExecutionService"/> used to execute code.</param>
+        /// <param name="userPromptRewriteService">The <see cref="IUserPromptRewriteService"/> used to rewrite user prompts.</param>
+        /// <param name="semanticCacheService">The <see cref="ISemanticCacheService"/> used to cache and retrieve completion responses.</param>
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/> provding dependency injection services for the current scope.</param>
         /// <param name="loggerFactory">The logger factory used to create new loggers.</param>
         /// <param name="completionRequestObserver">An optional observer for completion requests.</param>
@@ -58,6 +60,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             IAzureCosmosDBService cosmosDBService,
             ITemplatingService templatingService,
             ICodeExecutionService codeExecutionService,
+            IUserPromptRewriteService userPromptRewriteService,
+            ISemanticCacheService semanticCacheService,
             IServiceProvider serviceProvider,
             ILoggerFactory loggerFactory,
             Func<LLMCompletionRequest, Task>? completionRequestObserver = null)
@@ -108,7 +112,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                 var orchestrationService = llmOrchestrationServiceManager.GetService(instanceId, orchestrator!, serviceProvider, callContext);
 
-                var kmOrchestration = new KnowledgeManagementOrchestration(
+                var kmOrchestration = new AgentOrchestration(
                     instanceId,
                     result.Agent.ObjectId!,
                     (KnowledgeManagementAgent)result.Agent,
@@ -116,6 +120,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     result.ExplodedObjectsManager.GetExplodedObjects() ?? [],
                     callContext,
                     orchestrationService,
+                    userPromptRewriteService,
+                    semanticCacheService,
                     loggerFactory.CreateLogger<OrchestrationBase>(),
                     serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
                     resourceProviderServices,
@@ -158,7 +164,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             var orchestrationService = llmOrchestrationServiceManager.GetService(instanceId, operationContext.Orchestrator!, serviceProvider, callContext);
 
-            var kmOrchestration = new KnowledgeManagementOrchestration(
+            var kmOrchestration = new AgentOrchestration(
                 instanceId,
                 ResourcePath.GetObjectId(
                     instanceId,
@@ -170,6 +176,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 null,
                 callContext,
                 orchestrationService,
+                null,
+                null,
                 loggerFactory.CreateLogger<OrchestrationBase>(),
                 serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
                 resourceProviderServices,

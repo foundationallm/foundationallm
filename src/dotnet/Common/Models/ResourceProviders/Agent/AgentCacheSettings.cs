@@ -1,12 +1,11 @@
-﻿using FoundationaLLM.Common.Constants.Agents;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
 {
     /// <summary>
     /// Provides agent-related caching settings.
     /// </summary>
-    public class AgentCachingSettings
+    public class AgentCacheSettings
     {
         /// <summary>
         /// Gets or sets a value indicating whether the agent's semantic cache is enabled.

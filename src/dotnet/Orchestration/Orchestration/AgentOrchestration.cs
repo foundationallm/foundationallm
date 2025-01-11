@@ -33,13 +33,15 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// <param name="explodedObjects">A dictionary of objects retrieved from various object ids related to the agent. For more details see <see cref="LLMCompletionRequest.Objects"/> .</param>
     /// <param name="callContext">The call context of the request being handled.</param>
     /// <param name="orchestrationService"></param>
+    /// <param name="userPromptRewriteService">The <see cref="IUserPromptRewriteService"/> used to rewrite user prompts.</param>
+    /// <param name="semanticCacheService">The <see cref="ISemanticCacheService"/> used to cache and retrieve completion responses.</param>
     /// <param name="logger">The logger used for logging.</param>
     /// <param name="httpClientFactoryService">The <see cref="IHttpClientFactoryService"/> used to create HttpClient instances.</param>
     /// <param name="resourceProviderServices">The dictionary of <see cref="IResourceProviderService"/></param>
     /// <param name="dataSourceAccessDenied">Inidicates that access was denied to all underlying data sources.</param>
     /// <param name="openAIVectorStoreId">The OpenAI Assistants vector store id.</param>
     /// <param name="completionRequestObserver">An optional observer for completion requests.</param>
-    public class KnowledgeManagementOrchestration(
+    public class AgentOrchestration(
         string instanceId,
         string agentObjectId,
         KnowledgeManagementAgent? agent,
@@ -47,6 +49,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         Dictionary<string, object>? explodedObjects,
         ICallContext callContext,
         ILLMOrchestrationService orchestrationService,
+        IUserPromptRewriteService userPromptRewriteService,
+        ISemanticCacheService semanticCacheService,
         ILogger<OrchestrationBase> logger,
         IHttpClientFactoryService httpClientFactoryService,
         Dictionary<string, IResourceProviderService> resourceProviderServices,
@@ -72,6 +76,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private readonly string? _openAIVectorStoreId = openAIVectorStoreId;
         private GatewayServiceClient _gatewayClient;
 
+        private readonly IUserPromptRewriteService _userPromptRewriteService = userPromptRewriteService;
+        private readonly ISemanticCacheService _semanticCacheService = semanticCacheService;
+
         /// <inheritdoc/>
         public override async Task<LongRunningOperation> StartCompletionOperation(CompletionRequest completionRequest)
         {
@@ -82,6 +89,16 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     OperationId = completionRequest.OperationId!,
                     Status = OperationStatus.Completed,
                     Result = validationResponse
+                };
+
+            await HandlePromptRewrite(completionRequest);
+            var cachedResponse = await GetCompletionResponseFromCache(completionRequest);
+            if (cachedResponse != null)
+                return new LongRunningOperation
+                {
+                    OperationId = completionRequest.OperationId!,
+                    Status = OperationStatus.Completed,
+                    Result = cachedResponse
                 };
 
             var llmCompletionRequest = await GetLLMCompletionRequest(completionRequest);
@@ -122,6 +139,11 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (validationResponse != null)
                 return validationResponse;
 
+            await HandlePromptRewrite(completionRequest);
+            var cachedResponse = await GetCompletionResponseFromCache(completionRequest);
+            if (cachedResponse != null)
+                return cachedResponse;
+
             var llmCompletionRequest = await GetLLMCompletionRequest(completionRequest);
             if (_completionRequestObserver != null)
                 await _completionRequestObserver(llmCompletionRequest);
@@ -159,6 +181,20 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     AgentName = _agent.Name
                 };
 
+            return null;
+        }
+
+        private async Task HandlePromptRewrite(CompletionRequest completionRequest)
+        {
+            if (_agent!.TextRewriteSettings != null
+                && _agent!.TextRewriteSettings.UserPromptRewriteEnabled)
+            {
+
+            }
+        }
+
+        private async Task<CompletionResponse?> GetCompletionResponseFromCache(CompletionRequest completionRequest)
+        {
             return null;
         }
 

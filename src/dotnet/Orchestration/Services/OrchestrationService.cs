@@ -34,6 +34,8 @@ public class OrchestrationService : IOrchestrationService
     private readonly ITemplatingService _templatingService;
     private readonly ICodeExecutionService _codeExecutionService;
     private readonly IUserProfileService _userProfileService;
+    private readonly IUserPromptRewriteService _userPromptRewriteService;
+    private readonly ISemanticCacheService _semanticCacheService;
     private readonly ICallContext _callContext;
     private readonly IConfiguration _configuration;
     private readonly ILogger<OrchestrationService> _logger;
@@ -54,6 +56,8 @@ public class OrchestrationService : IOrchestrationService
     /// <param name="templatingService">The <see cref="ITemplatingService"/> used to render templates.</param>
     /// <param name="codeExecutionService">The <see cref="ICodeExecutionService"/> used to execute code.</param>
     /// <param name="userProfileService">The <see cref="IUserProfileService"/> used to interact with user profiles.</param>
+    /// <param name="userPromptRewriteService">The <see cref="IUserPromptRewriteService"/> used to rewrite user prompts.</param>
+    /// <param name="semanticCacheService">The <see cref="ISemanticCacheService"/> used to cache and retrieve completion responses.</param>
     /// <param name="callContext">The call context of the request being handled.</param>
     /// <param name="configuration">The <see cref="IConfiguration"/> used to retrieve app settings from configuration.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> provding dependency injection services for the current scope.</param>
@@ -66,6 +70,8 @@ public class OrchestrationService : IOrchestrationService
         ITemplatingService templatingService,
         ICodeExecutionService codeExecutionService,
         IUserProfileService userProfileService,
+        IUserPromptRewriteService userPromptRewriteService,
+        ISemanticCacheService semanticCacheService,
         ICallContext callContext,
         IConfiguration configuration,
         IServiceProvider serviceProvider,
@@ -79,6 +85,9 @@ public class OrchestrationService : IOrchestrationService
         _templatingService = templatingService;
         _codeExecutionService = codeExecutionService;
         _userProfileService = userProfileService;
+
+        _userPromptRewriteService = userPromptRewriteService;
+        _semanticCacheService = semanticCacheService;
 
         _callContext = callContext;
         _configuration = configuration;
@@ -129,6 +138,8 @@ public class OrchestrationService : IOrchestrationService
                 _cosmosDBService,
                 _templatingService,
                 _codeExecutionService,
+                _userPromptRewriteService,
+                _semanticCacheService,
                 _serviceProvider,
                 _loggerFactory,
                 ObserveCompletionRequest)
@@ -171,6 +182,8 @@ public class OrchestrationService : IOrchestrationService
                 _cosmosDBService,
                 _templatingService,
                 _codeExecutionService,
+                _userPromptRewriteService,
+                _semanticCacheService,
                 _serviceProvider,
                 _loggerFactory,
                 ObserveCompletionRequest)
@@ -287,6 +300,8 @@ public class OrchestrationService : IOrchestrationService
                 _cosmosDBService,
                 _templatingService,
                 _codeExecutionService,
+                _userPromptRewriteService,
+                _semanticCacheService,
                 _serviceProvider,
                 _loggerFactory);
 

@@ -5,7 +5,8 @@ using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
@@ -62,8 +63,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         public async Task InitializeCacheForAgent(
             string instanceId,
             string agentName,
-            AgentSemanticCacheSettings agentSettings,
-            UnifiedUserIdentity currentUserIdentity)
+            AgentSemanticCacheSettings agentSettings)
         {
             try
             {
@@ -83,10 +83,10 @@ namespace FoundationaLLM.Orchestration.Core.Services
 
                 var embeddingAIModel = await _aiModelResourceProviderService.GetResourceAsync<AIModelBase>(
                                         agentSettings.EmbeddingAIModelObjectId,
-                                        currentUserIdentity);
+                                        DefaultAuthentication.ServiceIdentity!);
                 var embeddingAPIEndpointConfiguration = await _configurationResourceProviderService.GetResourceAsync<APIEndpointConfiguration>(
                                         embeddingAIModel.EndpointObjectId!,
-                                        currentUserIdentity);
+                                        DefaultAuthentication.ServiceIdentity!);
 
                 _agentCaches[$"{instanceId}|{agentName}"] = new AgentSemanticCache
                 {
@@ -109,18 +109,17 @@ namespace FoundationaLLM.Orchestration.Core.Services
             Task.CompletedTask;
 
         /// <inheritdoc/>
-        public async Task<SemanticCacheItem?> GetCacheItem(
+        public async Task<CompletionResponse?> GetCompletionResponseFromCache(
             string instanceId,
             string agentName,
-            string userPrompt,
-            List<string> messageHistory)
+            CompletionRequest completionRequest)
         {
             if (!_agentCaches.TryGetValue($"{instanceId}-{agentName}", out AgentSemanticCache? agentCache)
                 || agentCache == null)
                 throw new SemanticCacheException($"The semantic cache is not initialized for agent {agentName} in instance {instanceId}.");
 
             var userPromptEmbedding = await agentCache.EmbeddingClient.GenerateEmbeddingAsync(
-                userPrompt,
+                completionRequest.UserPromptRewrite,
                 new EmbeddingGenerationOptions
                 {
                     Dimensions = agentCache.Settings.EmbeddingDimensions

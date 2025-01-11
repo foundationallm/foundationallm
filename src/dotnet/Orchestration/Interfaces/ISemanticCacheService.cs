@@ -1,4 +1,6 @@
 ﻿using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Orchestration.Models;
 
@@ -23,13 +25,11 @@ namespace FoundationaLLM.Orchestration.Core.Interfaces
         /// <param name="instanceId">The unique identifier of the FoundationaLLM instance.</param>
         /// <param name="agentName">The name of the agent.</param>
         /// <param name="agentSettings">The <see cref="AgentSemanticCacheSettings"/> providing the agent's semantic cache settings.</param>
-        /// <param name="currentUserIdentity">The <see cref="UnifiedUserIdentity"/> of the current user.</param>
         /// <returns></returns>
         Task InitializeCacheForAgent(
             string instanceId,
             string agentName,
-            AgentSemanticCacheSettings agentSettings,
-            UnifiedUserIdentity currentUserIdentity);
+            AgentSemanticCacheSettings agentSettings);
 
         /// <summary>
         /// Resets the semantic cache for the specified agent in the specified FoundationaLLM instance.
@@ -44,14 +44,12 @@ namespace FoundationaLLM.Orchestration.Core.Interfaces
         /// </summary>
         /// <param name="instanceId">The unique identifier of the FoundationaLLM instance.</param>
         /// <param name="agentName">The name of the agent.</param>
-        /// <param name="userPrompt">The user prompt for which a cache item is searched.</param>
-        /// <param name="messageHistory">The message history associated with the user prompt.</param>
-        /// <returns>A <see cref="SemanticCacheItem"/> if a match exists.</returns>
-        Task<SemanticCacheItem?> GetCacheItem(
+        /// <param name="completionRequest">The <see cref="CompletionRequest"/> for which to get the cache item.</param>
+        /// <returns>A <see cref="CompletionResponse"/> if a match exists.</returns>
+        Task<CompletionResponse?> GetCompletionResponseFromCache(
             string instanceId,
             string agentName,
-            string userPrompt,
-            List<string> messageHistory);
+            CompletionRequest completionRequest);
 
         /// <summary>
         /// Sets a cache item in the semantic cache for the specified agent in the specified FoundationaLLM instance.

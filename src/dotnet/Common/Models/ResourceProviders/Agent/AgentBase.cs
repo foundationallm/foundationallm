@@ -24,10 +24,16 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public bool SessionsEnabled { get; set; }
 
         /// <summary>
+        /// Gets or sets the agent's text rewrite settings.
+        /// </summary>
+        [JsonPropertyName("text_rewrite_settings")]
+        public AgentTextRewriteSettings? TextRewriteSettings { get; set; }
+
+        /// <summary>
         /// Gets or sets the agent's caching settings.
         /// </summary>
-        [JsonPropertyName("caching_settings")]
-        public AgentCachingSettings? CachingSettings { get; set; }
+        [JsonPropertyName("cache_settings")]
+        public AgentCacheSettings? CacheSettings { get; set; }
 
         /// <summary>
         /// The agent's conversation history configuration.
