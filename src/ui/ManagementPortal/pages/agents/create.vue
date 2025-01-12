@@ -700,9 +700,7 @@
 
 			<!-- Workflow -->
 			<div class="step-section-header span-2">Workflow</div>
-			<div id="aria-workflow" class="step-header span-2">
-				What workflow should the agent use?
-			</div>
+			<div id="aria-workflow" class="step-header span-2">What workflow should the agent use?</div>
 
 			<!-- Workflow selection -->
 			<div class="span-2">
@@ -1621,21 +1619,25 @@ export default {
 								},
 							},
 
-							...(promptObjectId ? {
-								[promptObjectId]: {
-									object_id: promptObjectId,
-									properties: {
-										object_role: 'main_prompt',
-									},
-								},
-							} : {}),
+							...(promptObjectId
+								? {
+										[promptObjectId]: {
+											object_id: promptObjectId,
+											properties: {
+												object_role: 'main_prompt',
+											},
+										},
+									}
+								: {}),
 
-							...(this.selectedWorkflow?.object_id ? {
-								[this.selectedWorkflow.object_id]: {
-									object_id: this.selectedWorkflow.object_id,
-									properties: {},
-								},
-							} : {}),
+							...(this.selectedWorkflow?.object_id
+								? {
+										[this.selectedWorkflow.object_id]: {
+											object_id: this.selectedWorkflow.object_id,
+											properties: {},
+										},
+									}
+								: {}),
 						},
 					};
 				}
