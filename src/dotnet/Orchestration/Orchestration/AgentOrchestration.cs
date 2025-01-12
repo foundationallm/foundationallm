@@ -148,11 +148,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (_completionRequestObserver != null)
                 await _completionRequestObserver(llmCompletionRequest);
 
-            var result = await _orchestrationService.GetCompletion(
+            var llmCompletionResponse = await _orchestrationService.GetCompletion(
                 _instanceId,
                 llmCompletionRequest);
 
-            return await GetCompletionResponse(completionRequest.OperationId!, result);
+            var completionResponse = await GetCompletionResponse(completionRequest.OperationId!, llmCompletionResponse);
+
+            return completionResponse;
         }
 
         private async Task<CompletionResponse?> ValidateCompletionRequest(CompletionRequest completionRequest)
@@ -221,6 +223,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 OperationId = completionRequest.OperationId,
                 UserPrompt = completionRequest.UserPrompt!,
+                UserPromptRewrite = completionRequest.UserPromptRewrite,
                 MessageHistory = completionRequest.MessageHistory,
                 Attachments = await GetAttachmentPaths(completionRequest.Attachments),
                 Agent = _agent!,
@@ -327,6 +330,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 Completion = llmCompletionResponse.Completion,
                 Content = llmCompletionResponse.Content != null ? await TransformContentItems(llmCompletionResponse.Content) : null,
                 UserPrompt = llmCompletionResponse.UserPrompt!,
+                UserPromptRewrite = llmCompletionResponse.UserPromptRewrite,
                 ContentArtifacts = llmCompletionResponse.ContentArtifacts,
                 FullPrompt = llmCompletionResponse.FullPrompt,
                 PromptTemplate = llmCompletionResponse.PromptTemplate,
