@@ -16,7 +16,7 @@
 					<!-- Tokens & Timestamp -->
 					<span class="message__header--right">
 						<Chip
-							v-if="$appConfigStore.showMessageTokens"
+							v-if="$appConfigStore.showMessageTokens && ($appStore.lastSelectedAgent?.properties?.show_message_tokens ?? true)"
 							:label="`Tokens: ${message.tokens}`"
 							class="token-chip"
 							:class="message.sender === 'User' ? 'token-chip--out' : 'token-chip--in'"
@@ -110,7 +110,7 @@
 						</span>
 					</div>
 
-					<template v-if="$appConfigStore.showMessageRating">
+					<template v-if="$appConfigStore.showMessageRating && ($appStore.lastSelectedAgent?.properties?.show_message_rating ?? true)">
 						<!-- Rating -->
 						<span class="ratings">
 							<!-- Rate message button -->
@@ -146,7 +146,7 @@
 
 						<!-- View prompt button -->
 						<Button
-							v-if="$appConfigStore.showViewPrompt"	
+							v-if="$appConfigStore.showViewPrompt && ($appStore.lastSelectedAgent?.properties?.show_view_prompt ?? true)"	
 							class="message__button"
 							:disabled="message.type === 'LoadingMessage'"
 							size="small"
