@@ -189,7 +189,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (_agent!.TextRewriteSettings != null
                 && _agent!.TextRewriteSettings.UserPromptRewriteEnabled)
             {
+                if (!_userPromptRewriteService.HasUserPromptRewriterForAgent(_instanceId, _agent.Name))
+                    await _userPromptRewriteService.InitializeUserPromptRewriterForAgent(
+                        _instanceId,
+                        _agent.Name,
+                        _agent.TextRewriteSettings.UserPromptRewriteSettings!);
 
+                await _userPromptRewriteService.RewriteUserPrompt(instanceId, _agent.Name, completionRequest);
             }
         }
 

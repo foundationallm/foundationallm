@@ -13,6 +13,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using FoundationaLLM.Orchestration.Core.Models;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
@@ -78,7 +79,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 var userPromptRewriteAIModel = await _aiModelResourceProviderService.GetResourceAsync<AIModelBase>(
                     agentSettings.UserPromptRewriteAIModelObjectId,
                     DefaultAuthentication.ServiceIdentity!);
-                var userPromptRewirteAPIEndpointConfiguration = await _configurationResourceProviderService.GetResourceAsync<APIEndpointConfiguration>(
+                var userPromptRewriteAPIEndpointConfiguration = await _configurationResourceProviderService.GetResourceAsync<APIEndpointConfiguration>(
                     userPromptRewriteAIModel.EndpointObjectId!,
                     DefaultAuthentication.ServiceIdentity!);
                 var userPromptRewritePrompt = await _promptResourceProviderService.GetResourceAsync<PromptBase>(
@@ -91,7 +92,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
                     RewriterSystemPrompt = (userPromptRewritePrompt as MultipartPrompt)!.Prefix!,
                     ChatClient = GetChatClient(
                         userPromptRewriteAIModel.DeploymentName!,
-                        userPromptRewirteAPIEndpointConfiguration)
+                        userPromptRewriteAPIEndpointConfiguration)
                 };
             }
             finally
@@ -106,7 +107,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
             string agentName,
             CompletionRequest completionRequest)
         {
-            if (!_agentRewriters.TryGetValue($"{instanceId}-{agentName}", out AgentUserPromptRewriter? agentRewriter)
+            if (!_agentRewriters.TryGetValue($"{instanceId}|{agentName}", out AgentUserPromptRewriter? agentRewriter)
                 || agentRewriter == null)
                 throw new UserPromptRewriteException($"The user prompt rewriter is not initialized for agent {agentName} in instance {instanceId}.");
 
@@ -116,17 +117,13 @@ namespace FoundationaLLM.Orchestration.Core.Services
                     .Where(x => StringComparer.Ordinal.Equals(x.Sender, nameof(Participants.User)))
                     .Select(x => x.Text)
                     .TakeLast(agentRewriter.Settings.UserPromptsWindowSize)
-                    .Reverse()
-                    .ToArray()
+                    .ToList()
                     ?? [];
+                userPromptsHistory.Add(completionRequest.UserPrompt);
                 var completionResult = await agentRewriter.ChatClient.CompleteChatAsync(
                     [
                         new SystemChatMessage(agentRewriter.RewriterSystemPrompt),
-                    new UserChatMessage($@"QUESTION:
-{completionRequest.UserPrompt}
-
-PREVIOUS QUESTIONS:
-{string.Join(Environment.NewLine, [.. userPromptsHistory])}")
+                        new UserChatMessage($"QUESTIONS:{Environment.NewLine}{string.Join(Environment.NewLine, [.. userPromptsHistory])}")
                     ]);
 
                 completionRequest.UserPromptRewrite = completionResult.Value.Content[0].Text;
