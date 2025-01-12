@@ -1,5 +1,4 @@
-﻿using Azure.Monitor.OpenTelemetry.AspNetCore;
-using Azure.Monitor.OpenTelemetry.Exporter;
+﻿using Azure.Monitor.OpenTelemetry.Exporter;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authorization;
@@ -10,7 +9,6 @@ using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Security;
-using FoundationaLLM.Common.Services.Templates;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
@@ -298,19 +296,5 @@ namespace FoundationaLLM
 
             services.AddSingleton<IAzureCosmosDBService, AzureCosmosDBService>();
         }
-
-        /// <summary>
-        /// Registers the <see cref="ITemplatingService"/> implementation with the dependency injection container.
-        /// </summary>
-        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
-        public static void AddRegexTemplatingEngine(this IHostApplicationBuilder builder) =>
-            builder.Services.AddSingleton<ITemplatingService, RegexTemplatingService>();
-
-        /// <summary>
-        /// Registers the <see cref="ITemplatingService"/> implementation with the dependency injection container.
-        /// </summary>
-        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        public static void AddRegexTemplatingEngine(this IServiceCollection services) =>
-            services.AddSingleton<ITemplatingService, RegexTemplatingService>();
     }
 }
