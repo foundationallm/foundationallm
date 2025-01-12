@@ -1540,11 +1540,18 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             if (!string.IsNullOrWhiteSpace(_resourceReferenceStore?.DefaultResourceName) && results
                     .Any(a => a.Resource.Name == _resourceReferenceStore.DefaultResourceName))
             {
-                var resourceProperties = results.First(a => a.Resource.Name == _resourceReferenceStore.DefaultResourceName)
-                    .Resource.Properties;
-                if (resourceProperties != null)
+                var resource = results.First(a => a.Resource.Name == _resourceReferenceStore.DefaultResourceName)
+                    .Resource;
+                if (resource.Properties != null)
                 {
-                    resourceProperties[ResourcePropertyNames.DefaultResource] = true.ToString().ToLowerInvariant();
+                    resource.Properties[ResourcePropertyNames.DefaultResource] = true.ToString().ToLowerInvariant();
+                }
+                else
+                {
+                    resource.Properties = new Dictionary<string, string>
+                    {
+                        { ResourcePropertyNames.DefaultResource, true.ToString().ToLowerInvariant() }
+                    };
                 }
 
                 foreach (var result in results.Where(r => r.Resource.Name != _resourceReferenceStore.DefaultResourceName))
