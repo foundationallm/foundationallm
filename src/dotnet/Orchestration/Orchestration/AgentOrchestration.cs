@@ -201,6 +201,18 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
         private async Task<CompletionResponse?> GetCompletionResponseFromCache(CompletionRequest completionRequest)
         {
+            if (_agent!.CacheSettings != null
+                && _agent!.CacheSettings.SemanticCacheEnabled)
+            {
+                if (!_semanticCacheService.HasCacheForAgent(_instanceId, _agent.Name))
+                    await _semanticCacheService.InitializeCacheForAgent(
+                        _instanceId,
+                        _agent.Name,
+                        _agent.CacheSettings.SemanticCacheSettings!);
+
+                return null;
+            }
+
             return null;
         }
 

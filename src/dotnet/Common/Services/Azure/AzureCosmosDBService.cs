@@ -12,10 +12,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
 using Polly.Retry;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net;
 
-namespace FoundationaLLM.Common.Services
+namespace FoundationaLLM.Common.Services.Azure
 {
     /// <summary>
     /// Service to access Azure Cosmos DB for NoSQL.
@@ -27,6 +28,7 @@ namespace FoundationaLLM.Common.Services
         private Container _operations;
         private Container _attachments;
         private Container _externalResources;
+        private Container _completionsCache;
         private readonly Lazy<Task<Container>> _userProfiles;
         private Task<Container> _userProfilesTask => _userProfiles.Value;
         private readonly Database _database;
@@ -109,11 +111,17 @@ namespace FoundationaLLM.Common.Services
                            throw new ArgumentException(
                                $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.ExternalResources}).");
 
+
+            _completionsCache = database?.GetContainer(AzureCosmosDBContainers.CompletionsCache) ??
+                           throw new ArgumentException(
+                               $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.CompletionsCache}).");
+
             _containers[AzureCosmosDBContainers.Sessions] = _sessions;
             _containers[AzureCosmosDBContainers.UserSessions] = _userSessions;
             _containers[AzureCosmosDBContainers.Operations] = _operations;
             _containers[AzureCosmosDBContainers.Attachments] = _attachments;
             _containers[AzureCosmosDBContainers.ExternalResources] = _externalResources;
+            _containers[AzureCosmosDBContainers.CompletionsCache] = _completionsCache;
 
             _logger.LogInformation("Cosmos DB service initialized.");
         }
@@ -587,6 +595,49 @@ namespace FoundationaLLM.Common.Services
                item: attachmentReference,
                partitionKey: partitionKey,
                cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public async Task CreateVectorSearchContainerAsync(
+            string containerName,
+            string partitionKeyPath,
+            string vectorPropertyPath,
+            int vectorDimensions,
+            CancellationToken cancellationToken = default)
+        {
+            var containerProperties = new ContainerProperties(containerName, partitionKeyPath)
+            {
+                VectorEmbeddingPolicy = new(new Collection<Embedding>(
+                    [
+                        new Embedding()
+                        {
+                            Path = vectorPropertyPath,
+                            DataType = VectorDataType.Float32,
+                            DistanceFunction = DistanceFunction.Cosine,
+                            Dimensions = vectorDimensions
+                        }
+                    ])),
+
+                IndexingPolicy = new IndexingPolicy
+                {
+                    VectorIndexes =
+                        [
+                            new VectorIndexPath()
+                            {
+                                Path = vectorPropertyPath,
+                                Type = VectorIndexType.DiskANN
+                            }
+                        ]
+                }
+            };
+            containerProperties.IndexingPolicy.IncludedPaths.Add(new IncludedPath { Path = "/*" });
+            containerProperties.IndexingPolicy.ExcludedPaths.Add(new ExcludedPath { Path = $"{vectorPropertyPath}/*" });
+
+            var containerResponse = await _database.CreateContainerIfNotExistsAsync(
+                containerProperties,
+                cancellationToken: cancellationToken);
+            if (containerResponse.Container != null)
+                _containers[containerName] = containerResponse.Container;
         }
     }
 }

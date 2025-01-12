@@ -24,6 +24,8 @@ namespace FoundationaLLM.Orchestration.Core.Services
     /// </summary>
     public class SemanticCacheService : ISemanticCacheService
     {
+        private const string SEMANTIC_CACHE_CONTAINER_NAME = "CompletionsCache";
+
         private readonly Dictionary<string, AgentSemanticCache> _agentCaches = [];
         private readonly SemaphoreSlim _syncLock = new SemaphoreSlim(1, 1);
 
@@ -72,7 +74,16 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 if (_agentCaches.Count == 0)
                 {
                     // This is the first time an agent attempts to initialize the cache.
-                    // TODO: Ensure the necessary Cosmos DB collections are created.
+                    // Ensure the proper container exists in Cosmos DB.
+
+                    // For now we are skipping the dynamic creation of the container as it looks like
+                    // there is a bug with the Cosmos DB client when working with RBAC.
+
+                    //await _cosmosDBService.CreateVectorSearchContainerAsync(
+                    //    SEMANTIC_CACHE_CONTAINER_NAME,
+                    //    "/partitionKey",
+                    //    "/userPromptEmbedding",
+                    //    agentSettings.EmbeddingDimensions);
                 }
 
                 if (HasCacheForAgent(instanceId, agentName))

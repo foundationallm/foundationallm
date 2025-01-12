@@ -8,12 +8,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
     public class AgentSemanticCacheSettings
     {
         /// <summary>
-        /// Gets or sets the maximum number of tokens to use for the conversation context.
-        /// </summary>
-        [JsonPropertyName("conversation_context_max_tokens")]
-        public int ConversationContextMaxTokens { get; set; }
-
-        /// <summary>
         /// Gets or sets the object identifier of the AI model to use for the embedding.
         /// </summary>
         [JsonPropertyName("embedding_ai_model_object_id")]
