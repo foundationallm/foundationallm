@@ -548,6 +548,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     user_prompt=parsed_user_prompt,
                     message_history=messages
                 )
+                # Ensure the user prompt rewrite is returned in the response
+                response.user_prompt_rewrite = request.user_prompt_rewrite
             return response
         # End External Agent workflow implementation
 
