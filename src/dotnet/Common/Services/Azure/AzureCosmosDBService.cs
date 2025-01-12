@@ -5,9 +5,11 @@ using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
@@ -15,6 +17,7 @@ using Polly.Retry;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net;
+using System.Text.Json;
 
 namespace FoundationaLLM.Common.Services.Azure
 {
@@ -638,6 +641,45 @@ namespace FoundationaLLM.Common.Services.Azure
                 cancellationToken: cancellationToken);
             if (containerResponse.Container != null)
                 _containers[containerName] = containerResponse.Container;
+        }
+
+        /// <inheritdoc/>
+        public async Task<CompletionResponse?> GetCompletionResponseAsync(
+            string containerName,
+            ReadOnlyMemory<float> userPromptEmbedding,
+            decimal minimumSimilarityScore)
+        {
+            var query = new QueryDefinition("""
+                SELECT TOP 1
+                    x.serializedItem, x.similarityScore
+                FROM
+                    (
+                        SELECT c.serializedItem, VectorDistance(c.userPromptEmbedding, @userPromptEmbedding) AS similarityScore FROM c
+                    ) x
+                WHERE
+                    x.similarityScore >= @minimumSimilarityScore
+                ORDER BY
+                    x.similarityScore DESC
+                """);
+            query.WithParameter("@userPromptEmbedding", userPromptEmbedding.ToArray());
+            query.WithParameter("@minimumSimilarityScore", (float)minimumSimilarityScore);
+
+            using var feedIterator = _completionsCache.GetItemQueryIterator<Object>(query);
+            if (feedIterator.HasMoreResults)
+            {
+                var response = await feedIterator.ReadNextAsync();
+                var result = response.Resource.FirstOrDefault();
+
+                if (result == null)
+                    return null;
+
+                var serializedCompletionResponse = (result as Newtonsoft.Json.Linq.JObject)!["serializedItem"]!.ToString();
+                var completionResponse = JsonSerializer.Deserialize<CompletionResponse>(serializedCompletionResponse);
+
+                return completionResponse;
+            }
+
+            return null;
         }
     }
 }

@@ -16,6 +16,7 @@ using FoundationaLLM.Orchestration.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OpenAI.Embeddings;
+using System.Text.Json;
 
 namespace FoundationaLLM.Orchestration.Core.Services
 {
@@ -112,12 +113,37 @@ namespace FoundationaLLM.Orchestration.Core.Services
         }
 
         /// <inheritdoc/>
-        public Task ResetCacheForAgent(string instanceId, string agentName) =>
-            Task.CompletedTask;
+        public async Task ResetCacheForAgent(string instanceId, string agentName) =>
+            await Task.CompletedTask;
 
         /// <inheritdoc/>
-        public Task SetCacheItem(string instanceId, string agentName, SemanticCacheItem cacheItem) =>
-            Task.CompletedTask;
+        public async Task SetCompletionResponseInCache(string instanceId, string agentName, CompletionResponse completionResponse)
+        {
+            if (!_agentCaches.TryGetValue($"{instanceId}|{agentName}", out AgentSemanticCache? agentCache)
+                || agentCache == null)
+                throw new SemanticCacheException($"The semantic cache is not initialized for agent {agentName} in instance {instanceId}.");
+
+            var cacheItem = new SemanticCacheItem
+            {
+                Id = Guid.NewGuid().ToString().ToLower(),
+                OperationId = completionResponse.OperationId!,
+                UserPrompt = completionResponse.UserPromptRewrite!,
+                SerializedItem = JsonSerializer.Serialize(completionResponse),
+            };
+
+            var embeddingResponse = await agentCache.EmbeddingClient.GenerateEmbeddingAsync(
+                cacheItem.UserPrompt,
+                new EmbeddingGenerationOptions
+                {
+                    Dimensions = agentCache.Settings.EmbeddingDimensions
+                });
+            cacheItem.UserPromptEmbedding = embeddingResponse.Value.ToFloats().ToArray();
+
+            await _cosmosDBService.UpsertItemAsync<SemanticCacheItem>(
+                SEMANTIC_CACHE_CONTAINER_NAME,
+                cacheItem.OperationId,
+                cacheItem);
+        }
 
         /// <inheritdoc/>
         public async Task<CompletionResponse?> GetCompletionResponseFromCache(
@@ -125,18 +151,24 @@ namespace FoundationaLLM.Orchestration.Core.Services
             string agentName,
             CompletionRequest completionRequest)
         {
-            if (!_agentCaches.TryGetValue($"{instanceId}-{agentName}", out AgentSemanticCache? agentCache)
+            if (!_agentCaches.TryGetValue($"{instanceId}|{agentName}", out AgentSemanticCache? agentCache)
                 || agentCache == null)
                 throw new SemanticCacheException($"The semantic cache is not initialized for agent {agentName} in instance {instanceId}.");
 
-            var userPromptEmbedding = await agentCache.EmbeddingClient.GenerateEmbeddingAsync(
+            var embeddingResult = await agentCache.EmbeddingClient.GenerateEmbeddingAsync(
                 completionRequest.UserPromptRewrite,
                 new EmbeddingGenerationOptions
                 {
                     Dimensions = agentCache.Settings.EmbeddingDimensions
                 });
+            var userPromptEmbedding = embeddingResult.Value.ToFloats();
 
-            return null;
+            var cachedCompletionResponse = await _cosmosDBService.GetCompletionResponseAsync(
+                SEMANTIC_CACHE_CONTAINER_NAME,
+                userPromptEmbedding,
+                agentCache.Settings.MinimumSimilarityThreshold);
+
+            return cachedCompletionResponse;
         }
 
         private EmbeddingClient GetEmbeddingClient(string deploymentName, APIEndpointConfiguration apiEndpointConfiguration) =>

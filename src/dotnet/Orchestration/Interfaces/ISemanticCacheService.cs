@@ -40,7 +40,7 @@ namespace FoundationaLLM.Orchestration.Core.Interfaces
         Task ResetCacheForAgent(string instanceId, string agentName);
 
         /// <summary>
-        /// Tries to get a cache item from the semantic cache for the specified agent in the specified FoundationaLLM instance.
+        /// Tries to get a <see cref="CompletionResponse"/> from the semantic cache for the specified agent in the specified FoundationaLLM instance.
         /// </summary>
         /// <param name="instanceId">The unique identifier of the FoundationaLLM instance.</param>
         /// <param name="agentName">The name of the agent.</param>
@@ -52,15 +52,15 @@ namespace FoundationaLLM.Orchestration.Core.Interfaces
             CompletionRequest completionRequest);
 
         /// <summary>
-        /// Sets a cache item in the semantic cache for the specified agent in the specified FoundationaLLM instance.
+        /// Sets a <see cref="CompletionResponse"/> in the semantic cache for the specified agent in the specified FoundationaLLM instance.
         /// </summary>
         /// <param name="instanceId">The unique identifier of the FoundationaLLM instance.</param>
         /// <param name="agentName">The name of the agent.</param>
-        /// <param name="cacheItem">The <see cref="SemanticCacheItem"/> to be set in the agent's cache.</param>
+        /// <param name="completionResponse">The <see cref="CompletionResponse"/> to be set in the agent's cache.</param>
         /// <returns></returns>
-        Task SetCacheItem(
+        Task SetCompletionResponseInCache(
             string instanceId,
             string agentName,
-            SemanticCacheItem cacheItem);
+            CompletionResponse completionResponse);
     }
 }

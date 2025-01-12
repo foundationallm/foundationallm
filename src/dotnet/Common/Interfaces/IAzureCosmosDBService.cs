@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 
@@ -274,4 +275,16 @@ public interface IAzureCosmosDBService
         string vectorProperyPath,
         int vectorDimensions,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets the completion response for a given user prompt embedding using vector search and a minimum threshold for similarity.
+    /// </summary>
+    /// <param name="containerName">The name of the container holding the vector index.</param>
+    /// <param name="userPromptEmbedding">The reference embedding used for the vector search.</param>
+    /// <param name="minimumSimilarityScore">The threshold used for the similarity score.</param>
+    /// <returns>A <see cref="CompletionResponse"/> that matches the search criteria. If no item in the vector index matches the criteria, returns <see langref="null"/>.</returns>
+    Task<CompletionResponse?> GetCompletionResponseAsync(
+        string containerName,
+        ReadOnlyMemory<float> userPromptEmbedding,
+        decimal minimumSimilarityScore);
 }

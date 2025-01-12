@@ -124,7 +124,11 @@ namespace FoundationaLLM.Orchestration.Core.Services
                     [
                         new SystemChatMessage(agentRewriter.RewriterSystemPrompt),
                         new UserChatMessage($"QUESTIONS:{Environment.NewLine}{string.Join(Environment.NewLine, [.. userPromptsHistory])}")
-                    ]);
+                    ],
+                    new ChatCompletionOptions
+                    {
+                        Temperature = 0
+                    });
 
                 completionRequest.UserPromptRewrite = completionResult.Value.Content[0].Text;
 

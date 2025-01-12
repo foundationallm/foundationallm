@@ -14,6 +14,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Orchestration.Core.Interfaces;
+using FoundationaLLM.Orchestration.Models;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -91,15 +92,19 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     Result = validationResponse
                 };
 
-            await HandlePromptRewrite(completionRequest);
-            var cachedResponse = await GetCompletionResponseFromCache(completionRequest);
-            if (cachedResponse != null)
-                return new LongRunningOperation
-                {
-                    OperationId = completionRequest.OperationId!,
-                    Status = OperationStatus.Completed,
-                    Result = cachedResponse
-                };
+            if (_agent!.CacheSettings != null
+                && _agent!.CacheSettings.SemanticCacheEnabled)
+            {
+                await HandlePromptRewrite(completionRequest);
+                var cachedResponse = await GetCompletionResponseFromCache(completionRequest);
+                if (cachedResponse != null)
+                    return new LongRunningOperation
+                    {
+                        OperationId = completionRequest.OperationId!,
+                        Status = OperationStatus.Completed,
+                        Result = cachedResponse
+                    };
+            }
 
             var llmCompletionRequest = await GetLLMCompletionRequest(completionRequest);
             if (_completionRequestObserver != null)
@@ -123,9 +128,24 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 // parse the LLM Completion response from JsonElement
                 if (operationStatus.Result is JsonElement jsonElement)
                 {
-                    var completionResponse = JsonSerializer.Deserialize<LLMCompletionResponse>(jsonElement.ToString());
-                    if (completionResponse != null)
-                        operationStatus.Result = await GetCompletionResponse(operationId, completionResponse);
+                    var llmCompletionResponse = JsonSerializer.Deserialize<LLMCompletionResponse>(jsonElement.ToString());
+                    if (llmCompletionResponse != null)
+                    {
+                        var completionResponse = await GetCompletionResponse(operationId, llmCompletionResponse);
+
+                        if (_agent!.CacheSettings != null
+                            && _agent!.CacheSettings.SemanticCacheEnabled
+                            && (
+                                completionResponse.Errors == null
+                                || completionResponse.Errors.Length == 0
+                            ))
+                        {
+                            // This is a valid response that can be cached.
+                            await SetCompletionResponseInCache(completionResponse);
+                        }
+
+                        operationStatus.Result = completionResponse;
+                    }
                 }               
             }
 
@@ -139,10 +159,14 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (validationResponse != null)
                 return validationResponse;
 
-            await HandlePromptRewrite(completionRequest);
-            var cachedResponse = await GetCompletionResponseFromCache(completionRequest);
-            if (cachedResponse != null)
-                return cachedResponse;
+            if (_agent!.CacheSettings != null
+                && _agent!.CacheSettings.SemanticCacheEnabled)
+            {
+                await HandlePromptRewrite(completionRequest);
+                var cachedResponse = await GetCompletionResponseFromCache(completionRequest);
+                if (cachedResponse != null)
+                    return cachedResponse;
+            }
 
             var llmCompletionRequest = await GetLLMCompletionRequest(completionRequest);
             if (_completionRequestObserver != null)
@@ -153,6 +177,17 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 llmCompletionRequest);
 
             var completionResponse = await GetCompletionResponse(completionRequest.OperationId!, llmCompletionResponse);
+
+            if (_agent!.CacheSettings != null
+                && _agent!.CacheSettings.SemanticCacheEnabled
+                && (
+                    completionResponse.Errors == null
+                    || completionResponse.Errors.Length == 0
+                ))
+            {
+                // This is a valid response that can be cached.
+                await SetCompletionResponseInCache(completionResponse);
+            }
 
             return completionResponse;
         }
@@ -203,19 +238,49 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
         private async Task<CompletionResponse?> GetCompletionResponseFromCache(CompletionRequest completionRequest)
         {
-            if (_agent!.CacheSettings != null
-                && _agent!.CacheSettings.SemanticCacheEnabled)
-            {
-                if (!_semanticCacheService.HasCacheForAgent(_instanceId, _agent.Name))
-                    await _semanticCacheService.InitializeCacheForAgent(
-                        _instanceId,
-                        _agent.Name,
-                        _agent.CacheSettings.SemanticCacheSettings!);
+            if (!_semanticCacheService.HasCacheForAgent(_instanceId, _agent!.Name))
+                await _semanticCacheService.InitializeCacheForAgent(
+                    _instanceId,
+                    _agent.Name,
+                    _agent.CacheSettings!.SemanticCacheSettings!);
 
+            var cachedResponse = await _semanticCacheService.GetCompletionResponseFromCache(
+                _instanceId,
+                _agent.Name,
+                completionRequest);
+
+            if (cachedResponse == null)
                 return null;
-            }
 
-            return null;
+            cachedResponse.OperationId = completionRequest.OperationId!;
+            var contentArtifactsList = new List<ContentArtifact>(cachedResponse.ContentArtifacts ??= [])
+            {
+                new() {
+                    Id = "CachedResponse",
+                    Title = "Cached Response",
+                    Source = "SemanticCache"
+                }
+            };
+            cachedResponse.ContentArtifacts = [.. contentArtifactsList];
+
+            return cachedResponse;
+        }
+
+        private async Task SetCompletionResponseInCache(CompletionResponse completionResponse)
+        {
+            try
+            {
+                await _semanticCacheService.SetCompletionResponseInCache(_instanceId, _agent!.Name, completionResponse);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    ex,
+                    "An error occurred while setting the completion response in the semantic cache for operation {OperationId} and agent {AgentName} in instance {InstanceId}.",
+                    completionResponse.OperationId,
+                    _agent!.Name,
+                    _instanceId);
+            }
         }
 
         private async Task<LLMCompletionRequest> GetLLMCompletionRequest(CompletionRequest completionRequest) =>

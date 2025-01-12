@@ -37,13 +37,15 @@ az cosmosdb update --resource-group <resource-group-name> --name <account-name> 
 Create the `CompletionsCache` container in the Cosmos DB database with the following properties:
 
 - **Container id**: `CompletionsCache`
-- **Partition key**: `/partitionKey`
+- **Partition key**: `/operationId`
 - **Container Vector Policy**: a policy with the following properties:
   - **Path**: `/userPromptEmbedding`
   - **Data type**: `float32`
   - **Distance function**: `Cosine`
   - **Dimensions**: 2048
   - **Index type**: `diskANN` (leave the default values)
+
+After the container is created, set the `Time to Live` property on the container to 300 seconds.
 
 ## Starting with 0.9.1-rc105
 

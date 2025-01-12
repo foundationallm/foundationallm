@@ -9,14 +9,14 @@ namespace FoundationaLLM.Orchestration.Models
     {
         public string Id { get; set; }
 
-        public string PartitionKey { get; set; }
+        public string OperationId { get; set; }
 
         public string UserPrompt { get; set; }
 
         public int UserPromptTokens { get; set; }
 
-        public ReadOnlyMemory<float> UserPromptEmbedding { get; set; }
+        public float[] UserPromptEmbedding { get; set; }
 
-        public CompletionResponse CompletionResponse { get; set; }
+        public string SerializedItem { get; set; }
     }
 }
