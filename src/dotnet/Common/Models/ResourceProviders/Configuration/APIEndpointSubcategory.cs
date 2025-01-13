@@ -13,7 +13,7 @@
         /// <summary>
         /// Denotes the subcategory for indexing services.
         /// </summary>
-        IndexingService,
+        Indexing,
 
         /// <summary>
         /// Denotes the subcategory for AI model endpoints, such as Azure OpenAI.
