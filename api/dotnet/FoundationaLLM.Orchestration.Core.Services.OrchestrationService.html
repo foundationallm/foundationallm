@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Orchestration_Core_Services_OrchestrationService" data-uid="FoundationaLLM.Orchestration.Core.Services.OrchestrationService" class="text-break">
-Class OrchestrationService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/OrchestrationService.cs/#L29"><i class="bi bi-code-slash"></i></a>
+Class OrchestrationService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/OrchestrationService.cs/#L28"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -168,9 +168,9 @@ Class OrchestrationService  <a class="header-action link-secondary" title="View 
 
   <a id="FoundationaLLM_Orchestration_Core_Services_OrchestrationService__ctor_" data-uid="FoundationaLLM.Orchestration.Core.Services.OrchestrationService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Orchestration_Core_Services_OrchestrationService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Orchestration_Core_Models_ConfigurationOptions_OrchestrationServiceSettings__System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__FoundationaLLM_Orchestration_Core_Interfaces_ILLMOrchestrationServiceManager_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_FoundationaLLM_Common_Interfaces_ITemplatingService_FoundationaLLM_Common_Interfaces_ICodeExecutionService_FoundationaLLM_Common_Interfaces_IUserProfileService_FoundationaLLM_Common_Interfaces_ICallContext_Microsoft_Extensions_Configuration_IConfiguration_System_IServiceProvider_Microsoft_Extensions_Logging_ILoggerFactory_" data-uid="FoundationaLLM.Orchestration.Core.Services.OrchestrationService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions.OrchestrationServiceSettings},System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager,FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,FoundationaLLM.Common.Interfaces.ITemplatingService,FoundationaLLM.Common.Interfaces.ICodeExecutionService,FoundationaLLM.Common.Interfaces.IUserProfileService,FoundationaLLM.Common.Interfaces.ICallContext,Microsoft.Extensions.Configuration.IConfiguration,System.IServiceProvider,Microsoft.Extensions.Logging.ILoggerFactory)">
-  OrchestrationService(IOptions&lt;OrchestrationServiceSettings&gt;, IEnumerable&lt;IResourceProviderService&gt;, ILLMOrchestrationServiceManager, IAzureCosmosDBService, ITemplatingService, ICodeExecutionService, IUserProfileService, ICallContext, IConfiguration, IServiceProvider, ILoggerFactory)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/OrchestrationService.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Orchestration_Core_Services_OrchestrationService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Orchestration_Core_Models_ConfigurationOptions_OrchestrationServiceSettings__System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__FoundationaLLM_Orchestration_Core_Interfaces_ILLMOrchestrationServiceManager_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_FoundationaLLM_Common_Interfaces_ITemplatingService_FoundationaLLM_Common_Interfaces_ICodeExecutionService_FoundationaLLM_Common_Interfaces_IUserProfileService_FoundationaLLM_Orchestration_Core_Interfaces_IUserPromptRewriteService_FoundationaLLM_Orchestration_Core_Interfaces_ISemanticCacheService_FoundationaLLM_Common_Interfaces_ICallContext_Microsoft_Extensions_Configuration_IConfiguration_System_IServiceProvider_Microsoft_Extensions_Logging_ILoggerFactory_" data-uid="FoundationaLLM.Orchestration.Core.Services.OrchestrationService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions.OrchestrationServiceSettings},System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager,FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,FoundationaLLM.Common.Interfaces.ITemplatingService,FoundationaLLM.Common.Interfaces.ICodeExecutionService,FoundationaLLM.Common.Interfaces.IUserProfileService,FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService,FoundationaLLM.Orchestration.Core.Interfaces.ISemanticCacheService,FoundationaLLM.Common.Interfaces.ICallContext,Microsoft.Extensions.Configuration.IConfiguration,System.IServiceProvider,Microsoft.Extensions.Logging.ILoggerFactory)">
+  OrchestrationService(IOptions&lt;OrchestrationServiceSettings&gt;, IEnumerable&lt;IResourceProviderService&gt;, ILLMOrchestrationServiceManager, IAzureCosmosDBService, ITemplatingService, ICodeExecutionService, IUserProfileService, IUserPromptRewriteService, ISemanticCacheService, ICallContext, IConfiguration, IServiceProvider, ILoggerFactory)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/OrchestrationService.cs/#L64"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Constructor for the Orchestration Service.</p>
@@ -178,7 +178,7 @@ Class OrchestrationService  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public OrchestrationService(IOptions&lt;OrchestrationServiceSettings&gt; options, IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices, ILLMOrchestrationServiceManager llmOrchestrationServiceManager, IAzureCosmosDBService cosmosDBService, ITemplatingService templatingService, ICodeExecutionService codeExecutionService, IUserProfileService userProfileService, ICallContext callContext, IConfiguration configuration, IServiceProvider serviceProvider, ILoggerFactory loggerFactory)</code></pre>
+    <pre><code class="lang-csharp hljs">public OrchestrationService(IOptions&lt;OrchestrationServiceSettings&gt; options, IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices, ILLMOrchestrationServiceManager llmOrchestrationServiceManager, IAzureCosmosDBService cosmosDBService, ITemplatingService templatingService, ICodeExecutionService codeExecutionService, IUserProfileService userProfileService, IUserPromptRewriteService userPromptRewriteService, ISemanticCacheService semanticCacheService, ICallContext callContext, IConfiguration configuration, IServiceProvider serviceProvider, ILoggerFactory loggerFactory)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -203,6 +203,12 @@ Class OrchestrationService  <a class="header-action link-secondary" title="View 
 </dd>
     <dt><code>userProfileService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IUserProfileService.html">IUserProfileService</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.IUserProfileService.html">IUserProfileService</a> used to interact with user profiles.</p>
+</dd>
+    <dt><code>userPromptRewriteService</code> <a class="xref" href="FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.html">IUserPromptRewriteService</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.html">IUserPromptRewriteService</a> used to rewrite user prompts.</p>
+</dd>
+    <dt><code>semanticCacheService</code> <a class="xref" href="FoundationaLLM.Orchestration.Core.Interfaces.ISemanticCacheService.html">ISemanticCacheService</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Orchestration.Core.Interfaces.ISemanticCacheService.html">ISemanticCacheService</a> used to cache and retrieve completion responses.</p>
 </dd>
     <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
     <dd><p>The call context of the request being handled.</p>
@@ -237,7 +243,7 @@ Class OrchestrationService  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Orchestration_Core_Services_OrchestrationService_GetCompletion_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_" data-uid="FoundationaLLM.Orchestration.Core.Services.OrchestrationService.GetCompletion(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)">
   GetCompletion(string, CompletionRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/OrchestrationService.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/OrchestrationService.cs/#L121"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieve a completion from the configured orchestration service.</p>
@@ -279,7 +285,7 @@ Class OrchestrationService  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Orchestration_Core_Services_OrchestrationService_GetCompletionOperationStatus_System_String_System_String_" data-uid="FoundationaLLM.Orchestration.Core.Services.OrchestrationService.GetCompletionOperationStatus(System.String,System.String)">
   GetCompletionOperationStatus(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/OrchestrationService.cs/#L207"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/OrchestrationService.cs/#L219"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the status of a completion operation.</p>
@@ -321,7 +327,7 @@ Class OrchestrationService  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Orchestration_Core_Services_OrchestrationService_GetStatus_System_String_" data-uid="FoundationaLLM.Orchestration.Core.Services.OrchestrationService.GetStatus(System.String)">
   GetStatus(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/OrchestrationService.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/OrchestrationService.cs/#L104"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Get the aggredated status of all orchestration services.</p>
@@ -360,7 +366,7 @@ Class OrchestrationService  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Orchestration_Core_Services_OrchestrationService_StartCompletionOperation_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_" data-uid="FoundationaLLM.Orchestration.Core.Services.OrchestrationService.StartCompletionOperation(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)">
   StartCompletionOperation(string, CompletionRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/OrchestrationService.cs/#L159"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/OrchestrationService.cs/#L169"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Begins a completion operation.</p>
@@ -402,7 +408,7 @@ Class OrchestrationService  <a class="header-action link-secondary" title="View 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/OrchestrationService.cs/#L29" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/OrchestrationService.cs/#L28" class="edit-link">Edit this page</a>
         </div>
 
 

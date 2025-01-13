@@ -77,6 +77,44 @@
 <h5>Note</h5>
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
+<h2 id="starting-with-091-rc117">Starting with 0.9.1-rc117</h2>
+<h3 id="agent-configuration-changes">Agent configuration changes</h3>
+<pre><code class="lang-json">&quot;text_rewrite_settings&quot;: {
+    &quot;user_prompt_rewrite_enabled&quot; : true,
+    &quot;user_prompt_rewrite_settings&quot;: {
+        &quot;user_prompt_rewrite_ai_model_object_id&quot;: &quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel&quot;,
+        &quot;user_prompt_rewrite_prompt_object_id&quot;: &quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Prompt/prompts/FoundationaLLM-v2-Rewrite&quot;,
+        &quot;user_prompts_window_size&quot;: 1
+    }
+},
+&quot;cache_settings&quot;: {
+    &quot;semantic_cache_enabled&quot;: true,
+    &quot;semantic_cache_settings&quot;: {
+        &quot;embedding_ai_model_object_id&quot;: &quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/DefaultEmbeddingAIModel&quot;,
+        &quot;embedding_dimensions&quot;: 2048,
+        &quot;minimum_similarity_threshold&quot;: 0.975
+    }
+},
+</code></pre>
+<h3 id="semantic-cache">Semantic cache</h3>
+<p>Enable vector search in the Cosmos DB database using the following CLI command:</p>
+<pre><code class="lang-cli">az cosmosdb update --resource-group &lt;resource-group-name&gt; --name &lt;account-name&gt; --capabilities EnableNoSQLVectorSearch
+</code></pre>
+<p>Create the <code>CompletionsCache</code> container in the Cosmos DB database with the following properties:</p>
+<ul>
+<li><strong>Container id</strong>: <code>CompletionsCache</code></li>
+<li><strong>Partition key</strong>: <code>/operationId</code></li>
+<li><strong>Container Vector Policy</strong>: a policy with the following properties:
+<ul>
+<li><strong>Path</strong>: <code>/userPromptEmbedding</code></li>
+<li><strong>Data type</strong>: <code>float32</code></li>
+<li><strong>Distance function</strong>: <code>Cosine</code></li>
+<li><strong>Dimensions</strong>: 2048</li>
+<li><strong>Index type</strong>: <code>diskANN</code> (leave the default values)</li>
+</ul>
+</li>
+</ul>
+<p>After the container is created, set the <code>Time to Live</code> property on the container to 300 seconds.</p>
 <h2 id="starting-with-091-rc105">Starting with 0.9.1-rc105</h2>
 <h3 id="configuration-changes">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>

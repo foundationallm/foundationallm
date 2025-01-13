@@ -210,7 +210,7 @@ public class AgentBase : ResourceBase</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_AIModelObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.AIModelObjectId">
   AIModelObjectId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L65"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The object identifier of the <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.html">AIModelBase</a> object providing the AI model for the agent.</p>
@@ -243,7 +243,7 @@ public string? AIModelObjectId { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_AgentType" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.AgentType">
   AgentType
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L103"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The object type of the agent.</p>
@@ -272,11 +272,44 @@ public Type AgentType { get; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_CacheSettings_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.CacheSettings*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_CacheSettings" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.CacheSettings">
+  CacheSettings
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the agent's caching settings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;cache_settings&quot;)]
+public AgentCacheSettings? CacheSettings { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentCacheSettings.html">AgentCacheSettings</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_Capabilities_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Capabilities*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_Capabilities" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Capabilities">
   Capabilities
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L71"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>List of capabilities that the agent supports.</p>
@@ -309,7 +342,7 @@ public string[]? Capabilities { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_ConversationHistorySettings" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.ConversationHistorySettings">
   ConversationHistorySettings
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L41"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The agent's conversation history configuration.</p>
@@ -318,7 +351,7 @@ public string[]? Capabilities { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;conversation_history_settings&quot;)]
-public ConversationHistorySettings? ConversationHistorySettings { get; set; }</code></pre>
+public AgentConversationHistorySettings? ConversationHistorySettings { get; set; }</code></pre>
   </div>
 
 
@@ -327,7 +360,7 @@ public ConversationHistorySettings? ConversationHistorySettings { get; set; }</c
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.ConversationHistorySettings.html">ConversationHistorySettings</a></dt>
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentConversationHistorySettings.html">AgentConversationHistorySettings</a></dt>
     <dd></dd>
   </dl>
 
@@ -342,7 +375,7 @@ public ConversationHistorySettings? ConversationHistorySettings { get; set; }</c
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_GatekeeperSettings" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.GatekeeperSettings">
   GatekeeperSettings
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L47"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The agent's Gatekeeper configuration.</p>
@@ -351,7 +384,7 @@ public ConversationHistorySettings? ConversationHistorySettings { get; set; }</c
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;gatekeeper_settings&quot;)]
-public GatekeeperSettings? GatekeeperSettings { get; set; }</code></pre>
+public AgentGatekeeperSettings? GatekeeperSettings { get; set; }</code></pre>
   </div>
 
 
@@ -360,7 +393,7 @@ public GatekeeperSettings? GatekeeperSettings { get; set; }</code></pre>
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.GatekeeperSettings.html">GatekeeperSettings</a></dt>
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentGatekeeperSettings.html">AgentGatekeeperSettings</a></dt>
     <dd></dd>
   </dl>
 
@@ -375,7 +408,7 @@ public GatekeeperSettings? GatekeeperSettings { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_OrchestrationSettings" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.OrchestrationSettings">
   OrchestrationSettings
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L53"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Settings for the orchestration service.</p>
@@ -408,7 +441,7 @@ public AgentOrchestrationSettings? OrchestrationSettings { get; set; }</code></p
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_PromptObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.PromptObjectId">
   PromptObjectId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L59"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The object identifier of the <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase.html">PromptBase</a> object providing the prompt for the agent.</p>
@@ -470,11 +503,44 @@ public bool SessionsEnabled { get; set; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_TextRewriteSettings_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.TextRewriteSettings*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_TextRewriteSettings" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.TextRewriteSettings">
+  TextRewriteSettings
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the agent's text rewrite settings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;text_rewrite_settings&quot;)]
+public AgentTextRewriteSettings? TextRewriteSettings { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTextRewriteSettings.html">AgentTextRewriteSettings</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_Tools_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Tools*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_Tools" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Tools">
   Tools
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L86"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a list of tools that are registered with the agent.</p>
@@ -543,7 +609,7 @@ public override string? Type { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_VirtualSecurityGroupId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.VirtualSecurityGroupId">
   VirtualSecurityGroupId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L97"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the object identifier of the virtual security group associated with the agent.</p>
@@ -581,7 +647,7 @@ agent access token.</p>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_Workflow" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Workflow">
   Workflow
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L77"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The agent's workflow configuration.</p>
@@ -618,7 +684,7 @@ public AgentWorkflowBase? Workflow { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_HasCapability_System_String_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.HasCapability(System.String)">
   HasCapability(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs/#L116"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Checks whether the agent has a specified capbability.</p>

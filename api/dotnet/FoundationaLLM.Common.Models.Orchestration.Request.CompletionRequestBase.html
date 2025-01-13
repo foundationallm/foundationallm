@@ -174,7 +174,7 @@ Class CompletionRequestBase  <a class="header-action link-secondary" title="View
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/CompletionRequestBase.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Indicates whether this is a long-running operation.</p>
+  <div class="markdown level1 summary"><p>Gets or sets a flag that indicates whether this is a long-running operation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -204,10 +204,10 @@ public bool LongRunningOperation { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequestBase_MessageHistory" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.MessageHistory">
   MessageHistory
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/CompletionRequestBase.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/CompletionRequestBase.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>The message history associated with the completion request.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the message history associated with the completion request.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -240,7 +240,7 @@ public List&lt;MessageHistoryItem&gt;? MessageHistory { get; set; }</code></pre>
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/CompletionRequestBase.cs/#L14"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>The Operation ID identifying the completion request.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the operation identifier of the completion request.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -273,7 +273,7 @@ public string? OperationId { get; set; }</code></pre>
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/CompletionRequestBase.cs/#L26"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>The session ID.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the conversation identifier.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -306,13 +306,46 @@ public string? SessionId { get; set; }</code></pre>
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/CompletionRequestBase.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Represent the input or user prompt.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the user prompt.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;user_prompt&quot;)]
 public required string UserPrompt { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequestBase_UserPromptRewrite_" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.UserPromptRewrite*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequestBase_UserPromptRewrite" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.UserPromptRewrite">
+  UserPromptRewrite
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/CompletionRequestBase.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the rewrite of the user prompt.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;user_prompt_rewrite&quot;)]
+public string? UserPromptRewrite { get; set; }</code></pre>
   </div>
 
 
