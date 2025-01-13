@@ -142,7 +142,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             ))
                         {
                             // This is a valid response that can be cached.
-                            await SetCompletionResponseInCache(completionResponse);
+                            await SetCompletionResponseInCache(completionResponse, _longRunningOperationContext.AgentName);
                         }
 
                         operationStatus.Result = completionResponse;
@@ -187,7 +187,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 ))
             {
                 // This is a valid response that can be cached.
-                await SetCompletionResponseInCache(completionResponse);
+                await SetCompletionResponseInCache(completionResponse, _agent!.Name);
             }
 
             return completionResponse;
@@ -267,11 +267,11 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             return cachedResponse;
         }
 
-        private async Task SetCompletionResponseInCache(CompletionResponse completionResponse)
+        private async Task SetCompletionResponseInCache(CompletionResponse completionResponse, string agentName)
         {
             try
             {
-                await _semanticCacheService.SetCompletionResponseInCache(_instanceId, _agent!.Name, completionResponse);
+                await _semanticCacheService.SetCompletionResponseInCache(_instanceId, agentName, completionResponse);
             }
             catch (Exception ex)
             {
