@@ -10,5 +10,6 @@ class CompletionRequestBase(BaseModel):
     operation_id: str = Field(description="The operation ID for the completion request.")
     session_id: Optional[str] = Field(None, description="The session ID for the completion request.")
     user_prompt: str = Field(description="The user prompt for the completion request.")
+    user_prompt_rewrite: Optional[str] = Field(None, description="The user prompt rewrite for the completion request.")
     message_history: Optional[List[MessageHistoryItem]] = Field(list, description="The message history for the completion.")
     attachments: Optional[List[AttachmentProperties]] = Field(list, description="The attachments collection for the completion request.")

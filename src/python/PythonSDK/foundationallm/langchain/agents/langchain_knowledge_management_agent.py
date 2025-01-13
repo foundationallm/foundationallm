@@ -429,6 +429,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     operation_id = request.operation_id,
                     full_prompt = self.prompt.prefix,
                     user_prompt = request.user_prompt,
+                    user_prompt_rewrite = request.user_prompt_rewrite,
                     errors = [ "Assistants API response was None." ]
                 )
 
@@ -443,6 +444,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 prompt_tokens = assistant_response.prompt_tokens + image_analysis_token_usage.prompt_tokens,
                 total_tokens = assistant_response.total_tokens + image_analysis_token_usage.total_tokens,
                 user_prompt = request.user_prompt,
+                user_prompt_rewrite = request.user_prompt_rewrite,
                 errors = assistant_response.errors
             )
         # End Assistants API implementation
@@ -499,6 +501,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                         content = [response_content],
                         content_artifacts = content_artifacts,
                         user_prompt = request.user_prompt,
+                        user_prompt_rewrite = request.user_prompt_rewrite,
                         full_prompt = self.prompt.prefix,
                         completion_tokens = final_message.usage_metadata["output_tokens"] or 0,
                         prompt_tokens = final_message.usage_metadata["input_tokens"] or 0,
@@ -545,6 +548,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     user_prompt=parsed_user_prompt,
                     message_history=messages
                 )
+                # Ensure the user prompt rewrite is returned in the response
+                response.user_prompt_rewrite = request.user_prompt_rewrite
             return response
         # End External Agent workflow implementation
 
@@ -604,6 +609,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 operation_id = request.operation_id,
                 content = [response_content],
                 user_prompt = request.user_prompt,
+                user_prompt_rewrite = request.user_prompt_rewrite,
                 full_prompt = self.full_prompt.text,
                 completion_tokens = completion.usage_metadata["output_tokens"] + image_analysis_token_usage.completion_tokens,
                 prompt_tokens = completion.usage_metadata["input_tokens"] + image_analysis_token_usage.prompt_tokens,
@@ -629,6 +635,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                         operation_id = request.operation_id,
                         content = [response_content],
                         user_prompt = request.user_prompt,
+                        user_prompt_rewrite = request.user_prompt_rewrite,
                         full_prompt = self.full_prompt.text,
                         completion_tokens = cb.completion_tokens + image_analysis_token_usage.completion_tokens,
                         prompt_tokens = cb.prompt_tokens + image_analysis_token_usage.prompt_tokens,

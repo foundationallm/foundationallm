@@ -43,7 +43,19 @@ export const useAppStore = defineStore('app', {
 		highContrastMode: JSON.parse(sessionStorage.getItem('highContrastMode') || 'false') as boolean,
 	}),
 
-	getters: {},
+	getters: {
+		agentShowMessageTokens() {
+			return this.lastSelectedAgent?.properties?.show_message_tokens ?? true;
+		},
+
+		agentShowMessageRating() {
+			return this.lastSelectedAgent?.properties?.show_message_rating ?? true;
+		},
+
+		agentShowViewPrompt() {
+			return this.lastSelectedAgent?.properties?.show_view_prompt ?? true;
+		},
+	},
 
 	actions: {
 		async init(sessionId: string) {
