@@ -326,6 +326,10 @@ export type CreateAgentRequest = ResourceBase & {
 	type: 'knowledge-management' | 'analytics';
 	inline_context: boolean;
 
+	show_message_tokens?: boolean;
+	show_message_rating?: boolean;
+	show_view_prompt?: boolean;
+
 	ai_model_object_id: string;
 
 	language_model: {
