@@ -14,7 +14,6 @@ using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Orchestration.Core.Interfaces;
-using FoundationaLLM.Orchestration.Models;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -41,6 +40,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// <param name="resourceProviderServices">The dictionary of <see cref="IResourceProviderService"/></param>
     /// <param name="dataSourceAccessDenied">Inidicates that access was denied to all underlying data sources.</param>
     /// <param name="openAIVectorStoreId">The OpenAI Assistants vector store id.</param>
+    /// <param name="longRunningOperationContext">The <see cref="LongRunningOperationContext"/> providing the context of the long-running operation.</param>
     /// <param name="completionRequestObserver">An optional observer for completion requests.</param>
     public class AgentOrchestration(
         string instanceId,
@@ -57,6 +57,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         Dictionary<string, IResourceProviderService> resourceProviderServices,
         bool? dataSourceAccessDenied,
         string? openAIVectorStoreId,
+        LongRunningOperationContext? longRunningOperationContext,
         Func<LLMCompletionRequest, Task>? completionRequestObserver = null) : OrchestrationBase(orchestrationService)
     {
         private readonly string _instanceId = instanceId;
@@ -68,6 +69,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private readonly ILogger<OrchestrationBase> _logger = logger;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
         private readonly bool? _dataSourceAccessDenied = dataSourceAccessDenied;
+        private readonly LongRunningOperationContext? _longRunningOperationContext = longRunningOperationContext;
         private readonly Func<LLMCompletionRequest, Task>? _completionRequestObserver = completionRequestObserver;
 
         private readonly IResourceProviderService _attachmentResourceProvider =
@@ -133,8 +135,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     {
                         var completionResponse = await GetCompletionResponse(operationId, llmCompletionResponse);
 
-                        if (_agent!.CacheSettings != null
-                            && _agent!.CacheSettings.SemanticCacheEnabled
+                        if ((_longRunningOperationContext?.UseSemanticCache ?? false)
                             && (
                                 completionResponse.Errors == null
                                 || completionResponse.Errors.Length == 0
@@ -232,7 +233,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         _agent.Name,
                         _agent.TextRewriteSettings.UserPromptRewriteSettings!);
 
-                await _userPromptRewriteService.RewriteUserPrompt(instanceId, _agent.Name, completionRequest);
+                await _userPromptRewriteService.RewriteUserPrompt(_instanceId, _agent.Name, completionRequest);
             }
         }
 
@@ -459,7 +460,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 Name = openAIImageFile.FileId!,
                 Id = openAIImageFile.FileId!,
-                UPN = callContext.CurrentUserIdentity!.UPN!,
+                UPN = _callContext.CurrentUserIdentity!.UPN!,
                 InstanceId = _instanceId,
                 FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileMappings}/{openAIImageFile.FileId}",
                 OriginalFileName = openAIImageFile.FileId!,
@@ -483,7 +484,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 {
                     Name = openAIFilePath.FileId!,
                     Id = openAIFilePath.FileId!,
-                    UPN = callContext.CurrentUserIdentity!.UPN!,
+                    UPN = _callContext.CurrentUserIdentity!.UPN!,
                     InstanceId = _instanceId,
                     FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileMappings}/{openAIFilePath.FileId}",
                     OriginalFileName = openAIFilePath.FileId!,

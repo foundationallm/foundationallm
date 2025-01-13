@@ -77,6 +77,12 @@ namespace FoundationaLLM.Common.Models.Orchestration
         public string? Orchestrator { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to use the semantic cache.
+        /// </summary>
+        [JsonProperty("useSemanticCache")]
+        public bool? UseSemanticCache { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets the Time to Live (TTL) of the long-running operation.
         /// </summary>
         [JsonProperty("ttl")]
