@@ -98,6 +98,24 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public string? VirtualSecurityGroupId { get; set; }
 
         /// <summary>
+        /// Indicates whether to show a token count on the messages.
+        /// </summary>
+        [JsonPropertyName("show_message_tokens")]
+        public bool? ShowMessageTokens { get; set; } = true;
+
+        /// <summary>
+        /// Indicates whether to show rating options on the messages.
+        /// </summary>
+        [JsonPropertyName("show_message_rating")]
+        public bool? ShowMessageRating { get; set; } = true;
+
+        /// <summary>
+        /// Indicates whether to show a view prompt option on agent messages.
+        /// </summary>
+        [JsonPropertyName("show_view_prompt")]
+        public bool? ShowViewPrompt { get; set; } = true;
+
+        /// <summary>
         /// The object type of the agent.
         /// </summary>
         [JsonIgnore]
