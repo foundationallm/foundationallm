@@ -135,14 +135,17 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     {
                         var completionResponse = await GetCompletionResponse(operationId, llmCompletionResponse);
 
-                        if ((_longRunningOperationContext?.UseSemanticCache ?? false)
+                        if ((_longRunningOperationContext?.SemanticCacheSettings != null)
                             && (
                                 completionResponse.Errors == null
                                 || completionResponse.Errors.Length == 0
                             ))
                         {
                             // This is a valid response that can be cached.
-                            await SetCompletionResponseInCache(completionResponse, _longRunningOperationContext.AgentName);
+                            await SetCompletionResponseInCache(
+                                _instanceId,
+                                _longRunningOperationContext.AgentName,
+                                completionResponse);
                         }
 
                         operationStatus.Result = completionResponse;
@@ -187,7 +190,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 ))
             {
                 // This is a valid response that can be cached.
-                await SetCompletionResponseInCache(completionResponse, _agent!.Name);
+                await SetCompletionResponseInCache(
+                    _instanceId,
+                    _agent!.Name,
+                    completionResponse);
             }
 
             return completionResponse;
@@ -267,10 +273,18 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             return cachedResponse;
         }
 
-        private async Task SetCompletionResponseInCache(CompletionResponse completionResponse, string agentName)
+        private async Task SetCompletionResponseInCache(string instanceId, string agentName, CompletionResponse completionResponse)
         {
             try
             {
+                if (!_semanticCacheService.HasCacheForAgent(instanceId, agentName))
+                    await _semanticCacheService.InitializeCacheForAgent(
+                        instanceId,
+                        agentName,
+                        _agent == null
+                            ? _longRunningOperationContext!.SemanticCacheSettings!
+                            : _agent!.CacheSettings!.SemanticCacheSettings!);
+
                 await _semanticCacheService.SetCompletionResponseInCache(_instanceId, agentName, completionResponse);
             }
             catch (Exception ex)

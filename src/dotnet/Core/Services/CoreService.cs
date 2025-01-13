@@ -187,6 +187,7 @@ public partial class CoreService(
 
             await _cosmosDBService.UpsertLongRunningOperationContextAsync(new LongRunningOperationContext
             {
+                InstanceId = instanceId,
                 OperationId = completionRequest.OperationId!,
                 AgentName = completionRequest.AgentName!,
                 SessionId = completionRequest.SessionId!,
@@ -194,7 +195,7 @@ public partial class CoreService(
                 AgentMessageId = conversationItems.AgentMessage.Id,
                 CompletionPromptId = conversationItems.CompletionPrompt.Id,
                 GatekeeperOverride = agentOption,
-                UseSemanticCache = agentBase.CacheSettings?.SemanticCacheEnabled ?? false,
+                SemanticCacheSettings = agentBase.CacheSettings?.SemanticCacheSettings,
                 StartTime = operationStartTime,
                 UPN = _userIdentity.UPN!
             });
@@ -393,6 +394,7 @@ public partial class CoreService(
             var agentMessage = await ProcessCompletionResponse(
                 new LongRunningOperationContext
                 {
+                    InstanceId = instanceId,
                     AgentName = completionRequest.AgentName!,
                     SessionId = completionRequest.SessionId!,
                     OperationId = completionRequest.OperationId!,
@@ -400,7 +402,7 @@ public partial class CoreService(
                     AgentMessageId = conversationItems.AgentMessage.Id,
                     CompletionPromptId = conversationItems.CompletionPrompt.Id,
                     GatekeeperOverride = agentOption,
-                    UseSemanticCache = agentBase.CacheSettings?.SemanticCacheEnabled ?? false,
+                    SemanticCacheSettings = agentBase.CacheSettings?.SemanticCacheSettings,
                     StartTime = operationStartTime,
                     UPN = _userIdentity.UPN!
                 },
