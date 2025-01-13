@@ -701,9 +701,11 @@
 					/>
 				</div>
 
+				<div id="aria-show-message-tokens" class="step-header">Would you like to show the message tokens?</div>
+				<div id="aria-show-message-rating" class="step-header">Would you like to allow the user to rate the agent responses?</div>
+
 				<!-- Message tokens -->
-				<div id="aria-show-message-tokens" class="step-header span-2">Would you like to show the message tokens?</div>
-				<div class="span-2">
+				<div>
 					<ToggleButton
 						v-model="showMessageTokens"
 						on-label="Yes"
@@ -715,8 +717,7 @@
 				</div>
 
 				<!-- Rate messages -->
-				<div id="aria-show-message-rating" class="step-header span-2">Would you like to allow the user to rate the agent responses?</div>
-				<div class="span-2">
+				<div>
 					<ToggleButton
 						v-model="showMessageRating"
 						on-label="Yes"
@@ -893,9 +894,9 @@ const getDefaultFormValues = () => {
 			orchestrator: 'LangChain' as string,
 		},
 
-		showMessageTokens: false as Boolean,
-		showMessageRating: false as Boolean,
-		showViewPrompt: false as Boolean,
+		showMessageTokens: false as boolean,
+		showMessageRating: false as boolean,
+		showViewPrompt: false as boolean,
 	};
 };
 
@@ -1183,9 +1184,9 @@ export default {
 					) || this.selectedAgentCapabilities;
 			}
 
-			this.showMessageTokens = agent.properties?.show_message_tokens ?? false;
-			this.showMessageRating = agent.properties?.show_message_rating ?? false;
-			this.showViewPrompt = agent.properties?.show_view_prompt ?? false;
+			this.showMessageTokens = agent.show_message_tokens ?? false;
+			this.showMessageRating = agent.show_message_rating ?? false;
+			this.showViewPrompt = agent.show_view_prompt ?? false;
 		},
 
 		updateAgentWelcomeMessage(newContent: string) {
@@ -1391,14 +1392,15 @@ export default {
 					description: this.agentDescription,
 					properties: {
 						welcome_message: this.agentWelcomeMessage,
-						show_message_tokens: this.showMessageTokens,
-						show_message_rating: this.showMessageRating,
-						show_view_prompt: this.showViewPrompt,
 					},
 					object_id: this.object_id,
 					inline_context: this.inline_context,
 					cost_center: this.cost_center,
 					expiration_date: this.expirationDate?.toISOString(),
+
+					show_message_tokens: this.showMessageTokens,
+					show_message_rating: this.showMessageRating,
+					show_view_prompt: this.showViewPrompt,
 
 					vectorization: {
 						dedicated_pipeline: this.dedicated_pipeline,
