@@ -363,8 +363,12 @@ export const useAppStore = defineStore('app', {
 					// Default to the last selected agent to make the selection "sticky" across sessions.
 					selectedAgent = this.lastSelectedAgent;
 				} else {
-					// Default to the first agent in the list.
-					selectedAgent = this.agents[0];
+					// Find an agent in the list that is configured as the default agent.
+					selectedAgent = this.agents.find((agent) => agent.resource.properties?.default_resource);
+					if (!selectedAgent || selectedAgent.resource.properties?.default_resource !== 'true') {
+						// Default to the first agent in the list.
+						selectedAgent = this.agents[0];
+					}
 				}
 			}
 			return selectedAgent;
