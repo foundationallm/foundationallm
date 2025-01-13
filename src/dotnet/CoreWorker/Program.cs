@@ -3,7 +3,7 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
-using FoundationaLLM.Common.Services;
+using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Services;
 using FoundationaLLM.Core.Worker;

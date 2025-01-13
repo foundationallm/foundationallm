@@ -19,3 +19,4 @@ class OpenAIAssistantsAPIRequest(BaseModel):
     thread_id: str
     attachments: Optional[List[str]] = []
     user_prompt: str
+    user_prompt_rewrite: Optional[str] = None
