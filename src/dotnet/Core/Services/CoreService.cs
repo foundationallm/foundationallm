@@ -179,10 +179,15 @@ public partial class CoreService(
 
             var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
 
-            var agentOption = await ProcessGatekeeperOptions(instanceId, completionRequest);
+            var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(
+                instanceId,
+                completionRequest.AgentName!,
+                _userIdentity);
+            var agentOption = GetGatekeeperOption(instanceId, agentBase, completionRequest);
 
             await _cosmosDBService.UpsertLongRunningOperationContextAsync(new LongRunningOperationContext
             {
+                InstanceId = instanceId,
                 OperationId = completionRequest.OperationId!,
                 AgentName = completionRequest.AgentName!,
                 SessionId = completionRequest.SessionId!,
@@ -190,6 +195,7 @@ public partial class CoreService(
                 AgentMessageId = conversationItems.AgentMessage.Id,
                 CompletionPromptId = conversationItems.CompletionPrompt.Id,
                 GatekeeperOverride = agentOption,
+                SemanticCacheSettings = agentBase.CacheSettings?.SemanticCacheSettings,
                 StartTime = operationStartTime,
                 UPN = _userIdentity.UPN!
             });
@@ -376,7 +382,11 @@ public partial class CoreService(
 
             var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
 
-            var agentOption = await ProcessGatekeeperOptions(instanceId, completionRequest);
+            var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(
+                instanceId,
+                completionRequest.AgentName!,
+                _userIdentity);
+            var agentOption = GetGatekeeperOption(instanceId, agentBase, completionRequest);
 
             // Generate the completion to return to the user.
             var completionResponse = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, completionRequest);
@@ -384,12 +394,15 @@ public partial class CoreService(
             var agentMessage = await ProcessCompletionResponse(
                 new LongRunningOperationContext
                 {
+                    InstanceId = instanceId,
                     AgentName = completionRequest.AgentName!,
                     SessionId = completionRequest.SessionId!,
                     OperationId = completionRequest.OperationId!,
                     UserMessageId = conversationItems.UserMessage.Id,
                     AgentMessageId = conversationItems.AgentMessage.Id,
                     CompletionPromptId = conversationItems.CompletionPrompt.Id,
+                    GatekeeperOverride = agentOption,
+                    SemanticCacheSettings = agentBase.CacheSettings?.SemanticCacheSettings,
                     StartTime = operationStartTime,
                     UPN = _userIdentity.UPN!
                 },
@@ -418,7 +431,11 @@ public partial class CoreService(
         {
             directCompletionRequest = await PrepareCompletionRequest(directCompletionRequest);
 
-            var agentOption = await ProcessGatekeeperOptions(instanceId, directCompletionRequest);
+            var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(
+                instanceId,
+                directCompletionRequest.AgentName!,
+                _userIdentity);
+            var agentOption = GetGatekeeperOption(instanceId, agentBase, directCompletionRequest);
 
             // Generate the completion to return to the user.
             var result = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, directCompletionRequest);
@@ -732,21 +749,16 @@ public partial class CoreService(
             ? _orchestrationAPIService
             : _gatekeeperAPIService;
 
-    private async Task<AgentGatekeeperOverrideOption> ProcessGatekeeperOptions(string instanceId, CompletionRequest completionRequest)
+    private AgentGatekeeperOverrideOption GetGatekeeperOption(string instanceId, AgentBase agent, CompletionRequest completionRequest)
     {
-        var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(
-            instanceId,
-            completionRequest.AgentName!,
-            _userIdentity);
-
-        if (agentBase?.GatekeeperSettings?.UseSystemSetting == false)
+        if (agent.GatekeeperSettings?.UseSystemSetting == false)
         {
             // Agent does not want to use system settings, however it does not have any Gatekeeper options either
             // Consequently, a request to bypass Gatekeeper will be returned.
-            if (agentBase!.GatekeeperSettings!.Options == null || agentBase.GatekeeperSettings.Options.Length == 0)
+            if (agent.GatekeeperSettings!.Options == null || agent.GatekeeperSettings.Options.Length == 0)
                 return AgentGatekeeperOverrideOption.MustBypass;
 
-            completionRequest.GatekeeperOptions = agentBase.GatekeeperSettings.Options;
+            completionRequest.GatekeeperOptions = agent.GatekeeperSettings.Options;
             return AgentGatekeeperOverrideOption.MustCall;
         }
 

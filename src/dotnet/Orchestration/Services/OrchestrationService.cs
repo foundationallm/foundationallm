@@ -228,6 +228,7 @@ public class OrchestrationService : IOrchestrationService
                 _resourceProviderServices,
                 _llmOrchestrationServiceManager,
                 _cosmosDBService,
+                _semanticCacheService,
                 _serviceProvider,
                 _loggerFactory)
                 ?? throw new OrchestrationException($"The orchestration builder was not able to create an orchestration to retrieve the status of the operation with id {operationId}.");

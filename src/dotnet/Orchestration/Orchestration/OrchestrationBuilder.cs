@@ -127,6 +127,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     resourceProviderServices,
                     result.DataSourceAccessDenied,
                     vectorStoreId,
+                    null,
                     completionRequestObserver);
 
                 return kmOrchestration;
@@ -145,6 +146,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
         /// <param name="llmOrchestrationServiceManager">The <see cref="ILLMOrchestrationServiceManager"/> that manages internal and external orchestration services.</param>
         /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> used to interact with the Cosmos DB database.</param>
+        /// <param name="semanticCacheService">The <see cref="ISemanticCacheService"/> used to cache and retrieve completion responses.</param>
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/> provding dependency injection services for the current scope.</param>
         /// <param name="loggerFactory">The logger factory used to create new loggers.</param>
         /// <returns></returns>
@@ -157,6 +159,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             Dictionary<string, IResourceProviderService> resourceProviderServices,
             ILLMOrchestrationServiceManager llmOrchestrationServiceManager,
             IAzureCosmosDBService cosmosDBService,
+            ISemanticCacheService semanticCacheService,
             IServiceProvider serviceProvider,
             ILoggerFactory loggerFactory)
         {
@@ -177,12 +180,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 callContext,
                 orchestrationService,
                 null,
-                null,
+                semanticCacheService,
                 loggerFactory.CreateLogger<OrchestrationBase>(),
                 serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
                 resourceProviderServices,
                 null,
                 null,
+                operationContext,
                 null);
 
             return kmOrchestration;
