@@ -44,16 +44,16 @@ export const useAppStore = defineStore('app', {
 	}),
 
 	getters: {
-		agentShowMessageTokens() {
-			return this.lastSelectedAgent?.properties?.show_message_tokens ?? true;
+		agentShowMessageTokens(): boolean {
+			return this.lastSelectedAgent?.resource.show_message_tokens ?? true;
 		},
 
-		agentShowMessageRating() {
-			return this.lastSelectedAgent?.properties?.show_message_rating ?? true;
+		agentShowMessageRating(): boolean {
+			return this.lastSelectedAgent?.resource.show_message_rating ?? true;
 		},
 
-		agentShowViewPrompt() {
-			return this.lastSelectedAgent?.properties?.show_view_prompt ?? true;
+		agentShowViewPrompt(): boolean {
+			return this.lastSelectedAgent?.resource.show_view_prompt ?? true;
 		},
 	},
 

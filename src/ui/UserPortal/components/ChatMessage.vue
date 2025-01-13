@@ -110,9 +110,9 @@
 						</span>
 					</div>
 
-					<template v-if="$appConfigStore.showMessageRating && $appStore.agentShowMessageRating">
-						<!-- Rating -->
-						<span class="ratings">
+					<!-- Rating -->
+					<span class="ratings">
+						<template v-if="$appConfigStore.showMessageRating && $appStore.agentShowMessageRating">
 							<!-- Rate message button -->
 							<Button
 								class="message__button"
@@ -123,8 +123,9 @@
 								label="Rate Message"
 								@click.stop="isRatingModalVisible = true"
 							/>
-						</span>
-					</template>
+						</template>
+					</span>
+					
 
 					<!-- Avg MS Per Word: {{ averageTimePerWordMS }} -->
 					<div v-if="messageDisplayStatus" class="loading-shimmer" style="font-weight: 600">
