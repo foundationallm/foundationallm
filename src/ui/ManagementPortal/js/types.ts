@@ -549,3 +549,50 @@ export function convertToAppConfigKeyVault(baseConfig: AppConfigUnion): AppConfi
 		content_type: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8',
 	};
 }
+
+export type APIEndpointConfiguration = ResourceBase & {
+    type: string;
+    category: APIEndpointCategory;
+    subcategory?: APIEndpointSubcategory;
+    authenticationType: AuthenticationTypes;
+    url: string;
+    statusUrl?: string;
+    urlExceptions: UrlException[];
+    authenticationParameters: { [key: string]: any };
+    timeoutSeconds: number;
+    retryStrategyName: string;
+    provider?: string;
+    apiVersion?: string;
+    operationType?: string;
+}
+
+export type UrlException = {
+    userPrincipalName: string;
+    url: string;
+    enabled: boolean;
+}
+
+export enum APIEndpointCategory {
+    Orchestration,
+    ExternalOrchestration,
+    LLM,
+    Gatekeeper,
+    AzureAIDirect,
+    AzureOpenAIDirect,
+    FileStoreConnector,
+    General
+}
+
+export enum APIEndpointSubcategory {
+    OneDriveWorkSchool,
+    IndexingService,
+    AIModel
+}
+
+export enum AuthenticationTypes {
+    Unknown = -1,
+    AzureIdentity,
+    APIKey,
+    ConnectionString,
+    AccountKey
+}

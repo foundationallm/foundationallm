@@ -38,6 +38,15 @@
 		<ul>
 			<li><NuxtLink to="/data-sources" class="sidebar__item">Data Sources</NuxtLink></li>
 		</ul>
+
+		<!-- Pipeline -->
+		<h3 class="sidebar__section-header">
+			<span class="pi pi-equals" aria-hidden="true"></span>
+			<span>Pipeline</span>
+		</h3>
+		<ul>
+			<li><NuxtLink to="/pipeline/indexing-profiles" class="sidebar__item">Indexing Profiles</NuxtLink></li>
+		</ul>
 		<!-- <div class="sidebar__item">Vector Stores</div> -->
 
 		<!-- Quotas -->
