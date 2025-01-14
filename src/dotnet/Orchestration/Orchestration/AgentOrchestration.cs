@@ -100,12 +100,17 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 await HandlePromptRewrite(completionRequest);
                 var cachedResponse = await GetCompletionResponseFromCache(completionRequest);
                 if (cachedResponse != null)
+                {
+                    // Rewrite the operation id to match the completion request.
+                    cachedResponse.OperationId = completionRequest.OperationId!;
+
                     return new LongRunningOperation
                     {
                         OperationId = completionRequest.OperationId!,
                         Status = OperationStatus.Completed,
                         Result = cachedResponse
                     };
+                }
             }
 
             var llmCompletionRequest = await GetLLMCompletionRequest(completionRequest);

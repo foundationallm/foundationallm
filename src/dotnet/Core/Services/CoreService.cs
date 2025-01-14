@@ -185,7 +185,7 @@ public partial class CoreService(
                 _userIdentity);
             var agentOption = GetGatekeeperOption(instanceId, agentBase, completionRequest);
 
-            await _cosmosDBService.UpsertLongRunningOperationContextAsync(new LongRunningOperationContext
+            var operationContext = new LongRunningOperationContext
             {
                 InstanceId = instanceId,
                 OperationId = completionRequest.OperationId!,
@@ -198,40 +198,55 @@ public partial class CoreService(
                 SemanticCacheSettings = agentBase.CacheSettings?.SemanticCacheSettings,
                 StartTime = operationStartTime,
                 UPN = _userIdentity.UPN!
-            });
+            };
+            await _cosmosDBService.UpsertLongRunningOperationContextAsync(operationContext);
 
             // Start the completion operation.
             var result = await GetDownstreamAPIService(agentOption).StartCompletionOperation(instanceId, completionRequest);
 
-            if (result.Status == OperationStatus.Failed)
+            switch (result.Status)
             {
-                // In case the completion operation fails to start properly, we need to update the user and agent messages accordingly.
+                case OperationStatus.Failed:
+                    {
+                        // In case the completion operation fails to start properly, we need to update the user and agent messages accordingly.
 
-                var patchOperations = new List<IPatchOperationItem>
-                {
-                    new PatchOperationItem<Message>
-                    {
-                        ItemId = conversationItems.UserMessage.Id,
-                        PropertyValues = new Dictionary<string, object?>
+                        var patchOperations = new List<IPatchOperationItem>
                         {
-                            { "/status", OperationStatus.Failed }
-                        }
-                    },
-                    new PatchOperationItem<Message>
-                    {
-                        ItemId = conversationItems.AgentMessage.Id,
-                        PropertyValues = new Dictionary<string, object?>
-                        {
-                            { "/status", OperationStatus.Failed },
-                            { "/text", result.StatusMessage }
-                        }
+                            new PatchOperationItem<Message>
+                            {
+                                ItemId = conversationItems.UserMessage.Id,
+                                PropertyValues = new Dictionary<string, object?>
+                                {
+                                    { "/status", OperationStatus.Failed }
+                                }
+                            },
+                            new PatchOperationItem<Message>
+                            {
+                                ItemId = conversationItems.AgentMessage.Id,
+                                PropertyValues = new Dictionary<string, object?>
+                                {
+                                    { "/status", OperationStatus.Failed },
+                                    { "/text", result.StatusMessage }
+                                }
+                            }
+                        };
+
+                        var patchedItems = await _cosmosDBService.PatchMultipleSessionsItemsInTransactionAsync(
+                            completionRequest.SessionId!,
+                            patchOperations
+                        );
+
+                        break;
                     }
-                };
+                case OperationStatus.Completed:
+                    {
+                        // If the completion operation completes immediately, we need to process the completion response and update the user and agent messages accordingly.
 
-                var patchedItems = await _cosmosDBService.PatchMultipleSessionsItemsInTransactionAsync(
-                    completionRequest.SessionId!,
-                    patchOperations
-                );
+                        var processedOperation = await ProcessLongRunningOperation(operationContext, result);
+                        return processedOperation;
+                    }
+                default:
+                    break;
             }
 
             return result;
@@ -258,14 +273,41 @@ public partial class CoreService(
         try
         {
             var operationContext = await _cosmosDBService.GetLongRunningOperationContextAsync(operationId);
-            var operationStatus = await GetDownstreamAPIService(operationContext.GatekeeperOverride).GetCompletionOperationStatus(instanceId, operationId);
+            var operation = await GetDownstreamAPIService(operationContext.GatekeeperOverride).GetCompletionOperationStatus(instanceId, operationId);
 
-            if ((DateTime.UtcNow - operationContext.StartTime).TotalMinutes > 30
-                && (operationStatus.Status == OperationStatus.Pending || operationStatus.Status == OperationStatus.InProgress))
+            var processedOperation = await ProcessLongRunningOperation(operationContext, operation);
+            return processedOperation;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving the status for the operation with id {OperationId}.",
+                operationId);
+            return new LongRunningOperation
             {
-                // We've hit the hard stop time for the operation.
+                OperationId = operationId,
+                StatusMessage = "Could not retrieve the status of the operation due to an internal error.",
+                Result = new Message
+                {
+                    OperationId = operationId,
+                    Status = OperationStatus.Failed,
+                    Text = "Could not retrieve the status of the operation due to an internal error.",
+                    TimeStamp = DateTime.UtcNow
+                },
+                Status = OperationStatus.Failed
+            };
+        }
+    }
 
-                var patchOperations = new List<IPatchOperationItem>
+    private async Task<LongRunningOperation> ProcessLongRunningOperation(
+        LongRunningOperationContext operationContext,
+        LongRunningOperation operation)
+    {
+        if ((DateTime.UtcNow - operationContext.StartTime).TotalMinutes > 30
+                && (operation.Status == OperationStatus.Pending || operation.Status == OperationStatus.InProgress))
+        {
+            // We've hit the hard stop time for the operation.
+
+            var patchOperations = new List<IPatchOperationItem>
                 {
                     new PatchOperationItem<Message>
                     {
@@ -288,82 +330,63 @@ public partial class CoreService(
                     }
                 };
 
-                var patchedItems = await _cosmosDBService.PatchMultipleSessionsItemsInTransactionAsync(
-                    operationContext.SessionId,
-                    patchOperations
-                );
+            var patchedItems = await _cosmosDBService.PatchMultipleSessionsItemsInTransactionAsync(
+                operationContext.SessionId,
+                patchOperations
+            );
 
-                return new LongRunningOperation
-                {
-                    OperationId = operationId,
-                    StatusMessage = "The completion operation has exceeded the maximum time allowed.",
-                    Result = new Message
-                    {
-                        OperationId = operationId,
-                        Status = OperationStatus.Failed,
-                        Text = "The completion operation has exceeded the maximum time allowed.",
-                        TimeStamp = DateTime.UtcNow,
-                        SenderDisplayName = operationContext.AgentName
-                    },
-                    Status = OperationStatus.Failed
-                };
-            }
-
-            if (operationStatus.Result is JsonElement jsonElement)
-            {
-                var completionResponse = jsonElement.Deserialize<CompletionResponse>();
-
-                var agentMessage = await ProcessCompletionResponse(
-                    operationContext,
-                    completionResponse!,
-                    operationStatus.Status);
-
-                if (agentMessage.Content is { Count: > 0 })
-                {
-                    foreach (var content in agentMessage.Content)
-                    {
-                        content.Value = ResolveContentDeepLinks(content.Value, _baseUrl);
-                    }
-                }
-
-                operationStatus.Result = agentMessage;
-                if (completionResponse != null)
-                {
-                    operationStatus.PromptTokens = completionResponse.PromptTokens;
-                }
-
-                return operationStatus;
-            }
-
-            operationStatus.Result = new Message
-            {
-                OperationId = operationId,
-                Status = operationStatus.Status,
-                Text = operationStatus.StatusMessage ?? "The completion operation is in progress.",
-                TimeStamp = DateTime.UtcNow,
-                SenderDisplayName = operationContext.AgentName
-            };
-
-            return operationStatus;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error retrieving the status for the operation with id {OperationId}.",
-                operationId);
             return new LongRunningOperation
             {
-                OperationId = operationId,
-                StatusMessage = "Could not retrieve the status of the operation due to an internal error.",
+                OperationId = operation.OperationId,
+                StatusMessage = "The completion operation has exceeded the maximum time allowed.",
                 Result = new Message
                 {
-                    OperationId = operationId,
+                    OperationId = operation.OperationId,
                     Status = OperationStatus.Failed,
-                    Text = "Could not retrieve the status of the operation due to an internal error.",
-                    TimeStamp = DateTime.UtcNow
+                    Text = "The completion operation has exceeded the maximum time allowed.",
+                    TimeStamp = DateTime.UtcNow,
+                    SenderDisplayName = operationContext.AgentName
                 },
                 Status = OperationStatus.Failed
             };
         }
+
+        if (operation.Result is JsonElement jsonElement)
+        {
+            var completionResponse = jsonElement.Deserialize<CompletionResponse>();
+
+            var agentMessage = await ProcessCompletionResponse(
+                operationContext,
+                completionResponse!,
+                operation.Status);
+
+            if (agentMessage.Content is { Count: > 0 })
+            {
+                foreach (var content in agentMessage.Content)
+                {
+                    content.Value = ResolveContentDeepLinks(content.Value, _baseUrl);
+                }
+            }
+
+            operation.Result = agentMessage;
+            if (completionResponse != null)
+            {
+                operation.PromptTokens = completionResponse.PromptTokens;
+            }
+
+            return operation;
+        }
+
+        operation.Result = new Message
+        {
+            OperationId = operation.OperationId,
+            Status = operation.Status,
+            Text = operation.StatusMessage ?? "The completion operation is in progress.",
+            TimeStamp = DateTime.UtcNow,
+            SenderDisplayName = operationContext.AgentName
+        };
+
+        return operation;
     }
 
     #endregion
