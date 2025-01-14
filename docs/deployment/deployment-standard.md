@@ -48,7 +48,7 @@ Follow the steps below to deploy the solution to your Azure subscription.
     ```pwsh
       git clone https://github.com/solliancenet/foundationallm.git
       cd foundationallm
-      git checkout release/0.8.2
+      git checkout release/0.9.1-rc121
     ```
 
 3. Install AzCopy
