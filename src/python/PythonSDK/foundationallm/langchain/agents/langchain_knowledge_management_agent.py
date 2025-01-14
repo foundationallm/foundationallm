@@ -553,6 +553,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             return response
         # End External Agent workflow implementation
 
+        request.objects['message_history'] = request.message_history
+
         # Start LangChain Expression Language (LCEL) implementation
 
         # Get the vector document retriever, if it exists.
