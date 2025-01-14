@@ -28,6 +28,7 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
             id = request.document_id,
             operation_id = request.operation_id,
             user_prompt = request.user_prompt,
+            user_prompt_rewrite = request.user_prompt_rewrite,
             content = [],
             analysis_results = []
         )
@@ -48,7 +49,7 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
             if details and details.type == "tool_calls":
                 for tool in details.tool_calls or []:
                     if tool.type == "code_interpreter" and tool.code_interpreter and tool.code_interpreter.input and tool.code_interpreter.input.endswith(tuple(self.stop_tokens)):
-                        self.run_steps[event.data.id] = event.data # Overwrite the run step with the final version.    
+                        self.run_steps[event.data.id] = event.data # Overwrite the run step with the final version.
                         await self.update_state_api_analysis_results_async()
                     if tool.type ==  "function":
                         self.run_steps[event.data.id] = event.data
@@ -62,7 +63,7 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
             print(f'{event.event} ({event.data.id}): {event.data.last_error}')
             if event.event == "thread.run.failed":
                 raise Exception(event.data.last_error.message)
-            
+
 
     @override
     async def on_text_delta(self, delta: TextDelta, snapshot: Text) -> None:
@@ -93,15 +94,15 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
                             # Get data from the tool
                             if call.type == "function":
                                 if call.function.name == "generate_image":
-                                    try:                                        
-                                        tool_response = await self.image_service.generate_image_async(**json.loads(call.function.arguments))                                       
+                                    try:
+                                        tool_response = await self.image_service.generate_image_async(**json.loads(call.function.arguments))
                                         tool_responses.append(
                                             {
                                                 "tool_call_id": call.id,
                                                 "output": json.dumps(tool_response)
                                             }
                                         )
-                                    except Exception as ex:                                       
+                                    except Exception as ex:
                                         print(f'Error getting tool response: {ex}')
                                         break
                 try:
@@ -130,7 +131,7 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
             if analysis_result:
                 self.interim_result.analysis_results.append(analysis_result)
         await self.operations_manager.set_operation_result_async(self.request.operation_id, self.request.instance_id, self.interim_result)
-        
+
     async def update_state_api_content_async(self):
         self.interim_result.content = [] # Clear the content list before adding new messages.
         for k, v in self.messages.items():

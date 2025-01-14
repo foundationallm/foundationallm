@@ -43,7 +43,19 @@ export const useAppStore = defineStore('app', {
 		highContrastMode: JSON.parse(sessionStorage.getItem('highContrastMode') || 'false') as boolean,
 	}),
 
-	getters: {},
+	getters: {
+		agentShowMessageTokens(): boolean {
+			return this.lastSelectedAgent?.resource.show_message_tokens ?? true;
+		},
+
+		agentShowMessageRating(): boolean {
+			return this.lastSelectedAgent?.resource.show_message_rating ?? true;
+		},
+
+		agentShowViewPrompt(): boolean {
+			return this.lastSelectedAgent?.resource.show_view_prompt ?? true;
+		},
+	},
 
 	actions: {
 		async init(sessionId: string) {
@@ -351,8 +363,12 @@ export const useAppStore = defineStore('app', {
 					// Default to the last selected agent to make the selection "sticky" across sessions.
 					selectedAgent = this.lastSelectedAgent;
 				} else {
-					// Default to the first agent in the list.
-					selectedAgent = this.agents[0];
+					// Find an agent in the list that is configured as the default agent.
+					selectedAgent = this.agents.find((agent) => agent.resource.properties?.default_resource);
+					if (!selectedAgent || selectedAgent.resource.properties?.default_resource !== 'true') {
+						// Default to the first agent in the list.
+						selectedAgent = this.agents[0];
+					}
 				}
 			}
 			return selectedAgent;

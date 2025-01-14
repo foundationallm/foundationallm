@@ -129,6 +129,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     ResourceProviderActions.CheckName => await CheckResourceName<AgentBase>(
                         JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
                     ResourceProviderActions.Purge => await PurgeResource<AgentBase>(resourcePath),
+                    ResourceProviderActions.SetDefault => await SetDefaultResource<AgentBase>(resourcePath),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
@@ -584,19 +585,19 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
         private async Task<List<ResourceProviderGetResult<AgentFile>>> LoadAgentFiles(string agentName) =>
             (await _resourceReferenceStore!.GetAllResourceReferences<AgentFile>())
-            .Where(r => r.Name.StartsWith(agentName))
-            .Select(r => (r, r.Name.Split("|").Last()))
-            .Select(x => new ResourceProviderGetResult<AgentFile>()
-            {
-                Actions = [],
-                Roles = [],
-                Resource = new AgentFile()
+                .Where(r => r.Name.StartsWith(agentName))
+                .Select(r => (r, r.Name.Split("|").Last()))
+                .Select(x => new ResourceProviderGetResult<AgentFile>()
                 {
-                    Name = x.Item2,
-                    DisplayName = x.Item2,
-                    ObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, agentName, AgentResourceTypeNames.Files, x.Item2)
-                }
-            }).ToList();
+                    Actions = [],
+                    Roles = [],
+                    Resource = new AgentFile()
+                    {
+                        Name = x.Item2,
+                        DisplayName = x.Item2,
+                        ObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, agentName, AgentResourceTypeNames.Files, x.Item2)
+                    }
+                }).ToList();
 
         private async Task<ResourceProviderUpsertResult> UpdateAgentFile(ResourcePath resourcePath, ResourceProviderFormFile formFile, UnifiedUserIdentity userIdentity)
         {
