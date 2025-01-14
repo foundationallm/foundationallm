@@ -406,7 +406,9 @@ public partial class CoreService(
                     AgentMessageId = conversationItems.AgentMessage.Id,
                     CompletionPromptId = conversationItems.CompletionPrompt.Id,
                     GatekeeperOverride = agentOption,
-                    SemanticCacheSettings = agentBase.CacheSettings?.SemanticCacheSettings,
+                    SemanticCacheSettings = (agentBase.CacheSettings?.SemanticCacheEnabled ?? false)
+                        ? agentBase.CacheSettings?.SemanticCacheSettings
+                        : null,
                     StartTime = operationStartTime,
                     UPN = _userIdentity.UPN!
                 },
