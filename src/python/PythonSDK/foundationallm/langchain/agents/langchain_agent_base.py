@@ -270,7 +270,7 @@ class LangChainAgentBase():
                             DefaultAzureCredential(exclude_environment_credential=True),
                             scope
                         )
-
+                        
                         if op_type == OperationTypes.CHAT:
                             language_model = AzureChatOpenAI(
                                 azure_endpoint=self.api_endpoint.url,
@@ -279,13 +279,12 @@ class LangChainAgentBase():
                                 azure_ad_token_provider=token_provider,
                                 azure_deployment=self.ai_model.deployment_name
                             )
-                        elif op_type == OperationTypes.ASSISTANTS_API or op_type == OperationTypes.IMAGE_SERVICES:
+                        elif op_type == OperationTypes.ASSISTANTS_API or op_type == OperationTypes.IMAGE_SERVICES:                            
                             # Assistants API clients can't have deployment as that is assigned at the assistant level.
                             language_model = async_aoi(
                                 azure_endpoint=self.api_endpoint.url,
-                                api_version=self.api_endpoint.api_version,
-                                openai_api_type='azure_ad',
-                                azure_ad_token_provider=token_provider,
+                                api_version=self.api_endpoint.api_version,                                
+                                azure_ad_token_provider=token_provider
                             )
                         else:
                             raise LangChainException(f"Unsupported operation type: {op_type}", 400)
