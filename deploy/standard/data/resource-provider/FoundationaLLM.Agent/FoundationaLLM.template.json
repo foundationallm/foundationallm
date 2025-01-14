@@ -38,12 +38,12 @@
   ],
   "properties": {
     "welcome_message": "\u003Cp\u003EYou are chatting with an agent named FoundationaLLM, who can answer questions about the FoundationaLLM platform.\u003C/p\u003E\u003Cp\u003EAdditional capabilities include:\u003C/p\u003E\u003Cul\u003E\u003Cli\u003EUpload files and ask the agent to analyze them\u003C/li\u003E\u003Cli\u003EGenerate charts, files, and downloadable content\u003C/li\u003E\u003Cli\u003EGenerate images using DALL-E\u003C/li\u003E\u003C/ul\u003E\u003Cp\u003E\u003Cem\u003EPlease avoid sharing personally identifiable information (PII) while conversing with the agent.\u003C/em\u003E\u003C/p\u003E",
-    "Azure.OpenAI.Assistant.Id": "{{oaiAssistantId}}}"
+    "Azure.OpenAI.Assistant.Id": "{{oaiAssistantId}}"
   },
   "workflow": {
     "type": "azure-openai-assistants-workflow",
     "name": "OpenAIAssistants",
-    "assistant_id": "{{oaiAssistantId}}}",
+    "assistant_id": "{{oaiAssistantId}}",
     "package_name": "FoundationaLLM",
     "resource_object_ids": {
 			"/instances/{{instanceId}}/providers/FoundationaLLM.Agent/workflows/OpenAIAssistants": {
