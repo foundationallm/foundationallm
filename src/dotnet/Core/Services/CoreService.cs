@@ -175,14 +175,15 @@ public partial class CoreService(
             ArgumentNullException.ThrowIfNull(completionRequest.SessionId);
             var operationStartTime = DateTime.UtcNow;
 
-            completionRequest = await PrepareCompletionRequest(completionRequest, true);
-
-            var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
-
             var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(
                 instanceId,
                 completionRequest.AgentName!,
                 _userIdentity);
+
+            completionRequest = await PrepareCompletionRequest(completionRequest, agentBase, true);
+
+            var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
+
             var agentOption = GetGatekeeperOption(instanceId, agentBase, completionRequest);
 
             var operationContext = new LongRunningOperationContext
@@ -195,7 +196,9 @@ public partial class CoreService(
                 AgentMessageId = conversationItems.AgentMessage.Id,
                 CompletionPromptId = conversationItems.CompletionPrompt.Id,
                 GatekeeperOverride = agentOption,
-                SemanticCacheSettings = agentBase.CacheSettings?.SemanticCacheSettings,
+                SemanticCacheSettings = (agentBase.CacheSettings?.SemanticCacheEnabled ?? false)
+                    ? agentBase.CacheSettings?.SemanticCacheSettings
+                    : null,
                 StartTime = operationStartTime,
                 UPN = _userIdentity.UPN!
             };
@@ -401,14 +404,15 @@ public partial class CoreService(
             ArgumentNullException.ThrowIfNull(completionRequest.SessionId);
             var operationStartTime = DateTime.UtcNow;
 
-            completionRequest = await PrepareCompletionRequest(completionRequest);
-
-            var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
-
             var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(
                 instanceId,
                 completionRequest.AgentName!,
                 _userIdentity);
+
+            completionRequest = await PrepareCompletionRequest(completionRequest, agentBase);
+
+            var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
+
             var agentOption = GetGatekeeperOption(instanceId, agentBase, completionRequest);
 
             // Generate the completion to return to the user.
@@ -425,7 +429,9 @@ public partial class CoreService(
                     AgentMessageId = conversationItems.AgentMessage.Id,
                     CompletionPromptId = conversationItems.CompletionPrompt.Id,
                     GatekeeperOverride = agentOption,
-                    SemanticCacheSettings = agentBase.CacheSettings?.SemanticCacheSettings,
+                    SemanticCacheSettings = (agentBase.CacheSettings?.SemanticCacheEnabled ?? false)
+                        ? agentBase.CacheSettings?.SemanticCacheSettings
+                        : null,
                     StartTime = operationStartTime,
                     UPN = _userIdentity.UPN!
                 },
@@ -452,12 +458,13 @@ public partial class CoreService(
     {
         try
         {
-            directCompletionRequest = await PrepareCompletionRequest(directCompletionRequest);
-
             var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(
                 instanceId,
                 directCompletionRequest.AgentName!,
                 _userIdentity);
+
+            directCompletionRequest = await PrepareCompletionRequest(directCompletionRequest, agentBase);
+
             var agentOption = GetGatekeeperOption(instanceId, agentBase, directCompletionRequest);
 
             // Generate the completion to return to the user.
@@ -935,13 +942,17 @@ public partial class CoreService(
     /// Pre-processing of incoming completion request.
     /// </summary>
     /// <param name="request">The completion request.</param>
+    /// <param name="agent">The <see cref="AgentBase"/> resource object.</param>
     /// <param name="longRunningOperation">Indicates whether this is a long-running operation.</param>
     /// <returns>The updated completion request with pre-processing applied.</returns>
-    private async Task<CompletionRequest> PrepareCompletionRequest(CompletionRequest request, bool longRunningOperation = false)
+    private async Task<CompletionRequest> PrepareCompletionRequest(CompletionRequest request, AgentBase agent, bool longRunningOperation = false)
     {
         request.OperationId = Guid.NewGuid().ToString();
         request.LongRunningOperation = longRunningOperation;
         List<MessageHistoryItem> messageHistoryList = [];
+        List<string> contentArtifactTypes = (agent.ConversationHistorySettings?.Enabled ?? false)
+            ? [.. (agent.ConversationHistorySettings.HistoryContentArtifactTypes ?? string.Empty).Split(",", StringSplitOptions.RemoveEmptyEntries)]
+            : [];
 
         // Retrieve conversation, including latest prompt.
         var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!);
@@ -960,7 +971,11 @@ public partial class CoreService(
 
             if (!string.IsNullOrWhiteSpace(messageText))
             {
-                messageHistoryList.Add(new MessageHistoryItem(message.Sender, messageText));
+                var messageHistoryItem = new MessageHistoryItem(message.Sender, messageText)
+                {
+                    ContentArtifacts = message.ContentArtifacts?.Where(ca => contentArtifactTypes.Contains(ca.Type ?? string.Empty)).ToList()
+                };
+                messageHistoryList.Add(messageHistoryItem);
             }
         }
 
