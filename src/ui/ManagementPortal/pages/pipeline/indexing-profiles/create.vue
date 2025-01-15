@@ -251,7 +251,6 @@ export default {
             const indexingProfileResult = await api.getIndexingProfile(this.editId);
             const indexingProfile = indexingProfileResult.resource;
             this.indexingProfile = indexingProfile;
-			console.log(this.indexingProfile);
         } else {
             // Create a new IndexingProfile object.
             const newIndexingProfile = {
@@ -269,7 +268,6 @@ export default {
                 }
             };
             this.indexingProfile = newIndexingProfile;
-			console.log(this.indexingProfile);
         }
 
 		this.getAPIEndpointConfigurationObjectIDs();
