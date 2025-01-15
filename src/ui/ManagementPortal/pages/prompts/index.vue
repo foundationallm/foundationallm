@@ -12,7 +12,14 @@
 			</template>
 
 			<!-- Table -->
-			<DataTable :value="prompts" striped-rows scrollable table-style="max-width: 100%" size="small">
+			<DataTable
+				:value="prompts"
+				striped-rows
+				scrollable
+				sortField="resource.name"
+				:sortOrder="1"
+				table-style="max-width: 100%"
+				size="small">
 				<template #empty>
 					<div role="alert" aria-live="polite">
 						No prompts found.
@@ -106,7 +113,6 @@ export default {
 			this.loading = true;
 			try {
 				this.prompts = (await api.getPrompts()) || [];
-				this.prompts.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',
