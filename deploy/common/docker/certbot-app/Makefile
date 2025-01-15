@@ -8,4 +8,4 @@ prepare:
 	cp -v ../../scripts/Function-Library.ps1 .
 
 pull:
-	docker pull mcr.microsoft.com/vscode/devcontainers/base:0-bullseye
+	docker pull ubuntu:22.04
