@@ -913,12 +913,18 @@ export default {
 	},
 
 	async checkIndexingProfileName(name): Promise<any> {
-		const indexingProfiles = await this.getIndexingProfiles();
-		if (indexingProfiles) {
-			const existingIndexingProfile = indexingProfiles.find((indexingProfile) => indexingProfile.resource.name === name);
-			return existingIndexingProfile ? { status: 'Denied' } : { status: 'Allowed' };
-		}
-		return { status: 'Denied' };
+		const payload = {
+			name,
+			type: 'indexing-profile',
+		};
+
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles/checkname?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		)) as CheckNameResponse;
 	},
 
 	async getOrchestrationServices(): Promise<APIEndpointConfiguration> {
