@@ -2,15 +2,15 @@
 	<main id="main-content">
 		<div style="display: flex">
 			<div style="flex: 1">
-				<h2 class="page-header">Indexing Profiles</h2>
-				<div class="page-subheader">The following indexing profiles are available.</div>
+				<h2 class="page-header">Vector Stores</h2>
+				<div class="page-subheader">The following vector stores are available.</div>
 			</div>
 
 			<div style="display: flex; align-items: center">
-				<NuxtLink to="/pipeline/indexing-profiles/create" tabindex="-1">
-					<Button aria-label="Create data source">
+				<NuxtLink to="/vector-stores/create" tabindex="-1">
+					<Button aria-label="Create vector store">
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
-						Create Indexing Profile
+						Create Vector Store
 					</Button>
 				</NuxtLink>
 			</div>
@@ -27,7 +27,7 @@
 
 			<!-- Table -->
 			<DataTable
-				:value="indexingProfiles"
+				:value="vectorStores"
 				striped-rows
 				scrollable
 				table-style="max-width: 100%"
@@ -35,11 +35,11 @@
 			>
 				<template #empty>
 					<div role="alert" aria-live="polite">
-						No data sources found.
+						No vector stores found.
 					</div>
 				</template>
 
-				<template #loading>Loading data sources. Please wait.</template>
+				<template #loading>Loading vector stores. Please wait.</template>
 
 				<!-- Name -->
 				<Column
@@ -82,7 +82,7 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink :to="'/pipeline/indexing-profiles/edit/' + data.resource.name" class="table__button" tabindex="-1">
+						<NuxtLink :to="'/vector-stores/edit/' + data.resource.name" class="table__button" tabindex="-1">
 							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
 								<Button link :aria-label="`Edit ${data.resource.name}`">
 									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
@@ -110,7 +110,7 @@
 							<Button
 								link
 								:aria-label="`Delete ${data.resource.name}`"
-								@click="indexingProfileToDelete = data.resource"
+								@click="vectorStoreToDelete = data.resource"
 							>
 								<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
 							</Button>
@@ -123,16 +123,16 @@
 
 		<!-- Delete agent dialog -->
 		<Dialog
-			:visible="indexingProfileToDelete !== null"
+			:visible="vectorStoreToDelete !== null"
 			modal
 			v-focustrap
 			header="Delete Data Source"
 			:closable="false"
 		>
-			<p>Do you want to delete the data source "{{ indexingProfileToDelete.name }}" ?</p>
+			<p>Do you want to delete the vector store "{{ vectorStoreToDelete.name }}" ?</p>
 			<template #footer>
-				<Button label="Cancel" text @click="indexingProfileToDelete = null" />
-				<Button label="Delete" severity="danger" autofocus @click="handleDeleteIndexingProfile" />
+				<Button label="Cancel" text @click="vectorStoreToDelete = null" />
+				<Button label="Delete" severity="danger" autofocus @click="handleDeleteVectorStore" />
 			</template>
 		</Dialog>
 	</main>
@@ -148,17 +148,17 @@ export default {
 	data() {
 		return {
 			dataSources: [] as ResourceProviderGetResult<DataSource>[],
-            indexingProfiles: [] as [],
+            vectorStores: [] as [],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 			dataSourceToDelete: null as DataSource | null,
-			indexingProfileToDelete: null,
+			vectorStoreToDelete: null,
 		};
 	},
 
 	async created() {
 		await this.getAgentDataSources();
-        await this.getIndexingProfiles();
+        await this.getVectorStores();
 	},
 
 	methods: {
@@ -176,11 +176,10 @@ export default {
 			this.loading = false;
 		},
 
-        async getIndexingProfiles() {
+        async getVectorStores() {
             this.loading = true;
             try {
-                this.indexingProfiles = await api.getIndexingProfiles();
-                console.log(this.indexingProfiles);
+                this.vectorStores = await api.getIndexingProfiles();
             } catch (error) {
                 this.$toast.add({
                     severity: 'error',
@@ -206,10 +205,10 @@ export default {
 			await this.getAgentDataSources();
 		},
 
-		async handleDeleteIndexingProfile() {
+		async handleDeleteVectorStore() {
 			try {
-				await api.deleteIndexingProfile(this.indexingProfileToDelete!.name);
-				this.indexingProfileToDelete = null;
+				await api.deleteIndexingProfile(this.vectorStoreToDelete!.name);
+				this.vectorStoreToDelete = null;
 			} catch (error) {
 				return this.$toast.add({
 					severity: 'error',
@@ -218,7 +217,7 @@ export default {
 				});
 			}
 
-			await this.getIndexingProfiles();
+			await this.getVectorStores();
 		},
 	},
 };

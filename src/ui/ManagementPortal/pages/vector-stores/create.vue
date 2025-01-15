@@ -3,12 +3,12 @@
 		<div style="display: flex">
 			<!-- Title -->
 			<div style="flex: 1">
-				<h2 class="page-header">{{ editId ? 'Edit Indexing Profile' : 'Create Indexing Profile' }}</h2>
+				<h2 class="page-header">{{ editId ? 'Edit Vector Store' : 'Create Vector Store' }}</h2>
 				<div class="page-subheader">
 					{{
 						editId
-							? 'Edit your indexing profile settings below.'
-							: 'Complete the settings below to configure the indexing profile.'
+							? 'Edit your vector store settings below.'
+							: 'Complete the settings below to configure the vector store.'
 					}}
 				</div>
 			</div>
@@ -25,19 +25,18 @@
 			</template>
 
 			<!-- Name -->
-			<div class="step-header span-2">What is the name of the indexing profile?</div>
+			<div class="step-header span-2">Vector Store Name:</div>
 			<div class="span-2">
-				<div id="aria-source-name" class="mb-2">Indexing profile name:</div>
 				<div id="aria-source-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
 				</div>
 				<div class="input-wrapper">
 					<InputText
-						v-model="indexingProfile.name"
+						v-model="vectorStore.name"
 						:disabled="editId"
 						type="text"
 						class="w-100"
-						placeholder="Enter indexing profile name"
+						placeholder="Enter vector store name"
 						aria-labelledby="aria-source-name aria-source-name-desc"
 						@input="handleNameInput"
 					/>
@@ -58,26 +57,27 @@
 						❌
 					</span>
 				</div>
+			</div>
 
-				<div id="aria-data-desc" class="mb-2 mt-2">Indexing Profile description:</div>
-				<div class="input-wrapper">
-					<InputText
-						v-model="indexingProfile.description"
-						type="text"
-						class="w-100"
-						placeholder="Enter a description for this indexing profile"
-						aria-labelledby="aria-data-desc"
-					/>
-				</div>
+			<!-- Description -->
+			<div class="step-header span-2">Vector Store Description:</div>
+			<div class="input-wrapper span-2">
+				<InputText
+					v-model="vectorStore.description"
+					type="text"
+					class="w-100"
+					placeholder="Enter a description for this vector store"
+					aria-labelledby="aria-data-desc"
+				/>
 			</div>
 
 			<!-- Type -->
 			<div id="aria-source-type" class="step-header span-2">
-				What is the indexer of the indexing profile?
+				What is the indexer of the vector store?
 			</div>
 			<div class="span-2">
 				<Dropdown
-					v-model="indexingProfile.indexer"
+					v-model="vectorStore.indexer"
 					:options="profileIndexerOptions"
 					option-label="label"
 					option-value="value"
@@ -93,7 +93,7 @@
 			<div id="aria-index-name" class="step-header span-2">Index Name:</div>
 			<div class="span-2">
 				<InputText
-					v-model="indexingProfile.settings.IndexName"
+					v-model="vectorStore.settings.IndexName"
 					:disabled="editId"
 					type="text"
 					class="w-100"
@@ -103,35 +103,11 @@
 				/>
 			</div>
 
-			<!-- TopN -->
-			<div id="aria-top-n" class="step-header span-2">Top N:</div>
-			<div class="span-2">
-				<InputText
-					v-model="indexingProfile.settings.TopN"
-					type="text"
-					class="w-100"
-					placeholder="Enter top N"
-					aria-labelledby="aria-top-n"
-				/>
-			</div>
-
-			<!-- Filters -->
-			<div id="aria-filters" class="step-header span-2">Filters:</div>
-			<div class="span-2">
-				<InputText
-					v-model="indexingProfile.settings.Filters"
-					type="text"
-					class="w-100"
-					placeholder="Enter filters"
-					aria-labelledby="aria-filters"
-				/>
-			</div>
-
 			<!-- Embedding Field Name -->
 			<div id="aria-embedding-field-name" class="step-header span-2">Embedding Field Name:</div>
 			<div class="span-2">
 				<InputText
-					v-model="indexingProfile.settings.EmbeddingFieldName"
+					v-model="vectorStore.settings.EmbeddingFieldName"
 					type="text"
 					class="w-100"
 					placeholder="Enter embedding field name"
@@ -143,7 +119,7 @@
 			<div id="aria-text-field-name" class="step-header span-2">Text Field Name:</div>
 			<div class="span-2">
 				<InputText
-					v-model="indexingProfile.settings.TextFieldName"
+					v-model="vectorStore.settings.TextFieldName"
 					type="text"
 					class="w-100"
 					placeholder="Enter text field name"
@@ -151,13 +127,13 @@
 				/>
 			</div>
 
-			<!-- API Endpoint Configuration Object ID -->
+			<!-- Indexing Service -->
 			<div id="aria-api-endpoint-configuration-object-id" class="step-header span-2">
-				API Endpoint Configuration Object ID:
+				Indexing Service:
 			</div>
 			<div class="span-2">
 				<Dropdown
-					v-model="indexingProfile.settings.api_endpoint_configuration_object_id"
+					v-model="vectorStore.settings.api_endpoint_configuration_object_id"
 					:options="profileIndexerAPIEndpointOptions"
 					option-label="label"
 					option-value="value"
@@ -169,11 +145,11 @@
 
 			<!-- Buttons -->
 			<div class="button-container column-2 justify-self-end">
-				<!-- Create data source -->
+				<!-- Create Vector Store -->
 				<Button
-					:label="editId ? 'Save Changes' : 'Create Indexing Profile'"
+					:label="editId ? 'Save Changes' : 'Create Vector Store'"
 					severity="primary"
-					@click="handleCreateIndexingProfile"
+					@click="handleCreatevectorStore"
 				/>
 
 				<!-- Cancel -->
@@ -195,7 +171,7 @@ import { debounce } from 'lodash';
 import api from '@/js/api';
 
 export default {
-	name: 'CreateDataSource',
+	name: 'CreateVectorStore',
 
 	props: {
 		editId: {
@@ -215,7 +191,7 @@ export default {
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			validationMessage: null as string | null,
 
-            indexingProfile: {
+            vectorStore: {
                 type: 'indexing-profile',
                 name: '',
                 display_name: null,
@@ -247,13 +223,13 @@ export default {
 		this.loading = true;
 
         if (this.editId) {
-            this.loadingStatusText = `Retrieving indexing source "${this.editId}"...`;
-            const indexingProfileResult = await api.getIndexingProfile(this.editId);
-            const indexingProfile = indexingProfileResult.resource;
-            this.indexingProfile = indexingProfile;
+            this.loadingStatusText = `Retrieving vector store "${this.editId}"...`;
+            const vectorStoreResult = await api.getIndexingProfile(this.editId);
+            const vectorStore = vectorStoreResult.resource;
+            this.vectorStore = vectorStore;
         } else {
-            // Create a new IndexingProfile object.
-            const newIndexingProfile = {
+            // Create a new vectorStore object.
+            const newVectorStore = {
                 name: '',
                 display_name: '',
                 description: '',
@@ -267,7 +243,7 @@ export default {
                     api_endpoint_configuration_object_id: '',
                 }
             };
-            this.indexingProfile = newIndexingProfile;
+            this.vectorStore = newVectorStore;
         }
 
 		this.getAPIEndpointConfigurationObjectIDs();
@@ -280,7 +256,7 @@ export default {
 	methods: {
 		async checkName() {
 			try {
-				const response = await api.checkIndexingProfileName(this.indexingProfile.name);
+				const response = await api.checkIndexingProfileName(this.vectorStore.name);
 
 				// Handle response based on the status
 				if (response.status === 'Allowed') {
@@ -304,14 +280,14 @@ export default {
 				return;
 			}
 
-			this.$router.push('/data-sources');
+			this.$router.push('/vector-stores');
 		},
 
 		handleNameInput(event) {
 			const sanitizedValue = this.$filters.sanitizeNameInput(event);
-			this.indexingProfile.name = sanitizedValue;
+			this.vectorStore.name = sanitizedValue;
 
-			// Check if the name is available if we are creating a new data source.
+			// Check if the name is available if we are creating a new vector store.
 			if (!this.editId) {
 				this.debouncedCheckName();
 			}
@@ -319,16 +295,16 @@ export default {
 
 		handleIndexNameInput(event) {
 			const sanitizedValue = this.$filters.sanitizeNameInput(event);
-			this.indexingProfile.settings.IndexName = sanitizedValue;
+			this.vectorStore.settings.IndexName = sanitizedValue;
 		},
 
-		async handleCreateIndexingProfile() {
+		async handleCreateVectorStore() {
 			this.loading = true;
 			let successMessage = null as null | string;
 			try {
-				this.loadingStatusText = 'Saving data source...';
-				await api.createIndexingProfile(this.indexingProfile);
-				successMessage = `Indexing Profile "${this.indexingProfile.name}" was successfully saved.`;
+				this.loadingStatusText = 'Saving vector store...';
+				await api.createVectorStore(this.vectorStore);
+				successMessage = `Vector Store "${this.vectorStore.name}" was successfully saved.`;
 			} catch (error) {
 				this.loading = false;
 				return this.$toast.add({
@@ -347,7 +323,7 @@ export default {
 			this.loading = false;
 
 			if (!this.editId) {
-				this.$router.push('/pipeline/indexing-profiles');
+				this.$router.push('/vector-stores');
 			}
 		},
 
