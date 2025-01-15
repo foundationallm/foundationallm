@@ -527,6 +527,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 for tool in agent.tools:
                     tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
 
+            request.objects['message_history'] = request.message_history
+
             # create the workflow
             workflow_factory = WorkflowFactory(self.plugin_manager)
             workflow = workflow_factory.get_workflow(
