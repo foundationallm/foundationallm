@@ -44,5 +44,10 @@
         /// Stores information about external resources (e.g., Azure OpenAI assistants threads and files).
         /// </summary>
         public const string ExternalResources = "ExternalResources";
+
+        /// <summary>
+        /// The vector store for cached completions (used by the semantic cache service).
+        /// </summary>
+        public const string CompletionsCache = "CompletionsCache";
     }
 }
