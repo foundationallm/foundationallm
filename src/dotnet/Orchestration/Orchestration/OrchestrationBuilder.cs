@@ -261,6 +261,23 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                     foreach (var key in modelParamsDict!.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
                                     {
                                         retrievedAIModel.ModelParameters[key] = modelParamsDict[key];
+                                    }                                  
+                                }
+
+                                // for every non-well known property, add it to the AIModel.Properties dictionary
+                                // Add non-well known properties to the AIModel.Properties dictionary
+                                retrievedAIModel.Properties ??= new Dictionary<string, string>();
+
+                                foreach (var (key, value) in resourceObjectId.Properties)
+                                {
+                                    if (key is ResourceObjectIdPropertyNames.ModelParameters or ResourceObjectIdPropertyNames.ObjectRole)
+                                    {
+                                        continue;
+                                    }
+
+                                    if (value != null)
+                                    {
+                                        retrievedAIModel.Properties[key] = value.ToString() ?? string.Empty;
                                     }
                                 }
 
