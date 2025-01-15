@@ -585,7 +585,7 @@ export enum APIEndpointCategory {
 
 export enum APIEndpointSubcategory {
     OneDriveWorkSchool,
-    IndexingService,
+    Indexing,
     AIModel
 }
 

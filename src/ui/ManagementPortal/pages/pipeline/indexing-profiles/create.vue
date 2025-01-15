@@ -12,12 +12,6 @@
 					}}
 				</div>
 			</div>
-
-			<!-- Edit access control -->
-			<!-- <AccessControl
-				v-if="editId"
-				:scope="`providers/FoundationaLLM.DataSource/dataSources/${dataSource.name}`"
-			/> -->
 		</div>
 
 		<!-- Steps -->
@@ -43,7 +37,7 @@
 						:disabled="editId"
 						type="text"
 						class="w-100"
-						placeholder="Enter data source name"
+						placeholder="Enter indexing profile name"
 						aria-labelledby="aria-source-name aria-source-name-desc"
 						@input="handleNameInput"
 					/>
@@ -65,16 +59,16 @@
 					</span>
 				</div>
 
-				<!-- <div id="aria-data-desc" class="mb-2 mt-2">Data description:</div>
+				<div id="aria-data-desc" class="mb-2 mt-2">Indexing Profile description:</div>
 				<div class="input-wrapper">
 					<InputText
-						v-model="dataSource.description"
+						v-model="indexingProfile.description"
 						type="text"
 						class="w-100"
-						placeholder="Enter a description for this data source"
+						placeholder="Enter a description for this indexing profile"
 						aria-labelledby="aria-data-desc"
 					/>
-				</div> -->
+				</div>
 			</div>
 
 			<!-- Type -->
@@ -94,6 +88,21 @@
 			</div>
 
 			<!-- Settings -->
+
+			<!-- Index Name -->
+			<div id="aria-index-name" class="step-header span-2">Index Name:</div>
+			<div class="span-2">
+				<InputText
+					v-model="indexingProfile.settings.IndexName"
+					:disabled="editId"
+					type="text"
+					class="w-100"
+					placeholder="Enter index name"
+					aria-labelledby="aria-index-name"
+					@input="handleIndexNameInput"
+				/>
+			</div>
+
 			<!-- TopN -->
 			<div id="aria-top-n" class="step-header span-2">Top N:</div>
 			<div class="span-2">
@@ -184,20 +193,6 @@
 import type { PropType } from 'vue';
 import { debounce } from 'lodash';
 import api from '@/js/api';
-import type {
-	DataSource,
-	ConfigurationReferenceMetadata,
-	// AzureDataLakeDataSource,
-	// SharePointOnlineSiteDataSource,
-	// AzureSQLDatabaseDataSource,
-} from '@/js/types';
-import {
-	isAzureDataLakeDataSource,
-	isOneLakeDataSource,
-	isAzureSQLDatabaseDataSource,
-	isSharePointOnlineSiteDataSource,
-	convertToDataSource,
-} from '@/js/types';
 
 export default {
 	name: 'CreateDataSource',
@@ -219,36 +214,6 @@ export default {
 
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			validationMessage: null as string | null,
-
-			folders: [] as string[],
-			workspaces: [] as string[],
-			documentLibraries: [] as string[],
-			tables: [] as string[],
-
-			// Create a default Azure Data Lake data source.
-			dataSource: {
-				type: 'azure-data-lake',
-				name: '',
-				display_name: '',
-				object_id: '',
-				description: '',
-				cost_center: '',
-				resolved_configuration_references: {
-					AuthenticationType: '',
-					ConnectionString: '',
-					APIKey: '',
-					Endpoint: '',
-					AccountName: '',
-				},
-				configuration_references: {
-					AuthenticationType: '',
-					ConnectionString: '',
-					APIKey: '',
-					Endpoint: '',
-					AccountName: '',
-				},
-				configuration_reference_metadata: {} as { [key: string]: ConfigurationReferenceMetadata },
-			} as null | DataSource,
 
             indexingProfile: {
                 type: 'indexing-profile',
@@ -274,36 +239,8 @@ export default {
 				},
 			],
 
-			profileIndexerAPIEndpointOptions: [
-				{
-					label: 'Azure AI Search',
-					value: '/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch',
-				},
-			],
-
-			authenticationTypeOptions: [
-				{
-					label: 'Connection String',
-					value: 'ConnectionString',
-				},
-				{
-					label: 'Account Key',
-					value: 'AccountKey',
-				},
-				{
-					label: 'Azure Identity',
-					value: 'AzureIdentity',
-				},
-			],
-
-			apiEndpointConfigurationObjectIDs: [] as any[],
+			profileIndexerAPIEndpointOptions: [] as any[],
 		};
-	},
-
-	watch: {
-		'dataSource.type'() {
-			this.dataSource = convertToDataSource(this.dataSource);
-		},
 	},
 
 	async created() {
@@ -343,12 +280,6 @@ export default {
 	},
 
 	methods: {
-		isAzureDataLakeDataSource,
-		isOneLakeDataSource,
-		isSharePointOnlineSiteDataSource,
-		isAzureSQLDatabaseDataSource,
-		convertToDataSource,
-
 		async checkName() {
 			try {
 				const response = await api.checkIndexingProfileName(this.indexingProfile.name);
@@ -381,9 +312,6 @@ export default {
 		handleNameInput(event) {
 			const sanitizedValue = this.$filters.sanitizeNameInput(event);
 			this.indexingProfile.name = sanitizedValue;
-			this.indexingProfile.settings.IndexName = sanitizedValue;
-			this.dataSource.name = sanitizedValue;
-			this.sourceName = sanitizedValue;
 
 			// Check if the name is available if we are creating a new data source.
 			if (!this.editId) {
@@ -391,69 +319,12 @@ export default {
 			}
 		},
 
-		async handleCreateDataSource() {
-			const errors: string[] = [];
-			if (!this.dataSource.name) {
-				errors.push('Please give the data source a name.');
-			}
-
-			if (!this.dataSource.type) {
-				errors.push('Please specify a data source type.');
-			}
-
-			this.dataSource = convertToDataSource(this.dataSource);
-
-			// Convert string representations of array fields back to arrays.
-			if (isAzureDataLakeDataSource(this.dataSource)) {
-				this.dataSource.folders = this.folders;
-			} else if (isOneLakeDataSource(this.dataSource)) {
-				this.dataSource.workspaces = this.workspaces;
-			} else if (isSharePointOnlineSiteDataSource(this.dataSource)) {
-				this.dataSource.document_libraries = this.documentLibraries;
-			} else if (isAzureSQLDatabaseDataSource(this.dataSource)) {
-				this.dataSource.tables = this.tables;
-			}
-
-			if (errors.length > 0) {
-				this.$toast.add({
-					severity: 'error',
-					detail: errors.join('\n'),
-					life: 5000,
-				});
-
-				return;
-			}
-
-			this.loading = true;
-			let successMessage = null as null | string;
-			try {
-				this.loadingStatusText = 'Saving data source...';
-				await api.upsertDataSource(this.dataSource);
-				successMessage = `Data source "${this.dataSource.name}" was successfully saved.`;
-			} catch (error) {
-				this.loading = false;
-				return this.$toast.add({
-					severity: 'error',
-					detail: error?.response?._data || error,
-					life: 5000,
-				});
-			}
-
-			this.$toast.add({
-				severity: 'success',
-				detail: successMessage,
-				life: 5000,
-			});
-
-			this.loading = false;
-
-			if (!this.editId) {
-				this.$router.push('/data-sources');
-			}
+		handleIndexNameInput(event) {
+			const sanitizedValue = this.$filters.sanitizeNameInput(event);
+			this.indexingProfile.settings.IndexName = sanitizedValue;
 		},
 
 		async handleCreateIndexingProfile() {
-			console.log(this.indexingProfile);
 			this.loading = true;
 			let successMessage = null as null | string;
 			try {
@@ -486,8 +357,21 @@ export default {
 			this.loading = true;
 			try {
 				const response = await api.getOrchestrationServices();
-				console.log(response);
-				// this.apiEndpointConfigurationObjectIDs = response;
+
+				const filteredData = response.filter(item => 
+					item.resource &&
+					item.resource.category &&
+					item.resource.category === "General"&&
+					item.resource.subcategory &&
+					item.resource.subcategory === "Indexing"
+				);
+
+				filteredData.forEach(item => {
+					this.profileIndexerAPIEndpointOptions.push({
+						label: item.resource.name,
+						value: item.resource.object_id,
+					});
+				});
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',
