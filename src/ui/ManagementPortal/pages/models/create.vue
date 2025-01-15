@@ -181,6 +181,7 @@ export default {
 			this.loading = true;
 			this.loadingStatusText = `Retrieving AI model "${this.editId}"...`;
 			this.aiModel = (await api.getAIModel(this.editId))[0].resource;
+			this.aiModelEndpoint = this.aiModel.endpoint_object_id;
 			this.loading = false;
 		}
 	},
