@@ -32,6 +32,9 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         ]),
                         new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
+                        ]),
+                        new ResourceTypeAction(ResourceProviderActions.SetDefault, true, false, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderActionResult)])
                         ])
                     ],
                     SubTypes = new()

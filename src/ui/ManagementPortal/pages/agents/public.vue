@@ -1,223 +1,60 @@
 <template>
-	<main id="main-content">
-		<h2 class="page-header">All Agents</h2>
-		<div class="page-subheader">View your publicly accessible agents.</div>
+    <main id="main-content">
+        <h2 class="page-header">All Agents</h2>
+        <div class="page-subheader">View your publicly accessible agents.</div>
 
-		<div :class="{ 'grid--loading': loading }">
-			<!-- Loading overlay -->
-			<template v-if="loading">
-				<div class="grid__loading-overlay" role="status" aria-live="polite">
-					<LoadingGrid />
-					<div>{{ loadingStatusText }}</div>
-				</div>
-			</template>
-
-			<!-- Table -->
-			<DataTable :value="agents" striped-rows scrollable table-style="max-width: 100%" size="small">
-				<template #empty>
-					<div role="alert" aria-live="polite">
-						No agents found. Please use the menu on the left to create a new agent.
-					</div>
-				</template>
-				<template #loading>Loading agent data. Please wait.</template>
-
-				<!-- Name -->
-				<Column
-					field="resource.name"
-					header="Name"
-					sortable
-					style="min-width: 200px"
-					:pt="{
-						headerCell: {
-							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
-						},
-						sortIcon: { style: { color: 'var(--primary-text)' } },
-					}"
-				></Column>
-
-				<!-- Description -->
-				<Column
-					field="resource.description"
-					header="Description"
-					sortable
-					style="min-width: 200px"
-					:pt="{
-						headerCell: {
-							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
-						},
-						sortIcon: { style: { color: 'var(--primary-text)' } },
-					}"
-				></Column>
-
-				<!-- Expiration -->
-				<Column
-					field="resource.expiration_date"
-					header="Expiration Date"
-					sortable
-					style="min-width: 200px"
-					:pt="{
-						headerCell: {
-							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
-						},
-						sortIcon: { style: { color: 'var(--primary-text)' } },
-					}"
-				>
-					<template #body="{ data }">
-						<span>{{ $filters.formatDate(data.resource.expiration_date) }}</span>
-					</template>
-				</Column>
-
-				<!-- Edit -->
-				<Column
-					header="Edit"
-					header-style="width:6rem"
-					style="text-align: center"
-					:pt="{
-						headerCell: {
-							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
-						},
-						headerContent: { style: { justifyContent: 'center' } },
-					}"
-				>
-					<template #body="{ data }">
-						<NuxtLink :to="'/agents/edit/' + data.resource.name" class="table__button" tabindex="-1">
-							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-								<Button
-									link
-									:disabled="!data.actions.includes('FoundationaLLM.Agent/agents/write')"
-									:aria-label="`Edit ${data.resource.name}`"
-								>
-									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
-								</Button>
-								<template #popper><div role="tooltip">Edit {{data.resource.name}}</div></template>
-							</VTooltip>
-						</NuxtLink>
-					</template>
-				</Column>
-
-				<!-- Delete -->
-				<Column
-					header="Delete"
-					header-style="width:6rem"
-					style="text-align: center"
-					:pt="{
-						headerCell: {
-							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
-						},
-						headerContent: { style: { justifyContent: 'center' } },
-					}"
-				>
-					<template #body="{ data }">
-						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-							<Button
-								link
-								:disabled="!data.actions.includes('FoundationaLLM.Agent/agents/delete')"
-								:aria-label="`Delete ${data.resource.name}`"
-								@click="agentToDelete = data.resource"
-							>
-								<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
-							</Button>
-							<template #popper><div role="tooltip">Delete {{data.resource.name}}</div></template>
-						</VTooltip>
-					</template>
-				</Column>
-			</DataTable>
-		</div>
-
-		<!-- Delete agent dialog -->
-		<Dialog :visible="agentToDelete !== null" modal v-focustrap header="Delete Agent" :closable="false">
-			<p>Do you want to delete the agent "{{ agentToDelete.name }}" ?</p>
-			<template #footer>
-				<Button label="Cancel" text @click="agentToDelete = null" />
-				<Button label="Delete" severity="danger" autofocus @click="handleDeleteAgent" />
-			</template>
-		</Dialog>
-	</main>
+        <AgentsList
+            :agents="agents"
+            :loading="loading"
+            :loadingStatusText="loadingStatusText"
+            @refreshAgents="getAgents"
+        />
+    </main>
 </template>
 
 <script lang="ts">
 import api from '@/js/api';
-import type { Agent, ResourceProviderGetResult } from '@/js/types';
+import AgentsList from '@/components/AgentsList.vue';
+import type {
+    Agent,
+    ResourceProviderGetResult,
+} from '@/js/types';
 
 export default {
-	name: 'PublicAgents',
+    name: 'PublicAgents',
 
-	data() {
-		return {
-			agents: [] as ResourceProviderGetResult<Agent>[],
-			loading: false as boolean,
-			loadingStatusText: 'Retrieving data...' as string,
-			agentToDelete: null as Agent | null,
-			accessControlModalOpen: false,
-		};
-	},
+    components: {
+        AgentsList,
+    },
 
-	async created() {
-		await this.getAgents();
-	},
+    data() {
+        return {
+            agents: [] as ResourceProviderGetResult<Agent>[],
+            loading: false as boolean,
+            loadingStatusText: 'Retrieving data...' as string,
+        };
+    },
 
-	methods: {
-		async getAgents() {
-			this.loading = true;
-			try {
-				this.agents = await api.getAgents();
-			} catch (error) {
-				this.$toast.add({
-					severity: 'error',
-					detail: error?.response?._data || error,
-					life: 5000,
-				});
-			}
-			this.loading = false;
-		},
+    async created() {
+        await this.getAgents();
+    },
 
-		async handleDeleteAgent() {
-			try {
-				await api.deleteAgent(this.agentToDelete!.name);
-				this.agentToDelete = null;
-			} catch (error) {
-				return this.$toast.add({
-					severity: 'error',
-					detail: error?.response?._data || error,
-					life: 5000,
-				});
-			}
-
-			await this.getAgents();
-		},
-	},
+    methods: {
+        async getAgents() {
+            this.loading = true;
+            try {
+                this.agents = await api.getAgents();
+            } catch (error) {
+                this.$toast.add({
+                    severity: 'error',
+                    detail: error?.response?._data || error,
+                    life: 5000,
+                });
+            }
+            this.loading = false;
+        },
+    },
 };
 </script>
 
-<style lang="scss">
-.table__button {
-	color: var(--primary-button-bg);
-}
-
-.steps {
-	display: grid;
-	grid-template-columns: minmax(auto, 50%) minmax(auto, 50%);
-	gap: 24px;
-	position: relative;
-}
-
-.grid--loading {
-	pointer-events: none;
-}
-
-.grid__loading-overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	gap: 16px;
-	z-index: 10;
-	background-color: rgba(255, 255, 255, 0.9);
-	pointer-events: none;
-}
-</style>
+<style lang="scss"></style>

@@ -39,6 +39,8 @@ namespace FoundationaLLM.Orchestration.Tests.Services
                 null,
                 null,
                 null,
+                null,
+                null,
                 _callContext,
                 _configuration,
                 null,
