@@ -68,14 +68,16 @@
 			</div>
 
 				<!-- Model parameters -->
-			<div class="step-header mb-2">What are the model parameters?</div>
-			<PropertyBuilder v-model="aiModel.model_parameters" />
+			<div class="step-header span-2">What are the model parameters?</div>
+			<div class="span-2">
+				<PropertyBuilder v-model="aiModel.model_parameters" />
+			</div>
 
 			<!-- Buttons -->
 			<div class="button-container column-2 justify-self-end">
 				<!-- Create model -->
 				<Button
-					:label="editId ? 'Save Changes' : 'Create Model/Endpoint'"
+					:label="editId ? 'Save Changes' : 'Create Model'"
 					severity="primary"
 					@click="handleCreate"
 				/>
@@ -170,7 +172,9 @@ export default {
 	async created() {
 		this.loading = true;
 		this.loadingStatusText = `Retrieving AI model endpoints...`;
-		this.aiModelEndpointOptions = (await api.getAIModelEndpoints()).map((endpoint) => endpoint.resource);
+		const modelEndpoints = (await api.getAIModelEndpoints()).map((endpoint) => endpoint.resource);
+		this.aiModelEndpointOptions = modelEndpoints.filter((resource) => ['AIModel'].includes(resource.subcategory));
+
 		this.loading = false;
 
 		if (this.editId) {
@@ -205,7 +209,7 @@ export default {
 			let successMessage = null as null | string;
 			try {
 				this.loadingStatusText = 'Saving AI model...';
-				await api.upsertAIModel(this.editId, this.aiModel);
+				await api.upsertAIModel(this.editId || this.aiModel.name, this.aiModel);
 				successMessage = `AI model "${this.aiModel.name}" was successfully saved.`;
 			} catch (error) {
 				this.loading = false;
