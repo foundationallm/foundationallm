@@ -536,6 +536,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 self.user_identity,
                 self.config)
 
+            request.objects['message_history'] = request.message_history
+
             # Get message history
             if agent.conversation_history_settings.enabled:
                 messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
@@ -552,8 +554,6 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 response.user_prompt_rewrite = request.user_prompt_rewrite
             return response
         # End External Agent workflow implementation
-
-        request.objects['message_history'] = request.message_history
 
         # Start LangChain Expression Language (LCEL) implementation
 
