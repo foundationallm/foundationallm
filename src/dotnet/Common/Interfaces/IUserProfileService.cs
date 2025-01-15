@@ -1,6 +1,6 @@
 ﻿using FoundationaLLM.Common.Models.Configuration.Users;
 
-namespace FoundationaLLM.Core.Interfaces
+namespace FoundationaLLM.Common.Interfaces
 {
     /// <summary>
     /// Provides methods for working with user profiles.

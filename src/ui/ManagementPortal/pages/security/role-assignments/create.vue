@@ -59,12 +59,19 @@
 				<!-- Type -->
 				<div id="aria-principal-type" class="mb-2">Principal Type:</div>
 				<div class="d-flex gap-4">
-					<InputText
+					<!-- <InputText
 						v-model="principal.object_type"
 						readonly
 						placeholder="Browse for selection"
 						type="text"
 						class="w-50"
+						aria-labelledby="aria-principal-type"
+					/> -->
+					<Dropdown
+						v-model="principal.object_type"
+						:options="principalTypeOptions"
+						placeholder="--Select--"
+						class="mb-2 w-100"
 						aria-labelledby="aria-principal-type"
 					/>
 				</div>
@@ -100,7 +107,6 @@
 				<div class="d-flex gap-4">
 					<InputText
 						v-model="roleAssignment.principal_id"
-						readonly
 						placeholder="Browse for selection"
 						type="text"
 						class="w-50"
@@ -384,6 +390,14 @@ export default {
 				errors.push('Please specify a role.');
 			}
 
+			if (!this.roleAssignment.principal_type) {
+				if (this.principal.object_type) {
+					this.roleAssignment.principal_type = this.principal.object_type;
+				} else {
+					errors.push('Please specify a principal type.');
+				}
+			}
+
 			if (errors.length > 0) {
 				throw errors.join('\n');
 			}
@@ -392,6 +406,7 @@ export default {
 			let successMessage = null as null | string;
 			try {
 				this.loadingStatusText = 'Saving role assignment...';
+
 				await api.createRoleAssignment({
 					...this.roleAssignment,
 					name: uuidv4(),

@@ -7,6 +7,7 @@ using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
+using FoundationaLLM.Common.Services.Users;
 using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
@@ -72,8 +73,7 @@ namespace FoundationaLLM.Core.API
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 
             // Add authorization services.
-            builder.AddGroupMembership();
-            builder.AddAuthorizationServiceClient();
+            builder.AddGroupMembership();            
 
             // CORS policies
             builder.AddCorsPolicies();
@@ -108,10 +108,11 @@ namespace FoundationaLLM.Core.API
             builder.AddHttpClientFactoryService();
             builder.AddDownstreamAPIService(HttpClientNames.GatekeeperAPI);
             builder.AddDownstreamAPIService(HttpClientNames.OrchestrationAPI);
+            builder.AddAuthorizationServiceClient();
 
             builder.AddAzureCosmosDBService();
             builder.Services.AddScoped<ICoreService, CoreService>();
-            builder.Services.AddScoped<IUserProfileService, UserProfileService>();
+            builder.AddUserProfileService();
             builder.Services.AddScoped<IOneDriveWorkSchoolService, OneDriveWorkSchoolService>();
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();

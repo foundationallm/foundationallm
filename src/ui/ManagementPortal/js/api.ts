@@ -545,6 +545,29 @@ export default {
 	/*
 		Prompts
 	 */
+	async getPrompts(): Promise<ResourceProviderGetResult<Prompt>[] | null> {
+		try {
+			const data = await this.fetch(
+				`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts?api-version=${this.apiVersion}`,
+			);
+			return data as ResourceProviderGetResult<Prompt>[];
+		} catch (error) {
+			return null;
+		}
+	},
+
+	async getPromptByName(promptName: string): Promise<ResourceProviderGetResult<Prompt> | null> {
+		// Attempt to retrieve the prompt. If it doesn't exist, return an empty object.
+		try {
+			const data = await this.fetch(
+				`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptName}?api-version=${this.apiVersion}`,
+			);
+			return data[0];
+		} catch (error) {
+			return null;
+		}
+	},
+
 	async getPrompt(promptId: string): Promise<ResourceProviderGetResult<Prompt> | null> {
 		// Attempt to retrieve the prompt. If it doesn't exist, return an empty object.
 		try {
@@ -784,6 +807,15 @@ export default {
 		);
 	},
 
+	async deleteRoleAssignment(roleAssignmentId): void {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/${roleAssignmentId}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
+			},
+		);
+	},
+
 	/*
 		Role Definitions
 	 */
@@ -797,15 +829,6 @@ export default {
 		return (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleDefinitions/${roleAssignmentId}?api-version=${this.apiVersion}`,
 		)) as RoleAssignment[];
-	},
-
-	async deleteRoleAssignment(roleAssignmentId): void {
-		return await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleDefinitions/${roleAssignmentId}?api-version=${this.apiVersion}`,
-			{
-				method: 'DELETE',
-			},
-		);
 	},
 
 	/*

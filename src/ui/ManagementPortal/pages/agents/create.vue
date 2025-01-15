@@ -604,22 +604,6 @@
 					</template>
 				</CreateAgentStepItem>
 
-				<!-- Orchestrator -->
-				<div id="aria-orchestrator" class="step-header span-2">
-					How should the agent communicate with the AI model?
-				</div>
-				<div class="span-2">
-					<Dropdown
-						v-model="orchestration_settings.orchestrator"
-						:options="orchestratorOptions"
-						option-label="label"
-						option-value="value"
-						class="dropdown--agent"
-						placeholder="--Select--"
-						aria-labelledby="aria-orchestrator"
-					/>
-				</div>
-
 				<div class="step-header">Which AI model should the orchestrator use?</div>
 				<div class="step-header">Which capabilities should the agent have?</div>
 
@@ -714,41 +698,20 @@
 				</div>
 			</section>
 
-			<!-- System prompt -->
-			<section aria-labelledby="system-prompt" class="span-2 steps">
-				<h3 class="step-section-header span-2" id="system-prompt">System Prompt</h3>
-
-				<div id="aria-persona" class="step-header">What is the persona of the agent?</div>
-
-				<div class="span-2">
-					<Textarea
-						v-model="systemPrompt"
-						class="w-100"
-						auto-resize
-						rows="5"
-						type="text"
-						placeholder="You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional."
-						aria-labelledby="aria-persona"
-					/>
-				</div>
-			</section>
-
 			<!-- Workflow -->
 			<div class="step-section-header span-2">Workflow</div>
-			<div id="aria-orchestrator" class="step-header span-2">
-				What workflow should the agent use?
-			</div>
+			<div id="aria-workflow" class="step-header span-2">What workflow should the agent use?</div>
 
 			<!-- Workflow selection -->
 			<div class="span-2">
 				<Dropdown
 					:modelValue="selectedWorkflow?.type"
 					:options="workflowOptions"
-					option-label="type"
+					option-label="name"
 					option-value="type"
 					class="dropdown--agent"
 					placeholder="--Select--"
-					aria-labelledby="aria-orchestrator"
+					aria-labelledby="aria-workflow"
 					@change="
 						selectedWorkflow = JSON.parse(
 							JSON.stringify(workflowOptions.find((workflow) => workflow.type === $event.value)),
@@ -759,7 +722,7 @@
 					class="ml-2"
 					severity="primary"
 					:label="showWorkflowConfiguration ? 'Hide Workflow Configuration' : 'Configure Workflow'"
-					:disabled="!selectedWorkflow"
+					:disabled="!selectedWorkflow?.type"
 					@click="showWorkflowConfiguration = !showWorkflowConfiguration"
 				/>
 			</div>
@@ -785,56 +748,131 @@
 					/>
 				</div>
 
-				<!-- <div class="mb-6">
-					<div class="step-header mb-3">Workflow main prompt:</div>
+				<!-- Orchestrator -->
+				<div class="mb-6">
+					<div id="aria-orchestrator" class="step-header mb-3">
+						How should the agent communicate with the model?
+					</div>
+					<div class="span-2">
+						<Dropdown
+							v-model="orchestration_settings.orchestrator"
+							:options="orchestratorOptions"
+							option-label="label"
+							option-value="value"
+							class="dropdown--agent"
+							placeholder="--Select--"
+							aria-labelledby="aria-orchestrator"
+						/>
+					</div>
+				</div>
+
+				<!-- Workflow main model parameters -->
+				<div class="step-header mb-3">Workflow main model parameters:</div>
+				<PropertyBuilder v-model="workflowMainAIModelParameters" class="mb-6" />
+
+				<div id="aria-persona" class="step-header mb-3">What is the main model prompt?</div>
+				<div class="span-2">
 					<Textarea
-						v-model="workflowMainPrompt"
+						v-model="systemPrompt"
 						class="w-100"
 						auto-resize
 						rows="5"
 						type="text"
-						placeholder=""
+						placeholder="You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional."
 						aria-labelledby="aria-persona"
 					/>
-				</div> -->
-
-				<!-- Workflow main model parameters -->
-				<div class="step-header mb-3">Workflow main model parameters:</div>
-				<PropertyBuilder v-model="workflowMainAIModelParameters" />
+				</div>
 			</div>
 
 			<!-- Tools -->
-			<template v-if="agentTools.length > 0">
-				<div class="step-section-header span-2">Tools</div>
-				<div id="aria-orchestrator" class="step-header span-2">
-					What tools should the agent use?
-				</div>
+			<div class="step-section-header span-2">Tools</div>
+			<div id="aria-orchestrator" class="step-header span-2">What tools should the agent use?</div>
 
-				<div class="span-2">
-					<div
-						v-for="(tool, index) in agentTools"
-						class="d-flex justify-content-between mb-2"
-						:key="index"
+			<!-- Tools table -->
+			<div class="span-2">
+				<DataTable
+					:value="agentTools"
+					striped-rows
+					scrollable
+					table-style="max-width: 100%"
+					size="small"
+				>
+					<template #empty>No agent tools added.</template>
+
+					<template #loading>Loading agent tools. Please wait.</template>
+
+					<!-- Tool name -->
+					<Column
+						field="name"
+						header="Name"
+						sortable
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							sortIcon: { style: { color: 'var(--primary-text)' } },
+						}"
+					/>
+
+					<!-- Edit tool -->
+					<Column
+						header="Edit"
+						header-style="width:6rem"
+						style="text-align: center"
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							headerContent: { style: { justifyContent: 'center' } },
+						}"
 					>
-						<div>{{ tool.name }}</div>
+						<template #body="{ data }">
+							<Button link @click="toolToEdit = data">
+								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
+							</Button>
 
-						<Button
-							class="ml-2"
-							severity="primary"
-							label="Configure Tool"
-							@click="selectedTool = tool"
-						/>
+							<ConfigureToolDialog
+								v-if="toolToEdit?.name === data.name"
+								v-model="toolToEdit"
+								:visible="!!toolToEdit"
+								@update:visible="toolToEdit = null"
+								@update:modelValue="handleUpdateTool"
+							/>
+						</template>
+					</Column>
 
-						<JSONEditorDialog
-							v-if="selectedTool?.name === tool.name"
-							v-model="selectedTool"
-							:visible="!!selectedTool"
-							@update:visible="selectedTool = null"
-							@update:modelValue="agentTools[index] = selectedTool"
-						/>
-					</div>
+					<!-- Delete tool -->
+					<Column
+						header="Delete"
+						header-style="width:6rem"
+						style="text-align: center"
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							headerContent: { style: { justifyContent: 'center' } },
+						}"
+					>
+						<template #body="{ data }">
+							<Button link @click="handleRemoveTool(data)">
+								<i class="pi pi-trash" style="font-size: 1.2rem"></i>
+							</Button>
+						</template>
+					</Column>
+				</DataTable>
+
+				<!-- Add new tool -->
+				<div class="d-flex justify-content-end mt-4">
+					<Button @click="showNewToolDialog = true">Add New Tool</Button>
 				</div>
-			</template>
+
+				<ConfigureToolDialog
+					v-if="showNewToolDialog"
+					:visible="!!showNewToolDialog"
+					@update:visible="showNewToolDialog = false"
+					@update:modelValue="handleAddNewTool"
+				/>
+			</div>
 
 			<!-- Security -->
 			<div v-if="virtualSecurityGroupId" class="step-section-header span-2">Security</div>
@@ -963,7 +1001,7 @@ const getDefaultFormValues = () => {
 
 		selectedWorkflow: null,
 
-		selectedTool: null,
+		toolToEdit: null,
 		agentTools: [] as AgentTool[],
 	};
 };
@@ -1009,6 +1047,8 @@ export default {
 			workflowMainAIModelParameters: {} as object,
 
 			virtualSecurityGroupId: null as string | null,
+
+			showNewToolDialog: false,
 
 			orchestratorOptions: [
 				{
@@ -1095,15 +1135,28 @@ export default {
 
 	watch: {
 		selectedWorkflow() {
-			this.workflowMainAIModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
-				(resource) => resource.properties?.object_role === 'main_model',
-			);
+			if (this.selectedWorkflow?.resource_object_ids) {
+				const existingMainModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
+					(resource) => resource.properties?.object_role === 'main_model',
+				);
+				this.workflowMainAIModel = existingMainModel ?? null;
+			} else {
+				this.workflowMainAIModel = null;
+			}
+
+			this.showWorkflowConfiguration = true;
+
+			// if (!this.selectedWorkflow?.type) {
+			// 	this.showWorkflowConfiguration = false;
+			// 	this.selectedWorkflow = null;
+			// }
 		},
 
 		workflowMainAIModel() {
-			this.workflowMainAIModelParameters =
-				this.workflowMainAIModel?.model_parameters ??
-				this.workflowMainAIModel?.properties?.model_parameters;
+			const mainModel = this.workflowMainAIModel;
+			const existingMainModelParamters =
+				mainModel?.model_parameters ?? mainModel?.properties?.model_parameters;
+			this.workflowMainAIModelParameters = existingMainModelParamters ?? {};
 		},
 	},
 
@@ -1143,7 +1196,21 @@ export default {
 			this.aiModelOptions = this.aiModelOptions.filter((model) => model.type === 'completion');
 
 			this.loadingStatusText = 'Retrieving workflows...';
-			this.workflowOptions = await api.getAgentWorkflows();
+			this.workflowOptions = [
+				// {
+				// 	type: null,
+				// 	workflow_name: 'None',
+				// },
+				// {
+				// 	type: 'langgraph-react-agent-workflow',
+				// 	workflow_name: 'LangGraph ReAct Agent Workflow',
+				// },
+				// {
+				// 	type: 'azure-openai-assistants-workflow',
+				// 	workflow_name: 'Azure OpenAI Assistants Workflow',
+				// },
+				...(await api.getAgentWorkflows()).map((workflow) => workflow.resource),
+			];
 
 			// Update the orchestratorOptions with the externalOrchestratorOptions.
 			this.orchestratorOptions = this.orchestratorOptions.concat(
@@ -1178,16 +1245,33 @@ export default {
 					this.overlapSize = Number(textPartitioningProfile.resource.settings.OverlapSizeTokens);
 				}
 			}
-			if (agent.prompt_object_id !== '') {
+
+			if (agent.prompt_object_id) {
 				this.loadingStatusText = `Retrieving prompt...`;
 				const prompt = await api.getPrompt(agent.prompt_object_id);
 				if (prompt && prompt.resource) {
 					this.systemPrompt = prompt.resource.prefix;
 				}
+			} else if (agent.workflow?.resource_object_ids) {
+				this.loadingStatusText = `Retrieving prompt...`;
+
+				const existingMainPrompt = Object.values(agent.workflow.resource_object_ids).find(
+					(resource) => resource.properties?.object_role === 'main_prompt',
+				);
+
+				if (existingMainPrompt) {
+					const prompt = await api.getPrompt(existingMainPrompt.object_id);
+					if (prompt && prompt.resource) {
+						this.systemPrompt = prompt.resource.prefix;
+					}
+				}
 			}
 
 			if (agent.workflow) {
-				this.workflowOptions.push(agent.workflow);
+				const existingMainModel = Object.values(agent.workflow.resource_object_ids).find(
+					(resource) => resource.properties?.object_role === 'main_model',
+				);
+				this.workflowMainAIModel = existingMainModel ?? null;
 			}
 
 			this.loadingStatusText = `Mapping agent values to form...`;
@@ -1372,6 +1456,22 @@ export default {
 			}
 		},
 
+		handleAddNewTool(newTool) {
+			this.agentTools.push(newTool);
+			this.showNewToolDialog = false;
+		},
+
+		handleUpdateTool(updatedTool) {
+			const index = this.agentTools.findIndex((tool) => tool.object_id === updatedTool.object_id);
+			this.agentTools[index] = updatedTool;
+			this.toolToEdit = null;
+		},
+
+		handleRemoveTool(toolToRemove) {
+			const index = this.agentTools.findIndex((tool) => tool.object_id === toolToRemove.object_id);
+			this.agentTools.splice(index, 1);
+		},
+
 		async handleCreateAgent() {
 			const errors = [];
 			if (!this.agentName) {
@@ -1387,16 +1487,24 @@ export default {
 				this.text_embedding_profile_object_id = this.selectedTextEmbeddingProfile?.object_id ?? '';
 			}
 
-			if (this.systemPrompt === '') {
-				errors.push('Please provide a system prompt.');
-			}
-
 			if (!this.orchestration_settings.orchestrator) {
 				errors.push('Please select an orchestrator.');
 			}
 
 			if (!this.selectedAIModel) {
 				errors.push('Please select an AI model for the orchestrator.');
+			}
+
+			if (!this.selectedWorkflow) {
+				errors.push('Please select a workflow.');
+			}
+
+			if (!this.workflowMainAIModel) {
+				errors.push('Please select an AI model for the workflow.');
+			}
+
+			if (this.systemPrompt === '') {
+				errors.push('Please provide a system prompt.');
 			}
 
 			// if (!this.selectedDataSource) {
@@ -1498,6 +1606,8 @@ export default {
 				if (this.selectedWorkflow) {
 					workflow = {
 						...this.selectedWorkflow,
+						workflow_host: this.orchestration_settings.orchestrator,
+						// workflow_name: '',
 
 						resource_object_ids: {
 							...this.selectedWorkflow.resource_object_ids,
@@ -1510,12 +1620,25 @@ export default {
 								},
 							},
 
-							// [promptObjectId]: {
-							// 	object_id: promptObjectId,
-							// 	properties: {
-							// 		object_role: 'main_prompt',
-							// 	},
-							// },
+							...(promptObjectId
+								? {
+										[promptObjectId]: {
+											object_id: promptObjectId,
+											properties: {
+												object_role: 'main_prompt',
+											},
+										},
+									}
+								: {}),
+
+							...(this.selectedWorkflow?.object_id
+								? {
+										[this.selectedWorkflow.object_id]: {
+											object_id: this.selectedWorkflow.object_id,
+											properties: {},
+										},
+									}
+								: {}),
 						},
 					};
 				}
