@@ -33,13 +33,16 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// <param name="explodedObjects">A dictionary of objects retrieved from various object ids related to the agent. For more details see <see cref="LLMCompletionRequest.Objects"/> .</param>
     /// <param name="callContext">The call context of the request being handled.</param>
     /// <param name="orchestrationService"></param>
+    /// <param name="userPromptRewriteService">The <see cref="IUserPromptRewriteService"/> used to rewrite user prompts.</param>
+    /// <param name="semanticCacheService">The <see cref="ISemanticCacheService"/> used to cache and retrieve completion responses.</param>
     /// <param name="logger">The logger used for logging.</param>
     /// <param name="httpClientFactoryService">The <see cref="IHttpClientFactoryService"/> used to create HttpClient instances.</param>
     /// <param name="resourceProviderServices">The dictionary of <see cref="IResourceProviderService"/></param>
     /// <param name="dataSourceAccessDenied">Inidicates that access was denied to all underlying data sources.</param>
     /// <param name="openAIVectorStoreId">The OpenAI Assistants vector store id.</param>
+    /// <param name="longRunningOperationContext">The <see cref="LongRunningOperationContext"/> providing the context of the long-running operation.</param>
     /// <param name="completionRequestObserver">An optional observer for completion requests.</param>
-    public class KnowledgeManagementOrchestration(
+    public class AgentOrchestration(
         string instanceId,
         string agentObjectId,
         KnowledgeManagementAgent? agent,
@@ -47,11 +50,14 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         Dictionary<string, object>? explodedObjects,
         ICallContext callContext,
         ILLMOrchestrationService orchestrationService,
+        IUserPromptRewriteService userPromptRewriteService,
+        ISemanticCacheService semanticCacheService,
         ILogger<OrchestrationBase> logger,
         IHttpClientFactoryService httpClientFactoryService,
         Dictionary<string, IResourceProviderService> resourceProviderServices,
         bool? dataSourceAccessDenied,
         string? openAIVectorStoreId,
+        LongRunningOperationContext? longRunningOperationContext,
         Func<LLMCompletionRequest, Task>? completionRequestObserver = null) : OrchestrationBase(orchestrationService)
     {
         private readonly string _instanceId = instanceId;
@@ -63,6 +69,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private readonly ILogger<OrchestrationBase> _logger = logger;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
         private readonly bool? _dataSourceAccessDenied = dataSourceAccessDenied;
+        private readonly LongRunningOperationContext? _longRunningOperationContext = longRunningOperationContext;
         private readonly Func<LLMCompletionRequest, Task>? _completionRequestObserver = completionRequestObserver;
 
         private readonly IResourceProviderService _attachmentResourceProvider =
@@ -71,6 +78,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             resourceProviderServices[ResourceProviderNames.FoundationaLLM_AzureOpenAI];
         private readonly string? _openAIVectorStoreId = openAIVectorStoreId;
         private GatewayServiceClient _gatewayClient;
+
+        private readonly IUserPromptRewriteService _userPromptRewriteService = userPromptRewriteService;
+        private readonly ISemanticCacheService _semanticCacheService = semanticCacheService;
 
         /// <inheritdoc/>
         public override async Task<LongRunningOperation> StartCompletionOperation(CompletionRequest completionRequest)
@@ -83,6 +93,25 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     Status = OperationStatus.Completed,
                     Result = validationResponse
                 };
+
+            if (_agent!.CacheSettings != null
+                && _agent!.CacheSettings.SemanticCacheEnabled)
+            {
+                await HandlePromptRewrite(completionRequest);
+                var cachedResponse = await GetCompletionResponseFromCache(completionRequest);
+                if (cachedResponse != null)
+                {
+                    // Rewrite the operation id to match the completion request.
+                    cachedResponse.OperationId = completionRequest.OperationId!;
+
+                    return new LongRunningOperation
+                    {
+                        OperationId = completionRequest.OperationId!,
+                        Status = OperationStatus.Completed,
+                        Result = cachedResponse
+                    };
+                }
+            }
 
             var llmCompletionRequest = await GetLLMCompletionRequest(completionRequest);
             if (_completionRequestObserver != null)
@@ -106,9 +135,26 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 // parse the LLM Completion response from JsonElement
                 if (operationStatus.Result is JsonElement jsonElement)
                 {
-                    var completionResponse = JsonSerializer.Deserialize<LLMCompletionResponse>(jsonElement.ToString());
-                    if (completionResponse != null)
-                        operationStatus.Result = await GetCompletionResponse(operationId, completionResponse);
+                    var llmCompletionResponse = JsonSerializer.Deserialize<LLMCompletionResponse>(jsonElement.ToString());
+                    if (llmCompletionResponse != null)
+                    {
+                        var completionResponse = await GetCompletionResponse(operationId, llmCompletionResponse);
+
+                        if ((_longRunningOperationContext?.SemanticCacheSettings != null)
+                            && (
+                                completionResponse.Errors == null
+                                || completionResponse.Errors.Length == 0
+                            ))
+                        {
+                            // This is a valid response that can be cached.
+                            await SetCompletionResponseInCache(
+                                _instanceId,
+                                _longRunningOperationContext.AgentName,
+                                completionResponse);
+                        }
+
+                        operationStatus.Result = completionResponse;
+                    }
                 }               
             }
 
@@ -122,15 +168,40 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (validationResponse != null)
                 return validationResponse;
 
+            if (_agent!.CacheSettings != null
+                && _agent!.CacheSettings.SemanticCacheEnabled)
+            {
+                await HandlePromptRewrite(completionRequest);
+                var cachedResponse = await GetCompletionResponseFromCache(completionRequest);
+                if (cachedResponse != null)
+                    return cachedResponse;
+            }
+
             var llmCompletionRequest = await GetLLMCompletionRequest(completionRequest);
             if (_completionRequestObserver != null)
                 await _completionRequestObserver(llmCompletionRequest);
 
-            var result = await _orchestrationService.GetCompletion(
+            var llmCompletionResponse = await _orchestrationService.GetCompletion(
                 _instanceId,
                 llmCompletionRequest);
 
-            return await GetCompletionResponse(completionRequest.OperationId!, result);
+            var completionResponse = await GetCompletionResponse(completionRequest.OperationId!, llmCompletionResponse);
+
+            if (_agent!.CacheSettings != null
+                && _agent!.CacheSettings.SemanticCacheEnabled
+                && (
+                    completionResponse.Errors == null
+                    || completionResponse.Errors.Length == 0
+                ))
+            {
+                // This is a valid response that can be cached.
+                await SetCompletionResponseInCache(
+                    _instanceId,
+                    _agent!.Name,
+                    completionResponse);
+            }
+
+            return completionResponse;
         }
 
         private async Task<CompletionResponse?> ValidateCompletionRequest(CompletionRequest completionRequest)
@@ -162,11 +233,82 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             return null;
         }
 
+        private async Task HandlePromptRewrite(CompletionRequest completionRequest)
+        {
+            if (_agent!.TextRewriteSettings != null
+                && _agent!.TextRewriteSettings.UserPromptRewriteEnabled)
+            {
+                if (!_userPromptRewriteService.HasUserPromptRewriterForAgent(_instanceId, _agent.Name))
+                    await _userPromptRewriteService.InitializeUserPromptRewriterForAgent(
+                        _instanceId,
+                        _agent.Name,
+                        _agent.TextRewriteSettings.UserPromptRewriteSettings!);
+
+                await _userPromptRewriteService.RewriteUserPrompt(_instanceId, _agent.Name, completionRequest);
+            }
+        }
+
+        private async Task<CompletionResponse?> GetCompletionResponseFromCache(CompletionRequest completionRequest)
+        {
+            if (!_semanticCacheService.HasCacheForAgent(_instanceId, _agent!.Name))
+                await _semanticCacheService.InitializeCacheForAgent(
+                    _instanceId,
+                    _agent.Name,
+                    _agent.CacheSettings!.SemanticCacheSettings!);
+
+            var cachedResponse = await _semanticCacheService.GetCompletionResponseFromCache(
+                _instanceId,
+                _agent.Name,
+                completionRequest);
+
+            if (cachedResponse == null)
+                return null;
+
+            cachedResponse.OperationId = completionRequest.OperationId!;
+            var contentArtifactsList = new List<ContentArtifact>(cachedResponse.ContentArtifacts ??= [])
+            {
+                new() {
+                    Id = "CachedResponse",
+                    Title = "Cached Response",
+                    Source = "SemanticCache"
+                }
+            };
+            cachedResponse.ContentArtifacts = [.. contentArtifactsList];
+
+            return cachedResponse;
+        }
+
+        private async Task SetCompletionResponseInCache(string instanceId, string agentName, CompletionResponse completionResponse)
+        {
+            try
+            {
+                if (!_semanticCacheService.HasCacheForAgent(instanceId, agentName))
+                    await _semanticCacheService.InitializeCacheForAgent(
+                        instanceId,
+                        agentName,
+                        _agent == null
+                            ? _longRunningOperationContext!.SemanticCacheSettings!
+                            : _agent!.CacheSettings!.SemanticCacheSettings!);
+
+                await _semanticCacheService.SetCompletionResponseInCache(_instanceId, agentName, completionResponse);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    ex,
+                    "An error occurred while setting the completion response in the semantic cache for operation {OperationId} and agent {AgentName} in instance {InstanceId}.",
+                    completionResponse.OperationId,
+                    _agent!.Name,
+                    _instanceId);
+            }
+        }
+
         private async Task<LLMCompletionRequest> GetLLMCompletionRequest(CompletionRequest completionRequest) =>
             new LLMCompletionRequest
             {
                 OperationId = completionRequest.OperationId,
                 UserPrompt = completionRequest.UserPrompt!,
+                UserPromptRewrite = completionRequest.UserPromptRewrite,
                 MessageHistory = completionRequest.MessageHistory,
                 Attachments = await GetAttachmentPaths(completionRequest.Attachments),
                 Agent = _agent!,
@@ -273,6 +415,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 Completion = llmCompletionResponse.Completion,
                 Content = llmCompletionResponse.Content != null ? await TransformContentItems(llmCompletionResponse.Content) : null,
                 UserPrompt = llmCompletionResponse.UserPrompt!,
+                UserPromptRewrite = llmCompletionResponse.UserPromptRewrite,
                 ContentArtifacts = llmCompletionResponse.ContentArtifacts,
                 FullPrompt = llmCompletionResponse.FullPrompt,
                 PromptTemplate = llmCompletionResponse.PromptTemplate,
@@ -336,7 +479,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 Name = openAIImageFile.FileId!,
                 Id = openAIImageFile.FileId!,
-                UPN = callContext.CurrentUserIdentity!.UPN!,
+                UPN = _callContext.CurrentUserIdentity!.UPN!,
                 InstanceId = _instanceId,
                 FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileMappings}/{openAIImageFile.FileId}",
                 OriginalFileName = openAIImageFile.FileId!,
@@ -360,7 +503,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 {
                     Name = openAIFilePath.FileId!,
                     Id = openAIFilePath.FileId!,
-                    UPN = callContext.CurrentUserIdentity!.UPN!,
+                    UPN = _callContext.CurrentUserIdentity!.UPN!,
                     InstanceId = _instanceId,
                     FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileMappings}/{openAIFilePath.FileId}",
                     OriginalFileName = openAIFilePath.FileId!,

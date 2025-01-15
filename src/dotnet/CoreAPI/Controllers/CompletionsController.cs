@@ -75,7 +75,7 @@ namespace FoundationaLLM.Core.API.Controllers
         {
             using var telemetryActivity = TelemetryActivitySources.CoreAPIActivitySource.StartActivity(
                 TelemetryActivityNames.CoreAPI_Completions_GetCompletion,
-                ActivityKind.Consumer,
+                ActivityKind.Server,
                 parentContext: default,
                 tags: new Dictionary<string, object?>
                 {
@@ -102,7 +102,7 @@ namespace FoundationaLLM.Core.API.Controllers
         {
             using var telemetryActivity = TelemetryActivitySources.CoreAPIActivitySource.StartActivity(
                 TelemetryActivityNames.CoreAPI_AsyncCompletions_StartCompletionOperation,
-                ActivityKind.Consumer,
+                ActivityKind.Server,
                 parentContext: default,
                 tags: new Dictionary<string, object?>
                 {

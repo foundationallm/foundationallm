@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using FoundationaLLM.Common.Models.Orchestration.Response;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Conversation
 {
@@ -17,6 +18,16 @@ namespace FoundationaLLM.Common.Models.Conversation
         /// </summary>
         [JsonPropertyName("text")]
         public string Text { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list <see cref="ContentArtifact"/> objects.
+        /// </summary>
+        /// <remarks>
+        /// Not all content artifacts are loaded.
+        /// The content of the list depends on the content artifact types configured in the message history settings of the agent.
+        /// </remarks>
+        [JsonPropertyName("content_artifacts")]
+        public List<ContentArtifact>? ContentArtifacts { get; set; }
 
         /// <summary>
         /// Message history item

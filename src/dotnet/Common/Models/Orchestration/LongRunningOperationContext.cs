@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.Conversation;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -9,6 +10,12 @@ namespace FoundationaLLM.Common.Models.Orchestration
     /// </summary>
     public class LongRunningOperationContext
     {
+        /// <summary>
+        /// Gets or sets the FoundationaLLM instance identifier.
+        /// </summary>
+        [JsonProperty("instanceId")]
+        public required string InstanceId { get; set; }
+
         /// <summary>
         /// Gets or sets the identifier of the long-running operation.
         /// </summary>
@@ -75,6 +82,12 @@ namespace FoundationaLLM.Common.Models.Orchestration
         /// </summary>
         [JsonProperty("orchestrator")]
         public string? Orchestrator { get; set; }
+
+        /// <summary>
+        /// Gets or sets the settings for the semantic cache.
+        /// </summary>
+        [JsonProperty("semanticCacheSettings")]
+        public AgentSemanticCacheSettings? SemanticCacheSettings { get; set; }
 
         /// <summary>
         /// Gets or sets the Time to Live (TTL) of the long-running operation.

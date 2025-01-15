@@ -75,6 +75,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
                     Completion = completionResponse!.Completion,
                     ContentArtifacts = completionResponse.ContentArtifacts,
                     UserPrompt = completionResponse.UserPrompt,
+                    UserPromptRewrite = completionResponse.UserPromptRewrite,
                     FullPrompt = completionResponse.FullPrompt,
                     PromptTemplate = string.Empty,
                     AgentName = request.Agent.Name,
@@ -99,7 +100,8 @@ namespace FoundationaLLM.Orchestration.Core.Services
                     PromptTemplate = string.Empty,
                     AgentName = request.Agent.Name,
                     PromptTokens = 0,
-                    CompletionTokens = 0
+                    CompletionTokens = 0,
+                    Errors = [ "A problem on my side prevented me from responding." ]
                 };
             }
         }

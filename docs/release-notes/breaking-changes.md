@@ -3,6 +3,97 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting with 0.9.1-rc117
+
+### Agent configuration changes
+
+```json
+"text_rewrite_settings": {
+    "user_prompt_rewrite_enabled" : true,
+    "user_prompt_rewrite_settings": {
+        "user_prompt_rewrite_ai_model_object_id": "/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel",
+        "user_prompt_rewrite_prompt_object_id": "/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Prompt/prompts/FoundationaLLM-v2-Rewrite",
+        "user_prompts_window_size": 1
+    }
+},
+"cache_settings": {
+    "semantic_cache_enabled": true,
+    "semantic_cache_settings": {
+        "embedding_ai_model_object_id": "/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/DefaultEmbeddingAIModel",
+        "embedding_dimensions": 2048,
+        "minimum_similarity_threshold": 0.975
+    }
+},
+```
+
+### Semantic cache
+
+Enable vector search in the Cosmos DB database using the following CLI command:
+
+```cli
+az cosmosdb update --resource-group <resource-group-name> --name <account-name> --capabilities EnableNoSQLVectorSearch
+```
+
+Create the `CompletionsCache` container in the Cosmos DB database with the following properties:
+
+- **Container id**: `CompletionsCache`
+- **Partition key**: `/operationId`
+- **Container Vector Policy**: a policy with the following properties:
+  - **Path**: `/userPromptEmbedding`
+  - **Data type**: `float32`
+  - **Distance function**: `Cosine`
+  - **Dimensions**: 2048
+  - **Index type**: `diskANN` (leave the default values)
+
+After the container is created, set the `Time to Live` property on the container to 300 seconds.
+
+## Starting with 0.9.1-rc105
+
+### Configuration changes
+
+The following new App Configuration settings are required:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+|`FoundationaLLM:PythonSDK:Logging:LogLevel:Azure` | `Warning` | Provides the default level of logging for Azure modules in the Python SDK. |
+
+### Agent workflow configuration changes
+
+Agent resource configuration files that have a `workflow` property now requires a `name` and `package_name` property. This is to support loading external workflows via plugins. For internal workflows, the `package_name` should be set to `FoundationaLLM`. Example below truncated for brevity.
+
+```json
+{
+    "workflow": {
+        "type": "langgraph-react-agent-workflow",
+        "name": "LangGraphReactAgent",
+        "package_name": "FoundationaLLM",
+        "workflow_host": "LangChain",
+        "graph_recursion_limit": 10,
+        "resource_object_ids": {}
+    }
+}
+```
+
+A new `Workflow` resource must be added to the `FoundationaLLM.Agent` resource provider:
+
+```json
+{
+  "type": "external-agent-workflow",
+  "name": "ExternalAgentWorkflow",
+  "object_id": "/instances/<instance_id>/providers/FoundationaLLM.Agent/workflows/ExternalAgentWorkflow",
+  "display_name": "ExternalAgentWorkflow",
+  "description": "External Agent workflow",
+  "cost_center": null,
+  "properties": null,
+  "created_on": "2024-11-13T18:12:07.0223039+00:00",
+  "updated_on": "0001-01-01T00:00:00+00:00",
+  "created_by": "dev@foundationaLLM.ai",
+  "updated_by": null,
+  "deleted": false,
+  "expiration_date": null
+}
+```
+
 ## Starting with 0.9.1-rc102
 
 ### Configuration changes
