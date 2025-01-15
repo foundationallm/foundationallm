@@ -162,66 +162,6 @@ namespace FoundationaLLM.DataSource.ResourceProviders
 
         #endregion
 
-        #region Event handling
-
-        /// <inheritdoc/>
-        protected override async Task HandleEvents(EventTypeEventArgs e)
-        {
-            _logger.LogInformation("{EventsCount} events received in the {EventsNamespace} events namespace.",
-                e.Events.Count, e.EventType);
-
-            switch (e.EventType)
-            {
-                case EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand:
-                    foreach (var @event in e.Events)
-                        await HandleDataSourceResourceProviderEvent(@event);
-                    break;
-                default:
-                    // Ignore sliently any event namespace that's of no interest.
-                    break;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task HandleDataSourceResourceProviderEvent(CloudEvent e)
-        {
-            await Task.CompletedTask;
-            return;
-
-            // Event handling is temporarily disabled until the updated event handling mechanism is implemented.
-
-            //if (string.IsNullOrWhiteSpace(e.Subject))
-            //    return;
-
-            //var fileName = e.Subject.Split("/").Last();
-
-            //_logger.LogInformation("The file [{FileName}] managed by the [{ResourceProvider}] resource provider has changed and will be reloaded.",
-            //    fileName, _name);
-
-            //var dataSourceReference = new DataSourceReference
-            //{
-            //    Name = Path.GetFileNameWithoutExtension(fileName),
-            //    Filename = $"/{_name}/{fileName}",
-            //    Type = DataSourceTypes.Basic,
-            //    Deleted = false
-            //};
-
-            //var dataSource = await LoadDataSource(dataSourceReference);
-            //dataSourceReference.Name = dataSource.Name;
-            //dataSourceReference.Type = dataSource.Type!;
-
-            //_dataSourceReferences.AddOrUpdate(
-            //    dataSourceReference.Name,
-            //    dataSourceReference,
-            //    (k, v) => v);
-
-            //_logger.LogInformation("The data source reference for the [{DataSourceName}] agent or type [{DataSourceType}] was loaded.",
-            //    dataSourceReference.Name, dataSourceReference.Type);
-        }
-
-        #endregion
-
         #region Resource management
 
         private async Task<ResourceProviderUpsertResult> UpdateDataSource(ResourcePath resourcePath, string serializedDataSource, UnifiedUserIdentity userIdentity)

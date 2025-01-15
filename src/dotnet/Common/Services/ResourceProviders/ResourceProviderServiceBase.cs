@@ -1,5 +1,7 @@
-﻿using FoundationaLLM.Common.Constants;
+﻿using Azure.Messaging;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
@@ -752,11 +754,63 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         #region Events handling
 
         /// <summary>
+        /// Sends a resource provider event to the event service.
+        /// </summary>
+        /// <param name="eventType">The type of the event to send.</param>
+        /// <param name="data">The optional data to send with the event.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// See <see cref="EventTypes"/> for a list of event types.
+        /// </remarks>
+        protected async Task SendResourceProviderEvent(string eventType, object? data = null) =>
+            // The CloudEvent source is automatically filled in by the event service.
+            await _eventService.SendEvent(
+                EventGridTopics.FoundationaLLM_Resource_Providers,
+                new CloudEvent(string.Empty, eventType, data)
+                {
+                    Subject = _name
+                });
+
+        private async Task HandleEvents(EventTypeEventArgs e)
+        {
+            var originalEventCount = e.Events.Count;
+            // Only process events that are targeted for this resource provider.
+            e.Events = e.Events
+                .Where(e => e.Subject == _name).ToList();
+
+            _logger.LogInformation("{EventsCount} events of type {EventType} received out if which {ResourceProviderEventsCount} are targeted for the {ResourceProviderName} resource provider.",
+                originalEventCount,
+                e.EventType,
+                e.Events.Count,
+                _name);
+
+            // Handle the common events here and defer the rest to the derived classes.
+            switch (e.EventType)
+            {
+                case EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand:
+                    // No need to handle each event separately.
+                    // If more than one event is received, this indicates that multiple cache resets were requested.
+                    // However, the cache will be reset only once.
+                    await HandleCacheResetCommand();
+                    break;
+                default:
+                    await HandleEventsInternal(e);
+                    break;
+            }
+        }
+
+        private async Task HandleCacheResetCommand()
+        {
+            _resourceCache?.Reset();
+            await (_resourceReferenceStore?.LoadResourceReferences() ?? Task.CompletedTask);
+        }
+
+        /// <summary>
         /// Handles events received from the <see cref="IEventService"/> when they are dequeued locally.
         /// </summary>
-        /// <param name="e">The <see cref="EventTypeEventArgs"/> containing the events namespace and the actual events.</param>
+        /// <param name="e">The <see cref="EventTypeEventArgs"/> containing the event type and the actual events.</param>
         /// <returns></returns>
-        protected virtual async Task HandleEvents(EventTypeEventArgs e) =>
+        protected virtual async Task HandleEventsInternal(EventTypeEventArgs e) =>
             await Task.CompletedTask;
 
         #endregion
@@ -1110,6 +1164,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
                 // Add resource to cache if caching is enabled.
                 _resourceCache?.SetValue<T>(resourceReference, resource);
+
+                await SendResourceProviderEvent(
+                    EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
             }
             finally
             {
@@ -1141,6 +1198,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
                 if (_useInternalReferencesStore)
                     await _resourceReferenceStore!.AddResourceReference(resourceReference);
+
+                await SendResourceProviderEvent(
+                    EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
             }
             finally
             {
@@ -1198,6 +1258,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                         resourceReference1,
                         resourceReference2
                     ]);
+
+                await SendResourceProviderEvent(
+                    EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
             }
             finally
             {
@@ -1227,6 +1290,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
                 // Update resource to cache if caching is enabled.
                 _resourceCache?.SetValue<T>(resourceReference, resource);
+
+                await SendResourceProviderEvent(
+                    EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
             }
             finally
             {
@@ -1261,6 +1327,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     && !result.Deleted)
                 {
                     await _resourceReferenceStore!.DeleteResourceReference(result.ResourceReference!);
+
+                    await SendResourceProviderEvent(
+                        EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
                 }
                 else
                 {
@@ -1308,6 +1377,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     // Remove the resource reference from the store.
                     await _resourceReferenceStore!.PurgeResourceReference(result.ResourceReference!);
 
+                    await SendResourceProviderEvent(
+                        EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
+
                     return new ResourceProviderActionResult(true);
                 }
                 else
@@ -1347,6 +1419,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
                     // Set the default reference name in the store.
                     await _resourceReferenceStore!.SetDefaultResourceName(result.ResourceReference!);
+
+                    await SendResourceProviderEvent(
+                        EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
 
                     return new ResourceProviderActionResult(true);
                 }

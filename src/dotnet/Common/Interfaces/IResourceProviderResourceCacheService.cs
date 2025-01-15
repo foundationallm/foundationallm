@@ -23,5 +23,10 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="resourceReference">The <see cref="ResourceReference"/> used as a key in the cache.</param>
         /// <param name="resourceValue">The resource value to be set.</param>
         void SetValue<T>(ResourceReference resourceReference, T resourceValue) where T : ResourceBase;
+
+        /// <summary>
+        /// Resets the cache.
+        /// </summary>
+        void Reset();
     }
 }

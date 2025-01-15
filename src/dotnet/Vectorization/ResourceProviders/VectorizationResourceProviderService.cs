@@ -865,17 +865,11 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         #region Event handling
 
         /// <inheritdoc/>
-        protected override async Task HandleEvents(EventTypeEventArgs e)
+        protected override async Task HandleEventsInternal(EventTypeEventArgs e)
         {
-            _logger.LogInformation("{EventsCount} events received in the {EventsNamespace} events namespace.",
-                e.Events.Count, e.EventType);
-
             switch (e.EventType)
             {
-                case EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand:
-                    foreach (var @event in e.Events)
-                        await HandleVectorizationResourceProviderEvent(@event);
-                    break;
+                //TODO: Add dedicated commands and handling for this resource provider.
                 default:
                     // Ignore silently any event namespace that's of no interest.
                     break;

@@ -11,9 +11,9 @@
         public const string FoundationaLLM_ResourceProvider_Cache_ResetCommand = "FoundationaLLM.ResourceProvider.Cache.ResetCommand";
 
         /// <summary>
-        /// The resource provider cache reset command confirmation event type.
+        /// The FoundationaLLM.Configuration update key command event type.
         /// </summary>
-        public const string FoundationaLLM_ResourceProvider_Cache_ResetCommandConfirmation = "FoundationaLLM.ResourceProvider.Cache.ResetCommandConfirmation";
+        public const string FoundationaLLM_ResourceProvider_AppConfig_UpdateKeyCommand = "FoundationaLLM.ResourceProvider.AppConfig.UpdateKeyCommand";
 
         /// <summary>
         /// All event types.
@@ -21,7 +21,7 @@
         public static List<string> All =>
             [
                 FoundationaLLM_ResourceProvider_Cache_ResetCommand,
-                FoundationaLLM_ResourceProvider_Cache_ResetCommandConfirmation
+                FoundationaLLM_ResourceProvider_AppConfig_UpdateKeyCommand
             ];
     }
 }

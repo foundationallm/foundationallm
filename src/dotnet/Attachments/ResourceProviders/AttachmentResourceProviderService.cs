@@ -231,32 +231,6 @@ namespace FoundationaLLM.Attachment.ResourceProviders
 
         #endregion
 
-        #region Event handling
-
-        /// <inheritdoc/>
-        protected override async Task HandleEvents(EventTypeEventArgs e)
-        {
-            _logger.LogInformation("{EventsCount} events received in the {EventsNamespace} events namespace.",
-                e.Events.Count, e.EventType);
-
-            switch (e.EventType)
-            {
-                case EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand:
-                    foreach (var @event in e.Events)
-                        await HandleAttachmentResourceProviderEvent(@event);
-                    break;
-                default:
-                    // Ignore sliently any event namespace that's of no interest.
-                    break;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task HandleAttachmentResourceProviderEvent(CloudEvent e) => await Task.CompletedTask;
-
-        #endregion
-
         #region Resource management
 
         private async Task<AttachmentFile> LoadAttachment(AttachmentReference attachment, bool loadContent = false)

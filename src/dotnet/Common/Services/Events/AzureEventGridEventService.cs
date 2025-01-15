@@ -193,6 +193,9 @@ namespace FoundationaLLM.Common.Services.Events
             // Enforce the correct event source when sending through the Azure Event Grid service.
             cloudEvent.Source = _serviceInstanceName;
 
+            _logger.LogInformation("Sending an event with source {EventSource}, type {EventType}, and subject {EventSubject} to topic {TopicName},",
+                cloudEvent.Source, cloudEvent.Type, cloudEvent.Subject, topicName);
+
             if (!_senderClients.TryGetValue(topicName, out var senderClient))
             {
                 _logger.LogError("Could not send event {EventId} of type {EventType} from source {EventSource}. The Azure Event Grid event service does not have a sender client for the topic {EventTopic}.",

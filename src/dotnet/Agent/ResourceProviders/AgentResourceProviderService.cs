@@ -188,66 +188,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
         #endregion
 
-        #region Event handling
-
-        /// <inheritdoc/>
-        protected override async Task HandleEvents(EventTypeEventArgs e)
-        {
-            _logger.LogInformation("{EventsCount} events received in the {EventsNamespace} events namespace.",
-                e.Events.Count, e.EventType);
-
-            switch (e.EventType)
-            {
-                case EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand:
-                    foreach (var @event in e.Events)
-                        await HandleAgentResourceProviderEvent(@event);
-                    break;
-                default:
-                    // Ignore sliently any event namespace that's of no interest.
-                    break;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task HandleAgentResourceProviderEvent(CloudEvent e)
-        {
-            await Task.CompletedTask;
-            return;
-
-            // Event handling is temporarily disabled until the updated event handling mechanism is implemented.
-
-            //if (string.IsNullOrWhiteSpace(e.Subject))
-            //    return;
-
-            //var fileName = e.Subject.Split("/").Last();
-
-            //_logger.LogInformation("The file [{FileName}] managed by the [{ResourceProvider}] resource provider has changed and will be reloaded.",
-            //    fileName, _name);
-
-            //var agentReference = new AgentReference
-            //{
-            //    Name = Path.GetFileNameWithoutExtension(fileName),
-            //    Filename = $"/{_name}/{fileName}",
-            //    Type = AgentTypes.Basic,
-            //    Deleted = false
-            //};
-
-            //var getAgentResult = await LoadAgent(agentReference, null);
-            //agentReference.Name = getAgentResult.Name;
-            //agentReference.Type = getAgentResult.Type;
-
-            //_agentReferences.AddOrUpdate(
-            //    agentReference.Name,
-            //    agentReference,
-            //    (k, v) => v);
-
-            //_logger.LogInformation("The agent reference for the [{AgentName}] agent or type [{AgentType}] was loaded.",
-            //    agentReference.Name, agentReference.Type);
-        }
-
-        #endregion
-
         #region Resource management
 
         private async Task<ResourceProviderUpsertResult> UpdateAgent(ResourcePath resourcePath, string serializedAgent, UnifiedUserIdentity userIdentity)
