@@ -147,7 +147,7 @@ var logs = [
 ]
 
 /** Data Sources **/
-var zones = pickZones('Microsoft.Compute', 'virtualMachines', location)
+var zones = pickZones('Microsoft.Compute', 'virtualMachines', location, 3)
 
 /** Resources **/
 resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = {
@@ -221,7 +221,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
         minCount: 1
         mode: 'System'
         name: 'sys'
-        osDiskSizeGB: 1024
+        osDiskSizeGB: 128
         tags: tags
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_D2s_v5'
@@ -327,7 +327,7 @@ resource userPool 'Microsoft.ContainerService/managedClusters/agentPools@2024-04
     maxCount: 15
     minCount: 6
     mode: 'User'
-    osDiskSizeGB: 1024
+    osDiskSizeGB: 256
     tags: tags
     type: 'VirtualMachineScaleSets'
     vmSize: aksNodeSku
