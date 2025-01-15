@@ -700,6 +700,46 @@
 						type="text"
 					/>
 				</div>
+
+				<div id="aria-show-message-tokens" class="step-header">Would you like to show the message tokens?</div>
+				<div id="aria-show-message-rating" class="step-header">Would you like to allow the user to rate the agent responses?</div>
+
+				<!-- Message tokens -->
+				<div>
+					<ToggleButton
+						v-model="showMessageTokens"
+						on-label="Yes"
+						on-icon="pi pi-check-circle"
+						off-label="No"
+						off-icon="pi pi-times-circle"
+						aria-labelledby="aria-show-message-tokens"
+					/>
+				</div>
+
+				<!-- Rate messages -->
+				<div>
+					<ToggleButton
+						v-model="showMessageRating"
+						on-label="Yes"
+						on-icon="pi pi-check-circle"
+						off-label="No"
+						off-icon="pi pi-times-circle"
+						aria-labelledby="aria-show-message-rating"
+					/>
+				</div>
+
+				<!-- Show view prompt -->
+				<div id="aria-show-view-prompt" class="step-header span-2">Would you like to allow the user to see the message prompts?</div>
+				<div class="span-2">
+					<ToggleButton
+						v-model="showViewPrompt"
+						on-label="Yes"
+						on-icon="pi pi-check-circle"
+						off-label="No"
+						off-icon="pi pi-times-circle"
+						aria-labelledby="aria-show-view-prompt"
+					/>
+				</div>
 			</section>
 
 			<!-- System prompt -->
@@ -853,6 +893,10 @@ const getDefaultFormValues = () => {
 		orchestration_settings: {
 			orchestrator: 'LangChain' as string,
 		},
+
+		showMessageTokens: false as boolean,
+		showMessageRating: false as boolean,
+		showViewPrompt: false as boolean,
 	};
 };
 
@@ -1139,6 +1183,10 @@ export default {
 						agent.capabilities?.includes(localOption.code),
 					) || this.selectedAgentCapabilities;
 			}
+
+			this.showMessageTokens = agent.show_message_tokens ?? false;
+			this.showMessageRating = agent.show_message_rating ?? false;
+			this.showViewPrompt = agent.show_view_prompt ?? false;
 		},
 
 		updateAgentWelcomeMessage(newContent: string) {
@@ -1342,11 +1390,17 @@ export default {
 					type: this.agentType,
 					name: this.agentName,
 					description: this.agentDescription,
-					properties: { welcome_message: this.agentWelcomeMessage },
+					properties: {
+						welcome_message: this.agentWelcomeMessage,
+					},
 					object_id: this.object_id,
 					inline_context: this.inline_context,
 					cost_center: this.cost_center,
 					expiration_date: this.expirationDate?.toISOString(),
+
+					show_message_tokens: this.showMessageTokens,
+					show_message_rating: this.showMessageRating,
+					show_view_prompt: this.showViewPrompt,
 
 					vectorization: {
 						dedicated_pipeline: this.dedicated_pipeline,

@@ -59,6 +59,11 @@ public record Message
     public string Text { get; set; }
 
     /// <summary>
+    /// The optional rewrite of the text content of the message.
+    /// </summary>
+    public string? TextRewrite { get; set; }
+
+    /// <summary>
     /// The rating associated with the message, if any.
     /// </summary>
     public bool? Rating { get; set; }

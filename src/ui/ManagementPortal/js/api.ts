@@ -8,6 +8,7 @@ import type {
 	// AgentGatekeeper,
 	AgentAccessToken,
 	ResourceProviderUpsertResult,
+	ResourceProviderActionResult,
 	AIModel,
 	FilterRequest,
 	CreateAgentRequest,
@@ -539,6 +540,16 @@ export default {
 				method: 'DELETE',
 			},
 		);
+	},
+
+	async setDefaultAgent(agentId: string): Promise<ResourceProviderActionResult> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentId}/set-default?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: {},
+			}
+		) as ResourceProviderActionResult;
 	},
 
 	/*

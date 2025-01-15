@@ -44,6 +44,12 @@ namespace FoundationaLLM.Common.Models.Orchestration.Response
         public string UserPrompt { get; set; }
 
         /// <summary>
+        /// The user prompt rewrite.
+        /// </summary>
+        [JsonPropertyName("user_prompt_rewrite")]
+        public string? UserPromptRewrite { get; set; }
+
+        /// <summary>
         /// The full prompt composed by the LLM.
         /// </summary>
         [JsonPropertyName("full_prompt")]
