@@ -121,7 +121,7 @@
 			<div class="button-container column-2 justify-self-end">
 				<!-- Create model -->
 				<Button
-					:label="editId ? 'Save Changes' : 'Create Model/Endpoint'"
+					:label="editId ? 'Save Changes' : 'Create Model Endpoint'"
 					severity="primary"
 					@click="handleCreate"
 				/>
