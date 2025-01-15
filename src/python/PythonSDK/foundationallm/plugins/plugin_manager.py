@@ -21,6 +21,8 @@ class PluginManager():
     Manages the plugins in the system.
     """
 
+    object_cache : dict[str, object] = {}
+
     def __init__(self, config:Configuration, logger:Logger):
         """
         Initializes the plugin manager.
@@ -70,7 +72,7 @@ class PluginManager():
                     container_name=storage_container_name,
                     authentication_type=storage_authentication_type
                 )
-                
+
                 if modules_list is not None and modules_list.strip() != '':
                     for module_configuration in [x.split('|') for x in modules_list.split(',')]:
                         module_file = module_configuration[0]
@@ -102,7 +104,7 @@ class PluginManager():
         if not self.initialized:
             self.logger.error('The plugin manager is not initialized. No plugins will be loaded.')
             return
-        
+
         loaded_modules = set()
 
         for module_name in self.external_modules.keys():

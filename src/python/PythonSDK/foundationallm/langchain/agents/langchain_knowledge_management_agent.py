@@ -523,18 +523,27 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 tools.append(tool_factory.get_tool(explicit_tool, request.objects, self.user_identity, self.config))
                 parsed_user_prompt = parsed_user_prompt.split(':', 1)[1].strip()
             else:
-                # Populate tools list from agent configuration
-                for tool in agent.tools:
-                    tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
+
+                if f"{agent.workflow.package_name}_tools" in self.plugin_manager.object_cache:
+                    tools = self.plugin_manager.object_cache[f"{agent.workflow.package_name}_tools"]
+                else:
+                    # Populate tools list from agent configuration
+                    for tool in agent.tools:
+                        tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
+
+                    self.plugin_manager.object_cache[f"{agent.workflow.package_name}_tools"] = tools
 
             # create the workflow
             workflow_factory = WorkflowFactory(self.plugin_manager)
+
             workflow = workflow_factory.get_workflow(
                 agent.workflow,
                 request.objects,
                 tools,
                 self.user_identity,
                 self.config)
+
+            request.objects['message_history'] = request.message_history
 
             # Get message history
             if agent.conversation_history_settings.enabled:
