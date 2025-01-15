@@ -94,7 +94,6 @@
 			<div class="span-2">
 				<InputText
 					v-model="vectorStore.settings.IndexName"
-					:disabled="editId"
 					type="text"
 					class="w-100"
 					placeholder="Enter index name"
@@ -149,7 +148,7 @@
 				<Button
 					:label="editId ? 'Save Changes' : 'Create Vector Store'"
 					severity="primary"
-					@click="handleCreatevectorStore"
+					@click="handleCreateVectorStore"
 				/>
 
 				<!-- Cancel -->
@@ -303,7 +302,7 @@ export default {
 			let successMessage = null as null | string;
 			try {
 				this.loadingStatusText = 'Saving vector store...';
-				await api.createVectorStore(this.vectorStore);
+				await api.createIndexingProfile(this.vectorStore);
 				successMessage = `Vector Store "${this.vectorStore.name}" was successfully saved.`;
 			} catch (error) {
 				this.loading = false;
