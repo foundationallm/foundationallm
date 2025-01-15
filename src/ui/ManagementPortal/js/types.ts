@@ -6,6 +6,7 @@ interface ResourceBase {
 	name: string;
 	display_name: string;
 	description: string;
+	properties?: { [key: string]: string | null };
 	cost_center: string;
 	expiration_date: string;
 }
@@ -45,6 +46,13 @@ export type ResourceProviderUpsertResult = {
     resource?: any;
 };
 
+export type ResourceProviderActionResult = {
+	/**
+	 * Represents the result of an action.
+	 */
+	isSuccessResult: boolean;
+};
+
 export type AgentTool = {
 	name: string;
 	description: string;
@@ -56,7 +64,10 @@ export type AgentTool = {
 export type Agent = ResourceBase & {
 	type: 'knowledge-management' | 'analytics';
 	inline_context: boolean;
-	properties?: { [key: string]: string | null };
+
+	show_message_tokens?: boolean;
+	show_message_rating?: boolean;
+	show_view_prompt?: boolean;
 
 	ai_model_object_id: string;
 
@@ -321,7 +332,10 @@ export type MockCreateAgentRequest = {
 export type CreateAgentRequest = ResourceBase & {
 	type: 'knowledge-management' | 'analytics';
 	inline_context: boolean;
-	properties?: { [key: string]: string | null };
+
+	show_message_tokens?: boolean;
+	show_message_rating?: boolean;
+	show_view_prompt?: boolean;
 
 	ai_model_object_id: string;
 

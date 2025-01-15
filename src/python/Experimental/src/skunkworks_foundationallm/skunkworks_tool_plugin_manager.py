@@ -14,7 +14,7 @@ class SkunkworksToolPluginManager(ToolPluginManagerBase):
     FOUNDATIONALLM_CODE_INTERPRETER_TOOL_NAME = 'FoundationaLLMCodeInterpreterTool'
 
     def __init__(self):
-        pass
+        super().__init__()
 
     def create_tool(self,
         tool_config: AgentTool,

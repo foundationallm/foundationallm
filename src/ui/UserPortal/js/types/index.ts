@@ -53,7 +53,7 @@ export interface Message {
 	type: string;
 	sessionId: string;
 	timeStamp: string;
-	sender: 'User' | 'Assistant';
+	sender: 'User' | 'Agent';
 	senderDisplayName: string | null;
 	tokens: number;
 	text: string;
@@ -66,6 +66,7 @@ export interface Message {
 	attachments: Array<string>;
 	attachmentDetails: Array<AttachmentDetail>;
 	analysisResults: Array<AnalysisResult>;
+	processingTime: number; // Calculated in milliseconds - not from the API
 }
 
 export interface MessageRatingRequest
@@ -121,6 +122,9 @@ export interface Agent {
 	properties?: { [key: string]: string | null };
 	long_running: boolean;
 	orchestration_settings?: OrchestrationSettings;
+	show_message_tokens?: boolean;
+	show_message_rating?: boolean;
+	show_view_prompt?: boolean;
 }
 
 export interface CompletionRequest {

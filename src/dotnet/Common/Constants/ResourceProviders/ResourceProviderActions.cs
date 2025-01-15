@@ -29,5 +29,10 @@
         /// Validate resources.
         /// </summary>
         public const string Validate = "validate";
+
+        /// <summary>
+        /// Set the resource as the default.
+        /// </summary>
+        public const string SetDefault = "set-default";
     }
 }

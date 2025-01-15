@@ -110,6 +110,9 @@ namespace FoundationaLLM.Orchestration.API
             builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
             builder.AddUserProfileService();
 
+            builder.AddUserPromptRewriteService();
+            builder.AddSemanticCacheService();
+
             builder.Services.AddSingleton<ICacheService, MemoryCacheService>();
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();

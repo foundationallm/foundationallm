@@ -39,5 +39,19 @@ namespace FoundationaLLM
             builder.Services.AddScoped<ILLMOrchestrationService, LangChainService>();
             builder.Services.AddScoped<ILLMOrchestrationService, SemanticKernelService>();
         }
+
+        /// <summary>
+        /// Adds the semantic cache service to the dependency injection container.
+        /// </summary>
+        /// <param name="builder"></param>
+        public static void AddSemanticCacheService(this IHostApplicationBuilder builder) =>
+            builder.Services.AddSingleton<ISemanticCacheService, SemanticCacheService>();
+
+        /// <summary>
+        /// Adds the user prompt rewrite service to the dependency injection container.
+        /// </summary>
+        /// <param name="builder"></param>
+        public static void AddUserPromptRewriteService(this IHostApplicationBuilder builder) =>
+            builder.Services.AddSingleton<IUserPromptRewriteService, UserPromptRewriteService>();
     }
 }

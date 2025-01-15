@@ -158,10 +158,15 @@ main {
 		display: none !important;
 	}
 
-	.message-row, .message__body {
-		page-break-inside: avoid;
-		page-break-after: auto;
+	.message-row {
+		// page-break-inside: avoid;
+		// page-break-after: auto;
 		margin-bottom: 1rem;
+	}
+
+	.message__body {
+		overflow-wrap: break-word !important;
+        word-break: break-word !important;
 	}
 }
 

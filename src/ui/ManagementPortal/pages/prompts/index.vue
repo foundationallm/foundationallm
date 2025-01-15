@@ -106,6 +106,7 @@ export default {
 			this.loading = true;
 			try {
 				this.prompts = (await api.getPrompts()) || [];
+				this.prompts.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',

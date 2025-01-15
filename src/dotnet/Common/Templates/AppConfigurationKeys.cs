@@ -72,6 +72,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:PythonSDK:Logging:LogLevel:Default";
         
         /// <summary>
+        /// The app configuration key for the FoundationaLLM:PythonSDK:Logging:LogLevel:Azure setting.
+        /// <para>Value description:<br/>The default logging level used by the Python SDK.</para>
+        /// </summary>
+        public const string FoundationaLLM_PythonSDK_Logging_LogLevel_Azure =
+            "FoundationaLLM:PythonSDK:Logging:LogLevel:Azure";
+        
+        /// <summary>
         /// The app configuration key for the FoundationaLLM:PythonSDK:Logging:EnableConsoleLogging setting.
         /// <para>Value description:<br/>The flag indicating whether the Python SDK sends logs to the console or not.</para>
         /// </summary>

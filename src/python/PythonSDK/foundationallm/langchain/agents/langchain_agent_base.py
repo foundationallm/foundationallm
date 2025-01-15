@@ -24,6 +24,7 @@ from foundationallm.models.resource_providers.attachments import Attachment
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.models.resource_providers.prompts import MultipartPrompt
 from foundationallm.plugins import PluginManager
+from foundationallm.telemetry import Telemetry
 
 class LangChainAgentBase():
     """
@@ -49,6 +50,8 @@ class LangChainAgentBase():
         self.has_indexing_profiles = False
         self.has_retriever = False
         self.operations_manager = operations_manager
+
+        self.tracer = Telemetry.get_tracer('langchain-agent-base')
 
     @abstractmethod
     async def invoke_async(self, request: CompletionRequestBase) -> CompletionResponse:
@@ -267,7 +270,7 @@ class LangChainAgentBase():
                             DefaultAzureCredential(exclude_environment_credential=True),
                             scope
                         )
-
+                        
                         if op_type == OperationTypes.CHAT:
                             language_model = AzureChatOpenAI(
                                 azure_endpoint=self.api_endpoint.url,
@@ -276,13 +279,12 @@ class LangChainAgentBase():
                                 azure_ad_token_provider=token_provider,
                                 azure_deployment=self.ai_model.deployment_name
                             )
-                        elif op_type == OperationTypes.ASSISTANTS_API or op_type == OperationTypes.IMAGE_SERVICES:
+                        elif op_type == OperationTypes.ASSISTANTS_API or op_type == OperationTypes.IMAGE_SERVICES:                            
                             # Assistants API clients can't have deployment as that is assigned at the assistant level.
                             language_model = async_aoi(
                                 azure_endpoint=self.api_endpoint.url,
-                                api_version=self.api_endpoint.api_version,
-                                openai_api_type='azure_ad',
-                                azure_ad_token_provider=token_provider,
+                                api_version=self.api_endpoint.api_version,                                
+                                azure_ad_token_provider=token_provider
                             )
                         else:
                             raise LangChainException(f"Unsupported operation type: {op_type}", 400)

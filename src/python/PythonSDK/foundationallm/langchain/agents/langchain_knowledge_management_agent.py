@@ -5,10 +5,14 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
 from langgraph.prebuilt import create_react_agent
+
+from opentelemetry.trace import SpanKind
+
 from foundationallm.langchain.agents import LangChainAgentBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, ContentArtifactRetrievalBase
-from foundationallm.models.agents import AzureOpenAIAssistantsAgentWorkflow, LangGraphReactAgentWorkflow
+from foundationallm.langchain.workflows import WorkflowFactory
+from foundationallm.models.agents import AzureOpenAIAssistantsAgentWorkflow, ExternalAgentWorkflow, LangGraphReactAgentWorkflow
 from foundationallm.models.constants import (
     AgentCapabilityCategories,
     ResourceObjectIdPropertyNames,
@@ -181,7 +185,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             raise LangChainException("The objects property on the completion request cannot be null.", 400)
 
         if request.agent.workflow is not None:
-            
+
             ai_model_object_id = request.agent.workflow.get_resource_object_id_properties(
                 ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
                 AIModelResourceTypeNames.AI_MODELS,
@@ -191,7 +195,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             if ai_model_object_id is None:
                 raise LangChainException("The agent's workflow AI models requires a main_model.", 400)
             self.ai_model = self._get_ai_model_from_object_id(ai_model_object_id.object_id, request.objects)
-            
+
             prompt_object_id = request.agent.workflow.get_resource_object_id_properties(
                 ResourceProviderNames.FOUNDATIONALLM_PROMPT,
                 PromptResourceTypeNames.PROMPTS,
@@ -402,7 +406,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     ResourceObjectIdPropertyNames.OBJECT_ROLE,
                     ResourceObjectIdPropertyValues.MAIN_MODEL
                 )
-                
+
                 image_generation_deployment_model = request.objects[model_object_id.object_id]["deployment_name"]
                 api_endpoint_object_id = request.objects[model_object_id.object_id]["endpoint_object_id"]
                 image_generation_client = self._get_image_gen_language_model(api_endpoint_object_id=api_endpoint_object_id, objects=request.objects)
@@ -425,6 +429,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     operation_id = request.operation_id,
                     full_prompt = self.prompt.prefix,
                     user_prompt = request.user_prompt,
+                    user_prompt_rewrite = request.user_prompt_rewrite,
                     errors = [ "Assistants API response was None." ]
                 )
 
@@ -439,6 +444,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 prompt_tokens = assistant_response.prompt_tokens + image_analysis_token_usage.prompt_tokens,
                 total_tokens = assistant_response.total_tokens + image_analysis_token_usage.total_tokens,
                 user_prompt = request.user_prompt,
+                user_prompt_rewrite = request.user_prompt_rewrite,
                 errors = assistant_response.errors
             )
         # End Assistants API implementation
@@ -448,18 +454,29 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             tool_factory = ToolFactory(self.plugin_manager)
             tools = []
 
-            # Populate tools list from agent configuration
-            for tool in agent.tools:
-                tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
+            parsed_user_prompt = request.user_prompt
+
+            explicit_tool = next((tool for tool in agent.tools if parsed_user_prompt.startswith(f'[{tool.name}]:')), None)
+            if explicit_tool is not None:
+                tools.append(tool_factory.get_tool(explicit_tool, request.objects, self.user_identity, self.config))
+                parsed_user_prompt = parsed_user_prompt.split(':', 1)[1].strip()
+            else:
+                # Populate tools list from agent configuration
+                for tool in agent.tools:
+                    tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
 
             # Define the graph
             graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)
-            messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
-            messages.append(HumanMessage(content=request.user_prompt))
+            if agent.conversation_history_settings.enabled:
+                messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
+            else:
+                messages = []
+
+            messages.append(HumanMessage(content=parsed_user_prompt))
 
             response = await graph.ainvoke(
-                {'messages': messages}, 
-                config={"configurable": {"original_user_prompt": request.user_prompt, **({"recursion_limit": agent.workflow.graph_recursion_limit} if agent.workflow.graph_recursion_limit is not None else {})}}
+                {'messages': messages},
+                config={"configurable": {"original_user_prompt": parsed_user_prompt, **({"recursion_limit": agent.workflow.graph_recursion_limit} if agent.workflow.graph_recursion_limit is not None else {})}}
             )
             # TODO: process tool messages with analysis results AIMessage with content='' but has addition_kwargs={'tool_calls';[...]}
 
@@ -484,6 +501,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                         content = [response_content],
                         content_artifacts = content_artifacts,
                         user_prompt = request.user_prompt,
+                        user_prompt_rewrite = request.user_prompt_rewrite,
                         full_prompt = self.prompt.prefix,
                         completion_tokens = final_message.usage_metadata["output_tokens"] or 0,
                         prompt_tokens = final_message.usage_metadata["input_tokens"] or 0,
@@ -491,6 +509,49 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                         total_cost = 0
                     )
         # End LangGraph ReAct Agent workflow implementation
+
+        # Start External Agent workflow implementation
+        if (agent.workflow is not None and isinstance(agent.workflow, ExternalAgentWorkflow)):
+            # prepare tools
+            tool_factory = ToolFactory(self.plugin_manager)
+            tools = []
+
+            parsed_user_prompt = request.user_prompt
+
+            explicit_tool = next((tool for tool in agent.tools if parsed_user_prompt.startswith(f'[{tool.name}]:')), None)
+            if explicit_tool is not None:
+                tools.append(tool_factory.get_tool(explicit_tool, request.objects, self.user_identity, self.config))
+                parsed_user_prompt = parsed_user_prompt.split(':', 1)[1].strip()
+            else:
+                # Populate tools list from agent configuration
+                for tool in agent.tools:
+                    tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
+
+            # create the workflow
+            workflow_factory = WorkflowFactory(self.plugin_manager)
+            workflow = workflow_factory.get_workflow(
+                agent.workflow,
+                request.objects,
+                tools,
+                self.user_identity,
+                self.config)
+
+            # Get message history
+            if agent.conversation_history_settings.enabled:
+                messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
+            else:
+                messages = []
+
+            with self.tracer.start_as_current_span('langchain_invoke_external_workflow', kind=SpanKind.SERVER) as span:
+                response = await workflow.invoke_async(
+                    operation_id=request.operation_id,
+                    user_prompt=parsed_user_prompt,
+                    message_history=messages
+                )
+                # Ensure the user prompt rewrite is returned in the response
+                response.user_prompt_rewrite = request.user_prompt_rewrite
+            return response
+        # End External Agent workflow implementation
 
         # Start LangChain Expression Language (LCEL) implementation
 
@@ -548,6 +609,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 operation_id = request.operation_id,
                 content = [response_content],
                 user_prompt = request.user_prompt,
+                user_prompt_rewrite = request.user_prompt_rewrite,
                 full_prompt = self.full_prompt.text,
                 completion_tokens = completion.usage_metadata["output_tokens"] + image_analysis_token_usage.completion_tokens,
                 prompt_tokens = completion.usage_metadata["input_tokens"] + image_analysis_token_usage.prompt_tokens,
@@ -573,6 +635,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                         operation_id = request.operation_id,
                         content = [response_content],
                         user_prompt = request.user_prompt,
+                        user_prompt_rewrite = request.user_prompt_rewrite,
                         full_prompt = self.full_prompt.text,
                         completion_tokens = cb.completion_tokens + image_analysis_token_usage.completion_tokens,
                         prompt_tokens = cb.prompt_tokens + image_analysis_token_usage.prompt_tokens,
