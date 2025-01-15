@@ -113,6 +113,31 @@ var containers = [
     }
     defaultTtl: null
   }
+  {
+    name: 'CompletionsCache'
+    partitionKey: {
+      paths: [
+        '/operationId'
+      ]
+    }
+    vectorIndexes: [
+      {
+        path: '/userPromptEmbedding'
+        type: 'diskANN'
+      }
+    ]
+    VectorEmbeddingPolicy: {
+      vectorEmbeddings: [
+        {
+          dataType: 'float32'
+          dimensions: 2048
+          distanceFunction: 'Cosine'
+          path: '/userPromptEmbedding'
+        }
+      ]
+    }
+    defaultTtl: 300
+  }
 ]
 
 @description('The Resource logs to enable')
@@ -153,7 +178,9 @@ resource main 'Microsoft.DocumentDB/databaseAccounts@2023-09-15' = {
     databaseAccountOfferType: 'Standard'
     defaultIdentity: 'FirstPartyIdentity'
     disableKeyBasedMetadataWriteAccess: false
-    capabilities: []
+    capabilities: [
+      'EnableNoSQLVectorSearch'
+    ]
     cors: []
     disableLocalAuth: false
     enableAnalyticalStorage: false
@@ -235,7 +262,7 @@ resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' 
   }
 }
 
-resource cosmosContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = [
+resource cosmosContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2024-12-01-preview' = [
   for c in containers: if (c.defaultTtl == null) {
     name: c.name
     parent: database
@@ -263,6 +290,8 @@ resource cosmosContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/con
               path: '/*'
             }
           ]
+
+          vectorIndexes: c.?vectorIndexes == null ? [] : c.?vectorIndexes
         }
 
         partitionKey: {
@@ -275,6 +304,9 @@ resource cosmosContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/con
           uniqueKeys: []
         }
 
+
+        vectorEmbeddingPolicy: c.?VectorEmbeddingPolicy == null ? { vectorEmbeddings: [] } : c.?VectorEmbeddingPolicy
+
         conflictResolutionPolicy: {
           conflictResolutionPath: '/_ts'
           mode: 'LastWriterWins'
@@ -284,7 +316,7 @@ resource cosmosContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/con
   }
 ]
 
-resource cosmosContainerWithTtl 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = [
+resource cosmosContainerWithTtl 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2024-12-01-preview' = [
   for c in containers: if (c.defaultTtl != null) {
     name: c.name
     parent: database
@@ -312,6 +344,8 @@ resource cosmosContainerWithTtl 'Microsoft.DocumentDB/databaseAccounts/sqlDataba
               path: '/*'
             }
           ]
+
+          vectorIndexes: c.?vectorIndexes == null ? [] : c.?vectorIndexes
         }
 
         partitionKey: {
@@ -325,6 +359,9 @@ resource cosmosContainerWithTtl 'Microsoft.DocumentDB/databaseAccounts/sqlDataba
         uniqueKeyPolicy: {
           uniqueKeys: []
         }
+
+
+        vectorEmbeddingPolicy: c.?VectorEmbeddingPolicy == null ? { vectorEmbeddings: [] } : c.?VectorEmbeddingPolicy
 
         conflictResolutionPolicy: {
           conflictResolutionPath: '/_ts'
