@@ -5,14 +5,14 @@
 			:key="propertyKey"
 			class="d-flex justify-content-between gap-4"
 		>
-			<div class="d-flex flex-1">
+			<div class="d-flex flex-1 gap-4">
 				<!-- Property name -->
 				<InputText :value="propertyKey" type="text" placeholder="Property Name" disabled />
 
 				<span class="d-flex align-center">=</span>
 
 				<!-- Property value -->
-				<InputText :value="propertyValue" type="text" placeholder="Property Value" disabled />
+				<InputText :value="JSON.stringify(propertyValue)" type="text" placeholder="Property Value" disabled />
 			</div>
 
 			<!-- Delete property -->

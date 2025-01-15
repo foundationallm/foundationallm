@@ -53,8 +53,12 @@
 			<span>LLM's</span>
 		</div> -->
 
-		<NuxtLink to="/models-and-endpoints" class="sidebar__item">
-			Language Models & Endpoints
+		<NuxtLink to="/model-endpoints" class="sidebar__item">
+			Model Endpoints
+		</NuxtLink>
+
+		<NuxtLink to="/models" class="sidebar__item">
+			Models
 		</NuxtLink>
 
 		<!-- Security -->

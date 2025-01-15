@@ -23,6 +23,8 @@ import type {
 } from './types';
 import { convertToDataSource, convertToAppConfigKeyVault, convertToAppConfig } from '@/js/types';
 
+import { mockAzureOpenAIAssistantsWorkflow, mockLangChainExpressionLanguageWorkflow } from '@/js/mock';
+
 // async function wait(milliseconds: number = 1000): Promise<void> {
 // 	return await new Promise<void>((resolve) => setTimeout(() => resolve(), milliseconds));
 // }
@@ -632,6 +634,56 @@ export default {
 	},
 
 	/*
+		AI Model Endpoints
+	 */
+	async getAIModelEndpoints(): Promise<ResourceProviderGetResult<AIModel>[]> {
+		const data = (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations?api-version=${this.apiVersion}`,
+		)) as ResourceProviderGetResult<AIModel>[];
+
+		return data;
+	},
+
+	async getAIModelEndpoint(aiModelEndpointName: string): Promise<ResourceProviderGetResult<AIModel>[]> {
+		const data = (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/${aiModelEndpointName}?api-version=${this.apiVersion}`,
+		)) as ResourceProviderGetResult<AIModel>[];
+
+		return data;
+	},
+
+	async createAIModelEndpoint(aiModelEndpoint: CreateAgentRequest): Promise<ResourceProviderGetResult<AIModel>[]> {
+		const data = (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/${aiModelEndpoint.name}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: aiModelEndpoint,
+			},
+		)) as ResourceProviderGetResult<AIModel>[];
+
+		return data;
+	},
+
+	// async upsertAIModel(aiModelOriginalName: string, aiModel: CreateAgentRequest): Promise<any> {
+	// 	return await this.fetch(
+	// 		`/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels/${aiModelOriginalName}?api-version=${this.apiVersion}`,
+	// 		{
+	// 			method: 'POST',
+	// 			body: aiModel,
+	// 		},
+	// 	);
+	// },
+
+	async deleteAIModelEndpoint(aiEndpointModelName: string): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/${aiEndpointModelName}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
+			},
+		);
+	},
+
+	/*
 		AI Models
 	 */
 	async getAIModels(): Promise<ResourceProviderGetResult<AIModel>[]> {
@@ -640,6 +692,45 @@ export default {
 		)) as ResourceProviderGetResult<AIModel>[];
 
 		return data;
+	},
+
+	async getAIModel(aiModelName: string): Promise<ResourceProviderGetResult<AIModel>[]> {
+		const data = (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels/${aiModelName}?api-version=${this.apiVersion}`,
+		)) as ResourceProviderGetResult<AIModel>[];
+
+		return data;
+	},
+
+	async createAIModel(aiModel: CreateAgentRequest): Promise<ResourceProviderGetResult<AIModel>[]> {
+		const data = (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels/${aiModel.name}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: aiModel,
+			},
+		)) as ResourceProviderGetResult<AIModel>[];
+
+		return data;
+	},
+
+	async upsertAIModel(aiModelOriginalName: string, aiModel: CreateAgentRequest): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels/${aiModelOriginalName}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: aiModel,
+			},
+		);
+	},
+
+	async deleteAIModel(aiModelName: string): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels/${aiModelName}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
+			},
+		);
 	},
 
 	/*
@@ -820,6 +911,39 @@ export default {
 		Workflows
 	 */
 	async getAgentWorkflows(): Promise<any> {
+		return [
+		{
+					type: 'some type',
+					assistant_id: 'blahfuoerhfiuehrifuh',
+					resource_object_ids: {
+						'/instances/whatever': {
+							object_id: 'same',
+							properties: {},
+						},
+
+						'/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel': {
+							object_id: '/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel',
+							properties: {
+								object_role: 'main_model',
+								model_parameters: {
+									temperature: '0.7',
+								},
+							},
+						},
+
+						'/instances/whateverprompt': {
+							object_id: '/instances/whateverprompt',
+							properties: {
+								object_role: 'main_prompt',
+							},
+						},
+					}
+				}
+		];
+		return [
+			mockAzureOpenAIAssistantsWorkflow,
+			mockLangChainExpressionLanguageWorkflow,
+		];
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/workflows?api-version=${this.apiVersion}`,
 		);

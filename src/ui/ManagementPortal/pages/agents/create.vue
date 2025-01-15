@@ -897,6 +897,7 @@ import type {
 	CreateAgentRequest,
 	ExternalOrchestrationService,
 	TextEmbeddingProfile,
+	AgentWorkflowAIModel,
 	// AgentCheckNameResponse,
 } from '@/js/types';
 

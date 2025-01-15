@@ -1,12 +1,12 @@
 <template>
 	<div>
 		<!-- Header -->
-		<h2 class="page-header">{{ editId ? 'Edit Model/Endpoint' : 'Create Model/Endpoint' }}</h2>
+		<h2 class="page-header">{{ editId ? 'Edit Model' : 'Create Model' }}</h2>
 		<div class="page-subheader">
 			{{
 				editId
-					? 'Edit your model/endpoint settings below.'
-					: 'Complete the settings below to configure the model/endpoint.'
+					? 'Edit your model settings below.'
+					: 'Complete the settings below to configure the model.'
 			}}
 		</div>
 
@@ -20,69 +20,56 @@
 				</div>
 			</template>
 
-			<!-- Model type -->
-			<div class="step-header span-2">What is the model type?</div>
+			<!-- Name -->
+			<div class="step-header span-2">What is the model name?</div>
 			<div class="span-2">
-				<Dropdown
-					v-model="request.orchestrator"
-					:options="orchestratorOptions"
-					option-label="label"
-					option-value="value"
-					placeholder="--Select--"
-					class="dropdown--agent"
-				/>
-			</div>
-
-			<!-- Connection type -->
-			<div class="step-header span-2">What is the connection type?</div>
-			<div class="span-2">
-				<div class="mb-2">Auth Type:</div>
-				<Dropdown
-					v-model="authType"
-					:options="authTypeOptions"
-					option-label="label"
-					option-value="value"
-					placeholder="--Select--"
-					class="dropdown--agent"
-				/>
-			</div>
-
-			<!-- Connection details -->
-			<div class="step-header span-2">What are the connection details?</div>
-			<div class="span-2">
-				<!-- Endpoint -->
-				<div class="mb-2">Endpoint:</div>
-				<InputText
-					v-model="request.endpoint_configuration.endpoint"
-					class="w-100 mb-4"
-					type="text"
-				/>
-
-				<!-- API Key -->
-				<template v-if="authType === 'key'">
-					<div class="mb-2">API Key:</div>
-					<SecretKeyInput v-model="request.endpoint_configuration.api_key" class="mb-4" />
-				</template>
-
-				<!-- API Version -->
-				<template v-if="['AzureOpenAI', 'AzureAI'].includes(request.orchestrator)">
-					<div class="mb-2">API Version:</div>
-					<InputText
-						v-model="request.endpoint_configuration.version"
-						class="w-100 mb-4"
-						type="text"
-					/>
-				</template>
-			</div>
-
-			<!-- Model params -->
-			<template v-if="request.orchestrator === 'AzureOpenAI'">
-				<div class="step-header span-2">What are the model details?</div>
-				<div class="span-2">
-					<div class="mb-2">Deployment Name:</div>
-					<SecretKeyInput v-model="request.endpoint_configuration.api_key" class="mb-4" />
+				<div id="aria-source-name-desc" class="mb-2">
+					No special characters or spaces, use letters and numbers with dashes and underscores only.
 				</div>
-			</template>
+				<div class="input-wrapper">
+					<InputText
+						v-model="aiModel.name"
+						:disabled="editId"
+						type="text"
+						class="w-100"
+						placeholder="Enter model name"
+						aria-labelledby="aria-source-name aria-source-name-desc"
+						@input="handleNameInput"
+					/>
+					<span
+						v-if="nameValidationStatus === 'valid'"
+						class="icon valid"
+						title="Name is available"
+					>
+						✔️
+					</span>
+					<span
+						v-else-if="nameValidationStatus === 'invalid'"
+						:title="validationMessage"
+						class="icon invalid"
+					>
+						❌
+					</span>
+				</div>
+			</div>
+
+			<!-- Model endpoint -->
+			<div class="step-header span-2">What is the model endpoint?</div>
+			<div class="span-2">
+				<div class="mb-2">Model Endpoint:</div>
+				<Dropdown
+					v-model="aiModelEndpoint"
+					:options="aiModelEndpointOptions"
+					option-label="name"
+					option-value="object_id"
+					placeholder="--Select--"
+					class="dropdown--agent"
+				/>
+			</div>
+
+				<!-- Model parameters -->
+			<div class="step-header mb-2">What are the model parameters?</div>
+			<PropertyBuilder v-model="aiModel.model_parameters" />
 
 			<!-- Buttons -->
 			<div class="button-container column-2 justify-self-end">
@@ -108,6 +95,8 @@
 
 <script lang="ts">
 import type { PropType } from 'vue';
+import { debounce } from 'lodash';
+
 import api from '@/js/api';
 
 export default {
@@ -129,18 +118,24 @@ export default {
 			// nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			// validationMessage: '' as string,
 
-			request: {
-				orchestrator: null as string | null,
-				endpoint_configuration: {
-					endpoint: '' as string,
-					api_key: '' as string,
-					api_version: '' as string,
-					// operation_type: 'chat' as string,
-				} as object,
-				model_parameters: {
-					deployment_name: '' as string,
-					// temperature: 0 as number,
-				} as object,
+			aiModelEndpoint: null,
+			aiModelEndpointOptions: [],
+
+			aiModelName: '' as string,
+			aiModel: {
+				name: '',
+				model_parameters: {},
+				// orchestrator: null as string | null,
+				// endpoint_configuration: {
+				// 	endpoint: '' as string,
+				// 	api_key: '' as string,
+				// 	api_version: '' as string,
+				// 	// operation_type: 'chat' as string,
+				// } as object,
+				// model_parameters: {
+				// 	deployment_name: '' as string,
+				// 	// temperature: 0 as number,
+				// } as object,
 			},
 
 			orchestratorOptions: [
@@ -172,7 +167,19 @@ export default {
 		};
 	},
 
-	async created() {},
+	async created() {
+		this.loading = true;
+		this.loadingStatusText = `Retrieving AI model endpoints...`;
+		this.aiModelEndpointOptions = (await api.getAIModelEndpoints()).map((endpoint) => endpoint.resource);
+		this.loading = false;
+
+		if (this.editId) {
+			this.loading = true;
+			this.loadingStatusText = `Retrieving AI model "${this.editId}"...`;
+			this.aiModel = (await api.getAIModel(this.editId))[0].resource;
+			this.loading = false;
+		}
+	},
 
 	methods: {
 		handleCancel() {
@@ -183,8 +190,43 @@ export default {
 			this.$router.push('/models-and-endpoints');
 		},
 
+		handleNameInput(event) {
+			const sanitizedValue = this.$filters.sanitizeNameInput(event);
+			this.aiModel.name = sanitizedValue;
+
+			// Check if the name is available if we are creating a new data source.
+			if (!this.editId) {
+				this.debouncedCheckName();
+			}
+		},
+
 		async handleCreate() {
-			console.log(this.request);
+			this.loading = true;
+			let successMessage = null as null | string;
+			try {
+				this.loadingStatusText = 'Saving AI model...';
+				await api.upsertAIModel(this.editId, this.aiModel);
+				successMessage = `AI model "${this.aiModel.name}" was successfully saved.`;
+			} catch (error) {
+				this.loading = false;
+				return this.$toast.add({
+					severity: 'error',
+					detail: error?.response?._data || error,
+					life: 5000,
+				});
+			}
+
+			this.$toast.add({
+				severity: 'success',
+				detail: successMessage,
+				life: 5000,
+			});
+
+			this.loading = false;
+
+			if (!this.editId) {
+				this.$router.push('/models-and-endpoints');
+			}
 		},
 	},
 };

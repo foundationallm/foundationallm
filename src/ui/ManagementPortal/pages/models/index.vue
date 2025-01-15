@@ -2,15 +2,15 @@
 	<div>
 		<div style="display: flex">
 			<div style="flex: 1">
-				<h2 class="page-header">Models & Endpoints</h2>
-				<div class="page-subheader">The following models & endpoints are available.</div>
+				<h2 class="page-header">Models</h2>
+				<div class="page-subheader">The following language models are available.</div>
 			</div>
 
 			<div style="display: flex; align-items: center">
-				<NuxtLink to="/models-and-endpoints/create">
+				<NuxtLink to="/models/create">
 					<Button>
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
-						Create Model/Endpoint
+						Create Model
 					</Button>
 				</NuxtLink>
 			</div>
@@ -40,7 +40,7 @@
 
 				<!-- Name -->
 				<Column
-					field="name"
+					field="resource.name"
 					header="Name"
 					sortable
 					style="min-width: 200px"
@@ -54,7 +54,7 @@
 
 				<!-- Type -->
 				<Column
-					field="type"
+					field="resource.type"
 					header="Source Type"
 					sortable
 					style="min-width: 200px"
@@ -79,7 +79,7 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink :to="'/models-and-endpoints/edit/' + data.name" class="table__button">
+						<NuxtLink :to="'/models/edit/' + data.resource.name" class="table__button">
 							<Button link>
 								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
 							</Button>
@@ -101,7 +101,7 @@
 				>
 					<template #body="{ data }">
 						<Button link @click="itemToDelete = data">
-							<i class="pi pi-trash" style="font-size: 1.2rem; color: var(--red-400)"></i>
+							<i class="pi pi-trash" style="font-size: 1.2rem;"></i>
 						</Button>
 					</template>
 				</Column>
@@ -136,22 +136,22 @@ export default {
 	},
 
 	async created() {
-		// await this.getModelsAndEndpoints();
+		await this.getModelsAndEndpoints();
 	},
 
 	methods: {
 		async getModelsAndEndpoints() {
-			// this.loading = true;
-			// try {
-			// 	this.modelsAndEndpoints = await api.getModelsAndEndpoints();
-			// } catch (error) {
-			// 	this.$toast.add({
-			// 		severity: 'error',
-			// 		detail: error?.response?._data || error,
-			// 		life: 5000,
-			// 	});
-			// }
-			// this.loading = false;
+			this.loading = true;
+			try {
+				this.modelsAndEndpoints = await api.getAIModels();
+			} catch (error) {
+				this.$toast.add({
+					severity: 'error',
+					detail: error?.response?._data || error,
+					life: 5000,
+				});
+			}
+			this.loading = false;
 		},
 
 		async handleDelete() {
