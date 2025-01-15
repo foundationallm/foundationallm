@@ -142,9 +142,9 @@ namespace FoundationaLLM.Common.Services.Events
 
                         if (receiveResult?.Value?.Details != null
                             && receiveResult.Value.Details.Count > 0)
-                        await ProcessTopicSubscriptionEvents(
-                            receiverClient,
-                            receiveResult.Value.Details);
+                            await ProcessTopicSubscriptionEvents(
+                                receiverClient,
+                                receiveResult.Value.Details);
                     }
                     catch (Exception ex)
                     {
