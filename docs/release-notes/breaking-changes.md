@@ -3,6 +3,70 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.1
+
+### App configuration settings
+
+To support the event grid infrastructure, the following new App Configuration settings are required.
+
+```json
+[
+	{
+		"key": "FoundationaLLM:Events:Profiles:CoreAPI",
+		"label": null,
+		"value": "{\"EventProcessingCycleSeconds\": 5,\"Topics\": [{\"Name\": \"resource-providers\",\"SubscriptionPrefix\": \"rp-core\"}]}",
+		"content_type": "application/json",
+		"tags": {}
+	},
+	{
+		"key": "FoundationaLLM:Events:Profiles:GatekeeperAPI",
+		"label": null,
+		"value": "{\"EventProcessingCycleSeconds\":60,\"Topics\":[]}",
+		"content_type": "application/json",
+		"tags": {}
+	},
+	{
+		"key": "FoundationaLLM:Events:Profiles:GatewayAPI",
+		"label": null,
+		"value": "{\"EventProcessingCycleSeconds\":60,\"Topics\":[]}",
+		"content_type": "application/json",
+		"tags": {}
+	},
+	{
+		"key": "FoundationaLLM:Events:Profiles:ManagementAPI",
+		"label": null,
+		"value": "{\"EventProcessingCycleSeconds\": 5,\"Topics\": [{\"Name\": \"resource-providers\",\"SubscriptionPrefix\": \"rp-management\"}]}",
+		"content_type": "application/json",
+		"tags": {}
+	},
+	{
+		"key": "FoundationaLLM:Events:Profiles:OrchestrationAPI",
+		"label": null,
+		"value": "{\"EventProcessingCycleSeconds\": 5,\"Topics\": [{\"Name\": \"resource-providers\",\"SubscriptionPrefix\": \"rp-orch\"}]}",
+		"content_type": "application/json",
+		"tags": {}
+	},
+	{
+		"key": "FoundationaLLM:Events:Profiles:VectorizationAPI",
+		"label": null,
+		"value": "{\"EventProcessingCycleSeconds\":60,\"Topics\":[]}",
+		"content_type": "application/json",
+		"tags": {}
+	},
+	{
+		"key": "FoundationaLLM:Events:Profiles:VectorizationWorker",
+		"label": null,
+		"value": "{\"EventProcessingCycleSeconds\":60,\"Topics\":[]}",
+		"content_type": "application/json",
+		"tags": {}
+	}
+]
+```
+
+>Note: The event grid system topics need to be removed.
+
+The following topic needs to be created in the event grid namespace, must have a `resource-providers` topic with a publisher type of `Custom` and an input schema of `Cloud Events v1.0`.
+
 ## Starting with 0.9.1-rc117
 
 ### Agent configuration changes

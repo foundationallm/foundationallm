@@ -46,6 +46,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
         public Dictionary<string, ResourceObjectIdProperties> ResourceObjectIds { get; set; } = [];
 
         /// <summary>
+        /// Gets or sets a dictionary of properties that are specific to the workflow.
+        /// </summary>
+        [JsonPropertyName("properties")]
+        public Dictionary<string, object>? Properties { get; set; } = [];
+
+        /// <summary>
         /// Gets the main AI model object identifier.
         /// </summary>
         [JsonIgnore]

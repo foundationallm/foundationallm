@@ -1,8 +1,8 @@
 ﻿using Azure.Messaging;
 using FluentValidation;
 using FoundationaLLM.AIModel.Models;
-using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
@@ -49,7 +49,7 @@ namespace FoundationaLLM.AIModel.ResourceProviders
             serviceProvider,
             loggerFactory.CreateLogger<AIModelResourceProviderService>(),
             [
-                EventSetEventNamespaces.FoundationaLLM_ResourceProvider_AIModel
+                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ],
             useInternalReferencesStore: true)
     {
@@ -186,66 +186,6 @@ namespace FoundationaLLM.AIModel.ResourceProviders
         /// <inheritdoc/>
         protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) =>
             (await LoadResource<T>(resourcePath.ResourceId!))!;
-
-        #endregion
-
-        #region Event handling
-
-        /// <inheritdoc/>
-        protected override async Task HandleEvents(EventSetEventArgs e)
-        {
-            _logger.LogInformation("{EventsCount} events received in the {EventsNamespace} events namespace.",
-                e.Events.Count, e.Namespace);
-
-            switch (e.Namespace)
-            {
-                case EventSetEventNamespaces.FoundationaLLM_ResourceProvider_AIModel:
-                    foreach (var @event in e.Events)
-                        await HandleAIModelResourceProviderEvent(@event);
-                    break;
-                default:
-                    // Ignore sliently any event namespace that's of no interest.
-                    break;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task HandleAIModelResourceProviderEvent(CloudEvent e)
-        {
-            await Task.CompletedTask;
-            return;
-
-            // Event handling is temporarily disabled until the updated event handling mechanism is implemented.
-
-            //if (string.IsNullOrWhiteSpace(e.Subject))
-            //    return;
-
-            //var fileName = e.Subject.Split("/").Last();
-
-            //_logger.LogInformation("The file [{FileName}] managed by the [{ResourceProvider}] resource provider has changed and will be reloaded.",
-            //    fileName, _name);
-
-            //var aiModelReference = new AIModelReference
-            //{
-            //    Name = Path.GetFileNameWithoutExtension(fileName),
-            //    Filename = $"/{_name}/{fileName}",
-            //    Type = nameof(AIModelBase),
-            //    Deleted = false
-            //};
-
-            //var aiModel = await LoadAIModel(aiModelReference);
-            //aiModelReference.Name = aiModel.Name;
-            //aiModelReference.Type = aiModel.Type!;
-
-            //_aiModelReferences.AddOrUpdate(
-            //    aiModelReference.Name,
-            //    aiModelReference,
-            //    (k, v) => v);
-
-            //_logger.LogInformation("The aiModel reference for the [{AIModelName}] agent or type [{AIModelType}] was loaded.",
-            //    aiModelReference.Name, aiModelReference.Type);
-        }
 
         #endregion
     }

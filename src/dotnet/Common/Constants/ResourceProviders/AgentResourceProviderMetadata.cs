@@ -32,6 +32,9 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         ]),
                         new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
+                        ]),
+                        new ResourceTypeAction(ResourceProviderActions.SetDefault, true, false, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderActionResult)])
                         ])
                     ],
                     SubTypes = new()
@@ -77,18 +80,21 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         typeof(Workflow))
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<Workflow>)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(Workflow)], [typeof(ResourceProviderUpsertResult)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<Workflow>)])
                     ],
-                    Actions = [
-                        new ResourceTypeAction(ResourceProviderActions.CheckName, false, true, [
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
-                        ]),
-                        new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
-                        ])
-                    ]
+                    Actions = []
+                }
+            },
+            {
+                AgentResourceTypeNames.Tools,
+                new ResourceTypeDescriptor(
+                        AgentResourceTypeNames.Tools,
+                        typeof(Tool))
+                {
+                    AllowedTypes = [
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<Tool>)])
+                    ],
+                    Actions = []
                 }
             }
         };

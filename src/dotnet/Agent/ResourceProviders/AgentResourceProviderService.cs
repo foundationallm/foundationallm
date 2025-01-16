@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -59,8 +60,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
             resourceValidatorFactory,
             serviceProvider,
             loggerFactory.CreateLogger<AgentResourceProviderService>(),
-            eventNamespacesToSubscribe: [
-                EventSetEventNamespaces.FoundationaLLM_ResourceProvider_Agent
+            eventTypesToSubscribe: [
+                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ],
             useInternalReferencesStore: true)
     {
@@ -99,6 +100,13 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     {
                         IncludeRoles = resourcePath.IsResourceTypePath,
                     }),
+                AgentResourceTypeNames.Tools => await LoadResources<Tool>(
+                   resourcePath.ResourceTypeInstances[0],
+                   authorizationResult,
+                   options ?? new ResourceProviderGetOptions
+                   {
+                       IncludeRoles = resourcePath.IsResourceTypePath,
+                   }),
                 AgentResourceTypeNames.AgentAccessTokens => await LoadAgentAccessTokens(
                     resourcePath)!,
                 AgentResourceTypeNames.Files => await LoadAgentFiles(
@@ -112,7 +120,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
             resourcePath.ResourceTypeName switch
             {
                 AgentResourceTypeNames.Agents => await UpdateAgent(resourcePath, serializedResource!, userIdentity),
-                AgentResourceTypeNames.Workflows => await UpdateWorkflow(resourcePath, serializedResource!, userIdentity),
                 AgentResourceTypeNames.AgentAccessTokens => await UpdateAgentAccessToken(resourcePath, serializedResource!),
                 AgentResourceTypeNames.Files => await UpdateAgentFile(resourcePath, formFile!, userIdentity),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
@@ -132,14 +139,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     ResourceProviderActions.CheckName => await CheckResourceName<AgentBase>(
                         JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
                     ResourceProviderActions.Purge => await PurgeResource<AgentBase>(resourcePath),
-                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
-                        StatusCodes.Status400BadRequest)
-                },
-                AgentResourceTypeNames.Workflows => resourcePath.Action switch
-                {
-                    ResourceProviderActions.CheckName => await CheckResourceName<Workflow>(
-                        JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
-                    ResourceProviderActions.Purge => await PurgeResource<Workflow>(resourcePath),
+                    ResourceProviderActions.SetDefault => await SetDefaultResource<AgentBase>(resourcePath),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
@@ -163,9 +163,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 case AgentResourceTypeNames.Agents:
                     await DeleteResource<AgentBase>(resourcePath);
                     break;
-                case AgentResourceTypeNames.Workflows:
-                    await DeleteResource<Workflow>(resourcePath);
-                    break;
                 case AgentResourceTypeNames.Files:
                     await DeleteAgentFile(resourcePath);
                     break;
@@ -186,66 +183,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
         /// <inheritdoc/>
         protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) =>
             (await LoadResource<T>(resourcePath.ResourceId!))!;
-
-        #endregion
-
-        #region Event handling
-
-        /// <inheritdoc/>
-        protected override async Task HandleEvents(EventSetEventArgs e)
-        {
-            _logger.LogInformation("{EventsCount} events received in the {EventsNamespace} events namespace.",
-                e.Events.Count, e.Namespace);
-
-            switch (e.Namespace)
-            {
-                case EventSetEventNamespaces.FoundationaLLM_ResourceProvider_Agent:
-                    foreach (var @event in e.Events)
-                        await HandleAgentResourceProviderEvent(@event);
-                    break;
-                default:
-                    // Ignore sliently any event namespace that's of no interest.
-                    break;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task HandleAgentResourceProviderEvent(CloudEvent e)
-        {
-            await Task.CompletedTask;
-            return;
-
-            // Event handling is temporarily disabled until the updated event handling mechanism is implemented.
-
-            //if (string.IsNullOrWhiteSpace(e.Subject))
-            //    return;
-
-            //var fileName = e.Subject.Split("/").Last();
-
-            //_logger.LogInformation("The file [{FileName}] managed by the [{ResourceProvider}] resource provider has changed and will be reloaded.",
-            //    fileName, _name);
-
-            //var agentReference = new AgentReference
-            //{
-            //    Name = Path.GetFileNameWithoutExtension(fileName),
-            //    Filename = $"/{_name}/{fileName}",
-            //    Type = AgentTypes.Basic,
-            //    Deleted = false
-            //};
-
-            //var getAgentResult = await LoadAgent(agentReference, null);
-            //agentReference.Name = getAgentResult.Name;
-            //agentReference.Type = getAgentResult.Type;
-
-            //_agentReferences.AddOrUpdate(
-            //    agentReference.Name,
-            //    agentReference,
-            //    (k, v) => v);
-
-            //_logger.LogInformation("The agent reference for the [{AgentName}] agent or type [{AgentType}] was loaded.",
-            //    agentReference.Name, agentReference.Type);
-        }
 
         #endregion
 
@@ -487,53 +424,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
             };
         }
 
-        private async Task<ResourceProviderUpsertResult> UpdateWorkflow(ResourcePath resourcePath, string serializedWorkflow, UnifiedUserIdentity userIdentity)
-        {
-            var workflow = JsonSerializer.Deserialize<Workflow>(serializedWorkflow)
-                ?? throw new ResourceProviderException("The object definition is invalid.",
-                    StatusCodes.Status400BadRequest);
-
-            var existingReference = await _resourceReferenceStore!.GetResourceReference(workflow.Name);
-
-            if (resourcePath.ResourceTypeInstances[0].ResourceId != workflow.Name)
-                throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
-                    StatusCodes.Status400BadRequest);
-
-            var newReference = new AgentReference
-            {
-                Name = workflow.Name!,
-                Type = workflow.Type!,
-                Filename = $"/{_name}/{workflow.Name}.json",
-                Deleted = false
-            };
-
-            workflow.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
-
-            var validator = _resourceValidatorFactory.GetValidator(newReference.ResourceType);
-            if (validator is IValidator workflowValidator)
-            {
-                var context = new ValidationContext<object>(workflow);
-                var validationResult = await workflowValidator.ValidateAsync(context);
-                if (!validationResult.IsValid)
-                {
-                    throw new ResourceProviderException($"Validation failed: {string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage))}",
-                        StatusCodes.Status400BadRequest);
-                }
-            }
-
-            UpdateBaseProperties(workflow, userIdentity, isNew: existingReference == null);
-            if (existingReference == null)
-                await CreateResource<Workflow>(newReference, workflow);
-            else
-                await SaveResource<Workflow>(existingReference, workflow);
-
-            return new ResourceProviderUpsertResult
-            {
-                ObjectId = workflow!.ObjectId,
-                ResourceExists = existingReference != null
-            };
-        }
-
         private async Task<List<ResourceProviderGetResult<AgentAccessToken>>> LoadAgentAccessTokens(ResourcePath resourcePath)
         {
             var agentClientSecretKey = new AgentClientSecretKey
@@ -676,19 +566,19 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
         private async Task<List<ResourceProviderGetResult<AgentFile>>> LoadAgentFiles(string agentName) =>
             (await _resourceReferenceStore!.GetAllResourceReferences<AgentFile>())
-            .Where(r => r.Name.StartsWith(agentName))
-            .Select(r => (r, r.Name.Split("|").Last()))
-            .Select(x => new ResourceProviderGetResult<AgentFile>()
-            {
-                Actions = [],
-                Roles = [],
-                Resource = new AgentFile()
+                .Where(r => r.Name.StartsWith(agentName))
+                .Select(r => (r, r.Name.Split("|").Last()))
+                .Select(x => new ResourceProviderGetResult<AgentFile>()
                 {
-                    Name = x.Item2,
-                    DisplayName = x.Item2,
-                    ObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, agentName, AgentResourceTypeNames.Files, x.Item2)
-                }
-            }).ToList();
+                    Actions = [],
+                    Roles = [],
+                    Resource = new AgentFile()
+                    {
+                        Name = x.Item2,
+                        DisplayName = x.Item2,
+                        ObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, agentName, AgentResourceTypeNames.Files, x.Item2)
+                    }
+                }).ToList();
 
         private async Task<ResourceProviderUpsertResult> UpdateAgentFile(ResourcePath resourcePath, ResourceProviderFormFile formFile, UnifiedUserIdentity userIdentity)
         {

@@ -98,6 +98,8 @@ foreach ($basename in $basenames.GetEnumerator()) {
             --email $email `
             --authenticator dns-azure `
             --config-dir $directories["config"] `
+            --key-type rsa `
+            --cert-name $fqdn `
             --dns-azure-config /app/config/certbot.ini `
             --domain $fqdn `
             --keep-until-expiring `
