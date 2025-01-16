@@ -61,6 +61,21 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string FoundationaLLM_Agent_Workflows_Delete = "FoundationaLLM.Agent/workflows/delete";
 
+        /// <summary>
+        /// Read tools.
+        /// </summary>
+        public const string FoundationaLLM_Agent_Tools_Read = "FoundationaLLM.Agent/tools/read";
+
+        /// <summary>
+        /// Create or update tools.
+        /// </summary>
+        public const string FoundationaLLM_Agent_Tools_Write = "FoundationaLLM.Agent/tools/write";
+
+        /// <summary>
+        /// Delete tools.
+        /// </summary>
+        public const string FoundationaLLM_Agent_Tools_Delete = "FoundationaLLM.Agent/tools/delete";
+
         #endregion
 
         #region AzureOpenAI

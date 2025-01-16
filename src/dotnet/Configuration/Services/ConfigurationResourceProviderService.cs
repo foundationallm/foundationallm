@@ -1,6 +1,6 @@
 ﻿using Azure.Messaging;
-using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
@@ -58,7 +58,8 @@ namespace FoundationaLLM.Configuration.Services
             serviceProvider,
             logger,
             [
-                EventSetEventNamespaces.FoundationaLLM_ResourceProvider_Configuration
+                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand,
+                EventTypes.FoundationaLLM_ResourceProvider_AppConfig_UpdateKeyCommand
             ],
             useInternalReferencesStore: true)
     {
@@ -162,16 +163,13 @@ namespace FoundationaLLM.Configuration.Services
         #region Event handling
 
         /// <inheritdoc/>
-        protected override async Task HandleEvents(EventSetEventArgs e)
+        protected override async Task HandleEventsInternal(EventTypeEventArgs e)
         {
-            _logger.LogInformation("{EventsCount} events received in the {EventsNamespace} events namespace.",
-                e.Events.Count, e.Namespace);
-
-            switch (e.Namespace)
+            switch (e.EventType)
             {
-                case EventSetEventNamespaces.FoundationaLLM_ResourceProvider_Configuration:
+                case EventTypes.FoundationaLLM_ResourceProvider_AppConfig_UpdateKeyCommand:
                     foreach (var @event in e.Events)
-                        await HandleConfigurationResourceProviderEvent(@event);
+                        await HandleKeyUpdateEvent(@event);
                     break;
                 default:
                     // Ignore sliently any event namespace that's of no interest.
@@ -181,7 +179,7 @@ namespace FoundationaLLM.Configuration.Services
             await Task.CompletedTask;
         }
 
-        private async Task HandleConfigurationResourceProviderEvent(CloudEvent e)
+        private async Task HandleKeyUpdateEvent(CloudEvent e)
         {
             if (string.IsNullOrWhiteSpace(e.Subject))
                 return;
@@ -291,6 +289,10 @@ namespace FoundationaLLM.Configuration.Services
             }
             else
                 await _appConfigurationService.SetConfigurationSettingAsync(appConfig.Key, appConfig.Value, appConfig.ContentType);
+
+            await SendResourceProviderEvent(
+                EventTypes.FoundationaLLM_ResourceProvider_AppConfig_UpdateKeyCommand,
+                new AppConfigurationEventData { Key = appConfig.Key });
 
             return new ResourceProviderUpsertResult
             {
