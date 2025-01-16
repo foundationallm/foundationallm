@@ -932,6 +932,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes",
+            "value": "60",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup",
             "value": "false",
             "label": null,
