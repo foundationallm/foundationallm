@@ -120,22 +120,22 @@ var containers = [
         '/operationId'
       ]
     }
-    vectorIndexes: [
-      {
-        path: '/userPromptEmbedding'
-        type: 'diskANN'
-      }
-    ]
-    VectorEmbeddingPolicy: {
-      vectorEmbeddings: [
-        {
-          dataType: 'float32'
-          dimensions: 2048
-          distanceFunction: 'Cosine'
-          path: '/userPromptEmbedding'
-        }
-      ]
-    }
+    // vectorIndexes: [
+    //   {
+    //     path: '/userPromptEmbedding'
+    //     type: 'diskANN'
+    //   }
+    // ]
+    // VectorEmbeddingPolicy: {
+    //   vectorEmbeddings: [
+    //     {
+    //       dataType: 'float32'
+    //       dimensions: 2048
+    //       distanceFunction: 'Cosine'
+    //       path: '/userPromptEmbedding'
+    //     }
+    //   ]
+    // }
     defaultTtl: 300
   }
 ]
@@ -179,7 +179,9 @@ resource main 'Microsoft.DocumentDB/databaseAccounts@2023-09-15' = {
     defaultIdentity: 'FirstPartyIdentity'
     disableKeyBasedMetadataWriteAccess: false
     capabilities: [
-      'EnableNoSQLVectorSearch'
+      {
+        name: 'EnableNoSQLVectorSearch'
+      }
     ]
     cors: []
     disableLocalAuth: false
@@ -290,8 +292,6 @@ resource cosmosContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/con
               path: '/*'
             }
           ]
-
-          vectorIndexes: c.?vectorIndexes == null ? [] : c.?vectorIndexes
         }
 
         partitionKey: {
@@ -303,9 +303,6 @@ resource cosmosContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/con
         uniqueKeyPolicy: {
           uniqueKeys: []
         }
-
-
-        vectorEmbeddingPolicy: c.?VectorEmbeddingPolicy == null ? { vectorEmbeddings: [] } : c.?VectorEmbeddingPolicy
 
         conflictResolutionPolicy: {
           conflictResolutionPath: '/_ts'
@@ -344,8 +341,6 @@ resource cosmosContainerWithTtl 'Microsoft.DocumentDB/databaseAccounts/sqlDataba
               path: '/*'
             }
           ]
-
-          vectorIndexes: c.?vectorIndexes == null ? [] : c.?vectorIndexes
         }
 
         partitionKey: {
@@ -359,9 +354,6 @@ resource cosmosContainerWithTtl 'Microsoft.DocumentDB/databaseAccounts/sqlDataba
         uniqueKeyPolicy: {
           uniqueKeys: []
         }
-
-
-        vectorEmbeddingPolicy: c.?VectorEmbeddingPolicy == null ? { vectorEmbeddings: [] } : c.?VectorEmbeddingPolicy
 
         conflictResolutionPolicy: {
           conflictResolutionPath: '/_ts'
