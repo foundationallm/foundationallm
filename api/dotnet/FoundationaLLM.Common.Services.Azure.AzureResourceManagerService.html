@@ -205,8 +205,8 @@ Class AzureResourceManagerService  <a class="header-action link-secondary" title
 
   <a id="FoundationaLLM_Common_Services_Azure_AzureResourceManagerService_CreateEventGridNamespaceTopicSubscription_" data-uid="FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.CreateEventGridNamespaceTopicSubscription*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Azure_AzureResourceManagerService_CreateEventGridNamespaceTopicSubscription_System_String_System_String_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Threading.CancellationToken)">
-  CreateEventGridNamespaceTopicSubscription(string, string, string, CancellationToken)
+  <h3 id="FoundationaLLM_Common_Services_Azure_AzureResourceManagerService_CreateEventGridNamespaceTopicSubscription_System_String_System_String_System_String_System_Collections_Generic_List_System_String__System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.Threading.CancellationToken)">
+  CreateEventGridNamespaceTopicSubscription(string, string, string, List&lt;string&gt;, CancellationToken)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureResourceManagerService.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -215,7 +215,7 @@ Class AzureResourceManagerService  <a class="header-action link-secondary" title
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; CreateEventGridNamespaceTopicSubscription(string namespaceResourceId, string topicName, string topicSubscriptionName, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; CreateEventGridNamespaceTopicSubscription(string namespaceResourceId, string topicName, string topicSubscriptionName, List&lt;string&gt; includedEventTypes, CancellationToken cancellationToken)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -228,6 +228,9 @@ Class AzureResourceManagerService  <a class="header-action link-secondary" title
 </dd>
     <dt><code>topicSubscriptionName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The name of the subscription to be created.</p>
+</dd>
+    <dt><code>includedEventTypes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>The list of event types to include in the subscription as part of the filters configuration.</p>
 </dd>
     <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
     <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a> signaling the request to cancel the operation.</p>
@@ -255,7 +258,7 @@ Class AzureResourceManagerService  <a class="header-action link-secondary" title
 
   <h3 id="FoundationaLLM_Common_Services_Azure_AzureResourceManagerService_DeleteEventGridNamespaceTopicSubscription_System_String_System_String_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Threading.CancellationToken)">
   DeleteEventGridNamespaceTopicSubscription(string, string, string, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureResourceManagerService.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureResourceManagerService.cs/#L79"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes an Azure Event Grid namespace topic subscription.</p>
@@ -302,7 +305,7 @@ Class AzureResourceManagerService  <a class="header-action link-secondary" title
 
   <h3 id="FoundationaLLM_Common_Services_Azure_AzureResourceManagerService_GetOpenAIAccountProperties_System_String_" data-uid="FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.GetOpenAIAccountProperties(System.String)">
   GetOpenAIAccountProperties(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureResourceManagerService.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureResourceManagerService.cs/#L88"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves the properties of an Azure OpenAI account.</p>

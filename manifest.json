@@ -1312,40 +1312,30 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.EventGridEventTypes.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Events.EventGridTopics.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.EventGridEventTypes.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Events.EventGridTopics.html"
         }
       },
       "version": ""
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.EventGridTopicSubscriptions.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Events.EventTypes.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.EventGridTopicSubscriptions.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Events.EventTypes.html"
         }
       },
       "version": ""
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.EventGridTopics.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Events.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.EventGridTopics.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.EventSetEventNamespaces.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.EventSetEventNamespaces.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Events.html"
         }
       },
       "version": ""
@@ -3252,26 +3242,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.Events.EventGridEventSet.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.Events.EventGridEventSet.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.Events.EventGridEventTypeProfile.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.Events.EventGridEventTypeProfile.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.Events.EventGridTopicProfile.yml",
       "output": {
         ".html": {
@@ -3542,30 +3512,20 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Events.EventGridTopicSubscription.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Events.EventTypeEventArgs.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Events.EventGridTopicSubscription.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Events.EventTypeEventArgs.html"
         }
       },
       "version": ""
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Events.EventSetEventArgs.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Events.EventTypeEventDelegate.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Events.EventSetEventArgs.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Events.EventSetEventDelegate.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Events.EventSetEventDelegate.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Events.EventTypeEventDelegate.html"
         }
       },
       "version": ""

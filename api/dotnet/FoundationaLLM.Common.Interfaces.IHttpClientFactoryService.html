@@ -134,7 +134,7 @@ necessary headers are added to the request.</p>
 
   <h3 id="FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_CreateClient_FoundationaLLM_Common_Models_ResourceProviders_Configuration_APIEndpointConfiguration_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IHttpClientFactoryService.CreateClient(FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   CreateClient(APIEndpointConfiguration, UnifiedUserIdentity?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IHttpClientFactoryService.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IHttpClientFactoryService.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpclient">HttpClient</a> instance based on the endpoint configuration.</p>
@@ -217,9 +217,9 @@ The client name must be registered in the <a class="xref" href="https://learn.mi
 
   <a id="FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_CreateClient_" data-uid="FoundationaLLM.Common.Interfaces.IHttpClientFactoryService.CreateClient*"></a>
 
-  <h3 id="FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_CreateClient__1_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Func_System_Collections_Generic_Dictionary_System_String_System_Object____0__" data-uid="FoundationaLLM.Common.Interfaces.IHttpClientFactoryService.CreateClient``1(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Func{System.Collections.Generic.Dictionary{System.String,System.Object},``0})">
-  CreateClient&lt;T&gt;(string, UnifiedUserIdentity, Func&lt;Dictionary&lt;string, object&gt;, T&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IHttpClientFactoryService.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_CreateClient__1_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Func_System_Collections_Generic_Dictionary_System_String_System_Object____0__System_Collections_Generic_Dictionary_System_String_System_Object__" data-uid="FoundationaLLM.Common.Interfaces.IHttpClientFactoryService.CreateClient``1(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Func{System.Collections.Generic.Dictionary{System.String,System.Object},``0},System.Collections.Generic.Dictionary{System.String,System.Object})">
+  CreateClient&lt;T&gt;(string, UnifiedUserIdentity, Func&lt;Dictionary&lt;string, object&gt;, T&gt;, Dictionary&lt;string, object&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IHttpClientFactoryService.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a <code class="typeparamref">T</code> client instance based on the client name and a client builder delegate.</p>
@@ -227,7 +227,7 @@ The client name must be registered in the <a class="xref" href="https://learn.mi
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;T&gt; CreateClient&lt;T&gt;(string clientName, UnifiedUserIdentity userIdentity, Func&lt;Dictionary&lt;string, object&gt;, T&gt; clientBuilder)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;T&gt; CreateClient&lt;T&gt;(string clientName, UnifiedUserIdentity userIdentity, Func&lt;Dictionary&lt;string, object&gt;, T&gt; clientBuilder, Dictionary&lt;string, object&gt;? clientBuilderParameters = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -240,6 +240,9 @@ The client name must be registered in the <a class="xref" href="https://learn.mi
 </dd>
     <dt><code>clientBuilder</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;, T&gt;</dt>
     <dd><p>A delegate that creates the <code class="typeparamref">T</code> client instance based on a dictionary of values. The keys available in the dictionary are defined in <a class="xref" href="FoundationaLLM.Common.Constants.HttpClientFactoryServiceKeyNames.html">HttpClientFactoryServiceKeyNames</a>.</p>
+</dd>
+    <dt><code>clientBuilderParameters</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd><p>A dictionary of parameters to pass to the client builder delegate.</p>
 </dd>
   </dl>
 
@@ -270,7 +273,7 @@ The client name must be registered in the <a class="xref" href="https://learn.mi
 
   <h3 id="FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_CreateUnregisteredClient_System_Nullable_System_TimeSpan__" data-uid="FoundationaLLM.Common.Interfaces.IHttpClientFactoryService.CreateUnregisteredClient(System.Nullable{System.TimeSpan})">
   CreateUnregisteredClient(TimeSpan?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IHttpClientFactoryService.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IHttpClientFactoryService.cs/#L53"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new unregistered <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpclient">HttpClient</a> instance with a timeout.</p>

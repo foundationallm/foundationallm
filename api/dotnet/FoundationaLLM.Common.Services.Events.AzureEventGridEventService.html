@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService" class="text-break">
-Class AzureEventGridEventService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L18"><i class="bi bi-code-slash"></i></a>
+Class AzureEventGridEventService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L21"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -170,7 +170,7 @@ Class AzureEventGridEventService  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Events_AzureEventGridEventServiceSettings__Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Events_AzureEventGridEventServiceProfile__FoundationaLLM_Common_Interfaces_IAzureResourceManagerService_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Events_AzureEventGridEventService__" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings},Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile},FoundationaLLM.Common.Interfaces.IAzureResourceManagerService,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Events.AzureEventGridEventService})">
   AzureEventGridEventService(IOptions&lt;AzureEventGridEventServiceSettings&gt;, IOptions&lt;AzureEventGridEventServiceProfile&gt;, IAzureResourceManagerService, IHttpClientFactoryService, ILogger&lt;AzureEventGridEventService&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L53"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.html">AzureEventGridEventService</a> event service.</p>
@@ -211,6 +211,74 @@ Class AzureEventGridEventService  <a class="header-action link-secondary" title=
 
 
 
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_Active_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.Active*"></a>
+
+  <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_Active" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.Active">
+  Active
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Indicates whether the event service has started successfully and is active.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Active { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_ServiceInstanceName_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ServiceInstanceName*"></a>
+
+  <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_ServiceInstanceName" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ServiceInstanceName">
+  ServiceInstanceName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The name of the service instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string ServiceInstanceName { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
@@ -219,7 +287,7 @@ Class AzureEventGridEventService  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_ExecuteAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ExecuteAsync(System.Threading.CancellationToken)">
   ExecuteAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L105"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Executes the event service until cancellation is signaled.</p>
@@ -253,11 +321,52 @@ Class AzureEventGridEventService  <a class="header-action link-secondary" title=
 
 
 
+  <a id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_SendEvent_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SendEvent*"></a>
+
+  <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_SendEvent_System_String_Azure_Messaging_CloudEvent_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SendEvent(System.String,Azure.Messaging.CloudEvent)">
+  SendEvent(string, CloudEvent)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L185"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sends an event to the event service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task SendEvent(string topicName, CloudEvent cloudEvent)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>topicName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the topic where the event should be sent.</p>
+</dd>
+    <dt><code>cloudEvent</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/azure.messaging.cloudevent">CloudEvent</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/azure.messaging.cloudevent">CloudEvent</a> object containing the details of the event.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_StartAsync_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StartAsync*"></a>
 
   <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_StartAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StartAsync(System.Threading.CancellationToken)">
   StartAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L74"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Starts the event service, allowing it to initialize.</p>
@@ -295,7 +404,7 @@ Class AzureEventGridEventService  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_StopAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StopAsync(System.Threading.CancellationToken)">
   StopAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L101"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Stops the event service, allowing it to cleanup.</p>
@@ -329,11 +438,11 @@ Class AzureEventGridEventService  <a class="header-action link-secondary" title=
 
 
 
-  <a id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_SubscribeToEventSetEvent_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SubscribeToEventSetEvent*"></a>
+  <a id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_SubscribeToEventTypeEvent_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SubscribeToEventTypeEvent*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_SubscribeToEventSetEvent_System_String_FoundationaLLM_Common_Models_Events_EventSetEventDelegate_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SubscribeToEventSetEvent(System.String,FoundationaLLM.Common.Models.Events.EventSetEventDelegate)">
-  SubscribeToEventSetEvent(string, EventSetEventDelegate)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L171"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_SubscribeToEventTypeEvent_System_String_FoundationaLLM_Common_Models_Events_EventTypeEventDelegate_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SubscribeToEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)">
+  SubscribeToEventTypeEvent(string, EventTypeEventDelegate)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L161"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds an event set event delgate to the list of event handlers for a specified event set namespace.</p>
@@ -341,15 +450,15 @@ Class AzureEventGridEventService  <a class="header-action link-secondary" title=
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SubscribeToEventSetEvent(string eventNamespace, EventSetEventDelegate eventHandler)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SubscribeToEventTypeEvent(string eventType, EventTypeEventDelegate eventHandler)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>eventNamespace</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The name of the event namespace.</p>
+    <dt><code>eventType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The event type to subscribe to.</p>
 </dd>
-    <dt><code>eventHandler</code> <a class="xref" href="FoundationaLLM.Common.Models.Events.EventSetEventDelegate.html">EventSetEventDelegate</a></dt>
+    <dt><code>eventHandler</code> <a class="xref" href="FoundationaLLM.Common.Models.Events.EventTypeEventDelegate.html">EventTypeEventDelegate</a></dt>
     <dd><p>The function to be invoked during event handling.</p>
 </dd>
   </dl>
@@ -365,11 +474,11 @@ Class AzureEventGridEventService  <a class="header-action link-secondary" title=
 
 
 
-  <a id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_UnsubscribeFromEventSetEvent_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.UnsubscribeFromEventSetEvent*"></a>
+  <a id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_UnsubscribeFromEventTypeEvent_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.UnsubscribeFromEventTypeEvent*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_UnsubscribeFromEventSetEvent_System_String_FoundationaLLM_Common_Models_Events_EventSetEventDelegate_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.UnsubscribeFromEventSetEvent(System.String,FoundationaLLM.Common.Models.Events.EventSetEventDelegate)">
-  UnsubscribeFromEventSetEvent(string, EventSetEventDelegate)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L185"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_UnsubscribeFromEventTypeEvent_System_String_FoundationaLLM_Common_Models_Events_EventTypeEventDelegate_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.UnsubscribeFromEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)">
+  UnsubscribeFromEventTypeEvent(string, EventTypeEventDelegate)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L175"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes an event set event delegate from the list of event handlers for a specified event set namespace.</p>
@@ -377,15 +486,15 @@ Class AzureEventGridEventService  <a class="header-action link-secondary" title=
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void UnsubscribeFromEventSetEvent(string eventNamespace, EventSetEventDelegate eventHandler)</code></pre>
+    <pre><code class="lang-csharp hljs">public void UnsubscribeFromEventTypeEvent(string eventType, EventTypeEventDelegate eventHandler)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>eventNamespace</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The name of the event namespace.</p>
+    <dt><code>eventType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The event type to subscribe to.</p>
 </dd>
-    <dt><code>eventHandler</code> <a class="xref" href="FoundationaLLM.Common.Models.Events.EventSetEventDelegate.html">EventSetEventDelegate</a></dt>
+    <dt><code>eventHandler</code> <a class="xref" href="FoundationaLLM.Common.Models.Events.EventTypeEventDelegate.html">EventTypeEventDelegate</a></dt>
     <dd><p>The function to be invoked during event handling.</p>
 </dd>
   </dl>
@@ -405,7 +514,7 @@ Class AzureEventGridEventService  <a class="header-action link-secondary" title=
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L18" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L21" class="edit-link">Edit this page</a>
         </div>
 
 

@@ -77,6 +77,65 @@
 <h5>Note</h5>
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
+<h2 id="starting-from-091">Starting from 0.9.1</h2>
+<h3 id="app-configuration-settings">App configuration settings</h3>
+<p>To support the event grid infrastructure, the following new App Configuration settings are required.</p>
+<pre><code class="lang-json">[
+	{
+		&quot;key&quot;: &quot;FoundationaLLM:Events:Profiles:CoreAPI&quot;,
+		&quot;label&quot;: null,
+		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;: 5,\&quot;Topics\&quot;: [{\&quot;Name\&quot;: \&quot;resource-providers\&quot;,\&quot;SubscriptionPrefix\&quot;: \&quot;rp-core\&quot;}]}&quot;,
+		&quot;content_type&quot;: &quot;application/json&quot;,
+		&quot;tags&quot;: {}
+	},
+	{
+		&quot;key&quot;: &quot;FoundationaLLM:Events:Profiles:GatekeeperAPI&quot;,
+		&quot;label&quot;: null,
+		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;:60,\&quot;Topics\&quot;:[]}&quot;,
+		&quot;content_type&quot;: &quot;application/json&quot;,
+		&quot;tags&quot;: {}
+	},
+	{
+		&quot;key&quot;: &quot;FoundationaLLM:Events:Profiles:GatewayAPI&quot;,
+		&quot;label&quot;: null,
+		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;:60,\&quot;Topics\&quot;:[]}&quot;,
+		&quot;content_type&quot;: &quot;application/json&quot;,
+		&quot;tags&quot;: {}
+	},
+	{
+		&quot;key&quot;: &quot;FoundationaLLM:Events:Profiles:ManagementAPI&quot;,
+		&quot;label&quot;: null,
+		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;: 5,\&quot;Topics\&quot;: [{\&quot;Name\&quot;: \&quot;resource-providers\&quot;,\&quot;SubscriptionPrefix\&quot;: \&quot;rp-management\&quot;}]}&quot;,
+		&quot;content_type&quot;: &quot;application/json&quot;,
+		&quot;tags&quot;: {}
+	},
+	{
+		&quot;key&quot;: &quot;FoundationaLLM:Events:Profiles:OrchestrationAPI&quot;,
+		&quot;label&quot;: null,
+		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;: 5,\&quot;Topics\&quot;: [{\&quot;Name\&quot;: \&quot;resource-providers\&quot;,\&quot;SubscriptionPrefix\&quot;: \&quot;rp-orch\&quot;}]}&quot;,
+		&quot;content_type&quot;: &quot;application/json&quot;,
+		&quot;tags&quot;: {}
+	},
+	{
+		&quot;key&quot;: &quot;FoundationaLLM:Events:Profiles:VectorizationAPI&quot;,
+		&quot;label&quot;: null,
+		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;:60,\&quot;Topics\&quot;:[]}&quot;,
+		&quot;content_type&quot;: &quot;application/json&quot;,
+		&quot;tags&quot;: {}
+	},
+	{
+		&quot;key&quot;: &quot;FoundationaLLM:Events:Profiles:VectorizationWorker&quot;,
+		&quot;label&quot;: null,
+		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;:60,\&quot;Topics\&quot;:[]}&quot;,
+		&quot;content_type&quot;: &quot;application/json&quot;,
+		&quot;tags&quot;: {}
+	}
+]
+</code></pre>
+<blockquote>
+<p>Note: The event grid system topics need to be removed.</p>
+</blockquote>
+<p>The following topic needs to be created in the event grid namespace, must have a <code>resource-providers</code> topic with a publisher type of <code>Custom</code> and an input schema of <code>Cloud Events v1.0</code>.</p>
 <h2 id="starting-with-091-rc117">Starting with 0.9.1-rc117</h2>
 <h3 id="agent-configuration-changes">Agent configuration changes</h3>
 <pre><code class="lang-json">&quot;text_rewrite_settings&quot;: {

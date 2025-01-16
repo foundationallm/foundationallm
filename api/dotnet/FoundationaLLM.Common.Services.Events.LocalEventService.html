@@ -205,8 +205,8 @@ Class LocalEventService  <a class="header-action link-secondary" title="View sou
 
   <a id="FoundationaLLM_Common_Services_Events_LocalEventService_StartLocalEventProcessing_" data-uid="FoundationaLLM.Common.Services.Events.LocalEventService.StartLocalEventProcessing*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Events_LocalEventService_StartLocalEventProcessing_System_Func_FoundationaLLM_Common_Models_Events_EventSetEventArgs_System_Threading_Tasks_Task__" data-uid="FoundationaLLM.Common.Services.Events.LocalEventService.StartLocalEventProcessing(System.Func{FoundationaLLM.Common.Models.Events.EventSetEventArgs,System.Threading.Tasks.Task})">
-  StartLocalEventProcessing(Func&lt;EventSetEventArgs, Task&gt;)
+  <h3 id="FoundationaLLM_Common_Services_Events_LocalEventService_StartLocalEventProcessing_System_Func_FoundationaLLM_Common_Models_Events_EventTypeEventArgs_System_Threading_Tasks_Task__" data-uid="FoundationaLLM.Common.Services.Events.LocalEventService.StartLocalEventProcessing(System.Func{FoundationaLLM.Common.Models.Events.EventTypeEventArgs,System.Threading.Tasks.Task})">
+  StartLocalEventProcessing(Func&lt;EventTypeEventArgs, Task&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/LocalEventService.cs/#L51"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -217,12 +217,12 @@ In the background, the extraction thread will dequeue and submit them to final p
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void StartLocalEventProcessing(Func&lt;EventSetEventArgs, Task&gt; eventHandler)</code></pre>
+    <pre><code class="lang-csharp hljs">public void StartLocalEventProcessing(Func&lt;EventTypeEventArgs, Task&gt; eventHandler)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>eventHandler</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Events.EventSetEventArgs.html">EventSetEventArgs</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a>&gt;</dt>
+    <dt><code>eventHandler</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Events.EventTypeEventArgs.html">EventTypeEventArgs</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a>&gt;</dt>
     <dd><p>The event handler invoked to process each set of events.</p>
 </dd>
   </dl>
@@ -238,25 +238,25 @@ In the background, the extraction thread will dequeue and submit them to final p
 
 
 
-  <a id="FoundationaLLM_Common_Services_Events_LocalEventService_SubscribeToEventNamespaces_" data-uid="FoundationaLLM.Common.Services.Events.LocalEventService.SubscribeToEventNamespaces*"></a>
+  <a id="FoundationaLLM_Common_Services_Events_LocalEventService_SubscribeToEventTypes_" data-uid="FoundationaLLM.Common.Services.Events.LocalEventService.SubscribeToEventTypes*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Events_LocalEventService_SubscribeToEventNamespaces_System_Collections_Generic_List_System_String__" data-uid="FoundationaLLM.Common.Services.Events.LocalEventService.SubscribeToEventNamespaces(System.Collections.Generic.List{System.String})">
-  SubscribeToEventNamespaces(List&lt;string&gt;)
+  <h3 id="FoundationaLLM_Common_Services_Events_LocalEventService_SubscribeToEventTypes_System_Collections_Generic_List_System_String__" data-uid="FoundationaLLM.Common.Services.Events.LocalEventService.SubscribeToEventTypes(System.Collections.Generic.List{System.String})">
+  SubscribeToEventTypes(List&lt;string&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Events/LocalEventService.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Subscribes this instance to a specified list of event namespaces supported by the <a class="xref" href="FoundationaLLM.Common.Interfaces.IEventService.html">IEventService</a>.</p>
+  <div class="markdown level1 summary"><p>Subscribes this instance to a specified list of event types supported by the <a class="xref" href="FoundationaLLM.Common.Interfaces.IEventService.html">IEventService</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SubscribeToEventNamespaces(List&lt;string&gt; eventNamespaces)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SubscribeToEventTypes(List&lt;string&gt; eventTypes)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>eventNamespaces</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
-    <dd><p>The list with the namespace to subscribe to.</p>
+    <dt><code>eventTypes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>The list with the event types to subscribe to.</p>
 </dd>
   </dl>
 
