@@ -1,7 +1,7 @@
 ﻿using Azure.Messaging;
 using FluentValidation;
-using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
@@ -48,7 +48,7 @@ namespace FoundationaLLM.DataSource.ResourceProviders
             serviceProvider,
             loggerFactory.CreateLogger<DataSourceResourceProviderService>(),
             [
-                EventSetEventNamespaces.FoundationaLLM_ResourceProvider_DataSource
+                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ],
             useInternalReferencesStore: true)
     {
@@ -158,66 +158,6 @@ namespace FoundationaLLM.DataSource.ResourceProviders
                         $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest);
             }
-        }
-
-        #endregion
-
-        #region Event handling
-
-        /// <inheritdoc/>
-        protected override async Task HandleEvents(EventSetEventArgs e)
-        {
-            _logger.LogInformation("{EventsCount} events received in the {EventsNamespace} events namespace.",
-                e.Events.Count, e.Namespace);
-
-            switch (e.Namespace)
-            {
-                case EventSetEventNamespaces.FoundationaLLM_ResourceProvider_DataSource:
-                    foreach (var @event in e.Events)
-                        await HandleDataSourceResourceProviderEvent(@event);
-                    break;
-                default:
-                    // Ignore sliently any event namespace that's of no interest.
-                    break;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task HandleDataSourceResourceProviderEvent(CloudEvent e)
-        {
-            await Task.CompletedTask;
-            return;
-
-            // Event handling is temporarily disabled until the updated event handling mechanism is implemented.
-
-            //if (string.IsNullOrWhiteSpace(e.Subject))
-            //    return;
-
-            //var fileName = e.Subject.Split("/").Last();
-
-            //_logger.LogInformation("The file [{FileName}] managed by the [{ResourceProvider}] resource provider has changed and will be reloaded.",
-            //    fileName, _name);
-
-            //var dataSourceReference = new DataSourceReference
-            //{
-            //    Name = Path.GetFileNameWithoutExtension(fileName),
-            //    Filename = $"/{_name}/{fileName}",
-            //    Type = DataSourceTypes.Basic,
-            //    Deleted = false
-            //};
-
-            //var dataSource = await LoadDataSource(dataSourceReference);
-            //dataSourceReference.Name = dataSource.Name;
-            //dataSourceReference.Type = dataSource.Type!;
-
-            //_dataSourceReferences.AddOrUpdate(
-            //    dataSourceReference.Name,
-            //    dataSourceReference,
-            //    (k, v) => v);
-
-            //_logger.LogInformation("The data source reference for the [{DataSourceName}] agent or type [{DataSourceType}] was loaded.",
-            //    dataSourceReference.Name, dataSourceReference.Type);
         }
 
         #endregion
