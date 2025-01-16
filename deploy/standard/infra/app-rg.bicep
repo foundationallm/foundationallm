@@ -33,7 +33,7 @@ param monitorWorkspaceName string
 @description('Networking Resource Group Name')
 param networkingResourceGroupName string
 
-param openAiName string
+param openAiName stringMLS_PIPELINE_API_SSL_SECRET_NAME
 
 param deployOpenAi bool
 
@@ -201,7 +201,7 @@ module eventgrid 'modules/eventgrid.bicep' = {
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     opsResourceGroupName: opsResourceGroupName
     resourceSuffix: resourceSuffix
-    topics: [ 'storage', 'vectorization', 'configuration' ]
+    topics: [ 'storage', 'vectorization', 'configuration', 'resource-providers' ]
     tags: tags
   }
 }
