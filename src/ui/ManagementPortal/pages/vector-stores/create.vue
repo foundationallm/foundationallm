@@ -39,6 +39,7 @@
 						placeholder="Enter vector store name"
 						aria-labelledby="aria-source-name aria-source-name-desc"
 						@input="handleNameInput"
+						:invalid="errors.name"
 					/>
 					<span
 						v-if="nameValidationStatus === 'valid'"
@@ -57,6 +58,7 @@
 						❌
 					</span>
 				</div>
+				<div v-if="errors.name" class="error-message">{{ errors.name }}</div>
 			</div>
 
 			<!-- Description -->
@@ -84,7 +86,9 @@
 					class="dropdown--agent"
 					placeholder="--Select--"
 					aria-labelledby="aria-source-type"
+					:invalid="errors.indexer"
 				/>
+				<div v-if="errors.indexer" class="error-message">{{ errors.indexer }}</div>
 			</div>
 
 			<!-- Settings -->
@@ -99,7 +103,9 @@
 					placeholder="Enter index name"
 					aria-labelledby="aria-index-name"
 					@input="handleIndexNameInput"
+					:invalid="errors.IndexName"
 				/>
+				<div v-if="errors.IndexName" class="error-message">{{ errors.IndexName }}</div>
 			</div>
 
 			<!-- Embedding Field Name -->
@@ -111,7 +117,9 @@
 					class="w-100"
 					placeholder="Enter embedding field name"
 					aria-labelledby="aria-embedding-field-name"
+					:invalid="errors.EmbeddingFieldName"
 				/>
+				<div v-if="errors.EmbeddingFieldName" class="error-message">{{ errors.EmbeddingFieldName }}</div>
 			</div>
 
 			<!-- Text Field Name -->
@@ -123,7 +131,9 @@
 					class="w-100"
 					placeholder="Enter text field name"
 					aria-labelledby="aria-text-field-name"
+					:invalid="errors.TextFieldName"
 				/>
+				<div v-if="errors.TextFieldName" class="error-message">{{ errors.TextFieldName }}</div>
 			</div>
 
 			<!-- Indexing Service -->
@@ -139,7 +149,11 @@
 					class="dropdown--agent"
 					placeholder="--Select--"
 					aria-labelledby="aria-api-endpoint-configuration-object-id"
+					:invalid="errors.api_endpoint_configuration_object_id"
 				/>
+				<div v-if="errors.api_endpoint_configuration_object_id" class="error-message">
+					{{ errors.api_endpoint_configuration_object_id }}
+				</div>
 			</div>
 
 			<!-- Buttons -->
@@ -215,6 +229,15 @@ export default {
 			],
 
 			profileIndexerAPIEndpointOptions: [] as any[],
+
+			errors: {
+				name: null,
+				indexer: null,
+				IndexName: null,
+				EmbeddingFieldName: null,
+				TextFieldName: null,
+				api_endpoint_configuration_object_id: null,
+			},
 		};
 	},
 
@@ -298,6 +321,15 @@ export default {
 		},
 
 		async handleCreateVectorStore() {
+			if (!this.validateForm()) {
+				this.$toast.add({
+					severity: 'error',
+					detail: 'Please correct the errors before submitting.',
+					life: 5000,
+				});
+				return;
+			}
+
 			this.loading = true;
 			let successMessage = null as null | string;
 			try {
@@ -353,6 +385,55 @@ export default {
 				});
 			}
 			this.loading = false;
+		},
+
+		validateForm() {
+			this.errors = {
+				name: null,
+				indexer: null,
+				IndexName: null,
+				EmbeddingFieldName: null,
+				TextFieldName: null,
+				api_endpoint_configuration_object_id: null,
+			};
+
+			let isValid = true;
+
+			// Name validation
+			if (!this.vectorStore.name) {
+				this.errors.name = "Name is required.";
+				isValid = false;
+			}
+
+			// Indexer validation
+			if (!this.vectorStore.indexer) {
+				this.errors.indexer = "Indexer is required.";
+				isValid = false;
+			}
+
+			// Conditional fields if Azure AI Search Indexer is selected
+			if (this.vectorStore.indexer === "AzureAISearchIndexer") {
+				if (!this.vectorStore.settings.IndexName) {
+					this.errors.IndexName = "Index Name is required.";
+					isValid = false;
+				}
+				if (!this.vectorStore.settings.EmbeddingFieldName) {
+					this.errors.EmbeddingFieldName = "Embedding Field Name is required.";
+					isValid = false;
+				}
+				if (!this.vectorStore.settings.TextFieldName) {
+					this.errors.TextFieldName = "Text Field Name is required.";
+					isValid = false;
+				}
+			}
+
+			// Indexing Service validation
+			if (!this.vectorStore.settings.api_endpoint_configuration_object_id) {
+				this.errors.api_endpoint_configuration_object_id = "Indexing Service is required.";
+				isValid = false;
+			}
+
+			return isValid;
 		},
 	},
 };
@@ -586,5 +667,11 @@ input {
 			}
 		}
 	}
+}
+
+.error-message {
+	color: red;
+	font-size: 1rem;
+	margin-top: 4px;
 }
 </style>
