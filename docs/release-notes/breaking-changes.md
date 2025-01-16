@@ -3,6 +3,16 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting with 0.9.1-rc125
+
+### Configuration changes
+
+Added the following App Configuration value:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+`FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes` | `60` | The timeout in minutes for a user's auth token in the User Portal. |
+
 ## Starting with 0.9.1-rc117
 
 ### Agent configuration changes
