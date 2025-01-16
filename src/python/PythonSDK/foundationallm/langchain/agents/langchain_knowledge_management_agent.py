@@ -524,14 +524,14 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 parsed_user_prompt = parsed_user_prompt.split(':', 1)[1].strip()
             else:
 
-                if f"{agent.workflow.package_name}_tools" in self.plugin_manager.object_cache:
-                    tools = self.plugin_manager.object_cache[f"{agent.workflow.package_name}_tools"]
+                if f"{agent.name}_{agent.workflow.package_name}_tools" in self.plugin_manager.object_cache:
+                    tools = self.plugin_manager.object_cache[f"{agent.name}_{agent.workflow.package_name}_tools"]
                 else:
                     # Populate tools list from agent configuration
                     for tool in agent.tools:
                         tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
 
-                    self.plugin_manager.object_cache[f"{agent.workflow.package_name}_tools"] = tools
+                    self.plugin_manager.object_cache[f"{agent.name}_{agent.workflow.package_name}_tools"] = tools
 
             # create the workflow
             workflow_factory = WorkflowFactory(self.plugin_manager)
