@@ -1,30 +1,16 @@
 """
 Main entry-point for the FoundationaLLM LangChainAPI.
-Runs web server exposing the API.
 """
 from fastapi import FastAPI
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
-from app.dependencies import API_NAME, get_config
-from app.routers import (
-    manage,
-    completions,
-    status
-)
-from foundationallm.plugins import PluginManager
-from foundationallm.telemetry import Telemetry
-
-# Open a connection to the app configuration
-config = get_config()
-# Start collecting telemetry
-Telemetry.configure_monitoring(config, f'FoundationaLLM:APIEndpoints:{API_NAME}:Essentials:AppInsightsConnectionString', API_NAME)
-
-plugin_manager = PluginManager(config, Telemetry.get_logger(__name__))
-plugin_manager.load_external_modules()
+from app.lifespan_manager import lifespan
+from app.routers import completions, status
 
 app = FastAPI(
-    title=f'FoundationaLLM {API_NAME}',
+    lifespan=lifespan,
+    title=f'FoundationaLLM LangChainAPI',
     summary='API for interacting with large language models using the LangChain orchestrator.',
-    description=f"""The FoundationaLLM {API_NAME} is a wrapper around LangChain functionality
+    description=f"""The FoundationaLLM LangChainAPI is a wrapper around LangChain functionality
                 contained in the foundationallm.core Python SDK.""",
     version='1.0.0',
     contact={
@@ -38,16 +24,13 @@ app = FastAPI(
     license_info={
         'name': 'FoundationaLLM Software License',
         'url': 'https://www.foundationallm.ai/license',
-    },
-    config=config,
-    plugin_manager=plugin_manager
+    }
 )
 
-FastAPIInstrumentor.instrument_app(app)
-
-app.include_router(manage.router)
 app.include_router(completions.router)
 app.include_router(status.router)
+
+FastAPIInstrumentor.instrument_app(app)
 
 @app.get('/')
 async def root():
@@ -59,4 +42,4 @@ async def root():
     str
         Returns a JSON object containing a message and value.
     """
-    return { 'message': f'FoundationaLLM {API_NAME}' }
+    return { 'message': f'FoundationaLLM LangChainAPI' }
