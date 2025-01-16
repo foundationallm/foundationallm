@@ -3,37 +3,31 @@ The API endpoint for returning the completion from the LLM for the specified use
 """
 import asyncio
 import json
-from typing import Optional, List
+from aiohttp import ClientSession
+from app.dependencies import validate_api_key_header
+from app.lifespan_manager import get_config, get_http_client_session, get_plugin_manager
 from fastapi import (
     APIRouter,
-    BackgroundTasks,
     Body,
     Depends,
     Header,
     HTTPException,
-    Request,
-    Response,
     status
 )
-
 from opentelemetry.trace import SpanKind
-
+from typing import Optional, List
 from foundationallm.config import Configuration, UserIdentity
+from foundationallm.langchain.orchestration import OrchestrationManager
+from foundationallm.models.agents import KnowledgeManagementCompletionRequest
 from foundationallm.models.operations import (
     LongRunningOperation,
     LongRunningOperationLogEntry,
     OperationStatus
 )
-from foundationallm.models.orchestration import (
-    CompletionRequestBase,
-    CompletionResponse
-)
-from foundationallm.models.agents import KnowledgeManagementCompletionRequest
+from foundationallm.models.orchestration import CompletionRequestBase, CompletionResponse
 from foundationallm.operations import OperationsManager
 from foundationallm.plugins import PluginManager
-from foundationallm.langchain.orchestration import OrchestrationManager
 from foundationallm.telemetry import Telemetry
-from app.dependencies import handle_exception, validate_api_key_header
 
 # Initialize telemetry logging
 logger = Telemetry.get_logger(__name__)
@@ -67,11 +61,11 @@ async def resolve_completion_request(request_body: dict = Body(...)) -> Completi
     }
 )
 async def submit_completion_request(
-    raw_request: Request,
-    response: Response,
-    background_tasks: BackgroundTasks,
     instance_id: str,
     completion_request: CompletionRequestBase = Depends(resolve_completion_request),
+    config: Configuration = Depends(get_config),
+    http_client_session: ClientSession = Depends(get_http_client_session),
+    plugin_manager: PluginManager = Depends(get_plugin_manager),
     x_user_identity: Optional[str] = Header(None)
 ) -> LongRunningOperation:
     """
@@ -91,24 +85,22 @@ async def submit_completion_request(
             span.set_attribute('instance_id', instance_id)
             span.set_attribute('user_identity', x_user_identity)
 
-            location = f'{raw_request.base_url}instances/{instance_id}/async-completions/{operation_id}/status'
-            response.headers['location'] = location
-
             # Create an operations manager to create the operation.
-            operations_manager = OperationsManager(raw_request.app.extra['config'])
+            operations_manager = OperationsManager(config, http_client_session)
             # Submit the completion request operation to the state API.
             operation = await operations_manager.create_operation_async(operation_id, instance_id, x_user_identity)
 
             # Start a background task to perform the completion request.
-            background_tasks.add_task(
-                create_completion_response,
-                operation_id,
-                instance_id,
-                completion_request,
-                raw_request.app.extra['config'],
-                raw_request.app.extra['plugin_manager'],
-                operations_manager,
-                x_user_identity
+            asyncio.create_task(
+                create_completion_response(
+                    operation_id,
+                    instance_id,
+                    completion_request,
+                    config,
+                    plugin_manager,
+                    operations_manager,
+                    x_user_identity
+                )
             )
 
             # Return the long running operation object.
@@ -121,7 +113,7 @@ async def create_completion_response(
     operation_id: str,
     instance_id: str,
     completion_request: KnowledgeManagementCompletionRequest,
-    configuration: Configuration,
+    config: Configuration,
     plugin_manager: PluginManager,
     operations_manager: OperationsManager,
     x_user_identity: Optional[str] = Header(None)
@@ -145,18 +137,18 @@ async def create_completion_response(
             )
 
             # Create the user identity object from the x_user_identity header.
-            user_identity_dict = json.loads(x_user_identity)
-            user_identity = UserIdentity(**user_identity_dict)
+            user_identity = UserIdentity(**json.loads(x_user_identity))
 
             # Create an orchestration manager to process the completion request.
             orchestration_manager = OrchestrationManager(
                 completion_request = completion_request,
-                configuration = configuration,
+                configuration = config,
                 plugin_manager = plugin_manager,
                 operations_manager = operations_manager,
                 instance_id = instance_id,
                 user_identity = user_identity
             )
+
             # Await the completion response from the orchestration manager.
             completion_response = await orchestration_manager.invoke_async(completion_request)
             completion_status = OperationStatus.COMPLETED if completion_response.errors == [] else OperationStatus.FAILED
@@ -208,13 +200,14 @@ async def create_completion_response(
     }
 )
 async def get_operation_status(
-    raw_request: Request,
     instance_id: str,
-    operation_id: str
+    operation_id: str,
+    config: Configuration = Depends(get_config),
+    http_client_session: ClientSession = Depends(get_http_client_session)
 ) -> LongRunningOperation:
     with tracer.start_as_current_span('langchainapi_get_operation_status', kind=SpanKind.SERVER) as span:
         # Create an operations manager to get the operation status.
-        operations_manager = OperationsManager(raw_request.app.extra['config'])
+        operations_manager = OperationsManager(config, http_client_session)
 
         try:
             span.set_attribute('operation_id', operation_id)
@@ -243,13 +236,14 @@ async def get_operation_status(
     }
 )
 async def get_operation_result(
-    raw_request: Request,
     instance_id: str,
-    operation_id: str
+    operation_id: str,
+    config: Configuration = Depends(get_config),
+    http_client_session: ClientSession = Depends(get_http_client_session)
 ) -> CompletionResponse:
     with tracer.start_as_current_span('langchainapi_get_operation_result', kind=SpanKind.SERVER) as span:
         # Create an operations manager to get the operation result.
-        operations_manager = OperationsManager(raw_request.app.extra['config'])
+        operations_manager = OperationsManager(config, http_client_session)
 
         try:
             span.set_attribute('operation_id', operation_id)
@@ -264,6 +258,8 @@ async def get_operation_result(
                 raise HTTPException(status_code=404)
 
             return completion_response
+        except HTTPException as he:
+            handle_exception(he, he.status_code)
         except Exception as e:
             handle_exception(e)
 
@@ -276,13 +272,14 @@ async def get_operation_result(
     }
 )
 async def get_operation_logs(
-    raw_request: Request,
     instance_id: str,
-    operation_id: str
+    operation_id: str,
+    config: Configuration = Depends(get_config),
+    http_client_session: ClientSession = Depends(get_http_client_session)
 ) -> List[LongRunningOperationLogEntry]:
     with tracer.start_as_current_span('langchainapi_get_operation_log', kind=SpanKind.SERVER) as span:
         # Create an operations manager to get the operation log.
-        operations_manager = OperationsManager(raw_request.app.extra['config'])
+        operations_manager = OperationsManager(config, http_client_session)
 
         try:
             span.set_attribute('operation_id', operation_id)
@@ -297,5 +294,22 @@ async def get_operation_logs(
                 raise HTTPException(status_code=404)
 
             return log
+        except HTTPException as he:
+            handle_exception(he, he.status_code)
         except Exception as e:
             handle_exception(e)
+
+def handle_exception(exception: Exception, status_code: int = 500):
+    """
+    Handles an exception that occurred while processing a request.
+    
+    Parameters
+    ----------
+    exception : Exception
+        The exception that occurred.
+    """
+    logger.error(exception, stack_info=True, exc_info=True)
+    raise HTTPException(
+        status_code = status_code,
+        detail = str(exception)
+    ) from exception
