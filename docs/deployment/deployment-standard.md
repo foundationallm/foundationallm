@@ -181,16 +181,16 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
     > [!IMPORTANT]
     > The user running the script will need to have the appropriate permissions to assign roles to the managed identities. The user will need to be a `Global Administrator` or have the `Privileged Role Administrator` role in the Entra ID tenant.
-    The syntax for running the script from the `deploy\quick-start\common\scripts` folder is:
+    The syntax for running the script from the `deploy\standard` folder is:
 
     ```pwsh
-        cd .\deploy\quick-start
+        cd .\deploy\standard
         ..\common\scripts\Set-FllmGraphRoles.ps1 -resourceGroupName rg-<azd env name>
     ```
     Finally, you will need to update the Authorization Callbacks in the App Registrations created in the Entra ID tenant by running the following script:
 
     ```pwsh
-        cd .\deploy\quick-start
+        cd .\deploy\standard
         ..\common\scripts\Update-OAuthCallbackUris.ps1
     ```
 
