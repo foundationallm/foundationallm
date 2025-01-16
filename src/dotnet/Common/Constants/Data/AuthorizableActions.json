@@ -56,6 +56,21 @@
 				"name": "FoundationaLLM.Agent/workflows/delete",
 				"description": "Delete workflows.",
 				"field_name": "FoundationaLLM_Agent_Workflows_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Agent/tools/read",
+				"description": "Read tools.",
+				"field_name": "FoundationaLLM_Agent_Tools_Read"
+			},
+			{
+				"name": "FoundationaLLM.Agent/tools/write",
+				"description": "Create or update tools.",
+				"field_name": "FoundationaLLM_Agent_Tools_Write"
+			},
+			{
+				"name": "FoundationaLLM.Agent/tools/delete",
+				"description": "Delete tools.",
+				"field_name": "FoundationaLLM_Agent_Tools_Delete"
 			}
 		]
 	},
