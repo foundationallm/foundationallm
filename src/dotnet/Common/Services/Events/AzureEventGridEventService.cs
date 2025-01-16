@@ -168,7 +168,7 @@ namespace FoundationaLLM.Common.Services.Events
             if (eventDelegate == null)
                 _eventTypeDelegates[eventType] = eventHandler!;
             else
-                eventDelegate += eventHandler;
+                _eventTypeDelegates[eventType] = eventDelegate + eventHandler;
         }
 
         /// <inheritdoc/>
@@ -178,6 +178,7 @@ namespace FoundationaLLM.Common.Services.Events
                 throw new EventException($"The namespace {eventType} is invalid.");
 
             eventDelegate -= eventHandler;
+            _eventTypeDelegates[eventType] = eventDelegate;
         }
 
         /// <inheritdoc/>

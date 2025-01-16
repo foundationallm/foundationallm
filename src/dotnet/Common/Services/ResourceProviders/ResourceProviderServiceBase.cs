@@ -762,17 +762,21 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <remarks>
         /// See <see cref="EventTypes"/> for a list of event types.
         /// </remarks>
-        protected async Task SendResourceProviderEvent(string eventType, object? data = null) =>
-            // The CloudEvent source is automatically filled in by the event service.
+        protected async Task SendResourceProviderEvent(string eventType, object? data= null) =>
+            // The CloudEvent source is automatically filled in by the event service.            
             await _eventService.SendEvent(
                 EventGridTopics.FoundationaLLM_Resource_Providers,
-                new CloudEvent(string.Empty, eventType, data)
+                new CloudEvent(string.Empty, eventType, data ?? new { })
                 {
                     Subject = _name
                 });
 
         private async Task HandleEvents(EventTypeEventArgs e)
         {
+            // If the resource provider doesn't have any events to process, return.
+            if(e.Events.Count == 0)
+                return;
+
             var originalEventCount = e.Events.Count;
             // Only process events that are targeted for this resource provider.
             e.Events = e.Events
@@ -780,9 +784,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             _logger.LogInformation("{EventsCount} events of type {EventType} received out if which {ResourceProviderEventsCount} are targeted for the {ResourceProviderName} resource provider.",
                 originalEventCount,
-                e.EventType,
-                e.Events.Count,
+                e.EventType,                
+                e.Events.Count,               
                 _name);
+
+            // If the resource provider doesn't have any events to process, return.
+            if(e.Events.Count == 0)
+                return;
 
             // Handle the common events here and defer the rest to the derived classes.
             switch (e.EventType)
