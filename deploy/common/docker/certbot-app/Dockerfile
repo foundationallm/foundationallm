@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/vscode/devcontainers/base:0-bullseye
+FROM ubuntu:22.04
 
 ARG INSTALL_ZSH="true"
 ARG UPGRADE_PACKAGES="true"
@@ -13,7 +13,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 RUN bash /tmp/library-scripts/azcli-debian.sh
-RUN bash /tmp/library-scripts/install-certbot.sh
+RUN export DEBIAN_FRONTEND=noninteractive && bash /tmp/library-scripts/install-certbot.sh
 RUN bash /tmp/library-scripts/pwsh-debian.sh
 
 RUN rm -rf /tmp/library-scripts
