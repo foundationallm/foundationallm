@@ -115,43 +115,62 @@ These quotas are in place to manage resource allocation and ensure fair usage ac
 <li><p>Ensure all the prerequisites are met.</p>
 </li>
 <li><p>From a PowerShell prompt, execute the following to clone the repository:</p>
-</li>
-</ol>
-<pre><code class="lang-powershell">  git clone https://github.com/solliancenet/foundationallm.git
-  cd foundationallm/deploy/standard
-  git checkout release/0.8.2
-</code></pre>
-<ol start="3">
-<li>Create your deployment manifest:</li>
-</ol>
-<pre><code class="lang-powershell">  cp Deployment-Manifest.template.json Deployment-Manifest.json
-</code></pre>
-<ol start="4">
-<li><p>Fill out all required fields in the <code>Deployment-Manifest.json</code> file. Please look at <a href="standard/manifest.html">this guide</a> for more information on the manifest contents.</p>
-</li>
-<li><p>Login to your Azure account and set the deployment subscription:</p>
-<pre><code class="lang-powershell">az login
-az account set --subscription &lt;Azure Subscription ID&gt;
+<pre><code class="lang-pwsh">  git clone https://github.com/solliancenet/foundationallm.git
+  cd foundationallm
+  git checkout release/0.9.1-rc121
 </code></pre>
 </li>
-<li><p><strong>Optional</strong> Execute the pre-deployment script:</p>
-<pre><code class="lang-powershell">cd scripts
-./Pre-Deploy.ps1
+<li><p>Install AzCopy</p>
+<pre><code class="lang-pwsh">  cd .\deploy\common\scripts
+  .\Get-AzCopy.ps1
 </code></pre>
 </li>
-</ol>
-<div class="NOTE">
-<h5>Note</h5>
-<p>The pre-deployment script will acquire certificates from LetsEncrypt and place them in <code>foundationallm/deploy/standard/config/certbot/certs</code>.  If you plan to provide certificates another way, you can skip this script, but you must place the certificates in the specified location.  See step 7.</p>
-</div>
-<ol start="7">
-<li><strong>Optional</strong> Provide certificates (manual method):</li>
-</ol>
-<div class="NOTE">
-<h5>Note</h5>
-<p>Skip this step if you created certificates using LetsEncrypt in step 6.</p>
-</div>
-<p>Create certificates for the appropriate domains and package them in PFX format.  Place the PFX files in <code>foundationallm/deploy/standard/config/certbot/certs</code> following the naming convention below.  The values for <code>Host Name</code> and <code>Domain Name</code> should match the values you provided in your deployment manifest:</p>
+<li><p>Run the following commands to log into Azure CLI, Azure Developer CLI and AzCopy:</p>
+<pre><code class="lang-pwsh">cd .\deploy\standard
+az login                                   # Log into Azure CLI
+azd auth login                             # Log into Azure Developer CLI
+..\common\tools\azcopy\azcopy login        # Log into AzCopy
+</code></pre>
+</li>
+<li><p>Set up an <code>azd</code> environment targeting your Azure subscription and desired deployment region:</p>
+<pre><code class="lang-pwsh"># Set your target Subscription and Location
+azd env new --location &lt;Supported Azure Region&gt; --subscription &lt;Azure Subscription ID&gt;
+</code></pre>
+</li>
+<li><p>Set FoundationaLLM Entra Parameters</p>
+<pre><code class="lang-pwsh">cd .\deploy\standard
+..\common\scripts\Set-AzdEnvEntra.ps1
+</code></pre>
+</li>
+<li><p>Set FoundationaLLM Network Parameters</p>
+<pre><code class="lang-pwsh">cd .\deploy\standard
+..\common\scripts\Set-AzdEnvAksVnet.ps1 -fllmAksServiceCidr &lt;aksServiceCidr&gt; -fllmVnetCidr &lt;vnetCidr&gt; -fllmAllowedExternalCidrs &lt;allowedExternalCidrs&gt;
+
+# aksServiceCidr - CIDR block for the AKS Services - e.g., 10.100.0.0/16
+# vnetCidr             - CIDR block for the VNet - e.g., 10.220.128.0/20
+# allowedExternalCidrs - CIDR block for NSGs to allow VPN or HUB VNet
+#                        e.g., 192.168.101.0/28,10.0.0.0/16
+#                        comma separated
+#                        updates allow-vpn nsg rule
+</code></pre>
+</li>
+<li><p>Set FoundationaLLM Hub Network Parameters</p>
+<pre><code class="lang-pwsh">cd .\deploy\standard
+..\common\scripts\Set-AzdEnvHubVnet.ps1 -hubTenantId &lt;hubTenantId&gt; `
+                                        -hubVnetName &lt;hubVnetName&gt; `
+                                        -hubResourceGroupName &lt;hubResourceGroupName&gt; `
+                                        -hubSubscriptionId &lt;hubSubscriptionId&gt;
+
+# hubTenantId          - Id of the Azure Tenant in which the hub VNET resides
+# hubVnetName          - Name of the Hub VNET
+# hubResourceGroupName - Name of Azure resource group in which hub VNET resides
+# hubSubscriptionId    - Id of Azure subscription in which hub VNET resides
+</code></pre>
+<blockquote>
+<p>Note: If hub resources reside in an Azure tenant/subscription other than the target deployment tenant/subscription, you will need to make sure you are logged into that tenant and subscription via <code>az login</code> before executing this step.</p>
+</blockquote>
+</li>
+<li><p>Provision SSL certificates for the appropriate domains and package them in PFX format.  Place the PFX files in <code>foundationallm/deploy/standard/certs</code> following the naming convention below.  The values for <code>Host Name</code> and <code>Domain Name</code> should match the values you provided in your deployment manifest:</p>
 <table>
 <thead>
 <tr>
@@ -188,53 +207,32 @@ az account set --subscription &lt;Azure Subscription ID&gt;
 </tr>
 </tbody>
 </table>
-<h2 id="provision-infrastructure">Provision Infrastructure</h2>
-<ol start="8">
-<li>Provision infrastructure with <code>psake</code>:</li>
+</li>
+<li><p>Set the endpoint hostnames using AZD</p>
+<pre><code class="lang-pwsh">azd env set FLLM_USER_PORTAL_HOSTNAME chat.example.com
+azd env set FLLM_CORE_API_HOSTNAME api.example.com
+azd env set FLLM_MGMT_PORTAL_HOSTNAME management.example.com
+azd env set FLLM_MGMT_API_HOSTNAME management-api.example.com
+</code></pre>
+</li>
 </ol>
-<pre><code class="lang-powershell">  cd ../bicep
-  ./bootstrap.ps1; Invoke-Psake
+<h2 id="provision-infrastructure">Provision Infrastructure</h2>
+<ol start="11">
+<li><p>Provision platform infrastructure with <code>AZD</code>:</p>
+<pre><code class="lang-pwsh">cd .\deploy\standard
+azd provision
 </code></pre>
 <p>The deployment process will take some time.</p>
-<ol start="9">
-<li>Execute the first post-provision script:</li>
+<p>The AZD post-provisioning hook script will generate a <code>hosts</code> file in the <code>.\deploy\standard\config</code> folder describing all the private endpoint IPs and the associated hostnames.  These values can be used to populate your computer's local <code>hosts</code> file, or may assist with configuring your organization's DNS system.  This guide will assume that you have taken the contents of the generated file and added them to your local <code>hosts</code> file.</p>
+</li>
 </ol>
-<pre><code class="lang-powershell">  cd ../scripts
-  ./Post-Provision.1.ps1
-</code></pre>
-<p>The post-deployment script will generate a host file describing all the private endpoint IPs and the associated hostnames.  These values can be used to populate your computer's local <code>hosts</code> file, or may assist with configuring your organization's DNS system.  This guide will assume that you have taken the contents of the generated file and added them to your local <code>hosts</code> file.</p>
 <h2 id="configure-and-deploy">Configure and Deploy</h2>
-<ol start="10">
-<li><p>Connect to VPN</p>
-<p>First, download and install the Azure VPN client and connect to the VPN gateway.</p>
-<ul>
-<li><a href="https://learn.microsoft.com/en-us/azure/vpn-gateway/openvpn-azure-ad-client">Windows</a></li>
-<li><a href="https://learn.microsoft.com/en-us/azure/vpn-gateway/openvpn-azure-ad-client-mac">MacOS</a></li>
-</ul>
-<p>Next, using the Azure portal download and then import the VPN configuration. Locate the VPN gateway in the networking resource group, click Point-to-Site, then <em>Download VPN Client</em> and follow the following instructions to download the configuration, client and connect to VPN.</p>
-<p><img src="media/vpn-client.png" alt="Download the VPN Configuration from the Azure Portal."></p>
-<div class="NOTE">
-<h5>Note</h5>
-<p>Make sure to connect to the VPN before proceeding to the next step.</p>
-</div>
-</li>
-<li><p>Execute the second post-provision script:</p>
-</li>
-</ol>
-<pre><code class="lang-powershell">  ./Post-Provision.2.ps1
-</code></pre>
-<pre><code>The post-deployment script will upload the certificates to the Azure Key Vault.
-</code></pre>
 <ol start="12">
-<li>Run the bootstrap script to prepare download and install Azcopy:</li>
-</ol>
-<pre><code class="lang-powershell">  ./Bootstrap.ps1
-</code></pre>
-<p>When prompted, sign in to your Azcopy with your Azure account. This should be the same account you used to log in to the Azure CLI.</p>
-<ol start="13">
-<li>Execute the deployment script:</li>
-</ol>
-<pre><code class="lang-powershell">  ./Deploy.ps1
+<li><p>Ensure that you have network access to the deployed resources and that DNS resolution to deployed resources is configured (this is environment specific).</p>
+</li>
+<li><p>Deploy to platform infrastructure with <code>AZD</code>:</p>
+<pre><code class="lang-pwsh">cd .\deploy\standard
+azd deploy
 </code></pre>
 <p>The deployment process will take some time.  The process will:</p>
 <ul>
@@ -275,11 +273,30 @@ az account set --subscription &lt;Azure Subscription ID&gt;
 </ul>
 </li>
 </ul>
-<ol start="13">
-<li>Update your local <code>hosts</code> file with the entries from the generated host file.</li>
+<p>The AZD deploy hook script will generate a <code>hosts.ingress</code> file in the <code>.\deploy\standard\config</code> folder describing the api and frontend endpoints and the associated hostnames.  These values can be used to populate your computer's local <code>hosts</code> file, or may assist with configuring your organization's DNS system.  This guide will assume that you have taken the contents of the generated file and added them to your local <code>hosts</code> file.16.  Update your local <code>hosts</code> file with the entries from the generated host file.</p>
+</li>
 </ol>
-<h2 id="connect-and-test">Connect and Test</h2>
+<h3 id="running-script-to-allow-ms-graph-access-through-role-permissions">Running script to allow MS Graph access through Role Permissions</h3>
 <ol start="14">
+<li>After the deployment is complete, you will need to run the following script to allow MS Graph access through Role Permissions. (See below)</li>
+</ol>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The user running the script will need to have the appropriate permissions to assign roles to the managed identities. The user will need to be a <code>Global Administrator</code> or have the <code>Privileged Role Administrator</code> role in the Entra ID tenant. The syntax for running the script from the <code>deploy\quick-start\common\scripts</code> folder is:</p>
+</div>
+<pre><code>```pwsh
+    cd .\deploy\standard
+    ..\common\scripts\Set-FllmGraphRoles.ps1 -resourceGroupName rg-&lt;azd env name&gt;
+```
+Finally, you will need to update the Authorization Callbacks in the App Registrations created in the Entra ID tenant by running the following script:
+
+```pwsh
+    cd .\deploy\standard
+    ..\common\scripts\Update-OAuthCallbackUris.ps1
+```
+</code></pre>
+<h2 id="connect-and-test">Connect and Test</h2>
+<ol start="15">
 <li>Visit the chat UI in your browser and send a message to verify the deployment.  The message can be very simple like &quot;Who are you?&quot;.  The default agent should respond with a message explaining it's persona.</li>
 </ol>
 
