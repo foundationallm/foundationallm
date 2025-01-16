@@ -5,8 +5,6 @@ from foundationallm.models.constants import AgentCapabilityCategories
 
 class MessageContentItemBase(BaseModel):
     """Base message content item model."""
-    
-    type: Optional[MessageContentItemTypes] = Field(None, description="The type of message content item.")
     agent_capability_category: Optional[AgentCapabilityCategories] = Field(None, description="The category of capability assigned to the agent.")
     
     class Config:
