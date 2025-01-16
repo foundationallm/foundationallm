@@ -12,6 +12,7 @@ class AgentWorkflowBase(ResourceObjectIdsModelBase):
     workflow_host: str = Field(None, alias="workflow_host")
     name: str = Field(None, alias="name")
     package_name: str=Field(None, alias="package_name")
+    properties: Optional[dict] = Field(default=[], description="A dictionary of properties for the agent workflow.")
 
     @staticmethod
     def from_object(obj: Any) -> Self:
