@@ -1401,9 +1401,9 @@ export default {
 					) || this.selectedAgentCapabilities;
 			}
 
-this.agentTools = agent.tools;
+			this.agentTools = agent.tools;
 
-this.selectedWorkflow = agent.workflow;
+			this.selectedWorkflow = agent.workflow;
 
 			this.showMessageTokens = agent.show_message_tokens ?? false;
 			this.showMessageRating = agent.show_message_rating ?? false;
