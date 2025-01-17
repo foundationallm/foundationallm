@@ -24,5 +24,10 @@
         /// Agent access tokens.
         /// </summary>
         public const string AgentAccessTokens = "agentAccessTokens";
+
+        /// <summary>
+        /// Tools.
+        /// </summary>
+        public const string Tools = "tools";
     }
 }

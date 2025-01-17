@@ -9,7 +9,14 @@
         </template>
 
         <!-- Table -->
-        <DataTable :value="agents" striped-rows scrollable table-style="max-width: 100%" size="small">
+        <DataTable
+            :value="agents"
+            striped-rows
+            scrollable
+            sortField="resource.name"
+			:sortOrder="1"
+            table-style="max-width: 100%"
+            size="small">
             <template #empty>
                 <div role="alert" aria-live="polite">
                     No agents found. Please use the menu on the left to create a new agent.

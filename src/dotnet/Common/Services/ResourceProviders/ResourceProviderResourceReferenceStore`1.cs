@@ -315,6 +315,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     _resourceReferences[reference.Name] = reference;
                 }
             }
+
+            var referenceNamesToRemove = _resourceReferences.Keys
+                .Except(persistedReferencesList.ResourceReferences.Select(rr => rr.Name))
+                .ToList();
+            foreach (var referenceNameToRemove in referenceNamesToRemove)
+                _resourceReferences.Remove(referenceNameToRemove);
         }
 
         /// <summary>
