@@ -38,7 +38,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// Gets or sets a dictionary of properties that are specific to the tool.
         /// </summary>
         [JsonPropertyName("properties")]
-        public Dictionary<string, object> Properties { get; set; } = [];
+        public Dictionary<string, object>? Properties { get; set; } = [];
 
         /// <summary>
         /// Tries to get the value of a property.
@@ -50,6 +50,9 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public bool TryGetPropertyValue<T>(string propertyName, out T? propertyValue)
         {
             propertyValue = default;
+
+            if (Properties == null)
+                return false;
 
             if (Properties.TryGetValue(propertyName, out var value))
             {

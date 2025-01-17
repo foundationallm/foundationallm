@@ -21,6 +21,7 @@ import type {
 	ExternalOrchestrationService,
 	// Role,
 	RoleAssignment,
+	APIEndpointConfiguration,
 } from './types';
 import { convertToDataSource, convertToAppConfigKeyVault, convertToAppConfig } from '@/js/types';
 
@@ -1021,5 +1022,66 @@ export default {
 				method: 'DELETE',
 			},
 		);
+	},
+
+	/*
+		Indexing Profiles
+	 */
+	async getIndexingProfiles(): Promise<any> {
+		const data = (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles?api-version=${this.apiVersion}`,
+		)) as ResourceProviderGetResult<AgentIndex>[];
+		return data;
+	},
+
+	async getIndexingProfile(indexingProfileId: string): Promise<any> {
+		const data = await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles/${indexingProfileId}?api-version=${this.apiVersion}`,
+		);
+		return data[0];
+	},
+
+	async createIndexingProfile(request): Promise<any> {
+		console.log('createIndexingProfile', request);
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles/${request.name}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: JSON.stringify(request),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			},
+		);
+	},
+
+	async deleteIndexingProfile(indexingProfileId: string): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles/${indexingProfileId}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
+			},
+		);
+	},
+
+	async checkIndexingProfileName(name): Promise<any> {
+		const payload = {
+			name,
+			type: 'indexing-profile',
+		};
+
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles/checkname?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		)) as CheckNameResponse;
+	},
+
+	async getOrchestrationServices(): Promise<APIEndpointConfiguration> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations?api-version=${this.apiVersion}`,
+		) as APIEndpointConfiguration;
 	},
 };

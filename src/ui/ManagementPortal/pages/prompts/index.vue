@@ -16,11 +16,14 @@
 				:value="prompts"
 				striped-rows
 				scrollable
+				sortField="resource.name"
+				:sortOrder="1"
 				table-style="max-width: 100%"
-				size="small"
-			>
+				size="small">
 				<template #empty>
-					<div role="alert" aria-live="polite">No prompts found.</div>
+					<div role="alert" aria-live="polite">
+						No prompts found.
+					</div>
 				</template>
 				<template #loading>Loading agent prompts. Please wait.</template>
 
@@ -65,11 +68,7 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink
-							:to="'/prompts/edit/' + data.resource.name"
-							class="table__button"
-							tabindex="-1"
-						>
+						<NuxtLink :to="'/prompts/edit/' + data.resource.name" class="table__button" tabindex="-1">
 							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
 								<Button
 									link
@@ -78,13 +77,12 @@
 								>
 									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
 								</Button>
-								<template #popper
-									><div role="tooltip">Edit {{ data.resource.name }}</div></template
-								>
+								<template #popper><div role="tooltip">Edit {{data.resource.name}}</div></template>
 							</VTooltip>
 						</NuxtLink>
 					</template>
 				</Column>
+
 			</DataTable>
 		</div>
 	</main>
@@ -115,7 +113,6 @@ export default {
 			this.loading = true;
 			try {
 				this.prompts = (await api.getPrompts()) || [];
-				this.prompts.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',

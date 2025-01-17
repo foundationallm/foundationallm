@@ -1,9 +1,12 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import List, Optional
+
+from foundationallm.models.orchestration import ContentArtifact
 
 class MessageHistoryItem(BaseModel):
     """
         Represents an historic message sender and text item.
-        
+
         Parameters
         ----------
         sender : str
@@ -13,3 +16,4 @@ class MessageHistoryItem(BaseModel):
     """
     sender: str
     text: str
+    content_artifacts : Optional[List[ContentArtifact]] = []
