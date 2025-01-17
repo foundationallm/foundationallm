@@ -44,7 +44,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                             AgentResourceTypeNames.Files,
                             new ResourceTypeDescriptor (
                                 AgentResourceTypeNames.Files,
-                                typeof(FileContent))
+                                typeof(AgentFile))
                             {
                                 AllowedTypes = [
                                     new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderGetResult<AgentFile>)]),

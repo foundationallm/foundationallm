@@ -1,4 +1,6 @@
-﻿namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+﻿using System.Text.Json.Serialization;
+
+namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
 {
     /// <summary>
     /// Request object to associate a tool with an agent file.
@@ -9,6 +11,7 @@
         /// <summary>
         /// The object ID of the the tool to associate with the agent file.
         /// </summary>
+        [JsonPropertyName("tool_object_id")]
         public required string ToolObjectId { get; set; }
     }
 }

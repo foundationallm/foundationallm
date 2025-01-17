@@ -285,6 +285,7 @@ namespace FoundationaLLM.Gateway.Services
                 });
 
                 var assistant = assistantResult.Value;
+                _logger.LogInformation("Created assistant {AssistantName} with ID {AssistantId}.", assistant.Name, assistant.Id);
                 result[OpenAIAgentCapabilityParameterNames.OpenAIAssistantId] = assistant.Id;
                 result[OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId] = vectorStoreResult.Value!.Id;
             }
@@ -322,7 +323,7 @@ namespace FoundationaLLM.Gateway.Services
                         FileSearch = fileSearchToolResources
                     }
                 });
-
+                _logger.LogInformation("Added vector store {VectorStoreId} to file search tool for assistant {AssistantId}.", vectorStoreResult.Value!.Id, assistantId);
                 result[OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId] = vectorStoreResult.Value!.Id;
             }
 
@@ -352,7 +353,7 @@ namespace FoundationaLLM.Gateway.Services
                 });
                 var thread = threadResult.Value;
                 var vectorStore = vectorStoreResult.Value;
-
+                _logger.LogInformation("Created thread {ThreadId} with vector store {VectorStoreId}.", thread.Id, vectorStore.Id);
                 result[OpenAIAgentCapabilityParameterNames.OpenAIAssistantThreadId] = thread.Id;
                 result[OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId] = vectorStore.Id;
             }
@@ -394,6 +395,7 @@ namespace FoundationaLLM.Gateway.Services
                     originalFileName,
                     FileUploadPurpose.Assistants);
                 var file = fileResult.Value;
+                _logger.LogInformation("Uploaded file {FileName} as an OpenAI file with ID {FileId}.", originalFileName, file.Id);
                 result[OpenAIAgentCapabilityParameterNames.OpenAIFileId] = file.Id;
                 fileId = file.Id;
             }
@@ -452,6 +454,7 @@ namespace FoundationaLLM.Gateway.Services
                         isRemoved = vectorizationResult.Value.Removed;
                     }                   
                 }
+                _logger.LogInformation("Removed file {FileId} from vector store {VectorStoreId}.", fileId, vectorStoreId);
                 result[OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess] = isRemoved;
             }
 
@@ -482,7 +485,7 @@ namespace FoundationaLLM.Gateway.Services
                         CodeInterpreter = codeInterpreterToolResources
                     }
                 });
-
+                _logger.LogInformation("Added file {FileId} to code interpreter tool for assistant {AssistantId}.", file, assistantId);
                 result[OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnCodeInterpreterSuccess] = true;
 
             }
@@ -514,7 +517,7 @@ namespace FoundationaLLM.Gateway.Services
                         CodeInterpreter = codeInterpreterToolResources
                     }
                 });
-
+                _logger.LogInformation("Removed file {FileId} from code interpreter tool for assistant {AssistantId}.", file, assistantId);
                 result[OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnCodeInterpreterSuccess] = true;
 
             }
