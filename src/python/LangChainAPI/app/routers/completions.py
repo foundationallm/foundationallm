@@ -86,7 +86,7 @@ async def submit_completion_request(
             span.set_attribute('user_identity', x_user_identity)
 
             # Create an operations manager to create the operation.
-            operations_manager = OperationsManager(config, http_client_session)
+            operations_manager = OperationsManager(config, http_client_session, logger)
             # Submit the completion request operation to the state API.
             operation = await operations_manager.create_operation_async(operation_id, instance_id, x_user_identity)
 
@@ -207,7 +207,7 @@ async def get_operation_status(
 ) -> LongRunningOperation:
     with tracer.start_as_current_span('langchainapi_get_operation_status', kind=SpanKind.SERVER) as span:
         # Create an operations manager to get the operation status.
-        operations_manager = OperationsManager(config, http_client_session)
+        operations_manager = OperationsManager(config, http_client_session, logger)
 
         try:
             span.set_attribute('operation_id', operation_id)
@@ -243,7 +243,7 @@ async def get_operation_result(
 ) -> CompletionResponse:
     with tracer.start_as_current_span('langchainapi_get_operation_result', kind=SpanKind.SERVER) as span:
         # Create an operations manager to get the operation result.
-        operations_manager = OperationsManager(config, http_client_session)
+        operations_manager = OperationsManager(config, http_client_session, logger)
 
         try:
             span.set_attribute('operation_id', operation_id)
@@ -279,7 +279,7 @@ async def get_operation_logs(
 ) -> List[LongRunningOperationLogEntry]:
     with tracer.start_as_current_span('langchainapi_get_operation_log', kind=SpanKind.SERVER) as span:
         # Create an operations manager to get the operation log.
-        operations_manager = OperationsManager(config, http_client_session)
+        operations_manager = OperationsManager(config, http_client_session, logger)
 
         try:
             span.set_attribute('operation_id', operation_id)
