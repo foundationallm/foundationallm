@@ -861,6 +861,15 @@ export default {
 	},
 
 	/*
+		Agent Tools
+	 */
+	async getAgentTools(): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/tools?api-version=${this.apiVersion}`,
+		);
+	},
+
+	/*
 		Agent Access Tokens
 	 */
 	async getAgentAccessTokens(agentName: string) {
