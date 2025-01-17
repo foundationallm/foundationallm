@@ -73,6 +73,11 @@
         /// </summary>
         public const string AttachmentObjectId = "FoundationaLLM.Attachment.ObjectId";
 
+        /// <summary>
+        /// The object identifier of the FoundationaLLM agent file resource.
+        /// </summary>
+        public const string AgentFileObjectId = "FoundationaLLM.Agent.File.ObjectId";
+
         #endregion
 
         #region Outputs

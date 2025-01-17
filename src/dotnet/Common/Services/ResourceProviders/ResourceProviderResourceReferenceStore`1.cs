@@ -238,20 +238,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// </summary>
         /// <param name="resourceReference">The resource reference to add.</param>
         /// <returns></returns>
-        public async Task AddResourceReference(T resourceReference)
+        public async Task UpsertResourceReference(T resourceReference)
         {
             await _lock.WaitAsync();
             try
             {
-                var existingResourceReference = GetResourceReferenceInternal(resourceReference.Name);
-
-                if (existingResourceReference != null)
-                    throw new ResourceProviderException(
-                        $"A resource reference for the resource {resourceReference.Name} already exists.",
-                        StatusCodes.Status400BadRequest);
-
+                var existingResourceReference = GetResourceReferenceInternal(resourceReference.Name);             
                 _resourceReferences[resourceReference.Name] = resourceReference;
-
                 await SaveResourceReferences();
             }
             finally

@@ -1,4 +1,4 @@
-﻿using Azure.Messaging;
+using Azure.Messaging;
 using FluentValidation;
 using FoundationaLLM.Agent.Models.Resources;
 using FoundationaLLM.Common.Clients;
@@ -17,6 +17,7 @@ using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
@@ -27,9 +28,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Graph.Models;
 using System.Data;
-using System.Net.Mail;
 using System.Text.Json;
 
 namespace FoundationaLLM.Agent.ResourceProviders
@@ -152,9 +151,22 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
+                AgentResourceTypeNames.Files => resourcePath.Action switch
+                {
+                    ResourceProviderActions.AddFileTool => await AddFileToolAssociation(
+                        resourcePath,
+                        JsonSerializer.Deserialize<AgentFileToolAssociationRequest>(serializedAction)!,
+                        userIdentity),
+                    ResourceProviderActions.RemoveFileTool => await RemoveFileToolAssociation(
+                        resourcePath,
+                        JsonSerializer.Deserialize<AgentFileToolAssociationRequest>(serializedAction)!,
+                        userIdentity),
+                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
+                                               StatusCodes.Status400BadRequest)
+                },
                 _ => throw new ResourceProviderException()
             };
-
+        
         /// <inheritdoc/>
         protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
@@ -181,9 +193,22 @@ namespace FoundationaLLM.Agent.ResourceProviders
         #region Resource provider strongly typed operations
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) =>
-            (await LoadResource<T>(resourcePath.ResourceId!))!;
-
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
+        {
+            // Check if the resource being requested is an agent file that needs content loaded, if so, override with the load content option.            
+            if (options != null && options.LoadContent == true && typeof(T) == typeof(AgentFile))
+            {
+                var splitName = resourcePath.ResourceId!.Split("|");
+                var agentName = splitName[0];
+                var agentFileName = splitName[1];
+                return (T)(object)(await LoadAgentFile(agentName, agentFileName, true));
+            }
+            else
+            {
+                // Otherwise, process as normal.
+                return (await LoadResource<T>(resourcePath.ResourceId!))!;
+            }            
+        }
         #endregion
 
         #region Resource management
@@ -243,44 +268,10 @@ namespace FoundationaLLM.Agent.ResourceProviders
             {
                 agent.Properties ??= [];
 
-                var openAIAssistantId = agent.Properties.GetValueOrDefault(
-                    AgentPropertyNames.AzureOpenAIAssistantId);
+                (var openAIAssistantId, var workflowBase, var agentAIModel, var agentPrompt, var agentAIModelAPIEndpoint)
+                    = await ResolveAgentProperties(agent, userIdentity);
 
                 var workflow = agent.Workflow as AzureOpenAIAssistantsAgentWorkflow;
-
-                if(string.IsNullOrWhiteSpace(openAIAssistantId))
-                {
-                    if(workflow != null)
-                    {
-                        openAIAssistantId = workflow.AssistantId;
-                    }
-                }
-
-                #region Resolve various agent properties
-                AIModelBase agentAIModel = null!;
-                APIEndpointConfiguration agentAIModelAPIEndpoint = null!;
-                PromptBase agentPrompt = null!;
-                
-                if(workflow==null)
-                {
-                    // Legacy path
-                    agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
-                        .GetResourceAsync<AIModelBase>(agent.AIModelObjectId!, userIdentity);
-                    agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
-                        .GetResourceAsync<PromptBase>(agent.PromptObjectId!, userIdentity);
-                }
-                else
-                {                    
-                    agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
-                                .GetResourceAsync<AIModelBase>(workflow.MainAIModelObjectId!, userIdentity);
-                    agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
-                                .GetResourceAsync<PromptBase>(workflow.MainPromptObjectId!, userIdentity);
-                }
-                agentAIModelAPIEndpoint = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Configuration)
-                        .GetResourceAsync<APIEndpointConfiguration>(agentAIModel.EndpointObjectId!, userIdentity);
-               
-                #endregion
-
                 var gatewayClient = await GetGatewayServiceClient(userIdentity);
 
                 if (string.IsNullOrWhiteSpace(openAIAssistantId))
@@ -580,6 +571,39 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     }
                 }).ToList();
 
+        /// <summary>
+        /// Load an agent file.
+        /// </summary>
+        /// <param name="agentName">The name of the agent whose file is being loaded.</param>
+        /// <param name="agentFileName">The name of the agent file to load.</param>        
+        /// <param name="loadContent">Determines if the file bytes are loaded from storage.</param>
+        /// <returns></returns>
+        /// <exception cref="ResourceProviderException"></exception>
+        private async Task<AgentFile> LoadAgentFile(
+            string agentName,
+            string agentFileName,            
+            bool loadContent=false)
+        {
+            // Get the list of agent files
+            var agentFilesGetResult = await LoadAgentFiles(agentName);
+            var agentFile = agentFilesGetResult?.FirstOrDefault(f => f.Resource.Name == agentFileName)?.Resource;
+            if (agentFile == null)
+            {
+                throw new ResourceProviderException($"The agent file {agentFileName} does not exist.",
+                                                    StatusCodes.Status404NotFound);
+            }
+            if (loadContent)
+            {
+                var filePath = $"{_name}/{_instanceSettings.Id}/{agentName}/private-file-store/{agentFileName}";               
+                var fileContent = await _storageService.ReadFileAsync(
+                        _storageContainerName,
+                        filePath,
+                        default);
+                agentFile.Content = fileContent.ToArray();               
+            }
+            return agentFile;                  
+        }
+
         private async Task<ResourceProviderUpsertResult> UpdateAgentFile(ResourcePath resourcePath, ResourceProviderFormFile formFile, UnifiedUserIdentity userIdentity)
         {
             if (formFile.BinaryContent.Length == 0)
@@ -605,7 +629,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     Deleted = false
                 };
 
-                await _resourceReferenceStore.AddResourceReference(agentFileReference);
+                await _resourceReferenceStore.UpsertResourceReference(agentFileReference);
             }
 
             await _storageService.WriteFileAsync(_storageContainerName, filePath, new MemoryStream(formFile.BinaryContent.ToArray()), formFile.ContentType, CancellationToken.None);
@@ -638,6 +662,225 @@ namespace FoundationaLLM.Agent.ResourceProviders
             }
         }
 
+        private async Task<AgentFileToolAssociationResult> AddFileToolAssociation(ResourcePath resourcePath,
+            AgentFileToolAssociationRequest agentFileToolAssociationRequest,
+            UnifiedUserIdentity userIdentity)
+        {
+            var agentFileToolAssociationResult = new AgentFileToolAssociationResult
+            {
+                Success = false
+            };
+            
+            // build file resource name from resource path
+            var resourceReferenceName = $"{resourcePath.MainResourceId!}|{resourcePath.ResourceId}";
+
+            // get agent file reference
+            var existingAgentReference = await _resourceReferenceStore!.GetResourceReference(resourceReferenceName);
+            if(existingAgentReference == null)
+                throw new ResourceProviderException($"The agent file {resourcePath.ResourceId} does not exist.",
+                                       StatusCodes.Status404NotFound);
+
+            // check if the agent file reference contains the requested tool association
+            if(existingAgentReference.AssociatedResourceObjectIds?.Any(x=> x.Value.HasObjectRole(ResourceObjectIdPropertyValues.ToolAssociation)
+                            && x.Value.ObjectId==agentFileToolAssociationRequest.ToolObjectId) ?? false)
+                throw new ResourceProviderException($"The agent file {resourcePath.ResourceId} is already associated with this tool.",
+                                                          StatusCodes.Status400BadRequest);
+
+            var agentFile = await LoadAgentFile(resourcePath.MainResourceId!, resourcePath.ResourceId!, false);
+
+            //TODO: check if the tool object is OpenAI Assistant File Search or OpenAI Assistant Code Interpreter when we have the Tool resources
+            // For now assume file_search
+            var toolName = "FoundationaLLM.Tools.OpenAI.Assistants.FileSearch";
+
+            switch(toolName)
+            {
+                case "FoundationaLLM.Tools.OpenAI.Assistants.FileSearch":
+                    var gatewayClient = await GetGatewayServiceClient(userIdentity);
+                    var agent = await GetResourceAsync<AgentBase>(resourcePath.MainResourceId!, userIdentity);
+
+                    (var openAIAssistantId, var workflow, var agentAIModel, var agentPrompt, var agentAIModelAPIEndpoint)
+                        = await ResolveAgentProperties(agent, userIdentity);
+
+                    // check reference for the Azure OpenAI File ID
+                    if (!string.IsNullOrWhiteSpace(existingAgentReference.OpenAIFileId))
+                    {
+                        Dictionary<string, object> parameters = new()
+                        {
+                            { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpoint },
+                            { OpenAIAgentCapabilityParameterNames.CreateOpenAIFile, true },
+                            { OpenAIAgentCapabilityParameterNames.AgentFileObjectId, agentFile.ObjectId! }
+                        };
+
+                        var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
+                            _instanceSettings.Id,
+                            AgentCapabilityCategoryNames.OpenAIAssistants,
+                            string.Empty,
+                            parameters);
+
+                        agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileId, out var openAIFileIdObject);
+                        var openAIFileId = ((JsonElement)openAIFileIdObject!).Deserialize<string>();
+                        // Update the agent(file) reference with the OpenAI File ID
+                        existingAgentReference.OpenAIFileId = openAIFileId;
+                    }
+
+                    // Add the tool association to the agent file reference
+                    agentFileToolAssociationResult.Success = await AddFileToAssistantsVectorStore(
+                        _instanceSettings.Id,
+                        agentAIModelAPIEndpoint.Url,
+                        agentAIModel.DeploymentName!,
+                        openAIAssistantId!,
+                        existingAgentReference.OpenAIFileId!,
+                        userIdentity);
+
+                    // Add the tool association to the agent file reference
+                    existingAgentReference.AssociatedResourceObjectIds ??= new Dictionary<string, ResourceObjectIdProperties>();
+                    existingAgentReference.AssociatedResourceObjectIds.Add(agentFileToolAssociationRequest.ToolObjectId, new ResourceObjectIdProperties
+                    {
+                        ObjectId = agentFileToolAssociationRequest.ToolObjectId,
+                        Properties = new Dictionary<string, object>
+                        {
+                            { ResourceObjectIdPropertyNames.ObjectRole, ResourceObjectIdPropertyValues.ToolAssociation }
+                        }
+                    });
+                    await _resourceReferenceStore.UpsertResourceReference(existingAgentReference);
+                    break;
+
+                case "FoundationaLLM.Tools.OpenAI.Assistants.CodeInterpreter":
+                    
+                    var gatewayClientCI = await GetGatewayServiceClient(userIdentity);
+                    var agentCI = await GetResourceAsync<AgentBase>(resourcePath.MainResourceId!, userIdentity);
+
+                    (var openAIAssistantIdCI, var workflowCI, var agentAIModelCI, var agentPromptCI, var agentAIModelAPIEndpointCI)
+                        = await ResolveAgentProperties(agentCI, userIdentity);
+
+                    // check reference for the Azure OpenAI File ID
+                    if (!string.IsNullOrWhiteSpace(existingAgentReference.OpenAIFileId))
+                    {
+                        Dictionary<string, object> parameters = new()
+                    {
+                        { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpointCI },
+                        { OpenAIAgentCapabilityParameterNames.CreateOpenAIFile, true },
+                        { OpenAIAgentCapabilityParameterNames.AgentFileObjectId, agentFile.ObjectId! }
+                    };
+
+                        var agentCapabilityResult = await gatewayClientCI!.CreateAgentCapability(
+                            _instanceSettings.Id,
+                            AgentCapabilityCategoryNames.OpenAIAssistants,
+                            string.Empty,
+                            parameters);
+
+                        agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileId, out var openAIFileIdObject);
+                        var openAIFileId = ((JsonElement)openAIFileIdObject!).Deserialize<string>();
+                        // Update the agent(file) reference with the OpenAI File ID
+                        existingAgentReference.OpenAIFileId = openAIFileId;
+                    }
+
+                    // Add the tool association to the agent file reference
+                    agentFileToolAssociationResult.Success = await AddFileToAssistantsCodeInterpreter(
+                        _instanceSettings.Id,
+                        agentAIModelAPIEndpointCI.Url,
+                        agentAIModelCI.DeploymentName!,
+                        openAIAssistantIdCI!,
+                        existingAgentReference.OpenAIFileId!,
+                        userIdentity);
+
+                    // Add the tool association to the agent file reference
+                    existingAgentReference.AssociatedResourceObjectIds ??= new Dictionary<string, ResourceObjectIdProperties>();
+                    existingAgentReference.AssociatedResourceObjectIds.Add(agentFileToolAssociationRequest.ToolObjectId, new ResourceObjectIdProperties
+                    {
+                        ObjectId = agentFileToolAssociationRequest.ToolObjectId,
+                        Properties = new Dictionary<string, object>
+                    {
+                        { ResourceObjectIdPropertyNames.ObjectRole, ResourceObjectIdPropertyValues.ToolAssociation }
+                    }
+                    });
+                    await _resourceReferenceStore.UpsertResourceReference(existingAgentReference);
+                    
+                    break;
+
+                default:
+                    throw new ResourceProviderException($"The tool {toolName} is not supported by the {_name} resource provider.",
+                                                StatusCodes.Status400BadRequest);
+            }
+
+           
+            return agentFileToolAssociationResult;
+        }
+
+        private async Task<AgentFileToolAssociationResult> RemoveFileToolAssociation(
+            ResourcePath resourcePath,
+            AgentFileToolAssociationRequest agentFileToolAssociationRequest,
+            UnifiedUserIdentity userIdentity)
+        {
+            var agentFileToolAssociationResult = new AgentFileToolAssociationResult
+            {
+                Success = false
+            };
+            
+            // build file resource name from resource path
+            var resourceReferenceName = $"{resourcePath.MainResourceId!}|{resourcePath.ResourceId}";
+
+            // get agent file reference
+            var existingAgentReference = await _resourceReferenceStore!.GetResourceReference(resourceReferenceName);
+            if (existingAgentReference == null)
+                throw new ResourceProviderException($"The agent file {resourcePath.ResourceId} does not exist.",
+                                       StatusCodes.Status404NotFound);
+
+            // Ensure the agent file reference contains the requested tool association
+            if (!existingAgentReference.AssociatedResourceObjectIds?.Any(x => x.Value.HasObjectRole(ResourceObjectIdPropertyValues.ToolAssociation)
+                                       && x.Value.ObjectId == agentFileToolAssociationRequest.ToolObjectId) ?? false)
+                throw new ResourceProviderException($"The agent file {resourcePath.ResourceId} is not associated with this tool.",
+                                        StatusCodes.Status400BadRequest);
+
+            //TODO: check if the tool object is OpenAI Assistant File Search or OpenAI Assistant Code Interpreter when we have the Tool resources
+            // For now assume file_search
+            var toolName = "FoundationaLLM.Tools.OpenAI.Assistants.FileSearch";
+            switch(toolName)
+            {
+                case "FoundationaLLM.Tools.OpenAI.Assistants.FileSearch":
+                    var gatewayClient = await GetGatewayServiceClient(userIdentity);
+                    var agent = await GetResourceAsync<AgentBase>(resourcePath.MainResourceId!, userIdentity);
+
+                    (var openAIAssistantId, var workflow, var agentAIModel, var agentPrompt, var agentAIModelAPIEndpoint)
+                        = await ResolveAgentProperties(agent, userIdentity);
+
+                    agentFileToolAssociationResult.Success = await RemoveFileFromAssistantsVectorStore(
+                            _instanceSettings.Id,
+                            agentAIModelAPIEndpoint.Url,
+                            agentAIModel.DeploymentName!,
+                            openAIAssistantId!,
+                            existingAgentReference.OpenAIFileId!,
+                            userIdentity);
+
+                    // Remove the tool association from the agent file reference
+                    existingAgentReference.AssociatedResourceObjectIds!.Remove(agentFileToolAssociationRequest.ToolObjectId);
+                    await _resourceReferenceStore.UpsertResourceReference(existingAgentReference);
+                    break;
+                case "FoundationaLLM.Tools.OpenAI.Assistants.CodeInterpreter":
+                    var gatewayClientCI = await GetGatewayServiceClient(userIdentity);
+                    var agentCI = await GetResourceAsync<AgentBase>(resourcePath.MainResourceId!, userIdentity);
+
+                    (var openAIAssistantIdCI, var workflowCI, var agentAIModelCI, var agentPromptCI, var agentAIModelAPIEndpointCI)
+                        = await ResolveAgentProperties(agentCI, userIdentity);
+
+                    agentFileToolAssociationResult.Success = await RemoveFileFromAssistantsCodeInterpreter(
+                            _instanceSettings.Id,
+                            agentAIModelAPIEndpointCI.Url,
+                            agentAIModelCI.DeploymentName!,
+                            openAIAssistantIdCI!,
+                            existingAgentReference.OpenAIFileId!,
+                            userIdentity);
+
+                    // Remove the tool association from the agent file reference
+                    existingAgentReference.AssociatedResourceObjectIds!.Remove(agentFileToolAssociationRequest.ToolObjectId);
+                    await _resourceReferenceStore.UpsertResourceReference(existingAgentReference);
+                    break;                    
+                default:
+                    throw new ResourceProviderException($"The tool {toolName} is not supported by the {_name} resource provider.",
+                                                                        StatusCodes.Status400BadRequest);
+            }         
+            return agentFileToolAssociationResult;
+        }
 
         /// <summary>
         /// Retrieves the GatewayServiceClient.
@@ -651,6 +894,46 @@ namespace FoundationaLLM.Agent.ResourceProviders
                            .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
                        _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
             return gatewayClient;
+        }
+
+        private async Task<(string, AgentWorkflowBase, AIModelBase, PromptBase, APIEndpointConfiguration)> ResolveAgentProperties(AgentBase agent, UnifiedUserIdentity userIdentity)
+        {
+            agent.Properties ??= [];
+
+            var openAIAssistantId = agent.Properties.GetValueOrDefault(
+                    AgentPropertyNames.AzureOpenAIAssistantId);
+
+            var workflow = agent.Workflow as AzureOpenAIAssistantsAgentWorkflow;
+
+            if (string.IsNullOrWhiteSpace(openAIAssistantId))
+            {
+                if (workflow != null)
+                {
+                    openAIAssistantId = workflow.AssistantId;
+                }
+            }
+
+            PromptBase agentPrompt;
+            AIModelBase agentAIModel;
+            if (workflow == null)
+            {
+                // Legacy path
+                agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
+                    .GetResourceAsync<AIModelBase>(agent.AIModelObjectId!, userIdentity);
+                agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
+                    .GetResourceAsync<PromptBase>(agent.PromptObjectId!, userIdentity);
+            }
+            else
+            {
+                agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
+                            .GetResourceAsync<AIModelBase>(workflow.MainAIModelObjectId!, userIdentity);
+                agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
+                            .GetResourceAsync<PromptBase>(workflow.MainPromptObjectId!, userIdentity);
+            }
+            APIEndpointConfiguration agentAIModelAPIEndpoint = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Configuration)
+                    .GetResourceAsync<APIEndpointConfiguration>(agentAIModel.EndpointObjectId!, userIdentity);
+
+            return (openAIAssistantId!, workflow!, agentAIModel, agentPrompt, agentAIModelAPIEndpoint);
         }
 
         /// <summary>
@@ -796,6 +1079,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 throw new OrchestrationException($"The removal of file id {fileId} from the code interpreter resources for assistant with id {assistantId} failed.");
             return removalSuccess;
         }
+
+
         #endregion
     }
 }

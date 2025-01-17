@@ -8,6 +8,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Azure;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Gateway.Interfaces;
@@ -44,6 +45,8 @@ namespace FoundationaLLM.Gateway.Services
         private readonly ILoggerFactory _loggerFactory = loggerFactory;
         private readonly IResourceProviderService _attachmentResourceProvider =
             resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Attachment);
+        private readonly IResourceProviderService _agentResourceProvider =
+            resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Agent);
         private readonly ILogger<GatewayCore> _logger = loggerFactory.CreateLogger<GatewayCore>();
 
         private bool _initialized = false;
@@ -359,13 +362,36 @@ namespace FoundationaLLM.Gateway.Services
             if (createAssistantFile)
             {
                 var fileClient = GetAzureOpenAIFileClient(azureOpenAIAccount.Endpoint);
+                var originalFileName = string.Empty;
+                byte[]? fileContent = null;
 
-                var attachmentObjectId = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AttachmentObjectId);
-                var attachmentFile = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(attachmentObjectId, userIdentity, new ResourceProviderGetOptions { LoadContent = true });
-
+                // check if it's an attachment or an agent file
+                var attachmentObjectId = GetParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AttachmentObjectId, string.Empty);
+                if(!string.IsNullOrEmpty(attachmentObjectId))
+                {
+                    var attachmentFile = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(attachmentObjectId, userIdentity, new ResourceProviderGetOptions { LoadContent = true });
+                    originalFileName = attachmentFile.OriginalFileName;
+                    fileContent = attachmentFile.Content;
+                }
+                else
+                {
+                    var agentFileObjectId = GetParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AgentFileObjectId, string.Empty);
+                    var agentFile = await _agentResourceProvider.GetResourceAsync<AgentFile>(agentFileObjectId, userIdentity, new ResourceProviderGetOptions { LoadContent = true });
+                    originalFileName = agentFile.Name;
+                    fileContent = agentFile.Content;                   
+                }
+                if (string.IsNullOrWhiteSpace(originalFileName))
+                {
+                    throw new GatewayException("The request does not have a valid AttachmentObjectId or AgentFileObjectId parameter value.", StatusCodes.Status400BadRequest);
+                }
+                if (fileContent == null)
+                {
+                    throw new GatewayException("The file content is null.", StatusCodes.Status400BadRequest);
+                }
+               
                 var fileResult = await fileClient.UploadFileAsync(
-                    new MemoryStream(attachmentFile.Content!),
-                    attachmentFile.OriginalFileName,
+                    new MemoryStream(fileContent!),
+                    originalFileName,
                     FileUploadPurpose.Assistants);
                 var file = fileResult.Value;
                 result[OpenAIAgentCapabilityParameterNames.OpenAIFileId] = file.Id;
@@ -406,7 +432,7 @@ namespace FoundationaLLM.Gateway.Services
                     _logger.LogInformation("Completed vectorization of file {FileId} in vector store {VectorStoreId} in {TotalSeconds} with result {VectorizationResult}.",
                         fileId, vectorStoreId, (DateTimeOffset.UtcNow - startTime).TotalSeconds, fileAssociationResult.Value.Status);
                     result[OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess] =
-                        (fileAssociationResult.Value.Status == VectorStoreFileAssociationStatus.Completed);
+                        fileAssociationResult.Value.Status == VectorStoreFileAssociationStatus.Completed;
                 }
             }
 
