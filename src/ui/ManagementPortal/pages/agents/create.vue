@@ -1034,10 +1034,10 @@ const getDefaultFormValues = () => {
 			orchestrator: 'LangChain' as string,
 		},
 
-selectedWorkflow: null,
+		selectedWorkflow: null,
 
-toolToEdit: null,
-agentTools: [] as AgentTool[],
+		toolToEdit: null,
+		agentTools: [] as AgentTool[],
 
 		showMessageTokens: false as boolean,
 		showMessageRating: false as boolean,
