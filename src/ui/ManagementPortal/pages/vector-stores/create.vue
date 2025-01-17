@@ -204,22 +204,22 @@ export default {
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			validationMessage: null as string | null,
 
-            vectorStore: {
-                type: 'indexing-profile',
-                name: '',
-                display_name: null,
-                description: null,
-                cost_center: null,
-                indexer: '',
-                settings: {
-                    IndexName: '',
-                    TopN: '',
-                    Filters: '',
-                    EmbeddingFieldName: '',
-                    TextFieldName: '',
-                    api_endpoint_configuration_object_id: '',
-                }
-            } as null | any,
+			vectorStore: {
+				type: 'indexing-profile',
+				name: '',
+				display_name: null,
+				description: null,
+				cost_center: null,
+				indexer: '',
+				settings: {
+					IndexName: '',
+					TopN: '',
+					Filters: '',
+					EmbeddingFieldName: '',
+					TextFieldName: '',
+					api_endpoint_configuration_object_id: '',
+				}
+			} as null | any,
 
 			profileIndexerOptions: [
 				{
@@ -244,29 +244,29 @@ export default {
 	async created() {
 		this.loading = true;
 
-        if (this.editId) {
-            this.loadingStatusText = `Retrieving vector store "${this.editId}"...`;
-            const vectorStoreResult = await api.getIndexingProfile(this.editId);
-            const vectorStore = vectorStoreResult.resource;
-            this.vectorStore = vectorStore;
-        } else {
-            // Create a new vectorStore object.
-            const newVectorStore = {
-                name: '',
-                display_name: '',
-                description: '',
-                indexer: '',
-                settings: {
-                    IndexName: '',
-                    TopN: '',
-                    Filters: '',
-                    EmbeddingFieldName: '',
-                    TextFieldName: '',
-                    api_endpoint_configuration_object_id: '',
-                }
-            };
-            this.vectorStore = newVectorStore;
-        }
+		if (this.editId) {
+			this.loadingStatusText = `Retrieving vector store "${this.editId}"...`;
+			const vectorStoreResult = await api.getIndexingProfile(this.editId);
+			const vectorStore = vectorStoreResult.resource;
+			this.vectorStore = vectorStore;
+		} else {
+			// Create a new vectorStore object.
+			const newVectorStore = {
+				name: '',
+				display_name: '',
+				description: '',
+				indexer: '',
+				settings: {
+					IndexName: '',
+					TopN: '',
+					Filters: '',
+					EmbeddingFieldName: '',
+					TextFieldName: '',
+					api_endpoint_configuration_object_id: '',
+				}
+			};
+			this.vectorStore = newVectorStore;
+		}
 
 		this.getAPIEndpointConfigurationObjectIDs();
 
