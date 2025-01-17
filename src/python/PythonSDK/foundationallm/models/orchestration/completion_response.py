@@ -1,5 +1,5 @@
-from typing import List, Optional, Union
-from pydantic import BaseModel
+from typing import List, Optional, Union, Annotated
+from pydantic import BaseModel, Field
 
 from foundationallm.models.orchestration import (
     AnalysisResult,
@@ -19,9 +19,12 @@ class CompletionResponse(BaseModel):
     full_prompt: Optional[str] = None
     content: Optional[
         List[
-            Union[
-                OpenAIImageFileMessageContentItem,
-                OpenAITextMessageContentItem
+            Annotated[
+                Union[
+                    OpenAIImageFileMessageContentItem,
+                    OpenAITextMessageContentItem
+                ],
+                Field(discriminator='type')
             ]
         ]
     ] = None

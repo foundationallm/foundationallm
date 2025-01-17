@@ -66,7 +66,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 client,
                 request,
                 $"instances/{instanceId}/async-completions",
-                $"instances/{instanceId}/async-completions/{{operationId}}/status",
+                $"instances/{instanceId}/async-completions/{{0}}/status",
                 TimeSpan.FromSeconds(10),
                 client.Timeout.Subtract(TimeSpan.FromSeconds(1)),
                 _logger);
@@ -152,7 +152,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 client,
                 request,
                 $"instances/{instanceId}/async-completions",
-                $"instances/{instanceId}/async-completions/{{operationId}}/status",
+                $"instances/{instanceId}/async-completions/{{0}}/status",
                 TimeSpan.FromSeconds(10),
                 client.Timeout.Subtract(TimeSpan.FromSeconds(1)),
                 _logger);

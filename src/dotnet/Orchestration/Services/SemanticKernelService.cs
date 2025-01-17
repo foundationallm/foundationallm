@@ -120,7 +120,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 operationRetrieverClient,
                 request,
                 $"instances/{instanceId}/async-completions",
-                $"instances/{instanceId}/operations/{{operationId}}",
+                $"instances/{instanceId}/operations/{{0}}",
                 TimeSpan.FromSeconds(10),
                 operationStarterClient.Timeout.Subtract(TimeSpan.FromSeconds(1)),
                 _logger);

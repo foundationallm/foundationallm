@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 
 namespace FoundationaLLM.Common.Clients
 {
@@ -46,6 +47,7 @@ namespace FoundationaLLM.Common.Clients
         private readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions(
             options => {
                 options.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                options.UnmappedMemberHandling = JsonUnmappedMemberHandling.Skip;
                 return options;
             });
 
@@ -169,7 +171,7 @@ namespace FoundationaLLM.Common.Clients
                         case OperationStatus.Completed:
                             if (operationStatus.Result is JsonElement jsonElement)
                             {
-                                return jsonElement.Deserialize<TResponse>();
+                                return jsonElement.Deserialize<TResponse>(_jsonSerializerOptions);
                             }
                             return default;
                         case OperationStatus.InProgress:
