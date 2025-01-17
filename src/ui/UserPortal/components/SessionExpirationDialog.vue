@@ -44,12 +44,15 @@ export default {
 		},
 
 		startDialogTimer() {
-			// Show the dialog every hour
+			// Show the dialog every configured interval
+			const timeoutInMinutes = this.$appConfigStore.auth.timeoutInMinutes;
+			const timeoutInMS = timeoutInMinutes * 60 * 1000;
+
 			this.dialogInterval = setInterval(
 				() => {
 					this.triggerDialog();
 				},
-				60 * 60 * 1000,
+				timeoutInMS,
 			);
 		},
 

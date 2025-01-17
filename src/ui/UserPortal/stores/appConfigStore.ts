@@ -45,6 +45,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 			tenantId: null,
 			scopes: [],
 			callbackPath: null,
+			timeoutInMinutes: 60,
 		},
 	}),
 	getters: {},
@@ -96,6 +97,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				authTenantId,
 				authScopes,
 				authCallbackPath,
+				authTimeoutInMinutes,
 			] = await Promise.all([
 				api.getConfigValue('FoundationaLLM:APIEndpoints:CoreAPI:Essentials:APIUrl'),
 
@@ -138,6 +140,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:TenantId'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:Scopes'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:CallbackPath'),
+				getConfigValueSafe('FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes', 60),
 			]);
 
 			this.apiUrl = apiUrl;
@@ -177,6 +180,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.auth.tenantId = authTenantId;
 			this.auth.scopes = authScopes;
 			this.auth.callbackPath = authCallbackPath;
+			this.auth.timeoutInMinutes = authTimeoutInMinutes;
 		},
 	},
 });
