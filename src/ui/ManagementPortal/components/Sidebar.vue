@@ -15,7 +15,98 @@
 			<template v-else>
 				<NuxtLink to="/">{{ $appConfigStore.logoText }}</NuxtLink>
 			</template>
-			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+		</div>
+
+		<!-- Agents -->
+		<h3 class="sidebar__section-header">
+			<span class="pi pi-users" aria-hidden="true"></span>
+			<span>Agents</span>
+		</h3>
+		<ul>
+			<li><NuxtLink to="/agents/create" class="sidebar__item">Create New Agent</NuxtLink></li>
+			<li><NuxtLink to="/agents/public" class="sidebar__item">All Agents</NuxtLink></li>
+			<li><NuxtLink to="/agents/private" class="sidebar__item">My Agents</NuxtLink></li>
+			<li><NuxtLink to="/prompts" class="sidebar__item">Agent Prompts</NuxtLink></li>
+		</ul>
+		<!-- <div class="sidebar__item">Performance</div> -->
+
+		<!-- Data Catalog -->
+		<h3 class="sidebar__section-header">
+			<span class="pi pi-database" aria-hidden="true"></span>
+			<span>Data Catalog</span>
+		</h3>
+		<ul>
+			<li><NuxtLink to="/data-sources" class="sidebar__item">Data Sources</NuxtLink></li>
+			<li><NuxtLink to="/vector-stores" class="sidebar__item">Vector Stores</NuxtLink></li>
+		</ul>
+
+		<!-- Pipeline -->
+		<!-- <h3 class="sidebar__section-header">
+			<span class="pi pi-equals" aria-hidden="true"></span>
+			<span>Data Pipeline</span>
+		</h3>
+		<ul>
+			<li><NuxtLink to="/pipeline/indexing-profiles" class="sidebar__item">Indexing Profiles</NuxtLink></li>
+		</ul> -->
+
+		<!-- Quotas -->
+		<!-- <div class="sidebar__section-header">
+			<span class="pi pi-calculator"></span>
+			<span>Quotas</span>
+		</div>
+
+		<div class="sidebar__item">Policies</div> -->
+
+		<!-- LLM's -->
+		<!-- <div class="sidebar__section-header">
+			<span class="pi pi-sitemap"></span>
+			<span>LLM's</span>
+		</div>
+
+		<div class="sidebar__item">Language Models & Endpoints</div> -->
+
+		<!-- Security -->
+		<h3 class="sidebar__section-header">
+			<span class="pi pi-shield" aria-hidden="true"></span>
+			<span>Security</span>
+		</h3>
+		<ul>
+			<li>
+				<NuxtLink to="/security/role-assignments" class="sidebar__item">
+					Instance Access Control
+				</NuxtLink>
+			</li>
+		</ul>
+
+		<!-- FLLM Deployment -->
+		<h3 class="sidebar__section-header">
+			<span class="pi pi-cloud" aria-hidden="true"></span>
+			<span>FLLM Platform</span>
+		</h3>
+		<ul>
+			<li><NuxtLink to="/branding" class="sidebar__item">Branding</NuxtLink></li>
+			<li><NuxtLink to="/info" class="sidebar__item">Deployment Information</NuxtLink></li>
+		</ul>
+
+		<!-- Logged in user -->
+		<div v-if="$authStore.currentAccount?.name" class="sidebar__account">
+			<UserAvatar
+				class="sidebar__avatar"
+				size="large"
+				:aria-label="`User Avatar for ${$authStore.currentAccount?.name}`"
+			/>
+
+			<div>
+				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+					<span
+						class="sidebar__username"
+						aria-label="Logged in as {{ $authStore.currentAccount?.username }}">
+						{{ $authStore.currentAccount?.name }}
+					</span>
+					<template #popper>
+						<div role="tooltip">Logged in as {{ $authStore.currentAccount?.username }}</div>
+					</template>
+				</VTooltip>
 				<Button
 					:icon="$appStore.sidebarCollapsed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 					:aria-label="$appStore.sidebarCollapsed ? 'Open Sidebar' : 'Close Sidebar'"
@@ -47,8 +138,17 @@
 				</h3>
 				<ul>
 					<li><NuxtLink to="/data-sources" class="sidebar__item">Data Sources</NuxtLink></li>
+					<li><NuxtLink to="/vector-stores" class="sidebar__item">Vector Stores</NuxtLink></li>
 				</ul>
-				<!-- <div class="sidebar__item">Vector Stores</div> -->
+
+				<!-- Pipeline -->
+				<!-- <h3 class="sidebar__section-header">
+					<span class="pi pi-equals" aria-hidden="true"></span>
+					<span>Data Pipeline</span>
+				</h3>
+				<ul>
+					<li><NuxtLink to="/pipeline/indexing-profiles" class="sidebar__item">Indexing Profiles</NuxtLink></li>
+				</ul> -->
 
 				<!-- Quotas -->
 				<!-- <div class="sidebar__section-header">

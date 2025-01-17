@@ -24,5 +24,10 @@
         /// Workflow.
         /// </summary>
         public const string Workflow = "workflow";
+
+        /// <summary>
+        /// Tool.
+        /// </summary>
+        public const string Tool = "tool";
     }
 }

@@ -43,11 +43,24 @@ export const useAppStore = defineStore('app', {
 		highContrastMode: JSON.parse(sessionStorage.getItem('highContrastMode') || 'false') as boolean,
 	}),
 
-	getters: {},
+	getters: {
+		agentShowMessageTokens(): boolean {
+			return this.lastSelectedAgent?.resource.show_message_tokens ?? true;
+		},
+
+		agentShowMessageRating(): boolean {
+			return this.lastSelectedAgent?.resource.show_message_rating ?? true;
+		},
+
+		agentShowViewPrompt(): boolean {
+			return this.lastSelectedAgent?.resource.show_view_prompt ?? true;
+		},
+	},
 
 	actions: {
 		async init(sessionId: string) {
 			const appConfigStore = useAppConfigStore();
+			await this.getAgents();
 
 			// Watch for changes in autoHideToasts and update sessionStorage
 			watch(
@@ -350,8 +363,12 @@ export const useAppStore = defineStore('app', {
 					// Default to the last selected agent to make the selection "sticky" across sessions.
 					selectedAgent = this.lastSelectedAgent;
 				} else {
-					// Default to the first agent in the list.
-					selectedAgent = this.agents[0];
+					// Find an agent in the list that is configured as the default agent.
+					selectedAgent = this.agents.find((agent) => agent.resource.properties?.default_resource);
+					if (!selectedAgent || selectedAgent.resource.properties?.default_resource !== 'true') {
+						// Default to the first agent in the list.
+						selectedAgent = this.agents[0];
+					}
 				}
 			}
 			return selectedAgent;
@@ -366,10 +383,11 @@ export const useAppStore = defineStore('app', {
 		 * Sends a message to the Core API.
 		 *
 		 * @param text - The text of the message to send.
-		 * @returns A Promise that resolves when the message is sent.
+		 * @returns A boolean indicating whether to wait for a polling operation to complete.
 		 */
-		async sendMessage(text: string) {
-			if (!text) return;
+		async sendMessage(text: string): boolean {
+			let waitForPolling = false;
+			if (!text) return waitForPolling;
 
 			const agent = this.getSessionAgent(this.currentSession!).resource;
 			const sessionId = this.currentSession!.id;
@@ -430,6 +448,16 @@ export const useAppStore = defineStore('app', {
 				agent,
 				relevantAttachments.map((attachment) => String(attachment.id)),
 			);
+
+			if (message.status === 'Completed') {
+				// The endpoint likely returned the final message, so we can update the last message in the list.
+				let completedMessage = message.result as Message;
+				// Replace the last message with the completed message.
+				this.currentMessages[this.currentMessages.length - 1] = completedMessage;
+				this.calculateMessageProcessingTime();
+				return waitForPolling;
+			}
+
 			this.currentMessages[this.currentMessages.length - 1] = {
 				...tempAssistantMessage,
 				...message,
@@ -442,10 +470,12 @@ export const useAppStore = defineStore('app', {
 			);
 
 			// If the session has changed before above completes we need to prevent polling
-			if (initialSession !== this.currentSession.id) return;
+			if (initialSession !== this.currentSession.id) return waitForPolling;
 
 			// If the operation failed to start prevent polling
-			if (message.status === 'Failed') return;
+			if (message.status === 'Failed') return waitForPolling;
+
+			waitForPolling = true;
 
 			// For older messages that have a status of "Pending" but no operation id, assume
 			// it is complete and do no initiate polling as it will return empty data
@@ -455,6 +485,8 @@ export const useAppStore = defineStore('app', {
 			if (this.newSession && this.newSession.id === initialSession) {
 				this.newSession = null;
 			}
+
+			return waitForPolling;
 		},
 
 		getPollingRateMS() {

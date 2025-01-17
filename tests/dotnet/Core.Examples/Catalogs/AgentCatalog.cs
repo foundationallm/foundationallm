@@ -29,12 +29,12 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     IndexingProfileObjectIds = null,
                     TextEmbeddingProfileObjectId = null
                 },
-                ConversationHistorySettings = new ConversationHistorySettings
+                ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
                     MaxHistory = 10
                 },
-                GatekeeperSettings = new GatekeeperSettings
+                GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
                 },
@@ -56,12 +56,12 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     IndexingProfileObjectIds = null,
                     TextEmbeddingProfileObjectId = null,
                 },
-                ConversationHistorySettings = new ConversationHistorySettings
+                ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
                     MaxHistory = 10
                 },
-                GatekeeperSettings = new GatekeeperSettings
+                GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
                 },
@@ -84,12 +84,12 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     TextEmbeddingProfileObjectId = null,
                     DataSourceObjectId = null
                 },
-                ConversationHistorySettings = new ConversationHistorySettings
+                ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
                     MaxHistory = 10
                 },
-                GatekeeperSettings = new GatekeeperSettings
+                GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
                 },
@@ -112,12 +112,12 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     TextEmbeddingProfileObjectId = null,
                     DataSourceObjectId = null
                 },
-                ConversationHistorySettings = new ConversationHistorySettings
+                ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
                     MaxHistory = 10
                 },
-                GatekeeperSettings = new GatekeeperSettings
+                GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
                 },
@@ -139,12 +139,12 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     IndexingProfileObjectIds = null,
                     TextEmbeddingProfileObjectId = null
                 },
-                ConversationHistorySettings = new ConversationHistorySettings
+                ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
                     MaxHistory = 10
                 },
-                GatekeeperSettings = new GatekeeperSettings
+                GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
                 },
@@ -166,12 +166,12 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     IndexingProfileObjectIds = null,
                     TextEmbeddingProfileObjectId = null
                 },
-                ConversationHistorySettings = new ConversationHistorySettings
+                ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
                     MaxHistory = 10
                 },
-                GatekeeperSettings = new GatekeeperSettings
+                GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
                 },
@@ -193,12 +193,12 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     IndexingProfileObjectIds = null,
                     TextEmbeddingProfileObjectId = null
                 },
-                ConversationHistorySettings = new ConversationHistorySettings
+                ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
                     MaxHistory = 10
                 },
-                GatekeeperSettings = new GatekeeperSettings
+                GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
                 },
@@ -220,12 +220,12 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     IndexingProfileObjectIds = null,
                     TextEmbeddingProfileObjectId = null
                 },
-                ConversationHistorySettings = new ConversationHistorySettings
+                ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
                     MaxHistory = 10
                 },
-                GatekeeperSettings = new GatekeeperSettings
+                GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
                 },
@@ -247,12 +247,12 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     IndexingProfileObjectIds = null,
                     TextEmbeddingProfileObjectId = null
                 },
-                ConversationHistorySettings = new ConversationHistorySettings
+                ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
                     MaxHistory = 10
                 },
-                GatekeeperSettings = new GatekeeperSettings
+                GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
                 },
@@ -274,12 +274,12 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     IndexingProfileObjectIds = null,
                     TextEmbeddingProfileObjectId = null
                 },
-                ConversationHistorySettings = new ConversationHistorySettings
+                ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
                     MaxHistory = 10
                 },
-                GatekeeperSettings = new GatekeeperSettings
+                GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
                 },
@@ -301,12 +301,12 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     IndexingProfileObjectIds = null,
                     TextEmbeddingProfileObjectId = null
                 },
-                ConversationHistorySettings = new ConversationHistorySettings
+                ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
                     MaxHistory = 10
                 },
-                GatekeeperSettings = new GatekeeperSettings
+                GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
                 },

@@ -3,6 +3,122 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.1
+
+### App configuration settings
+
+To support the event grid infrastructure, the following new App Configuration settings are required.
+
+```json
+[
+	{
+		"key": "FoundationaLLM:Events:Profiles:CoreAPI",
+		"label": null,
+		"value": "{\"EventProcessingCycleSeconds\": 5,\"Topics\": [{\"Name\": \"resource-providers\",\"SubscriptionPrefix\": \"rp-core\"}]}",
+		"content_type": "application/json",
+		"tags": {}
+	},
+	{
+		"key": "FoundationaLLM:Events:Profiles:GatekeeperAPI",
+		"label": null,
+		"value": "{\"EventProcessingCycleSeconds\":60,\"Topics\":[]}",
+		"content_type": "application/json",
+		"tags": {}
+	},
+	{
+		"key": "FoundationaLLM:Events:Profiles:GatewayAPI",
+		"label": null,
+		"value": "{\"EventProcessingCycleSeconds\":60,\"Topics\":[]}",
+		"content_type": "application/json",
+		"tags": {}
+	},
+	{
+		"key": "FoundationaLLM:Events:Profiles:ManagementAPI",
+		"label": null,
+		"value": "{\"EventProcessingCycleSeconds\": 5,\"Topics\": [{\"Name\": \"resource-providers\",\"SubscriptionPrefix\": \"rp-management\"}]}",
+		"content_type": "application/json",
+		"tags": {}
+	},
+	{
+		"key": "FoundationaLLM:Events:Profiles:OrchestrationAPI",
+		"label": null,
+		"value": "{\"EventProcessingCycleSeconds\": 5,\"Topics\": [{\"Name\": \"resource-providers\",\"SubscriptionPrefix\": \"rp-orch\"}]}",
+		"content_type": "application/json",
+		"tags": {}
+	},
+	{
+		"key": "FoundationaLLM:Events:Profiles:VectorizationAPI",
+		"label": null,
+		"value": "{\"EventProcessingCycleSeconds\":60,\"Topics\":[]}",
+		"content_type": "application/json",
+		"tags": {}
+	},
+	{
+		"key": "FoundationaLLM:Events:Profiles:VectorizationWorker",
+		"label": null,
+		"value": "{\"EventProcessingCycleSeconds\":60,\"Topics\":[]}",
+		"content_type": "application/json",
+		"tags": {}
+	}
+]
+```
+
+>Note: The event grid system topics need to be removed.
+
+The following topic needs to be created in the event grid namespace, must have a `resource-providers` topic with a publisher type of `Custom` and an input schema of `Cloud Events v1.0`.
+
+### Configuration changes
+
+Added the following App Configuration value:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+`FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes` | `60` | The timeout in minutes for a user's auth token in the User Portal. |
+
+## Starting with 0.9.1-rc117
+
+### Agent configuration changes
+
+```json
+"text_rewrite_settings": {
+    "user_prompt_rewrite_enabled" : true,
+    "user_prompt_rewrite_settings": {
+        "user_prompt_rewrite_ai_model_object_id": "/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel",
+        "user_prompt_rewrite_prompt_object_id": "/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Prompt/prompts/FoundationaLLM-v2-Rewrite",
+        "user_prompts_window_size": 1
+    }
+},
+"cache_settings": {
+    "semantic_cache_enabled": true,
+    "semantic_cache_settings": {
+        "embedding_ai_model_object_id": "/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/DefaultEmbeddingAIModel",
+        "embedding_dimensions": 2048,
+        "minimum_similarity_threshold": 0.975
+    }
+},
+```
+
+### Semantic cache
+
+Enable vector search in the Cosmos DB database using the following CLI command:
+
+```cli
+az cosmosdb update --resource-group <resource-group-name> --name <account-name> --capabilities EnableNoSQLVectorSearch
+```
+
+Create the `CompletionsCache` container in the Cosmos DB database with the following properties:
+
+- **Container id**: `CompletionsCache`
+- **Partition key**: `/operationId`
+- **Container Vector Policy**: a policy with the following properties:
+  - **Path**: `/userPromptEmbedding`
+  - **Data type**: `float32`
+  - **Distance function**: `Cosine`
+  - **Dimensions**: 2048
+  - **Index type**: `diskANN` (leave the default values)
+
+After the container is created, set the `Time to Live` property on the container to 300 seconds.
+
 ## Starting with 0.9.1-rc105
 
 ### Configuration changes

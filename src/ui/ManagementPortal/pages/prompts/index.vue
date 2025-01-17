@@ -12,7 +12,14 @@
 			</template>
 
 			<!-- Table -->
-			<DataTable :value="prompts" striped-rows scrollable table-style="max-width: 100%" size="small">
+			<DataTable
+				:value="prompts"
+				striped-rows
+				scrollable
+				sortField="resource.name"
+				:sortOrder="1"
+				table-style="max-width: 100%"
+				size="small">
 				<template #empty>
 					<div role="alert" aria-live="polite">
 						No prompts found.

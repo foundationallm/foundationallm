@@ -7,9 +7,7 @@ from .message_content_item_types import MessageContentItemTypes
 class OpenAITextMessageContentItem(MessageContentItemBase):
     """An OpenAI text message content item."""
     
+    type: str = MessageContentItemTypes.TEXT
     annotations: Optional[List[OpenAIFilePathMessageContentItem]] = Field(default_factory=list, alias="annotations")
     value: Optional[str] = Field(None, alias="value")
-    
-    def __init__(self, **data):
-        super().__init__(**data)
-        self.type = MessageContentItemTypes.TEXT
+

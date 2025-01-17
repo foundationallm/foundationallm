@@ -1,8 +1,7 @@
+from aiohttp import ClientSession
 import json
 import os
-import requests
-import urllib3
-from typing import List
+from typing import List, Optional
 from foundationallm.config import Configuration
 from foundationallm.models.operations import (
     LongRunningOperation,
@@ -15,24 +14,21 @@ class OperationsManager():
     """
     Class for managing long running operations via calls to the StateAPI.
     """
-    def __init__(self, config: Configuration):
-        self.config = config
+    def __init__(self, config: Configuration, http_client_session: ClientSession = None):
+        self.http_client_session = http_client_session or ClientSession()
         # Retrieve the State API configuration settings.
-        env = os.environ.get('FOUNDATIONALLM_ENV', 'prod')
-
         self.state_api_url = config.get_value('FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIUrl').rstrip('/')
         self.state_api_key = config.get_value('FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIKey')
-        if env == 'dev':
-            self.verify_certs = False
-            urllib3.disable_warnings(category=urllib3.exceptions.InsecureRequestWarning)
-        else:
-            self.verify_certs = True
-        
+
+        # Determine if the State API should be accessed using HTTPS.
+        self.use_ssl = os.environ.get('FOUNDATIONALLM_ENV', 'prod') == 'prod'
+    
     async def create_operation_async(
         self,
         operation_id: str,
         instance_id: str,
-        user_identity: str) -> LongRunningOperation:
+        user_identity: str
+    ) -> Optional[LongRunningOperation]:
         """
         Creates a background operation by settings its initial state through the State API.
 
@@ -49,44 +45,39 @@ class OperationsManager():
         
         Returns
         -------
-        LongRunningOperation
-            Object representing the operation.
+        Optional[LongRunningOperation]
+            Object representing the operation if successful, None if not found.
         """               
         try:
-            headers = {
-                "x-api-key": self.state_api_key,
-                "charset":"utf-8",
-                "Content-Type":"application/json"
-            }
-
-            user_identity_dict = json.loads(user_identity)
             body = {
                 "operation_id": operation_id,
                 "instance_id": instance_id,
-                "upn": user_identity_dict['upn']
+                "upn": self.__get_upn_from_user_identity(user_identity)
             }
 
-            # Call the State API to create a new operation.
-            r = requests.post(
+            async with self.http_client_session.post(
                 f'{self.state_api_url}/instances/{instance_id}/operations/{operation_id}',
-                json=body,
-                headers=headers,
-                verify=self.verify_certs
-            )
+                json = body,
+                headers = self.__get_standard_headers(),
+                ssl = self.use_ssl
+            ) as response:
+                if response.status == 404:
+                    return None
+                if response.status != 200:
+                    raise Exception(f'An error occurred while creating the operation {operation_id}: ({response.status}) {await response.text()}')
 
-            if r.status_code != 200:
-                raise Exception(f'An error occurred while creating the operation {operation_id}: ({r.status_code}) {r.text}')
+                return LongRunningOperation(**await response.json())
+        except Exception:
+            raise
 
-            return r.json()
-        except Exception as e:
-            raise e
-
-    async def update_operation_async(self,
+    async def update_operation_async(
+        self,
         operation_id: str,
         instance_id: str,
         status: OperationStatus,
         status_message: str,
-        user_identity: str) -> LongRunningOperation:
+        user_identity: str
+    ) -> Optional[LongRunningOperation]:
         """
         Updates the state of a background operation through the State API.
 
@@ -107,47 +98,38 @@ class OperationsManager():
         
         Returns
         -------
-        LongRunningOperation
-            Object representing the operation.
+        Optional[LongRunningOperation]
+            Object representing the operation if successful, None if not found.
         """
-        user_identity_dict = json.loads(user_identity)
-
-        operation = LongRunningOperation(
-            operation_id=operation_id,
-            status=status,
-            status_message=status_message,
-            upn=user_identity_dict['upn']
-        )
-        
         try:
-            # Call the State API to create a new operation.
-            headers = {
-                "x-api-key": self.state_api_key,
-                "charset":"utf-8",
-                "Content-Type":"application/json"
-            }
-
-            r = requests.put(
-                f'{self.state_api_url}/instances/{instance_id}/operations/{operation_id}',
-                json=operation.model_dump(exclude_unset=True),
-                headers=headers,
-                verify=self.verify_certs
+            operation = LongRunningOperation(
+                operation_id = operation_id,
+                status = status,
+                status_message = status_message,
+                upn = self.__get_upn_from_user_identity(user_identity)
             )
+            
+            # Call the State API to create a new operation.
+            async with self.http_client_session.put(
+                f'{self.state_api_url}/instances/{instance_id}/operations/{operation_id}',
+                json = operation.model_dump(exclude_unset=True),
+                headers = self.__get_standard_headers(),
+                ssl = self.use_ssl
+            ) as response:
+                if response.status == 404:
+                    return None
+                if response.status != 200:
+                    raise Exception(f'An error occurred while updating the status of operation {operation_id}: ({response.status}) {await response.text()}')
 
-            if r.status_code == 404:
-                return None
-
-            if r.status_code != 200:
-                raise Exception(f'An error occurred while updating the status of operation {operation_id}: ({r.status_code}) {r.text}')
-
-            return r.json()
-        except Exception as e:
-            raise e
-
+                return LongRunningOperation(**await response.json())
+        except Exception:
+            raise
+        
     async def get_operation_async(
         self,
         operation_id: str,
-        instance_id: str) -> LongRunningOperation:
+        instance_id: str
+    ) -> Optional[LongRunningOperation]:
         """
         Retrieves the state of a background operation through the State API.
 
@@ -162,32 +144,24 @@ class OperationsManager():
         
         Returns
         -------
-        LongRunningOperation
-            Object representing the operation.
+        Optional[LongRunningOperation]
+            Object representing the operation if successful, None if not found.
         """
         try:
             # Call the State API to create a new operation.
-            headers = {
-                "x-api-key": self.state_api_key,
-                "charset":"utf-8",
-                "Content-Type":"application/json"
-            }
-
-            r = requests.get(
+            async with self.http_client_session.get(
                 f'{self.state_api_url}/instances/{instance_id}/operations/{operation_id}',
-                headers=headers,
-                verify=self.verify_certs
-            )
+                headers = self.__get_standard_headers(),
+                ssl = self.use_ssl
+            ) as response:
+                if response.status == 404:
+                    return None
+                if response.status != 200:
+                    raise Exception(f'An error occurred while retrieving the status of the operation {operation_id}: ({response.status}) {await response.text()}')
 
-            if r.status_code == 404:
-                return None
-
-            if r.status_code != 200:
-                raise Exception(f'An error occurred while retrieving the status of the operation {operation_id}: ({r.status_code}) {r.text}')
-
-            return r.json()
-        except Exception as e:
-            raise e
+                return LongRunningOperation(**await response.json())
+        except Exception:
+            raise
 
     async def set_operation_result_async(
         self,
@@ -210,32 +184,24 @@ class OperationsManager():
         """
         try:
             # Call the State API to create a new operation.
-            headers = {
-                "x-api-key": self.state_api_key,
-                "charset":"utf-8",
-                "Content-Type":"application/json"
-            }
-
-            r = requests.post(
+            async with self.http_client_session.post(
                 f'{self.state_api_url}/instances/{instance_id}/operations/{operation_id}/result',
-                json=completion_response.model_dump(),
-                headers=headers,
-                verify=self.verify_certs
-            )
-
-            if r.status_code == 404:
-                return None
-
-            if r.status_code != 200:
-                raise Exception(f'An error occurred while submitting the result of operation {operation_id}: ({r.status_code}) {r.text}')
-
-        except Exception as e:
-            raise e
+                json = completion_response.model_dump(),
+                headers = self.__get_standard_headers(),
+                ssl = self.use_ssl
+            ) as response:
+                if response.status == 404:
+                    return None
+                if response.status != 200:
+                    raise Exception(f'An error occurred while submitting the result of operation {operation_id}: ({response.status}) {await response.text()}')
+        except Exception:
+            raise
 
     async def get_operation_result_async(
         self,
         operation_id: str,
-        instance_id: str) -> CompletionResponse:
+        instance_id: str
+    ) -> Optional[CompletionResponse]:
         """
         Retrieves the result of an async completion operation through the State API.
 
@@ -255,32 +221,25 @@ class OperationsManager():
         """
         try:
             # Call the State API to create a new operation.
-            headers = {
-                "x-api-key": self.state_api_key,
-                "charset":"utf-8",
-                "Content-Type":"application/json"
-            }
-
-            r = requests.get(
+            async with self.http_client_session.get(
                 f'{self.state_api_url}/instances/{instance_id}/operations/{operation_id}/result',
-                headers=headers,
-                verify=self.verify_certs
-            )
+                headers = self.__get_standard_headers(),
+                ssl = self.use_ssl
+            ) as response:
+                if response.status == 404:
+                    return None
+                if response.status != 200:
+                    raise Exception(f'An error occurred while retrieving the result of operation {operation_id}: ({response.status}) {await response.text()}')
 
-            if r.status_code == 404:
-                return None
-
-            if r.status_code != 200:
-                raise Exception(f'An error occurred while retrieving the result of operation {operation_id}: ({r.status_code}) {r.text}')
-
-            return r.json()
-        except Exception as e:
-            raise e
+                return CompletionResponse(**await response.json())
+        except Exception:
+            raise
 
     async def get_operation_logs_async(
         self,
         operation_id: str,
-        instance_id: str) -> List[LongRunningOperationLogEntry]:
+        instance_id: str
+    ) -> Optional[List[LongRunningOperationLogEntry]]:
         """
         Retrieves a list of log entries for an async operation through the State API.
 
@@ -295,29 +254,48 @@ class OperationsManager():
         
         Returns
         -------
-        List[LongRunningOperationLogEntry]
-            List of log entries for the operation.
+        Optional[List[LongRunningOperationLogEntry]]
+            List of log entries for the operation if successful, None if not found.
         """
         try:
             # Call the State API to create a new operation.
-            headers = {
-                "x-api-key": self.state_api_key,
-                "charset":"utf-8",
-                "Content-Type":"application/json"
-            }
-
-            r = requests.get(
+            async with self.http_client_session.get(
                 f'{self.state_api_url}/instances/{instance_id}/operations/{operation_id}/logs',
-                headers=headers,
-                verify=self.verify_certs
-            )
+                headers = self.__get_standard_headers(),
+                ssl = self.use_ssl
+            ) as response:
+                if response.status == 404:
+                    return None
+                if response.status != 200:
+                    raise Exception(f'An error occurred while retrieving the log for operation {operation_id}: ({response.status}) {await response.text()}')
 
-            if r.status_code == 404:
-                return None
+                return LongRunningOperationLogEntry(**await response.json())
+        except Exception:
+            raise
 
-            if r.status_code != 200:
-                raise Exception(f'An error occurred while retrieving the log of steps for the operation {operation_id}: ({r.status_code}) {r.text}')
+    def __get_standard_headers(self):
+        """
+        Retrieves the standard headers for interacting with the State API.
+        """
+        return {
+            "x-api-key": self.state_api_key,
+            "charset":"utf-8",
+            "Content-Type":"application/json"
+        }
+    
+    def __get_upn_from_user_identity(self, user_identity: str) -> str:
+        """
+        Retrieves the user principal name from the user identity object.
 
-            return r.json()
-        except Exception as e:
-            raise e
+        Parameters
+        ----------
+        user_identity : str
+            The user identity object containing the user principal name of the user who initiated the operation.
+        
+        Returns
+        -------
+        str
+            The user principal name.
+        """
+        user_identity_dict = json.loads(user_identity)
+        return user_identity_dict['upn']

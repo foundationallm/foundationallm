@@ -203,7 +203,11 @@ export default {
 			// 	this.longRunningOperations.set(this.currentSession.id, true);
 			// 	await this.pollForCompletion(this.currentSession.id, operationId);
 			// } else {
-			await this.$appStore.sendMessage(text);
+			let waitForPolling = await this.$appStore.sendMessage(text);
+
+			if (!waitForPolling) {
+				this.isMessagePending = false;
+			}
 			// console.log(message);
 			// await this.$appStore.getMessages();
 			// }

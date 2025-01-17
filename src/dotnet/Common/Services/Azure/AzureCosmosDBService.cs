@@ -5,17 +5,21 @@ using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
 using Polly.Retry;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net;
+using System.Text.Json;
 
-namespace FoundationaLLM.Common.Services
+namespace FoundationaLLM.Common.Services.Azure
 {
     /// <summary>
     /// Service to access Azure Cosmos DB for NoSQL.
@@ -27,6 +31,7 @@ namespace FoundationaLLM.Common.Services
         private Container _operations;
         private Container _attachments;
         private Container _externalResources;
+        private Container _completionsCache;
         private readonly Lazy<Task<Container>> _userProfiles;
         private Task<Container> _userProfilesTask => _userProfiles.Value;
         private readonly Database _database;
@@ -109,11 +114,17 @@ namespace FoundationaLLM.Common.Services
                            throw new ArgumentException(
                                $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.ExternalResources}).");
 
+
+            _completionsCache = database?.GetContainer(AzureCosmosDBContainers.CompletionsCache) ??
+                           throw new ArgumentException(
+                               $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.CompletionsCache}).");
+
             _containers[AzureCosmosDBContainers.Sessions] = _sessions;
             _containers[AzureCosmosDBContainers.UserSessions] = _userSessions;
             _containers[AzureCosmosDBContainers.Operations] = _operations;
             _containers[AzureCosmosDBContainers.Attachments] = _attachments;
             _containers[AzureCosmosDBContainers.ExternalResources] = _externalResources;
+            _containers[AzureCosmosDBContainers.CompletionsCache] = _completionsCache;
 
             _logger.LogInformation("Cosmos DB service initialized.");
         }
@@ -299,7 +310,7 @@ namespace FoundationaLLM.Common.Services
         public async Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, CancellationToken cancellationToken = default)
         {
             var query =
-                new QueryDefinition($"SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction}")
+                new QueryDefinition($"SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c.timeStamp")
                     .WithParameter("@sessionId", sessionId)
                     .WithParameter("@type", nameof(Message))
                     .WithParameter("@upn", upn);
@@ -587,6 +598,88 @@ namespace FoundationaLLM.Common.Services
                item: attachmentReference,
                partitionKey: partitionKey,
                cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public async Task CreateVectorSearchContainerAsync(
+            string containerName,
+            string partitionKeyPath,
+            string vectorPropertyPath,
+            int vectorDimensions,
+            CancellationToken cancellationToken = default)
+        {
+            var containerProperties = new ContainerProperties(containerName, partitionKeyPath)
+            {
+                VectorEmbeddingPolicy = new(new Collection<Embedding>(
+                    [
+                        new Embedding()
+                        {
+                            Path = vectorPropertyPath,
+                            DataType = VectorDataType.Float32,
+                            DistanceFunction = DistanceFunction.Cosine,
+                            Dimensions = vectorDimensions
+                        }
+                    ])),
+
+                IndexingPolicy = new IndexingPolicy
+                {
+                    VectorIndexes =
+                        [
+                            new VectorIndexPath()
+                            {
+                                Path = vectorPropertyPath,
+                                Type = VectorIndexType.DiskANN
+                            }
+                        ]
+                }
+            };
+            containerProperties.IndexingPolicy.IncludedPaths.Add(new IncludedPath { Path = "/*" });
+            containerProperties.IndexingPolicy.ExcludedPaths.Add(new ExcludedPath { Path = $"{vectorPropertyPath}/*" });
+
+            var containerResponse = await _database.CreateContainerIfNotExistsAsync(
+                containerProperties,
+                cancellationToken: cancellationToken);
+            if (containerResponse.Container != null)
+                _containers[containerName] = containerResponse.Container;
+        }
+
+        /// <inheritdoc/>
+        public async Task<CompletionResponse?> GetCompletionResponseAsync(
+            string containerName,
+            ReadOnlyMemory<float> userPromptEmbedding,
+            decimal minimumSimilarityScore)
+        {
+            var query = new QueryDefinition("""
+                SELECT TOP 1
+                    x.serializedItem, x.similarityScore
+                FROM
+                    (
+                        SELECT c.serializedItem, VectorDistance(c.userPromptEmbedding, @userPromptEmbedding) AS similarityScore FROM c
+                    ) x
+                WHERE
+                    x.similarityScore >= @minimumSimilarityScore
+                ORDER BY
+                    x.similarityScore DESC
+                """);
+            query.WithParameter("@userPromptEmbedding", userPromptEmbedding.ToArray());
+            query.WithParameter("@minimumSimilarityScore", (float)minimumSimilarityScore);
+
+            using var feedIterator = _completionsCache.GetItemQueryIterator<Object>(query);
+            if (feedIterator.HasMoreResults)
+            {
+                var response = await feedIterator.ReadNextAsync();
+                var result = response.Resource.FirstOrDefault();
+
+                if (result == null)
+                    return null;
+
+                var serializedCompletionResponse = (result as Newtonsoft.Json.Linq.JObject)!["serializedItem"]!.ToString();
+                var completionResponse = JsonSerializer.Deserialize<CompletionResponse>(serializedCompletionResponse);
+
+                return completionResponse;
+            }
+
+            return null;
         }
     }
 }

@@ -6,6 +6,7 @@ interface ResourceBase {
 	name: string;
 	display_name: string;
 	description: string;
+	properties?: { [key: string]: string | null };
 	cost_center: string;
 	expiration_date: string;
 }
@@ -45,6 +46,13 @@ export type ResourceProviderUpsertResult = {
     resource?: any;
 };
 
+export type ResourceProviderActionResult = {
+	/**
+	 * Represents the result of an action.
+	 */
+	isSuccessResult: boolean;
+};
+
 export type AgentTool = {
 	name: string;
 	description: string;
@@ -56,7 +64,10 @@ export type AgentTool = {
 export type Agent = ResourceBase & {
 	type: 'knowledge-management' | 'analytics';
 	inline_context: boolean;
-	properties?: { [key: string]: string | null };
+
+	show_message_tokens?: boolean;
+	show_message_rating?: boolean;
+	show_view_prompt?: boolean;
 
 	ai_model_object_id: string;
 
@@ -321,7 +332,10 @@ export type MockCreateAgentRequest = {
 export type CreateAgentRequest = ResourceBase & {
 	type: 'knowledge-management' | 'analytics';
 	inline_context: boolean;
-	properties?: { [key: string]: string | null };
+
+	show_message_tokens?: boolean;
+	show_message_rating?: boolean;
+	show_view_prompt?: boolean;
 
 	ai_model_object_id: string;
 
@@ -549,4 +563,51 @@ export function convertToAppConfigKeyVault(baseConfig: AppConfigUnion): AppConfi
 		key_vault_secret_name: baseConfig.key_vault_secret_name,
 		content_type: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8',
 	};
+}
+
+export type APIEndpointConfiguration = ResourceBase & {
+    type: string;
+    category: APIEndpointCategory;
+    subcategory?: APIEndpointSubcategory;
+    authenticationType: AuthenticationTypes;
+    url: string;
+    statusUrl?: string;
+    urlExceptions: UrlException[];
+    authenticationParameters: { [key: string]: any };
+    timeoutSeconds: number;
+    retryStrategyName: string;
+    provider?: string;
+    apiVersion?: string;
+    operationType?: string;
+}
+
+export type UrlException = {
+    userPrincipalName: string;
+    url: string;
+    enabled: boolean;
+}
+
+export enum APIEndpointCategory {
+    Orchestration,
+    ExternalOrchestration,
+    LLM,
+    Gatekeeper,
+    AzureAIDirect,
+    AzureOpenAIDirect,
+    FileStoreConnector,
+    General
+}
+
+export enum APIEndpointSubcategory {
+    OneDriveWorkSchool,
+    Indexing,
+    AIModel
+}
+
+export enum AuthenticationTypes {
+    Unknown = -1,
+    AzureIdentity,
+    APIKey,
+    ConnectionString,
+    AccountKey
 }
