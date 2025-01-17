@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 
 namespace FoundationaLLM.Common.Clients
 {
@@ -15,31 +16,38 @@ namespace FoundationaLLM.Common.Clients
     /// </summary>
     /// <typeparam name="TRequest">The type of the payload to send to start the operation.</typeparam>
     /// <typeparam name="TResponse">The type of the response received when the operation is completed.</typeparam>
-    /// <param name="httpClient">The <see cref="HttpClient"/> to use for the requests.</param>
+    /// <param name="operationStarterHttpClient">The <see cref="HttpClient"/> used to start the operation.</param>
+    /// <param name="operationRetrieverHttpClient">The <see cref="HttpClient"/> used to retrieve the operation (including its status).</param>
     /// <param name="request">The <typeparamref name="TRequest"/> request to send to the service.</param>
-    /// <param name="operationStarterPath">The path to send the request to (will be appended to the base path of the HTTP client.</param>
+    /// <param name="operationStarterPath">The path used to start the operation.</param>
+    /// <param name="operationRetrieverPathTemplate">The path template used to retrieve the operation (including its status).</param>
     /// <param name="pollingInterval">The <see cref="TimeSpan"/> interval to poll for the response.</param>
     /// <param name="maxWaitTime">The <see cref="TimeSpan"/> maximum time to wait for the response.</param>
     /// <param name="logger">The logger used for logging.</param>
     public class PollingHttpClient<TRequest, TResponse>(
-        HttpClient httpClient,
+        HttpClient operationStarterHttpClient,
+        HttpClient operationRetrieverHttpClient,
         TRequest? request,
         string operationStarterPath,
+        string operationRetrieverPathTemplate,
         TimeSpan pollingInterval,
         TimeSpan maxWaitTime,
         ILogger logger)
         where TRequest : CompletionRequestBase
         where TResponse : CompletionResponseBase
     {
-        private readonly HttpClient _httpClient = httpClient;
+        private readonly HttpClient _operationStarterHttpClient = operationStarterHttpClient;
+        private readonly HttpClient _operationRetrieverHttpClient = operationRetrieverHttpClient;
         private readonly TRequest? _request = request;
         private readonly string _operationStarterPath = operationStarterPath;
+        private readonly string _operationRetrieverPathTemplate = operationRetrieverPathTemplate;
         private readonly TimeSpan _pollingInterval = pollingInterval;
         private readonly TimeSpan _maxWaitTime = maxWaitTime;
         private readonly ILogger _logger = logger;
         private readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions(
             options => {
                 options.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                options.UnmappedMemberHandling = JsonUnmappedMemberHandling.Skip;
                 return options;
             });
 
@@ -51,7 +59,7 @@ namespace FoundationaLLM.Common.Clients
         public async Task<LongRunningOperation> StartOperationAsync(CancellationToken cancellationToken = default)
         {
             var body = JsonSerializer.Serialize(_request, _jsonSerializerOptions);
-            var responseMessage = await _httpClient.PostAsync(
+            var responseMessage = await _operationStarterHttpClient.PostAsync(
                 _operationStarterPath,
                 new StringContent(
                     body,
@@ -83,8 +91,8 @@ namespace FoundationaLLM.Common.Clients
         /// <returns>A <see cref="LongRunningOperation"/>object providing details about the running operation.</returns>
         public async Task<LongRunningOperation> GetOperationStatusAsync(string operationId, CancellationToken cancellationToken = default)
         {
-            var operationStatusPath = $"{_operationStarterPath}/{operationId}/status";
-            var responseMessage = await _httpClient.GetAsync(operationStatusPath, cancellationToken);
+            var operationStatusPath = string.Format(_operationRetrieverPathTemplate, operationId);
+            var responseMessage = await _operationRetrieverHttpClient.GetAsync(operationStatusPath, cancellationToken);
 
             if (responseMessage.StatusCode == HttpStatusCode.NotFound)
             {
@@ -163,7 +171,7 @@ namespace FoundationaLLM.Common.Clients
                         case OperationStatus.Completed:
                             if (operationStatus.Result is JsonElement jsonElement)
                             {
-                                return jsonElement.Deserialize<TResponse>();
+                                return jsonElement.Deserialize<TResponse>(_jsonSerializerOptions);
                             }
                             return default;
                         case OperationStatus.InProgress:
