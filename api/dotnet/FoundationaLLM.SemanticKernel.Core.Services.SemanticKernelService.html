@@ -216,48 +216,6 @@ is primarily used to inject HTTP headers into downstream HTTP calls.</p>
 </h2>
 
 
-  <a id="FoundationaLLM_SemanticKernel_Core_Services_SemanticKernelService_GetCompletionOperationResult_" data-uid="FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelService.GetCompletionOperationResult*"></a>
-
-  <h3 id="FoundationaLLM_SemanticKernel_Core_Services_SemanticKernelService_GetCompletionOperationResult_System_String_System_String_" data-uid="FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelService.GetCompletionOperationResult(System.String,System.String)">
-  GetCompletionOperationResult(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/SemanticKernel/Services/SemanticKernelService.cs/#L114"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets a completion operation from the Orchestration service.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;LLMCompletionResponse&gt; GetCompletionOperationResult(string instanceId, string operationId)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The FoundationaLLM instance id.</p>
-</dd>
-    <dt><code>operationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The ID of the operation to retrieve.</p>
-</dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse.html">LLMCompletionResponse</a>&gt;</dt>
-    <dd><p>Returns a <a class="xref" href="FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse.html">LLMCompletionResponse</a> object.</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
   <a id="FoundationaLLM_SemanticKernel_Core_Services_SemanticKernelService_GetCompletionOperationStatus_" data-uid="FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelService.GetCompletionOperationStatus*"></a>
 
   <h3 id="FoundationaLLM_SemanticKernel_Core_Services_SemanticKernelService_GetCompletionOperationStatus_System_String_System_String_" data-uid="FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelService.GetCompletionOperationStatus(System.String,System.String)">
