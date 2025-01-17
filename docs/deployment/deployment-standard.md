@@ -45,129 +45,155 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
 2. From a PowerShell prompt, execute the following to clone the repository:
 
-```powershell
-  git clone https://github.com/solliancenet/foundationallm.git
-  cd foundationallm/deploy/standard
-  git checkout release/0.8.2
-```
-3. Create your deployment manifest:
-
-```powershell
-  cp Deployment-Manifest.template.json Deployment-Manifest.json
-```
-
-4. Fill out all required fields in the `Deployment-Manifest.json` file. Please look at [this guide](./standard/manifest.md) for more information on the manifest contents.
-
-5. Login to your Azure account and set the deployment subscription:
-
-    ```powershell
-    az login
-    az account set --subscription <Azure Subscription ID>
+    ```pwsh
+      git clone https://github.com/solliancenet/foundationallm.git
+      cd foundationallm
+      git checkout release/0.9.1-rc121
     ```
 
-6. **Optional** Execute the pre-deployment script:
+3. Install AzCopy
 
-    ```powershell
-    cd scripts
-    ./Pre-Deploy.ps1
+    ```pwsh
+      cd .\deploy\common\scripts
+      .\Get-AzCopy.ps1
     ```
 
-> [!NOTE]
-> The pre-deployment script will acquire certificates from LetsEncrypt and place them in `foundationallm/deploy/standard/config/certbot/certs`.  If you plan to provide certificates another way, you can skip this script, but you must place the certificates in the specified location.  See step 7.
+4. Run the following commands to log into Azure CLI, Azure Developer CLI and AzCopy:
 
-7. **Optional** Provide certificates (manual method):
+    ```pwsh
+    cd .\deploy\standard
+    az login                                   # Log into Azure CLI
+    azd auth login                             # Log into Azure Developer CLI
+    ..\common\tools\azcopy\azcopy login        # Log into AzCopy
+    ```
 
-> [!NOTE]
-> Skip this step if you created certificates using LetsEncrypt in step 6.
+5. Set up an `azd` environment targeting your Azure subscription and desired deployment region:
 
-Create certificates for the appropriate domains and package them in PFX format.  Place the PFX files in `foundationallm/deploy/standard/config/certbot/certs` following the naming convention below.  The values for `Host Name` and `Domain Name` should match the values you provided in your deployment manifest:
+    ```pwsh
+    # Set your target Subscription and Location
+    azd env new --location <Supported Azure Region> --subscription <Azure Subscription ID>
+    ```
 
-| Service Name      | Host Name         | Domain Name | File Name                         |
-| ----------------- | ----------------- | ----------- | --------------------------------- |
-| core-api          | api               | example.com | api.example.com.pfx               |
-| management-api    | management-api    | example.com | management-api.example.com.pfx    |
-| chat-ui           | chat              | example.com | chat.example.com.pfx              |
-| management-ui     | management        | example.com | management.example.com.pfx        |
+6. Set FoundationaLLM Entra Parameters
+
+    ```pwsh
+    cd .\deploy\standard
+    ..\common\scripts\Set-AzdEnvEntra.ps1
+    ```
+
+7. Set FoundationaLLM Network Parameters
+
+    ```pwsh
+    cd .\deploy\standard
+    ..\common\scripts\Set-AzdEnvAksVnet.ps1 -fllmAksServiceCidr <aksServiceCidr> -fllmVnetCidr <vnetCidr> -fllmAllowedExternalCidrs <allowedExternalCidrs>
+
+    # aksServiceCidr - CIDR block for the AKS Services - e.g., 10.100.0.0/16
+    # vnetCidr             - CIDR block for the VNet - e.g., 10.220.128.0/20
+    # allowedExternalCidrs - CIDR block for NSGs to allow VPN or HUB VNet
+    #                        e.g., 192.168.101.0/28,10.0.0.0/16
+    #                        comma separated
+    #                        updates allow-vpn nsg rule
+    ```
+
+8. Set FoundationaLLM Hub Network Parameters
+
+    ```pwsh
+    cd .\deploy\standard
+    ..\common\scripts\Set-AzdEnvHubVnet.ps1 -hubTenantId <hubTenantId> `
+                                            -hubVnetName <hubVnetName> `
+                                            -hubResourceGroupName <hubResourceGroupName> `
+                                            -hubSubscriptionId <hubSubscriptionId>
+
+    # hubTenantId          - Id of the Azure Tenant in which the hub VNET resides
+    # hubVnetName          - Name of the Hub VNET
+    # hubResourceGroupName - Name of Azure resource group in which hub VNET resides
+    # hubSubscriptionId    - Id of Azure subscription in which hub VNET resides
+    ```
+    > Note: If hub resources reside in an Azure tenant/subscription other than the target deployment tenant/subscription, you will need to make sure you are logged into that tenant and subscription via `az login` before executing this step.
+
+9.  Provision SSL certificates for the appropriate domains and package them in PFX format.  Place the PFX files in `foundationallm/deploy/standard/certs` following the naming convention below.  The values for `Host Name` and `Domain Name` should match the values you provided in your deployment manifest:
+
+    | Service Name      | Host Name         | Domain Name | File Name                         |
+    | ----------------- | ----------------- | ----------- | --------------------------------- |
+    | core-api          | api               | example.com | api.example.com.pfx               |
+    | management-api    | management-api    | example.com | management-api.example.com.pfx    |
+    | chat-ui           | chat              | example.com | chat.example.com.pfx              |
+    | management-ui     | management        | example.com | management.example.com.pfx        |
+
+10. Set the endpoint hostnames using AZD
+
+    ```pwsh
+    azd env set FLLM_USER_PORTAL_HOSTNAME chat.example.com
+    azd env set FLLM_CORE_API_HOSTNAME api.example.com
+    azd env set FLLM_MGMT_PORTAL_HOSTNAME management.example.com
+    azd env set FLLM_MGMT_API_HOSTNAME management-api.example.com
+    ```
 
 ## Provision Infrastructure
 
-8. Provision infrastructure with `psake`:
+11. Provision platform infrastructure with `AZD`:
 
-```powershell
-  cd ../bicep
-  ./bootstrap.ps1; Invoke-Psake
-```
+    ```pwsh
+    cd .\deploy\standard
+    azd provision
+    ```
 
-The deployment process will take some time.
+    The deployment process will take some time.
 
-9. Execute the first post-provision script:
-
-```powershell
-  cd ../scripts
-  ./Post-Provision.1.ps1
-```
-
-The post-deployment script will generate a host file describing all the private endpoint IPs and the associated hostnames.  These values can be used to populate your computer's local `hosts` file, or may assist with configuring your organization's DNS system.  This guide will assume that you have taken the contents of the generated file and added them to your local `hosts` file.
+    The AZD post-provisioning hook script will generate a `hosts` file in the `.\deploy\standard\config` folder describing all the private endpoint IPs and the associated hostnames.  These values can be used to populate your computer's local `hosts` file, or may assist with configuring your organization's DNS system.  This guide will assume that you have taken the contents of the generated file and added them to your local `hosts` file.
 
 ## Configure and Deploy
 
-10. Connect to VPN
+12. Ensure that you have network access to the deployed resources and that DNS resolution to deployed resources is configured (this is environment specific).
 
-    First, download and install the Azure VPN client and connect to the VPN gateway.
-    - [Windows](https://learn.microsoft.com/en-us/azure/vpn-gateway/openvpn-azure-ad-client)
-    - [MacOS](https://learn.microsoft.com/en-us/azure/vpn-gateway/openvpn-azure-ad-client-mac)
+13. Deploy to platform infrastructure with `AZD`:
 
-    Next, using the Azure portal download and then import the VPN configuration. Locate the VPN gateway in the networking resource group, click Point-to-Site, then *Download VPN Client* and follow the following instructions to download the configuration, client and connect to VPN.
-    
-    ![Download the VPN Configuration from the Azure Portal.](media/vpn-client.png)
+    ```pwsh
+    cd .\deploy\standard
+    azd deploy
+    ```
 
-    > [!NOTE]
-    > Make sure to connect to the VPN before proceeding to the next step.
+    The deployment process will take some time.  The process will:
+    - Generate the configuration for the system.
+    - Load the configuration into App Configuration.
+    - Load default system files into Azure Storage.
+    - Configure the backend cluster.
+      - Create the FLLM namespace in the backend cluster
+        - Deploy the backend services to the cluster in the FLLM namespace
+      - Create the gateway-system namespace
+        - Deploy the secret class provider to the gateway-system namespace
+        - Deploy ingress-nginx
+        - Deploy Ingress Configurations and External Services
+      - Configure the frontend cluster.
+        - Create the FLLM namespace in the frontend cluster
+          - Deploy the frontend services to the cluster in the FLLM namespace
+        - Create the gateway-system namespace
+          - Deploy the secret class provider to the gateway-system namespace
+          - Deploy ingress-nginx
+          - Deploy Ingress Configurations and External Services
+      - Generate host file entries for the deployed services on AKS that you can add to your host file or DNS server.
 
+    The AZD deploy hook script will generate a `hosts.ingress` file in the `.\deploy\standard\config` folder describing the api and frontend endpoints and the associated hostnames.  These values can be used to populate your computer's local `hosts` file, or may assist with configuring your organization's DNS system.  This guide will assume that you have taken the contents of the generated file and added them to your local `hosts` file.16.  Update your local `hosts` file with the entries from the generated host file.
 
-11. Execute the second post-provision script:
+### Running script to allow MS Graph access through Role Permissions
 
-```powershell
-  ./Post-Provision.2.ps1
-```
-    The post-deployment script will upload the certificates to the Azure Key Vault.
+14. After the deployment is complete, you will need to run the following script to allow MS Graph access through Role Permissions. (See below)
 
+> [!IMPORTANT]
+> The user running the script will need to have the appropriate permissions to assign roles to the managed identities. The user will need to be a `Global Administrator` or have the `Privileged Role Administrator` role in the Entra ID tenant. The syntax for running the script from the `deploy\quick-start\common\scripts` folder is:
 
-12. Run the bootstrap script to prepare download and install Azcopy:
+    ```pwsh
+        cd .\deploy\standard
+        ..\common\scripts\Set-FllmGraphRoles.ps1 -resourceGroupName rg-<azd env name>
+    ```
+    Finally, you will need to update the Authorization Callbacks in the App Registrations created in the Entra ID tenant by running the following script:
 
-```powershell
-  ./Bootstrap.ps1
-```
+    ```pwsh
+        cd .\deploy\standard
+        ..\common\scripts\Update-OAuthCallbackUris.ps1
+    ```
 
-When prompted, sign in to your Azcopy with your Azure account. This should be the same account you used to log in to the Azure CLI.
-
-13. Execute the deployment script:
-
-```powershell
-  ./Deploy.ps1
-```
-The deployment process will take some time.  The process will:
-- Generate the configuration for the system.
-- Load the configuration into App Configuration.
-- Load default system files into Azure Storage.
-- Configure the backend cluster.
-  - Create the FLLM namespace in the backend cluster
-    - Deploy the backend services to the cluster in the FLLM namespace
-  - Create the gateway-system namespace
-    - Deploy the secret class provider to the gateway-system namespace
-    - Deploy ingress-nginx
-    - Deploy Ingress Configurations and External Services
-  - Configure the frontend cluster.
-    - Create the FLLM namespace in the frontend cluster
-      - Deploy the frontend services to the cluster in the FLLM namespace
-    - Create the gateway-system namespace
-      - Deploy the secret class provider to the gateway-system namespace
-      - Deploy ingress-nginx
-      - Deploy Ingress Configurations and External Services
-  - Generate host file entries for the deployed services on AKS that you can add to your host file or DNS server.
-
-13.  Update your local `hosts` file with the entries from the generated host file.
 
 ## Connect and Test
 
-14. Visit the chat UI in your browser and send a message to verify the deployment.  The message can be very simple like "Who are you?".  The default agent should respond with a message explaining it's persona.
+15. Visit the chat UI in your browser and send a message to verify the deployment.  The message can be very simple like "Who are you?".  The default agent should respond with a message explaining it's persona.

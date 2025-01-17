@@ -15,11 +15,12 @@ class CompletionResponse(BaseModel):
     id: Optional[str] = None
     operation_id: str
     user_prompt: str
+    user_prompt_rewrite: Optional[str] = None
     full_prompt: Optional[str] = None
     content: Optional[
         List[
             Union[
-                OpenAIImageFileMessageContentItem, 
+                OpenAIImageFileMessageContentItem,
                 OpenAITextMessageContentItem
             ]
         ]

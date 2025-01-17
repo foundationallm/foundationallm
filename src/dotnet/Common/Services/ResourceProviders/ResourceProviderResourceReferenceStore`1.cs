@@ -315,6 +315,39 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     _resourceReferences[reference.Name] = reference;
                 }
             }
+
+            var referenceNamesToRemove = _resourceReferences.Keys
+                .Except(persistedReferencesList.ResourceReferences.Select(rr => rr.Name))
+                .ToList();
+            foreach (var referenceNameToRemove in referenceNamesToRemove)
+                _resourceReferences.Remove(referenceNameToRemove);
+        }
+
+        /// <summary>
+        /// Sets the default resource name on the store.
+        /// </summary>
+        /// <param name="resourceReference">The resource reference to set as the default.</param>
+        /// <returns></returns>
+        public async Task SetDefaultResourceName(T resourceReference)
+        {
+            await _lock.WaitAsync();
+            try
+            {
+                var existingResourceReference = GetResourceReferenceInternal(resourceReference.Name);
+
+                if (existingResourceReference == null)
+                    throw new ResourceProviderException(
+                        $"Cannot set the default resource name to {resourceReference.Name} since it does not exist in the resource reference store.",
+                        StatusCodes.Status400BadRequest);
+
+                _defaultResourceName = resourceReference.Name;
+
+                await SaveResourceReferences();
+            }
+            finally
+            {
+                _lock.Release();
+            }
         }
 
         /// <summary>
@@ -383,6 +416,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 ResourceReferencesFilePath,
                 JsonSerializer.Serialize(new ResourceReferenceList<T>
                 {
+                    DefaultResourceName = _defaultResourceName,
                     ResourceReferences = _resourceReferences.Values.ToList()
                 }),
                 default,

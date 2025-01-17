@@ -2,6 +2,7 @@ using Azure.Messaging;
 using FluentValidation;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
@@ -54,7 +55,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             serviceProvider,
             loggerFactory.CreateLogger<VectorizationResourceProviderService>(),
             [
-                EventSetEventNamespaces.FoundationaLLM_ResourceProvider_Vectorization
+                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ])
     {
         /// <inheritdoc/>
@@ -864,17 +865,11 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         #region Event handling
 
         /// <inheritdoc/>
-        protected override async Task HandleEvents(EventSetEventArgs e)
+        protected override async Task HandleEventsInternal(EventTypeEventArgs e)
         {
-            _logger.LogInformation("{EventsCount} events received in the {EventsNamespace} events namespace.",
-                e.Events.Count, e.Namespace);
-
-            switch (e.Namespace)
+            switch (e.EventType)
             {
-                case EventSetEventNamespaces.FoundationaLLM_ResourceProvider_Vectorization:
-                    foreach (var @event in e.Events)
-                        await HandleVectorizationResourceProviderEvent(@event);
-                    break;
+                //TODO: Add dedicated commands and handling for this resource provider.
                 default:
                     // Ignore silently any event namespace that's of no interest.
                     break;
