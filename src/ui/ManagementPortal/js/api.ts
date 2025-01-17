@@ -768,6 +768,20 @@ export default {
 		);
 	},
 
+	async checkAIModelName(name: string): Promise<CheckNameResponse> {
+		const payload = {
+			name,
+		};
+
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels/checkname?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		);
+	},
+
 	/*
 		Role Assignments
 	 */
@@ -1042,7 +1056,6 @@ export default {
 	},
 
 	async createIndexingProfile(request): Promise<any> {
-		console.log('createIndexingProfile', request);
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles/${request.name}?api-version=${this.apiVersion}`,
 			{
