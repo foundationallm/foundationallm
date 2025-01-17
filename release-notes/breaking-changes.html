@@ -136,6 +136,24 @@
 <p>Note: The event grid system topics need to be removed.</p>
 </blockquote>
 <p>The following topic needs to be created in the event grid namespace, must have a <code>resource-providers</code> topic with a publisher type of <code>Custom</code> and an input schema of <code>Cloud Events v1.0</code>.</p>
+<h3 id="configuration-changes">Configuration changes</h3>
+<p>Added the following App Configuration value:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes</code></td>
+<td><code>60</code></td>
+<td>The timeout in minutes for a user's auth token in the User Portal.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="starting-with-091-rc117">Starting with 0.9.1-rc117</h2>
 <h3 id="agent-configuration-changes">Agent configuration changes</h3>
 <pre><code class="lang-json">&quot;text_rewrite_settings&quot;: {
@@ -175,7 +193,7 @@
 </ul>
 <p>After the container is created, set the <code>Time to Live</code> property on the container to 300 seconds.</p>
 <h2 id="starting-with-091-rc105">Starting with 0.9.1-rc105</h2>
-<h3 id="configuration-changes">Configuration changes</h3>
+<h3 id="configuration-changes-1">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -224,7 +242,7 @@
 }
 </code></pre>
 <h2 id="starting-with-091-rc102">Starting with 0.9.1-rc102</h2>
-<h3 id="configuration-changes-1">Configuration changes</h3>
+<h3 id="configuration-changes-2">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -261,7 +279,7 @@
     },
 </code></pre>
 <h2 id="starting-with-091-rc101">Starting with 0.9.1-rc101</h2>
-<h3 id="configuration-changes-2">Configuration changes</h3>
+<h3 id="configuration-changes-3">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -305,7 +323,7 @@
 </tbody>
 </table>
 <h2 id="starting-with-090">Starting with 0.9.0</h2>
-<h3 id="configuration-changes-3">Configuration changes</h3>
+<h3 id="configuration-changes-4">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -427,7 +445,7 @@
 <p>Please note that both properties are nullable. Set them to null to clear out the rating and comments.</p>
 </div>
 <h2 id="starting-with-084">Starting with 0.8.4</h2>
-<h3 id="configuration-changes-4">Configuration changes</h3>
+<h3 id="configuration-changes-5">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -618,7 +636,7 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 <li><code>FoundationaLLM.AzureOpenAI/assistantUserContexts</code></li>
 <li><code>FoundationaLLM.Conversation/conversations</code></li>
 </ul>
-<h3 id="configuration-changes-5">Configuration changes</h3>
+<h3 id="configuration-changes-6">Configuration changes</h3>
 <h4 id="resource-provider-templates">Resource provider templates</h4>
 <p>The <code>AzureOpenAI.template.json</code> files within <code>deploy/quick-start/data/resource-provider/FoundationaLLM.Configuration</code> and <code>deploy/standard/data/resource-provider/FoundationaLLM.Configuration</code> have been updated to set the <code>category</code> field to the value <code>LLM</code>. This discriminator allows the Management Portal to filter the list of API endpoints by category and provide options to add AI Models to endpoints with the <code>LLM</code> category.</p>
 <p>The existing <code>category</code> property needs to be set to <code>LLM</code> on existing API endpoint configurations in the <code>FoundationaLLM.Configuration</code> resource provider that fit this description, including the <code>AzureOpenAI</code> endpoint configuration.</p>
@@ -670,7 +688,7 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 }
 </code></pre>
 <h2 id="starting-with-082">Starting with 0.8.2</h2>
-<h3 id="configuration-changes-6">Configuration changes</h3>
+<h3 id="configuration-changes-7">Configuration changes</h3>
 <p>The following settings are required:</p>
 <table>
 <thead>
