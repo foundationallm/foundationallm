@@ -1,15 +1,14 @@
 <template>
-	<CreateModelOrEndpoint :edit-id="$route.params.modelOrEndpointName" />
+	<CreateDataSource :edit-id="$route.params.dataSourceName" />
 </template>
 
 <script lang="ts">
-import CreateModelOrEndpoint from '../create.vue';
+import CreateDataSource from '../create.vue';
 
 export default {
-	name: 'EditModelOrEndpoint',
-
+	name: 'EditDataSource',
 	components: {
-		CreateModelOrEndpoint,
+		CreateDataSource,
 	},
 };
 </script>
