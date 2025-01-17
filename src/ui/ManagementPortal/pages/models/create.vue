@@ -53,21 +53,33 @@
 				</div>
 			</div>
 
+			<!-- Model type -->
+			<div class="step-header span-2">What is the model type?</div>
+			<div class="span-2">
+				<div class="mb-2">Model Type:</div>
+				<Dropdown
+					v-model="aiModel.type"
+					:options="aiModelTypeOptions"
+					option-label="label"
+					option-value="value"
+					placeholder="--Select--"
+				/>
+			</div>
+
 			<!-- Model endpoint -->
 			<div class="step-header span-2">What is the model endpoint?</div>
 			<div class="span-2">
 				<div class="mb-2">Model Endpoint:</div>
 				<Dropdown
-					v-model="aiModelEndpoint"
+					v-model="aiModel.endpoint_object_id"
 					:options="aiModelEndpointOptions"
 					option-label="name"
 					option-value="object_id"
 					placeholder="--Select--"
-					class="dropdown--agent"
 				/>
 			</div>
 
-				<!-- Model parameters -->
+			<!-- Model parameters -->
 			<div class="step-header span-2">What are the model parameters?</div>
 			<div class="span-2">
 				<PropertyBuilder v-model="aiModel.model_parameters" />
@@ -117,53 +129,38 @@ export default {
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 
-			// nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
-			// validationMessage: '' as string,
+			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
+			validationMessage: '' as string,
 
-			aiModelEndpoint: null,
 			aiModelEndpointOptions: [],
 
-			aiModelName: '' as string,
 			aiModel: {
-				name: '',
-				model_parameters: {},
-				// orchestrator: null as string | null,
-				// endpoint_configuration: {
-				// 	endpoint: '' as string,
-				// 	api_key: '' as string,
-				// 	api_version: '' as string,
-				// 	// operation_type: 'chat' as string,
-				// } as object,
-				// model_parameters: {
-				// 	deployment_name: '' as string,
-				// 	// temperature: 0 as number,
-				// } as object,
+				name: null as string | null,
+				// object_id: '',
+				endpoint_object_id:'' as string,
+				type: null as string | null,
+				// display_name: '' as string,
+				// deployment_name: 'completions4' as string,
+				// version: '0.0' as string,
+				model_parameters: {} as object,
 			},
 
-			orchestratorOptions: [
+			aiModelTypeOptions: [
 				{
-					label: 'Azure OpenAI',
-					value: 'AzureOpenAI',
+					label: 'Basic',
+					value: 'basic',
 				},
 				{
-					label: 'Azure AI',
-					value: 'AzureAI',
+					label: 'Embedding',
+					value: 'embedding',
 				},
 				{
-					label: 'OpenAI',
-					value: 'OpenAI',
-				},
-			],
-
-			authType: null,
-			authTypeOptions: [
-				{
-					label: 'API Key',
-					value: 'key',
+					label: 'Completion',
+					value: 'completion',
 				},
 				{
-					label: 'Token',
-					value: 'token',
+					label: 'ImageGeneration',
+					value: 'image-generation',
 				},
 			],
 		};
@@ -174,25 +171,46 @@ export default {
 		this.loadingStatusText = `Retrieving AI model endpoints...`;
 		const modelEndpoints = (await api.getAIModelEndpoints()).map((endpoint) => endpoint.resource);
 		this.aiModelEndpointOptions = modelEndpoints.filter((resource) => ['AIModel'].includes(resource.subcategory));
-
 		this.loading = false;
 
 		if (this.editId) {
 			this.loading = true;
 			this.loadingStatusText = `Retrieving AI model "${this.editId}"...`;
 			this.aiModel = (await api.getAIModel(this.editId))[0].resource;
-			this.aiModelEndpoint = this.aiModel.endpoint_object_id;
 			this.loading = false;
 		}
+
+		this.debouncedCheckName = debounce(this.checkName, 500);
 	},
 
 	methods: {
+		async checkName() {
+			try {
+				const response = await api.checkAIModelName(this.aiModel.name);
+
+				// Handle response based on the status
+				if (response.status === 'Allowed') {
+					// Name is available
+					this.nameValidationStatus = 'valid';
+					this.validationMessage = null;
+				} else if (response.status === 'Denied') {
+					// Name is taken
+					this.nameValidationStatus = 'invalid';
+					this.validationMessage = response.message;
+				}
+			} catch (error) {
+				console.error('Error checking AI model name: ', error);
+				this.nameValidationStatus = 'invalid';
+				this.validationMessage = 'Error checking the AI model name. Please try again.';
+			}
+		},
+
 		handleCancel() {
 			if (!confirm('Are you sure you want to cancel?')) {
 				return;
 			}
 
-			this.$router.push('/models-and-endpoints');
+			this.$router.push('/models');
 		},
 
 		handleNameInput(event) {
@@ -206,6 +224,30 @@ export default {
 		},
 
 		async handleCreate() {
+			const errors: string[] = [];
+
+			if (!this.aiModel.name) {
+				errors.push('Please give the AI model a name.');
+			}
+
+			if (!this.aiModel.type) {
+				errors.push('Please specify an AI model type.');
+			}
+
+			if (!this.aiModel.endpoint_object_id) {
+				errors.push('Please specify an AI model endpoint.');
+			}
+
+			if (errors.length > 0) {
+				this.$toast.add({
+					severity: 'error',
+					detail: errors.join('\n'),
+					life: 5000,
+				});
+
+				return;
+			}
+
 			this.loading = true;
 			let successMessage = null as null | string;
 			try {
