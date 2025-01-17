@@ -55,15 +55,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <inheritdoc/>
         public async Task<LLMCompletionResponse> GetCompletion(string instanceId, LLMCompletionRequest request)
         {
-            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.SemanticKernelAPI, _userIdentity);
-
-            var pollingClient = new PollingHttpClient<LLMCompletionRequest, LLMCompletionResponse>(
-                client,
-                request,
-                $"instances/{instanceId}/async-completions",
-                TimeSpan.FromSeconds(10),
-                client.Timeout.Subtract(TimeSpan.FromSeconds(1)),
-                _logger);
+            var pollingClient = await GetPollingClient(instanceId, request);
 
             try
             {
@@ -120,14 +112,17 @@ namespace FoundationaLLM.Orchestration.Core.Services
             string instanceId,
             LLMCompletionRequest? request = null)
         {
-            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.SemanticKernelAPI, _userIdentity);
+            var operationStarterClient = await _httpClientFactoryService.CreateClient(HttpClientNames.LangChainAPI, _userIdentity);
+            var operationRetrieverClient = await _httpClientFactoryService.CreateClient(HttpClientNames.StateAPI, _userIdentity);
 
             return new PollingHttpClient<LLMCompletionRequest, LLMCompletionResponse>(
-                client,
+                operationStarterClient,
+                operationRetrieverClient,
                 request,
                 $"instances/{instanceId}/async-completions",
+                $"instances/{instanceId}/operations/{{operationId}}",
                 TimeSpan.FromSeconds(10),
-                client.Timeout.Subtract(TimeSpan.FromSeconds(1)),
+                operationStarterClient.Timeout.Subtract(TimeSpan.FromSeconds(1)),
                 _logger);
         }
     }

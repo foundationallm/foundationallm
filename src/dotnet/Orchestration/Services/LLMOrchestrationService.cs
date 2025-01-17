@@ -63,8 +63,10 @@ namespace FoundationaLLM.Orchestration.Core.Services
             var client = await _httpClientFactoryService.CreateClient(_serviceName, _userIdentity);
             var pollingClient = new PollingHttpClient<LLMCompletionRequest, LLMCompletionResponse>(
                 client,
+                client,
                 request,
                 $"instances/{instanceId}/async-completions",
+                $"instances/{instanceId}/async-completions/{{operationId}}/status",
                 TimeSpan.FromSeconds(10),
                 client.Timeout.Subtract(TimeSpan.FromSeconds(1)),
                 _logger);
@@ -147,8 +149,10 @@ namespace FoundationaLLM.Orchestration.Core.Services
 
             return new PollingHttpClient<LLMCompletionRequest, LLMCompletionResponse>(
                 client,
+                client,
                 request,
                 $"instances/{instanceId}/async-completions",
+                $"instances/{instanceId}/async-completions/{{operationId}}/status",
                 TimeSpan.FromSeconds(10),
                 client.Timeout.Subtract(TimeSpan.FromSeconds(1)),
                 _logger);
