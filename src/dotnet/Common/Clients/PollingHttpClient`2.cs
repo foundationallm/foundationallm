@@ -148,6 +148,8 @@ namespace FoundationaLLM.Common.Clients
                 var pollingStartTime = DateTime.UtcNow;
                 var pollingCounter = 0;
 
+                await Task.Delay(_pollingInterval, cancellationToken);
+
                 while (true)
                 {
                     if (cancellationToken.IsCancellationRequested)
@@ -175,6 +177,7 @@ namespace FoundationaLLM.Common.Clients
                             }
                             return default;
                         case OperationStatus.InProgress:
+                        case OperationStatus.Pending:
                             if (totalPollingTime > _maxWaitTime)
                             {
                                 _logger.LogWarning("Total polling time ({TotalTime} seconds) exceeded to maximum allowed ({MaxTime} seconds).",
