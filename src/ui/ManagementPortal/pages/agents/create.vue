@@ -727,10 +727,11 @@
 						aria-labelledby="aria-show-message-rating"
 					/>
 				</div>
-
+				
+				<div id="aria-show-view-prompt" class="step-header">Would you like to allow the user to see the message prompts?</div>
+				<div id="aria-show-file-upload" class="step-header">Would you like to allow the user to upload files?</div>
 				<!-- Show view prompt -->
-				<div id="aria-show-view-prompt" class="step-header span-2">Would you like to allow the user to see the message prompts?</div>
-				<div class="span-2">
+				<div>
 					<ToggleButton
 						v-model="showViewPrompt"
 						on-label="Yes"
@@ -738,6 +739,19 @@
 						off-label="No"
 						off-icon="pi pi-times-circle"
 						aria-labelledby="aria-show-view-prompt"
+					/>
+				</div>
+				
+				<!-- Show file upload -->
+				
+				<div>
+					<ToggleButton
+						v-model="showFileUpload"
+						on-label="Yes"
+						on-icon="pi pi-check-circle"
+						off-label="No"
+						off-icon="pi pi-times-circle"
+						aria-labelledby="aria-show-file-upload"
 					/>
 				</div>
 			</section>
@@ -897,6 +911,7 @@ const getDefaultFormValues = () => {
 		showMessageTokens: false as boolean,
 		showMessageRating: false as boolean,
 		showViewPrompt: false as boolean,
+		showFileUpload: false as boolean
 	};
 };
 
@@ -1187,6 +1202,7 @@ export default {
 			this.showMessageTokens = agent.show_message_tokens ?? false;
 			this.showMessageRating = agent.show_message_rating ?? false;
 			this.showViewPrompt = agent.show_view_prompt ?? false;
+			this.showFileUpload = agent.show_file_upload ?? false;
 		},
 
 		updateAgentWelcomeMessage(newContent: string) {
@@ -1324,7 +1340,7 @@ export default {
 			}
 
 			this.loading = true;
-			this.loadingStatusText = 'Creating agent...';
+			this.loadingStatusText = 'Saving agent...';
 
 			const promptRequest = {
 				type: 'multipart',
@@ -1401,6 +1417,7 @@ export default {
 					show_message_tokens: this.showMessageTokens,
 					show_message_rating: this.showMessageRating,
 					show_view_prompt: this.showViewPrompt,
+					show_file_upload: this.showFileUpload,
 
 					vectorization: {
 						dedicated_pipeline: this.dedicated_pipeline,

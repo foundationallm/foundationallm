@@ -116,6 +116,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public bool? ShowViewPrompt { get; set; } = true;
 
         /// <summary>
+        /// Indicates whether to show the file upload option on agent message input.
+        /// </summary>
+        [JsonPropertyName("show_file_upload")]
+        public bool? ShowFileUpload { get; set; } = true;
+
+        /// <summary>
         /// The object type of the agent.
         /// </summary>
         [JsonIgnore]

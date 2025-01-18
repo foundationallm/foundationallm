@@ -55,6 +55,10 @@ export const useAppStore = defineStore('app', {
 		agentShowViewPrompt(): boolean {
 			return this.lastSelectedAgent?.resource.show_view_prompt ?? true;
 		},
+
+		agentShowFileUpload(): boolean {
+			return this.lastSelectedAgent?.resource.show_file_upload ?? true;
+		}
 	},
 
 	actions: {

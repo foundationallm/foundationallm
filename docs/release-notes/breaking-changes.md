@@ -28,7 +28,7 @@ To support the event grid infrastructure, the following new App Configuration se
 	{
 		"key": "FoundationaLLM:Events:Profiles:GatewayAPI",
 		"label": null,
-		"value": "{\"EventProcessingCycleSeconds\":60,\"Topics\":[]}",
+		"value": "{\"EventProcessingCycleSeconds\": 5,\"Topics\": [{\"Name\": \"resource-providers\",\"SubscriptionPrefix\": \"rp-gateway\"}]}",
 		"content_type": "application/json",
 		"tags": {}
 	},
@@ -73,7 +73,8 @@ Added the following App Configuration value:
 
 |Name | Default value | Description |
 |--- | --- | --- |
-`FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes` | `60` | The timeout in minutes for a user's auth token in the User Portal. |
+| `FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes` | `60` | The timeout in minutes for a user's auth token in the User Portal. |
+| `FoundationaLLM:UserPortal:Configuration:ShowFileUpload` | `true` | Global setting to determine if file upload is allowed on chat messages. |
 
 ## Starting with 0.9.1-rc117
 

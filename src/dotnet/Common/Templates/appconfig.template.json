@@ -967,6 +967,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:UserPortal:Configuration:ShowFileUpload",
+            "value": "true",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:Instance",
             "value": "https://login.microsoftonline.com/",
             "label": null,

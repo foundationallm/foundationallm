@@ -1212,6 +1212,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_UserPortal_Configuration_ShowViewPrompt =
             "FoundationaLLM:UserPortal:Configuration:ShowViewPrompt";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:UserPortal:Configuration:ShowFileUpload setting.
+        /// <para>Value description:<br/>Global setting to determine if file upload is allowed on chat messages.</para>
+        /// </summary>
+        public const string FoundationaLLM_UserPortal_Configuration_ShowFileUpload =
+            "FoundationaLLM:UserPortal:Configuration:ShowFileUpload";
 
         #endregion
 
