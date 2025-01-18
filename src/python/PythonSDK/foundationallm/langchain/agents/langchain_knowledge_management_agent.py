@@ -458,12 +458,12 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             explicit_tool = next((tool for tool in agent.tools if parsed_user_prompt.startswith(f'[{tool.name}]:')), None)
             if explicit_tool is not None:
-                tools.append(tool_factory.get_tool(explicit_tool, request.objects, self.user_identity, self.config))
+                tools.append(tool_factory.get_tool(agent.name, explicit_tool, request.objects, self.user_identity, self.config))
                 parsed_user_prompt = parsed_user_prompt.split(':', 1)[1].strip()
             else:
                 # Populate tools list from agent configuration
                 for tool in agent.tools:
-                    tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
+                    tools.append(tool_factory.get_tool(agent.name, tool, request.objects, self.user_identity, self.config))
 
             # Define the graph
             graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)
@@ -520,12 +520,14 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             explicit_tool = next((tool for tool in agent.tools if parsed_user_prompt.startswith(f'[{tool.name}]:')), None)
             if explicit_tool is not None:
-                tools.append(tool_factory.get_tool(explicit_tool, request.objects, self.user_identity, self.config))
+                tools.append(tool_factory.get_tool(agent.name, explicit_tool, request.objects, self.user_identity, self.config))
                 parsed_user_prompt = parsed_user_prompt.split(':', 1)[1].strip()
             else:
                 # Populate tools list from agent configuration
                 for tool in agent.tools:
-                    tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
+                    tools.append(tool_factory.get_tool(agent.name, tool, request.objects, self.user_identity, self.config))
+
+            request.objects['message_history'] = request.message_history
 
             request.objects['message_history'] = request.message_history
 
