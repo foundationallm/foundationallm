@@ -27,7 +27,7 @@
 
 			<!-- Table -->
 			<DataTable
-				:value="modelsAndEndpoints"
+				:value="aiModels"
 				striped-rows
 				scrollable
 				table-style="max-width: 100%"
@@ -100,7 +100,7 @@
 					}"
 				>
 					<template #body="{ data }">
-						<Button link @click="itemToDelete = data">
+						<Button link @click="itemToDelete = data.resource">
 							<i class="pi pi-trash" style="font-size: 1.2rem;"></i>
 						</Button>
 					</template>
@@ -109,8 +109,8 @@
 		</div>
 
 		<!-- Delete model/endpoint dialog -->
-		<Dialog :visible="itemToDelete !== null" modal header="Delete Model/Endpoint" :closable="false">
-			<p>Do you want to delete the model/endpoint "{{ itemToDelete.name }}" ?</p>
+		<Dialog :visible="itemToDelete !== null" modal header="Delete Model" :closable="false">
+			<p>Do you want to delete the model "{{ itemToDelete.name }}" ?</p>
 			<template #footer>
 				<Button label="Cancel" text @click="itemToDelete = null" />
 				<Button label="Delete" severity="danger" @click="handleDelete" />
@@ -121,17 +121,17 @@
 
 <script lang="ts">
 import api from '@/js/api';
-import type { ModelOrEndpoint } from '@/js/types';
+import type { AIModel } from '@/js/types';
 
 export default {
-	name: 'ModelsAndEndpoints',
+	name: 'Models',
 
 	data() {
 		return {
-			modelsAndEndpoints: [] as ModelOrEndpoint,
+			aiModels: [] as AIModel,
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
-			itemToDelete: null as ModelOrEndpoint | null,
+			itemToDelete: null as AIModel | null,
 		};
 	},
 
@@ -143,7 +143,7 @@ export default {
 		async getModelsAndEndpoints() {
 			this.loading = true;
 			try {
-				this.modelsAndEndpoints = await api.getAIModels();
+				this.aiModels = await api.getAIModels();
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',
@@ -155,16 +155,23 @@ export default {
 		},
 
 		async handleDelete() {
-			// try {
-			// 	await api.deleteModelOrEndpoint(this.itemToDelete!.name);
-			// 	this.itemToDelete = null;
-			// } catch (error) {
-			// 	return this.$toast.add({
-			// 		severity: 'error',
-			// 		detail: error?.response?._data || error,
-			// 		life: 5000,
-			// 	});
-			// }
+			try {
+				await api.deleteAIModel(this.itemToDelete!.name);
+				this.$toast.add({
+					severity: 'success',
+					detail: `Successfully deleted AI model "${this.itemToDelete!.name}"!`,
+					life: 5000,
+				});
+				this.itemToDelete = null;
+			} catch (error) {
+				return this.$toast.add({
+					severity: 'error',
+					detail: error?.response?._data || error,
+					life: 5000,
+				});
+			}
+
+			await this.getModelsAndEndpoints();
 		},
 	},
 };
