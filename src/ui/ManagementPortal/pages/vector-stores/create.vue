@@ -244,11 +244,10 @@ export default {
 			validationMessage: null as string | null,
 
 			vectorStore: {
-				type: 'indexing-profile',
+				// type: 'indexing-profile',
 				name: '',
-				display_name: null,
-				description: null,
-				cost_center: null,
+				display_name: '',
+				description: '',
 				indexer: '',
 				settings: {
 					IndexName: '',
@@ -258,7 +257,7 @@ export default {
 					TextFieldName: '',
 					api_endpoint_configuration_object_id: '',
 				},
-			} as null | any,
+			} as any,
 
 			profileIndexerOptions: [
 				{
@@ -294,31 +293,23 @@ export default {
 	async created() {
 		this.loading = true;
 
+		try {
+			this.loadingStatusText = `Retrieving API endpoints...`;
+			await this.getAPIEndpointConfigurationObjectIDs();
+		} catch (error) {
+			this.$toast.add({
+				severity: 'error',
+				detail: error?.response?._data || error,
+				life: 5000,
+			});
+		}
+
 		if (this.editId) {
 			this.loadingStatusText = `Retrieving vector store "${this.editId}"...`;
 			const vectorStoreResult = await api.getIndexingProfile(this.editId);
 			const vectorStore = vectorStoreResult.resource;
 			this.vectorStore = vectorStore;
-		} else {
-			// Create a new vectorStore object.
-			const newVectorStore = {
-				name: '',
-				display_name: '',
-				description: '',
-				indexer: '',
-				settings: {
-					IndexName: '',
-					TopN: '',
-					Filters: '',
-					EmbeddingFieldName: '',
-					TextFieldName: '',
-					api_endpoint_configuration_object_id: '',
-				},
-			};
-			this.vectorStore = newVectorStore;
 		}
-
-		this.getAPIEndpointConfigurationObjectIDs();
 
 		this.debouncedCheckName = debounce(this.checkName, 500);
 
@@ -326,6 +317,26 @@ export default {
 	},
 
 	methods: {
+		async getAPIEndpointConfigurationObjectIDs() {
+			const response = await api.getOrchestrationServices();
+
+			const filteredData = response.filter(
+				(item) =>
+					item.resource &&
+					item.resource.category &&
+					item.resource.category === 'General' &&
+					item.resource.subcategory &&
+					item.resource.subcategory === 'Indexing',
+			);
+
+			filteredData.forEach((item) => {
+				this.profileIndexerAPIEndpointOptions.push({
+					label: item.resource.name,
+					value: item.resource.object_id,
+				});
+			});
+		},
+
 		async checkName() {
 			try {
 				const response = await api.checkIndexingProfileName(this.vectorStore.name);
@@ -369,74 +380,6 @@ export default {
 			if (field.sanitizer) {
 				this.vectorStore.settings[field.fieldName] = field.sanitizer(event);
 			}
-		},
-
-		async handleCreateVectorStore() {
-			if (!this.validateForm()) {
-				this.$toast.add({
-					severity: 'error',
-					detail: 'Please correct the errors before submitting.',
-					life: 5000,
-				});
-				return;
-			}
-
-			this.loading = true;
-			let successMessage = null as null | string;
-			try {
-				this.loadingStatusText = 'Saving vector store...';
-				await api.createIndexingProfile(this.vectorStore);
-				successMessage = `Vector Store "${this.vectorStore.name}" was successfully saved.`;
-			} catch (error) {
-				this.loading = false;
-				return this.$toast.add({
-					severity: 'error',
-					detail: error?.response?._data || error,
-					life: 5000,
-				});
-			}
-
-			this.$toast.add({
-				severity: 'success',
-				detail: successMessage,
-				life: 5000,
-			});
-
-			this.loading = false;
-
-			if (!this.editId) {
-				this.$router.push('/vector-stores');
-			}
-		},
-
-		async getAPIEndpointConfigurationObjectIDs() {
-			this.loading = true;
-			try {
-				const response = await api.getOrchestrationServices();
-
-				const filteredData = response.filter(
-					(item) =>
-						item.resource &&
-						item.resource.category &&
-						item.resource.category === 'General' &&
-						item.resource.subcategory &&
-						item.resource.subcategory === 'Indexing',
-				);
-
-				filteredData.forEach((item) => {
-					this.profileIndexerAPIEndpointOptions.push({
-						label: item.resource.name,
-						value: item.resource.object_id,
-					});
-				});
-			} catch (error) {
-				this.$toast.add({
-					severity: 'error',
-					detail: error?.response?._data || error,
-					life: 5000,
-				});
-			}
-			this.loading = false;
 		},
 
 		validateForm() {
@@ -484,6 +427,44 @@ export default {
 			}
 
 			return isValid;
+		},
+
+		async handleCreateVectorStore() {
+			if (!this.validateForm()) {
+				this.$toast.add({
+					severity: 'error',
+					detail: 'Please correct the errors before submitting.',
+					life: 5000,
+				});
+				return;
+			}
+
+			this.loading = true;
+			let successMessage = null as null | string;
+			try {
+				this.loadingStatusText = 'Saving vector store...';
+				await api.createIndexingProfile(this.vectorStore);
+				successMessage = `Vector Store "${this.vectorStore.name}" was successfully saved.`;
+			} catch (error) {
+				this.loading = false;
+				return this.$toast.add({
+					severity: 'error',
+					detail: error?.response?._data || error,
+					life: 5000,
+				});
+			}
+
+			this.$toast.add({
+				severity: 'success',
+				detail: successMessage,
+				life: 5000,
+			});
+
+			this.loading = false;
+
+			if (!this.editId) {
+				this.$router.push('/vector-stores');
+			}
 		},
 	},
 };
