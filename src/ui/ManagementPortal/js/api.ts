@@ -750,11 +750,17 @@ export default {
 	},
 
 	async upsertAIModel(aiModelOriginalName: string, aiModel: CreateAgentRequest): Promise<any> {
+		const aiModelNoType = { ...aiModel };
+		delete aiModelNoType.type;
+
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels/${aiModelOriginalName}?api-version=${this.apiVersion}`,
 			{
 				method: 'POST',
-				body: aiModel,
+				body: {
+					type: aiModel.type,
+					...aiModelNoType
+				},
 			},
 		);
 	},

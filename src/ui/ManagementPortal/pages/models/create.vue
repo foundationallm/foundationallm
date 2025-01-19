@@ -136,9 +136,9 @@ export default {
 
 			aiModel: {
 				name: null as string | null,
+				type: null as string | null,
 				// object_id: '',
 				endpoint_object_id:'' as string,
-				type: null as string | null,
 				// display_name: '' as string,
 				// deployment_name: 'completions4' as string,
 				// version: '0.0' as string,
