@@ -38,8 +38,8 @@
 						class="w-100"
 						placeholder="Enter vector store name"
 						aria-labelledby="aria-source-name aria-source-name-desc"
+						:invalid="errors.name?.length > 0"
 						@input="handleNameInput"
-						:invalid="errors.name"
 					/>
 					<span
 						v-if="nameValidationStatus === 'valid'"
@@ -58,7 +58,7 @@
 						❌
 					</span>
 				</div>
-				<div v-if="errors.name" class="error-message">{{ errors.name }}</div>
+				<div v-for="error in errors.name" :key="error" class="error-message">{{ error }}</div>
 			</div>
 
 			<!-- Description -->
@@ -73,7 +73,7 @@
 				/>
 			</div>
 
-			<!-- Type -->
+			<!-- Indexer -->
 			<div id="aria-source-type" class="step-header span-2">
 				What is the indexer of the vector store?
 			</div>
@@ -86,57 +86,27 @@
 					class="dropdown--agent"
 					placeholder="--Select--"
 					aria-labelledby="aria-source-type"
-					:invalid="errors.indexer"
+					:invalid="errors.indexer?.length > 0"
 				/>
-				<div v-if="errors.indexer" class="error-message">{{ errors.indexer }}</div>
+				<div v-for="error in errors.indexer" :key="error" class="error-message">{{ error }}</div>
 			</div>
 
-			<!-- Settings -->
-
-			<!-- Index Name -->
-			<div id="aria-index-name" class="step-header span-2">Index Name:</div>
-			<div class="span-2">
-				<InputText
-					v-model="vectorStore.settings.IndexName"
-					type="text"
-					class="w-100"
-					placeholder="Enter index name"
-					aria-labelledby="aria-index-name"
-					@input="handleIndexNameInput"
-					:invalid="errors.IndexName"
-				/>
-				<div v-if="errors.IndexName" class="error-message">{{ errors.IndexName }}</div>
-			</div>
-
-			<!-- Embedding Field Name -->
-			<div id="aria-embedding-field-name" class="step-header span-2">Embedding Field Name:</div>
-			<div class="span-2">
-				<InputText
-					v-model="vectorStore.settings.EmbeddingFieldName"
-					type="text"
-					class="w-100"
-					placeholder="Enter embedding field name"
-					aria-labelledby="aria-embedding-field-name"
-					:invalid="errors.EmbeddingFieldName"
-				/>
-				<div v-if="errors.EmbeddingFieldName" class="error-message">
-					{{ errors.EmbeddingFieldName }}
+			<!-- Indexer Settings -->
+			<template v-if="vectorStore.indexer" v-for="indexerSetting in indexerSettingFields" :key="indexerSetting.fieldName">
+				<div :id="`aria-${indexerSetting.fieldName}`" class="step-header span-2">{{ indexerSetting.label }}</div>
+				<div class="span-2">
+					<InputText
+						v-model="vectorStore.settings[indexerSetting.fieldName]"
+						type="text"
+						class="w-100"
+						:placeholder="`Enter ${indexerSetting.label}`"
+						:aria-labelledby="`aria-${indexerSetting.fieldName}`"
+						:invalid="errors[indexerSetting.fieldName]?.length > 0"
+						@input="handleIndexerSettingFieldInput(indexerSetting, $event)"
+					/>
+					<div v-for="error in errors[indexerSetting.fieldName]" :key="error" class="error-message">{{ error }}</div>
 				</div>
-			</div>
-
-			<!-- Text Field Name -->
-			<div id="aria-text-field-name" class="step-header span-2">Text Field Name:</div>
-			<div class="span-2">
-				<InputText
-					v-model="vectorStore.settings.TextFieldName"
-					type="text"
-					class="w-100"
-					placeholder="Enter text field name"
-					aria-labelledby="aria-text-field-name"
-					:invalid="errors.TextFieldName"
-				/>
-				<div v-if="errors.TextFieldName" class="error-message">{{ errors.TextFieldName }}</div>
-			</div>
+			</template>
 
 			<!-- Indexing Service -->
 			<div id="aria-api-endpoint-configuration-object-id" class="step-header span-2">
@@ -151,11 +121,9 @@
 					class="dropdown--agent"
 					placeholder="--Select--"
 					aria-labelledby="aria-api-endpoint-configuration-object-id"
-					:invalid="errors.api_endpoint_configuration_object_id"
+					:invalid="errors.api_endpoint_configuration_object_id?.length > 0"
 				/>
-				<div v-if="errors.api_endpoint_configuration_object_id" class="error-message">
-					{{ errors.api_endpoint_configuration_object_id }}
-				</div>
+				<div v-for="error in errors.api_endpoint_configuration_object_id" :key="error" class="error-message">{{ error }}</div>
 			</div>
 
 			<!-- Buttons -->
@@ -184,6 +152,75 @@
 import type { PropType } from 'vue';
 import { debounce } from 'lodash';
 import api from '@/js/api';
+
+const AzureAISearchIndexerFields = [
+	{
+		label: 'Index Name',
+		fieldName: 'IndexName',
+		// type: 'String',
+		validator(value) {
+			const errors = [];
+			if (!value) {
+				errors.push('Index Name is required.');
+			}
+
+			return errors;
+		},
+		sanitizer(value) {
+			return useNuxtApp().vueApp.config.globalProperties.$filters.sanitizeNameInput(value);
+		},
+	},
+	{
+		label: 'Embedding Field Name',
+		fieldName: 'EmbeddingFieldName',
+		// type: 'String',
+		validator(value) {
+			const errors = [];
+			if (!value) {
+				errors.push('Embedding Field Name is required.');
+			}
+
+			return errors;
+		},
+	},
+	{
+		label: 'Text Field Name',
+		fieldName: 'TextFieldName',
+		// type: 'String',
+		validator(value) {
+			const errors = [];
+			if (!value) {
+				errors.push('Text Field Name is required.');
+			}
+
+			return errors;
+		},
+	},
+	{
+		label: 'Top N',
+		fieldName: 'TopN',
+		// type: 'Number',
+		required: true,
+		validator(value) {
+			const errors = [];
+			if (!value) {
+				errors.push('Top N is required.');
+			} else if (Number.isNaN(Number(value))) {
+				errors.push('Top N must be an integer.');
+			} else if (Number(value) < 0) {
+				errors.push('Top N must be a positive integer.');
+			}
+
+			return errors;
+		},
+	},
+	{
+		label: 'Filters',
+		fieldName: 'Filters',
+		// type: 'String',
+		required: false,
+	},
+];
 
 export default {
 	name: 'CreateVectorStore',
@@ -229,18 +266,29 @@ export default {
 					value: 'AzureAISearchIndexer',
 				},
 			],
+			indexerSettingFields: [],
 
 			profileIndexerAPIEndpointOptions: [] as any[],
 
 			errors: {
-				name: null,
-				indexer: null,
-				IndexName: null,
-				EmbeddingFieldName: null,
-				TextFieldName: null,
-				api_endpoint_configuration_object_id: null,
+				name: [] as string[],
+				indexer: [] as string[],
+				IndexName: [] as string[],
+				EmbeddingFieldName: [] as string[],
+				TextFieldName: [] as string[],
+				api_endpoint_configuration_object_id: [] as string[],
 			},
 		};
+	},
+
+	watch: {
+		'vectorStore.indexer'() {
+			switch (this.vectorStore.indexer) {
+				case 'AzureAISearchIndexer': {
+					this.indexerSettingFields = AzureAISearchIndexerFields;
+				}
+			}
+		},
 	},
 
 	async created() {
@@ -317,9 +365,10 @@ export default {
 			}
 		},
 
-		handleIndexNameInput(event) {
-			const sanitizedValue = this.$filters.sanitizeNameInput(event);
-			this.vectorStore.settings.IndexName = sanitizedValue;
+		handleIndexerSettingFieldInput(field, event) {
+			if (field.sanitizer) {
+				this.vectorStore.settings[field.fieldName] = field.sanitizer(event);
+			}
 		},
 
 		async handleCreateVectorStore() {
@@ -392,47 +441,45 @@ export default {
 
 		validateForm() {
 			this.errors = {
-				name: null,
-				indexer: null,
-				IndexName: null,
-				EmbeddingFieldName: null,
-				TextFieldName: null,
-				api_endpoint_configuration_object_id: null,
+				name: [],
+				indexer: [],
+				IndexName: [],
+				EmbeddingFieldName: [],
+				TextFieldName: [],
+				api_endpoint_configuration_object_id: [],
 			};
 
 			let isValid = true;
 
 			// Name validation
 			if (!this.vectorStore.name) {
-				this.errors.name = 'Name is required.';
+				this.errors.name = ['Name is required.'];
 				isValid = false;
 			}
 
 			// Indexer validation
 			if (!this.vectorStore.indexer) {
-				this.errors.indexer = 'Indexer is required.';
+				this.errors.indexer = ['Indexer is required.'];
 				isValid = false;
 			}
 
-			// Conditional fields if Azure AI Search Indexer is selected
-			if (this.vectorStore.indexer === 'AzureAISearchIndexer') {
-				if (!this.vectorStore.settings.IndexName) {
-					this.errors.IndexName = 'Index Name is required.';
-					isValid = false;
-				}
-				if (!this.vectorStore.settings.EmbeddingFieldName) {
-					this.errors.EmbeddingFieldName = 'Embedding Field Name is required.';
-					isValid = false;
-				}
-				if (!this.vectorStore.settings.TextFieldName) {
-					this.errors.TextFieldName = 'Text Field Name is required.';
-					isValid = false;
-				}
-			}
+			let allIndexerSettingFieldsValid = true;
+			this.indexerSettingFields.forEach(({ fieldName, validator }) => {
+				if (!validator) return;
+
+				const fieldValue = this.vectorStore.settings[fieldName];
+				const errors = validator(fieldValue);
+
+				this.errors[fieldName] = errors;
+
+				if (errors.length > 0) allIndexerSettingFieldsValid = false;
+			});
+
+			if (!allIndexerSettingFieldsValid) isValid = false;
 
 			// Indexing Service validation
 			if (!this.vectorStore.settings.api_endpoint_configuration_object_id) {
-				this.errors.api_endpoint_configuration_object_id = 'Indexing Service is required.';
+				this.errors.api_endpoint_configuration_object_id = ['Indexing Service is required.'];
 				isValid = false;
 			}
 
