@@ -200,7 +200,6 @@ const AzureAISearchIndexerFields = [
 		label: 'Top N',
 		fieldName: 'TopN',
 		// type: 'Number',
-		required: true,
 		validator(value) {
 			const errors = [];
 			if (!value) {
@@ -218,7 +217,6 @@ const AzureAISearchIndexerFields = [
 		label: 'Filters',
 		fieldName: 'Filters',
 		// type: 'String',
-		required: false,
 	},
 ];
 
@@ -322,10 +320,7 @@ export default {
 
 			const filteredData = response.filter(
 				(item) =>
-					item.resource &&
-					item.resource.category &&
 					item.resource.category === 'General' &&
-					item.resource.subcategory &&
 					item.resource.subcategory === 'Indexing',
 			);
 
