@@ -98,7 +98,7 @@
 	{
 		&quot;key&quot;: &quot;FoundationaLLM:Events:Profiles:GatewayAPI&quot;,
 		&quot;label&quot;: null,
-		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;:60,\&quot;Topics\&quot;:[]}&quot;,
+		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;: 5,\&quot;Topics\&quot;: [{\&quot;Name\&quot;: \&quot;resource-providers\&quot;,\&quot;SubscriptionPrefix\&quot;: \&quot;rp-gateway\&quot;}]}&quot;,
 		&quot;content_type&quot;: &quot;application/json&quot;,
 		&quot;tags&quot;: {}
 	},
@@ -151,6 +151,11 @@
 <td><code>FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes</code></td>
 <td><code>60</code></td>
 <td>The timeout in minutes for a user's auth token in the User Portal.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:UserPortal:Configuration:ShowFileUpload</code></td>
+<td><code>true</code></td>
+<td>Global setting to determine if file upload is allowed on chat messages.</td>
 </tr>
 </tbody>
 </table>
