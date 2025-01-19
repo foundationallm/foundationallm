@@ -272,7 +272,7 @@ export default {
 			this.loading = false;
 
 			if (!this.editId) {
-				this.$router.push('/models-and-endpoints');
+				this.$router.push('/models');
 			}
 		},
 	},
