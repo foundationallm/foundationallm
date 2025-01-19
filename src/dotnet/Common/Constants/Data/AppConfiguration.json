@@ -1626,6 +1626,14 @@
 				"value": "true",
 				"content_type": "",
 				"first_version": "0.9.0"
+			},
+			{
+				"name": "ShowFileUpload",
+				"description": "Global setting to determine if file upload is allowed on chat messages.",
+				"secret": "",
+				"value": "true",
+				"content_type": "",
+				"first_version": "0.9.0"
 			}
 		]
 	},

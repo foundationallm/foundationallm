@@ -125,6 +125,7 @@ export interface Agent {
 	show_message_tokens?: boolean;
 	show_message_rating?: boolean;
 	show_view_prompt?: boolean;
+	show_file_upload?: boolean;
 }
 
 export interface CompletionRequest {
