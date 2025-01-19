@@ -119,7 +119,9 @@
 					aria-labelledby="aria-embedding-field-name"
 					:invalid="errors.EmbeddingFieldName"
 				/>
-				<div v-if="errors.EmbeddingFieldName" class="error-message">{{ errors.EmbeddingFieldName }}</div>
+				<div v-if="errors.EmbeddingFieldName" class="error-message">
+					{{ errors.EmbeddingFieldName }}
+				</div>
 			</div>
 
 			<!-- Text Field Name -->
@@ -218,7 +220,7 @@ export default {
 					EmbeddingFieldName: '',
 					TextFieldName: '',
 					api_endpoint_configuration_object_id: '',
-				}
+				},
 			} as null | any,
 
 			profileIndexerOptions: [
@@ -245,27 +247,27 @@ export default {
 		this.loading = true;
 
 		if (this.editId) {
-				this.loadingStatusText = `Retrieving vector store "${this.editId}"...`;
-				const vectorStoreResult = await api.getIndexingProfile(this.editId);
-				const vectorStore = vectorStoreResult.resource;
-				this.vectorStore = vectorStore;
+			this.loadingStatusText = `Retrieving vector store "${this.editId}"...`;
+			const vectorStoreResult = await api.getIndexingProfile(this.editId);
+			const vectorStore = vectorStoreResult.resource;
+			this.vectorStore = vectorStore;
 		} else {
-				// Create a new vectorStore object.
-				const newVectorStore = {
-					name: '',
-					display_name: '',
-					description: '',
-					indexer: '',
-					settings: {
-						IndexName: '',
-						TopN: '',
-						Filters: '',
-						EmbeddingFieldName: '',
-						TextFieldName: '',
-						api_endpoint_configuration_object_id: '',
-					}
-				};
-				this.vectorStore = newVectorStore;
+			// Create a new vectorStore object.
+			const newVectorStore = {
+				name: '',
+				display_name: '',
+				description: '',
+				indexer: '',
+				settings: {
+					IndexName: '',
+					TopN: '',
+					Filters: '',
+					EmbeddingFieldName: '',
+					TextFieldName: '',
+					api_endpoint_configuration_object_id: '',
+				},
+			};
+			this.vectorStore = newVectorStore;
 		}
 
 		this.getAPIEndpointConfigurationObjectIDs();
@@ -363,15 +365,16 @@ export default {
 			try {
 				const response = await api.getOrchestrationServices();
 
-				const filteredData = response.filter(item => 
-					item.resource &&
-					item.resource.category &&
-					item.resource.category === "General"&&
-					item.resource.subcategory &&
-					item.resource.subcategory === "Indexing"
+				const filteredData = response.filter(
+					(item) =>
+						item.resource &&
+						item.resource.category &&
+						item.resource.category === 'General' &&
+						item.resource.subcategory &&
+						item.resource.subcategory === 'Indexing',
 				);
 
-				filteredData.forEach(item => {
+				filteredData.forEach((item) => {
 					this.profileIndexerAPIEndpointOptions.push({
 						label: item.resource.name,
 						value: item.resource.object_id,
@@ -401,35 +404,35 @@ export default {
 
 			// Name validation
 			if (!this.vectorStore.name) {
-				this.errors.name = "Name is required.";
+				this.errors.name = 'Name is required.';
 				isValid = false;
 			}
 
 			// Indexer validation
 			if (!this.vectorStore.indexer) {
-				this.errors.indexer = "Indexer is required.";
+				this.errors.indexer = 'Indexer is required.';
 				isValid = false;
 			}
 
 			// Conditional fields if Azure AI Search Indexer is selected
-			if (this.vectorStore.indexer === "AzureAISearchIndexer") {
+			if (this.vectorStore.indexer === 'AzureAISearchIndexer') {
 				if (!this.vectorStore.settings.IndexName) {
-					this.errors.IndexName = "Index Name is required.";
+					this.errors.IndexName = 'Index Name is required.';
 					isValid = false;
 				}
 				if (!this.vectorStore.settings.EmbeddingFieldName) {
-					this.errors.EmbeddingFieldName = "Embedding Field Name is required.";
+					this.errors.EmbeddingFieldName = 'Embedding Field Name is required.';
 					isValid = false;
 				}
 				if (!this.vectorStore.settings.TextFieldName) {
-					this.errors.TextFieldName = "Text Field Name is required.";
+					this.errors.TextFieldName = 'Text Field Name is required.';
 					isValid = false;
 				}
 			}
 
 			// Indexing Service validation
 			if (!this.vectorStore.settings.api_endpoint_configuration_object_id) {
-				this.errors.api_endpoint_configuration_object_id = "Indexing Service is required.";
+				this.errors.api_endpoint_configuration_object_id = 'Indexing Service is required.';
 				isValid = false;
 			}
 

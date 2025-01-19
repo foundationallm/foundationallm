@@ -36,9 +36,7 @@
 				size="small"
 			>
 				<template #empty>
-					<div role="alert" aria-live="polite">
-						No vector stores found.
-					</div>
+					<div role="alert" aria-live="polite">No vector stores found.</div>
 				</template>
 
 				<template #loading>Loading vector stores. Please wait.</template>
@@ -84,12 +82,18 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink :to="'/vector-stores/edit/' + data.resource.name" class="table__button" tabindex="-1">
+						<NuxtLink
+							:to="'/vector-stores/edit/' + data.resource.name"
+							class="table__button"
+							tabindex="-1"
+						>
 							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
 								<Button link :aria-label="`Edit ${data.resource.name}`">
 									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
 								</Button>
-								<template #popper><div role="tooltip">Edit {{data.resource.name}}</div></template>
+								<template #popper
+									><div role="tooltip">Edit {{ data.resource.name }}</div></template
+								>
 							</VTooltip>
 						</NuxtLink>
 					</template>
@@ -116,7 +120,9 @@
 							>
 								<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
 							</Button>
-							<template #popper><div role="tooltip">Delete {{data.resource.name}}</div></template>
+							<template #popper
+								><div role="tooltip">Delete {{ data.resource.name }}</div></template
+							>
 						</VTooltip>
 					</template>
 				</Column>
@@ -150,7 +156,7 @@ export default {
 	data() {
 		return {
 			dataSources: [] as ResourceProviderGetResult<DataSource>[],
-            vectorStores: [] as [],
+			vectorStores: [] as [],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 			dataSourceToDelete: null as DataSource | null,
@@ -160,7 +166,7 @@ export default {
 
 	async created() {
 		await this.getAgentDataSources();
-        await this.getVectorStores();
+		await this.getVectorStores();
 	},
 
 	methods: {
@@ -178,19 +184,19 @@ export default {
 			this.loading = false;
 		},
 
-        async getVectorStores() {
-            this.loading = true;
-            try {
-                this.vectorStores = await api.getIndexingProfiles();
-            } catch (error) {
-                this.$toast.add({
-                    severity: 'error',
-                    detail: error?.response?._data || error,
-                    life: 5000,
-                });
-            }
-            this.loading = false;
-        },
+		async getVectorStores() {
+			this.loading = true;
+			try {
+				this.vectorStores = await api.getIndexingProfiles();
+			} catch (error) {
+				this.$toast.add({
+					severity: 'error',
+					detail: error?.response?._data || error,
+					life: 5000,
+				});
+			}
+			this.loading = false;
+		},
 
 		async handleDeleteDataSource() {
 			try {
