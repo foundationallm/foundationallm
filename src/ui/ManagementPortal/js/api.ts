@@ -758,6 +758,7 @@ export default {
 			{
 				method: 'POST',
 				body: {
+					// Type must be the first property sent in the payload in order to succeed
 					type: aiModel.type,
 					...aiModelNoType
 				},
