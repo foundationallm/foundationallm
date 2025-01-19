@@ -28,6 +28,7 @@ const filters = {
 		while (sanitizedValue.length > 0 && !/^[a-zA-Z]/.test(sanitizedValue.charAt(0))) {
 			sanitizedValue = sanitizedValue.substring(1);
 		}
+
 		event.target.value = sanitizedValue;
 		return sanitizedValue;
 	},
