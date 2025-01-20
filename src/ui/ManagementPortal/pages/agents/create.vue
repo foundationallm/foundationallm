@@ -762,11 +762,7 @@
 					class="dropdown--agent"
 					placeholder="--Select--"
 					aria-labelledby="aria-workflow"
-					@change="
-						selectedWorkflow = JSON.parse(
-							JSON.stringify(workflowOptions.find((workflow) => workflow.type === $event.value)),
-						)
-					"
+					@change="handleWorkflowSelection"
 				/>
 				<Button
 					class="ml-2"
@@ -779,6 +775,18 @@
 
 			<!-- Workflow configuration -->
 			<div v-if="showWorkflowConfiguration" class="span-2">
+				<!-- Workflow package name -->
+				<div class="mb-6">
+					<div class="step-header mb-3">Workflow package name:</div>
+					<InputText
+						v-model="workflowPackageName"
+						type="text"
+						class="w-50"
+						placeholder="Enter workflow package name"
+						aria-labelledby="aria-cost-center"
+					/>
+				</div>
+
 				<!-- Workflow main model -->
 				<div class="mb-6">
 					<div class="step-header mb-3">Workflow main model:</div>
@@ -800,7 +808,7 @@
 
 				<!-- Orchestrator -->
 				<div class="mb-6">
-					<div id="aria-orchestrator" class="step-header mb-3">
+					<div id="aria-workflow-model" class="step-header mb-3">
 						How should the agent communicate with the model?
 					</div>
 					<div class="span-2">
@@ -811,7 +819,7 @@
 							option-value="value"
 							class="dropdown--agent"
 							placeholder="--Select--"
-							aria-labelledby="aria-orchestrator"
+							aria-labelledby="aria-workflow-model"
 						/>
 					</div>
 				</div>
@@ -972,7 +980,7 @@
 import '@vue-js-cron/light/dist/light.css';
 import type { PropType } from 'vue';
 import { ref } from 'vue';
-import { debounce } from 'lodash';
+import { debounce, clone } from 'lodash';
 import { CronLight } from '@vue-js-cron/light';
 import api from '@/js/api';
 import type {
@@ -1099,6 +1107,7 @@ export default {
 			workflowMainAIModel: null as AIModel | null,
 			// workflowMainPrompt: '' as string,
 			workflowMainAIModelParameters: {} as object,
+			workflowPackageName: 'foundationllm' as string,
 
 			virtualSecurityGroupId: null as string | null,
 
@@ -1480,6 +1489,10 @@ export default {
 			}
 		},
 
+		handleWorkflowSelection(event) {
+			this.selectedWorkflow = clone(this.workflowOptions.find((workflow) => workflow.type === event.value));
+		},
+
 		handleAgentTypeSelect(type: Agent['type']) {
 			this.agentType = type;
 		},
@@ -1666,6 +1679,7 @@ export default {
 					workflow = {
 						...this.selectedWorkflow,
 						workflow_host: this.orchestration_settings.orchestrator,
+						package_name: this.workflowPackageName,
 						// workflow_name: '',
 
 						resource_object_ids: {
