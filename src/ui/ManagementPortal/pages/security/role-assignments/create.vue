@@ -210,6 +210,19 @@ import api from '@/js/api';
 
 import type { Role, RoleAssignment } from '@/js/types';
 
+function splitPath(path) {
+	const lastSlashIndex = path.lastIndexOf('/');
+
+	// Slice before and after the last slash
+	return [
+		// Everything before the last slash
+		path.slice(0, lastSlashIndex),
+
+		// Everything after the last slash
+		path.slice(lastSlashIndex + 1),
+	];
+}
+
 export default {
 	name: 'CreateRoleAssignment',
 
@@ -406,6 +419,17 @@ export default {
 			let successMessage = null as null | string;
 			try {
 				this.loadingStatusText = 'Saving role assignment...';
+
+				const [resourcePath, resourceName] = splitPath(this.scope);
+
+				// Add access to prompt as well if the resource is an agent
+				if (resourcePath === 'providers/FoundationaLLM.Agent/agents') {
+					await api.createRoleAssignment({
+						...this.roleAssignment,
+						name: uuidv4(),
+						scope: `/instances/${api.instanceId}/providers/FoundationaLLM.Prompt/prompts/${resourceName}`,
+					});
+				}
 
 				await api.createRoleAssignment({
 					...this.roleAssignment,
