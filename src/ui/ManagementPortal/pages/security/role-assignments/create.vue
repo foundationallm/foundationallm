@@ -420,15 +420,17 @@ export default {
 			try {
 				this.loadingStatusText = 'Saving role assignment...';
 
-				const [resourcePath, resourceName] = splitPath(this.scope);
+				if (this.scope) {
+					const [resourcePath, resourceName] = splitPath(this.scope);
 
-				// Add access to prompt as well if the resource is an agent
-				if (resourcePath === 'providers/FoundationaLLM.Agent/agents') {
-					await api.createRoleAssignment({
-						...this.roleAssignment,
-						name: uuidv4(),
-						scope: `/instances/${api.instanceId}/providers/FoundationaLLM.Prompt/prompts/${resourceName}`,
-					});
+					// Add access to prompt as well if the resource is an agent
+					if (resourcePath === 'providers/FoundationaLLM.Agent/agents') {
+						await api.createRoleAssignment({
+							...this.roleAssignment,
+							name: uuidv4(),
+							scope: `/instances/${api.instanceId}/providers/FoundationaLLM.Prompt/prompts/${resourceName}`,
+						});
+					}
 				}
 
 				await api.createRoleAssignment({
