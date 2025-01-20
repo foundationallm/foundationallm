@@ -2,7 +2,7 @@
 	<Dialog
 		:visible="visible"
 		modal
-		header="Create Resource Object"
+		header="Create Tool Resource"
 		:style="{ minWidth: '50%' }"
 		:closable="false"
 	>
@@ -98,6 +98,14 @@ export default {
 					label: 'Indexing Profile',
 					value: 'indexingProfile',
 				},
+				{
+					label: 'Prompt',
+					value: 'prompt',
+				},
+				{
+					label: 'API Endpoint',
+					value: 'apiEndpoint',
+				},
 			],
 
 			resourceOption: null,
@@ -125,6 +133,12 @@ export default {
 			} else if (this.resourceType === 'indexingProfile') {
 				this.loadingStatusText = 'Loading indexing profiles...';
 				apiMethod = api.getAgentIndexes;
+			} else if (this.resourceType === 'prompt') {
+				this.loadingStatusText = 'Loading prompts...';
+				apiMethod = api.getPrompts;
+			} else if (this.resourceType === 'apiEndpoint') {
+				this.loadingStatusText = 'Loading api endpoints...';
+				apiMethod = api.getOrchestrationServices;
 			}
 
 			this.loading = true;
