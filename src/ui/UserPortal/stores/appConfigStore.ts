@@ -37,6 +37,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 		showLastConversionOnStartup: null,
 		showMessageTokens: null,
 		showViewPrompt: null,
+		showFileUpload: null,
 
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
@@ -92,6 +93,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				showLastConversionOnStartup,
 				showMessageTokens,
 				showViewPrompt,
+				showFileUpload,
 				authClientId,
 				authInstance,
 				authTenantId,
@@ -135,6 +137,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup', 'true'),
 				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowMessageTokens', 'true'),
 				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowViewPrompt', 'true'),
+				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowFileUpload', 'true'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:Instance'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:TenantId'),
@@ -174,6 +177,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.showLastConversionOnStartup = JSON.parse(showLastConversionOnStartup.toLowerCase());
 			this.showMessageTokens = JSON.parse(showMessageTokens.toLowerCase());
 			this.showViewPrompt = JSON.parse(showViewPrompt.toLowerCase());
+			this.showFileUpload = JSON.parse(showFileUpload.toLowerCase());
 
 			this.auth.clientId = authClientId;
 			this.auth.instance = authInstance;

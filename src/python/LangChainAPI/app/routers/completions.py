@@ -86,7 +86,7 @@ async def submit_completion_request(
             span.set_attribute('user_identity', x_user_identity)
 
             # Create an operations manager to create the operation.
-            operations_manager = OperationsManager(config, http_client_session)
+            operations_manager = OperationsManager(config, http_client_session, logger)
             # Submit the completion request operation to the state API.
             operation = await operations_manager.create_operation_async(operation_id, instance_id, x_user_identity)
 
@@ -190,114 +190,6 @@ async def create_completion_response(
                     user_identity = x_user_identity
                 )
             )
-
-@router.get(
-    '/async-completions/{operation_id}/status',
-    summary = 'Retrieve the status of the completion request operation with the specified operation ID.',
-    responses = {
-        200: {'description': 'The operation status was retrieved successfully.'},
-        404: {'description': 'The specified operation was not found.'}
-    }
-)
-async def get_operation_status(
-    instance_id: str,
-    operation_id: str,
-    config: Configuration = Depends(get_config),
-    http_client_session: ClientSession = Depends(get_http_client_session)
-) -> LongRunningOperation:
-    with tracer.start_as_current_span('langchainapi_get_operation_status', kind=SpanKind.SERVER) as span:
-        # Create an operations manager to get the operation status.
-        operations_manager = OperationsManager(config, http_client_session)
-
-        try:
-            span.set_attribute('operation_id', operation_id)
-            span.set_attribute('instance_id', instance_id)
-
-            operation = await operations_manager.get_operation_async(
-                operation_id,
-                instance_id
-            )
-
-            if operation is None:
-                raise HTTPException(status_code=404, detail=f"An operation with the id '{operation_id}' does not exist.")
-
-            return operation
-        except HTTPException as he:
-            handle_exception(he, he.status_code)
-        except Exception as e:
-            handle_exception(e)
-
-@router.get(
-    '/async-completions/{operation_id}/result',
-    summary = 'Retrieve the completion result of the operation with the specified operation ID.',
-    responses = {
-        200: {'description': 'The operation result was retrieved successfully.'},
-        404: {'description': 'The specified operation or its result was not found.'}
-    }
-)
-async def get_operation_result(
-    instance_id: str,
-    operation_id: str,
-    config: Configuration = Depends(get_config),
-    http_client_session: ClientSession = Depends(get_http_client_session)
-) -> CompletionResponse:
-    with tracer.start_as_current_span('langchainapi_get_operation_result', kind=SpanKind.SERVER) as span:
-        # Create an operations manager to get the operation result.
-        operations_manager = OperationsManager(config, http_client_session)
-
-        try:
-            span.set_attribute('operation_id', operation_id)
-            span.set_attribute('instance_id', instance_id)
-
-            completion_response = await operations_manager.get_operation_result_async(
-                operation_id,
-                instance_id
-            )
-
-            if completion_response is None:
-                raise HTTPException(status_code=404)
-
-            return completion_response
-        except HTTPException as he:
-            handle_exception(he, he.status_code)
-        except Exception as e:
-            handle_exception(e)
-
-@router.get(
-    '/async-completions/{operation_id}/logs',
-    summary = 'Retrieve the log of operational steps for the specified operation ID.',
-    responses = {
-        200: {'description': 'The operation log was retrieved successfully.'},
-        404: {'description': 'The specified operation or its log was not found.'}
-    }
-)
-async def get_operation_logs(
-    instance_id: str,
-    operation_id: str,
-    config: Configuration = Depends(get_config),
-    http_client_session: ClientSession = Depends(get_http_client_session)
-) -> List[LongRunningOperationLogEntry]:
-    with tracer.start_as_current_span('langchainapi_get_operation_log', kind=SpanKind.SERVER) as span:
-        # Create an operations manager to get the operation log.
-        operations_manager = OperationsManager(config, http_client_session)
-
-        try:
-            span.set_attribute('operation_id', operation_id)
-            span.set_attribute('instance_id', instance_id)
-
-            log = await operations_manager.get_operation_logs_async(
-                operation_id,
-                instance_id
-            )
-
-            if log is None:
-                raise HTTPException(status_code=404)
-
-            return log
-        except HTTPException as he:
-            handle_exception(he, he.status_code)
-        except Exception as e:
-            handle_exception(e)
 
 def handle_exception(exception: Exception, status_code: int = 500):
     """

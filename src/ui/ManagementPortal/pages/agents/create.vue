@@ -765,6 +765,21 @@
                         />
                     </div>
                 </div>
+
+                <!-- Show file upload -->
+                <div class="row">
+                    <div id="aria-show-file-upload" class="row-header span-2">Would you like to allow the user to upload files?</div>
+                    <div class="span-2">
+                        <ToggleButton
+                            v-model="showFileUpload"
+                            on-label="Yes"
+                            on-icon="pi pi-check-circle"
+                            off-label="No"
+                            off-icon="pi pi-times-circle"
+                            aria-labelledby="aria-show-file-upload"
+                        />
+                    </div>
+                </div>
             </section>
 
             <!-- System prompt -->
@@ -930,7 +945,8 @@ const getDefaultFormValues = () => {
 		showMessageTokens: false as boolean,
 		showMessageRating: false as boolean,
 		showViewPrompt: false as boolean,
-    };
+		showFileUpload: false as boolean
+	};
 };
 
 export default {
@@ -1220,7 +1236,8 @@ export default {
 			this.showMessageTokens = agent.show_message_tokens ?? false;
 			this.showMessageRating = agent.show_message_rating ?? false;
 			this.showViewPrompt = agent.show_view_prompt ?? false;
-        },
+			this.showFileUpload = agent.show_file_upload ?? false;
+		},
 
         updateAgentWelcomeMessage(newContent: string) {
             this.agentWelcomeMessage = newContent;
@@ -1356,8 +1373,8 @@ export default {
                 return;
             }
 
-            this.loading = true;
-            this.loadingStatusText = 'Creating agent...';
+			this.loading = true;
+			this.loadingStatusText = 'Saving agent...';
 
             const promptRequest = {
                 type: 'multipart',
@@ -1434,6 +1451,7 @@ export default {
 					show_message_tokens: this.showMessageTokens,
 					show_message_rating: this.showMessageRating,
 					show_view_prompt: this.showViewPrompt,
+					show_file_upload: this.showFileUpload,
 
                     vectorization: {
                         dedicated_pipeline: this.dedicated_pipeline,

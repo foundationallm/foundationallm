@@ -9,13 +9,16 @@ from foundationallm.models.operations import (
     OperationStatus
 )
 from foundationallm.models.orchestration import CompletionResponse
+from foundationallm.telemetry import Telemetry
+from logging import Logger
 
 class OperationsManager():
     """
     Class for managing long running operations via calls to the StateAPI.
     """
-    def __init__(self, config: Configuration, http_client_session: ClientSession = None):
+    def __init__(self, config: Configuration, http_client_session: ClientSession = None, logger: Logger = None):
         self.http_client_session = http_client_session or ClientSession()
+        self.logger = logger or Telemetry.get_logger(__name__)
         # Retrieve the State API configuration settings.
         self.state_api_url = config.get_value('FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIUrl').rstrip('/')
         self.state_api_key = config.get_value('FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIKey')
@@ -67,7 +70,8 @@ class OperationsManager():
                     raise Exception(f'An error occurred while creating the operation {operation_id}: ({response.status}) {await response.text()}')
 
                 return LongRunningOperation(**await response.json())
-        except Exception:
+        except Exception as e:
+            self.logger.exception(f'An error occurred while creating the operation {operation_id}: {e}')
             raise
 
     async def update_operation_async(
@@ -122,7 +126,8 @@ class OperationsManager():
                     raise Exception(f'An error occurred while updating the status of operation {operation_id}: ({response.status}) {await response.text()}')
 
                 return LongRunningOperation(**await response.json())
-        except Exception:
+        except Exception as e:
+            self.logger.exception(f'An error occurred while updating the status of operation {operation_id}: {e}')
             raise
         
     async def get_operation_async(
@@ -160,7 +165,8 @@ class OperationsManager():
                     raise Exception(f'An error occurred while retrieving the status of the operation {operation_id}: ({response.status}) {await response.text()}')
 
                 return LongRunningOperation(**await response.json())
-        except Exception:
+        except Exception as e:
+            self.logger.exception(f'An error occurred while retrieving the status of operation {operation_id}: {e}')
             raise
 
     async def set_operation_result_async(
@@ -194,7 +200,8 @@ class OperationsManager():
                     return None
                 if response.status != 200:
                     raise Exception(f'An error occurred while submitting the result of operation {operation_id}: ({response.status}) {await response.text()}')
-        except Exception:
+        except Exception as e:
+            self.logger.exception(f'An error occurred while submitting the result of operation {operation_id}: {e}')
             raise
 
     async def get_operation_result_async(
@@ -232,7 +239,8 @@ class OperationsManager():
                     raise Exception(f'An error occurred while retrieving the result of operation {operation_id}: ({response.status}) {await response.text()}')
 
                 return CompletionResponse(**await response.json())
-        except Exception:
+        except Exception as e:
+            self.logger.exception(f'An error occurred while retrieving the result of operation {operation_id}: {e}')
             raise
 
     async def get_operation_logs_async(
@@ -270,7 +278,8 @@ class OperationsManager():
                     raise Exception(f'An error occurred while retrieving the log for operation {operation_id}: ({response.status}) {await response.text()}')
 
                 return LongRunningOperationLogEntry(**await response.json())
-        except Exception:
+        except Exception as e:
+            self.logger.exception(f'An error occurred while retrieving the log for operation {operation_id}: {e}')
             raise
 
     def __get_standard_headers(self):
@@ -298,4 +307,4 @@ class OperationsManager():
             The user principal name.
         """
         user_identity_dict = json.loads(user_identity)
-        return user_identity_dict['upn']
+        return user_identity_dict.get('upn', '')
