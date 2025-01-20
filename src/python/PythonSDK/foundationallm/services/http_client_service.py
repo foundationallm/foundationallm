@@ -60,7 +60,7 @@ class HttpClientService:
             response.raise_for_status()
             return response.json()
 
-    async def aget(self, endpoint: str):
+    async def get_async(self, endpoint: str):
         """
         Execute an asynchronous GET request.
         """
@@ -70,7 +70,7 @@ class HttpClientService:
                 response.raise_for_status()
                 return await response.json()
 
-    async def apost(self, endpoint: str, data: dict = None):
+    async def post_async(self, endpoint: str, data: dict = None):
         """
         Execute an asynchronous POST request.
         """

@@ -68,6 +68,7 @@ export type Agent = ResourceBase & {
 	show_message_tokens?: boolean;
 	show_message_rating?: boolean;
 	show_view_prompt?: boolean;
+	show_file_upload?: boolean;
 
 	ai_model_object_id: string;
 
@@ -336,6 +337,7 @@ export type CreateAgentRequest = ResourceBase & {
 	show_message_tokens?: boolean;
 	show_message_rating?: boolean;
 	show_view_prompt?: boolean;
+	show_file_upload?: boolean;
 
 	ai_model_object_id: string;
 
@@ -565,49 +567,49 @@ export function convertToAppConfigKeyVault(baseConfig: AppConfigUnion): AppConfi
 	};
 }
 
-export type APIEndpointConfiguration = ResourceBase & {
-    type: string;
-    category: APIEndpointCategory;
-    subcategory?: APIEndpointSubcategory;
-    authenticationType: AuthenticationTypes;
-    url: string;
-    statusUrl?: string;
-    urlExceptions: UrlException[];
-    authenticationParameters: { [key: string]: any };
-    timeoutSeconds: number;
-    retryStrategyName: string;
-    provider?: string;
-    apiVersion?: string;
-    operationType?: string;
-}
-
-export type UrlException = {
-    userPrincipalName: string;
-    url: string;
-    enabled: boolean;
-}
-
 export enum APIEndpointCategory {
-    Orchestration,
-    ExternalOrchestration,
-    LLM,
-    Gatekeeper,
-    AzureAIDirect,
-    AzureOpenAIDirect,
-    FileStoreConnector,
-    General
+	Orchestration = 'Orchestration',
+	ExternalOrchestration = 'ExternalOrchestration',
+	LLM = 'LLM',
+	Gatekeeper = 'Gatekeeper',
+	AzureAIDirect = 'AzureAIDirect',
+	AzureOpenAIDirect = 'AzureOpenAIDirect',
+	FileStoreConnector = 'FileStoreConnector',
+	General = 'General',
 }
 
 export enum APIEndpointSubcategory {
-    OneDriveWorkSchool,
-    Indexing,
-    AIModel
+	OneDriveWorkSchool = 'OneDriveWorkSchool',
+	Indexing = 'Indexing',
+	AIModel = 'AIModel',
 }
 
 export enum AuthenticationTypes {
-    Unknown = -1,
-    AzureIdentity,
-    APIKey,
-    ConnectionString,
-    AccountKey
+	Unknown = -1,
+	AzureIdentity = 'AzureIdentity',
+	APIKey = 'APIKey',
+	ConnectionString = 'ConnectionString',
+	AccountKey = 'AccountKey',
 }
+
+export type UrlException = {
+	userPrincipalName: string;
+	url: string;
+	enabled: boolean;
+};
+
+export type APIEndpointConfiguration = ResourceBase & {
+	type: string;
+	category: APIEndpointCategory;
+	subcategory?: APIEndpointSubcategory;
+	authenticationType: AuthenticationTypes;
+	url: string;
+	statusUrl?: string;
+	urlExceptions: UrlException[];
+	authenticationParameters: { [key: string]: any };
+	timeoutSeconds: number;
+	retryStrategyName: string;
+	provider?: string;
+	apiVersion?: string;
+	operationType?: string;
+};

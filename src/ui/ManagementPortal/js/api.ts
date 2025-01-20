@@ -918,7 +918,6 @@ export default {
 	},
 
 	async createIndexingProfile(request): Promise<any> {
-		console.log('createIndexingProfile', request);
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles/${request.name}?api-version=${this.apiVersion}`,
 			{

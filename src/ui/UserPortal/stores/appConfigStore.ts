@@ -37,6 +37,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 		showLastConversionOnStartup: null,
 		showMessageTokens: null,
 		showViewPrompt: null,
+		showFileUpload: null,
 
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
@@ -45,6 +46,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 			tenantId: null,
 			scopes: [],
 			callbackPath: null,
+			timeoutInMinutes: 60,
 		},
 	}),
 	getters: {},
@@ -91,11 +93,13 @@ export const useAppConfigStore = defineStore('appConfig', {
 				showLastConversionOnStartup,
 				showMessageTokens,
 				showViewPrompt,
+				showFileUpload,
 				authClientId,
 				authInstance,
 				authTenantId,
 				authScopes,
 				authCallbackPath,
+				authTimeoutInMinutes,
 			] = await Promise.all([
 				api.getConfigValue('FoundationaLLM:APIEndpoints:CoreAPI:Essentials:APIUrl'),
 
@@ -133,11 +137,13 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup', 'true'),
 				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowMessageTokens', 'true'),
 				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowViewPrompt', 'true'),
+				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowFileUpload', 'true'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:Instance'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:TenantId'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:Scopes'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:CallbackPath'),
+				getConfigValueSafe('FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes', 60),
 			]);
 
 			this.apiUrl = apiUrl;
@@ -171,12 +177,14 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.showLastConversionOnStartup = JSON.parse(showLastConversionOnStartup.toLowerCase());
 			this.showMessageTokens = JSON.parse(showMessageTokens.toLowerCase());
 			this.showViewPrompt = JSON.parse(showViewPrompt.toLowerCase());
+			this.showFileUpload = JSON.parse(showFileUpload.toLowerCase());
 
 			this.auth.clientId = authClientId;
 			this.auth.instance = authInstance;
 			this.auth.tenantId = authTenantId;
 			this.auth.scopes = authScopes;
 			this.auth.callbackPath = authCallbackPath;
+			this.auth.timeoutInMinutes = authTimeoutInMinutes;
 		},
 	},
 });
