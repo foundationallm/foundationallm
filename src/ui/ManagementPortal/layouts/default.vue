@@ -58,6 +58,7 @@ export default {
 
 <style scoped>
 .page {
+	max-width: 100%;
 	display: flex;
 	flex-direction: column;
 	height: auto;

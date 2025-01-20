@@ -1,5 +1,5 @@
 <template>
-    <div :class="{ 'grid--loading': loading }">
+    <div :class="{ 'grid--loading': loading }" style="overflow: auto;">
         <!-- Loading overlay -->
         <template v-if="loading">
             <div class="grid__loading-overlay" role="status" aria-live="polite">
@@ -29,7 +29,7 @@
                 field="resource.name"
                 header="Name"
                 sortable
-                style="min-width: 200px"
+                :style="columnStyle"
                 :pt="{
                     headerCell: {
                         style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -54,7 +54,7 @@
                 field="resource.description"
                 header="Description"
                 sortable
-                style="min-width: 200px"
+                :style="columnStyle"
                 :pt="{
                     headerCell: {
                         style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -68,7 +68,7 @@
                 field="resource.expiration_date"
                 header="Expiration Date"
                 sortable
-                style="min-width: 200px"
+                :style="columnStyle"
                 :pt="{
                     headerCell: {
                         style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -211,6 +211,12 @@ export default {
         },
     },
 
+    computed: {
+        columnStyle() {
+            return window.innerWidth <= 768 ? {} : { minWidth: '200px' };
+        },
+    },
+
     data() {
         return {
             agentToDelete: null as Agent | null,
@@ -286,5 +292,20 @@ export default {
     z-index: 10;
     background-color: rgba(255, 255, 255, 0.9);
     pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .p-column {
+        min-width: auto !important;
+        white-space: normal;
+    }
+
+    .p-datatable {
+        font-size: 0.9rem;
+    }
+
+    .p-column-header-content {
+        text-align: left;
+    }
 }
 </style>

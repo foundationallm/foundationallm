@@ -35,7 +35,7 @@
             </template>
 
             <div class="row">
-                <div id="aria-agent-name" class="step-header mb-2">Agent name:</div>
+                <div id="aria-agent-name" class="row-header mb-2">Agent name:</div>
                 <div id="aria-agent-name-desc" class="mb-2">
                     No special characters or spaces, use letters and numbers with dashes and underscores only.
                 </div>
@@ -69,7 +69,7 @@
             </div>
 
             <div class="row">
-                <div class="step-header mb-2">Description:</div>
+                <div class="row-header mb-2">Description:</div>
                 <div id="aria-description" class="mb-2">
                     Provide a description to help others understand the agent's purpose.
                 </div>
@@ -83,7 +83,7 @@
             </div>
 
             <div class="row">
-                <div class="step-header mb-2">Welcome message:</div>
+                <div class="row-header mb-2">Welcome message:</div>
                 <div id="aria-welcome-message-desc" class="mb-2">
                     Provide a message to display when a user starts a new conversation with the agent. If a
                     message is not provided, the default welcome message will be displayed.
@@ -105,7 +105,7 @@
                 </div>
 
                 <div class="row">
-                    <div id="aria-inline-context" class="step-header">
+                    <div id="aria-inline-context" class="row-header">
                         Does this agent have an inline context?
                     </div>
                     <div class="d-flex align-center mt-2">
@@ -124,7 +124,7 @@
 
                 <template v-if="!inline_context">
                     <div class="row">
-                        <div id="aria-dedicated-pipeline" class="step-header">
+                        <div id="aria-dedicated-pipeline" class="row-header">
                             Do you want this agent to have a dedicated pipeline?
                         </div>
                         <div class="d-flex align-center mt-2">
@@ -140,300 +140,304 @@
                             </span>
                         </div>
                     </div>
-
-                    <div class="row">
-						<div class="step-header" v-if="dedicated_pipeline">Where is the data?</div>
-						<div class="step-header" v-else>Select your index</div>
-						<!-- Data source -->
-						<CreateAgentStepItem v-model="editDataSource" focusQuery=".step-container__edit__option">
-							<template v-if="selectedDataSource">
-								<div class="step-container__header">{{ selectedDataSource.type }}</div>
-								<div>
-									<div v-if="selectedDataSource.object_id !== ''">
-										<span class="step-option__header">Name:</span>
-									</div>
-									<span>{{ selectedDataSource.name }}</span>
-								</div>
-								<!-- <div>
-									<span class="step-option__header">Container name:</span>
-									<span>{{ selectedDataSource.Container.Name }}</span>
-								</div> -->
-
-								<!-- <div>
-									<span class="step-option__header">Data Format(s):</span>
-									<span v-for="format in selectedDataSource.Formats" :key="format" class="mr-1">
-										{{ format }}
-									</span>
-								</div> -->
-							</template>
-							<template v-else>Please select a data source.</template>
-
-							<template #edit>
-								<div class="step-container__edit__header">Please select a data source.</div>
-
-								<div v-for="(group, type) in groupedDataSources" :key="type">
-									<div class="step-container__edit__group-header">{{ type }}</div>
-
-									<div
-										v-for="dataSource in group"
-										:key="dataSource.name"
-										class="step-container__edit__option"
-										:class="{
-											'step-container__edit__option--selected':
-												dataSource.name === selectedDataSource?.name,
-										}"
-										tabindex="0"
-										@click.stop="handleDataSourceSelected(dataSource)"
-										@keydown.enter="handleDataSourceSelected(dataSource)"
-									>
-										<div>
-											<div v-if="dataSource.object_id !== ''">
-												<span class="step-option__header">Name:</span>
-											</div>
-											<span>{{ dataSource.name }}</span>
-										</div>
-										<!-- <div>
-											<span class="step-option__header">Container name:</span>
-											<span>{{ dataSource.Container.Name }}</span>
-										</div> -->
-
-										<!-- <div>
-											<span class="step-option__header">Data Format(s):</span>
-											<span v-for="format in dataSource.Formats" :key="format" class="mr-1">
-												{{ format }}
-											</span>
-										</div> -->
-									</div>
-								</div>
-							</template>
-						</CreateAgentStepItem>
-					</div>
-                    <template v-if="dedicated_pipeline">
+                    
+                    <div class="flex-row">
                         <div class="row">
-                            <div class="step-header">Where should the data be indexed?</div>
-                            <!-- Index source -->
-                            <CreateAgentStepItem v-model="editIndexSource" focusQuery=".step-container__edit__option">
-                                <template v-if="selectedIndexSource">
-                                    <div v-if="selectedIndexSource.object_id !== ''">
-                                        <div class="step-container__header">{{ selectedIndexSource.name }}</div>
-                                        <div>
-                                            <span class="step-option__header">URL:</span>
-                                            <span>{{ selectedIndexSource.resolved_configuration_references.Endpoint }}</span>
+                            <div class="row-header" v-if="dedicated_pipeline">Where is the data?</div>
+                            <div class="row-header" v-else>Select your index</div>
+                            <!-- Data source -->
+                            <CreateAgentStepItem v-model="editDataSource" focusQuery=".step-container__edit__option">
+                                <template v-if="selectedDataSource">
+                                    <div class="step-container__header">{{ selectedDataSource.type }}</div>
+                                    <div>
+                                        <div v-if="selectedDataSource.object_id !== ''">
+                                            <span class="step-option__header">Name:</span>
                                         </div>
-                                        <div>
-                                            <span class="step-option__header">Index Name:</span>
-                                            <span>{{ selectedIndexSource.settings.IndexName }}</span>
-                                        </div>
+                                        <span>{{ selectedDataSource.name }}</span>
                                     </div>
-                                    <div v-else>
-                                        <div class="step-container__header">DEFAULT</div>
-                                        {{ selectedIndexSource.name }}
-                                    </div>
+                                    <!-- <div>
+                                        <span class="step-option__header">Container name:</span>
+                                        <span>{{ selectedDataSource.Container.Name }}</span>
+                                    </div> -->
+
+                                    <!-- <div>
+                                        <span class="step-option__header">Data Format(s):</span>
+                                        <span v-for="format in selectedDataSource.Formats" :key="format" class="mr-1">
+                                            {{ format }}
+                                        </span>
+                                    </div> -->
                                 </template>
-                                <template v-else>Please select an index source.</template>
+                                <template v-else>Please select a data source.</template>
 
                                 <template #edit>
-                                    <div class="step-container__edit__header">Please select an index source.</div>
-                                    <div
-                                        v-for="indexSource in indexSources"
-                                        :key="indexSource.name"
-                                        class="step-container__edit__option"
-                                        :class="{
-                                            'step-container__edit__option--selected':
-                                                indexSource.name === selectedIndexSource?.name,
-                                        }"
-                                        tabindex="0"
-                                        @click.stop="handleIndexSourceSelected(indexSource)"
-                                        @keydown.enter="handleIndexSourceSelected(indexSource)"
-                                    >
-                                        <div v-if="indexSource.object_id !== ''">
-                                            <div class="step-container__header">{{ indexSource.name }}</div>
-                                            <div v-if="indexSource.resolved_configuration_references.Endpoint">
-                                                <span class="step-option__header">URL:</span>
-                                                <span>{{ indexSource.resolved_configuration_references.Endpoint }}</span>
+                                    <div class="step-container__edit__header">Please select a data source.</div>
+
+                                    <div v-for="(group, type) in groupedDataSources" :key="type">
+                                        <div class="step-container__edit__group-header">{{ type }}</div>
+
+                                        <div
+                                            v-for="dataSource in group"
+                                            :key="dataSource.name"
+                                            class="step-container__edit__option"
+                                            :class="{
+                                                'step-container__edit__option--selected':
+                                                    dataSource.name === selectedDataSource?.name,
+                                            }"
+                                            tabindex="0"
+                                            @click.stop="handleDataSourceSelected(dataSource)"
+                                            @keydown.enter="handleDataSourceSelected(dataSource)"
+                                        >
+                                            <div>
+                                                <div v-if="dataSource.object_id !== ''">
+                                                    <span class="step-option__header">Name:</span>
+                                                </div>
+                                                <span>{{ dataSource.name }}</span>
                                             </div>
-                                            <div v-if="indexSource.settings.IndexName">
+                                            <!-- <div>
+                                                <span class="step-option__header">Container name:</span>
+                                                <span>{{ dataSource.Container.Name }}</span>
+                                            </div> -->
+
+                                            <!-- <div>
+                                                <span class="step-option__header">Data Format(s):</span>
+                                                <span v-for="format in dataSource.Formats" :key="format" class="mr-1">
+                                                    {{ format }}
+                                                </span>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </template>
+                            </CreateAgentStepItem>
+                        </div>
+                        <template v-if="dedicated_pipeline">
+                            <div class="row">
+                                <div class="row-header">Where should the data be indexed?</div>
+                                <!-- Index source -->
+                                <CreateAgentStepItem v-model="editIndexSource" focusQuery=".step-container__edit__option">
+                                    <template v-if="selectedIndexSource">
+                                        <div v-if="selectedIndexSource.object_id !== ''">
+                                            <div class="step-container__header">{{ selectedIndexSource.name }}</div>
+                                            <div>
+                                                <span class="step-option__header">URL:</span>
+                                                <span>{{ selectedIndexSource.resolved_configuration_references.Endpoint }}</span>
+                                            </div>
+                                            <div>
                                                 <span class="step-option__header">Index Name:</span>
-                                                <span>{{ indexSource.settings.IndexName }}</span>
+                                                <span>{{ selectedIndexSource.settings.IndexName }}</span>
                                             </div>
                                         </div>
                                         <div v-else>
                                             <div class="step-container__header">DEFAULT</div>
-                                            {{ indexSource.name }}
+                                            {{ selectedIndexSource.name }}
+                                        </div>
+                                    </template>
+                                    <template v-else>Please select an index source.</template>
+
+                                    <template #edit>
+                                        <div class="step-container__edit__header">Please select an index source.</div>
+                                        <div
+                                            v-for="indexSource in indexSources"
+                                            :key="indexSource.name"
+                                            class="step-container__edit__option"
+                                            :class="{
+                                                'step-container__edit__option--selected':
+                                                    indexSource.name === selectedIndexSource?.name,
+                                            }"
+                                            tabindex="0"
+                                            @click.stop="handleIndexSourceSelected(indexSource)"
+                                            @keydown.enter="handleIndexSourceSelected(indexSource)"
+                                        >
+                                            <div v-if="indexSource.object_id !== ''">
+                                                <div class="step-container__header">{{ indexSource.name }}</div>
+                                                <div v-if="indexSource.resolved_configuration_references.Endpoint">
+                                                    <span class="step-option__header">URL:</span>
+                                                    <span>{{ indexSource.resolved_configuration_references.Endpoint }}</span>
+                                                </div>
+                                                <div v-if="indexSource.settings.IndexName">
+                                                    <span class="step-option__header">Index Name:</span>
+                                                    <span>{{ indexSource.settings.IndexName }}</span>
+                                                </div>
+                                            </div>
+                                            <div v-else>
+                                                <div class="step-container__header">DEFAULT</div>
+                                                {{ indexSource.name }}
+                                            </div>
+                                        </div>
+                                    </template>
+                                </CreateAgentStepItem>
+                            </div>
+                        </template>
+                        <div class="row">
+                            <div class="row-header">Select the text embedding profile</div>
+                            <!-- Text embedding profiles -->
+                            <CreateAgentStepItem v-model="editTextEmbeddingProfile" focusQuery=".step-container__edit__option">
+                                <template v-if="selectedTextEmbeddingProfile">
+                                    <div v-if="selectedTextEmbeddingProfile.object_id !== ''">
+                                        <div class="step-container__header">{{ selectedTextEmbeddingProfile.name }}</div>
+                                        <div v-if="selectedTextEmbeddingProfile.resolved_configuration_references?.Endpoint">
+                                            <span class="step-option__header">URL:</span>
+                                            <span>{{
+                                                selectedTextEmbeddingProfile.resolved_configuration_references.Endpoint
+                                            }}</span
+                                            ><br />
+                                            <span class="step-option__header">Deployment:</span>
+                                            <span>{{
+                                                selectedTextEmbeddingProfile.resolved_configuration_references.DeploymentName
+                                            }}</span>
+                                        </div>
+                                        <div v-if="selectedTextEmbeddingProfile.settings?.model_name">
+                                            <span class="step-option__header">Model Name:</span>
+                                            <span>{{ selectedTextEmbeddingProfile.settings.model_name }}</span>
+                                        </div>
+                                    </div>
+                                    <div v-else>
+                                        <div class="step-container__header">DEFAULT</div>
+                                        {{ selectedTextEmbeddingProfile.name }}
+                                    </div>
+                                </template>
+                                <template v-else>Please select text embedding profile.</template>
+
+                                <template #edit>
+                                    <div class="step-container__edit__header">Please select text embedding profile.</div>
+                                    <div
+                                        v-for="textEmbeddingProfile in textEmbeddingProfileSources"
+                                        :key="textEmbeddingProfile.name"
+                                        class="step-container__edit__option"
+                                        :class="{
+                                            'step-container__edit__option--selected':
+                                                textEmbeddingProfile.name === selectedTextEmbeddingProfile?.name,
+                                        }"
+                                        tabindex="0"
+                                        @click.stop="handleTextEmbeddingProfileSelected(textEmbeddingProfile)"
+                                        @keydown.enter="handleTextEmbeddingProfileSelected(textEmbeddingProfile)"
+                                    >
+                                        <div v-if="textEmbeddingProfile.object_id !== ''">
+                                            <div class="step-container__header">{{ textEmbeddingProfile.name }}</div>
+                                            <div v-if="textEmbeddingProfile.resolved_configuration_references?.Endpoint">
+                                                <span class="step-option__header">URL:</span>
+                                                <span>{{ textEmbeddingProfile.resolved_configuration_references.Endpoint }}</span
+                                                ><br />
+                                                <span class="step-option__header">Deployment:</span>
+                                                <span>{{
+                                                    textEmbeddingProfile.resolved_configuration_references.DeploymentName
+                                                }}</span>
+                                            </div>
+                                            <div v-if="textEmbeddingProfile.settings?.model_name">
+                                                <span class="step-option__header">Model Name:</span>
+                                                <span>{{ textEmbeddingProfile.settings.model_name }}</span>
+                                            </div>
+                                        </div>
+                                        <div v-else>
+                                            <div class="step-container__header">DEFAULT</div>
+                                            {{ textEmbeddingProfile.name }}
                                         </div>
                                     </div>
                                 </template>
                             </CreateAgentStepItem>
                         </div>
-                    </template>
+                    </div>
+
                     <!-- <template v-else>
-                        <div class="step-header">Select the text embedding profile</div>
+                        <div class="row-header">Select the text embedding profile</div>
                     </template> -->
 
-                    <div class="row">
-						<div class="step-header">Select the text embedding profile</div>
-						<!-- Text embedding profiles -->
-						<CreateAgentStepItem v-model="editTextEmbeddingProfile" focusQuery=".step-container__edit__option">
-							<template v-if="selectedTextEmbeddingProfile">
-								<div v-if="selectedTextEmbeddingProfile.object_id !== ''">
-									<div class="step-container__header">{{ selectedTextEmbeddingProfile.name }}</div>
-									<div v-if="selectedTextEmbeddingProfile.resolved_configuration_references?.Endpoint">
-										<span class="step-option__header">URL:</span>
-										<span>{{
-											selectedTextEmbeddingProfile.resolved_configuration_references.Endpoint
-										}}</span
-										><br />
-										<span class="step-option__header">Deployment:</span>
-										<span>{{
-											selectedTextEmbeddingProfile.resolved_configuration_references.DeploymentName
-										}}</span>
-									</div>
-									<div v-if="selectedTextEmbeddingProfile.settings?.model_name">
-										<span class="step-option__header">Model Name:</span>
-										<span>{{ selectedTextEmbeddingProfile.settings.model_name }}</span>
-									</div>
-								</div>
-								<div v-else>
-									<div class="step-container__header">DEFAULT</div>
-									{{ selectedTextEmbeddingProfile.name }}
-								</div>
-							</template>
-							<template v-else>Please select text embedding profile.</template>
-
-							<template #edit>
-								<div class="step-container__edit__header">Please select text embedding profile.</div>
-								<div
-									v-for="textEmbeddingProfile in textEmbeddingProfileSources"
-									:key="textEmbeddingProfile.name"
-									class="step-container__edit__option"
-									:class="{
-										'step-container__edit__option--selected':
-											textEmbeddingProfile.name === selectedTextEmbeddingProfile?.name,
-									}"
-									tabindex="0"
-									@click.stop="handleTextEmbeddingProfileSelected(textEmbeddingProfile)"
-									@keydown.enter="handleTextEmbeddingProfileSelected(textEmbeddingProfile)"
-								>
-									<div v-if="textEmbeddingProfile.object_id !== ''">
-										<div class="step-container__header">{{ textEmbeddingProfile.name }}</div>
-										<div v-if="textEmbeddingProfile.resolved_configuration_references?.Endpoint">
-											<span class="step-option__header">URL:</span>
-											<span>{{ textEmbeddingProfile.resolved_configuration_references.Endpoint }}</span
-											><br />
-											<span class="step-option__header">Deployment:</span>
-											<span>{{
-												textEmbeddingProfile.resolved_configuration_references.DeploymentName
-											}}</span>
-										</div>
-										<div v-if="textEmbeddingProfile.settings?.model_name">
-											<span class="step-option__header">Model Name:</span>
-											<span>{{ textEmbeddingProfile.settings.model_name }}</span>
-										</div>
-									</div>
-									<div v-else>
-										<div class="step-container__header">DEFAULT</div>
-										{{ textEmbeddingProfile.name }}
-									</div>
-								</div>
-							</template>
-						</CreateAgentStepItem>
-					</div>
-
-                    <template v-if="dedicated_pipeline">
-                        <div class="row">
-                            <div class="step-header">How should the data be processed for indexing?</div>
-                            <!-- Process indexing -->
-                            <CreateAgentStepItem focusQuery=".chunk-size-input">
-                                <div class="step-container__header">Splitting & Chunking</div>
-
-                                <div>
-                                    <span class="step-option__header">Chunk size:</span>
-                                    <span>{{ chunkSize }}</span>
-                                </div>
-
-                                <div>
-                                    <span class="step-option__header">Overlap size:</span>
-                                    <span>{{ overlapSize == 0 ? 'No Overlap' : overlapSize }}</span>
-                                </div>
-
-                                <template #edit>
+                    <div class="flex-row">
+                        <template v-if="dedicated_pipeline">
+                            <div class="row">
+                                <div class="row-header">How should the data be processed for indexing?</div>
+                                <!-- Process indexing -->
+                                <CreateAgentStepItem focusQuery=".chunk-size-input">
                                     <div class="step-container__header">Splitting & Chunking</div>
 
                                     <div>
-                                        <span id="aria-chunk-size" class="step-option__header">Chunk size:</span>
-                                        <InputText
-                                            v-model="chunkSize"
-                                            type="number"
-                                            class="mt-2 chunk-size-input"
-                                            aria-label="aria-chunk-size"
-                                        />
+                                        <span class="step-option__header">Chunk size:</span>
+                                        <span>{{ chunkSize }}</span>
                                     </div>
 
                                     <div>
-                                        <span id="aria-overlap-size" class="step-option__header">Overlap size:</span>
-                                        <InputText
-                                            v-model="overlapSize"
-                                            type="number"
-                                            class="mt-2"
-                                            aria-label="aria-overlap-size"
-                                        />
+                                        <span class="step-option__header">Overlap size:</span>
+                                        <span>{{ overlapSize == 0 ? 'No Overlap' : overlapSize }}</span>
                                     </div>
-                                </template>
-                            </CreateAgentStepItem>
-                        </div>
-                        <div class="row">
-                            <div class="step-header">When should the data be indexed?</div>
-                            <!-- Trigger -->
-                            <CreateAgentStepItem focusQuery=".frequency-dropdown span">
-                                <div class="step-container__header">Trigger</div>
-                                <div>Runs every time a new item is added to the data source.</div>
 
-                                <div class="mt-2">
-                                    <span class="step-option__header">Frequency:</span>
-                                    <span>{{ triggerFrequency }}</span>
-                                </div>
+                                    <template #edit>
+                                        <div class="step-container__header">Splitting & Chunking</div>
 
-                                <div v-if="triggerFrequency === 'Schedule' && triggerFrequencyScheduled">
-                                    <span class="step-option__header">Schedule:</span>
-                                    <span>{{ triggerFrequencyScheduled }}</span>
-                                </div>
+                                        <div>
+                                            <span id="aria-chunk-size" class="step-option__header">Chunk size:</span>
+                                            <InputText
+                                                v-model="chunkSize"
+                                                type="number"
+                                                class="mt-2 chunk-size-input"
+                                                aria-label="aria-chunk-size"
+                                            />
+                                        </div>
 
-                                <template #edit>
+                                        <div>
+                                            <span id="aria-overlap-size" class="step-option__header">Overlap size:</span>
+                                            <InputText
+                                                v-model="overlapSize"
+                                                type="number"
+                                                class="mt-2"
+                                                aria-label="aria-overlap-size"
+                                            />
+                                        </div>
+                                    </template>
+                                </CreateAgentStepItem>
+                            </div>
+                            <div class="row">
+                                <div class="row-header">When should the data be indexed?</div>
+                                <!-- Trigger -->
+                                <CreateAgentStepItem focusQuery=".frequency-dropdown span">
                                     <div class="step-container__header">Trigger</div>
                                     <div>Runs every time a new item is added to the data source.</div>
 
                                     <div class="mt-2">
-                                        <span id="aria-frequency" class="step-option__header">Frequency:</span>
-                                        <Dropdown
-                                            v-model="triggerFrequency"
-                                            class="dropdown--agent frequency-dropdown"
-                                            :options="triggerFrequencyOptions"
-                                            placeholder="--Select--"
-                                            aria-label="aria-frequency"
-                                        />
+                                        <span class="step-option__header">Frequency:</span>
+                                        <span>{{ triggerFrequency }}</span>
                                     </div>
 
-                                    <div v-if="triggerFrequency === 'Schedule'" class="mt-2">
-                                        <CronLight
-                                            v-model="triggerFrequencyScheduled"
-                                            format="quartz"
-                                            @error="error = $event"
-                                        />
-                                        <!-- editable cron expression -->
-                                        <InputText
-                                            class="mt-4"
-                                            label="cron expression"
-                                            :model-value="triggerFrequencyScheduled"
-                                            :error-messages="error"
-                                            aria-label="cron expression"
-                                            @update:model-value="triggerFrequencyNextScheduled = $event"
-                                            @blur="triggerFrequencyScheduled = triggerFrequencyNextScheduled"
-                                        />
+                                    <div v-if="triggerFrequency === 'Schedule' && triggerFrequencyScheduled">
+                                        <span class="step-option__header">Schedule:</span>
+                                        <span>{{ triggerFrequencyScheduled }}</span>
                                     </div>
-                                </template>
-                            </CreateAgentStepItem>
-                        </div>
-                    </template>
+
+                                    <template #edit>
+                                        <div class="step-container__header">Trigger</div>
+                                        <div>Runs every time a new item is added to the data source.</div>
+
+                                        <div class="mt-2">
+                                            <span id="aria-frequency" class="step-option__header">Frequency:</span>
+                                            <Dropdown
+                                                v-model="triggerFrequency"
+                                                class="dropdown--agent frequency-dropdown"
+                                                :options="triggerFrequencyOptions"
+                                                placeholder="--Select--"
+                                                aria-label="aria-frequency"
+                                            />
+                                        </div>
+
+                                        <div v-if="triggerFrequency === 'Schedule'" class="mt-2">
+                                            <CronLight
+                                                v-model="triggerFrequencyScheduled"
+                                                format="quartz"
+                                                @error="error = $event"
+                                            />
+                                            <!-- editable cron expression -->
+                                            <InputText
+                                                class="mt-4"
+                                                label="cron expression"
+                                                :model-value="triggerFrequencyScheduled"
+                                                :error-messages="error"
+                                                aria-label="cron expression"
+                                                @update:model-value="triggerFrequencyNextScheduled = $event"
+                                                @blur="triggerFrequencyScheduled = triggerFrequencyNextScheduled"
+                                            />
+                                        </div>
+                                    </template>
+                                </CreateAgentStepItem>
+                            </div>
+                        </template>
+                    </div>
                 </template>
             </section>
             <!-- End of Knowledge Source -->
@@ -444,162 +448,164 @@
                 	<h3 class="step-section-header span-2" id="agent-configuration">Agent Configuration</h3>
 				</div>
 
-				<div class="row">
-					<div class="step-header">Should conversations be included in the context?</div>
-					<!-- Conversation history -->
-					<CreateAgentStepItem focusQuery=".conversation-history-toggle input">
-						<div class="step-container__header">Conversation History</div>
+                <div class="flex-row">
+                    <div class="row">
+                        <div class="row-header">Should conversations be included in the context?</div>
+                        <!-- Conversation history -->
+                        <CreateAgentStepItem focusQuery=".conversation-history-toggle input">
+                            <div class="step-container__header">Conversation History</div>
 
-						<div>
-							<span class="step-option__header">Enabled:</span>
-							<span>
-								<span>{{ conversationHistory ? 'Yes' : 'No' }}</span>
-								<span
-									v-if="conversationHistory"
-									class="pi pi-check-circle ml-1"
-									style="color: var(--green-400); font-size: 0.8rem"
-								></span>
-								<span
-									v-else
-									class="pi pi-times-circle ml-1"
-									style="color: var(--red-400); font-size: 0.8rem"
-								></span>
-							</span>
-						</div>
+                            <div>
+                                <span class="step-option__header">Enabled:</span>
+                                <span>
+                                    <span>{{ conversationHistory ? 'Yes' : 'No' }}</span>
+                                    <span
+                                        v-if="conversationHistory"
+                                        class="pi pi-check-circle ml-1"
+                                        style="color: var(--green-400); font-size: 0.8rem"
+                                    ></span>
+                                    <span
+                                        v-else
+                                        class="pi pi-times-circle ml-1"
+                                        style="color: var(--red-400); font-size: 0.8rem"
+                                    ></span>
+                                </span>
+                            </div>
 
-						<div>
-							<span class="step-option__header">Max Messages:</span>
-							<span>{{ conversationMaxMessages }}</span>
-						</div>
+                            <div>
+                                <span class="step-option__header">Max Messages:</span>
+                                <span>{{ conversationMaxMessages }}</span>
+                            </div>
 
-						<template #edit>
-							<div id="aria-conversation-history" class="step-container__header">
-								Conversation History
-							</div>
+                            <template #edit>
+                                <div id="aria-conversation-history" class="step-container__header">
+                                    Conversation History
+                                </div>
 
-							<div class="d-flex align-center mt-2">
-								<span id="aria-conversation-history-enabled" class="step-option__header">Enabled:</span>
-								<span>
-									<ToggleButton
-										v-model="conversationHistory"
-										on-label="Yes"
-										on-icon="pi pi-check-circle"
-										off-label="No"
-										off-icon="pi pi-times-circle"
-										aria-labelledby="aria-conversation-history aria-conversation-history-enabled"
-										class="conversation-history-toggle"
-									/>
-								</span>
-							</div>
+                                <div class="d-flex align-center mt-2">
+                                    <span id="aria-conversation-history-enabled" class="step-option__header">Enabled:</span>
+                                    <span>
+                                        <ToggleButton
+                                            v-model="conversationHistory"
+                                            on-label="Yes"
+                                            on-icon="pi pi-check-circle"
+                                            off-label="No"
+                                            off-icon="pi pi-times-circle"
+                                            aria-labelledby="aria-conversation-history aria-conversation-history-enabled"
+                                            class="conversation-history-toggle"
+                                        />
+                                    </span>
+                                </div>
 
-							<div>
-								<span id="aria-max-messages" class="step-option__header">Max Messages:</span>
-								<InputText
-									v-model="conversationMaxMessages"
-									type="number"
-									class="mt-2"
-									aria-label="aria-max-messages"
-								/>
-							</div>
-						</template>
-					</CreateAgentStepItem>
-				</div>
+                                <div>
+                                    <span id="aria-max-messages" class="step-option__header">Max Messages:</span>
+                                    <InputText
+                                        v-model="conversationMaxMessages"
+                                        type="number"
+                                        class="mt-2"
+                                        aria-label="aria-max-messages"
+                                    />
+                                </div>
+                            </template>
+                        </CreateAgentStepItem>
+                    </div>
 
-				<div class="row">
-					<div class="step-header">How should user-agent interactions be gated?</div>
-					<!-- Gatekeeper -->
-					<CreateAgentStepItem focusQuery=".gatekeeper-toggle input">
-						<div class="step-container__header">Gatekeeper</div>
+                    <div class="row">
+                        <div class="row-header">How should user-agent interactions be gated?</div>
+                        <!-- Gatekeeper -->
+                        <CreateAgentStepItem focusQuery=".gatekeeper-toggle input">
+                            <div class="step-container__header">Gatekeeper</div>
 
-						<div>
-							<span class="step-option__header">Enabled:</span>
-							<span>
-								<span>{{ gatekeeperEnabled ? 'Yes' : 'No' }}</span>
-								<span
-									v-if="gatekeeperEnabled"
-									class="pi pi-check-circle ml-1"
-									style="color: var(--green-400); font-size: 0.8rem"
-								></span>
-								<span
-									v-else
-									class="pi pi-times-circle ml-1"
-									style="color: var(--red-400); font-size: 0.8rem"
-								></span>
-							</span>
-						</div>
+                            <div>
+                                <span class="step-option__header">Enabled:</span>
+                                <span>
+                                    <span>{{ gatekeeperEnabled ? 'Yes' : 'No' }}</span>
+                                    <span
+                                        v-if="gatekeeperEnabled"
+                                        class="pi pi-check-circle ml-1"
+                                        style="color: var(--green-400); font-size: 0.8rem"
+                                    ></span>
+                                    <span
+                                        v-else
+                                        class="pi pi-times-circle ml-1"
+                                        style="color: var(--red-400); font-size: 0.8rem"
+                                    ></span>
+                                </span>
+                            </div>
 
-						<div>
-							<span class="step-option__header">Content Safety:</span>
-							<span>{{
-								Array.isArray(selectedGatekeeperContentSafety)
-									? selectedGatekeeperContentSafety.map((item) => item.name).join(', ')
-									: ''
-							}}</span>
-						</div>
+                            <div>
+                                <span class="step-option__header">Content Safety:</span>
+                                <span>{{
+                                    Array.isArray(selectedGatekeeperContentSafety)
+                                        ? selectedGatekeeperContentSafety.map((item) => item.name).join(', ')
+                                        : ''
+                                }}</span>
+                            </div>
 
-						<div>
-							<span class="step-option__header">Data Protection:</span>
-							<span>{{
-								Array.isArray(selectedGatekeeperDataProtection)
-									? selectedGatekeeperDataProtection.map((item) => item.name).join(', ')
-									: ''
-							}}</span>
-						</div>
+                            <div>
+                                <span class="step-option__header">Data Protection:</span>
+                                <span>{{
+                                    Array.isArray(selectedGatekeeperDataProtection)
+                                        ? selectedGatekeeperDataProtection.map((item) => item.name).join(', ')
+                                        : ''
+                                }}</span>
+                            </div>
 
-						<template #edit>
-							<div id="aria-gatekeeper" class="step-container__header">Gatekeeper</div>
+                            <template #edit>
+                                <div id="aria-gatekeeper" class="step-container__header">Gatekeeper</div>
 
-							<!-- Gatekeeper toggle -->
-							<div class="d-flex align-center mt-2">
-								<span id="aria-gatekeeper-enabled" class="step-option__header">Enabled:</span>
-								<span>
-									<ToggleButton
-										v-model="gatekeeperEnabled"
-										on-label="Yes"
-										on-icon="pi pi-check-circle"
-										off-label="No"
-										off-icon="pi pi-times-circle"
-										aria-labelledby="aria-gatekeeper aria-gatekeeper-enabled"
-										class="gatekeeper-toggle"
-									/>
-								</span>
-							</div>
+                                <!-- Gatekeeper toggle -->
+                                <div class="d-flex align-center mt-2">
+                                    <span id="aria-gatekeeper-enabled" class="step-option__header">Enabled:</span>
+                                    <span>
+                                        <ToggleButton
+                                            v-model="gatekeeperEnabled"
+                                            on-label="Yes"
+                                            on-icon="pi pi-check-circle"
+                                            off-label="No"
+                                            off-icon="pi pi-times-circle"
+                                            aria-labelledby="aria-gatekeeper aria-gatekeeper-enabled"
+                                            class="gatekeeper-toggle"
+                                        />
+                                    </span>
+                                </div>
 
-							<!-- Content safety -->
-							<div class="mt-2">
-								<span id="aria-content-safety" class="step-option__header">Content Safety:</span>
-								<MultiSelect
-									v-model="selectedGatekeeperContentSafety"
-									class="dropdown--agent"
-									:options="gatekeeperContentSafetyOptions"
-									option-label="name"
-									display="chip"
-									placeholder="--Select--"
-									aria-labelledby="aria-content-safety"
-								/>
-							</div>
+                                <!-- Content safety -->
+                                <div class="mt-2">
+                                    <span id="aria-content-safety" class="step-option__header">Content Safety:</span>
+                                    <MultiSelect
+                                        v-model="selectedGatekeeperContentSafety"
+                                        class="dropdown--agent"
+                                        :options="gatekeeperContentSafetyOptions"
+                                        option-label="name"
+                                        display="chip"
+                                        placeholder="--Select--"
+                                        aria-labelledby="aria-content-safety"
+                                    />
+                                </div>
 
-							<!-- Data protection -->
-							<div class="mt-2">
-								<span id="aria-data-prot" class="step-option__header">Data Protection:</span>
-								<!-- <span>Microsoft Presidio</span> -->
-								<MultiSelect
-									v-model="selectedGatekeeperDataProtection"
-									class="dropdown--agent"
-									:options="gatekeeperDataProtectionOptions"
-									option-label="name"
-									display="chip"
-									placeholder="--Select--"
-									aria-labelledby="aria-data-prot"
-								/>
-							</div>
-						</template>
-					</CreateAgentStepItem>
-				</div>
+                                <!-- Data protection -->
+                                <div class="mt-2">
+                                    <span id="aria-data-prot" class="step-option__header">Data Protection:</span>
+                                    <!-- <span>Microsoft Presidio</span> -->
+                                    <MultiSelect
+                                        v-model="selectedGatekeeperDataProtection"
+                                        class="dropdown--agent"
+                                        :options="gatekeeperDataProtectionOptions"
+                                        option-label="name"
+                                        display="chip"
+                                        placeholder="--Select--"
+                                        aria-labelledby="aria-data-prot"
+                                    />
+                                </div>
+                            </template>
+                        </CreateAgentStepItem>
+                    </div>
+                </div>
 
 				<div class="row">
 					<!-- Orchestrator -->
-					<div id="aria-orchestrator" class="step-header span-2">
+					<div id="aria-orchestrator" class="row-header span-2">
 						How should the agent communicate with the AI model?
 					</div>
 					<Dropdown
@@ -613,192 +619,211 @@
 					/>
 				</div>
 
-				<div class="row">
-                	<div class="step-header">Which AI model should the orchestrator use?</div>
-					<!-- AI model -->
-					<CreateAgentStepItem v-model="editAIModel" focusQuery=".step-container__edit__option">
-						<template v-if="selectedAIModel">
-							<div v-if="selectedAIModel.object_id !== ''">
-								<div class="step-container__header">{{ selectedAIModel.name }}</div>
-								<div>
-									<span class="step-option__header">Deployment name:</span>
-									<span>{{ selectedAIModel.deployment_name }}</span>
-								</div>
-							</div>
-						</template>
-						<template v-else>Please select an AI model.</template>
+                <div class="flex-row">
+                    <div class="row">
+                        <div class="row-header">Which AI model should the orchestrator use?</div>
+                        <!-- AI model -->
+                        <CreateAgentStepItem v-model="editAIModel" focusQuery=".step-container__edit__option">
+                            <template v-if="selectedAIModel">
+                                <div v-if="selectedAIModel.object_id !== ''">
+                                    <div class="step-container__header">{{ selectedAIModel.name }}</div>
+                                    <div>
+                                        <span class="step-option__header">Deployment name:</span>
+                                        <span>{{ selectedAIModel.deployment_name }}</span>
+                                    </div>
+                                </div>
+                            </template>
+                            <template v-else>Please select an AI model.</template>
 
-						<template #edit>
-							<div class="step-container__edit__header">Please select an AI model.</div>
-							<div
-								v-for="aiModel in aiModelOptions"
-								:key="aiModel.name"
-								class="step-container__edit__option"
-								:class="{
-									'step-container__edit__option--selected': aiModel.name === selectedAIModel?.name,
-								}"
-								tabindex="0"
-								@click.stop="handleAIModelSelected(aiModel)"
-								@keydown.enter="handleAIModelSelected(aiModel)"
-							>
-								<div v-if="aiModel.object_id !== ''">
-									<div class="step-container__header">{{ aiModel.name }}</div>
-									<div v-if="aiModel.deployment_name">
-										<span class="step-option__header">Deployment name:</span>
-										<span>{{ aiModel.deployment_name }}</span>
-									</div>
-								</div>
-							</div>
-						</template>
-					</CreateAgentStepItem>
-				</div>
+                            <template #edit>
+                                <div class="step-container__edit__header">Please select an AI model.</div>
+                                <div
+                                    v-for="aiModel in aiModelOptions"
+                                    :key="aiModel.name"
+                                    class="step-container__edit__option"
+                                    :class="{
+                                        'step-container__edit__option--selected': aiModel.name === selectedAIModel?.name,
+                                    }"
+                                    tabindex="0"
+                                    @click.stop="handleAIModelSelected(aiModel)"
+                                    @keydown.enter="handleAIModelSelected(aiModel)"
+                                >
+                                    <div v-if="aiModel.object_id !== ''">
+                                        <div class="step-container__header">{{ aiModel.name }}</div>
+                                        <div v-if="aiModel.deployment_name">
+                                            <span class="step-option__header">Deployment name:</span>
+                                            <span>{{ aiModel.deployment_name }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </CreateAgentStepItem>
+                    </div>
 
-				<div class="row">
-                	<div class="step-header">Which capabilities should the agent have?</div>
-					<!-- Agent capabilities -->
-					<CreateAgentStepItem focusQuery=".agent-capabilities-dropdown input">
-						<div>
-							<span class="step-option__header">Agent Capabilities:</span>
-							<span>{{
-								Array.isArray(selectedAgentCapabilities)
-									? selectedAgentCapabilities.map((item) => item.name).join(', ')
-									: ''
-							}}</span>
-						</div>
+                    <div class="row">
+                        <div class="row-header">Which capabilities should the agent have?</div>
+                        <!-- Agent capabilities -->
+                        <CreateAgentStepItem focusQuery=".agent-capabilities-dropdown input">
+                            <div>
+                                <span class="step-option__header">Agent Capabilities:</span>
+                                <span>{{
+                                    Array.isArray(selectedAgentCapabilities)
+                                        ? selectedAgentCapabilities.map((item) => item.name).join(', ')
+                                        : ''
+                                }}</span>
+                            </div>
 
-						<template #edit>
-							<div class="mt-2">
-								<span class="step-option__header">Agent Capabilities:</span>
-								<MultiSelect
-									v-model="selectedAgentCapabilities"
-									class="dropdown--agent agent-capabilities-dropdown"
-									:options="agentCapabilitiesOptions"
-									option-label="name"
-									display="chip"
-									placeholder="--Select--"
-									aria-labelledby="aria-content-safety"
-								/>
-							</div>
-						</template>
-					</CreateAgentStepItem>
-				</div>
+                            <template #edit>
+                                <div class="mt-2">
+                                    <span class="step-option__header">Agent Capabilities:</span>
+                                    <MultiSelect
+                                        v-model="selectedAgentCapabilities"
+                                        class="dropdown--agent agent-capabilities-dropdown"
+                                        :options="agentCapabilitiesOptions"
+                                        option-label="name"
+                                        display="chip"
+                                        placeholder="--Select--"
+                                        aria-labelledby="aria-content-safety"
+                                    />
+                                </div>
+                            </template>
+                        </CreateAgentStepItem>
+                    </div>
+                </div>
 
                 <!-- Cost center -->
-                <div id="aria-cost-center" class="step-header span-2">
-                    Would you like to assign this agent to a cost center?
-                </div>
-                <div class="span-2">
-                    <InputText
-                        v-model="cost_center"
-                        type="text"
-                        class="w-50"
-                        placeholder="Enter cost center name"
-                        aria-labelledby="aria-cost-center"
-                    />
+                <div class="row">
+                    <div id="aria-cost-center" class="row-header span-2">
+                        Would you like to assign this agent to a cost center?
+                    </div>
+                    <div class="span-2">
+                        <InputText
+                            v-model="cost_center"
+                            type="text"
+                            class="w-50"
+                            placeholder="Enter cost center name"
+                            aria-labelledby="aria-cost-center"
+                        />
+                    </div>
                 </div>
 
                 <!-- Expiration -->
-                <div class="step-header span-2">Would you like to set an expiration on this agent?</div>
-                <div class="span-2">
-                    <Calendar
-                        v-model="expirationDate"
-                        show-icon
-                        show-button-bar
-                        placeholder="Enter expiration date"
-                        type="text"
-                    />
+                <div class="row">
+                    <div class="row-header span-2">Would you like to set an expiration on this agent?</div>
+                    <div class="span-2">
+                        <Calendar
+                            v-model="expirationDate"
+                            show-icon
+                            show-button-bar
+                            placeholder="Enter expiration date"
+                            type="text"
+                        />
+                    </div>
                 </div>
 
-				<div id="aria-show-message-tokens" class="step-header">Would you like to show the message tokens?</div>
-				<div id="aria-show-message-rating" class="step-header">Would you like to allow the user to rate the agent responses?</div>
-
 				<!-- Message tokens -->
-				<div>
-					<ToggleButton
-						v-model="showMessageTokens"
-						on-label="Yes"
-						on-icon="pi pi-check-circle"
-						off-label="No"
-						off-icon="pi pi-times-circle"
-						aria-labelledby="aria-show-message-tokens"
-					/>
-				</div>
+                <div class="row">
+                    <div id="aria-show-message-tokens" class="row-header">Would you like to show the message tokens?</div>
+                    <div>
+                        <ToggleButton
+                            v-model="showMessageTokens"
+                            on-label="Yes"
+                            on-icon="pi pi-check-circle"
+                            off-label="No"
+                            off-icon="pi pi-times-circle"
+                            aria-labelledby="aria-show-message-tokens"
+                        />
+                    </div>
+                </div>
 
 				<!-- Rate messages -->
-				<div>
-					<ToggleButton
-						v-model="showMessageRating"
-						on-label="Yes"
-						on-icon="pi pi-check-circle"
-						off-label="No"
-						off-icon="pi pi-times-circle"
-						aria-labelledby="aria-show-message-rating"
-					/>
-				</div>
+                <div class="row">
+                    <div id="aria-show-message-rating" class="row-header">Would you like to allow the user to rate the agent responses?</div>
+                    <div>
+                        <ToggleButton
+                            v-model="showMessageRating"
+                            on-label="Yes"
+                            on-icon="pi pi-check-circle"
+                            off-label="No"
+                            off-icon="pi pi-times-circle"
+                            aria-labelledby="aria-show-message-rating"
+                        />
+                    </div>
+                </div>
 
 				<!-- Show view prompt -->
-				<div id="aria-show-view-prompt" class="step-header span-2">Would you like to allow the user to see the message prompts?</div>
-				<div class="span-2">
-					<ToggleButton
-						v-model="showViewPrompt"
-						on-label="Yes"
-						on-icon="pi pi-check-circle"
-						off-label="No"
-						off-icon="pi pi-times-circle"
-						aria-labelledby="aria-show-view-prompt"
-					/>
-				</div>
+                <div class="row">
+                    <div id="aria-show-view-prompt" class="row-header span-2">Would you like to allow the user to see the message prompts?</div>
+                    <div class="span-2">
+                        <ToggleButton
+                            v-model="showViewPrompt"
+                            on-label="Yes"
+                            on-icon="pi pi-check-circle"
+                            off-label="No"
+                            off-icon="pi pi-times-circle"
+                            aria-labelledby="aria-show-view-prompt"
+                        />
+                    </div>
+                </div>
             </section>
 
             <!-- System prompt -->
-            <section aria-labelledby="system-prompt" class="span-2 steps">
-                <h3 class="step-section-header span-2" id="system-prompt">System Prompt</h3>
+            <section aria-labelledby="system-prompt" class="row section-body">
+                <div class="row">
+                    <h3 class="step-section-header span-2" id="system-prompt">System Prompt</h3>
+                </div>
 
-                <div id="aria-persona" class="step-header">What is the persona of the agent?</div>
+                <div class="row">
+                    <div id="aria-persona" class="row-header">What is the persona of the agent?</div>
 
-                <div class="span-2">
-                    <Textarea
-                        v-model="systemPrompt"
-                        class="w-100"
-                        auto-resize
-                        rows="5"
-                        type="text"
-                        placeholder="You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional."
-                        aria-labelledby="aria-persona"
-                    />
+                    <div class="span-2">
+                        <Textarea
+                            v-model="systemPrompt"
+                            class="w-100"
+                            auto-resize
+                            rows="5"
+                            type="text"
+                            placeholder="You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional."
+                            aria-labelledby="aria-persona"
+                        />
+                    </div>
                 </div>
             </section>
             
             <!-- Security -->
-            <div v-if="virtualSecurityGroupId" class="step-section-header span-2">Security</div>
-
-            <!-- Virtual security group id -->
-            <template v-if="virtualSecurityGroupId">
-                <div class="step-header">Virtual security group ID</div>
-                <div class="span-2" style="display: flex; gap: 16px">
-                    <InputText
-                        :value="virtualSecurityGroupId"
-                        disabled
-                        type="text"
-                        class="w-50"
-                        placeholder="Enter cost center name"
-                        aria-labelledby="aria-cost-center"
-                    />
-                    <Button
-                        label="Copy"
-                        severity="primary"
-                        @click="handleCopySecurityGroupId"
-                    />
+            <section v-if="virtualSecurityGroupId" aria-labelledby="security" class="row section-body">
+                <div class="row">
+                    <h3 class="step-section-header span-2" id="security">Security</h3>
                 </div>
-            </template>
 
-            <!-- Access tokens -->
-            <template v-if="virtualSecurityGroupId">
-                <div class="step-header">Agent access tokens</div>
-                <div class="span-2">
-                    <AgentAccessTokens :agent-name="this.agentName" />
+                <!-- Virtual security group id -->
+                <div class="row">
+                    <div class="row-header">Virtual security group ID</div>
+                    <div class="span-2" style="display: flex; gap: 16px">
+                        <InputText
+                            :value="virtualSecurityGroupId"
+                            disabled
+                            type="text"
+                            class="w-50"
+                            placeholder="Enter cost center name"
+                            aria-labelledby="aria-cost-center"
+                        />
+                        <Button
+                            label="Copy"
+                            severity="primary"
+                            @click="handleCopySecurityGroupId"
+                        />
+                    </div>
                 </div>
-            </template>
+
+                <!-- Access tokens -->
+                <div class="row">
+                    <div class="row-header">Agent access tokens</div>
+                    <div class="span-2">
+                        <AgentAccessTokens :agent-name="this.agentName" />
+                    </div>
+                </div>
+            </section>
             
             
             <div class="span-2 d-flex justify-content-end" style="gap: 16px">
@@ -1515,7 +1540,7 @@ export default {
     padding: 16px;
 }
 
-.step-header {
+.row-header {
     font-weight: bold;
     margin-bottom: 0.5rem;
 }
@@ -1533,6 +1558,28 @@ export default {
 .section-body {
     display: flex;
     flex-direction: column;
+}
+
+.flex-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+// .flex-row > .row {
+//     flex: 1 1 100%;
+// }
+.flex-row > .row {
+    flex: 1 1 calc(50% - 1rem) !important;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 768px) {
+    .flex-row > .row {
+        flex: 1 1 50% !important;
+    }
 }
 
 .row {

@@ -174,7 +174,7 @@
 					@input="updateBrandingValue(key, $event.target.value)"
 				/>
 			</div>
-			<div class="button-container column-2 justify-self-end">
+			<div class="button-container span-2 justify-self-end">
 				<Button
 					:disabled="JSON.stringify(branding) === JSON.stringify(brandingOriginal)"
 					label="Reset"

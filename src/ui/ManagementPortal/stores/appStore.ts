@@ -8,5 +8,10 @@ export const useAppStore = defineStore('app', {
 
 	getters: {},
 
-	actions: {},
+	actions: {
+		initializeSidebarState() {
+			// Set sidebarCollapsed based on the screen width
+			this.sidebarCollapsed = window.innerWidth < 950;
+		},
+	},
 });
