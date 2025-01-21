@@ -787,6 +787,24 @@
 					/>
 				</div>
 
+				<!-- Workflow host -->
+				<div class="mb-6">
+					<div id="aria-workflow-model" class="step-header mb-3">
+						Workflow host:
+					</div>
+					<div class="span-2">
+						<Dropdown
+							v-model="orchestration_settings.orchestrator"
+							:options="orchestratorOptions"
+							option-label="label"
+							option-value="value"
+							class="dropdown--agent"
+							placeholder="--Select--"
+							aria-labelledby="aria-workflow-model"
+						/>
+					</div>
+				</div>
+
 				<!-- Workflow main model -->
 				<div class="mb-6">
 					<div class="step-header mb-3">Workflow main model:</div>
@@ -806,29 +824,12 @@
 					/>
 				</div>
 
-				<!-- Orchestrator -->
-				<div class="mb-6">
-					<div id="aria-workflow-model" class="step-header mb-3">
-						How should the agent communicate with the model?
-					</div>
-					<div class="span-2">
-						<Dropdown
-							v-model="orchestration_settings.orchestrator"
-							:options="orchestratorOptions"
-							option-label="label"
-							option-value="value"
-							class="dropdown--agent"
-							placeholder="--Select--"
-							aria-labelledby="aria-workflow-model"
-						/>
-					</div>
-				</div>
-
 				<!-- Workflow main model parameters -->
 				<div class="step-header mb-3">Workflow main model parameters:</div>
 				<PropertyBuilder v-model="workflowMainAIModelParameters" class="mb-6" />
 
-				<div id="aria-persona" class="step-header mb-3">What is the main model prompt?</div>
+				<!-- Workflow main prompt -->
+				<div id="aria-persona" class="step-header mb-3">What is the main workflow prompt?</div>
 				<div class="span-2">
 					<Textarea
 						v-model="systemPrompt"
