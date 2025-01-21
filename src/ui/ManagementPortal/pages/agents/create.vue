@@ -600,11 +600,11 @@
 					</template>
 				</CreateAgentStepItem>
 
-				<div class="step-header">Which AI model should the orchestrator use?</div>
-				<div class="step-header">Which capabilities should the agent have?</div>
+				<!-- <div class="step-header">Which AI model should the orchestrator use?</div>
+				<div class="step-header">Which capabilities should the agent have?</div> -->
 
 				<!-- AI model -->
-				<CreateAgentStepItem v-model="editAIModel" focusQuery=".step-container__edit__option">
+				<!-- <CreateAgentStepItem v-model="editAIModel" focusQuery=".step-container__edit__option">
 					<template v-if="selectedAIModel">
 						<div v-if="selectedAIModel.object_id !== ''">
 							<div class="step-container__header">{{ selectedAIModel.name }}</div>
@@ -638,10 +638,10 @@
 							</div>
 						</div>
 					</template>
-				</CreateAgentStepItem>
+				</CreateAgentStepItem> -->
 
 				<!-- Agent capabilities -->
-				<CreateAgentStepItem focusQuery=".agent-capabilities-dropdown input">
+				<!-- <CreateAgentStepItem focusQuery=".agent-capabilities-dropdown input">
 					<div>
 						<span class="step-option__header">Agent Capabilities:</span>
 						<span>{{
@@ -665,7 +665,7 @@
 							/>
 						</div>
 					</template>
-				</CreateAgentStepItem>
+				</CreateAgentStepItem> -->
 
 				<!-- Cost center -->
 				<div id="aria-cost-center" class="step-header span-2">
@@ -1040,7 +1040,7 @@ const getDefaultFormValues = () => {
 		editTextEmbeddingProfile: false as boolean,
 		selectedTextEmbeddingProfile: null as null | TextEmbeddingProfile,
 
-		editAIModel: false as boolean,
+		// editAIModel: false as boolean,
 		selectedAIModel: null as null | AIModel,
 
 		chunkSize: 500,
@@ -1061,7 +1061,7 @@ const getDefaultFormValues = () => {
 		gatekeeperContentSafety: { label: 'None', value: null },
 		gatekeeperDataProtection: { label: 'None', value: null },
 
-		selectedAgentCapabilities: ref(),
+		// selectedAgentCapabilities: ref(),
 		agentCapabilities: { label: 'None', value: null },
 
 		systemPrompt: defaultSystemPrompt as string,
@@ -1182,16 +1182,16 @@ export default {
 				},
 			]),
 
-			agentCapabilitiesOptions: ref([
-				{
-					name: 'OpenAI Assistants',
-					code: 'OpenAI.Assistants',
-				},
-				{
-					name: 'FLLM Knowledge Management',
-					code: 'FoundationaLLM.KnowledgeManagement',
-				},
-			]),
+			// agentCapabilitiesOptions: ref([
+			// 	{
+			// 		name: 'OpenAI Assistants',
+			// 		code: 'OpenAI.Assistants',
+			// 	},
+			// 	{
+			// 		name: 'FLLM Knowledge Management',
+			// 		code: 'FoundationaLLM.KnowledgeManagement',
+			// 	},
+			// ]),
 		};
 	},
 
@@ -1409,9 +1409,9 @@ export default {
 					(dataSource) => dataSource.object_id === agent.vectorization?.data_source_object_id,
 				) || null;
 
-			this.selectedAIModel =
-				this.aiModelOptions.find((aiModel) => aiModel.object_id === agent.ai_model_object_id) ||
-				null;
+			// this.selectedAIModel =
+			// 	this.aiModelOptions.find((aiModel) => aiModel.object_id === agent.ai_model_object_id) ||
+			// 	null;
 
 			this.conversationHistory =
 				agent.conversation_history_settings?.enabled || this.conversationHistory;
@@ -1432,12 +1432,12 @@ export default {
 					) || this.selectedGatekeeperDataProtection;
 			}
 
-			if (agent.capabilities) {
-				this.selectedAgentCapabilities =
-					this.agentCapabilitiesOptions.filter((localOption) =>
-						agent.capabilities?.includes(localOption.code),
-					) || this.selectedAgentCapabilities;
-			}
+			// if (agent.capabilities) {
+			// 	this.selectedAgentCapabilities =
+			// 		this.agentCapabilitiesOptions.filter((localOption) =>
+			// 			agent.capabilities?.includes(localOption.code),
+			// 		) || this.selectedAgentCapabilities;
+			// }
 
 			this.agentTools = agent.tools;
 
@@ -1526,10 +1526,10 @@ export default {
 			this.editTextEmbeddingProfile = false;
 		},
 
-		handleAIModelSelected(aiModel: AIModel) {
-			this.selectedAIModel = aiModel;
-			this.editAIModel = false;
-		},
+		// handleAIModelSelected(aiModel: AIModel) {
+		// 	this.selectedAIModel = aiModel;
+		// 	this.editAIModel = false;
+		// },
 
 		handleCopySecurityGroupId() {
 			if (this.virtualSecurityGroupId) {
@@ -1577,9 +1577,9 @@ export default {
 				errors.push('Please select an orchestrator.');
 			}
 
-			if (!this.selectedAIModel) {
-				errors.push('Please select an AI model for the orchestrator.');
-			}
+			// if (!this.selectedAIModel) {
+			// 	errors.push('Please select an AI model for the orchestrator.');
+			// }
 
 			if (!this.selectedWorkflow) {
 				errors.push('Please select a workflow.');
@@ -1771,13 +1771,13 @@ export default {
 						].filter((option) => option !== null),
 					},
 
-					capabilities: (this.selectedAgentCapabilities || []).map((option: any) => option.code),
+					// capabilities: (this.selectedAgentCapabilities || []).map((option: any) => option.code),
 
 					sessions_enabled: true,
 
 					prompt_object_id: promptObjectId,
 					orchestration_settings: this.orchestration_settings,
-					ai_model_object_id: this.selectedAIModel.object_id,
+					// ai_model_object_id: this.selectedAIModel.object_id,
 
 					tools: this.agentTools,
 
