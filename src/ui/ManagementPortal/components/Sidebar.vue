@@ -1,5 +1,5 @@
 <template>
-	<div class="sidebar" role="navigation">
+	<div :class="$appStore.sidebarCollapsed ? 'sidebar sidebar-collapsed' : 'sidebar'" role="navigation">
 		<h2 id="sidebar-title" class="visually-hidden">Main Navigation</h2>
 		<!-- Sidebar section header -->
 		<div class="sidebar__header">
@@ -15,54 +15,55 @@
 			<template v-else>
 				<NuxtLink to="/">{{ $appConfigStore.logoText }}</NuxtLink>
 			</template>
+			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+				<Button
+					:icon="$appStore.sidebarCollapsed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
+					:aria-label="$appStore.sidebarCollapsed ? 'Open Sidebar' : 'Close Sidebar'"
+					@click="$appStore.sidebarCollapsed = !$appStore.sidebarCollapsed"
+				/>
+				<template #popper>
+					<div role="tooltip">
+						{{ $appStore.sidebarCollapsed ? 'Open Sidebar' : 'Close Sidebar' }}
+					</div>
+				</template>
+			</VTooltip>
 		</div>
 
-		<!-- Agents -->
-		<h3 class="sidebar__section-header">
-			<span class="pi pi-users" aria-hidden="true"></span>
-			<span>Agents</span>
-		</h3>
-		<ul>
-			<li><NuxtLink to="/agents/create" class="sidebar__item">Create New Agent</NuxtLink></li>
-			<li><NuxtLink to="/agents/public" class="sidebar__item">All Agents</NuxtLink></li>
-			<li><NuxtLink to="/agents/private" class="sidebar__item">My Agents</NuxtLink></li>
-			<li><NuxtLink to="/prompts" class="sidebar__item">Agent Prompts</NuxtLink></li>
-		</ul>
-		<!-- <div class="sidebar__item">Performance</div> -->
+		<div class="sidebar__content" v-if="!$appStore.sidebarCollapsed">
+			<div class="sidebar__navigation">
+				<!-- Agents -->
+				<h3 class="sidebar__section-header">
+					<span class="pi pi-users" aria-hidden="true"></span>
+					<span>Agents</span>
+				</h3>
+				<ul>
+					<li><NuxtLink to="/agents/create" class="sidebar__item">Create New Agent</NuxtLink></li>
+					<li><NuxtLink to="/agents/public" class="sidebar__item">All Agents</NuxtLink></li>
+					<li><NuxtLink to="/agents/private" class="sidebar__item">My Agents</NuxtLink></li>
+					<li><NuxtLink to="/prompts" class="sidebar__item">Agent Prompts</NuxtLink></li>
+				</ul>
+				<!-- <div class="sidebar__item">Performance</div> -->
 
-		<!-- Data Catalog -->
-		<h3 class="sidebar__section-header">
-			<span class="pi pi-database" aria-hidden="true"></span>
-			<span>Data Catalog</span>
-		</h3>
-		<ul>
-			<li><NuxtLink to="/data-sources" class="sidebar__item">Data Sources</NuxtLink></li>
-			<li><NuxtLink to="/vector-stores" class="sidebar__item">Vector Stores</NuxtLink></li>
-		</ul>
+				<!-- Data Catalog -->
+				<h3 class="sidebar__section-header">
+					<span class="pi pi-database" aria-hidden="true"></span>
+					<span>Data Catalog</span>
+				</h3>
+				<ul>
+					<li><NuxtLink to="/data-sources" class="sidebar__item">Data Sources</NuxtLink></li>
+					<li><NuxtLink to="/vector-stores" class="sidebar__item">Vector Stores</NuxtLink></li>
+				</ul>
 
-		<!-- Pipeline -->
-		<!-- <h3 class="sidebar__section-header">
-			<span class="pi pi-equals" aria-hidden="true"></span>
-			<span>Data Pipeline</span>
-		</h3>
-		<ul>
-			<li><NuxtLink to="/pipeline/indexing-profiles" class="sidebar__item">Indexing Profiles</NuxtLink></li>
-		</ul> -->
+				<!-- Pipeline -->
+				<!-- <h3 class="sidebar__section-header">
+					<span class="pi pi-equals" aria-hidden="true"></span>
+					<span>Data Pipeline</span>
+				</h3>
+				<ul>
+					<li><NuxtLink to="/pipeline/indexing-profiles" class="sidebar__item">Indexing Profiles</NuxtLink></li>
+				</ul> -->
 
-		<!-- Quotas -->
-		<!-- <div class="sidebar__section-header">
-			<span class="pi pi-calculator"></span>
-			<span>Quotas</span>
-		</div>
-
-		<div class="sidebar__item">Policies</div> -->
-
-		<!-- LLM's -->
-		<!-- <div class="sidebar__section-header">
-			<span class="pi pi-sitemap"></span>
-			<span>LLM's</span>
-		</div>
-
+<<<<<<< ours
 		<div class="sidebar__item">Language Models & Endpoints</div> -->
 
 		<!-- Security -->
@@ -116,7 +117,77 @@
 					size="small"
 					@click="$authStore.logout()"
 					aria-label="Sign out of the application"
+=======
+				<!-- Quotas -->
+				<!-- <div class="sidebar__section-header">
+					<span class="pi pi-calculator"></span>
+					<span>Quotas</span>
+				</div>
+
+				<div class="sidebar__item">Policies</div> -->
+
+				<!-- LLM's -->
+				<!-- <div class="sidebar__section-header">
+					<span class="pi pi-sitemap"></span>
+					<span>LLM's</span>
+				</div>
+
+				<div class="sidebar__item">Language Models & Endpoints</div> -->
+
+				<!-- Security -->
+				<h3 class="sidebar__section-header">
+					<span class="pi pi-shield" aria-hidden="true"></span>
+					<span>Security</span>
+				</h3>
+				<ul>
+					<li>
+						<NuxtLink to="/security/role-assignments" class="sidebar__item">
+							Instance Access Control
+						</NuxtLink>
+					</li>
+				</ul>
+
+				<!-- FLLM Deployment -->
+				<h3 class="sidebar__section-header">
+					<span class="pi pi-cloud" aria-hidden="true"></span>
+					<span>FLLM Platform</span>
+				</h3>
+				<ul>
+					<li><NuxtLink to="/branding" class="sidebar__item">Branding</NuxtLink></li>
+					<li><NuxtLink to="/info" class="sidebar__item">Deployment Information</NuxtLink></li>
+				</ul>
+			</div>
+
+			<!-- Logged in user -->
+			<div v-if="$authStore.currentAccount?.name" class="sidebar__account">
+				<UserAvatar
+					class="sidebar__avatar"
+					size="large"
+					:aria-label="`User Avatar for ${$authStore.currentAccount?.name}`"
+>>>>>>> theirs
 				/>
+
+				<div>
+					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+						<span
+							class="sidebar__username"
+							aria-label="Logged in as {{ $authStore.currentAccount?.username }}">
+							{{ $authStore.currentAccount?.name }}
+						</span>
+						<template #popper>
+							<div role="tooltip">Logged in as {{ $authStore.currentAccount?.username }}</div>
+						</template>
+					</VTooltip>
+					<Button
+						class="sidebar__sign-out-button"
+						icon="pi pi-sign-out"
+						label="Sign Out"
+						severity="secondary"
+						size="small"
+						@click="$authStore.logout()"
+						aria-label="Sign out of the application"
+					/>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -131,6 +202,10 @@ export default {
 			isMobile: window.screen.width < 950,
 		};
 	},
+
+	created() {
+		this.$appStore.initializeSidebarState();
+	}
 };
 </script>
 
@@ -141,14 +216,23 @@ a {
 
 .sidebar {
 	width: 300px;
-	max-width: 100%;
+	max-width: 300px;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 	background-color: var(--primary-color);
 	z-index: 3;
-	flex-shrink: 0;
-	overflow-y: scroll;
+	flex-shrink: 1;
+	flex-grow: 1;
+	overflow-y: auto;
+}
+
+.sidebar-collapsed {
+	position: absolute;
+	background-color: transparent;
+	width: 100%;
+	max-width: 100%;
+	height: max-content;
 }
 
 .sidebar ul {
@@ -163,21 +247,37 @@ a {
 }
 
 .sidebar__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: var(--primary-color);
 	height: 70px;
-	width: 100%;
+	width: 300px;
 	padding-right: 24px;
 	padding-left: 24px;
 	padding-top: 12px;
-	/*display: flex;*/
-	align-items: center;
+	padding-bottom: 12px;
 	color: var(--primary-text);
 
 	img {
 		max-height: 100%;
-		width: auto;
+		width: 100%;
 		max-width: 180px;
 		margin-right: 12px;
 	}
+}
+
+.sidebar__content {
+	display: flex;
+    height: 100%;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+	overflow: hidden;
+}
+
+.sidebar__navigation {
+	overflow-y: auto;
 }
 
 .sidebar__section-header {
@@ -254,5 +354,11 @@ a {
 	margin: -1px;
 	padding: 0;
 	border: 0;
+}
+
+@media only screen and (max-width: 960px) {
+	.sidebar {
+		position: absolute;
+	}
 }
 </style>
