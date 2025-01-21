@@ -6,6 +6,7 @@
     "description": null,
     "cost_center": null,
     "category": "General",
+    "subcategory": "Indexing",
     "authentication_type": "AzureIdentity",
     "authentication_parameters": {},
     "url": "{{cognitiveSearchEndpointUri}}",
