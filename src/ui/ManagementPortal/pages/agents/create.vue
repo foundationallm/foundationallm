@@ -327,7 +327,9 @@
 									<div class="step-container__header">{{ textEmbeddingProfile.name }}</div>
 									<div v-if="textEmbeddingProfile.resolved_configuration_references?.Endpoint">
 										<span class="step-option__header">URL:</span>
-										<span>{{ textEmbeddingProfile.resolved_configuration_references.Endpoint }}</span
+										<span>{{
+											textEmbeddingProfile.resolved_configuration_references.Endpoint
+										}}</span
 										><br />
 										<span class="step-option__header">Deployment:</span>
 										<span>{{
@@ -485,7 +487,9 @@
 						</div>
 
 						<div class="d-flex align-center mt-2">
-							<span id="aria-conversation-history-enabled" class="step-option__header">Enabled:</span>
+							<span id="aria-conversation-history-enabled" class="step-option__header"
+								>Enabled:</span
+							>
 							<span>
 								<ToggleButton
 									v-model="conversationHistory"
@@ -693,8 +697,12 @@
 					/>
 				</div>
 
-				<div id="aria-show-message-tokens" class="step-header">Would you like to show the message tokens?</div>
-				<div id="aria-show-message-rating" class="step-header">Would you like to allow the user to rate the agent responses?</div>
+				<div id="aria-show-message-tokens" class="step-header">
+					Would you like to show the message tokens?
+				</div>
+				<div id="aria-show-message-rating" class="step-header">
+					Would you like to allow the user to rate the agent responses?
+				</div>
 
 				<!-- Message tokens -->
 				<div>
@@ -719,9 +727,13 @@
 						aria-labelledby="aria-show-message-rating"
 					/>
 				</div>
-				
-				<div id="aria-show-view-prompt" class="step-header">Would you like to allow the user to see the message prompts?</div>
-				<div id="aria-show-file-upload" class="step-header">Would you like to allow the user to upload files?</div>
+
+				<div id="aria-show-view-prompt" class="step-header">
+					Would you like to allow the user to see the message prompts?
+				</div>
+				<div id="aria-show-file-upload" class="step-header">
+					Would you like to allow the user to upload files?
+				</div>
 				<!-- Show view prompt -->
 				<div>
 					<ToggleButton
@@ -733,9 +745,9 @@
 						aria-labelledby="aria-show-view-prompt"
 					/>
 				</div>
-				
+
 				<!-- Show file upload -->
-				
+
 				<div>
 					<ToggleButton
 						v-model="showFileUpload"
@@ -801,9 +813,7 @@
 
 				<!-- Workflow host -->
 				<div class="mb-6">
-					<div id="aria-workflow-host" class="step-header mb-3">
-						Workflow host:
-					</div>
+					<div id="aria-workflow-host" class="step-header mb-3">Workflow host:</div>
 					<div class="span-2">
 						<Dropdown
 							v-model="workflowHost"
@@ -1090,7 +1100,7 @@ const getDefaultFormValues = () => {
 		showMessageTokens: false as boolean,
 		showMessageRating: false as boolean,
 		showViewPrompt: false as boolean,
-		showFileUpload: false as boolean
+		showFileUpload: false as boolean,
 	};
 };
 
@@ -1525,7 +1535,9 @@ export default {
 		},
 
 		handleWorkflowSelection(event) {
-			this.selectedWorkflow = clone(this.workflowOptions.find((workflow) => workflow.type === event.value));
+			this.selectedWorkflow = clone(
+				this.workflowOptions.find((workflow) => workflow.type === event.value),
+			);
 		},
 
 		handleAgentTypeSelect(type: Agent['type']) {

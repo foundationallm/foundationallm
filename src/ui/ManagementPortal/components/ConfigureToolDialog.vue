@@ -6,7 +6,7 @@
 		:style="{ minWidth: '80%' }"
 		:closable="false"
 	>
-	<!-- 	<div id="aria-tool-type" class="mb-2 font-weight-bold">Tool type:</div>
+		<!-- 	<div id="aria-tool-type" class="mb-2 font-weight-bold">Tool type:</div>
 		<Dropdown
 			v-model="toolType"
 			:options="toolTypeOptions"
@@ -16,7 +16,7 @@
 			aria-labelledby="aria-tool-type"
 		/> -->
 
-<!-- 		<div id="aria-tool-name" class="mb-2 font-weight-bold">Tool:</div>
+		<!-- 		<div id="aria-tool-name" class="mb-2 font-weight-bold">Tool:</div>
 		<Dropdown
 			v-model="toolObject.name"
 			:options="toolOptions"
@@ -205,7 +205,7 @@ export default {
 
 		handleSave() {
 			const errors = [];
-			
+
 			if (!this.toolObject.name) {
 				errors.push('Please provide a tool name.');
 			}

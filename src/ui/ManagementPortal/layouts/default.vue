@@ -12,7 +12,11 @@
 		<div class="page">
 			<!-- Page to render -->
 			<div class="page-content">
-				<div class="sidebar-blur" @click="$appStore.sidebarCollapsed = true" v-show="!$appStore.sidebarCollapsed" />
+				<div
+					class="sidebar-blur"
+					@click="$appStore.sidebarCollapsed = true"
+					v-show="!$appStore.sidebarCollapsed"
+				/>
 				<slot />
 			</div>
 

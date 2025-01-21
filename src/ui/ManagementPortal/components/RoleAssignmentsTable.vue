@@ -197,10 +197,10 @@ export default {
 	},
 
 	computed: {
-        columnStyle() {
-            return window.innerWidth <= 768 ? {} : { minWidth: '200px' };
-        },
-    },
+		columnStyle() {
+			return window.innerWidth <= 768 ? {} : { minWidth: '200px' };
+		},
+	},
 
 	methods: {
 		async getRoleAssignments() {

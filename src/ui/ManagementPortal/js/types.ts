@@ -100,7 +100,7 @@ export type Agent = ResourceBase & {
 
 	capabilities: string[];
 	tools: AgentTool[];
-	workflow: AgentWorkflow,
+	workflow: AgentWorkflow;
 
 	sessions_enabled: boolean;
 	orchestration_settings: {

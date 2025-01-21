@@ -543,13 +543,13 @@ export default {
 	},
 
 	async setDefaultAgent(agentId: string): Promise<ResourceProviderActionResult> {
-		return await this.fetch(
+		return (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentId}/set-default?api-version=${this.apiVersion}`,
 			{
 				method: 'POST',
 				body: {},
-			}
-		) as ResourceProviderActionResult;
+			},
+		)) as ResourceProviderActionResult;
 	},
 
 	/*
@@ -955,8 +955,8 @@ export default {
 	},
 
 	async getOrchestrationServices(): Promise<APIEndpointConfiguration> {
-		return await this.fetch(
+		return (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations?api-version=${this.apiVersion}`,
-		) as APIEndpointConfiguration;
+		)) as APIEndpointConfiguration;
 	},
 };
