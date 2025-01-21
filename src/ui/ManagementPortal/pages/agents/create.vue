@@ -872,6 +872,19 @@
 						}"
 					/>
 
+					<!-- Tool package name -->
+					<Column
+						field="package_name"
+						header="Package Name"
+						sortable
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							sortIcon: { style: { color: 'var(--primary-text)' } },
+						}"
+					/>
+
 					<!-- Edit tool -->
 					<Column
 						header="Edit"
