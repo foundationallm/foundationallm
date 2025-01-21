@@ -111,7 +111,7 @@ export default {
 			default: () => ({
 				name: '' as string,
 				description: '' as string,
-				package_name: 'foundationallm' as string,
+				package_name: 'FoundationLLM' as string,
 				resource_object_ids: {},
 			}),
 		},
