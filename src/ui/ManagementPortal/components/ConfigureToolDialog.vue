@@ -204,6 +204,30 @@ export default {
 		},
 
 		handleSave() {
+			const errors = [];
+			
+			if (!this.toolObject.name) {
+				errors.push('Please select a tool.');
+			}
+
+			if (!this.toolObject.description) {
+				errors.push('Please provide a tool description.');
+			}
+
+			if (!this.toolObject.package_name) {
+				errors.push('Please provide a tool package name.');
+			}
+
+			if (errors.length > 0) {
+				this.$toast.add({
+					severity: 'error',
+					detail: errors.join('\n'),
+					life: 5000,
+				});
+
+				return;
+			}
+
 			this.$emit('update:modelValue', this.toolObject);
 		},
 
