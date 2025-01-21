@@ -806,7 +806,7 @@
 					</div>
 					<div class="span-2">
 						<Dropdown
-							v-model="orchestration_settings.orchestrator"
+							v-model="workflowHost"
 							:options="orchestratorOptions"
 							option-label="label"
 							option-value="value"
@@ -1078,9 +1078,9 @@ const getDefaultFormValues = () => {
 
 		systemPrompt: defaultSystemPrompt as string,
 
-		orchestration_settings: {
-			orchestrator: 'LangChain' as string,
-		},
+		// orchestration_settings: {
+		// 	orchestrator: 'LangChain' as string,
+		// },
 
 		selectedWorkflow: null,
 
@@ -1135,6 +1135,7 @@ export default {
 			workflowMainAIModelParameters: {} as object,
 			workflowName: '' as string,
 			workflowPackageName: 'FoundationaLLM' as string,
+			workflowHost: '' as string,
 
 			virtualSecurityGroupId: null as string | null,
 
@@ -1226,6 +1227,7 @@ export default {
 	watch: {
 		selectedWorkflow() {
 			this.workflowName = this.selectedWorkflow?.name ?? this.workflowName;
+			this.workflowHost = this.selectedWorkflow?.workflow_host ?? this.workflowHost;
 
 			if (this.selectedWorkflow?.resource_object_ids) {
 				const existingMainModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
@@ -1362,6 +1364,7 @@ export default {
 			if (agent.workflow) {
 				this.workflowName = agent.workflow.name ?? '';
 				this.workflowPackageName = agent.workflow.package_name ?? '';
+				this.workflowHost = agent.workflow.workflow_host ?? '';
 
 				const existingMainModel = Object.values(agent.workflow.resource_object_ids).find(
 					(resource) => resource.properties?.object_role === 'main_model',
@@ -1394,8 +1397,8 @@ export default {
 				? new Date(agent.expiration_date)
 				: this.expirationDate;
 
-			this.orchestration_settings.orchestrator =
-				agent.orchestration_settings?.orchestrator || this.orchestration_settings.orchestrator;
+			// this.orchestration_settings.orchestrator =
+			// 	agent.orchestration_settings?.orchestrator || this.orchestration_settings.orchestrator;
 
 			if (agent.vectorization) {
 				this.dedicated_pipeline = agent.vectorization.dedicated_pipeline;
@@ -1591,9 +1594,9 @@ export default {
 				this.text_embedding_profile_object_id = this.selectedTextEmbeddingProfile?.object_id ?? '';
 			}
 
-			if (!this.orchestration_settings.orchestrator) {
-				errors.push('Please select an orchestrator / workflow host.');
-			}
+			// if (!this.orchestration_settings.orchestrator) {
+			// 	errors.push('Please select an orchestrator / workflow host.');
+			// }
 
 			// if (!this.selectedAIModel) {
 			// 	errors.push('Please select an AI model for the orchestrator.');
@@ -1609,6 +1612,10 @@ export default {
 
 			if (!this.workflowPackageName) {
 				errors.push('Please provide a workflow package name.');
+			}
+
+			if (!this.workflowHost) {
+				errors.push('Please select a workflow host.');
 			}
 
 			if (!this.workflowMainAIModel) {
@@ -1718,7 +1725,7 @@ export default {
 				if (this.selectedWorkflow) {
 					workflow = {
 						...this.selectedWorkflow,
-						workflow_host: this.orchestration_settings.orchestrator,
+						workflow_host: this.workflowHost,
 						name: this.workflowName,
 						package_name: this.workflowPackageName,
 						assistant_id: '',
@@ -1803,7 +1810,7 @@ export default {
 					sessions_enabled: true,
 
 					prompt_object_id: promptObjectId,
-					orchestration_settings: this.orchestration_settings,
+					// orchestration_settings: this.orchestration_settings,
 					// ai_model_object_id: this.selectedAIModel.object_id,
 
 					tools: this.agentTools,
