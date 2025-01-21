@@ -1107,7 +1107,7 @@ export default {
 			workflowMainAIModel: null as AIModel | null,
 			// workflowMainPrompt: '' as string,
 			workflowMainAIModelParameters: {} as object,
-			workflowPackageName: 'FoundationLLM' as string,
+			workflowPackageName: 'FoundationaLLM' as string,
 
 			virtualSecurityGroupId: null as string | null,
 

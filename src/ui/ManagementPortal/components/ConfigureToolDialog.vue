@@ -111,7 +111,7 @@ export default {
 			default: () => ({
 				name: '' as string,
 				description: '' as string,
-				package_name: 'FoundationLLM' as string,
+				package_name: 'FoundationaLLM' as string,
 				resource_object_ids: {},
 			}),
 		},
@@ -128,7 +128,7 @@ export default {
 				type: 'tool' as string,
 				name: '' as string,
 				description: '' as string,
-				package_name: 'FoundationLLM' as string,
+				package_name: 'FoundationaLLM' as string,
 				resource_object_ids: {},
 			},
 			showCreateResourceObjectDialog: false,
