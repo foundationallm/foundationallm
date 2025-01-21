@@ -16,7 +16,7 @@
 			aria-labelledby="aria-tool-type"
 		/> -->
 
-		<div id="aria-tool-name" class="mb-2 font-weight-bold">Tool:</div>
+<!-- 		<div id="aria-tool-name" class="mb-2 font-weight-bold">Tool:</div>
 		<Dropdown
 			v-model="toolObject.name"
 			:options="toolOptions"
@@ -25,16 +25,16 @@
 			placeholder="--Select--"
 			aria-labelledby="aria-tool-type"
 			@change="handleToolSelection"
-		/>
+		/> -->
 
-		<!-- <div id="aria-tool-name" class="mt-6 mb-2 font-weight-bold">Tool name:</div>
+		<div id="aria-tool-name" class="mt-6 mb-2 font-weight-bold">Tool name:</div>
 		<InputText
 			v-model="toolObject.name"
 			type="text"
 			class="w-100"
 			placeholder="Enter tool name"
 			aria-labelledby="aria-tool-name"
-		/> -->
+		/>
 
 		<div id="aria-tool-description" class="mt-6 mb-2 font-weight-bold">Tool description:</div>
 		<Textarea
@@ -161,11 +161,11 @@ export default {
 	},
 
 	async created() {
-		const tools = await api.getAgentTools();
-		this.toolOptions = tools.map((tool) => ({
-			label: tool.resource.name,
-			value: tool.resource,
-		}));
+		// const tools = await api.getAgentTools();
+		// this.toolOptions = tools.map((tool) => ({
+		// 	label: tool.resource.name,
+		// 	value: tool.resource,
+		// }));
 	},
 
 	methods: {
@@ -207,7 +207,7 @@ export default {
 			const errors = [];
 			
 			if (!this.toolObject.name) {
-				errors.push('Please select a tool.');
+				errors.push('Please provide a tool name.');
 			}
 
 			if (!this.toolObject.description) {
