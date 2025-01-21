@@ -1,5 +1,4 @@
-﻿using Azure.Messaging;
-using FluentValidation;
+﻿using FluentValidation;
 using FoundationaLLM.Agent.Models.Resources;
 using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
@@ -13,7 +12,6 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
-using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;

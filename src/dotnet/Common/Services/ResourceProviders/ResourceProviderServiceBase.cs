@@ -1389,7 +1389,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     await SendResourceProviderEvent(
                         EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
 
-                    return new ResourceProviderActionResult(true);
+                    return new ResourceProviderActionResult(resourcePath.RawResourcePath, true);
                 }
                 else
                 {
@@ -1432,7 +1432,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     await SendResourceProviderEvent(
                         EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
 
-                    return new ResourceProviderActionResult(true);
+                    return new ResourceProviderActionResult(resourcePath.RawResourcePath, true);
                 }
                 else
                 {

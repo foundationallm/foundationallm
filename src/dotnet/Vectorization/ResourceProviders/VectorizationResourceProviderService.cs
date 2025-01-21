@@ -538,7 +538,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                         default,
                         default);
 
-                    return new ResourceProviderActionResult(true);
+                    return new ResourceProviderActionResult(resourcePath.RawResourcePath, true);
                 }
                 else
                 {
