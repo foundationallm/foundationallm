@@ -1,5 +1,5 @@
+import aiohttp
 import base64
-import requests
 from foundationallm.config import Configuration
 from foundationallm.models.attachments import AttachmentProperties
 from foundationallm.models.agents import KnowledgeManagementCompletionRequest
@@ -80,8 +80,7 @@ class AudioAnalysisService:
             raise Exception('Audio classification API endpoint configuration not found.')
         return APIEndpointConfiguration.from_object(api_configuration)
 
-    def classify(self, request: KnowledgeManagementCompletionRequest, audio_attachments: AttachmentProperties):
-        print('in audio classification service: classify')
+    async def classify_async(self, request: KnowledgeManagementCompletionRequest, audio_attachments: AttachmentProperties):
         api_configuration = self._get_audio_classifcation_endpoint_configuration(request)
         api_key = self.config.get_value(api_configuration.authentication_parameters.get('api_key_configuration_name'))
         api_key_header_name = api_configuration.authentication_parameters.get('api_key_header_name', 'x-api-key')
@@ -111,16 +110,15 @@ class AudioAnalysisService:
                         "top_k": top_k
                     }
                     headers = {"charset": "utf-8", "Content-Type": "application/json", api_key_header_name: api_key}
-                    # Make the REST API call.
-                    r = requests.post(api_endpoint, json=payload, headers=headers)
-                    # Check the response status code.
-                    if r.status_code != 200:
-                        raise Exception(f'Error: ({r.status_code}) {r.text}')
-                    
-                    response = r.json()
 
-                    # Add the audio analysis to the dictionary.
-                    audio_analyses[attachment.original_file_name] = response
+                    # Make the REST API call.
+                    async with aiohttp.ClientSession(headers=headers) as client:
+                        async with client.post(api_endpoint, json=payload) as response:
+                            if response.status != 200:
+                                raise Exception(f'Error: ({response.status}) {response.text}')
+                            
+                            # Add the audio analysis to the dictionary.
+                            audio_analyses[attachment.original_file_name] = await response.json()
 
         return audio_analyses
                     

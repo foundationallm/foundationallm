@@ -321,7 +321,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         audio_attachments = [attachment for attachment in request.attachments if (attachment.provider == AttachmentProviders.FOUNDATIONALLM_ATTACHMENT and attachment.content_type.startswith('audio/'))] if request.attachments is not None else []
         if len(audio_attachments) > 0:
             audio_service = AudioAnalysisService(config=self.config)
-            audio_analysis_results = audio_service.classify(request, audio_attachments)
+            audio_analysis_results = await audio_service.classify_async(request, audio_attachments)
 
         # Start Assistants API implementation
         # Check for Assistants API capability
@@ -458,12 +458,12 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             explicit_tool = next((tool for tool in agent.tools if parsed_user_prompt.startswith(f'[{tool.name}]:')), None)
             if explicit_tool is not None:
-                tools.append(tool_factory.get_tool(explicit_tool, request.objects, self.user_identity, self.config))
+                tools.append(tool_factory.get_tool(agent.name, explicit_tool, request.objects, self.user_identity, self.config))
                 parsed_user_prompt = parsed_user_prompt.split(':', 1)[1].strip()
             else:
                 # Populate tools list from agent configuration
                 for tool in agent.tools:
-                    tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
+                    tools.append(tool_factory.get_tool(agent.name, tool, request.objects, self.user_identity, self.config))
 
             # Define the graph
             graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)
@@ -520,14 +520,14 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             explicit_tool = next((tool for tool in agent.tools if parsed_user_prompt.startswith(f'[{tool.name}]:')), None)
             if explicit_tool is not None:
-                tools.append(tool_factory.get_tool(explicit_tool, request.objects, self.user_identity, self.config))
+                tools.append(tool_factory.get_tool(agent.name, explicit_tool, request.objects, self.user_identity, self.config))
                 parsed_user_prompt = parsed_user_prompt.split(':', 1)[1].strip()
             else:
                 # Populate tools list from agent configuration
                 for tool in agent.tools:
-                    tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
+                    tools.append(tool_factory.get_tool(agent.name, tool, request.objects, self.user_identity, self.config))
 
-            request.objects['message_history'] = request.message_history
+            request.objects['message_history'] = request.message_history[:agent.conversation_history_settings.max_history]
 
             # create the workflow
             workflow_factory = WorkflowFactory(self.plugin_manager)
