@@ -1680,7 +1680,7 @@ export default {
 						...this.selectedWorkflow,
 						workflow_host: this.orchestration_settings.orchestrator,
 						package_name: this.workflowPackageName,
-						// workflow_name: '',
+						assistant_id: '',
 
 						resource_object_ids: {
 							...this.selectedWorkflow.resource_object_ids,
