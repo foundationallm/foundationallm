@@ -775,21 +775,33 @@
 
 			<!-- Workflow configuration -->
 			<div v-if="showWorkflowConfiguration" class="span-2">
+				<!-- Workflow name -->
+				<div class="mb-6">
+					<div id="aria-workflow-name" class="step-header mb-3">Workflow name:</div>
+					<InputText
+						v-model="workflowName"
+						type="text"
+						class="w-50"
+						placeholder="Enter workflow name"
+						aria-labelledby="aria-workflow-name"
+					/>
+				</div>
+
 				<!-- Workflow package name -->
 				<div class="mb-6">
-					<div class="step-header mb-3">Workflow package name:</div>
+					<div id="aria-workflow-package-name" class="step-header mb-3">Workflow package name:</div>
 					<InputText
 						v-model="workflowPackageName"
 						type="text"
 						class="w-50"
 						placeholder="Enter workflow package name"
-						aria-labelledby="aria-cost-center"
+						aria-labelledby="aria-workflow-package-name"
 					/>
 				</div>
 
 				<!-- Workflow host -->
 				<div class="mb-6">
-					<div id="aria-workflow-model" class="step-header mb-3">
+					<div id="aria-workflow-host" class="step-header mb-3">
 						Workflow host:
 					</div>
 					<div class="span-2">
@@ -800,14 +812,14 @@
 							option-value="value"
 							class="dropdown--agent"
 							placeholder="--Select--"
-							aria-labelledby="aria-workflow-model"
+							aria-labelledby="aria-workflow-host"
 						/>
 					</div>
 				</div>
 
 				<!-- Workflow main model -->
 				<div class="mb-6">
-					<div class="step-header mb-3">Workflow main model:</div>
+					<div id="aria-workflow-model" class="step-header mb-3">Workflow main model:</div>
 					<Dropdown
 						:modelValue="workflowMainAIModel?.object_id"
 						:options="aiModelOptions"
@@ -815,7 +827,7 @@
 						option-value="object_id"
 						class="dropdown--agent"
 						placeholder="--Select--"
-						aria-labelledby="aria-orchestrator"
+						aria-labelledby="aria-workflow-model"
 						@change="
 							workflowMainAIModel = JSON.parse(
 								JSON.stringify(aiModelOptions.find((model) => model.object_id === $event.value)),
@@ -1121,6 +1133,7 @@ export default {
 			workflowMainAIModel: null as AIModel | null,
 			// workflowMainPrompt: '' as string,
 			workflowMainAIModelParameters: {} as object,
+			workflowName: '' as string,
 			workflowPackageName: 'FoundationaLLM' as string,
 
 			virtualSecurityGroupId: null as string | null,
@@ -1574,7 +1587,7 @@ export default {
 			}
 
 			if (!this.orchestration_settings.orchestrator) {
-				errors.push('Please select an orchestrator.');
+				errors.push('Please select an orchestrator / workflow host.');
 			}
 
 			// if (!this.selectedAIModel) {
@@ -1583,6 +1596,14 @@ export default {
 
 			if (!this.selectedWorkflow) {
 				errors.push('Please select a workflow.');
+			}
+
+			if (!this.workflowName) {
+				errors.push('Please provide a workflow name.');
+			}
+
+			if (!this.workflowPackageName) {
+				errors.push('Please provide a workflow package name.');
 			}
 
 			if (!this.workflowMainAIModel) {
@@ -1693,6 +1714,7 @@ export default {
 					workflow = {
 						...this.selectedWorkflow,
 						workflow_host: this.orchestration_settings.orchestrator,
+						workflow_name: this.workflowName,
 						package_name: this.workflowPackageName,
 						assistant_id: '',
 
