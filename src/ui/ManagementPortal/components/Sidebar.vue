@@ -63,61 +63,6 @@
 					<li><NuxtLink to="/pipeline/indexing-profiles" class="sidebar__item">Indexing Profiles</NuxtLink></li>
 				</ul> -->
 
-<<<<<<< ours
-		<div class="sidebar__item">Language Models & Endpoints</div> -->
-
-		<!-- Security -->
-		<h3 class="sidebar__section-header">
-			<span class="pi pi-shield" aria-hidden="true"></span>
-			<span>Security</span>
-		</h3>
-		<ul>
-			<li>
-				<NuxtLink to="/security/role-assignments" class="sidebar__item">
-					Instance Access Control
-				</NuxtLink>
-			</li>
-		</ul>
-
-		<!-- FLLM Deployment -->
-		<h3 class="sidebar__section-header">
-			<span class="pi pi-cloud" aria-hidden="true"></span>
-			<span>FLLM Platform</span>
-		</h3>
-		<ul>
-			<li><NuxtLink to="/branding" class="sidebar__item">Branding</NuxtLink></li>
-			<li><NuxtLink to="/info" class="sidebar__item">Deployment Information</NuxtLink></li>
-		</ul>
-
-		<!-- Logged in user -->
-		<div v-if="$authStore.currentAccount?.name" class="sidebar__account">
-			<UserAvatar
-				class="sidebar__avatar"
-				size="large"
-				:aria-label="`User Avatar for ${$authStore.currentAccount?.name}`"
-			/>
-
-			<div>
-				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-					<span
-						class="sidebar__username"
-						aria-label="Logged in as {{ $authStore.currentAccount?.username }}"
-					>
-						{{ $authStore.currentAccount?.name }}
-					</span>
-					<template #popper>
-						<div role="tooltip">Logged in as {{ $authStore.currentAccount?.username }}</div>
-					</template>
-				</VTooltip>
-				<Button
-					class="sidebar__sign-out-button"
-					icon="pi pi-sign-out"
-					label="Sign Out"
-					severity="secondary"
-					size="small"
-					@click="$authStore.logout()"
-					aria-label="Sign out of the application"
-=======
 				<!-- Quotas -->
 				<!-- <div class="sidebar__section-header">
 					<span class="pi pi-calculator"></span>
@@ -164,7 +109,6 @@
 					class="sidebar__avatar"
 					size="large"
 					:aria-label="`User Avatar for ${$authStore.currentAccount?.name}`"
->>>>>>> theirs
 				/>
 
 				<div>
@@ -236,14 +180,14 @@ a {
 }
 
 .sidebar ul {
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 .sidebar li {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .sidebar__header {
