@@ -1358,6 +1358,9 @@ export default {
 			}
 
 			if (agent.workflow) {
+				this.workflowName = agent.workflow.workflow_name ?? '';
+				this.workflowPackageName = agent.workflow.package_name ?? '';
+
 				const existingMainModel = Object.values(agent.workflow.resource_object_ids).find(
 					(resource) => resource.properties?.object_role === 'main_model',
 				);
