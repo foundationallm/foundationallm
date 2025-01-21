@@ -126,7 +126,7 @@
 					modal
 					header="Browse Principals"
 					:closable="false"
-					:style="{ minWidth: '30rem' }"
+					class="principal-dialog"
 				>
 					<div id="aria-principal-search-type" class="mb-2">Search type</div>
 					<Dropdown
@@ -661,6 +661,16 @@ input {
 				width: 100% !important;
 			}
 		}
+	}
+}
+
+.principal-dialog {
+	min-width: 30rem;
+}
+
+@media (max-width: 768px) {
+	.principal-dialog {
+		min-width: auto;
 	}
 }
 </style>

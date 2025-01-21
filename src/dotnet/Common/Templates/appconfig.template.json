@@ -932,6 +932,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes",
+            "value": "60",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup",
             "value": "false",
             "label": null,
@@ -954,6 +961,13 @@
         },
         {
             "key": "FoundationaLLM:UserPortal:Configuration:ShowViewPrompt",
+            "value": "true",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Configuration:ShowFileUpload",
             "value": "true",
             "label": null,
             "content_type": "",

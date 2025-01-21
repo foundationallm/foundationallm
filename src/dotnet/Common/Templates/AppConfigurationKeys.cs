@@ -1173,6 +1173,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_UserPortal_Authentication_Entra_ClientId =
             "FoundationaLLM:UserPortal:Authentication:Entra:ClientId";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes setting.
+        /// <para>Value description:<br/>The timeout in minutes for the auth token in the User Portal.</para>
+        /// </summary>
+        public const string FoundationaLLM_UserPortal_Authentication_Entra_TimeoutInMinutes =
+            "FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes";
 
         #endregion
 
@@ -1205,6 +1212,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_UserPortal_Configuration_ShowViewPrompt =
             "FoundationaLLM:UserPortal:Configuration:ShowViewPrompt";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:UserPortal:Configuration:ShowFileUpload setting.
+        /// <para>Value description:<br/>Global setting to determine if file upload is allowed on chat messages.</para>
+        /// </summary>
+        public const string FoundationaLLM_UserPortal_Configuration_ShowFileUpload =
+            "FoundationaLLM:UserPortal:Configuration:ShowFileUpload";
 
         #endregion
 

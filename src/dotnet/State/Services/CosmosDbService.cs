@@ -100,7 +100,7 @@ namespace FoundationaLLM.State.Services
                 var result = await GetLongRunningOperationResult(id, cancellationToken);
                 record.Resource.Result = result;
 
-                return record;
+                return record.Resource;
             }
             catch (Exception ex)
             {

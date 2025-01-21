@@ -28,6 +28,7 @@
 					style="height: 100%"
 					@click="toggle"
 					@keydown.esc="hideAllPoppers"
+					v-if="$appConfigStore.showFileUpload && $appStore.agentShowFileUpload"
 				/>
 				<OverlayPanel ref="menu" :dismissable="isMobile" style="max-width: 98%">
 					<div class="file-upload-header">

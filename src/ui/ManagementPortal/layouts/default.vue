@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper">
+	<div :class="$appStore.sidebarCollapsed ? 'wrapper collapsed-sidebar' : 'wrapper'">
 		<Button
 			class="skip-to-main-content-button"
 			role="link"
@@ -12,6 +12,7 @@
 		<div class="page">
 			<!-- Page to render -->
 			<div class="page-content">
+				<div class="sidebar-blur" @click="$appStore.sidebarCollapsed = true" v-show="!$appStore.sidebarCollapsed" />
 				<slot />
 			</div>
 
@@ -57,10 +58,24 @@ export default {
 
 <style scoped>
 .page {
+	max-width: 100%;
 	display: flex;
 	flex-direction: column;
-	min-height: 100vh;
+	height: auto;
 	overflow-x: auto;
+	flex: 1;
+}
+
+.collapsed-sidebar {
+	flex-direction: column !important;
+}
+
+.collapsed-sidebar .page {
+	padding-top: 94px;
+}
+
+.sidebar-blur {
+	display: none;
 }
 
 .page-content {
@@ -99,5 +114,22 @@ footer {
 	clip: auto !important; /* Remove clip hiding */
 	width: auto !important;
 	height: auto !important;
+}
+
+@media only screen and (max-width: 960px) {
+	.page {
+		padding-top: 94px;
+	}
+
+	.sidebar-blur {
+		display: block;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		z-index: 2;
+		top: 0px;
+		left: 0px;
+		backdrop-filter: blur(3px);
+	}
 }
 </style>

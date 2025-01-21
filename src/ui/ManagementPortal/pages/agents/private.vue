@@ -59,4 +59,8 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.main-content {
+    width: 100%;
+}
+</style>

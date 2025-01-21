@@ -10,6 +10,8 @@ using FoundationaLLM.Common.Models.Configuration.AppConfiguration;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.ResourceProviders;
@@ -129,6 +131,24 @@ namespace FoundationaLLM.Configuration.Services
                         StatusCodes.Status400BadRequest);
             };
         }
+
+        /// <inheritdoc/>
+        protected override async Task<object> ExecuteActionAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity) =>
+            resourcePath.ResourceTypeName switch
+            {
+                ConfigurationResourceTypeNames.APIEndpointConfigurations => resourcePath.Action switch
+                {
+                    ResourceProviderActions.CheckName => await CheckResourceName<APIEndpointConfiguration>(
+                        JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
+                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+                },
+                _ => throw new ResourceProviderException()
+            };
 
         #endregion
 

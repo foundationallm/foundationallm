@@ -40,8 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="app\dependencies.py" />
+    <Compile Include="app\lifespan_manager.py" />
     <Compile Include="app\main.py" />
-    <Compile Include="app\routers\manage.py" />
     <Compile Include="app\routers\completions.py" />
     <Compile Include="app\routers\status.py" />
     <Compile Include="app\routers\__init__.py" />
