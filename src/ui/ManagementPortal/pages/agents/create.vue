@@ -1225,6 +1225,8 @@ export default {
 
 	watch: {
 		selectedWorkflow() {
+			this.workflowName = this.selectedWorkflow?.name ?? this.workflowName;
+
 			if (this.selectedWorkflow?.resource_object_ids) {
 				const existingMainModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
 					(resource) => resource.properties?.object_role === 'main_model',
@@ -1358,7 +1360,7 @@ export default {
 			}
 
 			if (agent.workflow) {
-				this.workflowName = agent.workflow.workflow_name ?? '';
+				this.workflowName = agent.workflow.name ?? '';
 				this.workflowPackageName = agent.workflow.package_name ?? '';
 
 				const existingMainModel = Object.values(agent.workflow.resource_object_ids).find(
@@ -1717,7 +1719,7 @@ export default {
 					workflow = {
 						...this.selectedWorkflow,
 						workflow_host: this.orchestration_settings.orchestrator,
-						workflow_name: this.workflowName,
+						name: this.workflowName,
 						package_name: this.workflowPackageName,
 						assistant_id: '',
 
