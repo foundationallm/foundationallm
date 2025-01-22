@@ -136,11 +136,11 @@ export default {
 	},
 
 	async created() {
-		await this.getModelsAndEndpoints();
+		await this.getModels();
 	},
 
 	methods: {
-		async getModelsAndEndpoints() {
+		async getModels() {
 			this.loading = true;
 			try {
 				this.aiModels = await api.getAIModels();
@@ -171,7 +171,7 @@ export default {
 				});
 			}
 
-			await this.getModelsAndEndpoints();
+			await this.getModels();
 		},
 	},
 };

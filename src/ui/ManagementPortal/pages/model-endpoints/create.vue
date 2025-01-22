@@ -92,10 +92,17 @@
 				/>
 
 				<!-- API Key -->
-				<template v-if="aiModelEndpoint.authentication_type === 'AzureIdentity'">
-					<div class="mb-2">API Key:</div>
-					<SecretKeyInput v-model="aiModelEndpoint.url" class="mb-4" />
-				</template>
+				<div
+					v-if="aiModelEndpoint.authentication_type === 'APIKey'"
+					class="span-2"
+				>
+					<div id="aria-api-key" class="mb-2 mt-2">API Key:</div>
+					<SecretKeyInput
+						v-model="aiModelEndpoint.resolved_configuration_references.APIKey"
+						placeholder="Enter API key"
+						aria-labelledby="aria-api-key"
+					/>
+				</div>
 
 				<!-- API Version -->
 				<template v-if="['AzureOpenAI', 'AzureAI'].includes(aiModelEndpoint.orchestrator)">
@@ -107,15 +114,6 @@
 					/>
 				</template>
 			</div>
-
-			<!-- Model params -->
-			<!-- <template v-if="aiModelEndpoint.orchestrator === 'AzureOpenAI'">
-				<div class="step-header span-2">What are the model details?</div>
-				<div class="span-2">
-					<div class="mb-2">Deployment Name:</div>
-					<SecretKeyInput v-model="aiModelEndpoint.api_key" class="mb-4" />
-				</div>
-			</template> -->
 
 			<!-- Buttons -->
 			<div class="button-container column-2 justify-self-end">
@@ -146,7 +144,7 @@ import { debounce } from 'lodash';
 import api from '@/js/api';
 
 export default {
-	name: 'CreateModelOrEndpoint',
+	name: 'CreateModelEndpoint',
 
 	props: {
 		editId: {
@@ -161,21 +159,36 @@ export default {
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 
-			// nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
-			// validationMessage: '' as string,
+			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
+			validationMessage: '' as string,
 
 			aiModelEndpointName: '' as string,
 			aiModelEndpoint: {
-				display_name: '' as string,
+				description: null,
+				cost_center: null,
+				expiration_date: null as string | null,
+			  display_name: '' as string,
 				name: '' as string,
-				authentication_type: null,
 				url: '' as string,
-				// endpoint_configuration: {
-				// 	endpoint: '' as string,
-				// 	api_key: '' as string,
-				// 	api_version: '' as string,
-				// 	// operation_type: 'chat' as string,
-				// } as object,
+			  api_version: '2024-10-01-preview',
+				status_url: null as string | null,
+				timeout_seconds: 60 as number,
+			  retry_strategy_name: 'ExponentialBackoff',
+				category: 'General',
+				subcategory: 'AIModel',
+			 	provider: 'microsoft',
+				authentication_type: 'APIKey',
+				operation_type: 'chat',
+				url_exceptions: [],
+				properties: null,
+
+				authentication_parameters: {
+					api_key_header_name: 'api-key',
+				},
+
+				resolved_configuration_references: {
+					APIKey: '',
+				},
 			},
 
 			orchestratorOptions: [
@@ -203,7 +216,7 @@ export default {
 					value: 'APIKey',
 				},
 				{
-					label: 'Token',
+					label: 'Azure Identity',
 					value: 'AzureIdentity',
 				},
 			],
@@ -214,12 +227,35 @@ export default {
 		if (this.editId) {
 			this.loading = true;
 			this.loadingStatusText = `Retrieving AI model endpoint "${this.editId}"...`;
-			this.aiModelEndpoint = (await api.getAIModelEndpoint(this.editId))[0].resource;
+			this.aiModelEndpoint = (await api.getAPIEndpointConfiguration(this.editId)).resource;
 			this.loading = false;
 		}
+
+		this.debouncedCheckName = debounce(this.checkName, 500);
 	},
 
 	methods: {
+		async checkName() {
+			try {
+				const response = await api.checkAPIEndpointConfigurationName(this.aiModelEndpoint.name);
+
+				// Handle response based on the status
+				if (response.status === 'Allowed') {
+					// Name is available
+					this.nameValidationStatus = 'valid';
+					this.validationMessage = null;
+				} else if (response.status === 'Denied') {
+					// Name is taken
+					this.nameValidationStatus = 'invalid';
+					this.validationMessage = response.message;
+				}
+			} catch (error) {
+				console.error('Error checking AI model endpoint name: ', error);
+				this.nameValidationStatus = 'invalid';
+				this.validationMessage = 'Error checking the AI model endpoint name. Please try again.';
+			}
+		},
+
 		handleCancel() {
 			if (!confirm('Are you sure you want to cancel?')) {
 				return;
@@ -242,8 +278,8 @@ export default {
 			this.loading = true;
 			let successMessage = null as null | string;
 			try {
-				this.loadingStatusText = 'Saving AI model...';
-				await api.createAIModelEndpoint(this.aiModelEndpoint);
+				this.loadingStatusText = 'Saving AI model endpoint...';
+				await api.createAPIEndpointConfiguration(this.aiModelEndpoint);
 				successMessage = `AI model endpoint "${this.aiModelEndpoint.name}" was successfully saved.`;
 			} catch (error) {
 				this.loading = false;

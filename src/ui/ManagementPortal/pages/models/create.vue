@@ -114,7 +114,7 @@ import { debounce } from 'lodash';
 import api from '@/js/api';
 
 export default {
-	name: 'CreateModelOrEndpoint',
+	name: 'CreateModel',
 
 	props: {
 		editId: {
@@ -169,7 +169,7 @@ export default {
 	async created() {
 		this.loading = true;
 		this.loadingStatusText = `Retrieving AI model endpoints...`;
-		const modelEndpoints = (await api.getAIModelEndpoints()).map((endpoint) => endpoint.resource);
+		const modelEndpoints = (await api.getAPIEndpointConfigurations()).map((endpoint) => endpoint.resource);
 		this.aiModelEndpointOptions = modelEndpoints.filter((resource) => ['AIModel'].includes(resource.subcategory));
 		this.loading = false;
 

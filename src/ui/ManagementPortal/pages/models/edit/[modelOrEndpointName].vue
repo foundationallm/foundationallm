@@ -1,13 +1,13 @@
 <template>
-	<Create :edit-id="$route.params.modelOrEndpointName" />
+	<CreateModel :edit-id="$route.params.modelOrEndpointName" />
 </template>
 
 <script lang="ts">
-import Create from '../create.vue';
+import CreateModel from '../create.vue';
 
 export default {
 	components: {
-		Create,
+		CreateModel,
 	},
 };
 </script>

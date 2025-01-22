@@ -27,9 +27,11 @@
 
 			<!-- Table -->
 			<DataTable
-				:value="modelsAndEndpoints"
+				:value="aiModelEndpoints"
 				striped-rows
 				scrollable
+				sortField="resource.name"
+				:sortOrder="1"
 				table-style="max-width: 100%"
 				size="small"
 			>
@@ -66,6 +68,24 @@
 					}"
 				></Column>
 
+				<!-- Type -->
+				<Column
+					field="resource.subcategory"
+					header="Subcategory"
+					sortable
+					style="min-width: 200px"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						sortIcon: { style: { color: 'var(--primary-text)' } },
+					}"
+				>
+					<template #body="{ data }">
+						<span>{{ data.resource.subcategory || '-' }}</span>
+					</template>
+				</Column>
+
 				<!-- Edit -->
 				<Column
 					header="Edit"
@@ -100,7 +120,7 @@
 					}"
 				>
 					<template #body="{ data }">
-						<Button link @click="itemToDelete = data">
+						<Button link @click="itemToDelete = data.resource">
 							<i class="pi pi-trash" style="font-size: 1.2rem;"></i>
 						</Button>
 					</template>
@@ -109,8 +129,8 @@
 		</div>
 
 		<!-- Delete model/endpoint dialog -->
-		<Dialog :visible="itemToDelete !== null" modal header="Delete Model/Endpoint" :closable="false">
-			<p>Do you want to delete the model/endpoint "{{ itemToDelete.name }}" ?</p>
+		<Dialog :visible="itemToDelete !== null" modal header="Delete Model Endpoint" :closable="false">
+			<p>Do you want to delete the model endpoint "{{ itemToDelete.name }}" ?</p>
 			<template #footer>
 				<Button label="Cancel" text @click="itemToDelete = null" />
 				<Button label="Delete" severity="danger" @click="handleDelete" />
@@ -121,30 +141,30 @@
 
 <script lang="ts">
 import api from '@/js/api';
-import type { ModelOrEndpoint } from '@/js/types';
+import type { APIEndpointConfiguration } from '@/js/types';
 
 export default {
 	name: 'ModelsEndpoints',
 
 	data() {
 		return {
-			modelsAndEndpoints: [] as ModelOrEndpoint,
+			aiModelEndpoints: [] as APIEndpointConfiguration,
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
-			itemToDelete: null as ModelOrEndpoint | null,
+			itemToDelete: null as APIEndpointConfiguration | null,
 		};
 	},
 
 	async created() {
-		await this.getModelsAndEndpoints();
+		await this.getEndpoints();
 	},
 
 	methods: {
-		async getModelsAndEndpoints() {
+		async getEndpoints() {
 			this.loading = true;
 			try {
-				this.modelsAndEndpoints = await api.getAIModelEndpoints();
-				this.modelsAndEndpoints = this.modelsAndEndpoints.filter(({ resource }) => ['AIModel'].includes(resource.subcategory));
+				this.aiModelEndpoints = await api.getAPIEndpointConfigurations();
+				this.aiModelEndpoints = this.aiModelEndpoints;//.filter(({ resource }) => ['AIModel'].includes(resource.subcategory));
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',
@@ -156,16 +176,18 @@ export default {
 		},
 
 		async handleDelete() {
-			// try {
-			// 	await api.deleteModelOrEndpoint(this.itemToDelete!.name);
-			// 	this.itemToDelete = null;
-			// } catch (error) {
-			// 	return this.$toast.add({
-			// 		severity: 'error',
-			// 		detail: error?.response?._data || error,
-			// 		life: 5000,
-			// 	});
-			// }
+			try {
+				await api.deleteAPIEndpointConfiguration(this.itemToDelete!.name);
+				this.itemToDelete = null;
+			} catch (error) {
+				return this.$toast.add({
+					severity: 'error',
+					detail: error?.response?._data || error,
+					life: 5000,
+				});
+			}
+
+			await this.getEndpoints();
 		},
 	},
 };
