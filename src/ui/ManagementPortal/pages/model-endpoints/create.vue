@@ -1,12 +1,12 @@
 <template>
 	<div>
 		<!-- Header -->
-		<h2 class="page-header">{{ editId ? 'Edit Model Endpoint' : 'Create Model Endpoint' }}</h2>
+		<h2 class="page-header">{{ editId ? 'Edit API Endpoint' : 'Create API Endpoint' }}</h2>
 		<div class="page-subheader">
 			{{
 				editId
-					? 'Edit your model endpoint settings below.'
-					: 'Complete the settings below to configure the model endpoint.'
+					? 'Edit your API endpoint settings below.'
+					: 'Complete the settings below to configure the API endpoint.'
 			}}
 		</div>
 
@@ -21,18 +21,18 @@
 			</template>
 
 			<!-- Name -->
-			<div class="step-header span-2">What is the model endpoint name?</div>
+			<div class="step-header span-2">What is the API endpoint name?</div>
 			<div class="span-2">
 				<div id="aria-source-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
 				</div>
 				<div class="input-wrapper">
 					<InputText
-						v-model="aiModelEndpoint.name"
+						v-model="apiEndpoint.name"
 						:disabled="editId"
 						type="text"
 						class="w-100"
-						placeholder="Enter model endpoint name"
+						placeholder="Enter API endpoint name"
 						aria-labelledby="aria-source-name aria-source-name-desc"
 						@input="handleNameInput"
 					/>
@@ -57,7 +57,7 @@
 			<!-- <div class="step-header span-2">What is the model type?</div>
 			<div class="span-2">
 				<Dropdown
-					v-model="aiModelEndpoint.name"
+					v-model="apiEndpoint.name"
 					:options="orchestratorOptions"
 					option-label="label"
 					option-value="value"
@@ -66,60 +66,124 @@
 				/>
 			</div> -->
 
+			<!-- Description -->
+			<div class="span-2">
+				<div class="step-header mb-2">What are the endpoint details?</div>
+				<div id="aria-description" class="mb-2">
+					Provide a description to help others understand the API endpoint's purpose.
+				</div>
+				<InputText
+					v-model="apiEndpoint.description"
+					type="text"
+					class="w-100 mb-4"
+					placeholder="Enter API endpoint description"
+					aria-labelledby="aria-description"
+				/>
+
+				<!-- Category -->
+				<div class="mb-2">Category:</div>
+				<Dropdown
+					v-model="apiEndpoint.category"
+					:options="categoryOptions"
+					option-label="label"
+					option-value="value"
+					placeholder="--Select--"
+					class="mb-4"
+				/>
+
+				<!-- Subcategory -->
+				<div id="aria-subcategory" class="mb-2">Subcategory:</div>
+				<InputText
+					v-model="apiEndpoint.subcategory"
+					type="text"
+					class="w-100 mb-4"
+					placeholder="Enter API endpoint subcategory"
+					aria-labelledby="aria-subcategory"
+				/>
+			</div>
+
 			<!-- Connection type -->
 			<div class="step-header span-2">What is the connection type?</div>
 			<div class="span-2">
 				<div class="mb-2">Auth Type:</div>
 				<Dropdown
-					v-model="aiModelEndpoint.authentication_type"
+					v-model="apiEndpoint.authentication_type"
 					:options="authTypeOptions"
 					option-label="label"
 					option-value="value"
 					placeholder="--Select--"
-					class="dropdown--agent"
 				/>
 			</div>
 
 			<!-- Connection details -->
 			<div class="step-header span-2">What are the connection details?</div>
 			<div class="span-2">
-				<!-- Endpoint -->
-				<div class="mb-2">Endpoint:</div>
+				<!-- Endpoint URL -->
+				<div class="mb-2">Endpoint URL:</div>
 				<InputText
-					v-model="aiModelEndpoint.url"
+					v-model="apiEndpoint.url"
 					class="w-100 mb-4"
 					type="text"
+					placeholder="Enter API endpoint URL"
 				/>
 
-				<!-- API Key -->
+				<!-- API Key details -->
 				<div
-					v-if="aiModelEndpoint.authentication_type === 'APIKey'"
-					class="span-2"
+					v-if="apiEndpoint.authentication_type === 'APIKey'"
+					class="span-2 mb-4"
 				>
+					<!-- Header name -->
+					<div class="mb-2">API Key Header Name:</div>
+					<InputText
+						v-model="apiEndpoint.authentication_parameters.api_key_header_name"
+						class="w-100 mb-4"
+						type="text"
+					/>
+
+					<!-- API Key -->
 					<div id="aria-api-key" class="mb-2 mt-2">API Key:</div>
 					<SecretKeyInput
-						v-model="aiModelEndpoint.resolved_configuration_references.APIKey"
+						v-model="apiEndpoint.resolved_configuration_references.APIKey"
 						placeholder="Enter API key"
 						aria-labelledby="aria-api-key"
 					/>
 				</div>
 
 				<!-- API Version -->
-				<template v-if="['AzureOpenAI', 'AzureAI'].includes(aiModelEndpoint.orchestrator)">
-					<div class="mb-2">API Version:</div>
-					<InputText
-						v-model="aiModelEndpoint.api_version"
-						class="w-100 mb-4"
-						type="text"
-					/>
-				</template>
+				<div class="mb-2">API Version:</div>
+				<InputText
+					v-model="apiEndpoint.api_version"
+					class="w-100 mb-4"
+					type="text"
+				/>
+
+				<!-- Timeout -->
+				<div class="mb-2">Timeout (seconds):</div>
+				<InputNumber
+					v-model="apiEndpoint.timeout_seconds"
+					class="w-100 mb-4"
+				/>
+
+				<!-- Status URL -->
+				<div id="aria-status-url" class="mb-2">Status URL:</div>
+				<InputText
+					v-model="apiEndpoint.status_url"
+					type="text"
+					class="w-100 mb-4"
+					placeholder="Enter API endpoint status URL"
+					aria-labelledby="aria-status-url"
+				/>
+
+				<!-- URL Exceptions -->
+				<div id="aria-status-url" class="mb-2">URL Exceptions:</div>
+				<JsonEditorVue v-model="apiEndpoint.url_exceptions" />
 			</div>
 
 			<!-- Buttons -->
 			<div class="button-container column-2 justify-self-end">
-				<!-- Create model -->
+				<!-- Create API endpoint -->
 				<Button
-					:label="editId ? 'Save Changes' : 'Create Model Endpoint'"
+					:label="editId ? 'Save Changes' : 'Create API Endpoint'"
 					severity="primary"
 					@click="handleCreate"
 				/>
@@ -142,9 +206,14 @@ import type { PropType } from 'vue';
 import { debounce } from 'lodash';
 
 import api from '@/js/api';
+import JsonEditorVue from 'json-editor-vue';
 
 export default {
 	name: 'CreateModelEndpoint',
+
+	components: {
+		JsonEditorVue,
+	},
 
 	props: {
 		editId: {
@@ -162,15 +231,15 @@ export default {
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			validationMessage: '' as string,
 
-			aiModelEndpointName: '' as string,
-			aiModelEndpoint: {
+			apiEndpointName: '' as string,
+			apiEndpoint: {
 				description: null,
 				cost_center: null,
 				expiration_date: null as string | null,
-			  display_name: '' as string,
+			  display_name: null as string | null,
 				name: '' as string,
 				url: '' as string,
-			  api_version: '2024-10-01-preview',
+			  api_version: '' as string,
 				status_url: null as string | null,
 				timeout_seconds: 60 as number,
 			  retry_strategy_name: 'ExponentialBackoff',
@@ -191,22 +260,45 @@ export default {
 				},
 			},
 
-			orchestratorOptions: [
+			// orchestratorOptions: [
+			// 	{
+			// 		label: 'Azure OpenAI',
+			// 		value: 'AzureOpenAI',
+			// 	},
+			// 	{
+			// 		label: 'Azure OpenAI DALLE',
+			// 		value: 'AzureOpenAIDALLE',
+			// 	},
+			// 	{
+			// 		label: 'Azure AI',
+			// 		value: 'AzureAI',
+			// 	},
+			// 	{
+			// 		label: 'OpenAI',
+			// 		value: 'OpenAI',
+			// 	},
+			// ],
+
+			categoryOptions: [
 				{
-					label: 'Azure OpenAI',
-					value: 'AzureOpenAI',
+					label: 'General',
+					value: 'General',
 				},
 				{
-					label: 'Azure OpenAI DALLE',
-					value: 'AzureOpenAIDALLE',
+					label: 'LLM',
+					value: 'LLM',
 				},
 				{
-					label: 'Azure AI',
-					value: 'AzureAI',
+					label: 'Gatekeeper',
+					value: 'Gatekeeper',
 				},
 				{
-					label: 'OpenAI',
-					value: 'OpenAI',
+					label: 'Orchestration',
+					value: 'Orchestration',
+				},
+				{
+					label: 'FileStoreConnector',
+					value: 'FileStoreConnector',
 				},
 			],
 
@@ -227,7 +319,7 @@ export default {
 		if (this.editId) {
 			this.loading = true;
 			this.loadingStatusText = `Retrieving AI model endpoint "${this.editId}"...`;
-			this.aiModelEndpoint = (await api.getAPIEndpointConfiguration(this.editId)).resource;
+			this.apiEndpoint = (await api.getAPIEndpointConfiguration(this.editId)).resource;
 			this.loading = false;
 		}
 
@@ -237,7 +329,7 @@ export default {
 	methods: {
 		async checkName() {
 			try {
-				const response = await api.checkAPIEndpointConfigurationName(this.aiModelEndpoint.name);
+				const response = await api.checkAPIEndpointConfigurationName(this.apiEndpoint.name);
 
 				// Handle response based on the status
 				if (response.status === 'Allowed') {
@@ -266,7 +358,7 @@ export default {
 
 		handleNameInput(event) {
 			const sanitizedValue = this.$filters.sanitizeNameInput(event);
-			this.aiModelEndpoint.name = sanitizedValue;
+			this.apiEndpoint.name = sanitizedValue;
 
 			// Check if the name is available if we are creating a new data source.
 			if (!this.editId) {
@@ -275,12 +367,31 @@ export default {
 		},
 
 		async handleCreate() {
+			const errors = [];
+			if (!this.apiEndpoint.name) {
+				errors.push('Please provide an name for the API endpoint.');
+			}
+
+			if (!this.apiEndpoint.url) {
+				errors.push('Please provide a url for the API endpoint.');
+			}
+
+			if (errors.length > 0) {
+				this.$toast.add({
+					severity: 'error',
+					detail: errors.join('\n'),
+					life: 5000,
+				});
+
+				return;
+			}
+
 			this.loading = true;
 			let successMessage = null as null | string;
 			try {
 				this.loadingStatusText = 'Saving AI model endpoint...';
-				await api.createAPIEndpointConfiguration(this.aiModelEndpoint);
-				successMessage = `AI model endpoint "${this.aiModelEndpoint.name}" was successfully saved.`;
+				await api.createAPIEndpointConfiguration(this.apiEndpoint);
+				successMessage = `AI model endpoint "${this.apiEndpoint.name}" was successfully saved.`;
 			} catch (error) {
 				this.loading = false;
 				return this.$toast.add({
