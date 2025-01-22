@@ -122,6 +122,7 @@ export type Prompt = ResourceBase & {
 	description: string;
 	prefix: string;
 	suffix: string;
+	category: string;
 };
 
 export type AgentDataSource = ResourceBase & {
@@ -386,6 +387,7 @@ export type CreatePromptRequest = ResourceBase & {
 	type: 'basic' | 'multipart';
 	prefix: string;
 	suffix: string;
+	category: string;
 };
 
 export type CreateTextPartitioningProfileRequest = ResourceBase & {
