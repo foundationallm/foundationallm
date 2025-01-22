@@ -209,7 +209,7 @@ import api from '@/js/api';
 import JsonEditorVue from 'json-editor-vue';
 
 export default {
-	name: 'CreateModelEndpoint',
+	name: 'CreateAPIEndpoint',
 
 	components: {
 		JsonEditorVue,
@@ -318,7 +318,7 @@ export default {
 	async created() {
 		if (this.editId) {
 			this.loading = true;
-			this.loadingStatusText = `Retrieving AI model endpoint "${this.editId}"...`;
+			this.loadingStatusText = `Retrieving API endpoint "${this.editId}"...`;
 			this.apiEndpoint = (await api.getAPIEndpointConfiguration(this.editId)).resource;
 			this.loading = false;
 		}
@@ -342,9 +342,9 @@ export default {
 					this.validationMessage = response.message;
 				}
 			} catch (error) {
-				console.error('Error checking AI model endpoint name: ', error);
+				console.error('Error checking API endpoint name: ', error);
 				this.nameValidationStatus = 'invalid';
-				this.validationMessage = 'Error checking the AI model endpoint name. Please try again.';
+				this.validationMessage = 'Error checking the API endpoint name. Please try again.';
 			}
 		},
 
@@ -353,7 +353,7 @@ export default {
 				return;
 			}
 
-			this.$router.push('/model-endpoints');
+			this.$router.push('/api-endpoints');
 		},
 
 		handleNameInput(event) {
@@ -389,9 +389,9 @@ export default {
 			this.loading = true;
 			let successMessage = null as null | string;
 			try {
-				this.loadingStatusText = 'Saving AI model endpoint...';
+				this.loadingStatusText = 'Saving API endpoint...';
 				await api.createAPIEndpointConfiguration(this.apiEndpoint);
-				successMessage = `AI model endpoint "${this.apiEndpoint.name}" was successfully saved.`;
+				successMessage = `API endpoint "${this.apiEndpoint.name}" was successfully saved.`;
 			} catch (error) {
 				this.loading = false;
 				return this.$toast.add({
@@ -410,7 +410,7 @@ export default {
 			this.loading = false;
 
 			if (!this.editId) {
-				this.$router.push('/model-endpoints');
+				this.$router.push('/api-endpoints');
 			}
 		},
 	},

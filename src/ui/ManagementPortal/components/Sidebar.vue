@@ -69,7 +69,7 @@
 						</NuxtLink>
 					</li>
 					<li>
-						<NuxtLink to="/model-endpoints" class="sidebar__item">
+						<NuxtLink to="/api-endpoints" class="sidebar__item">
 							API Endpoints
 						</NuxtLink>
 					</li>

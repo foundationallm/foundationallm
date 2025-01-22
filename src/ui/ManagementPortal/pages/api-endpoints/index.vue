@@ -7,7 +7,7 @@
 			</div>
 
 			<div style="display: flex; align-items: center">
-				<NuxtLink to="/model-endpoints/create">
+				<NuxtLink to="/api-endpoints/create">
 					<Button>
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
 						Create API Endpoint
@@ -99,7 +99,7 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink :to="'/model-endpoints/edit/' + data.resource.name" class="table__button">
+						<NuxtLink :to="'/api-endpoints/edit/' + data.resource.name" class="table__button">
 							<Button link>
 								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
 							</Button>
@@ -144,7 +144,7 @@ import api from '@/js/api';
 import type { APIEndpointConfiguration } from '@/js/types';
 
 export default {
-	name: 'ModelsEndpoints',
+	name: 'APIEndpoints',
 
 	data() {
 		return {
