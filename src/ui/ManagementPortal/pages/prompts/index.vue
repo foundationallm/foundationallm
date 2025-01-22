@@ -1,6 +1,20 @@
 <template>
 	<main id="main-content">
-		<h2 class="page-header">All Agent Prompts</h2>
+		<div style="display: flex">
+			<div style="flex: 1">
+				<h2 class="page-header">Prompts</h2>
+				<div class="page-subheader">The following agent and tool prompts are available.</div>
+			</div>
+
+			<div style="display: flex; align-items: center">
+				<NuxtLink to="/prompts/create" tabindex="-1">
+					<Button aria-label="Create prompt">
+						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
+						Create Prompt
+					</Button>
+				</NuxtLink>
+			</div>
+		</div>
 
 		<div :class="{ 'grid--loading': loading }">
 			<!-- Loading overlay -->
@@ -16,8 +30,9 @@
 				:value="prompts"
 				striped-rows
 				scrollable
-				sortField="resource.name"
+				:multiSortMeta="sortingFields"
 				:sortOrder="1"
+				sortMode="multiple"
 				table-style="max-width: 100%"
 				size="small">
 				<template #empty>
@@ -33,6 +48,20 @@
 					header="Name"
 					sortable
 					style="min-width: 200px"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						sortIcon: { style: { color: 'var(--primary-text)' } },
+					}"
+				></Column>
+
+				<!-- Category -->
+				<Column
+					field="resource.category"
+					header="Category"
+					header-style="width:6rem"
+					sortable
 					:pt="{
 						headerCell: {
 							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -82,6 +111,12 @@
 						</NuxtLink>
 					</template>
 				</Column>
+				<template #groupheader="slotProps">
+					<div class="flex items-center gap-2">
+						<span class="pi pi-book" aria-hidden="true"></span>
+						<span>&nbsp;&nbsp;Category: {{ slotProps.data.resource.category ?? "None" }}</span>
+					</div>
+				</template>
 
 			</DataTable>
 		</div>
@@ -101,6 +136,7 @@ export default {
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 			accessControlModalOpen: false,
+			sortingFields: ([{ field: "resource.category", order: 1 }, { field: "resource.name", order: 1 }]),
 		};
 	},
 
