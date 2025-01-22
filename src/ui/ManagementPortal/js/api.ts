@@ -25,8 +25,6 @@ import type {
 } from './types';
 import { convertToDataSource, convertToAppConfigKeyVault, convertToAppConfig } from '@/js/types';
 
-import { mockAzureOpenAIAssistantsWorkflow, mockLangChainExpressionLanguageWorkflow } from '@/js/mock';
-
 // async function wait(milliseconds: number = 1000): Promise<void> {
 // 	return await new Promise<void>((resolve) => setTimeout(() => resolve(), milliseconds));
 // }
@@ -545,18 +543,33 @@ export default {
 	},
 
 	async setDefaultAgent(agentId: string): Promise<ResourceProviderActionResult> {
-		return await this.fetch(
+		return (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentId}/set-default?api-version=${this.apiVersion}`,
 			{
 				method: 'POST',
 				body: {},
-			}
-		) as ResourceProviderActionResult;
+			},
+		)) as ResourceProviderActionResult;
 	},
 
 	/*
 		Prompts
 	 */
+	async checkPromptName(name: string, promptType: string): Promise<CheckNameResponse> {
+		const payload = {
+			name,
+			type: promptType,
+		};
+
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/checkname?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		)) as CheckNameResponse;
+	},
+
 	async getPrompts(): Promise<ResourceProviderGetResult<Prompt>[] | null> {
 		try {
 			const data = await this.fetch(
@@ -590,9 +603,9 @@ export default {
 		}
 	},
 
-	async createOrUpdatePrompt(agentId: string, request: CreatePromptRequest): Promise<any> {
+	async createOrUpdatePrompt(promptName: string, request: CreatePromptRequest): Promise<any> {
 		return await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${agentId}?api-version=${this.apiVersion}`,
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptName}?api-version=${this.apiVersion}`,
 			{
 				method: 'POST',
 				body: request,
@@ -963,54 +976,21 @@ export default {
 		);
 	},
 
-    /*
-		Workflows
-	 */
-	async getAgentWorkflows(): Promise<any> {
-		return [
-		{
-					type: 'some type',
-					assistant_id: 'blahfuoerhfiuehrifuh',
-					resource_object_ids: {
-						'/instances/whatever': {
-							object_id: 'same',
-							properties: {},
-						},
-
-						'/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel': {
-							object_id: '/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel',
-							properties: {
-								object_role: 'main_model',
-								model_parameters: {
-									temperature: '0.7',
-								},
-							},
-						},
-
-						'/instances/whateverprompt': {
-							object_id: '/instances/whateverprompt',
-							properties: {
-								object_role: 'main_prompt',
-							},
-						},
-					}
-				}
-		];
-		return [
-			mockAzureOpenAIAssistantsWorkflow,
-			mockLangChainExpressionLanguageWorkflow,
-		];
-		return await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/workflows?api-version=${this.apiVersion}`,
-		);
-	},
-
 	/*
 		Agent Workflows
 	 */
 	async getAgentWorkflows(): Promise<any> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/workflows?api-version=${this.apiVersion}`,
+		);
+	},
+
+	/*
+		Agent Tools
+	 */
+	async getAgentTools(): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/tools?api-version=${this.apiVersion}`,
 		);
 	},
 
@@ -1100,8 +1080,8 @@ export default {
 	},
 
 	async getOrchestrationServices(): Promise<APIEndpointConfiguration> {
-		return await this.fetch(
+		return (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations?api-version=${this.apiVersion}`,
-		) as APIEndpointConfiguration;
+		)) as APIEndpointConfiguration;
 	},
 };

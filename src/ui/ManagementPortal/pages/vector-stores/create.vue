@@ -92,8 +92,14 @@
 			</div>
 
 			<!-- Indexer Settings -->
-			<template v-if="vectorStore.indexer" v-for="indexerSetting in indexerSettingFields" :key="indexerSetting.fieldName">
-				<div :id="`aria-${indexerSetting.fieldName}`" class="step-header span-2">{{ indexerSetting.label }}</div>
+			<template
+				v-if="vectorStore.indexer"
+				v-for="indexerSetting in indexerSettingFields"
+				:key="indexerSetting.fieldName"
+			>
+				<div :id="`aria-${indexerSetting.fieldName}`" class="step-header span-2">
+					{{ indexerSetting.label }}
+				</div>
 				<div class="span-2">
 					<InputText
 						v-model="vectorStore.settings[indexerSetting.fieldName]"
@@ -104,7 +110,9 @@
 						:invalid="errors[indexerSetting.fieldName]?.length > 0"
 						@input="handleIndexerSettingFieldInput(indexerSetting, $event)"
 					/>
-					<div v-for="error in errors[indexerSetting.fieldName]" :key="error" class="error-message">{{ error }}</div>
+					<div v-for="error in errors[indexerSetting.fieldName]" :key="error" class="error-message">
+						{{ error }}
+					</div>
 				</div>
 			</template>
 
@@ -123,7 +131,13 @@
 					aria-labelledby="aria-api-endpoint-configuration-object-id"
 					:invalid="errors.api_endpoint_configuration_object_id?.length > 0"
 				/>
-				<div v-for="error in errors.api_endpoint_configuration_object_id" :key="error" class="error-message">{{ error }}</div>
+				<div
+					v-for="error in errors.api_endpoint_configuration_object_id"
+					:key="error"
+					class="error-message"
+				>
+					{{ error }}
+				</div>
 			</div>
 
 			<!-- Buttons -->
@@ -319,9 +333,7 @@ export default {
 			const response = await api.getOrchestrationServices();
 
 			const filteredData = response.filter(
-				(item) =>
-					item.resource.category === 'General' &&
-					item.resource.subcategory === 'Indexing',
+				(item) => item.resource.category === 'General' && item.resource.subcategory === 'Indexing',
 			);
 
 			filteredData.forEach((item) => {

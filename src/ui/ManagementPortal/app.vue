@@ -67,14 +67,16 @@ body,
 .wrapper {
 	display: flex;
 	flex-direction: row;
-	height: 100%;
+	height: 100vh;
+	flex-wrap: wrap;
 }
 
 .page {
 	padding: 32px;
 	padding-top: 24px;
 	padding-bottom: 24px;
-	overflow: scroll;
+	overflow-y: auto;
+	max-height: 100%;
 	flex-grow: 1;
 }
 

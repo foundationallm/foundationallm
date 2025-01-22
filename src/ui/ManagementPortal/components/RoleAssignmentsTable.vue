@@ -42,7 +42,7 @@
 				field="principal.display_name"
 				header="Name"
 				sortable
-				style="min-width: 120px"
+				:style="columnStyle"
 				:pt="{
 					headerCell: {
 						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -69,7 +69,7 @@
 				field="principal_type"
 				header="Type"
 				sortable
-				style="min-width: 120px"
+				:style="columnStyle"
 				:pt="{
 					headerCell: {
 						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -110,7 +110,7 @@
 				field="scope_name"
 				header="Scope"
 				sortable
-				style="min-width: 140px"
+				:style="columnStyle"
 				:pt="{
 					headerCell: {
 						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -194,6 +194,12 @@ export default {
 
 	async created() {
 		await this.getRoleAssignments();
+	},
+
+	computed: {
+		columnStyle() {
+			return window.innerWidth <= 768 ? {} : { minWidth: '200px' };
+		},
 	},
 
 	methods: {

@@ -6,7 +6,28 @@
 		:style="{ minWidth: '80%' }"
 		:closable="false"
 	>
-		<div id="aria-tool-name" class="mb-2 font-weight-bold">Tool name:</div>
+		<!-- 	<div id="aria-tool-type" class="mb-2 font-weight-bold">Tool type:</div>
+		<Dropdown
+			v-model="toolType"
+			:options="toolTypeOptions"
+			option-label="label"
+			option-value="value"
+			placeholder="--Select--"
+			aria-labelledby="aria-tool-type"
+		/> -->
+
+		<!-- 		<div id="aria-tool-name" class="mb-2 font-weight-bold">Tool:</div>
+		<Dropdown
+			v-model="toolObject.name"
+			:options="toolOptions"
+			option-label="label"
+			option-value="label"
+			placeholder="--Select--"
+			aria-labelledby="aria-tool-type"
+			@change="handleToolSelection"
+		/> -->
+
+		<div id="aria-tool-name" class="mt-6 mb-2 font-weight-bold">Tool name:</div>
 		<InputText
 			v-model="toolObject.name"
 			type="text"
@@ -56,7 +77,7 @@
 		<div class="d-flex justify-content-end mt-4">
 			<Button
 				severity="primary"
-				label="Add Resource Object"
+				label="Add Tool Resource"
 				@click="showCreateResourceObjectDialog = true"
 			/>
 		</div>
@@ -76,6 +97,7 @@
 
 <script lang="ts">
 import JsonEditorVue from 'json-editor-vue';
+import api from '@/js/api';
 
 export default {
 	components: {
@@ -89,7 +111,7 @@ export default {
 			default: () => ({
 				name: '' as string,
 				description: '' as string,
-				package_name: '' as string,
+				package_name: 'FoundationaLLM' as string,
 				resource_object_ids: {},
 			}),
 		},
@@ -103,12 +125,27 @@ export default {
 	data() {
 		return {
 			toolObject: {
+				type: 'tool' as string,
 				name: '' as string,
 				description: '' as string,
-				package_name: '' as string,
+				package_name: 'FoundationaLLM' as string,
 				resource_object_ids: {},
 			},
 			showCreateResourceObjectDialog: false,
+
+			// toolType: null,
+			// toolTypeOptions: [
+			// 	{
+			// 		label: 'Internal',
+			// 		value: 'internal',
+			// 	},
+			// 	{
+			// 		label: 'Custom',
+			// 		value: 'custom',
+			// 	},
+			// ] as Object[],
+
+			toolOptions: [] as Object[],
 		};
 	},
 
@@ -121,6 +158,14 @@ export default {
 				this.toolObject = this.modelValue;
 			},
 		},
+	},
+
+	async created() {
+		// const tools = await api.getAgentTools();
+		// this.toolOptions = tools.map((tool) => ({
+		// 	label: tool.resource.name,
+		// 	value: tool.resource,
+		// }));
 	},
 
 	methods: {
@@ -139,9 +184,18 @@ export default {
 				return 'AI Model';
 			} else if (type === 'indexingProfiles') {
 				return 'Indexing Profile';
+			} else if (type === 'apiEndpointConfigurations') {
+				return 'API Endpoint';
 			}
 
 			return type;
+		},
+
+		handleToolSelection(event) {
+			const tool = this.toolOptions.find((tool) => tool.label === event.value)?.value;
+			this.toolObject.type = tool.type;
+			this.toolObject.name = tool.name;
+			this.toolObject.description = tool.description;
 		},
 
 		handleAddResourceObject(resourceObject) {
@@ -150,6 +204,30 @@ export default {
 		},
 
 		handleSave() {
+			const errors = [];
+
+			if (!this.toolObject.name) {
+				errors.push('Please provide a tool name.');
+			}
+
+			if (!this.toolObject.description) {
+				errors.push('Please provide a tool description.');
+			}
+
+			if (!this.toolObject.package_name) {
+				errors.push('Please provide a tool package name.');
+			}
+
+			if (errors.length > 0) {
+				this.$toast.add({
+					severity: 'error',
+					detail: errors.join('\n'),
+					life: 5000,
+				});
+
+				return;
+			}
+
 			this.$emit('update:modelValue', this.toolObject);
 		},
 

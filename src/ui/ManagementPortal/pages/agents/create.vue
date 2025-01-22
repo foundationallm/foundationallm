@@ -604,11 +604,11 @@
 					</template>
 				</CreateAgentStepItem>
 
-				<div class="step-header">Which AI model should the orchestrator use?</div>
-				<div class="step-header">Which capabilities should the agent have?</div>
+				<!-- <div class="step-header">Which AI model should the orchestrator use?</div>
+				<div class="step-header">Which capabilities should the agent have?</div> -->
 
 				<!-- AI model -->
-				<CreateAgentStepItem v-model="editAIModel" focusQuery=".step-container__edit__option">
+				<!-- <CreateAgentStepItem v-model="editAIModel" focusQuery=".step-container__edit__option">
 					<template v-if="selectedAIModel">
 						<div v-if="selectedAIModel.object_id !== ''">
 							<div class="step-container__header">{{ selectedAIModel.name }}</div>
@@ -642,10 +642,10 @@
 							</div>
 						</div>
 					</template>
-				</CreateAgentStepItem>
+				</CreateAgentStepItem> -->
 
 				<!-- Agent capabilities -->
-				<CreateAgentStepItem focusQuery=".agent-capabilities-dropdown input">
+				<!-- <CreateAgentStepItem focusQuery=".agent-capabilities-dropdown input">
 					<div>
 						<span class="step-option__header">Agent Capabilities:</span>
 						<span>{{
@@ -669,7 +669,7 @@
 							/>
 						</div>
 					</template>
-				</CreateAgentStepItem>
+				</CreateAgentStepItem> -->
 
 				<!-- Cost center -->
 				<div id="aria-cost-center" class="step-header span-2">
@@ -697,8 +697,12 @@
 					/>
 				</div>
 
-				<div id="aria-show-message-tokens" class="step-header">Would you like to show the message tokens?</div>
-				<div id="aria-show-message-rating" class="step-header">Would you like to allow the user to rate the agent responses?</div>
+				<div id="aria-show-message-tokens" class="step-header">
+					Would you like to show the message tokens?
+				</div>
+				<div id="aria-show-message-rating" class="step-header">
+					Would you like to allow the user to rate the agent responses?
+				</div>
 
 				<!-- Message tokens -->
 				<div>
@@ -723,9 +727,13 @@
 						aria-labelledby="aria-show-message-rating"
 					/>
 				</div>
-				
-				<div id="aria-show-view-prompt" class="step-header">Would you like to allow the user to see the message prompts?</div>
-				<div id="aria-show-file-upload" class="step-header">Would you like to allow the user to upload files?</div>
+
+				<div id="aria-show-view-prompt" class="step-header">
+					Would you like to allow the user to see the message prompts?
+				</div>
+				<div id="aria-show-file-upload" class="step-header">
+					Would you like to allow the user to upload files?
+				</div>
 				<!-- Show view prompt -->
 				<div>
 					<ToggleButton
@@ -737,9 +745,9 @@
 						aria-labelledby="aria-show-view-prompt"
 					/>
 				</div>
-				
+
 				<!-- Show file upload -->
-				
+
 				<div>
 					<ToggleButton
 						v-model="showFileUpload"
@@ -766,11 +774,7 @@
 					class="dropdown--agent"
 					placeholder="--Select--"
 					aria-labelledby="aria-workflow"
-					@change="
-						selectedWorkflow = JSON.parse(
-							JSON.stringify(workflowOptions.find((workflow) => workflow.type === $event.value)),
-						)
-					"
+					@change="handleWorkflowSelection"
 				/>
 				<Button
 					class="ml-2"
@@ -783,9 +787,49 @@
 
 			<!-- Workflow configuration -->
 			<div v-if="showWorkflowConfiguration" class="span-2">
+				<!-- Workflow name -->
+				<div class="mb-6">
+					<div id="aria-workflow-name" class="step-header mb-3">Workflow name:</div>
+					<InputText
+						v-model="workflowName"
+						type="text"
+						class="w-50"
+						placeholder="Enter workflow name"
+						aria-labelledby="aria-workflow-name"
+					/>
+				</div>
+
+				<!-- Workflow package name -->
+				<div class="mb-6">
+					<div id="aria-workflow-package-name" class="step-header mb-3">Workflow package name:</div>
+					<InputText
+						v-model="workflowPackageName"
+						type="text"
+						class="w-50"
+						placeholder="Enter workflow package name"
+						aria-labelledby="aria-workflow-package-name"
+					/>
+				</div>
+
+				<!-- Workflow host -->
+				<div class="mb-6">
+					<div id="aria-workflow-host" class="step-header mb-3">Workflow host:</div>
+					<div class="span-2">
+						<Dropdown
+							v-model="workflowHost"
+							:options="orchestratorOptions"
+							option-label="label"
+							option-value="value"
+							class="dropdown--agent"
+							placeholder="--Select--"
+							aria-labelledby="aria-workflow-host"
+						/>
+					</div>
+				</div>
+
 				<!-- Workflow main model -->
 				<div class="mb-6">
-					<div class="step-header mb-3">Workflow main model:</div>
+					<div id="aria-workflow-model" class="step-header mb-3">Workflow main model:</div>
 					<Dropdown
 						:modelValue="workflowMainAIModel?.object_id"
 						:options="aiModelOptions"
@@ -793,7 +837,7 @@
 						option-value="object_id"
 						class="dropdown--agent"
 						placeholder="--Select--"
-						aria-labelledby="aria-orchestrator"
+						aria-labelledby="aria-workflow-model"
 						@change="
 							workflowMainAIModel = JSON.parse(
 								JSON.stringify(aiModelOptions.find((model) => model.object_id === $event.value)),
@@ -802,29 +846,12 @@
 					/>
 				</div>
 
-				<!-- Orchestrator -->
-				<div class="mb-6">
-					<div id="aria-orchestrator" class="step-header mb-3">
-						How should the agent communicate with the model?
-					</div>
-					<div class="span-2">
-						<Dropdown
-							v-model="orchestration_settings.orchestrator"
-							:options="orchestratorOptions"
-							option-label="label"
-							option-value="value"
-							class="dropdown--agent"
-							placeholder="--Select--"
-							aria-labelledby="aria-orchestrator"
-						/>
-					</div>
-				</div>
-
 				<!-- Workflow main model parameters -->
 				<div class="step-header mb-3">Workflow main model parameters:</div>
 				<PropertyBuilder v-model="workflowMainAIModelParameters" class="mb-6" />
 
-				<div id="aria-persona" class="step-header mb-3">What is the main model prompt?</div>
+				<!-- Workflow main prompt -->
+				<div id="aria-persona" class="step-header mb-3">What is the main workflow prompt?</div>
 				<div class="span-2">
 					<Textarea
 						v-model="systemPrompt"
@@ -859,6 +886,19 @@
 					<Column
 						field="name"
 						header="Name"
+						sortable
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							sortIcon: { style: { color: 'var(--primary-text)' } },
+						}"
+					/>
+
+					<!-- Tool package name -->
+					<Column
+						field="package_name"
+						header="Package Name"
 						sortable
 						:pt="{
 							headerCell: {
@@ -976,7 +1016,7 @@
 import '@vue-js-cron/light/dist/light.css';
 import type { PropType } from 'vue';
 import { ref } from 'vue';
-import { debounce } from 'lodash';
+import { debounce, clone } from 'lodash';
 import { CronLight } from '@vue-js-cron/light';
 import api from '@/js/api';
 import type {
@@ -1023,7 +1063,7 @@ const getDefaultFormValues = () => {
 		editTextEmbeddingProfile: false as boolean,
 		selectedTextEmbeddingProfile: null as null | TextEmbeddingProfile,
 
-		editAIModel: false as boolean,
+		// editAIModel: false as boolean,
 		selectedAIModel: null as null | AIModel,
 
 		chunkSize: 500,
@@ -1044,19 +1084,24 @@ const getDefaultFormValues = () => {
 		gatekeeperContentSafety: { label: 'None', value: null },
 		gatekeeperDataProtection: { label: 'None', value: null },
 
-		selectedAgentCapabilities: ref(),
+		// selectedAgentCapabilities: ref(),
 		agentCapabilities: { label: 'None', value: null },
 
 		systemPrompt: defaultSystemPrompt as string,
 
-		orchestration_settings: {
-			orchestrator: 'LangChain' as string,
-		},
+		// orchestration_settings: {
+		// 	orchestrator: 'LangChain' as string,
+		// },
+
+		selectedWorkflow: null,
+
+		toolToEdit: null,
+		agentTools: [] as AgentTool[],
 
 		showMessageTokens: false as boolean,
 		showMessageRating: false as boolean,
 		showViewPrompt: false as boolean,
-		showFileUpload: false as boolean
+		showFileUpload: false as boolean,
 	};
 };
 
@@ -1099,6 +1144,9 @@ export default {
 			workflowMainAIModel: null as AIModel | null,
 			// workflowMainPrompt: '' as string,
 			workflowMainAIModelParameters: {} as object,
+			workflowName: '' as string,
+			workflowPackageName: 'FoundationaLLM' as string,
+			workflowHost: '' as string,
 
 			virtualSecurityGroupId: null as string | null,
 
@@ -1159,16 +1207,16 @@ export default {
 				},
 			]),
 
-			agentCapabilitiesOptions: ref([
-				{
-					name: 'OpenAI Assistants',
-					code: 'OpenAI.Assistants',
-				},
-				{
-					name: 'FLLM Knowledge Management',
-					code: 'FoundationaLLM.KnowledgeManagement',
-				},
-			]),
+			// agentCapabilitiesOptions: ref([
+			// 	{
+			// 		name: 'OpenAI Assistants',
+			// 		code: 'OpenAI.Assistants',
+			// 	},
+			// 	{
+			// 		name: 'FLLM Knowledge Management',
+			// 		code: 'FoundationaLLM.KnowledgeManagement',
+			// 	},
+			// ]),
 		};
 	},
 
@@ -1189,6 +1237,9 @@ export default {
 
 	watch: {
 		selectedWorkflow() {
+			this.workflowName = this.selectedWorkflow?.name ?? this.workflowName;
+			this.workflowHost = this.selectedWorkflow?.workflow_host ?? this.workflowHost;
+
 			if (this.selectedWorkflow?.resource_object_ids) {
 				const existingMainModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
 					(resource) => resource.properties?.object_role === 'main_model',
@@ -1322,6 +1373,10 @@ export default {
 			}
 
 			if (agent.workflow) {
+				this.workflowName = agent.workflow.name ?? '';
+				this.workflowPackageName = agent.workflow.package_name ?? '';
+				this.workflowHost = agent.workflow.workflow_host ?? '';
+
 				const existingMainModel = Object.values(agent.workflow.resource_object_ids).find(
 					(resource) => resource.properties?.object_role === 'main_model',
 				);
@@ -1353,8 +1408,8 @@ export default {
 				? new Date(agent.expiration_date)
 				: this.expirationDate;
 
-			this.orchestration_settings.orchestrator =
-				agent.orchestration_settings?.orchestrator || this.orchestration_settings.orchestrator;
+			// this.orchestration_settings.orchestrator =
+			// 	agent.orchestration_settings?.orchestrator || this.orchestration_settings.orchestrator;
 
 			if (agent.vectorization) {
 				this.dedicated_pipeline = agent.vectorization.dedicated_pipeline;
@@ -1386,9 +1441,9 @@ export default {
 					(dataSource) => dataSource.object_id === agent.vectorization?.data_source_object_id,
 				) || null;
 
-			this.selectedAIModel =
-				this.aiModelOptions.find((aiModel) => aiModel.object_id === agent.ai_model_object_id) ||
-				null;
+			// this.selectedAIModel =
+			// 	this.aiModelOptions.find((aiModel) => aiModel.object_id === agent.ai_model_object_id) ||
+			// 	null;
 
 			this.conversationHistory =
 				agent.conversation_history_settings?.enabled || this.conversationHistory;
@@ -1409,12 +1464,16 @@ export default {
 					) || this.selectedGatekeeperDataProtection;
 			}
 
-			if (agent.capabilities) {
-				this.selectedAgentCapabilities =
-					this.agentCapabilitiesOptions.filter((localOption) =>
-						agent.capabilities?.includes(localOption.code),
-					) || this.selectedAgentCapabilities;
-			}
+			// if (agent.capabilities) {
+			// 	this.selectedAgentCapabilities =
+			// 		this.agentCapabilitiesOptions.filter((localOption) =>
+			// 			agent.capabilities?.includes(localOption.code),
+			// 		) || this.selectedAgentCapabilities;
+			// }
+
+			this.agentTools = agent.tools;
+
+			this.selectedWorkflow = agent.workflow;
 
 			this.showMessageTokens = agent.show_message_tokens ?? false;
 			this.showMessageRating = agent.show_message_rating ?? false;
@@ -1476,6 +1535,12 @@ export default {
 			}
 		},
 
+		handleWorkflowSelection(event) {
+			this.selectedWorkflow = clone(
+				this.workflowOptions.find((workflow) => workflow.type === event.value),
+			);
+		},
+
 		handleAgentTypeSelect(type: Agent['type']) {
 			this.agentType = type;
 		},
@@ -1495,10 +1560,10 @@ export default {
 			this.editTextEmbeddingProfile = false;
 		},
 
-		handleAIModelSelected(aiModel: AIModel) {
-			this.selectedAIModel = aiModel;
-			this.editAIModel = false;
-		},
+		// handleAIModelSelected(aiModel: AIModel) {
+		// 	this.selectedAIModel = aiModel;
+		// 	this.editAIModel = false;
+		// },
 
 		handleCopySecurityGroupId() {
 			if (this.virtualSecurityGroupId) {
@@ -1542,16 +1607,28 @@ export default {
 				this.text_embedding_profile_object_id = this.selectedTextEmbeddingProfile?.object_id ?? '';
 			}
 
-			if (!this.orchestration_settings.orchestrator) {
-				errors.push('Please select an orchestrator.');
-			}
+			// if (!this.orchestration_settings.orchestrator) {
+			// 	errors.push('Please select an orchestrator / workflow host.');
+			// }
 
-			if (!this.selectedAIModel) {
-				errors.push('Please select an AI model for the orchestrator.');
-			}
+			// if (!this.selectedAIModel) {
+			// 	errors.push('Please select an AI model for the orchestrator.');
+			// }
 
 			if (!this.selectedWorkflow) {
 				errors.push('Please select a workflow.');
+			}
+
+			if (!this.workflowName) {
+				errors.push('Please provide a workflow name.');
+			}
+
+			if (!this.workflowPackageName) {
+				errors.push('Please provide a workflow package name.');
+			}
+
+			if (!this.workflowHost) {
+				errors.push('Please select a workflow host.');
 			}
 
 			if (!this.workflowMainAIModel) {
@@ -1583,14 +1660,15 @@ export default {
 			this.loading = true;
 			this.loadingStatusText = 'Saving agent...';
 
-			const promptRequest = {
-				type: 'multipart',
-				name: this.agentName,
-				cost_center: this.cost_center,
-				description: `System prompt for the ${this.agentName} agent`,
-				prefix: this.systemPrompt,
-				suffix: '',
-			};
+            const promptRequest = {
+                type: 'multipart',
+                name: this.agentName,
+                cost_center: this.cost_center,
+                description: `System prompt for the ${this.agentName} agent`,
+                prefix: this.systemPrompt,
+                suffix: '',
+                category: 'Agent',
+            };
 
 			const tokenTextPartitionRequest = {
 				text_splitter: 'TokenTextSplitter',
@@ -1661,8 +1739,10 @@ export default {
 				if (this.selectedWorkflow) {
 					workflow = {
 						...this.selectedWorkflow,
-						workflow_host: this.orchestration_settings.orchestrator,
-						// workflow_name: '',
+						workflow_host: this.workflowHost,
+						name: this.workflowName,
+						package_name: this.workflowPackageName,
+						assistant_id: '',
 
 						resource_object_ids: {
 							...this.selectedWorkflow.resource_object_ids,
@@ -1739,13 +1819,13 @@ export default {
 						].filter((option) => option !== null),
 					},
 
-					capabilities: (this.selectedAgentCapabilities || []).map((option: any) => option.code),
+					// capabilities: (this.selectedAgentCapabilities || []).map((option: any) => option.code),
 
 					sessions_enabled: true,
 
 					prompt_object_id: promptObjectId,
-					orchestration_settings: this.orchestration_settings,
-					ai_model_object_id: this.selectedAIModel.object_id,
+					// orchestration_settings: this.orchestration_settings,
+					// ai_model_object_id: this.selectedAIModel.object_id,
 
 					tools: this.agentTools,
 
