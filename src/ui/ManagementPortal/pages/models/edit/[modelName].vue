@@ -1,5 +1,5 @@
 <template>
-	<CreateModel :edit-id="$route.params.modelOrEndpointName" />
+	<CreateModel :edit-id="$route.params.modelName" />
 </template>
 
 <script lang="ts">
