@@ -2,15 +2,15 @@
 	<div>
 		<div style="display: flex">
 			<div style="flex: 1">
-				<h2 class="page-header">Model Endpoints</h2>
-				<div class="page-subheader">The following endpoints are available.</div>
+				<h2 class="page-header">API Endpoints</h2>
+				<div class="page-subheader">The following API endpoints are available.</div>
 			</div>
 
 			<div style="display: flex; align-items: center">
 				<NuxtLink to="/model-endpoints/create">
 					<Button>
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
-						Create Endpoint
+						Create API Endpoint
 					</Button>
 				</NuxtLink>
 			</div>
@@ -27,7 +27,7 @@
 
 			<!-- Table -->
 			<DataTable
-				:value="aiModelEndpoints"
+				:value="apiEndpoints"
 				striped-rows
 				scrollable
 				sortField="resource.name"
@@ -148,7 +148,7 @@ export default {
 
 	data() {
 		return {
-			aiModelEndpoints: [] as APIEndpointConfiguration,
+			apiEndpoints: [] as APIEndpointConfiguration,
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 			itemToDelete: null as APIEndpointConfiguration | null,
@@ -163,8 +163,8 @@ export default {
 		async getEndpoints() {
 			this.loading = true;
 			try {
-				this.aiModelEndpoints = await api.getAPIEndpointConfigurations();
-				this.aiModelEndpoints = this.aiModelEndpoints;//.filter(({ resource }) => ['AIModel'].includes(resource.subcategory));
+				this.apiEndpoints = await api.getAPIEndpointConfigurations();
+				this.apiEndpoints = this.apiEndpoints;//.filter(({ resource }) => ['AIModel'].includes(resource.subcategory));
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',
