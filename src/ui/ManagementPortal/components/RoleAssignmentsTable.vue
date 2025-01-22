@@ -138,7 +138,7 @@
 				<template #body="{ data }">
 					<Button
 						link
-						:aria-label="`Delete role assignment ${data.principal?.display_name? 'for ' + data.principal?.display_name : ''}`"
+						:aria-label="`Delete role assignment ${data.principal?.display_name ? 'for ' + data.principal?.display_name : ''}`"
 						@click="roleAssignmentToDelete = data"
 					>
 						<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
@@ -197,10 +197,10 @@ export default {
 	},
 
 	computed: {
-        columnStyle() {
-            return window.innerWidth <= 768 ? {} : { minWidth: '200px' };
-        },
-    },
+		columnStyle() {
+			return window.innerWidth <= 768 ? {} : { minWidth: '200px' };
+		},
+	},
 
 	methods: {
 		async getRoleAssignments() {

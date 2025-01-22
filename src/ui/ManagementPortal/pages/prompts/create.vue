@@ -3,7 +3,9 @@
 		<div style="display: flex">
 			<!-- Title -->
 			<div style="flex: 1">
-				<h2 class="page-header">{{ editPrompt ? 'Edit Agent Prompt' : 'Create New Agent Prompt' }}</h2>
+				<h2 class="page-header">
+					{{ editPrompt ? 'Edit Prompt' : 'Create New Prompt' }}
+				</h2>
 				<div class="page-subheader">
 					{{
 						editPrompt
@@ -100,7 +102,7 @@
 					/>
 				</div>
 			</section>
-			
+
 			<div class="span-2 d-flex justify-content-end" style="gap: 16px">
 				<!-- Create agent -->
 				<Button
@@ -111,12 +113,7 @@
 				/>
 
 				<!-- Cancel -->
-				<Button
-					v-if="editPrompt"
-					label="Cancel"
-					severity="secondary"
-					@click="handleCancel"
-				/>
+				<Button v-if="editPrompt" label="Cancel" severity="secondary" @click="handleCancel" />
 			</div>
 		</div>
 	</main>
@@ -127,10 +124,7 @@ import type { PropType } from 'vue';
 import { ref } from 'vue';
 import { debounce } from 'lodash';
 import api from '@/js/api';
-import type {
-	Prompt,
-	CreatePromptRequest
-} from '@/js/types';
+import type { Prompt, CreatePromptRequest } from '@/js/types';
 
 export default {
 	name: 'CreatePrompt',

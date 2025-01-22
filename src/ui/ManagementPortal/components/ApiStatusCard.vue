@@ -154,7 +154,7 @@ export default {
 }
 
 .api-status-card .api-status-card__url {
-    word-break: break-all;
+	word-break: break-all;
 }
 
 @media (max-width: 600px) {
