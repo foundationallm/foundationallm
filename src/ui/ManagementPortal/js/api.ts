@@ -555,6 +555,21 @@ export default {
 	/*
 		Prompts
 	 */
+	async checkPromptName(name: string, promptType: string): Promise<CheckNameResponse> {
+		const payload = {
+			name,
+			type: promptType,
+		};
+
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/checkname?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		)) as CheckNameResponse;
+	},
+
 	async getPrompts(): Promise<ResourceProviderGetResult<Prompt>[] | null> {
 		try {
 			const data = await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts?api-version=${this.apiVersion}`);
@@ -584,9 +599,9 @@ export default {
 		}
 	},
 
-	async createOrUpdatePrompt(agentId: string, request: CreatePromptRequest): Promise<any> {
+	async createOrUpdatePrompt(promptName: string, request: CreatePromptRequest): Promise<any> {
 		return await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${agentId}?api-version=${this.apiVersion}`,
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptName}?api-version=${this.apiVersion}`,
 			{
 				method: 'POST',
 				body: request,
