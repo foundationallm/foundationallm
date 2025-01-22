@@ -582,9 +582,9 @@ export default {
 					this.validationMessage = response.message;
 				}
 			} catch (error) {
-				console.error('Error checking agent name: ', error);
+				console.error('Error checking data source name: ', error);
 				this.nameValidationStatus = 'invalid';
-				this.validationMessage = 'Error checking the agent name. Please try again.';
+				this.validationMessage = 'Error checking the data source name. Please try again.';
 			}
 		},
 
@@ -612,6 +612,9 @@ export default {
 			if (!this.dataSource.name) {
 				errors.push('Please give the data source a name.');
 			}
+			if (this.nameValidationStatus === 'invalid') {
+                errors.push(this.validationMessage);
+            }
 
 			if (!this.dataSource.type) {
 				errors.push('Please specify a data source type.');
