@@ -61,6 +61,21 @@ export type AgentTool = {
 	properties: { [key: string]: any };
 };
 
+export type AgentWorkflow = {
+	type: string;
+	assistant_id: string;
+	name: string;
+	package_name: string;
+	workflow_host: string;
+	properties: Object;
+	resource_object_ids: {
+		[key: string]: {
+			object_id: string;
+			properties: Object;
+		};
+	};
+};
+
 export type Agent = ResourceBase & {
 	type: 'knowledge-management' | 'analytics';
 	inline_context: boolean;
@@ -85,6 +100,7 @@ export type Agent = ResourceBase & {
 
 	capabilities: string[];
 	tools: AgentTool[];
+	workflow: AgentWorkflow;
 
 	sessions_enabled: boolean;
 	orchestration_settings: {

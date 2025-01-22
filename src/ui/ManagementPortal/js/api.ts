@@ -543,13 +543,13 @@ export default {
 	},
 
 	async setDefaultAgent(agentId: string): Promise<ResourceProviderActionResult> {
-		return await this.fetch(
+		return (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentId}/set-default?api-version=${this.apiVersion}`,
 			{
 				method: 'POST',
 				body: {},
-			}
-		) as ResourceProviderActionResult;
+			},
+		)) as ResourceProviderActionResult;
 	},
 
 	/*
@@ -557,7 +557,9 @@ export default {
 	 */
 	async getPrompts(): Promise<ResourceProviderGetResult<Prompt>[] | null> {
 		try {
-			const data = await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts?api-version=${this.apiVersion}`);
+			const data = await this.fetch(
+				`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts?api-version=${this.apiVersion}`,
+			);
 			return data as ResourceProviderGetResult<Prompt>[];
 		} catch (error) {
 			return null;
@@ -567,7 +569,9 @@ export default {
 	async getPromptByName(promptName: string): Promise<ResourceProviderGetResult<Prompt> | null> {
 		// Attempt to retrieve the prompt. If it doesn't exist, return an empty object.
 		try {
-			const data = await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptName}?api-version=${this.apiVersion}`);
+			const data = await this.fetch(
+				`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptName}?api-version=${this.apiVersion}`,
+			);
 			return data[0];
 		} catch (error) {
 			return null;
@@ -662,6 +666,9 @@ export default {
 		);
 	},
 
+	/*
+		AI Models
+	 */
 	async getAIModels(): Promise<ResourceProviderGetResult<AIModel>[]> {
 		const data = (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels?api-version=${this.apiVersion}`,
@@ -845,6 +852,24 @@ export default {
 	},
 
 	/*
+		Agent Workflows
+	 */
+	async getAgentWorkflows(): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/workflows?api-version=${this.apiVersion}`,
+		);
+	},
+
+	/*
+		Agent Tools
+	 */
+	async getAgentTools(): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/tools?api-version=${this.apiVersion}`,
+		);
+	},
+
+	/*
 		Agent Access Tokens
 	 */
 	async getAgentAccessTokens(agentName: string) {
@@ -853,14 +878,17 @@ export default {
 		)) as ResourceProviderGetResult<AgentAccessToken>[];
 	},
 
-	async createAgentAccessToken(agentName: string, body: AgentAccessToken): Promise<ResourceProviderUpsertResult> {
-		return await this.fetch(
+	async createAgentAccessToken(
+		agentName: string,
+		body: AgentAccessToken,
+	): Promise<ResourceProviderUpsertResult> {
+		return (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentAccessTokens/${body.id}?api-version=${this.apiVersion}`,
 			{
 				method: 'POST',
 				body,
 			},
-		) as ResourceProviderUpsertResult;
+		)) as ResourceProviderUpsertResult;
 	},
 
 	async deleteAgentAccessToken(agentName: string, accessTokenId: string): Promise<any> {
@@ -927,8 +955,8 @@ export default {
 	},
 
 	async getOrchestrationServices(): Promise<APIEndpointConfiguration> {
-		return await this.fetch(
+		return (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations?api-version=${this.apiVersion}`,
-		) as APIEndpointConfiguration;
+		)) as APIEndpointConfiguration;
 	},
 };
