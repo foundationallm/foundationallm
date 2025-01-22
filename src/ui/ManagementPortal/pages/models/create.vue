@@ -138,7 +138,7 @@ export default {
 				name: null as string | null,
 				type: null as string | null,
 				// object_id: '',
-				endpoint_object_id:'' as string,
+				endpoint_object_id: '' as string,
 				// display_name: '' as string,
 				// deployment_name: 'completions4' as string,
 				// version: '0.0' as string,
@@ -169,8 +169,12 @@ export default {
 	async created() {
 		this.loading = true;
 		this.loadingStatusText = `Retrieving AI model endpoints...`;
-		const modelEndpoints = (await api.getAPIEndpointConfigurations()).map((endpoint) => endpoint.resource);
-		this.aiModelEndpointOptions = modelEndpoints.filter((resource) => ['AIModel'].includes(resource.subcategory));
+		const modelEndpoints = (await api.getAPIEndpointConfigurations()).map(
+			(endpoint) => endpoint.resource,
+		);
+		this.aiModelEndpointOptions = modelEndpoints.filter((resource) =>
+			['AIModel'].includes(resource.subcategory),
+		);
 		this.loading = false;
 
 		if (this.editId) {

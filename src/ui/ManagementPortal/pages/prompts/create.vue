@@ -173,7 +173,8 @@ export default {
 		if (this.editPrompt && this.promptName !== '') {
 			this.loadingStatusText = `Retrieving prompt: ${this.promptName}...`;
 			const promptGetResult = await api.getPromptByName(this.promptName);
-			this.editable = promptGetResult?.actions.includes('FoundationaLLM.Prompt/prompts/write') ?? false;
+			this.editable =
+				promptGetResult?.actions.includes('FoundationaLLM.Prompt/prompts/write') ?? false;
 
 			const prompt = promptGetResult?.resource;
 			this.loadingStatusText = `Mapping prompt values to form...`;
@@ -217,7 +218,7 @@ export default {
 				this.validationMessage = 'Error checking the prompt name. Please try again.';
 			}
 		},
-		
+
 		handleNameInput(event) {
 			const sanitizedValue = this.$filters.sanitizeNameInput(event);
 			this.prompt.name = sanitizedValue;
@@ -235,8 +236,8 @@ export default {
 				errors.push('Please give the prompt a name.');
 			}
 			if (this.nameValidationStatus === 'invalid') {
-                errors.push(this.validationMessage);
-            }
+				errors.push(this.validationMessage);
+			}
 
 			if (!this.prompt.prefix) {
 				errors.push('The prompt requires a prefix.');

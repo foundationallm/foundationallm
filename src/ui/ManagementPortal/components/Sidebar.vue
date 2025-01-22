@@ -64,14 +64,10 @@
 				</h3>
 				<ul>
 					<li>
-						<NuxtLink to="/models" class="sidebar__item">
-							AI Models
-						</NuxtLink>
+						<NuxtLink to="/models" class="sidebar__item">AI Models</NuxtLink>
 					</li>
 					<li>
-						<NuxtLink to="/api-endpoints" class="sidebar__item">
-							API Endpoints
-						</NuxtLink>
+						<NuxtLink to="/api-endpoints" class="sidebar__item">API Endpoints</NuxtLink>
 					</li>
 				</ul>
 

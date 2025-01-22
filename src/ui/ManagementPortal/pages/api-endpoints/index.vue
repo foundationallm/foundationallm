@@ -121,7 +121,7 @@
 				>
 					<template #body="{ data }">
 						<Button link @click="itemToDelete = data.resource">
-							<i class="pi pi-trash" style="font-size: 1.2rem;"></i>
+							<i class="pi pi-trash" style="font-size: 1.2rem"></i>
 						</Button>
 					</template>
 				</Column>
@@ -164,7 +164,7 @@ export default {
 			this.loading = true;
 			try {
 				this.apiEndpoints = await api.getAPIEndpointConfigurations();
-				this.apiEndpoints = this.apiEndpoints;//.filter(({ resource }) => ['AIModel'].includes(resource.subcategory));
+				this.apiEndpoints = this.apiEndpoints; //.filter(({ resource }) => ['AIModel'].includes(resource.subcategory));
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',

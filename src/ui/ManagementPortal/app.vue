@@ -1,9 +1,9 @@
 <template>
-		<Head>
-			<Title>{{ pageTitle }}</Title>
-			<Meta name="description" :content="pageTitle" />
-			<Link rel="icon" type="image/x-icon" :href="iconLink" />
-		</Head>
+	<Head>
+		<Title>{{ pageTitle }}</Title>
+		<Meta name="description" :content="pageTitle" />
+		<Link rel="icon" type="image/x-icon" :href="iconLink" />
+	</Head>
 
 	<div class="main-content">
 		<NuxtLayout>

@@ -670,22 +670,28 @@ export default {
 		return data;
 	},
 
-	async getAPIEndpointConfiguration(apiEndpointName: string): Promise<ResourceProviderGetResult<any>[]> {
+	async getAPIEndpointConfiguration(
+		apiEndpointName: string,
+	): Promise<ResourceProviderGetResult<any>[]> {
 		const [data] = (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/${apiEndpointName}?api-version=${this.apiVersion}`,
 		)) as ResourceProviderGetResult<any>[];
 
 		data.resource.resolved_configuration_references = {};
 
-    if (data.resource.authentication_type === 'APIKey') {
-			const apiKeySecret = await this.getAppConfig(data.resource.authentication_parameters.api_key_configuration_name);
+		if (data.resource.authentication_type === 'APIKey') {
+			const apiKeySecret = await this.getAppConfig(
+				data.resource.authentication_parameters.api_key_configuration_name,
+			);
 			data.resource.resolved_configuration_references.APIKey = apiKeySecret?.resource?.value;
-    }
+		}
 
 		return data;
 	},
 
-	async createAPIEndpointConfiguration(apiEndpoint: any): Promise<ResourceProviderGetResult<any>[]> {
+	async createAPIEndpointConfiguration(
+		apiEndpoint: any,
+	): Promise<ResourceProviderGetResult<any>[]> {
 		if (apiEndpoint.authentication_type === 'APIKey') {
 			var appConfigKey = `FoundationaLLM:APIEndpoints:${apiEndpoint.name}:Essentials:APIKey`;
 			let appConfig: AppConfigKeyVault = {
@@ -699,7 +705,8 @@ export default {
 
 			const appConfigResult = await this.getAppConfig('FoundationaLLM:Configuration:KeyVaultURI');
 			const keyVaultUri = appConfigResult.resource;
-			const keyVaultSecretName = `foundationallm-apiendpoints-${apiEndpoint.name}-apikey`.toLowerCase();
+			const keyVaultSecretName =
+				`foundationallm-apiendpoints-${apiEndpoint.name}-apikey`.toLowerCase();
 
 			appConfig = {
 				...appConfig,
@@ -719,10 +726,12 @@ export default {
 					...apiEndpoint,
 					resolved_configuration_references: undefined,
 					authentication_parameters: {
-						...(apiEndpoint.authentication_type === 'APIKey' ? {
-							api_key_configuration_name: appConfigKey,
-							api_key_header_name: apiEndpoint.authentication_parameters?.api_key_header_name,
-						} : {})
+						...(apiEndpoint.authentication_type === 'APIKey'
+							? {
+									api_key_configuration_name: appConfigKey,
+									api_key_header_name: apiEndpoint.authentication_parameters?.api_key_header_name,
+								}
+							: {}),
 					},
 				},
 			},
@@ -806,7 +815,7 @@ export default {
 				body: {
 					// Type must be the first property sent in the payload in order to succeed
 					type: aiModel.type,
-					...aiModelNoType
+					...aiModelNoType,
 				},
 			},
 		);

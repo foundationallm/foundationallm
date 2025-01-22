@@ -128,10 +128,7 @@
 				/>
 
 				<!-- API Key details -->
-				<div
-					v-if="apiEndpoint.authentication_type === 'APIKey'"
-					class="span-2 mb-4"
-				>
+				<div v-if="apiEndpoint.authentication_type === 'APIKey'" class="span-2 mb-4">
 					<!-- Header name -->
 					<div class="mb-2">API Key Header Name:</div>
 					<InputText
@@ -151,18 +148,11 @@
 
 				<!-- API Version -->
 				<div class="mb-2">API Version:</div>
-				<InputText
-					v-model="apiEndpoint.api_version"
-					class="w-100 mb-4"
-					type="text"
-				/>
+				<InputText v-model="apiEndpoint.api_version" class="w-100 mb-4" type="text" />
 
 				<!-- Timeout -->
 				<div class="mb-2">Timeout (seconds):</div>
-				<InputNumber
-					v-model="apiEndpoint.timeout_seconds"
-					class="w-100 mb-4"
-				/>
+				<InputNumber v-model="apiEndpoint.timeout_seconds" class="w-100 mb-4" />
 
 				<!-- Status URL -->
 				<div id="aria-status-url" class="mb-2">Status URL:</div>
@@ -236,16 +226,16 @@ export default {
 				description: null,
 				cost_center: null,
 				expiration_date: null as string | null,
-			  display_name: null as string | null,
+				display_name: null as string | null,
 				name: '' as string,
 				url: '' as string,
-			  api_version: '' as string,
+				api_version: '' as string,
 				status_url: null as string | null,
 				timeout_seconds: 60 as number,
-			  retry_strategy_name: 'ExponentialBackoff',
+				retry_strategy_name: 'ExponentialBackoff',
 				category: 'General',
 				subcategory: 'AIModel',
-			 	provider: 'microsoft',
+				provider: 'microsoft',
 				authentication_type: 'APIKey',
 				operation_type: 'chat',
 				url_exceptions: [],

@@ -1,4 +1,9 @@
-import type { AgentIndex, AzureDataLakeDataSource, AgentWorkflowBase, AgentWorkflowAIModel } from './types';
+import type {
+	AgentIndex,
+	AzureDataLakeDataSource,
+	AgentWorkflowBase,
+	AgentWorkflowAIModel,
+} from './types';
 
 export const mockGetAgentIndexesResponse: AgentIndex[] = [
 	{
@@ -421,7 +426,8 @@ export const mockAzureOpenAIAssistantsWorkflow: AgentWorkflowBase = {
 	workflow_name: 'Azure OpenAI Assistants Workflow',
 	agent_workflow_ai_models: {
 		main_model: {
-			ai_model_object_id: '/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel',
+			ai_model_object_id:
+				'/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel',
 			model_parameters: {
 				temperature: 0.7,
 				max_tokens: 100,
