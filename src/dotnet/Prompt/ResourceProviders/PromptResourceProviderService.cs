@@ -102,7 +102,7 @@ namespace FoundationaLLM.Prompt.ResourceProviders
             {
                 PromptResourceTypeNames.Prompts => resourcePath.Action switch
                 {
-                    ResourceProviderActions.CheckName => CheckResourceName<PromptBase>(
+                    ResourceProviderActions.CheckName => await CheckResourceName<PromptBase>(
                         JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
                     ResourceProviderActions.Purge => await PurgeResource<PromptBase>(resourcePath),
                     _ => throw new ResourceProviderException(
