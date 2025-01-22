@@ -34,9 +34,26 @@
 						:disabled="editPrompt"
 						type="text"
 						class="w-100"
-						placeholder="Enter agent prompt name"
+						placeholder="Enter prompt name"
 						aria-labelledby="aria-agent-name aria-agent-name-desc"
+						@input="handleNameInput"
 					/>
+					<span
+						v-if="nameValidationStatus === 'valid'"
+						class="icon valid"
+						title="Name is available"
+						aria-label="Name is available"
+					>
+						✔️
+					</span>
+					<span
+						v-else-if="nameValidationStatus === 'invalid'"
+						:title="validationMessage"
+						class="icon invalid"
+						:aria-label="validationMessage"
+					>
+						❌
+					</span>
 				</div>
 			</div>
 			<div class="span-2">
@@ -48,8 +65,20 @@
 					v-model="prompt.description"
 					type="text"
 					class="w-100"
-					placeholder="Enter agent description"
+					placeholder="Enter prompt description"
 					aria-labelledby="aria-description"
+				/>
+			</div>
+			<div class="span-2">
+				<div class="step-header mb-2">Category:</div>
+				<Dropdown
+					v-model="prompt.category"
+					:options="categoryOptions"
+					option-label="label"
+					option-value="value"
+					class="dropdown--agent"
+					placeholder="--Select--"
+					aria-labelledby="aria-source-type"
 				/>
 			</div>
 
@@ -112,6 +141,11 @@ export default {
 			required: false,
 			default: false,
 		},
+		promptName: {
+			type: String as PropType<string>,
+			required: false,
+			default: '',
+		},
 	},
 
 	data() {
@@ -125,15 +159,26 @@ export default {
 
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			validationMessage: '' as string,
+
+			categoryOptions: [
+				{
+					label: 'Agent',
+					value: 'Agent',
+				},
+				{
+					label: 'Tool',
+					value: 'Tool',
+				},
+			],
 		};
 	},
 
 	async created() {
 		this.loading = true;
 
-		if (this.editPrompt) {
-			this.loadingStatusText = `Retrieving prompt: ${this.editPrompt}...`;
-			const promptGetResult = await api.getPromptByName(this.editPrompt);
+		if (this.editPrompt && this.promptName !== '') {
+			this.loadingStatusText = `Retrieving prompt: ${this.promptName}...`;
+			const promptGetResult = await api.getPromptByName(this.promptName);
 			this.editable = promptGetResult?.actions.includes('FoundationaLLM.Prompt/prompts/write') ?? false;
 
 			const prompt = promptGetResult?.resource;
@@ -144,6 +189,8 @@ export default {
 		} else {
 			this.editable = true;
 		}
+
+		this.debouncedCheckName = debounce(this.checkName, 500);
 
 		this.loading = false;
 	},
@@ -156,14 +203,53 @@ export default {
 			this.$router.push('/prompts');
 		},
 
+		async checkName() {
+			try {
+				const response = await api.checkPromptName(this.prompt.name, this.prompt.type);
+
+				// Handle response based on the status
+				if (response.status === 'Allowed') {
+					// Name is available
+					this.nameValidationStatus = 'valid';
+					this.validationMessage = null;
+				} else if (response.status === 'Denied') {
+					// Name is taken
+					this.nameValidationStatus = 'invalid';
+					this.validationMessage = response.message;
+				}
+			} catch (error) {
+				console.error('Error checking prompt name: ', error);
+				this.nameValidationStatus = 'invalid';
+				this.validationMessage = 'Error checking the prompt name. Please try again.';
+			}
+		},
+		
+		handleNameInput(event) {
+			const sanitizedValue = this.$filters.sanitizeNameInput(event);
+			this.prompt.name = sanitizedValue;
+			this.sourceName = sanitizedValue;
+
+			// Check if the name is available if we are creating a new prompt.
+			if (!this.editPrompt) {
+				this.debouncedCheckName();
+			}
+		},
+
 		async handleCreatePrompt() {
 			const errors = [];
 			if (!this.prompt.name) {
 				errors.push('Please give the prompt a name.');
 			}
+			if (this.nameValidationStatus === 'invalid') {
+                errors.push(this.validationMessage);
+            }
 
 			if (!this.prompt.prefix) {
 				errors.push('The prompt requires a prefix.');
+			}
+
+			if (!this.prompt.category) {
+				errors.push('Please select a category for the prompt.');
 			}
 
 			if (errors.length > 0) {
@@ -190,10 +276,11 @@ export default {
 				display_name: this.prompt.display_name,
 				expiration_date: this.prompt.expiration_date,
 				properties: this.prompt.properties,
+				category: this.prompt.category,
 			};
 
 			try {
-				await api.createOrUpdatePrompt(this.editPrompt, promptRequest);
+				await api.createOrUpdatePrompt(this.prompt.name, promptRequest);
 			} catch (error) {
 				this.loading = false;
 				return this.$toast.add({
