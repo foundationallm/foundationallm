@@ -167,6 +167,53 @@ A new `Workflow` resource must be added to the `FoundationaLLM.Agent` resource p
 }
 ```
 
+## Starting with 0.9.2-rc005
+
+### Agent configuration changes
+
+Starting with this version, all agents MUST transition to the agent workflow configuraiton approach.
+
+The following agent properties are no longer supported and should be deleted as part of upgrading to this version:
+
+- `OrchestrationSettings` - fully replaced by the agent worflow settings.
+- `PromptObjectId` - replaced by the agent workflow resource object identifier with an `object_role` of `main_prompt`.
+- `AIModelObjectId` - replaced by the agent workflow resource object identifier with an `object_role` of `main_model`.
+- `Capabilities` - removed. The equivalent of having Azure OpenAI Assistants capabilities is having an agent workflow with the type `azure-openai-assistants-workflow`.
+- `Azure.OpenAI.Assistant.Id` property in `properties` - replaced by the `assistant_id` property of an agent workflow witht the type `azure-openai-assistants-workflow`.
+
+>[!IMPORTANT]
+>If the `Azure.OpenAI.Assistant.Id` property is set in the agent properties, it's value must be copied to the `assistant_id` property of the agent workflow.
+
+Here is an example of a fully configured worfklow section for an agent:
+
+```json
+{
+    "type": "azure-openai-assistants-workflow",
+		"name": "OpenAIAssistants",
+		"package_name": "FoundationaLLM",
+    "assistant_id": "asst_...",
+    "resource_object_ids": {
+        "/instances/.../providers/FoundationaLLM.Agent/workflows/OpenAIAssistants": {
+            "object_id": "/instances/.../providers/FoundationaLLM.Agent/workflows/OpenAIAssistants",
+            "properties": {}
+        },
+        "/instances/.../providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel" : {
+            "object_id": "/instances/.../providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel",
+            "properties": {
+                "object_role": "main_model",
+                "model_parameters": {}
+            }
+        },
+        "/instances/.../providers/FoundationaLLM.Prompt/prompts/FoundationaLLM-mini": {
+            "object_id": "/instances/.../providers/FoundationaLLM.Prompt/prompts/FoundationaLLM-mini",
+            "properties": {
+                "object_role": "main_prompt"
+            }
+        }
+    }
+}
+```
+
 ## Starting with 0.9.1-rc102
 
 ### Configuration changes
