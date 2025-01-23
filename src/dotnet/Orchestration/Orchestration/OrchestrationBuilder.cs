@@ -346,7 +346,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     }
                 }
 
-                if (agentBase.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants))
+                if (agentBase.HasAzureOpenAIAssistantsWorkflow())
                 {
                     explodedObjectsManager.TryAdd(
                         CompletionRequestObjectsKeys.OpenAIAssistantsAssistantId,
@@ -703,7 +703,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 #region Legacy agent code
 
-                if (agent.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants))
+                if (agent.HasAzureOpenAIAssistantsWorkflow())
                 {
                     if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_AzureOpenAI, out var azureOpenAIResourceProvider))
                         throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureOpenAI} was not loaded.");
