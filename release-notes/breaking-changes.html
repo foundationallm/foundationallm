@@ -77,6 +77,48 @@
 <h5>Note</h5>
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
+<h2 id="starting-with-092-rc005">Starting with 0.9.2-rc005</h2>
+<h3 id="agent-configuration-changes">Agent configuration changes</h3>
+<p>Starting with this version, all agents MUST transition to the agent workflow configuraiton approach.</p>
+<p>The following agent properties are no longer supported and should be deleted as part of upgrading to this version:</p>
+<ul>
+<li><code>OrchestrationSettings</code> - fully replaced by the agent worflow settings.</li>
+<li><code>PromptObjectId</code> - replaced by the agent workflow resource object identifier with an <code>object_role</code> of <code>main_prompt</code>.</li>
+<li><code>AIModelObjectId</code> - replaced by the agent workflow resource object identifier with an <code>object_role</code> of <code>main_model</code>.</li>
+<li><code>Capabilities</code> - removed. The equivalent of having Azure OpenAI Assistants capabilities is having an agent workflow with the type <code>azure-openai-assistants-workflow</code>.</li>
+<li><code>Azure.OpenAI.Assistant.Id</code> property in <code>properties</code> - replaced by the <code>assistant_id</code> property of an agent workflow witht the type <code>azure-openai-assistants-workflow</code>.</li>
+</ul>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>If the <code>Azure.OpenAI.Assistant.Id</code> property is set in the agent properties, it's value must be copied to the <code>assistant_id</code> property of the agent workflow.</p>
+</div>
+<p>Here is an example of a fully configured worfklow section for an agent:</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;azure-openai-assistants-workflow&quot;,
+		&quot;name&quot;: &quot;OpenAIAssistants&quot;,
+		&quot;package_name&quot;: &quot;FoundationaLLM&quot;,
+    &quot;assistant_id&quot;: &quot;asst_...&quot;,
+    &quot;resource_object_ids&quot;: {
+        &quot;/instances/.../providers/FoundationaLLM.Agent/workflows/OpenAIAssistants&quot;: {
+            &quot;object_id&quot;: &quot;/instances/.../providers/FoundationaLLM.Agent/workflows/OpenAIAssistants&quot;,
+            &quot;properties&quot;: {}
+        },
+        &quot;/instances/.../providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel&quot; : {
+            &quot;object_id&quot;: &quot;/instances/.../providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel&quot;,
+            &quot;properties&quot;: {
+                &quot;object_role&quot;: &quot;main_model&quot;,
+                &quot;model_parameters&quot;: {}
+            }
+        },
+        &quot;/instances/.../providers/FoundationaLLM.Prompt/prompts/FoundationaLLM-mini&quot;: {
+            &quot;object_id&quot;: &quot;/instances/.../providers/FoundationaLLM.Prompt/prompts/FoundationaLLM-mini&quot;,
+            &quot;properties&quot;: {
+                &quot;object_role&quot;: &quot;main_prompt&quot;
+            }
+        }
+    }
+}
+</code></pre>
 <h2 id="starting-from-091">Starting from 0.9.1</h2>
 <h3 id="app-configuration-settings">App configuration settings</h3>
 <p>To support the event grid infrastructure, the following new App Configuration settings are required.</p>
@@ -160,7 +202,7 @@
 </tbody>
 </table>
 <h2 id="starting-with-091-rc117">Starting with 0.9.1-rc117</h2>
-<h3 id="agent-configuration-changes">Agent configuration changes</h3>
+<h3 id="agent-configuration-changes-1">Agent configuration changes</h3>
 <pre><code class="lang-json">&quot;text_rewrite_settings&quot;: {
     &quot;user_prompt_rewrite_enabled&quot; : true,
     &quot;user_prompt_rewrite_settings&quot;: {
