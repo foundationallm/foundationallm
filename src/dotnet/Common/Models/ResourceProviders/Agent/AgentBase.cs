@@ -1,7 +1,5 @@
 ﻿using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
-using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
-using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
@@ -46,30 +44,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// </summary>
         [JsonPropertyName("gatekeeper_settings")]
         public AgentGatekeeperSettings? GatekeeperSettings { get; set; }
-
-        /// <summary>
-        /// Settings for the orchestration service.
-        /// </summary>
-        [JsonPropertyName("orchestration_settings")]
-        public AgentOrchestrationSettings? OrchestrationSettings { get; set; }
-
-        /// <summary>
-        /// The object identifier of the <see cref="PromptBase"/> object providing the prompt for the agent.
-        /// </summary>
-        [JsonPropertyName("prompt_object_id")]
-        public string? PromptObjectId { get; set; }
-		
-        /// <summary>
-        /// The object identifier of the <see cref="AIModelBase"/> object providing the AI model for the agent.
-        /// </summary>
-        [JsonPropertyName("ai_model_object_id")]
-        public string? AIModelObjectId { get; set; }
-
-        /// <summary>
-        /// List of capabilities that the agent supports.
-        /// </summary>
-        [JsonPropertyName("capabilities")]
-        public string[]? Capabilities { get; set; }
 
         /// <summary>
         /// The agent's workflow configuration.
