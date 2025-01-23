@@ -133,11 +133,10 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
             };
 
         /// <summary>
-        /// Checks whether the agent has a specified capbability.
+        /// Checks whether the agent uses an Azure OpenAI Assistants workflow.
         /// </summary>
-        /// <param name="capabilityName">The name of the capability.</param>
-        /// <returns>True if the agent has the capability, False otherwise.</returns>
-        public bool HasCapability(string capabilityName) =>
-            Capabilities?.Contains(capabilityName) ?? false;
+        /// <returns>True if the agent uses an Azure OpenAI Assistants workflow, False otherwise.</returns>
+        public bool HasAzureOpenAIAssistantsWorkflow() =>
+            Workflow != null && Workflow is AzureOpenAIAssistantsAgentWorkflow;
     }
 }

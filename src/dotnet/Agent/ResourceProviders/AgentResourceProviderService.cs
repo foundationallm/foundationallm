@@ -236,8 +236,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         StatusCodes.Status500InternalServerError);
             }
 
-            if (agent.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants)
-                || (agent.Workflow != null && agent.Workflow is AzureOpenAIAssistantsAgentWorkflow))
+            if (agent.HasAzureOpenAIAssistantsWorkflow())
             {
                 agent.Properties ??= [];
 

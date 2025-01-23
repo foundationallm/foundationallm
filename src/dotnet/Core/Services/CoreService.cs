@@ -502,7 +502,7 @@ public partial class CoreService(
         var aiModelBase = await _aiModelResourceProvider.GetResourceAsync<AIModelBase>(agentBase.AIModelObjectId!, userIdentity);
         var apiEndpointConfiguration = await _configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(aiModelBase.EndpointObjectId!, userIdentity);
 
-        var agentRequiresOpenAIAssistants = agentBase.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants);
+        var agentRequiresOpenAIAssistants = agentBase.HasAzureOpenAIAssistantsWorkflow();
 
         attachmentFile.SecondaryProvider = agentRequiresOpenAIAssistants
             ? ResourceProviderNames.FoundationaLLM_AzureOpenAI
