@@ -1666,7 +1666,7 @@ export default {
                 description: `System prompt for the ${this.agentName} agent`,
                 prefix: this.systemPrompt,
                 suffix: '',
-                category: 'Agent',
+                category: 'Workflow',
             };
 
 			const tokenTextPartitionRequest = {

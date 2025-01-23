@@ -11,6 +11,11 @@
         Agent,
 
         /// <summary>
+        /// Workflow prompt.
+        /// </summary>
+        Workflow,
+
+        /// <summary>
         /// Tool prompt.
         /// </summary>
         Tool

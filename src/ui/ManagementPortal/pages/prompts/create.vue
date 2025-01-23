@@ -156,8 +156,8 @@ export default {
 
 			categoryOptions: [
 				{
-					label: 'Agent',
-					value: 'Agent',
+					label: 'Workflow',
+					value: 'Workflow',
 				},
 				{
 					label: 'Tool',
