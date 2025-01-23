@@ -26,8 +26,8 @@
 			</template>
 
 			<div class="span-2">
-				<div id="aria-agent-name" class="step-header mb-2">Prompt name:</div>
-				<div id="aria-agent-name-desc" class="mb-2">
+				<div id="aria-prompt-name" class="step-header mb-2">Prompt name:</div>
+				<div id="aria-prompt-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
 				</div>
 				<div class="input-wrapper">
@@ -37,7 +37,7 @@
 						type="text"
 						class="w-100"
 						placeholder="Enter prompt name"
-						aria-labelledby="aria-agent-name aria-agent-name-desc"
+						aria-labelledby="aria-prompt-name aria-prompt-name-desc"
 						@input="handleNameInput"
 					/>
 					<span
@@ -88,8 +88,6 @@
 			<section aria-labelledby="system-prompt" class="span-2 steps">
 				<h3 class="step-section-header span-2" id="system-prompt">Prompt Prefix</h3>
 
-				<div id="aria-persona" class="step-header">What is the persona of the agent?</div>
-
 				<div class="span-2">
 					<Textarea
 						v-model="prompt.prefix"
@@ -104,9 +102,9 @@
 			</section>
 
 			<div class="span-2 d-flex justify-content-end" style="gap: 16px">
-				<!-- Create agent -->
+				<!-- Create prompt -->
 				<Button
-					:label="editPrompt ? 'Save Changes' : 'Create Agent Prompt'"
+					:label="editPrompt ? 'Save Changes' : 'Create Prompt'"
 					severity="primary"
 					:disabled="editable === false"
 					@click="handleCreatePrompt"
