@@ -69,7 +69,8 @@
             "cwd" : "${workspaceFolder}/src/python/LangChainAPI/app",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/src/python/LangChainAPI;${workspaceFolder}/src/python/PythonSDK;d:/repos/fllm/foundationallm/src/python/PythonSDK;",
-                "FOUNDATIONALLM_CONTEXT": "DEBUG"
+                "FOUNDATIONALLM_CONTEXT": "DEBUG",
+                "FOUNDATIONALLM_APP_CONFIGURATION_URI": "https://appcs-l43jljq2i5ox6.azconfig.io"
             },
             "args": ["main:app","--reload", "--port", "8765"],
             "python": "${workspaceFolder}/src/python/LangChainAPI/env/Scripts/python.exe"
