@@ -2412,7 +2412,7 @@
   "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.html": {
     "href": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.html",
     "title": "Enum PromptCategory | FoundationaLLM",
-    "keywords": "Enum PromptCategory Namespace FoundationaLLM.Common.Models.ResourceProviders.Prompt Assembly FoundationaLLM.Common.dll The category for the prompt class. public enum PromptCategory Extension Methods ObjectExtensions.GetPropertyValues(object, List<string>) Fields Agent = 0 Agent prompt. Tool = 1 Tool prompt."
+    "keywords": "Enum PromptCategory Namespace FoundationaLLM.Common.Models.ResourceProviders.Prompt Assembly FoundationaLLM.Common.dll The category for the prompt class. public enum PromptCategory Extension Methods ObjectExtensions.GetPropertyValues(object, List<string>) Fields Agent = 0 Agent prompt. Tool = 2 Tool prompt. Workflow = 1 Workflow prompt."
   },
   "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Prompt.html": {
     "href": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Prompt.html",
