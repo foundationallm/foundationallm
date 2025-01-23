@@ -12,7 +12,11 @@
 		<div class="page">
 			<!-- Page to render -->
 			<div class="page-content">
-				<div class="sidebar-blur" @click="$appStore.sidebarCollapsed = true" v-show="!$appStore.sidebarCollapsed" />
+				<div
+					class="sidebar-blur"
+					@click="$appStore.sidebarCollapsed = true"
+					v-show="!$appStore.sidebarCollapsed"
+				/>
 				<slot />
 			</div>
 
@@ -47,7 +51,9 @@ export default {
 
 		focusMainContent() {
 			const mainContent = document.getElementById('main-content');
-			const focusableElements = mainContent.querySelectorAll('a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])');
+			const focusableElements = mainContent.querySelectorAll(
+				'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])',
+			);
 			if (focusableElements.length > 0) {
 				focusableElements[0].focus();
 			}

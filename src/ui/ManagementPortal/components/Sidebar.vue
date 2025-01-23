@@ -1,5 +1,8 @@
 <template>
-	<div :class="$appStore.sidebarCollapsed ? 'sidebar sidebar-collapsed' : 'sidebar'" role="navigation">
+	<div
+		:class="$appStore.sidebarCollapsed ? 'sidebar sidebar-collapsed' : 'sidebar'"
+		role="navigation"
+	>
 		<h2 id="sidebar-title" class="visually-hidden">Main Navigation</h2>
 		<!-- Sidebar section header -->
 		<div class="sidebar__header">
@@ -40,7 +43,7 @@
 					<li><NuxtLink to="/agents/create" class="sidebar__item">Create New Agent</NuxtLink></li>
 					<li><NuxtLink to="/agents/public" class="sidebar__item">All Agents</NuxtLink></li>
 					<li><NuxtLink to="/agents/private" class="sidebar__item">My Agents</NuxtLink></li>
-					<li><NuxtLink to="/prompts" class="sidebar__item">Agent Prompts</NuxtLink></li>
+					<li><NuxtLink to="/prompts" class="sidebar__item">Prompts</NuxtLink></li>
 				</ul>
 				<!-- <div class="sidebar__item">Performance</div> -->
 
@@ -115,7 +118,8 @@
 					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 						<span
 							class="sidebar__username"
-							aria-label="Logged in as {{ $authStore.currentAccount?.username }}">
+							aria-label="Logged in as {{ $authStore.currentAccount?.username }}"
+						>
 							{{ $authStore.currentAccount?.name }}
 						</span>
 						<template #popper>
@@ -149,7 +153,7 @@ export default {
 
 	created() {
 		this.$appStore.initializeSidebarState();
-	}
+	},
 };
 </script>
 
@@ -180,14 +184,14 @@ a {
 }
 
 .sidebar ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
 }
 
 .sidebar li {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 .sidebar__header {
@@ -213,10 +217,10 @@ a {
 
 .sidebar__content {
 	display: flex;
-    height: 100%;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: stretch;
+	height: 100%;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-items: stretch;
 	overflow: hidden;
 }
 
