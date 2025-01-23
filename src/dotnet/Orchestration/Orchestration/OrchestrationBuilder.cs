@@ -92,11 +92,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             if (result.Agent.AgentType == typeof(KnowledgeManagementAgent))
             {
-                var orchestrator = string.IsNullOrWhiteSpace(
-                    result.Agent.Workflow?.WorkflowHost
-                    ?? result.Agent.OrchestrationSettings?.Orchestrator) // TODO: Remove this fallback path after all agents are upgraded.
-                    ? LLMOrchestrationServiceNames.LangChain
-                    : result.Agent.OrchestrationSettings?.Orchestrator;
+                var orchestrator = !string.IsNullOrWhiteSpace(result.Agent.Workflow?.WorkflowHost)
+                    ? result.Agent.Workflow.WorkflowHost
+                    : result.Agent.OrchestrationSettings?.Orchestrator ?? LLMOrchestrationServiceNames.LangChain;
 
                 if (originalRequest.LongRunningOperation)
                 {
