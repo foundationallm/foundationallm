@@ -70,7 +70,7 @@ namespace FoundationaLLM.Common.Services.Storage
             var blobClient = containerClient.GetBlobClient(filePath);
             var blobLeaseClient = blobClient.GetBlobLeaseClient();
 
-            // We are using pessimistic conccurency by default.
+            // We are using pessimistic concurrency by default.
             // For more details, see https://learn.microsoft.com/en-us/azure/storage/blobs/concurrency-manage.
 
             BlobLease? blobLease = default;
