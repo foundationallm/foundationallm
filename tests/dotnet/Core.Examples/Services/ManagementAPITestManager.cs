@@ -253,12 +253,8 @@ namespace FoundationaLLM.Core.Examples.Services
         {
             // All test agents should have a corresponding prompt in the catalog.
             // Retrieve the agent and prompt from the test catalog.
-            var agent = AgentCatalog.GetAllAgents().FirstOrDefault(a => a.Name == agentName);
-            
-            if (agent == null)
-            {
-                throw new InvalidOperationException($"The agent {agentName} was not found.");
-            }
+            var agent = AgentCatalog.GetAllAgents().FirstOrDefault(a => a.Name == agentName)
+                ?? throw new InvalidOperationException($"The agent {agentName} was not found.");
 
             // TODO: we need support for creating APIEndpointConfiguration and AIModel object in ManagementClient
             // This will break everything in the E2E tests.
@@ -274,27 +270,27 @@ namespace FoundationaLLM.Core.Examples.Services
             //        endpoint.APIVersion = await TestConfiguration.GetAppConfigValueAsync(endpoint.APIVersion!);
             //}
 
-            var agentPrompt = await CreatePrompt(agentName);
-            // Add the prompt ObjectId to the agent.
-            agent.PromptObjectId = agentPrompt.ObjectId;
+            //var agentPrompt = await CreatePrompt(agentName);
+            //// Add the prompt ObjectId to the agent.
+            //agent.PromptObjectId = agentPrompt.ObjectId;
 
-            // Create APIEndpointConfiguration and AIModel object.
-            if (!string.IsNullOrWhiteSpace(apiEndpointName)
-                && !string.IsNullOrWhiteSpace(apiEndpointUrl)
-                && !string.IsNullOrWhiteSpace(aiModelName))
-            {
-                var endpointObjectId = await CreateAPIEndpointConfiguration(apiEndpointName, apiEndpointUrl);
-                agent.AIModelObjectId = await CreateAIModel(aiModelName, endpointObjectId);
-            }
-            else
-            {
-                // Attempt to lookup the AIModel to retrieve its ObjectId.
-                var aiModel = await managementClient.AIModels.GetAIModelAsync(agent.AIModelObjectId!);
-                if (aiModel is {Resource: not null})
-                {
-                    agent.AIModelObjectId = aiModel.Resource.ObjectId;
-                }
-            }
+            //// Create APIEndpointConfiguration and AIModel object.
+            //if (!string.IsNullOrWhiteSpace(apiEndpointName)
+            //    && !string.IsNullOrWhiteSpace(apiEndpointUrl)
+            //    && !string.IsNullOrWhiteSpace(aiModelName))
+            //{
+            //    var endpointObjectId = await CreateAPIEndpointConfiguration(apiEndpointName, apiEndpointUrl);
+            //    agent.AIModelObjectId = await CreateAIModel(aiModelName, endpointObjectId);
+            //}
+            //else
+            //{
+            //    // Attempt to lookup the AIModel to retrieve its ObjectId.
+            //    var aiModel = await managementClient.AIModels.GetAIModelAsync(agent.AIModelObjectId!);
+            //    if (aiModel is {Resource: not null})
+            //    {
+            //        agent.AIModelObjectId = aiModel.Resource.ObjectId;
+            //    }
+            //}
 
             // TODO: Create any other dependencies for the agent here.
 

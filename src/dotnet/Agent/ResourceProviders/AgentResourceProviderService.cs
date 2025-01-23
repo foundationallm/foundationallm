@@ -245,33 +245,15 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
                 var workflow = agent.Workflow as AzureOpenAIAssistantsAgentWorkflow;
 
-                if (workflow != null)
-                {
-                        openAIAssistantId = workflow.AssistantId;
-                }
+                openAIAssistantId = workflow!.AssistantId;
 
                 #region Resolve various agent properties
 
-                AIModelBase agentAIModel = null!;
-                APIEndpointConfiguration agentAIModelAPIEndpoint = null!;
-                PromptBase agentPrompt = null!;
-
-                if (workflow == null)
-                {
-                    // Legacy path
-                    agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
-                        .GetResourceAsync<AIModelBase>(agent.AIModelObjectId!, userIdentity);
-                    agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
-                        .GetResourceAsync<PromptBase>(agent.PromptObjectId!, userIdentity);
-                }
-                else
-                {
-                    agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
-                                .GetResourceAsync<AIModelBase>(workflow.MainAIModelObjectId!, userIdentity);
-                    agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
+                var agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
+                            .GetResourceAsync<AIModelBase>(workflow.MainAIModelObjectId!, userIdentity);
+                var agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
                                 .GetResourceAsync<PromptBase>(workflow.MainPromptObjectId!, userIdentity);
-                }
-                agentAIModelAPIEndpoint = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Configuration)
+                var agentAIModelAPIEndpoint = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Configuration)
                         .GetResourceAsync<APIEndpointConfiguration>(agentAIModel.EndpointObjectId!, userIdentity);
 
                 #endregion
