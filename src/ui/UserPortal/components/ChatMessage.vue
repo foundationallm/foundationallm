@@ -80,6 +80,10 @@
 						<ChatMessageContentBlock v-else :value="content" />
 					</div>
 
+					<div v-for="artifact in message.contentArtifacts" :key="artifact.id">
+						<ChatMessageContentArtifactBlock v-if="artifact.type === 'image'" :value="artifact" />
+					</div>
+
 					<!-- Analysis button -->
 					<Button
 						v-if="message.analysisResults && message.analysisResults.length > 0"
