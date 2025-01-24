@@ -98,8 +98,13 @@ export const useAppStore = defineStore('app', {
 				return;
 			}
 
+			await this.getSessions();
+
+			// The session id may not correspond to an existing session, handle that case
 			const sessionIdQuery = useNuxtApp().$router.currentRoute.value.query.chat;
-			if (!appConfigStore.showLastConversionOnStartup && !sessionIdQuery) {
+			const sessionExists = this.sessions.find((s: Session) => s.id === sessionIdQuery);
+
+			if (!appConfigStore.showLastConversionOnStartup && !sessionExists) {
 				this.sessions.unshift({
 					...this.getDefaultChatSessionProperties(),
 					id: 'new',
@@ -109,14 +114,10 @@ export const useAppStore = defineStore('app', {
 
 				this.changeSession(this.sessions[0]);
 
-				this.sessions.push(...(await api.getSessions()));
-
 				await this.getUserProfiles();
 
 				return;
 			}
-
-			await this.getSessions();
 
 			// If there is an existing session matching the one requested in the url, select it
 			// otherwise, if showLastConversionOnStartup is true there is a session available to show, select it
