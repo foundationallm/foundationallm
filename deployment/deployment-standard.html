@@ -117,7 +117,7 @@ These quotas are in place to manage resource allocation and ensure fair usage ac
 <li><p>From a PowerShell prompt, execute the following to clone the repository:</p>
 <pre><code class="lang-pwsh">  git clone https://github.com/solliancenet/foundationallm.git
   cd foundationallm
-  git checkout release/0.9.1-rc121
+  git checkout release/0.9.1-rc124
 </code></pre>
 </li>
 <li><p>Install AzCopy</p>
@@ -278,23 +278,21 @@ azd deploy
 </ol>
 <h3 id="running-script-to-allow-ms-graph-access-through-role-permissions">Running script to allow MS Graph access through Role Permissions</h3>
 <ol start="14">
-<li>After the deployment is complete, you will need to run the following script to allow MS Graph access through Role Permissions. (See below)</li>
-</ol>
+<li><p>After the deployment is complete, you will need to run the following script to allow MS Graph access through Role Permissions. (See below)</p>
 <div class="IMPORTANT">
 <h5>Important</h5>
-<p>The user running the script will need to have the appropriate permissions to assign roles to the managed identities. The user will need to be a <code>Global Administrator</code> or have the <code>Privileged Role Administrator</code> role in the Entra ID tenant. The syntax for running the script from the <code>deploy\quick-start\common\scripts</code> folder is:</p>
+<p>The user running the script will need to have the appropriate permissions to assign roles to the managed identities. The user will need to be a <code>Global Administrator</code> or have the <code>Privileged Role Administrator</code> role in the Entra ID tenant.
+The syntax for running the script from the <code>deploy\standard</code> folder is:</p>
 </div>
-<pre><code>```pwsh
-    cd .\deploy\standard
+<pre><code class="lang-pwsh">    cd .\deploy\standard
     ..\common\scripts\Set-FllmGraphRoles.ps1 -resourceGroupName rg-&lt;azd env name&gt;
-```
-Finally, you will need to update the Authorization Callbacks in the App Registrations created in the Entra ID tenant by running the following script:
-
-```pwsh
-    cd .\deploy\standard
-    ..\common\scripts\Update-OAuthCallbackUris.ps1
-```
 </code></pre>
+<p>Finally, you will need to update the Authorization Callbacks in the App Registrations created in the Entra ID tenant by running the following script:</p>
+<pre><code class="lang-pwsh">    cd .\deploy\standard
+    ..\common\scripts\Update-OAuthCallbackUris.ps1
+</code></pre>
+</li>
+</ol>
 <h2 id="connect-and-test">Connect and Test</h2>
 <ol start="15">
 <li>Visit the chat UI in your browser and send a message to verify the deployment.  The message can be very simple like &quot;Who are you?&quot;.  The default agent should respond with a message explaining it's persona.</li>
