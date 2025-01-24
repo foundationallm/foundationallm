@@ -67,7 +67,7 @@
 							</VTooltip>
 
 							<!-- Chat icons -->
-							<span v-if="currentSession?.id === session.id" class="chat__icons">
+							<span class="chat__icons">
 								<!-- Rename session -->
 								<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 									<Button
@@ -469,6 +469,13 @@ export default {
 	font-size: 13px;
 	font-size: 0.8125rem;
 	height: 72px;
+
+	&:hover {
+		.chat__icons {
+			display: flex;
+			opacity: 1;
+		}
+	}
 }
 
 .chat__name {
@@ -480,8 +487,12 @@ export default {
 }
 
 .chat__icons {
-	display: flex;
+	display: none;
 	justify-content: space-between;
+	opacity: 0;
+	flex-shrink: 0;
+	margin-left: 12px;
+	transition: all 0.1s ease-in-out;
 }
 
 .chat:hover {
@@ -492,6 +503,11 @@ export default {
 	color: var(--secondary-text);
 	background-color: var(--secondary-color);
 	border-left: 4px solid rgba(217, 217, 217, 0.5);
+
+	.chat__icons {
+		display: flex;
+		opacity: 1;
+	}
 }
 
 .chat--selected .option {
@@ -515,11 +531,6 @@ export default {
 
 .chat__name {
 	cursor: pointer;
-}
-
-.chat__icons {
-	flex-shrink: 0;
-	margin-left: 12px;
 }
 
 .chat-sidebar__account {
