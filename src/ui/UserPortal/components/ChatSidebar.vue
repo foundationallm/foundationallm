@@ -52,9 +52,15 @@
 						@click="handleSessionSelected(session)"
 						@keydown.enter="handleSessionSelected(session)"
 					>
-						<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
+						<div
+							class="chat"
+							:class="{
+								'chat--selected': currentSession?.id === session.id,
+								'chat--editing': session?.id === sessionToRename?.id,
+								'chat--deleting': session?.id === sessionToDelete?.id,
+							}"
+						>
 							<!-- Chat name -->
-
 							<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 								<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{
 									session.display_name
@@ -512,6 +518,32 @@ export default {
 
 .chat--selected .option {
 	background-color: rgba(245, 245, 245, 1);
+}
+
+@mixin blink-background($startColor, $endColor, $duration: 2s, $iterations: infinite) {
+	$animation-name: blink-background-#{random(1000)};
+
+	@keyframes #{$animation-name} {
+		0% {
+			background-color: $startColor;
+		}
+		40% {
+			background-color: $endColor;
+		}
+		100% {
+			background-color: $startColor;
+		}
+	}
+
+	animation: $animation-name ease-out $duration $iterations;
+}
+
+.chat--editing {
+	@include blink-background(transparent, var(--secondary-color));
+}
+
+.chat--deleting {
+	@include blink-background(transparent, var(--red-600));
 }
 
 .option {
