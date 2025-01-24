@@ -134,7 +134,7 @@ export default {
 		// },
 
 		async handleFileDownload(content) {
-			await fetchBlobUrl(content, this.$toast);
+			await fetchBlobUrl(content);
 		},
 	},
 };

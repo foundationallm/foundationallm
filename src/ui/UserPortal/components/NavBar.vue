@@ -182,10 +182,9 @@ export default {
 				? `Agent changed to ${this.agentSelection!.label}`
 				: `Cleared agent hint selection`;
 
-			this.$toast.add({
+			this.$appStore.addToast({
 				severity: 'success',
 				detail: message,
-				life: this.$appStore.autoHideToasts ? 5000 : null,
 			});
 
 			if (this.$appStore.currentMessages?.length > 0) {
@@ -270,10 +269,9 @@ export default {
 		// 	const chatLink = `${window.location.origin}?chat=${this.currentSession!.id}`;
 		// 	navigator.clipboard.writeText(chatLink);
 
-		// 	this.$toast.add({
+		// 	this.$appStore.addToast({
 		// 		severity: 'success',
 		// 		detail: 'Chat link copied!',
-		// 		life: 5000,
 		// 	});
 		// },
 
