@@ -117,9 +117,9 @@ export const useAppStore = defineStore('app', {
 
 			const requestedSession = this.sessions.find((s: Session) => s.id === sessionId);
 
-			// If there is an existing session matching the one requested in the url, select it
-			// otherwise, if showLastConversionOnStartup is true and there is a session available to show, select it
-			// otherwise, create a new session
+			// If there is an existing session matching the one requested in the url, select it.
+			// otherwise, if the portal is configured to show the previous session and it exists, select it.
+			// otherwise, (if there are no sessions) create a temporary session.
 			if (requestedSession) {
 				this.changeSession(requestedSession);
 			} else if (appConfigStore.showLastConversionOnStartup && this.sessions.length > 0) {
