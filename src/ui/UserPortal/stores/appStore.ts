@@ -101,8 +101,7 @@ export const useAppStore = defineStore('app', {
 			await this.getSessions();
 
 			// The session id may not correspond to an existing session, handle that case
-			const sessionIdQuery = useNuxtApp().$router.currentRoute.value.query.chat;
-			const sessionExists = this.sessions.find((s: Session) => s.id === sessionIdQuery);
+			const sessionExists = this.sessions.find((s: Session) => s.id === sessionId);
 
 			if (!appConfigStore.showLastConversionOnStartup && !sessionExists) {
 				this.sessions.unshift({
