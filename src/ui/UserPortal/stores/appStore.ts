@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import type { ToastMessageOptions } from 'primevue/toast';
 import { useAppConfigStore } from './appConfigStore';
 import { useAuthStore } from './authStore';
 import type {
@@ -130,7 +131,7 @@ export const useAppStore = defineStore('app', {
 				});
 
 				this.addTemporarySession();
-				this.changeSession(this.sessions[0]);				
+				this.changeSession(this.sessions[0]);
 			}
 
 			await this.getUserProfiles();
@@ -721,12 +722,12 @@ export const useAppStore = defineStore('app', {
 			return await api.getVirtualUser();
 		},
 
-		addToast(toastProperties: any) {
+		addToast(toastProperties: ToastMessageOptions) {
 			const lifeSeconds = toastProperties?.life ?? 5000;
 
 			useNuxtApp().vueApp.config.globalProperties.$toast.add({
 				...toastProperties,
-				life: this.autoHideToasts ? lifeSeconds : null,
+				life: this.autoHideToasts ? lifeSeconds : undefined,
 			});
 		},
 	},
