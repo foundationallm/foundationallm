@@ -1,8 +1,8 @@
 <template>
 	<Image
         class="message-content__image"
-        :src="value.filepath"
-        :alt="value.metadata.revised_tool_input"
+		:src="value.filepath"
+		:alt="value.metadata?.revised_tool_input"
         :width="isMobile ? '100%' : '75%'"
         preview
         @load="loading = false"
