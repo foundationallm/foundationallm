@@ -53,7 +53,7 @@ class DALLEImageGenerationTool(FoundationaLLMToolBase):
     Supports only Azure Identity authentication.
     """
     args_schema: Type[BaseModel] = DALLEImageGenerationToolInput
-    
+
     def __init__(self, tool_config: AgentTool, objects: dict, user_identity:UserIdentity, config: Configuration):
         """ Initializes the DALLEImageGenerationTool class with the tool configuration,
             exploded objects collection, user identity, and platform configuration. """
@@ -105,10 +105,16 @@ class DALLEImageGenerationTool(FoundationaLLMToolBase):
             )
             content_artifacts = [
                 ContentArtifact(
-                    id=image_data.url,
-                    title=image_data.revised_prompt,
+                    id=self.tool_config.name,
+                    title=self.tool_config.name,
+                    source='tool',
                     filepath=image_data.url,
-                    type='image'
+                    type='image',
+                    metadata = {
+                        'tool_name': self.tool_config.name,
+                        'tool_input': prompt,
+                        'revised_tool_input': image_data.revised_prompt
+                    }
                 )
                 for image_data in result.data
                 if image_data.revised_prompt and image_data.url

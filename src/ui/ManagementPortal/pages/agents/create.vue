@@ -1029,7 +1029,6 @@ import type {
 	CreateAgentRequest,
 	ExternalOrchestrationService,
 	TextEmbeddingProfile,
-	AgentWorkflowAIModel,
 	// AgentCheckNameResponse,
 } from '@/js/types';
 
@@ -1660,15 +1659,15 @@ export default {
 			this.loading = true;
 			this.loadingStatusText = 'Saving agent...';
 
-			const promptRequest = {
-				type: 'multipart',
-				name: this.agentName,
-				cost_center: this.cost_center,
-				description: `System prompt for the ${this.agentName} agent`,
-				prefix: this.systemPrompt,
-				suffix: '',
-				category: 'Agent',
-			};
+            const promptRequest = {
+                type: 'multipart',
+                name: this.agentName,
+                cost_center: this.cost_center,
+                description: `System prompt for the ${this.agentName} agent`,
+                prefix: this.systemPrompt,
+                suffix: '',
+                category: 'Workflow',
+            };
 
 			const tokenTextPartitionRequest = {
 				text_splitter: 'TokenTextSplitter',

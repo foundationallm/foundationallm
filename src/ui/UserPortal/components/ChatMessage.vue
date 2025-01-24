@@ -921,6 +921,10 @@ $textColor: #131833;
 	padding: 4px 8px;
 	cursor: pointer;
 	white-space: nowrap;
+	max-width: 25rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .ratings {
