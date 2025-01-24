@@ -874,7 +874,7 @@ export default {
 
 	/*
 		Indexing Profiles
-	 */
+	*/
 	async getIndexingProfiles(): Promise<any> {
 		const data = (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles?api-version=${this.apiVersion}`,
@@ -931,4 +931,19 @@ export default {
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations?api-version=${this.apiVersion}`,
 		) as APIEndpointConfiguration;
 	},
+
+	/*
+		Pipelines
+	*/
+	async getPipelines(): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/vectorizationPipelines?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async getPipelineRuns(pipeline): Promise<any> {
+		return await this.fetch(
+			`/pipeline-state/${pipeline}/${pipeline}-{GUID}.json?api-version=${this.apiVersion}`,
+		);
+	}
 };
