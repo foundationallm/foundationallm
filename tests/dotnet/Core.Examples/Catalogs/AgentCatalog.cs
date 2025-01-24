@@ -37,12 +37,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
-                },
-                OrchestrationSettings = new AgentOrchestrationSettings
-                {
-                    Orchestrator = LLMOrchestrationServiceNames.LangChain
-                },
-                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
+                }
             },
             new KnowledgeManagementAgent
             {
@@ -64,12 +59,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
-                },
-                OrchestrationSettings = new AgentOrchestrationSettings
-                {
-                    Orchestrator = LLMOrchestrationServiceNames.SemanticKernel,
-                },
-                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
+                }
             },
             new KnowledgeManagementAgent
             {
@@ -92,12 +82,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
-                },
-                OrchestrationSettings = new AgentOrchestrationSettings
-                {
-                    Orchestrator = LLMOrchestrationServiceNames.SemanticKernel
-                },
-                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
+                }
             },
             new KnowledgeManagementAgent
             {
@@ -120,12 +105,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
-                },
-                OrchestrationSettings = new AgentOrchestrationSettings
-                {
-                    Orchestrator = LLMOrchestrationServiceNames.LangChain
-                },
-                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
+                }
             },
             new KnowledgeManagementAgent
             {
@@ -147,13 +127,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
-                },
-                OrchestrationSettings = new AgentOrchestrationSettings
-                {
-                    Orchestrator = LLMOrchestrationServiceNames.SemanticKernel
-                },
-                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
-            },
+                }            },
             new KnowledgeManagementAgent
             {
                 Name = TestAgentNames.LangChainSDZWA,
@@ -174,12 +148,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
-                },
-                OrchestrationSettings = new AgentOrchestrationSettings
-                {
-                    Orchestrator = LLMOrchestrationServiceNames.LangChain
-                },
-                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
+                }
             },
             new KnowledgeManagementAgent
             {
@@ -201,12 +170,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
-                },
-                OrchestrationSettings = new AgentOrchestrationSettings
-                {
-                    Orchestrator = LLMOrchestrationServiceNames.LangChain
-                },
-                AIModelObjectId = TestAIModelNames.Completions_GPT4o
+                }
             },
             new KnowledgeManagementAgent
             {
@@ -228,12 +192,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
-                },
-                OrchestrationSettings = new AgentOrchestrationSettings
-                {
-                    Orchestrator = LLMOrchestrationServiceNames.SemanticKernel
-                },
-                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
+                }
             },
             new KnowledgeManagementAgent
             {
@@ -255,12 +214,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
-                },
-                OrchestrationSettings = new AgentOrchestrationSettings
-                {
-                    Orchestrator = LLMOrchestrationServiceNames.SemanticKernel
-                },
-                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
+                }
             },
             new KnowledgeManagementAgent
             {
@@ -282,12 +236,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
-                },
-                OrchestrationSettings = new AgentOrchestrationSettings
-                {
-                    Orchestrator = LLMOrchestrationServiceNames.SemanticKernel
-                },
-                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
+                }
             },
             new KnowledgeManagementAgent
             {
@@ -309,12 +258,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 GatekeeperSettings = new AgentGatekeeperSettings
                 {
                     UseSystemSetting = false
-                },
-                OrchestrationSettings = new AgentOrchestrationSettings
-                {
-                    Orchestrator = LLMOrchestrationServiceNames.LangChain
-                },
-                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
+                }
             },
 
         ];
