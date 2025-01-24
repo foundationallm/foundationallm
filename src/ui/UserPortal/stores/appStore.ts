@@ -98,36 +98,40 @@ export const useAppStore = defineStore('app', {
 				return;
 			}
 
-			await this.getSessions();
-
-			// If the portal is configured to create a new session on startup, and there are
-			// no sessions (including if the requested session does not exist), create a temporary
-			// session.
-			const sessionExists = this.sessions.find((s: Session) => s.id === sessionId);
-			if (!appConfigStore.showLastConversionOnStartup && !sessionExists) {
-				this.sessions.unshift({
-					...this.getDefaultChatSessionProperties(),
-					id: 'new',
-					is_temp: true,
-					display_name: 'New Chat',
-				});
+			// If the portal is configured to create a temporary session on startup, and
+			// there is no requested session, then create a temporary one.
+			if (!appConfigStore.showLastConversionOnStartup && !sessionId) {
+				this.addTemporarySession();
 
 				this.changeSession(this.sessions[0]);
+
+				this.sessions.push(...(await api.getSessions()));
 
 				await this.getUserProfiles();
 
 				return;
 			}
 
-			// If there is an existing session matching the one requested in the url, select it
-			// otherwise, if showLastConversionOnStartup is true there is a session available to show, select it
-			// otherwise, create a new session
-			const requestedSession = this.sessions.find((session: Session) => session.id === sessionId);
+			await this.getSessions();
 
+			const requestedSession = this.sessions.find((s: Session) => s.id === sessionId);
+
+			// If there is an existing session matching the one requested in the url, select it
+			// otherwise, if showLastConversionOnStartup is true and there is a session available to show, select it
+			// otherwise, create a new session
 			if (requestedSession) {
 				this.changeSession(requestedSession);
 			} else if (appConfigStore.showLastConversionOnStartup && this.sessions.length > 0) {
 				this.changeSession(this.sessions[0]);
+			} else {
+				useNuxtApp().vueApp.config.globalProperties.$toast.add({
+					severity: 'error',
+					summary: 'The requested session was not found.',
+					life: this.autoHideToasts ? 5000 : null,
+				});
+
+				this.addTemporarySession();
+				this.changeSession(this.sessions[0]);				
 			}
 
 			await this.getUserProfiles();
@@ -136,6 +140,15 @@ export const useAppStore = defineStore('app', {
 			// 	await this.getMessages();
 			// 	this.updateSessionAgentFromMessages(this.currentSession);
 			// }
+		},
+
+		addTemporarySession() {
+			this.sessions.unshift({
+				...this.getDefaultChatSessionProperties(),
+				id: 'new',
+				is_temp: true,
+				display_name: 'New Chat',
+			});
 		},
 
 		getDefaultChatSessionProperties(): ChatSessionProperties {
