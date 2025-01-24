@@ -1,16 +1,16 @@
 <template>
 	<Image
-        class="message-content__image"
+		class="message-content__image"
 		:src="value.filepath"
 		:alt="value.metadata?.revised_tool_input"
-        :width="isMobile ? '100%' : '75%'"
-        preview
-        @load="loading = false"
-        @error="
-            loading = false;
-            error = true;
-        "
-    />
+		:width="isMobile ? '100%' : '75%'"
+		preview
+		@load="loading = false"
+		@error="
+			loading = false;
+			error = true;
+		"
+	/>
 </template>
 
 <script>
@@ -27,7 +27,7 @@ export default {
 		return {
 			loading: false,
 			error: false,
-            isMobile: window.screen.width < 950,
+			isMobile: window.screen.width < 950,
 		};
 	},
 
