@@ -100,9 +100,10 @@ export const useAppStore = defineStore('app', {
 
 			await this.getSessions();
 
-			// The session id may not correspond to an existing session, handle that case
+			// If the portal is configured to create a new session on startup, and there are
+			// no sessions (including if the requested session does not exist), create a temporary
+			// session.
 			const sessionExists = this.sessions.find((s: Session) => s.id === sessionId);
-
 			if (!appConfigStore.showLastConversionOnStartup && !sessionExists) {
 				this.sessions.unshift({
 					...this.getDefaultChatSessionProperties(),
