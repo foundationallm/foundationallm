@@ -349,6 +349,9 @@ module eventgrid './shared/eventgrid.bicep' = {
       {
         name: 'configuration'
       }
+      {
+        name: 'resource-providers'
+      }
     ]
   }
   scope: rg
@@ -424,6 +427,9 @@ module storage './shared/storage.bicep' = {
       }
       {
         name: 'external-modules-python'
+      }
+      {
+        name: 'orchestration-completion-requests'
       }
     ]
     files: []

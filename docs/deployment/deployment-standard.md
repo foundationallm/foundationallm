@@ -48,7 +48,7 @@ Follow the steps below to deploy the solution to your Azure subscription.
     ```pwsh
       git clone https://github.com/solliancenet/foundationallm.git
       cd foundationallm
-      git checkout release/0.9.1-rc121
+      git checkout release/0.9.1-rc124
     ```
 
 3. Install AzCopy
@@ -179,8 +179,9 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
 14. After the deployment is complete, you will need to run the following script to allow MS Graph access through Role Permissions. (See below)
 
-> [!IMPORTANT]
-> The user running the script will need to have the appropriate permissions to assign roles to the managed identities. The user will need to be a `Global Administrator` or have the `Privileged Role Administrator` role in the Entra ID tenant. The syntax for running the script from the `deploy\quick-start\common\scripts` folder is:
+    > [!IMPORTANT]
+    > The user running the script will need to have the appropriate permissions to assign roles to the managed identities. The user will need to be a `Global Administrator` or have the `Privileged Role Administrator` role in the Entra ID tenant.
+    The syntax for running the script from the `deploy\standard` folder is:
 
     ```pwsh
         cd .\deploy\standard

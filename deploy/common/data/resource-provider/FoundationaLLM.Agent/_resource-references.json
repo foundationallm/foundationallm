@@ -5,6 +5,12 @@
 			"Filename": "/FoundationaLLM.Agent/FoundationaLLM.json",
 			"Type": "knowledge-management",
 			"Deleted": false
+		},
+		{
+			"Name": "OpenAIAssistants",
+			"Filename": "/FoundationaLLM.Agent/OpenAIAssistants.json",
+			"Type": "workflow",
+			"Deleted": false
 		}
 	]
 }
