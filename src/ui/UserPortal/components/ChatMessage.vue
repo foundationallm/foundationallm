@@ -720,10 +720,9 @@ export default {
 			document.execCommand('copy');
 			document.body.removeChild(textarea);
 
-			this.$toast.add({
+			this.$appStore.addToast({
 				severity: 'success',
 				detail: 'Message copied to clipboard!',
-				life: this.$appStore.autoHideToasts ? 5000 : null,
 			});
 		},
 
@@ -734,10 +733,9 @@ export default {
 		handleRatingSubmit(message: Message) {
 			this.$emit('rate', { message });
 			this.isRatingModalVisible = false;
-			this.$toast.add({
+			this.$appStore.addToast({
 				severity: 'success',
 				detail: 'Rating submitted!',
-				life: this.$appStore.autoHideToasts ? 5000 : null,
 			});
 		},
 
@@ -762,7 +760,7 @@ export default {
 					fileName: link.dataset.filename || link.textContent,
 				};
 
-				fetchBlobUrl(content, this.$toast);
+				fetchBlobUrl(content);
 			}
 		},
 	},
