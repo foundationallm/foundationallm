@@ -124,10 +124,9 @@ export const useAppStore = defineStore('app', {
 			} else if (appConfigStore.showLastConversionOnStartup && this.sessions.length > 0) {
 				this.changeSession(this.sessions[0]);
 			} else {
-				useNuxtApp().vueApp.config.globalProperties.$toast.add({
+				this.addToast({
 					severity: 'error',
-					summary: 'The requested session was not found.',
-					life: this.autoHideToasts ? 5000 : null,
+					detail: 'The requested session was not found.',
 				});
 
 				this.addTemporarySession();
@@ -720,6 +719,15 @@ export const useAppStore = defineStore('app', {
 
 		async getVirtualUser() {
 			return await api.getVirtualUser();
+		},
+
+		addToast(toastProperties: any) {
+			const lifeSeconds = toastProperties?.life ?? 5000;
+
+			useNuxtApp().vueApp.config.globalProperties.$toast.add({
+				...toastProperties,
+				life: this.autoHideToasts ? lifeSeconds : null,
+			});
 		},
 	},
 });
