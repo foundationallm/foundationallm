@@ -129,7 +129,6 @@
 							/>
 						</template>
 					</span>
-					
 
 					<!-- Avg MS Per Word: {{ averageTimePerWordMS }} -->
 					<div v-if="messageDisplayStatus" class="loading-shimmer" style="font-weight: 600">
@@ -151,7 +150,7 @@
 
 						<!-- View prompt button -->
 						<Button
-							v-if="$appConfigStore.showViewPrompt && $appStore.agentShowViewPrompt"	
+							v-if="$appConfigStore.showViewPrompt && $appStore.agentShowViewPrompt"
 							class="message__button"
 							:disabled="message.type === 'LoadingMessage'"
 							size="small"
