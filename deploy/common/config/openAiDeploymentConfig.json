@@ -1,70 +1,4 @@
 [
-    {
-        "name": "completions",
-        "locations": [
-            "eastus",
-            "eastus2",
-            "japaneast",
-            "northcentralus",
-            "switzerlandnorth"
-        ],
-        "raiPolicyName": "",
-        "model": {
-            "format": "OpenAI",
-            "name": "gpt-35-turbo",
-            "version": "0613"
-        },
-        "sku": {
-            "capacity": 10,
-            "name": "Standard"
-        }
-    },
-    {
-        "name": "completions",
-        "locations": [
-          "austrailiaeast",
-          "canadaeast",
-          "francecentral",
-          "southindia",
-          "swedencentral",
-          "uksouth",
-          "westus"
-        ],
-        "raiPolicyName": "",
-        "model": {
-          "format": "OpenAI",
-          "name": "gpt-35-turbo",
-          "version": "1106"
-        },
-        "sku": {
-          "capacity": 10,
-          "name": "Standard"
-        }
-      },
-      {
-        "name": "completions4",
-        "locations": [
-          "austrailiaeast",
-          "canadaeast",
-          "eastus2",
-          "francecentral",
-          "norwayeast",
-          "southindia",
-          "swedencentral",
-          "uksouth",
-          "westus"
-        ],
-        "raiPolicyName": "",
-        "model": {
-          "format": "OpenAI",
-          "name": "gpt-4",
-          "version": "1106-Preview"
-        },
-        "sku": {
-          "capacity": 4,
-          "name": "Standard"
-        }
-      },
       {
         "name": "completions4o",
         "locations": [
@@ -81,10 +15,33 @@
         "model": {
           "format": "OpenAI",
           "name": "gpt-4o",
-          "version": "2024-05-13"
+          "version": "2024-08-06"
         },
         "sku": {
           "capacity": 100,
+          "name": "Standard"
+        }
+      },
+      {
+        "name": "completions4o-mini",
+        "locations": [
+          "eastus",
+          "eastus2",
+          "northcentralus",
+          "southcentralus",
+          "southindia",
+          "swedencentral",
+          "westus",
+          "westus3"
+        ],
+        "raiPolicyName": "",
+        "model": {
+          "format": "OpenAI",
+          "name": "gpt-4o-mini",
+          "version": "2024-07-18"
+        },
+        "sku": {
+          "capacity": 8,
           "name": "Standard"
         }
       },
@@ -110,6 +67,7 @@
         "name": "embeddings",
         "locations": [
           "austrailiaeast",
+          "brazilsouth",
           "canadaeast",
           "eastus",
           "eastus2",
@@ -117,12 +75,16 @@
           "japaneast",
           "northcentralus",
           "norwayeast",
+          "southafricanorth",
           "southcentralus",
+          "southindia",
           "swedencentral",
           "switzerlandnorth",
+          "uaenorth",
           "uksouth",
           "westeurope",
-          "westus"
+          "westus",
+          "westus3"
         ],
         "raiPolicyName": "Microsoft.Default",
         "model": {
@@ -138,15 +100,25 @@
       {
         "name": "embeddings-3-large",
         "locations": [
+          "austrailiaeast",
           "canadaeast",
           "eastus",
-          "eastus2"
+          "eastus2",
+          "francecentral",
+          "japaneast",
+          "norwayeast",
+          "polandcentral",
+          "southindia",
+          "swedencentral",
+          "switzerlandnorth",
+          "uksouth",
+          "westus3"
         ],
         "raiPolicyName": "Microsoft.Default",
         "model": {
           "format": "OpenAI",
           "name": "text-embedding-3-large",
-          "version": ""
+          "version": "1"
         },
         "sku": {
           "capacity": 60,
@@ -156,15 +128,19 @@
       {
         "name": "embeddings-3-small",
         "locations": [
+          "austrailiaeast",
           "canadaeast",
           "eastus",
-          "eastus2"
+          "eastus2",
+          "japaneast",
+          "switzerlandnorth",
+          "westus"
         ],
         "raiPolicyName": "Microsoft.Default",
         "model": {
           "format": "OpenAI",
           "name": "text-embedding-3-small",
-          "version": ""
+          "version": "1"
         },
         "sku": {
           "capacity": 60,

@@ -80,6 +80,10 @@
 						<ChatMessageContentBlock v-else :value="content" />
 					</div>
 
+					<div v-for="artifact in message.contentArtifacts" :key="artifact.id">
+						<ChatMessageContentArtifactBlock v-if="artifact.type === 'image'" :value="artifact" />
+					</div>
+
 					<!-- Analysis button -->
 					<Button
 						v-if="message.analysisResults && message.analysisResults.length > 0"
@@ -125,7 +129,6 @@
 							/>
 						</template>
 					</span>
-					
 
 					<!-- Avg MS Per Word: {{ averageTimePerWordMS }} -->
 					<div v-if="messageDisplayStatus" class="loading-shimmer" style="font-weight: 600">
@@ -147,7 +150,7 @@
 
 						<!-- View prompt button -->
 						<Button
-							v-if="$appConfigStore.showViewPrompt && $appStore.agentShowViewPrompt"	
+							v-if="$appConfigStore.showViewPrompt && $appStore.agentShowViewPrompt"
 							class="message__button"
 							:disabled="message.type === 'LoadingMessage'"
 							size="small"
@@ -720,10 +723,9 @@ export default {
 			document.execCommand('copy');
 			document.body.removeChild(textarea);
 
-			this.$toast.add({
+			this.$appStore.addToast({
 				severity: 'success',
 				detail: 'Message copied to clipboard!',
-				life: this.$appStore.autoHideToasts ? 5000 : null,
 			});
 		},
 
@@ -734,10 +736,9 @@ export default {
 		handleRatingSubmit(message: Message) {
 			this.$emit('rate', { message });
 			this.isRatingModalVisible = false;
-			this.$toast.add({
+			this.$appStore.addToast({
 				severity: 'success',
 				detail: 'Rating submitted!',
-				life: this.$appStore.autoHideToasts ? 5000 : null,
 			});
 		},
 
@@ -762,7 +763,7 @@ export default {
 					fileName: link.dataset.filename || link.textContent,
 				};
 
-				fetchBlobUrl(content, this.$toast);
+				fetchBlobUrl(content);
 			}
 		},
 	},

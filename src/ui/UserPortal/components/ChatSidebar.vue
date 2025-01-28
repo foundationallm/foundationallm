@@ -329,11 +329,11 @@ export default {
 			if (this.createProcessing) return;
 
 			if (this.debounceTimeout) {
-				this.$toast.add({
+				this.$appStore.addToast({
 					severity: 'warn',
 					summary: 'Warning',
 					detail: 'Please wait before creating another session.',
-					life: this.$appStore.autoHideToasts ? 3000 : null,
+					life: 3000,
 				});
 				return;
 			}
@@ -348,11 +348,10 @@ export default {
 					this.debounceTimeout = null;
 				}, 2000);
 			} catch (error) {
-				this.$toast.add({
+				this.$appStore.addToast({
 					severity: 'error',
 					summary: 'Error',
 					detail: 'Could not create a new session. Please try again.',
-					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 			} finally {
 				this.createProcessing = false; // Re-enable the button
@@ -370,11 +369,10 @@ export default {
 				await this.$appStore.deleteSession(this.sessionToDelete!);
 				this.sessionToDelete = null;
 			} catch (error) {
-				this.$toast.add({
+				this.$appStore.addToast({
 					severity: 'error',
 					summary: 'Error',
 					detail: 'Could not delete the session. Please try again.',
-					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 			} finally {
 				this.deleteProcessing = false;

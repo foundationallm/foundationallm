@@ -2,7 +2,7 @@ import { useAppStore } from '@/stores/appStore';
 import api from '@/js/api';
 import type { MessageContent } from '@/js/types';
 
-export async function fetchBlobUrl(content: MessageContent, toast: any) {
+export async function fetchBlobUrl(content: MessageContent) {
 	const appStore = useAppStore();
 	if (!content.blobUrl) {
 		content.loading = true;
@@ -12,11 +12,10 @@ export async function fetchBlobUrl(content: MessageContent, toast: any) {
 			content.blobUrl = URL.createObjectURL(blob);
 		} catch (error) {
 			console.error(`Failed to fetch content from ${content.value}`, error);
-			toast.add({
+			appStore.addToast({
 				severity: 'error',
 				summary: 'Error downloading file',
 				detail: `Failed to download "${content.fileName}". ${error.message || error}`,
-				life: appStore.autoHideToasts ? 5000 : null,
 			});
 			content.error = true;
 		} finally {
