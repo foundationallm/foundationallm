@@ -2,7 +2,7 @@
 	<Dialog
 		:visible="visible"
 		modal
-		header="Edit URL Exception"
+		:header="modelValue?.url ? 'Edit URL Exception' : 'Create URL Exception'"
 		:style="{ minWidth: '80%' }"
 		:closable="false"
 	>
