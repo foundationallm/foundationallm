@@ -155,6 +155,9 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 || agentCache == null)
                 throw new SemanticCacheException($"The semantic cache is not initialized for agent {agentName} in instance {instanceId}.");
 
+            if (string.IsNullOrEmpty(completionRequest.UserPromptRewrite))
+                return null;
+
             var embeddingResult = await agentCache.EmbeddingClient.GenerateEmbeddingAsync(
                 completionRequest.UserPromptRewrite,
                 new EmbeddingGenerationOptions
