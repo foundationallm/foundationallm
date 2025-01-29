@@ -1,46 +1,125 @@
 <template>
 	<div class="d-flex flex-column gap-4">
-		<div
-			v-for="(propertyValue, propertyKey) in properties"
-			:key="propertyKey"
-			class="d-flex justify-content-between gap-4"
+
+		<!-- Authenication parameters table -->
+		<DataTable
+			:value="Object.keys(parameters).map((key) => ({ key, ...parameters[key] }))"
+			striped-rows
+			scrollable
+			table-style="max-width: 100%"
+			size="small"
 		>
-			<div class="d-flex flex-1 gap-4">
-				<!-- Property name -->
-				<InputText :value="propertyKey" type="text" placeholder="Property Name" disabled />
+			<template #empty>No authentication parameters added.</template>
 
-				<span class="d-flex align-center">=</span>
+			<!-- Parameter secret toggle -->
+			<Column
+				field="secret"
+				header="Secret"
+				sortable
+				:pt="{
+					headerCell: {
+						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+					},
+					sortIcon: { style: { color: 'var(--primary-text)' } },
+				}"
+			>
+				<template #body="{ data }">
+					<i v-if="data.secret" class="pi pi-lock mr-2"></i>
+					<span>{{ data.secret }}</span>
+				</template>
+			</Column>
 
-				<!-- Property value -->
-				<InputText
-					:value="propertyValue.value"
-					type="text"
-					placeholder="Property Value"
-					disabled
-				/>
-			</div>
+			<!-- Parameter key -->
+			<Column
+				field="key"
+				header="Parameter Key"
+				sortable
+				:pt="{
+					headerCell: {
+						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+					},
+					sortIcon: { style: { color: 'var(--primary-text)' } },
+				}"
+			/>
 
-			<!-- Edit property -->
-			<Button link @click="handleEditProperty(propertyKey)">
-				<i class="pi pi-cog" style="font-size: 1.2rem"></i>
-			</Button>
+			<!-- Parameter value -->
+			<Column
+				field="value"
+				header="Parameter Value"
+				sortable
+				:pt="{
+					headerCell: {
+						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+					},
+					sortIcon: { style: { color: 'var(--primary-text)' } },
+				}"
+			>
+				<template #body="{ data }">
+					{{ data.secret ? '[VALUE HIDDEN]' : data.value }}
+				</template>
+			</Column>
 
-			<!-- Delete property -->
-			<Button link @click="handleDeleteProperty(propertyKey)">
-				<i class="pi pi-trash" style="font-size: 1.2rem"></i>
+			<!-- Edit parameter -->
+			<Column
+				header="Edit"
+				header-style="width:6rem"
+				style="text-align: center"
+				:pt="{
+					headerCell: {
+						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+					},
+					headerContent: { style: { justifyContent: 'center' } },
+				}"
+			>
+				<template #body="{ data }">
+					<Button link @click="handleEditParameter(data.key)">
+						<i class="pi pi-cog" style="font-size: 1.2rem"></i>
+					</Button>
+				</template>
+			</Column>
+
+			<!-- Delete parameter -->
+			<Column
+				header="Delete"
+				header-style="width:6rem"
+				style="text-align: center"
+				:pt="{
+					headerCell: {
+						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+					},
+					headerContent: { style: { justifyContent: 'center' } },
+				}"
+			>
+				<template #body="{ data }">
+					<Button link @click="handleDeleteParameter(data.key)">
+						<i class="pi pi-trash" style="font-size: 1.2rem"></i>
+					</Button>
+				</template>
+			</Column>
+		</DataTable>
+
+		<!-- Add parameter button -->
+		<div class="d-flex w-100 justify-content-end">
+			<Button
+				severity="primary"
+				style="word-wrap: none"
+				@click="showCreateOrEditParameterDialog = true"
+			>
+				Add Authentication Parameter
 			</Button>
 		</div>
 
+		<!-- Create / edit parameter dialog -->
 		<div class="d-flex gap-4">
 			<Dialog
-				v-if="showCreateOrEditPropertyDialog"
-				:visible="showCreateOrEditPropertyDialog"
+				v-if="showCreateOrEditParameterDialog"
+				:visible="showCreateOrEditParameterDialog"
 				modal
-				header="Add Authentication Parameter"
+				:header="parameterToEdit.currentKey ? 'Edit Authentication Parameter' : 'Add Authentication Parameter'"
 				:style="{ minWidth: '50%' }"
 				:closable="false"
 			>
-				<!-- Property name -->
+				<!-- Parameter key -->
 				<div class="mb-1">Parameter Key:</div>
 				<InputText
 					v-model="parameterToEdit.key"
@@ -49,7 +128,7 @@
 					@input="handleParameterKeyInput"
 				/>
 
-				<!-- Property type -->
+				<!-- Parameter secret toggle -->
 				<div class="mb-1 mt-4">Is the parameter secret?</div>
 				<ToggleButton
 					v-model="parameterToEdit.secret"
@@ -58,18 +137,11 @@
     			class="w-36"
     			aria-label="Do you confirm"
     		/>
-				<!-- <Dropdown
-					v-model="parameterToEdit.type"
-					:options="propertyTypeOptions"
-					option-label="label"
-					option-value="value"
-					placeholder="--Select--"
-				/> -->
 
-				<!-- Property Value -->
+				<!-- Parameter value -->
 				<div class="mb-1 mt-4">Parameter Value:</div>
 
-				<!-- String -->
+				<!-- Secret value -->
 				<SecretKeyInput
 					v-if="parameterToEdit.secret"
 					v-model="parameterToEdit.value"
@@ -77,27 +149,17 @@
 					aria-labelledby="aria-api-key"
 				/>
 
-				<!-- Number -->
+				<!-- Plain value -->
 				<InputText v-else v-model="parameterToEdit.value" placeholder="Enter parameter value" />
 
 				<template #footer>
 					<!-- Save -->
-					<Button severity="primary" label="Save" @click="handleAddProperty" />
+					<Button severity="primary" label="Save" @click="handleAddParameter" />
 
 					<!-- Cancel -->
 					<Button class="ml-2" label="Close" text @click="handleClose" />
 				</template>
 			</Dialog>
-
-			<!-- Add property -->
-			<div class="d-flex w-100 justify-content-end">
-				<Button
-					label="Add Authentication Parameter"
-					severity="primary"
-					style="word-wrap: none"
-					@click="showCreateOrEditPropertyDialog = true"
-				/>
-			</div>
 		</div>
 	</div>
 </template>
@@ -114,28 +176,14 @@ export default {
 
 	data() {
 		return {
-			showCreateOrEditPropertyDialog: false,
-			propertyToEdit: null,
+			parameters: {},
 
-			properties: {},
-
+			showCreateOrEditParameterDialog: false,
 			parameterToEdit: {
 				key: '',
 				value: '',
-				type: 'public',
+				secret: false,
 			},
-
-			// propertyType: 'public',
-			propertyTypeOptions: [
-				{
-					label: 'Public',
-					value: 'public',
-				},
-				{
-					label: 'Secret',
-					value: 'secret',
-				},
-			],
 		};
 	},
 
@@ -144,50 +192,45 @@ export default {
 			immediate: true,
 			deep: true,
 			handler() {
-				this.properties = this.modelValue;
+				this.parameters = this.modelValue;
 			},
 		},
 	},
 
 	methods: {
 		handleParameterKeyInput(event) {
-			// Remove spaces and any characters that are not letters, digits, dashes, or underscores.
-			let sanitizedValue = event.target.value.replace(/\s/g, '').replace(/[^a-zA-Z0-9-_]/g, '');
-
-			// Ensure the first character is a letter.
-			while (sanitizedValue.length > 0 && !/^[a-zA-Z]/.test(sanitizedValue.charAt(0))) {
-				sanitizedValue = sanitizedValue.substring(1);
-			}
+			// Filter to only allow lowercase letters and underscores
+			let sanitizedValue = event.target.value.replace(/[^a-zA-Z_]/g, '').toLowerCase();
 
 			event.target.value = sanitizedValue;
-
-			this.apiEndpoint.name = sanitizedValue;
-
-			// Check if the name is available if we are creating a new data source.
-			if (!this.editId) {
-				this.debouncedCheckName();
-			}
+			this.parameterToEdit.key = sanitizedValue;
 		},
 
 		handleClose() {
-			this.showCreateOrEditPropertyDialog = false;
+			this.showCreateOrEditParameterDialog = false;
+			this.parameterToEdit = {
+				currentKey: '',
+				key: '',
+				value: '',
+				secret: false,
+			};
 		},
 
-		handleEditProperty(propertyKey) {
+		handleEditParameter(propertyKey) {
 			this.parameterToEdit = {
 				currentKey: propertyKey,
 				key: propertyKey,
-				...this.properties[propertyKey],
+				...this.parameters[propertyKey],
 			},
-			this.showCreateOrEditPropertyDialog = true;
+			this.showCreateOrEditParameterDialog = true;
 		},
 
-		handleDeleteProperty(propertyKey) {
-			delete this.properties[propertyKey];
-			this.$emit('update:modelValue', this.properties);
+		handleDeleteParameter(propertyKey) {
+			delete this.parameters[propertyKey];
+			this.$emit('update:modelValue', this.parameters);
 		},
 
-		handleAddProperty() {
+		handleAddParameter() {
 			const errors = [];
 
 			if (!this.parameterToEdit.key) {
@@ -208,18 +251,18 @@ export default {
 				return;
 			}
 
-			this.properties[this.parameterToEdit.currentKey] = {
+			this.parameters[this.parameterToEdit.currentKey || this.parameterToEdit.key] = {
 				secret: this.parameterToEdit.secret,
 				value: this.parameterToEdit.value,
 			};
-			this.showCreateOrEditPropertyDialog = false;
+			this.showCreateOrEditParameterDialog = false;
 			this.parameterToEdit = {
 				currentKey: '',
 				key: '',
 				value: '',
 				secret: false,
 			};
-			this.$emit('update:modelValue', this.properties);
+			this.$emit('update:modelValue', this.parameters);
 		},
 	},
 };
