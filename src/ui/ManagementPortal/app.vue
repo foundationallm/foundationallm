@@ -109,6 +109,10 @@ body,
 	margin-right: 4px !important;
 }
 
+.mr-2 {
+	margin-right: 8px !important;
+}
+
 .mx-2 {
 	margin-left: 8px !important;
 	margin-right: 8px !important;
