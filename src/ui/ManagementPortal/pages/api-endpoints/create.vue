@@ -81,7 +81,7 @@
 				/>
 
 				<!-- Category -->
-				<div class="mb-2">Category:</div>
+				<div id="aria-category" class="mb-2">Category:</div>
 				<Dropdown
 					v-model="apiEndpoint.category"
 					:options="categoryOptions"
@@ -89,15 +89,18 @@
 					option-value="value"
 					placeholder="--Select--"
 					class="mb-4"
+					aria-labelledby="aria-category"
 				/>
 
 				<!-- Subcategory -->
 				<div id="aria-subcategory" class="mb-2">Subcategory:</div>
-				<InputText
+				<Dropdown
 					v-model="apiEndpoint.subcategory"
-					type="text"
-					class="w-100 mb-4"
-					placeholder="Enter API endpoint subcategory"
+					:options="subcategoryOptions"
+					option-label="label"
+					option-value="value"
+					placeholder="None"
+					class="mb-4"
 					aria-labelledby="aria-subcategory"
 				/>
 			</div>
@@ -397,6 +400,25 @@ export default {
 				{
 					label: 'General',
 					value: 'General',
+				},
+			],
+
+			subcategoryOptions: [
+				{
+					label: 'None',
+					value: null,
+				},
+				{
+					label: 'OneDriveWorkSchool',
+					value: 'OneDriveWorkSchool',
+				},
+				{
+					label: 'Indexing',
+					value: 'Indexing',
+				},
+				{
+					label: 'AIModel',
+					value: 'AIModel',
 				},
 			],
 
