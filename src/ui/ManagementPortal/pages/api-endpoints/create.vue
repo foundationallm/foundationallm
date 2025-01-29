@@ -367,8 +367,12 @@ export default {
 
 			categoryOptions: [
 				{
-					label: 'General',
-					value: 'General',
+					label: 'Orchestration',
+					value: 'Orchestration',
+				},
+				{
+					label: 'ExternalOrchestration',
+					value: 'ExternalOrchestration',
 				},
 				{
 					label: 'LLM',
@@ -379,12 +383,20 @@ export default {
 					value: 'Gatekeeper',
 				},
 				{
-					label: 'Orchestration',
-					value: 'Orchestration',
+					label: 'AzureAIDirect',
+					value: 'AzureAIDirect',
+				},
+				{
+					label: 'AzureOpenAIDirect',
+					value: 'AzureOpenAIDirect',
 				},
 				{
 					label: 'FileStoreConnector',
 					value: 'FileStoreConnector',
+				},
+				{
+					label: 'General',
+					value: 'General',
 				},
 			],
 
