@@ -154,10 +154,114 @@
 			</div>
 
 			<!-- URL exceptions -->
-			<div class="step-header span-2">Configure URL exceptions:</div>
+			<div class="step-header span-2">URL exceptions:</div>
 			<div class="span-2">
-				<div id="aria-status-url" class="mb-2">URL Exceptions:</div>
-				<JsonEditorVue v-model="apiEndpoint.url_exceptions" />
+				<DataTable
+					:value="apiEndpoint.url_exceptions"
+					striped-rows
+					scrollable
+					table-style="max-width: 100%"
+					size="small"
+				>
+					<template #empty>No url exceptions added.</template>
+
+					<!-- URL exception URL -->
+					<Column
+						field="url"
+						header="URL"
+						sortable
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							sortIcon: { style: { color: 'var(--primary-text)' } },
+						}"
+					/>
+
+					<!-- URL exception principal -->
+					<Column
+						field="user_principal_name"
+						header="Principal Name"
+						sortable
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							sortIcon: { style: { color: 'var(--primary-text)' } },
+						}"
+					/>
+
+					<!-- URL exception enabled -->
+					<Column
+						field="enabled"
+						header="Enabled"
+						sortable
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							sortIcon: { style: { color: 'var(--primary-text)' } },
+						}"
+					/>
+
+					<!-- Edit url exception -->
+					<Column
+						header="Edit"
+						header-style="width:6rem"
+						style="text-align: center"
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							headerContent: { style: { justifyContent: 'center' } },
+						}"
+					>
+						<template #body="{ data }">
+							<Button link @click="urlExceptionToEdit = data">
+								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
+							</Button>
+
+							<EditURLExceptionDialog
+								v-if="urlExceptionToEdit?.name === data.name"
+								v-model="urlExceptionToEdit"
+								:visible="!!urlExceptionToEdit"
+								@update:visible="urlExceptionToEdit = null"
+								@update:modelValue="handleUpdateURLException"
+							/>
+						</template>
+					</Column>
+
+					<!-- Delete url exception -->
+					<Column
+						header="Delete"
+						header-style="width:6rem"
+						style="text-align: center"
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							headerContent: { style: { justifyContent: 'center' } },
+						}"
+					>
+						<template #body="{ data }">
+							<Button link @click="handleRemoveURLException(data)">
+								<i class="pi pi-trash" style="font-size: 1.2rem"></i>
+							</Button>
+						</template>
+					</Column>
+				</DataTable>
+
+				<!-- Add url exception -->
+				<div class="d-flex justify-content-end mt-4">
+					<Button @click="showNewURLExceptionDialog = true">Add URL Exception</Button>
+				</div>
+
+				<EditURLExceptionDialog
+					v-if="showNewURLExceptionDialog"
+					:visible="!!showNewURLExceptionDialog"
+					@update:visible="showNewURLExceptionDialog = false"
+					@update:modelValue="handleAddNewURLException"
+				/>
 			</div>
 
 			<!-- Buttons -->
@@ -238,6 +342,9 @@ export default {
 
 				resolved_authentication_parameters: {},
 			},
+
+			showNewURLExceptionDialog: false,
+			urlExceptionToEdit: null,
 
 			// orchestratorOptions: [
 			// 	{
@@ -343,6 +450,22 @@ export default {
 			if (!this.editId) {
 				this.debouncedCheckName();
 			}
+		},
+
+		handleAddNewURLException(newURLException) {
+			this.apiEndpoint.url_exceptions.push(newURLException);
+			this.showNewURLExceptionDialog = false;
+		},
+
+		handleUpdateURLException(updatedURLException) {
+			const index = this.apiEndpoint.url_exceptions.findIndex((urlException) => urlException.url === updatedURLException.url);
+			this.apiEndpoint.url_exceptions[index] = updatedURLException;
+			this.urlExceptionToEdit = null;
+		},
+
+		handleRemoveURLException(urlExceptionToRemove) {
+			const index = this.apiEndpoint.url_exceptions.findIndex((urlException) => urlException.url === urlExceptionToRemove.url);
+			this.apiEndpoint.url_exceptions.splice(index, 1);
 		},
 
 		async handleCreate() {
