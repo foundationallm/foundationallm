@@ -11,10 +11,11 @@ fastapi==0.115.6
 langchain==0.3.7
 langchain-aws==0.2.7
 langchain-experimental==0.3.3
-langchain-openai==0.2.9
+langchain-openai==0.3.3
 langchain-azure-dynamic-sessions==0.2.0
+langchain-deepseek-official==0.1.0
 langgraph==0.2.53
-openai==1.55.3
+openai==1.60.2
 pandas==2.2.2
 pyarrow==18.1.0
 pydantic==2.8.2
