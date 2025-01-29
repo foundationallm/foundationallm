@@ -948,13 +948,19 @@ public partial class CoreService(
     {
         request.OperationId = Guid.NewGuid().ToString();
         request.LongRunningOperation = longRunningOperation;
+
+        if (string.IsNullOrWhiteSpace(request.SessionId) ||
+            !(agent.ConversationHistorySettings?.Enabled ?? false))
+            return request;
+
         List<MessageHistoryItem> messageHistoryList = [];
+        var max = agent.ConversationHistorySettings?.MaxHistory *2 ?? null;
         List<string> contentArtifactTypes = (agent.ConversationHistorySettings?.Enabled ?? false)
             ? [.. (agent.ConversationHistorySettings.HistoryContentArtifactTypes ?? string.Empty).Split(",", StringSplitOptions.RemoveEmptyEntries)]
             : [];
 
         // Retrieve conversation, including latest prompt.
-        var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!);
+        var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!, max);
         foreach (var message in messages)
         {
             var messageText = message.Text;
