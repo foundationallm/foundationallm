@@ -15,7 +15,9 @@
 			aria-labelledby="aria-url-exception-url"
 		/>
 
-		<div id="aria-url-exception-user-principal-name" class="mt-6 mb-2 font-weight-bold">User Principal Name:</div>
+		<div id="aria-url-exception-user-principal-name" class="mt-6 mb-2 font-weight-bold">
+			User Principal Name:
+		</div>
 		<InputText
 			v-model="urlException.user_principal_name"
 			type="text"
@@ -25,10 +27,7 @@
 		/>
 
 		<div id="aria-url-exception-enabled" class="mt-6 mb-2 font-weight-bold">Enabled:</div>
-		<InputSwitch
-			v-model="urlException.enabled"
-			aria-labelledby="aria-url-exception-enabled"
-		/>
+		<InputSwitch v-model="urlException.enabled" aria-labelledby="aria-url-exception-enabled" />
 
 		<template #footer>
 			<!-- Save -->

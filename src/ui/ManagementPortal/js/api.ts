@@ -25,7 +25,7 @@ import type {
 	APIEndpointConfiguration,
 } from './types';
 import { convertToDataSource, convertToAppConfigKeyVault, convertToAppConfig } from '@/js/types';
-import { isEmpty, upperFirst, camelCase} from 'lodash';
+import { isEmpty, upperFirst, camelCase } from 'lodash';
 // async function wait(milliseconds: number = 1000): Promise<void> {
 // 	return await new Promise<void>((resolve) => setTimeout(() => resolve(), milliseconds));
 // }
@@ -681,7 +681,8 @@ export default {
 
 		// Attempt to load the real authentication parameter values if they are stored in app config
 		for (const authenticationParameterKey in data.resource.authentication_parameters) {
-			const authenticationParameterValue = data.resource.authentication_parameters[authenticationParameterKey]
+			const authenticationParameterValue =
+				data.resource.authentication_parameters[authenticationParameterKey];
 			const appConfigValue = await this.getAppConfig(authenticationParameterValue);
 
 			if (appConfigValue) {
@@ -708,7 +709,8 @@ export default {
 		if (!isEmpty(apiEndpoint.resolved_authentication_parameters)) {
 			// Convert secret authentication values into app config values and store app config key as value instead
 			for (const authenticationParameterKey in apiEndpoint.resolved_authentication_parameters) {
-				const authenticationParameterValue = apiEndpoint.resolved_authentication_parameters[authenticationParameterKey];
+				const authenticationParameterValue =
+					apiEndpoint.resolved_authentication_parameters[authenticationParameterKey];
 
 				if (authenticationParameterValue.secret) {
 					const parameterKeyPascalCase = upperFirst(camelCase(authenticationParameterKey));
@@ -722,7 +724,9 @@ export default {
 						content_type: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8',
 					};
 
-					const appConfigResult = await this.getAppConfig('FoundationaLLM:Configuration:KeyVaultURI');
+					const appConfigResult = await this.getAppConfig(
+						'FoundationaLLM:Configuration:KeyVaultURI',
+					);
 					const keyVaultUri = appConfigResult.resource;
 					const keyVaultSecretName =
 						`foundationallm-apiendpoints-${apiEndpoint.name}-${parameterKeyPascalCase}`.toLowerCase();

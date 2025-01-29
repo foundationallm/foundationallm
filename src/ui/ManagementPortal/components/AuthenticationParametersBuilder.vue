@@ -1,6 +1,5 @@
 <template>
 	<div class="d-flex flex-column gap-4">
-
 		<!-- Authenication parameters table -->
 		<DataTable
 			:value="Object.keys(parameters).map((key) => ({ key, ...parameters[key] }))"
@@ -115,7 +114,11 @@
 				v-if="showCreateOrEditParameterDialog"
 				:visible="showCreateOrEditParameterDialog"
 				modal
-				:header="parameterToEdit.currentKey ? 'Edit Authentication Parameter' : 'Add Authentication Parameter'"
+				:header="
+					parameterToEdit.currentKey
+						? 'Edit Authentication Parameter'
+						: 'Add Authentication Parameter'
+				"
 				:style="{ minWidth: '50%' }"
 				:closable="false"
 			>
@@ -132,11 +135,11 @@
 				<div class="mb-1 mt-4">Is the parameter secret?</div>
 				<ToggleButton
 					v-model="parameterToEdit.secret"
-					onIcon="pi pi-lock" 
-    			offIcon="pi pi-lock-open"
-    			class="w-36"
-    			aria-label="Do you confirm"
-    		/>
+					onIcon="pi pi-lock"
+					offIcon="pi pi-lock-open"
+					class="w-36"
+					aria-label="Do you confirm"
+				/>
 
 				<!-- Parameter value -->
 				<div class="mb-1 mt-4">Parameter Value:</div>
@@ -217,12 +220,12 @@ export default {
 		},
 
 		handleEditParameter(propertyKey) {
-			this.parameterToEdit = {
+			(this.parameterToEdit = {
 				currentKey: propertyKey,
 				key: propertyKey,
 				...this.parameters[propertyKey],
-			},
-			this.showCreateOrEditParameterDialog = true;
+			}),
+				(this.showCreateOrEditParameterDialog = true);
 		},
 
 		handleDeleteParameter(propertyKey) {

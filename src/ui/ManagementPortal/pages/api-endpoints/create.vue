@@ -458,13 +458,17 @@ export default {
 		},
 
 		handleUpdateURLException(updatedURLException) {
-			const index = this.apiEndpoint.url_exceptions.findIndex((urlException) => urlException.url === updatedURLException.url);
+			const index = this.apiEndpoint.url_exceptions.findIndex(
+				(urlException) => urlException.url === updatedURLException.url,
+			);
 			this.apiEndpoint.url_exceptions[index] = updatedURLException;
 			this.urlExceptionToEdit = null;
 		},
 
 		handleRemoveURLException(urlExceptionToRemove) {
-			const index = this.apiEndpoint.url_exceptions.findIndex((urlException) => urlException.url === urlExceptionToRemove.url);
+			const index = this.apiEndpoint.url_exceptions.findIndex(
+				(urlException) => urlException.url === urlExceptionToRemove.url,
+			);
 			this.apiEndpoint.url_exceptions.splice(index, 1);
 		},
 
