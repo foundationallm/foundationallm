@@ -41,7 +41,7 @@ namespace FoundationaLLM.Common.Clients
 
             if (_settings.EnableCache)
             {
-                _cacheService = new AuthorizationServiceClientCacheService(logger);
+                _cacheService = new AuthorizationServiceClientCacheService(_settings, logger);
             }
         }
 
