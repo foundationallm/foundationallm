@@ -26,7 +26,7 @@
 				<div id="aria-source-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
 				</div>
-				<div class="input-wrapper">
+				<div class="input-wrapper mb-4">
 					<InputText
 						v-model="apiEndpoint.name"
 						:disabled="editId"
@@ -109,6 +109,7 @@
 				<Dropdown
 					v-model="apiEndpoint.authentication_type"
 					:options="authTypeOptions"
+					class="mb-4"
 					option-label="label"
 					option-value="value"
 					placeholder="--Select--"
@@ -127,25 +128,6 @@
 					placeholder="Enter API endpoint URL"
 				/>
 
-				<!-- API Key details -->
-				<div v-if="apiEndpoint.authentication_type === 'APIKey'" class="span-2 mb-4">
-					<!-- Header name -->
-					<div class="mb-2">API Key Header Name:</div>
-					<InputText
-						v-model="apiEndpoint.authentication_parameters.api_key_header_name"
-						class="w-100 mb-4"
-						type="text"
-					/>
-
-					<!-- API Key -->
-					<div id="aria-api-key" class="mb-2 mt-2">API Key:</div>
-					<SecretKeyInput
-						v-model="apiEndpoint.resolved_configuration_references.APIKey"
-						placeholder="Enter API key"
-						aria-labelledby="aria-api-key"
-					/>
-				</div>
-
 				<!-- API Version -->
 				<div class="mb-2">API Version:</div>
 				<InputText v-model="apiEndpoint.api_version" class="w-100 mb-4" type="text" />
@@ -163,8 +145,17 @@
 					placeholder="Enter API endpoint status URL"
 					aria-labelledby="aria-status-url"
 				/>
+			</div>
 
-				<!-- URL Exceptions -->
+			<!-- Authentication parameters -->
+			<div class="step-header span-2">What are the authentication parameters?</div>
+			<div class="span-2">
+				<AuthenticationParametersBuilder v-model="apiEndpoint.resolved_authentication_parameters" />
+			</div>
+
+			<!-- URL exceptions -->
+			<div class="step-header span-2">Configure URL exceptions:</div>
+			<div class="span-2">
 				<div id="aria-status-url" class="mb-2">URL Exceptions:</div>
 				<JsonEditorVue v-model="apiEndpoint.url_exceptions" />
 			</div>
@@ -245,9 +236,7 @@ export default {
 					api_key_header_name: 'api-key',
 				},
 
-				resolved_configuration_references: {
-					APIKey: '',
-				},
+				resolved_authentication_parameters: {},
 			},
 
 			// orchestratorOptions: [

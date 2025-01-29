@@ -25,7 +25,7 @@ import type {
 	APIEndpointConfiguration,
 } from './types';
 import { convertToDataSource, convertToAppConfigKeyVault, convertToAppConfig } from '@/js/types';
-
+import { isEmpty, upperFirst, camelCase} from 'lodash';
 // async function wait(milliseconds: number = 1000): Promise<void> {
 // 	return await new Promise<void>((resolve) => setTimeout(() => resolve(), milliseconds));
 // }
@@ -677,13 +677,24 @@ export default {
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/${apiEndpointName}?api-version=${this.apiVersion}`,
 		)) as ResourceProviderGetResult<any>[];
 
-		data.resource.resolved_configuration_references = {};
+		data.resource.resolved_authentication_parameters = {};
 
-		if (data.resource.authentication_type === 'APIKey') {
-			const apiKeySecret = await this.getAppConfig(
-				data.resource.authentication_parameters.api_key_configuration_name,
-			);
-			data.resource.resolved_configuration_references.APIKey = apiKeySecret?.resource?.value;
+		// Attempt to load the real authentication parameter values if they are stored in app config
+		for (const authenticationParameterKey in data.resource.authentication_parameters) {
+			const authenticationParameterValue = data.resource.authentication_parameters[authenticationParameterKey]
+			const appConfigValue = await this.getAppConfig(authenticationParameterValue);
+
+			if (appConfigValue) {
+				data.resource.resolved_authentication_parameters[authenticationParameterKey] = {
+					secret: true,
+					value: appConfigValue.resource.value,
+				};
+			} else {
+				data.resource.resolved_authentication_parameters[authenticationParameterKey] = {
+					secret: false,
+					value: authenticationParameterValue,
+				};
+			}
 		}
 
 		return data;
@@ -692,29 +703,43 @@ export default {
 	async createAPIEndpointConfiguration(
 		apiEndpoint: any,
 	): Promise<ResourceProviderGetResult<any>[]> {
-		if (apiEndpoint.authentication_type === 'APIKey') {
-			var appConfigKey = `FoundationaLLM:APIEndpoints:${apiEndpoint.name}:Essentials:APIKey`;
-			let appConfig: AppConfigKeyVault = {
-				name: appConfigKey,
-				display_name: appConfigKey,
-				description: '',
-				key: appConfigKey,
-				value: apiEndpoint.resolved_configuration_references.APIKey,
-				content_type: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8',
-			};
+		const authenticationParameters = {};
 
-			const appConfigResult = await this.getAppConfig('FoundationaLLM:Configuration:KeyVaultURI');
-			const keyVaultUri = appConfigResult.resource;
-			const keyVaultSecretName =
-				`foundationallm-apiendpoints-${apiEndpoint.name}-apikey`.toLowerCase();
+		if (!isEmpty(apiEndpoint.resolved_authentication_parameters)) {
+			// Convert secret authentication values into app config values and store app config key as value instead
+			for (const authenticationParameterKey in apiEndpoint.resolved_authentication_parameters) {
+				const authenticationParameterValue = apiEndpoint.resolved_authentication_parameters[authenticationParameterKey];
 
-			appConfig = {
-				...appConfig,
-				key_vault_uri: keyVaultUri.value,
-				key_vault_secret_name: keyVaultSecretName,
-			};
+				if (authenticationParameterValue.secret) {
+					const parameterKeyPascalCase = upperFirst(camelCase(authenticationParameterKey));
+					var appConfigKey = `FoundationaLLM:APIEndpoints:${apiEndpoint.name}:Essentials:${parameterKeyPascalCase}`;
+					let appConfig: AppConfigKeyVault = {
+						name: appConfigKey,
+						display_name: appConfigKey,
+						description: '',
+						key: appConfigKey,
+						value: authenticationParameterValue.value,
+						content_type: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8',
+					};
 
-			await this.upsertAppConfig(appConfig);
+					const appConfigResult = await this.getAppConfig('FoundationaLLM:Configuration:KeyVaultURI');
+					const keyVaultUri = appConfigResult.resource;
+					const keyVaultSecretName =
+						`foundationallm-apiendpoints-${apiEndpoint.name}-${parameterKeyPascalCase}`.toLowerCase();
+
+					appConfig = {
+						...appConfig,
+						key_vault_uri: keyVaultUri.value,
+						key_vault_secret_name: keyVaultSecretName,
+					};
+
+					await this.upsertAppConfig(appConfig);
+
+					authenticationParameters[authenticationParameterKey] = appConfigKey;
+				} else {
+					authenticationParameters[authenticationParameterKey] = authenticationParameterValue.value;
+				}
+			}
 		}
 
 		const data = (await this.fetch(
@@ -724,15 +749,8 @@ export default {
 				body: {
 					type: 'api-endpoint',
 					...apiEndpoint,
-					resolved_configuration_references: undefined,
-					authentication_parameters: {
-						...(apiEndpoint.authentication_type === 'APIKey'
-							? {
-									api_key_configuration_name: appConfigKey,
-									api_key_header_name: apiEndpoint.authentication_parameters?.api_key_header_name,
-								}
-							: {}),
-					},
+					resolved_authentication_parameters: undefined,
+					authentication_parameters: authenticationParameters,
 				},
 			},
 		)) as ResourceProviderGetResult<any>[];
