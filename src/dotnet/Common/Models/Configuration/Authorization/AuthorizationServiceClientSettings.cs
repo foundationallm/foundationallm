@@ -21,13 +21,13 @@
         public bool EnableCache { get; set; } = false;
 
         /// <summary>
-        /// Absolute cache expiration in minutes.
+        /// Absolute cache expiration in seconds.
         /// </summary>
-        public int? AbsoluteCacheExpirationMinutes { get; set; } = 5;
+        public int? AbsoluteCacheExpirationSeconds { get; set; } = 300;
 
-        /// Sets how long the cache entry can be inactive (e.g. not accessed) before it will be removed.
+        /// Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed.
         /// This will not extend the entry lifetime beyond the absolute expiration (if set).
-        public int? SlidingCacheExpirationMinutes { get; set; } = 2;
+        public int? SlidingCacheExpirationSeconds { get; set; } = 120;
 
         /// <summary>
         /// The maximum number of items that can be stored in the cache.
@@ -35,8 +35,8 @@
         public long? CacheSizeLimit { get; set; } = 1000;
 
         /// <summary>
-        /// Gets or sets the minimum length of time between successive scans for expired items.
+        /// Gets or sets the minimum length of time between successive scans for expired items in seconds.
         /// </summary>
-        public TimeSpan? CacheExpirationScanFrequency { get; set; } = TimeSpan.FromSeconds(30);
+        public int? CacheExpirationScanFrequencySeconds { get; set; } = 30;
     }
 }
