@@ -111,6 +111,13 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 || agentRewriter == null)
                 throw new UserPromptRewriteException($"The user prompt rewriter is not initialized for agent {agentName} in instance {instanceId}.");
 
+            //No need to rewrite a single message.
+            if (completionRequest.MessageHistory?.Count == 0)
+            {
+                completionRequest.UserPromptRewrite = completionRequest.UserPrompt;
+                return;
+            }
+
             try
             {
                 var userPromptsHistory = completionRequest.MessageHistory?
