@@ -77,6 +77,40 @@
 <h5>Note</h5>
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
+<h2 id="starting-with-093-rc002">Starting with 0.9.3-rc002</h2>
+<h2 id="app-configuration-settings">App configuration settings</h2>
+<p>The following App Config properties make cache settings for the <code>AuthorizationServiceClientCacheService</code> configurable:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:AbsoluteCacheExpirationSeconds</code></td>
+<td>Absolute cache expiration in seconds.</td>
+<td>300</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:SlidingCacheExpirationSeconds</code></td>
+<td>Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set).</td>
+<td>120</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheSizeLimit</code></td>
+<td>The maximum number of items that can be stored in the cache.</td>
+<td>10000</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheExpirationScanFrequencySeconds</code></td>
+<td>Gets or sets the minimum length of time between successive scans for expired items in seconds.</td>
+<td>30</td>
+</tr>
+</tbody>
+</table>
 <h2 id="starting-with-092-rc005">Starting with 0.9.2-rc005</h2>
 <h3 id="agent-configuration-changes">Agent configuration changes</h3>
 <p>Starting with this version, all agents MUST transition to the agent workflow configuraiton approach.</p>
@@ -120,7 +154,7 @@
 }
 </code></pre>
 <h2 id="starting-from-091">Starting from 0.9.1</h2>
-<h3 id="app-configuration-settings">App configuration settings</h3>
+<h3 id="app-configuration-settings-1">App configuration settings</h3>
 <p>To support the event grid infrastructure, the following new App Configuration settings are required.</p>
 <pre><code class="lang-json">[
 	{
