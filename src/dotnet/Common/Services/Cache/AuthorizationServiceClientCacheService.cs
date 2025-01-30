@@ -79,7 +79,7 @@ namespace FoundationaLLM.Common.Services.Cache
         {
             var resourcePaths = string.Join(",", authorizationRequest.ResourcePaths);
             var groupIds = string.Join(",", authorizationRequest.UserContext.SecurityGroupIds);
-            var userIdentity = $"{authorizationRequest.UserContext.SecurityPrincipalId}:{authorizationRequest.UserContext.UserPrincipalName}:{groupIds}";
+            var userIdentity = $"{authorizationRequest.UserContext.SecurityPrincipalId}:{groupIds}";
 
             var keyString = $"{authorizationRequest.Action}:{resourcePaths}:{authorizationRequest.ExpandResourceTypePaths}:{authorizationRequest.IncludeRoles}:{authorizationRequest.IncludeActions}:{userIdentity}";
 
