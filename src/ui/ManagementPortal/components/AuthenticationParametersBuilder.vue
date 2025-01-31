@@ -2,7 +2,7 @@
 	<div class="d-flex flex-column gap-4">
 		<!-- Authenication parameters table -->
 		<DataTable
-			:value="Object.keys(parameters).map((key) => ({ key, ...parameters[key] }))"
+			:value="Object.keys(parameters).map((key) => ({ key, value: parameters[key] }))"
 			striped-rows
 			scrollable
 			table-style="max-width: 100%"
@@ -11,7 +11,7 @@
 			<template #empty>No authentication parameters added.</template>
 
 			<!-- Parameter secret toggle -->
-			<Column
+		<!-- 	<Column
 				field="secret"
 				header="Secret"
 				sortable
@@ -26,7 +26,7 @@
 					<i v-if="data.secret" class="pi pi-lock mr-2"></i>
 					<span>{{ data.secret }}</span>
 				</template>
-			</Column>
+			</Column> -->
 
 			<!-- Parameter key -->
 			<Column
@@ -53,9 +53,9 @@
 					sortIcon: { style: { color: 'var(--primary-text)' } },
 				}"
 			>
-				<template #body="{ data }">
+				<!-- <template #body="{ data }">
 					{{ data.secret ? '[VALUE HIDDEN]' : data.value }}
-				</template>
+				</template> -->
 			</Column>
 
 			<!-- Edit parameter -->
@@ -132,28 +132,28 @@
 				/>
 
 				<!-- Parameter secret toggle -->
-				<div class="mb-1 mt-4">Is the parameter secret?</div>
+				<!-- <div class="mb-1 mt-4">Is the parameter secret?</div>
 				<ToggleButton
 					v-model="parameterToEdit.secret"
 					onIcon="pi pi-lock"
 					offIcon="pi pi-lock-open"
 					class="w-36"
 					aria-label="Do you confirm"
-				/>
+				/> -->
 
 				<!-- Parameter value -->
 				<div class="mb-1 mt-4">Parameter Value:</div>
 
 				<!-- Secret value -->
-				<SecretKeyInput
+				<!-- <SecretKeyInput
 					v-if="parameterToEdit.secret"
 					v-model="parameterToEdit.value"
 					placeholder="Enter parameter secret value"
 					aria-labelledby="aria-api-key"
-				/>
+				/> -->
 
 				<!-- Plain value -->
-				<InputText v-else v-model="parameterToEdit.value" placeholder="Enter parameter value" />
+				<InputText v-model="parameterToEdit.value" placeholder="Enter parameter value" />
 
 				<template #footer>
 					<!-- Save -->
@@ -215,17 +215,17 @@ export default {
 				currentKey: '',
 				key: '',
 				value: '',
-				secret: false,
+				// secret: false,
 			};
 		},
 
 		handleEditParameter(propertyKey) {
-			(this.parameterToEdit = {
+			this.parameterToEdit = {
 				currentKey: propertyKey,
 				key: propertyKey,
-				...this.parameters[propertyKey],
-			}),
-				(this.showCreateOrEditParameterDialog = true);
+				value: this.parameters[propertyKey],
+			};
+			this.showCreateOrEditParameterDialog = true;
 		},
 
 		handleDeleteParameter(propertyKey) {
@@ -254,16 +254,14 @@ export default {
 				return;
 			}
 
-			this.parameters[this.parameterToEdit.currentKey || this.parameterToEdit.key] = {
-				secret: this.parameterToEdit.secret,
-				value: this.parameterToEdit.value,
-			};
+			delete this.parameters[this.parameterToEdit.currentKey];
+			this.parameters[this.parameterToEdit.key] = this.parameterToEdit.value;
 			this.showCreateOrEditParameterDialog = false;
 			this.parameterToEdit = {
 				currentKey: '',
 				key: '',
 				value: '',
-				secret: false,
+				// secret: false,
 			};
 			this.$emit('update:modelValue', this.parameters);
 		},

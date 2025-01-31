@@ -153,7 +153,7 @@
 			<!-- Authentication parameters -->
 			<div class="step-header span-2">What are the authentication parameters?</div>
 			<div class="span-2">
-				<AuthenticationParametersBuilder v-model="apiEndpoint.resolved_authentication_parameters" />
+				<AuthenticationParametersBuilder v-model="apiEndpoint.authentication_parameters" />
 			</div>
 
 			<!-- URL exceptions -->
@@ -340,10 +340,10 @@ export default {
 				properties: null,
 
 				authentication_parameters: {
-					api_key_header_name: 'api-key',
+					// api_key_header_name: 'api-key',
 				},
 
-				resolved_authentication_parameters: {},
+				// resolved_authentication_parameters: {},
 			},
 
 			showNewURLExceptionDialog: false,

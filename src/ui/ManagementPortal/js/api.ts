@@ -677,26 +677,26 @@ export default {
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/${apiEndpointName}?api-version=${this.apiVersion}`,
 		)) as ResourceProviderGetResult<any>[];
 
-		data.resource.resolved_authentication_parameters = {};
+		// data.resource.resolved_authentication_parameters = {};
 
-		// Attempt to load the real authentication parameter values if they are stored in app config
-		for (const authenticationParameterKey in data.resource.authentication_parameters) {
-			const authenticationParameterValue =
-				data.resource.authentication_parameters[authenticationParameterKey];
-			const appConfigValue = await this.getAppConfig(authenticationParameterValue);
+		// // Attempt to load the real authentication parameter values if they are stored in app config
+		// for (const authenticationParameterKey in data.resource.authentication_parameters) {
+		// 	const authenticationParameterValue =
+		// 		data.resource.authentication_parameters[authenticationParameterKey];
+		// 	const appConfigValue = await this.getAppConfig(authenticationParameterValue);
 
-			if (appConfigValue) {
-				data.resource.resolved_authentication_parameters[authenticationParameterKey] = {
-					secret: true,
-					value: appConfigValue.resource.value,
-				};
-			} else {
-				data.resource.resolved_authentication_parameters[authenticationParameterKey] = {
-					secret: false,
-					value: authenticationParameterValue,
-				};
-			}
-		}
+		// 	if (appConfigValue) {
+		// 		data.resource.resolved_authentication_parameters[authenticationParameterKey] = {
+		// 			secret: true,
+		// 			value: appConfigValue.resource.value,
+		// 		};
+		// 	} else {
+		// 		data.resource.resolved_authentication_parameters[authenticationParameterKey] = {
+		// 			secret: false,
+		// 			value: authenticationParameterValue,
+		// 		};
+		// 	}
+		// }
 
 		return data;
 	},
@@ -704,47 +704,47 @@ export default {
 	async createAPIEndpointConfiguration(
 		apiEndpoint: any,
 	): Promise<ResourceProviderGetResult<any>[]> {
-		const authenticationParameters = {};
+		// const authenticationParameters = {};
 
-		if (!isEmpty(apiEndpoint.resolved_authentication_parameters)) {
-			// Convert secret authentication values into app config values and store app config key as value instead
-			for (const authenticationParameterKey in apiEndpoint.resolved_authentication_parameters) {
-				const authenticationParameterValue =
-					apiEndpoint.resolved_authentication_parameters[authenticationParameterKey];
+		// if (!isEmpty(apiEndpoint.resolved_authentication_parameters)) {
+		// 	// Convert secret authentication values into app config values and store app config key as value instead
+		// 	for (const authenticationParameterKey in apiEndpoint.resolved_authentication_parameters) {
+		// 		const authenticationParameterValue =
+		// 			apiEndpoint.resolved_authentication_parameters[authenticationParameterKey];
 
-				if (authenticationParameterValue.secret) {
-					const parameterKeyPascalCase = upperFirst(camelCase(authenticationParameterKey));
-					var appConfigKey = `FoundationaLLM:APIEndpoints:${apiEndpoint.name}:Essentials:${parameterKeyPascalCase}`;
-					let appConfig: AppConfigKeyVault = {
-						name: appConfigKey,
-						display_name: appConfigKey,
-						description: '',
-						key: appConfigKey,
-						value: authenticationParameterValue.value,
-						content_type: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8',
-					};
+		// 		if (authenticationParameterValue.secret) {
+		// 			const parameterKeyPascalCase = upperFirst(camelCase(authenticationParameterKey));
+		// 			var appConfigKey = `FoundationaLLM:APIEndpoints:${apiEndpoint.name}:Essentials:${parameterKeyPascalCase}`;
+		// 			let appConfig: AppConfigKeyVault = {
+		// 				name: appConfigKey,
+		// 				display_name: appConfigKey,
+		// 				description: '',
+		// 				key: appConfigKey,
+		// 				value: authenticationParameterValue.value,
+		// 				content_type: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8',
+		// 			};
 
-					const appConfigResult = await this.getAppConfig(
-						'FoundationaLLM:Configuration:KeyVaultURI',
-					);
-					const keyVaultUri = appConfigResult.resource;
-					const keyVaultSecretName =
-						`foundationallm-apiendpoints-${apiEndpoint.name}-${parameterKeyPascalCase}`.toLowerCase();
+		// 			const appConfigResult = await this.getAppConfig(
+		// 				'FoundationaLLM:Configuration:KeyVaultURI',
+		// 			);
+		// 			const keyVaultUri = appConfigResult.resource;
+		// 			const keyVaultSecretName =
+		// 				`foundationallm-apiendpoints-${apiEndpoint.name}-${parameterKeyPascalCase}`.toLowerCase();
 
-					appConfig = {
-						...appConfig,
-						key_vault_uri: keyVaultUri.value,
-						key_vault_secret_name: keyVaultSecretName,
-					};
+		// 			appConfig = {
+		// 				...appConfig,
+		// 				key_vault_uri: keyVaultUri.value,
+		// 				key_vault_secret_name: keyVaultSecretName,
+		// 			};
 
-					await this.upsertAppConfig(appConfig);
+		// 			await this.upsertAppConfig(appConfig);
 
-					authenticationParameters[authenticationParameterKey] = appConfigKey;
-				} else {
-					authenticationParameters[authenticationParameterKey] = authenticationParameterValue.value;
-				}
-			}
-		}
+		// 			authenticationParameters[authenticationParameterKey] = appConfigKey;
+		// 		} else {
+		// 			authenticationParameters[authenticationParameterKey] = authenticationParameterValue.value;
+		// 		}
+		// 	}
+		// }
 
 		const data = (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/${apiEndpoint.name}?api-version=${this.apiVersion}`,
@@ -753,8 +753,8 @@ export default {
 				body: {
 					type: 'api-endpoint',
 					...apiEndpoint,
-					resolved_authentication_parameters: undefined,
-					authentication_parameters: authenticationParameters,
+					// resolved_authentication_parameters: undefined,
+					// authentication_parameters: authenticationParameters,
 				},
 			},
 		)) as ResourceProviderGetResult<any>[];
