@@ -175,6 +175,11 @@ namespace FoundationaLLM.Common.Clients
                             {
                                 return jsonElement.Deserialize<TResponse>(_jsonSerializerOptions);
                             }
+
+                            //may not have gotten the response result set yet...keep going.
+                            if (operationStatus.Result == null)
+                                continue;
+
                             return default;
                         case OperationStatus.InProgress:
                         case OperationStatus.Pending:
