@@ -171,14 +171,15 @@ namespace FoundationaLLM.Common.Clients
                     switch (operationStatus.Status)
                     {
                         case OperationStatus.Completed:
-                            if (operationStatus.Result is JsonElement jsonElement)
-                            {
-                                return jsonElement.Deserialize<TResponse>(_jsonSerializerOptions);
-                            }
 
                             //may not have gotten the response result set yet...keep going.
                             if (operationStatus.Result == null)
                                 continue;
+
+                            if (operationStatus.Result is JsonElement jsonElement)
+                            {
+                                return jsonElement.Deserialize<TResponse>(_jsonSerializerOptions);
+                            }
 
                             return default;
                         case OperationStatus.InProgress:
