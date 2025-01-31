@@ -1,4 +1,3 @@
-
 /**
  * Renames a key in an object while preserving the key order.
  * (Normally renaming a key in an object involves deleting the old key and
@@ -15,7 +14,11 @@
  * const updatedObject = renameObjectKey(object, 'oldKey', 'newKey');
  * console.log(updatedObject); // { newKey: 'value', anotherKey: 'anotherValue' }
  */
-export function renameObjectKey(object: Record<string, any>, oldKeyName: string, newKeyName: string): Record<string, any> {
+export function renameObjectKey(
+	object: Record<string, any>,
+	oldKeyName: string,
+	newKeyName: string,
+): Record<string, any> {
 	// Convert the object to an array of key value pairs
 	const objectKeyValuePairs = Object.entries(object);
 
@@ -30,4 +33,4 @@ export function renameObjectKey(object: Record<string, any>, oldKeyName: string,
 
 	// Convert the array back to an object
 	return Object.fromEntries(updatedKeyValuePairs);
-};
+}

@@ -11,7 +11,7 @@
 			<template #empty>No authentication parameters added.</template>
 
 			<!-- Parameter secret toggle -->
-		<!-- 	<Column
+			<!-- 	<Column
 				field="secret"
 				header="Secret"
 				sortable
@@ -257,7 +257,11 @@ export default {
 			}
 
 			// Rename the parameter key while preserving the key order
-			this.parameters = renameObjectKey(this.parameters, this.parameterToEdit.currentKey, this.parameterToEdit.key);
+			this.parameters = renameObjectKey(
+				this.parameters,
+				this.parameterToEdit.currentKey,
+				this.parameterToEdit.key,
+			);
 			this.parameters[this.parameterToEdit.key] = this.parameterToEdit.value;
 
 			this.showCreateOrEditParameterDialog = false;
