@@ -4,7 +4,7 @@ import type {
 	Agent,
 	DataSource,
 	AppConfigUnion,
-	AppConfigKeyVault,
+	// AppConfigKeyVault,
 	AgentIndex,
 	// AgentGatekeeper,
 	AgentAccessToken,
@@ -25,7 +25,7 @@ import type {
 	APIEndpointConfiguration,
 } from './types';
 import { convertToDataSource, convertToAppConfigKeyVault, convertToAppConfig } from '@/js/types';
-import { isEmpty, upperFirst, camelCase } from 'lodash';
+// import { isEmpty, upperFirst, camelCase } from 'lodash';
 // async function wait(milliseconds: number = 1000): Promise<void> {
 // 	return await new Promise<void>((resolve) => setTimeout(() => resolve(), milliseconds));
 // }
@@ -241,7 +241,7 @@ export default {
 		);
 	},
 
-	async deleteDataSource(dataSourceId: string): Promise<any> {
+	async deleteDataSource(dataSourceId: string): Promise<void> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.DataSource/dataSources/${dataSourceId}?api-version=${this.apiVersion}`,
 			{
@@ -266,7 +266,7 @@ export default {
 		)) as ResourceProviderGetResult<AppConfigUnion>[];
 	},
 
-	async upsertAppConfig(request): Promise<any> {
+	async upsertAppConfig(request: AppConfigUnion): Promise<any> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/appConfigurations/${request.key}?api-version=${this.apiVersion}`,
 			{
@@ -276,7 +276,7 @@ export default {
 		);
 	},
 
-	// async deleteAppConfig(appConfigKey: string): Promise<any> {
+	// async deleteAppConfig(appConfigKey: string): Promise<void> {
 	// 	return await this.fetch(
 	// 		`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/appConfigurations/${appConfigKey}?api-version=${this.apiVersion}`,
 	// 		{
@@ -543,7 +543,7 @@ export default {
 		);
 	},
 
-	async deleteAgent(agentId: string): Promise<any> {
+	async deleteAgent(agentId: string): Promise<void> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentId}?api-version=${this.apiVersion}`,
 			{
@@ -662,20 +662,22 @@ export default {
 	/*
 		API Endpoints Configurations
 	 */
-	async getAPIEndpointConfigurations(): Promise<ResourceProviderGetResult<any>[]> {
+	async getAPIEndpointConfigurations(): Promise<
+		ResourceProviderGetResult<APIEndpointConfiguration>[]
+	> {
 		const data = (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations?api-version=${this.apiVersion}`,
-		)) as ResourceProviderGetResult<any>[];
+		)) as ResourceProviderGetResult<APIEndpointConfiguration>[];
 
 		return data;
 	},
 
 	async getAPIEndpointConfiguration(
 		apiEndpointName: string,
-	): Promise<ResourceProviderGetResult<any>[]> {
+	): Promise<ResourceProviderGetResult<APIEndpointConfiguration>> {
 		const [data] = (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/${apiEndpointName}?api-version=${this.apiVersion}`,
-		)) as ResourceProviderGetResult<any>[];
+		)) as ResourceProviderGetResult<APIEndpointConfiguration>[];
 
 		// data.resource.resolved_authentication_parameters = {};
 
@@ -701,9 +703,7 @@ export default {
 		return data;
 	},
 
-	async createAPIEndpointConfiguration(
-		apiEndpoint: any,
-	): Promise<ResourceProviderGetResult<any>[]> {
+	async createAPIEndpointConfiguration(apiEndpoint: any): Promise<ResourceProviderUpsertResult> {
 		// const authenticationParameters = {};
 
 		// if (!isEmpty(apiEndpoint.resolved_authentication_parameters)) {
@@ -757,12 +757,12 @@ export default {
 					// authentication_parameters: authenticationParameters,
 				},
 			},
-		)) as ResourceProviderGetResult<any>[];
+		)) as ResourceProviderUpsertResult;
 
 		return data;
 	},
 
-	async deleteAPIEndpointConfiguration(apiEndpointName: string): Promise<any> {
+	async deleteAPIEndpointConfiguration(apiEndpointName: string): Promise<void> {
 		const response = await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/${apiEndpointName}?api-version=${this.apiVersion}`,
 			{
@@ -814,19 +814,22 @@ export default {
 		return data;
 	},
 
-	async createAIModel(aiModel: CreateAgentRequest): Promise<ResourceProviderGetResult<AIModel>[]> {
+	async createAIModel(aiModel: CreateAgentRequest): Promise<ResourceProviderUpsertResult[]> {
 		const data = (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels/${aiModel.name}?api-version=${this.apiVersion}`,
 			{
 				method: 'POST',
 				body: aiModel,
 			},
-		)) as ResourceProviderGetResult<AIModel>[];
+		)) as ResourceProviderUpsertResult;
 
 		return data;
 	},
 
-	async upsertAIModel(aiModelOriginalName: string, aiModel: CreateAgentRequest): Promise<any> {
+	async upsertAIModel(
+		aiModelOriginalName: string,
+		aiModel: CreateAgentRequest,
+	): Promise<ResourceProviderUpsertResult> {
 		const aiModelNoType = { ...aiModel };
 		delete aiModelNoType.type;
 
@@ -843,7 +846,7 @@ export default {
 		);
 	},
 
-	async deleteAIModel(aiModelName: string): Promise<any> {
+	async deleteAIModel(aiModelName: string): Promise<void> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels/${aiModelName}?api-version=${this.apiVersion}`,
 			{
@@ -869,7 +872,7 @@ export default {
 	/*
 		Role Assignments
 	 */
-	async getRoleAssignments(scope): RoleAssignment[] {
+	async getRoleAssignments(scope: string): Promise<ResourceProviderGetResult<RoleAssignment>[]> {
 		const assignments = (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/filter?api-version=${this.apiVersion}`,
 			{
@@ -878,7 +881,7 @@ export default {
 					scope: `/instances/${this.instanceId}${scope ? `/${scope}` : ''}`,
 				}),
 			},
-		)) as RoleAssignment[];
+		)) as ResourceProviderGetResult<RoleAssignment>[];
 
 		assignments.forEach((assignment) => {
 			if (assignment.resource.scope === `/instances/${this.instanceId}`) {
@@ -891,7 +894,7 @@ export default {
 		return assignments;
 	},
 
-	async getRoleAssignment(roleAssignmentId): RoleAssignment[] {
+	async getRoleAssignment(roleAssignmentId: string): Promise<RoleAssignment[]> {
 		return (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/${roleAssignmentId}?api-version=${this.apiVersion}`,
 			{
@@ -903,7 +906,7 @@ export default {
 		)) as RoleAssignment[];
 	},
 
-	async createRoleAssignment(request: Object): Promise<any> {
+	async createRoleAssignment(request: any): Promise<ResourceProviderUpsertResult> {
 		if (!request.scope) {
 			request.scope = `/instances/${this.instanceId}`;
 		}
@@ -917,7 +920,7 @@ export default {
 		);
 	},
 
-	async deleteRoleAssignment(roleAssignmentId): void {
+	async deleteRoleAssignment(roleAssignmentId: string): Promise<void> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/${roleAssignmentId}?api-version=${this.apiVersion}`,
 			{
@@ -1031,7 +1034,7 @@ export default {
 		);
 	},
 
-	async deleteFileFromPrivateStorage(agentName, fileName): Promise<any> {
+	async deleteFileFromPrivateStorage(agentName, fileName): Promise<void> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files/${fileName}?api-version=${this.apiVersion}`,
 			{
@@ -1080,7 +1083,7 @@ export default {
 		)) as ResourceProviderUpsertResult;
 	},
 
-	async deleteAgentAccessToken(agentName: string, accessTokenId: string): Promise<any> {
+	async deleteAgentAccessToken(agentName: string, accessTokenId: string): Promise<void> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentAccessTokens/${accessTokenId}?api-version=${this.apiVersion}`,
 			{
@@ -1119,7 +1122,7 @@ export default {
 		);
 	},
 
-	async deleteIndexingProfile(indexingProfileId: string): Promise<any> {
+	async deleteIndexingProfile(indexingProfileId: string): Promise<void> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles/${indexingProfileId}?api-version=${this.apiVersion}`,
 			{
