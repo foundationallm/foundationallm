@@ -946,7 +946,6 @@ public partial class CoreService(
     /// <returns>The updated completion request with pre-processing applied.</returns>
     private async Task<CompletionRequest> PrepareCompletionRequest(CompletionRequest request, AgentBase agent, bool longRunningOperation = false)
     {
-        request.OperationId = Guid.NewGuid().ToString();
         request.LongRunningOperation = longRunningOperation;
 
         if (string.IsNullOrWhiteSpace(request.SessionId) ||
