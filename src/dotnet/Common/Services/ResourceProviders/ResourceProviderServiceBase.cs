@@ -148,6 +148,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             _eventTypesToSubscribe = eventTypesToSubscribe;
             _useInternalReferencesStore = useInternalReferencesStore;
 
+            logger.LogInformation("Resource provider caching {CacheStatusString} enabled.",
+                _instanceSettings.EnableResourceProvidersCache ? "is" : "is not");
+
             if (_instanceSettings.EnableResourceProvidersCache)
                 _resourceCache = new ResourceProviderResourceCacheService(_logger);
 

@@ -164,7 +164,7 @@ namespace FoundationaLLM.Common.Clients
                         "Polling for operation id {Operationid} (counter: {PollingCounter}, time elapsed: {PollingSeconds} seconds)...",
                         runningOperation.OperationId,
                         pollingCounter,
-                        (int)totalPollingTime.TotalSeconds);
+                        totalPollingTime.TotalSeconds);
 
                     var operationStatus = await GetOperationStatusAsync(runningOperation.OperationId!, cancellationToken);
 
