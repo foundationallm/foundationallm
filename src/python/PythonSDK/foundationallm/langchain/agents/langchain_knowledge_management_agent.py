@@ -468,7 +468,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             # Define the graph
             graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)
             if agent.conversation_history_settings.enabled:
-                messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
+                messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history*2)
             else:
                 messages = []
 
