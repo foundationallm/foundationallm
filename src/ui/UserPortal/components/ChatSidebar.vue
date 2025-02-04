@@ -585,10 +585,6 @@ export default {
 	width: 100%;
 }
 
-.chat-sidebar__button {
-	color: var(--primary-text) !important;
-}
-
 .p-button-text.sidebar-dialog__button:focus {
 	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
 }
