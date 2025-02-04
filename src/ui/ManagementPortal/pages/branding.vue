@@ -830,15 +830,3 @@ export default {
 	pointer-events: none;
 }
 </style>
-
-<style lang="scss">
-.ql-container {
-	height: auto;
-}
-
-.ql-editor {
-	height: auto;
-	max-height: 200px;
-	font-family: 'Poppins', sans-serif;
-}
-</style>
