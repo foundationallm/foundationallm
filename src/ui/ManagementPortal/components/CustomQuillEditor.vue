@@ -290,7 +290,9 @@ export default {
 
 	.ql-editor {
 		height: auto;
-		max-height: 200px;
+		min-height: 150px;
+		max-height: 800px;
+		resize: vertical;
 		font-family: 'Poppins', sans-serif;
 	}
 }
