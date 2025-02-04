@@ -898,7 +898,8 @@ public partial class CoreService(
                 PropertyValues = new Dictionary<string, object?>
                 {
                     { "/tokens", completionResponse.PromptTokens },
-                    { "/status", operationStatus }
+                    { "/status", operationStatus },
+                    { "/textRewrite", completionResponse.UserPromptRewrite }
                 }
             },
             new PatchOperationItem<Message>

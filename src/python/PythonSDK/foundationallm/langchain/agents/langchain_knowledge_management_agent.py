@@ -548,6 +548,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 response = await workflow.invoke_async(
                     operation_id=request.operation_id,
                     user_prompt=parsed_user_prompt,
+                    user_prompt_rewrite=request.user_prompt_rewrite,
                     message_history=messages
                 )
                 # Ensure the user prompt rewrite is returned in the response
