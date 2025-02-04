@@ -134,7 +134,6 @@ export type Agent = ResourceBase & {
 		user_prompt_rewrite_enabled: boolean;
 		user_prompt_rewrite_settings: {
 			user_prompt_rewrite_ai_model_object_id: string;
-			user_prompt_rewrite_ai_model_object_id: string;
 			user_prompt_rewrite_prompt_object_id: string;
 			user_prompts_window_size: number;
 		};
@@ -426,7 +425,6 @@ export type CreateAgentRequest = ResourceBase & {
 	text_rewrite_settings?: {
 		user_prompt_rewrite_enabled: boolean;
 		user_prompt_rewrite_settings: {
-			user_prompt_rewrite_ai_model_object_id: string;
 			user_prompt_rewrite_ai_model_object_id: string;
 			user_prompt_rewrite_prompt_object_id: string;
 			user_prompts_window_size: number;
