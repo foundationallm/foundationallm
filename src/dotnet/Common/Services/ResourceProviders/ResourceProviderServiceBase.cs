@@ -195,6 +195,16 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     _localEventService.StartLocalEventProcessing(HandleEvents);
                 }
 
+                if (_instanceSettings.EnableResourceProvidersCache
+                    && (_resourceReferenceStore?.PreCachedResourceNames != null))
+                {
+                    // Pre-cache the resources.
+                    foreach (var preCachedResourceName in _resourceReferenceStore.PreCachedResourceNames)
+                    {
+
+                    }
+                }
+
                 _isInitialized = true;
 
                 _logger.LogInformation("The {ResourceProvider} resource provider was successfully initialized.", _name);
