@@ -94,10 +94,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     Result = validationResponse
                 };
 
+            if (_agent!.TextRewriteSettings != null
+                && _agent!.TextRewriteSettings.UserPromptRewriteEnabled)
+                await HandlePromptRewrite(completionRequest);
+
             if (_agent!.CacheSettings != null
                 && _agent!.CacheSettings.SemanticCacheEnabled)
             {
-                await HandlePromptRewrite(completionRequest);
                 var cachedResponse = await GetCompletionResponseFromCache(completionRequest);
                 if (cachedResponse != null)
                 {
@@ -168,10 +171,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (validationResponse != null)
                 return validationResponse;
 
+            if (_agent!.TextRewriteSettings != null
+                && _agent!.TextRewriteSettings.UserPromptRewriteEnabled)
+                await HandlePromptRewrite(completionRequest);
+
             if (_agent!.CacheSettings != null
                 && _agent!.CacheSettings.SemanticCacheEnabled)
             {
-                await HandlePromptRewrite(completionRequest);
                 var cachedResponse = await GetCompletionResponseFromCache(completionRequest);
                 if (cachedResponse != null)
                     return cachedResponse;
