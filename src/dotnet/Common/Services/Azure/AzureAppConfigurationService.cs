@@ -136,7 +136,7 @@ namespace FoundationaLLM.Common.Services.Azure
             {
                 var identifier = new KeyVaultSecretIdentifier(secretReference.SecretId);
                 _logger.LogInformation("App Configuration key {key} references Key Vault secret {identifier.Name}. Deleting.", key, identifier.Name);
-                var secretClient = new SecretClient(identifier.VaultUri, DefaultAuthentication.AzureCredential);
+                var secretClient = new SecretClient(identifier.VaultUri, ServiceContext.AzureCredential);
                 try
                 {
                     await secretClient.StartDeleteSecretAsync(identifier.Name);

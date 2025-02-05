@@ -80,13 +80,13 @@ namespace FoundationaLLM.Orchestration.Core.Services
 
                 var userPromptRewriteAIModel = await _aiModelResourceProviderService.GetResourceAsync<AIModelBase>(
                     agentSettings.UserPromptRewriteAIModelObjectId,
-                    DefaultAuthentication.ServiceIdentity!);
+                    ServiceContext.ServiceIdentity!);
                 var userPromptRewriteAPIEndpointConfiguration = await _configurationResourceProviderService.GetResourceAsync<APIEndpointConfiguration>(
                     userPromptRewriteAIModel.EndpointObjectId!,
-                    DefaultAuthentication.ServiceIdentity!);
+                    ServiceContext.ServiceIdentity!);
                 var userPromptRewritePrompt = await _promptResourceProviderService.GetResourceAsync<PromptBase>(
                     agentSettings.UserPromptRewritePromptObjectId,
-                    DefaultAuthentication.ServiceIdentity!);
+                    ServiceContext.ServiceIdentity!);
 
                 _agentRewriters[$"{instanceId}|{agentName}"] = new AgentUserPromptRewriter
                 {
@@ -177,7 +177,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
             {
                 AuthenticationTypes.AzureIdentity => (new AzureOpenAIClient(
                     new Uri(apiEndpointConfiguration.Url),
-                    DefaultAuthentication.AzureCredential))
+                    ServiceContext.AzureCredential))
                     .GetChatClient(deploymentName),
                 AuthenticationTypes.APIKey => (new AzureOpenAIClient(
                     new Uri(apiEndpointConfiguration.Url),

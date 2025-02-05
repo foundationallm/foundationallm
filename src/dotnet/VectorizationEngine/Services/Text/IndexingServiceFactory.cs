@@ -86,7 +86,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
             if (profile.Settings.TryGetValue("api_endpoint_configuration_object_id", out var apiEndpointObjectId) == false)
                 throw new VectorizationException($"The API endpoint configuration object ID was not found in the settings.");
             
-            var apiEndpoint = await configurationResourceProviderService.GetResourceAsync<APIEndpointConfiguration>(apiEndpointObjectId, DefaultAuthentication.ServiceIdentity!);
+            var apiEndpoint = await configurationResourceProviderService.GetResourceAsync<APIEndpointConfiguration>(apiEndpointObjectId, ServiceContext.ServiceIdentity!);
             if(apiEndpoint==null)
                 throw new VectorizationException($"The API endpoint configuration {apiEndpointObjectId} for the Azure AI Search service was not found.");
 

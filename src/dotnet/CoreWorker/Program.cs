@@ -13,7 +13,7 @@ using Microsoft.Extensions.Options;
 
 var builder = Host.CreateApplicationBuilder(args);
 
-DefaultAuthentication.Initialize(
+ServiceContext.Initialize(
     builder.Environment.IsProduction(),
     ServiceNames.CoreWorker);
 
@@ -26,7 +26,7 @@ builder.Configuration.AddAzureAppConfiguration(options =>
 
     options.ConfigureKeyVault(options =>
     {
-        options.SetCredential(DefaultAuthentication.AzureCredential);
+        options.SetCredential(ServiceContext.AzureCredential);
     });
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreWorker_Essentials);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
@@ -40,7 +40,7 @@ builder.Services.AddOptions<CosmosDbSettings>()
 builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
 {
     var settings = serviceProvider.GetRequiredService<IOptions<CosmosDbSettings>>().Value;
-    return new CosmosClientBuilder(settings.Endpoint, DefaultAuthentication.AzureCredential)
+    return new CosmosClientBuilder(settings.Endpoint, ServiceContext.AzureCredential)
         .WithSerializerOptions(new CosmosSerializationOptions
         {
             PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase

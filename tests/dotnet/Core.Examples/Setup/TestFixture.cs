@@ -17,7 +17,7 @@ namespace FoundationaLLM.Core.Examples.Setup
 		public TestFixture()
 		{
 			var serviceCollection = new ServiceCollection();
-            DefaultAuthentication.Initialize(false, string.Empty);
+            ServiceContext.Initialize(false, string.Empty);
 
             var configRoot = new ConfigurationBuilder()
 				.AddJsonFile("testsettings.json", true)
@@ -34,7 +34,7 @@ namespace FoundationaLLM.Core.Examples.Setup
                     options.Connect(connectionString)
                         .ConfigureKeyVault(kv =>
                         {
-                            kv.SetCredential(DefaultAuthentication.AzureCredential);
+                            kv.SetCredential(ServiceContext.AzureCredential);
                         })
                         // Select all configuration sections
                         .Select("*");
