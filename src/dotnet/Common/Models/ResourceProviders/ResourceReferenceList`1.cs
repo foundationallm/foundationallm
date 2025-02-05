@@ -15,10 +15,5 @@
         /// Gets or sets the name of the resource that should be used as the default resource.
         /// </summary>
         public string? DefaultResourceName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the list of resource names that should be pre-cached.
-        /// </summary>
-        public List<string>? PreCachedResourceNames { get; set; }
     }
 }

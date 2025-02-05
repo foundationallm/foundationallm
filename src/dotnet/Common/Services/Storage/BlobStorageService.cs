@@ -176,7 +176,7 @@ namespace FoundationaLLM.Common.Services.Storage
         /// <inheritdoc/>
         protected override void CreateClientFromAccountKey(string accountName, string accountKey) =>
             _blobServiceClient = new BlobServiceClient(
-                new Uri($"https://{accountName}.dfs.core.windows.net"),
+                new Uri($"https://{accountName}.blob.core.windows.net"),
                 new StorageSharedKeyCredential(accountName, accountKey));
 
         /// <inheritdoc/>

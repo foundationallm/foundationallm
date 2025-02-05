@@ -35,17 +35,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
         private SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
         private string? _defaultResourceName;
-        private List<string>? _preCachedResourceNames;
 
         /// <summary>
         /// Gets the name of the default resource (if any).
         /// </summary>
         public string? DefaultResourceName => _defaultResourceName;
-
-        /// <summary>
-        /// Gets or sets the list of resource names that should be pre-cached.
-        /// </summary>
-        public List<string>? PreCachedResourceNames => _preCachedResourceNames;
 
         /// <summary>
         /// Loads the resource references from the storage service.
@@ -313,7 +307,6 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 Encoding.UTF8.GetString(fileContent.ToArray()))!;
 
             _defaultResourceName = persistedReferencesList.DefaultResourceName;
-            _preCachedResourceNames = persistedReferencesList.PreCachedResourceNames;
 
             foreach (var reference in persistedReferencesList.ResourceReferences)
             {
