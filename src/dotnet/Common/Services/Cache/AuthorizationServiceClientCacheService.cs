@@ -56,15 +56,23 @@ namespace FoundationaLLM.Common.Services.Cache
         public bool TryGetValue(ActionAuthorizationRequest authorizationRequest, out ActionAuthorizationResult? authorizationResult)
         {
             authorizationResult = default;
+            var resourcePathsString = string.Join(Environment.NewLine, authorizationRequest.ResourcePaths);
+
             try
             {
                 if (_cache.TryGetValue(GetCacheKey(authorizationRequest), out ActionAuthorizationResult? cachedValue)
                     && cachedValue != null)
                 {
                     authorizationResult = cachedValue;
-                    _logger.LogInformation("Cache hit for the authorization request");
+                    _logger.LogInformation("Cache hit for the authorization request with security principal id {SecurityPrincipalId}. Resource paths: {ResourcePaths}.",
+                        authorizationRequest.UserContext.SecurityPrincipalId,
+                        resourcePathsString);
                     return true;
                 }
+
+                _logger.LogInformation("Cache miss for the authorization request with security principal id {SecurityPrincipalId}. Resource paths: {ResourcePaths}.",
+                        authorizationRequest.UserContext.SecurityPrincipalId,
+                        resourcePathsString);
             }
             catch (Exception ex)
             {
