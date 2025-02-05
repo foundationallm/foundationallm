@@ -259,36 +259,15 @@ namespace FoundationaLLM.Agent.ResourceProviders
             }
 
 
-            if (agent.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants)
-                || (agent.Workflow!=null && agent.Workflow is AzureOpenAIAssistantsAgentWorkflow))
+            if (agent.Workflow is AzureOpenAIAssistantsAgentWorkflow)
             {
                 agent.Properties ??= [];
 
                 (var openAIAssistantId, var openAIAssistantVectorStoreId, var workflowBase, var agentAIModel, var agentPrompt, var agentAIModelAPIEndpoint)
                     = await ResolveAgentProperties(agent, userIdentity);
 
-                var workflow = agent.Workflow as AzureOpenAIAssistantsAgentWorkflow;
+                var workflow = (workflowBase as AzureOpenAIAssistantsAgentWorkflow)!;
                 var gatewayClient = await GetGatewayServiceClient(userIdentity);
-
-                var workflow = agent.Workflow as AzureOpenAIAssistantsAgentWorkflow;
-
-                openAIAssistantId = workflow!.AssistantId;
-
-                #region Resolve various agent properties
-
-                var agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
-                            .GetResourceAsync<AIModelBase>(workflow.MainAIModelObjectId!, userIdentity);
-                var agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
-                                .GetResourceAsync<PromptBase>(workflow.MainPromptObjectId!, userIdentity);
-                var agentAIModelAPIEndpoint = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Configuration)
-                        .GetResourceAsync<APIEndpointConfiguration>(agentAIModel.EndpointObjectId!, userIdentity);
-
-                #endregion
-
-                var gatewayClient = new GatewayServiceClient(
-                   await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
-                       .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
-                   _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
 
                 if (string.IsNullOrWhiteSpace(openAIAssistantId))
                 {
@@ -339,33 +318,15 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         $"The Azure OpenAI assistant {newOpenAIAssistantId} for agent {agent.Name} was created successfully with Vector Store: {newOpenAIAssistantVectorStoreId}.",
                         newOpenAIAssistantId, agent.Name);
 
-
-                    if(workflow == null)
-                    {
-                        // Legacy path
-                        agent.Properties[AgentPropertyNames.AzureOpenAIAssistantId] = newOpenAIAssistantId;
-                        agent.Properties[AgentPropertyNames.AzureOpenAIAssistantVectorStoreId] = newOpenAIAssistantVectorStoreId;
-                    }
-                    else
-                    {
-                        // Workflow path
-                        workflow.VectorStoreId = newOpenAIAssistantVectorStoreId;
-                        workflow.AssistantId = newOpenAIAssistantId;                        
-                    }
+                    workflow.VectorStoreId = newOpenAIAssistantVectorStoreId;
+                    workflow.AssistantId = newOpenAIAssistantId;                        
+                    
                     #endregion
                 }
                 else
                 {
-                    // Verify if the assistant has a vector store id.
-                    // Legacy path
-                    var vectorStoreId = agent.Properties.GetValueOrDefault(
-                            AgentPropertyNames.AzureOpenAIAssistantVectorStoreId);
-                    // Workflow path
-                    if(workflow != null)
-                    {
-                        vectorStoreId = workflow.VectorStoreId;
-                    }
-                    if(string.IsNullOrEmpty(vectorStoreId))
+                    // Verify if the assistant has a vector store id.                   
+                    if(string.IsNullOrEmpty(workflow.VectorStoreId))
                     {
                         // Add vector store to existing assistant
                         Dictionary<string, object> parameters = new()
@@ -390,17 +351,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         if (string.IsNullOrWhiteSpace(newOpenAIAssistantVectorStoreId))
                             throw new ResourceProviderException($"Could not create an Azure OpenAI assistant vector store id for the agent {agent} which requires it.",
                                 StatusCodes.Status500InternalServerError);
-
-                        if (workflow == null)
-                        {
-                            // Legacy path                           
-                            agent.Properties[AgentPropertyNames.AzureOpenAIAssistantVectorStoreId] = newOpenAIAssistantVectorStoreId;
-                        }
-                        else
-                        {
-                            // Workflow path
-                            workflow.VectorStoreId = newOpenAIAssistantVectorStoreId;
-                        }
+                       
+                        workflow.VectorStoreId = newOpenAIAssistantVectorStoreId;                       
                     }
                 }
             }
@@ -922,38 +874,18 @@ namespace FoundationaLLM.Agent.ResourceProviders
         /// <returns>openAIAssistantId, openAIAssistantVectorStoreId, AIModel resource, Prompt resource, APIEndpointConfiguration resource.</returns>
         private async Task<(string, string, AgentWorkflowBase, AIModelBase, PromptBase, APIEndpointConfiguration)> ResolveAgentProperties(AgentBase agent, UnifiedUserIdentity userIdentity)
         {
-            agent.Properties ??= [];
+            agent.Properties ??= [];                     
 
-            var openAIAssistantId = agent.Properties.GetValueOrDefault(
-                    AgentPropertyNames.AzureOpenAIAssistantId);
-            var openAiAssistantVectorStoreId = agent.Properties.GetValueOrDefault(
-                AgentPropertyNames.AzureOpenAIAssistantVectorStoreId);
-
-            var workflow = agent.Workflow as AzureOpenAIAssistantsAgentWorkflow;
-                        
-            if (workflow != null)
-            {
-                openAIAssistantId = workflow.AssistantId;
-                openAiAssistantVectorStoreId = workflow.VectorStoreId;
-            }         
-
-            PromptBase agentPrompt;
-            AIModelBase agentAIModel;
-            if (workflow == null)
-            {
-                // Legacy path
-                agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
-                    .GetResourceAsync<AIModelBase>(agent.AIModelObjectId!, userIdentity);
-                agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
-                    .GetResourceAsync<PromptBase>(agent.PromptObjectId!, userIdentity);
-            }
-            else
-            {
-                agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
+            var workflow = (agent.Workflow as AzureOpenAIAssistantsAgentWorkflow)!;
+            var openAIAssistantId = workflow.AssistantId;
+            var openAiAssistantVectorStoreId = workflow.VectorStoreId;
+             
+           
+            var agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
                             .GetResourceAsync<AIModelBase>(workflow.MainAIModelObjectId!, userIdentity);
-                agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
+            var agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
                             .GetResourceAsync<PromptBase>(workflow.MainPromptObjectId!, userIdentity);
-            }
+            
             APIEndpointConfiguration agentAIModelAPIEndpoint = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Configuration)
                     .GetResourceAsync<APIEndpointConfiguration>(agentAIModel.EndpointObjectId!, userIdentity);
 
