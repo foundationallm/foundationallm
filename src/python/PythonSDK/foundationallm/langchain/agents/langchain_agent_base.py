@@ -1,11 +1,13 @@
 import boto3
+import json
 from abc import abstractmethod
 from typing import List
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
-
+from google.oauth2 import service_account
 from langchain_core.language_models import BaseLanguageModel
 from langchain_aws import ChatBedrockConverse
 from langchain_core.messages import BaseMessage, AIMessage, HumanMessage
+from langchain_google_vertexai import ChatVertexAI
 from langchain_openai import AzureChatOpenAI, ChatOpenAI, OpenAI
 from openai import AsyncAzureOpenAI as async_aoi
 from foundationallm.config import Configuration, UserIdentity
@@ -397,6 +399,26 @@ class LangChainAgentBase():
                         aws_access_key_id = access_key,
                         aws_secret_access_key = secret_key
                     )
+            case LanguageModelProvider.VERTEXAI:
+                # Only supports service account authentication via JSON credentials stored in key vault. 
+                # Uses the authentication parameter: service_account_credentials to get the application configuration key for this value.
+                try:
+                    service_account_credentials_definition = json.loads(self.config.get_value(self.api_endpoint.authentication_parameters.get('service_account_credentials')))
+                except Exception as e:
+                    raise LangChainException(f"Failed to retrieve service account credentials: {str(e)}", 500)
+
+                if not service_account_credentials_definition:
+                    raise LangChainException("Service account credentials are missing from the configuration settings.", 400)
+
+                service_account_credentials = service_account.Credentials.from_service_account_info(service_account_credentials_definition)                
+                language_model = ChatVertexAI(                   
+                    model=self.ai_model.deployment_name,
+                    temperature=0,
+                    max_tokens=None,
+                    max_retries=6,
+                    stop=None,
+                    credentials=service_account_credentials
+                )
 
         # Set model parameters.
         for key, value in self.ai_model.model_parameters.items():
