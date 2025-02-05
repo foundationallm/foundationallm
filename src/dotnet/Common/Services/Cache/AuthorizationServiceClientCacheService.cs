@@ -5,6 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 
 namespace FoundationaLLM.Common.Services.Cache
 {
@@ -56,7 +57,7 @@ namespace FoundationaLLM.Common.Services.Cache
         public bool TryGetValue(ActionAuthorizationRequest authorizationRequest, out ActionAuthorizationResult? authorizationResult)
         {
             authorizationResult = default;
-            var resourcePathsString = string.Join(Environment.NewLine, authorizationRequest.ResourcePaths);
+            var authorizationRequestJson = JsonSerializer.Serialize(authorizationRequest);
 
             try
             {
@@ -64,15 +65,13 @@ namespace FoundationaLLM.Common.Services.Cache
                     && cachedValue != null)
                 {
                     authorizationResult = cachedValue;
-                    _logger.LogInformation("Cache hit for the authorization request with security principal id {SecurityPrincipalId}. Resource paths: {ResourcePaths}.",
-                        authorizationRequest.UserContext.SecurityPrincipalId,
-                        resourcePathsString);
+                    _logger.LogInformation("Cache hit for the following authorization request: {AuthorizationRequest}.",
+                        authorizationRequestJson);
                     return true;
                 }
 
-                _logger.LogInformation("Cache miss for the authorization request with security principal id {SecurityPrincipalId}. Resource paths: {ResourcePaths}.",
-                        authorizationRequest.UserContext.SecurityPrincipalId,
-                        resourcePathsString);
+                _logger.LogInformation("Cache miss for the following authorization request: {AuthorizationRequest}.",
+                        authorizationRequestJson);
             }
             catch (Exception ex)
             {
