@@ -12,29 +12,48 @@ Resource providers now support a cache warm-up mechanism. This mechanism allows 
 The cache warm-up mechanism is enabled when a file named `_cache_warmup.json` exists in the blob storage location associated with the resource provider. Here is an example of such a file:
 
 ```json
-{
-	"ResourceObjectIds": [
-		"/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI",
-		"/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/GatewayAPI",
-		"/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch",
-		"/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/LangChainAPI",
-		"/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/StateAPI"
-	],
-	"SecurityPrincipalIds": [
-		"4150c6b3-e1d2-4bd3-92fa-61751e1d5963"
-	]
-}
+[
+	{
+		"ServiceName": "OrchestrationAPI",
+		"Description": "Resources required by: service principal x, service principal y.",
+		"ResourceObjectIds": [
+			"/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/GatewayAPI",
+			"/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch",
+			"/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/LangChainAPI",
+			"/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/StateAPI"
+		],
+		"SecurityPrincipalIds": [
+			"4150c6b3-...",
+			"949195b1-..."
+		]
+	},
+	{
+		"ServiceName": "OrchestrationAPI",
+		"Description": "Resources required by: service principal x, service principal y, service principal z.",
+		"ResourceObjectIds": [
+			"/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI"
+		],
+		"SecurityPrincipalIds": [
+			"4150c6b3-...",
+			"949195b1-...",
+			"d6a6317a-..."
+		]
+	}
+]
 ```
+The configuration contains an array of objects, each representing a cache warm-up configuration. Each object contains the following properties:
 
-The `ResourceObjectIds` contains the list of resource object identifiers that will be pre-loaded into the resource provider cache.
+- `ServiceName` - The name of the service that the cache warm-up configuration is for.
+- `Description` - A description of the cache warm-up configuration.
+- `ResourceObjectIds` - The list of resource object identifiers that will be pre-loaded into the resource provider cache.
 
->[!NOTE]
-> The resource object identifiers must be specific to the resource provider.
+    >[!NOTE]
+    > The resource object identifiers must be specific to the resource provider.
 
-The `SecurityPrincipalIds` contains the list of security principal identifiers that will be used to authenticate the cache warm-up requests.
+- `SecurityPrincipalIds` - The list of security principal identifiers that will be used to authenticate the cache warm-up requests.
 
->[!IMPORTANT]
-> As a result of the cache warm-up process, the client authorization cache will be populated with all combinations of security principal and resource object identifiers. Make sure the two lists only contain the necessary values to avoid a long startup time for the resource provider.
+    >[!IMPORTANT]
+    > As a result of the cache warm-up process, the client authorization cache will be populated with all combinations of security principal and resource object identifiers that exist in the cache warm-up configuration. Make sure the two lists only contain the necessary values to avoid a long startup time for the resource provider.
 
 ## Starting with 0.9.3-rc002
 

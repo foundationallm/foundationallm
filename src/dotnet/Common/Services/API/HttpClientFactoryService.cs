@@ -156,7 +156,7 @@ namespace FoundationaLLM.Common.Services.API
                     if (string.IsNullOrEmpty(scope))
                         throw new Exception($"The {AuthenticationParametersKeys.Scope} key is missing from the enpoint's authentication parameters dictionary.");
 
-                    var credentials = DefaultAuthentication.AzureCredential;
+                    var credentials = ServiceContext.AzureCredential;
                     var tokenResult = await credentials!.GetTokenAsync(
                         new([scope]),
                         default);

@@ -23,7 +23,7 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-DefaultAuthentication.Initialize(
+ServiceContext.Initialize(
     builder.Environment.IsProduction(),
     ServiceNames.StateAPI);
 
@@ -35,7 +35,7 @@ builder.Configuration.AddAzureAppConfiguration(options =>
     options.Connect(builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]);
     options.ConfigureKeyVault(options =>
     {
-        options.SetCredential(DefaultAuthentication.AzureCredential);
+        options.SetCredential(ServiceContext.AzureCredential);
     });
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_StateAPI_Essentials);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
@@ -85,7 +85,7 @@ builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
     // Configure CosmosSystemTextJsonSerializer
     var serializer
         = new CosmosSystemTextJsonSerializer(opt);
-    return new CosmosClientBuilder(settings.Endpoint, DefaultAuthentication.AzureCredential)
+    return new CosmosClientBuilder(settings.Endpoint, ServiceContext.AzureCredential)
         .WithCustomSerializer(serializer)
         .WithConnectionModeGateway()
         .Build();

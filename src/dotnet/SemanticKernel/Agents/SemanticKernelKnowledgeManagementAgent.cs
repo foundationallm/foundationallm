@@ -205,7 +205,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
 
         private Kernel BuildKernel()
         {
-            var credential = DefaultAuthentication.AzureCredential;
+            var credential = ServiceContext.AzureCredential;
 
             var builder = Kernel.CreateBuilder();
             builder.Services.AddSingleton<ILoggerFactory>(_loggerFactory);
