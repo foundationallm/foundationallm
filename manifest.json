@@ -902,10 +902,10 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Authentication.DefaultAuthentication.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Authentication.ServiceContext.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Authentication.DefaultAuthentication.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Authentication.ServiceContext.html"
         }
       },
       "version": ""

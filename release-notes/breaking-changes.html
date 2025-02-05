@@ -81,29 +81,54 @@
 <h3 id="resource-provider-cache-warm-up">Resource provider cache warm-up</h3>
 <p>Resource providers now support a cache warm-up mechanism. This mechanism allows the cache to be pre-populated with the resource provider data before the service starts processing requests. This feature is useful when the service is deployed in a cold environment and needs to be warmed up before it can handle requests.</p>
 <p>The cache warm-up mechanism is enabled when a file named <code>_cache_warmup.json</code> exists in the blob storage location associated with the resource provider. Here is an example of such a file:</p>
-<pre><code class="lang-json">{
-	&quot;ResourceObjectIds&quot;: [
-		&quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI&quot;,
-		&quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/GatewayAPI&quot;,
-		&quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch&quot;,
-		&quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/LangChainAPI&quot;,
-		&quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/StateAPI&quot;
-	],
-	&quot;SecurityPrincipalIds&quot;: [
-		&quot;4150c6b3-e1d2-4bd3-92fa-61751e1d5963&quot;
-	]
-}
+<pre><code class="lang-json">[
+	{
+		&quot;ServiceName&quot;: &quot;OrchestrationAPI&quot;,
+		&quot;Description&quot;: &quot;Resources required by: service principal x, service principal y.&quot;,
+		&quot;ResourceObjectIds&quot;: [
+			&quot;/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/GatewayAPI&quot;,
+			&quot;/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch&quot;,
+			&quot;/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/LangChainAPI&quot;,
+			&quot;/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/StateAPI&quot;
+		],
+		&quot;SecurityPrincipalIds&quot;: [
+			&quot;4150c6b3-...&quot;,
+			&quot;949195b1-...&quot;
+		]
+	},
+	{
+		&quot;ServiceName&quot;: &quot;OrchestrationAPI&quot;,
+		&quot;Description&quot;: &quot;Resources required by: service principal x, service principal y, service principal z.&quot;,
+		&quot;ResourceObjectIds&quot;: [
+			&quot;/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI&quot;
+		],
+		&quot;SecurityPrincipalIds&quot;: [
+			&quot;4150c6b3-...&quot;,
+			&quot;949195b1-...&quot;,
+			&quot;d6a6317a-...&quot;
+		]
+	}
+]
 </code></pre>
-<p>The <code>ResourceObjectIds</code> contains the list of resource object identifiers that will be pre-loaded into the resource provider cache.</p>
+<p>The configuration contains an array of objects, each representing a cache warm-up configuration. Each object contains the following properties:</p>
+<ul>
+<li><p><code>ServiceName</code> - The name of the service that the cache warm-up configuration is for.</p>
+</li>
+<li><p><code>Description</code> - A description of the cache warm-up configuration.</p>
+</li>
+<li><p><code>ResourceObjectIds</code> - The list of resource object identifiers that will be pre-loaded into the resource provider cache.</p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>The resource object identifiers must be specific to the resource provider.</p>
 </div>
-<p>The <code>SecurityPrincipalIds</code> contains the list of security principal identifiers that will be used to authenticate the cache warm-up requests.</p>
+</li>
+<li><p><code>SecurityPrincipalIds</code> - The list of security principal identifiers that will be used to authenticate the cache warm-up requests.</p>
 <div class="IMPORTANT">
 <h5>Important</h5>
-<p>As a result of the cache warm-up process, the client authorization cache will be populated with all combinations of security principal and resource object identifiers. Make sure the two lists only contain the necessary values to avoid a long startup time for the resource provider.</p>
+<p>As a result of the cache warm-up process, the client authorization cache will be populated with all combinations of security principal and resource object identifiers that exist in the cache warm-up configuration. Make sure the two lists only contain the necessary values to avoid a long startup time for the resource provider.</p>
 </div>
+</li>
+</ul>
 <h2 id="starting-with-093-rc002">Starting with 0.9.3-rc002</h2>
 <h2 id="app-configuration-settings">App configuration settings</h2>
 <p>The following App Config properties make cache settings for the <code>AuthorizationServiceClientCacheService</code> configurable:</p>
