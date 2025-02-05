@@ -1,4 +1,5 @@
 ﻿using Azure.Messaging;
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.Events;
@@ -244,9 +245,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                         _storageContainerName,
                         cacheWarmupFileName,
                         default);
-                    var cacheWarmupConfiguration = JsonSerializer.Deserialize<ResourceProviderCacheWarmupConfiguration>(
+                    var cacheWarmupConfigurations = JsonSerializer.Deserialize<List<ResourceProviderCacheWarmupConfiguration>>(
                         Encoding.UTF8.GetString(fileContent.ToArray()))!;
 
+                    foreach (var cacheWarmupConfiguration in cacheWarmupConfigurations.Where(cwc => StringComparer.Ordinal.Equals(cwc.ServiceName, ServiceContext.ServiceName)))
                     foreach (var securityPrincipalId in cacheWarmupConfiguration.SecurityPrincipalIds)
                     {
                         var userIdentity = new UnifiedUserIdentity

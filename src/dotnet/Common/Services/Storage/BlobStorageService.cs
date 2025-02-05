@@ -187,7 +187,7 @@ namespace FoundationaLLM.Common.Services.Storage
         protected override void CreateClientFromIdentity(string accountName) =>
             _blobServiceClient = new BlobServiceClient(
                 new Uri($"https://{accountName}.blob.core.windows.net"),
-                DefaultAuthentication.AzureCredential);
+                ServiceContext.AzureCredential);
 
         /// <inheritdoc/>
         public async Task<List<string>> GetFilePathsAsync(string containerName, string? directoryPath = null, bool recursive = true, CancellationToken cancellationToken = default)

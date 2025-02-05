@@ -367,7 +367,7 @@ namespace FoundationaLLM.Gateway.Services
         private AzureOpenAIClient GetAzureOpenAIClient(string endpoint) =>
             new AzureOpenAIClient(
                 new Uri(endpoint),
-                DefaultAuthentication.AzureCredential,
+                ServiceContext.AzureCredential,
                 new AzureOpenAIClientOptions
                 {
                     NetworkTimeout = TimeSpan.FromSeconds(1000)
