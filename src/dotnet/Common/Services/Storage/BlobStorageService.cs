@@ -70,7 +70,7 @@ namespace FoundationaLLM.Common.Services.Storage
             var blobClient = containerClient.GetBlobClient(filePath);
             var blobLeaseClient = blobClient.GetBlobLeaseClient();
 
-            // We are using pessimistic conccurency by default.
+            // We are using pessimistic concurrency by default.
             // For more details, see https://learn.microsoft.com/en-us/azure/storage/blobs/concurrency-manage.
 
             BlobLease? blobLease = default;
@@ -176,7 +176,7 @@ namespace FoundationaLLM.Common.Services.Storage
         /// <inheritdoc/>
         protected override void CreateClientFromAccountKey(string accountName, string accountKey) =>
             _blobServiceClient = new BlobServiceClient(
-                new Uri($"https://{accountName}.dfs.core.windows.net"),
+                new Uri($"https://{accountName}.blob.core.windows.net"),
                 new StorageSharedKeyCredential(accountName, accountKey));
 
         /// <inheritdoc/>

@@ -68,12 +68,12 @@ class GatewayTextEmbeddingService():
         request_json = text_embedding_request.model_dump_json(by_alias=True)
 
         # Send asynchronous POST request to start the operation
-        response = TextEmbeddingResponse.model_validate(await self.http_client.apost(self.url, data=request_json))
+        response = TextEmbeddingResponse.model_validate(await self.http_client.post_async(self.url, data=request_json))
 
         # Poll until operation is complete
         while response.in_progress and not response.failed:
             await asyncio.sleep(1)  # Use asyncio.sleep for non-blocking delay
-            response = TextEmbeddingResponse.model_validate(await self.http_client.aget(self.url + f'?operationId={response.operation_id}'))
+            response = TextEmbeddingResponse.model_validate(await self.http_client.get_async(self.url + f'?operationId={response.operation_id}'))
 
         if response.failed:
             raise Exception(f"Text embedding operation failed: {response.error_message}")

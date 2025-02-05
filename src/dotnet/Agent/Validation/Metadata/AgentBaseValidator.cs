@@ -12,11 +12,8 @@ namespace FoundationaLLM.Agent.Validation.Metadata
         /// <summary>
         /// Configures the validation rules for the <see cref="AgentBase"/> model.
         /// </summary>
-        public AgentBaseValidator()
-        {
+        public AgentBaseValidator() =>
             Include(new ResourceBaseValidator());
-            //RuleFor(x => x.ConversationHistory).NotNull().When(x => x.SessionsEnabled);
-            RuleFor(x => x.OrchestrationSettings!.Orchestrator).NotEmpty().WithMessage("The agent's orchestrator is required.");
-        }
+        //RuleFor(x => x.OrchestrationSettings!.Orchestrator).NotEmpty().WithMessage("The agent's orchestrator is required.");
     }
 }

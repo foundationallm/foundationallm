@@ -258,6 +258,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         StatusCodes.Status500InternalServerError);
             }
 
+
             if (agent.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants)
                 || (agent.Workflow!=null && agent.Workflow is AzureOpenAIAssistantsAgentWorkflow))
             {
@@ -269,6 +270,26 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 var workflow = agent.Workflow as AzureOpenAIAssistantsAgentWorkflow;
                 var gatewayClient = await GetGatewayServiceClient(userIdentity);
 
+                var workflow = agent.Workflow as AzureOpenAIAssistantsAgentWorkflow;
+
+                openAIAssistantId = workflow!.AssistantId;
+
+                #region Resolve various agent properties
+
+                var agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
+                            .GetResourceAsync<AIModelBase>(workflow.MainAIModelObjectId!, userIdentity);
+                var agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
+                                .GetResourceAsync<PromptBase>(workflow.MainPromptObjectId!, userIdentity);
+                var agentAIModelAPIEndpoint = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Configuration)
+                        .GetResourceAsync<APIEndpointConfiguration>(agentAIModel.EndpointObjectId!, userIdentity);
+
+                #endregion
+
+                var gatewayClient = new GatewayServiceClient(
+                   await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
+                       .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
+                   _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
+
                 if (string.IsNullOrWhiteSpace(openAIAssistantId))
                 {
                     // The agent uses the Azure OpenAI Assistants workflow
@@ -279,7 +300,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         "Starting to create the Azure OpenAI assistant for agent {AgentName}",
                         agent.Name);
 
+
                     #region Create Azure OpenAI Assistants assistant                   
+
                     Dictionary<string, object> parameters = new()
                         {
                             { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant, true },
@@ -316,6 +339,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         $"The Azure OpenAI assistant {newOpenAIAssistantId} for agent {agent.Name} was created successfully with Vector Store: {newOpenAIAssistantVectorStoreId}.",
                         newOpenAIAssistantId, agent.Name);
 
+
                     if(workflow == null)
                     {
                         // Legacy path
@@ -327,7 +351,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         // Workflow path
                         workflow.VectorStoreId = newOpenAIAssistantVectorStoreId;
                         workflow.AssistantId = newOpenAIAssistantId;                        
-                    }                  
+                    }
                     #endregion
                 }
                 else

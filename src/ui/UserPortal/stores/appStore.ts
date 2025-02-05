@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import type { ToastMessageOptions } from 'primevue/toast';
 import { useAppConfigStore } from './appConfigStore';
 import { useAuthStore } from './authStore';
 import type {
@@ -55,6 +56,10 @@ export const useAppStore = defineStore('app', {
 		agentShowViewPrompt(): boolean {
 			return this.lastSelectedAgent?.resource.show_view_prompt ?? true;
 		},
+
+		agentShowFileUpload(): boolean {
+			return this.lastSelectedAgent?.resource.show_file_upload ?? true;
+		}
 	},
 
 	actions: {
@@ -94,14 +99,10 @@ export const useAppStore = defineStore('app', {
 				return;
 			}
 
-			const sessionIdQuery = useNuxtApp().$router.currentRoute.value.query.chat;
-			if (!appConfigStore.showLastConversionOnStartup && !sessionIdQuery) {
-				this.sessions.unshift({
-					...this.getDefaultChatSessionProperties(),
-					id: 'new',
-					is_temp: true,
-					display_name: 'New Chat',
-				});
+			// If the portal is configured to create a temporary session on startup, and
+			// there is no requested session, then create a temporary one.
+			if (!appConfigStore.showLastConversionOnStartup && !sessionId) {
+				this.addTemporarySession();
 
 				this.changeSession(this.sessions[0]);
 
@@ -114,14 +115,22 @@ export const useAppStore = defineStore('app', {
 
 			await this.getSessions();
 
-			// If there is an existing session matching the one requested in the url, select it
-			// otherwise, if showLastConversionOnStartup is true there is a session available to show, select it
-			// otherwise, create a new session
-			const requestedSession = this.sessions.find((session: Session) => session.id === sessionId);
+			const requestedSession = this.sessions.find((s: Session) => s.id === sessionId);
 
+			// If there is an existing session matching the one requested in the url, select it.
+			// otherwise, if the portal is configured to show the previous session and it exists, select it.
+			// otherwise, (if there are no sessions) create a temporary session.
 			if (requestedSession) {
 				this.changeSession(requestedSession);
 			} else if (appConfigStore.showLastConversionOnStartup && this.sessions.length > 0) {
+				this.changeSession(this.sessions[0]);
+			} else {
+				this.addToast({
+					severity: 'error',
+					detail: 'The requested session was not found.',
+				});
+
+				this.addTemporarySession();
 				this.changeSession(this.sessions[0]);
 			}
 
@@ -131,6 +140,15 @@ export const useAppStore = defineStore('app', {
 			// 	await this.getMessages();
 			// 	this.updateSessionAgentFromMessages(this.currentSession);
 			// }
+		},
+
+		addTemporarySession() {
+			this.sessions.unshift({
+				...this.getDefaultChatSessionProperties(),
+				id: 'new',
+				is_temp: true,
+				display_name: 'New Chat',
+			});
 		},
 
 		getDefaultChatSessionProperties(): ChatSessionProperties {
@@ -702,6 +720,15 @@ export const useAppStore = defineStore('app', {
 
 		async getVirtualUser() {
 			return await api.getVirtualUser();
+		},
+
+		addToast(toastProperties: ToastMessageOptions) {
+			const lifeSeconds = toastProperties?.life ?? 5000;
+
+			useNuxtApp().vueApp.config.globalProperties.$toast.add({
+				...toastProperties,
+				life: this.autoHideToasts ? lifeSeconds : undefined,
+			});
 		},
 	},
 });

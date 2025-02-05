@@ -300,6 +300,34 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials_EnableCache =
             "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:EnableCache";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:AbsoluteCacheExpirationSeconds setting.
+        /// <para>Value description:<br/>Absolute cache expiration in seconds.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials_AbsoluteCacheExpirationSeconds =
+            "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:AbsoluteCacheExpirationSeconds";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:SlidingCacheExpirationSeconds setting.
+        /// <para>Value description:<br/>Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set).</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials_SlidingCacheExpirationSeconds =
+            "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:SlidingCacheExpirationSeconds";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheSizeLimit setting.
+        /// <para>Value description:<br/>The maximum number of items that can be stored in the cache.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials_CacheSizeLimit =
+            "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheSizeLimit";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheExpirationScanFrequencySeconds setting.
+        /// <para>Value description:<br/>Gets or sets the minimum length of time between successive scans for expired items in seconds.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials_CacheExpirationScanFrequencySeconds =
+            "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheExpirationScanFrequencySeconds";
 
         #endregion
 
@@ -1173,6 +1201,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_UserPortal_Authentication_Entra_ClientId =
             "FoundationaLLM:UserPortal:Authentication:Entra:ClientId";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes setting.
+        /// <para>Value description:<br/>The timeout in minutes for the auth token in the User Portal.</para>
+        /// </summary>
+        public const string FoundationaLLM_UserPortal_Authentication_Entra_TimeoutInMinutes =
+            "FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes";
 
         #endregion
 
@@ -1205,6 +1240,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_UserPortal_Configuration_ShowViewPrompt =
             "FoundationaLLM:UserPortal:Configuration:ShowViewPrompt";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:UserPortal:Configuration:ShowFileUpload setting.
+        /// <para>Value description:<br/>Global setting to determine if file upload is allowed on chat messages.</para>
+        /// </summary>
+        public const string FoundationaLLM_UserPortal_Configuration_ShowFileUpload =
+            "FoundationaLLM:UserPortal:Configuration:ShowFileUpload";
 
         #endregion
 

@@ -149,44 +149,5 @@ namespace FoundationaLLM.Common.Services.API
 
             return fallback;
         }
-
-        /// <inheritdoc/>
-        public async Task<CompletionResponse> GetCompletionOperationResult(string instanceId, string operationId)
-        {
-            var fallback = new CompletionResponse
-            {
-                OperationId = operationId,
-                Completion = "An error occured while attempting to get the completion operation result.",
-                UserPrompt = string.Empty,
-                PromptTokens = 0,
-                CompletionTokens = 0,
-                UserPromptEmbedding = [0f]
-            };
-
-            var client = await _httpClientFactoryService.CreateClient(_downstreamHttpClientName, _callContext.CurrentUserIdentity);
-
-            _logger.LogInformation(
-                "Created Http client {ClientName} with timeout {Timeout} seconds.",
-                _downstreamHttpClientName,
-                (int)client.Timeout.TotalSeconds);
-
-            var responseMessage = await client.GetAsync($"instances/{instanceId}/async-completions/{operationId}/result");
-
-            _logger.LogInformation(
-                "Http client {ClientName} returned a response with status code {HttpStatusCode}.",
-                _downstreamHttpClientName,
-                responseMessage.StatusCode);
-
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var completionResponse = JsonSerializer.Deserialize<CompletionResponse>(responseContent);
-
-                return completionResponse ?? fallback;
-            }
-
-            return fallback;
-        }
-
     }
 }

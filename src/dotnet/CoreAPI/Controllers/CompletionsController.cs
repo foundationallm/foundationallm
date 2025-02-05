@@ -73,6 +73,10 @@ namespace FoundationaLLM.Core.API.Controllers
         [HttpPost("completions", Name = "GetCompletion")]
         public async Task<IActionResult> GetCompletion(string instanceId, [FromBody] CompletionRequest completionRequest)
         {
+            // Ensure we always have a deterministic way to track the operation.
+            if (string.IsNullOrWhiteSpace(completionRequest.OperationId))
+                completionRequest.OperationId = Guid.NewGuid().ToString().ToLower();
+
             using var telemetryActivity = TelemetryActivitySources.CoreAPIActivitySource.StartActivity(
                 TelemetryActivityNames.CoreAPI_Completions_GetCompletion,
                 ActivityKind.Server,
@@ -80,8 +84,8 @@ namespace FoundationaLLM.Core.API.Controllers
                 tags: new Dictionary<string, object?>
                 {
                     { TelemetryActivityTagNames.InstanceId, instanceId },
+                    { TelemetryActivityTagNames.OperationId, completionRequest.OperationId },
                     { TelemetryActivityTagNames.ConversationId, completionRequest.SessionId ?? "N/A" },
-                    { TelemetryActivityTagNames.OperationId, completionRequest.OperationId ?? "N/A" },
                     { TelemetryActivityTagNames.UPN, _callContext.CurrentUserIdentity?.UPN ?? "N/A" },
                     { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
                 });
@@ -100,6 +104,10 @@ namespace FoundationaLLM.Core.API.Controllers
         [HttpPost("async-completions")]
         public async Task<ActionResult<LongRunningOperation>> StartCompletionOperation(string instanceId, CompletionRequest completionRequest)
         {
+            // Ensure we always have a deterministic way to track the operation.
+            if (string.IsNullOrWhiteSpace(completionRequest.OperationId))
+                completionRequest.OperationId = Guid.NewGuid().ToString().ToLower();
+
             using var telemetryActivity = TelemetryActivitySources.CoreAPIActivitySource.StartActivity(
                 TelemetryActivityNames.CoreAPI_AsyncCompletions_StartCompletionOperation,
                 ActivityKind.Server,
@@ -107,8 +115,8 @@ namespace FoundationaLLM.Core.API.Controllers
                 tags: new Dictionary<string, object?>
                 {
                     { TelemetryActivityTagNames.InstanceId, instanceId },
+                    { TelemetryActivityTagNames.OperationId, completionRequest.OperationId },
                     { TelemetryActivityTagNames.ConversationId, completionRequest.SessionId ?? "N/A" },
-                    { TelemetryActivityTagNames.OperationId, completionRequest.OperationId ?? "N/A" },
                     { TelemetryActivityTagNames.UPN, _callContext.CurrentUserIdentity?.UPN ?? "N/A" },
                     { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
                 });

@@ -1,6 +1,4 @@
-using System.Text;
 using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Orchestration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -27,6 +25,7 @@ using FoundationaLLM.Core.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
@@ -499,10 +498,10 @@ public partial class CoreService(
     public async Task<ResourceProviderUpsertResult<AttachmentFile>> UploadAttachment(string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity)
     {
         var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(instanceId, agentName, userIdentity);
-        var aiModelBase = await _aiModelResourceProvider.GetResourceAsync<AIModelBase>(agentBase.AIModelObjectId!, userIdentity);
+        var aiModelBase = await _aiModelResourceProvider.GetResourceAsync<AIModelBase>(agentBase.Workflow!.MainAIModelObjectId!, userIdentity);
         var apiEndpointConfiguration = await _configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(aiModelBase.EndpointObjectId!, userIdentity);
 
-        var agentRequiresOpenAIAssistants = agentBase.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants);
+        var agentRequiresOpenAIAssistants = agentBase.HasAzureOpenAIAssistantsWorkflow();
 
         attachmentFile.SecondaryProvider = agentRequiresOpenAIAssistants
             ? ResourceProviderNames.FoundationaLLM_AzureOpenAI
@@ -899,7 +898,8 @@ public partial class CoreService(
                 PropertyValues = new Dictionary<string, object?>
                 {
                     { "/tokens", completionResponse.PromptTokens },
-                    { "/status", operationStatus }
+                    { "/status", operationStatus },
+                    { "/textRewrite", completionResponse.UserPromptRewrite }
                 }
             },
             new PatchOperationItem<Message>
@@ -947,15 +947,20 @@ public partial class CoreService(
     /// <returns>The updated completion request with pre-processing applied.</returns>
     private async Task<CompletionRequest> PrepareCompletionRequest(CompletionRequest request, AgentBase agent, bool longRunningOperation = false)
     {
-        request.OperationId = Guid.NewGuid().ToString();
         request.LongRunningOperation = longRunningOperation;
+
+        if (string.IsNullOrWhiteSpace(request.SessionId) ||
+            !(agent.ConversationHistorySettings?.Enabled ?? false))
+            return request;
+
         List<MessageHistoryItem> messageHistoryList = [];
+        var max = agent.ConversationHistorySettings?.MaxHistory *2 ?? null;
         List<string> contentArtifactTypes = (agent.ConversationHistorySettings?.Enabled ?? false)
             ? [.. (agent.ConversationHistorySettings.HistoryContentArtifactTypes ?? string.Empty).Split(",", StringSplitOptions.RemoveEmptyEntries)]
             : [];
 
         // Retrieve conversation, including latest prompt.
-        var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!);
+        var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!, max);
         foreach (var message in messages)
         {
             var messageText = message.Text;

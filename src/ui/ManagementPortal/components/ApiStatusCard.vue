@@ -26,7 +26,7 @@
 			</div>
 		</div>
 		<div v-else>This service does not contain a status endpoint.</div>
-		<p><strong>URL:</strong> {{ apiUrl }}</p>
+		<p class="api-status-card__url"><strong>URL:</strong> {{ apiUrl }}</p>
 	</div>
 </template>
 
@@ -89,6 +89,7 @@ export default {
 
 <style scoped>
 .api-status-card {
+	max-width: 100%;
 	border: 1px solid #ddd;
 	border-radius: 8px;
 	padding: 1.5em;
@@ -150,5 +151,19 @@ export default {
 .api-status-card .subordinate-services ul li {
 	margin-bottom: 1em;
 	list-style-type: disc;
+}
+
+.api-status-card .api-status-card__url {
+	word-break: break-all;
+}
+
+@media (max-width: 600px) {
+	.api-status-card h2 {
+		font-size: 1.2em;
+	}
+
+	.error {
+		word-break: break-all;
+	}
 }
 </style>

@@ -28,6 +28,7 @@
 					style="height: 100%"
 					@click="toggle"
 					@keydown.esc="hideAllPoppers"
+					v-if="$appConfigStore.showFileUpload && $appStore.agentShowFileUpload"
 				/>
 				<OverlayPanel ref="menu" :dismissable="isMobile" style="max-width: 98%">
 					<div class="file-upload-header">
@@ -602,11 +603,10 @@ export default {
 					currentFiles.uploadedFiles.push(file);
 				} catch (error) {
 					filesFailed += 1;
-					this.$toast.add({
+					this.$appStore.addToast({
 						severity: 'error',
 						summary: 'Error',
 						detail: `File upload failed for "${file.name}". ${error.message || error.title || ''}`,
-						life: this.$appStore.autoHideToasts ? 5000 : null,
 					});
 				} finally {
 					if (totalFiles === filesUploaded + filesFailed) {
@@ -617,11 +617,10 @@ export default {
 						this.alignOverlay();
 						this.toggle();
 						if (filesUploaded > 0) {
-							this.$toast.add({
+							this.$appStore.addToast({
 								severity: 'success',
 								summary: 'Success',
 								detail: `Successfully uploaded ${filesUploaded} file${totalFiles > 1 ? 's' : ''}.`,
-								life: this.$appStore.autoHideToasts ? 5000 : null,
 							});
 						}
 					}
@@ -720,11 +719,10 @@ export default {
 				if (fileAlreadyExists) return;
 
 				if (file.size > 536870912) {
-					this.$toast.add({
+					this.$appStore.addToast({
 						severity: 'error',
 						summary: 'Error',
 						detail: 'File size exceeds the limit of 512MB.',
-						life: this.$appStore.autoHideToasts ? 5000 : null,
 					});
 				} else if (allowedFileTypes && allowedFileTypes !== '') {
 					const fileExtension = file.name.split('.').pop()?.toLowerCase();
@@ -734,11 +732,10 @@ export default {
 						.includes(fileExtension);
 
 					if (!isFileTypeAllowed) {
-						this.$toast.add({
+						this.$appStore.addToast({
 							severity: 'error',
 							summary: 'Error',
 							detail: `File type not supported. File: ${file.name}`,
-							life: this.$appStore.autoHideToasts ? 5000 : null,
 						});
 					} else {
 						filteredFiles.push(file);
@@ -755,11 +752,10 @@ export default {
 					filteredFiles.length >
 				this.maxFiles
 			) {
-				this.$toast.add({
+				this.$appStore.addToast({
 					severity: 'error',
 					summary: 'Error',
 					detail: `You can only upload a maximum of ${this.maxFiles} ${this.maxFiles === 1 ? 'file' : 'files'} at a time.`,
-					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 				filteredFiles.splice(
 					this.maxFiles -
@@ -820,11 +816,10 @@ export default {
 		async oneDriveWorkSchoolConnect() {
 			this.connectingOneDrive = true;
 			await this.$appStore.oneDriveWorkSchoolConnect().then(() => {
-				this.$toast.add({
+				this.$appStore.addToast({
 					severity: 'success',
 					summary: 'Success',
 					detail: `Your account is now connected to OneDrive.`,
-					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 				this.connectingOneDrive = false;
 			});
@@ -833,11 +828,10 @@ export default {
 		async oneDriveWorkSchoolDisconnect() {
 			this.disconnectingOneDrive = true;
 			await this.$appStore.oneDriveWorkSchoolDisconnect().then(() => {
-				this.$toast.add({
+				this.$appStore.addToast({
 					severity: 'success',
 					summary: 'Success',
 					detail: `Your account is now disconnected from OneDrive.`,
-					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 				this.disconnectingOneDrive = false;
 			});

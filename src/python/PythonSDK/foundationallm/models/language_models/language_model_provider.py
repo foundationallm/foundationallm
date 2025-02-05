@@ -6,3 +6,4 @@ class LanguageModelProvider(str, Enum):
     MICROSOFT = "microsoft"
     OPENAI = "openai"
     BEDROCK = "bedrock"
+    VERTEXAI = "vertexai"

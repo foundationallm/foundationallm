@@ -1,7 +1,5 @@
 ﻿using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
-using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
-using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
@@ -48,30 +46,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public AgentGatekeeperSettings? GatekeeperSettings { get; set; }
 
         /// <summary>
-        /// Settings for the orchestration service.
-        /// </summary>
-        [JsonPropertyName("orchestration_settings")]
-        public AgentOrchestrationSettings? OrchestrationSettings { get; set; }
-
-        /// <summary>
-        /// The object identifier of the <see cref="PromptBase"/> object providing the prompt for the agent.
-        /// </summary>
-        [JsonPropertyName("prompt_object_id")]
-        public string? PromptObjectId { get; set; }
-		
-        /// <summary>
-        /// The object identifier of the <see cref="AIModelBase"/> object providing the AI model for the agent.
-        /// </summary>
-        [JsonPropertyName("ai_model_object_id")]
-        public string? AIModelObjectId { get; set; }
-
-        /// <summary>
-        /// List of capabilities that the agent supports.
-        /// </summary>
-        [JsonPropertyName("capabilities")]
-        public string[]? Capabilities { get; set; }
-
-        /// <summary>
         /// The agent's workflow configuration.
         /// </summary>
         [JsonPropertyName("workflow")]
@@ -116,6 +90,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public bool? ShowViewPrompt { get; set; } = true;
 
         /// <summary>
+        /// Indicates whether to show the file upload option on agent message input.
+        /// </summary>
+        [JsonPropertyName("show_file_upload")]
+        public bool? ShowFileUpload { get; set; } = true;
+
+        /// <summary>
         /// The object type of the agent.
         /// </summary>
         [JsonIgnore]
@@ -127,11 +107,10 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
             };
 
         /// <summary>
-        /// Checks whether the agent has a specified capbability.
+        /// Checks whether the agent uses an Azure OpenAI Assistants workflow.
         /// </summary>
-        /// <param name="capabilityName">The name of the capability.</param>
-        /// <returns>True if the agent has the capability, False otherwise.</returns>
-        public bool HasCapability(string capabilityName) =>
-            Capabilities?.Contains(capabilityName) ?? false;
+        /// <returns>True if the agent uses an Azure OpenAI Assistants workflow, False otherwise.</returns>
+        public bool HasAzureOpenAIAssistantsWorkflow() =>
+            Workflow != null && Workflow is AzureOpenAIAssistantsAgentWorkflow;
     }
 }

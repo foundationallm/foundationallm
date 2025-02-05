@@ -10,6 +10,7 @@ from typing import Optional, Type
 from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import AgentTool
+from foundationallm.models.orchestration import ContentArtifact
 from foundationallm.models.resource_providers.ai_models import AIModelBase
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.utils import ObjectUtils
@@ -73,20 +74,20 @@ class DALLEImageGenerationTool(FoundationaLLMToolBase):
 
     def _run(self,
             prompt: str,
-            n: int,
-            quality: DALLEImageGenerationToolQualityEnum,
-            style: DALLEImageGenerationToolStyleEnum,
-            size: DALLEImageGenerationToolSizeEnum,
+            n: int = 1,
+            quality: DALLEImageGenerationToolQualityEnum = DALLEImageGenerationToolQualityEnum.hd,
+            style: DALLEImageGenerationToolStyleEnum = DALLEImageGenerationToolStyleEnum.natural,
+            size: DALLEImageGenerationToolSizeEnum = DALLEImageGenerationToolSizeEnum.size1024x1024,
             run_manager: Optional[CallbackManagerForToolRun] = None
             ) -> str:
         raise ToolException("This tool does not support synchronous execution. Please use the async version of the tool.")
 
     async def _arun(self,
             prompt: str,
-            n: int,
-            quality: DALLEImageGenerationToolQualityEnum,
-            style: DALLEImageGenerationToolStyleEnum,
-            size: DALLEImageGenerationToolSizeEnum,
+            n: int = 1,
+            quality: DALLEImageGenerationToolQualityEnum = DALLEImageGenerationToolQualityEnum.hd,
+            style: DALLEImageGenerationToolStyleEnum = DALLEImageGenerationToolStyleEnum.natural,
+            size: DALLEImageGenerationToolSizeEnum = DALLEImageGenerationToolSizeEnum.size1024x1024,
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None
             ) -> str:
         """
@@ -102,7 +103,23 @@ class DALLEImageGenerationTool(FoundationaLLMToolBase):
                 style = style,
                 size = size
             )
-            return json.loads(result.model_dump_json())
+            content_artifacts = [
+                ContentArtifact(
+                    id=self.tool_config.name,
+                    title=self.tool_config.name,
+                    source='tool',
+                    filepath=image_data.url,
+                    type='image',
+                    metadata = {
+                        'tool_name': self.tool_config.name,
+                        'tool_input': prompt,
+                        'revised_tool_input': image_data.revised_prompt
+                    }
+                )
+                for image_data in result.data
+                if image_data.revised_prompt and image_data.url
+            ]
+            return json.loads(result.model_dump_json()), content_artifacts
         except Exception as e:
             print(f'Image generation error code and message: {e.code}; {e}')
             # Specifically handle content policy violation errors.

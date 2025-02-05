@@ -110,29 +110,6 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
             return fallback;
         }
 
-        /// <inheritdoc/>
-        public async Task<LLMCompletionResponse> GetCompletionOperationResult(string instanceId, string operationId)
-        {
-            var fallback = new LLMCompletionResponse
-            {
-                OperationId = operationId
-            };
-
-            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.StateAPI, _callContext.CurrentUserIdentity!);
-
-            var response = await client.GetAsync($"instances/{instanceId}/operations/{operationId}/result");
-
-            if (response.IsSuccessStatusCode)
-            {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var completionResponse = JsonSerializer.Deserialize<LLMCompletionResponse>(responseContent, _jsonSerializerOptions)!;
-
-                return completionResponse;
-            }
-
-            return fallback;
-        }
-
         private async Task RunCompletionOperation(string instanceId, LLMCompletionRequest completionRequest, LongRunningOperation operation, HttpClient stateAPIClient)
         {
             operation.Status = OperationStatus.InProgress;

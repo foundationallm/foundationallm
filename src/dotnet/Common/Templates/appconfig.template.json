@@ -72,7 +72,7 @@
         },
         {
             "key": "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions",
-            "value": "{"DynamicSessionsEndpoints": []}",
+            "value": "{\"DynamicSessionsEndpoints\": []}",
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -206,6 +206,34 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:EnableCache",
             "value": "false",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:AbsoluteCacheExpirationSeconds",
+            "value": "300",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:SlidingCacheExpirationSeconds",
+            "value": "120",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheSizeLimit",
+            "value": "10000",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheExpirationScanFrequencySeconds",
+            "value": "30",
             "label": null,
             "content_type": "",
             "tags": {}
@@ -932,6 +960,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes",
+            "value": "60",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup",
             "value": "false",
             "label": null,
@@ -954,6 +989,13 @@
         },
         {
             "key": "FoundationaLLM:UserPortal:Configuration:ShowViewPrompt",
+            "value": "true",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Configuration:ShowFileUpload",
             "value": "true",
             "label": null,
             "content_type": "",

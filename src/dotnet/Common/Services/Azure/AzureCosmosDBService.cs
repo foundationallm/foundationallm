@@ -9,7 +9,6 @@ using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
@@ -307,10 +306,12 @@ namespace FoundationaLLM.Common.Services.Azure
         }
 
         /// <inheritdoc/>
-        public async Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, CancellationToken cancellationToken = default)
+        public async Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, int? max = null, CancellationToken cancellationToken = default)
         {
-            var query =
-                new QueryDefinition($"SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c.timeStamp")
+            var select = max.HasValue
+                ? $"SELECT TOP {max} * FROM c WHERE c.sessionId = @sessionId AND c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c.timeStamp DESC"
+                : $"SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c.timeStamp";
+            var query = new QueryDefinition(select)
                     .WithParameter("@sessionId", sessionId)
                     .WithParameter("@type", nameof(Message))
                     .WithParameter("@upn", upn);
@@ -323,6 +324,8 @@ namespace FoundationaLLM.Common.Services.Azure
                 var response = await results.ReadNextAsync(cancellationToken);
                 output.AddRange(response);
             }
+
+            output = output.OrderBy(m => m.TimeStamp).ToList();
 
             return output;
         }

@@ -179,12 +179,12 @@ export default {
 
 			// Display an error toast message if agent is null or undefined.
 			if (!agent) {
-				this.$toast.add({
+				this.$appStore.addToast({
 					severity: 'info',
 					summary: 'Could not send message',
 					detail:
 						'Please select an agent and try again. If no agents are available, refresh the page.',
-					life: this.$appStore.autoHideToasts ? 8000 : null,
+					life: 8000,
 				});
 				this.isMessagePending = false;
 				return;

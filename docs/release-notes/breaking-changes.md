@@ -3,6 +3,99 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting with 0.9.3-rc010
+
+### Resource provider cache warm-up
+
+Resource providers now support a cache warm-up mechanism. This mechanism allows the cache to be pre-populated with the resource provider data before the service starts processing requests. This feature is useful when the service is deployed in a cold environment and needs to be warmed up before it can handle requests.
+
+The cache warm-up mechanism is enabled when a file named `_cache_warmup.json` exists in the blob storage location associated with the resource provider. Here is an example of such a file:
+
+```json
+{
+	"ResourceObjectIds": [
+		"/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI",
+		"/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/GatewayAPI",
+		"/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch",
+		"/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/LangChainAPI",
+		"/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/StateAPI"
+	],
+	"SecurityPrincipalIds": [
+		"4150c6b3-e1d2-4bd3-92fa-61751e1d5963"
+	]
+}
+```
+
+The `ResourceObjectIds` contains the list of resource object identifiers that will be pre-loaded into the resource provider cache.
+
+>[!NOTE]
+> The resource object identifiers must be specific to the resource provider.
+
+The `SecurityPrincipalIds` contains the list of security principal identifiers that will be used to authenticate the cache warm-up requests.
+
+>[!IMPORTANT]
+> As a result of the cache warm-up process, the client authorization cache will be populated with all combinations of security principal and resource object identifiers. Make sure the two lists only contain the necessary values to avoid a long startup time for the resource provider.
+
+## Starting with 0.9.3-rc002
+
+## App configuration settings
+
+The following App Config properties make cache settings for the `AuthorizationServiceClientCacheService` configurable:
+
+| Name                              | Description                                                                                                                   | Default Value  |
+|-----------------------------------|-------------------------------------------------------------------------------------------------------------------------------|--------|
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:AbsoluteCacheExpirationSeconds`    | Absolute cache expiration in seconds.                                                                                         | 300    |
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:SlidingCacheExpirationSeconds`     | Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set). | 120    |
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheSizeLimit`                    | The maximum number of items that can be stored in the cache.                                                                   | 10000  |
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheExpirationScanFrequencySeconds` | Gets or sets the minimum length of time between successive scans for expired items in seconds.                                | 30     |
+
+## Starting with 0.9.2-rc005
+
+### Agent configuration changes
+
+Starting with this version, all agents MUST transition to the agent workflow configuraiton approach.
+
+The following agent properties are no longer supported and should be deleted as part of upgrading to this version:
+
+- `OrchestrationSettings` - fully replaced by the agent worflow settings.
+- `PromptObjectId` - replaced by the agent workflow resource object identifier with an `object_role` of `main_prompt`.
+- `AIModelObjectId` - replaced by the agent workflow resource object identifier with an `object_role` of `main_model`.
+- `Capabilities` - removed. The equivalent of having Azure OpenAI Assistants capabilities is having an agent workflow with the type `azure-openai-assistants-workflow`.
+- `Azure.OpenAI.Assistant.Id` property in `properties` - replaced by the `assistant_id` property of an agent workflow witht the type `azure-openai-assistants-workflow`.
+
+>[!IMPORTANT]
+>If the `Azure.OpenAI.Assistant.Id` property is set in the agent properties, it's value must be copied to the `assistant_id` property of the agent workflow.
+
+Here is an example of a fully configured worfklow section for an agent:
+
+```json
+{
+    "type": "azure-openai-assistants-workflow",
+		"name": "OpenAIAssistants",
+		"package_name": "FoundationaLLM",
+    "assistant_id": "asst_...",
+    "resource_object_ids": {
+        "/instances/.../providers/FoundationaLLM.Agent/workflows/OpenAIAssistants": {
+            "object_id": "/instances/.../providers/FoundationaLLM.Agent/workflows/OpenAIAssistants",
+            "properties": {}
+        },
+        "/instances/.../providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel" : {
+            "object_id": "/instances/.../providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel",
+            "properties": {
+                "object_role": "main_model",
+                "model_parameters": {}
+            }
+        },
+        "/instances/.../providers/FoundationaLLM.Prompt/prompts/FoundationaLLM-mini": {
+            "object_id": "/instances/.../providers/FoundationaLLM.Prompt/prompts/FoundationaLLM-mini",
+            "properties": {
+                "object_role": "main_prompt"
+            }
+        }
+    }
+}
+```
+
 ## Starting from 0.9.1
 
 ### App configuration settings
@@ -28,7 +121,7 @@ To support the event grid infrastructure, the following new App Configuration se
 	{
 		"key": "FoundationaLLM:Events:Profiles:GatewayAPI",
 		"label": null,
-		"value": "{\"EventProcessingCycleSeconds\":60,\"Topics\":[]}",
+		"value": "{\"EventProcessingCycleSeconds\": 5,\"Topics\": [{\"Name\": \"resource-providers\",\"SubscriptionPrefix\": \"rp-gateway\"}]}",
 		"content_type": "application/json",
 		"tags": {}
 	},
@@ -66,6 +159,15 @@ To support the event grid infrastructure, the following new App Configuration se
 >Note: The event grid system topics need to be removed.
 
 The following topic needs to be created in the event grid namespace, must have a `resource-providers` topic with a publisher type of `Custom` and an input schema of `Cloud Events v1.0`.
+
+### Configuration changes
+
+Added the following App Configuration value:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+| `FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes` | `60` | The timeout in minutes for a user's auth token in the User Portal. |
+| `FoundationaLLM:UserPortal:Configuration:ShowFileUpload` | `true` | Global setting to determine if file upload is allowed on chat messages. |
 
 ## Starting with 0.9.1-rc117
 

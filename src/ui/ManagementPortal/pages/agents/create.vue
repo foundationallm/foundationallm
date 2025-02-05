@@ -150,7 +150,10 @@
 
 					<!-- Data source -->
 					<div v-if="dedicated_pipeline">
-						<CreateAgentStepItem v-model="editDataSource" focusQuery=".step-container__edit__option">
+						<CreateAgentStepItem
+							v-model="editDataSource"
+							focusQuery=".step-container__edit__option"
+						>
 							<template v-if="selectedDataSource">
 								<div class="step-container__header">{{ selectedDataSource.type }}</div>
 								<div>
@@ -274,11 +277,16 @@
 					</template>
 
 					<!-- Text embedding profiles -->
-					<CreateAgentStepItem v-model="editTextEmbeddingProfile" focusQuery=".step-container__edit__option">
+					<CreateAgentStepItem
+						v-model="editTextEmbeddingProfile"
+						focusQuery=".step-container__edit__option"
+					>
 						<template v-if="selectedTextEmbeddingProfile">
 							<div v-if="selectedTextEmbeddingProfile.object_id !== ''">
 								<div class="step-container__header">{{ selectedTextEmbeddingProfile.name }}</div>
-								<div v-if="selectedTextEmbeddingProfile.resolved_configuration_references?.Endpoint">
+								<div
+									v-if="selectedTextEmbeddingProfile.resolved_configuration_references?.Endpoint"
+								>
 									<span class="step-option__header">URL:</span>
 									<span>{{
 										selectedTextEmbeddingProfile.resolved_configuration_references.Endpoint
@@ -319,7 +327,9 @@
 									<div class="step-container__header">{{ textEmbeddingProfile.name }}</div>
 									<div v-if="textEmbeddingProfile.resolved_configuration_references?.Endpoint">
 										<span class="step-option__header">URL:</span>
-										<span>{{ textEmbeddingProfile.resolved_configuration_references.Endpoint }}</span
+										<span>{{
+											textEmbeddingProfile.resolved_configuration_references.Endpoint
+										}}</span
 										><br />
 										<span class="step-option__header">Deployment:</span>
 										<span>{{
@@ -477,7 +487,9 @@
 						</div>
 
 						<div class="d-flex align-center mt-2">
-							<span id="aria-conversation-history-enabled" class="step-option__header">Enabled:</span>
+							<span id="aria-conversation-history-enabled" class="step-option__header"
+								>Enabled:</span
+							>
 							<span>
 								<ToggleButton
 									v-model="conversationHistory"
@@ -592,27 +604,11 @@
 					</template>
 				</CreateAgentStepItem>
 
-				<!-- Orchestrator -->
-				<div id="aria-orchestrator" class="step-header span-2">
-					How should the agent communicate with the AI model?
-				</div>
-				<div class="span-2">
-					<Dropdown
-						v-model="orchestration_settings.orchestrator"
-						:options="orchestratorOptions"
-						option-label="label"
-						option-value="value"
-						class="dropdown--agent"
-						placeholder="--Select--"
-						aria-labelledby="aria-orchestrator"
-					/>
-				</div>
-
-				<div class="step-header">Which AI model should the orchestrator use?</div>
-				<div class="step-header">Which capabilities should the agent have?</div>
+				<!-- <div class="step-header">Which AI model should the orchestrator use?</div>
+				<div class="step-header">Which capabilities should the agent have?</div> -->
 
 				<!-- AI model -->
-				<CreateAgentStepItem v-model="editAIModel" focusQuery=".step-container__edit__option">
+				<!-- <CreateAgentStepItem v-model="editAIModel" focusQuery=".step-container__edit__option">
 					<template v-if="selectedAIModel">
 						<div v-if="selectedAIModel.object_id !== ''">
 							<div class="step-container__header">{{ selectedAIModel.name }}</div>
@@ -646,10 +642,10 @@
 							</div>
 						</div>
 					</template>
-				</CreateAgentStepItem>
+				</CreateAgentStepItem> -->
 
 				<!-- Agent capabilities -->
-				<CreateAgentStepItem focusQuery=".agent-capabilities-dropdown input">
+				<!-- <CreateAgentStepItem focusQuery=".agent-capabilities-dropdown input">
 					<div>
 						<span class="step-option__header">Agent Capabilities:</span>
 						<span>{{
@@ -673,7 +669,7 @@
 							/>
 						</div>
 					</template>
-				</CreateAgentStepItem>
+				</CreateAgentStepItem> -->
 
 				<!-- Cost center -->
 				<div id="aria-cost-center" class="step-header span-2">
@@ -701,8 +697,12 @@
 					/>
 				</div>
 
-				<div id="aria-show-message-tokens" class="step-header">Would you like to show the message tokens?</div>
-				<div id="aria-show-message-rating" class="step-header">Would you like to allow the user to rate the agent responses?</div>
+				<div id="aria-show-message-tokens" class="step-header">
+					Would you like to show the message tokens?
+				</div>
+				<div id="aria-show-message-rating" class="step-header">
+					Would you like to allow the user to rate the agent responses?
+				</div>
 
 				<!-- Message tokens -->
 				<div>
@@ -728,9 +728,14 @@
 					/>
 				</div>
 
+				<div id="aria-show-view-prompt" class="step-header">
+					Would you like to allow the user to see the message prompts?
+				</div>
+				<div id="aria-show-file-upload" class="step-header">
+					Would you like to allow the user to upload files?
+				</div>
 				<!-- Show view prompt -->
-				<div id="aria-show-view-prompt" class="step-header span-2">Would you like to allow the user to see the message prompts?</div>
-				<div class="span-2">
+				<div>
 					<ToggleButton
 						v-model="showViewPrompt"
 						on-label="Yes"
@@ -740,14 +745,113 @@
 						aria-labelledby="aria-show-view-prompt"
 					/>
 				</div>
+
+				<!-- Show file upload -->
+
+				<div>
+					<ToggleButton
+						v-model="showFileUpload"
+						on-label="Yes"
+						on-icon="pi pi-check-circle"
+						off-label="No"
+						off-icon="pi pi-times-circle"
+						aria-labelledby="aria-show-file-upload"
+					/>
+				</div>
 			</section>
 
-			<!-- System prompt -->
-			<section aria-labelledby="system-prompt" class="span-2 steps">
-				<h3 class="step-section-header span-2" id="system-prompt">System Prompt</h3>
+			<!-- Workflow -->
+			<div class="step-section-header span-2">Workflow</div>
+			<div id="aria-workflow" class="step-header span-2">What workflow should the agent use?</div>
 
-				<div id="aria-persona" class="step-header">What is the persona of the agent?</div>
+			<!-- Workflow selection -->
+			<div class="span-2">
+				<Dropdown
+					:modelValue="selectedWorkflow?.type"
+					:options="workflowOptions"
+					option-label="name"
+					option-value="type"
+					class="dropdown--agent"
+					placeholder="--Select--"
+					aria-labelledby="aria-workflow"
+					@change="handleWorkflowSelection"
+				/>
+				<Button
+					class="ml-2"
+					severity="primary"
+					:label="showWorkflowConfiguration ? 'Hide Workflow Configuration' : 'Configure Workflow'"
+					:disabled="!selectedWorkflow?.type"
+					@click="showWorkflowConfiguration = !showWorkflowConfiguration"
+				/>
+			</div>
 
+			<!-- Workflow configuration -->
+			<div v-if="showWorkflowConfiguration" class="span-2">
+				<!-- Workflow name -->
+				<div class="mb-6">
+					<div id="aria-workflow-name" class="step-header mb-3">Workflow name:</div>
+					<InputText
+						v-model="workflowName"
+						type="text"
+						class="w-50"
+						placeholder="Enter workflow name"
+						aria-labelledby="aria-workflow-name"
+					/>
+				</div>
+
+				<!-- Workflow package name -->
+				<div class="mb-6">
+					<div id="aria-workflow-package-name" class="step-header mb-3">Workflow package name:</div>
+					<InputText
+						v-model="workflowPackageName"
+						type="text"
+						class="w-50"
+						placeholder="Enter workflow package name"
+						aria-labelledby="aria-workflow-package-name"
+					/>
+				</div>
+
+				<!-- Workflow host -->
+				<div class="mb-6">
+					<div id="aria-workflow-host" class="step-header mb-3">Workflow host:</div>
+					<div class="span-2">
+						<Dropdown
+							v-model="workflowHost"
+							:options="orchestratorOptions"
+							option-label="label"
+							option-value="value"
+							class="dropdown--agent"
+							placeholder="--Select--"
+							aria-labelledby="aria-workflow-host"
+						/>
+					</div>
+				</div>
+
+				<!-- Workflow main model -->
+				<div class="mb-6">
+					<div id="aria-workflow-model" class="step-header mb-3">Workflow main model:</div>
+					<Dropdown
+						:modelValue="workflowMainAIModel?.object_id"
+						:options="aiModelOptions"
+						option-label="name"
+						option-value="object_id"
+						class="dropdown--agent"
+						placeholder="--Select--"
+						aria-labelledby="aria-workflow-model"
+						@change="
+							workflowMainAIModel = JSON.parse(
+								JSON.stringify(aiModelOptions.find((model) => model.object_id === $event.value)),
+							)
+						"
+					/>
+				</div>
+
+				<!-- Workflow main model parameters -->
+				<div class="step-header mb-3">Workflow main model parameters:</div>
+				<PropertyBuilder v-model="workflowMainAIModelParameters" class="mb-6" />
+
+				<!-- Workflow main prompt -->
+				<div id="aria-persona" class="step-header mb-3">What is the main workflow prompt?</div>
 				<div class="span-2">
 					<Textarea
 						v-model="systemPrompt"
@@ -759,15 +863,118 @@
 						aria-labelledby="aria-persona"
 					/>
 				</div>
-			</section>
-			
+			</div>
+
+			<!-- Tools -->
+			<div class="step-section-header span-2">Tools</div>
+			<div id="aria-orchestrator" class="step-header span-2">What tools should the agent use?</div>
+
+			<!-- Tools table -->
+			<div class="span-2">
+				<DataTable
+					:value="agentTools"
+					striped-rows
+					scrollable
+					table-style="max-width: 100%"
+					size="small"
+				>
+					<template #empty>No agent tools added.</template>
+
+					<template #loading>Loading agent tools. Please wait.</template>
+
+					<!-- Tool name -->
+					<Column
+						field="name"
+						header="Name"
+						sortable
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							sortIcon: { style: { color: 'var(--primary-text)' } },
+						}"
+					/>
+
+					<!-- Tool package name -->
+					<Column
+						field="package_name"
+						header="Package Name"
+						sortable
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							sortIcon: { style: { color: 'var(--primary-text)' } },
+						}"
+					/>
+
+					<!-- Edit tool -->
+					<Column
+						header="Edit"
+						header-style="width:6rem"
+						style="text-align: center"
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							headerContent: { style: { justifyContent: 'center' } },
+						}"
+					>
+						<template #body="{ data }">
+							<Button link @click="toolToEdit = data">
+								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
+							</Button>
+
+							<ConfigureToolDialog
+								v-if="toolToEdit?.name === data.name"
+								v-model="toolToEdit"
+								:visible="!!toolToEdit"
+								@update:visible="toolToEdit = null"
+								@update:modelValue="handleUpdateTool"
+							/>
+						</template>
+					</Column>
+
+					<!-- Delete tool -->
+					<Column
+						header="Delete"
+						header-style="width:6rem"
+						style="text-align: center"
+						:pt="{
+							headerCell: {
+								style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+							},
+							headerContent: { style: { justifyContent: 'center' } },
+						}"
+					>
+						<template #body="{ data }">
+							<Button link @click="handleRemoveTool(data)">
+								<i class="pi pi-trash" style="font-size: 1.2rem"></i>
+							</Button>
+						</template>
+					</Column>
+				</DataTable>
+
+				<!-- Add new tool -->
+				<div class="d-flex justify-content-end mt-4">
+					<Button @click="showNewToolDialog = true">Add New Tool</Button>
+				</div>
+
+				<ConfigureToolDialog
+					v-if="showNewToolDialog"
+					:visible="!!showNewToolDialog"
+					@update:visible="showNewToolDialog = false"
+					@update:modelValue="handleAddNewTool"
+				/>
+			</div>
+
 			<!-- Security -->
 			<div v-if="virtualSecurityGroupId" class="step-section-header span-2">Security</div>
 
 			<!-- Virtual security group id -->
 			<template v-if="virtualSecurityGroupId">
 				<div class="step-header">Virtual security group ID</div>
-				<div class="span-2" style="display: flex; gap: 16px">
+				<div class="span-2 d-flex gap-4">
 					<InputText
 						:value="virtualSecurityGroupId"
 						disabled
@@ -776,11 +983,7 @@
 						placeholder="Enter cost center name"
 						aria-labelledby="aria-cost-center"
 					/>
-					<Button
-						label="Copy"
-						severity="primary"
-						@click="handleCopySecurityGroupId"
-					/>
+					<Button label="Copy" severity="primary" @click="handleCopySecurityGroupId" />
 				</div>
 			</template>
 
@@ -791,9 +994,9 @@
 					<AgentAccessTokens :agent-name="this.agentName" />
 				</div>
 			</template>
-			
-			
-			<div class="span-2 d-flex justify-content-end" style="gap: 16px">
+
+			<!-- Form buttons -->
+			<div class="span-2 d-flex justify-content-end gap-4">
 				<!-- Create agent -->
 				<Button
 					:label="editAgent ? 'Save Changes' : 'Create Agent'"
@@ -803,12 +1006,7 @@
 				/>
 
 				<!-- Cancel -->
-				<Button
-					v-if="editAgent"
-					label="Cancel"
-					severity="secondary"
-					@click="handleCancel"
-				/>
+				<Button v-if="editAgent" label="Cancel" severity="secondary" @click="handleCancel" />
 			</div>
 		</div>
 	</main>
@@ -818,7 +1016,7 @@
 import '@vue-js-cron/light/dist/light.css';
 import type { PropType } from 'vue';
 import { ref } from 'vue';
-import { debounce } from 'lodash';
+import { debounce, clone } from 'lodash';
 import { CronLight } from '@vue-js-cron/light';
 import api from '@/js/api';
 import type {
@@ -864,7 +1062,7 @@ const getDefaultFormValues = () => {
 		editTextEmbeddingProfile: false as boolean,
 		selectedTextEmbeddingProfile: null as null | TextEmbeddingProfile,
 
-		editAIModel: false as boolean,
+		// editAIModel: false as boolean,
 		selectedAIModel: null as null | AIModel,
 
 		chunkSize: 500,
@@ -885,18 +1083,24 @@ const getDefaultFormValues = () => {
 		gatekeeperContentSafety: { label: 'None', value: null },
 		gatekeeperDataProtection: { label: 'None', value: null },
 
-		selectedAgentCapabilities: ref(),
+		// selectedAgentCapabilities: ref(),
 		agentCapabilities: { label: 'None', value: null },
 
 		systemPrompt: defaultSystemPrompt as string,
 
-		orchestration_settings: {
-			orchestrator: 'LangChain' as string,
-		},
+		// orchestration_settings: {
+		// 	orchestrator: 'LangChain' as string,
+		// },
+
+		selectedWorkflow: null,
+
+		toolToEdit: null,
+		agentTools: [] as AgentTool[],
 
 		showMessageTokens: false as boolean,
 		showMessageRating: false as boolean,
 		showViewPrompt: false as boolean,
+		showFileUpload: false as boolean,
 	};
 };
 
@@ -933,9 +1137,19 @@ export default {
 			textEmbeddingProfileSources: [] as TextEmbeddingProfile[],
 			externalOrchestratorOptions: [] as ExternalOrchestrationService[],
 			aiModelOptions: [] as AIModel[],
-			tools: [] as AgentTool[],
+
+			workflowOptions: [] as AgentWorkflowAIModel[],
+			showWorkflowConfiguration: false,
+			workflowMainAIModel: null as AIModel | null,
+			// workflowMainPrompt: '' as string,
+			workflowMainAIModelParameters: {} as object,
+			workflowName: '' as string,
+			workflowPackageName: 'FoundationaLLM' as string,
+			workflowHost: '' as string,
 
 			virtualSecurityGroupId: null as string | null,
+
+			showNewToolDialog: false,
 
 			orchestratorOptions: [
 				{
@@ -992,16 +1206,16 @@ export default {
 				},
 			]),
 
-			agentCapabilitiesOptions: ref([
-				{
-					name: 'OpenAI Assistants',
-					code: 'OpenAI.Assistants',
-				},
-				{
-					name: 'FLLM Knowledge Management',
-					code: 'FoundationaLLM.KnowledgeManagement',
-				},
-			]),
+			// agentCapabilitiesOptions: ref([
+			// 	{
+			// 		name: 'OpenAI Assistants',
+			// 		code: 'OpenAI.Assistants',
+			// 	},
+			// 	{
+			// 		name: 'FLLM Knowledge Management',
+			// 		code: 'FoundationaLLM.KnowledgeManagement',
+			// 	},
+			// ]),
 		};
 	},
 
@@ -1017,6 +1231,36 @@ export default {
 			});
 
 			return grouped;
+		},
+	},
+
+	watch: {
+		selectedWorkflow() {
+			this.workflowName = this.selectedWorkflow?.name ?? this.workflowName;
+			this.workflowHost = this.selectedWorkflow?.workflow_host ?? this.workflowHost;
+
+			if (this.selectedWorkflow?.resource_object_ids) {
+				const existingMainModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
+					(resource) => resource.properties?.object_role === 'main_model',
+				);
+				this.workflowMainAIModel = existingMainModel ?? null;
+			} else {
+				this.workflowMainAIModel = null;
+			}
+
+			this.showWorkflowConfiguration = true;
+
+			// if (!this.selectedWorkflow?.type) {
+			// 	this.showWorkflowConfiguration = false;
+			// 	this.selectedWorkflow = null;
+			// }
+		},
+
+		workflowMainAIModel() {
+			const mainModel = this.workflowMainAIModel;
+			const existingMainModelParamters =
+				mainModel?.model_parameters ?? mainModel?.properties?.model_parameters;
+			this.workflowMainAIModelParameters = existingMainModelParamters ?? {};
 		},
 	},
 
@@ -1055,6 +1299,23 @@ export default {
 			// Filter the AIModels so we only display the ones where the type is 'completion'.
 			this.aiModelOptions = this.aiModelOptions.filter((model) => model.type === 'completion');
 
+			this.loadingStatusText = 'Retrieving workflows...';
+			this.workflowOptions = [
+				// {
+				// 	type: null,
+				// 	workflow_name: 'None',
+				// },
+				// {
+				// 	type: 'langgraph-react-agent-workflow',
+				// 	workflow_name: 'LangGraph ReAct Agent Workflow',
+				// },
+				// {
+				// 	type: 'azure-openai-assistants-workflow',
+				// 	workflow_name: 'Azure OpenAI Assistants Workflow',
+				// },
+				...(await api.getAgentWorkflows()).map((workflow) => workflow.resource),
+			];
+
 			// Update the orchestratorOptions with the externalOrchestratorOptions.
 			this.orchestratorOptions = this.orchestratorOptions.concat(
 				this.externalOrchestratorOptions.map((service) => ({
@@ -1088,16 +1349,41 @@ export default {
 					this.overlapSize = Number(textPartitioningProfile.resource.settings.OverlapSizeTokens);
 				}
 			}
-			if (agent.prompt_object_id !== '') {
+
+			if (agent.prompt_object_id) {
 				this.loadingStatusText = `Retrieving prompt...`;
 				const prompt = await api.getPrompt(agent.prompt_object_id);
 				if (prompt && prompt.resource) {
 					this.systemPrompt = prompt.resource.prefix;
 				}
+			} else if (agent.workflow?.resource_object_ids) {
+				this.loadingStatusText = `Retrieving prompt...`;
+
+				const existingMainPrompt = Object.values(agent.workflow.resource_object_ids).find(
+					(resource) => resource.properties?.object_role === 'main_prompt',
+				);
+
+				if (existingMainPrompt) {
+					const prompt = await api.getPrompt(existingMainPrompt.object_id);
+					if (prompt && prompt.resource) {
+						this.systemPrompt = prompt.resource.prefix;
+					}
+				}
 			}
+
+			if (agent.workflow) {
+				this.workflowName = agent.workflow.name ?? '';
+				this.workflowPackageName = agent.workflow.package_name ?? '';
+				this.workflowHost = agent.workflow.workflow_host ?? '';
+
+				const existingMainModel = Object.values(agent.workflow.resource_object_ids).find(
+					(resource) => resource.properties?.object_role === 'main_model',
+				);
+				this.workflowMainAIModel = existingMainModel ?? null;
+			}
+
 			this.loadingStatusText = `Mapping agent values to form...`;
 			this.mapAgentToForm(agent);
-			this.tools = agent.tools;
 		} else {
 			this.editable = true;
 		}
@@ -1121,8 +1407,8 @@ export default {
 				? new Date(agent.expiration_date)
 				: this.expirationDate;
 
-			this.orchestration_settings.orchestrator =
-				agent.orchestration_settings?.orchestrator || this.orchestration_settings.orchestrator;
+			// this.orchestration_settings.orchestrator =
+			// 	agent.orchestration_settings?.orchestrator || this.orchestration_settings.orchestrator;
 
 			if (agent.vectorization) {
 				this.dedicated_pipeline = agent.vectorization.dedicated_pipeline;
@@ -1154,9 +1440,9 @@ export default {
 					(dataSource) => dataSource.object_id === agent.vectorization?.data_source_object_id,
 				) || null;
 
-			this.selectedAIModel =
-				this.aiModelOptions.find((aiModel) => aiModel.object_id === agent.ai_model_object_id) ||
-				null;
+			// this.selectedAIModel =
+			// 	this.aiModelOptions.find((aiModel) => aiModel.object_id === agent.ai_model_object_id) ||
+			// 	null;
 
 			this.conversationHistory =
 				agent.conversation_history_settings?.enabled || this.conversationHistory;
@@ -1177,16 +1463,21 @@ export default {
 					) || this.selectedGatekeeperDataProtection;
 			}
 
-			if (agent.capabilities) {
-				this.selectedAgentCapabilities =
-					this.agentCapabilitiesOptions.filter((localOption) =>
-						agent.capabilities?.includes(localOption.code),
-					) || this.selectedAgentCapabilities;
-			}
+			// if (agent.capabilities) {
+			// 	this.selectedAgentCapabilities =
+			// 		this.agentCapabilitiesOptions.filter((localOption) =>
+			// 			agent.capabilities?.includes(localOption.code),
+			// 		) || this.selectedAgentCapabilities;
+			// }
+
+			this.agentTools = agent.tools;
+
+			this.selectedWorkflow = agent.workflow;
 
 			this.showMessageTokens = agent.show_message_tokens ?? false;
 			this.showMessageRating = agent.show_message_rating ?? false;
 			this.showViewPrompt = agent.show_view_prompt ?? false;
+			this.showFileUpload = agent.show_file_upload ?? false;
 		},
 
 		updateAgentWelcomeMessage(newContent: string) {
@@ -1243,6 +1534,12 @@ export default {
 			}
 		},
 
+		handleWorkflowSelection(event) {
+			this.selectedWorkflow = clone(
+				this.workflowOptions.find((workflow) => workflow.type === event.value),
+			);
+		},
+
 		handleAgentTypeSelect(type: Agent['type']) {
 			this.agentType = type;
 		},
@@ -1262,10 +1559,10 @@ export default {
 			this.editTextEmbeddingProfile = false;
 		},
 
-		handleAIModelSelected(aiModel: AIModel) {
-			this.selectedAIModel = aiModel;
-			this.editAIModel = false;
-		},
+		// handleAIModelSelected(aiModel: AIModel) {
+		// 	this.selectedAIModel = aiModel;
+		// 	this.editAIModel = false;
+		// },
 
 		handleCopySecurityGroupId() {
 			if (this.virtualSecurityGroupId) {
@@ -1276,6 +1573,22 @@ export default {
 					life: 5000,
 				});
 			}
+		},
+
+		handleAddNewTool(newTool) {
+			this.agentTools.push(newTool);
+			this.showNewToolDialog = false;
+		},
+
+		handleUpdateTool(updatedTool) {
+			const index = this.agentTools.findIndex((tool) => tool.object_id === updatedTool.object_id);
+			this.agentTools[index] = updatedTool;
+			this.toolToEdit = null;
+		},
+
+		handleRemoveTool(toolToRemove) {
+			const index = this.agentTools.findIndex((tool) => tool.object_id === toolToRemove.object_id);
+			this.agentTools.splice(index, 1);
 		},
 
 		async handleCreateAgent() {
@@ -1293,16 +1606,36 @@ export default {
 				this.text_embedding_profile_object_id = this.selectedTextEmbeddingProfile?.object_id ?? '';
 			}
 
+			// if (!this.orchestration_settings.orchestrator) {
+			// 	errors.push('Please select an orchestrator / workflow host.');
+			// }
+
+			// if (!this.selectedAIModel) {
+			// 	errors.push('Please select an AI model for the orchestrator.');
+			// }
+
+			if (!this.selectedWorkflow) {
+				errors.push('Please select a workflow.');
+			}
+
+			if (!this.workflowName) {
+				errors.push('Please provide a workflow name.');
+			}
+
+			if (!this.workflowPackageName) {
+				errors.push('Please provide a workflow package name.');
+			}
+
+			if (!this.workflowHost) {
+				errors.push('Please select a workflow host.');
+			}
+
+			if (!this.workflowMainAIModel) {
+				errors.push('Please select an AI model for the workflow.');
+			}
+
 			if (this.systemPrompt === '') {
 				errors.push('Please provide a system prompt.');
-			}
-
-			if (!this.orchestration_settings.orchestrator) {
-				errors.push('Please select an orchestrator.');
-			}
-
-			if (!this.selectedAIModel) {
-				errors.push('Please select an AI model for the orchestrator.');
 			}
 
 			// if (!this.selectedDataSource) {
@@ -1324,16 +1657,17 @@ export default {
 			}
 
 			this.loading = true;
-			this.loadingStatusText = 'Creating agent...';
+			this.loadingStatusText = 'Saving agent...';
 
-			const promptRequest = {
-				type: 'multipart',
-				name: this.agentName,
-				cost_center: this.cost_center,
-				description: `System prompt for the ${this.agentName} agent`,
-				prefix: this.systemPrompt,
-				suffix: '',
-			};
+            const promptRequest = {
+                type: 'multipart',
+                name: this.agentName,
+                cost_center: this.cost_center,
+                description: `System prompt for the ${this.agentName} agent`,
+                prefix: this.systemPrompt,
+                suffix: '',
+                category: 'Workflow',
+            };
 
 			const tokenTextPartitionRequest = {
 				text_splitter: 'TokenTextSplitter',
@@ -1354,6 +1688,20 @@ export default {
 					const promptResponse = await api.createOrUpdatePrompt(this.agentName, promptRequest);
 					promptObjectId = promptResponse.objectId;
 				}
+
+				// if (this.selectedWorkflow) {
+				// 	const workflowPromptRequest = {
+				// 		type: 'multipart',
+				// 		name: this.selectedWorkflow.prompt_object_ids.main_prompt,
+				// 		cost_center: null,
+				// 		description: `Workflow prompt for the ${this.selectedWorkflowModelId} model`,
+				// 		prefix: this.workflowMainPrompt,
+				// 		suffix: '',
+				// 	};
+
+				// 	const workflowPromptResponse = await api.createOrUpdatePrompt(this.selectedWorkflow.prompt_object_ids.main_prompt, promptRequest);
+				// 	workflowPromptResponse = promptResponse.objectId;
+				// }
 
 				let textPartitioningProfileObjectId = '';
 				let dataSourceObjectId = '';
@@ -1386,6 +1734,49 @@ export default {
 					}
 				}
 
+				let workflow = null;
+				if (this.selectedWorkflow) {
+					workflow = {
+						...this.selectedWorkflow,
+						workflow_host: this.workflowHost,
+						name: this.workflowName,
+						package_name: this.workflowPackageName,
+						assistant_id: '',
+
+						resource_object_ids: {
+							...this.selectedWorkflow.resource_object_ids,
+
+							[this.workflowMainAIModel.object_id]: {
+								object_id: this.workflowMainAIModel.object_id,
+								properties: {
+									object_role: 'main_model',
+									model_parameters: this.workflowMainAIModelParameters,
+								},
+							},
+
+							...(promptObjectId
+								? {
+										[promptObjectId]: {
+											object_id: promptObjectId,
+											properties: {
+												object_role: 'main_prompt',
+											},
+										},
+									}
+								: {}),
+
+							...(this.selectedWorkflow?.object_id
+								? {
+										[this.selectedWorkflow.object_id]: {
+											object_id: this.selectedWorkflow.object_id,
+											properties: {},
+										},
+									}
+								: {}),
+						},
+					};
+				}
+
 				const agentRequest: CreateAgentRequest = {
 					type: this.agentType,
 					name: this.agentName,
@@ -1401,6 +1792,7 @@ export default {
 					show_message_tokens: this.showMessageTokens,
 					show_message_rating: this.showMessageRating,
 					show_view_prompt: this.showViewPrompt,
+					show_file_upload: this.showFileUpload,
 
 					vectorization: {
 						dedicated_pipeline: this.dedicated_pipeline,
@@ -1426,15 +1818,17 @@ export default {
 						].filter((option) => option !== null),
 					},
 
-					capabilities: (this.selectedAgentCapabilities || []).map((option: any) => option.code),
+					// capabilities: (this.selectedAgentCapabilities || []).map((option: any) => option.code),
 
 					sessions_enabled: true,
 
 					prompt_object_id: promptObjectId,
-					orchestration_settings: this.orchestration_settings,
-					ai_model_object_id: this.selectedAIModel.object_id,
+					// orchestration_settings: this.orchestration_settings,
+					// ai_model_object_id: this.selectedAIModel.object_id,
 
-					tools: this.tools,
+					tools: this.agentTools,
+
+					workflow,
 				};
 
 				if (this.editAgent) {

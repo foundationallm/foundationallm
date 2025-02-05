@@ -86,6 +86,7 @@ module storage 'modules/storageAccount.bicep' = {
       'vectorization-input'
       'vectorization-state'
       'external-modules-python'
+      'orchestration-completion-requests'
     ]
     queues: [
       'embed'
