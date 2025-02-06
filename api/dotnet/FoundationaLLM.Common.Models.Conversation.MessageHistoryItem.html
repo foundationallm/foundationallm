@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class MessageHistoryItem | FoundationaLLM ">
       
-      <meta name="description" content="Represents an historic message sender and text item.">
+      <meta name="description" content="Represents an item in the message history.">
       <link rel="icon" href="../../media/favicon.ico">
       <link rel="stylesheet" href="../../public/docfx.min.css">
       <link rel="stylesheet" href="../../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem" class="text-break">
-Class MessageHistoryItem  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L9"><i class="bi bi-code-slash"></i></a>
+Class MessageHistoryItem  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L12"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,7 +97,7 @@ Class MessageHistoryItem  <a class="header-action link-secondary" title="View so
   <dl><dt>Assembly</dt><dd>FoundationaLLM.Common.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Represents an historic message sender and text item.</p>
+  <div class="markdown summary"><p>Represents an item in the message history.</p>
 </div>
   <div class="markdown conceptual"></div>
 
@@ -162,17 +162,17 @@ Class MessageHistoryItem  <a class="header-action link-secondary" title="View so
 
   <a id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem__ctor_" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem__ctor_System_String_System_String_" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.#ctor(System.String,System.String)">
-  MessageHistoryItem(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem__ctor_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.#ctor(System.String,System.String,System.String)">
+  MessageHistoryItem(string, string, string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L12"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Message history item</p>
+  <div class="markdown level1 summary"><p>Represents an item in the message history.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MessageHistoryItem(string sender, string text)</code></pre>
+    <pre><code class="lang-csharp hljs">public MessageHistoryItem(string sender, string text, string? textRewrite)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -182,6 +182,9 @@ Class MessageHistoryItem  <a class="header-action link-secondary" title="View so
 </dd>
     <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The message text.</p>
+</dd>
+    <dt><code>textRewrite</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The rewritten message text.</p>
 </dd>
   </dl>
 
@@ -204,7 +207,7 @@ Class MessageHistoryItem  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem_ContentArtifacts" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.ContentArtifacts">
   ContentArtifacts
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L42"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the list <a class="xref" href="FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html">ContentArtifact</a> objects.</p>
@@ -241,7 +244,7 @@ The content of the list depends on the content artifact types configured in the 
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem_Sender" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.Sender">
   Sender
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L17"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The sender of the message (e.g. &quot;Agent&quot;, &quot;User&quot;).</p>
@@ -274,7 +277,7 @@ public string Sender { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem_Text" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.Text">
   Text
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The message text.</p>
@@ -303,11 +306,48 @@ public string Text { get; set; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem_TextRewrite_" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.TextRewrite*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem_TextRewrite" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.TextRewrite">
+  TextRewrite
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the rewritten text.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;text_rewrite&quot;)]
+public string? TextRewrite { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem_TextRewrite_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The rewritten text is filled in if the agent's text rewriting feature is enabled.
+If set, it contains an unambiguous version of the original text.</p>
+</div>
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L9" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L12" class="edit-link">Edit this page</a>
         </div>
 
 
