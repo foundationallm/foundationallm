@@ -95,10 +95,10 @@ namespace FoundationaLLM.Orchestration.Core.Services
 
                 var embeddingAIModel = await _aiModelResourceProviderService.GetResourceAsync<AIModelBase>(
                                         agentSettings.EmbeddingAIModelObjectId,
-                                        DefaultAuthentication.ServiceIdentity!);
+                                        ServiceContext.ServiceIdentity!);
                 var embeddingAPIEndpointConfiguration = await _configurationResourceProviderService.GetResourceAsync<APIEndpointConfiguration>(
                                         embeddingAIModel.EndpointObjectId!,
-                                        DefaultAuthentication.ServiceIdentity!);
+                                        ServiceContext.ServiceIdentity!);
 
                 _agentCaches[$"{instanceId}|{agentName}"] = new AgentSemanticCache
                 {
@@ -179,7 +179,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
             {
                 AuthenticationTypes.AzureIdentity => (new AzureOpenAIClient(
                     new Uri(apiEndpointConfiguration.Url),
-                    DefaultAuthentication.AzureCredential))
+                    ServiceContext.AzureCredential))
                     .GetEmbeddingClient(deploymentName),
                 AuthenticationTypes.APIKey => (new AzureOpenAIClient(
                     new Uri(apiEndpointConfiguration.Url),

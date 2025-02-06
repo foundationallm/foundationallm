@@ -70,7 +70,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
 
                 var apiEndpointConfigurations = await configurationResourceProvider.GetResourcesAsync<APIEndpointConfiguration>(
                     _instanceSettings.Id,
-                    DefaultAuthentication.ServiceIdentity!);
+                    ServiceContext.ServiceIdentity!);
 
                 _externalOrchestrationServiceNames = apiEndpointConfigurations
                     .Where(aec => aec.Resource.Category == APIEndpointCategory.ExternalOrchestration
