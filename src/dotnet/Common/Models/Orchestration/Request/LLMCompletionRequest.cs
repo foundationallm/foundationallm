@@ -360,11 +360,5 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
                 return _indexingProfiles;
             }
         }
-
-        private void EnsureIsValid()
-        {
-            if (_valid)
-                throw new OrchestrationException("The request is either invalid or has not been validated yet.");
-        }
     }
 }
