@@ -1,21 +1,17 @@
 ﻿using System.Text.Json.Serialization;
 
-<<<<<<<< HEAD:src/dotnet/Common/Models/ResourceProviders/Agent/AgentFiles/AgentFile.cs
 namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
-========
-namespace FoundationaLLM.Common.Models.ResourceProviders.Attachment
->>>>>>>> 2396b84cb (agent private files via attachments rp):src/dotnet/Common/Models/ResourceProviders/Attachment/AgentPrivateFile.cs
 {
     /// <summary>
     /// Attachment resource.
     /// </summary>
-    public class AgentPrivateFile : ResourceBase
+    public class AgentFile : ResourceBase
     {
         /// <summary>
         /// The type of the resource.
         /// </summary>
         [JsonIgnore]
-        public override string? Type { get; set; } = nameof(AgentPrivateFile);
+        public override string? Type { get; set; } = nameof(AgentFile);
 
         /// <summary>
         /// A list of tools (object IDs) that are associated with the file.

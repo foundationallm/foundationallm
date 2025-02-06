@@ -1,10 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-<<<<<<<< HEAD:src/dotnet/Common/Models/ResourceProviders/Agent/AgentFiles/AgentFile.cs
-namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
-========
 namespace FoundationaLLM.Common.Models.ResourceProviders.Attachment
->>>>>>>> 2396b84cb (agent private files via attachments rp):src/dotnet/Common/Models/ResourceProviders/Attachment/AgentPrivateFile.cs
 {
     /// <summary>
     /// Attachment resource.
