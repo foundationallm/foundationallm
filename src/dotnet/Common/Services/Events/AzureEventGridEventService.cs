@@ -365,7 +365,7 @@ namespace FoundationaLLM.Common.Services.Events
         private async Task<EventGridSenderClient?> GetSenderClient(string topicName) =>
             await _httpClientFactory.CreateClient<EventGridSenderClient?>(
                 HttpClientNames.AzureEventGrid,
-                DefaultAuthentication.ServiceIdentity!,
+                ServiceContext.ServiceIdentity!,
                 BuildSenderClient,
                 new Dictionary<string, object>()
                 {
@@ -383,7 +383,7 @@ namespace FoundationaLLM.Common.Services.Events
                 switch (authenticationType)
                 {
                     case AuthenticationTypes.AzureIdentity:
-                        client = new EventGridSenderClient(new Uri(endpoint!), topicName, DefaultAuthentication.AzureCredential);
+                        client = new EventGridSenderClient(new Uri(endpoint!), topicName, ServiceContext.AzureCredential);
                         break;
                     case AuthenticationTypes.APIKey:
                         var apiKey = parameters[HttpClientFactoryServiceKeyNames.APIKey].ToString();
@@ -404,7 +404,7 @@ namespace FoundationaLLM.Common.Services.Events
         private async Task<EventGridReceiverClient?> GetReceiverClient(string topicName, string subscriptionName) =>
             await _httpClientFactory.CreateClient<EventGridReceiverClient?>(
                 HttpClientNames.AzureEventGrid,
-                DefaultAuthentication.ServiceIdentity!,
+                ServiceContext.ServiceIdentity!,
                 BuildReceiverClient,
                 new Dictionary<string, object>()
                 {
@@ -424,7 +424,7 @@ namespace FoundationaLLM.Common.Services.Events
                 switch (authenticationType)
                 {
                     case AuthenticationTypes.AzureIdentity:
-                        client = new EventGridReceiverClient(new Uri(endpoint!), topicName, subscriptionName, DefaultAuthentication.AzureCredential);
+                        client = new EventGridReceiverClient(new Uri(endpoint!), topicName, subscriptionName, ServiceContext.AzureCredential);
                         break;
                     case AuthenticationTypes.APIKey:
                         var apiKey = parameters[HttpClientFactoryServiceKeyNames.APIKey].ToString();

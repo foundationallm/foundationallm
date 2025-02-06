@@ -898,7 +898,8 @@ public partial class CoreService(
                 PropertyValues = new Dictionary<string, object?>
                 {
                     { "/tokens", completionResponse.PromptTokens },
-                    { "/status", operationStatus }
+                    { "/status", operationStatus },
+                    { "/textRewrite", completionResponse.UserPromptRewrite }
                 }
             },
             new PatchOperationItem<Message>
@@ -946,7 +947,6 @@ public partial class CoreService(
     /// <returns>The updated completion request with pre-processing applied.</returns>
     private async Task<CompletionRequest> PrepareCompletionRequest(CompletionRequest request, AgentBase agent, bool longRunningOperation = false)
     {
-        request.OperationId = Guid.NewGuid().ToString();
         request.LongRunningOperation = longRunningOperation;
 
         if (string.IsNullOrWhiteSpace(request.SessionId) ||
@@ -964,6 +964,7 @@ public partial class CoreService(
         foreach (var message in messages)
         {
             var messageText = message.Text;
+            var messageTextRewrite = message.TextRewrite;
             if (message.Content is { Count: > 0 })
             {
                 StringBuilder text = new();
@@ -976,7 +977,7 @@ public partial class CoreService(
 
             if (!string.IsNullOrWhiteSpace(messageText))
             {
-                var messageHistoryItem = new MessageHistoryItem(message.Sender, messageText)
+                var messageHistoryItem = new MessageHistoryItem(message.Sender, messageText, messageTextRewrite)
                 {
                     ContentArtifacts = message.ContentArtifacts?.Where(ca => contentArtifactTypes.Contains(ca.Type ?? string.Empty)).ToList()
                 };

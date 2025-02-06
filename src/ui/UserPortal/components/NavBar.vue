@@ -277,10 +277,15 @@ export default {
 
 		updateAgentSelection() {
 			const agent = this.$appStore.getSessionAgent(this.currentSession);
+
 			this.agentSelection =
 				this.agentOptions.find(
 					(option) => option.value.resource.object_id === agent.resource.object_id,
 				) || null;
+
+			if (this.agentSelection) {
+				this.$appStore.setSessionAgent(this.currentSession, this.agentSelection.value);
+			}
 		},
 
 		hideAllPoppers() {

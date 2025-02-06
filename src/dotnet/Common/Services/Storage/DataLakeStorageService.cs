@@ -229,7 +229,7 @@ namespace FoundationaLLM.Common.Services.Storage
         protected override void CreateClientFromIdentity(string accountName) =>
             _dataLakeClient = new DataLakeServiceClient(
                 BuildStorageEndpointUri(accountName),
-                DefaultAuthentication.AzureCredential);
+                ServiceContext.AzureCredential);
 
         /// <summary>
         /// Builds the endpoint for the Azure Data Lake service.

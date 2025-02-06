@@ -121,7 +121,7 @@ namespace FoundationaLLM.Common.Authentication
                             AccessToken = agentAccessToken
                         }),
                     null,
-                    DefaultAuthentication.ServiceIdentity!);
+                    ServiceContext.ServiceIdentity!);
 
                 return serializedResult as AgentAccessTokenValidationResult ?? result;
             }

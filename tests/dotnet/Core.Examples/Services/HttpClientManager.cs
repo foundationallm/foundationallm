@@ -22,7 +22,7 @@ namespace FoundationaLLM.Core.Examples.Services
             // The scope needs to just be the base URI, not the full URI.
             scope = scope[..scope.LastIndexOf('/')];
 
-            var credentials = DefaultAuthentication.AzureCredential;
+            var credentials = ServiceContext.AzureCredential;
             if (credentials == null) return httpClient;
             var tokenResult = await credentials.GetTokenAsync(
                 new([scope]),

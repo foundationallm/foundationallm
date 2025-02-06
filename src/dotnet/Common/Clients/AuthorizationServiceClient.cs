@@ -322,7 +322,7 @@ namespace FoundationaLLM.Common.Clients
             var httpClient = _httpClientFactory.CreateClient();
             httpClient.BaseAddress = new Uri(_settings.APIUrl);
 
-            var credentials = DefaultAuthentication.AzureCredential;
+            var credentials = ServiceContext.AzureCredential;
             var tokenResult = await credentials!.GetTokenAsync(
                 new([_settings.APIScope]),
                 default);

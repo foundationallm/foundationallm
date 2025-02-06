@@ -468,7 +468,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             # Define the graph
             graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)
             if agent.conversation_history_settings.enabled:
-                messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
+                messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history*2)
             else:
                 messages = []
 
@@ -491,7 +491,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                             if isinstance(item, ContentArtifact):
                                 content_artifacts.append(item)
 
-            final_message = response["messages"][-1]
+            final_message = response["messages"][-1]            
             response_content = OpenAITextMessageContentItem(
                 value = final_message.content,
                 agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
@@ -527,7 +527,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 for tool in agent.tools:
                     tools.append(tool_factory.get_tool(agent.name, tool, request.objects, self.user_identity, self.config))
 
-            request.objects['message_history'] = request.message_history[:agent.conversation_history_settings.max_history]
+            request.objects['message_history'] = request.message_history[:agent.conversation_history_settings.max_history*2]
 
             # create the workflow
             workflow_factory = WorkflowFactory(self.plugin_manager)
@@ -540,7 +540,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             # Get message history
             if agent.conversation_history_settings.enabled:
-                messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
+                messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history*2)
             else:
                 messages = []
 
@@ -548,6 +548,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 response = await workflow.invoke_async(
                     operation_id=request.operation_id,
                     user_prompt=parsed_user_prompt,
+                    user_prompt_rewrite=request.user_prompt_rewrite,
                     message_history=messages
                 )
                 # Ensure the user prompt rewrite is returned in the response
@@ -598,27 +599,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
         retvalue = None
 
-        if self.api_endpoint.provider == LanguageModelProvider.BEDROCK:
-            if self.has_retriever:
-                completion = chain.invoke(request.user_prompt)
-            else:
-                completion = await chain.ainvoke(request.user_prompt)
-            response_content = OpenAITextMessageContentItem(
-                value = completion.content,
-                agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-            )
-            retvalue = CompletionResponse(
-                operation_id = request.operation_id,
-                content = [response_content],
-                user_prompt = request.user_prompt,
-                user_prompt_rewrite = request.user_prompt_rewrite,
-                full_prompt = self.full_prompt.text,
-                completion_tokens = completion.usage_metadata["output_tokens"] + image_analysis_token_usage.completion_tokens,
-                prompt_tokens = completion.usage_metadata["input_tokens"] + image_analysis_token_usage.prompt_tokens,
-                total_tokens = completion.usage_metadata["total_tokens"] + image_analysis_token_usage.total_tokens,
-                total_cost = 0
-            )
-        else:
+        if self.api_endpoint.provider == LanguageModelProvider.MICROSOFT or self.api_endpoint.provider == LanguageModelProvider.OPENAI:     
             # OpenAI compatible models
             with get_openai_callback() as cb:
                 # add output parser to openai callback
@@ -646,6 +627,26 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     )
                 except Exception as e:
                     raise LangChainException(f"An unexpected exception occurred when executing the completion request: {str(e)}", 500)
+        else:
+            if self.has_retriever:
+                completion = chain.invoke(request.user_prompt)
+            else:
+                completion = await chain.ainvoke(request.user_prompt)
+            response_content = OpenAITextMessageContentItem(
+                value = completion.content,
+                agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
+            )
+            retvalue = CompletionResponse(
+                operation_id = request.operation_id,
+                content = [response_content],
+                user_prompt = request.user_prompt,
+                user_prompt_rewrite = request.user_prompt_rewrite,
+                full_prompt = self.full_prompt.text,
+                completion_tokens = completion.usage_metadata["output_tokens"] + image_analysis_token_usage.completion_tokens,
+                prompt_tokens = completion.usage_metadata["input_tokens"] + image_analysis_token_usage.prompt_tokens,
+                total_tokens = completion.usage_metadata["total_tokens"] + image_analysis_token_usage.total_tokens,
+                total_cost = 0
+            )
 
         if isinstance(retriever, ContentArtifactRetrievalBase):
             retvalue.content_artifacts = retriever.get_document_content_artifacts() or []

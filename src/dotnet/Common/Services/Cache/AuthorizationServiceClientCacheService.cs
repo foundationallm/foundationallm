@@ -5,6 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 
 namespace FoundationaLLM.Common.Services.Cache
 {
@@ -56,15 +57,21 @@ namespace FoundationaLLM.Common.Services.Cache
         public bool TryGetValue(ActionAuthorizationRequest authorizationRequest, out ActionAuthorizationResult? authorizationResult)
         {
             authorizationResult = default;
+            var authorizationRequestJson = JsonSerializer.Serialize(authorizationRequest);
+
             try
             {
                 if (_cache.TryGetValue(GetCacheKey(authorizationRequest), out ActionAuthorizationResult? cachedValue)
                     && cachedValue != null)
                 {
                     authorizationResult = cachedValue;
-                    _logger.LogInformation("Cache hit for the authorization request");
+                    _logger.LogInformation("Cache hit for the following authorization request: {AuthorizationRequest}.",
+                        authorizationRequestJson);
                     return true;
                 }
+
+                _logger.LogInformation("Cache miss for the following authorization request: {AuthorizationRequest}.",
+                        authorizationRequestJson);
             }
             catch (Exception ex)
             {

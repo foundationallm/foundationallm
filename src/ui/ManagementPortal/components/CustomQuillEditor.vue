@@ -2,6 +2,7 @@
 	<div class="quill-container" ref="quillContainer">
 		<QuillEditor
 			ref="quillEditor"
+			class="custom-quill-editor"
 			:content="content"
 			:toolbar="`#${toolbarId}`"
 			content-type="html"
@@ -266,7 +267,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .quill-container {
 	max-width: 80ch;
 }
@@ -278,5 +279,21 @@ export default {
 	border-radius: 4px;
 	padding: 0.5rem;
 	cursor: pointer;
+}
+</style>
+
+<style lang="scss">
+.custom-quill-editor {
+	.ql-container {
+		height: auto;
+	}
+
+	.ql-editor {
+		height: auto;
+		min-height: 150px;
+		max-height: 800px;
+		resize: vertical;
+		font-family: 'Poppins', sans-serif;
+	}
 }
 </style>
