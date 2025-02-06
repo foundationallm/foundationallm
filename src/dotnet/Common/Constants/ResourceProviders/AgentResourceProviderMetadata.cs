@@ -2,7 +2,6 @@
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 
 namespace FoundationaLLM.Common.Constants.ResourceProviders
 {
@@ -40,27 +39,6 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     ],
                     SubTypes = new()
                     {
-                        {
-                            AgentResourceTypeNames.Files,
-                            new ResourceTypeDescriptor (
-                                AgentResourceTypeNames.Files,
-                                typeof(AgentFile))
-                            {
-                                AllowedTypes = [
-                                    new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderGetResult<AgentFile>)]),
-                                    new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderUpsertResult)]),
-                                    new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
-                                ],
-                                Actions = [
-                                    new ResourceTypeAction(ResourceProviderActions.AddFileTool, true, false, [
-                                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AgentFileToolAssociationRequest)], [typeof(AgentFileToolAssociationResult)])
-                                        ]),
-                                    new ResourceTypeAction(ResourceProviderActions.RemoveFileTool, true, false, [
-                                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AgentFileToolAssociationRequest)], [typeof(AgentFileToolAssociationResult)])
-                                        ]),
-                                ]
-                            }
-                        },
                         {
                             AgentResourceTypeNames.AgentAccessTokens,
                             new ResourceTypeDescriptor(

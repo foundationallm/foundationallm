@@ -106,8 +106,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
                    }),
                 AgentResourceTypeNames.AgentAccessTokens => await LoadAgentAccessTokens(
                     resourcePath)!,
-                AgentResourceTypeNames.Files => await LoadAgentFiles(
-                    resourcePath.MainResourceId!)!,
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
@@ -118,7 +116,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
             {
                 AgentResourceTypeNames.Agents => await UpdateAgent(resourcePath, serializedResource!, userIdentity),
                 AgentResourceTypeNames.AgentAccessTokens => await UpdateAgentAccessToken(resourcePath, serializedResource!),
-                AgentResourceTypeNames.Files => await UpdateAgentFile(resourcePath, formFile!, userIdentity),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
@@ -172,9 +169,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
             {
                 case AgentResourceTypeNames.Agents:
                     await DeleteResource<AgentBase>(resourcePath);
-                    break;
-                case AgentResourceTypeNames.Files:
-                    await DeleteAgentFile(resourcePath);
                     break;
                 case AgentResourceTypeNames.AgentAccessTokens:
                     await DeleteAgentAccessToken(resourcePath);
