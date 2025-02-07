@@ -91,18 +91,18 @@ module actionGroup 'modules/actionGroup.bicep' = {
   }
 }
 
-@description('Azure Monitor Private Link Scope')
-module ampls 'modules/ampls.bicep' = {
-  name: 'ampls-${timestamp}'
-  params: {
-    environmentName: environmentName
-    location: location
-    privateDnsZones: zonesAmpls
-    project: project
-    resourceSuffix: resourceSuffix
-    subnetId: '${vnetId}/subnets/ops'
-  }
-}
+// @description('Azure Monitor Private Link Scope')
+// module ampls 'modules/ampls.bicep' = {
+//   name: 'ampls-${timestamp}'
+//   params: {
+//     environmentName: environmentName
+//     location: location
+//     privateDnsZones: zonesAmpls
+//     project: project
+//     resourceSuffix: resourceSuffix
+//     subnetId: '${vnetId}/subnets/ops'
+//   }
+// }
 
 @description('App Configuration')
 module appConfig 'modules/appConfig.bicep' = {
@@ -127,7 +127,7 @@ module appConfig 'modules/appConfig.bicep' = {
 module applicationInsights 'modules/applicationInsights.bicep' = {
   name: 'appInsights-${timestamp}'
   params: {
-    amplsName: ampls.outputs.name
+    // amplsName: ampls.outputs.name
     environmentName: environmentName
     location: location
     logAnalyticWorkspaceId: logAnalytics.outputs.id
@@ -175,10 +175,10 @@ module logAnalytics 'modules/logAnalytics.bicep' = {
     project: project
     resourceSuffix: resourceSuffix
 
-    ampls: {
-      id: ampls.outputs.id
-      name: ampls.outputs.name
-    }
+    // ampls: {
+    //   id: ampls.outputs.id
+    //   name: ampls.outputs.name
+    // }
   }
 }
 
