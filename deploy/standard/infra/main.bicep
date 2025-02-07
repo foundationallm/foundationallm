@@ -79,7 +79,7 @@ var workloads = [
   'jbx'
   'net'
   'oai'
-  'cfg'
+  'ops'
   'storage'
   'vec'
 ]
