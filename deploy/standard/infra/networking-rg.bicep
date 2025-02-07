@@ -612,9 +612,9 @@ module globalDns './modules/dns.bicep' = [for zone in items(globalPrivateDnsZone
   }
 }]
 
-resource opsVnet 'Microsoft.Network/virtualNetworks@2024-01-01' existing = {
+resource hubVnet 'Microsoft.Network/virtualNetworks@2024-01-01' existing = {
   name: hubVnetName
   scope: resourceGroup(hubSubscriptionId, hubResourceGroup)
 }
 
-output opsVnetId string = opsVnet.id
+output hubVnetId string = hubVnet.id

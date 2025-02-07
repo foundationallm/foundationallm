@@ -272,7 +272,7 @@ output FLLM_MGMT_API_HOSTNAME string = managementApiHostname
 
 output FOUNDATIONALLM_VNET_NAME string = networking.outputs.vnetName
 output FOUNDATIONALLM_VNET_ID string = networking.outputs.vnetId
-output FOUNDATIONALLM_OPS_VNET_ID string = networking.outputs.opsVnetId
+output FOUNDATIONALLM_HUB_VNET_ID string = networking.outputs.hubVnetId
 
 output ONEDRIVE_BASE_URL string = oneDriveBaseUrl
 
