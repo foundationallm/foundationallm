@@ -11,7 +11,6 @@ using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Services.ResourceProviders;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -222,11 +221,24 @@ namespace FoundationaLLM.Attachment.ResourceProviders
         /// <inheritdoc/>
         protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) where T : class
         {
-            var attachment = await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!)
-                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} was not found.");
+            switch (resourcePath.MainResourceTypeName)
+            {
+                case AttachmentResourceTypeNames.Attachments:
+                    var attachment = await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!)
+                        ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} was not found.");
 
-            return (await LoadAttachment(attachment, loadContent: options?.LoadContent ?? false)) as T
-                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} could not be loaded.");
+                    return (await LoadAttachment(attachment, loadContent: options?.LoadContent ?? false)) as T
+                        ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} could not be loaded.");
+                case AttachmentResourceTypeNames.AgentPrivateFiles:
+                    var agentPrivateFile = await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!)
+                        ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} was not found.");
+
+                    return (await LoadAgentPrivateFile(agentPrivateFile, loadContent: options?.LoadContent ?? false)) as T
+                        ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} could not be loaded.");
+                default:
+                    throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest);
+            }
         }
 
         /// <inheritdoc/>
@@ -394,7 +406,14 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 throw new ResourceProviderException("The resource path does not match the file name (name mismatch).",
                     StatusCodes.Status400BadRequest);
 
-            string agentName = "TODO";
+            string? agentName = null;
+            if (formFile.Payload != null && formFile.Payload.TryGetValue(ResourceProviderFormPayloadKeys.AgentName, out var value))
+                agentName = value;
+
+            if (string.IsNullOrWhiteSpace(agentName))
+                throw new ResourceProviderException("The agent name is not valid.",
+                    StatusCodes.Status400BadRequest);
+
             var filePath = $"/{_name}/{_instanceSettings.Id}/{agentName}/private-file-store/{resourcePath.ResourceId!}";
             var resourceName = $"{agentName}|{resourcePath.ResourceId}";
 

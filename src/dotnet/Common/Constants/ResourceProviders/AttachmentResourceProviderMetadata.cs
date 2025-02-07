@@ -46,13 +46,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     Actions = [
                         new ResourceTypeAction(ResourceProviderActions.Filter, false, true, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceFilter)], [typeof(AgentPrivateFile)])
-                        ]),
-                        //new ResourceTypeAction(ResourceProviderActions.AddFileTool, true, false, [
-                        //    new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AgentFileToolAssociationRequest)], [typeof(AgentFileToolAssociationResult)])
-                        //]),
-                        //new ResourceTypeAction(ResourceProviderActions.RemoveFileTool, true, false, [
-                        //    new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AgentFileToolAssociationRequest)], [typeof(AgentFileToolAssociationResult)])
-                        //])
+                        ])
                     ]
                 }
             }

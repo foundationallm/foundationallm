@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 
 namespace FoundationaLLM.Common.Constants.ResourceProviders
 {
@@ -35,6 +36,9 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         ]),
                         new ResourceTypeAction(ResourceProviderActions.SetDefault, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderActionResult)])
+                        ]),
+                        new ResourceTypeAction(ResourceProviderActions.UpdateFileToolAssociations, true, false, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AgentFileToolAssociationRequest)], [typeof(AgentFileToolAssociationResult)])
                         ])
                     ],
                     SubTypes = new()

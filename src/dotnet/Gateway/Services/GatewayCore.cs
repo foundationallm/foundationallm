@@ -377,7 +377,7 @@ namespace FoundationaLLM.Gateway.Services
                 else
                 {
                     var agentFileObjectId = GetParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AgentFileObjectId, string.Empty);
-                    var agentFile = await _agentResourceProvider.GetResourceAsync<AgentFile>(agentFileObjectId, userIdentity, new ResourceProviderGetOptions { LoadContent = true });
+                    var agentFile = await _attachmentResourceProvider.GetResourceAsync<AgentPrivateFile>(agentFileObjectId, userIdentity, new ResourceProviderGetOptions { LoadContent = true });
                     originalFileName = agentFile.Name;
                     fileContent = agentFile.Content;                   
                 }
