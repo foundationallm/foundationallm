@@ -151,8 +151,8 @@ async def create_completion_response(
 
             # Await the completion response from the orchestration manager.
             completion_response = await orchestration_manager.invoke_async(completion_request)
-            completion_status = OperationStatus.COMPLETED if completion_response.errors == [] else OperationStatus.FAILED
-            completion_status_message = "Operation completed successfully." if completion_response.errors == [] else "Operation failed."
+            completion_status = OperationStatus.COMPLETED if completion_response.errors == [] and completion_response.is_error else OperationStatus.FAILED
+            completion_status_message = "Operation completed successfully." if completion_response.errors == [] and completion_response.is_error else "Operation failed."
 
             # Send the completion response to the State API and mark the operation as completed.
             await asyncio.gather(
@@ -170,7 +170,8 @@ async def create_completion_response(
             )
         except Exception as e:
             # Send the completion response to the State API and mark the operation as failed.
-            print (f'Error: {e}')
+            logger.error(e, stack_info=True, exc_info=True)
+
             completion_response = CompletionResponse(
                 operation_id = operation_id,
                 user_prompt = completion_request.user_prompt,
@@ -194,7 +195,7 @@ async def create_completion_response(
 def handle_exception(exception: Exception, status_code: int = 500):
     """
     Handles an exception that occurred while processing a request.
-    
+
     Parameters
     ----------
     exception : Exception
