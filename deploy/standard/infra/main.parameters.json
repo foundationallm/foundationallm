@@ -50,7 +50,7 @@
       "location": {
         "value": "${AZURE_LOCATION}"
       },
-      "hubResourceGroup": {
+      "opsResourceGroup": {
         "value": "${FOUNDATIONALLM_HUB_RESOURCE_GROUP}"
       },
       "hubSubscriptionId": {

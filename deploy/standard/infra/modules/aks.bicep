@@ -55,8 +55,8 @@ param admnistratorObjectIds array
 param aksServiceCidr string = '10.100.0.0/16'
 param aksNodeSku string
 
-param hubResourceGroup string
-param hubSubscriptionId string = subscription().subscriptionId
+param dnsResourceGroup string
+param dnsSubscriptionId string = subscription().subscriptionId
 
 @description('Location for all resources')
 param location string
@@ -476,7 +476,7 @@ resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
 /** Nested Modules **/
 module dnsRoleAssignment 'utility/roleAssignments.bicep' = {
   name: 'dnsra-${resourceSuffix}-${timestamp}'
-  scope: resourceGroup(hubSubscriptionId, hubResourceGroup)
+  scope: resourceGroup(dnsSubscriptionId, dnsResourceGroup)
   params: {
     principalId: uai.properties.principalId
     roleDefinitionIds: {
