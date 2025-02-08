@@ -518,8 +518,13 @@ namespace FoundationaLLM.Agent.ResourceProviders
         {
             var errors = new List<AgentFileToolAssociationError>();
 
-            // get agent file tool associations
-            var fileContent = await _storageService.ReadFileAsync(_storageContainerName, $"{resourcePath.MainResourceId!}Associations.json", default);
+            var filePath = $"{resourcePath.MainResourceId!}Associations.json";
+            var fileExists = await _storageService.FileExistsAsync(_storageContainerName, filePath, default);
+
+            if (!fileExists)
+                await _storageService.WriteFileAsync(_storageContainerName, filePath, "[]", default, default);
+
+            var fileContent = await _storageService.ReadFileAsync(_storageContainerName, filePath, default);
             var existingAssociations = JsonSerializer.Deserialize<List<AgentFileToolAssociation>>(Encoding.UTF8.GetString(fileContent.ToArray()))!;
 
             foreach (var fileObjectId in agentFileToolAssociationRequest.AgentFileToolAssociations.Keys)
