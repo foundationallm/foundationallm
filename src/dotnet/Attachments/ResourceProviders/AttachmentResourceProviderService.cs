@@ -380,6 +380,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             {
                 ObjectId = attachment.ObjectId,
                 Name = attachment.Name,
+                DisplayName = attachment.OriginalFilename,
                 Type = attachment.Type,
                 ContentType = attachment.ContentType
             };
@@ -402,9 +403,9 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 throw new ResourceProviderException("The attached file is not valid.",
                     StatusCodes.Status400BadRequest);
 
-            if (resourcePath.ResourceId != formFile.FileName)
-                throw new ResourceProviderException("The resource path does not match the file name (name mismatch).",
-                    StatusCodes.Status400BadRequest);
+            //if (resourcePath.ResourceId != formFile.FileName)
+            //    throw new ResourceProviderException("The resource path does not match the file name (name mismatch).",
+            //        StatusCodes.Status400BadRequest);
 
             string? agentName = null;
             if (formFile.Payload != null && formFile.Payload.TryGetValue(ResourceProviderFormPayloadKeys.AgentName, out var value))
@@ -414,21 +415,24 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 throw new ResourceProviderException("The agent name is not valid.",
                     StatusCodes.Status400BadRequest);
 
-            var filePath = $"/{_name}/{_instanceSettings.Id}/{agentName}/private-file-store/{resourcePath.ResourceId!}";
-            var resourceName = $"{agentName}|{resourcePath.ResourceId}";
+            var uid = resourcePath.ResourceId!;
+            var filePath = $"/{_name}/{_instanceSettings.Id}/{agentName}/private-file-store/{uid}";
+            var agentObjectId = $"/instances/{_instanceSettings.Id}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/agents/{uid}";
 
             var agentPrivateFile = new AttachmentReference
             {
-                Id = resourceName,
+                Id = uid,
+                Name = uid,
                 ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name),
                 OriginalFilename = formFile.FileName,
                 ContentType = formFile.ContentType!,
-                Name = resourceName,
                 Type = AttachmentTypes.AgentPrivateFile,
                 Filename = filePath,
                 Size = formFile.BinaryContent.Length,
                 UPN = userIdentity.UPN ?? string.Empty,
-                Deleted = false
+                SecondaryProvider = ResourceProviderNames.FoundationaLLM_Agent,
+                SecondaryProviderObjectId = agentObjectId,
+                Deleted = false,
             };
 
             await CreateResource(
@@ -441,7 +445,15 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             return new ResourceProviderUpsertResult<AgentPrivateFile>
             {
                 ObjectId = agentPrivateFile!.ObjectId,
-                ResourceExists = false
+                ResourceExists = false,
+                Resource = new AgentPrivateFile
+                {
+                    ObjectId = agentPrivateFile.ObjectId,
+                    Name = agentPrivateFile.Name,
+                    DisplayName = formFile.FileName,
+                    Type = agentPrivateFile.Type,
+                    ContentType = agentPrivateFile.ContentType
+                }
             };
         }
 

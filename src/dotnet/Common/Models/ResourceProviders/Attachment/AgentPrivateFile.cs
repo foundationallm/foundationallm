@@ -14,12 +14,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Attachment
         public override string? Type { get; set; } = nameof(AgentPrivateFile);
 
         /// <summary>
-        /// A list of tools (object IDs) that are associated with the file.
-        /// </summary>
-        [JsonPropertyName("tool_object_ids")]
-        public List<string> ToolObjectIds { get; set; } = new List<string>();
-
-        /// <summary>
         /// File stream of the attachment contents.
         /// </summary>
         [JsonPropertyName("content")]
