@@ -221,10 +221,10 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
         minCount: 1
         mode: 'System'
         name: 'sys'
-        osDiskSizeGB: 128
+        osDiskSizeGB: 64
         tags: tags
         type: 'VirtualMachineScaleSets'
-        vmSize: 'Standard_D2s_v5'
+        vmSize: 'Standard_D2s_v4'
         vnetSubnetID: subnetId
 
         nodeTaints: [
@@ -240,7 +240,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
     apiServerAccessProfile: {
       enablePrivateCluster: true
       enablePrivateClusterPublicFQDN: false
-      privateDNSZone: filter(privateDnsZones, (privateDnsZone) => privateDnsZone.key == 'aks')[0].id
+      privateDNSZone: filter(privateDnsZones, (privateDnsZone) => privateDnsZone.key == 'aks_${location}')[0].id
     }
 
     autoUpgradeProfile: { upgradeChannel: 'stable' }
@@ -322,12 +322,12 @@ resource userPool 'Microsoft.ContainerService/managedClusters/agentPools@2024-04
   parent: main
   properties: {
     availabilityZones: zones
-    count: 10
+    count: 3
     enableAutoScaling: true
     maxCount: 15
-    minCount: 6
+    minCount: 3
     mode: 'User'
-    osDiskSizeGB: 256
+    osDiskSizeGB: 64
     tags: tags
     type: 'VirtualMachineScaleSets'
     vmSize: aksNodeSku
