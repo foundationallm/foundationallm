@@ -221,7 +221,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
         minCount: 1
         mode: 'System'
         name: 'sys'
-        osDiskSizeGB: 64
+        osDiskSizeGB: 256
         tags: tags
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_D2s_v4'
@@ -327,7 +327,7 @@ resource userPool 'Microsoft.ContainerService/managedClusters/agentPools@2024-04
     maxCount: 15
     minCount: 3
     mode: 'User'
-    osDiskSizeGB: 64
+    osDiskSizeGB: 256
     tags: tags
     type: 'VirtualMachineScaleSets'
     vmSize: aksNodeSku
