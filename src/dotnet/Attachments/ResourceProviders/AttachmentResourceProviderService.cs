@@ -85,7 +85,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                     if (resourcePath.ResourceTypeInstances[0].ResourceId != null)
                         attachments = [await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!)];
                     else
-                        attachments = await _cosmosDBService.GetAttachments(userIdentity.UPN!);
+                        attachments = await _cosmosDBService.GetAttachments(AttachmentTypes.File, userIdentity.UPN!);
 
                     var attachmentFiles = new List<AttachmentFile>();
                     foreach(var attachment in attachments)
@@ -108,7 +108,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                     if (resourcePath.ResourceTypeInstances[0].ResourceId != null)
                         agentPrivateFiles = [await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!)];
                     else
-                        agentPrivateFiles = await _cosmosDBService.GetAttachments(userIdentity.UPN!);
+                        agentPrivateFiles = await _cosmosDBService.GetAttachments(AttachmentTypes.AgentPrivateFile, userIdentity.UPN!);
 
                     var results = new List<AgentPrivateFile>();
                     foreach (var agentPrivateFile in agentPrivateFiles)
@@ -382,7 +382,8 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 Name = attachment.Name,
                 DisplayName = attachment.OriginalFilename,
                 Type = attachment.Type,
-                ContentType = attachment.ContentType
+                ContentType = attachment.ContentType,
+                AgentObjectId = attachment.SecondaryProviderObjectId
             };
 
             if (loadContent)
@@ -449,7 +450,8 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                     Name = agentPrivateFile.Name,
                     DisplayName = formFile.FileName,
                     Type = agentPrivateFile.Type,
-                    ContentType = agentPrivateFile.ContentType
+                    ContentType = agentPrivateFile.ContentType,
+                    AgentObjectId = agentPrivateFile.SecondaryProviderObjectId
                 }
             };
         }

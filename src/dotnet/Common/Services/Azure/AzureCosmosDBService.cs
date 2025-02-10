@@ -569,9 +569,10 @@ namespace FoundationaLLM.Common.Services.Azure
         }
 
         /// <inheritdoc/>
-        public async Task<List<AttachmentReference>> GetAttachments(string upn, CancellationToken cancellationToken = default)
+        public async Task<List<AttachmentReference>> GetAttachments(string type, string upn, CancellationToken cancellationToken = default)
         {
-            var query = new QueryDefinition($"SELECT DISTINCT * FROM c WHERE c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c._ts DESC")
+            var query = new QueryDefinition($"SELECT DISTINCT * FROM c WHERE c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c._ts DESC")
+                .WithParameter("@type", type)
                 .WithParameter("@upn", upn);
 
             var response = _attachments.GetItemQueryIterator<AttachmentReference>(query);

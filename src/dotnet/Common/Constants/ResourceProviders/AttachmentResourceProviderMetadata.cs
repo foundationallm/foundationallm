@@ -36,7 +36,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                 AttachmentResourceTypeNames.AgentPrivateFiles,
                 new ResourceTypeDescriptor (
                     AttachmentResourceTypeNames.AgentPrivateFiles,
-                    typeof(FileContent))
+                    typeof(AgentPrivateFile))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderGetResult<AgentPrivateFile>)]),

@@ -14,6 +14,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Attachment
         public override string? Type { get; set; } = nameof(AgentPrivateFile);
 
         /// <summary>
+        /// Agent object identifier.
+        /// </summary>
+        [JsonPropertyName("agent_object_id")]
+        public string? AgentObjectId { get; set; }
+
+        /// <summary>
         /// File stream of the attachment contents.
         /// </summary>
         [JsonPropertyName("content")]

@@ -240,11 +240,12 @@ public interface IAzureCosmosDBService
     /// <summary>
     /// Gets a list of attachments for the signed in user.
     /// </summary>
+    /// <param name="type">The attachment type to return.</param>
     /// <param name="upn">The user principal name used for retrieving the attachments for
     /// the signed in user.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns>A list of attachments for the signed in user.</returns>
-    Task<List<AttachmentReference>> GetAttachments(string upn, CancellationToken cancellationToken = default);
+    Task<List<AttachmentReference>> GetAttachments(string type, string upn, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates an attachment.
