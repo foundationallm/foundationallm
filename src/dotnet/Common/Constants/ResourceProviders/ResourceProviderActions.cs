@@ -26,11 +26,6 @@
         public const string LoadFileContent = "load-file-content";
 
         /// <summary>
-        /// Set file tool associations.
-        /// </summary>
-        public const string UpdateFileToolAssociations = "update-file-tool-associations";
-
-        /// <summary>
         /// Validate resources.
         /// </summary>
         public const string Validate = "validate";

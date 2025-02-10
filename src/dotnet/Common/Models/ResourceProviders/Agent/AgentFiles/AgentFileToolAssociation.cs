@@ -5,7 +5,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
     /// <summary>
     /// Agent file tool association.
     /// </summary>
-    public class AgentFileToolAssociation
+    public class AgentFileToolAssociation :  ResourceBase
     {
         /// <summary>
         /// Agent file object id.

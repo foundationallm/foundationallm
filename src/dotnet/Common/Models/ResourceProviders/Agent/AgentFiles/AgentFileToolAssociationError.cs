@@ -16,7 +16,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
         /// <summary>
         /// Tool object id.
         /// </summary>
-        [JsonPropertyName("file_object_id")]
+        [JsonPropertyName("tool_object_id")]
         public required string ToolObjectId { get; set; }
 
         /// <summary>

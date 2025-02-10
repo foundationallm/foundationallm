@@ -26,6 +26,11 @@
         public const string AgentAccessTokens = "agentAccessTokens";
 
         /// <summary>
+        /// Agent file tool associations.
+        /// </summary>
+        public const string AgentFileToolAssociations = "agentFileToolAssociations";
+
+        /// <summary>
         /// Tools.
         /// </summary>
         public const string Tools = "tools";

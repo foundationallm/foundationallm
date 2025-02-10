@@ -36,9 +36,6 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         ]),
                         new ResourceTypeAction(ResourceProviderActions.SetDefault, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderActionResult)])
-                        ]),
-                        new ResourceTypeAction(ResourceProviderActions.UpdateFileToolAssociations, true, false, [
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AgentFileToolAssociationRequest)], [typeof(AgentFileToolAssociationResult)])
                         ])
                     ],
                     SubTypes = new()
@@ -46,8 +43,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         {
                             AgentResourceTypeNames.AgentAccessTokens,
                             new ResourceTypeDescriptor(
-                                    AgentResourceTypeNames.AgentAccessTokens,
-                                    typeof(AgentAccessToken))
+                                AgentResourceTypeNames.AgentAccessTokens,
+                                typeof(AgentAccessToken))
                             {
                                 AllowedTypes = [
                                     new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AgentAccessToken>)]),
@@ -59,6 +56,19 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                                         new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(AgentAccessTokenValidationRequest)], [typeof(AgentAccessTokenValidationResult)])
                                     ])
                                 ]
+                            }
+                        },
+                        {
+                            AgentResourceTypeNames.AgentFileToolAssociations,
+                            new ResourceTypeDescriptor(
+                                AgentResourceTypeNames.AgentFileToolAssociations,
+                                typeof(AgentFileToolAssociation))
+                            {
+                                AllowedTypes = [
+                                    new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AgentFileToolAssociation>)]),
+                                    new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AgentFileToolAssociationRequest)], [typeof(ResourceProviderUpsertResult)])
+                                ],
+                                Actions = []
                             }
                         }
                     }

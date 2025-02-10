@@ -18,17 +18,16 @@ using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
+using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Data;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
 
@@ -107,8 +106,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
                    {
                        IncludeRoles = resourcePath.IsResourceTypePath,
                    }),
-                AgentResourceTypeNames.AgentAccessTokens => await LoadAgentAccessTokens(
-                    resourcePath)!,
+                AgentResourceTypeNames.AgentAccessTokens => await LoadAgentAccessTokens(resourcePath)!,
+                AgentResourceTypeNames.AgentFileToolAssociations => await LoadAgentFileToolAssociations(resourcePath, userIdentity)!,
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
@@ -119,6 +118,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             {
                 AgentResourceTypeNames.Agents => await UpdateAgent(resourcePath, serializedResource!, userIdentity),
                 AgentResourceTypeNames.AgentAccessTokens => await UpdateAgentAccessToken(resourcePath, serializedResource!),
+                AgentResourceTypeNames.AgentFileToolAssociations => await UpdateFileToolAssociations(resourcePath, serializedResource!, userIdentity),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
@@ -139,11 +139,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     ResourceProviderActions.Purge => await PurgeResource<AgentBase>(resourcePath),
 
                     ResourceProviderActions.SetDefault => await SetDefaultResource<AgentBase>(resourcePath),
-
-                    ResourceProviderActions.UpdateFileToolAssociations => await UpdateFileToolAssociations(
-                        resourcePath,
-                        JsonSerializer.Deserialize<AgentFileToolAssociationRequest>(serializedAction)!,
-                        userIdentity),
 
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
@@ -511,18 +506,70 @@ namespace FoundationaLLM.Agent.ResourceProviders
             return fallbackResult;
         }
 
-        private async Task<AgentFileToolAssociationResult> UpdateFileToolAssociations(
+        private async Task<List<ResourceProviderGetResult<AgentFileToolAssociation>>> LoadAgentFileToolAssociations(
+            ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
+        {
+            var attachmentResourceProvider = GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Attachment);
+
+            var allPrivateFiles = await attachmentResourceProvider.GetResourcesAsync<AgentPrivateFile>(
+                _instanceSettings.Id, userIdentity, new ResourceProviderGetOptions { LoadContent = false });
+
+            var agentObjectId = $"/instances/{_instanceSettings.Id}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/agents/{resourcePath.MainResourceId}";
+
+            var agentPrivateFiles = allPrivateFiles.Where(x => x.Resource.AgentObjectId == agentObjectId).Select(x => x.Resource).ToList();
+
+            var filePath = $"/{_name}/{resourcePath.MainResourceId!}Associations.json";
+            var fileExists = await _storageService.FileExistsAsync(_storageContainerName, filePath, default);
+
+            if (!fileExists)
+            {
+                await _storageService.WriteFileAsync(_storageContainerName, filePath,
+                    JsonSerializer.Serialize(new List<AgentFileToolAssociation>()), default, default);
+            }
+
+            var fileContent = await _storageService.ReadFileAsync(_storageContainerName, filePath, default);
+            var existingAssociations = JsonSerializer.Deserialize<List<AgentFileToolAssociation>>(Encoding.UTF8.GetString(fileContent.ToArray()))!;
+
+            foreach(var agentPrivateFile in agentPrivateFiles)
+            {
+                if (!existingAssociations.Any(x => x.FileObjectId == agentPrivateFile.ObjectId))
+                {
+                    existingAssociations.Add(new AgentFileToolAssociation()
+                    {
+                        FileObjectId = agentPrivateFile.ObjectId!,
+                        AssociatedResourceObjectIds = [],
+                        Name = Guid.NewGuid().ToString()
+                    });
+                }
+            }
+
+            return existingAssociations.Select(fileToolAssociation => new ResourceProviderGetResult<AgentFileToolAssociation>()
+            {
+                Actions = [],
+                Roles = [],
+                Resource = fileToolAssociation
+            }).ToList();
+        }
+
+        private async Task<ResourceProviderUpsertResult> UpdateFileToolAssociations(
             ResourcePath resourcePath,
-            AgentFileToolAssociationRequest agentFileToolAssociationRequest,
+            string serializedResource,
             UnifiedUserIdentity userIdentity)
         {
             var errors = new List<AgentFileToolAssociationError>();
 
-            var filePath = $"{resourcePath.MainResourceId!}Associations.json";
+            var agentFileToolAssociationRequest = JsonSerializer.Deserialize<AgentFileToolAssociationRequest>(serializedResource)
+                ?? throw new ResourceProviderException("The object definition is invalid.",
+                    StatusCodes.Status400BadRequest);
+
+            var filePath = $"/{_name}/{resourcePath.MainResourceId!}Associations.json";
             var fileExists = await _storageService.FileExistsAsync(_storageContainerName, filePath, default);
 
             if (!fileExists)
-                await _storageService.WriteFileAsync(_storageContainerName, filePath, "[]", default, default);
+            {
+                await _storageService.WriteFileAsync(_storageContainerName, filePath,
+                    JsonSerializer.Serialize(new List<AgentFileToolAssociation>()), default, default);
+            }
 
             var fileContent = await _storageService.ReadFileAsync(_storageContainerName, filePath, default);
             var existingAssociations = JsonSerializer.Deserialize<List<AgentFileToolAssociation>>(Encoding.UTF8.GetString(fileContent.ToArray()))!;
@@ -542,6 +589,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     {
                         fileToolAssociation = new AgentFileToolAssociation()
                         {
+                            Name = Guid.NewGuid().ToString(),
                             FileObjectId = fileObjectId
                         };
                         existingAssociations.Add(fileToolAssociation);
@@ -594,11 +642,16 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 }
             }
 
-            return new AgentFileToolAssociationResult()
+            return new ResourceProviderUpsertResult()
             {
-                Success = errors.Count == 0,
-                Errors = errors,
-                AgentFileToolAssociations = existingAssociations,
+                ObjectId = resourcePath.RawResourcePath,
+                ResourceExists = fileExists,
+                Resource = new AgentFileToolAssociationResult()
+                {
+                    Success = errors.Count == 0,
+                    Errors = errors,
+                    AgentFileToolAssociations = existingAssociations,
+                }
             };
         }
 
