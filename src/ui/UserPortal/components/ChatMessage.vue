@@ -309,12 +309,12 @@ function processLatex(content) {
 
 	// Process block LaTeX: \[ ... \]
 	content = content.replace(blockLatexPattern, (_, math) => {
-		return katex.renderToString(math, { displayMode: true, throwOnError: false });
+		return katex.renderToString(math, { displayMode: true, throwOnError: false, output: 'html' });
 	});
 
 	// Process inline LaTeX: \( ... \)
 	content = content.replace(inlineLatexPattern, (_, math) => {
-		return katex.renderToString(math, { throwOnError: false });
+		return katex.renderToString(math, { throwOnError: false, output: 'html' });
 	});
 
 	return content;

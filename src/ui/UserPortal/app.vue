@@ -129,6 +129,12 @@ main {
 }
 
 @media print {
+	// @font-face {
+    //     font-family: 'KaTeX_Main';
+    //     src: url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/fonts/KaTeX_Main-Regular.woff2') format('woff2'),
+    //          url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/fonts/KaTeX_Main-Regular.woff') format('woff');
+    // }
+
 	body, html {
 		margin: 0;
 		padding: 0;
@@ -167,7 +173,44 @@ main {
 	.message__body {
 		overflow-wrap: break-word !important;
         word-break: break-word !important;
+		white-space: normal !important;
 	}
+
+	.v-popper__popper {
+		display: none !important;
+	}
+
+	// .katex, .katex-display {
+    //     font-size: 1em !important; /* Ensure font size is preserved */
+    //     display: block !important;
+    //     overflow: visible !important;
+	// 	break-inside: avoid !important;
+    // }
+
+    // .katex .base {
+    //     white-space: normal !important;
+    // }
+
+    // .katex-display {
+    //     break-inside: avoid;
+    //     page-break-inside: avoid;
+    // }
+
+    // .katex .mord {
+    //     display: inline-block !important;
+    // }
+
+    // .katex .mfrac {
+    //     display: inline-block !important;
+    // }
+
+    // .katex .mspace {
+    //     width: auto !important;
+    // }
+
+    // .katex .hide-tail {
+    //     display: inline !important;
+    // }
 }
 
 </style>
