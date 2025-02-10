@@ -1,7 +1,5 @@
 # Agents and Workflows
 
-## Agents
-
 Foundationa**LLM** (FLLM) agents are the core of the solution. They are responsible for providing users with a customized experience based on its configuration.
 
 ## Creation of a new Agent
@@ -85,4 +83,6 @@ In this section, you can define an Agent Access Token to be used by the agent. T
 This is particularly useful for public applications that want to provide access to the agent without requiring users to log in with their Entra ID credentials.
 
 ![Agent Access Token configuration](./media/agent_Workflow_6.png)
+
+[Access Token scenarios](Agent_AccessToken.md)
 
