@@ -77,7 +77,7 @@ Currently, the following tools are available out of the box:
 ![DALLE3 Tool configuration](./media/agent_Workflow_5.png)
 
 > [!Important]
-> The name of the tool HAS to be **DALLEImageGenerator** in order for the agent to be able to use it. The AI Model's Object role has to be **main_model** in the **Tool Resources** section.
+> The name of the tool HAS to be **DALLEImageGeneration** in order for the agent to be able to use it. The AI Model's Object role has to be **main_model** in the **Tool Resources** section.
 
 ### Security Section
 
