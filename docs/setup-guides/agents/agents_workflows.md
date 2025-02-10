@@ -84,5 +84,5 @@ This is particularly useful for public applications that want to provide access 
 
 ![Agent Access Token configuration](./media/agent_Workflow_6.png)
 
-[Access Token scenarios](Agent_AccessToken.md)
+[Access Token scenario](Agent_AccessToken.md)
 
