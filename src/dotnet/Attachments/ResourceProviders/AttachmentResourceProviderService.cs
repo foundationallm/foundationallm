@@ -403,10 +403,6 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 throw new ResourceProviderException("The attached file is not valid.",
                     StatusCodes.Status400BadRequest);
 
-            //if (resourcePath.ResourceId != formFile.FileName)
-            //    throw new ResourceProviderException("The resource path does not match the file name (name mismatch).",
-            //        StatusCodes.Status400BadRequest);
-
             string? agentName = null;
             if (formFile.Payload != null && formFile.Payload.TryGetValue(ResourceProviderFormPayloadKeys.AgentName, out var value))
                 agentName = value;
@@ -415,14 +411,15 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 throw new ResourceProviderException("The agent name is not valid.",
                     StatusCodes.Status400BadRequest);
 
-            var uid = resourcePath.ResourceId!;
-            var filePath = $"/{_name}/{_instanceSettings.Id}/{agentName}/private-file-store/{uid}";
-            var agentObjectId = $"/instances/{_instanceSettings.Id}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/agents/{uid}";
+            var extension = GetFileExtension(formFile.FileName);
+            var fullName = $"{resourcePath.ResourceId!}{extension}";
+            var filePath = $"/{_name}/{_instanceSettings.Id}/{agentName}/private-file-store/{fullName}";
+            var agentObjectId = $"/instances/{_instanceSettings.Id}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/agents/{agentName}";
 
             var agentPrivateFile = new AttachmentReference
             {
-                Id = uid,
-                Name = uid,
+                Id = resourcePath.ResourceId!,
+                Name = resourcePath.ResourceId!,
                 ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name),
                 OriginalFilename = formFile.FileName,
                 ContentType = formFile.ContentType!,
