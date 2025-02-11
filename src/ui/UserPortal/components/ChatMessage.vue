@@ -123,7 +123,13 @@
 								:disabled="message.type === 'LoadingMessage'"
 								size="small"
 								text
-								:icon="message.rating === true ? 'pi pi-thumbs-up-fill' : message.rating === false ? 'pi pi-thumbs-down-fill' : 'pi pi-thumbs-up'"
+								:icon="
+									message.rating === true
+										? 'pi pi-thumbs-up-fill'
+										: message.rating === false
+											? 'pi pi-thumbs-down-fill'
+											: 'pi pi-thumbs-up'
+								"
 								label="Rate Message"
 								@click.stop="isRatingModalVisible = true"
 							/>
@@ -205,13 +211,13 @@
 			v-model:visible="selectedContentArtifact"
 			:header="selectedContentArtifact?.title"
 			modal
-			style="max-width: 85%;"
+			style="max-width: 85%"
 		>
-			<p tabindex="0" style="overflow-x: auto;">
-				<pre>{{ JSON.stringify(selectedContentArtifact, null, 2) }}</pre>
-			</p>
-
 			<template #footer>
+				<p tabindex="0" style="overflow-x: auto;">
+					<pre>{{ JSON.stringify(selectedContentArtifact, null, 2) }}</pre>
+				</p>
+
 				<Button
 					:style="{
 						backgroundColor: $appConfigStore.primaryButtonBg,
@@ -226,11 +232,7 @@
 		</Dialog>
 
 		<!-- Message Rating Modal -->
-		<Dialog
-			v-model:visible="isRatingModalVisible"
-			header="Rate Message"
-			modal
-		>
+		<Dialog v-model:visible="isRatingModalVisible" header="Rate Message" modal>
 			<label for="rating-textarea">Comments</label>
 			<Textarea
 				id="rating-textarea"
@@ -253,7 +255,7 @@
 					text
 					:icon="message.rating ? 'pi pi-thumbs-up-fill' : 'pi pi-thumbs-up'"
 					:label="message.rating ? 'Message Liked' : 'Like'"
-					@click="message.rating === true ? message.rating = null : message.rating = true"
+					@click="message.rating === true ? (message.rating = null) : (message.rating = true)"
 				/>
 			</span>
 
@@ -266,7 +268,7 @@
 					text
 					:icon="message.rating === false ? 'pi pi-thumbs-down-fill' : 'pi pi-thumbs-down'"
 					:label="message.rating === false ? 'Message Disliked' : 'Dislike'"
-					@click="message.rating === false ? message.rating = null : message.rating = false"
+					@click="message.rating === false ? (message.rating = null) : (message.rating = false)"
 				/>
 			</span>
 
@@ -412,11 +414,7 @@ export default {
 		},
 
 		messageDisplayStatus() {
-			if (
-				this.message.status === 'Failed' ||
-				(this.message.status === 'Completed')
-			)
-				return null;
+			if (this.message.status === 'Failed' || this.message.status === 'Completed') return null;
 
 			if (this.isRenderingMessage && this.messageContent.length > 0) return 'Responding';
 
