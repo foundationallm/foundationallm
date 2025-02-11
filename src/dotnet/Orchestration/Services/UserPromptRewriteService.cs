@@ -38,7 +38,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         private readonly ILogger<UserPromptRewriteService> _logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SemanticCacheService"/> class.
+        /// Initializes a new instance of the <see cref="UserPromptRewriteService"/> class.
         /// </summary>
         /// <param name="resourceProviderServices">A list of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
         /// <param name="configuration">The <see cref="IConfiguration"/> used to retrieve app settings from configuration.</param>
@@ -80,13 +80,13 @@ namespace FoundationaLLM.Orchestration.Core.Services
 
                 var userPromptRewriteAIModel = await _aiModelResourceProviderService.GetResourceAsync<AIModelBase>(
                     agentSettings.UserPromptRewriteAIModelObjectId,
-                    DefaultAuthentication.ServiceIdentity!);
+                    ServiceContext.ServiceIdentity!);
                 var userPromptRewriteAPIEndpointConfiguration = await _configurationResourceProviderService.GetResourceAsync<APIEndpointConfiguration>(
                     userPromptRewriteAIModel.EndpointObjectId!,
-                    DefaultAuthentication.ServiceIdentity!);
+                    ServiceContext.ServiceIdentity!);
                 var userPromptRewritePrompt = await _promptResourceProviderService.GetResourceAsync<PromptBase>(
                     agentSettings.UserPromptRewritePromptObjectId,
-                    DefaultAuthentication.ServiceIdentity!);
+                    ServiceContext.ServiceIdentity!);
 
                 _agentRewriters[$"{instanceId}|{agentName}"] = new AgentUserPromptRewriter
                 {
@@ -126,7 +126,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
                     .TakeLast(agentRewriter.Settings.UserPromptsWindowSize * 2)
                     .Select<MessageHistoryItem, ChatMessage>(m => m.Sender switch
                     {
-                        nameof(Participants.User) => new UserChatMessage(m.Text),
+                        nameof(Participants.User) => new UserChatMessage(m.TextRewrite ?? m.Text),
                         nameof(Participants.Agent) => new AssistantChatMessage(m.Text),
                         _ => throw new OrchestrationException($"Unknown message sender {m.Sender}.")
                     })
@@ -177,7 +177,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
             {
                 AuthenticationTypes.AzureIdentity => (new AzureOpenAIClient(
                     new Uri(apiEndpointConfiguration.Url),
-                    DefaultAuthentication.AzureCredential))
+                    ServiceContext.AzureCredential))
                     .GetChatClient(deploymentName),
                 AuthenticationTypes.APIKey => (new AzureOpenAIClient(
                     new Uri(apiEndpointConfiguration.Url),

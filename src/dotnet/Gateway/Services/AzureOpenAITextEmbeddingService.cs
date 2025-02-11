@@ -25,7 +25,7 @@ namespace FoundationaLLM.Gateway.Services
             ILogger<AzureOpenAITextEmbeddingService> logger)
         {
             _accountEndpoint = accountEndpoint;
-            _azureOpenAIClient = new AzureOpenAIClient(new Uri(_accountEndpoint), DefaultAuthentication.AzureCredential);
+            _azureOpenAIClient = new AzureOpenAIClient(new Uri(_accountEndpoint), ServiceContext.AzureCredential);
             _logger = logger;
         }
 
