@@ -968,33 +968,6 @@
 				/>
 			</div>
 
-			<!-- Security -->
-			<div v-if="virtualSecurityGroupId" class="step-section-header span-2">Security</div>
-
-			<!-- Virtual security group id -->
-			<template v-if="virtualSecurityGroupId">
-				<div class="step-header">Virtual security group ID</div>
-				<div class="span-2 d-flex gap-4">
-					<InputText
-						:value="virtualSecurityGroupId"
-						disabled
-						type="text"
-						class="w-50"
-						placeholder="Enter cost center name"
-						aria-labelledby="aria-cost-center"
-					/>
-					<Button label="Copy" severity="primary" @click="handleCopySecurityGroupId" />
-				</div>
-			</template>
-
-			<!-- Access tokens -->
-			<template v-if="virtualSecurityGroupId">
-				<div class="step-header">Agent access tokens</div>
-				<div class="span-2">
-					<AgentAccessTokens :agent-name="this.agentName" />
-				</div>
-			</template>
-
 			<!-- User prompt rewrite -->
 			<div class="step-section-header span-2">User Prompt Rewrite Settings</div>
 
@@ -1106,6 +1079,33 @@
 						placeholder="Minimum Similarity Threshold"
 						aria-labelledby="aria-semantic-cache-minimum-similarity"
 					/>
+				</div>
+			</template>
+
+			<!-- Security -->
+			<div v-if="virtualSecurityGroupId" class="step-section-header span-2">Security</div>
+
+			<!-- Virtual security group id -->
+			<template v-if="virtualSecurityGroupId">
+				<div class="step-header">Virtual security group ID</div>
+				<div class="span-2 d-flex gap-4">
+					<InputText
+						:value="virtualSecurityGroupId"
+						disabled
+						type="text"
+						class="w-50"
+						placeholder="Enter cost center name"
+						aria-labelledby="aria-cost-center"
+					/>
+					<Button label="Copy" severity="primary" @click="handleCopySecurityGroupId" />
+				</div>
+			</template>
+
+			<!-- Access tokens -->
+			<template v-if="virtualSecurityGroupId">
+				<div class="step-header">Agent access tokens</div>
+				<div class="span-2">
+					<AgentAccessTokens :agent-name="this.agentName" />
 				</div>
 			</template>
 
