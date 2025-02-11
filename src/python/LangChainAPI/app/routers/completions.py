@@ -151,8 +151,8 @@ async def create_completion_response(
 
             # Await the completion response from the orchestration manager.
             completion_response = await orchestration_manager.invoke_async(completion_request)
-            completion_status = OperationStatus.COMPLETED if completion_response.errors == [] and completion_response.is_error else OperationStatus.FAILED
-            completion_status_message = "Operation completed successfully." if completion_response.errors == [] and completion_response.is_error else "Operation failed."
+            completion_status = OperationStatus.COMPLETED if completion_response.errors == [] and not completion_response.is_error else OperationStatus.FAILED
+            completion_status_message = "Operation completed successfully." if completion_response.errors == [] and not completion_response.is_error else "Operation failed."
 
             # Send the completion response to the State API and mark the operation as completed.
             await asyncio.gather(
