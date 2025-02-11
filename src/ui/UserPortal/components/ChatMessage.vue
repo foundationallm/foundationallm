@@ -307,7 +307,7 @@ import TimeAgo from '~/components/TimeAgo.vue';
 
 function processLatex(content) {
 	const blockLatexPattern = /\\\[\s*([\s\S]+?)\s*\\\]/g;
-	const inlineLatexPattern = /\\\(([\s\S]+?)\\\)/g;
+	const inlineLatexPattern = /\\\(\s*([\s\S]+?)\s*\\\)/g;
 
 	// Match triple & inline backticks
 	const codeBlockPattern = /```[\s\S]+?```|`[^`]+`/g;
