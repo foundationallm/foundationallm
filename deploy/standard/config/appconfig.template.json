@@ -939,6 +939,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes",
+            "value": "60",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:UserPortal:Authentication:Entra:Scopes",
             "value": "{{chatEntraScopes}}",
             "label": null,
@@ -955,6 +962,13 @@
         {
             "key": "FoundationaLLM:UserPortal:Authentication:Entra:ClientId",
             "value": "{{chatEntraClientId}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Configuration:ShowFileUpload",
+            "value": "true",
             "label": null,
             "content_type": "",
             "tags": {}
