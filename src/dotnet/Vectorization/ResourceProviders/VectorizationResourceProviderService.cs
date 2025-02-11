@@ -55,7 +55,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             serviceProvider,
             loggerFactory.CreateLogger<VectorizationResourceProviderService>(),
             [
-                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand                
+                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ])
     {
         /// <inheritdoc/>
@@ -121,7 +121,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                 if (resourceStore != null)
                 {
                     foreach (var resource in resourceStore.Resources)
-                        resources.AddOrUpdate(resource.Name, resource, (k, v) => resource);
+                        resources.AddOrUpdate(resource.Name, resource, (k, v) => v);
                     defaultResourceName = resourceStore.DefaultResourceName ?? string.Empty;
                 }
             }
@@ -284,9 +284,6 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     default,
                     default);
 
-            await SendResourceProviderEvent(
-                    EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
-
             return new ResourceProviderUpsertResult
             {
                 ObjectId = resource.ObjectId,
@@ -391,9 +388,6 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     JsonSerializer.Serialize(ResourceStore<VectorizationPipeline>.FromDictionary(_pipelines.ToDictionary())),
                     default,
                     default);
-
-            await SendResourceProviderEvent(
-                    EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
 
             return new VectorizationResult(
                 existingPipeline.ObjectId!,
@@ -912,15 +906,6 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     _logger.LogWarning("The file {FileName} is not managed by the FoundationaLLM.Vectorization resource provider.", fileName);
                     break;
             }
-        }
-
-        /// <inheritdoc/>
-        public override async Task HandleCacheResetCommand()
-        {
-            _defaultTextPartitioningProfileName = await LoadResourceStore<TextPartitioningProfile, VectorizationProfileBase>(TEXT_PARTITIONING_PROFILES_FILE_PATH, _textPartitioningProfiles);
-            _defaultTextEmbeddingProfileName = await LoadResourceStore<TextEmbeddingProfile, VectorizationProfileBase>(TEXT_EMBEDDING_PROFILES_FILE_PATH, _textEmbeddingProfiles);
-            _defaultIndexingProfileName = await LoadResourceStore<IndexingProfile, VectorizationProfileBase>(INDEXING_PROFILES_FILE_PATH, _indexingProfiles);
-            _ = await LoadResourceStore<VectorizationPipeline, VectorizationPipeline>(PIPELINES_FILE_PATH, _pipelines);
         }
 
         #endregion
