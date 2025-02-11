@@ -213,11 +213,11 @@
 			modal
 			style="max-width: 85%"
 		>
-			<template #footer>
-				<p tabindex="0" style="overflow-x: auto;">
-					<pre>{{ JSON.stringify(selectedContentArtifact, null, 2) }}</pre>
-				</p>
+			<p tabindex="0" style="overflow-x: auto;">
+				<pre>{{ JSON.stringify(selectedContentArtifact, null, 2) }}</pre>
+			</p>
 
+			<template #footer>
 				<Button
 					:style="{
 						backgroundColor: $appConfigStore.primaryButtonBg,
