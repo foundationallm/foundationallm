@@ -309,15 +309,34 @@ function processLatex(content) {
 	const blockLatexPattern = /\\\[\s*([\s\S]+?)\s*\\\]/g;
 	const inlineLatexPattern = /\\\(([\s\S]+?)\\\)/g;
 
-	// Process block LaTeX: \[ ... \]
-	content = content.replace(blockLatexPattern, (_, math) => {
-		return katex.renderToString(math, { displayMode: true, throwOnError: false });
+	// Match triple & inline backticks
+	const codeBlockPattern = /```[\s\S]+?```|`[^`]+`/g;
+
+	let codeBlocks = [];
+
+	// Extract and replace code blocks with placeholders temporarily
+	// to ensure LaTeX within is not altered
+	content = content.replace(codeBlockPattern, (match) => {
+		codeBlocks.push(match);
+		return `{{CODE_BLOCK_${codeBlocks.length - 1}}}`;
 	});
 
-	// Process inline LaTeX: \( ... \)
-	content = content.replace(inlineLatexPattern, (_, math) => {
-		return katex.renderToString(math, { throwOnError: false });
-	});
+	try {
+		// Process block LaTeX: \[ ... \]
+		content = content.replace(blockLatexPattern, (_, math) => {
+			return katex.renderToString(math, { displayMode: true, throwOnError: false });
+		});
+
+		// Process inline LaTeX: \( ... \)
+		content = content.replace(inlineLatexPattern, (_, math) => {
+			return katex.renderToString(math, { throwOnError: false });
+		});
+	} catch (error) {
+		console.error('LaTeX rendering error:', error);
+	}
+
+	// Restore code blocks
+	content = content.replace(/\{\{CODE_BLOCK_(\d+)\}\}/g, (_, index) => codeBlocks[Number(index)]);
 
 	return content;
 }
