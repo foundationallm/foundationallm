@@ -867,7 +867,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             }
         }
 
-        private async Task HandleCacheResetCommand()
+        /// <summary>
+        /// Handles the cache reset command.
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task HandleCacheResetCommand()
         {
             _resourceCache?.Reset();
             await (_resourceReferenceStore?.LoadResourceReferences() ?? Task.CompletedTask);
