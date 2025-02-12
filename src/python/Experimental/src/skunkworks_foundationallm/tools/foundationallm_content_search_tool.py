@@ -55,6 +55,8 @@ class FoundationaLLMContentSearchTool(FoundationaLLMToolBase):
         completion = await self.client.ainvoke(rag_prompt)      
         content_artifacts = self.retriever.get_document_content_artifacts() or []
         # Token usage content artifact
+        # Transform all completion.usage_metadata property values to string
+        completion.usage_metadata = {k: str(v) for k, v in completion.usage_metadata.items()}
         content_artifacts.append(ContentArtifact(
             id = "token_usage",
             title="Token Usage",
@@ -115,8 +117,10 @@ class FoundationaLLMContentSearchTool(FoundationaLLMToolBase):
             config=self.config)
             
         # array of objects containing the indexing profile(s) and associated endpoint configuration
-        index_configurations = []                        
+        index_configurations = []                                      
         for profile in indexing_profile_definitions:
+            # indexing profile settings are currently being stored camel case, so we need to translate them to snake case for the retriever.
+            self.objects[profile.object_id]["settings"] = ObjectUtils.translate_keys(self.objects[profile.object_id]["settings"])
             indexing_profile = ObjectUtils.get_object_by_id(
                 profile.object_id,
                 self.objects,

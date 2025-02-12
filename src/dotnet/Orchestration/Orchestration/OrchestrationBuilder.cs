@@ -414,7 +414,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 apiEndpoint);
 
                             break;
-
                         case VectorizationResourceTypeNames.IndexingProfiles:
                             var indexingProfile = await vectorizationResourceProvider.GetResourceAsync<IndexingProfile>(
                                 resourceObjectId.ObjectId,
@@ -443,6 +442,15 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                     indexingProfileApiEndpoint);
                             }
 
+                            break;
+                        case VectorizationResourceTypeNames.TextEmbeddingProfiles:
+                            var textEmbeddingProfile = await vectorizationResourceProvider.GetResourceAsync<TextEmbeddingProfile>(
+                                resourceObjectId.ObjectId,
+                                currentUserIdentity);
+
+                            explodedObjectsManager.TryAdd(
+                                resourceObjectId.ObjectId,
+                                textEmbeddingProfile);
                             break;
                         case PromptResourceTypeNames.Prompts:
                             var prompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
