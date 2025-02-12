@@ -221,14 +221,10 @@
 					<CreateAgentStepItem v-model="editIndexSource" focusQuery=".step-container__edit__option">
 						<template v-if="selectedIndexSource">
 							<div v-if="selectedIndexSource.object_id !== ''">
-								<div class="step-container__header">{{ selectedIndexSource.name }}</div>
-								<div>
-									<span class="step-option__header">URL:</span>
-									<span>{{ selectedIndexSource.resolved_configuration_references.Endpoint }}</span>
-								</div>
+								<div class="step-container__header">{{ selectedIndexSource.name }}</div>								
 								<div>
 									<span class="step-option__header">Index Name:</span>
-									<span>{{ selectedIndexSource.settings.IndexName }}</span>
+									<span>{{ selectedIndexSource.settings.index_name }}</span>
 								</div>
 							</div>
 							<div v-else>
@@ -258,9 +254,9 @@
 										<span class="step-option__header">URL:</span>
 										<span>{{ indexSource.resolved_configuration_references.Endpoint }}</span>
 									</div>
-									<div v-if="indexSource.settings.IndexName">
+									<div v-if="indexSource.settings.index_name">
 										<span class="step-option__header">Index Name:</span>
-										<span>{{ indexSource.settings.IndexName }}</span>
+										<span>{{ indexSource.settings.index_name }}</span>
 									</div>
 								</div>
 								<div v-else>

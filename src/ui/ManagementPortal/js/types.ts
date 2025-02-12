@@ -256,11 +256,11 @@ export type AppConfigUnion = AppConfig | AppConfigKeyVault;
 export type AgentIndex = ResourceBase & {
 	indexer: string;
 	settings: {
-		IndexName: string;
-		TopN?: string;
-		Filters?: string;
-		EmbeddingFieldName?: string;
-		TextFieldName?: string;
+		index_name: string;
+		top_n?: string;
+		filters?: string;
+		embedding_field_name?: string;
+		text_field_name?: string;
 	};
 	configuration_references: {
 		APIKey: string;

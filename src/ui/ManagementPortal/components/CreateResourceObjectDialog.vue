@@ -95,7 +95,11 @@ export default {
 					value: 'model',
 				},
 				{
-					label: 'Indexing Profile',
+					label: 'Embedding profile',
+					value: 'textEmbeddingProfile'
+				},
+				{
+					label: 'Vector store',
 					value: 'indexingProfile',
 				},
 				{
@@ -130,8 +134,12 @@ export default {
 			if (this.resourceType === 'model') {
 				this.loadingStatusText = 'Loading models...';
 				apiMethod = api.getAIModels;
+			}
+			else if (this.resourceType === 'textEmbeddingProfile') {
+				this.loadingStatusText = 'Loading text embedding profiles...';
+				apiMethod = api.getTextEmbeddingProfiles;			
 			} else if (this.resourceType === 'indexingProfile') {
-				this.loadingStatusText = 'Loading indexing profiles...';
+				this.loadingStatusText = 'Loading vector stores...';
 				apiMethod = api.getAgentIndexes;
 			} else if (this.resourceType === 'prompt') {
 				this.loadingStatusText = 'Loading prompts...';
