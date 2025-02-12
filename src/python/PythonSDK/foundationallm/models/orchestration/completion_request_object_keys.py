@@ -5,4 +5,4 @@ class CompletionRequestObjectKeys(str, Enum):
    OPENAI_ASSISTANT_ID = "OpenAI.Assistants.Assistant.Id"
    OPENAI_THREAD_ID = "OpenAI.Assistants.Thread.Id"
    GATEWAY_API_ENDPOINT_CONFIGURATION = "GatewayAPIEndpointConfiguration"
-   INSTANCE_ID = "InstanceId"
+   INSTANCE_ID = "FoundationaLLM.InstanceId"

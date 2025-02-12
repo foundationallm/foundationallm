@@ -36,7 +36,7 @@ namespace FoundationaLLM.Common.Constants.Agents
         /// <summary>
         /// The key name for the FoundationaLLM instance identifier value.
         /// </summary>
-        public const string InstanceId = "InstanceId";
+        public const string InstanceId = "FoundationaLLM.InstanceId";
 
         /// <summary>
         /// All completion request objects dictionary keys.
