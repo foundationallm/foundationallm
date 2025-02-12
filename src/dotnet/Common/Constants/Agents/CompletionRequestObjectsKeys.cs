@@ -34,6 +34,11 @@ namespace FoundationaLLM.Common.Constants.Agents
         public const string ToolNames = "ToolNames";
 
         /// <summary>
+        /// The key name for the FoundationaLLM instance identifier value.
+        /// </summary>
+        public const string InstanceId = "InstanceId";
+
+        /// <summary>
         /// All completion request objects dictionary keys.
         /// </summary>
         public readonly static string[] All = [

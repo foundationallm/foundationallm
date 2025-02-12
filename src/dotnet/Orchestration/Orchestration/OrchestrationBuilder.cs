@@ -323,6 +323,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 CompletionRequestObjectsKeys.GatewayAPIEndpointConfiguration,
                 gatewayAPIEndpointConfiguration);
 
+            explodedObjectsManager.TryAdd(
+                CompletionRequestObjectsKeys.InstanceId,
+                instanceId);
+
             // TODO: New agent-to-agent conversations model is in development. Until then, no need to send the list of all agents and their descriptions..
 
             //var allAgents = await agentResourceProvider.GetResourcesAsync<AgentBase>(instanceId, currentUserIdentity);
