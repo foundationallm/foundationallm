@@ -3,7 +3,6 @@
 Foundationa**LLM** (FLLM) agents are the core of the solution. They are responsible for providing users with a customized experience based on its configuration.
 
 - [Agents and Workflows](agents_workflows.md)
-- [Knowledge management agent](knowledge-management-agent.md) Obsolete
 
 ## Prompts
 
