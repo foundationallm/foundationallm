@@ -68,7 +68,7 @@ prompt = ObjectUtils.get_object_by_id(prompt_object_id, exploded_objects_json, M
 language_model_factory = LanguageModelFactory(exploded_objects_json, config)        
 llm = language_model_factory.get_language_model(ai_model_object_id)
 
-#user_prompt = "In the Dune books, who is Paul?"
+user_prompt = "In the Dune books, who is Paul?"
 #user_prompt = "What is 2 + 2 ? Answer like you were explaining it to a kindergartner."
 tools = [skunkworks_tool]
 
