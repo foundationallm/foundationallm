@@ -77,6 +77,8 @@
 <h5>Note</h5>
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
+<h2 id="starting-with-093-rc016">Starting with 0.9.3-rc016</h2>
+<p>Vectorization indexing and partitioning profile settings dictionary keys are now persisted as snake case (ex. <code>IndexName</code> becomes <code>index_name</code>).</p>
 <h2 id="starting-with-093-rc010">Starting with 0.9.3-rc010</h2>
 <h3 id="resource-provider-cache-warm-up">Resource provider cache warm-up</h3>
 <p>Resource providers now support a cache warm-up mechanism. This mechanism allows the cache to be pre-populated with the resource provider data before the service starts processing requests. This feature is useful when the service is deployed in a cold environment and needs to be warmed up before it can handle requests.</p>
