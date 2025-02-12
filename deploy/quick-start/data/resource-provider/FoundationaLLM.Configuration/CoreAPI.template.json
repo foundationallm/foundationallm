@@ -12,7 +12,7 @@
     "api_key_header_name": ""
   },
   "url": "",
-  "status_url": "",
+  "status_endpoint": "",
   "url_exceptions": [],
   "timeout_seconds": 3500,
   "retry_strategy_name": "ExponentialBackoff",
