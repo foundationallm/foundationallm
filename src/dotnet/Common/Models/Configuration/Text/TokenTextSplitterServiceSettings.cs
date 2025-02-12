@@ -22,10 +22,10 @@ namespace FoundationaLLM.Common.Models.Configuration.Text
         /// <returns>A <see cref="TokenTextSplitterServiceSettings"/> instance initialized with the values from the dictionary.</returns>
         public static TokenTextSplitterServiceSettings FromDictionary(Dictionary<string, string> settings)
         {
-            if (settings.TryGetValue("Tokenizer", out var tokenizer)
-                && settings.TryGetValue("TokenizerEncoder", out var tokenizerEncoder)
-                && settings.TryGetValue("ChunkSizeTokens", out var chunkSizeTokens)
-                && settings.TryGetValue("OverlapSizeTokens", out var overlapSizeTokens))
+            if (settings.TryGetValue("tokenizer", out var tokenizer)
+                && settings.TryGetValue("tokenizer_encoder", out var tokenizerEncoder)
+                && settings.TryGetValue("chunk_size_tokens", out var chunkSizeTokens)
+                && settings.TryGetValue("overlap_size_tokens", out var overlapSizeTokens))
                 return new TokenTextSplitterServiceSettings(
                     tokenizer,
                     tokenizerEncoder,
