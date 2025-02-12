@@ -52,7 +52,7 @@ In this section, you can define the workflow of the agent. The workflow is a seq
 
 - **Workflow Type**: This setting allows you to choose the type of workflow for the agent. You can choose from the following options:
   - **OpenAIAssistants**: Gives your agent the ability to take advantage of **Code Interpreter**, **File Search** and **Function Calling**.
-  - **LangGraphReactAgent**: 
+  - **LangGraphReactAgent**: Gives your agent the ability to dynamically choose a tool from a predefined toolset in LangGraph
   - **ExternalAgentWorkflow**: Gives your agent the ability to use external workflows developed in Python and registered to be used by your Agent.
 - **Workflow name**: This setting allows you to define the name of the workflow for the agent. The name should be descriptive and reflect the purpose of the workflow.
 - **Workflow Package Name**: This setting allows you to define the name of the workflow package for the agent. The package name should be descriptive and reflect the purpose of the workflow.
