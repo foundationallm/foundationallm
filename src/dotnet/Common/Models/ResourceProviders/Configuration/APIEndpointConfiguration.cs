@@ -44,10 +44,10 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Configuration
         public required string Url { get; set; }
 
         /// <summary>
-        /// The status URL of the API endpoint, if available.
+        /// The relative path for the status endpoint of the API endpoint, if available.
         /// </summary>
-        [JsonPropertyName("status_url")]
-        public string? StatusUrl { get; set; }
+        [JsonPropertyName("status_endpoint")]
+        public string? StatusEndpoint { get; set; }
 
         /// <summary>
         /// A list of URL exceptions.
