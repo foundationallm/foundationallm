@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using FoundationaLLM.Common.Extensions;
 
 namespace FoundationaLLM.Common.Services.API
 {
@@ -42,15 +43,15 @@ namespace FoundationaLLM.Common.Services.API
         }
 
         /// <inheritdoc/>
-        public async Task<HttpClient> CreateClient(string clientName, UnifiedUserIdentity userIdentity, bool getStatusEndpoint = false)
+        public async Task<HttpClient> CreateClient(string clientName, UnifiedUserIdentity userIdentity)
         {
             var endpointConfiguration = await GetEndpoint(clientName, userIdentity);
 
             var client = await CreateClient(endpointConfiguration, userIdentity);
 
-            if (getStatusEndpoint && !string.IsNullOrWhiteSpace(endpointConfiguration.StatusUrl))
+            if (!string.IsNullOrWhiteSpace(endpointConfiguration.StatusEndpoint))
             {
-                client.BaseAddress = new Uri(endpointConfiguration.StatusUrl);
+                client.SetStatusEndpoint(endpointConfiguration.StatusEndpoint);
             }
 
             return client;

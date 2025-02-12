@@ -17,9 +17,8 @@ namespace FoundationaLLM.Common.Interfaces
         /// </summary>
         /// <param name="clientName">The name of the HTTP client to create. This name must be registered as an <see cref="APIEndpointConfiguration"/> resource in the FoundationaLLM.Configuration resource provider.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> of the caller requesting the client.</param>
-        /// <param name="getStatusEndpoint">If true, sets the <see cref="HttpClient"/> BaseAddress value to the StatusUrl property if set in the <see cref="APIEndpointConfiguration"/> for the resource.</param>
         /// <returns>An <see cref="HttpClient"/> instance.</returns>
-        Task<HttpClient> CreateClient(string clientName, UnifiedUserIdentity userIdentity, bool getStatusEndpoint = false);
+        Task<HttpClient> CreateClient(string clientName, UnifiedUserIdentity userIdentity);
 
         /// <summary>
         /// Creates a <typeparamref name="T"/> client instance based on the client name and a client builder delegate.
