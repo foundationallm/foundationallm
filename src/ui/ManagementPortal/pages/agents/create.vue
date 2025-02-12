@@ -734,6 +734,7 @@
 				<div id="aria-show-file-upload" class="step-header">
 					Would you like to allow the user to upload files?
 				</div>
+
 				<!-- Show view prompt -->
 				<div>
 					<ToggleButton
@@ -747,7 +748,6 @@
 				</div>
 
 				<!-- Show file upload -->
-
 				<div>
 					<ToggleButton
 						v-model="showFileUpload"
@@ -968,6 +968,120 @@
 				/>
 			</div>
 
+			<!-- User prompt rewrite -->
+			<div class="step-section-header span-2">User Prompt Rewrite Settings</div>
+
+			<!-- Enable user prompt rewrite -->
+			<div id="aria-user-prompt-rewrite-enabled" class="step-header span-2">Enable user prompt rewrite?</div>
+			<div class="span-2">
+				<ToggleButton
+					v-model="userPromptRewriteEnabled"
+					on-label="Yes"
+					on-icon="pi pi-check-circle"
+					off-label="No"
+					off-icon="pi pi-times-circle"
+					aria-labelledby="aria-user-prompt-rewrite-enabled"
+				/>
+			</div>
+
+			<template v-if="userPromptRewriteEnabled">
+				<!-- User prompt rewrite model -->
+				<div id="aria-user-prompt-rewrite-model" class="step-header span-2 mt-2">What model should be used for the prompt rewrite?</div>
+				<div class="span-2">
+					<Dropdown
+						v-model="userPromptRewriteAIModel"
+						:options="aiModelOptions"
+						option-label="name"
+						option-value="object_id"
+						class="dropdown--agent"
+						placeholder="--Select--"
+						aria-labelledby="aria-user-prompt-rewrite-model"
+					/>
+				</div>
+
+				<!-- User prompt rewrite prompt -->
+				<div id="aria-user-prompt-rewrite-prompt" class="step-header span-2 mt-2">What prompt should be used to rewrite the user prompt?</div>
+				<div class="span-2">
+					<Dropdown
+						v-model="userPromptRewritePrompt"
+						:options="promptOptions"
+						option-label="name"
+						option-value="object_id"
+						class="dropdown--agent"
+						placeholder="--Select--"
+						aria-labelledby="aria-user-prompt-rewrite-prompt"
+					/>
+				</div>
+
+				<!-- User prompt rewrite window size -->
+				<div id="aria-user-prompt-rewrite-window-size" class="step-header span-2 mt-2">What should the rewrite window size be?</div>
+				<div class="span-2">
+					<InputNumber
+						v-model="userPromptRewriteWindowSize"
+						:minFractionDigits="0"
+						:maxFractionDigits="0"
+						placeholder="Window size"
+						aria-labelledby="aria-user-prompt-rewrite-window-size"
+					/>
+				</div>
+			</template>
+
+			<!-- Cache settings -->
+			<div class="step-section-header span-2">Cache Settings</div>
+
+			<!-- Enable semantic cache -->
+			<div id="aria-semantic-cache-enabled" class="step-header span-2">Enable semantic cache?</div>
+			<div class="span-2">
+				<ToggleButton
+					v-model="semanticCacheEnabled"
+					on-label="Yes"
+					on-icon="pi pi-check-circle"
+					off-label="No"
+					off-icon="pi pi-times-circle"
+					aria-labelledby="aria-semantic-cache-enabled"
+				/>
+			</div>
+
+			<template v-if="semanticCacheEnabled">
+				<!-- Semantic cache model -->
+				<div id="aria-semantic-cache-model" class="step-header span-2 mt-2">What model should be used for the semantic cache?</div>
+				<div class="span-2">
+					<Dropdown
+						v-model="semanticCacheAIModel"
+						:options="aiModelOptions"
+						option-label="name"
+						option-value="object_id"
+						class="dropdown--agent"
+						placeholder="--Select--"
+						aria-labelledby="aria-semantic-cache-model"
+					/>
+				</div>
+
+				<!-- Semantic cache embedding dimensions -->
+				<div id="aria-semantic-cache-embedding-dimensions" class="step-header span-2 mt-2">How many embedding dimensions to use?</div>
+				<div class="span-2">
+					<InputNumber
+						v-model="semanticCacheEmbeddingDimensions"
+						:minFractionDigits="0"
+						:maxFractionDigits="0"
+						placeholder="Embedding dimensions size"
+						aria-labelledby="aria-semantic-cache-embedding-dimensions"
+					/>
+				</div>
+
+				<!-- Semantic cache minimum similarity threshold -->
+				<div id="aria-semantic-cache-minimum-similarity" class="step-header span-2 mt-2">What should the minimum similarity threshold be?</div>
+				<div class="span-2">
+					<InputNumber
+						v-model="semanticCacheMinimumSimilarityThreshold"
+						:minFractionDigits="0"
+						:maxFractionDigits="2"
+						placeholder="Minimum Similarity Threshold"
+						aria-labelledby="aria-semantic-cache-minimum-similarity"
+					/>
+				</div>
+			</template>
+
 			<!-- Security -->
 			<div v-if="virtualSecurityGroupId" class="step-section-header span-2">Security</div>
 
@@ -1029,6 +1143,7 @@ import type {
 	CreateAgentRequest,
 	ExternalOrchestrationService,
 	TextEmbeddingProfile,
+	Prompt,
 	// AgentCheckNameResponse,
 } from '@/js/types';
 
@@ -1101,6 +1216,16 @@ const getDefaultFormValues = () => {
 		showMessageRating: false as boolean,
 		showViewPrompt: false as boolean,
 		showFileUpload: false as boolean,
+
+		userPromptRewriteEnabled: false as boolean,
+		userPromptRewriteAIModel: null as string | null,
+		userPromptRewritePrompt: null as string | null,
+		userPromptRewriteWindowSize: 3 as number,
+
+		semanticCacheEnabled: false as boolean,
+		semanticCacheAIModel: null as string | null,
+		semanticCacheEmbeddingDimensions: 2048 as number,
+		semanticCacheMinimumSimilarityThreshold: 0.97 as number,
 	};
 };
 
@@ -1150,6 +1275,8 @@ export default {
 			virtualSecurityGroupId: null as string | null,
 
 			showNewToolDialog: false,
+
+			promptOptions: [] as Prompt[],
 
 			orchestratorOptions: [
 				{
@@ -1323,6 +1450,10 @@ export default {
 					value: service.name,
 				})),
 			);
+
+			this.loadingStatusText = 'Retrieving prompts...';
+			const promptOptionsResult = await api.getPrompts();
+			this.promptOptions = promptOptionsResult.map((result) => result.resource);
 		} catch (error) {
 			this.$toast.add({
 				severity: 'error',
@@ -1478,6 +1609,20 @@ export default {
 			this.showMessageRating = agent.show_message_rating ?? false;
 			this.showViewPrompt = agent.show_view_prompt ?? false;
 			this.showFileUpload = agent.show_file_upload ?? false;
+
+			const userPromptRewriteSettings = agent.text_rewrite_settings?.user_prompt_rewrite_settings;
+			this.userPromptRewriteEnabled = agent.text_rewrite_settings?.user_prompt_rewrite_enabled ?? false;
+			this.userPromptRewriteAIModel = userPromptRewriteSettings?.user_prompt_rewrite_ai_model_object_id ?? null;
+			this.userPromptRewritePrompt = userPromptRewriteSettings?.user_prompt_rewrite_prompt_object_id ?? null;
+			this.userPromptRewriteWindowSize = userPromptRewriteSettings?.user_prompts_window_size ?? 3;
+
+			const semanticCacheSettings = agent.cache_settings?.semantic_cache_settings;
+			this.semanticCacheEnabled = agent.cache_settings?.semantic_cache_enabled ?? false;
+			this.semanticCacheAIModel = semanticCacheSettings?.embedding_ai_model_object_id ?? null;
+			this.semanticCacheEmbeddingDimensions = semanticCacheSettings?.embedding_dimensions ?? 2048;
+			this.semanticCacheMinimumSimilarityThreshold = semanticCacheSettings?.minimum_similarity_threshold ?? 0.97;
+
+			// this.showFileUpload = agent.show_file_upload ?? false;
 		},
 
 		updateAgentWelcomeMessage(newContent: string) {
@@ -1638,6 +1783,34 @@ export default {
 				errors.push('Please provide a system prompt.');
 			}
 
+			if (this.userPromptRewriteEnabled) {
+				if (!this.userPromptRewriteAIModel) {
+					errors.push('Please select a model for the user prompt rewrite.');
+				}
+
+				if (!this.userPromptRewritePrompt) {
+					errors.push('Please select a prompt for the user prompt rewrite.');
+				}
+
+				if (this.userPromptRewriteWindowSize === null) {
+					errors.push('Please input a window size for the user prompt rewrite');
+				}
+			}
+
+			if (this.semanticCacheEnabled) {
+				if (!this.semanticCacheAIModel) {
+					errors.push('Please select a model for the semantic cache.');
+				}
+
+				if (!this.semanticCacheEmbeddingDimensions === null) {
+					errors.push('Please input the embedding dimensions for the semantic cache.');
+				}
+
+				if (this.semanticCacheMinimumSimilarityThreshold === null) {
+					errors.push('Please input the minimum similarity threshold for the semantic cache.');
+				}
+			}
+
 			// if (!this.selectedDataSource) {
 			// 	errors.push('Please select a data source.');
 			// }
@@ -1659,15 +1832,15 @@ export default {
 			this.loading = true;
 			this.loadingStatusText = 'Saving agent...';
 
-            const promptRequest = {
-                type: 'multipart',
-                name: this.agentName,
-                cost_center: this.cost_center,
-                description: `System prompt for the ${this.agentName} agent`,
-                prefix: this.systemPrompt,
-                suffix: '',
-                category: 'Workflow',
-            };
+			const promptRequest = {
+				type: 'multipart',
+				name: this.agentName,
+				cost_center: this.cost_center,
+				description: `System prompt for the ${this.agentName} agent`,
+				prefix: this.systemPrompt,
+				suffix: '',
+				category: 'Workflow',
+			};
 
 			const tokenTextPartitionRequest = {
 				text_splitter: 'TokenTextSplitter',
@@ -1829,6 +2002,24 @@ export default {
 					tools: this.agentTools,
 
 					workflow,
+
+					text_rewrite_settings: {
+						user_prompt_rewrite_enabled: this.userPromptRewriteEnabled,
+						user_prompt_rewrite_settings: {
+							user_prompt_rewrite_ai_model_object_id: this.userPromptRewriteAIModel,
+							user_prompt_rewrite_prompt_object_id: this.userPromptRewritePrompt,
+							user_prompts_window_size: this.userPromptRewriteWindowSize,
+						},
+					},
+
+					cache_settings: {
+						semantic_cache_enabled: this.semanticCacheEnabled,
+						semantic_cache_settings: {
+							embedding_ai_model_object_id: this.semanticCacheAIModel,
+							embedding_dimensions: this.semanticCacheEmbeddingDimensions,
+							minimum_similarity_threshold: this.semanticCacheMinimumSimilarityThreshold,
+						},
+					},
 				};
 
 				if (this.editAgent) {
