@@ -422,7 +422,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     full_prompt = prompt.prefix,
                     user_prompt = request.user_prompt,
                     user_prompt_rewrite = request.user_prompt_rewrite,
-                    errors = [ "Assistants API response was None." ]
+                    errors = [ "Assistants API response was None." ],
+                    is_error = True
                 )
 
             # create the CompletionResponse object
@@ -500,7 +501,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                         completion_tokens = final_message.usage_metadata["output_tokens"] or 0,
                         prompt_tokens = final_message.usage_metadata["input_tokens"] or 0,
                         total_tokens = final_message.usage_metadata["total_tokens"] or 0,
-                        total_cost = 0
+                        total_cost = 0,
+                        is_error = False
                     )
         # End LangGraph ReAct Agent workflow implementation
 
