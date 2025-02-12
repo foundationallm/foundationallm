@@ -118,9 +118,7 @@ class FoundationaLLMContentSearchTool(FoundationaLLMToolBase):
             
         # array of objects containing the indexing profile(s) and associated endpoint configuration
         index_configurations = []                                      
-        for profile in indexing_profile_definitions:
-            # indexing profile settings are currently being stored camel case, so we need to translate them to snake case for the retriever.
-            self.objects[profile.object_id]["settings"] = ObjectUtils.translate_keys(self.objects[profile.object_id]["settings"])
+        for profile in indexing_profile_definitions:            
             indexing_profile = ObjectUtils.get_object_by_id(
                 profile.object_id,
                 self.objects,

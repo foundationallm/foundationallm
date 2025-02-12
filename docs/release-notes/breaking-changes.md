@@ -3,6 +3,10 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting with 0.9.3-rc015
+
+Vectorization indexing and partitioning profile settings dictionary keys are now persisted as snake case (ex. `IndexName` becomes `index_name`).
+
 ## Starting with 0.9.3-rc010
 
 ### Resource provider cache warm-up
