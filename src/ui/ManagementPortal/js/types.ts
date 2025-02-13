@@ -162,6 +162,8 @@ export type Prompt = ResourceBase & {
 	category: string;
 };
 
+export type Workflow = ResourceBase;
+
 export type AgentDataSource = ResourceBase & {
 	content_source: string;
 	object_id: string;

@@ -233,7 +233,7 @@
 					<CreateAgentStepItem v-model="editIndexSource" focusQuery=".step-container__edit__option">
 						<template v-if="selectedIndexSource">
 							<div v-if="selectedIndexSource.object_id !== ''">
-								<div class="step-container__header">{{ selectedIndexSource.name }}</div>								
+								<div class="step-container__header">{{ selectedIndexSource.name }}</div>
 								<div>
 									<span class="step-option__header">Index Name:</span>
 									<span>{{ selectedIndexSource.settings.index_name }}</span>
@@ -775,7 +775,7 @@
 			<!-- Workflow selection -->
 			<div class="span-2">
 				<Dropdown
-					:modelValue="selectedWorkflow?.type"
+					:model-value="selectedWorkflow?.type"
 					:options="workflowOptions"
 					option-label="name"
 					option-value="type"
@@ -1152,6 +1152,7 @@ import type {
 	ExternalOrchestrationService,
 	TextEmbeddingProfile,
 	Prompt,
+	Workflow,
 	// AgentCheckNameResponse,
 } from '@/js/types';
 
@@ -1272,7 +1273,7 @@ export default {
 			externalOrchestratorOptions: [] as ExternalOrchestrationService[],
 			aiModelOptions: [] as AIModel[],
 
-			workflowOptions: [] as AgentWorkflowAIModel[],
+			workflowOptions: [] as Workflow[],
 			showWorkflowConfiguration: false,
 			workflowMainAIModel: null as AIModel | null,
 			// workflowMainPrompt: '' as string,
@@ -1543,7 +1544,7 @@ export default {
 			this.object_id = agent.object_id || this.object_id;
 			this.inline_context = agent.inline_context || this.inline_context;
 			this.cost_center = agent.cost_center || this.cost_center;
-			this.hasOpenAIAssistantCapability = agent.workflow?.type === 'azure-openai-assistants-workflow';			
+			this.hasOpenAIAssistantCapability = agent.workflow?.type === 'azure-openai-assistants-workflow';
 			this.expirationDate = agent.expiration_date
 				? new Date(agent.expiration_date)
 				: this.expirationDate;

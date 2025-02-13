@@ -23,6 +23,8 @@ import type {
 	// Role,
 	RoleAssignment,
 	APIEndpointConfiguration,
+	Workflow,
+	AgentTool,
 } from './types';
 import { convertToDataSource, convertToAppConfigKeyVault, convertToAppConfig } from '@/js/types';
 // import { isEmpty, upperFirst, camelCase } from 'lodash';
@@ -1034,7 +1036,7 @@ export default {
 		);
 	},
 
-	async deleteFileFromPrivateStorage(agentName, fileName): Promise<void> {
+	async deleteFileFromPrivateStorage(agentName: string, fileName: string): Promise<void> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files/${fileName}?api-version=${this.apiVersion}`,
 			{
@@ -1046,19 +1048,19 @@ export default {
 	/*
 		Agent Workflows
 	 */
-	async getAgentWorkflows(): Promise<any> {
-		return await this.fetch(
+	async getAgentWorkflows(): Promise<ResourceProviderGetResult<Workflow>[]> {
+		return (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/workflows?api-version=${this.apiVersion}`,
-		);
+		)) as ResourceProviderGetResult<Workflow>[];
 	},
 
 	/*
 		Agent Tools
 	 */
-	async getAgentTools(): Promise<any> {
-		return await this.fetch(
+	async getAgentTools(): Promise<ResourceProviderGetResult<AgentTool>[]> {
+		return (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/tools?api-version=${this.apiVersion}`,
-		);
+		)) as ResourceProviderGetResult<AgentTool>[];
 	},
 
 	/*
