@@ -76,7 +76,14 @@
 					<!-- <component :is="compiledMarkdownComponent" v-else /> -->
 
 					<div v-for="(content, index) in processedContent" v-else :key="index">
-						<ChatMessageTextBlock v-if="content.type === 'text'" :value="content.value" />
+						<template v-if="content.type === 'text'">
+							<div v-if="message.sender === 'User'" style="white-space: pre-wrap;">
+								{{ content.value }}
+							</div>
+
+							<ChatMessageTextBlock v-else :value="content.value" />
+						</template>
+
 						<ChatMessageContentBlock v-else :value="content" />
 					</div>
 
@@ -487,7 +494,7 @@ export default {
 			this.processedContent = [
 				{
 					type: 'text',
-					value: this.processContentBlock(this.message.text),
+					value: this.message.text,
 					origValue: this.message.text,
 				},
 			];
