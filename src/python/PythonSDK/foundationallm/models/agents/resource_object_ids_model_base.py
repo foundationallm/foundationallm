@@ -53,9 +53,9 @@ class ResourceObjectIdsModelBase(BaseModel):
             List[ResourceObjectIdProperties]: A list of resource object identifier properties.
         """
         return [
-            v for v in self.resource_object_ids.values()
-            if v.resource_path.resource_provider == resource_provider_name
-            and v.resource_path.main_resource_type == resource_type_name
-            and property_name in v.properties
-            and v.properties[property_name] == "value"
+            v for v in self.resource_object_ids.values() \
+                if v.resource_path.resource_provider == resource_provider_name \
+                    and v.resource_path.main_resource_type == resource_type_name \
+                        and property_name in v.properties \
+                            and v.properties[property_name] == property_value
         ]
