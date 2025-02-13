@@ -1,8 +1,6 @@
 import type {
 	AgentIndex,
 	AzureDataLakeDataSource,
-	AgentWorkflowBase,
-	AgentWorkflowAIModel,
 } from './types';
 
 export const mockGetAgentIndexesResponse: AgentIndex[] = [
@@ -418,42 +416,4 @@ export const mockRoleAssignmentsResponse = {
 			deleted: false,
 		},
 	],
-};
-
-export const mockAzureOpenAIAssistantsWorkflow: AgentWorkflowBase = {
-	type: 'azure-openai-assistants-workflow',
-	workflow_object_id: 'workflow-123',
-	workflow_name: 'Azure OpenAI Assistants Workflow',
-	agent_workflow_ai_models: {
-		main_model: {
-			ai_model_object_id:
-				'/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel',
-			model_parameters: {
-				temperature: 0.7,
-				max_tokens: 100,
-			},
-		} as AgentWorkflowAIModel,
-	},
-	prompt_object_ids: {
-		main_prompt: 'prompt-789',
-	},
-	assistant_id: 'assistant-001',
-};
-
-export const mockLangChainExpressionLanguageWorkflow: AgentWorkflowBase = {
-	type: 'langchain-expression-language-workflow',
-	workflow_object_id: 'workflow-123',
-	workflow_name: 'Langchain Expression Language Workflow',
-	agent_workflow_ai_models: {
-		main_model: {
-			ai_model_object_id: 'model-456',
-			model_parameters: {
-				param1: 'value1',
-				param2: 'value2',
-			},
-		} as AgentWorkflowAIModel,
-	},
-	prompt_object_ids: {
-		main_prompt: 'prompt-789',
-	},
 };
