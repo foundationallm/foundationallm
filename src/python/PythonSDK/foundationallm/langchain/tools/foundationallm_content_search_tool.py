@@ -11,7 +11,8 @@ from foundationallm.models.constants import (
     AIModelResourceTypeNames,
     ResourceObjectIdPropertyNames,
     ResourceObjectIdPropertyValues,
-    ResourceProviderNames)
+    ResourceProviderNames,
+    VectorizationResourceTypeNames)
 from foundationallm.models.orchestration import CompletionRequestObjectKeys, ContentArtifact
 from foundationallm.models.resource_providers import ResourcePath
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
@@ -71,6 +72,7 @@ class FoundationaLLMContentSearchTool(FoundationaLLMToolBase):
         #    content = rag_prompt,
         #    source = "tool",
         #    type = "full_prompt"))
+        print(completion.content)
         return completion.content, content_artifacts
 
     def _get_document_retriever(self):
@@ -81,7 +83,7 @@ class FoundationaLLMContentSearchTool(FoundationaLLMToolBase):
 
         text_embedding_profile_definition = self.tool_config.get_resource_object_id_properties(
             ResourceProviderNames.FOUNDATIONALLM_VECTORIZATION,
-            "textEmbeddingProfiles",
+            VectorizationResourceTypeNames.EMBEDDING_PROFILE,
             ResourceObjectIdPropertyNames.OBJECT_ROLE,
             ResourceObjectIdPropertyValues.EMBEDDING_PROFILE)
         
@@ -94,13 +96,11 @@ class FoundationaLLMContentSearchTool(FoundationaLLMToolBase):
         text_embedding_model_name = text_embedding_profile.settings[EmbeddingProfileSettingsKeys.MODEL_NAME]
 
         # There can be multiple indexing_profile role objects in the resource object ids.        
-        indexing_profile_definitions = [
-            v for v in self.tool_config.resource_object_ids.values() \
-                if v.resource_path.resource_provider == ResourceProviderNames.FOUNDATIONALLM_VECTORIZATION \
-                    and v.resource_path.main_resource_type == "indexingProfiles" \
-                        and ResourceObjectIdPropertyNames.OBJECT_ROLE in v.properties \
-                            and v.properties[ResourceObjectIdPropertyNames.OBJECT_ROLE] == ResourceObjectIdPropertyValues.INDEXING_PROFILE
-        ]
+        indexing_profile_definitions = self.tool_config.get_many_resource_object_id_properties(
+            ResourceProviderNames.FOUNDATIONALLM_VECTORIZATION,
+            VectorizationResourceTypeNames.INDEXING_PROFILE,
+            ResourceObjectIdPropertyNames.OBJECT_ROLE,
+            ResourceObjectIdPropertyValues.INDEXING_PROFILE)
 
         # Only supporting GatewayTextEmbedding
         # Objects dictionary has the gateway API endpoint configuration by default.
@@ -153,4 +153,3 @@ class FoundationaLLMContentSearchTool(FoundationaLLMToolBase):
             ResourceObjectIdPropertyNames.OBJECT_ROLE,
             ResourceObjectIdPropertyValues.MAIN_MODEL)
         return language_model_factory.get_language_model(ai_model_definition.object_id)
-        
