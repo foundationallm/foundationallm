@@ -723,9 +723,11 @@ export default {
 		},
 
 		getDisplayName() {
-			return this.message.sender === 'User'
-				? this.message.senderDisplayName
-				: this.message.senderDisplayName || 'Agent';
+			let displayName = this.message.senderDisplayName;
+			if (this.message.sender.toLowerCase() !== 'user') {
+				displayName = this.$appStore.mapAgentDisplayName(this.message.senderDisplayName);
+			}
+			return displayName;
 		},
 
 		handleCopyMessageContent() {
