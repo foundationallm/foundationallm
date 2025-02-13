@@ -517,6 +517,9 @@ export default {
 		processContentBlock(contentToProcess) {
 			let htmlContent = processLatex(contentToProcess ?? '');
 			htmlContent = marked(htmlContent, { renderer: this.markedRenderer });
+
+			// In case the agent generates html that may be malicious, such as
+			// if the user asks the agent to repeat their malicious input
 			return DOMPurify.sanitize(htmlContent);
 		},
 
