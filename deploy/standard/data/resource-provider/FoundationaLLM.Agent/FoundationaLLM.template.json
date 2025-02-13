@@ -50,7 +50,7 @@
 				"object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Agent/workflows/OpenAIAssistants",
 				"properties": {}
 			},
-			"/instances/{{instanceId}}/providers/FoundationaLLM.AIModel/aiModels/DefaultCompletionAIModel" : {
+			"/instances/{{instanceId}}/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel" : {
 				"object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel",
 				"properties": {
 					"object_role": "main_model",

@@ -169,10 +169,6 @@ $configurations = @{
         template = './data/resource-provider/FoundationaLLM.AIModel/completion-4o-model.template.json'
         render   = '../common/data/resource-provider/FoundationaLLM.AIModel/completion-4o-model.json'
     }
-    "completion-model" = @{
-        template = './data/resource-provider/FoundationaLLM.AIModel/completion-model.template.json'
-        render   = '../common/data/resource-provider/FoundationaLLM.AIModel/completion-model.json'
-    }
     "dall-e-3" = @{
         template = './data/resource-provider/FoundationaLLM.AIModel/dall-e-3-model.template.json'
         render   = '../common/data/resource-provider/FoundationaLLM.AIModel/dall-e-3-model.json'
