@@ -192,48 +192,6 @@ export interface ConfigurationReferenceMetadata {
 	isKeyVaultBacked: boolean;
 }
 
-export interface AgentWorkflowBase {
-	/**
-	 * The workflow resource associated with the agent.
-	 */
-	type?: string;
-
-	/**
-	 * The workflow resource associated with the agent.
-	 */
-	workflow_object_id: string;
-
-	/**
-	 * The name of the workflow resource associated with the agent.
-	 */
-	workflow_name: string;
-
-	/**
-	 * The collection of AI models available to the workflow.
-	 * The well-known key "main-model" is used to specify the model for the main workflow.
-	 */
-	agent_workflow_ai_models: { [key: string]: AgentWorkflowAIModel };
-
-	/**
-	 * The collection of prompt resources available to the workflow.
-	 * The well-known key "main-prompt" is used to specify the prompt for the main workflow.
-	 */
-	prompt_object_ids: { [key: string]: string };
-}
-
-export interface AgentWorkflowAIModel {
-	/**
-	 * The AI model object ID.
-	 */
-	ai_model_object_id: string;
-
-	/**
-	 * Dictionary with override values for the model parameters.
-	 * For the list of supported keys, see ModelParametersKeys.
-	 */
-	model_parameters?: { [key: string]: any };
-}
-
 // Data sources
 interface BaseDataSource extends ResourceBase {
 	configuration_references: { [key: string]: string };
