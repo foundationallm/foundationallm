@@ -498,7 +498,7 @@ export default {
 					origValue: this.message.text,
 				},
 			];
-		} else if (this.message.content) {
+		} else if (this.message.content?.length > 0) {
 			this.processedContent = this.message.content.map((content) => {
 				this.currentWordIndex = getWordCount(content.value);
 				return {
@@ -508,6 +508,8 @@ export default {
 					origValue: content.value,
 				};
 			});
+		} else if (this.message.text) {
+			this.processedContent = this.messageContent;
 		}
 	},
 
