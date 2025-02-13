@@ -27,7 +27,7 @@
 
 			<!-- Name -->
 			<Column
-				field="resource.display_name"
+				field="resource.name"
 				header="Name"
 				sortable
 				:style="columnStyle"
@@ -39,7 +39,7 @@
 				}"
 			>
 				<template #body="{ data }">
-					<span>{{ data.resource.display_name || data.resource.name }}</span>
+					<span>{{ data.resource.name }} {{ data.resource.display_name ? `(${data.resource.display_name})` : '' }}</span>
 					<template v-if="data.resource.properties?.default_resource === 'true'">
 						<Chip label="Default" icon="pi pi-star" style="margin-left: 8px" />
 					</template>
