@@ -4,20 +4,22 @@ using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Constants.Telemetry;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
+using FoundationaLLM.Common.Telemetry;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using FoundationaLLM.Orchestration.Core.Models;
-using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
-using OpenAI.Embeddings;
+using System.Diagnostics;
 
 namespace FoundationaLLM.Orchestration.Core.Services
 {
@@ -36,7 +38,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         private readonly ILogger<UserPromptRewriteService> _logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SemanticCacheService"/> class.
+        /// Initializes a new instance of the <see cref="UserPromptRewriteService"/> class.
         /// </summary>
         /// <param name="resourceProviderServices">A list of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
         /// <param name="configuration">The <see cref="IConfiguration"/> used to retrieve app settings from configuration.</param>
@@ -78,13 +80,13 @@ namespace FoundationaLLM.Orchestration.Core.Services
 
                 var userPromptRewriteAIModel = await _aiModelResourceProviderService.GetResourceAsync<AIModelBase>(
                     agentSettings.UserPromptRewriteAIModelObjectId,
-                    DefaultAuthentication.ServiceIdentity!);
+                    ServiceContext.ServiceIdentity!);
                 var userPromptRewriteAPIEndpointConfiguration = await _configurationResourceProviderService.GetResourceAsync<APIEndpointConfiguration>(
                     userPromptRewriteAIModel.EndpointObjectId!,
-                    DefaultAuthentication.ServiceIdentity!);
+                    ServiceContext.ServiceIdentity!);
                 var userPromptRewritePrompt = await _promptResourceProviderService.GetResourceAsync<PromptBase>(
                     agentSettings.UserPromptRewritePromptObjectId,
-                    DefaultAuthentication.ServiceIdentity!);
+                    ServiceContext.ServiceIdentity!);
 
                 _agentRewriters[$"{instanceId}|{agentName}"] = new AgentUserPromptRewriter
                 {
@@ -111,23 +113,47 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 || agentRewriter == null)
                 throw new UserPromptRewriteException($"The user prompt rewriter is not initialized for agent {agentName} in instance {instanceId}.");
 
+            //No need to rewrite a single message.
+            if (completionRequest.MessageHistory?.Count == 0)
+            {
+                completionRequest.UserPromptRewrite = completionRequest.UserPrompt;
+                return;
+            }
+
             try
             {
-                var userPromptsHistory = completionRequest.MessageHistory?
-                    .Where(x => StringComparer.Ordinal.Equals(x.Sender, nameof(Participants.User)))
-                    .Select(x => x.Text)
-                    .TakeLast(agentRewriter.Settings.UserPromptsWindowSize)
+                var messages = completionRequest.MessageHistory?
+                    .TakeLast(agentRewriter.Settings.UserPromptsWindowSize * 2)
+                    .Select<MessageHistoryItem, ChatMessage>(m => m.Sender switch
+                    {
+                        nameof(Participants.User) => new UserChatMessage(m.TextRewrite ?? m.Text),
+                        nameof(Participants.Agent) => new AssistantChatMessage(m.Text),
+                        _ => throw new OrchestrationException($"Unknown message sender {m.Sender}.")
+                    })
                     .ToList()
                     ?? [];
-                userPromptsHistory.Add(completionRequest.UserPrompt);
+                messages.Insert(0, new SystemChatMessage(agentRewriter.RewriterSystemPrompt));
+                messages.Add(new UserChatMessage(completionRequest.UserPrompt));
+
+                using var telemetryActivity = TelemetryActivitySources.OrchestrationAPIActivitySource.StartActivity(
+                    TelemetryActivityNames.OrchestrationAPI_AgentOrchestration_UserPromptRewrite_LLM,
+                    ActivityKind.Internal,
+                    parentContext: default,
+                    tags: new Dictionary<string, object?>
+                    {
+                        { TelemetryActivityTagNames.InstanceId, instanceId },
+                        { TelemetryActivityTagNames.OperationId, completionRequest.OperationId },
+                        { TelemetryActivityTagNames.ConversationId, completionRequest.SessionId ?? "N/A" }
+                    });
+
                 var completionResult = await agentRewriter.ChatClient.CompleteChatAsync(
-                    [
-                        new SystemChatMessage(agentRewriter.RewriterSystemPrompt),
-                        new UserChatMessage($"QUESTIONS:{Environment.NewLine}{string.Join(Environment.NewLine, [.. userPromptsHistory])}")
-                    ],
+                    messages,
                     new ChatCompletionOptions
                     {
-                        Temperature = 0
+                        Temperature = 0,
+#pragma warning disable OPENAI001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+                        Seed = 42
+#pragma warning restore OPENAI001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
                     });
 
                 completionRequest.UserPromptRewrite = completionResult.Value.Content[0].Text;
@@ -151,7 +177,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
             {
                 AuthenticationTypes.AzureIdentity => (new AzureOpenAIClient(
                     new Uri(apiEndpointConfiguration.Url),
-                    DefaultAuthentication.AzureCredential))
+                    ServiceContext.AzureCredential))
                     .GetChatClient(deploymentName),
                 AuthenticationTypes.APIKey => (new AzureOpenAIClient(
                     new Uri(apiEndpointConfiguration.Url),

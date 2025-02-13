@@ -419,6 +419,38 @@
 				"value": "false",
 				"content_type": "",
 				"first_version": "0.9.1"
+			},
+			{
+				"name": "AbsoluteCacheExpirationSeconds",
+				"description": "Absolute cache expiration in seconds.",
+				"secret": "",
+				"value": "300",
+				"content_type": "",
+				"first_version": "0.9.2"
+			},
+			{
+				"name": "SlidingCacheExpirationSeconds",
+				"description": "Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set).",
+				"secret": "",
+				"value": "120",
+				"content_type": "",
+				"first_version": "0.9.2"
+			},
+			{
+				"name": "CacheSizeLimit",
+				"description": "The maximum number of items that can be stored in the cache.",
+				"secret": "",
+				"value": "10000",
+				"content_type": "",
+				"first_version": "0.9.2"
+			},
+			{
+				"name": "CacheExpirationScanFrequencySeconds",
+				"description": "Gets or sets the minimum length of time between successive scans for expired items in seconds.",
+				"secret": "",
+				"value": "30",
+				"content_type": "",
+				"first_version": "0.9.2"
 			}
 		]
 	},

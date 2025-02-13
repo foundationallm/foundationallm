@@ -27,11 +27,11 @@ export const mockGetAgentIndexesResponse: AgentIndex[] = [
 		description: 'Azure AI Search index for the State of the Union agent.',
 		indexer: 'AzureAISearchIndexer',
 		settings: {
-			IndexName: 'sotu',
-			TopN: '3',
-			Filters: '[]',
-			EmbeddingFieldName: 'Embedding',
-			TextFieldName: 'Text',
+			index_name: 'sotu',
+			top_n: '3',
+			filters: '[]',
+			embedding_field_name: 'Embedding',
+			text_field_name: 'Text',
 		},
 		configuration_references: {
 			APIKey: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey',
@@ -74,11 +74,11 @@ export const mockGetAgentDataSourcesResponse: AgentIndex[] = [
 		description: 'Azure AI Search index for the State of the Union agent.',
 		indexer: 'AzureAISearchIndexer',
 		settings: {
-			IndexName: 'sotu',
-			TopN: '3',
-			Filters: '[]',
-			EmbeddingFieldName: 'Embedding',
-			TextFieldName: 'Text',
+			index_name: 'sotu',
+			top_n: '3',
+			filters: '[]',
+			embedding_field_name: 'Embedding',
+			text_field_name: 'Text',
 		},
 		configuration_references: {
 			APIKey: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey',

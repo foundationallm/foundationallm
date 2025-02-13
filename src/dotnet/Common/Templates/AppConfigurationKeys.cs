@@ -300,6 +300,34 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials_EnableCache =
             "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:EnableCache";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:AbsoluteCacheExpirationSeconds setting.
+        /// <para>Value description:<br/>Absolute cache expiration in seconds.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials_AbsoluteCacheExpirationSeconds =
+            "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:AbsoluteCacheExpirationSeconds";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:SlidingCacheExpirationSeconds setting.
+        /// <para>Value description:<br/>Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set).</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials_SlidingCacheExpirationSeconds =
+            "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:SlidingCacheExpirationSeconds";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheSizeLimit setting.
+        /// <para>Value description:<br/>The maximum number of items that can be stored in the cache.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials_CacheSizeLimit =
+            "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheSizeLimit";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheExpirationScanFrequencySeconds setting.
+        /// <para>Value description:<br/>Gets or sets the minimum length of time between successive scans for expired items in seconds.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials_CacheExpirationScanFrequencySeconds =
+            "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheExpirationScanFrequencySeconds";
 
         #endregion
 

@@ -1,4 +1,5 @@
 ﻿using Azure.Messaging;
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.Events;
@@ -41,6 +42,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         private readonly SemaphoreSlim _lock = new(1, 1);
 
         private readonly IResourceProviderResourceCacheService? _resourceCache;
+        private const string CACHE_WARMUP_FILE_NAME = "_cache_warmup.json";
 
         /// <summary>
         /// The resource reference store used by the resource provider.
@@ -148,6 +150,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             _eventTypesToSubscribe = eventTypesToSubscribe;
             _useInternalReferencesStore = useInternalReferencesStore;
 
+            logger.LogInformation("Resource provider caching {CacheStatusString} enabled.",
+                _instanceSettings.EnableResourceProvidersCache ? "is" : "is not");
+
             if (_instanceSettings.EnableResourceProvidersCache)
                 _resourceCache = new ResourceProviderResourceCacheService(_logger);
 
@@ -194,6 +199,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
                 _isInitialized = true;
 
+                await WarmupCache();
+
                 _logger.LogInformation("The {ResourceProvider} resource provider was successfully initialized.", _name);
             }
             catch (Exception ex)
@@ -216,6 +223,58 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             }
 
             throw new ResourceProviderException($"The resource provider {Name} did not initialize within the expected time frame.");
+        }
+
+        private async Task WarmupCache()
+        {
+            try
+            {
+                if (!_instanceSettings.EnableResourceProvidersCache)
+                    return;
+
+                _logger.LogInformation("Starting to warm up the cache for the {ResourceProvider} resource provider...", _name);
+
+                var cacheWarmupFileName = $"/{_name}/{CACHE_WARMUP_FILE_NAME}";
+
+                if (await _storageService.FileExistsAsync(
+                    _storageContainerName,
+                    cacheWarmupFileName,
+                    default))
+                {
+                    var fileContent = await _storageService.ReadFileAsync(
+                        _storageContainerName,
+                        cacheWarmupFileName,
+                        default);
+                    var cacheWarmupConfigurations = JsonSerializer.Deserialize<List<ResourceProviderCacheWarmupConfiguration>>(
+                        Encoding.UTF8.GetString(fileContent.ToArray()))!;
+
+                    foreach (var cacheWarmupConfiguration in cacheWarmupConfigurations.Where(cwc => StringComparer.Ordinal.Equals(cwc.ServiceName, ServiceContext.ServiceName)))
+                    foreach (var securityPrincipalId in cacheWarmupConfiguration.SecurityPrincipalIds)
+                    {
+                        var userIdentity = new UnifiedUserIdentity
+                        {
+                            UserId = securityPrincipalId,
+                            Name = securityPrincipalId,
+                            Username = securityPrincipalId,
+                            UPN = securityPrincipalId,
+                        };
+
+                        foreach (var resourceObjectId in cacheWarmupConfiguration.ResourceObjectIds)
+                        {
+                            _logger.LogInformation("Loading object {ResourceObjectId} for security principal {SecurityPrincipalId}...", resourceObjectId, securityPrincipalId);
+                            await HandleGetAsync(resourceObjectId, userIdentity);
+                        }
+                    }
+                }
+                else
+                    _logger.LogInformation("The {ResourceProvider} resource provider does not have a cache warmup file.", _name);
+
+                _logger.LogInformation("The cache for the {ResourceProvider} resource provider was successfully warmed up.", _name);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while warming up the cache for the {ResourceProvider} resource provider.", _name);
+            }
         }
 
         #region Virtuals to override in derived classes
@@ -808,7 +867,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             }
         }
 
-        private async Task HandleCacheResetCommand()
+        /// <summary>
+        /// Handles the cache reset command.
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task HandleCacheResetCommand()
         {
             _resourceCache?.Reset();
             await (_resourceReferenceStore?.LoadResourceReferences() ?? Task.CompletedTask);

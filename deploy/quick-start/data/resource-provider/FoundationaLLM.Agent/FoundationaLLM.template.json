@@ -32,7 +32,7 @@
     "agent_parameters": null
   },
   "prompt_object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.Prompt/prompts/FoundationaLLM",
-  "ai_model_object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.AIModel/aiModels/DefaultCompletionAIModel",
+  "ai_model_object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel",
   "capabilities": [
     "OpenAI.Assistants"
   ],

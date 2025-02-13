@@ -3,6 +3,75 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting with 0.9.3-rc016
+
+Vectorization indexing and partitioning profile settings dictionary keys are now persisted as snake case (ex. `IndexName` becomes `index_name`).
+
+## Starting with 0.9.3-rc010
+
+### Resource provider cache warm-up
+
+Resource providers now support a cache warm-up mechanism. This mechanism allows the cache to be pre-populated with the resource provider data before the service starts processing requests. This feature is useful when the service is deployed in a cold environment and needs to be warmed up before it can handle requests.
+
+The cache warm-up mechanism is enabled when a file named `_cache_warmup.json` exists in the blob storage location associated with the resource provider. Here is an example of such a file:
+
+```json
+[
+	{
+		"ServiceName": "OrchestrationAPI",
+		"Description": "Resources required by: service principal x, service principal y.",
+		"ResourceObjectIds": [
+			"/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/GatewayAPI",
+			"/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch",
+			"/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/LangChainAPI",
+			"/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/StateAPI"
+		],
+		"SecurityPrincipalIds": [
+			"4150c6b3-...",
+			"949195b1-..."
+		]
+	},
+	{
+		"ServiceName": "OrchestrationAPI",
+		"Description": "Resources required by: service principal x, service principal y, service principal z.",
+		"ResourceObjectIds": [
+			"/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI"
+		],
+		"SecurityPrincipalIds": [
+			"4150c6b3-...",
+			"949195b1-...",
+			"d6a6317a-..."
+		]
+	}
+]
+```
+The configuration contains an array of objects, each representing a cache warm-up configuration. Each object contains the following properties:
+
+- `ServiceName` - The name of the service that the cache warm-up configuration is for.
+- `Description` - A description of the cache warm-up configuration.
+- `ResourceObjectIds` - The list of resource object identifiers that will be pre-loaded into the resource provider cache.
+
+    >[!NOTE]
+    > The resource object identifiers must be specific to the resource provider.
+
+- `SecurityPrincipalIds` - The list of security principal identifiers that will be used to authenticate the cache warm-up requests.
+
+    >[!IMPORTANT]
+    > As a result of the cache warm-up process, the client authorization cache will be populated with all combinations of security principal and resource object identifiers that exist in the cache warm-up configuration. Make sure the two lists only contain the necessary values to avoid a long startup time for the resource provider.
+
+## Starting with 0.9.3-rc002
+
+## App configuration settings
+
+The following App Config properties make cache settings for the `AuthorizationServiceClientCacheService` configurable:
+
+| Name                              | Description                                                                                                                   | Default Value  |
+|-----------------------------------|-------------------------------------------------------------------------------------------------------------------------------|--------|
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:AbsoluteCacheExpirationSeconds`    | Absolute cache expiration in seconds.                                                                                         | 300    |
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:SlidingCacheExpirationSeconds`     | Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set). | 120    |
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheSizeLimit`                    | The maximum number of items that can be stored in the cache.                                                                   | 10000  |
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheExpirationScanFrequencySeconds` | Gets or sets the minimum length of time between successive scans for expired items in seconds.                                | 30     |
+
 ## Starting with 0.9.2-rc005
 
 ### Agent configuration changes

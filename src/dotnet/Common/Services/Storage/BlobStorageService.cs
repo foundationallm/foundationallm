@@ -176,7 +176,7 @@ namespace FoundationaLLM.Common.Services.Storage
         /// <inheritdoc/>
         protected override void CreateClientFromAccountKey(string accountName, string accountKey) =>
             _blobServiceClient = new BlobServiceClient(
-                new Uri($"https://{accountName}.dfs.core.windows.net"),
+                new Uri($"https://{accountName}.blob.core.windows.net"),
                 new StorageSharedKeyCredential(accountName, accountKey));
 
         /// <inheritdoc/>
@@ -187,7 +187,7 @@ namespace FoundationaLLM.Common.Services.Storage
         protected override void CreateClientFromIdentity(string accountName) =>
             _blobServiceClient = new BlobServiceClient(
                 new Uri($"https://{accountName}.blob.core.windows.net"),
-                DefaultAuthentication.AzureCredential);
+                ServiceContext.AzureCredential);
 
         /// <inheritdoc/>
         public async Task<List<string>> GetFilePathsAsync(string containerName, string? directoryPath = null, bool recursive = true, CancellationToken cancellationToken = default)

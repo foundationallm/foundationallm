@@ -52,7 +52,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
         {
             var httpClient = await _httpClientFactoryService.CreateClient(
                                 HttpClientNames.GatewayAPI,
-                                DefaultAuthentication.ServiceIdentity!);
+                                ServiceContext.ServiceIdentity!);
             var logger = _loggerFactory.CreateLogger<GatewayServiceClient>();
             var gatewayClient = new GatewayServiceClient(httpClient,logger);
             return gatewayClient;

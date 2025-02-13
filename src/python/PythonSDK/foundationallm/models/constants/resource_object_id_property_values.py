@@ -5,3 +5,5 @@ class ResourceObjectIdPropertyValues(str, Enum):
     MAIN_MODEL = 'main_model'
     MAIN_PROMPT = 'main_prompt'
     MAIN_INDEXING_PROFILE = 'main_indexing_profile'
+    INDEXING_PROFILE = 'indexing_profile'
+    EMBEDDING_PROFILE = 'embedding_profile'

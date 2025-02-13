@@ -204,7 +204,7 @@ export default {
     
 		async setAgentOptions() {
 			this.agentOptions = this.$appStore.agents.map((agent) => ({
-				label: agent.resource.name,
+				label: agent.resource.display_name ? agent.resource.display_name : agent.resource.name,
 				type: agent.resource.type,
 				object_id: agent.resource.object_id,
 				description: agent.resource.description,
@@ -277,10 +277,15 @@ export default {
 
 		updateAgentSelection() {
 			const agent = this.$appStore.getSessionAgent(this.currentSession);
+
 			this.agentSelection =
 				this.agentOptions.find(
 					(option) => option.value.resource.object_id === agent.resource.object_id,
 				) || null;
+
+			if (this.agentSelection) {
+				this.$appStore.setSessionAgent(this.currentSession, this.agentSelection.value);
+			}
 		},
 
 		hideAllPoppers() {
