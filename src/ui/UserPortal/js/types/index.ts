@@ -117,6 +117,7 @@ export interface OrchestrationSettings {
 export interface Agent {
 	type: string;
 	name: string;
+	display_name: string;
 	object_id: string;
 	description: string;
 	properties?: { [key: string]: string | null };
