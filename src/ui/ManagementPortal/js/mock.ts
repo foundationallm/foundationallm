@@ -1,7 +1,4 @@
-import type {
-	AgentIndex,
-	AzureDataLakeDataSource,
-} from './types';
+import type { AgentIndex, AzureDataLakeDataSource } from './types';
 
 export const mockGetAgentIndexesResponse: AgentIndex[] = [
 	{
