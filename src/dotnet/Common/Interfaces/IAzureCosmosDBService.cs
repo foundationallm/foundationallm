@@ -248,6 +248,15 @@ public interface IAzureCosmosDBService
     Task<List<AttachmentReference>> GetAttachments(string type, string upn, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Gets a list of attachments for the signed in user.
+    /// </summary>
+    /// <param name="type">The attachment type to return.</param>
+    /// <param name="agentObjectId">The agent object id.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>A list of attachments for the signed in user.</returns>
+    Task<List<AttachmentReference>> GetAgentPrivateFiles(string type, string agentObjectId, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Creates an attachment.
     /// </summary>
     /// <param name="attachment">The attachment to be added.</param>

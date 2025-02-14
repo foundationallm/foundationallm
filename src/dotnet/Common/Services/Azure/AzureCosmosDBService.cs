@@ -588,6 +588,25 @@ namespace FoundationaLLM.Common.Services.Azure
         }
 
         /// <inheritdoc/>
+        public async Task<List<AttachmentReference>> GetAgentPrivateFiles(string type, string agentObjectId, CancellationToken cancellationToken = default)
+        {
+            var query = new QueryDefinition($"SELECT DISTINCT * FROM c WHERE c.type = @type AND c.secondaryProviderObjectId = @agentObjectId AND {SoftDeleteQueryRestriction} ORDER BY c._ts DESC")
+                .WithParameter("@type", type)
+                .WithParameter("@agentObjectId", agentObjectId);
+
+            var response = _attachments.GetItemQueryIterator<AttachmentReference>(query);
+
+            List<AttachmentReference> output = [];
+            while (response.HasMoreResults)
+            {
+                var results = await response.ReadNextAsync(cancellationToken);
+                output.AddRange(results);
+            }
+
+            return output;
+        }
+
+        /// <inheritdoc/>
         public async Task CreateAttachment(AttachmentReference attachmentReference, CancellationToken cancellationToken = default) =>
             await _attachments.CreateItemAsync(item: attachmentReference, partitionKey: new PartitionKey(attachmentReference.UPN), cancellationToken: cancellationToken);
 

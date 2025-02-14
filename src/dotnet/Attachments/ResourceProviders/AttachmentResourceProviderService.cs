@@ -108,7 +108,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                     if (resourcePath.ResourceTypeInstances[0].ResourceId != null)
                         agentPrivateFiles = [await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!)];
                     else
-                        agentPrivateFiles = await _cosmosDBService.GetAttachments(AttachmentTypes.AgentPrivateFile, userIdentity.UPN!);
+                        agentPrivateFiles = await _cosmosDBService.GetAgentPrivateFiles(AttachmentTypes.AgentPrivateFile, "agentObjectId");
 
                     var results = new List<AgentPrivateFile>();
                     foreach (var agentPrivateFile in agentPrivateFiles)
