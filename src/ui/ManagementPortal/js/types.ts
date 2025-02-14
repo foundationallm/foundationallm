@@ -100,6 +100,7 @@ export type Agent = ResourceBase & {
 	};
 
 	capabilities: string[];
+	virtual_security_group_id: string;
 	tools: AgentTool[];
 	workflow: AgentWorkflow;
 
