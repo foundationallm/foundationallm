@@ -550,6 +550,7 @@ $tokens.serviceNamespaceName = $serviceNamespaceName
 
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,FoundationaLLM.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,FoundationaLLM.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,OpenAIAssistants.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,OpenAIAssistants.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,LangGraphReactAgent.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,LangGraphReactAgent.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,completion-4-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,completion-4-model.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,completion-4o-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,completion-4o-model.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,embedding-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,embedding-model.json"
