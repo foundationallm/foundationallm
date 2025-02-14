@@ -310,7 +310,14 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             foreach (var reference in persistedReferencesList.ResourceReferences)
             {
-                if (!_resourceReferences.ContainsKey(reference.Name))
+                if (_resourceReferences.TryGetValue(reference.Name, out var existingReference))
+                {
+                    if (!existingReference.Equals(reference))
+                    {
+                        _resourceReferences[reference.Name] = reference;
+                    }
+                }
+                else
                 {
                     _resourceReferences[reference.Name] = reference;
                 }

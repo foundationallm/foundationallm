@@ -4,7 +4,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>2469cc23-7f26-4b84-8878-98d90604eee8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>foundationallm\langchain\language_models\openai\openai_model.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -32,6 +33,8 @@
     <Compile Include="foundationallm\langchain\common\foundationallm_tool_base.py" />
     <Compile Include="foundationallm\langchain\common\foundationallm_workflow_base.py" />
     <Compile Include="foundationallm\langchain\common\__init__.py" />
+    <Compile Include="foundationallm\langchain\language_models\language_model_factory.py" />
+    <Compile Include="foundationallm\langchain\tools\foundationallm_content_search_tool.py" />
     <Compile Include="foundationallm\langchain\workflows\workflow_factory.py" />
     <Compile Include="foundationallm\langchain\workflows\__init__.py" />
     <Compile Include="foundationallm\models\agents\agent_tool.py" />
@@ -41,11 +44,19 @@
     <Compile Include="foundationallm\models\agents\agent_workflows\external_agent_workflow.py" />
     <Compile Include="foundationallm\models\agents\agent_workflows\langchain_expression_language_agent_workflow.py" />
     <Compile Include="foundationallm\models\agents\agent_workflows\langgraph_react_agent_workflow.py" />
+    <Compile Include="foundationallm\models\agents\resource_object_ids_model_base.py" />
+    <Compile Include="foundationallm\models\agents\resource_object_id_properties.py" />
     <Compile Include="foundationallm\models\attachments\attachment_properties.py" />
     <Compile Include="foundationallm\models\attachments\attachment_providers.py" />
     <Compile Include="foundationallm\models\attachments\__init__.py" />
     <Compile Include="foundationallm\models\authentication\authentication_parameters_keys.py" />
     <Compile Include="foundationallm\models\constants\agent_capability_categories.py" />
+    <Compile Include="foundationallm\models\constants\ai_model_resource_type_names.py" />
+    <Compile Include="foundationallm\models\constants\prompt_resource_type_names.py" />
+    <Compile Include="foundationallm\models\constants\resource_object_id_property_names.py" />
+    <Compile Include="foundationallm\models\constants\resource_object_id_property_values.py" />
+    <Compile Include="foundationallm\models\constants\resource_provider_names.py" />
+    <Compile Include="foundationallm\models\constants\vectorization_resource_type_names.py" />
     <Compile Include="foundationallm\models\constants\__init__.py" />
     <Compile Include="foundationallm\models\messages\__init__.py" />
     <Compile Include="foundationallm\models\orchestration\analysis_result.py" />
@@ -83,7 +94,6 @@
     <Compile Include="foundationallm\langchain\retrievers\search_service_filter_retriever.py" />
     <Compile Include="foundationallm\langchain\retrievers\azure_ai_search_service_retriever.py" />
     <Compile Include="foundationallm\langchain\retrievers\__init__.py" />
-    <Compile Include="foundationallm\langchain\language_models\openai\openai_model.py" />
     <Compile Include="foundationallm\models\agents\agent_conversation_history_settings.py" />
     <Compile Include="foundationallm\models\agents\agent_gatekeeper_settings.py" />
     <Compile Include="foundationallm\models\agents\agent_orchestration_settings.py" />
@@ -109,8 +119,6 @@
     <Compile Include="foundationallm\models\language_models\language_model_type.py" />
     <Compile Include="foundationallm\langchain\agents\__init__.py" />
     <Compile Include="foundationallm\langchain\agents\agent_factory.py" />
-    <Compile Include="foundationallm\langchain\language_models\language_model_base.py" />
-    <Compile Include="foundationallm\langchain\language_models\openai\__init__.py" />
     <Compile Include="foundationallm\models\language_models\language_model_provider.py" />
     <Compile Include="foundationallm\langchain\language_models\__init__.py" />
     <Compile Include="foundationallm\langchain\orchestration\orchestration_manager.py" />
@@ -191,7 +199,6 @@
     <Folder Include="foundationallm\langchain\agents\" />
     <Folder Include="foundationallm\langchain\common\" />
     <Folder Include="foundationallm\langchain\language_models\" />
-    <Folder Include="foundationallm\langchain\language_models\openai\" />
     <Folder Include="foundationallm\langchain\exceptions\" />
     <Folder Include="foundationallm\langchain\workflows\" />
     <Folder Include="foundationallm\models\agents\agent_workflows\" />

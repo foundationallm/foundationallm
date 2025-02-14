@@ -424,7 +424,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 AgentName = llmCompletionResponse.AgentName,
                 PromptTokens = llmCompletionResponse.PromptTokens,
                 CompletionTokens = llmCompletionResponse.CompletionTokens,
-                AnalysisResults = llmCompletionResponse.AnalysisResults                
+                AnalysisResults = llmCompletionResponse.AnalysisResults,
+                Errors = llmCompletionResponse.Errors
             };
         }
 

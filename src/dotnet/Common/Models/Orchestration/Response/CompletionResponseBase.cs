@@ -102,5 +102,11 @@ namespace FoundationaLLM.Common.Models.Orchestration.Response
         /// </summary>
         [JsonPropertyName("errors")]
         public string[]? Errors { get; set; }
+
+        /// <summary>
+        /// Whether the errors collection actually represent a full error condition or not.
+        /// </summary>
+        [JsonPropertyName("is_error")]
+        public bool? IsError { get; set; }
     }
 }
