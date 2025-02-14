@@ -18,7 +18,12 @@
 			<!-- Edit access control -->
 			<AccessControl
 				v-if="editPrompt"
-				:scope="`providers/FoundationaLLM.Prompt/prompts/${prompt.name}`"
+				:scopes="[
+					{
+						label: 'Prompt',
+						value: `providers/FoundationaLLM.Prompt/prompts/${prompt.name}`,
+					},
+				]"
 			/>
 		</div>
 

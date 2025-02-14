@@ -16,7 +16,12 @@
 			<!-- Edit access control -->
 			<AccessControl
 				v-if="editId"
-				:scope="`providers/FoundationaLLM.DataSource/dataSources/${dataSource.name}`"
+				:scopes="[
+					{
+						label: 'Data Source',
+						value: `providers/FoundationaLLM.DataSource/dataSources/${dataSource.name}`,
+					},
+				]"
 			/>
 		</div>
 

@@ -20,7 +20,12 @@
 				<!-- Edit access control -->
 				<AccessControl
 					v-if="editAgent"
-					:scope="`providers/FoundationaLLM.Agent/agents/${agentName}`"
+					:scopes="[
+						{
+							label: 'Agent',
+							value: `providers/FoundationaLLM.Agent/agents/${agentName}`,
+						},
+					]"
 				/>
 			</div>
 		</div>
