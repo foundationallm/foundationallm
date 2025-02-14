@@ -604,7 +604,6 @@ export default {
 		handleNameInput(event) {
 			const sanitizedValue = this.$filters.sanitizeNameInput(event);
 			this.dataSource.name = sanitizedValue;
-			this.sourceName = sanitizedValue;
 
 			// Check if the name is available if we are creating a new data source.
 			if (!this.editId) {
