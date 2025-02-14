@@ -41,6 +41,20 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     SubTypes = new()
                     {
                         {
+                            AgentResourceTypeNames.AgentFiles,
+                            new ResourceTypeDescriptor (
+                                AgentResourceTypeNames.AgentFiles,
+                                typeof(AgentFile))
+                            {
+                                AllowedTypes = [
+                                    new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderGetResult<AgentFile>)]),
+                                    new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderUpsertResult)]),
+                                    new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
+                                ],
+                                Actions = []
+                            }
+                        },
+                        {
                             AgentResourceTypeNames.AgentAccessTokens,
                             new ResourceTypeDescriptor(
                                 AgentResourceTypeNames.AgentAccessTokens,

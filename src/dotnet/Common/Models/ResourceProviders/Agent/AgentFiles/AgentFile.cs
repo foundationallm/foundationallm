@@ -1,17 +1,17 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models.ResourceProviders.Attachment
+namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
 {
     /// <summary>
-    /// Attachment resource.
+    /// Agent file resource.
     /// </summary>
-    public class AgentPrivateFile : ResourceBase
+    public class AgentFile : ResourceBase
     {
         /// <summary>
         /// The type of the resource.
         /// </summary>
         [JsonIgnore]
-        public override string? Type { get; set; } = nameof(AgentPrivateFile);
+        public override string? Type { get; set; } = nameof(AgentFile);
 
         /// <summary>
         /// Agent object identifier.

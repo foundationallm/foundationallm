@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Graph.Models;
 using System.Data;
 using System.Text;
 using System.Text.Json;
@@ -41,6 +42,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
+    /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> providing Cosmos DB services.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to provide loggers for logging.</param>
     public class AgentResourceProviderService(
@@ -49,6 +51,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
         [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Agent)] IStorageService storageService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
+        IAzureCosmosDBService cosmosDBService,
         IServiceProvider serviceProvider,
         ILoggerFactory loggerFactory)
         : ResourceProviderServiceBase<AgentReference>(
@@ -64,6 +67,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
             ],
             useInternalReferencesStore: true)
     {
+        private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
+
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
             AgentResourceProviderMetadata.AllowedResourceTypes;
@@ -107,6 +112,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                        IncludeRoles = resourcePath.IsResourceTypePath,
                    }),
                 AgentResourceTypeNames.AgentAccessTokens => await LoadAgentAccessTokens(resourcePath)!,
+                AgentResourceTypeNames.AgentFiles => await LoadAgentFiles(resourcePath, userIdentity, options)!,
                 AgentResourceTypeNames.AgentFileToolAssociations => await LoadAgentFileToolAssociations(resourcePath, userIdentity)!,
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
@@ -117,6 +123,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             resourcePath.ResourceTypeName switch
             {
                 AgentResourceTypeNames.Agents => await UpdateAgent(resourcePath, serializedResource!, userIdentity),
+                AgentResourceTypeNames.AgentFiles => await UpdateAgentFile(resourcePath, formFile!, userIdentity),
                 AgentResourceTypeNames.AgentAccessTokens => await UpdateAgentAccessToken(resourcePath, serializedResource!),
                 AgentResourceTypeNames.AgentFileToolAssociations => await UpdateFileToolAssociations(resourcePath, serializedResource!, userIdentity),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
@@ -167,6 +174,12 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 case AgentResourceTypeNames.AgentAccessTokens:
                     await DeleteAgentAccessToken(resourcePath);
                     break;
+                case AgentResourceTypeNames.AgentFiles:
+                    var attachment = await _cosmosDBService.GetAgentFile(_instanceSettings.Id, resourcePath.MainResourceId!, resourcePath.ResourceId!)
+                        ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} was not found.");
+
+                    await _cosmosDBService.DeleteAgentFile(attachment);
+                    break;
                 default:
                     throw new ResourceProviderException(
                         $"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
@@ -181,8 +194,25 @@ namespace FoundationaLLM.Agent.ResourceProviders
         /// <inheritdoc/>
         protected override async Task<T> GetResourceAsyncInternal<T>(
             ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult,
-            UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) =>
-            (await LoadResource<T>(resourcePath.ResourceId!))!;
+            UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
+        {
+            switch (resourcePath.MainResourceTypeName)
+            {
+                case AgentResourceTypeNames.Agents:
+                case AgentResourceTypeNames.Workflows:
+                case AgentResourceTypeNames.Tools:
+                    return (await LoadResource<T>(resourcePath.ResourceId!))!;
+                case AgentResourceTypeNames.AgentFiles:
+                    var agentPrivateFile = await _cosmosDBService.GetAgentFile(_instanceSettings.Id, resourcePath.MainResourceId!, resourcePath.ResourceId!)
+                        ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} was not found.");
+
+                    return (await LoadAgentFile(agentPrivateFile, loadContent: options?.LoadContent ?? false)) as T
+                        ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} could not be loaded.");
+                default:
+                    throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest);
+            }
+        }
 
         #endregion
 
@@ -506,48 +536,151 @@ namespace FoundationaLLM.Agent.ResourceProviders
             return fallbackResult;
         }
 
+        private async Task<List<ResourceProviderGetResult<AgentFile>>> LoadAgentFiles(
+            ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
+        {
+            var agentFiles = new List<AgentFileReference>();
+
+            if (resourcePath.ResourceTypeInstances[0].ResourceId != null)
+                agentFiles = [await _cosmosDBService.GetAgentFile(_instanceSettings.Id, resourcePath.MainResourceId!, resourcePath.ResourceId!)];
+            else
+                agentFiles = await _cosmosDBService.GetAgentFiles(_instanceSettings.Id, resourcePath.MainResourceId!);
+
+            var results = new List<AgentFile>();
+            foreach (var agentFile in agentFiles)
+                results.Add(await LoadAgentFile(agentFile, options != null && options!.LoadContent));
+
+            return results.Select(r => new ResourceProviderGetResult<AgentFile>
+            {
+                Resource = r,
+                Roles = [],
+                Actions = []
+            }).ToList();
+            }
+
+        private async Task<AgentFile> LoadAgentFile(AgentFileReference agentFileReference, bool loadContent = false)
+        {
+            var agentFile = new AgentFile
+            {
+                ObjectId = agentFileReference.ObjectId,
+                Name = agentFileReference.Name,
+                DisplayName = agentFileReference.OriginalFilename,
+                Type = agentFileReference.Type,
+                ContentType = agentFileReference.ContentType,
+                AgentObjectId = $"/instance/{agentFileReference.InstanceId}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentFileReference.AgentName}"
+            };
+
+            if (loadContent)
+            {
+                var fileContent = await _storageService.ReadFileAsync(
+                    _storageContainerName,
+                    agentFileReference.Filename,
+                    default);
+                agentFile.Content = fileContent.ToArray();
+            }
+
+            return agentFile;
+        }
+
+        private async Task<ResourceProviderUpsertResult> UpdateAgentFile(ResourcePath resourcePath, ResourceProviderFormFile formFile, UnifiedUserIdentity userIdentity)
+        {
+            if (formFile.BinaryContent.Length == 0)
+                throw new ResourceProviderException("The attached file is not valid.",
+                    StatusCodes.Status400BadRequest);
+
+            string? agentName = null;
+            if (formFile.Payload != null && formFile.Payload.TryGetValue(ResourceProviderFormPayloadKeys.AgentName, out var value))
+                agentName = value;
+
+            if (string.IsNullOrWhiteSpace(agentName))
+                throw new ResourceProviderException("The agent name is not valid.",
+                    StatusCodes.Status400BadRequest);
+
+            var extension = GetFileExtension(formFile.FileName);
+            var fullName = $"{resourcePath.ResourceId!}{extension}";
+            var filePath = $"/{_name}/{_instanceSettings.Id}/{agentName}/private-file-store/{fullName}";
+
+            var agentPrivateFile = new AgentFileReference
+            {
+                Id = resourcePath.ResourceId!,
+                Name = resourcePath.ResourceId!,
+                ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name),
+                OriginalFilename = formFile.FileName,
+                ContentType = formFile.ContentType!,
+                Type = AgentTypes.AgentFile,
+                Filename = filePath,
+                Size = formFile.BinaryContent.Length,
+                UPN = userIdentity.UPN ?? string.Empty,
+                InstanceId = _instanceSettings.Id,
+                AgentName = agentName,
+                Deleted = false,
+            };
+
+            await _storageService.WriteFileAsync(
+                _storageContainerName,
+                agentPrivateFile.Filename,
+                new MemoryStream(formFile.BinaryContent.ToArray()),
+                agentPrivateFile.ContentType ?? default,
+                default);
+
+            await _cosmosDBService.CreateAgentFile(agentPrivateFile);
+
+            return new ResourceProviderUpsertResult<AgentFile>
+            {
+                ObjectId = agentPrivateFile!.ObjectId,
+                ResourceExists = false,
+                Resource = new AgentFile
+                {
+                    ObjectId = agentPrivateFile.ObjectId,
+                    Name = agentPrivateFile.Name,
+                    DisplayName = formFile.FileName,
+                    Type = agentPrivateFile.Type,
+                    ContentType = agentPrivateFile.ContentType,
+                    AgentObjectId = $"/instance/{agentPrivateFile.InstanceId}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentPrivateFile.AgentName}"
+                }
+            };
+        }
+
         private async Task<List<ResourceProviderGetResult<AgentFileToolAssociation>>> LoadAgentFileToolAssociations(
             ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
-            var attachmentResourceProvider = GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Attachment);
+            if (!ResourcePath.TryParse(
+                $"/instances/{_instanceSettings.Id}/providers/{_name}/{AgentResourceTypeNames.Agents}/{resourcePath.MainResourceId}/{AgentResourceTypeNames.AgentFiles}",
+                [_name],
+                AgentResourceProviderMetadata.AllowedResourceTypes,
+                false,
+                out var agentFilesResourcePath))
+                throw new ResourceProviderException("The object definition is invalid.",
+                    StatusCodes.Status400BadRequest);
 
-            var allPrivateFiles = await attachmentResourceProvider.GetResourcesAsync<AgentPrivateFile>(
-                _instanceSettings.Id, userIdentity, new ResourceProviderGetOptions { LoadContent = false });
+            var agentFileResources = await LoadAgentFiles(agentFilesResourcePath!, userIdentity, new ResourceProviderGetOptions() { LoadContent = false });
+            var agentFiles = agentFileResources.Select(x => x.Resource).ToList();
 
-            var agentObjectId = $"/instances/{_instanceSettings.Id}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/agents/{resourcePath.MainResourceId}";
-
-            var agentPrivateFiles = allPrivateFiles.Where(x => x.Resource.AgentObjectId == agentObjectId).Select(x => x.Resource).ToList();
-
-            var filePath = $"/{_name}/{resourcePath.MainResourceId!}Associations.json";
-            var fileExists = await _storageService.FileExistsAsync(_storageContainerName, filePath, default);
-
-            if (!fileExists)
-            {
-                await _storageService.WriteFileAsync(_storageContainerName, filePath,
-                    JsonSerializer.Serialize(new List<AgentFileToolAssociation>()), default, default);
-            }
+            var filePath = $"/{_name}/{_instanceSettings.Id}/{resourcePath.MainResourceId!}/Associations.json";
+            await EnsureAgentFileToolAssociationsFileExists(filePath);
 
             var fileContent = await _storageService.ReadFileAsync(_storageContainerName, filePath, default);
             var existingAssociations = JsonSerializer.Deserialize<List<AgentFileToolAssociation>>(Encoding.UTF8.GetString(fileContent.ToArray()))!;
 
-            foreach(var agentPrivateFile in agentPrivateFiles)
+            foreach(var agentFile in agentFiles)
             {
-                if (!existingAssociations.Any(x => x.FileObjectId == agentPrivateFile.ObjectId))
+                if (!existingAssociations.Any(x => x.FileObjectId == agentFile.ObjectId))
                 {
                     existingAssociations.Add(new AgentFileToolAssociation()
                     {
-                        FileObjectId = agentPrivateFile.ObjectId!,
+                        FileObjectId = agentFile.ObjectId!,
                         AssociatedResourceObjectIds = [],
                         Name = Guid.NewGuid().ToString()
                     });
                 }
             }
 
-            return existingAssociations.Select(fileToolAssociation => new ResourceProviderGetResult<AgentFileToolAssociation>()
+            return existingAssociations.Select(fileToolAssociation =>
+            new ResourceProviderGetResult<AgentFileToolAssociation>()
             {
+                Resource = fileToolAssociation,
                 Actions = [],
-                Roles = [],
-                Resource = fileToolAssociation
+                Roles = []
             }).ToList();
         }
 
@@ -562,14 +695,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 ?? throw new ResourceProviderException("The object definition is invalid.",
                     StatusCodes.Status400BadRequest);
 
-            var filePath = $"/{_name}/{resourcePath.MainResourceId!}Associations.json";
-            var fileExists = await _storageService.FileExistsAsync(_storageContainerName, filePath, default);
-
-            if (!fileExists)
-            {
-                await _storageService.WriteFileAsync(_storageContainerName, filePath,
-                    JsonSerializer.Serialize(new List<AgentFileToolAssociation>()), default, default);
-            }
+            var filePath = $"/{_name}/{_instanceSettings.Id}/{resourcePath.MainResourceId!}/Associations.json";
+            await EnsureAgentFileToolAssociationsFileExists(filePath);
 
             var fileContent = await _storageService.ReadFileAsync(_storageContainerName, filePath, default);
             var existingAssociations = JsonSerializer.Deserialize<List<AgentFileToolAssociation>>(Encoding.UTF8.GetString(fileContent.ToArray()))!;
@@ -645,7 +772,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             return new ResourceProviderUpsertResult()
             {
                 ObjectId = resourcePath.RawResourcePath,
-                ResourceExists = fileExists,
+                ResourceExists = true,
                 Resource = new AgentFileToolAssociationResult()
                 {
                     Success = errors.Count == 0,
@@ -653,6 +780,15 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     AgentFileToolAssociations = existingAssociations,
                 }
             };
+        }
+
+        private async Task EnsureAgentFileToolAssociationsFileExists(string filePath)
+        {
+            var fileExists = await _storageService.FileExistsAsync(_storageContainerName, filePath, default);
+
+            if (!fileExists)
+                await _storageService.WriteFileAsync(_storageContainerName, filePath,
+                    JsonSerializer.Serialize(new List<AgentFileToolAssociation>()), default, default);
         }
 
         private async Task AddFileToolAssociation(
@@ -1023,6 +1159,10 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 throw new OrchestrationException($"The removal of file id {fileId} from the code interpreter resources for assistant with id {assistantId} failed.");
             return removalSuccess;
         }
+
+        private static string GetFileExtension(string fileName) =>
+            Path.GetExtension(fileName);
+
         #endregion
     }
 }
