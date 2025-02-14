@@ -18,7 +18,6 @@ using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
-using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.Vectorization;
@@ -27,7 +26,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Graph.Models;
 using System.Data;
 using System.Text;
 using System.Text.Json;
@@ -196,7 +194,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
         {
-            switch (resourcePath.MainResourceTypeName)
+            switch (resourcePath.ResourceTypeName)
             {
                 case AgentResourceTypeNames.Agents:
                 case AgentResourceTypeNames.Workflows:
@@ -541,7 +539,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
         {
             var agentFiles = new List<AgentFileReference>();
 
-            if (resourcePath.ResourceTypeInstances[0].ResourceId != null)
+            if (resourcePath.ResourceId != null)
                 agentFiles = [await _cosmosDBService.GetAgentFile(_instanceSettings.Id, resourcePath.MainResourceId!, resourcePath.ResourceId!)];
             else
                 agentFiles = await _cosmosDBService.GetAgentFiles(_instanceSettings.Id, resourcePath.MainResourceId!);
@@ -556,7 +554,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 Roles = [],
                 Actions = []
             }).ToList();
-            }
+        }
 
         private async Task<AgentFile> LoadAgentFile(AgentFileReference agentFileReference, bool loadContent = false)
         {
@@ -567,7 +565,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 DisplayName = agentFileReference.OriginalFilename,
                 Type = agentFileReference.Type,
                 ContentType = agentFileReference.ContentType,
-                AgentObjectId = $"/instance/{agentFileReference.InstanceId}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentFileReference.AgentName}"
+                AgentObjectId = ResourcePath.GetObjectId(agentFileReference.InstanceId, _name, AgentResourceTypeNames.Agents, agentFileReference.AgentName)
             };
 
             if (loadContent)
@@ -636,7 +634,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     DisplayName = formFile.FileName,
                     Type = agentPrivateFile.Type,
                     ContentType = agentPrivateFile.ContentType,
-                    AgentObjectId = $"/instance/{agentPrivateFile.InstanceId}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentPrivateFile.AgentName}"
+                    AgentObjectId = ResourcePath.GetObjectId(agentPrivateFile.InstanceId, _name, AgentResourceTypeNames.Agents, agentPrivateFile.AgentName)
                 }
             };
         }
@@ -662,7 +660,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             var fileContent = await _storageService.ReadFileAsync(_storageContainerName, filePath, default);
             var existingAssociations = JsonSerializer.Deserialize<List<AgentFileToolAssociation>>(Encoding.UTF8.GetString(fileContent.ToArray()))!;
 
-            foreach(var agentFile in agentFiles)
+            foreach (var agentFile in agentFiles)
             {
                 if (!existingAssociations.Any(x => x.FileObjectId == agentFile.ObjectId))
                 {
@@ -768,6 +766,13 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     }
                 }
             }
+
+            await _storageService.WriteFileAsync(
+                _storageContainerName,
+                filePath,
+                JsonSerializer.Serialize(existingAssociations),
+                default,
+                default);
 
             return new ResourceProviderUpsertResult()
             {
