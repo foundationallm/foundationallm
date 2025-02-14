@@ -613,8 +613,8 @@ export default {
 				errors.push('Please give the data source a name.');
 			}
 			if (this.nameValidationStatus === 'invalid') {
-                errors.push(this.validationMessage);
-            }
+				errors.push(this.validationMessage);
+			}
 
 			if (!this.dataSource.type) {
 				errors.push('Please specify a data source type.');
