@@ -153,7 +153,7 @@ namespace FoundationaLLM.Core.Examples.Services
         {
             SearchIndexClient indexClient = await GetIndexClient(indexProfile);
 
-            return indexClient.GetSearchClient(indexProfile.Settings["IndexName"]);
+            return indexClient.GetSearchClient(indexProfile.Settings["index_name"]);
         }
 
         public async Task<SearchResults<object>> PerformQuerySearch(IndexingProfile indexProfile, string query)
@@ -239,7 +239,7 @@ namespace FoundationaLLM.Core.Examples.Services
                 if (deleteIndex)
                 {
                     SearchIndexClient indexClient = await GetIndexClient(indexingProfile);
-                    await indexClient.DeleteIndexAsync(indexingProfile.Settings["IndexName"]);
+                    await indexClient.DeleteIndexAsync(indexingProfile.Settings["index_name"]);
                 }
             }
 

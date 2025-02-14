@@ -36,3 +36,4 @@ class CompletionResponse(BaseModel):
     total_tokens: int = 0
     total_cost: float = 0.0
     errors: Optional[List[str]] = []
+    is_error: bool = False
