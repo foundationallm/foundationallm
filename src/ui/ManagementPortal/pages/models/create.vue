@@ -21,7 +21,7 @@
 			</template>
 
 			<!-- Name -->
-			<div class="step-header span-2">What is the model name?</div>
+			<div class="step-header span-2">What would you like the model display name to be?</div>
 			<div class="span-2">
 				<div id="aria-source-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
@@ -77,6 +77,36 @@
 					option-value="object_id"
 					placeholder="--Select--"
 				/>
+			</div>
+
+			<!-- deployment name -->
+			<div class="step-header span-2">What is the model deployment name?</div>
+			<div class="span-2">
+				<div id="aria-deployment-name" class="mb-2">Model deployment name:</div>
+				<div id="aria-deployment-name-desc" class="mb-2">
+					Depending on the service, this may be deployment name or the model name that includes the version.
+				</div>
+				<InputText
+						v-model="aiModel.deployment_name"						
+						type="text"
+						class="w-100"
+						placeholder="Enter the model deployment name"
+						aria-labelledby="aria-deployment-name aria-deployment-name-desc"
+						
+					/>
+			</div>
+
+			<!-- Model Version -->
+			<div class="step-header span-2">What is the model version?</div>
+			<div class="span-2">
+				<div id="aria-model-version" class="mb-2">Model version:</div>				
+				<InputText
+						v-model="aiModel.version"						
+						type="text"
+						class="w-100"
+						placeholder="Enter the model version"
+						aria-labelledby="aria-deployment-version"						
+					/>
 			</div>
 
 			<!-- Model parameters -->
@@ -140,8 +170,8 @@ export default {
 				// object_id: '',
 				endpoint_object_id: '' as string,
 				// display_name: '' as string,
-				// deployment_name: 'completions4' as string,
-				// version: '0.0' as string,
+				deployment_name: '' as string,
+				version: '' as string,
 				model_parameters: {} as object,
 			},
 
@@ -240,6 +270,14 @@ export default {
 
 			if (!this.aiModel.endpoint_object_id) {
 				errors.push('Please specify an AI model endpoint.');
+			}
+
+			if (!this.aiModel.deployment_name) {
+				errors.push('Please specify an AI model deployment name.');
+			}
+
+			if (!this.aiModel.version) {
+				errors.push('Please specify an AI model version.');
 			}
 
 			if (errors.length > 0) {
