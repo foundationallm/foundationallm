@@ -25,6 +25,10 @@
 							label: 'Agent',
 							value: `providers/FoundationaLLM.Agent/agents/${agentName}`,
 						},
+						{
+							label: 'Prompt',
+							value: `providers/FoundationaLLM.Prompt/prompts/${agentPrompt?.resource?.name}`,
+						},
 					]"
 				/>
 			</div>
@@ -1216,6 +1220,7 @@ const getDefaultFormValues = () => {
 		agentCapabilities: { label: 'None', value: null },
 
 		systemPrompt: defaultSystemPrompt as string,
+		agentPrompt: null as null | Prompt,
 
 		// orchestration_settings: {
 		// 	orchestrator: 'LangChain' as string,
@@ -1499,6 +1504,7 @@ export default {
 				this.loadingStatusText = `Retrieving prompt...`;
 				const prompt = await api.getPrompt(agent.prompt_object_id);
 				if (prompt && prompt.resource) {
+					this.agentPrompt = prompt;
 					this.systemPrompt = prompt.resource.prefix;
 				}
 			} else if (agent.workflow?.resource_object_ids) {
@@ -1511,6 +1517,7 @@ export default {
 				if (existingMainPrompt) {
 					const prompt = await api.getPrompt(existingMainPrompt.object_id);
 					if (prompt && prompt.resource) {
+						this.agentPrompt = prompt;
 						this.systemPrompt = prompt.resource.prefix;
 					}
 				}
