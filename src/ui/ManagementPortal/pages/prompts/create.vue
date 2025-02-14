@@ -14,6 +14,12 @@
 					}}
 				</div>
 			</div>
+
+			<!-- Edit access control -->
+			<AccessControl
+				v-if="editPrompt"
+				:scope="`providers/FoundationaLLM.Prompt/prompts/${prompt.name}`"
+			/>
 		</div>
 
 		<div class="steps" :class="{ 'steps--loading': loading }">
