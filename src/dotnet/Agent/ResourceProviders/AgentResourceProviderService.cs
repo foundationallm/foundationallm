@@ -541,7 +541,10 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         UPN = upn,
                         GroupIds = string.IsNullOrWhiteSpace(agent.VirtualSecurityGroupId)
                             ? []
-                            : [agent.VirtualSecurityGroupId],
+                            : [
+                                agent.VirtualSecurityGroupId,
+                                Common.Constants.Authentication.GroupIDs.AllAgentsVirtualSecurityGroup
+                            ],
                     }
                 };
             }
