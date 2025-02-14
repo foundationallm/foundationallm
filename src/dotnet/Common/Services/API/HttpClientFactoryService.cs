@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using FoundationaLLM.Common.Extensions;
 
 namespace FoundationaLLM.Common.Services.API
 {
@@ -46,7 +47,14 @@ namespace FoundationaLLM.Common.Services.API
         {
             var endpointConfiguration = await GetEndpoint(clientName, userIdentity);
 
-            return await CreateClient(endpointConfiguration, userIdentity);
+            var client = await CreateClient(endpointConfiguration, userIdentity);
+
+            if (!string.IsNullOrWhiteSpace(endpointConfiguration.StatusEndpoint))
+            {
+                client.SetStatusEndpoint(endpointConfiguration.StatusEndpoint);
+            }
+
+            return client;
         }
 
         /// <inheritdoc/>

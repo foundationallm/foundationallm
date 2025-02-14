@@ -1,5 +1,7 @@
-﻿using FoundationaLLM.Common.Clients;
+﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Infrastructure;
@@ -23,7 +25,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
     {
         readonly LangChainServiceSettings _settings;
         readonly ILogger<LangChainService> _logger;
-        private readonly UnifiedUserIdentity _userIdentity;
+        private readonly UnifiedUserIdentity? _userIdentity;
         private readonly IHttpClientFactoryService _httpClientFactoryService;
         readonly JsonSerializerOptions _jsonSerializerOptions;
 
@@ -38,8 +40,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         {
             _settings = options.Value;
             _logger = logger;
-            _userIdentity = callContext.CurrentUserIdentity
-                ?? throw new ArgumentException("The provided call context does not have a valid user identity.");
+            _userIdentity = callContext.CurrentUserIdentity;
             _httpClientFactoryService = httpClientFactoryService;
             _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
             _jsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
@@ -48,9 +49,31 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <inheritdoc/>
         public async Task<ServiceStatusInfo> GetStatus(string instanceId)
         {
-            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.LangChainAPI, _userIdentity);
+            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.LangChainAPI, ServiceContext.ServiceIdentity!);
+            var statusEndpoint = client.GetStatusEndpoint();
+
+            if (string.IsNullOrWhiteSpace(statusEndpoint))
+            {
+                return new ServiceStatusInfo
+                {
+                    Name = HttpClientNames.LangChainAPI,
+                    Status = ServiceStatuses.Warning,
+                    Message = "No status endpoint defined for the LangChain orchestration service."
+                };
+            }
+
             var responseMessage = await client.SendAsync(
-                new HttpRequestMessage(HttpMethod.Get, "status"));
+                new HttpRequestMessage(HttpMethod.Get, statusEndpoint));
+
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                return new ServiceStatusInfo
+                {
+                    Name = HttpClientNames.LangChainAPI,
+                    Status = ServiceStatuses.Error,
+                    Message = "The LangChain orchestration service is unavailable."
+                };
+            }
 
             var responseContent = await responseMessage.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<ServiceStatusInfo>(responseContent)!;
@@ -124,6 +147,10 @@ namespace FoundationaLLM.Orchestration.Core.Services
             string instanceId,
             LLMCompletionRequest? request = null)
         {
+            if (_userIdentity == null)
+            {
+                throw new ArgumentException("The provided call context does not have a valid user identity.");
+            }
             var operationStarterClient = await _httpClientFactoryService.CreateClient(HttpClientNames.LangChainAPI, _userIdentity);
             var operationRetrieverClient = await _httpClientFactoryService.CreateClient(HttpClientNames.StateAPI, _userIdentity);
 
