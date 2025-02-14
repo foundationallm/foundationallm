@@ -109,7 +109,6 @@
 import { hideAllPoppers } from 'floating-vue';
 import eventBus from '@/js/eventBus';
 import type { Session } from '@/js/types';
-import html2pdf from 'html2pdf.js';
 
 interface AgentDropdownOption {
 	label: string;
@@ -199,105 +198,8 @@ export default {
 			await this.$authStore.logout();
 		},
 
-		// convertKatexToSVG() {
-		// 	document.querySelectorAll('.katex').forEach((el) => {
-		// 		const math = el.getAttribute('data-math') || el.innerText;
-		// 		const svg = katex.renderToString(math, { displayMode: true, output: 'html' });
-		// 		el.innerHTML = svg;
-		// 	});
-		// },
-
-		// attachPDFStyles() {
-		// 	const pdfStyles = `
-		// 		body, html {
-		// 			margin: 0;
-		// 			padding: 0;
-		// 		}
-
-		// 		.chat-thread__messages {
-		// 			display: flex !important;
-		// 			height: auto !important;
-		// 			align-items: stretch !important;
-		// 		}
-
-		// 		* {
-		// 			overflow: visible !important;
-		// 			height: auto !important;
-		// 			print-color-adjust: exact;
-		// 		}
-
-		// 		.message__copy, .message__footer {
-		// 			display: none !important;
-		// 		}
-
-		// 		main, .chat-app {
-		// 			height: auto !important;
-		// 		}
-
-		// 		header, aside, footer, .chat-thread__input, .drop-files-here-container, .print-button {
-		// 			display: none !important;
-		// 		}
-
-		// 		.message-row {
-		// 			margin-bottom: 1rem;
-		// 		}
-
-		// 		.message__body {
-		// 			overflow-wrap: break-word !important;
-		// 			word-break: break-word !important;
-		// 			white-space: normal !important;
-		// 		}
-		// 	`;
-
-		// 	// Create a <style> tag
-		// 	const styleTag = document.createElement('style');
-		// 	styleTag.setAttribute('id', 'pdf-styles');
-		// 	styleTag.textContent = pdfStyles;
-
-		// 	// Append the <style> tag to the document head
-		// 	document.head.appendChild(styleTag);
-
-		// 	return styleTag;
-		// },
-
-		// removePDFStyles() {
-		// 	const styleTag = document.getElementById('pdf-styles');
-		// 	if (styleTag) {
-		// 		styleTag.remove();
-		// 	}
-		// },
-
-
-
 		handlePrint() {
-			// window.onbeforeprint = this.convertKatexToSVG;
 			window.print();
-			// const chatContainer = document.querySelector('.chat-thread__messages');
-
-			// // this.attachPDFStyles();
-
-			// const options = {
-			// 	margin: 10,
-			// 	filename: 'Chat_History.pdf',
-			// 	image: { type: 'jpeg', quality: 1 },
-			// 	html2canvas: {
-			// 		scale: 2,
-			// 		useCORS: true,
-			// 		allowTaint: true
-			// 	},
-			// 	jsPDF: {
-			// 		unit: 'mm',
-			// 		format: 'a4',
-			// 		orientation: 'portrait'
-			// 	}
-			// };
-
-			// html2pdf()
-			// 	.set(options)
-			// 	.from(chatContainer)
-			// 	.save();
-
-			// // this.removePDFStyles();
     	},
     
 		async setAgentOptions() {

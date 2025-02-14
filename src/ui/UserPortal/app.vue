@@ -180,37 +180,28 @@ main {
 		display: none !important;
 	}
 
-	// .katex, .katex-display {
-    //     font-size: 1em !important; /* Ensure font size is preserved */
-    //     display: block !important;
-    //     overflow: visible !important;
-	// 	break-inside: avoid !important;
-    // }
+	.katex {
+        font-size: inherit !important; /* Adjust font size to fit */
+        line-height: normal !important;
+    }
 
-    // .katex .base {
-    //     white-space: normal !important;
-    // }
+	.katex .vlist > span > span {
+        display: inline !important; /* Fixes spacing issue */
+    }
 
-    // .katex-display {
-    //     break-inside: avoid;
-    //     page-break-inside: avoid;
-    // }
+	.katex-display {
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        text-align: left !important; /* Ensure alignment */
+    }
 
-    // .katex .mord {
-    //     display: inline-block !important;
-    // }
-
-    // .katex .mfrac {
-    //     display: inline-block !important;
-    // }
-
-    // .katex .mspace {
-    //     width: auto !important;
-    // }
-
-    // .katex .hide-tail {
-    //     display: inline !important;
-    // }
+	.katex-block {
+        margin-top: 1rem !important;
+		margin-bottom: 1rem !important;
+        padding: 0 !important;
+        line-height: normal !important;
+    }
 }
 
 </style>
