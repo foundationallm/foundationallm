@@ -88,7 +88,7 @@
 				<!-- Name -->
 				<Column
 					field="display_name"
-					header="Name"
+					header="File Name"
 					:pt="{
 						headerCell: {
 							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -96,6 +96,21 @@
 						sortIcon: { style: { color: 'var(--primary-text)' } },
 					}"
 				></Column>
+
+				<Column
+					v-for="tool in tools"
+					:header="tool.name"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						sortIcon: { style: { color: 'var(--primary-text)' } },
+					}"
+				>
+					<template #body="{ data }">
+						<Checkbox v-model="checked" binary size="large" :aria-label="tool.name" @update:modelValue="handleAllowToolFileAccess(tool, data)"/>
+					</template>
+				</Column>
 
 				<!-- Delete -->
 				<Column
@@ -131,6 +146,11 @@ export default {
 	props: {
 		agentName: {
 			type: String,
+			required: true,
+		},
+
+		tools: {
+			type: Array,
 			required: true,
 		},
 	},
@@ -181,6 +201,7 @@ export default {
 				});
 			}
 		},
+
 		removeLocalFile(fileName) {
 			const fileIndex = this.agentFiles.localFiles.findIndex((file) => file.name === fileName);
 			if (fileIndex !== -1) {
@@ -345,6 +366,10 @@ export default {
 					}
 				}
 			});
+		},
+
+		handleAllowToolFileAccess(tool, file) {
+			console.log(tool, file);
 		},
 	},
 };
