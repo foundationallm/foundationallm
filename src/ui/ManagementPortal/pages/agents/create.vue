@@ -34,7 +34,7 @@
 			</div>
 		</div>
 
-		<div class="steps" :class="{ 'steps--loading': loading }">
+		<div class="steps">
 			<!-- Loading overlay -->
 			<template v-if="loading">
 				<div class="steps__loading-overlay" role="status" aria-live="polite">
@@ -2086,10 +2086,6 @@ export default {
 	position: relative;
 }
 
-.steps--loading {
-	pointer-events: none;
-}
-
 .steps__loading-overlay {
 	position: fixed;
 	top: 0;
@@ -2103,7 +2099,7 @@ export default {
 	gap: 16px;
 	z-index: 10;
 	background-color: rgba(255, 255, 255, 0.9);
-	pointer-events: none;
+	pointer-events: auto;
 }
 
 .step-section-header {
