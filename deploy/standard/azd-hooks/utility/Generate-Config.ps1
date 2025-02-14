@@ -241,6 +241,16 @@ $tokens.agentReaderGuid = $(New-Guid).Guid
 $tokens.promptReaderGuid = $(New-Guid).Guid
 $tokens.attachmentContributorGuid = $(New-Guid).Guid
 $tokens.conversationContributorGuid = $(New-Guid).Guid
+
+$tokens.openAiAssistantsReaderGuid = $(New-Guid).Guid
+$tokens.langGraphReactAgentReaderGuid = $(New-Guid).Guid
+$tokens.conversationContributorGuid2 = $(New-Guid).Guid
+$tokens.attachmentContributorGuid2 = $(New-Guid).Guid
+$tokens.configReadAccessGuid3 = $(New-Guid).Guid
+$tokens.configReadAccessGuid4 = $(New-Guid).Guid
+$tokens.pbacConversationsOwnerGuid = $(New-Guid).Guid
+$tokens.pbacConversationMappingsGuid = $(New-Guid).Guid
+
 $tokens.subscriptionId = $subscriptionId
 $tokens.storageResourceGroup = $resourceGroups.storage
 $tokens.opsResourceGroup = $resourceGroups.ops
