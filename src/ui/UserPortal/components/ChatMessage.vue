@@ -399,7 +399,7 @@ export default {
 		},
 	},
 
-	emits: ['rate'],
+	emits: ['rate', 'scroll-to-bottom'],
 
 	data() {
 		return {
@@ -483,6 +483,15 @@ export default {
 			deep: true,
 			handler() {
 				this.markSkippableContent();
+			},
+		},
+
+		isRenderingMessage: {
+			handler(newVal, oldVal) {
+				if (newVal === oldVal) return;
+				if (newVal) {
+					this.keepScrollingUntilCompleted();
+				}
 			},
 		},
 	},
@@ -796,6 +805,24 @@ export default {
 
 				fetchBlobUrl(content);
 			}
+		},
+
+		keepScrollingUntilCompleted() {
+			if (!this.isRenderingMessage) return;
+
+			this.$nextTick(() => {
+				const previousScrollHeight = this.$parent.$refs.messageContainer?.scrollHeight || 0;
+
+				setTimeout(() => {
+					const newScrollHeight = this.$parent.$refs.messageContainer?.scrollHeight || 0;
+					const contentGrowth = newScrollHeight - previousScrollHeight;
+
+					if (contentGrowth > 0) {
+						this.$emit('scroll-to-bottom', contentGrowth);
+					}
+					this.keepScrollingUntilCompleted();
+				}, 100);
+			});
 		},
 	},
 };

@@ -28,6 +28,7 @@
 						:show-word-animation="index === messages.length - 1 && message.sender !== 'User'"
 						role="log"
 						@rate="handleRateMessage($event.message)"
+						@scroll-to-bottom="scrollToBottom($event)"
 					/>
 				</template>
 
@@ -118,7 +119,7 @@ export default {
 			const sessionAgent = this.$appStore.getSessionAgent(newSession);
 			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
 			this.isLoading = false;
-			this.scrollToBottom();
+			this.scrollToBottom(0, true);
 		},
 
 		lastSelectedAgent(newAgent, oldAgent) {
@@ -220,9 +221,20 @@ export default {
 			// this.isMessagePending = false;
 		},
 
-		scrollToBottom() {
+		scrollToBottom(contentGrowth = 0, force = false) {
+			const container = this.$refs.messageContainer;
+			if (!container) return;
+
+			const previousScrollHeight = container.scrollHeight;
+			const previousScrollTop = container.scrollTop;
+			const isNearBottom = previousScrollTop + container.clientHeight + contentGrowth >= previousScrollHeight - 100;
+
 			this.$nextTick(() => {
-				this.$refs.messageContainer.scrollTop = this.$refs.messageContainer.scrollHeight;
+				const newScrollHeight = container.scrollHeight;
+
+				if (isNearBottom || force) {
+					container.scrollTop = newScrollHeight;
+				}
 			});
 		},
 	},
