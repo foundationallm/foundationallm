@@ -12,19 +12,6 @@ namespace FoundationaLLM.Agent.Models.Resources
     public class AgentReference : ResourceReference
     {
         /// <summary>
-        /// Gets or sets a dictionary of resource objects.
-        /// Currently used when associating an agent file resource with a tool.
-        /// </summary>
-        [JsonPropertyName("associated_resource_object_ids")]
-        public Dictionary<string, ResourceObjectIdProperties>? AssociatedResourceObjectIds { get; set; }
-
-        /// <summary>
-        /// When a file is used with the OpenAI assistants API tool, associate the file with the OpenAI file ID.
-        /// </summary>
-        [JsonPropertyName("openai_file_id")]
-        public string? OpenAIFileId { get; set; }
-
-        /// <summary>
         /// The object type of the agent.
         /// </summary>
         [JsonIgnore]
@@ -33,7 +20,6 @@ namespace FoundationaLLM.Agent.Models.Resources
             {
                 AgentTypes.Basic => typeof(AgentBase),
                 AgentTypes.KnowledgeManagement => typeof(KnowledgeManagementAgent),
-                AgentTypes.AgentFile => typeof(AgentFile),
                 AgentTypes.Workflow => typeof(Workflow),
                 AgentTypes.Tool => typeof(Tool),
                 _ => throw new ResourceProviderException($"The agent type {Type} is not supported.")

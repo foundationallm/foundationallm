@@ -9,9 +9,9 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
     public class AgentFileToolAssociationRequest
     {
         /// <summary>
-        /// The object ID of the the tool to associate with the agent file.
+        /// The agent file tool association matrix.
         /// </summary>
-        [JsonPropertyName("tool_object_id")]
-        public required string ToolObjectId { get; set; }
+        [JsonPropertyName("agent_file_tool_associations")]
+        public required Dictionary<string, Dictionary<string, bool>> AgentFileToolAssociations {  get; set; }
     }
 }

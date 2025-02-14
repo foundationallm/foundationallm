@@ -3,7 +3,7 @@
 namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
 {
     /// <summary>
-    /// Attachment resource.
+    /// Agent file resource.
     /// </summary>
     public class AgentFile : ResourceBase
     {
@@ -14,10 +14,10 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
         public override string? Type { get; set; } = nameof(AgentFile);
 
         /// <summary>
-        /// A list of tools (object IDs) that are associated with the file.
+        /// Agent object identifier.
         /// </summary>
-        [JsonPropertyName("tool_object_ids")]
-        public List<string> ToolObjectIds { get; set; } = new List<string>();
+        [JsonPropertyName("agent_object_id")]
+        public string? AgentObjectId { get; set; }
 
         /// <summary>
         /// File stream of the attachment contents.
