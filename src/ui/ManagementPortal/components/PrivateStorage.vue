@@ -372,7 +372,6 @@ export default {
 						this.fileToolAccess[fileId] = {};
 					}
 
-					const toolPrefix = `/instances/${this.$appConfigStore.instanceId}/providers/FoundationaLLM.Agent/tools`;
 					this.tools.forEach((tool) => {
 						this.fileToolAccess[fileId][this.toolNameToObjectId(tool)] = associatedTools.hasOwnProperty(this.toolNameToObjectId(tool));
 					});
