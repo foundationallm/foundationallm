@@ -426,6 +426,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 agentClientSecretKey.InstanceId,
                 agentClientSecretKey.ContextId,
                 agentClientSecretKey.Id);
+
+            await SendResourceProviderEvent(EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
 
         private async Task<AgentAccessTokenValidationResult> ValidateAgentAccessToken(
