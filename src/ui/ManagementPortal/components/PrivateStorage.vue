@@ -113,9 +113,7 @@
 					<template #body="{ data }">
 						<Checkbox
 							v-if="fileToolAccess[data.object_id] !== undefined"
-							v-model="
-								fileToolAccess[data.object_id][toolNameToObjectId(tool)]
-							"
+							v-model="fileToolAccess[data.object_id][toolNameToObjectId(tool)]"
 							binary
 							size="large"
 						/>
@@ -191,10 +189,7 @@ export default {
 		tools: {
 			type: Array,
 			required: false,
-			default: () => ([
-				'OpenAIAssistantsCodeInterpreter',
-				'OpenAIAssistantsFileSearch',
-			]),
+			default: () => ['OpenAIAssistantsCodeInterpreter', 'OpenAIAssistantsFileSearch'],
 		},
 	},
 
@@ -373,7 +368,8 @@ export default {
 					}
 
 					this.tools.forEach((tool) => {
-						this.fileToolAccess[fileId][this.toolNameToObjectId(tool)] = associatedTools.hasOwnProperty(this.toolNameToObjectId(tool));
+						this.fileToolAccess[fileId][this.toolNameToObjectId(tool)] =
+							associatedTools.hasOwnProperty(this.toolNameToObjectId(tool));
 					});
 				}
 			});
