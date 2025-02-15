@@ -155,6 +155,7 @@
 </template>
 
 <script lang="ts">
+import type { PropType } from 'vue';
 import api from '@/js/api';
 
 export default {
@@ -165,7 +166,7 @@ export default {
 		},
 
 		tools: {
-			type: Array,
+			type: Array as PropType<string[]>,
 			required: false,
 			default: () => ['OpenAIAssistantsCodeInterpreter', 'OpenAIAssistantsFileSearch'],
 		},
@@ -184,7 +185,11 @@ export default {
 				localFiles: [] as any[],
 				uploadedFiles: [] as any[],
 			},
-			fileToolAccess: {}, // { fileId: { toolId: boolean } }
+			fileToolAccess: {} as {
+				[key: string]: {
+					[key: string]: boolean;
+				};
+			},
 		};
 	},
 
@@ -345,7 +350,7 @@ export default {
 						this.fileToolAccess[fileId] = {};
 					}
 
-					this.tools.forEach((tool) => {
+					this.tools.forEach((tool: string) => {
 						this.fileToolAccess[fileId][this.toolNameToObjectId(tool)] =
 							associatedTools.hasOwnProperty(this.toolNameToObjectId(tool));
 					});
