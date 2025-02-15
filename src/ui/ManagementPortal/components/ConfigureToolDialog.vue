@@ -58,15 +58,15 @@
 
 		<div class="mt-6 mb-2 font-weight-bold">Tool resources:</div>
 		<ToolResourceTable
-			:resource-objects="toolObject.resource_object_ids"
-			@delete="handleDeleteResource"
+			:resources="toolObject.resource_object_ids"
+			@delete="handleDeleteToolResource"
 		/>
 
 		<CreateResourceObjectDialog
 			v-if="showCreateResourceObjectDialog"
 			:visible="showCreateResourceObjectDialog"
 			@update:visible="showCreateResourceObjectDialog = false"
-			@update:modelValue="handleAddResourceObject"
+			@update:modelValue="handleAddToolResource"
 		/>
 
 		<div class="d-flex justify-content-end mt-4">
@@ -177,18 +177,18 @@ export default {
 			this.toolObject.description = tool.description;
 		},
 
-		handleAddResourceObject(resourceObject) {
-			this.toolObject.resource_object_ids[resourceObject.object_id] = resourceObject;
+		handleAddToolResource(resourceToAdd) {
+			this.toolObject.resource_object_ids[resourceToAdd.object_id] = resourceToAdd;
 			this.showCreateResourceObjectDialog = false;
 
 		},
 
-		handleEditResourceObject(resourceObject) {
-			this.toolObject.resource_object_ids[resourceObject.object_id] = resourceObject;
-		},
+		// handleEditToolResource(resourceToEdit) {
+		// 	this.toolObject.resource_object_ids[resourceToEdit.object_id] = resourceToEdit;
+		// },
 
-		handleDeleteResource(resourceObject) {
-			delete this.toolObject.resource_object_ids[resourceObject.object_id];
+		handleDeleteToolResource(resourceToDelete) {
+			delete this.toolObject.resource_object_ids[resourceToDelete.object_id];
 		},
 
 		handleSave() {

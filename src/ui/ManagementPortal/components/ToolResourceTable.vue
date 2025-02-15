@@ -1,6 +1,6 @@
 <template>
 	<DataTable
-		:value="Object.keys(this.resourceObjects).map((key) => ({ key, value: this.resourceObjects[key] }))"
+		:value="Object.keys(this.resources).map((key) => ({ key, value: this.resources[key] }))"
 		:expandedRows="expandedRows"
 		dataKey="key"
 		striped-rows
@@ -105,7 +105,7 @@
 		<template #expansion="{ data }">
 			<div style="padding-left: 16px">
 				<div class="mb-2 font-weight-bold">{{ getResourceNameFromId(data.value.object_id) }} properties:</div>
-				<PropertyBuilder v-model="resourceObjects[data.value.object_id].properties" />
+				<PropertyBuilder v-model="resources[data.value.object_id].properties" />
 			</div>
 		</template>
 	</DataTable>
@@ -116,7 +116,7 @@ export default {
 	emits: ['delete'],
 
 	props: {
-		resourceObjects: {
+		resources: {
 			type: Object,
 			required: true,
 		},
