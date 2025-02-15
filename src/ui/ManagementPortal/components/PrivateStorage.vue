@@ -109,7 +109,11 @@
 					<template #body="{ data }">
 						<Checkbox
 							v-if="fileToolAccess[data.object_id] !== undefined"
-							v-model="fileToolAccess[data.object_id]['/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsCodeInterpreter']"
+							v-model="
+								fileToolAccess[data.object_id][
+									'/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsCodeInterpreter'
+								]
+							"
 							binary
 							size="large"
 							@change="handleAllowToolFileAccess(data.object_id)"
@@ -117,7 +121,7 @@
 					</template>
 				</Column>
 
-				<Column 
+				<Column
 					header="Open AI Assistants File Search"
 					:pt="{
 						headerCell: {
@@ -129,7 +133,11 @@
 					<template #body="{ data }">
 						<Checkbox
 							v-if="fileToolAccess[data.object_id] !== undefined"
-							v-model="fileToolAccess[data.object_id]['/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch']"
+							v-model="
+								fileToolAccess[data.object_id][
+									'/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch'
+								]
+							"
 							binary
 							size="large"
 							@change="handleAllowToolFileAccess(data.object_id)"
@@ -356,12 +364,19 @@ export default {
 					if (!this.fileToolAccess[fileId]) {
 						this.fileToolAccess[fileId] = {};
 					}
-					this.fileToolAccess[fileId][`/instances/${ this.$appConfigStore.instanceId }/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsCodeInterpreter`] = associatedTools.hasOwnProperty(`/instances/${ this.$appConfigStore.instanceId }/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsCodeInterpreter`);
-					this.fileToolAccess[fileId][`/instances/${ this.$appConfigStore.instanceId }/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch`] = associatedTools.hasOwnProperty(`/instances/${ this.$appConfigStore.instanceId }/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch`);
+					this.fileToolAccess[fileId][
+						`/instances/${this.$appConfigStore.instanceId}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsCodeInterpreter`
+					] = associatedTools.hasOwnProperty(
+						`/instances/${this.$appConfigStore.instanceId}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsCodeInterpreter`,
+					);
+					this.fileToolAccess[fileId][
+						`/instances/${this.$appConfigStore.instanceId}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch`
+					] = associatedTools.hasOwnProperty(
+						`/instances/${this.$appConfigStore.instanceId}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch`,
+					);
 				}
 			});
 		},
-
 
 		handleUpload() {
 			this.loadingModalStatusText =
@@ -420,33 +435,32 @@ export default {
 		async handleAllowToolFileAccess() {
 			const payload = {
 				agent_file_tool_associations: { ...this.fileToolAccess },
-			}
-
+			};
 
 			try {
 				const response = await api.updateFileToolAssociations(this.agentName, payload);
 				if (response.resource.success) {
 					this.$toast.add({
-						severity: "success",
-						summary: "Updated",
-						detail: "File tool association updated successfully.",
+						severity: 'success',
+						summary: 'Updated',
+						detail: 'File tool association updated successfully.',
 						life: 3000,
 					});
 				} else {
 					this.getPrivateAgentFileToolAssociations();
 					this.$toast.add({
-						severity: "error",
-						summary: "Update Failed",
-						detail: "Failed to update tool associations.",
+						severity: 'error',
+						summary: 'Update Failed',
+						detail: 'Failed to update tool associations.',
 						life: 5000,
 					});
 				}
 			} catch (error) {
-				console.error("Error updating tool associations:", error);
+				console.error('Error updating tool associations:', error);
 				this.$toast.add({
-					severity: "error",
-					summary: "Update Failed",
-					detail: "Failed to update tool associations.",
+					severity: 'error',
+					summary: 'Update Failed',
+					detail: 'Failed to update tool associations.',
 					life: 5000,
 				});
 			}
