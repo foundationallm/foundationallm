@@ -103,6 +103,7 @@
 				<!-- Tools -->
 				<Column
 					v-for="tool in tools"
+					:key="tool"
 					:header="tool"
 					:pt="{
 						headerCell: {
