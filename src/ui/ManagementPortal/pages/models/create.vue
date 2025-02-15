@@ -84,29 +84,29 @@
 			<div class="span-2">
 				<div id="aria-deployment-name" class="mb-2">Model deployment name:</div>
 				<div id="aria-deployment-name-desc" class="mb-2">
-					Depending on the service, this may be the deployment name or the model name that includes the version.
+					Depending on the service, this may be the deployment name or the model name that includes
+					the version.
 				</div>
 				<InputText
-						v-model="aiModel.deployment_name"						
-						type="text"
-						class="w-100"
-						placeholder="Enter the model deployment name"
-						aria-labelledby="aria-deployment-name aria-deployment-name-desc"
-						
-					/>
+					v-model="aiModel.deployment_name"
+					type="text"
+					class="w-100"
+					placeholder="Enter the model deployment name"
+					aria-labelledby="aria-deployment-name aria-deployment-name-desc"
+				/>
 			</div>
 
 			<!-- Model Version -->
 			<div class="step-header span-2">What is the model version?</div>
 			<div class="span-2">
-				<div id="aria-model-version" class="mb-2">Model version:</div>				
+				<div id="aria-model-version" class="mb-2">Model version:</div>
 				<InputText
-						v-model="aiModel.version"						
-						type="text"
-						class="w-100"
-						placeholder="Enter the model version"
-						aria-labelledby="aria-deployment-version"						
-					/>
+					v-model="aiModel.version"
+					type="text"
+					class="w-100"
+					placeholder="Enter the model version"
+					aria-labelledby="aria-deployment-version"
+				/>
 			</div>
 
 			<!-- Model parameters -->
