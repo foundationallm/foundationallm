@@ -100,6 +100,7 @@
 					}"
 				></Column>
 
+				<!-- Tools -->
 				<Column
 					v-for="tool in tools"
 					:header="tool"
@@ -119,30 +120,6 @@
 						/>
 					</template>
 				</Column>
-
-				<!-- <Column
-					header="Open AI Assistants File Search"
-					:pt="{
-						headerCell: {
-							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
-						},
-						sortIcon: { style: { color: 'var(--primary-text)' } },
-					}"
-				>
-					<template #body="{ data }">
-						<Checkbox
-							v-if="fileToolAccess[data.object_id] !== undefined"
-							v-model="
-								fileToolAccess[data.object_id][
-									'/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch'
-								]
-							"
-							binary
-							size="large"
-							@change="handleAllowToolFileAccess(data.object_id)"
-						/>
-					</template>
-				</Column> -->
 
 				<!-- Delete -->
 				<Column
