@@ -129,6 +129,7 @@ export default {
 			immediate: true,
 			deep: true,
 			handler() {
+				if (JSON.stringify(this.modelValue) === JSON.stringify(this.properties)) return;
 				this.properties = this.modelValue;
 			},
 		},
