@@ -98,8 +98,7 @@
 				></Column>
 
 				<Column
-					v-for="tool in tools"
-					:header="tool.name"
+					header="Open AI Assistants Code Interpreter"
 					:pt="{
 						headerCell: {
 							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -108,7 +107,33 @@
 					}"
 				>
 					<template #body="{ data }">
-						<Checkbox v-model="checked" binary size="large" :aria-label="tool.name" @update:modelValue="handleAllowToolFileAccess(tool, data)"/>
+						<Checkbox
+							v-if="fileToolAccess[data.object_id] !== undefined"
+							v-model="fileToolAccess[data.object_id]['/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsCodeInterpreter']"
+							binary
+							size="large"
+							@change="handleAllowToolFileAccess(data.object_id)"
+						/>
+					</template>
+				</Column>
+
+				<Column 
+					header="Open AI Assistants File Search"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						sortIcon: { style: { color: 'var(--primary-text)' } },
+					}"
+				>
+					<template #body="{ data }">
+						<Checkbox
+							v-if="fileToolAccess[data.object_id] !== undefined"
+							v-model="fileToolAccess[data.object_id]['/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch']"
+							binary
+							size="large"
+							@change="handleAllowToolFileAccess(data.object_id)"
+						/>
 					</template>
 				</Column>
 
@@ -149,10 +174,10 @@ export default {
 			required: true,
 		},
 
-		tools: {
-			type: Array,
-			required: true,
-		},
+		// tools: {
+		// 	type: Array,
+		// 	required: true,
+		// },
 	},
 
 	data() {
@@ -168,6 +193,7 @@ export default {
 				localFiles: [] as any[],
 				uploadedFiles: [] as any[],
 			},
+			fileToolAccess: {}, // { fileId: { toolId: boolean } }
 		};
 	},
 
@@ -285,6 +311,7 @@ export default {
 		async openPrivateStorageDialog() {
 			this.loading = true;
 			await this.getPrivateAgentFiles();
+			await this.getPrivateAgentFileToolAssociations();
 			this.loading = false;
 			this.privateStorageDialogOpen = true;
 		},
@@ -313,6 +340,28 @@ export default {
 				(r) => r.resource,
 			);
 		},
+
+		async getPrivateAgentFileToolAssociations() {
+			const toolAssociations = await api.getPrivateStorageFileToolAssociations(this.agentName);
+
+			// Create an empty object to store tool permissions
+			this.fileToolAccess = {};
+
+			toolAssociations.forEach((association) => {
+				const fileId = association.resource.file_object_id; // Unique file ID
+				const associatedTools = association.resource.associated_resource_object_ids || {};
+
+				// Initialize file entry if not exists
+				if (!this.fileToolAccess[fileId]) {
+					if (!this.fileToolAccess[fileId]) {
+						this.fileToolAccess[fileId] = {};
+					}
+					this.fileToolAccess[fileId][`/instances/${ this.$appConfigStore.instanceId }/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsCodeInterpreter`] = associatedTools.hasOwnProperty(`/instances/${ this.$appConfigStore.instanceId }/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsCodeInterpreter`);
+					this.fileToolAccess[fileId][`/instances/${ this.$appConfigStore.instanceId }/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch`] = associatedTools.hasOwnProperty(`/instances/${ this.$appConfigStore.instanceId }/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch`);
+				}
+			});
+		},
+
 
 		handleUpload() {
 			this.loadingModalStatusText =
@@ -368,8 +417,39 @@ export default {
 			});
 		},
 
-		handleAllowToolFileAccess(tool, file) {
-			console.log(tool, file);
+		async handleAllowToolFileAccess() {
+			const payload = {
+				agent_file_tool_associations: { ...this.fileToolAccess },
+			}
+
+
+			try {
+				const response = await api.updateFileToolAssociations(this.agentName, payload);
+				if (response.resource.success) {
+					this.$toast.add({
+						severity: "success",
+						summary: "Updated",
+						detail: "File tool association updated successfully.",
+						life: 3000,
+					});
+				} else {
+					this.getPrivateAgentFileToolAssociations();
+					this.$toast.add({
+						severity: "error",
+						summary: "Update Failed",
+						detail: "Failed to update tool associations.",
+						life: 5000,
+					});
+				}
+			} catch (error) {
+				console.error("Error updating tool associations:", error);
+				this.$toast.add({
+					severity: "error",
+					summary: "Update Failed",
+					detail: "Failed to update tool associations.",
+					life: 5000,
+				});
+			}
 		},
 	},
 };

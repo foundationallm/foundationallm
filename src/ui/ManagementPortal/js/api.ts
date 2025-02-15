@@ -866,6 +866,22 @@ export default {
 		);
 	},
 
+	async getPrivateStorageFileToolAssociations(agentName) {
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFileToolAssociations?api-version=${this.apiVersion}`,
+		)) as Object[];
+	},
+
+	async updateFileToolAssociations(agentName: string, payload): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFileToolAssociations/1234abcd?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: JSON.stringify(payload),
+			},
+		);
+	},
+
 	/*
 		Agent Workflows
 	 */
