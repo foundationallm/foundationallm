@@ -79,12 +79,12 @@
 				/>
 			</div>
 
-			<!-- deployment name -->
+			<!-- Deployment name -->
 			<div class="step-header span-2">What is the model deployment name?</div>
 			<div class="span-2">
 				<div id="aria-deployment-name" class="mb-2">Model deployment name:</div>
 				<div id="aria-deployment-name-desc" class="mb-2">
-					Depending on the service, this may be deployment name or the model name that includes the version.
+					Depending on the service, this may be the deployment name or the model name that includes the version.
 				</div>
 				<InputText
 						v-model="aiModel.deployment_name"						
