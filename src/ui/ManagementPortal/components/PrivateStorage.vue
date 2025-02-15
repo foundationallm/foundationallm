@@ -83,8 +83,11 @@
 				</FileUpload>
 			</div>
 			<Divider />
-			<!-- Table -->
+
+			<!-- Files table -->
 			<DataTable :value="agentFiles.uploadedFiles">
+				<template #empty>There are no private storage files uploaded for this agent.</template>
+
 				<!-- Name -->
 				<Column
 					field="display_name"
@@ -98,7 +101,8 @@
 				></Column>
 
 				<Column
-					header="Open AI Assistants Code Interpreter"
+					v-for="tool in tools"
+					:header="tool"
 					:pt="{
 						headerCell: {
 							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -110,18 +114,15 @@
 						<Checkbox
 							v-if="fileToolAccess[data.object_id] !== undefined"
 							v-model="
-								fileToolAccess[data.object_id][
-									'/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsCodeInterpreter'
-								]
+								fileToolAccess[data.object_id][toolNameToObjectId(tool)]
 							"
 							binary
 							size="large"
-							@change="handleAllowToolFileAccess(data.object_id)"
 						/>
 					</template>
 				</Column>
 
-				<Column
+				<!-- <Column
 					header="Open AI Assistants File Search"
 					:pt="{
 						headerCell: {
@@ -143,7 +144,7 @@
 							@change="handleAllowToolFileAccess(data.object_id)"
 						/>
 					</template>
-				</Column>
+				</Column> -->
 
 				<!-- Delete -->
 				<Column
@@ -163,9 +164,14 @@
 						</Button>
 					</template>
 				</Column>
-				<template #empty>There are no private storage files uploaded for this agent.</template>
 			</DataTable>
+
+			<!-- Footer -->
 			<template #footer>
+				<!-- Save -->
+				<Button severity="primary" label="Save" @click="handleSaveFileToolAccess" />
+
+				<!-- Cancel -->
 				<Button label="Close" text @click="handleClosePrivateStorage" />
 			</template>
 		</Dialog>
@@ -182,10 +188,14 @@ export default {
 			required: true,
 		},
 
-		// tools: {
-		// 	type: Array,
-		// 	required: true,
-		// },
+		tools: {
+			type: Array,
+			required: false,
+			default: () => ([
+				'OpenAIAssistantsCodeInterpreter',
+				'OpenAIAssistantsFileSearch',
+			]),
+		},
 	},
 
 	data() {
@@ -209,14 +219,6 @@ export default {
 		isButtonVisible: function () {
 			return this.$appConfigStore.agentPrivateStoreFeatureFlag;
 		},
-	},
-
-	mounted() {
-		window.addEventListener('resize', this.handleResize);
-	},
-
-	beforeUnmount() {
-		window.removeEventListener('resize', this.handleResize);
 	},
 
 	methods: {
@@ -349,6 +351,11 @@ export default {
 			);
 		},
 
+		toolNameToObjectId(toolName: string): string {
+			const toolPrefix = `/instances/${this.$appConfigStore.instanceId}/providers/FoundationaLLM.Agent/tools`;
+			return `${toolPrefix}/${toolName}`;
+		},
+
 		async getPrivateAgentFileToolAssociations() {
 			const toolAssociations = await api.getPrivateStorageFileToolAssociations(this.agentName);
 
@@ -356,26 +363,58 @@ export default {
 			this.fileToolAccess = {};
 
 			toolAssociations.forEach((association) => {
-				const fileId = association.resource.file_object_id; // Unique file ID
+				const fileId = association.resource.file_object_id;
 				const associatedTools = association.resource.associated_resource_object_ids || {};
 
-				// Initialize file entry if not exists
+				// Initialize file entry if it does not exist
 				if (!this.fileToolAccess[fileId]) {
 					if (!this.fileToolAccess[fileId]) {
 						this.fileToolAccess[fileId] = {};
 					}
-					this.fileToolAccess[fileId][
-						`/instances/${this.$appConfigStore.instanceId}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsCodeInterpreter`
-					] = associatedTools.hasOwnProperty(
-						`/instances/${this.$appConfigStore.instanceId}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsCodeInterpreter`,
-					);
-					this.fileToolAccess[fileId][
-						`/instances/${this.$appConfigStore.instanceId}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch`
-					] = associatedTools.hasOwnProperty(
-						`/instances/${this.$appConfigStore.instanceId}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch`,
-					);
+
+					const toolPrefix = `/instances/${this.$appConfigStore.instanceId}/providers/FoundationaLLM.Agent/tools`;
+					this.tools.forEach((tool) => {
+						this.fileToolAccess[fileId][this.toolNameToObjectId(tool)] = associatedTools.hasOwnProperty(this.toolNameToObjectId(tool));
+					});
 				}
 			});
+		},
+
+		async handleSaveFileToolAccess() {
+			const payload = {
+				agent_file_tool_associations: { ...this.fileToolAccess },
+			};
+
+			this.loadingModalStatusText = 'Saving tool file access permisisons...';
+			this.modalLoading = true;
+			try {
+				const response = await api.updateFileToolAssociations(this.agentName, payload);
+				if (response.resource?.success) {
+					this.$toast.add({
+						severity: 'success',
+						summary: 'Updated',
+						detail: 'File tool association updated successfully.',
+						life: 3000,
+					});
+				} else {
+					this.getPrivateAgentFileToolAssociations();
+					this.$toast.add({
+						severity: 'error',
+						summary: 'Update Failed',
+						detail: 'Failed to update tool associations.',
+						life: 5000,
+					});
+				}
+			} catch (error) {
+				console.error('Error updating tool associations:', error);
+				this.$toast.add({
+					severity: 'error',
+					summary: 'Update Failed',
+					detail: 'Failed to update tool associations.',
+					life: 5000,
+				});
+			}
+			this.modalLoading = false;
 		},
 
 		handleUpload() {
@@ -430,40 +469,6 @@ export default {
 					}
 				}
 			});
-		},
-
-		async handleAllowToolFileAccess() {
-			const payload = {
-				agent_file_tool_associations: { ...this.fileToolAccess },
-			};
-
-			try {
-				const response = await api.updateFileToolAssociations(this.agentName, payload);
-				if (response.resource.success) {
-					this.$toast.add({
-						severity: 'success',
-						summary: 'Updated',
-						detail: 'File tool association updated successfully.',
-						life: 3000,
-					});
-				} else {
-					this.getPrivateAgentFileToolAssociations();
-					this.$toast.add({
-						severity: 'error',
-						summary: 'Update Failed',
-						detail: 'Failed to update tool associations.',
-						life: 5000,
-					});
-				}
-			} catch (error) {
-				console.error('Error updating tool associations:', error);
-				this.$toast.add({
-					severity: 'error',
-					summary: 'Update Failed',
-					detail: 'Failed to update tool associations.',
-					life: 5000,
-				});
-			}
 		},
 	},
 };
