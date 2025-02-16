@@ -300,10 +300,10 @@ export type AgentIndex = ResourceBase & {
 export type TextPartitioningProfile = ResourceBase & {
 	text_splitter: string;
 	settings: {
-		Tokenizer: string;
-		TokenizerEncoder: string;
-		ChunkSizeTokens: string;
-		OverlapSizeTokens: string;
+		tokenizer: string;
+		tokenizer_encoder: string;
+		chunk_size_tokens: string;
+		overlap_size_tokens: string;
 	};
 };
 
@@ -453,10 +453,10 @@ export type CreatePromptRequest = ResourceBase & {
 export type CreateTextPartitioningProfileRequest = ResourceBase & {
 	text_splitter: string;
 	settings: {
-		Tokenizer: string;
-		TokenizerEncoder: string;
-		ChunkSizeTokens: string;
-		OverlapSizeTokens: string;
+		tokenizer: string;
+		tokenizer_encoder: string;
+		chunk_size_tokens: string;
+		overlap_size_tokens: string;
 	};
 };
 
