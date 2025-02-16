@@ -586,17 +586,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 throw new ResourceProviderException("The attached file is not valid.",
                     StatusCodes.Status400BadRequest);
 
-            string? agentName = null;
-            if (formFile.Payload != null && formFile.Payload.TryGetValue(ResourceProviderFormPayloadKeys.AgentName, out var value))
-                agentName = value;
-
-            if (string.IsNullOrWhiteSpace(agentName))
-                throw new ResourceProviderException("The agent name is not valid.",
-                    StatusCodes.Status400BadRequest);
-
             var extension = GetFileExtension(formFile.FileName);
             var fullName = $"{resourcePath.ResourceId!}{extension}";
-            var filePath = $"/{_name}/{_instanceSettings.Id}/{agentName}/private-file-store/{fullName}";
+            var filePath = $"/{_name}/{_instanceSettings.Id}/{resourcePath.MainResourceId}/private-file-store/{fullName}";
 
             var agentPrivateFile = new AgentFileReference
             {
@@ -610,7 +602,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 Size = formFile.BinaryContent.Length,
                 UPN = userIdentity.UPN ?? string.Empty,
                 InstanceId = _instanceSettings.Id,
-                AgentName = agentName,
+                AgentName = resourcePath.MainResourceId!,
                 Deleted = false,
             };
 
