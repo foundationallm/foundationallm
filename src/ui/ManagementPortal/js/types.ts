@@ -170,6 +170,16 @@ export type AgentDataSource = ResourceBase & {
 	object_id: string;
 };
 
+export type FileToolAssociation = ResourceBase & {
+	file_object_id: string;
+	openai_file_id: string;
+	associated_resource_object_ids: {
+		[key: string]: {
+			properties: { [key: string]: any };
+		};
+	};
+};
+
 export type ExternalOrchestrationService = ResourceBase & {
 	category: string;
 	api_url_configuration_name: string;
@@ -343,33 +353,30 @@ export type CheckNameResponse = {
 export type FilterRequest = {
 	default?: boolean;
 };
-
-export type AgentGatekeeper = {};
-
-export type MockCreateAgentRequest = {
-	type: 'knowledge' | 'analytics';
-	storageSource: number;
-	indexSource: number;
-	processing: {
-		chunkSize: number;
-		overlapSize: number;
-	};
-	trigger: {
-		frequency: 'auto' | 'manual' | 'scheduled';
-	};
-	conversation_history: {
-		enabled: boolean;
-		max_history: number;
-	};
-	gatekeeper: {
-		use_system_setting: boolean;
-		options: {
-			content_safety: number;
-			data_protection: number;
-		};
-	};
-	prompt: string;
-};
+// export type MockCreateAgentRequest = {
+// 	type: 'knowledge' | 'analytics';
+// 	storageSource: number;
+// 	indexSource: number;
+// 	processing: {
+// 		chunkSize: number;
+// 		overlapSize: number;
+// 	};
+// 	trigger: {
+// 		frequency: 'auto' | 'manual' | 'scheduled';
+// 	};
+// 	conversation_history: {
+// 		enabled: boolean;
+// 		max_history: number;
+// 	};
+// 	gatekeeper: {
+// 		use_system_setting: boolean;
+// 		options: {
+// 			content_safety: number;
+// 			data_protection: number;
+// 		};
+// 	};
+// 	prompt: string;
+// };
 
 export type CreateAgentRequest = ResourceBase & {
 	type: 'knowledge-management' | 'analytics';
@@ -460,6 +467,16 @@ export type CreateTextPartitioningProfileRequest = ResourceBase & {
 		overlap_size_tokens: string;
 	};
 };
+
+export type UpdateAgentFileToolAssociationRequest = {
+	agent_file_tool_associations: {
+		[key: string]: {
+			[key: string]: boolean;
+		};
+	};
+};
+
+export type AgentGatekeeper = {};
 
 export type Role = {};
 
