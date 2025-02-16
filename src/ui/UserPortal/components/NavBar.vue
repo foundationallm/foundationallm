@@ -208,8 +208,8 @@ export default {
 
 		handlePrint() {
 			window.print();
-    },
-
+    	},
+    
 		async setAgentOptions() {
 			const isCurrentAgent = (agent): boolean  => {
 				return agent.resource.name === this.$appStore.getSessionAgent(this.currentSession)?.resource?.name;
