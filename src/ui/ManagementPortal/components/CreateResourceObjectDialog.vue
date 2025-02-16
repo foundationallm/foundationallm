@@ -153,11 +153,10 @@ export default {
 			if (resourceType === 'model') {
 				this.loadingStatusText = 'Loading models...';
 				apiMethod = api.getAIModels;
-			}
-			else if (resourceType === 'textEmbeddingProfile') {
+			} else if (this.resourceType === 'textEmbeddingProfile') {
 				this.loadingStatusText = 'Loading text embedding profiles...';
-				apiMethod = api.getTextEmbeddingProfiles;			
-			} else if (resourceType === 'indexingProfile') {
+				apiMethod = api.getTextEmbeddingProfiles;
+			} else if (this.resourceType === 'indexingProfile') {
 				this.loadingStatusText = 'Loading vector stores...';
 				apiMethod = api.getAgentIndexes;
 			} else if (resourceType === 'prompt') {
