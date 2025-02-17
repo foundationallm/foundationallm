@@ -1236,7 +1236,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                    default,
                 default);
 
-                await _resourceReferenceStore!.UpsertResourceReference(resourceReference);
+                await _resourceReferenceStore!.AddResourceReference(resourceReference);
 
                 // Add resource to cache if caching is enabled.
                 _resourceCache?.SetValue<T>(resourceReference, resource);
