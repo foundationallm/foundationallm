@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
 using System.Net.Http.Headers;
 using System.Text.Json;
-using FoundationaLLM.Common.Extensions;
 
 namespace FoundationaLLM.Common.Services.API
 {
@@ -48,11 +47,6 @@ namespace FoundationaLLM.Common.Services.API
             var endpointConfiguration = await GetEndpoint(clientName, userIdentity);
 
             var client = await CreateClient(endpointConfiguration, userIdentity);
-
-            if (!string.IsNullOrWhiteSpace(endpointConfiguration.StatusEndpoint))
-            {
-                client.SetStatusEndpoint(endpointConfiguration.StatusEndpoint);
-            }
 
             return client;
         }
@@ -179,6 +173,27 @@ namespace FoundationaLLM.Common.Services.API
             }
 
             return httpClient;
+        }
+
+        public async Task<HttpClient> CreateClientForStatus(string clientName, UnifiedUserIdentity userIdentity)
+        {
+            var endpointConfiguration = await GetEndpoint(clientName, userIdentity);
+
+            var client = await CreateClient(endpointConfiguration, userIdentity);
+
+            if (client.BaseAddress == null)
+            {
+                throw new Exception($"The endpoint {clientName} does not have a base URL configured.");
+            }
+
+            if (string.IsNullOrWhiteSpace(endpointConfiguration.StatusEndpoint))
+            {
+                throw new Exception($"The endpoint {clientName} does not have a status endpoint configured.");
+            }
+
+            client.BaseAddress = new Uri(client.BaseAddress, endpointConfiguration.StatusEndpoint);
+
+            return client;
         }
 
         /// <inheritdoc/>

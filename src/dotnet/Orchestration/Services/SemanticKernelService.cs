@@ -43,21 +43,10 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <inheritdoc/>
         public async Task<ServiceStatusInfo> GetStatus(string instanceId)
         {
-            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.SemanticKernelAPI, ServiceContext.ServiceIdentity!);
-            var statusEndpoint = client.GetStatusEndpoint();
-
-            if (string.IsNullOrWhiteSpace(statusEndpoint))
-            {
-                return new ServiceStatusInfo
-                {
-                    Name = HttpClientNames.SemanticKernelAPI,
-                    Status = ServiceStatuses.Warning,
-                    Message = "No status endpoint defined for the Semantic Kernel orchestration service."
-                };
-            }
-
+            var client = await _httpClientFactoryService.CreateClientForStatus(HttpClientNames.SemanticKernelAPI, ServiceContext.ServiceIdentity!);
+            // Set the requestUri value to empty since we requested the status endpoint for this service.
             var responseMessage = await client.SendAsync(
-                new HttpRequestMessage(HttpMethod.Get, statusEndpoint)); ;
+                new HttpRequestMessage(HttpMethod.Get, ""));
 
             if (!responseMessage.IsSuccessStatusCode)
             {

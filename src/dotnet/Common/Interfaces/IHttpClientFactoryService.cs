@@ -44,6 +44,16 @@ namespace FoundationaLLM.Common.Interfaces
         Task<HttpClient> CreateClient(APIEndpointConfiguration endpointConfiguration, UnifiedUserIdentity? userIdentity);
 
         /// <summary>
+        /// Creates a <see cref="HttpClient"/> instance based on the client name and sets the base address to the status endpoint.
+        /// The client name must be registered in the <see cref="IHttpClientFactory"/> configuration.
+        /// </summary>
+        /// <param name="clientName">The name of the HTTP client to create. This name must be registered as an <see cref="APIEndpointConfiguration"/> resource in the FoundationaLLM.Configuration resource provider.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> of the caller requesting the client.</param>
+        /// <returns>An <see cref="HttpClient"/> instance.</returns>
+        /// <exception cref="Exception">When if the service base address is null or the status endpoint is null or empty.</exception>
+        Task<HttpClient> CreateClientForStatus(string clientName, UnifiedUserIdentity userIdentity);
+
+        /// <summary>
         /// Creates a new unregistered <see cref="HttpClient"/> instance with a timeout.
         /// </summary>
         /// <param name="timeout">The timeout for the <see cref="HttpClient"/>.

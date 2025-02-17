@@ -1,7 +1,6 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Infrastructure;
@@ -49,21 +48,10 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <inheritdoc/>
         public async Task<ServiceStatusInfo> GetStatus(string instanceId)
         {
-            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.LangChainAPI, ServiceContext.ServiceIdentity!);
-            var statusEndpoint = client.GetStatusEndpoint();
-
-            if (string.IsNullOrWhiteSpace(statusEndpoint))
-            {
-                return new ServiceStatusInfo
-                {
-                    Name = HttpClientNames.LangChainAPI,
-                    Status = ServiceStatuses.Warning,
-                    Message = "No status endpoint defined for the LangChain orchestration service."
-                };
-            }
-
+            var client = await _httpClientFactoryService.CreateClientForStatus(HttpClientNames.LangChainAPI, ServiceContext.ServiceIdentity!);
+            // Set the requestUri value to empty since we requested the status endpoint for this service.
             var responseMessage = await client.SendAsync(
-                new HttpRequestMessage(HttpMethod.Get, statusEndpoint));
+                new HttpRequestMessage(HttpMethod.Get, ""));
 
             if (!responseMessage.IsSuccessStatusCode)
             {
