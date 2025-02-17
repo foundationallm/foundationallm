@@ -100,6 +100,7 @@ export type Agent = ResourceBase & {
 	};
 
 	capabilities: string[];
+	virtual_security_group_id: string | null;
 	tools: AgentTool[];
 	workflow: AgentWorkflow;
 
@@ -161,6 +162,8 @@ export type Prompt = ResourceBase & {
 	suffix: string;
 	category: string;
 };
+
+export type Workflow = ResourceBase;
 
 export type AgentDataSource = ResourceBase & {
 	content_source: string;
@@ -261,7 +264,7 @@ export interface AppConfigBase extends ResourceBase {
 
 export interface AppConfig extends AppConfigBase {
 	type: 'appconfiguration-key-value';
-	content_type: '';
+	content_type: string;
 }
 
 export interface AppConfigKeyVault extends AppConfigBase {
@@ -298,10 +301,10 @@ export type AgentIndex = ResourceBase & {
 export type TextPartitioningProfile = ResourceBase & {
 	text_splitter: string;
 	settings: {
-		Tokenizer: string;
-		TokenizerEncoder: string;
-		ChunkSizeTokens: string;
-		OverlapSizeTokens: string;
+		tokenizer: string;
+		tokenizer_encoder: string;
+		chunk_size_tokens: string;
+		overlap_size_tokens: string;
 	};
 };
 
@@ -451,10 +454,10 @@ export type CreatePromptRequest = ResourceBase & {
 export type CreateTextPartitioningProfileRequest = ResourceBase & {
 	text_splitter: string;
 	settings: {
-		Tokenizer: string;
-		TokenizerEncoder: string;
-		ChunkSizeTokens: string;
-		OverlapSizeTokens: string;
+		tokenizer: string;
+		tokenizer_encoder: string;
+		chunk_size_tokens: string;
+		overlap_size_tokens: string;
 	};
 };
 
