@@ -20,12 +20,21 @@
 				<!-- Edit access control -->
 				<AccessControl
 					v-if="editAgent"
-					:scope="`providers/FoundationaLLM.Agent/agents/${agentName}`"
+					:scopes="[
+						{
+							label: 'Agent',
+							value: `providers/FoundationaLLM.Agent/agents/${agentName}`,
+						},
+						{
+							label: 'Prompt',
+							value: `providers/FoundationaLLM.Prompt/prompts/${agentPrompt?.resource?.name}`,
+						},
+					]"
 				/>
 			</div>
 		</div>
 
-		<div class="steps" :class="{ 'steps--loading': loading }">
+		<div class="steps">
 			<!-- Loading overlay -->
 			<template v-if="loading">
 				<div class="steps__loading-overlay" role="status" aria-live="polite">
@@ -935,8 +944,9 @@
 
 							<ConfigureToolDialog
 								v-if="toolToEdit?.name === data.name"
-								v-model="toolToEdit"
+								:model-value="toolToEdit"
 								:visible="!!toolToEdit"
+								:existing-tools="agentTools"
 								@update:visible="toolToEdit = null"
 								@update:modelValue="handleUpdateTool"
 							/>
@@ -971,6 +981,7 @@
 				<ConfigureToolDialog
 					v-if="showNewToolDialog"
 					:visible="!!showNewToolDialog"
+					:existing-tools="agentTools"
 					@update:visible="showNewToolDialog = false"
 					@update:modelValue="handleAddNewTool"
 				/>
@@ -1226,6 +1237,7 @@ const getDefaultFormValues = () => {
 		agentCapabilities: { label: 'None', value: null },
 
 		systemPrompt: defaultSystemPrompt as string,
+		agentPrompt: null as null | Prompt,
 
 		// orchestration_settings: {
 		// 	orchestrator: 'LangChain' as string,
@@ -1509,6 +1521,7 @@ export default {
 				this.loadingStatusText = `Retrieving prompt...`;
 				const prompt = await api.getPrompt(agent.prompt_object_id);
 				if (prompt && prompt.resource) {
+					this.agentPrompt = prompt;
 					this.systemPrompt = prompt.resource.prefix;
 				}
 			} else if (agent.workflow?.resource_object_ids) {
@@ -1521,6 +1534,7 @@ export default {
 				if (existingMainPrompt) {
 					const prompt = await api.getPrompt(existingMainPrompt.object_id);
 					if (prompt && prompt.resource) {
+						this.agentPrompt = prompt;
 						this.systemPrompt = prompt.resource.prefix;
 					}
 				}
@@ -1751,18 +1765,24 @@ export default {
 		},
 
 		handleAddNewTool(newTool) {
-			this.agentTools.push(newTool);
+			const index = this.agentTools.findIndex((tool) => tool.name === newTool.name);
+			if (index > -1) {
+				this.agentTools[index] = newTool;
+			} else {
+				this.agentTools.push(newTool);
+			}
+
 			this.showNewToolDialog = false;
 		},
 
 		handleUpdateTool(updatedTool) {
-			const index = this.agentTools.findIndex((tool) => tool.object_id === updatedTool.object_id);
+			const index = this.agentTools.findIndex((tool) => tool.name === updatedTool.name);
 			this.agentTools[index] = updatedTool;
 			this.toolToEdit = null;
 		},
 
 		handleRemoveTool(toolToRemove) {
-			const index = this.agentTools.findIndex((tool) => tool.object_id === toolToRemove.object_id);
+			const index = this.agentTools.findIndex((tool) => tool.name === toolToRemove.name);
 			this.agentTools.splice(index, 1);
 		},
 
@@ -1876,10 +1896,10 @@ export default {
 				text_splitter: 'TokenTextSplitter',
 				name: this.agentName,
 				settings: {
-					Tokenizer: 'MicrosoftBPETokenizer',
-					TokenizerEncoder: 'cl100k_base',
-					ChunkSizeTokens: this.chunkSize.toString(),
-					OverlapSizeTokens: this.overlapSize.toString(),
+					tokenizer: 'MicrosoftBPETokenizer',
+					tokenizer_encoder: 'cl100k_base',
+					chunk_size_tokens: this.chunkSize.toString(),
+					overlap_size_tokens: this.overlapSize.toString(),
 				},
 			};
 
@@ -2034,6 +2054,8 @@ export default {
 
 					workflow,
 
+					virtual_security_group_id: this.virtualSecurityGroupId,
+
 					text_rewrite_settings: {
 						user_prompt_rewrite_enabled: this.userPromptRewriteEnabled,
 						user_prompt_rewrite_settings: {
@@ -2094,10 +2116,6 @@ export default {
 	position: relative;
 }
 
-.steps--loading {
-	pointer-events: none;
-}
-
 .steps__loading-overlay {
 	position: fixed;
 	top: 0;
@@ -2111,7 +2129,7 @@ export default {
 	gap: 16px;
 	z-index: 10;
 	background-color: rgba(255, 255, 255, 0.9);
-	pointer-events: none;
+	pointer-events: auto;
 }
 
 .step-section-header {
