@@ -11455,6 +11455,26 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "setup-guides/agents/Agent_AccessToken.md",
+      "output": {
+        ".html": {
+          "relative_path": "setup-guides/agents/Agent_AccessToken.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "setup-guides/agents/agents_workflows.md",
+      "output": {
+        ".html": {
+          "relative_path": "setup-guides/agents/agents_workflows.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "setup-guides/agents/index.md",
       "output": {
         ".html": {
@@ -11479,6 +11499,186 @@
       "output": {
         "resource": {
           "relative_path": "setup-guides/agents/media/add-kv-reference.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_1.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_1.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_10.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_10.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_11.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_11.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_12.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_12.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_13.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_13.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_14.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_14.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_15.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_15.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_16.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_16.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_17.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_17.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_18.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_18.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_2.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_2.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_3.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_3.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_4.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_4.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_5.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_5.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_6.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_6.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_7.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_7.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_8.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_8.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/agents/media/agent_Workflow_9.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/agents/media/agent_Workflow_9.png"
         }
       },
       "version": ""
