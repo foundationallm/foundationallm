@@ -3,6 +3,7 @@ using FoundationaLLM.Agent.Models.Resources;
 using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
+using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.OpenAI;
@@ -170,6 +171,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         $"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest);
             };
+            await SendResourceProviderEvent(
+                    EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
 
         #endregion
@@ -205,16 +208,18 @@ namespace FoundationaLLM.Agent.ResourceProviders
             };
 
             agent.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
-
-            if ((agent is KnowledgeManagementAgent { Vectorization.DedicatedPipeline: true, InlineContext: false } kmAgent))
+      
+            if (agent is KnowledgeManagementAgent { Vectorization.DedicatedPipeline: true, InlineContext: false } kmAgent)
             {
+                // If the agent is new, create the associated vectorization pipeline in an active state so the initial population is done.
+                bool isPipelineActive = existingAgentReference is null;
                 var result = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Vectorization)
                     .HandlePostAsync(
                         $"/instances/{_instanceSettings.Id}/providers/{ResourceProviderNames.FoundationaLLM_Vectorization}/{VectorizationResourceTypeNames.VectorizationPipelines}/{kmAgent.Name}",
                         JsonSerializer.Serialize<VectorizationPipeline>(new VectorizationPipeline
                         {
                             Name = kmAgent.Name,
-                            Active = true,
+                            Active = isPipelineActive,
                             Description = $"Vectorization data pipeline dedicated to the {kmAgent.Name} agent.",
                             DataSourceObjectId = kmAgent.Vectorization.DataSourceObjectId!,
                             TextPartitioningProfileObjectId = kmAgent.Vectorization.TextPartitioningProfileObjectId!,
@@ -328,8 +333,12 @@ namespace FoundationaLLM.Agent.ResourceProviders
             }
 
             // Ensure the agent has a valid virtual security group identifier.
+            var virtualSecurityGroupGenerated = false;
             if (string.IsNullOrWhiteSpace(agent.VirtualSecurityGroupId))
+            {
                 agent.VirtualSecurityGroupId = Guid.NewGuid().ToString().ToLower();
+                virtualSecurityGroupGenerated = true;
+            }
 
             UpdateBaseProperties(agent, userIdentity, isNew: existingAgentReference == null);
             if (existingAgentReference == null)
@@ -337,11 +346,71 @@ namespace FoundationaLLM.Agent.ResourceProviders
             else
                 await SaveResource<AgentBase>(existingAgentReference, agent);
 
-            return new ResourceProviderUpsertResult
+            var upsertResult = new ResourceProviderUpsertResult
             {
                 ObjectId = agent!.ObjectId,
                 ResourceExists = existingAgentReference != null
             };
+
+            if (virtualSecurityGroupGenerated)
+            {
+                try
+                {
+                    // Assign the agent's virtual security group identifier read permissions to the agent and its prompt.
+                    var roleAssignmentName = Guid.NewGuid().ToString();
+                    var roleAssignmentDescription = $"Reader role for the {agent.Name} agent's virtual security group";
+                    var roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
+                        _instanceSettings.Id,
+                        new RoleAssignmentRequest()
+                        {
+                            Name = roleAssignmentName,
+                            Description = roleAssignmentDescription,
+                            ObjectId = $"/instances/{resourcePath.InstanceId}/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}/{roleAssignmentName}",
+                            PrincipalId = agent.VirtualSecurityGroupId,
+                            PrincipalType = PrincipalTypes.Group,
+                            RoleDefinitionId = $"/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleDefinitions}/{RoleDefinitionNames.Reader}",
+                            Scope = upsertResult.ObjectId
+                        },
+                        userIdentity);
+
+                    if (!roleAssignmentResult.Success)
+                    {
+                        _logger.LogWarning("Failed to assign the agent's virtual security group identifier read permissions to the agent {AgentName}.",
+                            agent.Name);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(agent.Workflow?.MainPromptObjectId))
+                    {
+                        roleAssignmentName = Guid.NewGuid().ToString();
+                        roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
+                            _instanceSettings.Id,
+                            new RoleAssignmentRequest()
+                            {
+                                Name = roleAssignmentName,
+                                Description = roleAssignmentDescription,
+                                ObjectId = $"/instances/{resourcePath.InstanceId}/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}/{roleAssignmentName}",
+                                PrincipalId = agent.VirtualSecurityGroupId,
+                                PrincipalType = PrincipalTypes.Group,
+                                RoleDefinitionId = $"/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleDefinitions}/{RoleDefinitionNames.Reader}",
+                                Scope = agent.Workflow.MainPromptObjectId
+                            },
+                            userIdentity);
+
+                        if (!roleAssignmentResult.Success)
+                        {
+                            _logger.LogWarning("Failed to assign the agent's virtual security group identifier read permissions to the prompt {PromptObjectId}.",
+                                agent.Workflow.MainPromptObjectId);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "An error occurred while assigning the agent's virtual security group identifier read permissions to the agent {AgentName}.and/or its prompt.",
+                        agent.Name);
+                }
+            }
+
+            return upsertResult;
         }
 
         private async Task<List<ResourceProviderGetResult<AgentAccessToken>>> LoadAgentAccessTokens(ResourcePath resourcePath)
@@ -424,6 +493,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 agentClientSecretKey.InstanceId,
                 agentClientSecretKey.ContextId,
                 agentClientSecretKey.Id);
+
+            await SendResourceProviderEvent(EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
 
         private async Task<AgentAccessTokenValidationResult> ValidateAgentAccessToken(
@@ -476,7 +547,10 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         UPN = upn,
                         GroupIds = string.IsNullOrWhiteSpace(agent.VirtualSecurityGroupId)
                             ? []
-                            : [agent.VirtualSecurityGroupId],
+                            : [
+                                agent.VirtualSecurityGroupId,
+                                Common.Constants.Authentication.GroupIDs.AllAgentsVirtualSecurityGroup
+                            ],
                     }
                 };
             }

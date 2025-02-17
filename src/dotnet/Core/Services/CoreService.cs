@@ -1054,13 +1054,16 @@ public partial class CoreService(
         var baseUrl = configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!;
         try
         {
-            var baseUrlOverride = await httpClientFactory.CreateClient<string?>(
-                HttpClientNames.CoreAPI,
-                callContext.CurrentUserIdentity!,
-                BuildClient);
-            if (!string.IsNullOrWhiteSpace(baseUrlOverride))
+            if (callContext.CurrentUserIdentity is {AssociatedWithAccessToken: false})
             {
-                baseUrl = baseUrlOverride;
+                var baseUrlOverride = await httpClientFactory.CreateClient<string?>(
+                    HttpClientNames.CoreAPI,
+                    callContext.CurrentUserIdentity!,
+                    BuildClient);
+                if (!string.IsNullOrWhiteSpace(baseUrlOverride))
+                {
+                    baseUrl = baseUrlOverride;
+                }
             }
         }
         catch (Exception e)
