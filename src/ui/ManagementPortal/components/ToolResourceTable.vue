@@ -104,7 +104,9 @@
 
 		<template #expansion="{ data }">
 			<div style="padding-left: 16px">
-				<div class="mb-2 font-weight-bold">{{ getResourceNameFromId(data.value.object_id) }} properties:</div>
+				<div class="mb-2 font-weight-bold">
+					{{ getResourceNameFromId(data.value.object_id) }} properties:
+				</div>
 				<PropertyBuilder v-model="resources[data.value.object_id].properties" />
 			</div>
 		</template>
@@ -143,7 +145,7 @@ export default {
 			} else if (type === 'aiModels') {
 				return 'AI Model';
 			} else if (type === 'textEmbeddingProfiles') {
-				return 'Embedding Profile';			
+				return 'Embedding Profile';
 			} else if (type === 'indexingProfiles') {
 				return 'Vector Store';
 			} else if (type === 'apiEndpointConfigurations') {

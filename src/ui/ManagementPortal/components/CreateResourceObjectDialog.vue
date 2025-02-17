@@ -94,7 +94,7 @@ export default {
 				},
 				{
 					label: 'Embedding profile',
-					value: 'textEmbeddingProfile'
+					value: 'textEmbeddingProfile',
 				},
 				{
 					label: 'Vector store',
@@ -138,7 +138,7 @@ export default {
 			} else if (type === 'aiModels') {
 				return 'model';
 			} else if (type === 'textEmbeddingProfiles') {
-				return 'textEmbeddingProfile';			
+				return 'textEmbeddingProfile';
 			} else if (type === 'indexingProfiles') {
 				return 'indexingProfile';
 			} else if (type === 'apiEndpointConfigurations') {
@@ -153,10 +153,9 @@ export default {
 			if (resourceType === 'model') {
 				this.loadingStatusText = 'Loading models...';
 				apiMethod = api.getAIModels;
-			}
-			else if (resourceType === 'textEmbeddingProfile') {
+			} else if (resourceType === 'textEmbeddingProfile') {
 				this.loadingStatusText = 'Loading text embedding profiles...';
-				apiMethod = api.getTextEmbeddingProfiles;			
+				apiMethod = api.getTextEmbeddingProfiles;
 			} else if (resourceType === 'indexingProfile') {
 				this.loadingStatusText = 'Loading vector stores...';
 				apiMethod = api.getAgentIndexes;
