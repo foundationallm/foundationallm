@@ -67,8 +67,11 @@ In this section, you can define the workflow of the agent. The workflow is a seq
 > Please check each section below for each type of agent to understand the differences in the configuration of the workflow.
 
 [LangchainExpressionLanguage](workflow_langchainexpressionlanguage.md)
+
 [OpenAIAssistants](workflow_openaiassistants.md)
+
 [LangGraphReactAgent](workflow_langgraphreact.md)
+
 [ExternalAgentWorkflow](workflow_external.md)
 
 ### Security Section
