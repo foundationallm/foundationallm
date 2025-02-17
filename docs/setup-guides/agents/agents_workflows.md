@@ -1,10 +1,23 @@
 # Agents and Workflows
 
-Foundationa**LLM** (FLLM) agents are the core of the solution. They are responsible for providing users with a customized experience based on its configuration.
+Foundationa**LLM** (FLLM) agents are the core of the platform solution. They are responsible for providing users with a customized experience based on its configuration.
 
 ## Creation of a new Agent
 
-To create a new agent, you can use the **Create Agent** hyperlink in the **Agents** section of the **Management Portal**. 
+To create a new agent, you can use the **Create New Agent** hyperlink in the **Agents** section of the **Management Portal**. 
+
+## What type of Agent are you interested in?
+
+FoundationaLLM allows you to create several types of agents depending on your needs. The following types of agents are available:
+
+- **LangChainExpressionLanguage**: This type of agent allows you to send your requests directly to an LLM to perform a wide range of tasks. These agents can be configured to use different models and prompts to provide customized responses to user requests.
+
+- **OpenAIAssistants**: This type of agent is based on the OpenAI Assistants framework and allows you to create agents that can perform a wide range of tasks using the OpenAI API. These agents can be configured to use different models, prompts, and tools to provide customized responses to user requests. They give you access to the main three tools in OpenAI Assistants - **Code Interpreter**, **File Search** and **Function Calling**.
+
+- **LangGraphReactAgent**: This type of agent is based on the LangGraph framework and allows you to create agents that can perform a wide range of tasks using the LangGraph API. These agents can be configured to use different models, prompts, and tools to provide customized responses to user requests. Currently, you have access to DALLE Image Generation tool to generate images and the FoundationaLLM Content Search Tool to search vectore stores predefined and vectorized through the FoundationaLLM vectorization services.
+
+- **ExternalAgentWorkflow**: This type of agent allows you to create agents that can use external workflows developed in Python. These agents can be configured to use different models, prompts, and tools to provide customized responses to user requests.
+
 
 ### The creation of a new agent consists of 5 sections:
 
@@ -50,32 +63,13 @@ The Gatekeeper also allows you to enable the Data Protection aspect of the agent
 
 In this section, you can define the workflow of the agent. The workflow is a sequence of steps that the agent follows to process user requests and provide responses. You can define the following aspects of the workflow:
 
-- **Workflow Type**: This setting allows you to choose the type of workflow for the agent. You can choose from the following options:
-  - **OpenAIAssistants**: Gives your agent the ability to take advantage of **Code Interpreter**, **File Search** and **Function Calling**.
-  - **LangGraphReactAgent**: Gives your agent the ability to dynamically choose a tool from a predefined toolset in LangGraph
-  - **ExternalAgentWorkflow**: Gives your agent the ability to use external workflows developed in Python and registered to be used by your Agent.
-- **Workflow name**: This setting allows you to define the name of the workflow for the agent. The name should be descriptive and reflect the purpose of the workflow.
-- **Workflow Package Name**: This setting allows you to define the name of the workflow package for the agent. The package name should be descriptive and reflect the purpose of the workflow.
-- **Workflow Host**: This setting allows you to define the host of the workflow for the agent. Currently the host is required to be **Langchain** for all OpenAIAssistants workflows.
-- **Workflow Main Model**: This setting allows you to define the main model of the workflow for the agent. The main model is the primary large language model (LLM) that the agent uses to generate responses. You can choose from any of the models deployed as part of your instance.
-- **Workflow Main Model Parameters**: This setting allows you to define the parameters of the main model for the agent. The parameters are the settings that control the behavior of the model, such as temperature, max tokens, and top_p. 
-- **Workflow Main Prompt**: This setting allows you to define the main prompt of the workflow for the agent. The main prompt is the definition of the persona of the agent and the instructions that it follows to generate responses.
+> [!NOTE]
+> Please check each section below for each type of agent to understand the differences in the configuration of the workflow.
 
-![Agent Workflow configuration](./media/agent_Workflow_3.png)
-
-### Tools Section
-
-In this section, you can define the tools that the agent can use to perform tasks and provide responses. The tools are external services or APIs that the agent can call to retrieve information or perform actions. 
-
-![Agent Tools configuration](./media/agent_Workflow_4.png)
-
-Currently, the following tools are available out of the box:
-- **DALLE3 Image Generator**
-
-![DALLE3 Tool configuration](./media/agent_Workflow_5.png)
-
-> [!Important]
-> The name of the tool HAS to be **DALLEImageGeneration** in order for the agent to be able to use it. The AI Model's Object role has to be **main_model** in the **Tool Resources** section.
+[LangchainExpressionLanguage](workflow_langchainexpressionlanguage.md)
+[OpenAIAssistants](workflow_openaiassistants.md)
+[LangGraphReactAgent](workflow_langgraphreact.md)
+[ExternalAgentWorkflow](workflow_external.md)
 
 ### Security Section
 
