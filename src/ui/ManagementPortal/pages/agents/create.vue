@@ -14,7 +14,7 @@
 			</div>
 
 			<div style="display: flex; align-items: center">
-				<!-- Private storage :tools="agentTools" -->
+				<!-- Private storage -->
 				<PrivateStorage v-if="hasOpenAIAssistantCapability" :agent-name="agentName" />
 
 				<!-- Edit access control -->
