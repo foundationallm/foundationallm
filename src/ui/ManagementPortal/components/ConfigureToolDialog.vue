@@ -170,33 +170,6 @@ export default {
 	},
 
 	methods: {
-<<<<<<< ours
-		getResourceNameFromId(resourceId) {
-			const parts = resourceId.split('/').filter(Boolean);
-			return parts.slice(-1)[0];
-		},
-
-		getResourceTypeFromId(resourceId) {
-			const parts = resourceId.split('/').filter(Boolean);
-			const type = parts.slice(-2)[0];
-
-			if (type === 'prompts') {
-				return 'Prompt';
-			} else if (type === 'aiModels') {
-				return 'AI Model';
-			} else if (type === 'textEmbeddingProfiles') {
-				return 'Embedding Profile';
-			} else if (type === 'indexingProfiles') {
-				return 'Vector Store';
-			} else if (type === 'apiEndpointConfigurations') {
-				return 'API Endpoint';
-			}
-
-			return type;
-		},
-
-=======
->>>>>>> theirs
 		handleToolSelection(event) {
 			const tool = this.toolOptions.find((tool) => tool.label === event.value)?.value;
 			this.toolObject.type = tool.type;
