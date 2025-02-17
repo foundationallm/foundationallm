@@ -179,7 +179,7 @@ public partial class CoreService(
                 completionRequest.AgentName!,
                 _userIdentity);
 
-            if (ReturnIfAgentExpired(agentBase, out var message))
+            if (AgentExpired(agentBase, out var message))
             {
                 return new LongRunningOperation
                 {
@@ -418,7 +418,7 @@ public partial class CoreService(
                 completionRequest.AgentName!,
                 _userIdentity);
 
-            if (ReturnIfAgentExpired(agentBase, out var message))
+            if (AgentExpired(agentBase, out var message))
             {
                 return new Message
                 {
@@ -482,7 +482,7 @@ public partial class CoreService(
                 directCompletionRequest.AgentName!,
                 _userIdentity);
 
-            if (ReturnIfAgentExpired(agentBase, out var message))
+            if (AgentExpired(agentBase, out var message))
             {
                 return new Message
                 {
@@ -1020,7 +1020,7 @@ public partial class CoreService(
         return request;
     }
 
-    private bool ReturnIfAgentExpired(AgentBase agentBase, out string message)
+    private bool AgentExpired(AgentBase agentBase, out string message)
     {
         // Check if the agent is expired.
         if (agentBase.ExpirationDate != null && agentBase.ExpirationDate < DateTime.UtcNow)
