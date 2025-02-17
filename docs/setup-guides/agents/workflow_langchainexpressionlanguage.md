@@ -1,4 +1,4 @@
-## LangChainExpressionLanguage Workflow
+## LangChain Expression Language Workflow
 
 > [!NOTE] 
 > This is a simple workflow that can be used to create an agent that passes requests directly to an LLM.
@@ -20,7 +20,7 @@ In this section, you can define the name, description and welcome message of the
 
 ![General Agent information](./media/agent_Workflow_1.png)
 
-### Knoweldge Source
+### Knowledge Source
 
 Choose `Yes` for the question **Does this agent have an inline context?**
 
