@@ -52,13 +52,16 @@ The Gatekeeper also allows you to enable the Data Protection aspect of the agent
 
 ### Workflow Section
 
-1- Choose `LangChainExpressionLanguage` from the dropdown for the question **What workflow should the agent use?**
-2- **Workflow name**: This setting allows you to define the name of the workflow for the agent. The name should be descriptive and reflect the purpose of the workflow.
-3- **Workflow Package Name**: This setting allows you to define the name of the workflow package for the agent. The package name should be descriptive and reflect the purpose of the workflow. Currently, the package name is set to `FoundationaLLM` as this is where the implementation of the workflow is located.
-4- **Workflow Host**: This setting allows you to define the host of the workflow for the agent. Currently the host is required to be **Langchain** for this workflow type. More orchestration types will be added in the future for workflows.
-5- **Workflow Main Model**: This setting allows you to define the main model of the workflow for the agent. The main model is the primary large language model (LLM) that the agent uses to generate responses. You can choose from any of the models deployed as part of your instance.
-6- **Workflow Main Model Parameters**: This setting allows you to define the parameters of the main model for the agent. The parameters are the settings that control the behavior of the model, such as temperature, max tokens, and top_p.  In this example, we can add `Temperature` with a value of `0`.
-7- **Workflow Main Prompt**: This setting allows you to define the main prompt of the workflow for the agent. The main prompt is the definition of the persona of the agent and the instructions that it follows to generate responses. In this example we can add `You are a helpful assistant capable of answering questions politely and accurately`
-8- No other setting is needed for this type of workflow.
-9- Click on `Create Agent` 
-10- Head over to the **Chat Portal**, choose your agent from the dropdown and start asking questions.
+1. Choose `LangChainExpressionLanguage` from the dropdown for the question **What workflow should the agent use?**
+
+2. **Workflow name**: This setting allows you to define the name of the workflow for the agent. The name should be descriptive and reflect the purpose of the workflow.
+
+3. **Workflow Package Name**: This setting allows you to define the name of the workflow package for the agent. The package name should be descriptive and reflect the purpose of the workflow. Currently, the package name is set to `FoundationaLLM` as this is where the implementation of the workflow is located.
+
+4. **Workflow Host**: This setting allows you to define the host of the workflow for the agent. Currently the host is required to be **Langchain** for this workflow type. More orchestration types will be added in the future for workflows.
+5. **Workflow Main Model**: This setting allows you to define the main model of the workflow for the agent. The main model is the primary large language model (LLM) that the agent uses to generate responses. You can choose from any of the models deployed as part of your instance.
+6. **Workflow Main Model Parameters**: This setting allows you to define the parameters of the main model for the agent. The parameters are the settings that control the behavior of the model, such as temperature, max tokens, and top_p.  In this example, we can add `Temperature` with a value of `0`.
+7. **Workflow Main Prompt**: This setting allows you to define the main prompt of the workflow for the agent. The main prompt is the definition of the persona of the agent and the instructions that it follows to generate responses. In this example we can add `You are a helpful assistant capable of answering questions politely and accurately`
+8. No other setting is needed for this type of workflow.
+9. Click on `Create Agent` 
+10. Head over to the **Chat Portal**, choose your agent from the dropdown and start asking questions.
