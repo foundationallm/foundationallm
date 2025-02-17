@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Orchestration_API_Controllers_StatusController" data-uid="FoundationaLLM.Orchestration.API.Controllers.StatusController" class="text-break">
-Class StatusController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/OrchestrationAPI/Controllers/StatusController.cs/#L10"><i class="bi bi-code-slash"></i></a>
+Class StatusController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/OrchestrationAPI/Controllers/StatusController.cs/#L12"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -104,6 +104,8 @@ Class StatusController  <a class="header-action link-secondary" title="View sour
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[ApiController]
 [Route(&quot;instances/{instanceId}/[controller]&quot;)]
+[Consumes(&quot;application/json&quot;, new string[] { })]
+[Produces(&quot;application/json&quot;, new string[] { })]
 public class StatusController : ControllerBase</code></pre>
   </div>
 
@@ -686,7 +688,7 @@ public class StatusController : ControllerBase</code></pre>
 
   <h3 id="FoundationaLLM_Orchestration_API_Controllers_StatusController__ctor_FoundationaLLM_Orchestration_Core_Interfaces_IOrchestrationService_" data-uid="FoundationaLLM.Orchestration.API.Controllers.StatusController.#ctor(FoundationaLLM.Orchestration.Core.Interfaces.IOrchestrationService)">
   StatusController(IOrchestrationService)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/OrchestrationAPI/Controllers/StatusController.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/OrchestrationAPI/Controllers/StatusController.cs/#L12"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Provides methods for checking the status of the service.</p>
@@ -723,7 +725,7 @@ public class StatusController : ControllerBase</code></pre>
 
   <h3 id="FoundationaLLM_Orchestration_API_Controllers_StatusController_Get_System_String_" data-uid="FoundationaLLM.Orchestration.API.Controllers.StatusController.Get(System.String)">
   Get(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/OrchestrationAPI/Controllers/StatusController.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/OrchestrationAPI/Controllers/StatusController.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the status of the Orchestration API service.</p>
@@ -731,8 +733,9 @@ public class StatusController : ControllerBase</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[HttpGet(Name = &quot;GetServiceStatus&quot;)]
-public Task&lt;IActionResult&gt; Get(string instanceId)</code></pre>
+    <pre><code class="lang-csharp hljs">[AllowAnonymous]
+[HttpGet(Name = &quot;GetServiceStatus&quot;)]
+public Task&lt;ServiceStatusInfo&gt; Get(string instanceId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -743,7 +746,7 @@ public Task&lt;IActionResult&gt; Get(string instanceId)</code></pre>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.iactionresult">IActionResult</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Infrastructure.ServiceStatusInfo.html">ServiceStatusInfo</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -761,7 +764,7 @@ public Task&lt;IActionResult&gt; Get(string instanceId)</code></pre>
 
   <h3 id="FoundationaLLM_Orchestration_API_Controllers_StatusController_Options" data-uid="FoundationaLLM.Orchestration.API.Controllers.StatusController.Options">
   Options()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/OrchestrationAPI/Controllers/StatusController.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/OrchestrationAPI/Controllers/StatusController.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the allowed HTTP methods for the Orchestration API service.</p>
@@ -769,7 +772,8 @@ public Task&lt;IActionResult&gt; Get(string instanceId)</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[HttpOptions]
+    <pre><code class="lang-csharp hljs">[AllowAnonymous]
+[HttpOptions]
 public IActionResult Options()</code></pre>
   </div>
 
@@ -794,7 +798,7 @@ public IActionResult Options()</code></pre>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/OrchestrationAPI/Controllers/StatusController.cs/#L10" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/OrchestrationAPI/Controllers/StatusController.cs/#L12" class="edit-link">Edit this page</a>
         </div>
 
 

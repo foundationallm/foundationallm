@@ -78,6 +78,38 @@
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
 <h2 id="starting-with-093-rc016">Starting with 0.9.3-rc016</h2>
+<h3 id="configuration-resource-provider">Configuration Resource Provider</h3>
+<p>The <code>APIEnpointConfiguration</code> class has been updated to change the previous <code>StatusUrl</code> property to <code>StatusEndpoint</code>, which is a relative path to the status endpoint. By extension, the related JSON files now have a <code>status_endpoint</code> property that contains the relative path. Here is the OrchestrationAPI JSON template as an example of this change:</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;api-endpoint&quot;,
+    &quot;name&quot;: &quot;OrchestrationAPI&quot;,
+    &quot;object_id&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/OrchestrationAPI&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: null,
+    &quot;cost_center&quot;: null,
+    &quot;category&quot;: &quot;General&quot;,
+    &quot;authentication_type&quot;: &quot;APIKey&quot;,
+    &quot;authentication_parameters&quot;: {
+        &quot;api_key_configuration_name&quot;: &quot;FoundationaLLM:APIEndpoints:OrchestrationAPI:Essentials:APIKey&quot;,
+        &quot;api_key_header_name&quot;: &quot;X-API-KEY&quot;
+    },
+    &quot;url&quot;: &quot;http://orchestration-api.{{serviceNamespaceName}}.svc.cluster.local&quot;,
+    &quot;status_endpoint&quot;: &quot;/instances/{{instanceId}}/status&quot;,
+    &quot;url_exceptions&quot;: [],
+    &quot;timeout_seconds&quot;: 2400,
+    &quot;retry_strategy_name&quot;: &quot;ExponentialBackoff&quot;,
+    &quot;created_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;,
+    &quot;deleted&quot;: false
+}
+</code></pre>
+<p>The status path is used by the Management Portal's Deployment Information page to show the status of each of the APIs. This path is also used by the <code>/Orchestration/Services/LangChainService</code> and <code>/Orchestration/Services/SemanticKernelService</code> classes to check the status of the respective APIs.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>All files within the <code>/resource-provider/FoundationaLLM.Configuration</code> directory must be updated to change the name of the <code>status_url</code> field to <code>status_endpoint</code> and change the value to a relative path as needed.</p>
+</div>
 <h3 id="vectorization-resource-provider-changes">Vectorization resource provider changes</h3>
 <p>Vectorization indexing and partitioning profile settings dictionary keys are now persisted as snake case (ex. <code>IndexName</code> becomes <code>index_name</code>).</p>
 <h3 id="agent-private-file-storage---new-container-required">Agent private file storage - new container required</h3>
