@@ -15,17 +15,26 @@
 
 			<div style="display: flex; align-items: center">
 				<!-- Private storage -->
-				<PrivateStorage v-if="hasOpenAIAssistantCapability" :agent-name="agentName" />
+				<PrivateStorage v-if="hasAgentPrivateStorage" :agent-name="agentName" />
 
 				<!-- Edit access control -->
 				<AccessControl
 					v-if="editAgent"
-					:scope="`providers/FoundationaLLM.Agent/agents/${agentName}`"
+					:scopes="[
+						{
+							label: 'Agent',
+							value: `providers/FoundationaLLM.Agent/agents/${agentName}`,
+						},
+						{
+							label: 'Prompt',
+							value: `providers/FoundationaLLM.Prompt/prompts/${agentPrompt?.resource?.name}`,
+						},
+					]"
 				/>
 			</div>
 		</div>
 
-		<div class="steps" :class="{ 'steps--loading': loading }">
+		<div class="steps">
 			<!-- Loading overlay -->
 			<template v-if="loading">
 				<div class="steps__loading-overlay" role="status" aria-live="polite">
@@ -66,6 +75,18 @@
 						❌
 					</span>
 				</div>
+			</div>
+			<div class="span-2">
+				<div class="step-header mb-2">Agent Display Name:</div>
+				<div class="mb-2">
+					This is the name that will be displayed to users when interacting with the agent.
+				</div>
+				<InputText
+					v-model="agentDisplayName"
+					type="text"
+					class="w-100"
+					placeholder="Enter agent display name"
+				/>
 			</div>
 			<div class="span-2">
 				<div class="step-header mb-2">Description:</div>
@@ -223,12 +244,8 @@
 							<div v-if="selectedIndexSource.object_id !== ''">
 								<div class="step-container__header">{{ selectedIndexSource.name }}</div>
 								<div>
-									<span class="step-option__header">URL:</span>
-									<span>{{ selectedIndexSource.resolved_configuration_references.Endpoint }}</span>
-								</div>
-								<div>
 									<span class="step-option__header">Index Name:</span>
-									<span>{{ selectedIndexSource.settings.IndexName }}</span>
+									<span>{{ selectedIndexSource.settings.index_name }}</span>
 								</div>
 							</div>
 							<div v-else>
@@ -258,9 +275,9 @@
 										<span class="step-option__header">URL:</span>
 										<span>{{ indexSource.resolved_configuration_references.Endpoint }}</span>
 									</div>
-									<div v-if="indexSource.settings.IndexName">
+									<div v-if="indexSource.settings.index_name">
 										<span class="step-option__header">Index Name:</span>
-										<span>{{ indexSource.settings.IndexName }}</span>
+										<span>{{ indexSource.settings.index_name }}</span>
 									</div>
 								</div>
 								<div v-else>
@@ -734,6 +751,7 @@
 				<div id="aria-show-file-upload" class="step-header">
 					Would you like to allow the user to upload files?
 				</div>
+
 				<!-- Show view prompt -->
 				<div>
 					<ToggleButton
@@ -747,7 +765,6 @@
 				</div>
 
 				<!-- Show file upload -->
-
 				<div>
 					<ToggleButton
 						v-model="showFileUpload"
@@ -767,7 +784,7 @@
 			<!-- Workflow selection -->
 			<div class="span-2">
 				<Dropdown
-					:modelValue="selectedWorkflow?.type"
+					:model-value="selectedWorkflow?.type"
 					:options="workflowOptions"
 					option-label="name"
 					option-value="type"
@@ -927,8 +944,9 @@
 
 							<ConfigureToolDialog
 								v-if="toolToEdit?.name === data.name"
-								v-model="toolToEdit"
+								:model-value="toolToEdit"
 								:visible="!!toolToEdit"
+								:existing-tools="agentTools"
 								@update:visible="toolToEdit = null"
 								@update:modelValue="handleUpdateTool"
 							/>
@@ -963,10 +981,139 @@
 				<ConfigureToolDialog
 					v-if="showNewToolDialog"
 					:visible="!!showNewToolDialog"
+					:existing-tools="agentTools"
 					@update:visible="showNewToolDialog = false"
 					@update:modelValue="handleAddNewTool"
 				/>
 			</div>
+
+			<!-- User prompt rewrite -->
+			<div class="step-section-header span-2">User Prompt Rewrite Settings</div>
+
+			<!-- Enable user prompt rewrite -->
+			<div id="aria-user-prompt-rewrite-enabled" class="step-header span-2">
+				Enable user prompt rewrite?
+			</div>
+			<div class="span-2">
+				<ToggleButton
+					v-model="userPromptRewriteEnabled"
+					on-label="Yes"
+					on-icon="pi pi-check-circle"
+					off-label="No"
+					off-icon="pi pi-times-circle"
+					aria-labelledby="aria-user-prompt-rewrite-enabled"
+				/>
+			</div>
+
+			<template v-if="userPromptRewriteEnabled">
+				<!-- User prompt rewrite model -->
+				<div id="aria-user-prompt-rewrite-model" class="step-header span-2 mt-2">
+					What model should be used for the prompt rewrite?
+				</div>
+				<div class="span-2">
+					<Dropdown
+						v-model="userPromptRewriteAIModel"
+						:options="aiModelOptions"
+						option-label="name"
+						option-value="object_id"
+						class="dropdown--agent"
+						placeholder="--Select--"
+						aria-labelledby="aria-user-prompt-rewrite-model"
+					/>
+				</div>
+
+				<!-- User prompt rewrite prompt -->
+				<div id="aria-user-prompt-rewrite-prompt" class="step-header span-2 mt-2">
+					What prompt should be used to rewrite the user prompt?
+				</div>
+				<div class="span-2">
+					<Dropdown
+						v-model="userPromptRewritePrompt"
+						:options="promptOptions"
+						option-label="name"
+						option-value="object_id"
+						class="dropdown--agent"
+						placeholder="--Select--"
+						aria-labelledby="aria-user-prompt-rewrite-prompt"
+					/>
+				</div>
+
+				<!-- User prompt rewrite window size -->
+				<div id="aria-user-prompt-rewrite-window-size" class="step-header span-2 mt-2">
+					What should the rewrite window size be?
+				</div>
+				<div class="span-2">
+					<InputNumber
+						v-model="userPromptRewriteWindowSize"
+						:minFractionDigits="0"
+						:maxFractionDigits="0"
+						placeholder="Window size"
+						aria-labelledby="aria-user-prompt-rewrite-window-size"
+					/>
+				</div>
+			</template>
+
+			<!-- Cache settings -->
+			<div class="step-section-header span-2">Cache Settings</div>
+
+			<!-- Enable semantic cache -->
+			<div id="aria-semantic-cache-enabled" class="step-header span-2">Enable semantic cache?</div>
+			<div class="span-2">
+				<ToggleButton
+					v-model="semanticCacheEnabled"
+					on-label="Yes"
+					on-icon="pi pi-check-circle"
+					off-label="No"
+					off-icon="pi pi-times-circle"
+					aria-labelledby="aria-semantic-cache-enabled"
+				/>
+			</div>
+
+			<template v-if="semanticCacheEnabled">
+				<!-- Semantic cache model -->
+				<div id="aria-semantic-cache-model" class="step-header span-2 mt-2">
+					What model should be used for the semantic cache?
+				</div>
+				<div class="span-2">
+					<Dropdown
+						v-model="semanticCacheAIModel"
+						:options="aiModelOptions"
+						option-label="name"
+						option-value="object_id"
+						class="dropdown--agent"
+						placeholder="--Select--"
+						aria-labelledby="aria-semantic-cache-model"
+					/>
+				</div>
+
+				<!-- Semantic cache embedding dimensions -->
+				<div id="aria-semantic-cache-embedding-dimensions" class="step-header span-2 mt-2">
+					How many embedding dimensions to use?
+				</div>
+				<div class="span-2">
+					<InputNumber
+						v-model="semanticCacheEmbeddingDimensions"
+						:minFractionDigits="0"
+						:maxFractionDigits="0"
+						placeholder="Embedding dimensions size"
+						aria-labelledby="aria-semantic-cache-embedding-dimensions"
+					/>
+				</div>
+
+				<!-- Semantic cache minimum similarity threshold -->
+				<div id="aria-semantic-cache-minimum-similarity" class="step-header span-2 mt-2">
+					What should the minimum similarity threshold be?
+				</div>
+				<div class="span-2">
+					<InputNumber
+						v-model="semanticCacheMinimumSimilarityThreshold"
+						:minFractionDigits="0"
+						:maxFractionDigits="2"
+						placeholder="Minimum Similarity Threshold"
+						aria-labelledby="aria-semantic-cache-minimum-similarity"
+					/>
+				</div>
+			</template>
 
 			<!-- Security -->
 			<div v-if="virtualSecurityGroupId" class="step-section-header span-2">Security</div>
@@ -1029,6 +1176,8 @@ import type {
 	CreateAgentRequest,
 	ExternalOrchestrationService,
 	TextEmbeddingProfile,
+	Prompt,
+	Workflow,
 	// AgentCheckNameResponse,
 } from '@/js/types';
 
@@ -1040,6 +1189,7 @@ const getDefaultFormValues = () => {
 
 		agentName: '',
 		agentDescription: '',
+		agentDisplayName: '',
 		agentWelcomeMessage: '',
 		object_id: '',
 		text_partitioning_profile_object_id: '',
@@ -1087,6 +1237,7 @@ const getDefaultFormValues = () => {
 		agentCapabilities: { label: 'None', value: null },
 
 		systemPrompt: defaultSystemPrompt as string,
+		agentPrompt: null as null | Prompt,
 
 		// orchestration_settings: {
 		// 	orchestrator: 'LangChain' as string,
@@ -1101,6 +1252,16 @@ const getDefaultFormValues = () => {
 		showMessageRating: false as boolean,
 		showViewPrompt: false as boolean,
 		showFileUpload: false as boolean,
+
+		userPromptRewriteEnabled: false as boolean,
+		userPromptRewriteAIModel: null as string | null,
+		userPromptRewritePrompt: null as string | null,
+		userPromptRewriteWindowSize: 3 as number,
+
+		semanticCacheEnabled: false as boolean,
+		semanticCacheAIModel: null as string | null,
+		semanticCacheEmbeddingDimensions: 2048 as number,
+		semanticCacheMinimumSimilarityThreshold: 0.97 as number,
 	};
 };
 
@@ -1127,7 +1288,7 @@ export default {
 			loadingStatusText: 'Retrieving data...' as string,
 
 			editable: false as boolean,
-			hasOpenAIAssistantCapability: false as boolean,
+			hasAgentPrivateStorage: false as boolean,
 
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			validationMessage: '' as string,
@@ -1138,7 +1299,7 @@ export default {
 			externalOrchestratorOptions: [] as ExternalOrchestrationService[],
 			aiModelOptions: [] as AIModel[],
 
-			workflowOptions: [] as AgentWorkflowAIModel[],
+			workflowOptions: [] as Workflow[],
 			showWorkflowConfiguration: false,
 			workflowMainAIModel: null as AIModel | null,
 			// workflowMainPrompt: '' as string,
@@ -1150,6 +1311,8 @@ export default {
 			virtualSecurityGroupId: null as string | null,
 
 			showNewToolDialog: false,
+
+			promptOptions: [] as Prompt[],
 
 			orchestratorOptions: [
 				{
@@ -1323,6 +1486,10 @@ export default {
 					value: service.name,
 				})),
 			);
+
+			this.loadingStatusText = 'Retrieving prompts...';
+			const promptOptionsResult = await api.getPrompts();
+			this.promptOptions = promptOptionsResult.map((result) => result.resource);
 		} catch (error) {
 			this.$toast.add({
 				severity: 'error',
@@ -1354,6 +1521,7 @@ export default {
 				this.loadingStatusText = `Retrieving prompt...`;
 				const prompt = await api.getPrompt(agent.prompt_object_id);
 				if (prompt && prompt.resource) {
+					this.agentPrompt = prompt;
 					this.systemPrompt = prompt.resource.prefix;
 				}
 			} else if (agent.workflow?.resource_object_ids) {
@@ -1366,6 +1534,7 @@ export default {
 				if (existingMainPrompt) {
 					const prompt = await api.getPrompt(existingMainPrompt.object_id);
 					if (prompt && prompt.resource) {
+						this.agentPrompt = prompt;
 						this.systemPrompt = prompt.resource.prefix;
 					}
 				}
@@ -1397,12 +1566,14 @@ export default {
 		mapAgentToForm(agent: Agent) {
 			this.agentName = agent.name || this.agentName;
 			this.agentDescription = agent.description || this.agentDescription;
+			this.agentDisplayName = agent.display_name || this.agentDisplayName;
 			this.agentWelcomeMessage = agent.properties?.welcome_message || this.agentWelcomeMessage;
 			this.agentType = agent.type || this.agentType;
 			this.object_id = agent.object_id || this.object_id;
 			this.inline_context = agent.inline_context || this.inline_context;
 			this.cost_center = agent.cost_center || this.cost_center;
-			this.hasOpenAIAssistantCapability = agent.capabilities?.includes('OpenAI.Assistants');
+			this.hasOpenAIAssistantCapability =
+				agent.workflow?.type === 'azure-openai-assistants-workflow';
 			this.expirationDate = agent.expiration_date
 				? new Date(agent.expiration_date)
 				: this.expirationDate;
@@ -1472,12 +1643,30 @@ export default {
 
 			this.agentTools = agent.tools;
 
-			this.selectedWorkflow = agent.workflow;
-
+			this.selectedWorkflow = agent.workflow;			
+			this.hasAgentPrivateStorage = agent.workflow.type == 'azure-openai-assistants-workflow';			
 			this.showMessageTokens = agent.show_message_tokens ?? false;
 			this.showMessageRating = agent.show_message_rating ?? false;
 			this.showViewPrompt = agent.show_view_prompt ?? false;
 			this.showFileUpload = agent.show_file_upload ?? false;
+
+			const userPromptRewriteSettings = agent.text_rewrite_settings?.user_prompt_rewrite_settings;
+			this.userPromptRewriteEnabled =
+				agent.text_rewrite_settings?.user_prompt_rewrite_enabled ?? false;
+			this.userPromptRewriteAIModel =
+				userPromptRewriteSettings?.user_prompt_rewrite_ai_model_object_id ?? null;
+			this.userPromptRewritePrompt =
+				userPromptRewriteSettings?.user_prompt_rewrite_prompt_object_id ?? null;
+			this.userPromptRewriteWindowSize = userPromptRewriteSettings?.user_prompts_window_size ?? 3;
+
+			const semanticCacheSettings = agent.cache_settings?.semantic_cache_settings;
+			this.semanticCacheEnabled = agent.cache_settings?.semantic_cache_enabled ?? false;
+			this.semanticCacheAIModel = semanticCacheSettings?.embedding_ai_model_object_id ?? null;
+			this.semanticCacheEmbeddingDimensions = semanticCacheSettings?.embedding_dimensions ?? 2048;
+			this.semanticCacheMinimumSimilarityThreshold =
+				semanticCacheSettings?.minimum_similarity_threshold ?? 0.97;
+
+			// this.showFileUpload = agent.show_file_upload ?? false;
 		},
 
 		updateAgentWelcomeMessage(newContent: string) {
@@ -1576,18 +1765,24 @@ export default {
 		},
 
 		handleAddNewTool(newTool) {
-			this.agentTools.push(newTool);
+			const index = this.agentTools.findIndex((tool) => tool.name === newTool.name);
+			if (index > -1) {
+				this.agentTools[index] = newTool;
+			} else {
+				this.agentTools.push(newTool);
+			}
+
 			this.showNewToolDialog = false;
 		},
 
 		handleUpdateTool(updatedTool) {
-			const index = this.agentTools.findIndex((tool) => tool.object_id === updatedTool.object_id);
+			const index = this.agentTools.findIndex((tool) => tool.name === updatedTool.name);
 			this.agentTools[index] = updatedTool;
 			this.toolToEdit = null;
 		},
 
 		handleRemoveTool(toolToRemove) {
-			const index = this.agentTools.findIndex((tool) => tool.object_id === toolToRemove.object_id);
+			const index = this.agentTools.findIndex((tool) => tool.name === toolToRemove.name);
 			this.agentTools.splice(index, 1);
 		},
 
@@ -1638,6 +1833,34 @@ export default {
 				errors.push('Please provide a system prompt.');
 			}
 
+			if (this.userPromptRewriteEnabled) {
+				if (!this.userPromptRewriteAIModel) {
+					errors.push('Please select a model for the user prompt rewrite.');
+				}
+
+				if (!this.userPromptRewritePrompt) {
+					errors.push('Please select a prompt for the user prompt rewrite.');
+				}
+
+				if (this.userPromptRewriteWindowSize === null) {
+					errors.push('Please input a window size for the user prompt rewrite');
+				}
+			}
+
+			if (this.semanticCacheEnabled) {
+				if (!this.semanticCacheAIModel) {
+					errors.push('Please select a model for the semantic cache.');
+				}
+
+				if (!this.semanticCacheEmbeddingDimensions === null) {
+					errors.push('Please input the embedding dimensions for the semantic cache.');
+				}
+
+				if (this.semanticCacheMinimumSimilarityThreshold === null) {
+					errors.push('Please input the minimum similarity threshold for the semantic cache.');
+				}
+			}
+
 			// if (!this.selectedDataSource) {
 			// 	errors.push('Please select a data source.');
 			// }
@@ -1659,24 +1882,24 @@ export default {
 			this.loading = true;
 			this.loadingStatusText = 'Saving agent...';
 
-            const promptRequest = {
-                type: 'multipart',
-                name: this.agentName,
-                cost_center: this.cost_center,
-                description: `System prompt for the ${this.agentName} agent`,
-                prefix: this.systemPrompt,
-                suffix: '',
-                category: 'Workflow',
-            };
+			const promptRequest = {
+				type: 'multipart',
+				name: this.agentName,
+				cost_center: this.cost_center,
+				description: `System prompt for the ${this.agentName} agent`,
+				prefix: this.systemPrompt,
+				suffix: '',
+				category: 'Workflow',
+			};
 
 			const tokenTextPartitionRequest = {
 				text_splitter: 'TokenTextSplitter',
 				name: this.agentName,
 				settings: {
-					Tokenizer: 'MicrosoftBPETokenizer',
-					TokenizerEncoder: 'cl100k_base',
-					ChunkSizeTokens: this.chunkSize.toString(),
-					OverlapSizeTokens: this.overlapSize.toString(),
+					tokenizer: 'MicrosoftBPETokenizer',
+					tokenizer_encoder: 'cl100k_base',
+					chunk_size_tokens: this.chunkSize.toString(),
+					overlap_size_tokens: this.overlapSize.toString(),
 				},
 			};
 
@@ -1781,6 +2004,7 @@ export default {
 					type: this.agentType,
 					name: this.agentName,
 					description: this.agentDescription,
+					display_name: this.agentDisplayName,
 					properties: {
 						welcome_message: this.agentWelcomeMessage,
 					},
@@ -1829,6 +2053,26 @@ export default {
 					tools: this.agentTools,
 
 					workflow,
+
+					virtual_security_group_id: this.virtualSecurityGroupId,
+
+					text_rewrite_settings: {
+						user_prompt_rewrite_enabled: this.userPromptRewriteEnabled,
+						user_prompt_rewrite_settings: {
+							user_prompt_rewrite_ai_model_object_id: this.userPromptRewriteAIModel,
+							user_prompt_rewrite_prompt_object_id: this.userPromptRewritePrompt,
+							user_prompts_window_size: this.userPromptRewriteWindowSize,
+						},
+					},
+
+					cache_settings: {
+						semantic_cache_enabled: this.semanticCacheEnabled,
+						semantic_cache_settings: {
+							embedding_ai_model_object_id: this.semanticCacheAIModel,
+							embedding_dimensions: this.semanticCacheEmbeddingDimensions,
+							minimum_similarity_threshold: this.semanticCacheMinimumSimilarityThreshold,
+						},
+					},
 				};
 
 				if (this.editAgent) {
@@ -1872,10 +2116,6 @@ export default {
 	position: relative;
 }
 
-.steps--loading {
-	pointer-events: none;
-}
-
 .steps__loading-overlay {
 	position: fixed;
 	top: 0;
@@ -1889,7 +2129,7 @@ export default {
 	gap: 16px;
 	z-index: 10;
 	background-color: rgba(255, 255, 255, 0.9);
-	pointer-events: none;
+	pointer-events: auto;
 }
 
 .step-section-header {

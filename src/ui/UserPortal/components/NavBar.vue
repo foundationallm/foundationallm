@@ -200,11 +200,11 @@ export default {
 
 		handlePrint() {
 			window.print();
-    },
+    	},
     
 		async setAgentOptions() {
 			this.agentOptions = this.$appStore.agents.map((agent) => ({
-				label: agent.resource.name,
+				label: agent.resource.display_name ? agent.resource.display_name : agent.resource.name,
 				type: agent.resource.type,
 				object_id: agent.resource.object_id,
 				description: agent.resource.description,

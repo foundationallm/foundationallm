@@ -41,6 +41,17 @@ The status path is used by the Management Portal's Deployment Information page t
 > [!IMPORTANT]
 > All files within the `/resource-provider/FoundationaLLM.Configuration` directory must be updated to change the name of the `status_url` field to `status_endpoint` and change the value to a relative path as needed.
 
+### Vectorization resource provider changes
+
+Vectorization indexing and partitioning profile settings dictionary keys are now persisted as snake case (ex. `IndexName` becomes `index_name`).
+
+### Agent private file storage - new container required
+
+A new container `Agents` needs to be created in the Cosmos DB database with the following properties:
+
+- **Container id**: `Agents`
+- **Partition key**: Add a hierarchical partition key: the first partition key is `/instanceId` and the second partition key is `/agentName`.
+
 ## Starting with 0.9.3-rc010
 
 ### Resource provider cache warm-up

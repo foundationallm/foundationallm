@@ -15,7 +15,7 @@
 		</div>
 
 		<!-- Steps -->
-		<div class="steps" :class="{ 'steps--loading': loading }">
+		<div class="steps">
 			<!-- Loading overlay -->
 			<template v-if="loading">
 				<div class="steps__loading-overlay" role="status" aria-live="polite">
@@ -170,7 +170,7 @@ import api from '@/js/api';
 const AzureAISearchIndexerFields = [
 	{
 		label: 'Index Name',
-		fieldName: 'IndexName',
+		fieldName: 'index_name',
 		// type: 'String',
 		validator(value) {
 			const errors = [];
@@ -186,7 +186,7 @@ const AzureAISearchIndexerFields = [
 	},
 	{
 		label: 'Embedding Field Name',
-		fieldName: 'EmbeddingFieldName',
+		fieldName: 'embedding_field_name',
 		// type: 'String',
 		validator(value) {
 			const errors = [];
@@ -199,7 +199,7 @@ const AzureAISearchIndexerFields = [
 	},
 	{
 		label: 'Text Field Name',
-		fieldName: 'TextFieldName',
+		fieldName: 'text_field_name',
 		// type: 'String',
 		validator(value) {
 			const errors = [];
@@ -212,7 +212,7 @@ const AzureAISearchIndexerFields = [
 	},
 	{
 		label: 'Top N',
-		fieldName: 'TopN',
+		fieldName: 'top_n',
 		// type: 'Number',
 		validator(value) {
 			const errors = [];
@@ -229,7 +229,7 @@ const AzureAISearchIndexerFields = [
 	},
 	{
 		label: 'Filters',
-		fieldName: 'Filters',
+		fieldName: 'filters',
 		// type: 'String',
 	},
 ];
@@ -262,11 +262,11 @@ export default {
 				description: '',
 				indexer: '',
 				settings: {
-					IndexName: '',
-					TopN: '',
-					Filters: '',
-					EmbeddingFieldName: '',
-					TextFieldName: '',
+					index_name: '',
+					top_n: '',
+					filters: '',
+					embedding_field_name: '',
+					text_field_name: '',
 					api_endpoint_configuration_object_id: '',
 				},
 			} as any,
@@ -284,9 +284,9 @@ export default {
 			errors: {
 				name: [] as string[],
 				indexer: [] as string[],
-				IndexName: [] as string[],
-				EmbeddingFieldName: [] as string[],
-				TextFieldName: [] as string[],
+				index_name: [] as string[],
+				embedding_field_name: [] as string[],
+				text_field_name: [] as string[],
 				api_endpoint_configuration_object_id: [] as string[],
 			},
 		};
@@ -393,9 +393,9 @@ export default {
 			this.errors = {
 				name: [],
 				indexer: [],
-				IndexName: [],
-				EmbeddingFieldName: [],
-				TextFieldName: [],
+				index_name: [],
+				embedding_field_name: [],
+				text_field_name: [],
 				api_endpoint_configuration_object_id: [],
 			};
 
@@ -485,10 +485,6 @@ export default {
 	position: relative;
 }
 
-.steps--loading {
-	pointer-events: none;
-}
-
 .steps__loading-overlay {
 	position: fixed;
 	top: 0;
@@ -502,7 +498,7 @@ export default {
 	gap: 16px;
 	z-index: 10;
 	background-color: rgba(255, 255, 255, 0.9);
-	pointer-events: none;
+	pointer-events: auto;
 }
 
 .step-section-header {

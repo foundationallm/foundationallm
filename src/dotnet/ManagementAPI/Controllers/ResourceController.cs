@@ -76,6 +76,10 @@ namespace FoundationaLLM.Management.API.Controllers
                     var formFiles = HttpContext.Request.HasFormContentType ? HttpContext.Request.Form?.Files : null;
                     IFormFile? formFile = (formFiles != null && formFiles.Count > 0) ? formFiles[0] : null;
 
+                    Dictionary<string, string>? formPayload = null;
+                    if (HttpContext.Request.HasFormContentType)
+                        formPayload = HttpContext.Request.Form?.Keys.ToDictionary(k => k, v => HttpContext.Request.Form[v].ToString());
+
                     var bodyContent = await (new StreamReader(HttpContext.Request.Body)).ReadToEndAsync();
                     string? serializedResource = !string.IsNullOrWhiteSpace(bodyContent) ? bodyContent : null;
 
@@ -92,7 +96,8 @@ namespace FoundationaLLM.Management.API.Controllers
                         {
                             FileName = formFile.FileName,
                             ContentType = formFile.ContentType,
-                            BinaryContent = new ReadOnlyMemory<byte>(memoryStream.ToArray())
+                            BinaryContent = new ReadOnlyMemory<byte>(memoryStream.ToArray()),
+                            Payload = formPayload
                         };
                     }
 
@@ -119,7 +124,7 @@ namespace FoundationaLLM.Management.API.Controllers
                 async (resourceProviderService) =>
                 {
                     await resourceProviderService.HandleDeleteAsync($"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}", _callContext.CurrentUserIdentity);
-                    return new OkResult();
+                    return new OkObjectResult(new ResourceProviderActionResult(true));
                 });
 
         private async Task<IActionResult> HandleRequest(string resourceProvider, string resourcePath, Func<IResourceProviderService, Task<IActionResult>> handler)
