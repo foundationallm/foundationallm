@@ -966,7 +966,7 @@
 						}"
 					>
 						<template #body="{ data }">
-							<Button erlink @click="handleRemoveTool(data)">
+							<Button link @click="handleRemoveTool(data)">
 								<i class="pi pi-trash" style="font-size: 1.2rem"></i>
 							</Button>
 						</template>
