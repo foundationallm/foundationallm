@@ -9,7 +9,7 @@
 		</template>
 
 		<!-- Trigger button -->
-		<Button v-if="isButtonVisible" style="margin-right: 8px" @click="openPrivateStorageDialog">
+		<Button v-if="isButtonVisible" style="margin-right: 8px" @click="handleOpenPrivateStorageDialog">
 			<i class="pi pi-box" style="font-size: 1.2rem; margin-right: 8px"></i>
 			Private Storage
 		</Button>
@@ -296,7 +296,7 @@ export default {
 			}
 		},
 
-		async openPrivateStorageDialog() {
+		async handleOpenPrivateStorageDialog() {
 			this.loading = true;
 			await this.getPrivateAgentFiles();
 			await this.getPrivateAgentFileToolAssociations();
@@ -435,6 +435,7 @@ export default {
 						this.agentFiles.localFiles = [];
 						if (filesUploaded > 0) {
 							await this.getPrivateAgentFiles();
+							await this.getPrivateAgentFileToolAssociations();
 							this.modalLoading = false;
 							this.$toast.add({
 								severity: 'success',
