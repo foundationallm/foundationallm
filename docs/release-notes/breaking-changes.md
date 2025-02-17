@@ -14,7 +14,7 @@ Vectorization indexing and partitioning profile settings dictionary keys are now
 A new container `Agents` needs to be created in the Cosmos DB database with the following properties:
 
 - **Container id**: `Agents`
-- **Partition key**: `/instanceId, /agentName`
+- **Partition key**: Add a hierarchical partition key: the first partition key is `/instanceId` and the second partition key is `/agentName`.
 
 ## Starting with 0.9.3-rc010
 
