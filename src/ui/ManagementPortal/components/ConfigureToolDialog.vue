@@ -112,7 +112,7 @@ export default {
 		},
 
 		existingTools: {
-			type: [Array],
+			type: Array,
 			required: false,
 			default: () => [],
 		},

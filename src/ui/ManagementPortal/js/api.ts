@@ -23,8 +23,10 @@ import type {
 	// Role,
 	RoleAssignment,
 	APIEndpointConfiguration,
+	FileToolAssociation,
+	UpdateAgentFileToolAssociationRequest,
 	Workflow,
-	AgentTool,
+	AgentTool
 } from './types';
 import { convertToDataSource, convertToAppConfigKeyVault, convertToAppConfig } from '@/js/types';
 // import { isEmpty, upperFirst, camelCase } from 'lodash';
@@ -1020,15 +1022,15 @@ export default {
 	/*
 		Private Storage
 	 */
-	async getPrivateStorageFiles(agentName) {
+	async getPrivateStorageFiles(agentName: string) {
 		return (await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files?api-version=${this.apiVersion}`,
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFiles?api-version=${this.apiVersion}`,
 		)) as Object[];
 	},
 
-	async uploadToPrivateStorage(agentName, fileName, file: FormData): Promise<any> {
+	async uploadToPrivateStorage(agentName: string, fileName: string, file: FormData): Promise<any> {
 		return await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files/${fileName}?api-version=${this.apiVersion}`,
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFiles/${fileName}?api-version=${this.apiVersion}`,
 			{
 				method: 'POST',
 				body: file,
@@ -1036,11 +1038,31 @@ export default {
 		);
 	},
 
-	async deleteFileFromPrivateStorage(agentName: string, fileName: string): Promise<void> {
+
+	async deleteFileFromPrivateStorage(agentName: string, fileName: string): Promise<any> {
 		return await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files/${fileName}?api-version=${this.apiVersion}`,
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFiles/${fileName}?api-version=${this.apiVersion}`,
 			{
 				method: 'DELETE',
+			},
+		);
+	},
+
+	async getPrivateStorageFileToolAssociations(agentName: string) {
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFileToolAssociations?api-version=${this.apiVersion}`,
+		)) as ResourceProviderGetResult<FileToolAssociation>[];
+	},
+
+	async updateFileToolAssociations(
+		agentName: string,
+		payload: UpdateAgentFileToolAssociationRequest,
+	): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFileToolAssociations/1234abcd?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: JSON.stringify(payload),
 			},
 		);
 	},
@@ -1133,7 +1155,7 @@ export default {
 		);
 	},
 
-	async checkIndexingProfileName(name): Promise<any> {
+	async checkIndexingProfileName(name: string): Promise<any> {
 		const payload = {
 			name,
 			type: 'indexing-profile',
