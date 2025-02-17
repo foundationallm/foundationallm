@@ -163,6 +163,8 @@ export type Prompt = ResourceBase & {
 	category: string;
 };
 
+export type Workflow = ResourceBase;
+
 export type AgentDataSource = ResourceBase & {
 	content_source: string;
 	object_id: string;
@@ -272,7 +274,7 @@ export interface AppConfigBase extends ResourceBase {
 
 export interface AppConfig extends AppConfigBase {
 	type: 'appconfiguration-key-value';
-	content_type: '';
+	content_type: string;
 }
 
 export interface AppConfigKeyVault extends AppConfigBase {

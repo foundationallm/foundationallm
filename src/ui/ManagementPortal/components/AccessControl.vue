@@ -17,7 +17,6 @@
 	>
 		<!-- Table step -->
 		<template v-if="currentStep === STEPS.TABLE_STEP">
-
 			<!-- Multiple scopes -->
 			<TabView v-if="scopes.length > 1" v-model:activeIndex="currentScopeIndex" lazy>
 				<TabPanel v-for="scope in scopes" :key="scope.value" :header="scope.label">

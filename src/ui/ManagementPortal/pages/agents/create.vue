@@ -784,7 +784,7 @@
 			<!-- Workflow selection -->
 			<div class="span-2">
 				<Dropdown
-					:modelValue="selectedWorkflow?.type"
+					:model-value="selectedWorkflow?.type"
 					:options="workflowOptions"
 					option-label="name"
 					option-value="type"
@@ -1177,6 +1177,7 @@ import type {
 	ExternalOrchestrationService,
 	TextEmbeddingProfile,
 	Prompt,
+	Workflow,
 	// AgentCheckNameResponse,
 } from '@/js/types';
 
@@ -1298,7 +1299,7 @@ export default {
 			externalOrchestratorOptions: [] as ExternalOrchestrationService[],
 			aiModelOptions: [] as AIModel[],
 
-			workflowOptions: [] as AgentWorkflowAIModel[],
+			workflowOptions: [] as Workflow[],
 			showWorkflowConfiguration: false,
 			workflowMainAIModel: null as AIModel | null,
 			// workflowMainPrompt: '' as string,

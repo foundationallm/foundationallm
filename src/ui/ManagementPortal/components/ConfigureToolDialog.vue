@@ -114,7 +114,7 @@ export default {
 		existingTools: {
 			type: Array,
 			required: false,
-			default: () => ([]),
+			default: () => [],
 		},
 
 		visible: {
@@ -180,7 +180,6 @@ export default {
 		handleAddToolResource(resourceToAdd) {
 			this.toolObject.resource_object_ids[resourceToAdd.object_id] = resourceToAdd;
 			this.showCreateResourceObjectDialog = false;
-
 		},
 
 		// handleEditToolResource(resourceToEdit) {
@@ -194,7 +193,10 @@ export default {
 		handleSave() {
 			const errors = [];
 
-			if (this.modelValue.name !== this.toolObject.name && this.existingTools.findIndex((tool) => tool.name === this.toolObject.name) !== -1) {
+			if (
+				this.modelValue.name !== this.toolObject.name &&
+				this.existingTools.findIndex((tool) => tool.name === this.toolObject.name) !== -1
+			) {
 				errors.push('This tool name aleady exists on this agent.');
 			}
 
