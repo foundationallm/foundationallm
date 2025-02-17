@@ -5,7 +5,16 @@
 
 ## Starting with 0.9.3-rc016
 
+### Vectorization resource provider changes
+
 Vectorization indexing and partitioning profile settings dictionary keys are now persisted as snake case (ex. `IndexName` becomes `index_name`).
+
+### Agent private file storage - new container required
+
+A new container `Agents` needs to be created in the Cosmos DB database with the following properties:
+
+- **Container id**: `Agents`
+- **Partition key**: `/instanceId, /agentName`
 
 ## Starting with 0.9.3-rc010
 
