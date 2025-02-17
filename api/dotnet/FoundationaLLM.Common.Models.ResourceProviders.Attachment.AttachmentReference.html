@@ -102,7 +102,7 @@ Class AttachmentReference  <a class="header-action link-secondary" title="View s
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class AttachmentReference : ResourceReference</code></pre>
+    <pre><code class="lang-csharp hljs">public class AttachmentReference : FileReference</code></pre>
   </div>
 
 
@@ -113,6 +113,7 @@ Class AttachmentReference  <a class="header-action link-secondary" title="View s
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
       <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceReference.html">ResourceReference</a></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.FileReference.html">FileReference</a></div>
       <div><span class="xref">AttachmentReference</span></div>
     </dd>
   </dl>
@@ -122,6 +123,21 @@ Class AttachmentReference  <a class="header-action link-secondary" title="View s
   <dl class="typelist inheritedMembers">
     <dt>Inherited Members</dt>
     <dd>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.FileReference.html#FoundationaLLM_Common_Models_ResourceProviders_FileReference_OriginalFilename">FileReference.OriginalFilename</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.FileReference.html#FoundationaLLM_Common_Models_ResourceProviders_FileReference_ContentType">FileReference.ContentType</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.FileReference.html#FoundationaLLM_Common_Models_ResourceProviders_FileReference_Size">FileReference.Size</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.FileReference.html#FoundationaLLM_Common_Models_ResourceProviders_FileReference_UPN">FileReference.UPN</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.FileReference.html#FoundationaLLM_Common_Models_ResourceProviders_FileReference_Id">FileReference.Id</a>
+    </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceReference.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceReference_ObjectId">ResourceReference.ObjectId</a>
     </div>
@@ -176,110 +192,11 @@ Class AttachmentReference  <a class="header-action link-secondary" title="View s
 </h2>
 
 
-  <a id="FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_ContentType_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ContentType*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_ContentType" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ContentType">
-  ContentType
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Attachment/AttachmentReference.cs/#L22"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>The mime content type of the attachment.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ContentType { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_Id_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Id*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_Id" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Id">
-  Id
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Attachment/AttachmentReference.cs/#L55"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>The unique identifier.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;id&quot;)]
-public required string Id { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_OriginalFilename_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.OriginalFilename*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_OriginalFilename" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.OriginalFilename">
-  OriginalFilename
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Attachment/AttachmentReference.cs/#L17"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>The original file name of the attachment.
-This is useful because the resource name is generated by the system
-and may not be the same as the original file name.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string OriginalFilename { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
   <a id="FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_ResourceType_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ResourceType*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_ResourceType" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ResourceType">
   ResourceType
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Attachment/AttachmentReference.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Attachment/AttachmentReference.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The object type of the resource.</p>
@@ -313,7 +230,7 @@ public override Type ResourceType { get; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_SecondaryProvider" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.SecondaryProvider">
   SecondaryProvider
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Attachment/AttachmentReference.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Attachment/AttachmentReference.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Indicates an optional secondary provider for the attachment.</p>
@@ -348,7 +265,7 @@ public override Type ResourceType { get; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_SecondaryProviderObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.SecondaryProviderObjectId">
   SecondaryProviderObjectId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Attachment/AttachmentReference.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Attachment/AttachmentReference.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the object identifier of the secondary provider of the attachment.</p>
@@ -376,71 +293,6 @@ public override Type ResourceType { get; }</code></pre>
   <div class="markdown level1 remarks"><p>The only secondary provider currently supported is FoundationaLLM.AzureOpenAI.
 In this case, the object identifier is the Azure OpenAI file identifier.</p>
 </div>
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_Size_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Size*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_Size" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Size">
-  Size
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Attachment/AttachmentReference.cs/#L27"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>The size of the file.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public long Size { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_UPN_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.UPN*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_UPN" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.UPN">
-  UPN
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Attachment/AttachmentReference.cs/#L49"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>The UPN of the user who created the attachment.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;upn&quot;)]
-public string UPN { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
 
 
 
