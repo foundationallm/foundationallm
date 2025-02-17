@@ -1,35 +1,86 @@
 <template>
 	<div class="d-flex flex-column gap-4">
-		<div
-			v-for="(propertyValue, propertyKey) in properties"
-			:key="propertyKey"
-			class="d-flex justify-content-between gap-4"
+		<DataTable
+			:value="Object.keys(properties).map((key) => ({ key, value: properties[key] }))"
+			striped-rows
+			scrollable
+			table-style="max-width: 100%"
+			size="small"
 		>
-			<div class="d-flex flex-1 gap-4">
-				<!-- Property name -->
-				<InputText :value="propertyKey" type="text" placeholder="Property Name" disabled />
+			<template #empty>No properties added.</template>
 
-				<span class="d-flex align-center">=</span>
+			<!-- Property name -->
+			<Column
+				field="name"
+				header="Property Name"
+				sortable
+				:pt="{
+					headerCell: {
+						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+					},
+					sortIcon: { style: { color: 'var(--primary-text)' } },
+				}"
+			>
+				<template #body="{ data }">
+					{{ data.key }}
+				</template>
+			</Column>
 
-				<!-- Property value -->
-				<InputText
-					:value="JSON.stringify(propertyValue)"
-					type="text"
-					placeholder="Property Value"
-					disabled
-				/>
-			</div>
+			<!-- Property value -->
+			<Column
+				field="value"
+				header="Property Value"
+				sortable
+				:pt="{
+					headerCell: {
+						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+					},
+					sortIcon: { style: { color: 'var(--primary-text)' } },
+				}"
+			>
+				<template #body="{ data }">
+					{{ JSON.stringify(data.value) }}
+				</template>
+			</Column>
 
 			<!-- Edit property -->
-			<Button link @click="handleEditProperty(propertyKey)">
-				<i class="pi pi-cog" style="font-size: 1.2rem"></i>
-			</Button>
+			<Column
+				header="Edit"
+				header-style="width:6rem"
+				style="text-align: center"
+				:pt="{
+					headerCell: {
+						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+					},
+					headerContent: { style: { justifyContent: 'center' } },
+				}"
+			>
+				<template #body="{ data }">
+					<Button link @click="handleEditProperty(data.key)">
+						<i class="pi pi-cog" style="font-size: 1.2rem"></i>
+					</Button>
+				</template>
+			</Column>
 
 			<!-- Delete property -->
-			<Button link @click="handleDeleteProperty(propertyKey)">
-				<i class="pi pi-trash" style="font-size: 1.2rem"></i>
-			</Button>
-		</div>
+			<Column
+				header="Delete"
+				header-style="width:6rem"
+				style="text-align: center"
+				:pt="{
+					headerCell: {
+						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+					},
+					headerContent: { style: { justifyContent: 'center' } },
+				}"
+			>
+				<template #body="{ data }">
+					<Button link @click="handleDeleteProperty(data.key)">
+						<i class="pi pi-trash" style="font-size: 1.2rem"></i>
+					</Button>
+				</template>
+			</Column>
+		</DataTable>
 
 		<div class="d-flex gap-4">
 			<PropertyDialog
@@ -38,16 +89,18 @@
 				:title="propertyToEdit ? 'Edit Property' : 'Create Property'"
 				:visible="showCreateOrEditPropertyDialog"
 				@update:modelValue="handleAddProperty($event)"
-				@update:visible="showCreateOrEditPropertyDialog = false"
+				@update:visible="handleClosePropertyDialog"
 			/>
 
 			<!-- Add property -->
-			<Button
-				label="Add Property"
-				severity="primary"
-				style="word-wrap: none"
-				@click="showCreateOrEditPropertyDialog = true"
-			/>
+			<div class="w-100 d-flex justify-content-end mt-4">
+				<Button
+					label="Add Property"
+					severity="primary"
+					style="word-wrap: none"
+					@click="showCreateOrEditPropertyDialog = true"
+				/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -76,6 +129,7 @@ export default {
 			immediate: true,
 			deep: true,
 			handler() {
+				if (JSON.stringify(this.modelValue) === JSON.stringify(this.properties)) return;
 				this.properties = this.modelValue;
 			},
 		},
@@ -90,6 +144,11 @@ export default {
 		handleDeleteProperty(propertyKey) {
 			delete this.properties[propertyKey];
 			this.$emit('update:modelValue', this.properties);
+		},
+
+		handleClosePropertyDialog() {
+			this.showCreateOrEditPropertyDialog = false;
+			this.propertyToEdit = null;
 		},
 
 		handleAddProperty(propertyObject) {

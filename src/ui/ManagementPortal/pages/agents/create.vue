@@ -944,8 +944,9 @@
 
 							<ConfigureToolDialog
 								v-if="toolToEdit?.name === data.name"
-								v-model="toolToEdit"
+								:model-value="toolToEdit"
 								:visible="!!toolToEdit"
+								:existing-tools="agentTools"
 								@update:visible="toolToEdit = null"
 								@update:modelValue="handleUpdateTool"
 							/>
@@ -980,6 +981,7 @@
 				<ConfigureToolDialog
 					v-if="showNewToolDialog"
 					:visible="!!showNewToolDialog"
+					:existing-tools="agentTools"
 					@update:visible="showNewToolDialog = false"
 					@update:modelValue="handleAddNewTool"
 				/>
@@ -1743,18 +1745,24 @@ export default {
 		},
 
 		handleAddNewTool(newTool) {
-			this.agentTools.push(newTool);
+			const index = this.agentTools.findIndex((tool) => tool.name === newTool.name);
+			if (index > -1) {
+				this.agentTools[index] = newTool;
+			} else {
+				this.agentTools.push(newTool);
+			}
+
 			this.showNewToolDialog = false;
 		},
 
 		handleUpdateTool(updatedTool) {
-			const index = this.agentTools.findIndex((tool) => tool.object_id === updatedTool.object_id);
+			const index = this.agentTools.findIndex((tool) => tool.name === updatedTool.name);
 			this.agentTools[index] = updatedTool;
 			this.toolToEdit = null;
 		},
 
 		handleRemoveTool(toolToRemove) {
-			const index = this.agentTools.findIndex((tool) => tool.object_id === toolToRemove.object_id);
+			const index = this.agentTools.findIndex((tool) => tool.name === toolToRemove.name);
 			this.agentTools.splice(index, 1);
 		},
 
