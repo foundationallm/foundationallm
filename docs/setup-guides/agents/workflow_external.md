@@ -9,3 +9,6 @@
 ## When to use this workflow?
 
 This workflow is useful when you want to you want to be in full control of the logic and flow of the agent's responses. This can be useful for complex tasks that require custom logic, calling outisde APIs or take adavantage of already deployed private Machine Learning models by your organization.
+
+> [!NOTE]
+> Code examples showing how to create these workflows in Python will be added soon.
