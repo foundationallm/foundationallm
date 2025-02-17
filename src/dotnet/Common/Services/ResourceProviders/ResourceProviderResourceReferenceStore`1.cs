@@ -232,7 +232,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 _lock.Release();
             }
         }
-
+       
         /// <summary>
         /// Adds a resource reference to the store.
         /// </summary>
