@@ -12,7 +12,7 @@
     "api_key_header_name": "X-API-KEY"
   },
   "url": "http://vectorization-api.{{serviceNamespaceName}}.svc.cluster.local",
-  "status_url": "http://vectorization-api.{{serviceNamespaceName}}.svc.cluster.local/status",
+  "status_endpoint": "/status",
   "url_exceptions": [],
   "timeout_seconds": 60,
   "retry_strategy_name": "ExponentialBackoff",

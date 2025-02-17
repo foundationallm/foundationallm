@@ -46,7 +46,9 @@ namespace FoundationaLLM.Common.Services.API
         {
             var endpointConfiguration = await GetEndpoint(clientName, userIdentity);
 
-            return await CreateClient(endpointConfiguration, userIdentity);
+            var client = await CreateClient(endpointConfiguration, userIdentity);
+
+            return client;
         }
 
         /// <inheritdoc/>
@@ -171,6 +173,27 @@ namespace FoundationaLLM.Common.Services.API
             }
 
             return httpClient;
+        }
+
+        public async Task<HttpClient> CreateClientForStatus(string clientName, UnifiedUserIdentity userIdentity)
+        {
+            var endpointConfiguration = await GetEndpoint(clientName, userIdentity);
+
+            var client = await CreateClient(endpointConfiguration, userIdentity);
+
+            if (client.BaseAddress == null)
+            {
+                throw new Exception($"The endpoint {clientName} does not have a base URL configured.");
+            }
+
+            if (string.IsNullOrWhiteSpace(endpointConfiguration.StatusEndpoint))
+            {
+                throw new Exception($"The endpoint {clientName} does not have a status endpoint configured.");
+            }
+
+            client.BaseAddress = new Uri(client.BaseAddress, endpointConfiguration.StatusEndpoint);
+
+            return client;
         }
 
         /// <inheritdoc/>

@@ -12,7 +12,7 @@
     "api_key_header_name": "X-API-KEY"
   },
   "url": "http://gatekeeper-api.{{serviceNamespaceName}}.svc.cluster.local",
-  "status_url": "http://gatekeeper-api.{{serviceNamespaceName}}.svc.cluster.local/instances/{{instanceId}}/status",
+  "status_endpoint": "/instances/{{instanceId}}/status",
   "url_exceptions": [],
   "timeout_seconds": 2700,
   "retry_strategy_name": "ExponentialBackoff",
