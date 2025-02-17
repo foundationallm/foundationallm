@@ -331,12 +331,12 @@ function processLatex(content) {
 	try {
 		// Process block LaTeX: \[ ... \]
 		content = content.replace(blockLatexPattern, (_, math) => {
-			return katex.renderToString(math, { displayMode: true, throwOnError: false });
+			return `<div class="katex-block">${katex.renderToString(math, { displayMode: true, throwOnError: false, output: "mathml" })}</div>`;
 		});
 
 		// Process inline LaTeX: \( ... \)
 		content = content.replace(inlineLatexPattern, (_, math) => {
-			return katex.renderToString(math, { throwOnError: false });
+			return `<span class="katex-inline">${katex.renderToString(math, { throwOnError: false, output: "mathml" })}</span>`;
 		});
 	} catch (error) {
 		console.error('LaTeX rendering error:', error);
@@ -399,7 +399,7 @@ export default {
 		},
 	},
 
-	emits: ['rate'],
+	emits: ['rate', 'scroll-to-bottom'],
 
 	data() {
 		return {
@@ -483,6 +483,15 @@ export default {
 			deep: true,
 			handler() {
 				this.markSkippableContent();
+			},
+		},
+
+		isRenderingMessage: {
+			handler(newVal, oldVal) {
+				if (newVal === oldVal) return;
+				if (newVal) {
+					this.keepScrollingUntilCompleted();
+				}
 			},
 		},
 	},
@@ -796,6 +805,24 @@ export default {
 
 				fetchBlobUrl(content);
 			}
+		},
+
+		keepScrollingUntilCompleted() {
+			if (!this.isRenderingMessage) return;
+
+			this.$nextTick(() => {
+				const previousScrollHeight = this.$parent.$refs.messageContainer?.scrollHeight || 0;
+
+				setTimeout(() => {
+					const newScrollHeight = this.$parent.$refs.messageContainer?.scrollHeight || 0;
+					const contentGrowth = newScrollHeight - previousScrollHeight;
+
+					if (contentGrowth > 0) {
+						this.$emit('scroll-to-bottom', contentGrowth);
+					}
+					this.keepScrollingUntilCompleted();
+				}, 100);
+			});
 		},
 	},
 };
