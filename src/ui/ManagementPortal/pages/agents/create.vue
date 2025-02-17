@@ -2026,6 +2026,8 @@ export default {
 
 					workflow,
 
+					virtual_security_group_id: this.virtualSecurityGroupId,
+
 					text_rewrite_settings: {
 						user_prompt_rewrite_enabled: this.userPromptRewriteEnabled,
 						user_prompt_rewrite_settings: {
