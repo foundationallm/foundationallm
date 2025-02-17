@@ -358,6 +358,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             await UpsertResourcePostProcess(ParsedResourcePath, (upsertResult as ResourceProviderUpsertResult)!, authorizationResult, userIdentity);
 
+            await SendResourceProviderEvent(EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
+
             return upsertResult;
         }
 
@@ -371,6 +373,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
             await DeleteResourceAsync(ParsedResourcePath, userIdentity);
+
+            await SendResourceProviderEvent(EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
 
         #region Virtuals to override in derived classes

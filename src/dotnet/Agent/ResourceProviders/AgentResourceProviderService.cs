@@ -171,6 +171,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         $"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest);
             };
+            await SendResourceProviderEvent(
+                    EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
 
         #endregion
@@ -491,6 +493,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 agentClientSecretKey.InstanceId,
                 agentClientSecretKey.ContextId,
                 agentClientSecretKey.Id);
+
+            await SendResourceProviderEvent(EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
 
         private async Task<AgentAccessTokenValidationResult> ValidateAgentAccessToken(
