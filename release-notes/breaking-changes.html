@@ -113,6 +113,12 @@
 <h3 id="vectorization-resource-provider-changes">Vectorization resource provider changes</h3>
 <p>Vectorization indexing and partitioning profile settings dictionary keys are now persisted as snake case (ex. <code>IndexName</code> becomes <code>index_name</code>).</p>
 <h3 id="agent-resource-provider-changes">Agent resource provider changes</h3>
+<h4 id="deployment-notes">Deployment notes</h4>
+<ol>
+<li>Ensure the feature flag is enabled for <code>FoundationaLLM.Agent.PrivateStore</code> if using the private store feature on OpenAI Assistants workflow agents is desired.</li>
+<li>Open existing <code>OpenAIAssistantsWorkflow</code> agents in the Management portal and select <code>Save</code> to populate the global vector store in the OpenAI service for the assistant.</li>
+</ol>
+<h4 id="agent-file-resources">Agent file resources</h4>
 <p>The agent file references are now stored in a new Cosmos DB container, while the file contents are stored in the storage account.
 Here are the configuration parameters for the required Cosmos DB container:</p>
 <table>
@@ -160,6 +166,33 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 }
 </code></pre>
 <p>The <code>agent-file</code> type has been removed and the references are no longer saved in the agent reference store <code>_resource-references.json</code>.</p>
+<h3 id="tools">Tools</h3>
+<p>In the agent resource provider storage folder (<code>resource-provider/FoundationaLLM.Agent</code>), add a <code>tool</code> resource reference entry (<code>_resource_references.json</code>) as well as configuration file for the following tools: <code>OpenAIAssistantsFileSearch</code>, <code>OpenAIAssistantsCodeInterpreter</code>, <code>DALLEImageGeneration</code>, and <code>FoundationaLLMContentSearchTool</code>.</p>
+<p>Reference example:</p>
+<pre><code class="lang-json">{
+    &quot;Name&quot;: &quot;OpenAIAssistantsFileSearch&quot;,
+    &quot;Filename&quot;: &quot;/FoundationaLLM.Agent/OpenAIAssistantsFileSearch.json&quot;,
+    &quot;Type&quot;: &quot;tool&quot;,
+    &quot;Deleted&quot;: false
+}
+</code></pre>
+<p>File example:</p>
+<pre><code class="lang-json">{
+  &quot;type&quot;: &quot;tool&quot;,
+  &quot;name&quot;: &quot;OpenAIAssistantsFileSearch&quot;,
+  &quot;object_id&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch&quot;,
+  &quot;display_name&quot;: &quot;OpenAIAssistantsFileSearch&quot;,
+  &quot;description&quot;: &quot;OpenAIAssistantsFileSearch&quot;,
+  &quot;cost_center&quot;: null,
+  &quot;properties&quot;: null,
+  &quot;created_on&quot;: &quot;2025-01-10T08:22:34.2682433+00:00&quot;,
+  &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+  &quot;created_by&quot;: &quot;dev@foundationaLLM.ai&quot;,
+  &quot;updated_by&quot;: null,
+  &quot;deleted&quot;: false,
+  &quot;expiration_date&quot;: null
+}
+</code></pre>
 <h2 id="starting-with-093-rc010">Starting with 0.9.3-rc010</h2>
 <h3 id="resource-provider-cache-warm-up">Resource provider cache warm-up</h3>
 <p>Resource providers now support a cache warm-up mechanism. This mechanism allows the cache to be pre-populated with the resource provider data before the service starts processing requests. This feature is useful when the service is deployed in a cold environment and needs to be warmed up before it can handle requests.</p>
