@@ -537,11 +537,11 @@
 					<div class="step-container__header">Gatekeeper</div>
 
 					<div>
-						<span class="step-option__header">Enabled:</span>
+						<span class="step-option__header">Use system default:</span>
 						<span>
-							<span>{{ gatekeeperEnabled ? 'Yes' : 'No' }}</span>
+							<span>{{ gatekeeperUseSystemDefault ? 'Yes' : 'No' }}</span>
 							<span
-								v-if="gatekeeperEnabled"
+								v-if="gatekeeperUseSystemDefault"
 								class="pi pi-check-circle ml-1"
 								style="color: var(--green-400); font-size: 0.8rem"
 							></span>
@@ -553,7 +553,7 @@
 						</span>
 					</div>
 
-					<div>
+					<div v-if="!gatekeeperUseSystemDefault">
 						<span class="step-option__header">Content Safety:</span>
 						<span>{{
 							Array.isArray(selectedGatekeeperContentSafety)
@@ -562,7 +562,7 @@
 						}}</span>
 					</div>
 
-					<div>
+					<div v-if="!gatekeeperUseSystemDefault">
 						<span class="step-option__header">Data Protection:</span>
 						<span>{{
 							Array.isArray(selectedGatekeeperDataProtection)
@@ -579,7 +579,7 @@
 							<span id="aria-gatekeeper-enabled" class="step-option__header">Enabled:</span>
 							<span>
 								<ToggleButton
-									v-model="gatekeeperEnabled"
+									v-model="gatekeeperUseSystemDefault"
 									on-label="Yes"
 									on-icon="pi pi-check-circle"
 									off-label="No"
@@ -591,7 +591,7 @@
 						</div>
 
 						<!-- Content safety -->
-						<div class="mt-2">
+						<div class="mt-2"  v-if="!gatekeeperUseSystemDefault">
 							<span id="aria-content-safety" class="step-option__header">Content Safety:</span>
 							<MultiSelect
 								v-model="selectedGatekeeperContentSafety"
@@ -605,7 +605,7 @@
 						</div>
 
 						<!-- Data protection -->
-						<div class="mt-2">
+						<div class="mt-2"  v-if="!gatekeeperUseSystemDefault">
 							<span id="aria-data-prot" class="step-option__header">Data Protection:</span>
 							<!-- <span>Microsoft Presidio</span> -->
 							<MultiSelect
@@ -1226,7 +1226,7 @@ const getDefaultFormValues = () => {
 		conversationHistory: false as boolean,
 		conversationMaxMessages: 5 as number,
 
-		gatekeeperEnabled: false as boolean,
+		gatekeeperUseSystemDefault: false as boolean,
 
 		selectedGatekeeperContentSafety: ref(),
 		selectedGatekeeperDataProtection: ref(),
@@ -1620,7 +1620,7 @@ export default {
 			this.conversationMaxMessages =
 				agent.conversation_history_settings?.max_history || this.conversationMaxMessages;
 
-			this.gatekeeperEnabled = Boolean(agent.gatekeeper_settings?.use_system_setting);
+			this.gatekeeperUseSystemDefault = Boolean(agent.gatekeeper_settings?.use_system_setting);
 
 			if (agent.gatekeeper_settings && agent.gatekeeper_settings.options) {
 				this.selectedGatekeeperContentSafety =
@@ -2035,7 +2035,7 @@ export default {
 					},
 
 					gatekeeper_settings: {
-						use_system_setting: this.gatekeeperEnabled,
+						use_system_setting: this.gatekeeperUseSystemDefault,
 						options: [
 							...(this.selectedGatekeeperContentSafety || []).map((option: any) => option.code),
 							...(this.selectedGatekeeperDataProtection || []).map((option: any) => option.code),
