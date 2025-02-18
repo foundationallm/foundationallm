@@ -228,7 +228,9 @@
 
 						<!-- Gatekeeper toggle -->
 						<div class="d-flex align-center mt-2">
-							<span id="aria-gatekeeper-enabled" class="step-option__header">Use system default:</span>
+							<span id="aria-gatekeeper-enabled" class="step-option__header"
+								>Use system default:</span
+							>
 							<span>
 								<ToggleButton
 									v-model="gatekeeperUseSystemDefault"
@@ -243,7 +245,7 @@
 						</div>
 
 						<!-- Content safety -->
-						<div class="mt-2"  v-if="!gatekeeperUseSystemDefault">
+						<div class="mt-2" v-if="!gatekeeperUseSystemDefault">
 							<span id="aria-content-safety" class="step-option__header">Content Safety:</span>
 							<MultiSelect
 								v-model="selectedGatekeeperContentSafety"
@@ -257,7 +259,7 @@
 						</div>
 
 						<!-- Data protection -->
-						<div class="mt-2"  v-if="!gatekeeperUseSystemDefault">
+						<div class="mt-2" v-if="!gatekeeperUseSystemDefault">
 							<span id="aria-data-prot" class="step-option__header">Data Protection:</span>
 							<!-- <span>Microsoft Presidio</span> -->
 							<MultiSelect
@@ -429,8 +431,10 @@
 					</div>
 				</template>
 
-					<!-- Enable semantic cache -->
-				<div id="aria-semantic-cache-enabled" class="step-header span-2">Enable semantic cache?</div>
+				<!-- Enable semantic cache -->
+				<div id="aria-semantic-cache-enabled" class="step-header span-2">
+					Enable semantic cache?
+				</div>
 				<div class="span-2">
 					<ToggleButton
 						v-model="semanticCacheEnabled"
@@ -491,7 +495,9 @@
 
 			<!-- User portal experience -->
 			<section aria-labelledby="user-portal-experience" class="span-2 steps">
-				<h3 class="step-section-header span-2" id="user-portal-experience">User Portal Experience</h3>
+				<h3 class="step-section-header span-2" id="user-portal-experience">
+					User Portal Experience
+				</h3>
 
 				<div id="aria-show-message-tokens" class="step-header">
 					Would you like to show the message tokens?
@@ -1642,8 +1648,8 @@ export default {
 
 			this.agentTools = agent.tools;
 
-			this.selectedWorkflow = agent.workflow;			
-			this.hasAgentPrivateStorage = agent.workflow.type == 'azure-openai-assistants-workflow';			
+			this.selectedWorkflow = agent.workflow;
+			this.hasAgentPrivateStorage = agent.workflow.type == 'azure-openai-assistants-workflow';
 			this.showMessageTokens = agent.show_message_tokens ?? false;
 			this.showMessageRating = agent.show_message_rating ?? false;
 			this.showViewPrompt = agent.show_view_prompt ?? false;

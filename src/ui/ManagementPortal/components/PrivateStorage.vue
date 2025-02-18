@@ -9,7 +9,11 @@
 		</template>
 
 		<!-- Trigger button -->
-		<Button v-if="isButtonVisible" style="margin-right: 8px" @click="handleOpenPrivateStorageDialog">
+		<Button
+			v-if="isButtonVisible"
+			style="margin-right: 8px"
+			@click="handleOpenPrivateStorageDialog"
+		>
 			<i class="pi pi-box" style="font-size: 1.2rem; margin-right: 8px"></i>
 			Private Storage
 		</Button>
