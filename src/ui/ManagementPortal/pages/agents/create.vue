@@ -576,7 +576,7 @@
 
 						<!-- Gatekeeper toggle -->
 						<div class="d-flex align-center mt-2">
-							<span id="aria-gatekeeper-enabled" class="step-option__header">Enabled:</span>
+							<span id="aria-gatekeeper-enabled" class="step-option__header">Use system default:</span>
 							<span>
 								<ToggleButton
 									v-model="gatekeeperUseSystemDefault"
