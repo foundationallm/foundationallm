@@ -45,12 +45,44 @@ The status path is used by the Management Portal's Deployment Information page t
 
 Vectorization indexing and partitioning profile settings dictionary keys are now persisted as snake case (ex. `IndexName` becomes `index_name`).
 
-### Agent private file storage - new container required
+### Agent resource provider changes
 
-A new container `Agents` needs to be created in the Cosmos DB database with the following properties:
+The agent file references are now stored in a new Cosmos DB container, while the file contents are stored in the storage account. 
+Here are the configuration parameters for the required Cosmos DB container:
 
-- **Container id**: `Agents`
-- **Partition key**: Add a hierarchical partition key: the first partition key is `/instanceId` and the second partition key is `/agentName`.
+Name | Value
+--- | ---
+Name | `Agents`
+Maximum RU/s | 4000
+Hierarchical Partition key | `/instanceId` + `/agentName`
+
+As a result of the migration, the newly created `Agents` container will initially contain only ony type of times: `AgentFileReference`.
+
+This is an example of such item:
+
+```json
+{
+    "instanceId": "8ac6074c-bdde-43cb-a140-ec0002d96d2b",
+    "agentName": "TestAgentFiles1",
+    "originalFilename": "curious_cat_story.pdf",
+    "contentType": "application/pdf",
+    "size": 2433,
+    "upn": "andrei@foundationaLLM.ai",
+    "id": "af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf",
+    "objectId": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/agents/TestAgentFiles1/agentFiles/af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf",
+    "name": "af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf",
+    "filename": "/FoundationaLLM.Agent/8ac6074c-bdde-43cb-a140-ec0002d96d2b/TestAgentFiles1/private-file-store/af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf.pdf",
+    "type": "agent-file",
+    "deleted": false,
+    "_rid": "ie9IAMu0+b0EAAAAAAAAAA==",
+    "_self": "dbs/ie9IAA==/colls/ie9IAMu0+b0=/docs/ie9IAMu0+b0EAAAAAAAAAA==/",
+    "_etag": "\"37012abc-0000-0200-0000-67afaa800000\"",
+    "_attachments": "attachments/",
+    "_ts": 1739565696
+}
+```
+
+The `agent-file` type has been removed and the references are no longer saved in the agent reference store `_resource-references.json`.
 
 ## Starting with 0.9.3-rc010
 
