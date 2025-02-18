@@ -1248,9 +1248,9 @@ const getDefaultFormValues = () => {
 		toolToEdit: null,
 		agentTools: [] as AgentTool[],
 
-		showMessageTokens: false as boolean,
-		showMessageRating: false as boolean,
-		showViewPrompt: false as boolean,
+		showMessageTokens: true as boolean,
+		showMessageRating: true as boolean,
+		showViewPrompt: true as boolean,
 		showFileUpload: false as boolean,
 
 		userPromptRewriteEnabled: false as boolean,
