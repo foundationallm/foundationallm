@@ -103,7 +103,7 @@ export default {
 				return;
 			}
 
-			this.$emit('update:modelValue', this.urlException);
+			this.$emit('update:modelValue', this.urlException, this.modelValue);
 		},
 
 		handleClose() {
