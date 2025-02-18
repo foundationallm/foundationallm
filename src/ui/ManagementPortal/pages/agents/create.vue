@@ -366,6 +366,9 @@
 					/>
 				</div>
 
+				<!-- User portal experience -->
+				<div class="step-section-header span-2">User Portal Experience</div>
+
 				<div id="aria-show-message-tokens" class="step-header">
 					Would you like to show the message tokens?
 				</div>
