@@ -112,12 +112,54 @@
 </div>
 <h3 id="vectorization-resource-provider-changes">Vectorization resource provider changes</h3>
 <p>Vectorization indexing and partitioning profile settings dictionary keys are now persisted as snake case (ex. <code>IndexName</code> becomes <code>index_name</code>).</p>
-<h3 id="agent-private-file-storage---new-container-required">Agent private file storage - new container required</h3>
-<p>A new container <code>Agents</code> needs to be created in the Cosmos DB database with the following properties:</p>
-<ul>
-<li><strong>Container id</strong>: <code>Agents</code></li>
-<li><strong>Partition key</strong>: Add a hierarchical partition key: the first partition key is <code>/instanceId</code> and the second partition key is <code>/agentName</code>.</li>
-</ul>
+<h3 id="agent-resource-provider-changes">Agent resource provider changes</h3>
+<p>The agent file references are now stored in a new Cosmos DB container, while the file contents are stored in the storage account.
+Here are the configuration parameters for the required Cosmos DB container:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td><code>Agents</code></td>
+</tr>
+<tr>
+<td>Maximum RU/s</td>
+<td>4000</td>
+</tr>
+<tr>
+<td>Hierarchical Partition key</td>
+<td><code>/instanceId</code> + <code>/agentName</code></td>
+</tr>
+</tbody>
+</table>
+<p>As a result of the migration, the newly created <code>Agents</code> container will initially contain only ony type of times: <code>AgentFileReference</code>.</p>
+<p>This is an example of such item:</p>
+<pre><code class="lang-json">{
+    &quot;instanceId&quot;: &quot;8ac6074c-bdde-43cb-a140-ec0002d96d2b&quot;,
+    &quot;agentName&quot;: &quot;TestAgentFiles1&quot;,
+    &quot;originalFilename&quot;: &quot;curious_cat_story.pdf&quot;,
+    &quot;contentType&quot;: &quot;application/pdf&quot;,
+    &quot;size&quot;: 2433,
+    &quot;upn&quot;: &quot;andrei@foundationaLLM.ai&quot;,
+    &quot;id&quot;: &quot;af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf&quot;,
+    &quot;objectId&quot;: &quot;/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/agents/TestAgentFiles1/agentFiles/af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf&quot;,
+    &quot;name&quot;: &quot;af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf&quot;,
+    &quot;filename&quot;: &quot;/FoundationaLLM.Agent/8ac6074c-bdde-43cb-a140-ec0002d96d2b/TestAgentFiles1/private-file-store/af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf.pdf&quot;,
+    &quot;type&quot;: &quot;agent-file&quot;,
+    &quot;deleted&quot;: false,
+    &quot;_rid&quot;: &quot;ie9IAMu0+b0EAAAAAAAAAA==&quot;,
+    &quot;_self&quot;: &quot;dbs/ie9IAA==/colls/ie9IAMu0+b0=/docs/ie9IAMu0+b0EAAAAAAAAAA==/&quot;,
+    &quot;_etag&quot;: &quot;\&quot;37012abc-0000-0200-0000-67afaa800000\&quot;&quot;,
+    &quot;_attachments&quot;: &quot;attachments/&quot;,
+    &quot;_ts&quot;: 1739565696
+}
+</code></pre>
+<p>The <code>agent-file</code> type has been removed and the references are no longer saved in the agent reference store <code>_resource-references.json</code>.</p>
 <h2 id="starting-with-093-rc010">Starting with 0.9.3-rc010</h2>
 <h3 id="resource-provider-cache-warm-up">Resource provider cache warm-up</h3>
 <p>Resource providers now support a cache warm-up mechanism. This mechanism allows the cache to be pre-populated with the resource provider data before the service starts processing requests. This feature is useful when the service is deployed in a cold environment and needs to be warmed up before it can handle requests.</p>
