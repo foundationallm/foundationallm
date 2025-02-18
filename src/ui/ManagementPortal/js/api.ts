@@ -26,7 +26,7 @@ import type {
 	FileToolAssociation,
 	UpdateAgentFileToolAssociationRequest,
 	Workflow,
-	AgentTool
+	AgentTool,
 } from './types';
 import { convertToDataSource, convertToAppConfigKeyVault, convertToAppConfig } from '@/js/types';
 // import { isEmpty, upperFirst, camelCase } from 'lodash';
@@ -1037,7 +1037,6 @@ export default {
 			},
 		);
 	},
-
 
 	async deleteFileFromPrivateStorage(agentName: string, fileName: string): Promise<any> {
 		return await this.fetch(

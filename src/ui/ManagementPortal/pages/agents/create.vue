@@ -117,6 +117,536 @@
 				/>
 			</div>
 
+			<!-- Agent configuration -->
+			<section aria-labelledby="agent-configuration" class="span-2 steps">
+				<h3 class="step-section-header span-2" id="agent-configuration">Agent Configuration</h3>
+
+				<div class="step-header">Should conversations be included in the context?</div>
+				<div class="step-header">How should user-agent interactions be gated?</div>
+
+				<!-- Conversation history -->
+				<CreateAgentStepItem focusQuery=".conversation-history-toggle input">
+					<div class="step-container__header">Conversation History</div>
+
+					<div>
+						<span class="step-option__header">Enabled:</span>
+						<span>
+							<span>{{ conversationHistory ? 'Yes' : 'No' }}</span>
+							<span
+								v-if="conversationHistory"
+								class="pi pi-check-circle ml-1"
+								style="color: var(--green-400); font-size: 0.8rem"
+							></span>
+							<span
+								v-else
+								class="pi pi-times-circle ml-1"
+								style="color: var(--red-400); font-size: 0.8rem"
+							></span>
+						</span>
+					</div>
+
+					<div>
+						<span class="step-option__header">Max Messages:</span>
+						<span>{{ conversationMaxMessages }}</span>
+					</div>
+
+					<template #edit>
+						<div id="aria-conversation-history" class="step-container__header">
+							Conversation History
+						</div>
+
+						<div class="d-flex align-center mt-2">
+							<span id="aria-conversation-history-enabled" class="step-option__header"
+								>Enabled:</span
+							>
+							<span>
+								<ToggleButton
+									v-model="conversationHistory"
+									on-label="Yes"
+									on-icon="pi pi-check-circle"
+									off-label="No"
+									off-icon="pi pi-times-circle"
+									aria-labelledby="aria-conversation-history aria-conversation-history-enabled"
+									class="conversation-history-toggle"
+								/>
+							</span>
+						</div>
+
+						<div>
+							<span id="aria-max-messages" class="step-option__header">Max Messages:</span>
+							<InputText
+								v-model="conversationMaxMessages"
+								type="number"
+								class="mt-2"
+								aria-label="aria-max-messages"
+							/>
+						</div>
+					</template>
+				</CreateAgentStepItem>
+
+				<!-- Gatekeeper -->
+				<CreateAgentStepItem focusQuery=".gatekeeper-toggle input">
+					<div class="step-container__header">Gatekeeper</div>
+
+					<div>
+						<span class="step-option__header">Use system default:</span>
+						<span>
+							<span>{{ gatekeeperUseSystemDefault ? 'Yes' : 'No' }}</span>
+							<span
+								v-if="gatekeeperUseSystemDefault"
+								class="pi pi-check-circle ml-1"
+								style="color: var(--green-400); font-size: 0.8rem"
+							></span>
+							<span
+								v-else
+								class="pi pi-times-circle ml-1"
+								style="color: var(--red-400); font-size: 0.8rem"
+							></span>
+						</span>
+					</div>
+
+					<div v-if="!gatekeeperUseSystemDefault">
+						<span class="step-option__header">Content Safety:</span>
+						<span>{{
+							Array.isArray(selectedGatekeeperContentSafety)
+								? selectedGatekeeperContentSafety.map((item) => item.name).join(', ')
+								: ''
+						}}</span>
+					</div>
+
+					<div v-if="!gatekeeperUseSystemDefault">
+						<span class="step-option__header">Data Protection:</span>
+						<span>{{
+							Array.isArray(selectedGatekeeperDataProtection)
+								? selectedGatekeeperDataProtection.map((item) => item.name).join(', ')
+								: ''
+						}}</span>
+					</div>
+
+					<template #edit>
+						<div id="aria-gatekeeper" class="step-container__header">Gatekeeper</div>
+
+						<!-- Gatekeeper toggle -->
+						<div class="d-flex align-center mt-2">
+							<span id="aria-gatekeeper-enabled" class="step-option__header"
+								>Use system default:</span
+							>
+							<span>
+								<ToggleButton
+									v-model="gatekeeperUseSystemDefault"
+									on-label="Yes"
+									on-icon="pi pi-check-circle"
+									off-label="No"
+									off-icon="pi pi-times-circle"
+									aria-labelledby="aria-gatekeeper aria-gatekeeper-enabled"
+									class="gatekeeper-toggle"
+								/>
+							</span>
+						</div>
+
+						<!-- Content safety -->
+						<div class="mt-2" v-if="!gatekeeperUseSystemDefault">
+							<span id="aria-content-safety" class="step-option__header">Content Safety:</span>
+							<MultiSelect
+								v-model="selectedGatekeeperContentSafety"
+								class="dropdown--agent"
+								:options="gatekeeperContentSafetyOptions"
+								option-label="name"
+								display="chip"
+								placeholder="--Select--"
+								aria-labelledby="aria-content-safety"
+							/>
+						</div>
+
+						<!-- Data protection -->
+						<div class="mt-2" v-if="!gatekeeperUseSystemDefault">
+							<span id="aria-data-prot" class="step-option__header">Data Protection:</span>
+							<!-- <span>Microsoft Presidio</span> -->
+							<MultiSelect
+								v-model="selectedGatekeeperDataProtection"
+								class="dropdown--agent"
+								:options="gatekeeperDataProtectionOptions"
+								option-label="name"
+								display="chip"
+								placeholder="--Select--"
+								aria-labelledby="aria-data-prot"
+							/>
+						</div>
+					</template>
+				</CreateAgentStepItem>
+
+				<!-- <div class="step-header">Which AI model should the orchestrator use?</div>
+				<div class="step-header">Which capabilities should the agent have?</div> -->
+
+				<!-- AI model -->
+				<!-- <CreateAgentStepItem v-model="editAIModel" focusQuery=".step-container__edit__option">
+					<template v-if="selectedAIModel">
+						<div v-if="selectedAIModel.object_id !== ''">
+							<div class="step-container__header">{{ selectedAIModel.name }}</div>
+							<div>
+								<span class="step-option__header">Deployment name:</span>
+								<span>{{ selectedAIModel.deployment_name }}</span>
+							</div>
+						</div>
+					</template>
+					<template v-else>Please select an AI model.</template>
+
+					<template #edit>
+						<div class="step-container__edit__header">Please select an AI model.</div>
+						<div
+							v-for="aiModel in aiModelOptions"
+							:key="aiModel.name"
+							class="step-container__edit__option"
+							:class="{
+								'step-container__edit__option--selected': aiModel.name === selectedAIModel?.name,
+							}"
+							tabindex="0"
+							@click.stop="handleAIModelSelected(aiModel)"
+							@keydown.enter="handleAIModelSelected(aiModel)"
+						>
+							<div v-if="aiModel.object_id !== ''">
+								<div class="step-container__header">{{ aiModel.name }}</div>
+								<div v-if="aiModel.deployment_name">
+									<span class="step-option__header">Deployment name:</span>
+									<span>{{ aiModel.deployment_name }}</span>
+								</div>
+							</div>
+						</div>
+					</template>
+				</CreateAgentStepItem> -->
+
+				<!-- Agent capabilities -->
+				<!-- <CreateAgentStepItem focusQuery=".agent-capabilities-dropdown input">
+					<div>
+						<span class="step-option__header">Agent Capabilities:</span>
+						<span>{{
+							Array.isArray(selectedAgentCapabilities)
+								? selectedAgentCapabilities.map((item) => item.name).join(', ')
+								: ''
+						}}</span>
+					</div>
+
+					<template #edit>
+						<div class="mt-2">
+							<span class="step-option__header">Agent Capabilities:</span>
+							<MultiSelect
+								v-model="selectedAgentCapabilities"
+								class="dropdown--agent agent-capabilities-dropdown"
+								:options="agentCapabilitiesOptions"
+								option-label="name"
+								display="chip"
+								placeholder="--Select--"
+								aria-labelledby="aria-content-safety"
+							/>
+						</div>
+					</template>
+				</CreateAgentStepItem> -->
+
+				<div class="step-header">Should user prompts be rewritten?</div>
+				<div class="step-header">Should semantic cache be used?</div>
+
+				<!-- User prompt rewrite -->
+				<CreateAgentStepItem focusQuery=".user-prompt-rewrite-toggle input">
+					<div class="step-container__header">User Prompt Rewrite</div>
+
+					<div>
+						<span class="step-option__header">Enabled:</span>
+						<span>
+							<span>{{ userPromptRewriteEnabled ? 'Yes' : 'No' }}</span>
+							<span
+								v-if="userPromptRewriteEnabled"
+								class="pi pi-check-circle ml-1"
+								style="color: var(--green-400); font-size: 0.8rem"
+							></span>
+							<span
+								v-else
+								class="pi pi-times-circle ml-1"
+								style="color: var(--red-400); font-size: 0.8rem"
+							></span>
+						</span>
+					</div>
+
+					<template v-if="userPromptRewriteEnabled">
+						<div>
+							<span class="step-option__header">Rewrite Model:</span>
+							<span>{{ aiModelOptions.find(model => model.object_id === userPromptRewriteAIModel)?.name }}</span>
+						</div>
+
+						<div>
+							<span class="step-option__header">Rewrite Prompt:</span>
+							<span>{{ promptOptions.find(prompt => prompt.object_id === userPromptRewritePrompt)?.name }}</span>
+						</div>
+
+						<div>
+							<span class="step-option__header">Rewrite Window Size:</span>
+							<span>{{ userPromptRewriteWindowSize }}</span>
+						</div>
+					</template>
+
+					<template #edit>
+						<div id="aria-gatekeeper" class="step-container__header">User Prompt Rewrite</div>
+
+						<!-- User prompt rewrite toggle -->
+						<div class="d-flex align-center mt-2">
+							<span id="aria-user-prompt-rewrite-enabled" class="step-option__header"
+								>Enabled:</span
+							>
+							<span>
+								<ToggleButton
+									v-model="userPromptRewriteEnabled"
+									on-label="Yes"
+									on-icon="pi pi-check-circle"
+									off-label="No"
+									off-icon="pi pi-times-circle"
+									aria-labelledby="aria-user-prompt-rewrite-enabled"
+									class="user-prompt-rewrite"
+								/>
+							</span>
+						</div>
+
+						<!-- User prompt rewrite model -->
+						<div class="mt-2" v-if="userPromptRewriteEnabled">
+							<!-- What model should be used for the prompt rewrite? -->
+							<span id="aria-user-prompt-rewrite-model" class="step-option__header">Rewrite Model:</span>
+							<Dropdown
+								v-model="userPromptRewriteAIModel"
+								:options="aiModelOptions"
+								option-label="name"
+								option-value="object_id"
+								class="dropdown--agent"
+								placeholder="--Select--"
+								aria-labelledby="aria-user-prompt-rewrite-model"
+							/>
+						</div>
+
+						<!-- User prompt rewrite prompt -->
+						<div class="mt-2" v-if="userPromptRewriteEnabled">
+							<!-- What prompt should be used to rewrite the user prompt? -->
+							<span id="aria-user-prompt-rewrite-prompt" class="step-option__header">Rewrite Prompt:</span>
+							<Dropdown
+								v-model="userPromptRewritePrompt"
+								:options="promptOptions"
+								option-label="name"
+								option-value="object_id"
+								class="dropdown--agent"
+								placeholder="--Select--"
+								aria-labelledby="aria-user-prompt-rewrite-prompt"
+							/>
+						</div>
+
+						<!-- User prompt rewrite window size -->
+						<div class="mt-2" v-if="userPromptRewriteEnabled">
+							<!-- What should the rewrite window size be? -->
+							<span id="aria-user-prompt-rewrite-window-size" class="step-option__header">Rewrite Window Size:</span>
+							<InputNumber
+								v-model="userPromptRewriteWindowSize"
+								:minFractionDigits="0"
+								:maxFractionDigits="0"
+								placeholder="Window size"
+								aria-labelledby="aria-user-prompt-rewrite-window-size"
+							/>
+						</div>
+					</template>
+				</CreateAgentStepItem>
+
+				<!-- Semantic cache  -->
+				<CreateAgentStepItem focusQuery=".semantic-cache-toggle input">
+					<div class="step-container__header">Semantic Cache</div>
+
+					<div>
+						<span class="step-option__header">Enabled:</span>
+						<span>
+							<span>{{ semanticCacheEnabled ? 'Yes' : 'No' }}</span>
+							<span
+								v-if="semanticCacheEnabled"
+								class="pi pi-check-circle ml-1"
+								style="color: var(--green-400); font-size: 0.8rem"
+							></span>
+							<span
+								v-else
+								class="pi pi-times-circle ml-1"
+								style="color: var(--red-400); font-size: 0.8rem"
+							></span>
+						</span>
+					</div>
+
+					<template v-if="semanticCacheEnabled">
+						<div>
+							<span class="step-option__header">Model:</span>
+							<span>{{ aiModelOptions.find(model => model.object_id === semanticCacheAIModel)?.name }}</span>
+						</div>
+
+						<div>
+							<span class="step-option__header">Embedding Dimensions:</span>
+							<span>{{ semanticCacheEmbeddingDimensions }}</span>
+						</div>
+
+						<div>
+							<span class="step-option__header">Minimum Similarity Threshold:</span>
+							<span>{{ semanticCacheMinimumSimilarityThreshold }}</span>
+						</div>
+					</template>
+
+					<template #edit>
+						<div id="aria-gatekeeper" class="step-container__header">User Prompt Rewrite</div>
+
+						<!-- Semantic cache toggle -->
+						<div class="d-flex align-center mt-2">
+							<span id="aria-semantic-cache-enabled" class="step-option__header"
+								>Enabled:</span
+							>
+							<span>
+							<ToggleButton
+								v-model="semanticCacheEnabled"
+								on-label="Yes"
+								on-icon="pi pi-check-circle"
+								off-label="No"
+								off-icon="pi pi-times-circle"
+								aria-labelledby="aria-semantic-cache-enabled"
+								class="semantic-cache-toggle"
+							/>
+							</span>
+						</div>
+
+						<!-- Semantic cache model -->
+						<div class="mt-2" v-if="semanticCacheEnabled">
+							<!-- What model should be used for the semantic cache? -->
+							<span id="aria-semantic-cache-model" class="step-option__header">Model:</span>
+							<Dropdown
+								v-model="semanticCacheAIModel"
+								:options="aiModelOptions"
+								option-label="name"
+								option-value="object_id"
+								class="dropdown--agent"
+								placeholder="--Select--"
+								aria-labelledby="aria-semantic-cache-model"
+							/>
+						</div>
+
+						<!-- Semantic cache embedding dimensions -->
+						<div class="mt-2" v-if="semanticCacheEnabled">
+							<!-- How many embedding dimensions to use? -->
+							<span id="aria-semantic-cache-embedding-dimensions" class="step-option__header">Embedding Dimensions:</span>
+							<InputNumber
+								v-model="semanticCacheEmbeddingDimensions"
+								:minFractionDigits="0"
+								:maxFractionDigits="0"
+								placeholder="Embedding dimensions size"
+								aria-labelledby="aria-semantic-cache-embedding-dimensions"
+							/>
+						</div>
+
+						<!-- Semantic cache minimum similarity threshold -->
+						<div class="mt-2" v-if="semanticCacheEnabled">
+							<!-- What should the minimum similarity threshold be? -->
+							<span id="aria-semantic-cache-minimum-similarity" class="step-option__header">Minimum Similarity Threshold:</span>
+							<InputNumber
+								v-model="semanticCacheMinimumSimilarityThreshold"
+								:minFractionDigits="0"
+								:maxFractionDigits="2"
+								placeholder="Minimum Similarity Threshold"
+								aria-labelledby="aria-semantic-cache-minimum-similarity"
+							/>
+						</div>
+					</template>
+				</CreateAgentStepItem>
+				
+				<!-- Cost center -->
+				<div id="aria-cost-center" class="step-header span-2">
+					Would you like to assign this agent to a cost center?
+				</div>
+				<div class="span-2">
+					<InputText
+						v-model="cost_center"
+						type="text"
+						class="w-50"
+						placeholder="Enter cost center name"
+						aria-labelledby="aria-cost-center"
+					/>
+				</div>
+
+				<!-- Expiration -->
+				<div class="step-header span-2">Would you like to set an expiration on this agent?</div>
+				<div class="span-2">
+					<Calendar
+						v-model="expirationDate"
+						show-icon
+						show-button-bar
+						placeholder="Enter expiration date"
+						type="text"
+					/>
+				</div>
+			</section>
+
+			<!-- User portal experience -->
+			<section aria-labelledby="user-portal-experience" class="span-2 steps">
+				<h3 class="step-section-header span-2" id="user-portal-experience">
+					User Portal Experience
+				</h3>
+
+				<div id="aria-show-message-tokens" class="step-header">
+					Would you like to show the message tokens?
+				</div>
+				<div id="aria-show-message-rating" class="step-header">
+					Would you like to allow the user to rate the agent responses?
+				</div>
+
+				<!-- Message tokens -->
+				<div>
+					<ToggleButton
+						v-model="showMessageTokens"
+						on-label="Yes"
+						on-icon="pi pi-check-circle"
+						off-label="No"
+						off-icon="pi pi-times-circle"
+						aria-labelledby="aria-show-message-tokens"
+					/>
+				</div>
+
+				<!-- Rate messages -->
+				<div>
+					<ToggleButton
+						v-model="showMessageRating"
+						on-label="Yes"
+						on-icon="pi pi-check-circle"
+						off-label="No"
+						off-icon="pi pi-times-circle"
+						aria-labelledby="aria-show-message-rating"
+					/>
+				</div>
+
+				<div id="aria-show-view-prompt" class="step-header">
+					Would you like to allow the user to see the message prompts?
+				</div>
+				<div id="aria-show-file-upload" class="step-header">
+					Would you like to allow the user to upload files?
+				</div>
+
+				<!-- Show view prompt -->
+				<div>
+					<ToggleButton
+						v-model="showViewPrompt"
+						on-label="Yes"
+						on-icon="pi pi-check-circle"
+						off-label="No"
+						off-icon="pi pi-times-circle"
+						aria-labelledby="aria-show-view-prompt"
+					/>
+				</div>
+
+				<!-- Show file upload -->
+				<div>
+					<ToggleButton
+						v-model="showFileUpload"
+						on-label="Yes"
+						on-icon="pi pi-check-circle"
+						off-label="No"
+						off-icon="pi pi-times-circle"
+						aria-labelledby="aria-show-file-upload"
+					/>
+				</div>
+			</section>
+
 			<!-- Knowledge source -->
 			<section aria-labelledby="knowledge-source" class="span-2 steps">
 				<h3 class="step-section-header span-2" id="knowledge-source">Knowledge Source</h3>
@@ -465,318 +995,6 @@
 			</section>
 			<!-- End of Knowledge Source -->
 
-			<!-- Agent configuration -->
-			<section aria-labelledby="agent-configuration" class="span-2 steps">
-				<h3 class="step-section-header span-2" id="agent-configuration">Agent Configuration</h3>
-
-				<div class="step-header">Should conversations be included in the context?</div>
-				<div class="step-header">How should user-agent interactions be gated?</div>
-
-				<!-- Conversation history -->
-				<CreateAgentStepItem focusQuery=".conversation-history-toggle input">
-					<div class="step-container__header">Conversation History</div>
-
-					<div>
-						<span class="step-option__header">Enabled:</span>
-						<span>
-							<span>{{ conversationHistory ? 'Yes' : 'No' }}</span>
-							<span
-								v-if="conversationHistory"
-								class="pi pi-check-circle ml-1"
-								style="color: var(--green-400); font-size: 0.8rem"
-							></span>
-							<span
-								v-else
-								class="pi pi-times-circle ml-1"
-								style="color: var(--red-400); font-size: 0.8rem"
-							></span>
-						</span>
-					</div>
-
-					<div>
-						<span class="step-option__header">Max Messages:</span>
-						<span>{{ conversationMaxMessages }}</span>
-					</div>
-
-					<template #edit>
-						<div id="aria-conversation-history" class="step-container__header">
-							Conversation History
-						</div>
-
-						<div class="d-flex align-center mt-2">
-							<span id="aria-conversation-history-enabled" class="step-option__header"
-								>Enabled:</span
-							>
-							<span>
-								<ToggleButton
-									v-model="conversationHistory"
-									on-label="Yes"
-									on-icon="pi pi-check-circle"
-									off-label="No"
-									off-icon="pi pi-times-circle"
-									aria-labelledby="aria-conversation-history aria-conversation-history-enabled"
-									class="conversation-history-toggle"
-								/>
-							</span>
-						</div>
-
-						<div>
-							<span id="aria-max-messages" class="step-option__header">Max Messages:</span>
-							<InputText
-								v-model="conversationMaxMessages"
-								type="number"
-								class="mt-2"
-								aria-label="aria-max-messages"
-							/>
-						</div>
-					</template>
-				</CreateAgentStepItem>
-
-				<!-- Gatekeeper -->
-				<CreateAgentStepItem focusQuery=".gatekeeper-toggle input">
-					<div class="step-container__header">Gatekeeper</div>
-
-					<div>
-						<span class="step-option__header">Use system default:</span>
-						<span>
-							<span>{{ gatekeeperUseSystemDefault ? 'Yes' : 'No' }}</span>
-							<span
-								v-if="gatekeeperUseSystemDefault"
-								class="pi pi-check-circle ml-1"
-								style="color: var(--green-400); font-size: 0.8rem"
-							></span>
-							<span
-								v-else
-								class="pi pi-times-circle ml-1"
-								style="color: var(--red-400); font-size: 0.8rem"
-							></span>
-						</span>
-					</div>
-
-					<div v-if="!gatekeeperUseSystemDefault">
-						<span class="step-option__header">Content Safety:</span>
-						<span>{{
-							Array.isArray(selectedGatekeeperContentSafety)
-								? selectedGatekeeperContentSafety.map((item) => item.name).join(', ')
-								: ''
-						}}</span>
-					</div>
-
-					<div v-if="!gatekeeperUseSystemDefault">
-						<span class="step-option__header">Data Protection:</span>
-						<span>{{
-							Array.isArray(selectedGatekeeperDataProtection)
-								? selectedGatekeeperDataProtection.map((item) => item.name).join(', ')
-								: ''
-						}}</span>
-					</div>
-
-					<template #edit>
-						<div id="aria-gatekeeper" class="step-container__header">Gatekeeper</div>
-
-						<!-- Gatekeeper toggle -->
-						<div class="d-flex align-center mt-2">
-							<span id="aria-gatekeeper-enabled" class="step-option__header">Use system default:</span>
-							<span>
-								<ToggleButton
-									v-model="gatekeeperUseSystemDefault"
-									on-label="Yes"
-									on-icon="pi pi-check-circle"
-									off-label="No"
-									off-icon="pi pi-times-circle"
-									aria-labelledby="aria-gatekeeper aria-gatekeeper-enabled"
-									class="gatekeeper-toggle"
-								/>
-							</span>
-						</div>
-
-						<!-- Content safety -->
-						<div class="mt-2"  v-if="!gatekeeperUseSystemDefault">
-							<span id="aria-content-safety" class="step-option__header">Content Safety:</span>
-							<MultiSelect
-								v-model="selectedGatekeeperContentSafety"
-								class="dropdown--agent"
-								:options="gatekeeperContentSafetyOptions"
-								option-label="name"
-								display="chip"
-								placeholder="--Select--"
-								aria-labelledby="aria-content-safety"
-							/>
-						</div>
-
-						<!-- Data protection -->
-						<div class="mt-2"  v-if="!gatekeeperUseSystemDefault">
-							<span id="aria-data-prot" class="step-option__header">Data Protection:</span>
-							<!-- <span>Microsoft Presidio</span> -->
-							<MultiSelect
-								v-model="selectedGatekeeperDataProtection"
-								class="dropdown--agent"
-								:options="gatekeeperDataProtectionOptions"
-								option-label="name"
-								display="chip"
-								placeholder="--Select--"
-								aria-labelledby="aria-data-prot"
-							/>
-						</div>
-					</template>
-				</CreateAgentStepItem>
-
-				<!-- <div class="step-header">Which AI model should the orchestrator use?</div>
-				<div class="step-header">Which capabilities should the agent have?</div> -->
-
-				<!-- AI model -->
-				<!-- <CreateAgentStepItem v-model="editAIModel" focusQuery=".step-container__edit__option">
-					<template v-if="selectedAIModel">
-						<div v-if="selectedAIModel.object_id !== ''">
-							<div class="step-container__header">{{ selectedAIModel.name }}</div>
-							<div>
-								<span class="step-option__header">Deployment name:</span>
-								<span>{{ selectedAIModel.deployment_name }}</span>
-							</div>
-						</div>
-					</template>
-					<template v-else>Please select an AI model.</template>
-
-					<template #edit>
-						<div class="step-container__edit__header">Please select an AI model.</div>
-						<div
-							v-for="aiModel in aiModelOptions"
-							:key="aiModel.name"
-							class="step-container__edit__option"
-							:class="{
-								'step-container__edit__option--selected': aiModel.name === selectedAIModel?.name,
-							}"
-							tabindex="0"
-							@click.stop="handleAIModelSelected(aiModel)"
-							@keydown.enter="handleAIModelSelected(aiModel)"
-						>
-							<div v-if="aiModel.object_id !== ''">
-								<div class="step-container__header">{{ aiModel.name }}</div>
-								<div v-if="aiModel.deployment_name">
-									<span class="step-option__header">Deployment name:</span>
-									<span>{{ aiModel.deployment_name }}</span>
-								</div>
-							</div>
-						</div>
-					</template>
-				</CreateAgentStepItem> -->
-
-				<!-- Agent capabilities -->
-				<!-- <CreateAgentStepItem focusQuery=".agent-capabilities-dropdown input">
-					<div>
-						<span class="step-option__header">Agent Capabilities:</span>
-						<span>{{
-							Array.isArray(selectedAgentCapabilities)
-								? selectedAgentCapabilities.map((item) => item.name).join(', ')
-								: ''
-						}}</span>
-					</div>
-
-					<template #edit>
-						<div class="mt-2">
-							<span class="step-option__header">Agent Capabilities:</span>
-							<MultiSelect
-								v-model="selectedAgentCapabilities"
-								class="dropdown--agent agent-capabilities-dropdown"
-								:options="agentCapabilitiesOptions"
-								option-label="name"
-								display="chip"
-								placeholder="--Select--"
-								aria-labelledby="aria-content-safety"
-							/>
-						</div>
-					</template>
-				</CreateAgentStepItem> -->
-
-				<!-- Cost center -->
-				<div id="aria-cost-center" class="step-header span-2">
-					Would you like to assign this agent to a cost center?
-				</div>
-				<div class="span-2">
-					<InputText
-						v-model="cost_center"
-						type="text"
-						class="w-50"
-						placeholder="Enter cost center name"
-						aria-labelledby="aria-cost-center"
-					/>
-				</div>
-
-				<!-- Expiration -->
-				<div class="step-header span-2">Would you like to set an expiration on this agent?</div>
-				<div class="span-2">
-					<Calendar
-						v-model="expirationDate"
-						show-icon
-						show-button-bar
-						placeholder="Enter expiration date"
-						type="text"
-					/>
-				</div>
-
-				<div id="aria-show-message-tokens" class="step-header">
-					Would you like to show the message tokens?
-				</div>
-				<div id="aria-show-message-rating" class="step-header">
-					Would you like to allow the user to rate the agent responses?
-				</div>
-
-				<!-- Message tokens -->
-				<div>
-					<ToggleButton
-						v-model="showMessageTokens"
-						on-label="Yes"
-						on-icon="pi pi-check-circle"
-						off-label="No"
-						off-icon="pi pi-times-circle"
-						aria-labelledby="aria-show-message-tokens"
-					/>
-				</div>
-
-				<!-- Rate messages -->
-				<div>
-					<ToggleButton
-						v-model="showMessageRating"
-						on-label="Yes"
-						on-icon="pi pi-check-circle"
-						off-label="No"
-						off-icon="pi pi-times-circle"
-						aria-labelledby="aria-show-message-rating"
-					/>
-				</div>
-
-				<div id="aria-show-view-prompt" class="step-header">
-					Would you like to allow the user to see the message prompts?
-				</div>
-				<div id="aria-show-file-upload" class="step-header">
-					Would you like to allow the user to upload files?
-				</div>
-
-				<!-- Show view prompt -->
-				<div>
-					<ToggleButton
-						v-model="showViewPrompt"
-						on-label="Yes"
-						on-icon="pi pi-check-circle"
-						off-label="No"
-						off-icon="pi pi-times-circle"
-						aria-labelledby="aria-show-view-prompt"
-					/>
-				</div>
-
-				<!-- Show file upload -->
-				<div>
-					<ToggleButton
-						v-model="showFileUpload"
-						on-label="Yes"
-						on-icon="pi pi-check-circle"
-						off-label="No"
-						off-icon="pi pi-times-circle"
-						aria-labelledby="aria-show-file-upload"
-					/>
-				</div>
-			</section>
-
 			<!-- Workflow -->
 			<div class="step-section-header span-2">Workflow</div>
 			<div id="aria-workflow" class="step-header span-2">What workflow should the agent use?</div>
@@ -987,134 +1205,6 @@
 				/>
 			</div>
 
-			<!-- User prompt rewrite -->
-			<div class="step-section-header span-2">User Prompt Rewrite Settings</div>
-
-			<!-- Enable user prompt rewrite -->
-			<div id="aria-user-prompt-rewrite-enabled" class="step-header span-2">
-				Enable user prompt rewrite?
-			</div>
-			<div class="span-2">
-				<ToggleButton
-					v-model="userPromptRewriteEnabled"
-					on-label="Yes"
-					on-icon="pi pi-check-circle"
-					off-label="No"
-					off-icon="pi pi-times-circle"
-					aria-labelledby="aria-user-prompt-rewrite-enabled"
-				/>
-			</div>
-
-			<template v-if="userPromptRewriteEnabled">
-				<!-- User prompt rewrite model -->
-				<div id="aria-user-prompt-rewrite-model" class="step-header span-2 mt-2">
-					What model should be used for the prompt rewrite?
-				</div>
-				<div class="span-2">
-					<Dropdown
-						v-model="userPromptRewriteAIModel"
-						:options="aiModelOptions"
-						option-label="name"
-						option-value="object_id"
-						class="dropdown--agent"
-						placeholder="--Select--"
-						aria-labelledby="aria-user-prompt-rewrite-model"
-					/>
-				</div>
-
-				<!-- User prompt rewrite prompt -->
-				<div id="aria-user-prompt-rewrite-prompt" class="step-header span-2 mt-2">
-					What prompt should be used to rewrite the user prompt?
-				</div>
-				<div class="span-2">
-					<Dropdown
-						v-model="userPromptRewritePrompt"
-						:options="promptOptions"
-						option-label="name"
-						option-value="object_id"
-						class="dropdown--agent"
-						placeholder="--Select--"
-						aria-labelledby="aria-user-prompt-rewrite-prompt"
-					/>
-				</div>
-
-				<!-- User prompt rewrite window size -->
-				<div id="aria-user-prompt-rewrite-window-size" class="step-header span-2 mt-2">
-					What should the rewrite window size be?
-				</div>
-				<div class="span-2">
-					<InputNumber
-						v-model="userPromptRewriteWindowSize"
-						:minFractionDigits="0"
-						:maxFractionDigits="0"
-						placeholder="Window size"
-						aria-labelledby="aria-user-prompt-rewrite-window-size"
-					/>
-				</div>
-			</template>
-
-			<!-- Cache settings -->
-			<div class="step-section-header span-2">Cache Settings</div>
-
-			<!-- Enable semantic cache -->
-			<div id="aria-semantic-cache-enabled" class="step-header span-2">Enable semantic cache?</div>
-			<div class="span-2">
-				<ToggleButton
-					v-model="semanticCacheEnabled"
-					on-label="Yes"
-					on-icon="pi pi-check-circle"
-					off-label="No"
-					off-icon="pi pi-times-circle"
-					aria-labelledby="aria-semantic-cache-enabled"
-				/>
-			</div>
-
-			<template v-if="semanticCacheEnabled">
-				<!-- Semantic cache model -->
-				<div id="aria-semantic-cache-model" class="step-header span-2 mt-2">
-					What model should be used for the semantic cache?
-				</div>
-				<div class="span-2">
-					<Dropdown
-						v-model="semanticCacheAIModel"
-						:options="aiModelOptions"
-						option-label="name"
-						option-value="object_id"
-						class="dropdown--agent"
-						placeholder="--Select--"
-						aria-labelledby="aria-semantic-cache-model"
-					/>
-				</div>
-
-				<!-- Semantic cache embedding dimensions -->
-				<div id="aria-semantic-cache-embedding-dimensions" class="step-header span-2 mt-2">
-					How many embedding dimensions to use?
-				</div>
-				<div class="span-2">
-					<InputNumber
-						v-model="semanticCacheEmbeddingDimensions"
-						:minFractionDigits="0"
-						:maxFractionDigits="0"
-						placeholder="Embedding dimensions size"
-						aria-labelledby="aria-semantic-cache-embedding-dimensions"
-					/>
-				</div>
-
-				<!-- Semantic cache minimum similarity threshold -->
-				<div id="aria-semantic-cache-minimum-similarity" class="step-header span-2 mt-2">
-					What should the minimum similarity threshold be?
-				</div>
-				<div class="span-2">
-					<InputNumber
-						v-model="semanticCacheMinimumSimilarityThreshold"
-						:minFractionDigits="0"
-						:maxFractionDigits="2"
-						placeholder="Minimum Similarity Threshold"
-						aria-labelledby="aria-semantic-cache-minimum-similarity"
-					/>
-				</div>
-			</template>
-
 			<!-- Security -->
 			<div v-if="virtualSecurityGroupId" class="step-section-header span-2">Security</div>
 
@@ -1248,9 +1338,9 @@ const getDefaultFormValues = () => {
 		toolToEdit: null,
 		agentTools: [] as AgentTool[],
 
-		showMessageTokens: false as boolean,
-		showMessageRating: false as boolean,
-		showViewPrompt: false as boolean,
+		showMessageTokens: true as boolean,
+		showMessageRating: true as boolean,
+		showViewPrompt: true as boolean,
 		showFileUpload: false as boolean,
 
 		userPromptRewriteEnabled: false as boolean,
@@ -1643,8 +1733,8 @@ export default {
 
 			this.agentTools = agent.tools;
 
-			this.selectedWorkflow = agent.workflow;			
-			this.hasAgentPrivateStorage = agent.workflow.type == 'azure-openai-assistants-workflow';			
+			this.selectedWorkflow = agent.workflow;
+			this.hasAgentPrivateStorage = agent.workflow.type == 'azure-openai-assistants-workflow';
 			this.showMessageTokens = agent.show_message_tokens ?? false;
 			this.showMessageRating = agent.show_message_rating ?? false;
 			this.showViewPrompt = agent.show_view_prompt ?? false;

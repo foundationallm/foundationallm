@@ -68,11 +68,11 @@ export default {
 			let fullUrl = this.apiUrl;
 			try {
 				if (this.statusEndpoint) {
-					fullUrl = this.apiUrl + (this.statusEndpoint ? `/${this.statusEndpoint.replace(/^\/+/, '')}` : '');
-					const response = await $fetch(
-						`/api/api-status?url=${encodeURIComponent(fullUrl)}`,
-					);
-					
+					fullUrl =
+						this.apiUrl +
+						(this.statusEndpoint ? `/${this.statusEndpoint.replace(/^\/+/, '')}` : '');
+					const response = await $fetch(`/api/api-status?url=${encodeURIComponent(fullUrl)}`);
+
 					//const response = await $fetch(fullUrl);
 					if (response.error) {
 						this.error = response.error;
