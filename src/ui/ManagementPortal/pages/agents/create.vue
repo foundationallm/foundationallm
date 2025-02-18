@@ -342,6 +342,9 @@
 					</template>
 				</CreateAgentStepItem> -->
 
+				<div class="step-header">Should user prompts be rewritten?</div>
+				<div class="step-header">Should semantic cache be used?</div>
+
 				<!-- User prompt rewrite -->
 				<CreateAgentStepItem focusQuery=".user-prompt-rewrite-toggle input">
 					<div class="step-container__header">User Prompt Rewrite</div>
