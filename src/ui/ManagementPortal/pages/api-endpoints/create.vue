@@ -491,10 +491,13 @@ export default {
 			this.showNewURLExceptionDialog = false;
 		},
 
-		handleUpdateURLException(updatedURLException) {
+		handleUpdateURLException(updatedURLException, originalURLException) {
 			const index = this.apiEndpoint.url_exceptions.findIndex(
-				(urlException) => urlException.url === updatedURLException.url,
+				(urlException) =>
+					urlException.url === originalURLException.url &&
+					urlException.user_principal_name === originalURLException.user_principal_name,
 			);
+
 			this.apiEndpoint.url_exceptions[index] = updatedURLException;
 			this.urlExceptionToEdit = null;
 		},
