@@ -67,10 +67,8 @@ export default {
 			type: [Object, String],
 			required: false,
 			default: () => ({
-				name: '' as string,
-				description: '' as string,
-				package_name: '' as string,
-				resource_object_ids: [] as object[],
+				object_id: null,
+				properties: {},
 			}),
 		},
 
@@ -95,7 +93,11 @@ export default {
 					value: 'model',
 				},
 				{
-					label: 'Indexing Profile',
+					label: 'Embedding profile',
+					value: 'textEmbeddingProfile',
+				},
+				{
+					label: 'Vector store',
 					value: 'indexingProfile',
 				},
 				{
@@ -114,29 +116,53 @@ export default {
 	},
 
 	watch: {
-		modelValue: {
-			immediate: true,
-			deep: true,
-			handler() {
-				if (JSON.stringify(this.modelValue) === JSON.stringify(this.json)) return;
-				this.json = this.modelValue;
-			},
-		},
-
 		async resourceType(newType, oldType) {
 			if (newType === oldType) return;
 
+			await this.updateResourceOptions(newType);
+		},
+	},
+
+	methods: {
+		getResourceNameFromId(resourceId) {
+			const parts = resourceId.split('/').filter(Boolean);
+			return parts.slice(-1)[0];
+		},
+
+		getResourceTypeFromId(resourceId) {
+			const parts = resourceId.split('/').filter(Boolean);
+			const type = parts.slice(-2)[0];
+
+			if (type === 'prompts') {
+				return 'prompt';
+			} else if (type === 'aiModels') {
+				return 'model';
+			} else if (type === 'textEmbeddingProfiles') {
+				return 'textEmbeddingProfile';
+			} else if (type === 'indexingProfiles') {
+				return 'indexingProfile';
+			} else if (type === 'apiEndpointConfigurations') {
+				return 'apiEndpoint';
+			}
+
+			return type;
+		},
+
+		async updateResourceOptions(resourceType) {
 			let apiMethod = null;
-			if (this.resourceType === 'model') {
+			if (resourceType === 'model') {
 				this.loadingStatusText = 'Loading models...';
 				apiMethod = api.getAIModels;
-			} else if (this.resourceType === 'indexingProfile') {
-				this.loadingStatusText = 'Loading indexing profiles...';
+			} else if (resourceType === 'textEmbeddingProfile') {
+				this.loadingStatusText = 'Loading text embedding profiles...';
+				apiMethod = api.getTextEmbeddingProfiles;
+			} else if (resourceType === 'indexingProfile') {
+				this.loadingStatusText = 'Loading vector stores...';
 				apiMethod = api.getAgentIndexes;
-			} else if (this.resourceType === 'prompt') {
+			} else if (resourceType === 'prompt') {
 				this.loadingStatusText = 'Loading prompts...';
 				apiMethod = api.getPrompts;
-			} else if (this.resourceType === 'apiEndpoint') {
+			} else if (resourceType === 'apiEndpoint') {
 				this.loadingStatusText = 'Loading api endpoints...';
 				apiMethod = api.getOrchestrationServices;
 			}
@@ -153,9 +179,7 @@ export default {
 			}
 			this.loading = false;
 		},
-	},
 
-	methods: {
 		handleSave() {
 			const errors = [];
 
@@ -206,6 +230,6 @@ export default {
 	gap: 16px;
 	z-index: 10;
 	background-color: rgba(255, 255, 255, 0.9);
-	pointer-events: none;
+	pointer-events: auto;
 }
 </style>

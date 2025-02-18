@@ -17,6 +17,7 @@ import type {
 	MessageContent,
 } from '@/js/types';
 import api from '@/js/api';
+import { isAgentExpired } from '@/js/helpers';
 // import eventBus from '@/js/eventBus';
 
 const DEFAULT_POLLING_INTERVAL_MS = 5000;
@@ -335,7 +336,7 @@ export const useAppStore = defineStore('app', {
 		calculateMessageProcessingTime() {
 			// Calculate the processing time for each message
 			this.currentMessages.forEach((message, index) => {
-				if (message.sender === 'Agent' && this.currentMessages[index - 1]?.sender === 'User') {
+				if (message.sender === 'Agent' && this.currentMessages[index - 1]?.sender.toLowerCase() === 'user') {
 					const previousMessageTimeStamp = new Date(this.currentMessages[index - 1].timeStamp).getTime();
 					const currentMessageTimeStamp = new Date(message.timeStamp).getTime();
 					message.processingTime = currentMessageTimeStamp - previousMessageTimeStamp;
@@ -360,7 +361,7 @@ export const useAppStore = defineStore('app', {
 
 		updateSessionAgentFromMessages(session: Session) {
 			const lastAssistantMessage = this.currentMessages
-				.filter((message) => message.sender === 'Agent')
+				.filter((message) => message.sender.toLowerCase() === 'agent')
 				.pop();
 
 			if (lastAssistantMessage) {
@@ -376,8 +377,9 @@ export const useAppStore = defineStore('app', {
 		getSessionAgent(session: Session) {
 			if (!session) return null;
 			let selectedAgent = this.selectedAgents.get(session.id);
+
 			if (!selectedAgent) {
-				if (this.lastSelectedAgent) {
+				if (this.lastSelectedAgent && !isAgentExpired(this.lastSelectedAgent)) {
 					// Default to the last selected agent to make the selection "sticky" across sessions.
 					selectedAgent = this.lastSelectedAgent;
 				} else {
@@ -619,6 +621,11 @@ export const useAppStore = defineStore('app', {
 		async getAgents() {
 			this.agents = await api.getAllowedAgents();
 			return this.agents;
+		},
+
+		mapAgentDisplayName(agentName: string) {
+			const agent = this.agents.find((a) => a.resource.name === agentName);
+			return agent?.resource.display_name?.trim() ? agent.resource.display_name : agentName;
 		},
 
 		async ensureAgentsLoaded() {

@@ -65,11 +65,19 @@ $env:GUID12 = $($(New-Guid).Guid)
 $env:GUID13 = $($(New-Guid).Guid)
 $env:GUID14 = $($(New-Guid).Guid)
 $env:GUID15 = $($(New-Guid).Guid)
+$env:GUID16 = $($(New-Guid).Guid)
+$env:GUID17 = $($(New-Guid).Guid)
+$env:GUID18 = $($(New-Guid).Guid)
+$env:GUID19 = $($(New-Guid).Guid)
+$env:GUID20 = $($(New-Guid).Guid)
+$env:GUID21 = $($(New-Guid).Guid)
 
 $env:POLICYGUID01 = $($(New-Guid).Guid)
 $env:POLICYGUID02 = $($(New-Guid).Guid)
 $env:POLICYGUID03 = $($(New-Guid).Guid)
 $env:POLICYGUID04 = $($(New-Guid).Guid)
+$env:POLICYGUID05 = $($(New-Guid).Guid)
+$env:POLICYGUID06 = $($(New-Guid).Guid)
 
 Invoke-AndRequireSuccess "Create New OpenAI Assistant" {
     $accountInfo = $(az resource show --ids $env:AZURE_OPENAI_ID --query "{resourceGroup:resourceGroup,name:name}" | ConvertFrom-Json)
@@ -168,10 +176,6 @@ $configurations = @{
     "completion-4o-model" = @{
         template = './data/resource-provider/FoundationaLLM.AIModel/completion-4o-model.template.json'
         render   = '../common/data/resource-provider/FoundationaLLM.AIModel/completion-4o-model.json'
-    }
-    "completion-model" = @{
-        template = './data/resource-provider/FoundationaLLM.AIModel/completion-model.template.json'
-        render   = '../common/data/resource-provider/FoundationaLLM.AIModel/completion-model.json'
     }
     "dall-e-3" = @{
         template = './data/resource-provider/FoundationaLLM.AIModel/dall-e-3-model.template.json'

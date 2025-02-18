@@ -12,7 +12,7 @@
       "scope": "Files.Read.All"
     },
     "url": "${env:ONEDRIVE_BASE_URL}",
-    "status_url": "",
+    "status_endpoint": "",
     "url_exceptions": [],
     "timeout_seconds": 2400,
     "retry_strategy_name": "ExponentialBackoff",

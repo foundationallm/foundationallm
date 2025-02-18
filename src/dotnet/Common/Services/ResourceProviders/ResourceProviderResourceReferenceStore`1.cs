@@ -232,27 +232,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 _lock.Release();
             }
         }
-
-        /// <summary>
-        /// Adds a resource reference to the store.
-        /// </summary>
-        /// <param name="resourceReference">The resource reference to add.</param>
-        /// <returns></returns>
-        public async Task UpsertResourceReference(T resourceReference)
-        {
-            await _lock.WaitAsync();
-            try
-            {
-                var existingResourceReference = GetResourceReferenceInternal(resourceReference.Name);             
-                _resourceReferences[resourceReference.Name] = resourceReference;
-                await SaveResourceReferences();
-            }
-            finally
-            {
-                _lock.Release();
-            }
-        }
-
+       
         /// <summary>
         /// Adds a resource reference to the store.
         /// </summary>
@@ -330,7 +310,14 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             foreach (var reference in persistedReferencesList.ResourceReferences)
             {
-                if (!_resourceReferences.ContainsKey(reference.Name))
+                if (_resourceReferences.TryGetValue(reference.Name, out var existingReference))
+                {
+                    if (!existingReference.Equals(reference))
+                    {
+                        _resourceReferences[reference.Name] = reference;
+                    }
+                }
+                else
                 {
                     _resourceReferences[reference.Name] = reference;
                 }

@@ -358,6 +358,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             await UpsertResourcePostProcess(ParsedResourcePath, (upsertResult as ResourceProviderUpsertResult)!, authorizationResult, userIdentity);
 
+            await SendResourceProviderEvent(EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
+
             return upsertResult;
         }
 
@@ -371,6 +373,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
             await DeleteResourceAsync(ParsedResourcePath, userIdentity);
+
+            await SendResourceProviderEvent(EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
 
         #region Virtuals to override in derived classes
@@ -867,7 +871,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             }
         }
 
-        private async Task HandleCacheResetCommand()
+        /// <summary>
+        /// Handles the cache reset command.
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task HandleCacheResetCommand()
         {
             _resourceCache?.Reset();
             await (_resourceReferenceStore?.LoadResourceReferences() ?? Task.CompletedTask);
@@ -1228,7 +1236,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                    default,
                 default);
 
-                await _resourceReferenceStore!.UpsertResourceReference(resourceReference);
+                await _resourceReferenceStore!.AddResourceReference(resourceReference);
 
                 // Add resource to cache if caching is enabled.
                 _resourceCache?.SetValue<T>(resourceReference, resource);

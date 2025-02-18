@@ -38,7 +38,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         private readonly ILogger<UserPromptRewriteService> _logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SemanticCacheService"/> class.
+        /// Initializes a new instance of the <see cref="UserPromptRewriteService"/> class.
         /// </summary>
         /// <param name="resourceProviderServices">A list of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
         /// <param name="configuration">The <see cref="IConfiguration"/> used to retrieve app settings from configuration.</param>
@@ -126,7 +126,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
                     .TakeLast(agentRewriter.Settings.UserPromptsWindowSize * 2)
                     .Select<MessageHistoryItem, ChatMessage>(m => m.Sender switch
                     {
-                        nameof(Participants.User) => new UserChatMessage(m.Text),
+                        nameof(Participants.User) => new UserChatMessage(m.TextRewrite ?? m.Text),
                         nameof(Participants.Agent) => new AssistantChatMessage(m.Text),
                         _ => throw new OrchestrationException($"Unknown message sender {m.Sender}.")
                     })

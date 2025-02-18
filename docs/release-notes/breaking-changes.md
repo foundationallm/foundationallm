@@ -3,12 +3,52 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
-## Starting with 0.9.3
+## Starting with 0.9.3-rc016
 
-**FoundationaLLM.Agent**
+### Configuration Resource Provider
 
-The agent file references are now stored in a new Cosmos DB container. The agent file contents are still stored in the storage account. 
-Here are the configuration parameters for the new Cosmos DB container:
+The `APIEnpointConfiguration` class has been updated to change the previous `StatusUrl` property to `StatusEndpoint`, which is a relative path to the status endpoint. By extension, the related JSON files now have a `status_endpoint` property that contains the relative path. Here is the OrchestrationAPI JSON template as an example of this change:
+
+```json
+{
+    "type": "api-endpoint",
+    "name": "OrchestrationAPI",
+    "object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/OrchestrationAPI",
+    "display_name": null,
+    "description": null,
+    "cost_center": null,
+    "category": "General",
+    "authentication_type": "APIKey",
+    "authentication_parameters": {
+        "api_key_configuration_name": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Essentials:APIKey",
+        "api_key_header_name": "X-API-KEY"
+    },
+    "url": "http://orchestration-api.{{serviceNamespaceName}}.svc.cluster.local",
+    "status_endpoint": "/instances/{{instanceId}}/status",
+    "url_exceptions": [],
+    "timeout_seconds": 2400,
+    "retry_strategy_name": "ExponentialBackoff",
+    "created_on": "0001-01-01T00:00:00+00:00",
+    "updated_on": "0001-01-01T00:00:00+00:00",
+    "created_by": null,
+    "updated_by": "SYSTEM",
+    "deleted": false
+}
+```
+
+The status path is used by the Management Portal's Deployment Information page to show the status of each of the APIs. This path is also used by the `/Orchestration/Services/LangChainService` and `/Orchestration/Services/SemanticKernelService` classes to check the status of the respective APIs.
+
+> [!IMPORTANT]
+> All files within the `/resource-provider/FoundationaLLM.Configuration` directory must be updated to change the name of the `status_url` field to `status_endpoint` and change the value to a relative path as needed.
+
+### Vectorization resource provider changes
+
+Vectorization indexing and partitioning profile settings dictionary keys are now persisted as snake case (ex. `IndexName` becomes `index_name`).
+
+### Agent resource provider changes
+
+The agent file references are now stored in a new Cosmos DB container, while the file contents are stored in the storage account. 
+Here are the configuration parameters for the required Cosmos DB container:
 
 Name | Value
 --- | ---

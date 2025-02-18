@@ -179,6 +179,16 @@ public partial class CoreService(
                 completionRequest.AgentName!,
                 _userIdentity);
 
+            if (AgentExpired(agentBase, out var message))
+            {
+                return new LongRunningOperation
+                {
+                    OperationId = completionRequest.OperationId,
+                    Status = OperationStatus.Failed,
+                    StatusMessage = message
+                };
+            }
+
             completionRequest = await PrepareCompletionRequest(completionRequest, agentBase, true);
 
             var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
@@ -408,6 +418,16 @@ public partial class CoreService(
                 completionRequest.AgentName!,
                 _userIdentity);
 
+            if (AgentExpired(agentBase, out var message))
+            {
+                return new Message
+                {
+                    OperationId = completionRequest.OperationId,
+                    Status = OperationStatus.Failed,
+                    Text = message
+                };
+            }
+
             completionRequest = await PrepareCompletionRequest(completionRequest, agentBase);
 
             var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
@@ -461,6 +481,16 @@ public partial class CoreService(
                 instanceId,
                 directCompletionRequest.AgentName!,
                 _userIdentity);
+
+            if (AgentExpired(agentBase, out var message))
+            {
+                return new Message
+                {
+                    OperationId = directCompletionRequest.OperationId,
+                    Status = OperationStatus.Failed,
+                    Text = message
+                };
+            }
 
             directCompletionRequest = await PrepareCompletionRequest(directCompletionRequest, agentBase);
 
@@ -964,6 +994,7 @@ public partial class CoreService(
         foreach (var message in messages)
         {
             var messageText = message.Text;
+            var messageTextRewrite = message.TextRewrite;
             if (message.Content is { Count: > 0 })
             {
                 StringBuilder text = new();
@@ -976,7 +1007,7 @@ public partial class CoreService(
 
             if (!string.IsNullOrWhiteSpace(messageText))
             {
-                var messageHistoryItem = new MessageHistoryItem(message.Sender, messageText)
+                var messageHistoryItem = new MessageHistoryItem(message.Sender, messageText, messageTextRewrite)
                 {
                     ContentArtifacts = message.ContentArtifacts?.Where(ca => contentArtifactTypes.Contains(ca.Type ?? string.Empty)).ToList()
                 };
@@ -987,6 +1018,22 @@ public partial class CoreService(
         request.MessageHistory = messageHistoryList;
 
         return request;
+    }
+
+    private bool AgentExpired(AgentBase agentBase, out string message)
+    {
+        // Check if the agent is expired.
+        if (agentBase.ExpirationDate != null && agentBase.ExpirationDate < DateTime.UtcNow)
+        {
+            _logger.LogWarning("User has attempted to access an expired agent: {AgentName}.",
+                agentBase.Name);
+            {
+                message = "Could not complete your request because the agent has expired.";
+                return true;
+            }
+        }
+        message = string.Empty;
+        return false;
     }
 
     private async Task<T> GetCoreConfigurationValue<T>(string instanceId, string configurationName, UnifiedUserIdentity userIdentity)
@@ -1007,13 +1054,16 @@ public partial class CoreService(
         var baseUrl = configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!;
         try
         {
-            var baseUrlOverride = await httpClientFactory.CreateClient<string?>(
-                HttpClientNames.CoreAPI,
-                callContext.CurrentUserIdentity!,
-                BuildClient);
-            if (!string.IsNullOrWhiteSpace(baseUrlOverride))
+            if (callContext.CurrentUserIdentity is {AssociatedWithAccessToken: false})
             {
-                baseUrl = baseUrlOverride;
+                var baseUrlOverride = await httpClientFactory.CreateClient<string?>(
+                    HttpClientNames.CoreAPI,
+                    callContext.CurrentUserIdentity!,
+                    BuildClient);
+                if (!string.IsNullOrWhiteSpace(baseUrlOverride))
+                {
+                    baseUrl = baseUrlOverride;
+                }
             }
         }
         catch (Exception e)

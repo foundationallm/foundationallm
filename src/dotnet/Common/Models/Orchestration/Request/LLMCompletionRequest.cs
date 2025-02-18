@@ -181,7 +181,7 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
 
                         if (indexingProfile == null
                             || indexingProfile.Settings == null
-                            || !indexingProfile.Settings.TryGetValue("IndexName", out var indexName)
+                            || !indexingProfile.Settings.TryGetValue("index_name", out var indexName)
                             || string.IsNullOrWhiteSpace(indexName))
                             throw new OrchestrationException($"The indexing profile object with id {indexingProfileObjectId} provided in the request's objects is invalid.");
                     }
@@ -359,12 +359,6 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
 
                 return _indexingProfiles;
             }
-        }
-
-        private void EnsureIsValid()
-        {
-            if (_valid)
-                throw new OrchestrationException("The request is either invalid or has not been validated yet.");
         }
     }
 }
