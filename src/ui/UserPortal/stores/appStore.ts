@@ -625,7 +625,7 @@ export const useAppStore = defineStore('app', {
 
 		mapAgentDisplayName(agentName: string) {
 			const agent = this.agents.find((a) => a.resource.name === agentName);
-			return agent?.resource.display_name ?? agentName;
+			return agent?.resource.display_name?.trim() ? agent.resource.display_name : agentName;
 		},
 
 		async ensureAgentsLoaded() {
