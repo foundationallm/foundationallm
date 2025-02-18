@@ -3,6 +3,8 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting with 0.9.3
+
 **FoundationaLLM.Agent**
 
 The agent file references are now stored in a new Cosmos DB container. The agent file contents are still stored in the storage account. 
