@@ -47,6 +47,13 @@ Vectorization indexing and partitioning profile settings dictionary keys are now
 
 ### Agent resource provider changes
 
+#### Deployment notes
+
+1. Ensure the feature flag is enabled for `FoundationaLLM.Agent.PrivateStore` if using the private store feature on OpenAI Assistants workflow agents is desired.
+2. Open existing `OpenAIAssistantsWorkflow` agents in the Management portal and select `Save` to populate the global vector store in the OpenAI service for the assistant.
+
+#### Agent file resources
+
 The agent file references are now stored in a new Cosmos DB container, while the file contents are stored in the storage account. 
 Here are the configuration parameters for the required Cosmos DB container:
 
@@ -83,6 +90,41 @@ This is an example of such item:
 ```
 
 The `agent-file` type has been removed and the references are no longer saved in the agent reference store `_resource-references.json`.
+
+### Tools
+
+In the agent resource provider storage folder (`resource-provider/FoundationaLLM.Agent`), add a `tool` resource reference entry (`_resource_references.json`) as well as configuration file for the following tools: `OpenAIAssistantsFileSearch`, `OpenAIAssistantsCodeInterpreter`, `DALLEImageGeneration`, and `FoundationaLLMContentSearchTool`.
+
+Reference example:
+
+```json
+{
+    "Name": "OpenAIAssistantsFileSearch",
+    "Filename": "/FoundationaLLM.Agent/OpenAIAssistantsFileSearch.json",
+    "Type": "tool",
+    "Deleted": false
+}
+```
+
+File example:
+
+```json
+{
+  "type": "tool",
+  "name": "OpenAIAssistantsFileSearch",
+  "object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch",
+  "display_name": "OpenAIAssistantsFileSearch",
+  "description": "OpenAIAssistantsFileSearch",
+  "cost_center": null,
+  "properties": null,
+  "created_on": "2025-01-10T08:22:34.2682433+00:00",
+  "updated_on": "0001-01-01T00:00:00+00:00",
+  "created_by": "dev@foundationaLLM.ai",
+  "updated_by": null,
+  "deleted": false,
+  "expiration_date": null
+}
+```
 
 ## Starting with 0.9.3-rc010
 
