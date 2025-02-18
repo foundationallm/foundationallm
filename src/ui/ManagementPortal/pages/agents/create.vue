@@ -117,7 +117,7 @@
 				/>
 			</div>
 
-				<!-- Agent configuration -->
+			<!-- Agent configuration -->
 			<section aria-labelledby="agent-configuration" class="span-2 steps">
 				<h3 class="step-section-header span-2" id="agent-configuration">Agent Configuration</h3>
 
@@ -366,8 +366,132 @@
 					/>
 				</div>
 
-				<!-- User portal experience -->
-				<div class="step-section-header span-2">User Portal Experience</div>
+				<!-- Enable user prompt rewrite -->
+				<div id="aria-user-prompt-rewrite-enabled" class="step-header span-2">
+					Enable user prompt rewrite?
+				</div>
+				<div class="span-2">
+					<ToggleButton
+						v-model="userPromptRewriteEnabled"
+						on-label="Yes"
+						on-icon="pi pi-check-circle"
+						off-label="No"
+						off-icon="pi pi-times-circle"
+						aria-labelledby="aria-user-prompt-rewrite-enabled"
+					/>
+				</div>
+
+				<template v-if="userPromptRewriteEnabled">
+					<!-- User prompt rewrite model -->
+					<div id="aria-user-prompt-rewrite-model" class="step-header span-2 mt-2">
+						What model should be used for the prompt rewrite?
+					</div>
+					<div class="span-2">
+						<Dropdown
+							v-model="userPromptRewriteAIModel"
+							:options="aiModelOptions"
+							option-label="name"
+							option-value="object_id"
+							class="dropdown--agent"
+							placeholder="--Select--"
+							aria-labelledby="aria-user-prompt-rewrite-model"
+						/>
+					</div>
+
+					<!-- User prompt rewrite prompt -->
+					<div id="aria-user-prompt-rewrite-prompt" class="step-header span-2 mt-2">
+						What prompt should be used to rewrite the user prompt?
+					</div>
+					<div class="span-2">
+						<Dropdown
+							v-model="userPromptRewritePrompt"
+							:options="promptOptions"
+							option-label="name"
+							option-value="object_id"
+							class="dropdown--agent"
+							placeholder="--Select--"
+							aria-labelledby="aria-user-prompt-rewrite-prompt"
+						/>
+					</div>
+
+					<!-- User prompt rewrite window size -->
+					<div id="aria-user-prompt-rewrite-window-size" class="step-header span-2 mt-2">
+						What should the rewrite window size be?
+					</div>
+					<div class="span-2">
+						<InputNumber
+							v-model="userPromptRewriteWindowSize"
+							:minFractionDigits="0"
+							:maxFractionDigits="0"
+							placeholder="Window size"
+							aria-labelledby="aria-user-prompt-rewrite-window-size"
+						/>
+					</div>
+				</template>
+
+					<!-- Enable semantic cache -->
+				<div id="aria-semantic-cache-enabled" class="step-header span-2">Enable semantic cache?</div>
+				<div class="span-2">
+					<ToggleButton
+						v-model="semanticCacheEnabled"
+						on-label="Yes"
+						on-icon="pi pi-check-circle"
+						off-label="No"
+						off-icon="pi pi-times-circle"
+						aria-labelledby="aria-semantic-cache-enabled"
+					/>
+				</div>
+
+				<template v-if="semanticCacheEnabled">
+					<!-- Semantic cache model -->
+					<div id="aria-semantic-cache-model" class="step-header span-2 mt-2">
+						What model should be used for the semantic cache?
+					</div>
+					<div class="span-2">
+						<Dropdown
+							v-model="semanticCacheAIModel"
+							:options="aiModelOptions"
+							option-label="name"
+							option-value="object_id"
+							class="dropdown--agent"
+							placeholder="--Select--"
+							aria-labelledby="aria-semantic-cache-model"
+						/>
+					</div>
+
+					<!-- Semantic cache embedding dimensions -->
+					<div id="aria-semantic-cache-embedding-dimensions" class="step-header span-2 mt-2">
+						How many embedding dimensions to use?
+					</div>
+					<div class="span-2">
+						<InputNumber
+							v-model="semanticCacheEmbeddingDimensions"
+							:minFractionDigits="0"
+							:maxFractionDigits="0"
+							placeholder="Embedding dimensions size"
+							aria-labelledby="aria-semantic-cache-embedding-dimensions"
+						/>
+					</div>
+
+					<!-- Semantic cache minimum similarity threshold -->
+					<div id="aria-semantic-cache-minimum-similarity" class="step-header span-2 mt-2">
+						What should the minimum similarity threshold be?
+					</div>
+					<div class="span-2">
+						<InputNumber
+							v-model="semanticCacheMinimumSimilarityThreshold"
+							:minFractionDigits="0"
+							:maxFractionDigits="2"
+							placeholder="Minimum Similarity Threshold"
+							aria-labelledby="aria-semantic-cache-minimum-similarity"
+						/>
+					</div>
+				</template>
+			</section>
+
+			<!-- User portal experience -->
+			<section aria-labelledby="user-portal-experience" class="span-2 steps">
+				<h3 class="step-section-header span-2" id="user-portal-experience">User Portal Experience</h3>
 
 				<div id="aria-show-message-tokens" class="step-header">
 					Would you like to show the message tokens?
@@ -989,134 +1113,6 @@
 					@update:modelValue="handleAddNewTool"
 				/>
 			</div>
-
-			<!-- User prompt rewrite -->
-			<div class="step-section-header span-2">User Prompt Rewrite Settings</div>
-
-			<!-- Enable user prompt rewrite -->
-			<div id="aria-user-prompt-rewrite-enabled" class="step-header span-2">
-				Enable user prompt rewrite?
-			</div>
-			<div class="span-2">
-				<ToggleButton
-					v-model="userPromptRewriteEnabled"
-					on-label="Yes"
-					on-icon="pi pi-check-circle"
-					off-label="No"
-					off-icon="pi pi-times-circle"
-					aria-labelledby="aria-user-prompt-rewrite-enabled"
-				/>
-			</div>
-
-			<template v-if="userPromptRewriteEnabled">
-				<!-- User prompt rewrite model -->
-				<div id="aria-user-prompt-rewrite-model" class="step-header span-2 mt-2">
-					What model should be used for the prompt rewrite?
-				</div>
-				<div class="span-2">
-					<Dropdown
-						v-model="userPromptRewriteAIModel"
-						:options="aiModelOptions"
-						option-label="name"
-						option-value="object_id"
-						class="dropdown--agent"
-						placeholder="--Select--"
-						aria-labelledby="aria-user-prompt-rewrite-model"
-					/>
-				</div>
-
-				<!-- User prompt rewrite prompt -->
-				<div id="aria-user-prompt-rewrite-prompt" class="step-header span-2 mt-2">
-					What prompt should be used to rewrite the user prompt?
-				</div>
-				<div class="span-2">
-					<Dropdown
-						v-model="userPromptRewritePrompt"
-						:options="promptOptions"
-						option-label="name"
-						option-value="object_id"
-						class="dropdown--agent"
-						placeholder="--Select--"
-						aria-labelledby="aria-user-prompt-rewrite-prompt"
-					/>
-				</div>
-
-				<!-- User prompt rewrite window size -->
-				<div id="aria-user-prompt-rewrite-window-size" class="step-header span-2 mt-2">
-					What should the rewrite window size be?
-				</div>
-				<div class="span-2">
-					<InputNumber
-						v-model="userPromptRewriteWindowSize"
-						:minFractionDigits="0"
-						:maxFractionDigits="0"
-						placeholder="Window size"
-						aria-labelledby="aria-user-prompt-rewrite-window-size"
-					/>
-				</div>
-			</template>
-
-			<!-- Cache settings -->
-			<div class="step-section-header span-2">Cache Settings</div>
-
-			<!-- Enable semantic cache -->
-			<div id="aria-semantic-cache-enabled" class="step-header span-2">Enable semantic cache?</div>
-			<div class="span-2">
-				<ToggleButton
-					v-model="semanticCacheEnabled"
-					on-label="Yes"
-					on-icon="pi pi-check-circle"
-					off-label="No"
-					off-icon="pi pi-times-circle"
-					aria-labelledby="aria-semantic-cache-enabled"
-				/>
-			</div>
-
-			<template v-if="semanticCacheEnabled">
-				<!-- Semantic cache model -->
-				<div id="aria-semantic-cache-model" class="step-header span-2 mt-2">
-					What model should be used for the semantic cache?
-				</div>
-				<div class="span-2">
-					<Dropdown
-						v-model="semanticCacheAIModel"
-						:options="aiModelOptions"
-						option-label="name"
-						option-value="object_id"
-						class="dropdown--agent"
-						placeholder="--Select--"
-						aria-labelledby="aria-semantic-cache-model"
-					/>
-				</div>
-
-				<!-- Semantic cache embedding dimensions -->
-				<div id="aria-semantic-cache-embedding-dimensions" class="step-header span-2 mt-2">
-					How many embedding dimensions to use?
-				</div>
-				<div class="span-2">
-					<InputNumber
-						v-model="semanticCacheEmbeddingDimensions"
-						:minFractionDigits="0"
-						:maxFractionDigits="0"
-						placeholder="Embedding dimensions size"
-						aria-labelledby="aria-semantic-cache-embedding-dimensions"
-					/>
-				</div>
-
-				<!-- Semantic cache minimum similarity threshold -->
-				<div id="aria-semantic-cache-minimum-similarity" class="step-header span-2 mt-2">
-					What should the minimum similarity threshold be?
-				</div>
-				<div class="span-2">
-					<InputNumber
-						v-model="semanticCacheMinimumSimilarityThreshold"
-						:minFractionDigits="0"
-						:maxFractionDigits="2"
-						placeholder="Minimum Similarity Threshold"
-						aria-labelledby="aria-semantic-cache-minimum-similarity"
-					/>
-				</div>
-			</template>
 
 			<!-- Security -->
 			<div v-if="virtualSecurityGroupId" class="step-section-header span-2">Security</div>
