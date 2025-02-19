@@ -35,25 +35,29 @@ Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
 # Get the list of container apps in the resource group
-$containerApps = (az containerapp list -g $resourceGroup --query "[].name" --output tsv)
+$containerApps = (az containerapp list -g $resourceGroup --query "[].{name:name,status:properties.runningStatus}" --output json | ConvertFrom-Json)
 
 Write-Host -ForegroundColor Blue "Restarting container apps using these parameters: Resource group: ${resourceGroup} Subscription:   ${subscriptionId}"
 
-foreach ($acaName in $containerApps) {
+foreach ($aca in $containerApps) {
 	try {
-		$revision = (az containerapp show --name $acaName --resource-group $resourceGroup --subscription $subscriptionId --query "properties.latestRevisionName" -o tsv)
-		Write-Host -ForegroundColor Yellow "Restarting container app ${acaName}"
-		az containerapp revision restart `
-			--revision $revision `
-			--name $acaName `
-			--resource-group $resourceGroup `
-			--subscription $subscriptionId
-
-		if ($LASTEXITCODE -ne 0) {
-			Write-Error("Failed to restart the container app ${acaName}")
+		Write-Host ($aca | ConvertTo-Json)
+		if ($aca.status -ne "Stopped")
+		{
+			$revision = (az containerapp show --name $aca.name --resource-group $resourceGroup --subscription $subscriptionId --query "properties.latestRevisionName" -o tsv)
+			Write-Host -ForegroundColor Yellow "Restarting container app $($aca.name)"
+			az containerapp revision restart `
+				--revision $revision `
+				--name $aca.name `
+				--resource-group $resourceGroup `
+				--subscription $subscriptionId
+	
+			if ($LASTEXITCODE -ne 0) {
+				Write-Error("Failed to restart the container app $($aca.name)")
+			}
 		}
 	}
  catch {
-		Write-Error("An error occurred while restarting the container app ${acaName}: $_")
+		Write-Error("An error occurred while restarting the container app $($aca.name): $_")
 	}
 }
