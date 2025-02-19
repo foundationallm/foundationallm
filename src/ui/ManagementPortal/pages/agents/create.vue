@@ -488,7 +488,7 @@
 					</template>
 
 					<template #edit>
-						<div id="aria-gatekeeper" class="step-container__header">User Prompt Rewrite</div>
+						<div id="aria-gatekeeper" class="step-container__header">Semantic Cache</div>
 
 						<!-- Semantic cache toggle -->
 						<div class="d-flex align-center mt-2">
