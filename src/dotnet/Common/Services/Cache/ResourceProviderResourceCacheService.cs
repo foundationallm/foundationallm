@@ -13,13 +13,7 @@ namespace FoundationaLLM.Common.Services.Cache
         ILogger logger) : IResourceProviderResourceCacheService
     {
         private readonly ILogger _logger = logger;
-
         private IMemoryCache _cache = CreateCache();
-        private readonly MemoryCacheEntryOptions _cacheEntryOptions = new MemoryCacheEntryOptions()
-            .SetAbsoluteExpiration(TimeSpan.FromMinutes(60)) // Cache entries are valid for 60 minutes.
-            .SetSlidingExpiration(TimeSpan.FromMinutes(30)) // Reset expiration time if accessed within 5 minutes.
-            .SetSize(1); // Each cache entry is a single resource.
-
         private SemaphoreSlim _cacheLock = new(1, 1);
 
         /// <inheritdoc/>
@@ -28,7 +22,7 @@ namespace FoundationaLLM.Common.Services.Cache
             try
             {
                 _cacheLock.Wait();
-                _cache.Set(GetCacheKey(resourceReference), resourceValue, _cacheEntryOptions);
+                _cache.Set(GetCacheKey(resourceReference), resourceValue, GetMemoryCacheEntryOptions());
                 _logger.LogInformation("The resource {ResourceName} of type {ResourceType} has been set in the cache.",
                     resourceReference.Name,
                     resourceReference.Type);
@@ -104,5 +98,10 @@ namespace FoundationaLLM.Common.Services.Cache
                 SizeLimit = 10000, // Limit cache size to 5000 resources.
                 ExpirationScanFrequency = TimeSpan.FromMinutes(5) // Scan for expired items every five minutes.
             });
+
+        private MemoryCacheEntryOptions GetMemoryCacheEntryOptions() => new MemoryCacheEntryOptions()
+            .SetAbsoluteExpiration(TimeSpan.FromMinutes(60)) // Cache entries are valid for 60 minutes.
+            .SetSlidingExpiration(TimeSpan.FromMinutes(30)) // Reset expiration time if accessed within 30 minutes.
+            .SetSize(1); // Each cache entry is a single resource.
     }
 }
