@@ -825,14 +825,23 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <remarks>
         /// See <see cref="EventTypes"/> for a list of event types.
         /// </remarks>
-        protected async Task SendResourceProviderEvent(string eventType, object? data= null) =>
-            // The CloudEvent source is automatically filled in by the event service.            
+        protected async Task SendResourceProviderEvent(string eventType, object? data = null)
+        {
+            if (_eventService == null)
+            {
+                _logger.LogWarning("The resource provider {ResourceProviderName} does not have an event service configured and cannot send events.", _name);
+                return;
+            }
+                
+            // The CloudEvent source is automatically filled in by the event service.
             await _eventService.SendEvent(
                 EventGridTopics.FoundationaLLM_Resource_Providers,
                 new CloudEvent(string.Empty, eventType, data ?? new { })
                 {
                     Subject = _name
                 });
+        }
+            
 
         private async Task HandleEvents(EventTypeEventArgs e)
         {
