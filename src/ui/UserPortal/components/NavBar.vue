@@ -208,15 +208,20 @@ export default {
 
 		handlePrint() {
 			window.print();
-    	},
-    
+		},
+
 		async setAgentOptions() {
-			const isCurrentAgent = (agent): boolean  => {
-				return agent.resource.name === this.$appStore.getSessionAgent(this.currentSession)?.resource?.name;
-			}
+			const isCurrentAgent = (agent): boolean => {
+				return (
+					agent.resource.name ===
+					this.$appStore.getSessionAgent(this.currentSession)?.resource?.name
+				);
+			};
 
 			// Filter out expired agents, but keep the currently selected agent even if it is expired
-			const notExpiredOrCurrentAgents = this.$appStore.agents.filter((agent) => !isAgentExpired(agent) || isCurrentAgent(agent));
+			const notExpiredOrCurrentAgents = this.$appStore.agents.filter(
+				(agent) => !isAgentExpired(agent) || isCurrentAgent(agent),
+			);
 
 			this.agentOptions = notExpiredOrCurrentAgents.map((agent) => ({
 				label: agent.resource.display_name ? agent.resource.display_name : agent.resource.name,

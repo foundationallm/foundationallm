@@ -30,7 +30,6 @@ export default {
 			isMobile: window.screen.width < 950,
 		};
 	},
-
 };
 </script>
 
