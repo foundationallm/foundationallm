@@ -660,15 +660,22 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 throw new ResourceProviderException("The attached file is not valid.",
                     StatusCodes.Status400BadRequest);
 
+            //if (!resourcePath.ResourceId!.StartsWith("af-") ||
+            //    !Guid.TryParse(resourcePath.ResourceId.Split('-').Last(), out var _))
+            //    throw new ResourceProviderException("The resource id is not valid.",
+            //        StatusCodes.Status400BadRequest);
+
+            var uniqueId = $"af-{Guid.NewGuid()}";
             var extension = GetFileExtension(formFile.FileName);
-            var fullName = $"{resourcePath.ResourceId!}{extension}";
+            var fullName = $"{uniqueId}{extension}";
             var filePath = $"/{_name}/{_instanceSettings.Id}/{resourcePath.MainResourceId}/private-file-store/{fullName}";
+            var objectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!, AgentResourceTypeNames.AgentFiles, uniqueId);
 
             var agentPrivateFile = new AgentFileReference
             {
-                Id = resourcePath.ResourceId!,
-                Name = resourcePath.ResourceId!,
-                ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name),
+                Id = uniqueId,
+                Name = uniqueId,
+                ObjectId = objectId,
                 OriginalFilename = formFile.FileName,
                 ContentType = formFile.ContentType!,
                 Type = AgentTypes.AgentFile,
