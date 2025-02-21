@@ -9,6 +9,9 @@
 
 ## App configuration settings
 
+>[!IMPORTANT]
+> The App Config setting `FoundationaLLM:Instance:EnableResourceProvidersCache` is obsolete and should be removed from the App Config settings.
+
 The following App Config properties make cache settings for the resource providers configurable:
 
 | Name | Description | Default Value  |
