@@ -13,6 +13,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Common.Services.ResourceProviders;
@@ -29,6 +30,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
     /// Implements the FoundationaLLM.AzureOpenAI resource provider.
     /// </summary>
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>
+    /// <param name="cacheOptions">The options providing the <see cref="ResourceProviderCacheSettings"/> with settings for the resource provider cache.</param>
     /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
@@ -38,6 +40,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     public class AzureOpenAIResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
+        IOptions<ResourceProviderCacheSettings> cacheOptions,
         IAuthorizationServiceClient authorizationService,
         [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_AzureOpenAI)] IStorageService storageService,
         IEventService eventService,
@@ -47,6 +50,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
         ILogger<AzureOpenAIResourceProviderService> logger)
         : ResourceProviderServiceBase<ResourceReference>(
             instanceOptions.Value,
+            cacheOptions.Value,
             authorizationService,
             storageService,
             eventService,
