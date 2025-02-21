@@ -206,7 +206,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
                 _isInitialized = true;
 
-                await WarmupCache();
+                if (_useInternalReferencesStore)
+                    await WarmupCache();
 
                 _logger.LogInformation("The {ResourceProvider} resource provider was successfully initialized.", _name);
             }
