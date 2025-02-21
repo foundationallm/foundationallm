@@ -4212,6 +4212,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Cache.CacheSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Cache.CacheSettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Cache.CacheSettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Cache.CacheSettings.yml\" sourcestartlinenumber=\"1\">Provides a standard set of settings for caching.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Cache.yml",
       "output": {
         ".html": {
@@ -4684,6 +4698,34 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.Configuration.KeyVault",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.ResourceProviders.ResourceProviderCacheSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.ResourceProviders.ResourceProviderCacheSettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Configuration.ResourceProviders.ResourceProviderCacheSettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Configuration.ResourceProviders.ResourceProviderCacheSettings.yml\" sourcestartlinenumber=\"1\">Provides settings for the resource provider cache.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.ResourceProviders.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.ResourceProviders.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Configuration.ResourceProviders",
       "Summary": null
     },
     {

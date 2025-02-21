@@ -168,21 +168,24 @@ Class ResourceProviderResourceCacheService  <a class="header-action link-seconda
 
   <a id="FoundationaLLM_Common_Services_Cache_ResourceProviderResourceCacheService__ctor_" data-uid="FoundationaLLM.Common.Services.Cache.ResourceProviderResourceCacheService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Cache_ResourceProviderResourceCacheService__ctor_Microsoft_Extensions_Logging_ILogger_" data-uid="FoundationaLLM.Common.Services.Cache.ResourceProviderResourceCacheService.#ctor(Microsoft.Extensions.Logging.ILogger)">
-  ResourceProviderResourceCacheService(ILogger)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Cache/ResourceProviderResourceCacheService.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Services_Cache_ResourceProviderResourceCacheService__ctor_FoundationaLLM_Common_Models_Configuration_ResourceProviders_ResourceProviderCacheSettings_Microsoft_Extensions_Logging_ILogger_" data-uid="FoundationaLLM.Common.Services.Cache.ResourceProviderResourceCacheService.#ctor(FoundationaLLM.Common.Models.Configuration.ResourceProviders.ResourceProviderCacheSettings,Microsoft.Extensions.Logging.ILogger)">
+  ResourceProviderResourceCacheService(ResourceProviderCacheSettings, ILogger)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Cache/ResourceProviderResourceCacheService.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Provides the resource caching services used by FoundationaLLM resource providers.</p>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Common.Services.Cache.ResourceProviderResourceCacheService.html">ResourceProviderResourceCacheService</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ResourceProviderResourceCacheService(ILogger logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public ResourceProviderResourceCacheService(ResourceProviderCacheSettings cacheSettings, ILogger logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
+    <dt><code>cacheSettings</code> <a class="xref" href="FoundationaLLM.Common.Models.Configuration.ResourceProviders.ResourceProviderCacheSettings.html">ResourceProviderCacheSettings</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Configuration.ResourceProviders.ResourceProviderCacheSettings.html">ResourceProviderCacheSettings</a> providing settings for the cache.</p>
+</dd>
     <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a></dt>
     <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a> used to log information.</p>
 </dd>
@@ -207,7 +210,7 @@ Class ResourceProviderResourceCacheService  <a class="header-action link-seconda
 
   <h3 id="FoundationaLLM_Common_Services_Cache_ResourceProviderResourceCacheService_Reset" data-uid="FoundationaLLM.Common.Services.Cache.ResourceProviderResourceCacheService.Reset">
   Reset()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Cache/ResourceProviderResourceCacheService.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Cache/ResourceProviderResourceCacheService.cs/#L89"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Resets the cache.</p>
@@ -234,7 +237,7 @@ Class ResourceProviderResourceCacheService  <a class="header-action link-seconda
 
   <h3 id="FoundationaLLM_Common_Services_Cache_ResourceProviderResourceCacheService_SetValue__1_FoundationaLLM_Common_Models_ResourceProviders_ResourceReference___0_" data-uid="FoundationaLLM.Common.Services.Cache.ResourceProviderResourceCacheService.SetValue``1(FoundationaLLM.Common.Models.ResourceProviders.ResourceReference,``0)">
   SetValue&lt;T&gt;(ResourceReference, T)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Cache/ResourceProviderResourceCacheService.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Cache/ResourceProviderResourceCacheService.cs/#L34"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets a resource value identified by a resource reference in the cache.</p>
@@ -276,7 +279,7 @@ Class ResourceProviderResourceCacheService  <a class="header-action link-seconda
 
   <h3 id="FoundationaLLM_Common_Services_Cache_ResourceProviderResourceCacheService_TryGetValue__1_FoundationaLLM_Common_Models_ResourceProviders_ResourceReference___0__" data-uid="FoundationaLLM.Common.Services.Cache.ResourceProviderResourceCacheService.TryGetValue``1(FoundationaLLM.Common.Models.ResourceProviders.ResourceReference,``0@)">
   TryGetValue&lt;T&gt;(ResourceReference, out T?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Cache/ResourceProviderResourceCacheService.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Cache/ResourceProviderResourceCacheService.cs/#L57"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Tries to get a resource value identified by a resource reference from the cache.</p>
