@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
@@ -8,13 +9,26 @@ namespace FoundationaLLM.Common.Services.Cache
     /// <summary>
     /// Provides the resource caching services used by FoundationaLLM resource providers.
     /// </summary>
-    /// <param name="logger">The <see cref="ILogger"/> used to log information.</param>
-    public class ResourceProviderResourceCacheService(
-        ILogger logger) : IResourceProviderResourceCacheService
+    public class ResourceProviderResourceCacheService : IResourceProviderResourceCacheService
     {
-        private readonly ILogger _logger = logger;
-        private IMemoryCache _cache = CreateCache();
+        private readonly ResourceProviderCacheSettings _cacheSettings;
+        private readonly ILogger _logger;
+        private IMemoryCache _cache;
         private SemaphoreSlim _cacheLock = new(1, 1);
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ResourceProviderResourceCacheService"/> class.
+        /// </summary>
+        /// <param name="cacheSettings">The <see cref="ResourceProviderCacheSettings"/> providing settings for the cache.</param>
+        /// <param name="logger">The <see cref="ILogger"/> used to log information.</param>
+        public ResourceProviderResourceCacheService(
+            ResourceProviderCacheSettings cacheSettings,
+            ILogger logger)
+        {
+            _cacheSettings = cacheSettings;
+            _logger = logger;
+            _cache = CreateCache();
+        }
 
         /// <inheritdoc/>
         public void SetValue<T>(ResourceReference resourceReference, T resourceValue) where T : ResourceBase
@@ -92,16 +106,17 @@ namespace FoundationaLLM.Common.Services.Cache
         private string GetCacheKey(ResourceReference resourceReference) =>
             $"{resourceReference.Type}|{resourceReference.Name}";
 
-        private static MemoryCache CreateCache() =>
+        private MemoryCache CreateCache() =>
             new(new MemoryCacheOptions
             {
-                SizeLimit = 10000, // Limit cache size to 5000 resources.
-                ExpirationScanFrequency = TimeSpan.FromMinutes(5) // Scan for expired items every five minutes.
+                SizeLimit = _cacheSettings.CacheSizeLimit,
+                ExpirationScanFrequency = TimeSpan.FromSeconds(
+                    _cacheSettings.CacheExpirationScanFrequencySeconds ?? 30)
             });
 
         private MemoryCacheEntryOptions GetMemoryCacheEntryOptions() => new MemoryCacheEntryOptions()
-            .SetAbsoluteExpiration(TimeSpan.FromMinutes(60)) // Cache entries are valid for 60 minutes.
-            .SetSlidingExpiration(TimeSpan.FromMinutes(30)) // Reset expiration time if accessed within 30 minutes.
+            .SetAbsoluteExpiration(TimeSpan.FromSeconds(_cacheSettings.AbsoluteCacheExpirationSeconds ?? 300))
+            .SetSlidingExpiration(TimeSpan.FromSeconds(_cacheSettings.SlidingCacheExpirationSeconds ?? 120))
             .SetSize(1); // Each cache entry is a single resource.
     }
 }

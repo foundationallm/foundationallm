@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Conversation.ResourceProviders;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +38,7 @@ namespace FoundationaLLM
             services.AddSingleton<IResourceProviderService, ConversationResourceProviderService>(sp =>
                 new ConversationResourceProviderService(
                     sp.GetRequiredService<IOptions<InstanceSettings>>(),
+                    sp.GetRequiredService<IOptions<ResourceProviderCacheSettings>>(),
                     sp.GetRequiredService<IAuthorizationServiceClient>(),
                     sp.GetRequiredService<IEventService>(),
                     sp.GetRequiredService<IResourceValidatorFactory>(),

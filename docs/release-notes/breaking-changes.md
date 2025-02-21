@@ -3,6 +3,22 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting with 0.9.4-rc100
+
+### Configuration changes
+
+## App configuration settings
+
+The following App Config properties make cache settings for the resource providers configurable:
+
+| Name | Description | Default Value  |
+|---|---|---|
+| `FoundationaLLM:ResourceProvidersCache:EnableCache` | Indicates whether resource providers should cache resources or not.| `true` |
+| `FoundationaLLM:ResourceProvidersCache:AbsoluteCacheExpirationSeconds` | Absolute cache expiration in seconds.| 300 |
+| `FoundationaLLM:ResourceProvidersCache:SlidingCacheExpirationSeconds` | Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set). | 120 |
+| `FoundationaLLM:ResourceProvidersCache:CacheSizeLimit` | The maximum number of items that can be stored in the cache. | 10000 |
+| `FoundationaLLM:ResourceProvidersCache:CacheExpirationScanFrequencySeconds` | Gets or sets the minimum length of time between successive scans for expired items in seconds. | 30 |
+
 ## Starting with 0.9.3-rc016
 
 ### Configuration Resource Provider
@@ -186,6 +202,7 @@ The following App Config properties make cache settings for the `AuthorizationSe
 
 | Name                              | Description                                                                                                                   | Default Value  |
 |-----------------------------------|-------------------------------------------------------------------------------------------------------------------------------|--------|
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:EnableCache`    | Indicates whether calls to the Authorization API should be cached or not.                                                                                         | `false`    |
 | `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:AbsoluteCacheExpirationSeconds`    | Absolute cache expiration in seconds.                                                                                         | 300    |
 | `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:SlidingCacheExpirationSeconds`     | Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set). | 120    |
 | `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheSizeLimit`                    | The maximum number of items that can be stored in the cache.                                                                   | 10000  |

@@ -43,6 +43,8 @@ namespace FoundationaLLM.Management.API
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
+
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Branding);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_Entra);
@@ -98,6 +100,8 @@ namespace FoundationaLLM.Management.API
             //----------------------------
             // Resource providers
             //----------------------------
+            builder.AddResourceProviderCacheSettings();
+
             builder.AddAuthorizationResourceProvider();
             builder.AddConfigurationResourceProvider();
             builder.AddVectorizationResourceProvider();

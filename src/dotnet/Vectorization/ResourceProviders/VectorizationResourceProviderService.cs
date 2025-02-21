@@ -9,6 +9,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
@@ -32,6 +33,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
     /// Implements the FoundationaLLM.Vectorization resource provider.
     /// </summary>    
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>    
+    /// <param name="cacheOptions">The options providing the <see cref="ResourceProviderCacheSettings"/> with settings for the resource provider cache.</param>
     /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
@@ -40,6 +42,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
     /// <param name="loggerFactory">The factory responsible for creating loggers.</param>    
     public class VectorizationResourceProviderService(        
         IOptions<InstanceSettings> instanceOptions,
+        IOptions<ResourceProviderCacheSettings> cacheOptions,
         IAuthorizationServiceClient authorizationService,
         [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization)] IStorageService storageService,
         IEventService eventService,
@@ -48,6 +51,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         ILoggerFactory loggerFactory)
         : ResourceProviderServiceBase<ResourceReference>(
             instanceOptions.Value,
+            cacheOptions.Value,
             authorizationService,
             storageService,
             eventService,

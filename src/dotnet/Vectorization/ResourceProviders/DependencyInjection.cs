@@ -2,6 +2,7 @@ using FluentValidation;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Vectorization.ResourceProviders;
@@ -36,7 +37,8 @@ namespace FoundationaLLM
             // Register the resource provider services (cannot use Keyed singletons due to the Microsoft Identity package being incompatible):
             builder.Services.AddSingleton<IResourceProviderService>(sp => 
                 new VectorizationResourceProviderService(                   
-                    sp.GetRequiredService<IOptions<InstanceSettings>>(),                    
+                    sp.GetRequiredService<IOptions<InstanceSettings>>(),
+                    sp.GetRequiredService<IOptions<ResourceProviderCacheSettings>>(),
                     sp.GetRequiredService<IAuthorizationServiceClient>(),
                     sp.GetRequiredService<IEnumerable<IStorageService>>()
                         .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization),
