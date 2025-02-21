@@ -203,10 +203,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     _localEventService.SubscribeToEventTypes(_eventTypesToSubscribe);
                     _localEventService.StartLocalEventProcessing(HandleEvents);
                 }
-
+                
                 _isInitialized = true;
 
-                if (_useInternalReferencesStore)
+                if (_useInternalReferencesStore && _cacheSettings.EnableCache)
                     await WarmupCache();
 
                 _logger.LogInformation("The {ResourceProvider} resource provider was successfully initialized.", _name);
