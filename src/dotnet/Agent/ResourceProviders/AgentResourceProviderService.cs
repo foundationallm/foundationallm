@@ -13,6 +13,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
@@ -37,6 +38,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
     /// Implements the FoundationaLLM.Agent resource provider.
     /// </summary>
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>
+    /// <param name="cacheOptions">The options providing the <see cref="ResourceProviderCacheSettings"/> with settings for the resource provider cache.</param>
     /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
@@ -46,6 +48,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to provide loggers for logging.</param>
     public class AgentResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
+        IOptions<ResourceProviderCacheSettings> cacheOptions,
         IAuthorizationServiceClient authorizationService,
         [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Agent)] IStorageService storageService,
         IEventService eventService,
@@ -55,6 +58,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
         ILoggerFactory loggerFactory)
         : ResourceProviderServiceBase<AgentReference>(
             instanceOptions.Value,
+            cacheOptions.Value,
             authorizationService,
             storageService,
             eventService,
@@ -660,15 +664,22 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 throw new ResourceProviderException("The attached file is not valid.",
                     StatusCodes.Status400BadRequest);
 
+            //if (!resourcePath.ResourceId!.StartsWith("af-") ||
+            //    !Guid.TryParse(resourcePath.ResourceId.Split('-').Last(), out var _))
+            //    throw new ResourceProviderException("The resource id is not valid.",
+            //        StatusCodes.Status400BadRequest);
+
+            var uniqueId = $"af-{Guid.NewGuid()}";
             var extension = GetFileExtension(formFile.FileName);
-            var fullName = $"{resourcePath.ResourceId!}{extension}";
+            var fullName = $"{uniqueId}{extension}";
             var filePath = $"/{_name}/{_instanceSettings.Id}/{resourcePath.MainResourceId}/private-file-store/{fullName}";
+            var objectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!, AgentResourceTypeNames.AgentFiles, uniqueId);
 
             var agentPrivateFile = new AgentFileReference
             {
-                Id = resourcePath.ResourceId!,
-                Name = resourcePath.ResourceId!,
-                ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name),
+                Id = uniqueId,
+                Name = uniqueId,
+                ObjectId = objectId,
                 OriginalFilename = formFile.FileName,
                 ContentType = formFile.ContentType!,
                 Type = AgentTypes.AgentFile,

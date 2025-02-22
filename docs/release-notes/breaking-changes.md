@@ -3,46 +3,24 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
-## Starting with 0.9.3
+## Starting with 0.9.4-rc100
 
-**FoundationaLLM.Agent**
+### Configuration changes
 
-The agent file references are now stored in a new Cosmos DB container. The agent file contents are still stored in the storage account. 
-Here are the configuration parameters for the new Cosmos DB container:
+## App configuration settings
 
-Name | Value
---- | ---
-Name | `Agents`
-Maximum RU/s | 4000
-Hierarchical Partition key | `/instanceId` + `/agentName`
+>[!IMPORTANT]
+> The App Config setting `FoundationaLLM:Instance:EnableResourceProvidersCache` is obsolete and should be removed from the App Config settings.
 
-As a result of the migration, the newly created `Agents` container will initially contain only ony type of times: `AgentFileReference`.
+The following App Config properties make cache settings for the resource providers configurable:
 
-This is an example of such item:
-
-```json
-{
-    "instanceId": "8ac6074c-bdde-43cb-a140-ec0002d96d2b",
-    "agentName": "TestAgentFiles1",
-    "originalFilename": "curious_cat_story.pdf",
-    "contentType": "application/pdf",
-    "size": 2433,
-    "upn": "andrei@foundationaLLM.ai",
-    "id": "af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf",
-    "objectId": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/agents/TestAgentFiles1/agentFiles/af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf",
-    "name": "af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf",
-    "filename": "/FoundationaLLM.Agent/8ac6074c-bdde-43cb-a140-ec0002d96d2b/TestAgentFiles1/private-file-store/af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf.pdf",
-    "type": "agent-file",
-    "deleted": false,
-    "_rid": "ie9IAMu0+b0EAAAAAAAAAA==",
-    "_self": "dbs/ie9IAA==/colls/ie9IAMu0+b0=/docs/ie9IAMu0+b0EAAAAAAAAAA==/",
-    "_etag": "\"37012abc-0000-0200-0000-67afaa800000\"",
-    "_attachments": "attachments/",
-    "_ts": 1739565696
-}
-```
-
-The `agent-file` type has been removed and the references are no longer saved in the agent reference store `_resource-references.json`.
+| Name | Description | Default Value  |
+|---|---|---|
+| `FoundationaLLM:ResourceProvidersCache:EnableCache` | Indicates whether resource providers should cache resources or not.| `true` |
+| `FoundationaLLM:ResourceProvidersCache:AbsoluteCacheExpirationSeconds` | Absolute cache expiration in seconds.| 300 |
+| `FoundationaLLM:ResourceProvidersCache:SlidingCacheExpirationSeconds` | Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set). | 120 |
+| `FoundationaLLM:ResourceProvidersCache:CacheSizeLimit` | The maximum number of items that can be stored in the cache. | 10000 |
+| `FoundationaLLM:ResourceProvidersCache:CacheExpirationScanFrequencySeconds` | Gets or sets the minimum length of time between successive scans for expired items in seconds. | 30 |
 
 ## Starting with 0.9.3-rc016
 
@@ -227,6 +205,7 @@ The following App Config properties make cache settings for the `AuthorizationSe
 
 | Name                              | Description                                                                                                                   | Default Value  |
 |-----------------------------------|-------------------------------------------------------------------------------------------------------------------------------|--------|
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:EnableCache`    | Indicates whether calls to the Authorization API should be cached or not.                                                                                         | `false`    |
 | `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:AbsoluteCacheExpirationSeconds`    | Absolute cache expiration in seconds.                                                                                         | 300    |
 | `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:SlidingCacheExpirationSeconds`     | Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set). | 120    |
 | `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheSizeLimit`                    | The maximum number of items that can be stored in the cache.                                                                   | 10000  |

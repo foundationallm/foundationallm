@@ -139,14 +139,14 @@
 				<div class="mb-2">Timeout (seconds):</div>
 				<InputNumber v-model="apiEndpoint.timeout_seconds" class="w-100 mb-4" />
 
-				<!-- Status URL -->
-				<div id="aria-status-url" class="mb-2">Status URL:</div>
+				<!-- Status Endpoint -->
+				<div id="aria-status-endpoint" class="mb-2">Status Endpoint (relative path):</div>
 				<InputText
-					v-model="apiEndpoint.status_url"
+					v-model="apiEndpoint.status_endpoint"
 					type="text"
 					class="w-100 mb-4"
-					placeholder="Enter API endpoint status URL"
-					aria-labelledby="aria-status-url"
+					placeholder="Enter the status endpoint"
+					aria-labelledby="aria-status-endpoint"
 				/>
 			</div>
 
@@ -328,7 +328,7 @@ export default {
 				name: '' as string,
 				url: '' as string,
 				api_version: '' as string,
-				status_url: null as string | null,
+				status_endpoint: null as string | null,
 				timeout_seconds: 60 as number,
 				retry_strategy_name: 'ExponentialBackoff',
 				category: 'General',

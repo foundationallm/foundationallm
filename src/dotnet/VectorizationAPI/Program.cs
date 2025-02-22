@@ -47,6 +47,8 @@ builder.Configuration.AddAzureAppConfiguration(options =>
     });
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
+
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Vectorization_Queues);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Vectorization_Steps);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Vectorization_StateService_Storage);
@@ -150,7 +152,11 @@ builder.Services.AddSingleton<IVectorizationRequestProcessor, LocalVectorization
 // Resource validation
 builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactory>();
 
+//----------------------------
 // Resource providers
+//----------------------------
+builder.AddResourceProviderCacheSettings();
+
 builder.AddConfigurationResourceProvider();
 builder.AddDataSourceResourceProvider();
 builder.AddVectorizationResourceProvider();

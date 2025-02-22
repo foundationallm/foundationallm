@@ -30,6 +30,7 @@
 					text
 					severity="secondary"
 					class="chat-sidebar__button"
+					style="color: var(--primary-text) !important"
 					aria-label="Add new chat"
 					:disabled="createProcessing"
 					@click="handleAddSession"

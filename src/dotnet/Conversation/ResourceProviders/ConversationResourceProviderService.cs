@@ -12,6 +12,7 @@ using FoundationaLLM.Common.Services.Storage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 
 namespace FoundationaLLM.Conversation.ResourceProviders
 {
@@ -19,6 +20,7 @@ namespace FoundationaLLM.Conversation.ResourceProviders
     /// Implements the FoundationaLLM.Conversation resource provider.
     /// </summary>
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>
+    /// <param name="cacheOptions">The options providing the <see cref="ResourceProviderCacheSettings"/> with settings for the resource provider cache.</param>
     /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
@@ -27,6 +29,7 @@ namespace FoundationaLLM.Conversation.ResourceProviders
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     public class ConversationResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
+        IOptions<ResourceProviderCacheSettings> cacheOptions,
         IAuthorizationServiceClient authorizationService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
@@ -35,6 +38,7 @@ namespace FoundationaLLM.Conversation.ResourceProviders
         ILogger<ConversationResourceProviderService> logger)
         : ResourceProviderServiceBase<ResourceReference>(
             instanceOptions.Value,
+            cacheOptions.Value,
             authorizationService,
             new NullStorageService(),
             eventService,

@@ -97,7 +97,7 @@ builder.AddGroupMembership();
 // Add services to the container.
 builder.Services.AddAuthorization();
 
-builder.Services.AddScoped<ICosmosDbService, CosmosDbService>();
+builder.Services.AddSingleton<ICosmosDbService, CosmosDbService>();
 builder.AddStateService();
 
 builder.Services
