@@ -3,12 +3,7 @@
 		<div class="input-wrapper">
 			<div class="tooltip-component">
 				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-					<i
-						class="pi pi-info-circle"
-						tabindex="0"
-						aria-hidden
-						@keydown.esc="hideAllPoppers"
-					></i>
+					<i class="pi pi-info-circle" tabindex="0" aria-hidden @keydown.esc="hideAllPoppers"></i>
 					<template #popper>
 						<div role="tooltip">Use Shift+Enter to add a new line</div>
 					</template>
@@ -269,7 +264,6 @@
 				<div id="oneDriveIframeDialogContent" class="onedrive-iframe-content" />
 			</Dialog>
 
-
 			<Mentionable
 				:keys="['@']"
 				:items="agents"
@@ -282,8 +276,8 @@
 				@close="agentListOpen = false"
 			>
 				<p id="chat-input-label" class="sr-only">
-					The agent can make mistakes. Please check important information carefully.
-					Use Shift+Enter to add a new line.
+					The agent can make mistakes. Please check important information carefully. Use Shift+Enter
+					to add a new line.
 				</p>
 
 				<textarea
@@ -292,8 +286,12 @@
 					ref="inputRef"
 					class="input"
 					:disabled="disabled || isCurrentAgentExpired"
-					:placeholder="isCurrentAgentExpired ? 'This agent has expired.' : 'What would you like to ask?'"
-					:aria-label="isCurrentAgentExpired ? 'This agent has expired.' : 'What would you like to ask?'"
+					:placeholder="
+						isCurrentAgentExpired ? 'This agent has expired.' : 'What would you like to ask?'
+					"
+					:aria-label="
+						isCurrentAgentExpired ? 'This agent has expired.' : 'What would you like to ask?'
+					"
 					aria-describedby="chat-input-label"
 					autofocus
 					@keydown="handleKeydown"

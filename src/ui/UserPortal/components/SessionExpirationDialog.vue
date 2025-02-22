@@ -48,12 +48,9 @@ export default {
 			const timeoutInMinutes = this.$appConfigStore.auth.timeoutInMinutes;
 			const timeoutInMS = timeoutInMinutes * 60 * 1000;
 
-			this.dialogInterval = setInterval(
-				() => {
-					this.triggerDialog();
-				},
-				timeoutInMS,
-			);
+			this.dialogInterval = setInterval(() => {
+				this.triggerDialog();
+			}, timeoutInMS);
 		},
 
 		triggerDialog() {

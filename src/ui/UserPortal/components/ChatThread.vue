@@ -141,7 +141,7 @@ export default {
 				this.scrollToBottom();
 			},
 			deep: true,
-		}
+		},
 	},
 
 	created() {
@@ -227,7 +227,8 @@ export default {
 
 			const previousScrollHeight = container.scrollHeight;
 			const previousScrollTop = container.scrollTop;
-			const isNearBottom = previousScrollTop + container.clientHeight + contentGrowth >= previousScrollHeight - 100;
+			const isNearBottom =
+				previousScrollTop + container.clientHeight + contentGrowth >= previousScrollHeight - 100;
 
 			this.$nextTick(() => {
 				const newScrollHeight = container.scrollHeight;

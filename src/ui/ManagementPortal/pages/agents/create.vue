@@ -369,12 +369,16 @@
 					<template v-if="userPromptRewriteEnabled">
 						<div>
 							<span class="step-option__header">Rewrite Model:</span>
-							<span>{{ aiModelOptions.find(model => model.object_id === userPromptRewriteAIModel)?.name }}</span>
+							<span>{{
+								aiModelOptions.find((model) => model.object_id === userPromptRewriteAIModel)?.name
+							}}</span>
 						</div>
 
 						<div>
 							<span class="step-option__header">Rewrite Prompt:</span>
-							<span>{{ promptOptions.find(prompt => prompt.object_id === userPromptRewritePrompt)?.name }}</span>
+							<span>{{
+								promptOptions.find((prompt) => prompt.object_id === userPromptRewritePrompt)?.name
+							}}</span>
 						</div>
 
 						<div>
@@ -407,7 +411,9 @@
 						<!-- User prompt rewrite model -->
 						<div class="mt-2" v-if="userPromptRewriteEnabled">
 							<!-- What model should be used for the prompt rewrite? -->
-							<span id="aria-user-prompt-rewrite-model" class="step-option__header">Rewrite Model:</span>
+							<span id="aria-user-prompt-rewrite-model" class="step-option__header"
+								>Rewrite Model:</span
+							>
 							<Dropdown
 								v-model="userPromptRewriteAIModel"
 								:options="aiModelOptions"
@@ -422,7 +428,9 @@
 						<!-- User prompt rewrite prompt -->
 						<div class="mt-2" v-if="userPromptRewriteEnabled">
 							<!-- What prompt should be used to rewrite the user prompt? -->
-							<span id="aria-user-prompt-rewrite-prompt" class="step-option__header">Rewrite Prompt:</span>
+							<span id="aria-user-prompt-rewrite-prompt" class="step-option__header"
+								>Rewrite Prompt:</span
+							>
 							<Dropdown
 								v-model="userPromptRewritePrompt"
 								:options="promptOptions"
@@ -437,7 +445,9 @@
 						<!-- User prompt rewrite window size -->
 						<div class="mt-2" v-if="userPromptRewriteEnabled">
 							<!-- What should the rewrite window size be? -->
-							<span id="aria-user-prompt-rewrite-window-size" class="step-option__header">Rewrite Window Size:</span>
+							<span id="aria-user-prompt-rewrite-window-size" class="step-option__header"
+								>Rewrite Window Size:</span
+							>
 							<InputNumber
 								v-model="userPromptRewriteWindowSize"
 								:minFractionDigits="0"
@@ -473,7 +483,9 @@
 					<template v-if="semanticCacheEnabled">
 						<div>
 							<span class="step-option__header">Model:</span>
-							<span>{{ aiModelOptions.find(model => model.object_id === semanticCacheAIModel)?.name }}</span>
+							<span>{{
+								aiModelOptions.find((model) => model.object_id === semanticCacheAIModel)?.name
+							}}</span>
 						</div>
 
 						<div>
@@ -492,19 +504,17 @@
 
 						<!-- Semantic cache toggle -->
 						<div class="d-flex align-center mt-2">
-							<span id="aria-semantic-cache-enabled" class="step-option__header"
-								>Enabled:</span
-							>
+							<span id="aria-semantic-cache-enabled" class="step-option__header">Enabled:</span>
 							<span>
-							<ToggleButton
-								v-model="semanticCacheEnabled"
-								on-label="Yes"
-								on-icon="pi pi-check-circle"
-								off-label="No"
-								off-icon="pi pi-times-circle"
-								aria-labelledby="aria-semantic-cache-enabled"
-								class="semantic-cache-toggle"
-							/>
+								<ToggleButton
+									v-model="semanticCacheEnabled"
+									on-label="Yes"
+									on-icon="pi pi-check-circle"
+									off-label="No"
+									off-icon="pi pi-times-circle"
+									aria-labelledby="aria-semantic-cache-enabled"
+									class="semantic-cache-toggle"
+								/>
 							</span>
 						</div>
 
@@ -526,7 +536,9 @@
 						<!-- Semantic cache embedding dimensions -->
 						<div class="mt-2" v-if="semanticCacheEnabled">
 							<!-- How many embedding dimensions to use? -->
-							<span id="aria-semantic-cache-embedding-dimensions" class="step-option__header">Embedding Dimensions:</span>
+							<span id="aria-semantic-cache-embedding-dimensions" class="step-option__header"
+								>Embedding Dimensions:</span
+							>
 							<InputNumber
 								v-model="semanticCacheEmbeddingDimensions"
 								:minFractionDigits="0"
@@ -539,7 +551,9 @@
 						<!-- Semantic cache minimum similarity threshold -->
 						<div class="mt-2" v-if="semanticCacheEnabled">
 							<!-- What should the minimum similarity threshold be? -->
-							<span id="aria-semantic-cache-minimum-similarity" class="step-option__header">Minimum Similarity Threshold:</span>
+							<span id="aria-semantic-cache-minimum-similarity" class="step-option__header"
+								>Minimum Similarity Threshold:</span
+							>
 							<InputNumber
 								v-model="semanticCacheMinimumSimilarityThreshold"
 								:minFractionDigits="0"
@@ -550,7 +564,7 @@
 						</div>
 					</template>
 				</CreateAgentStepItem>
-				
+
 				<!-- Cost center -->
 				<div id="aria-cost-center" class="step-header span-2">
 					Would you like to assign this agent to a cost center?

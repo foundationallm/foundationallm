@@ -69,9 +69,8 @@ export interface Message {
 	processingTime: number; // Calculated in milliseconds - not from the API
 }
 
-export interface MessageRatingRequest
-{
-    rating: boolean | null;
+export interface MessageRatingRequest {
+	rating: boolean | null;
 	comments: string | null;
 }
 
