@@ -25,10 +25,5 @@
         /// The Regex pattern used to validate the values allowed as User Principal Name (UPN) substitutes in the X-USER-IDENTITY header.
         /// </summary>
         public string? IdentitySubstitutionUserPrincipalNamePattern { get; set; }
-
-        /// <summary>
-        /// Enabling caching for resource providers.
-        /// </summary>
-        public bool EnableResourceProvidersCache { get; set; } = false;
     }
 }

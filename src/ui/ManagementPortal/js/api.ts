@@ -481,49 +481,6 @@ export default {
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentId}?api-version=${this.apiVersion}`,
 		);
 
-		const agent = agentGetResult.resource as Agent;
-
-		const orchestratorTypeToKeyMap: { [key: string]: string } = {
-			LangChain: 'AzureOpenAI',
-			AzureOpenAIDirect: 'AzureOpenAI',
-			AzureAIDirect: 'AzureAI',
-		};
-
-		const orchestratorTypeKey =
-			orchestratorTypeToKeyMap[agent.orchestration_settings?.orchestrator];
-
-		// Retrieve all the app config values for the agent
-		const appConfigFilter = `FoundationaLLM:${orchestratorTypeKey}:${agent.name}:API:*`;
-		const appConfigResults = await this.getAppConfigs(appConfigFilter);
-
-		// Replace the orchestrator endpoint config keys with the real values
-		if (appConfigResults) {
-			for (const appConfigResult of appConfigResults) {
-				const appConfig = appConfigResult.resource;
-				const propertyName = appConfig.name.split(':').pop();
-				agent.orchestration_settings.endpoint_configuration[propertyName as string] = String(
-					appConfig.value,
-				);
-			}
-		} else {
-			for (const [configName /* configValue */] of Object.entries(agent.orchestration_settings)) {
-				const resolvedValue = await this.getAppConfig(
-					agent.orchestration_settings.endpoint_configuration[
-						configName as keyof typeof agent.orchestration_settings.endpoint_configuration
-					],
-				);
-				if (resolvedValue && resolvedValue.resource) {
-					agent.orchestration_settings.endpoint_configuration[configName] = String(
-						resolvedValue.resource.value,
-					);
-				} else {
-					agent.orchestration_settings.endpoint_configuration[configName] = '';
-				}
-			}
-		}
-
-		agentGetResult.resource = agent;
-
 		return agentGetResult;
 	},
 
