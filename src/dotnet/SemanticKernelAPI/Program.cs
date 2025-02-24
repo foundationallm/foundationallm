@@ -45,6 +45,8 @@ namespace FoundationaLLM.SemanticKernel.API
                 });
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
+
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Events_Profiles_VectorizationAPI);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_SemanticKernelAPI_Configuration);
@@ -85,7 +87,11 @@ namespace FoundationaLLM.SemanticKernel.API
             // Add Azure ARM services
             builder.AddAzureResourceManager();
 
+            //----------------------------
             // Resource providers
+            //----------------------------
+            builder.AddResourceProviderCacheSettings();
+
             builder.AddConfigurationResourceProvider();
             builder.AddAIModelResourceProvider();
 

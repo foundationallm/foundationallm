@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 using FoundationaLLM.DataSource.ResourceProviders;
 using FoundationaLLM.DataSource.Validation;
@@ -35,6 +36,7 @@ namespace FoundationaLLM
             builder.Services.AddSingleton<IResourceProviderService, DataSourceResourceProviderService>(sp =>
                 new DataSourceResourceProviderService(
                     sp.GetRequiredService<IOptions<InstanceSettings>>(),
+                    sp.GetRequiredService<IOptions<ResourceProviderCacheSettings>>(),
                     sp.GetRequiredService<IAuthorizationServiceClient>(),
                     sp.GetRequiredService<IEnumerable<IStorageService>>()
                         .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_ResourceProviders_DataSource),

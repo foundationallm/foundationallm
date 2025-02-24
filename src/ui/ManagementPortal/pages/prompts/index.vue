@@ -119,10 +119,9 @@
 				<template #groupheader="slotProps">
 					<div class="flex items-center gap-2">
 						<span class="pi pi-book" aria-hidden="true"></span>
-						<span>&nbsp;&nbsp;Category: {{ slotProps.data.resource.category ?? "None" }}</span>
+						<span>&nbsp;&nbsp;Category: {{ slotProps.data.resource.category ?? 'None' }}</span>
 					</div>
 				</template>
-
 			</DataTable>
 		</div>
 	</main>
@@ -141,7 +140,10 @@ export default {
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 			accessControlModalOpen: false,
-			sortingFields: ([{ field: "resource.category", order: 1 }, { field: "resource.name", order: 1 }]),
+			sortingFields: [
+				{ field: 'resource.category', order: 1 },
+				{ field: 'resource.name', order: 1 },
+			],
 		};
 	},
 

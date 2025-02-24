@@ -12,6 +12,7 @@ namespace FoundationaLLM.Common.Services.Cache
     /// <summary>
     /// Provides the caching services used by the FoundationaLLM authorization service client.
     /// </summary>
+    /// <param name="settings">The <see cref="AuthorizationServiceClientSettings"/> used to configure the authorization service client.</param>
     /// <param name="logger">The <see cref="ILogger"/> used to log information.</param>
     public class AuthorizationServiceClientCacheService(
         AuthorizationServiceClientSettings settings,
@@ -24,11 +25,6 @@ namespace FoundationaLLM.Common.Services.Cache
             ExpirationScanFrequency = TimeSpan.FromSeconds(settings.CacheExpirationScanFrequencySeconds ?? 30) // How often to scan for expired items.
         });
 
-        private readonly MemoryCacheEntryOptions _cacheEntryOptions = new MemoryCacheEntryOptions()
-           .SetAbsoluteExpiration(TimeSpan.FromSeconds(settings.AbsoluteCacheExpirationSeconds ?? 300)) // Cache entries are valid for 5 minutes.
-           .SetSlidingExpiration(TimeSpan.FromSeconds(settings.SlidingCacheExpirationSeconds ?? 120)) // Reset expiration time if accessed within 2 minutes.
-           .SetSize(1); // Each cache entry is a single authorization result.
-
         private readonly SemaphoreSlim _cacheLock = new(1, 1);
         private readonly MD5 _md5 = MD5.Create();
 
@@ -38,7 +34,7 @@ namespace FoundationaLLM.Common.Services.Cache
             await _cacheLock.WaitAsync();
             try
             {
-                _cache.Set(GetCacheKey(authorizationRequest), result, _cacheEntryOptions);
+                _cache.Set(GetCacheKey(authorizationRequest), result, GetMemoryCacheEntryOptions());
                 _logger.LogInformation(
                     "An action authorization result for the authorizable action {AuthorizableAction} has been set in the cache.",
                     authorizationRequest.Action);
@@ -93,5 +89,10 @@ namespace FoundationaLLM.Common.Services.Cache
             var hashBytes = _md5.ComputeHash(Encoding.UTF8.GetBytes(keyString));
             return Convert.ToBase64String(hashBytes);
         }
+
+        private MemoryCacheEntryOptions GetMemoryCacheEntryOptions() => new MemoryCacheEntryOptions()
+           .SetAbsoluteExpiration(TimeSpan.FromSeconds(settings.AbsoluteCacheExpirationSeconds ?? 300)) // Cache entries are valid for 5 minutes.
+           .SetSlidingExpiration(TimeSpan.FromSeconds(settings.SlidingCacheExpirationSeconds ?? 120)) // Reset expiration time if accessed within 2 minutes.
+           .SetSize(1); // Each cache entry is a single authorization result.
     }
 }

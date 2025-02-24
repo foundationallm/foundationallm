@@ -34,6 +34,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         private readonly IResourceProviderService _aiModelResourceProviderService;
         private readonly IResourceProviderService _configurationResourceProviderService;
         private readonly IResourceProviderService _promptResourceProviderService;
+        private readonly ITemplatingService _templatingService;
         private readonly IConfiguration _configuration;
         private readonly ILogger<UserPromptRewriteService> _logger;
 
@@ -41,10 +42,12 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// Initializes a new instance of the <see cref="UserPromptRewriteService"/> class.
         /// </summary>
         /// <param name="resourceProviderServices">A list of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
+        /// <param name="templatingService">The templating service used for replacing variables in prompts.</param>
         /// <param name="configuration">The <see cref="IConfiguration"/> used to retrieve app settings from configuration.</param>
         /// <param name="logger">The logger used for logging..</param>
         public UserPromptRewriteService(
             IEnumerable<IResourceProviderService> resourceProviderServices,
+            ITemplatingService templatingService,
             IConfiguration configuration,
             ILogger<UserPromptRewriteService> logger)
         {
@@ -54,6 +57,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 .Single(x => x.Name == ResourceProviderNames.FoundationaLLM_Configuration);
             _promptResourceProviderService = resourceProviderServices
                 .Single(x => x.Name == ResourceProviderNames.FoundationaLLM_Prompt);
+            _templatingService = templatingService;
             _configuration = configuration;
             _logger = logger;
         }
@@ -132,7 +136,8 @@ namespace FoundationaLLM.Orchestration.Core.Services
                     })
                     .ToList()
                     ?? [];
-                messages.Insert(0, new SystemChatMessage(agentRewriter.RewriterSystemPrompt));
+                messages.Insert(0, new SystemChatMessage(
+                    _templatingService.Transform(agentRewriter.RewriterSystemPrompt)));
                 messages.Add(new UserChatMessage(completionRequest.UserPrompt));
 
                 using var telemetryActivity = TelemetryActivitySources.OrchestrationAPIActivitySource.StartActivity(

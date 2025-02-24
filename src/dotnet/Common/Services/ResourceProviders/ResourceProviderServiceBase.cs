@@ -1,4 +1,4 @@
-﻿using Azure.Messaging;
+using Azure.Messaging;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authorization;
@@ -10,6 +10,7 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Events;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Services.Cache;
@@ -41,6 +42,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         private readonly bool _useInternalReferencesStore;
         private readonly SemaphoreSlim _lock = new(1, 1);
 
+        private readonly ResourceProviderCacheSettings _cacheSettings;
         private readonly IResourceProviderResourceCacheService? _resourceCache;
         private const string CACHE_WARMUP_FILE_NAME = "_cache_warmup.json";
 
@@ -121,6 +123,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// Creates a new instance of the resource provider.
         /// </summary>
         /// <param name="instanceSettings">The <see cref="InstanceSettings"/> that provides instance-wide settings.</param>
+        /// <param name="cacheSettings">The <see cref="ResourceProviderCacheSettings"/> that provides settings for the resource provider cache.</param>
         /// <param name="authorizationServiceClient">The <see cref="IAuthorizationServiceClient"/> providing authorization services to the resource provider.</param>
         /// <param name="storageService">The <see cref="IStorageService"/> providing storage services to the resource provider.</param>
         /// <param name="eventService">The <see cref="IEventService"/> providing event services to the resource provider.</param>
@@ -131,6 +134,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="useInternalReferencesStore">Indicates whether the resource provider should use the internal resource references store or provide one of its own.</param>
         public ResourceProviderServiceBase(
             InstanceSettings instanceSettings,
+            ResourceProviderCacheSettings cacheSettings,
             IAuthorizationServiceClient authorizationServiceClient,
             IStorageService storageService,
             IEventService eventService,
@@ -147,14 +151,17 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             _logger = logger;
             _serviceProvider = serviceProvider;
             _instanceSettings = instanceSettings;
+            _cacheSettings = cacheSettings;
             _eventTypesToSubscribe = eventTypesToSubscribe;
             _useInternalReferencesStore = useInternalReferencesStore;
 
             logger.LogInformation("Resource provider caching {CacheStatusString} enabled.",
-                _instanceSettings.EnableResourceProvidersCache ? "is" : "is not");
+                _cacheSettings.EnableCache ? "is" : "is not");
 
-            if (_instanceSettings.EnableResourceProvidersCache)
-                _resourceCache = new ResourceProviderResourceCacheService(_logger);
+            if (_cacheSettings.EnableCache)
+                _resourceCache = new ResourceProviderResourceCacheService(
+                    _cacheSettings,
+                    _logger);
 
             _allowedResourceProviders = [_name];
             _allowedResourceTypes = GetResourceTypes();
@@ -196,10 +203,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     _localEventService.SubscribeToEventTypes(_eventTypesToSubscribe);
                     _localEventService.StartLocalEventProcessing(HandleEvents);
                 }
-
+                
                 _isInitialized = true;
 
-                await WarmupCache();
+                if (_useInternalReferencesStore && _cacheSettings.EnableCache)
+                    await WarmupCache();
 
                 _logger.LogInformation("The {ResourceProvider} resource provider was successfully initialized.", _name);
             }
@@ -229,7 +237,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         {
             try
             {
-                if (!_instanceSettings.EnableResourceProvidersCache)
+                if (!_cacheSettings.EnableCache)
                     return;
 
                 _logger.LogInformation("Starting to warm up the cache for the {ResourceProvider} resource provider...", _name);
@@ -358,6 +366,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             await UpsertResourcePostProcess(ParsedResourcePath, (upsertResult as ResourceProviderUpsertResult)!, authorizationResult, userIdentity);
 
+            await SendResourceProviderEvent(EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
+
             return upsertResult;
         }
 
@@ -371,6 +381,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
             await DeleteResourceAsync(ParsedResourcePath, userIdentity);
+
+            await SendResourceProviderEvent(EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
 
         #region Virtuals to override in derived classes
@@ -821,14 +833,23 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <remarks>
         /// See <see cref="EventTypes"/> for a list of event types.
         /// </remarks>
-        protected async Task SendResourceProviderEvent(string eventType, object? data= null) =>
-            // The CloudEvent source is automatically filled in by the event service.            
+        protected async Task SendResourceProviderEvent(string eventType, object? data = null)
+        {
+            if (_eventService == null)
+            {
+                _logger.LogWarning("The resource provider {ResourceProviderName} does not have an event service configured and cannot send events.", _name);
+                return;
+            }
+                
+            // The CloudEvent source is automatically filled in by the event service.
             await _eventService.SendEvent(
                 EventGridTopics.FoundationaLLM_Resource_Providers,
                 new CloudEvent(string.Empty, eventType, data ?? new { })
                 {
                     Subject = _name
                 });
+        }
+            
 
         private async Task HandleEvents(EventTypeEventArgs e)
         {
@@ -867,7 +888,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             }
         }
 
-        private async Task HandleCacheResetCommand()
+        /// <summary>
+        /// Handles the cache reset command.
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task HandleCacheResetCommand()
         {
             _resourceCache?.Reset();
             await (_resourceReferenceStore?.LoadResourceReferences() ?? Task.CompletedTask);

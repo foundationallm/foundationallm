@@ -46,6 +46,7 @@ namespace FoundationaLLM.Orchestration.API
                 });
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
 
                 //TODO: Replace this with a more granular approach that would only bring in the configuration namespaces that are actually needed.
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints);
@@ -79,6 +80,9 @@ namespace FoundationaLLM.Orchestration.API
                 ServiceNames.OrchestrationAPI);
 
             builder.Services.AddInstanceProperties(builder.Configuration);
+
+            // CORS policies
+            builder.AddCorsPolicies();
 
             // Add Azure ARM services.
             builder.AddAzureResourceManager();
@@ -133,6 +137,8 @@ namespace FoundationaLLM.Orchestration.API
             //----------------------------
             // Resource providers
             //----------------------------
+            builder.AddResourceProviderCacheSettings();
+
             builder.AddAgentResourceProvider();
             builder.AddPromptResourceProvider();
             builder.AddVectorizationResourceProvider();
@@ -185,6 +191,9 @@ namespace FoundationaLLM.Orchestration.API
                 .AddSwaggerGenNewtonsoftSupport();
 
             var app = builder.Build();
+
+            // Set the CORS policy before other middleware.
+            app.UseCors(CorsPolicyNames.AllowAllOrigins);
 
             // Register the middleware to extract the user identity context and other HTTP request context data required by the downstream services.
             app.UseMiddleware<CallContextMiddleware>();

@@ -9,6 +9,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
@@ -32,6 +33,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
     /// Implements the FoundationaLLM.Vectorization resource provider.
     /// </summary>    
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>    
+    /// <param name="cacheOptions">The options providing the <see cref="ResourceProviderCacheSettings"/> with settings for the resource provider cache.</param>
     /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
@@ -40,6 +42,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
     /// <param name="loggerFactory">The factory responsible for creating loggers.</param>    
     public class VectorizationResourceProviderService(        
         IOptions<InstanceSettings> instanceOptions,
+        IOptions<ResourceProviderCacheSettings> cacheOptions,
         IAuthorizationServiceClient authorizationService,
         [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization)] IStorageService storageService,
         IEventService eventService,
@@ -48,6 +51,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         ILoggerFactory loggerFactory)
         : ResourceProviderServiceBase<ResourceReference>(
             instanceOptions.Value,
+            cacheOptions.Value,
             authorizationService,
             storageService,
             eventService,
@@ -55,7 +59,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             serviceProvider,
             loggerFactory.CreateLogger<VectorizationResourceProviderService>(),
             [
-                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
+                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand                
             ])
     {
         /// <inheritdoc/>
@@ -121,7 +125,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                 if (resourceStore != null)
                 {
                     foreach (var resource in resourceStore.Resources)
-                        resources.AddOrUpdate(resource.Name, resource, (k, v) => v);
+                        resources.AddOrUpdate(resource.Name, resource, (k, v) => resource);
                     defaultResourceName = resourceStore.DefaultResourceName ?? string.Empty;
                 }
             }
@@ -284,6 +288,9 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     default,
                     default);
 
+            await SendResourceProviderEvent(
+                    EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
+
             return new ResourceProviderUpsertResult
             {
                 ObjectId = resource.ObjectId,
@@ -388,6 +395,9 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     JsonSerializer.Serialize(ResourceStore<VectorizationPipeline>.FromDictionary(_pipelines.ToDictionary())),
                     default,
                     default);
+
+            await SendResourceProviderEvent(
+                    EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
 
             return new VectorizationResult(
                 existingPipeline.ObjectId!,
@@ -577,6 +587,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest);
             };
+            await SendResourceProviderEvent(EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
 
         #region Helpers for DeleteResourceAsync
@@ -906,6 +917,15 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     _logger.LogWarning("The file {FileName} is not managed by the FoundationaLLM.Vectorization resource provider.", fileName);
                     break;
             }
+        }
+
+        /// <inheritdoc/>
+        public override async Task HandleCacheResetCommand()
+        {
+            _defaultTextPartitioningProfileName = await LoadResourceStore<TextPartitioningProfile, VectorizationProfileBase>(TEXT_PARTITIONING_PROFILES_FILE_PATH, _textPartitioningProfiles);
+            _defaultTextEmbeddingProfileName = await LoadResourceStore<TextEmbeddingProfile, VectorizationProfileBase>(TEXT_EMBEDDING_PROFILES_FILE_PATH, _textEmbeddingProfiles);
+            _defaultIndexingProfileName = await LoadResourceStore<IndexingProfile, VectorizationProfileBase>(INDEXING_PROFILES_FILE_PATH, _indexingProfiles);
+            _ = await LoadResourceStore<VectorizationPipeline, VectorizationPipeline>(PIPELINES_FILE_PATH, _pipelines);
         }
 
         #endregion

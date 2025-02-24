@@ -30,6 +30,7 @@
 					text
 					severity="secondary"
 					class="chat-sidebar__button"
+					style="color: var(--primary-text) !important"
 					aria-label="Add new chat"
 					:disabled="createProcessing"
 					@click="handleAddSession"
@@ -82,6 +83,7 @@
 										severity="secondary"
 										text
 										class="chat-sidebar__button"
+										style="color: var(--primary-text) !important"
 										aria-label="Rename chat session"
 										@click.stop="openRenameModal(session)"
 										@keydown.esc="hideAllPoppers"
@@ -97,6 +99,7 @@
 										severity="danger"
 										text
 										class="chat-sidebar__button"
+										style="color: var(--primary-text) !important"
 										aria-label="Delete chat session"
 										@click.stop="sessionToDelete = session"
 										@keydown.esc="hideAllPoppers"
