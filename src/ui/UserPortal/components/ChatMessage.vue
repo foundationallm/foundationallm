@@ -77,7 +77,7 @@
 
 					<div v-for="(content, index) in processedContent" v-else :key="index">
 						<template v-if="content.type === 'text'">
-							<div v-if="message.sender === 'User'" style="white-space: pre-wrap;">
+							<div v-if="message.sender === 'User'" style="white-space: pre-wrap">
 								{{ content.value }}
 							</div>
 
@@ -220,7 +220,7 @@
 			modal
 			style="max-width: 85%"
 		>
-			<p tabindex="0" style="overflow-x: auto;">
+			<p tabindex="0" style="overflow-x: auto">
 				<pre>{{ JSON.stringify(selectedContentArtifact, null, 2) }}</pre>
 			</p>
 
@@ -331,12 +331,12 @@ function processLatex(content) {
 	try {
 		// Process block LaTeX: \[ ... \]
 		content = content.replace(blockLatexPattern, (_, math) => {
-			return `<div class="katex-block">${katex.renderToString(math, { displayMode: true, throwOnError: false, output: "mathml" })}</div>`;
+			return `<div class="katex-block">${katex.renderToString(math, { displayMode: true, throwOnError: false, output: 'mathml' })}</div>`;
 		});
 
 		// Process inline LaTeX: \( ... \)
 		content = content.replace(inlineLatexPattern, (_, math) => {
-			return `<span class="katex-inline">${katex.renderToString(math, { throwOnError: false, output: "mathml" })}</span>`;
+			return `<span class="katex-inline">${katex.renderToString(math, { throwOnError: false, output: 'mathml' })}</span>`;
 		});
 	} catch (error) {
 		console.error('LaTeX rendering error:', error);
