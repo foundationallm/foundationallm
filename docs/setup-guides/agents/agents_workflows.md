@@ -64,11 +64,11 @@ The Gatekeeper also allows you to enable the Data Protection aspect of the agent
 > [!NOTE]
 > Once an agent expires, it won’t respond to requests and is not visible in the agent selection dropdown in the chat portal.
 
-![Agent Configuration Section](./media/agent_workflow_2.png)
+![Agent Configuration Section](./media/agent_Workflow_2.png)
 
 ### User Portal Experience Section
 
-![Agent Configuration Section](./media/agent_Workflow_2b.png)
+![Agent Configuration Section](./media/agent_workflow_2b.png)
 
 These setting allows you to turn on or off 4 valuable capabilities in the Chat Portal.
 - The number of tokens used in the conversation. (Questions and Responses)
