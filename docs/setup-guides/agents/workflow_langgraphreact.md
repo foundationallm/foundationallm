@@ -17,8 +17,8 @@ This workflow is useful when you want to create an agent that can dymnically cho
 ## Quick Start – Creating a LangGraphReact based Agent
 
 1.	Create a new agent: In the FoundationaLLM Management Portal, navigate to the "Agents" section and click on the "Create New Agent" button.
-2.	Name the agent “Yale-LangGraphReact” for example
-3.	Give the agent a display name of “Yale LangGraphReact”
+2.	Name the agent Sample_Agent-LangGraphReact” for example
+3.	Give the agent a display name of Sample Agent LangGraphReact”
 4.	Give the agent a description of your choice
 5.	Indicate the purpose of the agent in the Welcome message so that users of the Chat Portal get introduced to its capability and how to use it as soon as they choose to use it from the Portal.
 

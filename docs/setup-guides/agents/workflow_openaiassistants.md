@@ -10,8 +10,8 @@ This can be useful when the question requires a more complex processing or code 
 ## Quick Start – Creating an OpenAIAssistant based Agent
 
 1.	Create a new agent: In the FoundationaLLM Management Portal, navigate to the `Agents` section and click on the "Create New Agent" button.
-2.	Name the agent “Yale-Assistant” for example
-3.	Give the agent a display name of “Yale Assistant”
+2.	Name the agent “Sample-Agent-Assistant” for example
+3.	Give the agent a display name of Sample Agent Assistant”
 4.	Give the agent a description of your choice
 5.	Indicate the purpose of the agent in the Welcome message so that users of the Chat Portal get introduced to its capability and how to use it as soon as they choose to use it from the Portal.
 
