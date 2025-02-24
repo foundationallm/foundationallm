@@ -77,7 +77,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
                 if (indexingProfile == null
                     || !await ValidateAndMapIndexingProfileConfiguration(indexingProfile)
                     || indexingProfile.Settings == null
-                    || !indexingProfile.Settings.TryGetValue("IndexName", out var indexName)
+                    || !indexingProfile.Settings.TryGetValue("index_name", out var indexName)
                     || string.IsNullOrWhiteSpace(indexName))
                     throw new SemanticKernelException("The indexing profile object provided in the request's objects is invalid.", StatusCodes.Status400BadRequest);
 
@@ -205,7 +205,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
 
         private Kernel BuildKernel()
         {
-            var credential = DefaultAuthentication.AzureCredential;
+            var credential = ServiceContext.AzureCredential;
 
             var builder = Kernel.CreateBuilder();
             builder.Services.AddSingleton<ILoggerFactory>(_loggerFactory);

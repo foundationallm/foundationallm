@@ -84,17 +84,17 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
             if (Agent == null)
                 throw new OrchestrationException("The Agent property of the completion request cannot be null.");
 
-            if (Agent.OrchestrationSettings == null)
-                throw new OrchestrationException("The OrchestrationSettings property of the agent cannot be null.");
+            if (Agent.Workflow == null)
+                throw new OrchestrationException("The Workflow property of the Agent property of the completion request cannot be null.");
 
             if (Objects == null)
                 throw new OrchestrationException("The Objects property of the completion request cannot be null.");
 
-            if (string.IsNullOrWhiteSpace(Agent.AIModelObjectId))
-                throw new OrchestrationException("Invalid AI model object id.");
+            if (string.IsNullOrWhiteSpace(Agent.Workflow.MainAIModelObjectId))
+                throw new OrchestrationException("Invalid agent workflow main AI model object id.");
 
             if (!Objects.TryGetValue(
-                    Agent.AIModelObjectId, out var aiModelObject))
+                    Agent.Workflow.MainAIModelObjectId, out var aiModelObject))
                 throw new OrchestrationException("The AI model object is missing from the request's objects.");
 
             var aiModel = aiModelObject is JsonElement aiModelJsonElement
@@ -121,11 +121,11 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
                 || string.IsNullOrWhiteSpace(endpoint.Url))
                 throw new OrchestrationException("The API endpoint configuration object provided in the request's objects is invalid.");
 
-            if (string.IsNullOrWhiteSpace(Agent.PromptObjectId))
+            if (string.IsNullOrWhiteSpace(Agent.Workflow.MainPromptObjectId))
                 throw new OrchestrationException("Invalid prompt object id.");
 
             if (!Objects.TryGetValue(
-                    Agent.PromptObjectId, out var promptObject))
+                    Agent.Workflow.MainPromptObjectId, out var promptObject))
                 throw new OrchestrationException("The prompt object is missing from the request's objects.");
 
             var prompt = promptObject is JsonElement promptJsonElement
@@ -181,7 +181,7 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
 
                         if (indexingProfile == null
                             || indexingProfile.Settings == null
-                            || !indexingProfile.Settings.TryGetValue("IndexName", out var indexName)
+                            || !indexingProfile.Settings.TryGetValue("index_name", out var indexName)
                             || string.IsNullOrWhiteSpace(indexName))
                             throw new OrchestrationException($"The indexing profile object with id {indexingProfileObjectId} provided in the request's objects is invalid.");
                     }
@@ -209,7 +209,7 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
 
                 Validate();
 
-                var aiModelObject = Objects[Agent.AIModelObjectId!];
+                var aiModelObject = Objects[Agent.Workflow!.MainAIModelObjectId!];
                 _aiModel = aiModelObject is JsonElement aiModelJsonElement
                     ? aiModelJsonElement.Deserialize<AIModelBase>()!
                     : (aiModelObject as AIModelBase)!;
@@ -287,7 +287,7 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
 
                 Validate();
 
-                var promptObject = Objects[Agent.PromptObjectId!];
+                var promptObject = Objects[Agent.Workflow!.MainPromptObjectId!];
 
                 _prompt = promptObject is JsonElement promptJsonElement
                 ? promptJsonElement.Deserialize<MultipartPrompt>()!
@@ -359,12 +359,6 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
 
                 return _indexingProfiles;
             }
-        }
-
-        private void EnsureIsValid()
-        {
-            if (_valid)
-                throw new OrchestrationException("The request is either invalid or has not been validated yet.");
         }
     }
 }

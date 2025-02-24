@@ -31,7 +31,7 @@ namespace FoundationaLLM.Gatekeeper.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            DefaultAuthentication.Initialize(
+            ServiceContext.Initialize(
                 builder.Environment.IsProduction(),
                 ServiceNames.GatekeeperAPI);
 
@@ -43,10 +43,12 @@ namespace FoundationaLLM.Gatekeeper.API
                 options.Connect(builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]);
                 options.ConfigureKeyVault(options =>
                 {
-                    options.SetCredential(DefaultAuthentication.AzureCredential);
+                    options.SetCredential(ServiceContext.AzureCredential);
                 });
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
+
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatekeeperAPI_Configuration);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatekeeperAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
@@ -90,8 +92,12 @@ namespace FoundationaLLM.Gatekeeper.API
                 builder.Configuration,
                 AppConfigurationKeySections.FoundationaLLM_Events_Profiles_GatekeeperAPI);
 
-            // Add resource providers
+            //----------------------------
+            // Resource providers
+            //----------------------------
+            builder.AddResourceProviderCacheSettings();
             builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactory>();
+
             builder.AddConfigurationResourceProvider();
 
             // Register the downstream services and HTTP clients.

@@ -1,5 +1,5 @@
 <template>
-	<CreatePrompt :edit-prompt="$route.params.promptName" />
+	<CreatePrompt edit-prompt="true" :prompt-name="$route.params.promptName" />
 </template>
 
 <script lang="ts">

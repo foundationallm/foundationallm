@@ -17,7 +17,7 @@ namespace FoundationaLLM.Core.Examples.LoadTests.Setup
 		public LoadTestFixture()
 		{
 			var builder = Host.CreateApplicationBuilder();
-            DefaultAuthentication.Initialize(false, string.Empty);
+            ServiceContext.Initialize(false, string.Empty);
 
             builder.Configuration.Sources.Clear();
             builder.Configuration
@@ -35,7 +35,7 @@ namespace FoundationaLLM.Core.Examples.LoadTests.Setup
                     options.Connect(connectionString)
                         .ConfigureKeyVault(kv =>
                         {
-                            kv.SetCredential(DefaultAuthentication.AzureCredential);
+                            kv.SetCredential(ServiceContext.AzureCredential);
                         })
                         // Select all configuration sections
                         .Select("*");

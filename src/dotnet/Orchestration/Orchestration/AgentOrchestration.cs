@@ -94,10 +94,11 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     Result = validationResponse
                 };
 
+            await HandlePromptRewrite(completionRequest);
+
             if (_agent!.CacheSettings != null
                 && _agent!.CacheSettings.SemanticCacheEnabled)
             {
-                await HandlePromptRewrite(completionRequest);
                 var cachedResponse = await GetCompletionResponseFromCache(completionRequest);
                 if (cachedResponse != null)
                 {
@@ -168,10 +169,11 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (validationResponse != null)
                 return validationResponse;
 
+            await HandlePromptRewrite(completionRequest);
+
             if (_agent!.CacheSettings != null
                 && _agent!.CacheSettings.SemanticCacheEnabled)
             {
-                await HandlePromptRewrite(completionRequest);
                 var cachedResponse = await GetCompletionResponseFromCache(completionRequest);
                 if (cachedResponse != null)
                     return cachedResponse;
@@ -365,7 +367,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 { OpenAIAgentCapabilityParameterNames.OpenAIFileId, fileMapping.OpenAIFileId! }
                             });
 
-                        vectorizationResult.TryGetValue(OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStoreSuccess, out var vectorizationSuccessObject);
+                        vectorizationResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess, out var vectorizationSuccessObject);
                         var vectorizationSuccess = ((JsonElement)vectorizationSuccessObject!).Deserialize<bool>();
 
                         if (!vectorizationSuccess)
@@ -422,7 +424,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 AgentName = llmCompletionResponse.AgentName,
                 PromptTokens = llmCompletionResponse.PromptTokens,
                 CompletionTokens = llmCompletionResponse.CompletionTokens,
-                AnalysisResults = llmCompletionResponse.AnalysisResults                
+                AnalysisResults = llmCompletionResponse.AnalysisResults,
+                Errors = llmCompletionResponse.Errors
             };
         }
 

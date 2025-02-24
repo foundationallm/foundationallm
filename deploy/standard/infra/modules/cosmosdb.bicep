@@ -113,6 +113,31 @@ var containers = [
     }
     defaultTtl: null
   }
+  {
+    name: 'CompletionsCache'
+    partitionKey: {
+      paths: [
+        '/operationId'
+      ]
+    }
+    vectorIndexes: [
+      {
+        path: '/userPromptEmbedding'
+        type: 'diskANN'
+      }
+    ]
+    vectorEmbeddingPolicy: {
+      vectorEmbeddings: [
+        {
+          dataType: 'float32'
+          dimensions: 2048
+          distanceFunction: 'cosine'
+          path: '/userPromptEmbedding'
+        }
+      ]
+    }
+    defaultTtl: 300
+  }
 ]
 
 @description('The Resource logs to enable')
@@ -153,7 +178,11 @@ resource main 'Microsoft.DocumentDB/databaseAccounts@2023-09-15' = {
     databaseAccountOfferType: 'Standard'
     defaultIdentity: 'FirstPartyIdentity'
     disableKeyBasedMetadataWriteAccess: false
-    capabilities: []
+    capabilities: [
+      {
+        name: 'EnableNoSQLVectorSearch'
+      }
+    ]
     cors: []
     disableLocalAuth: false
     enableAnalyticalStorage: false
@@ -235,7 +264,7 @@ resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' 
   }
 }
 
-resource cosmosContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = [
+resource cosmosContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2024-12-01-preview' = [
   for c in containers: if (c.defaultTtl == null) {
     name: c.name
     parent: database
@@ -284,8 +313,8 @@ resource cosmosContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/con
   }
 ]
 
-resource cosmosContainerWithTtl 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = [
-  for c in containers: if (c.defaultTtl != null) {
+resource cosmosContainerWithTtl 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2024-12-01-preview' = [
+  for c in containers: if (c.defaultTtl != null && c.?vectorIndexes == null) {
     name: c.name
     parent: database
 
@@ -325,6 +354,61 @@ resource cosmosContainerWithTtl 'Microsoft.DocumentDB/databaseAccounts/sqlDataba
         uniqueKeyPolicy: {
           uniqueKeys: []
         }
+
+        conflictResolutionPolicy: {
+          conflictResolutionPath: '/_ts'
+          mode: 'LastWriterWins'
+        }
+      }
+    }
+  }
+]
+
+resource cosmosContainerWithVecIdx 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2024-12-01-preview' = [
+  for c in containers: if (c.?vectorIndexes != null) {
+    name: c.name
+    parent: database
+
+    properties: {
+      options: {
+        autoscaleSettings: {
+          maxThroughput: 1000
+        }
+      }
+      resource: {
+        id: c.name
+        indexingPolicy: {
+          indexingMode: 'consistent'
+          automatic: true
+
+          excludedPaths: [
+            {
+              path: '/"_etag"/?'
+            }
+          ]
+
+          includedPaths: [
+            {
+              path: '/*'
+            }
+          ]
+
+          vectorIndexes: c.?vectorIndexes
+        }
+
+        partitionKey: {
+          kind: 'Hash'
+          paths: c.partitionKey.paths
+          version: 2
+        }
+
+        defaultTtl: c.?defaultTtl
+
+        uniqueKeyPolicy: {
+          uniqueKeys: []
+        }
+
+        vectorEmbeddingPolicy: c.?vectorEmbeddingPolicy
 
         conflictResolutionPolicy: {
           conflictResolutionPath: '/_ts'

@@ -61,6 +61,21 @@ export type AgentTool = {
 	properties: { [key: string]: any };
 };
 
+export type AgentWorkflow = {
+	type: string;
+	assistant_id: string;
+	name: string;
+	package_name: string;
+	workflow_host: string;
+	properties: Object;
+	resource_object_ids: {
+		[key: string]: {
+			object_id: string;
+			properties: Object;
+		};
+	};
+};
+
 export type Agent = ResourceBase & {
 	type: 'knowledge-management' | 'analytics';
 	inline_context: boolean;
@@ -71,6 +86,7 @@ export type Agent = ResourceBase & {
 	show_file_upload?: boolean;
 
 	ai_model_object_id: string;
+	prompt_object_id: string;
 
 	vectorization: {
 		dedicated_pipeline: boolean;
@@ -84,20 +100,25 @@ export type Agent = ResourceBase & {
 	};
 
 	capabilities: string[];
+	virtual_security_group_id: string | null;
 	tools: AgentTool[];
+	workflow: AgentWorkflow;
 
 	sessions_enabled: boolean;
 	orchestration_settings: {
 		orchestrator: string;
 	};
+
 	conversation_history_settings: {
 		enabled: boolean;
 		max_history: number;
 	};
+
 	gatekeeper_settings: {
 		use_system_setting: boolean;
 		options: string[];
 	};
+
 	language_model: {
 		type: string;
 		provider: string;
@@ -109,7 +130,24 @@ export type Agent = ResourceBase & {
 		version: string;
 		deployment: string;
 	};
-	prompt_object_id: string;
+
+	text_rewrite_settings?: {
+		user_prompt_rewrite_enabled: boolean;
+		user_prompt_rewrite_settings: {
+			user_prompt_rewrite_ai_model_object_id: string;
+			user_prompt_rewrite_prompt_object_id: string;
+			user_prompts_window_size: number;
+		};
+	};
+
+	cache_settings?: {
+		semantic_cache_enabled: boolean;
+		semantic_cache_settings: {
+			embedding_ai_model_object_id: string;
+			embedding_dimensions: number;
+			minimum_similarity_threshold: number;
+		};
+	};
 };
 
 export type AgentAccessToken = ResourceBase & {
@@ -122,11 +160,24 @@ export type Prompt = ResourceBase & {
 	description: string;
 	prefix: string;
 	suffix: string;
+	category: string;
 };
+
+export type Workflow = ResourceBase;
 
 export type AgentDataSource = ResourceBase & {
 	content_source: string;
 	object_id: string;
+};
+
+export type FileToolAssociation = ResourceBase & {
+	file_object_id: string;
+	openai_file_id: string;
+	associated_resource_object_ids: {
+		[key: string]: {
+			properties: { [key: string]: any };
+		};
+	};
 };
 
 export type ExternalOrchestrationService = ResourceBase & {
@@ -134,7 +185,7 @@ export type ExternalOrchestrationService = ResourceBase & {
 	api_url_configuration_name: string;
 	api_key_configuration_name: string;
 	url: string;
-	status_url?: string | null;
+	status_endpoint?: string | null;
 	// The resolved value of the API key configuration reference for displaying in the UI and updating the configuration.
 	resolved_api_key: string;
 };
@@ -223,7 +274,7 @@ export interface AppConfigBase extends ResourceBase {
 
 export interface AppConfig extends AppConfigBase {
 	type: 'appconfiguration-key-value';
-	content_type: '';
+	content_type: string;
 }
 
 export interface AppConfigKeyVault extends AppConfigBase {
@@ -239,11 +290,11 @@ export type AppConfigUnion = AppConfig | AppConfigKeyVault;
 export type AgentIndex = ResourceBase & {
 	indexer: string;
 	settings: {
-		IndexName: string;
-		TopN?: string;
-		Filters?: string;
-		EmbeddingFieldName?: string;
-		TextFieldName?: string;
+		index_name: string;
+		top_n?: string;
+		filters?: string;
+		embedding_field_name?: string;
+		text_field_name?: string;
 	};
 	configuration_references: {
 		APIKey: string;
@@ -260,10 +311,10 @@ export type AgentIndex = ResourceBase & {
 export type TextPartitioningProfile = ResourceBase & {
 	text_splitter: string;
 	settings: {
-		Tokenizer: string;
-		TokenizerEncoder: string;
-		ChunkSizeTokens: string;
-		OverlapSizeTokens: string;
+		tokenizer: string;
+		tokenizer_encoder: string;
+		chunk_size_tokens: string;
+		overlap_size_tokens: string;
 	};
 };
 
@@ -302,33 +353,30 @@ export type CheckNameResponse = {
 export type FilterRequest = {
 	default?: boolean;
 };
-
-export type AgentGatekeeper = {};
-
-export type MockCreateAgentRequest = {
-	type: 'knowledge' | 'analytics';
-	storageSource: number;
-	indexSource: number;
-	processing: {
-		chunkSize: number;
-		overlapSize: number;
-	};
-	trigger: {
-		frequency: 'auto' | 'manual' | 'scheduled';
-	};
-	conversation_history: {
-		enabled: boolean;
-		max_history: number;
-	};
-	gatekeeper: {
-		use_system_setting: boolean;
-		options: {
-			content_safety: number;
-			data_protection: number;
-		};
-	};
-	prompt: string;
-};
+// export type MockCreateAgentRequest = {
+// 	type: 'knowledge' | 'analytics';
+// 	storageSource: number;
+// 	indexSource: number;
+// 	processing: {
+// 		chunkSize: number;
+// 		overlapSize: number;
+// 	};
+// 	trigger: {
+// 		frequency: 'auto' | 'manual' | 'scheduled';
+// 	};
+// 	conversation_history: {
+// 		enabled: boolean;
+// 		max_history: number;
+// 	};
+// 	gatekeeper: {
+// 		use_system_setting: boolean;
+// 		options: {
+// 			content_safety: number;
+// 			data_protection: number;
+// 		};
+// 	};
+// 	prompt: string;
+// };
 
 export type CreateAgentRequest = ResourceBase & {
 	type: 'knowledge-management' | 'analytics';
@@ -340,6 +388,37 @@ export type CreateAgentRequest = ResourceBase & {
 	show_file_upload?: boolean;
 
 	ai_model_object_id: string;
+	prompt_object_id: string;
+
+	vectorization: {
+		dedicated_pipeline: boolean;
+		indexing_profile_object_ids: string[];
+		text_embedding_profile_object_id: string;
+		text_partitioning_profile_object_id: string;
+		data_source_object_id: string;
+		vectorization_data_pipeline_object_id: string;
+		trigger_type: string;
+		trigger_cron_schedule: string;
+	};
+
+	capabilities: string[];
+	tools: AgentTool[];
+	workflow: AgentWorkflow;
+
+	sessions_enabled: boolean;
+	orchestration_settings: {
+		orchestrator: string;
+	};
+
+	conversation_history_settings: {
+		enabled: boolean;
+		max_history: number;
+	};
+
+	gatekeeper_settings: {
+		use_system_setting: boolean;
+		options: string[];
+	};
 
 	language_model: {
 		type: string;
@@ -353,50 +432,51 @@ export type CreateAgentRequest = ResourceBase & {
 		deployment: string;
 	};
 
-	capabilities: string[];
-	tools: AgentTool[];
-
-	vectorization: {
-		dedicated_pipeline: boolean;
-		indexing_profile_object_ids: string[];
-		text_embedding_profile_object_id: string;
-		text_partitioning_profile_object_id: string;
-		data_source_object_id: string;
-		vectorization_data_pipeline_object_id: string;
-		trigger_type: string;
-		trigger_cron_schedule: string;
+	text_rewrite_settings?: {
+		user_prompt_rewrite_enabled: boolean;
+		user_prompt_rewrite_settings: {
+			user_prompt_rewrite_ai_model_object_id: string;
+			user_prompt_rewrite_prompt_object_id: string;
+			user_prompts_window_size: number;
+		};
 	};
 
-	sessions_enabled: boolean;
-	orchestration_settings: {
-		orchestrator: string;
+	cache_settings?: {
+		semantic_cache_enabled: boolean;
+		semantic_cache_settings: {
+			embedding_ai_model_object_id: string;
+			embedding_dimensions: number;
+			minimum_similarity_threshold: number;
+		};
 	};
-	conversation_history_settings: {
-		enabled: boolean;
-		max_history: number;
-	};
-	gatekeeper_settings: {
-		use_system_setting: boolean;
-		options: string[];
-	};
-	prompt_object_id: string;
 };
 
 export type CreatePromptRequest = ResourceBase & {
 	type: 'basic' | 'multipart';
 	prefix: string;
 	suffix: string;
+	category: string;
 };
 
 export type CreateTextPartitioningProfileRequest = ResourceBase & {
 	text_splitter: string;
 	settings: {
-		Tokenizer: string;
-		TokenizerEncoder: string;
-		ChunkSizeTokens: string;
-		OverlapSizeTokens: string;
+		tokenizer: string;
+		tokenizer_encoder: string;
+		chunk_size_tokens: string;
+		overlap_size_tokens: string;
 	};
 };
+
+export type UpdateAgentFileToolAssociationRequest = {
+	agent_file_tool_associations: {
+		[key: string]: {
+			[key: string]: boolean;
+		};
+	};
+};
+
+export type AgentGatekeeper = {};
 
 export type Role = {};
 

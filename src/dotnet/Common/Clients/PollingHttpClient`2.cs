@@ -164,17 +164,23 @@ namespace FoundationaLLM.Common.Clients
                         "Polling for operation id {Operationid} (counter: {PollingCounter}, time elapsed: {PollingSeconds} seconds)...",
                         runningOperation.OperationId,
                         pollingCounter,
-                        (int)totalPollingTime.TotalSeconds);
+                        totalPollingTime.TotalSeconds);
 
                     var operationStatus = await GetOperationStatusAsync(runningOperation.OperationId!, cancellationToken);
 
                     switch (operationStatus.Status)
                     {
                         case OperationStatus.Completed:
+
+                            //may not have gotten the response result set yet...keep going.
+                            if (operationStatus.Result == null)
+                                continue;
+
                             if (operationStatus.Result is JsonElement jsonElement)
                             {
                                 return jsonElement.Deserialize<TResponse>(_jsonSerializerOptions);
                             }
+
                             return default;
                         case OperationStatus.InProgress:
                         case OperationStatus.Pending:

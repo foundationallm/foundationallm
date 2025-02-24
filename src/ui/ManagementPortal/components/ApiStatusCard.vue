@@ -26,7 +26,7 @@
 			</div>
 		</div>
 		<div v-else>This service does not contain a status endpoint.</div>
-		<p><strong>URL:</strong> {{ apiUrl }}</p>
+		<p class="api-status-card__url"><strong>URL:</strong> {{ apiUrl }}</p>
 	</div>
 </template>
 
@@ -41,7 +41,7 @@ export default {
 			type: String,
 			required: true,
 		},
-		statusUrl: {
+		statusEndpoint: {
 			type: [String, null],
 			required: false,
 			default: '',
@@ -65,11 +65,15 @@ export default {
 	methods: {
 		async fetchApiStatus() {
 			this.loading = true;
+			let fullUrl = this.apiUrl;
 			try {
-				if (this.statusUrl) {
-					const response = await $fetch(
-						`/api/api-status?url=${encodeURIComponent(this.statusUrl)}`,
-					);
+				if (this.statusEndpoint) {
+					fullUrl =
+						this.apiUrl +
+						(this.statusEndpoint ? `/${this.statusEndpoint.replace(/^\/+/, '')}` : '');
+					const response = await $fetch(`/api/api-status?url=${encodeURIComponent(fullUrl)}`);
+
+					//const response = await $fetch(fullUrl);
 					if (response.error) {
 						this.error = response.error;
 					} else {
@@ -78,7 +82,7 @@ export default {
 				}
 			} catch (error) {
 				console.error('Error fetching API status:', error);
-				this.error = `Error fetching API status from ${this.statusUrl}`;
+				this.error = `Error fetching API status from ${fullUrl}`;
 			} finally {
 				this.loading = false;
 			}
@@ -89,6 +93,7 @@ export default {
 
 <style scoped>
 .api-status-card {
+	max-width: 100%;
 	border: 1px solid #ddd;
 	border-radius: 8px;
 	padding: 1.5em;
@@ -150,5 +155,19 @@ export default {
 .api-status-card .subordinate-services ul li {
 	margin-bottom: 1em;
 	list-style-type: disc;
+}
+
+.api-status-card .api-status-card__url {
+	word-break: break-all;
+}
+
+@media (max-width: 600px) {
+	.api-status-card h2 {
+		font-size: 1.2em;
+	}
+
+	.error {
+		word-break: break-all;
+	}
 }
 </style>

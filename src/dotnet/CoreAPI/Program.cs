@@ -32,7 +32,7 @@ namespace FoundationaLLM.Core.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            DefaultAuthentication.Initialize(
+            ServiceContext.Initialize(
                 builder.Environment.IsProduction(),
                 ServiceNames.CoreAPI);
 
@@ -44,10 +44,12 @@ namespace FoundationaLLM.Core.API
                 options.Connect(builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]);
                 options.ConfigureKeyVault(options =>
                 {
-                    options.SetCredential(DefaultAuthentication.AzureCredential);
+                    options.SetCredential(ServiceContext.AzureCredential);
                 });
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
+
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Branding);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra);
@@ -95,8 +97,12 @@ namespace FoundationaLLM.Core.API
                 builder.Configuration,
                 AppConfigurationKeySections.FoundationaLLM_Events_Profiles_CoreAPI);
 
-            // Add resource providers
+            //----------------------------
+            // Resource providers
+            //----------------------------
+            builder.AddResourceProviderCacheSettings();
             builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactory>();
+
             builder.AddAgentResourceProvider();
             builder.AddAttachmentResourceProvider();
             builder.AddConfigurationResourceProvider();

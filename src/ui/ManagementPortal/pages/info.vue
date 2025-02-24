@@ -8,9 +8,9 @@
 			<ApiStatusCard
 				v-for="api in apiUrls"
 				:key="api.name"
-				:api-name="api.displayName"
+				:api-name="api.display_name"
 				:api-url="api.url"
-				:status-url="api.statusUrl"
+				:status-endpoint="api.status_endpoint"
 				:description="api.description"
 			/>
 		</div>
@@ -22,7 +22,7 @@
 				:key="api.name"
 				:api-name="api.name"
 				:api-url="api.url"
-				:status-url="api.status_url"
+				:status-endpoint="api.status_endpoint"
 				:description="api.description"
 			/>
 		</div>
@@ -60,35 +60,35 @@ export default {
 			this.apiUrls = [
 				{
 					name: 'coreApiUrl',
-					displayName: 'Core API',
+					display_name: 'Core API',
 					description:
 						'The Core API is the main user-based API for the FoundationaLLM platform. It is accessed by the User Portal.',
 					url: this.$appConfigStore.coreApiUrl,
-					statusUrl: `${this.$appConfigStore.coreApiUrl}${instancePart}/status`,
+					status_endpoint: `/${instancePart}/status`,
 				},
 				{
 					name: 'apiUrl',
-					displayName: 'Management API',
+					display_name: 'Management API',
 					description:
 						'The Management API is used by the Management Portal to manage the FoundationaLLM platform.',
 					url: this.$appConfigStore.apiUrl,
-					statusUrl: `${this.$appConfigStore.apiUrl}${instancePart}/status`,
+					status_endpoint: `/${instancePart}/status`,
 				},
 				{
 					name: 'authorizationApiUrl',
-					displayName: 'Authorization API',
+					display_name: 'Authorization API',
 					description:
 						'The Authorization API manages role-based access control (RBAC) and other auth-related functions for the FoundationaLLM platform.',
 					url: this.$appConfigStore.authorizationApiUrl,
-					statusUrl: `${this.$appConfigStore.authorizationApiUrl}/status`,
+					status_endpoint: `/status`,
 				},
 				{
 					name: 'stateApiUrl',
-					displayName: 'State API',
+					display_name: 'State API',
 					description:
 						'The State API manages background task and long-running operation state information for the FoundationaLLM platform.',
 					url: this.$appConfigStore.stateApiUrl,
-					statusUrl: `${this.$appConfigStore.stateApiUrl}/status`,
+					status_endpoint: `/status`,
 				},
 			] as Array<any>;
 

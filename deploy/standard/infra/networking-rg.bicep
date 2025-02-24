@@ -51,6 +51,7 @@ var subnets = [
   {
     name: 'aks-backend'
     addressPrefix: backendAksSubnetCidr
+    privateLinkServiceNetworkPolicies: 'Disabled'
     inbound: [
       {
         access: 'Allow'
@@ -73,6 +74,7 @@ var subnets = [
   {
     name: 'aks-frontend'
     addressPrefix: frontendAksSubnetCidr
+    privateLinkServiceNetworkPolicies: 'Disabled'
     inbound: [
       {
         access: 'Allow'
@@ -95,6 +97,7 @@ var subnets = [
   {
     name: 'openai'
     addressPrefix: openAiSubnetCidr
+    privateLinkServiceNetworkPolicies: 'Enabled'
     rules: {
       inbound: [
         {
@@ -213,6 +216,7 @@ var subnets = [
   {
     name: 'services'
     addressPrefix: servicesSubnetCidr
+    privateLinkServiceNetworkPolicies: 'Enabled'
     rules: {
       inbound: [
         {
@@ -257,6 +261,7 @@ var subnets = [
   {
     name: 'storage'
     addressPrefix: storageSubnetCidr
+    privateLinkServiceNetworkPolicies: 'Enabled'
     rules: {
       inbound: [
         {
@@ -324,6 +329,7 @@ var subnets = [
   {
     name: 'ops' // TODO: PLEs.  Maybe put these in services?
     addressPrefix: opsSubnetCidr
+    privateLinkServiceNetworkPolicies: 'Enabled'
     rules: {
       inbound: [
         {
@@ -381,6 +387,7 @@ var subnets = [
   {
     name: 'vectorization'
     addressPrefix: vectorizationSubnetCidr
+    privateLinkServiceNetworkPolicies: 'Enabled'
     rules: {
       inbound: [
         {
@@ -438,6 +445,7 @@ var subnets = [
   {
     name: 'auth'
     addressPrefix: authSubnetCidr
+    privateLinkServiceNetworkPolicies: 'Enabled'
     rules: {
       inbound: [
         {
@@ -532,7 +540,7 @@ resource main 'Microsoft.Network/virtualNetworks@2023-05-01' = {
         properties: {
           addressPrefix: subnet.addressPrefix
           privateEndpointNetworkPolicies: 'Enabled'
-          privateLinkServiceNetworkPolicies: 'Enabled'
+          privateLinkServiceNetworkPolicies: 'Disabled'
           serviceEndpoints: subnet.?serviceEndpoints
           delegations: subnet.?delegations
 

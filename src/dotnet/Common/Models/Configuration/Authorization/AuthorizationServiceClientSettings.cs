@@ -1,9 +1,11 @@
-﻿namespace FoundationaLLM.Common.Models.Configuration.Authorization
+﻿using FoundationaLLM.Common.Models.Cache;
+
+namespace FoundationaLLM.Common.Models.Configuration.Authorization
 {
     /// <summary>
     /// Authorization service client settings
     /// </summary>
-    public record AuthorizationServiceClientSettings
+    public record AuthorizationServiceClientSettings : CacheSettings
     {
         /// <summary>
         /// Provides the API URL of the Authorization service.
@@ -14,10 +16,5 @@
         /// Provides the API scope of the Authorization service.
         /// </summary>
         public required string APIScope { get; set; }
-
-        /// <summary>
-        /// Indicates whether to use caching in the Authorization service client.
-        /// </summary>
-        public bool EnableCache { get; set; } = false;
     }
 }

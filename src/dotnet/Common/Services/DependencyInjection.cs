@@ -204,7 +204,7 @@ namespace FoundationaLLM
             {
                 var keyVaultUri = builder.Configuration[keyVaultUriConfigurationKeyName];
                 clientBuilder.AddSecretClient(new Uri(keyVaultUri!))
-                    .WithCredential(DefaultAuthentication.AzureCredential);
+                    .WithCredential(ServiceContext.AzureCredential);
             });
 
             // Configure logging to filter out Azure Core and Azure Key Vault informational logs.
@@ -285,7 +285,7 @@ namespace FoundationaLLM
             services.AddSingleton<CosmosClient>(serviceProvider =>
             {
                 var settings = serviceProvider.GetRequiredService<IOptions<CosmosDbSettings>>().Value;
-                return new CosmosClientBuilder(settings.Endpoint, DefaultAuthentication.AzureCredential)
+                return new CosmosClientBuilder(settings.Endpoint, ServiceContext.AzureCredential)
                     .WithSerializerOptions(new CosmosSerializationOptions
                     {
                         PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase

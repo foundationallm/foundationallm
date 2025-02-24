@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Configuration.Services;
@@ -38,6 +39,7 @@ namespace FoundationaLLM
             builder.Services.AddSingleton<IResourceProviderService, ConfigurationResourceProviderService>(sp =>
                 new ConfigurationResourceProviderService(
                     sp.GetRequiredService<IOptions<InstanceSettings>>(),
+                    sp.GetRequiredService<IOptions<ResourceProviderCacheSettings>>(),
                     sp.GetRequiredService<IAuthorizationServiceClient>(),
                     sp.GetRequiredService<IEnumerable<IStorageService>>()
                         .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Configuration),

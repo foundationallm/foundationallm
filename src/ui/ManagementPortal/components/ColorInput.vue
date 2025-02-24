@@ -79,16 +79,28 @@ export default {
 }
 
 .branding-color-input {
-	width: 30ch;
+	max-width: 30ch;
+	height: 44px;
+	padding-right: 12px;
 }
 
 .color-picker {
 	width: 50px;
+	height: 44px;
 }
 
 .color-undo-button {
 	border: 2px solid #e1e1e1 !important;
 	border-width: 2px 2px 2px 0 !important;
 	width: 50px;
+	height: 44px;
+}
+</style>
+
+<style lang="scss">
+.color-picker > input {
+	border-radius: 0px !important;
+	padding: 20.4px 30px 20.4px 12px !important;
+	border-left: 0 !important;
 }
 </style>

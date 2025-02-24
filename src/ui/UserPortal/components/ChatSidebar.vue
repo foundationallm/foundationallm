@@ -30,6 +30,7 @@
 					text
 					severity="secondary"
 					class="chat-sidebar__button"
+					style="color: var(--primary-text) !important"
 					aria-label="Add new chat"
 					:disabled="createProcessing"
 					@click="handleAddSession"
@@ -52,9 +53,15 @@
 						@click="handleSessionSelected(session)"
 						@keydown.enter="handleSessionSelected(session)"
 					>
-						<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
+						<div
+							class="chat"
+							:class="{
+								'chat--selected': currentSession?.id === session.id,
+								'chat--editing': session?.id === sessionToRename?.id,
+								'chat--deleting': session?.id === sessionToDelete?.id,
+							}"
+						>
 							<!-- Chat name -->
-
 							<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 								<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{
 									session.display_name
@@ -67,7 +74,7 @@
 							</VTooltip>
 
 							<!-- Chat icons -->
-							<span v-if="currentSession?.id === session.id" class="chat__icons">
+							<span class="chat__icons">
 								<!-- Rename session -->
 								<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 									<Button
@@ -76,6 +83,7 @@
 										severity="secondary"
 										text
 										class="chat-sidebar__button"
+										style="color: var(--primary-text) !important"
 										aria-label="Rename chat session"
 										@click.stop="openRenameModal(session)"
 										@keydown.esc="hideAllPoppers"
@@ -91,6 +99,7 @@
 										severity="danger"
 										text
 										class="chat-sidebar__button"
+										style="color: var(--primary-text) !important"
 										aria-label="Delete chat session"
 										@click.stop="sessionToDelete = session"
 										@keydown.esc="hideAllPoppers"
@@ -329,11 +338,11 @@ export default {
 			if (this.createProcessing) return;
 
 			if (this.debounceTimeout) {
-				this.$toast.add({
+				this.$appStore.addToast({
 					severity: 'warn',
 					summary: 'Warning',
 					detail: 'Please wait before creating another session.',
-					life: this.$appStore.autoHideToasts ? 3000 : null,
+					life: 3000,
 				});
 				return;
 			}
@@ -348,11 +357,10 @@ export default {
 					this.debounceTimeout = null;
 				}, 2000);
 			} catch (error) {
-				this.$toast.add({
+				this.$appStore.addToast({
 					severity: 'error',
 					summary: 'Error',
 					detail: 'Could not create a new session. Please try again.',
-					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 			} finally {
 				this.createProcessing = false; // Re-enable the button
@@ -370,11 +378,10 @@ export default {
 				await this.$appStore.deleteSession(this.sessionToDelete!);
 				this.sessionToDelete = null;
 			} catch (error) {
-				this.$toast.add({
+				this.$appStore.addToast({
 					severity: 'error',
 					summary: 'Error',
 					detail: 'Could not delete the session. Please try again.',
-					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 			} finally {
 				this.deleteProcessing = false;
@@ -471,6 +478,13 @@ export default {
 	font-size: 13px;
 	font-size: 0.8125rem;
 	height: 72px;
+
+	&:hover {
+		.chat__icons {
+			display: flex;
+			opacity: 1;
+		}
+	}
 }
 
 .chat__name {
@@ -482,8 +496,12 @@ export default {
 }
 
 .chat__icons {
-	display: flex;
+	display: none;
 	justify-content: space-between;
+	opacity: 0;
+	flex-shrink: 0;
+	margin-left: 12px;
+	transition: all 0.1s ease-in-out;
 }
 
 .chat:hover {
@@ -494,10 +512,41 @@ export default {
 	color: var(--secondary-text);
 	background-color: var(--secondary-color);
 	border-left: 4px solid rgba(217, 217, 217, 0.5);
+
+	.chat__icons {
+		display: flex;
+		opacity: 1;
+	}
 }
 
 .chat--selected .option {
 	background-color: rgba(245, 245, 245, 1);
+}
+
+@mixin blink-background($startColor, $endColor, $duration: 2s, $iterations: infinite) {
+	$animation-name: blink-background-#{random(1000)};
+
+	@keyframes #{$animation-name} {
+		0% {
+			background-color: $startColor;
+		}
+		40% {
+			background-color: $endColor;
+		}
+		100% {
+			background-color: $startColor;
+		}
+	}
+
+	animation: $animation-name ease-out $duration $iterations;
+}
+
+.chat--editing {
+	@include blink-background(transparent, var(--secondary-color));
+}
+
+.chat--deleting {
+	@include blink-background(transparent, var(--red-600));
 }
 
 .option {
@@ -519,11 +568,6 @@ export default {
 	cursor: pointer;
 }
 
-.chat__icons {
-	flex-shrink: 0;
-	margin-left: 12px;
-}
-
 .chat-sidebar__account {
 	display: grid;
 	grid-template-columns: min-content auto;
@@ -542,10 +586,6 @@ export default {
 
 .chat-sidebar__sign-out {
 	width: 100%;
-}
-
-.chat-sidebar__button {
-	color: var(--primary-text) !important;
 }
 
 .p-button-text.sidebar-dialog__button:focus {

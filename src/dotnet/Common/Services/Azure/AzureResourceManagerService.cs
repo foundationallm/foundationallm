@@ -20,7 +20,7 @@ namespace FoundationaLLM.Common.Services.Azure
     public class AzureResourceManagerService(
         ILogger<AzureResourceManagerService> logger) : IAzureResourceManagerService
     {
-        private readonly ArmClient _armClient = new(DefaultAuthentication.AzureCredential);
+        private readonly ArmClient _armClient = new(ServiceContext.AzureCredential);
         private readonly ILogger<AzureResourceManagerService> _logger = logger;
 
         /// <inheritdoc/>

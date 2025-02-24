@@ -3,6 +3,261 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting with 0.9.4-rc100
+
+### Configuration changes
+
+## App configuration settings
+
+>[!IMPORTANT]
+> The App Config setting `FoundationaLLM:Instance:EnableResourceProvidersCache` is obsolete and should be removed from the App Config settings.
+
+The following App Config properties make cache settings for the resource providers configurable:
+
+| Name | Description | Default Value  |
+|---|---|---|
+| `FoundationaLLM:ResourceProvidersCache:EnableCache` | Indicates whether resource providers should cache resources or not.| `true` |
+| `FoundationaLLM:ResourceProvidersCache:AbsoluteCacheExpirationSeconds` | Absolute cache expiration in seconds.| 300 |
+| `FoundationaLLM:ResourceProvidersCache:SlidingCacheExpirationSeconds` | Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set). | 120 |
+| `FoundationaLLM:ResourceProvidersCache:CacheSizeLimit` | The maximum number of items that can be stored in the cache. | 10000 |
+| `FoundationaLLM:ResourceProvidersCache:CacheExpirationScanFrequencySeconds` | Gets or sets the minimum length of time between successive scans for expired items in seconds. | 30 |
+
+## Starting with 0.9.3-rc016
+
+### Configuration Resource Provider
+
+The `APIEnpointConfiguration` class has been updated to change the previous `StatusUrl` property to `StatusEndpoint`, which is a relative path to the status endpoint. By extension, the related JSON files now have a `status_endpoint` property that contains the relative path. Here is the OrchestrationAPI JSON template as an example of this change:
+
+```json
+{
+    "type": "api-endpoint",
+    "name": "OrchestrationAPI",
+    "object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/OrchestrationAPI",
+    "display_name": null,
+    "description": null,
+    "cost_center": null,
+    "category": "General",
+    "authentication_type": "APIKey",
+    "authentication_parameters": {
+        "api_key_configuration_name": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Essentials:APIKey",
+        "api_key_header_name": "X-API-KEY"
+    },
+    "url": "http://orchestration-api.{{serviceNamespaceName}}.svc.cluster.local",
+    "status_endpoint": "/instances/{{instanceId}}/status",
+    "url_exceptions": [],
+    "timeout_seconds": 2400,
+    "retry_strategy_name": "ExponentialBackoff",
+    "created_on": "0001-01-01T00:00:00+00:00",
+    "updated_on": "0001-01-01T00:00:00+00:00",
+    "created_by": null,
+    "updated_by": "SYSTEM",
+    "deleted": false
+}
+```
+
+The status path is used by the Management Portal's Deployment Information page to show the status of each of the APIs. This path is also used by the `/Orchestration/Services/LangChainService` and `/Orchestration/Services/SemanticKernelService` classes to check the status of the respective APIs.
+
+> [!IMPORTANT]
+> All files within the `/resource-provider/FoundationaLLM.Configuration` directory must be updated to change the name of the `status_url` field to `status_endpoint` and change the value to a relative path as needed.
+
+### Vectorization resource provider changes
+
+Vectorization indexing and partitioning profile settings dictionary keys are now persisted as snake case (ex. `IndexName` becomes `index_name`).
+
+### Agent resource provider changes
+
+#### Deployment notes
+
+1. Ensure the feature flag is enabled for `FoundationaLLM.Agent.PrivateStore` if using the private store feature on OpenAI Assistants workflow agents is desired.
+2. Open existing `OpenAIAssistantsWorkflow` agents in the Management portal and select `Save` to populate the global vector store in the OpenAI service for the assistant.
+
+#### Agent file resources
+
+The agent file references are now stored in a new Cosmos DB container, while the file contents are stored in the storage account. 
+Here are the configuration parameters for the required Cosmos DB container:
+
+Name | Value
+--- | ---
+Name | `Agents`
+Maximum RU/s | 4000
+Hierarchical Partition key | `/instanceId` + `/agentName`
+
+As a result of the migration, the newly created `Agents` container will initially contain only ony type of times: `AgentFileReference`.
+
+This is an example of such item:
+
+```json
+{
+    "instanceId": "8ac6074c-bdde-43cb-a140-ec0002d96d2b",
+    "agentName": "TestAgentFiles1",
+    "originalFilename": "curious_cat_story.pdf",
+    "contentType": "application/pdf",
+    "size": 2433,
+    "upn": "andrei@foundationaLLM.ai",
+    "id": "af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf",
+    "objectId": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/agents/TestAgentFiles1/agentFiles/af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf",
+    "name": "af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf",
+    "filename": "/FoundationaLLM.Agent/8ac6074c-bdde-43cb-a140-ec0002d96d2b/TestAgentFiles1/private-file-store/af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf.pdf",
+    "type": "agent-file",
+    "deleted": false,
+    "_rid": "ie9IAMu0+b0EAAAAAAAAAA==",
+    "_self": "dbs/ie9IAA==/colls/ie9IAMu0+b0=/docs/ie9IAMu0+b0EAAAAAAAAAA==/",
+    "_etag": "\"37012abc-0000-0200-0000-67afaa800000\"",
+    "_attachments": "attachments/",
+    "_ts": 1739565696
+}
+```
+
+The `agent-file` type has been removed and the references are no longer saved in the agent reference store `_resource-references.json`.
+
+### Tools
+
+In the agent resource provider storage folder (`resource-provider/FoundationaLLM.Agent`), add a `tool` resource reference entry (`_resource_references.json`) as well as configuration file for the following tools: `OpenAIAssistantsFileSearch`, `OpenAIAssistantsCodeInterpreter`, `DALLEImageGeneration`, and `FoundationaLLMContentSearchTool`.
+
+Reference example:
+
+```json
+{
+    "Name": "OpenAIAssistantsFileSearch",
+    "Filename": "/FoundationaLLM.Agent/OpenAIAssistantsFileSearch.json",
+    "Type": "tool",
+    "Deleted": false
+}
+```
+
+File example:
+
+```json
+{
+  "type": "tool",
+  "name": "OpenAIAssistantsFileSearch",
+  "object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch",
+  "display_name": "OpenAIAssistantsFileSearch",
+  "description": "OpenAIAssistantsFileSearch",
+  "cost_center": null,
+  "properties": null,
+  "created_on": "2025-01-10T08:22:34.2682433+00:00",
+  "updated_on": "0001-01-01T00:00:00+00:00",
+  "created_by": "dev@foundationaLLM.ai",
+  "updated_by": null,
+  "deleted": false,
+  "expiration_date": null
+}
+```
+
+## Starting with 0.9.3-rc010
+
+### Resource provider cache warm-up
+
+Resource providers now support a cache warm-up mechanism. This mechanism allows the cache to be pre-populated with the resource provider data before the service starts processing requests. This feature is useful when the service is deployed in a cold environment and needs to be warmed up before it can handle requests.
+
+The cache warm-up mechanism is enabled when a file named `_cache_warmup.json` exists in the blob storage location associated with the resource provider. Here is an example of such a file:
+
+```json
+[
+	{
+		"ServiceName": "OrchestrationAPI",
+		"Description": "Resources required by: service principal x, service principal y.",
+		"ResourceObjectIds": [
+			"/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/GatewayAPI",
+			"/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch",
+			"/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/LangChainAPI",
+			"/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/StateAPI"
+		],
+		"SecurityPrincipalIds": [
+			"4150c6b3-...",
+			"949195b1-..."
+		]
+	},
+	{
+		"ServiceName": "OrchestrationAPI",
+		"Description": "Resources required by: service principal x, service principal y, service principal z.",
+		"ResourceObjectIds": [
+			"/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI"
+		],
+		"SecurityPrincipalIds": [
+			"4150c6b3-...",
+			"949195b1-...",
+			"d6a6317a-..."
+		]
+	}
+]
+```
+The configuration contains an array of objects, each representing a cache warm-up configuration. Each object contains the following properties:
+
+- `ServiceName` - The name of the service that the cache warm-up configuration is for.
+- `Description` - A description of the cache warm-up configuration.
+- `ResourceObjectIds` - The list of resource object identifiers that will be pre-loaded into the resource provider cache.
+
+    >[!NOTE]
+    > The resource object identifiers must be specific to the resource provider.
+
+- `SecurityPrincipalIds` - The list of security principal identifiers that will be used to authenticate the cache warm-up requests.
+
+    >[!IMPORTANT]
+    > As a result of the cache warm-up process, the client authorization cache will be populated with all combinations of security principal and resource object identifiers that exist in the cache warm-up configuration. Make sure the two lists only contain the necessary values to avoid a long startup time for the resource provider.
+
+## Starting with 0.9.3-rc002
+
+## App configuration settings
+
+The following App Config properties make cache settings for the `AuthorizationServiceClientCacheService` configurable:
+
+| Name                              | Description                                                                                                                   | Default Value  |
+|-----------------------------------|-------------------------------------------------------------------------------------------------------------------------------|--------|
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:EnableCache`    | Indicates whether calls to the Authorization API should be cached or not.                                                                                         | `false`    |
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:AbsoluteCacheExpirationSeconds`    | Absolute cache expiration in seconds.                                                                                         | 300    |
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:SlidingCacheExpirationSeconds`     | Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set). | 120    |
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheSizeLimit`                    | The maximum number of items that can be stored in the cache.                                                                   | 10000  |
+| `FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheExpirationScanFrequencySeconds` | Gets or sets the minimum length of time between successive scans for expired items in seconds.                                | 30     |
+
+## Starting with 0.9.2-rc005
+
+### Agent configuration changes
+
+Starting with this version, all agents MUST transition to the agent workflow configuraiton approach.
+
+The following agent properties are no longer supported and should be deleted as part of upgrading to this version:
+
+- `OrchestrationSettings` - fully replaced by the agent worflow settings.
+- `PromptObjectId` - replaced by the agent workflow resource object identifier with an `object_role` of `main_prompt`.
+- `AIModelObjectId` - replaced by the agent workflow resource object identifier with an `object_role` of `main_model`.
+- `Capabilities` - removed. The equivalent of having Azure OpenAI Assistants capabilities is having an agent workflow with the type `azure-openai-assistants-workflow`.
+- `Azure.OpenAI.Assistant.Id` property in `properties` - replaced by the `assistant_id` property of an agent workflow witht the type `azure-openai-assistants-workflow`.
+
+>[!IMPORTANT]
+>If the `Azure.OpenAI.Assistant.Id` property is set in the agent properties, it's value must be copied to the `assistant_id` property of the agent workflow.
+
+Here is an example of a fully configured worfklow section for an agent:
+
+```json
+{
+    "type": "azure-openai-assistants-workflow",
+		"name": "OpenAIAssistants",
+		"package_name": "FoundationaLLM",
+    "assistant_id": "asst_...",
+    "resource_object_ids": {
+        "/instances/.../providers/FoundationaLLM.Agent/workflows/OpenAIAssistants": {
+            "object_id": "/instances/.../providers/FoundationaLLM.Agent/workflows/OpenAIAssistants",
+            "properties": {}
+        },
+        "/instances/.../providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel" : {
+            "object_id": "/instances/.../providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel",
+            "properties": {
+                "object_role": "main_model",
+                "model_parameters": {}
+            }
+        },
+        "/instances/.../providers/FoundationaLLM.Prompt/prompts/FoundationaLLM-mini": {
+            "object_id": "/instances/.../providers/FoundationaLLM.Prompt/prompts/FoundationaLLM-mini",
+            "properties": {
+                "object_role": "main_prompt"
+            }
+        }
+    }
+}
+```
+
 ## Starting from 0.9.2
 
 ### Configuration changes

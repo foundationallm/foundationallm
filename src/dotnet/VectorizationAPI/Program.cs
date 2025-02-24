@@ -31,7 +31,7 @@ using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-DefaultAuthentication.Initialize(
+ServiceContext.Initialize(
     builder.Environment.IsProduction(),
     ServiceNames.VectorizationAPI);
 
@@ -43,10 +43,12 @@ builder.Configuration.AddAzureAppConfiguration(options =>
     options.Connect(builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]);
     options.ConfigureKeyVault(options =>
     {
-        options.SetCredential(DefaultAuthentication.AzureCredential);
+        options.SetCredential(ServiceContext.AzureCredential);
     });
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
+
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Vectorization_Queues);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Vectorization_Steps);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Vectorization_StateService_Storage);
@@ -150,7 +152,11 @@ builder.Services.AddSingleton<IVectorizationRequestProcessor, LocalVectorization
 // Resource validation
 builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactory>();
 
+//----------------------------
 // Resource providers
+//----------------------------
+builder.AddResourceProviderCacheSettings();
+
 builder.AddConfigurationResourceProvider();
 builder.AddDataSourceResourceProvider();
 builder.AddVectorizationResourceProvider();

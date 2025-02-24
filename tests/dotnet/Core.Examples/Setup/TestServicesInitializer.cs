@@ -65,11 +65,11 @@ namespace FoundationaLLM.Core.Examples.Setup
             var instanceId = configuration.GetValue<string>(AppConfigurationKeys.FoundationaLLM_Instance_Id);
             services.AddCoreClient(
                 configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!,
-                DefaultAuthentication.AzureCredential!,
+                ServiceContext.AzureCredential!,
                 instanceId);
             services.AddManagementClient(
                 configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_ManagementAPI_Essentials_APIUrl]!,
-                DefaultAuthentication.AzureCredential!,
+                ServiceContext.AzureCredential!,
                 instanceId);
         }
 
@@ -81,7 +81,7 @@ namespace FoundationaLLM.Core.Examples.Setup
 			services.AddSingleton<CosmosClient>(serviceProvider =>
 			{
 				var settings = serviceProvider.GetRequiredService<IOptions<CosmosDbSettings>>().Value;
-				return new CosmosClientBuilder(settings.Endpoint, DefaultAuthentication.AzureCredential)
+				return new CosmosClientBuilder(settings.Endpoint, ServiceContext.AzureCredential)
 					.WithSerializerOptions(new CosmosSerializationOptions
 					{
 						PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase

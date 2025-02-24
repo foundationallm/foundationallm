@@ -3,14 +3,14 @@ Class: FoundationaLLMWorkflowBase
 Description: FoundationaLLM base class for tools that uses the agent workflow model for its configuration.
 """
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Optional
 
 from azure.identity import DefaultAzureCredential
 
 from langchain_core.messages import BaseMessage
 
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.models.agents import AgentTool, ExternalAgentWorkflow
+from foundationallm.models.agents import ExternalAgentWorkflow
 from foundationallm.models.orchestration import CompletionResponse
 from foundationallm.telemetry import Telemetry
 
@@ -54,7 +54,8 @@ class FoundationaLLMWorkflowBase(ABC):
     @abstractmethod
     async def invoke_async(self,
                            operation_id: str,
-                           user_prompt:str,
+                           user_prompt: str,
+                           user_prompt_rewrite: Optional[str],
                            message_history: List[BaseMessage])-> CompletionResponse:
         """
         Invokes the workflow asynchronously.

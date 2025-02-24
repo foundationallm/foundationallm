@@ -12,5 +12,10 @@ namespace FoundationaLLM.Common.Telemetry
         /// The activity source for the Core API.
         /// </summary>
         public static readonly ActivitySource CoreAPIActivitySource = new (ServiceNames.CoreAPI);
+
+        /// <summary>
+        /// The activity source for the Orchestration API.
+        /// </summary>
+        public static readonly ActivitySource OrchestrationAPIActivitySource = new(ServiceNames.OrchestrationAPI);
     }
 }

@@ -108,6 +108,7 @@
 <script lang="ts">
 import { hideAllPoppers } from 'floating-vue';
 import eventBus from '@/js/eventBus';
+import { isAgentExpired } from '@/js/helpers';
 import type { Session } from '@/js/types';
 
 interface AgentDropdownOption {
@@ -167,9 +168,14 @@ export default {
 			},
 			deep: true,
 		},
+		'$appStore.lastSelectedAgent': {
+			handler() {
+				this.setAgentOptions();
+				this.updateAgentSelection();
+			},
+			deep: true,
+		},
 	},
-
-	async created() {},
 
 	mounted() {
 		this.updateAgentSelection();
@@ -177,15 +183,16 @@ export default {
 
 	methods: {
 		handleAgentChange() {
+			if (isAgentExpired(this.agentSelection!.value)) return;
+
 			this.$appStore.setSessionAgent(this.currentSession, this.agentSelection!.value);
 			const message = this.agentSelection!.value
 				? `Agent changed to ${this.agentSelection!.label}`
 				: `Cleared agent hint selection`;
 
-			this.$toast.add({
+			this.$appStore.addToast({
 				severity: 'success',
 				detail: message,
-				life: this.$appStore.autoHideToasts ? 5000 : null,
 			});
 
 			if (this.$appStore.currentMessages?.length > 0) {
@@ -201,11 +208,18 @@ export default {
 
 		handlePrint() {
 			window.print();
-    },
+    	},
     
 		async setAgentOptions() {
-			this.agentOptions = this.$appStore.agents.map((agent) => ({
-				label: agent.resource.name,
+			const isCurrentAgent = (agent): boolean  => {
+				return agent.resource.name === this.$appStore.getSessionAgent(this.currentSession)?.resource?.name;
+			}
+
+			// Filter out expired agents, but keep the currently selected agent even if it is expired
+			const notExpiredOrCurrentAgents = this.$appStore.agents.filter((agent) => !isAgentExpired(agent) || isCurrentAgent(agent));
+
+			this.agentOptions = notExpiredOrCurrentAgents.map((agent) => ({
+				label: agent.resource.display_name ? agent.resource.display_name : agent.resource.name,
 				type: agent.resource.type,
 				object_id: agent.resource.object_id,
 				description: agent.resource.description,
@@ -231,6 +245,7 @@ export default {
 			];
 			this.virtualUser = await this.$appStore.getVirtualUser();
 
+			this.agentOptionsGroup = [];
 			this.agentOptionsGroup.push({
 				label: '',
 				items: [
@@ -270,19 +285,23 @@ export default {
 		// 	const chatLink = `${window.location.origin}?chat=${this.currentSession!.id}`;
 		// 	navigator.clipboard.writeText(chatLink);
 
-		// 	this.$toast.add({
+		// 	this.$appStore.addToast({
 		// 		severity: 'success',
 		// 		detail: 'Chat link copied!',
-		// 		life: 5000,
 		// 	});
 		// },
 
 		updateAgentSelection() {
 			const agent = this.$appStore.getSessionAgent(this.currentSession);
+
 			this.agentSelection =
 				this.agentOptions.find(
 					(option) => option.value.resource.object_id === agent.resource.object_id,
 				) || null;
+
+			if (this.agentSelection) {
+				this.$appStore.setSessionAgent(this.currentSession, this.agentSelection.value);
+			}
 		},
 
 		hideAllPoppers() {

@@ -90,7 +90,7 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                     foreach (var activePipeline in activePipelines)
                     {
                         //deactivate the pipeline bing processed.
-                        await vectorizationResourceProvider.TogglePipelineActivation(activePipeline.ObjectId!, false, DefaultAuthentication.ServiceIdentity!);
+                        await vectorizationResourceProvider.TogglePipelineActivation(activePipeline.ObjectId!, false, ServiceContext.ServiceIdentity!);
 
                         // initialize pipeline execution state
                         var pipelineExecutionId = Guid.NewGuid().ToString();
@@ -113,22 +113,22 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                 activePipeline.DataSourceObjectId,
                                 DataSourceResourceTypeNames.DataSources,
                                 dataSourceResourceProvider,
-                                DefaultAuthentication.ServiceIdentity!);
+                                ServiceContext.ServiceIdentity!);
                             var textPartitioningProfile = await GetResource<TextPartitioningProfile>(
                                 activePipeline.TextPartitioningProfileObjectId,
                                 VectorizationResourceTypeNames.TextPartitioningProfiles,
                                 vectorizationResourceProvider,
-                                DefaultAuthentication.ServiceIdentity!);
+                                ServiceContext.ServiceIdentity!);
                             var textEmbeddingProfile = await GetResource<TextEmbeddingProfile>(
                                 activePipeline.TextEmbeddingProfileObjectId,
                                 VectorizationResourceTypeNames.TextEmbeddingProfiles,
                                 vectorizationResourceProvider,
-                                DefaultAuthentication.ServiceIdentity!);
+                                ServiceContext.ServiceIdentity!);
                             var indexingProfile = await GetResource<IndexingProfile>(
                                 activePipeline.IndexingProfileObjectId,
                                 VectorizationResourceTypeNames.IndexingProfiles,
                                 vectorizationResourceProvider,
-                                DefaultAuthentication.ServiceIdentity!);
+                                ServiceContext.ServiceIdentity!);
 
                             if (dataSource is null)
                             {
@@ -229,7 +229,7 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                             await vectorizationRequest.UpdateVectorizationRequestResource(
                                                 _instanceSettings.Id,
                                                 vectorizationResourceProvider,
-                                                DefaultAuthentication.ServiceIdentity!);
+                                                ServiceContext.ServiceIdentity!);
                                             pipelineState.VectorizationRequestObjectIds.Add(vectorizationRequest.ObjectId!);
                                             //issue process action on the created vectorization request
                                             await vectorizationRequest.ProcessVectorizationRequest(vectorizationResourceProvider);
@@ -329,7 +329,7 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                             await vectorizationRequest.UpdateVectorizationRequestResource(
                                                 _instanceSettings.Id,
                                                 vectorizationResourceProvider,
-                                                DefaultAuthentication.ServiceIdentity!);
+                                                ServiceContext.ServiceIdentity!);
                                             pipelineState.VectorizationRequestObjectIds.Add(vectorizationRequest.ObjectId!);
 
                                             //issue process action on the created vectorization request
@@ -342,7 +342,7 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                             await vectorizationRequest.UpdateVectorizationRequestResource(
                                                 _instanceSettings.Id,
                                                 vectorizationResourceProvider,
-                                                DefaultAuthentication.ServiceIdentity!);
+                                                ServiceContext.ServiceIdentity!);
                                         }
                                         catch (Exception ex)
                                         {

@@ -9,7 +9,11 @@
 		</template>
 
 		<!-- Trigger button -->
-		<Button v-if="isButtonVisible" style="margin-right: 8px" @click="openPrivateStorageDialog">
+		<Button
+			v-if="isButtonVisible"
+			style="margin-right: 8px"
+			@click="handleOpenPrivateStorageDialog"
+		>
 			<i class="pi pi-box" style="font-size: 1.2rem; margin-right: 8px"></i>
 			Private Storage
 		</Button>
@@ -83,12 +87,15 @@
 				</FileUpload>
 			</div>
 			<Divider />
-			<!-- Table -->
+
+			<!-- Files table -->
 			<DataTable :value="agentFiles.uploadedFiles">
+				<template #empty>There are no private storage files uploaded for this agent.</template>
+
 				<!-- Name -->
 				<Column
 					field="display_name"
-					header="Name"
+					header="File Name"
 					:pt="{
 						headerCell: {
 							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -96,6 +103,28 @@
 						sortIcon: { style: { color: 'var(--primary-text)' } },
 					}"
 				></Column>
+
+				<!-- Tools -->
+				<Column
+					v-for="tool in tools"
+					:key="tool"
+					:header="tool"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						sortIcon: { style: { color: 'var(--primary-text)' } },
+					}"
+				>
+					<template #body="{ data }">
+						<Checkbox
+							v-if="fileToolAccess[data.object_id] !== undefined"
+							v-model="fileToolAccess[data.object_id][toolNameToObjectId(tool)]"
+							binary
+							size="large"
+						/>
+					</template>
+				</Column>
 
 				<!-- Delete -->
 				<Column
@@ -115,9 +144,14 @@
 						</Button>
 					</template>
 				</Column>
-				<template #empty>There are no private storage files uploaded for this agent.</template>
 			</DataTable>
+
+			<!-- Footer -->
 			<template #footer>
+				<!-- Save -->
+				<Button severity="primary" label="Save" @click="handleSaveFileToolAccess" />
+
+				<!-- Cancel -->
 				<Button label="Close" text @click="handleClosePrivateStorage" />
 			</template>
 		</Dialog>
@@ -125,6 +159,7 @@
 </template>
 
 <script lang="ts">
+import type { PropType } from 'vue';
 import api from '@/js/api';
 
 export default {
@@ -132,6 +167,12 @@ export default {
 		agentName: {
 			type: String,
 			required: true,
+		},
+
+		tools: {
+			type: Array as PropType<string[]>,
+			required: false,
+			default: () => ['OpenAIAssistantsCodeInterpreter', 'OpenAIAssistantsFileSearch'],
 		},
 	},
 
@@ -148,6 +189,11 @@ export default {
 				localFiles: [] as any[],
 				uploadedFiles: [] as any[],
 			},
+			fileToolAccess: {} as {
+				[key: string]: {
+					[key: string]: boolean;
+				};
+			},
 		};
 	},
 
@@ -155,14 +201,6 @@ export default {
 		isButtonVisible: function () {
 			return this.$appConfigStore.agentPrivateStoreFeatureFlag;
 		},
-	},
-
-	mounted() {
-		window.addEventListener('resize', this.handleResize);
-	},
-
-	beforeUnmount() {
-		window.removeEventListener('resize', this.handleResize);
 	},
 
 	methods: {
@@ -181,6 +219,7 @@ export default {
 				});
 			}
 		},
+
 		removeLocalFile(fileName) {
 			const fileIndex = this.agentFiles.localFiles.findIndex((file) => file.name === fileName);
 			if (fileIndex !== -1) {
@@ -261,9 +300,10 @@ export default {
 			}
 		},
 
-		async openPrivateStorageDialog() {
+		async handleOpenPrivateStorageDialog() {
 			this.loading = true;
 			await this.getPrivateAgentFiles();
+			await this.getPrivateAgentFileToolAssociations();
 			this.loading = false;
 			this.privateStorageDialogOpen = true;
 		},
@@ -291,6 +331,72 @@ export default {
 			this.agentFiles.uploadedFiles = (await api.getPrivateStorageFiles(this.agentName)).map(
 				(r) => r.resource,
 			);
+		},
+
+		toolNameToObjectId(toolName: string): string {
+			const toolPrefix = `/instances/${this.$appConfigStore.instanceId}/providers/FoundationaLLM.Agent/tools`;
+			return `${toolPrefix}/${toolName}`;
+		},
+
+		async getPrivateAgentFileToolAssociations() {
+			const toolAssociations = await api.getPrivateStorageFileToolAssociations(this.agentName);
+
+			// Create an empty object to store tool permissions
+			this.fileToolAccess = {};
+
+			toolAssociations.forEach((association) => {
+				const fileId = association.resource.file_object_id;
+				const associatedTools = association.resource.associated_resource_object_ids || {};
+
+				// Initialize file entry if it does not exist
+				if (!this.fileToolAccess[fileId]) {
+					if (!this.fileToolAccess[fileId]) {
+						this.fileToolAccess[fileId] = {};
+					}
+
+					this.tools.forEach((tool: string) => {
+						this.fileToolAccess[fileId][this.toolNameToObjectId(tool)] =
+							associatedTools.hasOwnProperty(this.toolNameToObjectId(tool));
+					});
+				}
+			});
+		},
+
+		async handleSaveFileToolAccess() {
+			const payload = {
+				agent_file_tool_associations: { ...this.fileToolAccess },
+			};
+
+			this.loadingModalStatusText = 'Saving tool file access permisisons...';
+			this.modalLoading = true;
+			try {
+				const response = await api.updateFileToolAssociations(this.agentName, payload);
+				if (response.resource?.success) {
+					this.$toast.add({
+						severity: 'success',
+						summary: 'Updated',
+						detail: 'File tool association updated successfully.',
+						life: 3000,
+					});
+				} else {
+					this.getPrivateAgentFileToolAssociations();
+					this.$toast.add({
+						severity: 'error',
+						summary: 'Update Failed',
+						detail: 'Failed to update tool associations.',
+						life: 5000,
+					});
+				}
+			} catch (error) {
+				console.error('Error updating tool associations:', error);
+				this.$toast.add({
+					severity: 'error',
+					summary: 'Update Failed',
+					detail: 'Failed to update tool associations.',
+					life: 5000,
+				});
+			}
+			this.modalLoading = false;
 		},
 
 		handleUpload() {
@@ -333,6 +439,7 @@ export default {
 						this.agentFiles.localFiles = [];
 						if (filesUploaded > 0) {
 							await this.getPrivateAgentFiles();
+							await this.getPrivateAgentFileToolAssociations();
 							this.modalLoading = false;
 							this.$toast.add({
 								severity: 'success',
