@@ -23,9 +23,11 @@ FoundationaLLM allows you to create several types of agents depending on your ne
 
 - General
 - Agent Configuration
+- User Portal Experience
+- Knowledge Source
 - Workflow
 - Tools
-- Security
+- Security (available only after the initial creation of the agent)
 
 ### General Section
 
@@ -37,7 +39,11 @@ In this section, you can define the name, description and welcome message of the
 
 In this section, you can define the following configurations:
 
-- **Chat History**: This setting allows you to enable or disable the chat history feature for the agent. When enabled, the agent will remember the context of previous conversations, allowing for more personalized and relevant responses. If disabled, the agent will not retain any memory of past interactions. It also allows you to define the number of messages to be stored in the chat history. The default is 5 messages.
+- **Chat History**: This setting allows you to enable or disable the chat history feature for the agent. When enabled, the agent will remember the context of previous conversations, allowing for more personalized and relevant responses. If disabled, the agent will not retain any memory of past interactions. It also allows you to define the maximum number of messages to be used in the conversation thread, the default is 5 messages.  
+
+> [!NOTE]
+> This maximum number is not related to the storing of conversation history in Cosmos DB as ALL of them are saved, it is only for the maximum number to be included in follow up request in the conversation.
+
 
 - **Gatekeeper**: This setting allows you to enable or disable the gatekeeper feature for the agent. When enabled, the agent will have a gatekeeper that can filter and moderate the content of conversations, ensuring that inappropriate or harmful content is not generated. If disabled, the agent will not have any content moderation capabilities. 
 You can choose from multiple options for the content safety:
@@ -47,17 +53,28 @@ You can choose from multiple options for the content safety:
   - **Enkrypt Guardrails**
 The Gatekeeper also allows you to enable the Data Protection aspect of the agent, which currently uses **Microsoft Presidio** to filter sensitive data in the conversations.
 
+- **Prompt Rewrite**: This setting allows you to enable it and specify the rewrite LLM model desired, the pre-defined prompt that you have authored in your prompt hub and the window size of the rewrite.  This is a very useful feature when tools are involved to carry on the context of the question between responses.
+
+- **Semantic Cache**: This is a very useful feature that you can enable and choose the model desired, the embedding dimension (like 1536 for ada-002 for example) and the minimum similarity threshold that you want to evaluate to determine if it is worth it to go back to the LLM (financial implication and speed) or if it is acceptable to return a cache response for a similar previous question as long as it meets the minimum similarity threshold.
+
 - **Cost Center**: This setting allows you to define a cost center for the agent. A cost center is a department or unit within an organization that is responsible for its own expenses and budget. By assigning a cost center to the agent, you can track and manage the costs associated with its operations.
 
 - **Expiration**: This setting allows you to define an expiration date for the agent. After this date, the agent will no longer be available for use. This is useful for managing the lifecycle of agents and ensuring that they are only active when needed.
 
-- **Chat Portal Displays**: This setting allows you to turn on or off 4 valuable capabilities in the **Chat Portal**.
-  - The amount of tokens used in the conversation. (Questions and Responses)
-  - The **prompt** used by the agent for a specific question including history and context.
-  - The option to rate the response of the agent.
-  - The ability to allow the user to upload files to the agent in the conversation.
+> [!NOTE]
+> Once an agent expires, it won’t respond to requests and is not visible in the agent selection dropdown in the chat portal.
 
 ![Agent Configuration Section](./media/agent_Workflow_2.png)
+
+### User Portal Experience Section
+
+![Agent Configuration Section](./media/agent_Workflow_2b.png)
+
+These setting allows you to turn on or off 4 valuable capabilities in the Chat Portal.
+- The number of tokens used in the conversation. (Questions and Responses)
+- The prompt used by the agent for a specific question including history and context.
+- The option to rate the response of the agent.
+-	The ability to allow the user to upload files to the agent in the conversation.
 
 ### Workflow Section
 
