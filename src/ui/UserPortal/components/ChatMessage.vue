@@ -202,7 +202,7 @@
 		</div>
 
 		<!-- Date Divider -->
-		<Divider v-if="message.sender == 'User'" align="center" type="solid" class="date-separator">
+		<Divider v-if="message.sender === 'User'" align="center" type="solid" class="date-separator">
 			<TimeAgo :date="new Date(message.timeStamp)" />
 		</Divider>
 
