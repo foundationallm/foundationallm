@@ -172,7 +172,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2024-10-02-preview' = 
   }
 
   properties: {
-    kubernetesVersion: '1.30.5'
+    kubernetesVersion: '1.30.9'
     enableRBAC: true
     fqdnSubdomain: name
     nodeResourceGroup: 'mrg-${name}'
