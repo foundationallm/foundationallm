@@ -345,20 +345,20 @@ export const useAppStore = defineStore('app', {
 			});
 		},
 
-		async getMessage(messageId: string) {
-			const data = await api.getMessage(messageId);
-			const existingMessageIndex = this.currentMessages.findIndex(
-				(message) => message.id === messageId,
-			);
+		// async getMessage(messageId: string) {
+		// 	const data = await api.getMessage(messageId);
+		// 	const existingMessageIndex = this.currentMessages.findIndex(
+		// 		(message) => message.id === messageId,
+		// 	);
 
-			if (existingMessageIndex !== -1) {
-				this.currentMessages[existingMessageIndex] = data;
-				return data;
-			}
+		// 	if (existingMessageIndex !== -1) {
+		// 		this.currentMessages[existingMessageIndex] = data;
+		// 		return data;
+		// 	}
 
-			this.currentMessages.push(data);
-			return data;
-		},
+		// 	this.currentMessages.push(data);
+		// 	return data;
+		// },
 
 		updateSessionAgentFromMessages(session: Session) {
 			const lastAssistantMessage = this.currentMessages
