@@ -482,7 +482,7 @@ export const useAppStore = defineStore('app', {
 			this.currentMessages[this.currentMessages.length - 1] = {
 				...tempAssistantMessage,
 				...message,
-				sender: message.sender?.toLowerCase() === 'user' ? 'User' : 'Agent',
+				sender: 'Agent',
 				type: 'Message',
 				text: message.status_message,
 			};
