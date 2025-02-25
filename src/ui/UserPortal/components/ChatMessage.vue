@@ -10,7 +10,7 @@
 							:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
 							alt="Agent avatar"
 						/>
-						<span>{{ getDisplayName() }}</span>
+						<span>{{ senderDisplayName }}</span>
 					</span>
 
 					<!-- Tokens & Timestamp -->
@@ -202,7 +202,7 @@
 		</div>
 
 		<!-- Date Divider -->
-		<Divider v-if="message.sender == 'User'" align="center" type="solid" class="date-separator">
+		<Divider v-if="message.sender === 'User'" align="center" type="solid" class="date-separator">
 			<TimeAgo :date="new Date(message.timeStamp)" />
 		</Divider>
 
@@ -423,6 +423,14 @@ export default {
 	},
 
 	computed: {
+		senderDisplayName() {
+			let displayName = this.message.senderDisplayName;
+			if (this.message.sender && this.message.sender !== 'User') {
+				displayName = this.$appStore.mapAgentDisplayName(this.message.senderDisplayName);
+			}
+			return displayName;
+		},
+
 		messageContent() {
 			if (this.message.status === 'Failed') {
 				const failedMessage = this.message.text ?? 'Failed to generate a response.';
@@ -729,14 +737,6 @@ export default {
 			if (!processingTime) return date;
 			const processingTimeSeconds = processingTime / 1000;
 			return `${date}\n(${processingTimeSeconds.toFixed(2)} seconds)`;
-		},
-
-		getDisplayName() {
-			let displayName = this.message.senderDisplayName;
-			if (this.message.sender.toLowerCase() !== 'user') {
-				displayName = this.$appStore.mapAgentDisplayName(this.message.senderDisplayName);
-			}
-			return displayName;
 		},
 
 		handleCopyMessageContent() {

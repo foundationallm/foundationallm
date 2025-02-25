@@ -314,6 +314,7 @@ export const useAppStore = defineStore('app', {
 			this.currentMessages = messagesResponse.map((message) => ({
 				...message,
 				content: message.content ? message.content.map(this.initializeMessageContent) : [],
+				sender: message.sender?.toLowerCase() === 'user' ? 'User' : 'Agent',
 			}));
 
 			// Determine if the latest message needs to be polled
@@ -336,7 +337,7 @@ export const useAppStore = defineStore('app', {
 		calculateMessageProcessingTime() {
 			// Calculate the processing time for each message
 			this.currentMessages.forEach((message, index) => {
-				if (message.sender === 'Agent' && this.currentMessages[index - 1]?.sender.toLowerCase() === 'user') {
+				if (message.sender === 'Agent' && this.currentMessages[index - 1]?.sender === 'User') {
 					const previousMessageTimeStamp = new Date(this.currentMessages[index - 1].timeStamp).getTime();
 					const currentMessageTimeStamp = new Date(message.timeStamp).getTime();
 					message.processingTime = currentMessageTimeStamp - previousMessageTimeStamp;
@@ -344,20 +345,20 @@ export const useAppStore = defineStore('app', {
 			});
 		},
 
-		async getMessage(messageId: string) {
-			const data = await api.getMessage(messageId);
-			const existingMessageIndex = this.currentMessages.findIndex(
-				(message) => message.id === messageId,
-			);
+		// async getMessage(messageId: string) {
+		// 	const data = await api.getMessage(messageId);
+		// 	const existingMessageIndex = this.currentMessages.findIndex(
+		// 		(message) => message.id === messageId,
+		// 	);
 
-			if (existingMessageIndex !== -1) {
-				this.currentMessages[existingMessageIndex] = data;
-				return data;
-			}
+		// 	if (existingMessageIndex !== -1) {
+		// 		this.currentMessages[existingMessageIndex] = data;
+		// 		return data;
+		// 	}
 
-			this.currentMessages.push(data);
-			return data;
-		},
+		// 	this.currentMessages.push(data);
+		// 	return data;
+		// },
 
 		updateSessionAgentFromMessages(session: Session) {
 			const lastAssistantMessage = this.currentMessages
@@ -481,6 +482,7 @@ export const useAppStore = defineStore('app', {
 			this.currentMessages[this.currentMessages.length - 1] = {
 				...tempAssistantMessage,
 				...message,
+				sender: 'Agent',
 				type: 'Message',
 				text: message.status_message,
 			};
@@ -529,6 +531,7 @@ export const useAppStore = defineStore('app', {
 					this.currentMessages[this.currentMessages.length - 1] = {
 						...updatedMessage,
 						renderId: this.currentMessages[this.currentMessages.length - 1].renderId,
+						sender: 'Agent',
 					};
 
 					const userMessage = this.currentMessages[this.currentMessages.length - 2];
