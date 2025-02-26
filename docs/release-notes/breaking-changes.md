@@ -22,6 +22,162 @@ The following App Config properties make cache settings for the resource provide
 | `FoundationaLLM:ResourceProvidersCache:CacheSizeLimit` | The maximum number of items that can be stored in the cache. | 10000 |
 | `FoundationaLLM:ResourceProvidersCache:CacheExpirationScanFrequencySeconds` | Gets or sets the minimum length of time between successive scans for expired items in seconds. | 30 |
 
+## Starting with 0.9.3
+
+This version introduces the concept of a well-known virtual security group (`AllAgentsVirtualSecurityGroup`) that is used by agents using Agent Access Token authentication and have their own virtual security group defined. Assign the following PBAC and RBAC roles to the `AllAgentsVirtualSecurityGroup` (replace the tokens denoted by `{{...}}` with the actual values):
+
+### PBAC changes
+
+```json
+{
+    "name": "{{pbacConversationsOwnerGuid}}",
+    "type": "FoundationaLLM.Authorization/policyAssignments",
+    "object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/{{pbacConversationsOwnerGuid}}",
+    "description": "Ownership on conversation resources for AllAgentsVirtualSecurityGroup by the FoundationaLLM.Conversation resource provider.",
+    "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}/FoundationaLLM.Conversation/conversations",
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+},
+{
+    "name": "{{pbacConversationMappingsGuid}}",
+    "type": "FoundationaLLM.Authorization/policyAssignments",
+    "object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/{{pbacConversationMappingsGuid}}",
+    "description": "Ownership on conversation mapping resources for AllAgentsVirtualSecurityGroup managed by the FoundationaLLM.AzureOpenAI resource provider.",
+    "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}/providers/FoundationaLLM.AzureOpenAI/conversationMappings",
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+}
+```
+
+### RBAC changes
+
+```json
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "{{openAiAssistantsReaderGuid}}",
+    "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{openAiAssistantsReaderGuid}}",
+    "display_name": null,
+    "description": "Read Access for OpenAIAssistants for the AllAgentsVirtualSecurityGroup group.",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}/providers/FoundationaLLM.Agent/workflows/OpenAIAssistants",
+    "properties": null,
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+},
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "{{langGraphReactAgentReaderGuid}}",
+    "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{langGraphReactAgentReaderGuid}}",
+    "display_name": null,
+    "description": "Read Access for LangGraphReactAgent for the AllAgentsVirtualSecurityGroup group.",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}/providers/FoundationaLLM.Agent/workflows/LangGraphReactAgent",
+    "properties": null,
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+},
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "{{attachmentContributorGuid2}}",
+    "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{attachmentContributorGuid2}}",
+    "display_name": null,
+    "description": "Attachment contributor role for AllAgentsVirtualSecurityGroup group.",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/8e77fb6a-7a78-43e1-b628-d9e2285fe25a",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}",
+    "properties": null,
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+},
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "{{conversationContributorGuid2}}",
+    "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{conversationContributorGuid2}}",
+    "display_name": null,
+    "description": "Conversation contributor role for AllAgentsVirtualSecurityGroup group.",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/d0d21b90-5317-499a-9208-3a6cb71b84f9",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}",
+    "properties": null,
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+},
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "{{configReadAccessGuid3}}",
+    "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{configReadAccessGuid3}}",
+    "display_name": null,
+    "description": "Read Access for configuration for the AllAgentsVirtualSecurityGroup group.",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}/providers/FoundationaLLM.Configuration/appConfigurations/FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage",
+    "properties": null,
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+},
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "{{configReadAccessGuid4}}",
+    "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{configReadAccessGuid4}}",
+    "display_name": null,
+    "description": "Read Access for configuration for the AllAgentsVirtualSecurityGroup group.",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}/providers/FoundationaLLM.Configuration/appConfigurations/FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds",
+    "properties": null,
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+}
+```
+
 ## Starting with 0.9.3-rc016
 
 ### Configuration Resource Provider
