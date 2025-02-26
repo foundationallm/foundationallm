@@ -121,6 +121,154 @@
 </tr>
 </tbody>
 </table>
+<h2 id="starting-with-093">Starting with 0.9.3</h2>
+<p>This version introduces the concept of a well-known virtual security group (<code>AllAgentsVirtualSecurityGroup</code>) that is used by agents using Agent Access Token authentication and have their own virtual security group defined. Assign the following PBAC and RBAC roles to the <code>AllAgentsVirtualSecurityGroup</code> (replace the tokens denoted by <code>{{...}}</code> with the actual values):</p>
+<h3 id="pbac-changes">PBAC changes</h3>
+<pre><code class="lang-json">{
+    &quot;name&quot;: &quot;{{pbacConversationsOwnerGuid}}&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/{{pbacConversationsOwnerGuid}}&quot;,
+    &quot;description&quot;: &quot;Ownership on conversation resources for AllAgentsVirtualSecurityGroup by the FoundationaLLM.Conversation resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Conversation/conversations&quot;,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
+},
+{
+    &quot;name&quot;: &quot;{{pbacConversationMappingsGuid}}&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/{{pbacConversationMappingsGuid}}&quot;,
+    &quot;description&quot;: &quot;Ownership on conversation mapping resources for AllAgentsVirtualSecurityGroup managed by the FoundationaLLM.AzureOpenAI resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.AzureOpenAI/conversationMappings&quot;,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
+}
+</code></pre>
+<h3 id="rbac-changes">RBAC changes</h3>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{openAiAssistantsReaderGuid}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{openAiAssistantsReaderGuid}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Read Access for OpenAIAssistants for the AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Agent/workflows/OpenAIAssistants&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{langGraphReactAgentReaderGuid}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{langGraphReactAgentReaderGuid}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Read Access for LangGraphReactAgent for the AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Agent/workflows/LangGraphReactAgent&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{attachmentContributorGuid2}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{attachmentContributorGuid2}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Attachment contributor role for AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/8e77fb6a-7a78-43e1-b628-d9e2285fe25a&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{conversationContributorGuid2}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{conversationContributorGuid2}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Conversation contributor role for AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/d0d21b90-5317-499a-9208-3a6cb71b84f9&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{configReadAccessGuid3}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{configReadAccessGuid3}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Read Access for configuration for the AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Configuration/appConfigurations/FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{configReadAccessGuid4}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{configReadAccessGuid4}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Read Access for configuration for the AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Configuration/appConfigurations/FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+}
+</code></pre>
 <h2 id="starting-with-093-rc016">Starting with 0.9.3-rc016</h2>
 <h3 id="configuration-resource-provider">Configuration Resource Provider</h3>
 <p>The <code>APIEnpointConfiguration</code> class has been updated to change the previous <code>StatusUrl</code> property to <code>StatusEndpoint</code>, which is a relative path to the status endpoint. By extension, the related JSON files now have a <code>status_endpoint</code> property that contains the relative path. Here is the OrchestrationAPI JSON template as an example of this change:</p>
