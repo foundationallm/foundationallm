@@ -37,7 +37,7 @@ This version introduces the concept of a well-known virtual security group (`All
     "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
     "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
     "principal_type": "Group",
-    "scope": "/instances/{{instanceId}}/FoundationaLLM.Conversation/conversations",
+    "scope": "/instances/{{instanceId}}/providers/FoundationaLLM.Conversation/conversations",
     "created_on": "{{deployTime}}",
     "updated_on": "{{deployTime}}",
     "created_by": "SYSTEM",
