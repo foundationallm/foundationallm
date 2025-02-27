@@ -496,6 +496,7 @@ export default {
 
 		isRenderingMessage: {
 			handler(newVal, oldVal) {
+				this.$appStore.sessionMessagePending = newVal;
 				if (newVal === oldVal) return;
 				if (newVal) {
 					this.keepScrollingUntilCompleted();
