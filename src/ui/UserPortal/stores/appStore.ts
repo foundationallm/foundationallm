@@ -288,7 +288,10 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async getMessages() {
-			if ((this.newSession && this.newSession.id === this.currentSession!.id) || this.currentSession.is_temp) {
+			if (
+				(this.newSession && this.newSession.id === this.currentSession!.id) ||
+				this.currentSession.is_temp
+			) {
 				// This is a new session, no need to fetch messages.
 				this.currentMessages = [];
 				return;
@@ -338,7 +341,9 @@ export const useAppStore = defineStore('app', {
 			// Calculate the processing time for each message
 			this.currentMessages.forEach((message, index) => {
 				if (message.sender === 'Agent' && this.currentMessages[index - 1]?.sender === 'User') {
-					const previousMessageTimeStamp = new Date(this.currentMessages[index - 1].timeStamp).getTime();
+					const previousMessageTimeStamp = new Date(
+						this.currentMessages[index - 1].timeStamp,
+					).getTime();
 					const currentMessageTimeStamp = new Date(message.timeStamp).getTime();
 					message.processingTime = currentMessageTimeStamp - previousMessageTimeStamp;
 				}
