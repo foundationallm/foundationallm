@@ -44,7 +44,7 @@
 
 		<!-- Chat input -->
 		<div class="chat-thread__input">
-			<ChatInput ref="chatInput" :disabled="isLoading || isMessagePending" @send="handleSend" />
+			<ChatInput ref="chatInput" :disabled="isLoading || isMessagePending || $appStore.sessionMessagePending" @send="handleSend" />
 		</div>
 
 		<!-- Footer -->
@@ -132,6 +132,7 @@ export default {
 			if (newPollingSession === this.currentSession.id) {
 				this.isMessagePending = true;
 			} else {
+				console.log(this.pollingSession);
 				this.isMessagePending = false;
 			}
 		},

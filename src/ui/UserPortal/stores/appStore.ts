@@ -43,6 +43,7 @@ export const useAppStore = defineStore('app', {
 		autoHideToasts: JSON.parse(sessionStorage.getItem('autoHideToasts') || 'true') as boolean,
 		textSize: JSON.parse(sessionStorage.getItem('textSize') || '1') as number,
 		highContrastMode: JSON.parse(sessionStorage.getItem('highContrastMode') || 'false') as boolean,
+		sessionMessagePending: false,
 	}),
 
 	getters: {
