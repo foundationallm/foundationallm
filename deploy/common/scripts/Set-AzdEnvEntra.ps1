@@ -57,8 +57,8 @@ from the ./foundationallm/deploy/standard directory:
 
 Param(
    [parameter(Mandatory = $true, HelpMessage = "Azure EntraID Tenant")][string]$tenantID,
-   [string]$adminGroupName = 'FLLM-Admins',
-   [string]$userGroupName = 'FLLM-Users',
+   [string]$adminGroupName = 'Development-FLLM-Administrators',
+   [string]$userGroupName = 'Developement-FLLM-Users',
    [string]$authAppName = 'FoundationaLLM-Authorization-API',
    [string]$coreAppName = 'FoundationaLLM-Core-API',
    [string]$coreClientAppName = 'FoundationaLLM-Core-Portal',
