@@ -1377,6 +1377,8 @@ export default {
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 
+			originalAgent: null,
+
 			editable: false as boolean,
 			hasAgentPrivateStorage: false as boolean,
 
@@ -1594,6 +1596,7 @@ export default {
 			this.editable = agentGetResult.actions.includes('FoundationaLLM.Agent/agents/write');
 
 			const agent = agentGetResult.resource;
+			this.originalAgent = agent;
 			this.virtualSecurityGroupId = agent.virtual_security_group_id;
 
 			if (agent.vectorization && agent.vectorization.text_partitioning_profile_object_id) {
@@ -2047,14 +2050,13 @@ export default {
 					}
 				}
 
-				let workflow = null;
+				let workflow = this.originalAgent?.workflow ?? null;
 				if (this.selectedWorkflow) {
 					workflow = {
 						...this.selectedWorkflow,
 						workflow_host: this.workflowHost,
 						name: this.workflowName,
 						package_name: this.workflowPackageName,
-						assistant_id: '',
 
 						resource_object_ids: {
 							...this.selectedWorkflow.resource_object_ids,
