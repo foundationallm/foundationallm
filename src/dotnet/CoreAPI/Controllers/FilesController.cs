@@ -88,7 +88,10 @@ namespace FoundationaLLM.Core.API.Controllers
                 agentName,
                 _callContext.CurrentUserIdentity!);
 
-            uploadResult.Resource = null;
+            if (uploadResult.Resource != null)
+            {
+                uploadResult.Resource.Content = null;
+            }
 
             return new OkObjectResult(uploadResult);
         }
