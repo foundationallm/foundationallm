@@ -215,9 +215,14 @@ azd env set FLLM_MGMT_PORTAL_HOSTNAME management.example.com
 azd env set FLLM_MGMT_API_HOSTNAME management-api.example.com
 </code></pre>
 </li>
+<li><p>If you are hosting FoundationaLLM and dependencies (like ingress-nginx) on an internally hosted container registry, be sure to set the following AZD environment settings:</p>
+<pre><code class="lang-pwsh">azd env set INGRESS_ESCROWED $true
+azd env set FOUNDATIONALLM_REGISTRY mycrname.azurecr.io
+</code></pre>
+</li>
 </ol>
 <h2 id="provision-infrastructure">Provision Infrastructure</h2>
-<ol start="11">
+<ol start="12">
 <li><p>Provision platform infrastructure with <code>AZD</code>:</p>
 <pre><code class="lang-pwsh">cd .\deploy\standard
 azd provision
@@ -227,7 +232,7 @@ azd provision
 </li>
 </ol>
 <h2 id="configure-and-deploy">Configure and Deploy</h2>
-<ol start="12">
+<ol start="13">
 <li><p>Ensure that you have network access to the deployed resources and that DNS resolution to deployed resources is configured (this is environment specific).</p>
 </li>
 <li><p>Deploy to platform infrastructure with <code>AZD</code>:</p>
@@ -277,7 +282,7 @@ azd deploy
 </li>
 </ol>
 <h3 id="running-script-to-allow-ms-graph-access-through-role-permissions">Running script to allow MS Graph access through Role Permissions</h3>
-<ol start="14">
+<ol start="15">
 <li><p>After the deployment is complete, you will need to run the following script to allow MS Graph access through Role Permissions. (See below)</p>
 <div class="IMPORTANT">
 <h5>Important</h5>
@@ -294,7 +299,7 @@ The syntax for running the script from the <code>deploy\standard</code> folder i
 </li>
 </ol>
 <h2 id="connect-and-test">Connect and Test</h2>
-<ol start="15">
+<ol start="16">
 <li>Visit the chat UI in your browser and send a message to verify the deployment.  The message can be very simple like &quot;Who are you?&quot;.  The default agent should respond with a message explaining it's persona.</li>
 </ol>
 
