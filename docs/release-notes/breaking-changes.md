@@ -3,6 +3,30 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting with 0.9.7-beta100
+
+### Configuration changes
+
+## App configuration settings
+
+The value of the `FoundationaLLM:Events:Profiles:CoreAPI` must be updated to include the `api-statistics` topic. The updated value is as follows:
+
+```json
+{
+    "EventProcessingCycleSeconds": 5,
+    "Topics": [
+        {
+            "Name": "resource-providers",
+            "SubscriptionPrefix": "rp-core"
+        },
+        {
+            "Name": "api-statistics",
+            "SubscriptionPrefix": "as-core"
+        }
+    ]
+}
+```
+
 ## Starting with 0.9.4-rc100
 
 ### Configuration changes
