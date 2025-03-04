@@ -1,4 +1,4 @@
-#! /usr/bin/pwsh
+#!/usr/bin/pwsh
 <#
 .SYNOPSIS
 Sets the environment variables for Networking in the default environment file.
@@ -33,6 +33,7 @@ directory.
 
 #>
 
+# Parameters for setting environment variables for Networking
 Param(
 	[parameter(Mandatory = $false, HelpMessage = "CIDR block for the AKS Services - e.g., 10.100.0.0/16")][string]
 	$fllmAksServiceCidr = "10.100.0.0/16",
@@ -116,8 +117,9 @@ User Portal Hostname: $($hostnames["chatui"])
 Write-Host -ForegroundColor Yellow $message
 
 foreach ($value in $envValues.GetEnumerator()) {
-	Write-Host -ForegroundColor Yellow "Setting $($value.Name) to $($value.Value)"
-	azd env set $value.Name $value.Value
+	Invoke-CliCommand "Setting $($value.Name) to $($value.Value)" {
+		azd env set $value.Name $value.Value
+	}
 }
 
 $message = @"
@@ -129,3 +131,5 @@ Write-Host -ForegroundColor Blue $message
 Invoke-CliCommand "azd env get-values" {
 	azd env get-values
 }
+
+Stop-Transcript
