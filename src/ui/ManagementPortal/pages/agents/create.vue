@@ -2068,7 +2068,6 @@ export default {
 						workflow_host: this.workflowHost,
 						name: this.workflowName,
 						package_name: this.workflowPackageName,
-						assistant_id: '',
 
 						resource_object_ids: {
 							...this.selectedWorkflow.resource_object_ids,

@@ -153,8 +153,11 @@ main {
 		print-color-adjust: exact;
 	}
 
-	.message__copy,
-	.message__footer {
+	.message {
+		width: 95% !important;
+	}
+
+	.message__copy, .message__footer {
 		display: none !important;
 	}
 
