@@ -151,6 +151,34 @@
     &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
     &quot;created_by&quot;: &quot;SYSTEM&quot;,
     &quot;updated_by&quot;: &quot;SYSTEM&quot;
+},
+{
+    &quot;name&quot;: &quot;{{pbacAttachmentsOwnerGuid}}&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/{{pbacAttachmentsOwnerGuid}}&quot;,
+    &quot;description&quot;: &quot;Ownership on attachment resources for AllAgentsVirtualSecurityGroup managed by the FoundationaLLM.Attachment resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Attachment/attachments&quot;,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
+},
+{
+    &quot;name&quot;: &quot;{{pbacFileMappingsGuid}}&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/{{pbacFileMappingsGuid}}&quot;,
+    &quot;description&quot;: &quot;Ownership on file mapping resources for AllAgentsVirtualSecurityGroup managed by the FoundationaLLM.AzureOpenAI resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.AzureOpenAI/fileMappings&quot;,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
 }
 </code></pre>
 <h3 id="rbac-changes">RBAC changes</h3>
