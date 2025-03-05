@@ -157,7 +157,8 @@ main {
 		width: 95% !important;
 	}
 
-	.message__copy, .message__footer {
+	.message__copy,
+	.message__footer {
 		display: none !important;
 	}
 
