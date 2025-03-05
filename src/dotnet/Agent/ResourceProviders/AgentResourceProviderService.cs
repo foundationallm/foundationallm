@@ -563,6 +563,25 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 return fallbackResult;
 
             var agentClientSecretKey = AgentClientSecretKey.FromClientSecretKey(clientSecretKey);
+            var accessTokens = await LoadAgentAccessTokens(resourcePath);
+            var matchingAccessToken = accessTokens.FirstOrDefault(x => x.Resource.Id == new Guid(agentClientSecretKey.Id))?.Resource;
+            if (matchingAccessToken != null)
+            {
+                if (matchingAccessToken.ExpirationDate.HasValue && matchingAccessToken.ExpirationDate.Value < DateTime.UtcNow)
+                {
+                    _logger.LogWarning("An expired agent access token was used for the agent {AgentName} in instance {InstanceId}.",
+                        agentClientSecretKey.AgentName,
+                        resourcePath.InstanceId);
+                    return fallbackResult;
+                }
+                if (!matchingAccessToken.Active)
+                {
+                    _logger.LogWarning("An inactive agent access token was used for the agent {AgentName} in instance {InstanceId}.",
+                        agentClientSecretKey.AgentName,
+                        resourcePath.InstanceId);
+                    return fallbackResult;
+                }
+            }
 
             if (!StringComparer.OrdinalIgnoreCase.Equals(agentClientSecretKey.AgentName, resourcePath.MainResourceId))
                 return fallbackResult;
@@ -574,7 +593,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
             if (result.Valid)
             {
-                // Set virtual identity
+                // Set virtual identity.
                 var agent = await GetResourceAsync<AgentBase>($"/instances/{resourcePath.InstanceId}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentClientSecretKey.AgentName}", userIdentity);
                 var upn =
                     $"aat_{agentClientSecretKey.AgentName}_{agentClientSecretKey.Id}@foundationallm.internal_";

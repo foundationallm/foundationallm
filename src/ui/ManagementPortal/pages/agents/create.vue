@@ -1748,7 +1748,7 @@ export default {
 			this.agentTools = agent.tools;
 
 			this.selectedWorkflow = agent.workflow;
-			this.hasAgentPrivateStorage = agent.workflow.type == 'azure-openai-assistants-workflow';
+			this.hasAgentPrivateStorage = agent.workflow?.type == 'azure-openai-assistants-workflow';
 			this.showMessageTokens = agent.show_message_tokens ?? false;
 			this.showMessageRating = agent.show_message_rating ?? false;
 			this.showViewPrompt = agent.show_view_prompt ?? false;

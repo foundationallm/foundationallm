@@ -56,6 +56,34 @@ This version introduces the concept of a well-known virtual security group (`All
     "updated_on": "{{deployTime}}",
     "created_by": "SYSTEM",
     "updated_by": "SYSTEM"
+},
+{
+    "name": "{{pbacAttachmentsOwnerGuid}}",
+    "type": "FoundationaLLM.Authorization/policyAssignments",
+    "object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/{{pbacAttachmentsOwnerGuid}}",
+    "description": "Ownership on attachment resources for AllAgentsVirtualSecurityGroup managed by the FoundationaLLM.Attachment resource provider.",
+    "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}/providers/FoundationaLLM.Attachment/attachments",
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+},
+{
+    "name": "{{pbacFileMappingsGuid}}",
+    "type": "FoundationaLLM.Authorization/policyAssignments",
+    "object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/{{pbacFileMappingsGuid}}",
+    "description": "Ownership on file mapping resources for AllAgentsVirtualSecurityGroup managed by the FoundationaLLM.AzureOpenAI resource provider.",
+    "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}/providers/FoundationaLLM.AzureOpenAI/fileMappings",
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
 }
 ```
 
