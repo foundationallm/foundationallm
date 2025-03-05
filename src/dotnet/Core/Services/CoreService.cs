@@ -457,6 +457,14 @@ public partial class CoreService(
                 completionResponse,
                 OperationStatus.Completed);
 
+            if (agentMessage.Content is { Count: > 0 })
+            {
+                foreach (var content in agentMessage.Content)
+                {
+                    content.Value = ResolveContentDeepLinks(content.Value, _baseUrl);
+                }
+            }
+
             return agentMessage;
         }
         catch (Exception ex)
