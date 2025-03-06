@@ -7,9 +7,10 @@ using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
@@ -29,6 +30,7 @@ namespace FoundationaLLM.Common.Services.Azure
         private Container _sessions;
         private Container _userSessions;
         private Container _operations;
+        private Container _agents;
         private Container _attachments;
         private Container _externalResources;
         private Container _completionsCache;
@@ -92,32 +94,38 @@ namespace FoundationaLLM.Common.Services.Azure
 
             var database = client?.GetDatabase(_settings.Database);
 
-            _database = database ??
-                        throw new ArgumentException("Unable to connect to existing Azure Cosmos DB database.");
+            _database = database
+                ?? throw new ArgumentException("Unable to connect to existing Azure Cosmos DB database.");
 
             _sessions = database?.GetContainer(AzureCosmosDBContainers.Sessions)
-                        ?? throw new ArgumentException(
-                            $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.Sessions}).");
+                ?? throw new ArgumentException(
+                    $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.Sessions}).");
+
             _userSessions = database?.GetContainer(AzureCosmosDBContainers.UserSessions)
-                            ?? throw new ArgumentException(
-                                $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.UserSessions}).");
+                ?? throw new ArgumentException(
+                    $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.UserSessions}).");
+
             _operations = database?.GetContainer(AzureCosmosDBContainers.Operations)
-                          ?? throw new ArgumentException(
-                                $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.Operations}).");
+                ?? throw new ArgumentException(
+                    $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.Operations}).");
+
             _userProfiles = new Lazy<Task<Container>>(InitializeUserProfilesContainer);
 
-            _attachments = database?.GetContainer(AzureCosmosDBContainers.Attachments) ??
-                           throw new ArgumentException(
-                               $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.Attachments}).");
+            _agents = database?.GetContainer(AzureCosmosDBContainers.Agents)
+                ?? throw new ArgumentException(
+                    $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.Agents}).");
 
-            _externalResources = database?.GetContainer(AzureCosmosDBContainers.ExternalResources) ??
-                           throw new ArgumentException(
-                               $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.ExternalResources}).");
+            _attachments = database?.GetContainer(AzureCosmosDBContainers.Attachments)
+                ?? throw new ArgumentException(
+                    $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.Attachments}).");
 
+            _externalResources = database?.GetContainer(AzureCosmosDBContainers.ExternalResources)
+                ?? throw new ArgumentException(
+                    $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.ExternalResources}).");
 
-            _completionsCache = database?.GetContainer(AzureCosmosDBContainers.CompletionsCache) ??
-                           throw new ArgumentException(
-                               $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.CompletionsCache}).");
+            _completionsCache = database?.GetContainer(AzureCosmosDBContainers.CompletionsCache)
+                ?? throw new ArgumentException(
+                    $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.CompletionsCache}).");
 
             _containers[AzureCosmosDBContainers.Sessions] = _sessions;
             _containers[AzureCosmosDBContainers.UserSessions] = _userSessions;
@@ -197,7 +205,7 @@ namespace FoundationaLLM.Common.Services.Azure
             {
                 propertyValues.Add(updatedOn, DateTimeOffset.UtcNow);
             }
-            
+
             var response = await _sessions.PatchItemAsync<Conversation>(
                 id: id,
                 partitionKey: new PartitionKey(id),
@@ -307,10 +315,12 @@ namespace FoundationaLLM.Common.Services.Azure
         }
 
         /// <inheritdoc/>
-        public async Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, CancellationToken cancellationToken = default)
+        public async Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, int? max = null, CancellationToken cancellationToken = default)
         {
-            var query =
-                new QueryDefinition($"SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c.timeStamp")
+            var select = max.HasValue
+                ? $"SELECT TOP {max} * FROM c WHERE c.sessionId = @sessionId AND c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c.timeStamp DESC"
+                : $"SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c.timeStamp";
+            var query = new QueryDefinition(select)
                     .WithParameter("@sessionId", sessionId)
                     .WithParameter("@type", nameof(Message))
                     .WithParameter("@upn", upn);
@@ -323,6 +333,8 @@ namespace FoundationaLLM.Common.Services.Azure
                 var response = await results.ReadNextAsync(cancellationToken);
                 output.AddRange(response);
             }
+
+            output = output.OrderBy(m => m.TimeStamp).ToList();
 
             return output;
         }
@@ -596,6 +608,75 @@ namespace FoundationaLLM.Common.Services.Azure
 
             await _attachments.UpsertItemAsync(
                item: attachmentReference,
+               partitionKey: partitionKey,
+               cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public async Task<AgentFileReference?> GetAgentFile(string instanceId, string agentName, string id, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                PartitionKey partitionKey = new PartitionKeyBuilder()
+                    .Add(instanceId)
+                    .Add(agentName)
+                    .Build();
+
+                var response = await _agents.ReadItemAsync<AgentFileReference>(
+                    id: id,
+                    partitionKey: partitionKey,
+                    cancellationToken: cancellationToken);
+
+                return response.Resource;
+            }
+            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<AgentFileReference>> GetAgentFiles(string instanceId, string agentName, CancellationToken cancellationToken = default)
+        {
+            var query = new QueryDefinition($"SELECT DISTINCT * FROM c WHERE c.instanceId = @instanceId AND c.agentName = @agentName AND {SoftDeleteQueryRestriction} ORDER BY c._ts DESC")
+                .WithParameter("@instanceId", instanceId)
+                .WithParameter("@agentName", agentName);
+
+            var response = _agents.GetItemQueryIterator<AgentFileReference>(query);
+
+            List<AgentFileReference> output = [];
+            while (response.HasMoreResults)
+            {
+                var results = await response.ReadNextAsync(cancellationToken);
+                output.AddRange(results);
+            }
+
+            return output;
+        }
+
+        /// <inheritdoc/>
+        public async Task CreateAgentFile(AgentFileReference agentFile, CancellationToken cancellationToken = default)
+        {
+            PartitionKey partitionKey = new PartitionKeyBuilder()
+                .Add(agentFile.InstanceId)
+                .Add(agentFile.AgentName)
+                .Build();
+
+            await _agents.CreateItemAsync(item: agentFile, partitionKey: partitionKey, cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteAgentFile(AgentFileReference agentFile, CancellationToken cancellationToken = default)
+        {
+            PartitionKey partitionKey = new PartitionKeyBuilder()
+                .Add(agentFile.InstanceId)
+                .Add(agentFile.AgentName)
+                .Build();
+
+            agentFile.Deleted = true;
+
+            await _agents.UpsertItemAsync(
+               item: agentFile,
                partitionKey: partitionKey,
                cancellationToken: cancellationToken);
         }

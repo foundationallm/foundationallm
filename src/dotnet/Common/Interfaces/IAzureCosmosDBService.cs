@@ -4,6 +4,7 @@ using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 
 namespace FoundationaLLM.Common.Interfaces;
@@ -92,13 +93,15 @@ public interface IAzureCosmosDBService
 
     /// <summary>
     /// Gets a list of all current chat messages for a specified session identifier.
+    /// Messages are always sorted by TimeStamp in ascending order.
     /// </summary>
     /// <param name="sessionId">Chat session identifier used to filter messages.</param>
     /// <param name="upn">The user principal name used for retrieving the messages for
     /// the signed in user.</param>
+    /// <param name="max">If provided, limits the number of messages.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns>List of chat message items for the specified session.</returns>
-    Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, CancellationToken cancellationToken = default);
+    Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, int? max = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets a single conversation message by its identifier.
@@ -259,6 +262,41 @@ public interface IAzureCosmosDBService
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns></returns>
     Task DeleteAttachment(AttachmentReference attachment, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets an agent file.
+    /// </summary>
+    /// <param name="instanceId">The instance unique identifier</param>
+    /// <param name="agentName">The agent name.</param>
+    /// <param name="id">The agent file id.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>An agent file.</returns>
+    Task<AgentFileReference?> GetAgentFile(string instanceId, string agentName, string id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a list of agent files.
+    /// </summary>
+    /// <param name="instanceId">The instance unique identifier</param>
+    /// <param name="agentName">The agent name.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>A list of agent files.</returns>
+    Task<List<AgentFileReference>> GetAgentFiles(string instanceId, string agentName, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Creates an agent file.
+    /// </summary>
+    /// <param name="agentFile">The agent file to be added.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns></returns>
+    Task CreateAgentFile(AgentFileReference agentFile, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Deletes an agent file.
+    /// </summary>
+    /// <param name="agentFile">The agent file to be deleted.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns></returns>
+    Task DeleteAgentFile(AgentFileReference agentFile, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates a new container for vector search.

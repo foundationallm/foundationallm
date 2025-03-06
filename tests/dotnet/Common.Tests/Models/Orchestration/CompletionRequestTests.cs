@@ -12,8 +12,8 @@ namespace FoundationaLLM.Common.Tests.Models.Orchestration
             string expectedPrompt = "Generate some text";
             var expectedMessageHistory = new List<MessageHistoryItem>
             {
-                new MessageHistoryItem("Sender_1", "Test"),
-                new MessageHistoryItem("Sender_2", "Test")
+                new MessageHistoryItem("Sender_1", "Test", "Test"),
+                new MessageHistoryItem("Sender_2", "Test", "Test")
             };
 
             // Act

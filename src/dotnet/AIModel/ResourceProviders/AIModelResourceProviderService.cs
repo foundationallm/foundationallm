@@ -9,6 +9,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
@@ -26,6 +27,7 @@ namespace FoundationaLLM.AIModel.ResourceProviders
     /// Implements the FoundationaLLM.AIModel resource provider.
     /// </summary>
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>
+    /// <param name="cacheOptions">The options providing the <see cref="ResourceProviderCacheSettings"/> with settings for the resource provider cache.</param>
     /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
@@ -34,6 +36,7 @@ namespace FoundationaLLM.AIModel.ResourceProviders
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to provide loggers for logging.</param>
     public class AIModelResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
+        IOptions<ResourceProviderCacheSettings> cacheOptions,
         IAuthorizationServiceClient authorizationService,
         [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_AIModel)] IStorageService storageService,
         IEventService eventService,
@@ -42,6 +45,7 @@ namespace FoundationaLLM.AIModel.ResourceProviders
         ILoggerFactory loggerFactory)
         : ResourceProviderServiceBase<AIModelReference>(
             instanceOptions.Value,
+            cacheOptions.Value,
             authorizationService,
             storageService,
             eventService,
@@ -177,6 +181,8 @@ namespace FoundationaLLM.AIModel.ResourceProviders
                     throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest);
             };
+            await SendResourceProviderEvent(
+                    EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
 
         #endregion

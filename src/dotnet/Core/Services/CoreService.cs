@@ -1,6 +1,4 @@
-using System.Text;
 using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Orchestration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -27,6 +25,7 @@ using FoundationaLLM.Core.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
@@ -179,6 +178,16 @@ public partial class CoreService(
                 instanceId,
                 completionRequest.AgentName!,
                 _userIdentity);
+
+            if (AgentExpired(agentBase, out var message))
+            {
+                return new LongRunningOperation
+                {
+                    OperationId = completionRequest.OperationId,
+                    Status = OperationStatus.Failed,
+                    StatusMessage = message
+                };
+            }
 
             completionRequest = await PrepareCompletionRequest(completionRequest, agentBase, true);
 
@@ -409,6 +418,16 @@ public partial class CoreService(
                 completionRequest.AgentName!,
                 _userIdentity);
 
+            if (AgentExpired(agentBase, out var message))
+            {
+                return new Message
+                {
+                    OperationId = completionRequest.OperationId,
+                    Status = OperationStatus.Failed,
+                    Text = message
+                };
+            }
+
             completionRequest = await PrepareCompletionRequest(completionRequest, agentBase);
 
             var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
@@ -438,6 +457,14 @@ public partial class CoreService(
                 completionResponse,
                 OperationStatus.Completed);
 
+            if (agentMessage.Content is { Count: > 0 })
+            {
+                foreach (var content in agentMessage.Content)
+                {
+                    content.Value = ResolveContentDeepLinks(content.Value, _baseUrl);
+                }
+            }
+
             return agentMessage;
         }
         catch (Exception ex)
@@ -462,6 +489,16 @@ public partial class CoreService(
                 instanceId,
                 directCompletionRequest.AgentName!,
                 _userIdentity);
+
+            if (AgentExpired(agentBase, out var message))
+            {
+                return new Message
+                {
+                    OperationId = directCompletionRequest.OperationId,
+                    Status = OperationStatus.Failed,
+                    Text = message
+                };
+            }
 
             directCompletionRequest = await PrepareCompletionRequest(directCompletionRequest, agentBase);
 
@@ -499,10 +536,10 @@ public partial class CoreService(
     public async Task<ResourceProviderUpsertResult<AttachmentFile>> UploadAttachment(string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity)
     {
         var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(instanceId, agentName, userIdentity);
-        var aiModelBase = await _aiModelResourceProvider.GetResourceAsync<AIModelBase>(agentBase.AIModelObjectId!, userIdentity);
+        var aiModelBase = await _aiModelResourceProvider.GetResourceAsync<AIModelBase>(agentBase.Workflow!.MainAIModelObjectId!, userIdentity);
         var apiEndpointConfiguration = await _configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(aiModelBase.EndpointObjectId!, userIdentity);
 
-        var agentRequiresOpenAIAssistants = agentBase.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants);
+        var agentRequiresOpenAIAssistants = agentBase.HasAzureOpenAIAssistantsWorkflow();
 
         attachmentFile.SecondaryProvider = agentRequiresOpenAIAssistants
             ? ResourceProviderNames.FoundationaLLM_AzureOpenAI
@@ -899,7 +936,8 @@ public partial class CoreService(
                 PropertyValues = new Dictionary<string, object?>
                 {
                     { "/tokens", completionResponse.PromptTokens },
-                    { "/status", operationStatus }
+                    { "/status", operationStatus },
+                    { "/textRewrite", completionResponse.UserPromptRewrite }
                 }
             },
             new PatchOperationItem<Message>
@@ -947,18 +985,24 @@ public partial class CoreService(
     /// <returns>The updated completion request with pre-processing applied.</returns>
     private async Task<CompletionRequest> PrepareCompletionRequest(CompletionRequest request, AgentBase agent, bool longRunningOperation = false)
     {
-        request.OperationId = Guid.NewGuid().ToString();
         request.LongRunningOperation = longRunningOperation;
+
+        if (string.IsNullOrWhiteSpace(request.SessionId) ||
+            !(agent.ConversationHistorySettings?.Enabled ?? false))
+            return request;
+
         List<MessageHistoryItem> messageHistoryList = [];
+        var max = agent.ConversationHistorySettings?.MaxHistory *2 ?? null;
         List<string> contentArtifactTypes = (agent.ConversationHistorySettings?.Enabled ?? false)
             ? [.. (agent.ConversationHistorySettings.HistoryContentArtifactTypes ?? string.Empty).Split(",", StringSplitOptions.RemoveEmptyEntries)]
             : [];
 
         // Retrieve conversation, including latest prompt.
-        var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!);
+        var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!, max);
         foreach (var message in messages)
         {
             var messageText = message.Text;
+            var messageTextRewrite = message.TextRewrite;
             if (message.Content is { Count: > 0 })
             {
                 StringBuilder text = new();
@@ -971,7 +1015,7 @@ public partial class CoreService(
 
             if (!string.IsNullOrWhiteSpace(messageText))
             {
-                var messageHistoryItem = new MessageHistoryItem(message.Sender, messageText)
+                var messageHistoryItem = new MessageHistoryItem(message.Sender, messageText, messageTextRewrite)
                 {
                     ContentArtifacts = message.ContentArtifacts?.Where(ca => contentArtifactTypes.Contains(ca.Type ?? string.Empty)).ToList()
                 };
@@ -982,6 +1026,22 @@ public partial class CoreService(
         request.MessageHistory = messageHistoryList;
 
         return request;
+    }
+
+    private bool AgentExpired(AgentBase agentBase, out string message)
+    {
+        // Check if the agent is expired.
+        if (agentBase.ExpirationDate != null && agentBase.ExpirationDate < DateTime.UtcNow)
+        {
+            _logger.LogWarning("User has attempted to access an expired agent: {AgentName}.",
+                agentBase.Name);
+            {
+                message = "Could not complete your request because the agent has expired.";
+                return true;
+            }
+        }
+        message = string.Empty;
+        return false;
     }
 
     private async Task<T> GetCoreConfigurationValue<T>(string instanceId, string configurationName, UnifiedUserIdentity userIdentity)
@@ -1002,13 +1062,16 @@ public partial class CoreService(
         var baseUrl = configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!;
         try
         {
-            var baseUrlOverride = await httpClientFactory.CreateClient<string?>(
-                HttpClientNames.CoreAPI,
-                callContext.CurrentUserIdentity!,
-                BuildClient);
-            if (!string.IsNullOrWhiteSpace(baseUrlOverride))
+            if (callContext.CurrentUserIdentity is {AssociatedWithAccessToken: false})
             {
-                baseUrl = baseUrlOverride;
+                var baseUrlOverride = await httpClientFactory.CreateClient<string?>(
+                    HttpClientNames.CoreAPI,
+                    callContext.CurrentUserIdentity!,
+                    BuildClient);
+                if (!string.IsNullOrWhiteSpace(baseUrlOverride))
+                {
+                    baseUrl = baseUrlOverride;
+                }
             }
         }
         catch (Exception e)

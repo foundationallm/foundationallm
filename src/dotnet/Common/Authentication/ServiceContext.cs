@@ -9,12 +9,12 @@ using System.IdentityModel.Tokens.Jwt;
 namespace FoundationaLLM.Common.Authentication
 {
     /// <summary>
-    /// Provides the default credentials for authentication.
+    /// Provides the context of the current service.
     /// </summary>
-    public static class DefaultAuthentication
+    public static class ServiceContext
     {
         /// <summary>
-        /// Initializes the default authentication.
+        /// Initializes the service context.
         /// </summary>
         /// <param name="production">Indicates whether the environment is production or not.</param>
         /// <param name="serviceName">The service name.</param>
@@ -22,6 +22,7 @@ namespace FoundationaLLM.Common.Authentication
         public static void Initialize(bool production, string serviceName, string scope = ScopeURIs.FoundationaLLM_Authorization)
         {
             Production = production;
+            ServiceName = serviceName;
 
             AzureCredential = Production
                 ? new ManagedIdentityCredential(Environment.GetEnvironmentVariable(EnvironmentVariables.AzureClientId))
@@ -52,6 +53,11 @@ namespace FoundationaLLM.Common.Authentication
                 ServiceIdentity.UPN = upn;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the name of the service.
+        /// </summary>
+        public static string ServiceName { get; set; } = string.Empty;
 
         /// <summary>
         /// Indicates whether the environment we run in is production or not.

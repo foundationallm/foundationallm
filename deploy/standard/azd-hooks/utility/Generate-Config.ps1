@@ -233,10 +233,32 @@ $tokens.gatewayApiRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.vectorizationJobRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.conversationPolicyGuid = $(New-Guid).Guid
 $tokens.attachmentPolicyGuid = $(New-Guid).Guid
+$tokens.conversationMappingsPolicyGuid = $(New-Guid).Guid
+$tokens.fileMappingsPolicyGuid = $(New-Guid).Guid
 $tokens.configReadAccessGuid1 = $(New-Guid).Guid
 $tokens.configReadAccessGuid2 = $(New-Guid).Guid
+$tokens.agentReaderGuid = $(New-Guid).Guid
+$tokens.promptReaderGuid = $(New-Guid).Guid
 $tokens.attachmentContributorGuid = $(New-Guid).Guid
 $tokens.conversationContributorGuid = $(New-Guid).Guid
+
+$tokens.openAiAssistantsReaderGuid = $(New-Guid).Guid
+$tokens.langGraphReactAgentReaderGuid = $(New-Guid).Guid
+$tokens.conversationContributorGuid2 = $(New-Guid).Guid
+$tokens.attachmentContributorGuid2 = $(New-Guid).Guid
+$tokens.configReadAccessGuid3 = $(New-Guid).Guid
+$tokens.configReadAccessGuid4 = $(New-Guid).Guid
+$tokens.externalAgentWorkflowReaderGuid = $(New-Guid).Guid
+$tokens.langChainExpressionLanguageReaderGuid = $(New-Guid).Guid
+$tokens.openAIAssistantsFileSearchReaderGuid = $(New-Guid).Guid
+$tokens.openAIAssistantsCodeInterpreterReaderGuid = $(New-Guid).Guid
+$tokens.dalleImageGenerationReaderGuid = $(New-Guid).Guid
+$tokens.foundationaLLMContentSearchToolReaderGuid = $(New-Guid).Guid
+$tokens.pbacConversationsOwnerGuid = $(New-Guid).Guid
+$tokens.pbacConversationMappingsGuid = $(New-Guid).Guid
+$tokens.pbacAttachmentsOwnerGuid = $(New-Guid).Guid
+$tokens.pbacFileMappingsGuid = $(New-Guid).Guid
+
 $tokens.subscriptionId = $subscriptionId
 $tokens.storageResourceGroup = $resourceGroups.storage
 $tokens.opsResourceGroup = $resourceGroups.ops
@@ -508,6 +530,7 @@ $tokens.orchestrationApiEventGridProfile = $eventGridProfiles["orchestration-api
 $tokens.vectorizationApiEventGridProfile = $eventGridProfiles["vectorization-api-event-profile"]
 $tokens.vectorizationWorkerEventGridProfile = $eventGridProfiles["vectorization-worker-event-profile"]
 $tokens.authKeyvaultUri = $authKeyvault.uri
+$tokens.serviceNamespaceName = $serviceNamespaceName
 
 PopulateTemplate $tokens "..,config,appconfig.template.json" "..,config,appconfig.json"
 PopulateTemplate $tokens "..,config,kubernetes,spc.foundationallm-certificates.backend.template.yml" "..,config,kubernetes,spc.foundationallm-certificates.backend.yml"
@@ -541,12 +564,22 @@ $($ingress.frontendIngress).PSBase.Keys | ForEach-Object {
     PopulateTemplate $tokens "..,config,helm,service-ingress.template.yml" "..,config,helm,$($_)-ingress.yml"
 }
 
+$tokens.serviceNamespaceName = $serviceNamespaceName
+
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,FoundationaLLM.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,FoundationaLLM.json"
-PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,completion-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,completion-model.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,OpenAIAssistants.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,OpenAIAssistants.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,LangGraphReactAgent.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,LangGraphReactAgent.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,LangChainExpressionLanguage.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,LangChainExpressionLanguage.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,DALLEImageGeneration.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,DALLEImageGeneration.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,ExternalAgentWorkflow.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,ExternalAgentWorkflow.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,FoundationaLLMContentSearchTool.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,FoundationaLLMContentSearchTool.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,OpenAIAssistantsFileSearch.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,OpenAIAssistantsFileSearch.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,OpenAIAssistantsCodeInterpreter.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,OpenAIAssistantsCodeInterpreter.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,completion-4-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,completion-4-model.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,completion-4o-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,completion-4o-model.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,embedding-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,embedding-model.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,dall-e-3-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,dall-e-3-model.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,AuthorizationAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,AuthorizationAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,AzureAISearch.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,AzureAISearch.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,AzureContentSafety.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,AzureContentSafety.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,AzureEventGrid.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,AzureEventGrid.json"

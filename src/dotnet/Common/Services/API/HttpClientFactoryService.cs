@@ -46,7 +46,9 @@ namespace FoundationaLLM.Common.Services.API
         {
             var endpointConfiguration = await GetEndpoint(clientName, userIdentity);
 
-            return await CreateClient(endpointConfiguration, userIdentity);
+            var client = await CreateClient(endpointConfiguration, userIdentity);
+
+            return client;
         }
 
         /// <inheritdoc/>
@@ -156,7 +158,7 @@ namespace FoundationaLLM.Common.Services.API
                     if (string.IsNullOrEmpty(scope))
                         throw new Exception($"The {AuthenticationParametersKeys.Scope} key is missing from the enpoint's authentication parameters dictionary.");
 
-                    var credentials = DefaultAuthentication.AzureCredential;
+                    var credentials = ServiceContext.AzureCredential;
                     var tokenResult = await credentials!.GetTokenAsync(
                         new([scope]),
                         default);
@@ -171,6 +173,27 @@ namespace FoundationaLLM.Common.Services.API
             }
 
             return httpClient;
+        }
+
+        public async Task<HttpClient> CreateClientForStatus(string clientName, UnifiedUserIdentity userIdentity)
+        {
+            var endpointConfiguration = await GetEndpoint(clientName, userIdentity);
+
+            var client = await CreateClient(endpointConfiguration, userIdentity);
+
+            if (client.BaseAddress == null)
+            {
+                throw new Exception($"The endpoint {clientName} does not have a base URL configured.");
+            }
+
+            if (string.IsNullOrWhiteSpace(endpointConfiguration.StatusEndpoint))
+            {
+                throw new Exception($"The endpoint {clientName} does not have a status endpoint configured.");
+            }
+
+            client.BaseAddress = new Uri(client.BaseAddress, endpointConfiguration.StatusEndpoint);
+
+            return client;
         }
 
         /// <inheritdoc/>
@@ -214,7 +237,7 @@ namespace FoundationaLLM.Common.Services.API
         /// <param name="userIdentity">The Identity of the user.</param>
         /// <returns>URLException or NULL</returns>
         private UrlException? GetUrlExceptionForUserIdentity(APIEndpointConfiguration endpointConfiguration, UnifiedUserIdentity userIdentity)
-        => endpointConfiguration.UrlExceptions.SingleOrDefault(x => x.UserPrincipalName.ToLower() == userIdentity.UPN!.ToLower() && x.Enabled);
+            => endpointConfiguration.UrlExceptions.SingleOrDefault(x => x.UserPrincipalName.ToLower() == userIdentity.UPN!.ToLower() && x.Enabled);
         
     }
 }

@@ -37,14 +37,6 @@
 				"value": "",
 				"content_type": "",
 				"first_version": "0.8.0"
-			},
-			{
-				"name": "EnableResourceProvidersCache",
-				"description": "Enable caching for resource providers.",
-				"secret": "",
-				"value": "false",
-				"content_type": "",
-				"first_version": "0.9.1"
 			}
 		]
 	},
@@ -109,9 +101,58 @@
 				"name": "AzureContainerAppsDynamicSessions",
 				"description": "The settings for the Azure Container Apps Dynamic Sessions code execution service.",
 				"secret": "",
-				"value": "{\"DynamicSessionsEndpoints\": []}",
+				"value": "{\\\"DynamicSessionsEndpoints\\\": []}",
 				"content_type": "application/json",
 				"first_version": "0.9.1"
+			}
+		]
+	},
+	{
+		"namespace": "ResourceProvidersCache",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify settings for resource providers caching."
+		},
+		"configuration_keys": [
+			{
+				"name": "EnableCache",
+				"description": "Setting that indicates whether the resource providers should use caching.",
+				"secret": "",
+				"value": "false",
+				"content_type": "",
+				"first_version": "0.9.4"
+			},
+			{
+				"name": "AbsoluteCacheExpirationSeconds",
+				"description": "Absolute cache expiration in seconds.",
+				"secret": "",
+				"value": "300",
+				"content_type": "",
+				"first_version": "0.9.4"
+			},
+			{
+				"name": "SlidingCacheExpirationSeconds",
+				"description": "Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set).",
+				"secret": "",
+				"value": "120",
+				"content_type": "",
+				"first_version": "0.9.4"
+			},
+			{
+				"name": "CacheSizeLimit",
+				"description": "The maximum number of items that can be stored in the cache.",
+				"secret": "",
+				"value": "10000",
+				"content_type": "",
+				"first_version": "0.9.4"
+			},
+			{
+				"name": "CacheExpirationScanFrequencySeconds",
+				"description": "Gets or sets the minimum length of time between successive scans for expired items in seconds.",
+				"secret": "",
+				"value": "30",
+				"content_type": "",
+				"first_version": "0.9.4"
 			}
 		]
 	},
@@ -419,6 +460,38 @@
 				"value": "false",
 				"content_type": "",
 				"first_version": "0.9.1"
+			},
+			{
+				"name": "AbsoluteCacheExpirationSeconds",
+				"description": "Absolute cache expiration in seconds.",
+				"secret": "",
+				"value": "300",
+				"content_type": "",
+				"first_version": "0.9.2"
+			},
+			{
+				"name": "SlidingCacheExpirationSeconds",
+				"description": "Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set).",
+				"secret": "",
+				"value": "120",
+				"content_type": "",
+				"first_version": "0.9.2"
+			},
+			{
+				"name": "CacheSizeLimit",
+				"description": "The maximum number of items that can be stored in the cache.",
+				"secret": "",
+				"value": "10000",
+				"content_type": "",
+				"first_version": "0.9.2"
+			},
+			{
+				"name": "CacheExpirationScanFrequencySeconds",
+				"description": "Gets or sets the minimum length of time between successive scans for expired items in seconds.",
+				"secret": "",
+				"value": "30",
+				"content_type": "",
+				"first_version": "0.9.2"
 			}
 		]
 	},

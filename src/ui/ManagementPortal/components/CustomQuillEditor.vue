@@ -2,6 +2,7 @@
 	<div class="quill-container" ref="quillContainer">
 		<QuillEditor
 			ref="quillEditor"
+			class="custom-quill-editor"
 			:content="content"
 			:toolbar="`#${toolbarId}`"
 			content-type="html"
@@ -22,8 +23,18 @@
 					<button class="ql-strike" aria-label="Strike" title="Strike"></button>
 					<button class="ql-link" aria-label="Link" title="Link"></button>
 					<button class="ql-image" aria-label="Image" title="Image"></button>
-					<button class="ql-list" value="ordered" aria-label="Ordered List" title="Ordered List"></button>
-					<button class="ql-list" value="bullet" aria-label="Unordered List" title="Unordered List"></button>
+					<button
+						class="ql-list"
+						value="ordered"
+						aria-label="Ordered List"
+						title="Ordered List"
+					></button>
+					<button
+						class="ql-list"
+						value="bullet"
+						aria-label="Unordered List"
+						title="Unordered List"
+					></button>
 					<button class="ql-clean" aria-label="Remove Styles" title="Remove Styles"></button>
 					<button
 						:class="`quill-view-html view-html-${randomNumber}`"
@@ -101,11 +112,11 @@ import CodeEditor from 'simple-code-editor';
 import { v4 as uuidv4 } from 'uuid';
 
 function getFocusableElements(container) {
-    return Array.from(
-        container.querySelectorAll(
-            'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
-        )
-    ).filter((el) => !el.hasAttribute('disabled') && el.offsetParent !== null);
+	return Array.from(
+		container.querySelectorAll(
+			'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])',
+		),
+	).filter((el) => !el.hasAttribute('disabled') && el.offsetParent !== null);
 }
 
 export default {
@@ -181,12 +192,12 @@ export default {
 				return;
 			}
 
-			this.$emit('content-update', this.content);
+			this.$emit('content-update', this.processedContent);
 			this.showHtmlDialog = false;
 		},
 
 		handleSaveCorrectedHTML() {
-			this.$emit('content-update', this.content);
+			this.$emit('content-update', this.processedContent);
 			this.showHtmlCorrectionDialog = false;
 			this.showHtmlDialog = false;
 		},
@@ -202,13 +213,15 @@ export default {
 				// event.preventDefault(); // Prevent Quill's default Tab handling
 				const focusableElements = getFocusableElements(document);
 				// console.log(focusableElements);
-				const currentIndex = focusableElements.indexOf(focusableElements.find((el) => el.classList.contains(`view-html-${this.randomNumber}`)));
+				const currentIndex = focusableElements.indexOf(
+					focusableElements.find((el) => el.classList.contains(`view-html-${this.randomNumber}`)),
+				);
 				// console.log(currentIndex);
 				const nextIndex = event.shiftKey ? currentIndex - 1 : currentIndex + 1;
 				// console.log(nextIndex);
 				this.$emit('content-update', this.oldContent);
 				// focusableElements[nextIndex]?.focus();
-				
+
 				// this.$nextTick(() => {
 				// 	this.content = this.oldContent;
 				setTimeout(() => {
@@ -245,8 +258,8 @@ export default {
 		// 			const nextIndex = context.shiftKey ? currentIndex - 1 : currentIndex + 1;
 
 		// 			if (focusableElements[nextIndex]) {
-        //                 focusableElements[nextIndex].focus();
-        //             }
+		//                 focusableElements[nextIndex].focus();
+		//             }
 		// 		}
 		// 	);
 		// },
@@ -254,7 +267,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .quill-container {
 	max-width: 80ch;
 }
@@ -266,5 +279,21 @@ export default {
 	border-radius: 4px;
 	padding: 0.5rem;
 	cursor: pointer;
+}
+</style>
+
+<style lang="scss">
+.custom-quill-editor {
+	.ql-container {
+		height: auto;
+	}
+
+	.ql-editor {
+		height: auto;
+		min-height: 150px;
+		max-height: 800px;
+		resize: vertical;
+		font-family: 'Poppins', sans-serif;
+	}
 }
 </style>

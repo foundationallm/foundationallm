@@ -21,16 +21,14 @@
 				<!-- Messages -->
 				<template v-if="messages.length !== 0">
 					<ChatMessage
-						v-for="(message, index) in messages.slice().reverse()"
+						v-for="(message, index) in messages.slice()"
 						:id="`message-${getMessageOrderFromReversedIndex(index)}`"
 						:key="message.renderId || message.id"
 						:message="message"
-						:show-word-animation="index === 0 && message.sender !== 'User'"
+						:show-word-animation="index === messages.length - 1 && message.sender !== 'User'"
 						role="log"
-						:aria-flowto="
-							index === 0 ? null : `message-${getMessageOrderFromReversedIndex(index) + 1}`
-						"
 						@rate="handleRateMessage($event.message)"
+						@scroll-to-bottom="scrollToBottom($event)"
 					/>
 				</template>
 
@@ -46,7 +44,7 @@
 
 		<!-- Chat input -->
 		<div class="chat-thread__input">
-			<ChatInput ref="chatInput" :disabled="isLoading || isMessagePending" @send="handleSend" />
+			<ChatInput ref="chatInput" :disabled="isLoading || isMessagePending || $appStore.sessionMessagePending" @send="handleSend" />
 		</div>
 
 		<!-- Footer -->
@@ -121,6 +119,7 @@ export default {
 			const sessionAgent = this.$appStore.getSessionAgent(newSession);
 			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
 			this.isLoading = false;
+			this.scrollToBottom(0, true);
 		},
 
 		lastSelectedAgent(newAgent, oldAgent) {
@@ -136,6 +135,13 @@ export default {
 				this.isMessagePending = false;
 			}
 		},
+
+		messages: {
+			handler() {
+				this.scrollToBottom();
+			},
+			deep: true,
+		}
 	},
 
 	created() {
@@ -179,12 +185,12 @@ export default {
 
 			// Display an error toast message if agent is null or undefined.
 			if (!agent) {
-				this.$toast.add({
+				this.$appStore.addToast({
 					severity: 'info',
 					summary: 'Could not send message',
 					detail:
 						'Please select an agent and try again. If no agents are available, refresh the page.',
-					life: this.$appStore.autoHideToasts ? 8000 : null,
+					life: 8000,
 				});
 				this.isMessagePending = false;
 				return;
@@ -213,6 +219,23 @@ export default {
 			// }
 
 			// this.isMessagePending = false;
+		},
+
+		scrollToBottom(contentGrowth = 0, force = false) {
+			const container = this.$refs.messageContainer;
+			if (!container) return;
+
+			const previousScrollHeight = container.scrollHeight;
+			const previousScrollTop = container.scrollTop;
+			const isNearBottom = previousScrollTop + container.clientHeight + contentGrowth >= previousScrollHeight - 100;
+
+			this.$nextTick(() => {
+				const newScrollHeight = container.scrollHeight;
+
+				if (isNearBottom || force) {
+					container.scrollTop = newScrollHeight;
+				}
+			});
 		},
 	},
 };
@@ -245,7 +268,7 @@ export default {
 
 .chat-thread__messages {
 	display: flex;
-	flex-direction: column-reverse;
+	flex-direction: column;
 	flex: 1;
 	overflow-y: auto;
 	overscroll-behavior: auto;

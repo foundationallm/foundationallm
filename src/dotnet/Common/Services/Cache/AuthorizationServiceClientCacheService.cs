@@ -1,30 +1,29 @@
 ﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authorization;
+using FoundationaLLM.Common.Models.Configuration.Authorization;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 
 namespace FoundationaLLM.Common.Services.Cache
 {
     /// <summary>
     /// Provides the caching services used by the FoundationaLLM authorization service client.
     /// </summary>
+    /// <param name="settings">The <see cref="AuthorizationServiceClientSettings"/> used to configure the authorization service client.</param>
     /// <param name="logger">The <see cref="ILogger"/> used to log information.</param>
     public class AuthorizationServiceClientCacheService(
+        AuthorizationServiceClientSettings settings,
         ILogger logger) : IAuthorizationServiceClientCacheService
     {
         private readonly ILogger _logger = logger;
         private readonly IMemoryCache _cache = new MemoryCache(new MemoryCacheOptions
         {
-            SizeLimit = 10000, // Limit cache size to 10000 resources.
-            ExpirationScanFrequency = TimeSpan.FromSeconds(30) // Scan for expired items every thirty seconds.
+            SizeLimit = settings.CacheSizeLimit ?? 10000, // Limit cache size.
+            ExpirationScanFrequency = TimeSpan.FromSeconds(settings.CacheExpirationScanFrequencySeconds ?? 30) // How often to scan for expired items.
         });
-
-        private readonly MemoryCacheEntryOptions _cacheEntryOptions = new MemoryCacheEntryOptions()
-           .SetAbsoluteExpiration(TimeSpan.FromMinutes(5)) // Cache entries are valid for 5 minutes.
-           .SetSlidingExpiration(TimeSpan.FromMinutes(2)) // Reset expiration time if accessed within 2 minutes.
-           .SetSize(1); // Each cache entry is a single authorization result.
 
         private readonly SemaphoreSlim _cacheLock = new(1, 1);
         private readonly MD5 _md5 = MD5.Create();
@@ -35,7 +34,7 @@ namespace FoundationaLLM.Common.Services.Cache
             await _cacheLock.WaitAsync();
             try
             {
-                _cache.Set(GetCacheKey(authorizationRequest), result, _cacheEntryOptions);
+                _cache.Set(GetCacheKey(authorizationRequest), result, GetMemoryCacheEntryOptions());
                 _logger.LogInformation(
                     "An action authorization result for the authorizable action {AuthorizableAction} has been set in the cache.",
                     authorizationRequest.Action);
@@ -54,15 +53,21 @@ namespace FoundationaLLM.Common.Services.Cache
         public bool TryGetValue(ActionAuthorizationRequest authorizationRequest, out ActionAuthorizationResult? authorizationResult)
         {
             authorizationResult = default;
+            var authorizationRequestJson = JsonSerializer.Serialize(authorizationRequest);
+
             try
             {
                 if (_cache.TryGetValue(GetCacheKey(authorizationRequest), out ActionAuthorizationResult? cachedValue)
                     && cachedValue != null)
                 {
                     authorizationResult = cachedValue;
-                    _logger.LogInformation("Cache hit for the authorization request");
+                    _logger.LogInformation("Cache hit for the following authorization request: {AuthorizationRequest}.",
+                        authorizationRequestJson);
                     return true;
                 }
+
+                _logger.LogInformation("Cache miss for the following authorization request: {AuthorizationRequest}.",
+                        authorizationRequestJson);
             }
             catch (Exception ex)
             {
@@ -77,12 +82,17 @@ namespace FoundationaLLM.Common.Services.Cache
         {
             var resourcePaths = string.Join(",", authorizationRequest.ResourcePaths);
             var groupIds = string.Join(",", authorizationRequest.UserContext.SecurityGroupIds);
-            var userIdentity = $"{authorizationRequest.UserContext.SecurityPrincipalId}:{authorizationRequest.UserContext.UserPrincipalName}:{groupIds}";
+            var userIdentity = $"{authorizationRequest.UserContext.SecurityPrincipalId}:{groupIds}";
 
             var keyString = $"{authorizationRequest.Action}:{resourcePaths}:{authorizationRequest.ExpandResourceTypePaths}:{authorizationRequest.IncludeRoles}:{authorizationRequest.IncludeActions}:{userIdentity}";
 
             var hashBytes = _md5.ComputeHash(Encoding.UTF8.GetBytes(keyString));
             return Convert.ToBase64String(hashBytes);
         }
+
+        private MemoryCacheEntryOptions GetMemoryCacheEntryOptions() => new MemoryCacheEntryOptions()
+           .SetAbsoluteExpiration(TimeSpan.FromSeconds(settings.AbsoluteCacheExpirationSeconds ?? 300)) // Cache entries are valid for 5 minutes.
+           .SetSlidingExpiration(TimeSpan.FromSeconds(settings.SlidingCacheExpirationSeconds ?? 120)) // Reset expiration time if accessed within 2 minutes.
+           .SetSize(1); // Each cache entry is a single authorization result.
     }
 }

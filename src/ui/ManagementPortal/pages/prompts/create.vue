@@ -3,7 +3,9 @@
 		<div style="display: flex">
 			<!-- Title -->
 			<div style="flex: 1">
-				<h2 class="page-header">{{ editPrompt ? 'Edit Agent Prompt' : 'Create New Agent Prompt' }}</h2>
+				<h2 class="page-header">
+					{{ editPrompt ? 'Edit Prompt' : 'Create New Prompt' }}
+				</h2>
 				<div class="page-subheader">
 					{{
 						editPrompt
@@ -12,9 +14,20 @@
 					}}
 				</div>
 			</div>
+
+			<!-- Edit access control -->
+			<AccessControl
+				v-if="editPrompt"
+				:scopes="[
+					{
+						label: 'Prompt',
+						value: `providers/FoundationaLLM.Prompt/prompts/${prompt.name}`,
+					},
+				]"
+			/>
 		</div>
 
-		<div class="steps" :class="{ 'steps--loading': loading }">
+		<div class="steps">
 			<!-- Loading overlay -->
 			<template v-if="loading">
 				<div class="steps__loading-overlay" role="status" aria-live="polite">
@@ -24,8 +37,8 @@
 			</template>
 
 			<div class="span-2">
-				<div id="aria-agent-name" class="step-header mb-2">Prompt name:</div>
-				<div id="aria-agent-name-desc" class="mb-2">
+				<div id="aria-prompt-name" class="step-header mb-2">Prompt name:</div>
+				<div id="aria-prompt-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
 				</div>
 				<div class="input-wrapper">
@@ -34,9 +47,26 @@
 						:disabled="editPrompt"
 						type="text"
 						class="w-100"
-						placeholder="Enter agent prompt name"
-						aria-labelledby="aria-agent-name aria-agent-name-desc"
+						placeholder="Enter prompt name"
+						aria-labelledby="aria-prompt-name aria-prompt-name-desc"
+						@input="handleNameInput"
 					/>
+					<span
+						v-if="nameValidationStatus === 'valid'"
+						class="icon valid"
+						title="Name is available"
+						aria-label="Name is available"
+					>
+						✔️
+					</span>
+					<span
+						v-else-if="nameValidationStatus === 'invalid'"
+						:title="validationMessage"
+						class="icon invalid"
+						:aria-label="validationMessage"
+					>
+						❌
+					</span>
 				</div>
 			</div>
 			<div class="span-2">
@@ -48,16 +78,26 @@
 					v-model="prompt.description"
 					type="text"
 					class="w-100"
-					placeholder="Enter agent description"
+					placeholder="Enter prompt description"
 					aria-labelledby="aria-description"
+				/>
+			</div>
+			<div class="span-2">
+				<div class="step-header mb-2">Category:</div>
+				<Dropdown
+					v-model="prompt.category"
+					:options="categoryOptions"
+					option-label="label"
+					option-value="value"
+					class="dropdown--agent"
+					placeholder="--Select--"
+					aria-labelledby="aria-source-type"
 				/>
 			</div>
 
 			<!-- System prompt -->
 			<section aria-labelledby="system-prompt" class="span-2 steps">
 				<h3 class="step-section-header span-2" id="system-prompt">Prompt Prefix</h3>
-
-				<div id="aria-persona" class="step-header">What is the persona of the agent?</div>
 
 				<div class="span-2">
 					<Textarea
@@ -71,23 +111,18 @@
 					/>
 				</div>
 			</section>
-			
+
 			<div class="span-2 d-flex justify-content-end" style="gap: 16px">
-				<!-- Create agent -->
+				<!-- Create prompt -->
 				<Button
-					:label="editPrompt ? 'Save Changes' : 'Create Agent Prompt'"
+					:label="editPrompt ? 'Save Changes' : 'Create Prompt'"
 					severity="primary"
 					:disabled="editable === false"
 					@click="handleCreatePrompt"
 				/>
 
 				<!-- Cancel -->
-				<Button
-					v-if="editPrompt"
-					label="Cancel"
-					severity="secondary"
-					@click="handleCancel"
-				/>
+				<Button v-if="editPrompt" label="Cancel" severity="secondary" @click="handleCancel" />
 			</div>
 		</div>
 	</main>
@@ -98,10 +133,7 @@ import type { PropType } from 'vue';
 import { ref } from 'vue';
 import { debounce } from 'lodash';
 import api from '@/js/api';
-import type {
-	Prompt,
-	CreatePromptRequest
-} from '@/js/types';
+import type { Prompt, CreatePromptRequest } from '@/js/types';
 
 export default {
 	name: 'CreatePrompt',
@@ -111,6 +143,11 @@ export default {
 			type: [Boolean, String] as PropType<false | string>,
 			required: false,
 			default: false,
+		},
+		promptName: {
+			type: String as PropType<string>,
+			required: false,
+			default: '',
 		},
 	},
 
@@ -125,16 +162,28 @@ export default {
 
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			validationMessage: '' as string,
+
+			categoryOptions: [
+				{
+					label: 'Workflow',
+					value: 'Workflow',
+				},
+				{
+					label: 'Tool',
+					value: 'Tool',
+				},
+			],
 		};
 	},
 
 	async created() {
 		this.loading = true;
 
-		if (this.editPrompt) {
-			this.loadingStatusText = `Retrieving prompt: ${this.editPrompt}...`;
-			const promptGetResult = await api.getPromptByName(this.editPrompt);
-			this.editable = promptGetResult?.actions.includes('FoundationaLLM.Prompt/prompts/write') ?? false;
+		if (this.editPrompt && this.promptName !== '') {
+			this.loadingStatusText = `Retrieving prompt: ${this.promptName}...`;
+			const promptGetResult = await api.getPromptByName(this.promptName);
+			this.editable =
+				promptGetResult?.actions.includes('FoundationaLLM.Prompt/prompts/write') ?? false;
 
 			const prompt = promptGetResult?.resource;
 			this.loadingStatusText = `Mapping prompt values to form...`;
@@ -144,6 +193,8 @@ export default {
 		} else {
 			this.editable = true;
 		}
+
+		this.debouncedCheckName = debounce(this.checkName, 500);
 
 		this.loading = false;
 	},
@@ -156,14 +207,53 @@ export default {
 			this.$router.push('/prompts');
 		},
 
+		async checkName() {
+			try {
+				const response = await api.checkPromptName(this.prompt.name, this.prompt.type);
+
+				// Handle response based on the status
+				if (response.status === 'Allowed') {
+					// Name is available
+					this.nameValidationStatus = 'valid';
+					this.validationMessage = null;
+				} else if (response.status === 'Denied') {
+					// Name is taken
+					this.nameValidationStatus = 'invalid';
+					this.validationMessage = response.message;
+				}
+			} catch (error) {
+				console.error('Error checking prompt name: ', error);
+				this.nameValidationStatus = 'invalid';
+				this.validationMessage = 'Error checking the prompt name. Please try again.';
+			}
+		},
+
+		handleNameInput(event) {
+			const sanitizedValue = this.$filters.sanitizeNameInput(event);
+			this.prompt.name = sanitizedValue;
+			this.sourceName = sanitizedValue;
+
+			// Check if the name is available if we are creating a new prompt.
+			if (!this.editPrompt) {
+				this.debouncedCheckName();
+			}
+		},
+
 		async handleCreatePrompt() {
 			const errors = [];
 			if (!this.prompt.name) {
 				errors.push('Please give the prompt a name.');
 			}
+			if (this.nameValidationStatus === 'invalid') {
+				errors.push(this.validationMessage);
+			}
 
 			if (!this.prompt.prefix) {
 				errors.push('The prompt requires a prefix.');
+			}
+
+			if (!this.prompt.category) {
+				errors.push('Please select a category for the prompt.');
 			}
 
 			if (errors.length > 0) {
@@ -190,10 +280,11 @@ export default {
 				display_name: this.prompt.display_name,
 				expiration_date: this.prompt.expiration_date,
 				properties: this.prompt.properties,
+				category: this.prompt.category,
 			};
 
 			try {
-				await api.createOrUpdatePrompt(this.editPrompt, promptRequest);
+				await api.createOrUpdatePrompt(this.prompt.name, promptRequest);
 			} catch (error) {
 				this.loading = false;
 				return this.$toast.add({
@@ -225,10 +316,6 @@ export default {
 	position: relative;
 }
 
-.steps--loading {
-	pointer-events: none;
-}
-
 .steps__loading-overlay {
 	position: fixed;
 	top: 0;
@@ -242,7 +329,7 @@ export default {
 	gap: 16px;
 	z-index: 10;
 	background-color: rgba(255, 255, 255, 0.9);
-	pointer-events: none;
+	pointer-events: auto;
 }
 
 .step-section-header {

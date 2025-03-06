@@ -12,6 +12,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Prompt
         /// <inheritdoc/>
         [JsonIgnore]
         public override string? Type { get; set; }
+
+        /// <summary>
+        /// The category of the prompt.
+        /// </summary>
+        [JsonPropertyName("category")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public PromptCategory? Category { get; set; }
     }
 
 }

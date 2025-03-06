@@ -1,5 +1,8 @@
 <template>
-	<div :class="$appStore.sidebarCollapsed ? 'sidebar sidebar-collapsed' : 'sidebar'" role="navigation">
+	<div
+		:class="$appStore.sidebarCollapsed ? 'sidebar sidebar-collapsed' : 'sidebar'"
+		role="navigation"
+	>
 		<h2 id="sidebar-title" class="visually-hidden">Main Navigation</h2>
 		<!-- Sidebar section header -->
 		<div class="sidebar__header">
@@ -40,7 +43,7 @@
 					<li><NuxtLink to="/agents/create" class="sidebar__item">Create New Agent</NuxtLink></li>
 					<li><NuxtLink to="/agents/public" class="sidebar__item">All Agents</NuxtLink></li>
 					<li><NuxtLink to="/agents/private" class="sidebar__item">My Agents</NuxtLink></li>
-					<li><NuxtLink to="/prompts" class="sidebar__item">Agent Prompts</NuxtLink></li>
+					<li><NuxtLink to="/prompts" class="sidebar__item">Prompts</NuxtLink></li>
 				</ul>
 				<!-- <div class="sidebar__item">Performance</div> -->
 
@@ -54,30 +57,19 @@
 					<li><NuxtLink to="/vector-stores" class="sidebar__item">Vector Stores</NuxtLink></li>
 				</ul>
 
-				<!-- Pipeline -->
-				<!-- <h3 class="sidebar__section-header">
-					<span class="pi pi-equals" aria-hidden="true"></span>
-					<span>Data Pipeline</span>
+				<!-- Models and Endpoints -->
+				<h3 class="sidebar__section-header">
+					<span class="pi pi-box" aria-hidden="true"></span>
+					<span>Models and Endpoints</span>
 				</h3>
 				<ul>
-					<li><NuxtLink to="/pipeline/indexing-profiles" class="sidebar__item">Indexing Profiles</NuxtLink></li>
-				</ul> -->
-
-				<!-- Quotas -->
-				<!-- <div class="sidebar__section-header">
-					<span class="pi pi-calculator"></span>
-					<span>Quotas</span>
-				</div>
-
-				<div class="sidebar__item">Policies</div> -->
-
-				<!-- LLM's -->
-				<!-- <div class="sidebar__section-header">
-					<span class="pi pi-sitemap"></span>
-					<span>LLM's</span>
-				</div>
-
-				<div class="sidebar__item">Language Models & Endpoints</div> -->
+					<li>
+						<NuxtLink to="/models" class="sidebar__item">AI Models</NuxtLink>
+					</li>
+					<li>
+						<NuxtLink to="/api-endpoints" class="sidebar__item">API Endpoints</NuxtLink>
+					</li>
+				</ul>
 
 				<!-- Security -->
 				<h3 class="sidebar__section-header">
@@ -115,7 +107,8 @@
 					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 						<span
 							class="sidebar__username"
-							aria-label="Logged in as {{ $authStore.currentAccount?.username }}">
+							aria-label="Logged in as {{ $authStore.currentAccount?.username }}"
+						>
 							{{ $authStore.currentAccount?.name }}
 						</span>
 						<template #popper>
@@ -149,7 +142,7 @@ export default {
 
 	created() {
 		this.$appStore.initializeSidebarState();
-	}
+	},
 };
 </script>
 
@@ -180,14 +173,14 @@ a {
 }
 
 .sidebar ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
 }
 
 .sidebar li {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 .sidebar__header {
@@ -213,10 +206,10 @@ a {
 
 .sidebar__content {
 	display: flex;
-    height: 100%;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: stretch;
+	height: 100%;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-items: stretch;
 	overflow: hidden;
 }
 

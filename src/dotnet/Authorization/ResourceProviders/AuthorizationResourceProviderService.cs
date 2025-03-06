@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
+using FoundationaLLM.Common.Constants.Authentication;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 
 namespace FoundationaLLM.Authorization.ResourceProviders
 {
@@ -19,18 +21,21 @@ namespace FoundationaLLM.Authorization.ResourceProviders
     /// Implements the FoundationaLLM.Authorization resource provider.
     /// </summary>
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>
+    /// <param name="cacheOptions">The options providing the <see cref="ResourceProviderCacheSettings"/> with settings for the resource provider cache.</param>
     /// <param name="authorizationServiceClient">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to provide loggers for logging.</param>
     public class AuthorizationResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
+        IOptions<ResourceProviderCacheSettings> cacheOptions,
         IAuthorizationServiceClient authorizationServiceClient,
         IResourceValidatorFactory resourceValidatorFactory,
         IServiceProvider serviceProvider,
         ILoggerFactory loggerFactory)
         : ResourceProviderServiceBase<ResourceReference>(
             instanceOptions.Value,
+            cacheOptions.Value,
             authorizationServiceClient,
             null,
             null,
@@ -137,6 +142,9 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                     ResourceExists = false
                 };
 
+            if (roleAssignmentResult.ResultReason == RoleAssignmentResultReasons.AssignmentExists)
+                throw new ResourceProviderException($"The role assignment already exists.",
+                    StatusCodes.Status409Conflict);
             throw new ResourceProviderException("The role assignment failed.");
         }
 

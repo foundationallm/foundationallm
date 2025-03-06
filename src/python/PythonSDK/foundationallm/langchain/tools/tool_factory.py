@@ -5,7 +5,7 @@ Description: Factory class for creating tools based on the AgentTool configurati
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.langchain.exceptions import LangChainException
-from foundationallm.langchain.tools import DALLEImageGenerationTool
+from foundationallm.langchain.tools import DALLEImageGenerationTool, FoundationaLLMContentSearchTool
 from foundationallm.models.agents import AgentTool
 from foundationallm.plugins import PluginManager, PluginManagerTypes
 
@@ -15,6 +15,7 @@ class ToolFactory:
     """
     FLLM_PACKAGE_NAME = "FoundationaLLM"
     DALLE_IMAGE_GENERATION_TOOL_NAME = "DALLEImageGeneration"
+    FOUNDATIONALLM_CONTENT_SEARCH_TOOL = "FoundationaLLMContentSearchTool"
 
     def __init__(self, plugin_manager: PluginManager):
         """
@@ -51,7 +52,10 @@ class ToolFactory:
                 case self.DALLE_IMAGE_GENERATION_TOOL_NAME:
                     tool = DALLEImageGenerationTool(tool_config, objects, user_identity, config)
                     self.plugin_manager.object_cache[cache_key] = tool
-                    return tool
+                case self.FOUNDATIONALLM_CONTENT_SEARCH_TOOL:
+                    tool = FoundationaLLMContentSearchTool(tool_config, objects, user_identity, config)
+            if tool is not None:
+                return tool
         else:
             tool_plugin_manager = None
 

@@ -204,50 +204,59 @@ module cosmosDb './shared/cosmosdb.bicep' = {
     containers: [
       {
         name: 'UserSessions'
-        partitionKeyPath: '/upn'
+        partitionKeyPath: ['/upn']
         maxThroughput: 1000
         defaultTtl: null
       }
       {
         name: 'UserProfiles'
-        partitionKeyPath: '/upn'
+        partitionKeyPath: ['/upn']
         maxThroughput: 1000
         defaultTtl: null
       }
       {
         name: 'Sessions'
-        partitionKeyPath: '/sessionId'
+        partitionKeyPath: ['/sessionId']
         maxThroughput: 1000
         defaultTtl: null
       }
       {
         name: 'State'
-        partitionKeyPath: '/operation_id'
+        partitionKeyPath: ['/operation_id']
         maxThroughput: 1000
         defaultTtl: 604800
       }
       {
         name: 'leases'
-        partitionKeyPath: '/id'
+        partitionKeyPath: ['/id']
         maxThroughput: 1000
         defaultTtl: null
       }
       {
         name: 'Attachments'
-        partitionKeyPath: '/upn'
+        partitionKeyPath: ['/upn']
         maxThroughput: 1000
         defaultTtl: null
       }
       {
         name: 'Operations'
-        partitionKeyPath: '/id'
+        partitionKeyPath: ['/id']
         maxThroughput: 1000
         defaultTtl: null
       }
       {
         name: 'ExternalResources'
-        partitionKeyPath: '/partitionKey'
+        partitionKeyPath: ['/partitionKey']
         maxThroughput: 1000
+        defaultTtl: null
+      }
+      {
+        name: 'Agents'
+        partitionKeyPath: [
+          '/instanceId'
+          '/agentName'
+        ]
+        maxThroughput: 4000
         defaultTtl: null
       }
     ]
@@ -349,6 +358,9 @@ module eventgrid './shared/eventgrid.bicep' = {
       {
         name: 'configuration'
       }
+      {
+        name: 'resource-providers'
+      }
     ]
   }
   scope: rg
@@ -424,6 +436,9 @@ module storage './shared/storage.bicep' = {
       }
       {
         name: 'external-modules-python'
+      }
+      {
+        name: 'orchestration-completion-requests'
       }
     ]
     files: []

@@ -10,7 +10,7 @@
 							:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
 							alt="Agent avatar"
 						/>
-						<span>{{ getDisplayName() }}</span>
+						<span>{{ senderDisplayName }}</span>
 					</span>
 
 					<!-- Tokens & Timestamp -->
@@ -76,8 +76,19 @@
 					<!-- <component :is="compiledMarkdownComponent" v-else /> -->
 
 					<div v-for="(content, index) in processedContent" v-else :key="index">
-						<ChatMessageTextBlock v-if="content.type === 'text'" :value="content.value" />
+						<template v-if="content.type === 'text'">
+							<div v-if="message.sender === 'User'" style="white-space: pre-wrap;">
+								{{ content.value }}
+							</div>
+
+							<ChatMessageTextBlock v-else :value="content.value" />
+						</template>
+
 						<ChatMessageContentBlock v-else :value="content" />
+					</div>
+
+					<div v-for="artifact in message.contentArtifacts" :key="artifact.id">
+						<ChatMessageContentArtifactBlock v-if="artifact.type === 'image'" :value="artifact" />
 					</div>
 
 					<!-- Analysis button -->
@@ -119,13 +130,18 @@
 								:disabled="message.type === 'LoadingMessage'"
 								size="small"
 								text
-								:icon="message.rating === true ? 'pi pi-thumbs-up-fill' : message.rating === false ? 'pi pi-thumbs-down-fill' : 'pi pi-thumbs-up'"
+								:icon="
+									message.rating === true
+										? 'pi pi-thumbs-up-fill'
+										: message.rating === false
+											? 'pi pi-thumbs-down-fill'
+											: 'pi pi-thumbs-up'
+								"
 								label="Rate Message"
 								@click.stop="isRatingModalVisible = true"
 							/>
 						</template>
 					</span>
-					
 
 					<!-- Avg MS Per Word: {{ averageTimePerWordMS }} -->
 					<div v-if="messageDisplayStatus" class="loading-shimmer" style="font-weight: 600">
@@ -147,7 +163,7 @@
 
 						<!-- View prompt button -->
 						<Button
-							v-if="$appConfigStore.showViewPrompt && $appStore.agentShowViewPrompt"	
+							v-if="$appConfigStore.showViewPrompt && $appStore.agentShowViewPrompt"
 							class="message__button"
 							:disabled="message.type === 'LoadingMessage'"
 							size="small"
@@ -186,7 +202,7 @@
 		</div>
 
 		<!-- Date Divider -->
-		<Divider v-if="message.sender == 'User'" align="center" type="solid" class="date-separator">
+		<Divider v-if="message.sender === 'User'" align="center" type="solid" class="date-separator">
 			<TimeAgo :date="new Date(message.timeStamp)" />
 		</Divider>
 
@@ -202,7 +218,7 @@
 			v-model:visible="selectedContentArtifact"
 			:header="selectedContentArtifact?.title"
 			modal
-			style="max-width: 85%;"
+			style="max-width: 85%"
 		>
 			<p tabindex="0" style="overflow-x: auto;">
 				<pre>{{ JSON.stringify(selectedContentArtifact, null, 2) }}</pre>
@@ -223,11 +239,7 @@
 		</Dialog>
 
 		<!-- Message Rating Modal -->
-		<Dialog
-			v-model:visible="isRatingModalVisible"
-			header="Rate Message"
-			modal
-		>
+		<Dialog v-model:visible="isRatingModalVisible" header="Rate Message" modal>
 			<label for="rating-textarea">Comments</label>
 			<Textarea
 				id="rating-textarea"
@@ -250,7 +262,7 @@
 					text
 					:icon="message.rating ? 'pi pi-thumbs-up-fill' : 'pi pi-thumbs-up'"
 					:label="message.rating ? 'Message Liked' : 'Like'"
-					@click="message.rating === true ? message.rating = null : message.rating = true"
+					@click="message.rating === true ? (message.rating = null) : (message.rating = true)"
 				/>
 			</span>
 
@@ -263,7 +275,7 @@
 					text
 					:icon="message.rating === false ? 'pi pi-thumbs-down-fill' : 'pi pi-thumbs-down'"
 					:label="message.rating === false ? 'Message Disliked' : 'Dislike'"
-					@click="message.rating === false ? message.rating = null : message.rating = false"
+					@click="message.rating === false ? (message.rating = null) : (message.rating = false)"
 				/>
 			</span>
 
@@ -302,17 +314,36 @@ import TimeAgo from '~/components/TimeAgo.vue';
 
 function processLatex(content) {
 	const blockLatexPattern = /\\\[\s*([\s\S]+?)\s*\\\]/g;
-	const inlineLatexPattern = /\\\(([\s\S]+?)\\\)/g;
+	const inlineLatexPattern = /\\\(\s*([\s\S]+?)\s*\\\)/g;
 
-	// Process block LaTeX: \[ ... \]
-	content = content.replace(blockLatexPattern, (_, math) => {
-		return katex.renderToString(math, { displayMode: true, throwOnError: false });
+	// Match triple & inline backticks
+	const codeBlockPattern = /```[\s\S]+?```|`[^`]+`/g;
+
+	let codeBlocks = [];
+
+	// Extract and replace code blocks with placeholders temporarily
+	// to ensure LaTeX within is not altered
+	content = content.replace(codeBlockPattern, (match) => {
+		codeBlocks.push(match);
+		return `{{CODE_BLOCK_${codeBlocks.length - 1}}}`;
 	});
 
-	// Process inline LaTeX: \( ... \)
-	content = content.replace(inlineLatexPattern, (_, math) => {
-		return katex.renderToString(math, { throwOnError: false });
-	});
+	try {
+		// Process block LaTeX: \[ ... \]
+		content = content.replace(blockLatexPattern, (_, math) => {
+			return `<div class="katex-block">${katex.renderToString(math, { displayMode: true, throwOnError: false, output: "mathml" })}</div>`;
+		});
+
+		// Process inline LaTeX: \( ... \)
+		content = content.replace(inlineLatexPattern, (_, math) => {
+			return `<span class="katex-inline">${katex.renderToString(math, { throwOnError: false, output: "mathml" })}</span>`;
+		});
+	} catch (error) {
+		console.error('LaTeX rendering error:', error);
+	}
+
+	// Restore code blocks
+	content = content.replace(/\{\{CODE_BLOCK_(\d+)\}\}/g, (_, index) => codeBlocks[Number(index)]);
 
 	return content;
 }
@@ -368,7 +399,7 @@ export default {
 		},
 	},
 
-	emits: ['rate'],
+	emits: ['rate', 'scroll-to-bottom'],
 
 	data() {
 		return {
@@ -392,6 +423,14 @@ export default {
 	},
 
 	computed: {
+		senderDisplayName() {
+			let displayName = this.message.senderDisplayName;
+			if (this.message.sender && this.message.sender !== 'User') {
+				displayName = this.$appStore.mapAgentDisplayName(this.message.senderDisplayName);
+			}
+			return displayName;
+		},
+
 		messageContent() {
 			if (this.message.status === 'Failed') {
 				const failedMessage = this.message.text ?? 'Failed to generate a response.';
@@ -409,11 +448,7 @@ export default {
 		},
 
 		messageDisplayStatus() {
-			if (
-				this.message.status === 'Failed' ||
-				(this.message.status === 'Completed')
-			)
-				return null;
+			if (this.message.status === 'Failed' || this.message.status === 'Completed') return null;
 
 			if (this.isRenderingMessage && this.messageContent.length > 0) return 'Responding';
 
@@ -435,7 +470,7 @@ export default {
 			deep: true,
 			handler(newMessage, oldMessage) {
 				// There is an issue here if a message that is not the latest has an incomplete status
-				if (newMessage.status === 'Completed') {
+				if (newMessage.status === 'Failed' || newMessage.status === 'Completed') {
 					this.computedAverageTimePerWord({ ...newMessage }, oldMessage ?? {});
 					this.handleMessageCompleted(newMessage);
 					return;
@@ -458,6 +493,16 @@ export default {
 				this.markSkippableContent();
 			},
 		},
+
+		isRenderingMessage: {
+			handler(newVal, oldVal) {
+				this.$appStore.sessionMessagePending = newVal;
+				if (newVal === oldVal) return;
+				if (newVal) {
+					this.keepScrollingUntilCompleted();
+				}
+			},
+		},
 	},
 
 	created() {
@@ -467,11 +512,11 @@ export default {
 			this.processedContent = [
 				{
 					type: 'text',
-					value: this.processContentBlock(this.message.text),
+					value: this.message.text,
 					origValue: this.message.text,
 				},
 			];
-		} else if (this.message.content) {
+		} else if (this.message.content?.length > 0) {
 			this.processedContent = this.message.content.map((content) => {
 				this.currentWordIndex = getWordCount(content.value);
 				return {
@@ -481,6 +526,8 @@ export default {
 					origValue: content.value,
 				};
 			});
+		} else if (this.message.text) {
+			this.processedContent = this.messageContent;
 		}
 	},
 
@@ -490,6 +537,9 @@ export default {
 		processContentBlock(contentToProcess) {
 			let htmlContent = processLatex(contentToProcess ?? '');
 			htmlContent = marked(htmlContent, { renderer: this.markedRenderer });
+
+			// In case the agent generates html that may be malicious, such as
+			// if the user asks the agent to repeat their malicious input
 			return DOMPurify.sanitize(htmlContent);
 		},
 
@@ -690,12 +740,6 @@ export default {
 			return `${date}\n(${processingTimeSeconds.toFixed(2)} seconds)`;
 		},
 
-		getDisplayName() {
-			return this.message.sender === 'User'
-				? this.message.senderDisplayName
-				: this.message.senderDisplayName || 'Agent';
-		},
-
 		handleCopyMessageContent() {
 			let contentToCopy = '';
 			if (this.messageContent && this.messageContent?.length > 0) {
@@ -720,10 +764,9 @@ export default {
 			document.execCommand('copy');
 			document.body.removeChild(textarea);
 
-			this.$toast.add({
+			this.$appStore.addToast({
 				severity: 'success',
 				detail: 'Message copied to clipboard!',
-				life: this.$appStore.autoHideToasts ? 5000 : null,
 			});
 		},
 
@@ -734,10 +777,9 @@ export default {
 		handleRatingSubmit(message: Message) {
 			this.$emit('rate', { message });
 			this.isRatingModalVisible = false;
-			this.$toast.add({
+			this.$appStore.addToast({
 				severity: 'success',
 				detail: 'Rating submitted!',
-				life: this.$appStore.autoHideToasts ? 5000 : null,
 			});
 		},
 
@@ -762,8 +804,26 @@ export default {
 					fileName: link.dataset.filename || link.textContent,
 				};
 
-				fetchBlobUrl(content, this.$toast);
+				fetchBlobUrl(content);
 			}
+		},
+
+		keepScrollingUntilCompleted() {
+			if (!this.isRenderingMessage) return;
+
+			this.$nextTick(() => {
+				const previousScrollHeight = this.$parent.$refs.messageContainer?.scrollHeight || 0;
+
+				setTimeout(() => {
+					const newScrollHeight = this.$parent.$refs.messageContainer?.scrollHeight || 0;
+					const contentGrowth = newScrollHeight - previousScrollHeight;
+
+					if (contentGrowth > 0) {
+						this.$emit('scroll-to-bottom', contentGrowth);
+					}
+					this.keepScrollingUntilCompleted();
+				}, 100);
+			});
 		},
 	},
 };
@@ -921,6 +981,10 @@ $textColor: #131833;
 	padding: 4px 8px;
 	cursor: pointer;
 	white-space: nowrap;
+	max-width: 25rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .ratings {

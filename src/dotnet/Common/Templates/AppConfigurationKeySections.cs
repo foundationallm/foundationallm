@@ -37,6 +37,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:Code:CodeExecution";
         
         /// <summary>
+        /// Configuration section used to identify settings for resource providers caching.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProvidersCache =
+            "FoundationaLLM:ResourceProvidersCache";
+        
+        /// <summary>
         /// Configuration section used to identify the storage settings for the FoundationaLLM.AIModel resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_AIModel_Storage =

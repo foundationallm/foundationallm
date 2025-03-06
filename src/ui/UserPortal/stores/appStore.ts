@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import type { ToastMessageOptions } from 'primevue/toast';
 import { useAppConfigStore } from './appConfigStore';
 import { useAuthStore } from './authStore';
 import type {
@@ -16,6 +17,7 @@ import type {
 	MessageContent,
 } from '@/js/types';
 import api from '@/js/api';
+import { isAgentExpired } from '@/js/helpers';
 // import eventBus from '@/js/eventBus';
 
 const DEFAULT_POLLING_INTERVAL_MS = 5000;
@@ -41,6 +43,7 @@ export const useAppStore = defineStore('app', {
 		autoHideToasts: JSON.parse(sessionStorage.getItem('autoHideToasts') || 'true') as boolean,
 		textSize: JSON.parse(sessionStorage.getItem('textSize') || '1') as number,
 		highContrastMode: JSON.parse(sessionStorage.getItem('highContrastMode') || 'false') as boolean,
+		sessionMessagePending: false,
 	}),
 
 	getters: {
@@ -98,14 +101,10 @@ export const useAppStore = defineStore('app', {
 				return;
 			}
 
-			const sessionIdQuery = useNuxtApp().$router.currentRoute.value.query.chat;
-			if (!appConfigStore.showLastConversionOnStartup && !sessionIdQuery) {
-				this.sessions.unshift({
-					...this.getDefaultChatSessionProperties(),
-					id: 'new',
-					is_temp: true,
-					display_name: 'New Chat',
-				});
+			// If the portal is configured to create a temporary session on startup, and
+			// there is no requested session, then create a temporary one.
+			if (!appConfigStore.showLastConversionOnStartup && !sessionId) {
+				this.addTemporarySession();
 
 				this.changeSession(this.sessions[0]);
 
@@ -118,14 +117,22 @@ export const useAppStore = defineStore('app', {
 
 			await this.getSessions();
 
-			// If there is an existing session matching the one requested in the url, select it
-			// otherwise, if showLastConversionOnStartup is true there is a session available to show, select it
-			// otherwise, create a new session
-			const requestedSession = this.sessions.find((session: Session) => session.id === sessionId);
+			const requestedSession = this.sessions.find((s: Session) => s.id === sessionId);
 
+			// If there is an existing session matching the one requested in the url, select it.
+			// otherwise, if the portal is configured to show the previous session and it exists, select it.
+			// otherwise, (if there are no sessions) create a temporary session.
 			if (requestedSession) {
 				this.changeSession(requestedSession);
 			} else if (appConfigStore.showLastConversionOnStartup && this.sessions.length > 0) {
+				this.changeSession(this.sessions[0]);
+			} else {
+				this.addToast({
+					severity: 'error',
+					detail: 'The requested session was not found.',
+				});
+
+				this.addTemporarySession();
 				this.changeSession(this.sessions[0]);
 			}
 
@@ -135,6 +142,15 @@ export const useAppStore = defineStore('app', {
 			// 	await this.getMessages();
 			// 	this.updateSessionAgentFromMessages(this.currentSession);
 			// }
+		},
+
+		addTemporarySession() {
+			this.sessions.unshift({
+				...this.getDefaultChatSessionProperties(),
+				id: 'new',
+				is_temp: true,
+				display_name: 'New Chat',
+			});
 		},
 
 		getDefaultChatSessionProperties(): ChatSessionProperties {
@@ -299,6 +315,7 @@ export const useAppStore = defineStore('app', {
 			this.currentMessages = messagesResponse.map((message) => ({
 				...message,
 				content: message.content ? message.content.map(this.initializeMessageContent) : [],
+				sender: message.sender?.toLowerCase() === 'user' ? 'User' : 'Agent',
 			}));
 
 			// Determine if the latest message needs to be polled
@@ -329,24 +346,24 @@ export const useAppStore = defineStore('app', {
 			});
 		},
 
-		async getMessage(messageId: string) {
-			const data = await api.getMessage(messageId);
-			const existingMessageIndex = this.currentMessages.findIndex(
-				(message) => message.id === messageId,
-			);
+		// async getMessage(messageId: string) {
+		// 	const data = await api.getMessage(messageId);
+		// 	const existingMessageIndex = this.currentMessages.findIndex(
+		// 		(message) => message.id === messageId,
+		// 	);
 
-			if (existingMessageIndex !== -1) {
-				this.currentMessages[existingMessageIndex] = data;
-				return data;
-			}
+		// 	if (existingMessageIndex !== -1) {
+		// 		this.currentMessages[existingMessageIndex] = data;
+		// 		return data;
+		// 	}
 
-			this.currentMessages.push(data);
-			return data;
-		},
+		// 	this.currentMessages.push(data);
+		// 	return data;
+		// },
 
 		updateSessionAgentFromMessages(session: Session) {
 			const lastAssistantMessage = this.currentMessages
-				.filter((message) => message.sender === 'Agent')
+				.filter((message) => message.sender.toLowerCase() === 'agent')
 				.pop();
 
 			if (lastAssistantMessage) {
@@ -362,8 +379,9 @@ export const useAppStore = defineStore('app', {
 		getSessionAgent(session: Session) {
 			if (!session) return null;
 			let selectedAgent = this.selectedAgents.get(session.id);
+
 			if (!selectedAgent) {
-				if (this.lastSelectedAgent) {
+				if (this.lastSelectedAgent && !isAgentExpired(this.lastSelectedAgent)) {
 					// Default to the last selected agent to make the selection "sticky" across sessions.
 					selectedAgent = this.lastSelectedAgent;
 				} else {
@@ -465,6 +483,7 @@ export const useAppStore = defineStore('app', {
 			this.currentMessages[this.currentMessages.length - 1] = {
 				...tempAssistantMessage,
 				...message,
+				sender: 'Agent',
 				type: 'Message',
 				text: message.status_message,
 			};
@@ -513,6 +532,7 @@ export const useAppStore = defineStore('app', {
 					this.currentMessages[this.currentMessages.length - 1] = {
 						...updatedMessage,
 						renderId: this.currentMessages[this.currentMessages.length - 1].renderId,
+						sender: 'Agent',
 					};
 
 					const userMessage = this.currentMessages[this.currentMessages.length - 2];
@@ -605,6 +625,11 @@ export const useAppStore = defineStore('app', {
 		async getAgents() {
 			this.agents = await api.getAllowedAgents();
 			return this.agents;
+		},
+
+		mapAgentDisplayName(agentName: string) {
+			const agent = this.agents.find((a) => a.resource.name === agentName);
+			return agent?.resource.display_name?.trim() ? agent.resource.display_name : agentName;
 		},
 
 		async ensureAgentsLoaded() {
@@ -706,6 +731,15 @@ export const useAppStore = defineStore('app', {
 
 		async getVirtualUser() {
 			return await api.getVirtualUser();
+		},
+
+		addToast(toastProperties: ToastMessageOptions) {
+			const lifeSeconds = toastProperties?.life ?? 5000;
+
+			useNuxtApp().vueApp.config.globalProperties.$toast.add({
+				...toastProperties,
+				life: this.autoHideToasts ? lifeSeconds : undefined,
+			});
 		},
 	},
 });

@@ -1,15 +1,14 @@
 <template>
-	<div class="main-content">
-		<Head>
-			<Title>{{ pageTitle }}</Title>
-			<Meta name="description" :content="pageTitle" />
-			<Link rel="icon" type="image/x-icon" :href="iconLink" />
-		</Head>
+	<Head>
+		<Title>{{ pageTitle }}</Title>
+		<Meta name="description" :content="pageTitle" />
+		<Link rel="icon" type="image/x-icon" :href="iconLink" />
+	</Head>
 
+	<div class="main-content">
 		<NuxtLayout>
 			<NuxtPage />
 		</NuxtLayout>
-
 		<Toast position="top-center" />
 	</div>
 </template>
@@ -102,8 +101,21 @@ body,
 	margin-left: 4px !important;
 }
 
+.ml-2 {
+	margin-left: 8px !important;
+}
+
 .mr-1 {
 	margin-right: 4px !important;
+}
+
+.mr-2 {
+	margin-right: 8px !important;
+}
+
+.mx-2 {
+	margin-left: 8px !important;
+	margin-right: 8px !important;
 }
 
 .mt-2 {
@@ -114,6 +126,10 @@ body,
 	margin-top: 16px !important;
 }
 
+.mt-6 {
+	margin-top: 24px !important;
+}
+
 .mb-1 {
 	margin-bottom: 4px !important;
 }
@@ -122,8 +138,20 @@ body,
 	margin-bottom: 8px !important;
 }
 
+.mb-3 {
+	margin-bottom: 12px !important;
+}
+
 .mb-4 {
 	margin-bottom: 16px !important;
+}
+
+.mb-5 {
+	margin-bottom: 20px !important;
+}
+
+.mb-6 {
+	margin-bottom: 24px !important;
 }
 
 .w-100 {
@@ -136,6 +164,14 @@ body,
 
 .d-flex {
 	display: flex;
+}
+
+.flex-1 {
+	flex: 1;
+}
+
+.gap-4 {
+	gap: 16px;
 }
 
 .flex-column {
@@ -154,8 +190,16 @@ body,
 	justify-content: end;
 }
 
+.justify-content-between {
+	justify-content: space-between;
+}
+
 .justify-self-end {
 	justify-self: end;
+}
+
+.font-weight-bold {
+	font-weight: bold;
 }
 
 .cursor-pointer {

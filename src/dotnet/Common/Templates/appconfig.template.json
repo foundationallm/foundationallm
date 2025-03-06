@@ -1,12 +1,12 @@
 {
     "items": [
         {
-			"key": ".appconfig.featureflag/FoundationaLLM.Agent.PrivateStore",
-			"value": "{\"id\":\"FoundationaLLM.Agent.PrivateStore\",\"description\":\"\",\"enabled\":false,\"conditions\":{\"client_filters\":[]}}",
-			"label": null,
-			"content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
-			"tags": {}
-		},
+            "key": ".appconfig.featureflag/FoundationaLLM.Agent.PrivateStore",
+            "value": "{\"id\":\"FoundationaLLM.Agent.PrivateStore\",\"description\":\"\",\"enabled\":false,\"conditions\":{\"client_filters\":[]}}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
+            "tags": {}
+        },
         {
             "key": "FoundationaLLM:Instance:Id",
             "value": "${env:FOUNDATIONALLM_INSTANCE_ID}",
@@ -72,9 +72,44 @@
         },
         {
             "key": "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions",
-            "value": "{"DynamicSessionsEndpoints": []}",
+            "value": "{\"DynamicSessionsEndpoints\": []}",
             "label": null,
             "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProvidersCache:EnableCache",
+            "value": "false",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProvidersCache:AbsoluteCacheExpirationSeconds",
+            "value": "300",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProvidersCache:SlidingCacheExpirationSeconds",
+            "value": "120",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProvidersCache:CacheSizeLimit",
+            "value": "10000",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProvidersCache:CacheExpirationScanFrequencySeconds",
+            "value": "30",
+            "label": null,
+            "content_type": "",
             "tags": {}
         },
         {
@@ -206,6 +241,34 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:EnableCache",
             "value": "false",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:AbsoluteCacheExpirationSeconds",
+            "value": "300",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:SlidingCacheExpirationSeconds",
+            "value": "120",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheSizeLimit",
+            "value": "10000",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheExpirationScanFrequencySeconds",
+            "value": "30",
             "label": null,
             "content_type": "",
             "tags": {}

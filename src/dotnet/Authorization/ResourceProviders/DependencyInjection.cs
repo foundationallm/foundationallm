@@ -3,6 +3,7 @@ using FoundationaLLM.Authorization.ResourceProviders;
 using FoundationaLLM.Authorization.Validation;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,6 +28,10 @@ namespace FoundationaLLM
             builder.Services.AddSingleton<IResourceProviderService, AuthorizationResourceProviderService>(sp =>
                 new AuthorizationResourceProviderService(
                     sp.GetRequiredService<IOptions<InstanceSettings>>(),
+                    Options.Create<ResourceProviderCacheSettings>(new ResourceProviderCacheSettings
+                    {
+                        EnableCache = false
+                    }),
                     sp.GetRequiredService<IAuthorizationServiceClient>(),
                     sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp,

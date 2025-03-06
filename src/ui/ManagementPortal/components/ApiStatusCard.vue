@@ -41,7 +41,7 @@ export default {
 			type: String,
 			required: true,
 		},
-		statusUrl: {
+		statusEndpoint: {
 			type: [String, null],
 			required: false,
 			default: '',
@@ -65,11 +65,15 @@ export default {
 	methods: {
 		async fetchApiStatus() {
 			this.loading = true;
+			let fullUrl = this.apiUrl;
 			try {
-				if (this.statusUrl) {
-					const response = await $fetch(
-						`/api/api-status?url=${encodeURIComponent(this.statusUrl)}`,
-					);
+				if (this.statusEndpoint) {
+					fullUrl =
+						this.apiUrl +
+						(this.statusEndpoint ? `/${this.statusEndpoint.replace(/^\/+/, '')}` : '');
+					const response = await $fetch(`/api/api-status?url=${encodeURIComponent(fullUrl)}`);
+
+					//const response = await $fetch(fullUrl);
 					if (response.error) {
 						this.error = response.error;
 					} else {
@@ -78,7 +82,7 @@ export default {
 				}
 			} catch (error) {
 				console.error('Error fetching API status:', error);
-				this.error = `Error fetching API status from ${this.statusUrl}`;
+				this.error = `Error fetching API status from ${fullUrl}`;
 			} finally {
 				this.loading = false;
 			}
@@ -154,7 +158,7 @@ export default {
 }
 
 .api-status-card .api-status-card__url {
-    word-break: break-all;
+	word-break: break-all;
 }
 
 @media (max-width: 600px) {

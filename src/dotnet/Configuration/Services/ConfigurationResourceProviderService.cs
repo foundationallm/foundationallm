@@ -24,6 +24,7 @@ using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
 using System.Text;
 using System.Text.Json;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 
 namespace FoundationaLLM.Configuration.Services
 {
@@ -31,6 +32,7 @@ namespace FoundationaLLM.Configuration.Services
     /// Implements the FoundationaLLM.Configuration resource provider.
     /// </summary>
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>
+    /// <param name="cacheOptions">The options providing the <see cref="ResourceProviderCacheSettings"/> with settings for the resource provider cache.</param>
     /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
@@ -42,6 +44,7 @@ namespace FoundationaLLM.Configuration.Services
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     public class ConfigurationResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
+        IOptions<ResourceProviderCacheSettings> cacheOptions,
         IAuthorizationServiceClient authorizationService,
         [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Configuration)] IStorageService storageService,
         IEventService eventService,
@@ -53,6 +56,7 @@ namespace FoundationaLLM.Configuration.Services
         ILogger<ConfigurationResourceProviderService> logger)
         : ResourceProviderServiceBase<APIEndpointReference>(
             instanceOptions.Value,
+            cacheOptions.Value,
             authorizationService,
             storageService,
             eventService,
@@ -130,6 +134,8 @@ namespace FoundationaLLM.Configuration.Services
                         $"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest);
             };
+            await SendResourceProviderEvent(
+                    EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
 
         /// <inheritdoc/>

@@ -41,7 +41,7 @@ namespace Vectorization.Tests.Handlers
                 new VectorizationProfileBase {
                     Name = "IndexingMockService",
                     Settings = new Dictionary<string, string> {
-                        { "IndexName", "test-001-index" } 
+                        { "index_name", "test-001-index" } 
                     } 
                 }
             ));

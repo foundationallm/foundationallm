@@ -14,8 +14,10 @@
 					</template>
 				</VTooltip>
 			</div>
+
 			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
+					v-if="$appConfigStore.showFileUpload && $appStore.agentShowFileUpload"
 					ref="fileUploadButton"
 					type="button"
 					:badge="fileArrayFiltered.length.toString() || null"
@@ -26,9 +28,9 @@
 					aria-controls="overlay_menu"
 					aria-haspopup="true"
 					style="height: 100%"
+					:disabled="isCurrentAgentExpired"
 					@click="toggle"
 					@keydown.esc="hideAllPoppers"
-					v-if="$appConfigStore.showFileUpload && $appStore.agentShowFileUpload"
 				/>
 				<OverlayPanel ref="menu" :dismissable="isMobile" style="max-width: 98%">
 					<div class="file-upload-header">
@@ -266,6 +268,8 @@
 			>
 				<div id="oneDriveIframeDialogContent" class="onedrive-iframe-content" />
 			</Dialog>
+
+
 			<Mentionable
 				:keys="['@']"
 				:items="agents"
@@ -281,18 +285,20 @@
 					The agent can make mistakes. Please check important information carefully.
 					Use Shift+Enter to add a new line.
 				</p>
+
 				<textarea
+					v-model="text"
 					id="chat-input"
 					ref="inputRef"
-					v-model="text"
 					class="input"
-					:disabled="disabled"
-					placeholder="What would you like to ask?"
-					autofocus
-					aria-label="What would you like to ask?"
+					:disabled="disabled || isCurrentAgentExpired"
+					:placeholder="isCurrentAgentExpired ? 'This agent has expired.' : 'What would you like to ask?'"
+					:aria-label="isCurrentAgentExpired ? 'This agent has expired.' : 'What would you like to ask?'"
 					aria-describedby="chat-input-label"
+					autofocus
 					@keydown="handleKeydown"
 				/>
+
 				<template #no-result>
 					<div class="dim">No result</div>
 				</template>
@@ -306,8 +312,9 @@
 				</template>
 			</Mentionable>
 		</div>
+
 		<Button
-			:disabled="disabled"
+			:disabled="disabled || isCurrentAgentExpired"
 			class="submit"
 			icon="pi pi-send"
 			label="Send"
@@ -320,6 +327,7 @@
 import { Mentionable } from 'vue-mention';
 import 'floating-vue/dist/style.css';
 import { hideAllPoppers } from 'floating-vue';
+import { isAgentExpired } from '@/js/helpers';
 
 const DEFAULT_INPUT_TEXT = '';
 
@@ -421,6 +429,11 @@ export default {
 		currentUploadedFiles() {
 			return this.currentSessionFiles.uploadedFiles;
 		},
+
+		isCurrentAgentExpired() {
+			const currentAgent = this.$appStore.lastSelectedAgent;
+			return currentAgent ? isAgentExpired(currentAgent) : false;
+		},
 	},
 
 	watch: {
@@ -430,6 +443,7 @@ export default {
 			},
 			immediate: true,
 		},
+
 		disabled: {
 			handler(newValue) {
 				if (!newValue) {
@@ -603,11 +617,10 @@ export default {
 					currentFiles.uploadedFiles.push(file);
 				} catch (error) {
 					filesFailed += 1;
-					this.$toast.add({
+					this.$appStore.addToast({
 						severity: 'error',
 						summary: 'Error',
 						detail: `File upload failed for "${file.name}". ${error.message || error.title || ''}`,
-						life: this.$appStore.autoHideToasts ? 5000 : null,
 					});
 				} finally {
 					if (totalFiles === filesUploaded + filesFailed) {
@@ -618,11 +631,10 @@ export default {
 						this.alignOverlay();
 						this.toggle();
 						if (filesUploaded > 0) {
-							this.$toast.add({
+							this.$appStore.addToast({
 								severity: 'success',
 								summary: 'Success',
 								detail: `Successfully uploaded ${filesUploaded} file${totalFiles > 1 ? 's' : ''}.`,
-								life: this.$appStore.autoHideToasts ? 5000 : null,
 							});
 						}
 					}
@@ -721,11 +733,10 @@ export default {
 				if (fileAlreadyExists) return;
 
 				if (file.size > 536870912) {
-					this.$toast.add({
+					this.$appStore.addToast({
 						severity: 'error',
 						summary: 'Error',
 						detail: 'File size exceeds the limit of 512MB.',
-						life: this.$appStore.autoHideToasts ? 5000 : null,
 					});
 				} else if (allowedFileTypes && allowedFileTypes !== '') {
 					const fileExtension = file.name.split('.').pop()?.toLowerCase();
@@ -735,11 +746,10 @@ export default {
 						.includes(fileExtension);
 
 					if (!isFileTypeAllowed) {
-						this.$toast.add({
+						this.$appStore.addToast({
 							severity: 'error',
 							summary: 'Error',
 							detail: `File type not supported. File: ${file.name}`,
-							life: this.$appStore.autoHideToasts ? 5000 : null,
 						});
 					} else {
 						filteredFiles.push(file);
@@ -756,11 +766,10 @@ export default {
 					filteredFiles.length >
 				this.maxFiles
 			) {
-				this.$toast.add({
+				this.$appStore.addToast({
 					severity: 'error',
 					summary: 'Error',
 					detail: `You can only upload a maximum of ${this.maxFiles} ${this.maxFiles === 1 ? 'file' : 'files'} at a time.`,
-					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 				filteredFiles.splice(
 					this.maxFiles -
@@ -821,11 +830,10 @@ export default {
 		async oneDriveWorkSchoolConnect() {
 			this.connectingOneDrive = true;
 			await this.$appStore.oneDriveWorkSchoolConnect().then(() => {
-				this.$toast.add({
+				this.$appStore.addToast({
 					severity: 'success',
 					summary: 'Success',
 					detail: `Your account is now connected to OneDrive.`,
-					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 				this.connectingOneDrive = false;
 			});
@@ -834,11 +842,10 @@ export default {
 		async oneDriveWorkSchoolDisconnect() {
 			this.disconnectingOneDrive = true;
 			await this.$appStore.oneDriveWorkSchoolDisconnect().then(() => {
-				this.$toast.add({
+				this.$appStore.addToast({
 					severity: 'success',
 					summary: 'Success',
 					detail: `Your account is now disconnected from OneDrive.`,
-					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 				this.disconnectingOneDrive = false;
 			});

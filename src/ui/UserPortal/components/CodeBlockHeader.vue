@@ -35,10 +35,9 @@ export default {
 			document.execCommand('copy');
 			document.body.removeChild(textarea);
 
-			this.$toast.add({
+			this.$appStore.addToast({
 				severity: 'success',
 				detail: 'Copied to clipboard!',
-				life: this.$appStore.autoHideToasts ? 5000 : null,
 			});
 		},
 	},

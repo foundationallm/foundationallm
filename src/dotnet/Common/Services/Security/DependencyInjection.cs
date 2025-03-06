@@ -23,7 +23,7 @@ namespace FoundationaLLM
             {
                 var httpClient = GraphClientFactory.Create();
                 httpClient.Timeout = TimeSpan.FromMinutes(15);
-                return new GraphServiceClient(httpClient, DefaultAuthentication.AzureCredential);
+                return new GraphServiceClient(httpClient, ServiceContext.AzureCredential);
             });
 
             // Register the group membership service.

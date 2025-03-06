@@ -35,6 +35,8 @@ param networkingResourceGroupName string
 
 param openAiName string
 
+param deployOpenAi bool
+
 @description('OPS Resource Group name')
 param opsResourceGroupName string
 
@@ -199,7 +201,7 @@ module eventgrid 'modules/eventgrid.bicep' = {
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     opsResourceGroupName: opsResourceGroupName
     resourceSuffix: resourceSuffix
-    topics: [ 'storage', 'vectorization', 'configuration' ]
+    topics: [ 'storage', 'vectorization', 'configuration', 'resource-providers' ]
     tags: tags
   }
 }
@@ -495,7 +497,7 @@ module searchIndexDataReaderWorkerRole 'modules/utility/roleAssignments.bicep' =
   }
 }
 
-module cognitiveServicesOpenAiUserRole 'modules/utility/openAiRoleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserRole 'modules/utility/openAiRoleAssignments.bicep' = if (deployOpenAi) {
   name: 'cognitiveServicesOpenAiUserRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
@@ -507,7 +509,7 @@ module cognitiveServicesOpenAiUserRole 'modules/utility/openAiRoleAssignments.bi
   }
 }
 
-module cognitiveServicesOpenAiUserWorkerRole 'modules/utility/openAiRoleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserWorkerRole 'modules/utility/openAiRoleAssignments.bicep' = if (deployOpenAi) {
   name: 'cognitiveServicesOpenAiUserWorkerRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
@@ -519,7 +521,7 @@ module cognitiveServicesOpenAiUserWorkerRole 'modules/utility/openAiRoleAssignme
   }
 }
 
-module cognitiveServicesOpenAiUserGatewayRole 'modules/utility/openAiRoleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserGatewayRole 'modules/utility/openAiRoleAssignments.bicep' = if (deployOpenAi) {
   name: 'cognitiveServicesOpenAiUserGatewayRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
@@ -531,7 +533,7 @@ module cognitiveServicesOpenAiUserGatewayRole 'modules/utility/openAiRoleAssignm
   }
 }
 
-module cognitiveServicesOpenAiUserCoreRole 'modules/utility/openAiRoleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserCoreRole 'modules/utility/openAiRoleAssignments.bicep' = if (deployOpenAi) {
   name: 'cognitiveServicesOpenAiUserCoreRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
@@ -544,7 +546,7 @@ module cognitiveServicesOpenAiUserCoreRole 'modules/utility/openAiRoleAssignment
   }
 }
 
-module cognitiveServicesOpenAiUserMgmtRole 'modules/utility/openAiRoleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserMgmtRole 'modules/utility/openAiRoleAssignments.bicep' = if (deployOpenAi) {
   name: 'cognitiveServicesOpenAiUserMgmtRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
@@ -556,7 +558,7 @@ module cognitiveServicesOpenAiUserMgmtRole 'modules/utility/openAiRoleAssignment
   }
 }
 
-module cognitiveServicesOpenAiUserLangChainRole 'modules/utility/openAiRoleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserLangChainRole 'modules/utility/openAiRoleAssignments.bicep' = if (deployOpenAi) {
   name: 'cognitiveServicesOpenAiUserLangChainRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
@@ -568,7 +570,7 @@ module cognitiveServicesOpenAiUserLangChainRole 'modules/utility/openAiRoleAssig
   }
 }
 
-module cognitiveServicesOpenAiUserSemanticKernelRole 'modules/utility/openAiRoleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserSemanticKernelRole 'modules/utility/openAiRoleAssignments.bicep' = if (deployOpenAi) {
   name: 'cognitiveServicesOpenAiUserSemKernelRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {

@@ -14,7 +14,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
-DefaultAuthentication.Initialize(
+ServiceContext.Initialize(
     builder.Environment.IsProduction(),
     ServiceNames.GatewayAPI);
 
@@ -26,13 +26,16 @@ builder.Configuration.AddAzureAppConfiguration(options =>
     options.Connect(builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]);
     options.ConfigureKeyVault(options =>
     {
-        options.SetCredential(DefaultAuthentication.AzureCredential);
+        options.SetCredential(ServiceContext.AzureCredential);
     });
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
+
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Configuration);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Attachment_Storage);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
@@ -78,6 +81,9 @@ builder.AddAuthorizationServiceClient();
 //----------------------------
 // Resource providers
 //----------------------------
+builder.AddResourceProviderCacheSettings();
+
+builder.AddAgentResourceProvider();
 builder.AddAttachmentResourceProvider();
 builder.AddConfigurationResourceProvider();
 

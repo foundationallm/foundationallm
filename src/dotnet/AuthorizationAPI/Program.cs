@@ -9,7 +9,7 @@ using FoundationaLLM.Common.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
-DefaultAuthentication.Initialize(
+ServiceContext.Initialize(
     builder.Environment.IsProduction(),
     ServiceNames.AuthorizationAPI);
 
@@ -18,7 +18,7 @@ builder.Configuration.AddJsonFile("appsettings.json", false, true);
 builder.Configuration.AddEnvironmentVariables();
 builder.Configuration.AddAzureKeyVault(
     new Uri(Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_AuthorizationAPI_KeyVaultURI)!),
-    DefaultAuthentication.AzureCredential);
+    ServiceContext.AzureCredential);
 if (builder.Environment.IsDevelopment())
     builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 

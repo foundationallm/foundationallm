@@ -50,7 +50,7 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
 
         public MessageHistoryItem CreateMessageHistoryItem(string sender, string text)
         {
-            return new MessageHistoryItem(sender, text);
+            return new MessageHistoryItem(sender, text, text);
         }
     }
 }
