@@ -1,0 +1,15 @@
+{
+    "type": "langchain-expression-language-workflow",
+    "name": "LangChainExpressionLanguage",
+    "object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.Agent/workflows/LangChainExpressionLanguage",
+    "display_name": "LangChainExpressionLanguage",
+    "description": "LangChain Expression Language workflow",
+    "cost_center": null,
+    "properties": null,
+    "created_on": "0001-01-01T00:00:00+00:00",
+    "updated_on": "0001-01-01T00:00:00+00:00",
+    "created_by": "SYSTEM",
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+  }

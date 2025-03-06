@@ -248,6 +248,12 @@ $tokens.conversationContributorGuid2 = $(New-Guid).Guid
 $tokens.attachmentContributorGuid2 = $(New-Guid).Guid
 $tokens.configReadAccessGuid3 = $(New-Guid).Guid
 $tokens.configReadAccessGuid4 = $(New-Guid).Guid
+$tokens.externalAgentWorkflowReaderGuid = $(New-Guid).Guid
+$tokens.langChainExpressionLanguageReaderGuid = $(New-Guid).Guid
+$tokens.openAIAssistantsFileSearchReaderGuid = $(New-Guid).Guid
+$tokens.openAIAssistantsCodeInterpreterReaderGuid = $(New-Guid).Guid
+$tokens.dalleImageGenerationReaderGuid = $(New-Guid).Guid
+$tokens.foundationaLLMContentSearchToolReaderGuid = $(New-Guid).Guid
 $tokens.pbacConversationsOwnerGuid = $(New-Guid).Guid
 $tokens.pbacConversationMappingsGuid = $(New-Guid).Guid
 
@@ -561,6 +567,12 @@ $tokens.serviceNamespaceName = $serviceNamespaceName
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,FoundationaLLM.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,FoundationaLLM.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,OpenAIAssistants.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,OpenAIAssistants.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,LangGraphReactAgent.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,LangGraphReactAgent.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,LangChainExpressionLanguage.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,LangChainExpressionLanguage.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,DALLEImageGeneration.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,DALLEImageGeneration.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,ExternalAgentWorkflow.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,ExternalAgentWorkflow.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,FoundationaLLMContentSearchTool.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,FoundationaLLMContentSearchTool.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,OpenAIAssistantsFileSearch.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,OpenAIAssistantsFileSearch.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,OpenAIAssistantsCodeInterpreter.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,OpenAIAssistantsCodeInterpreter.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,completion-4-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,completion-4-model.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,completion-4o-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,completion-4o-model.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,embedding-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,embedding-model.json"
