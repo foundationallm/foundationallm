@@ -140,6 +140,7 @@ var containers = [
   }
   {
     name: 'Agents'
+    defaultTtl: null
     partitionKey: {
       paths: [
         '/instanceId'
