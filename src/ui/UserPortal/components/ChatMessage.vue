@@ -470,7 +470,7 @@ export default {
 			deep: true,
 			handler(newMessage, oldMessage) {
 				// There is an issue here if a message that is not the latest has an incomplete status
-				if (newMessage.status === 'Failed' || this.message.status === 'Completed') {
+				if (newMessage.status === 'Failed' || newMessage.status === 'Completed') {
 					this.computedAverageTimePerWord({ ...newMessage }, oldMessage ?? {});
 					this.handleMessageCompleted(newMessage);
 					return;
