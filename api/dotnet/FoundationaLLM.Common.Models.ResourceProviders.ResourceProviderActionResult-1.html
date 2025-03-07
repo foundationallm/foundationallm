@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderActionResult_1" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult`1" class="text-break">
-Class ResourceProviderActionResult&lt;T&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceProviderActionResult`1.cs/#L9"><i class="bi bi-code-slash"></i></a>
+Class ResourceProviderActionResult&lt;T&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceProviderActionResult`1.cs/#L11"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -135,7 +135,13 @@ Class ResourceProviderActionResult&lt;T&gt;  <a class="header-action link-second
     <dt>Inherited Members</dt>
     <dd>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderActionResult_IsSuccessResult">ResourceProviderActionResult.IsSuccessResult</a>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderActionResult_ObjectId">ResourceProviderActionResult.ObjectId</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderActionResult_IsSuccess">ResourceProviderActionResult.IsSuccess</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderActionResult_ErrorMessage">ResourceProviderActionResult.ErrorMessage</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
@@ -178,9 +184,9 @@ Class ResourceProviderActionResult&lt;T&gt;  <a class="header-action link-second
 
   <a id="FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderActionResult_1__ctor_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult`1.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderActionResult_1__ctor_System_Boolean_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult`1.#ctor(System.Boolean)">
-  ResourceProviderActionResult(bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceProviderActionResult`1.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderActionResult_1__ctor_System_String_System_Boolean_System_String_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult`1.#ctor(System.String,System.Boolean,System.String)">
+  ResourceProviderActionResult(string, bool, string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceProviderActionResult`1.cs/#L11"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The result of an action executed by a resource provider.</p>
@@ -188,13 +194,19 @@ Class ResourceProviderActionResult&lt;T&gt;  <a class="header-action link-second
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ResourceProviderActionResult(bool IsSuccessResult)</code></pre>
+    <pre><code class="lang-csharp hljs">public ResourceProviderActionResult(string ObjectId, bool IsSuccessResult, string? ErrorMessage = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
+    <dt><code>ObjectId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The object id to which the result refers to.</p>
+</dd>
     <dt><code>IsSuccessResult</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
     <dd><p>Indicates whether the action executed successfully or not.</p>
+</dd>
+    <dt><code>ErrorMessage</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>When IsSuccess is false, contains an error message with details.</p>
 </dd>
   </dl>
 
@@ -213,11 +225,43 @@ Class ResourceProviderActionResult&lt;T&gt;  <a class="header-action link-second
 </h2>
 
 
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderActionResult_1_IsSuccessResult_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult`1.IsSuccessResult*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderActionResult_1_IsSuccessResult" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult`1.IsSuccessResult">
+  IsSuccessResult
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceProviderActionResult`1.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Indicates whether the action executed successfully or not.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsSuccessResult { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderActionResult_1_Resource_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult`1.Resource*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderActionResult_1_Resource" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult`1.Resource">
   Resource
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceProviderActionResult`1.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceProviderActionResult`1.cs/#L23"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the resource resulting from the action.</p>
@@ -253,7 +297,7 @@ public T? Resource { get; set; }</code></pre>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceProviderActionResult`1.cs/#L9" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceProviderActionResult`1.cs/#L11" class="edit-link">Edit this page</a>
         </div>
 
 
