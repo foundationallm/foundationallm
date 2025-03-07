@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>FoundationaLLM.DataPipelinePlugins</AssemblyName>
+    <RootNamespace>FoundationaLLM.Plugins.DataPipeline</RootNamespace>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>FoundationaLLM.DataPipelinePlugins</PackageId>
+    <Title>FoundationaLLM Data Pipeline Plugins</Title>
+    <Version>0.0.0</Version>
+    <Authors>FoundationaLLM</Authors>
+    <Description>FoundationaLLM.DataPipelinePlugin contains the standard Data Pipeline plugins provided by FoundationaLLM.</Description>
+    <Copyright>Copyright © FoundationaLLM. All rights reserved.</Copyright>
+    <PackageProjectUrl>https://foundationallm.ai</PackageProjectUrl>
+    <PackageIcon>fllm-icon-128.png</PackageIcon>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/solliancenet/foundationallm</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>FoundationaLLM;LLM;GPT;AI;Data;Pipeline;Plugin</PackageTags>
+    <AssemblyVersion>0.0.0</AssemblyVersion>
+    <FileVersion>0.0.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="fllm-icon-128.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
