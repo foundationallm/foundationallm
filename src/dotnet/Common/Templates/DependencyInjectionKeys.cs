@@ -79,6 +79,18 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:ResourceProviders:DataPipeline:Storage";
         
         /// <summary>
+        /// Dependency injection key used by the FoundationaLLM.Plugin resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Plugin =
+            "FoundationaLLM:ResourceProviders:Plugin";
+        
+        /// <summary>
+        /// Dependency injection key used to inject storage settings for the FoundationaLLM.Plugin resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Plugin_Storage =
+            "FoundationaLLM:ResourceProviders:Plugin:Storage";
+        
+        /// <summary>
         /// Dependency injection key used to inject the implementation of IIndexingService based on Azure Cosmos DB NoSQL.
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_AzureCosmosDBNoSQLVectorStore_Configuration =

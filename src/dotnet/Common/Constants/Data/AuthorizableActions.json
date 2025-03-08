@@ -373,5 +373,40 @@
 				"field_name": "FoundationaLLM_DataPipeline_DataPipelines_Delete"
 			}
 		]
+	},
+	{
+		"category": "Plugin",
+		"actions": [
+			{
+				"name": "FoundationaLLM.Plugin/plugins/read",
+				"description": "Read plugins.",
+				"field_name": "FoundationaLLM_Plugin_Plugins_Read"
+			},
+			{
+				"name": "FoundationaLLM.Plugin/plugins/write",
+				"description": "Create or update plugins.",
+				"field_name": "FoundationaLLM_Plugin_Plugins_Write"
+			},
+			{
+				"name": "FoundationaLLM.Plugin/plugins/delete",
+				"description": "Delete plugins.",
+				"field_name": "FoundationaLLM_Plugin_Plugins_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Plugin/pluginPackages/read",
+				"description": "Read plugin packages.",
+				"field_name": "FoundationaLLM_Plugin_PluginPackages_Read"
+			},
+			{
+				"name": "FoundationaLLM.Plugin/pluginPackages/write",
+				"description": "Create or update plugin packages.",
+				"field_name": "FoundationaLLM_Plugin_PluginPackages_Write"
+			},
+			{
+				"name": "FoundationaLLM.Plugin/pluginPackages/delete",
+				"description": "Delete plugin packages.",
+				"field_name": "FoundationaLLM_Plugin_PluginPackages_Delete"
+			}
+		]
 	}
 ]

@@ -9,19 +9,22 @@ using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
+using FoundationaLLM.Common.Models.ResourceProviders.Plugin;
 using FoundationaLLM.Common.Services.ResourceProviders;
-using FoundationaLLM.DataPipeline.Models;
+using FoundationaLLM.Plugin.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 
-namespace FoundationaLLM.DataPipeline.ResourceProviders
+namespace FoundationaLLM.Plugin.ResourceProviders
 {
     /// <summary>
-    /// Implements the FoundationaLLM.DataPipeline resource provider.
+    /// Implements the FoundationaLLM.Plugin resource provider.
     /// </summary>
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>    
     /// <param name="cacheOptions">The options providing the <see cref="ResourceProviderCacheSettings"/> with settings for the resource provider cache.</param>
@@ -29,20 +32,18 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
-    /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> providing Cosmos DB services.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="loggerFactory">The factory responsible for creating loggers.</param>    
-    public class DataPipelineResourceProviderService(
+    public class PluginResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
         IOptions<ResourceProviderCacheSettings> cacheOptions,
         IAuthorizationServiceClient authorizationService,
-        [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_DataPipeline_Storage)] IStorageService storageService,
+        [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Plugin_Storage)] IStorageService storageService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
-        IAzureCosmosDBService cosmosDBService,
         IServiceProvider serviceProvider,
         ILoggerFactory loggerFactory)
-        : ResourceProviderServiceBase<DataPipelineReference>(
+        : ResourceProviderServiceBase<PluginReference>(
             instanceOptions.Value,
             cacheOptions.Value,
             authorizationService,
@@ -50,19 +51,17 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             eventService,
             resourceValidatorFactory,
             serviceProvider,
-            loggerFactory.CreateLogger<DataPipelineResourceProviderService>(),
+            loggerFactory.CreateLogger<PluginResourceProviderService>(),
             [
                 EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ],
             useInternalReferencesStore: true)
     {
-        private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
-
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
-            DataPipelineResourceProviderMetadata.AllowedResourceTypes;
+            PluginResourceProviderMetadata.AllowedResourceTypes;
 
-        protected override string _name => ResourceProviderNames.FoundationaLLM_DataPipeline;
+        protected override string _name => ResourceProviderNames.FoundationaLLM_Plugin;
 
         protected override async Task InitializeInternal() =>
             await Task.CompletedTask;
@@ -77,7 +76,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             ResourceProviderGetOptions? options = null) =>
             resourcePath.ResourceTypeName switch
             {
-                DataPipelineResourceTypeNames.DataPipelines => await LoadResources<DataPipelineDefinition>(
+                PluginResourceTypeNames.PluginPackages => await LoadResources<PluginPackageDefinition>(
                     resourcePath.ResourceTypeInstances[0],
                     authorizationResult,
                     options ?? new ResourceProviderGetOptions
@@ -95,9 +94,10 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             UnifiedUserIdentity userIdentity) =>
             resourcePath.ResourceTypeName switch
             {
-                DataPipelineResourceTypeNames.DataPipelines => await UpdateDataPipeline(
+                PluginResourceTypeNames.PluginPackages => await UpdatePluginPackage(
                     resourcePath,
                     serializedResource!,
+                    formFile,
                     userIdentity),
                 _ => throw new ResourceProviderException(
                     $"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
@@ -106,51 +106,81 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
 
         #region Helpers for UpsertResourceAsync
 
-        private async Task<ResourceProviderUpsertResult> UpdateDataPipeline(
+        private async Task<ResourceProviderUpsertResult> UpdatePluginPackage(
             ResourcePath resourcePath,
-            string serializedDataPipeline,
+            string serializedPluginPackage,
+            ResourceProviderFormFile? formFile,
             UnifiedUserIdentity userIdentity)
         {
-            var dataPipeline = JsonSerializer.Deserialize<DataPipelineDefinition>(serializedDataPipeline)
+            var pluginPackage = JsonSerializer.Deserialize<PluginPackageDefinition>(serializedPluginPackage)
                 ?? throw new ResourceProviderException("The object definition is invalid.",
                 StatusCodes.Status400BadRequest);
 
-            var existingDataPipelineReference = await _resourceReferenceStore!.GetResourceReference(dataPipeline.Name);
+            var existingPluginPackageReference = await _resourceReferenceStore!.GetResourceReference(pluginPackage.Name);
 
-            if (resourcePath.ResourceTypeInstances[0].ResourceId != dataPipeline.Name)
+            if (resourcePath.ResourceTypeInstances[0].ResourceId != pluginPackage.Name)
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
                         StatusCodes.Status400BadRequest);
 
-            var dataPipelineReference = new DataPipelineReference
+            var pluginPackageReference = new PluginReference
             {
-                Name = dataPipeline.Name!,
-                Type = dataPipeline.Type!,
-                Filename = $"/{_name}/{dataPipeline.Name}.json",
+                Name = pluginPackage.Name!,
+                Type = pluginPackage.Type!,
+                Filename = $"/{_name}/{pluginPackage.Name}.json",
                 Deleted = false
             };
 
-            dataPipeline.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
+            pluginPackage.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
 
-            var validator = _resourceValidatorFactory.GetValidator(dataPipelineReference.ResourceType);
-            if (validator is IValidator dataPipelineValidator)
+            var validator = _resourceValidatorFactory.GetValidator(pluginPackageReference.ResourceType);
+            if (validator is IValidator pluginPackageValidator)
             {
-                var context = new ValidationContext<object>(dataPipeline);
-                var validationResult = await dataPipelineValidator.ValidateAsync(context);
+                var context = new ValidationContext<object>(pluginPackage);
+                var validationResult = await pluginPackageValidator.ValidateAsync(context);
                 if (!validationResult.IsValid)
                     throw new ResourceProviderException($"Validation failed: {string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage))}",
                         StatusCodes.Status400BadRequest);
             }
 
-            UpdateBaseProperties(dataPipeline, userIdentity, isNew: existingDataPipelineReference == null);
-            if (existingDataPipelineReference == null)
-                await CreateResource<DataPipelineDefinition>(dataPipelineReference, dataPipeline);
+            UpdateBaseProperties(pluginPackage, userIdentity, isNew: existingPluginPackageReference == null);
+            if (existingPluginPackageReference == null)
+                await CreateResource<PluginPackageDefinition>(pluginPackageReference, pluginPackage);
             else
-                await SaveResource<DataPipelineDefinition>(dataPipelineReference, dataPipeline);
+                await SaveResource<PluginPackageDefinition>(pluginPackageReference, pluginPackage);
+
+            if (formFile == null || formFile.BinaryContent.Length == 0)
+                throw new ResourceProviderException("The attached plugin package is not valid.",
+                    StatusCodes.Status400BadRequest);
+
+            var filePath = $"/{_name}/{_instanceSettings.Id}/{resourcePath.MainResourceId}/{formFile.FileName}";
+
+            //var agentPrivateFile = new AgentFileReference
+            //{
+            //    Id = uniqueId,
+            //    Name = uniqueId,
+            //    ObjectId = objectId,
+            //    OriginalFilename = formFile.FileName,
+            //    ContentType = formFile.ContentType!,
+            //    Type = AgentTypes.AgentFile,
+            //    Filename = filePath,
+            //    Size = formFile.BinaryContent.Length,
+            //    UPN = userIdentity.UPN ?? string.Empty,
+            //    InstanceId = _instanceSettings.Id,
+            //    AgentName = resourcePath.MainResourceId!,
+            //    Deleted = false,
+            //};
+
+            await _storageService.WriteFileAsync(
+                _storageContainerName,
+                filePath,
+                new MemoryStream(formFile.BinaryContent.ToArray()),
+                formFile.ContentType ?? default,
+                default);
 
             return new ResourceProviderUpsertResult
             {
-                ObjectId = dataPipeline!.ObjectId,
-                ResourceExists = existingDataPipelineReference != null
+                ObjectId = pluginPackage!.ObjectId,
+                ResourceExists = existingPluginPackageReference != null
             };
         }
 
