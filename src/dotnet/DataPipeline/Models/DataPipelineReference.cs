@@ -6,6 +6,9 @@ using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.DataPipeline.Models
 {
+    /// <summary>
+    /// Provides a reference to a resource managed by the FoundationaLLM.DataPipeline resource provider.
+    /// </summary>
     public class DataPipelineReference : ResourceReference
     {
         /// <summary>
