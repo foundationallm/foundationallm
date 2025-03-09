@@ -43,7 +43,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     ],
                     Actions = [
                         new ResourceTypeAction(ResourceProviderActions.Filter, false, true, [
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceFilter)], [typeof(PluginDefinition)])
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(PluginFilter)], [typeof(PluginDefinition)])
                         ])
                     ]
                 }

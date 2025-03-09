@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Graph.Models;
 using NuGet.Packaging;
 using NuGet.Versioning;
 using System.Runtime.Loader;
@@ -96,6 +97,7 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                         StatusCodes.Status400BadRequest)
             };
 
+        /// <inheritdoc/>
         protected override async Task<object> UpsertResourceAsync(
             ResourcePath resourcePath,
             string? serializedResource,
@@ -113,6 +115,30 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                     StatusCodes.Status400BadRequest)
             };
 
+        protected override async Task<object> ExecuteActionAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity) =>
+            resourcePath.ResourceTypeName switch
+            {
+                PluginResourceTypeNames.Plugins =>
+                    resourcePath.Action switch
+                    {
+                        ResourceProviderActions.Filter => await FilterPlugins(
+                            resourcePath,
+                            authorizationResult,
+                            serializedAction,
+                            userIdentity),
+                        _ => throw new ResourceProviderException(
+                                $"The resource type {resourcePath.ResourceTypeName} and action {resourcePath.Action!} are not supported by the {_name} resource provider.",
+                                StatusCodes.Status400BadRequest)
+                    },
+                _ => throw new ResourceProviderException(
+                        $"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+            };
+
         #region Helpers for UpsertResourceAsync
 
         private async Task<ResourceProviderUpsertResult> UpdatePluginPackage(
@@ -123,13 +149,13 @@ namespace FoundationaLLM.Plugin.ResourceProviders
         {
             var pluginPackageBase = JsonSerializer.Deserialize<ResourceBase>(serializedPluginPackage)
                 ?? throw new ResourceProviderException("The object definition is invalid.",
-                StatusCodes.Status400BadRequest);
+                    StatusCodes.Status400BadRequest);
 
             if (resourcePath.MainResourceId != pluginPackageBase.Name)
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
-                        StatusCodes.Status400BadRequest);
+                    StatusCodes.Status400BadRequest);
 
-            var pluginPackage = await GetPackageDefinition(
+            var pluginPackage = await GetPluginPackage(
                 resourcePath,
                 pluginPackageBase,
                 formFile,
@@ -177,7 +203,7 @@ namespace FoundationaLLM.Plugin.ResourceProviders
             };
         }
 
-        private async Task<PluginPackageDefinition> GetPackageDefinition(
+        private async Task<PluginPackageDefinition> GetPluginPackage(
             ResourcePath resourcePath,
             ResourceBase pluginPackageBase,
             ResourceProviderFormFile? formFile,
@@ -300,6 +326,26 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                     "The plugin package definition is invalid.",
                     StatusCodes.Status400BadRequest);
             }
+        }
+
+        private async Task<List<PluginDefinition>> FilterPlugins(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity)
+        {
+            var pluginFilter = JsonSerializer.Deserialize<PluginFilter>(serializedAction)
+                ?? throw new ResourceProviderException($"The serialized action cannot be deserialized.",
+                    StatusCodes.Status400BadRequest);
+
+            var allPlugins = await LoadResources<PluginDefinition>(
+                resourcePath.ResourceTypeInstances.First(),
+                authorizationResult);
+
+            return allPlugins
+                .Select(p => p.Resource)
+                .Where(p => pluginFilter.Categories.Contains(p.Category, StringComparer.Ordinal))
+                .ToList();
         }
 
         #endregion
