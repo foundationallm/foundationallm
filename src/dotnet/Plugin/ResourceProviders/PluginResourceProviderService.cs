@@ -9,7 +9,7 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
-using FoundationaLLM.Common.Models.Plugins;
+using FoundationaLLM.Common.Models.Plugins.Metadata;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Plugin;
 using FoundationaLLM.Common.Services.ResourceProviders;
@@ -165,7 +165,7 @@ namespace FoundationaLLM.Plugin.ResourceProviders
             return new ResourceProviderUpsertResult
             {
                 ObjectId = pluginPackage!.ObjectId,
-                ResourceExists = existingPluginPackageReference is null
+                ResourceExists = existingPluginPackageReference is not null
             };
         }
 
@@ -187,7 +187,7 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                         StatusCodes.Status400BadRequest);
 
                 var packageVersion = new SemanticVersion(0, 0, 0);
-                var packageConfiguration = default(PluginPackageConfiguration);
+                var packageMetadata = default(PluginPackageMetadata);
 
                 if (packagePlatform == PluginPackagePlatform.Dotnet)
                 {
@@ -214,7 +214,7 @@ namespace FoundationaLLM.Plugin.ResourceProviders
 
                             if (pluginPackageManager is not null)
                             {
-                                packageConfiguration = pluginPackageManager.GetConfiguration(
+                                packageMetadata = pluginPackageManager.GetMetadata(
                                     resourcePath.InstanceId!);
 
                                 assemblyLoadContext.Unload();
@@ -226,24 +226,24 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                     }
                 }
 
-                if (packageConfiguration is null)
+                if (packageMetadata is null)
                     throw new ResourceProviderException("The plugin package does not have a valid package manager and/or package configuration.",
                         StatusCodes.Status400BadRequest);
 
-                if (packageConfiguration.PluginPackageName != pluginPackageBase.Name)
+                if (packageMetadata.Name != pluginPackageBase.Name)
                     throw new ResourceProviderException("The plugin package name does not match the name from the package configuration.",
                         StatusCodes.Status400BadRequest);
 
-                if (packageConfiguration.PluginPackagePlatform != packagePlatform)
+                if (packageMetadata.Platform != packagePlatform)
                     throw new ResourceProviderException("The plugin package platform does not match the platform from the package configuration.",
                         StatusCodes.Status400BadRequest);
 
                 return new PluginPackageDefinition
                 {
                     Type = pluginPackageBase.Type,
-                    Name = packageConfiguration.PluginPackageName,
-                    DisplayName = packageConfiguration.PluginPackageDisplayName,
-                    Description = packageConfiguration.PluginPackageDescription,
+                    Name = packageMetadata.Name,
+                    DisplayName = packageMetadata.DisplayName,
+                    Description = packageMetadata.Description,
                     PackagePlatform = packagePlatform,
                     PackageVersion = packageVersion,
                     PackageFilePath = $"/{_name}/{resourcePath.InstanceId!}/{pluginPackageBase.Name}/{formFile.FileName}",

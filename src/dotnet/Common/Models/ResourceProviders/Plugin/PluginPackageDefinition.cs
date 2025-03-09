@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.Plugins;
+using FoundationaLLM.Common.Utils;
 using NuGet.Versioning;
 using System.Text.Json.Serialization;
 
@@ -23,6 +24,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Plugin
         /// Gets or sets the version of the package.
         /// </summary>
         [JsonPropertyName("package_version")]
+        [JsonConverter(typeof(JsonStringSemanticVersionConverter))]
         public required SemanticVersion PackageVersion { get; set; }
 
         /// <summary>

@@ -43,7 +43,7 @@
 
   <ItemGroup>
     <None Include="fllm-icon-128.png" Pack="true" PackagePath="\" />
-    <None Include="Models\Plugins\PluginParameterDefinition.cs" />
+    <None Include="Models\Plugins\Metadata\PluginParameterMetadata.cs" />
     <None Include="readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   

@@ -8,10 +8,10 @@ namespace FoundationaLLM.Common.Models.Plugins
     public class PluginConfigurationParameter
     {
         /// <summary>
-        /// Gets or sets the <see cref="PluginParameterDefinition"/> that defines the parameter.
+        /// Gets or sets the <see cref="PluginParameterMetadata"/> that defines the parameter.
         /// </summary>
-        [JsonPropertyName("parameter_definition")]
-        public required PluginParameterDefinition ParameterDefinition { get; set; }
+        [JsonPropertyName("parameter_metadata")]
+        public required PluginParameterMetadata ParameterMetadata { get; set; }
 
         /// <summary>
         /// Gets or sets the default value of the parameter.

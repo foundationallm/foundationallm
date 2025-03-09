@@ -1,5 +1,4 @@
-﻿using FoundationaLLM.Common.Constants.Plugins;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Plugins
 {
@@ -13,30 +12,6 @@ namespace FoundationaLLM.Common.Models.Plugins
         /// </summary>
         [JsonPropertyName("plugin_object_id")]
         public required string PluginObjectId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the plugin.
-        /// </summary>\
-        [JsonPropertyName("plugin_name")]
-        public string? PluginName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the display name of the plugin.
-        /// </summary>
-        [JsonPropertyName("plugin_display_name")]
-        public string? PluginDisplayName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the description of the plugin.
-        /// </summary>
-        [JsonPropertyName("plugin_description")]
-        public string? PluginDescription { get; set; }
-
-        /// <summary>
-        /// Gets or sets the category of the plugin.
-        /// </summary>
-        [JsonPropertyName("plugin_category")]
-        public string? PluginCategory { get; set; }
 
         /// <summary>
         /// Gets or sets the list of plugin parameters.
