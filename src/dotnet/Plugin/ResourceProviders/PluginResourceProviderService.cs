@@ -85,6 +85,13 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                     {
                         IncludeRoles = resourcePath.IsResourceTypePath
                     }),
+                PluginResourceTypeNames.Plugins => await LoadResources<PluginDefinition>(
+                    resourcePath.ResourceTypeInstances[0],
+                    authorizationResult,
+                    options ?? new ResourceProviderGetOptions
+                    {
+                        IncludeRoles = resourcePath.IsResourceTypePath
+                    }),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
             };
@@ -125,7 +132,8 @@ namespace FoundationaLLM.Plugin.ResourceProviders
             var pluginPackage = await GetPackageDefinition(
                 resourcePath,
                 pluginPackageBase,
-                formFile);
+                formFile,
+                userIdentity);
             pluginPackage.ObjectId = resourcePath.ObjectId
                 ?? throw new ResourceProviderException("The resource path cannot be converted to a valid resource object identifier.",
                     StatusCodes.Status400BadRequest);
@@ -149,7 +157,7 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                         StatusCodes.Status400BadRequest);
             }
 
-            UpdateBaseProperties(pluginPackageBase, userIdentity, isNew: existingPluginPackageReference is null);
+            UpdateBaseProperties(pluginPackage, userIdentity, isNew: existingPluginPackageReference is null);
             if (existingPluginPackageReference is null)
                 await CreateResource<PluginPackageDefinition>(pluginPackageReference, pluginPackage);
             else
@@ -172,7 +180,8 @@ namespace FoundationaLLM.Plugin.ResourceProviders
         private async Task<PluginPackageDefinition> GetPackageDefinition(
             ResourcePath resourcePath,
             ResourceBase pluginPackageBase,
-            ResourceProviderFormFile? formFile)
+            ResourceProviderFormFile? formFile,
+            UnifiedUserIdentity userIdentity)
         {
             try
             {
@@ -237,6 +246,40 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                 if (packageMetadata.Platform != packagePlatform)
                     throw new ResourceProviderException("The plugin package platform does not match the platform from the package configuration.",
                         StatusCodes.Status400BadRequest);
+
+                foreach (var pluginMetadata in packageMetadata.Plugins)
+                {
+                    var existingPluginReference = await _resourceReferenceStore!.GetResourceReference(pluginMetadata.Name);
+                    var newPlugin = existingPluginReference is null;
+                    var pluginReference = newPlugin
+                        ? new PluginReference
+                        {
+                            Name = pluginMetadata.Name,
+                            Type = PluginTypes.Plugin,
+                            Filename = $"/{_name}/{pluginMetadata.Name}.json",
+                            Deleted = false
+                        }
+                        : existingPluginReference!;
+
+                    var plugin = new PluginDefinition
+                    {
+                        Type = PluginTypes.Plugin,
+                        ObjectId = pluginMetadata.ObjectId,
+                        Name = pluginMetadata.Name,
+                        DisplayName = pluginMetadata.DisplayName,
+                        Description = pluginMetadata.Description,
+                        Category = pluginMetadata.Category,
+                        Parameters = pluginMetadata.Parameters,
+                        ParameterSelectionHints = pluginMetadata.ParameterSelectionHints,
+                        Dependencies = pluginMetadata.Dependencies
+                    };
+
+                    UpdateBaseProperties(plugin, userIdentity, isNew: newPlugin);
+                    if (newPlugin)
+                        await CreateResource<PluginDefinition>(pluginReference, plugin);
+                    else
+                        await SaveResource<PluginDefinition>(pluginReference, plugin);
+                }
 
                 return new PluginPackageDefinition
                 {

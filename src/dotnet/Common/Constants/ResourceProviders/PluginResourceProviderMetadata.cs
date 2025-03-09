@@ -1,6 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.Plugin;
 
 namespace FoundationaLLM.Common.Constants.ResourceProviders

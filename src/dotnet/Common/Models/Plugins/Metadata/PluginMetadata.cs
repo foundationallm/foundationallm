@@ -17,25 +17,25 @@ namespace FoundationaLLM.Common.Models.Plugins.Metadata
         /// Gets or sets the name of the plugin.
         /// </summary>\
         [JsonPropertyName("name")]
-        public string? Name { get; set; }
+        public required string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the display name of the plugin.
         /// </summary>
         [JsonPropertyName("display_name")]
-        public string? DisplayName { get; set; }
+        public required string DisplayName { get; set; }
 
         /// <summary>
         /// Gets or sets the description of the plugin.
         /// </summary>
         [JsonPropertyName("description")]
-        public string? Description { get; set; }
+        public required string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the category of the plugin.
         /// </summary>
         [JsonPropertyName("category")]
-        public string? Category { get; set; }
+        public required string Category { get; set; }
 
         /// <summary>
         /// Gets or sets the metadata associated with the plugin parameters.
