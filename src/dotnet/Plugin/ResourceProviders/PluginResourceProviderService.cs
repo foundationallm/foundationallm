@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Events;
+using FoundationaLLM.Common.Constants.Plugins;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
@@ -8,10 +9,8 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
+using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent;
-using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Plugin;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.Plugin.Models;
@@ -19,6 +18,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NuGet.Packaging;
+using NuGet.Versioning;
+using System.Runtime.Loader;
 using System.Text.Json;
 
 namespace FoundationaLLM.Plugin.ResourceProviders
@@ -112,15 +114,21 @@ namespace FoundationaLLM.Plugin.ResourceProviders
             ResourceProviderFormFile? formFile,
             UnifiedUserIdentity userIdentity)
         {
-            var pluginPackage = JsonSerializer.Deserialize<PluginPackageDefinition>(serializedPluginPackage)
+            var pluginPackageBase = JsonSerializer.Deserialize<ResourceBase>(serializedPluginPackage)
                 ?? throw new ResourceProviderException("The object definition is invalid.",
                 StatusCodes.Status400BadRequest);
 
-            var existingPluginPackageReference = await _resourceReferenceStore!.GetResourceReference(pluginPackage.Name);
-
-            if (resourcePath.ResourceTypeInstances[0].ResourceId != pluginPackage.Name)
+            if (resourcePath.MainResourceId != pluginPackageBase.Name)
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
                         StatusCodes.Status400BadRequest);
+
+            var pluginPackage = await GetPackageDefinition(
+                resourcePath,
+                pluginPackageBase,
+                formFile);
+            pluginPackage.ObjectId = resourcePath.ObjectId
+                ?? throw new ResourceProviderException("The resource path cannot be converted to a valid resource object identifier.",
+                    StatusCodes.Status400BadRequest);
 
             var pluginPackageReference = new PluginReference
             {
@@ -129,8 +137,7 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                 Filename = $"/{_name}/{pluginPackage.Name}.json",
                 Deleted = false
             };
-
-            pluginPackage.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
+            var existingPluginPackageReference = await _resourceReferenceStore!.GetResourceReference(pluginPackageBase.Name);
 
             var validator = _resourceValidatorFactory.GetValidator(pluginPackageReference.ResourceType);
             if (validator is IValidator pluginPackageValidator)
@@ -142,46 +149,114 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                         StatusCodes.Status400BadRequest);
             }
 
-            UpdateBaseProperties(pluginPackage, userIdentity, isNew: existingPluginPackageReference == null);
-            if (existingPluginPackageReference == null)
+            UpdateBaseProperties(pluginPackageBase, userIdentity, isNew: existingPluginPackageReference is null);
+            if (existingPluginPackageReference is null)
                 await CreateResource<PluginPackageDefinition>(pluginPackageReference, pluginPackage);
             else
                 await SaveResource<PluginPackageDefinition>(pluginPackageReference, pluginPackage);
 
-            if (formFile == null || formFile.BinaryContent.Length == 0)
-                throw new ResourceProviderException("The attached plugin package is not valid.",
-                    StatusCodes.Status400BadRequest);
-
-            var filePath = $"/{_name}/{_instanceSettings.Id}/{resourcePath.MainResourceId}/{formFile.FileName}";
-
-            //var agentPrivateFile = new AgentFileReference
-            //{
-            //    Id = uniqueId,
-            //    Name = uniqueId,
-            //    ObjectId = objectId,
-            //    OriginalFilename = formFile.FileName,
-            //    ContentType = formFile.ContentType!,
-            //    Type = AgentTypes.AgentFile,
-            //    Filename = filePath,
-            //    Size = formFile.BinaryContent.Length,
-            //    UPN = userIdentity.UPN ?? string.Empty,
-            //    InstanceId = _instanceSettings.Id,
-            //    AgentName = resourcePath.MainResourceId!,
-            //    Deleted = false,
-            //};
-
             await _storageService.WriteFileAsync(
                 _storageContainerName,
-                filePath,
-                new MemoryStream(formFile.BinaryContent.ToArray()),
+                pluginPackage.PackageFilePath,
+                new MemoryStream(formFile!.BinaryContent.ToArray()),
                 formFile.ContentType ?? default,
                 default);
 
             return new ResourceProviderUpsertResult
             {
                 ObjectId = pluginPackage!.ObjectId,
-                ResourceExists = existingPluginPackageReference != null
+                ResourceExists = existingPluginPackageReference is null
             };
+        }
+
+        private async Task<PluginPackageDefinition> GetPackageDefinition(
+            ResourcePath resourcePath,
+            ResourceBase pluginPackageBase,
+            ResourceProviderFormFile? formFile)
+        {
+            try
+            {
+                // Enforce the platform-based naming convention
+                var platformName = pluginPackageBase.Name!.Split('-')[0];
+                if (!Enum.TryParse<PluginPackagePlatform>(platformName, out var packagePlatform))
+                    throw new ResourceProviderException("The plugin package name does not follow the platform-based naming convention or the platform is not supported.",
+                        StatusCodes.Status400BadRequest);
+
+                if (formFile == null || formFile.BinaryContent.Length == 0)
+                    throw new ResourceProviderException("The attached plugin package is not valid.",
+                        StatusCodes.Status400BadRequest);
+
+                var packageVersion = new SemanticVersion(0, 0, 0);
+                var packageConfiguration = default(PluginPackageConfiguration);
+
+                if (packagePlatform == PluginPackagePlatform.Dotnet)
+                {
+                    using var packageReader = new PackageArchiveReader(new MemoryStream(formFile.BinaryContent.ToArray()));
+                    var nuspecReader = await packageReader.GetNuspecReaderAsync(default);
+                    packageVersion = nuspecReader.GetVersion();
+
+                    foreach (var packagePath in await packageReader.GetFilesAsync("lib", default))
+                    {
+                        var assemblyStream = await packageReader.GetStreamAsync(packagePath, default);
+                        var assemblyMemoryStream = new MemoryStream();
+                        await assemblyStream.CopyToAsync(assemblyMemoryStream);
+                        assemblyMemoryStream.Seek(0, SeekOrigin.Begin);
+
+                        var assemblyLoadContext = new AssemblyLoadContext(packagePath, isCollectible: true);
+                        var assembly = assemblyLoadContext.LoadFromStream(assemblyMemoryStream);
+
+                        var pluginPackageManagerType = assembly.GetTypes()
+                            .FirstOrDefault(t => (typeof(IPluginPackageManager)).IsAssignableFrom(t));
+
+                        if (pluginPackageManagerType is not null)
+                        {
+                            var pluginPackageManager = assembly.CreateInstance(pluginPackageManagerType.FullName!) as IPluginPackageManager;
+
+                            if (pluginPackageManager is not null)
+                            {
+                                packageConfiguration = pluginPackageManager.GetConfiguration(
+                                    resourcePath.InstanceId!);
+
+                                assemblyLoadContext.Unload();
+                                break;
+                            }
+                        }
+
+                        assemblyLoadContext.Unload();
+                    }
+                }
+
+                if (packageConfiguration is null)
+                    throw new ResourceProviderException("The plugin package does not have a valid package manager and/or package configuration.",
+                        StatusCodes.Status400BadRequest);
+
+                if (packageConfiguration.PluginPackageName != pluginPackageBase.Name)
+                    throw new ResourceProviderException("The plugin package name does not match the name from the package configuration.",
+                        StatusCodes.Status400BadRequest);
+
+                if (packageConfiguration.PluginPackagePlatform != packagePlatform)
+                    throw new ResourceProviderException("The plugin package platform does not match the platform from the package configuration.",
+                        StatusCodes.Status400BadRequest);
+
+                return new PluginPackageDefinition
+                {
+                    Type = pluginPackageBase.Type,
+                    Name = packageConfiguration.PluginPackageName,
+                    DisplayName = packageConfiguration.PluginPackageDisplayName,
+                    Description = packageConfiguration.PluginPackageDescription,
+                    PackagePlatform = packagePlatform,
+                    PackageVersion = packageVersion,
+                    PackageFilePath = $"/{_name}/{resourcePath.InstanceId!}/{pluginPackageBase.Name}/{formFile.FileName}",
+                    PackageFileSize = formFile.BinaryContent.Length
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to parse the plugin package definition.");
+                throw new ResourceProviderException(
+                    "The plugin package definition is invalid.",
+                    StatusCodes.Status400BadRequest);
+            }
         }
 
         #endregion

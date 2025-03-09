@@ -160,6 +160,17 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
             _rawResourcePath;
 
         /// <summary>
+        /// Gets the resource object identifier associated with the resource path.
+        /// </summary>
+        /// <remarks>
+        /// Only fully qualified resource paths can be converted to object identifiers.
+        /// </remarks>
+        public string? ObjectId =>
+            string.IsNullOrWhiteSpace(_instanceId) || string.IsNullOrWhiteSpace(_rawResourcePath)
+            ? null
+            : _rawResourcePath;
+
+        /// <summary>
         /// Creates a new resource identifier from a resource path optionally allowing an action.
         /// </summary>
         /// <param name="resourcePath">The resource path used to create the resource identifier.</param>
