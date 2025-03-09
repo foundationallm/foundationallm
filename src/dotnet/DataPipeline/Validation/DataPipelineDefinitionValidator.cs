@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
+using FoundationaLLM.Common.Validation.Plugins;
 using FoundationaLLM.Common.Validation.ResourceProvider;
 
 namespace FoundationaLLM.DataPipeline.Validation
@@ -37,7 +38,7 @@ namespace FoundationaLLM.DataPipeline.Validation
         private void ValidateDataPipelineStep(InlineValidator<DataPipelineStage> stageValidator)
         {
             stageValidator.RuleFor(x => x)
-                .SetValidator(new PluginArtifactValidator());
+                .SetValidator(new PluginComponentValidator());
 
             stageValidator.When(x => x.NextStages != null && x.NextStages.Count > 0, () =>
             {

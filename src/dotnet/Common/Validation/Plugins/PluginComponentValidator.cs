@@ -1,17 +1,17 @@
 ﻿using FluentValidation;
 using FoundationaLLM.Common.Models.Plugins;
 
-namespace FoundationaLLM.DataPipeline.Validation
+namespace FoundationaLLM.Common.Validation.Plugins
 {
     /// <summary>
     /// Validator for the <see cref="PluginComponent"/> model.
     /// </summary>
-    public class PluginArtifactValidator: AbstractValidator<PluginComponent>
+    public class PluginComponentValidator: AbstractValidator<PluginComponent>
     {
         /// <summary>
         /// Configures the validation rules for the <see cref="PluginComponent"/> model.
         /// </summary>
-        public PluginArtifactValidator()
+        public PluginComponentValidator()
         {
         }
     }

@@ -3,9 +3,9 @@
 namespace FoundationaLLM.Common.Models.Plugins
 {
     /// <summary>
-    /// Provides the model for a plugin parameter definition.
+    /// Provides the metadata for a plugin parameter definition.
     /// </summary>
-    public class PluginParameterDefinition
+    public class PluginParameterMetadata
     {
         /// <summary>
         /// Gets or sets the name of the parameter.

@@ -6,7 +6,7 @@
     public static class DataPipelineResourceTypeNames
     {
         /// <summary>
-        /// Vectorization pipelines.
+        /// Data pipelines.
         /// </summary>
         public const string DataPipelines = "dataPipelines";
     }

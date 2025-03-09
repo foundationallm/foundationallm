@@ -21,12 +21,12 @@
     <PackageIcon>fllm-icon-128.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <Title>FoundationaLLM Common</Title>
-    <Authors>Solliance</Authors>
+    <Authors>FoundationaLLM</Authors>
     <RepositoryType>git</RepositoryType>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageProjectUrl>https://foundationallm.ai</PackageProjectUrl>
-    <Copyright>Copyright © Solliance. All rights reserved.</Copyright>
+    <Copyright>Copyright © FoundationaLLM. All rights reserved.</Copyright>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Deterministic>true</Deterministic>
@@ -43,7 +43,7 @@
 
   <ItemGroup>
     <None Include="fllm-icon-128.png" Pack="true" PackagePath="\" />
-    <None Include="Models\Plugins\PluginParameterDefinition.cs" />
+    <None Include="Models\Plugins\Metadata\PluginParameterMetadata.cs" />
     <None Include="readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   
@@ -69,6 +69,7 @@
     <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.4" />
+    <PackageReference Include="NuGet.Packaging" Version="6.13.2" />
     <PackageReference Include="OpenTelemetry" Version="1.9.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="8.4.0" />

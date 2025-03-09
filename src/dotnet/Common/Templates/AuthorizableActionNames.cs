@@ -368,5 +368,39 @@ namespace FoundationaLLM.Common.Constants.Authorization
         public const string FoundationaLLM_DataPipeline_DataPipelines_Delete = "FoundationaLLM.DataPipeline/dataPipelines/delete";
 
         #endregion
+
+        #region Plugin
+
+        /// <summary>
+        /// Read plugins.
+        /// </summary>
+        public const string FoundationaLLM_Plugin_Plugins_Read = "FoundationaLLM.Plugin/plugins/read";
+
+        /// <summary>
+        /// Create or update plugins.
+        /// </summary>
+        public const string FoundationaLLM_Plugin_Plugins_Write = "FoundationaLLM.Plugin/plugins/write";
+
+        /// <summary>
+        /// Delete plugins.
+        /// </summary>
+        public const string FoundationaLLM_Plugin_Plugins_Delete = "FoundationaLLM.Plugin/plugins/delete";
+
+        /// <summary>
+        /// Read plugin packages.
+        /// </summary>
+        public const string FoundationaLLM_Plugin_PluginPackages_Read = "FoundationaLLM.Plugin/pluginPackages/read";
+
+        /// <summary>
+        /// Create or update plugin packages.
+        /// </summary>
+        public const string FoundationaLLM_Plugin_PluginPackages_Write = "FoundationaLLM.Plugin/pluginPackages/write";
+
+        /// <summary>
+        /// Delete plugin packages.
+        /// </summary>
+        public const string FoundationaLLM_Plugin_PluginPackages_Delete = "FoundationaLLM.Plugin/pluginPackages/delete";
+
+        #endregion
     }
 }

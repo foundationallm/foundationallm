@@ -38,6 +38,6 @@
         /// <summary>
         /// Represents a parameter of type FoundationaLLM resource object identifier.
         /// </summary>
-        public const string ResourceObjectId = "resource_object_id";
+        public const string ResourceObjectId = "resource-object-id";
     }
 }
