@@ -38,7 +38,6 @@ try {
 
     Invoke-AndRequireSuccess "Load Certificates" {
         ./utility/Load-Certificates.ps1 `
-            -keyVaultResourceGroup $env:FLLM_OPS_RG `
             -keyVaultName $env:FLLM_OPS_KV `
             -certificates $certificates
     }
