@@ -164,7 +164,7 @@ Class ResourcePath  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath__ctor_System_String_System_Collections_Immutable_ImmutableList_System_String__System_Collections_Generic_Dictionary_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeDescriptor__System_Boolean_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.#ctor(System.String,System.Collections.Immutable.ImmutableList{System.String},System.Collections.Generic.Dictionary{System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeDescriptor},System.Boolean)">
   ResourcePath(string, ImmutableList&lt;string&gt;, Dictionary&lt;string, ResourceTypeDescriptor&gt;, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L169"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L180"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new resource identifier from a resource path optionally allowing an action.</p>
@@ -564,6 +564,41 @@ Class ResourcePath  <a class="header-action link-secondary" title="View source" 
 
 
 
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_ObjectId_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.ObjectId*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_ObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.ObjectId">
+  ObjectId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L168"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the resource object identifier associated with the resource path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? ObjectId { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_ObjectId_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Only fully qualified resource paths can be converted to object identifiers.</p>
+</div>
+
+
+
+
   <a id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_RawResourcePath_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.RawResourcePath*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_RawResourcePath" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.RawResourcePath">
@@ -776,7 +811,7 @@ Otherwise, it will be the resource type name of the main resource (and hence ide
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_GetAllowedResourceTypes_System_String_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetAllowedResourceTypes(System.String)">
   GetAllowedResourceTypes(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L432"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L443"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves the allowed resource types for a specified resource provider.</p>
@@ -814,7 +849,7 @@ Otherwise, it will be the resource type name of the main resource (and hence ide
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_GetObjectId_System_String_System_String_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetObjectId(System.String,System.String)">
   GetObjectId(string?, string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L250"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L261"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Computes the object id of the resource identifier.</p>
@@ -856,7 +891,7 @@ Otherwise, it will be the resource type name of the main resource (and hence ide
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_GetObjectId_System_String_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetObjectId(System.String,System.String,System.String,System.String)">
   GetObjectId(string, string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L309"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L320"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Computes the object id of the resource identifier.</p>
@@ -904,7 +939,7 @@ Otherwise, it will be the resource type name of the main resource (and hence ide
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_GetObjectId_System_String_System_String_System_String_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetObjectId(System.String,System.String,System.String,System.String,System.String,System.String)">
   GetObjectId(string, string, string, string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L326"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L337"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Computes the object id of the resource identifier.</p>
@@ -958,7 +993,7 @@ Otherwise, it will be the resource type name of the main resource (and hence ide
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_GetResourcePath_System_String_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetResourcePath(System.String)">
   GetResourcePath(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L404"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L415"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Parses a resource path.</p>
@@ -997,7 +1032,7 @@ Otherwise, it will be the resource type name of the main resource (and hence ide
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_GetResourceTypeObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetResourceTypeObjectId">
   GetResourceTypeObjectId()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L283"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L294"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Computes the object id of the resource type associated with the resource identifier.</p>
@@ -1035,7 +1070,7 @@ Otherwise, it will be the resource type name of the main resource (and hence ide
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_IncludesResourcePath_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_Boolean_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.IncludesResourcePath(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.Boolean)">
   IncludesResourcePath(ResourcePath, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L341"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L352"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Determines whether the resource path includes another specified resource path.</p>
@@ -1077,7 +1112,7 @@ Otherwise, it will be the resource type name of the main resource (and hence ide
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_MatchesResourceTypes_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.MatchesResourceTypes(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath)">
   MatchesResourceTypes(ResourcePath)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L383"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L394"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Determines whether the resource path matches exactly (including order) the resource types of another specified resource path.</p>
@@ -1116,7 +1151,7 @@ Otherwise, it will be the resource type name of the main resource (and hence ide
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_TryParse_System_String_System_Collections_Immutable_ImmutableList_System_String__System_Collections_Generic_Dictionary_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeDescriptor__System_Boolean_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath__" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.TryParse(System.String,System.Collections.Immutable.ImmutableList{System.String},System.Collections.Generic.Dictionary{System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeDescriptor},System.Boolean,FoundationaLLM.Common.Models.ResourceProviders.ResourcePath@)">
   TryParse(string, ImmutableList&lt;string&gt;, Dictionary&lt;string, ResourceTypeDescriptor&gt;, bool, out ResourcePath?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L208"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Tries to parse a resource path and create a resource identifier from it.</p>
@@ -1167,7 +1202,7 @@ Otherwise, it will be the resource type name of the main resource (and hence ide
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_TryParseInstanceId_System_String_System_String__" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.TryParseInstanceId(System.String,System.String@)">
   TryParseInstanceId(string, out string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L226"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L237"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Tries to retrieve the identifier of the FoundationaLLM instance from a resource path.</p>
@@ -1209,7 +1244,7 @@ Otherwise, it will be the resource type name of the main resource (and hence ide
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_TryParseResourceProvider_System_String_System_String__" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.TryParseResourceProvider(System.String,System.String@)">
   TryParseResourceProvider(string, out string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L238"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L249"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Tries to retrieve the name of the resource provider from a resource path.</p>

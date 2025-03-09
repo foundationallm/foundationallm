@@ -1972,6 +1972,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.HttpFormDataKeys.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.HttpFormDataKeys.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.HttpFormDataKeys",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.HttpFormDataKeys.yml\" sourcestartlinenumber=\"1\">Common HTTP form data keys used throughout the FoundationaLLM infrastructure.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.HttpHeaders.yml",
       "output": {
         ".html": {
@@ -2109,6 +2123,48 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Constants.Participants",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Participants.yml\" sourcestartlinenumber=\"1\">Specifies the participants, such as a user and an assistant.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Plugins.PluginCategoryNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Plugins.PluginCategoryNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Plugins.PluginCategoryNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Plugins.PluginCategoryNames.yml\" sourcestartlinenumber=\"1\">Defines the categories of plugins.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Plugins.PluginDependencySelectionTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Plugins.PluginDependencySelectionTypes.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Plugins.PluginDependencySelectionTypes",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Plugins.PluginDependencySelectionTypes.yml\" sourcestartlinenumber=\"1\">Provides the constant values for plugin dependency selection types.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Plugins.PluginPackagePlatform.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Plugins.PluginPackagePlatform.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Plugins.PluginPackagePlatform",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Plugins.PluginPackagePlatform.yml\" sourcestartlinenumber=\"1\">Defines the platforms supported by plugin packages.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2529,6 +2585,48 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Constants.ResourceProviders.DataSourceTypes",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.DataSourceTypes.yml\" sourcestartlinenumber=\"1\">String constants for the types of data sources.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.PluginResourceProviderMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.PluginResourceProviderMetadata.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.ResourceProviders.PluginResourceProviderMetadata",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.PluginResourceProviderMetadata.yml\" sourcestartlinenumber=\"1\">Provides metadata for the FoundationaLLM.Plugin resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.PluginResourceTypeNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.PluginResourceTypeNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.ResourceProviders.PluginResourceTypeNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.PluginResourceTypeNames.yml\" sourcestartlinenumber=\"1\">Contains constants of the names of the resource types managed by the FoundationaLLM.Plugin resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.PluginTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.PluginTypes.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.ResourceProviders.PluginTypes",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.PluginTypes.yml\" sourcestartlinenumber=\"1\">Plugin type contants.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3453,6 +3551,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Interfaces.IManagementProviderService",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IManagementProviderService.yml\" sourcestartlinenumber=\"1\">Provides core services required by the Management API.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IPluginPackageManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IPluginPackageManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.IPluginPackageManager",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IPluginPackageManager.yml\" sourcestartlinenumber=\"1\">Provides methods to manage plugins in FoundationaLLM plugin packages.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5934,6 +6046,76 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.Metadata.PluginDependencyMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.Metadata.PluginDependencyMetadata.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Plugins.Metadata.PluginDependencyMetadata",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Plugins.Metadata.PluginDependencyMetadata.yml\" sourcestartlinenumber=\"1\">Provides the model for plugin dependency metadata.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.Metadata.PluginMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.Metadata.PluginMetadata.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Plugins.Metadata.PluginMetadata",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Plugins.Metadata.PluginMetadata.yml\" sourcestartlinenumber=\"1\">Provides the model for plugin metadata.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.Metadata.PluginPackageMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.Metadata.PluginPackageMetadata.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Plugins.Metadata.PluginPackageMetadata",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Plugins.Metadata.PluginPackageMetadata.yml\" sourcestartlinenumber=\"1\">Provides the model for plugin package metadata.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.Metadata.PluginParameterSelectionHint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.Metadata.PluginParameterSelectionHint.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Plugins.Metadata.PluginParameterSelectionHint",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Plugins.Metadata.PluginParameterSelectionHint.yml\" sourcestartlinenumber=\"1\">Provides the model for selection hints required by plugin parameters of type resource-object-id.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.Metadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.Metadata.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Plugins.Metadata",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.PluginComponent.yml",
       "output": {
         ".html": {
@@ -5976,17 +6158,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.PluginParameterDefinition.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.PluginParameterMetadata.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.PluginParameterDefinition.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.PluginParameterMetadata.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Plugins.PluginParameterDefinition",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Plugins.PluginParameterDefinition.yml\" sourcestartlinenumber=\"1\">Provides the model for a plugin parameter definition.</p>\n"
+      "Title": "FoundationaLLM.Common.Models.Plugins.PluginParameterMetadata",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Plugins.PluginParameterMetadata.yml\" sourcestartlinenumber=\"1\">Provides the metadata for a plugin parameter definition.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7149,6 +7331,62 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.ResourceProviders.NameCheckResultType",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.NameCheckResultType.yml\" sourcestartlinenumber=\"1\">The result types of resource name checks.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition.yml\" sourcestartlinenumber=\"1\">Provides the model for a plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginFilter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginFilter",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginFilter.yml\" sourcestartlinenumber=\"1\">Provides filter properties for Plugin resources.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginPackageDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginPackageDefinition.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginPackageDefinition",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginPackageDefinition.yml\" sourcestartlinenumber=\"1\">Provides the model for a plugin package.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Plugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Plugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Plugin",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -8790,6 +9028,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Utils.JsonStringSemanticVersionConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Utils.JsonStringSemanticVersionConverter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Utils.JsonStringSemanticVersionConverter",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Utils.JsonStringSemanticVersionConverter.yml\" sourcestartlinenumber=\"1\">Provides a JSON converter for <xref href=\"NuGet.Versioning.SemanticVersion\" data-throw-if-not-resolved=\"false\"></xref> objects.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Utils.ResourcePathUtils.yml",
       "output": {
         ".html": {
@@ -8814,6 +9066,34 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Utils",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Validation.Plugins.PluginComponentValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Validation.Plugins.PluginComponentValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Validation.Plugins.PluginComponentValidator",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Validation.Plugins.PluginComponentValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.Plugins.PluginComponent\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Validation.Plugins.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Validation.Plugins.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Validation.Plugins",
       "Summary": null
     },
     {
@@ -9570,7 +9850,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.DataPipeline.Models.DataPipelineReference",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipeline.Models.DataPipelineReference.yml\" sourcestartlinenumber=\"1\">Provides a reference to a resource managed by the FoundationaLLM.DataPipeline resource provider.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -9641,20 +9921,6 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.DataPipeline.Validation.DataPipelineTriggerValidator",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipeline.Validation.DataPipelineTriggerValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineTrigger\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.Validation.PluginArtifactValidator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.Validation.PluginArtifactValidator.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.DataPipeline.Validation.PluginArtifactValidator",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipeline.Validation.PluginArtifactValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.Plugins.PluginComponent\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -11474,6 +11740,146 @@
       "Uid": null,
       "IsMRef": true,
       "Title": null,
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugin.Models.PluginReference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugin.Models.PluginReference.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugin.Models.PluginReference",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugin.Models.PluginReference.yml\" sourcestartlinenumber=\"1\">Provides a reference to a resource managed by the FoundationaLLM.Plugin resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugin.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugin.Models.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugin.Models",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugin.ResourceProviders.PluginResourceProviderService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugin.ResourceProviders.PluginResourceProviderService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugin.ResourceProviders.PluginResourceProviderService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugin.ResourceProviders.PluginResourceProviderService.yml\" sourcestartlinenumber=\"1\">Implements the FoundationaLLM.Plugin resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugin.ResourceProviders.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugin.ResourceProviders.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugin.ResourceProviders",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugin.Validation.PluginDefinitionValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugin.Validation.PluginDefinitionValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugin.Validation.PluginDefinitionValidator",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugin.Validation.PluginDefinitionValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugin.Validation.PluginPackageDefinitionValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugin.Validation.PluginPackageDefinitionValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugin.Validation.PluginPackageDefinitionValidator",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugin.Validation.PluginPackageDefinitionValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginPackageDefinition\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugin.Validation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugin.Validation.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugin.Validation",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": null,
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.PluginPackageManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.PluginPackageManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.PluginPackageManager",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.PluginPackageManager.yml\" sourcestartlinenumber=\"1\">The plugin package manager.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline",
       "Summary": null
     },
     {
