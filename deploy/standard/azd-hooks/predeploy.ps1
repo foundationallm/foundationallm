@@ -204,7 +204,8 @@ try {
             -secretProviderClassManifest $secretProviderClassManifestBackend `
             -serviceNamespace $env:FOUNDATIONALLM_K8S_NS `
             -registry $env:FOUNDATIONALLM_REGISTRY `
-            -version $env:FLLM_VERSION
+            -version $env:FLLM_VERSION `
+            -ingressEscrowed $env:INGRESS_ESCROWED
     }
 
     $frontendAks = Invoke-AndRequireSuccess "Get Frontend AKS" {
@@ -224,7 +225,8 @@ try {
             -secretProviderClassManifest $secretProviderClassManifestFrontend `
             -serviceNamespace $env:FOUNDATIONALLM_K8S_NS `
             -registry $env:FOUNDATIONALLM_REGISTRY `
-            -version $env:FLLM_VERSION
+            -version $env:FLLM_VERSION `
+            -ingressEscrowed $env:INGRESS_ESCROWED
     }
 
     $clusters = @(
