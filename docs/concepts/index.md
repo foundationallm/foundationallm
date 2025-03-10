@@ -120,6 +120,17 @@ Chargeback is a mechanism for tracking and billing the usage of resources by age
 
 ## Data Pipeline
 
+A FoundationaLLM data pipeline defines a process that aims to extract data from a data source, transform it to make it suitable for LLM-based workloads (e.g., extracting text, partitioning text, extracting entities and relationships, embedding text, creating knowledge graphs, etc.), and load it into a target system (e.g., vector store, knowledge store, etc.). Data pipelines can be managed using the FoundationaLLM Management Portal (interactively) or the FoundationaLLM Management API (programmatically).
+
+FoundationaLLM data pipelines are built from the ground up to address the following key requirements for enterprise-grade Generative AI workloads:
+- **Scalability** - handle large volumes of data and scale horizontally to meet the demands of enterprise workloads. FoundationaLLM data pipelines are designed to handle anything from a few documents or records to millions of documents or records.
+- **Flexibility** - have a flexible and modular structure that is suitable from complex processing, parallelization of work, scalability, and reusability of components.
+- **Local and Global Processing** - support local processing of data (e.g., text extraction, text partitioning, entity extraction, relationship extraction, etc.) and global processing of data (e.g., assembly of knowledge graphs).
+- **Parameterization** - allow the configuration of data pipelines using parameters that can be set at runtime. This avoids the need to create multiple data pipelines for different configurations (e.g., a single data pipeline definition can be used to handle all user file uploads in the User Portal).
+- **Extensiblity** - enable the addition of new data pipeline stages and the modification of existing data pipeline stages to meet the specific requirements of different use cases. All data pipeline components are implemented using plugins.
+
+For more details, see [Data Pipelines](./data-pipeline/data-pipeline.md).
+
 ## Plugin
 
 A plugin is a software component that can be used to extend the functionality of the FoundationaLLM platform. Plugins can be used to add new features, integrate with external systems, or perform other tasks. Plugins can be managed using the FoundationaLLM Management Portal (interactively) or the FoundationaLLM Management API (programmatically).
