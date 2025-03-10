@@ -14335,10 +14335,60 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "concepts/data-pipeline/data-pipeline.md",
+      "output": {
+        ".html": {
+          "relative_path": "concepts/data-pipeline/data-pipeline.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "concepts/index.md",
       "output": {
         ".html": {
           "relative_path": "concepts/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "concepts/plugin/plugin-package.md",
+      "output": {
+        ".html": {
+          "relative_path": "concepts/plugin/plugin-package.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "concepts/plugin/plugin.md",
+      "output": {
+        ".html": {
+          "relative_path": "concepts/plugin/plugin.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "concepts/quota/agent-completion-call-rate.md",
+      "output": {
+        ".html": {
+          "relative_path": "concepts/quota/agent-completion-call-rate.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "concepts/quota/api-completion-call-rate.md",
+      "output": {
+        ".html": {
+          "relative_path": "concepts/quota/api-completion-call-rate.html"
         }
       },
       "version": ""
@@ -15839,6 +15889,16 @@
       "output": {
         "resource": {
           "relative_path": "media/RS-Provider-3.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/concepts-data-pipeline.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/concepts-data-pipeline.png"
         }
       },
       "version": ""

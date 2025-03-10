@@ -118,9 +118,27 @@
 <li><code>file</code> (of type file) - the plugin package file to upload.</li>
 <li><code>resource</code> (of type text) - the serialized plugin package FoundationaLLM resource.</li>
 </ul>
-<h2 id="starting-with-094-rc100">Starting with 0.9.4-rc100</h2>
+<h2 id="starting-with-097-beta100">Starting with 0.9.7-beta100</h2>
 <h3 id="configuration-changes-1">Configuration changes</h3>
 <h2 id="app-configuration-settings">App configuration settings</h2>
+<p>The value of the <code>FoundationaLLM:Events:Profiles:CoreAPI</code> must be updated to include the <code>api-statistics</code> topic. The updated value is as follows:</p>
+<pre><code class="lang-json">{
+    &quot;EventProcessingCycleSeconds&quot;: 5,
+    &quot;Topics&quot;: [
+        {
+            &quot;Name&quot;: &quot;resource-providers&quot;,
+            &quot;SubscriptionPrefix&quot;: &quot;rp-core&quot;
+        },
+        {
+            &quot;Name&quot;: &quot;api-statistics&quot;,
+            &quot;SubscriptionPrefix&quot;: &quot;as-core&quot;
+        }
+    ]
+}
+</code></pre>
+<h2 id="starting-with-094-rc100">Starting with 0.9.4-rc100</h2>
+<h3 id="configuration-changes-2">Configuration changes</h3>
+<h2 id="app-configuration-settings-1">App configuration settings</h2>
 <div class="IMPORTANT">
 <h5>Important</h5>
 <p>The App Config setting <code>FoundationaLLM:Instance:EnableResourceProvidersCache</code> is obsolete and should be removed from the App Config settings.</p>
@@ -621,7 +639,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 </li>
 </ul>
 <h2 id="starting-with-093-rc002">Starting with 0.9.3-rc002</h2>
-<h2 id="app-configuration-settings-1">App configuration settings</h2>
+<h2 id="app-configuration-settings-2">App configuration settings</h2>
 <p>The following App Config properties make cache settings for the <code>AuthorizationServiceClientCacheService</code> configurable:</p>
 <table>
 <thead>
@@ -702,7 +720,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 }
 </code></pre>
 <h2 id="starting-from-091">Starting from 0.9.1</h2>
-<h3 id="app-configuration-settings-2">App configuration settings</h3>
+<h3 id="app-configuration-settings-3">App configuration settings</h3>
 <p>To support the event grid infrastructure, the following new App Configuration settings are required.</p>
 <pre><code class="lang-json">[
 	{
@@ -760,7 +778,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 <p>Note: The event grid system topics need to be removed.</p>
 </blockquote>
 <p>The following topic needs to be created in the event grid namespace, must have a <code>resource-providers</code> topic with a publisher type of <code>Custom</code> and an input schema of <code>Cloud Events v1.0</code>.</p>
-<h3 id="configuration-changes-2">Configuration changes</h3>
+<h3 id="configuration-changes-3">Configuration changes</h3>
 <p>Added the following App Configuration value:</p>
 <table>
 <thead>
@@ -822,7 +840,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 </ul>
 <p>After the container is created, set the <code>Time to Live</code> property on the container to 300 seconds.</p>
 <h2 id="starting-with-091-rc105">Starting with 0.9.1-rc105</h2>
-<h3 id="configuration-changes-3">Configuration changes</h3>
+<h3 id="configuration-changes-4">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -871,7 +889,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 }
 </code></pre>
 <h2 id="starting-with-091-rc102">Starting with 0.9.1-rc102</h2>
-<h3 id="configuration-changes-4">Configuration changes</h3>
+<h3 id="configuration-changes-5">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -908,7 +926,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
     },
 </code></pre>
 <h2 id="starting-with-091-rc101">Starting with 0.9.1-rc101</h2>
-<h3 id="configuration-changes-5">Configuration changes</h3>
+<h3 id="configuration-changes-6">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -952,7 +970,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 </tbody>
 </table>
 <h2 id="starting-with-090">Starting with 0.9.0</h2>
-<h3 id="configuration-changes-6">Configuration changes</h3>
+<h3 id="configuration-changes-7">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -1074,7 +1092,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 <p>Please note that both properties are nullable. Set them to null to clear out the rating and comments.</p>
 </div>
 <h2 id="starting-with-084">Starting with 0.8.4</h2>
-<h3 id="configuration-changes-7">Configuration changes</h3>
+<h3 id="configuration-changes-8">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -1265,7 +1283,7 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 <li><code>FoundationaLLM.AzureOpenAI/assistantUserContexts</code></li>
 <li><code>FoundationaLLM.Conversation/conversations</code></li>
 </ul>
-<h3 id="configuration-changes-8">Configuration changes</h3>
+<h3 id="configuration-changes-9">Configuration changes</h3>
 <h4 id="resource-provider-templates">Resource provider templates</h4>
 <p>The <code>AzureOpenAI.template.json</code> files within <code>deploy/quick-start/data/resource-provider/FoundationaLLM.Configuration</code> and <code>deploy/standard/data/resource-provider/FoundationaLLM.Configuration</code> have been updated to set the <code>category</code> field to the value <code>LLM</code>. This discriminator allows the Management Portal to filter the list of API endpoints by category and provide options to add AI Models to endpoints with the <code>LLM</code> category.</p>
 <p>The existing <code>category</code> property needs to be set to <code>LLM</code> on existing API endpoint configurations in the <code>FoundationaLLM.Configuration</code> resource provider that fit this description, including the <code>AzureOpenAI</code> endpoint configuration.</p>
@@ -1317,7 +1335,7 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 }
 </code></pre>
 <h2 id="starting-with-082">Starting with 0.8.2</h2>
-<h3 id="configuration-changes-9">Configuration changes</h3>
+<h3 id="configuration-changes-10">Configuration changes</h3>
 <p>The following settings are required:</p>
 <table>
 <thead>
