@@ -58,6 +58,7 @@
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
     <ProjectReference Include="..\DataPipeline\DataPipeline.csproj" />
     <ProjectReference Include="..\DataSource\DataSource.csproj" />
+    <ProjectReference Include="..\Plugin\Plugin.csproj" />
     <ProjectReference Include="..\Prompt\Prompt.csproj" />
     <ProjectReference Include="..\Vectorization\Vectorization.csproj" />
   </ItemGroup>

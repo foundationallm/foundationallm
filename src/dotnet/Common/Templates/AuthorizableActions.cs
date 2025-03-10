@@ -460,6 +460,48 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Delete data pipelines.",
                         "DataPipeline")
                 },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Read,
+                        "Read plugins.",
+                        "Plugin")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Write,
+                        "Create or update plugins.",
+                        "Plugin")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Delete,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Delete,
+                        "Delete plugins.",
+                        "Plugin")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Read,
+                        "Read plugin packages.",
+                        "Plugin")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Write,
+                        "Create or update plugin packages.",
+                        "Plugin")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Delete,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Delete,
+                        "Delete plugin packages.",
+                        "Plugin")
+                },
             });
 
         /// <summary>

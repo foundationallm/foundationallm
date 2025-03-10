@@ -458,6 +458,41 @@
 		]
 	},
 	{
+		"namespace": "ResourceProviders:Plugin",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used by the FoundationaLLM.Plugin resource provider."
+		},
+		"configuration_section": null,
+		"configuration_keys": []
+	},
+	{
+		"namespace": "ResourceProviders:Plugin:Storage",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used to inject storage settings for the FoundationaLLM.Plugin resource provider."
+		},
+		"configuration_section": {
+			"description": "Configuration section used to identify the storage settings for the FoundationaLLM.Plugin resource provider."
+		},
+		"configuration_keys": [
+			{
+				"name": "AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.Plugin resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AccountName",
+				"description": "The name of the Azure Blob Storage account used by the FoundationaLLM.Plugin resource provider.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.9.7"
+			}
+		]
+	},
+	{
 		"namespace": "APIEndpoints",
 		"dependency_injection_key": null,
 		"configuration_section": {

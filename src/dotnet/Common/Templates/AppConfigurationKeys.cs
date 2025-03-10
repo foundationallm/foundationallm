@@ -328,6 +328,28 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:ResourceProviders:Plugin
+
+        #endregion
+
+        #region FoundationaLLM:ResourceProviders:Plugin:Storage
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:ResourceProviders:Plugin:Storage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.Plugin resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Plugin_Storage_AuthenticationType =
+            "FoundationaLLM:ResourceProviders:Plugin:Storage:AuthenticationType";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:ResourceProviders:Plugin:Storage:AccountName setting.
+        /// <para>Value description:<br/>The name of the Azure Blob Storage account used by the FoundationaLLM.Plugin resource provider.</para>
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Plugin_Storage_AccountName =
+            "FoundationaLLM:ResourceProviders:Plugin:Storage:AccountName";
+
+        #endregion
+
         #region FoundationaLLM:APIEndpoints
 
         #endregion

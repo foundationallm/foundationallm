@@ -18,11 +18,11 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                 DataPipelineResourceTypeNames.DataPipelines,
                 new ResourceTypeDescriptor(
                     DataPipelineResourceTypeNames.DataPipelines,
-                    typeof(DataPipelineBase))
+                    typeof(DataPipelineDefinition))
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<DataPipelineBase>)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(DataPipelineBase)], [typeof(ResourceProviderUpsertResult)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<DataPipelineDefinition>)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(DataPipelineDefinition)], [typeof(ResourceProviderUpsertResult)]),
                         new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], [])
                     ],
                     Actions = [

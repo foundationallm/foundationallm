@@ -3,7 +3,7 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
-## Starting from 0.9.5
+## Starting from 0.9.7-beta101
 
 ### Configuration changes
 
@@ -13,6 +13,16 @@ Added the following App Configuration value:
 |--- | --- | --- |
 | `FoundationaLLM:ResourceProviders:DataPipeline:Storage:AccountName` | `<storage_account_name>` | Provides the storage account used by the FoundationaLLM.DataPipeline resource provider. |
 | `FoundationaLLM:ResourceProviders:DataPipeline:Storage:AuthenticationType` | `AzureIdentity` |  Indicates the authentication type used by the FoundationaLLM.DataPipeline resource provider to connect to the storage account. |
+| `FoundationaLLM:ResourceProviders:Plugin:Storage:AccountName` | `<storage_account_name>` | Provides the storage account used by the FoundationaLLM.Plugin resource provider. |
+| `FoundationaLLM:ResourceProviders:Plugin:Storage:AuthenticationType` | `AzureIdentity` |  Indicates the authentication type used by the FoundationaLLM.Plugin resource provider to connect to the storage account. |
+
+### Management API
+
+The `POST /instances/{instanceId}/providers/{resourceProvider}/{resourcePath}` endpoint now supports providing a `resource` form data key in the request body. This key is used to provide the serialized resource FoundationaLLM resource when a file upload is performed using a `form-data` request body.
+
+The call to `POST /instances/{instanceId}/providers/FoundationaLLM.Plugin/pluginPackages/Dotnet-FoundationaLLMDataPipelinePlugins` expects a `form-data` request body with the following keys:
+- `file` (of type file) - the plugin package file to upload.
+- `resource` (of type text) - the serialized plugin package FoundationaLLM resource.
 
 ## Starting with 0.9.4-rc100
 
