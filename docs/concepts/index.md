@@ -21,11 +21,17 @@ mindmap
                 Agent Access Token Virtual User
             Agent Virtual Security Group
         (Chargeback)
+        (Data Pipeline)
+        (Plugin)
+            Plugin Package
+            Plugin
         (Quota)
             API Completion Call Rate
             Agent Completion Call Rate
+        (Resource Provider)
         (Tool)
         (Workflow)
+            Workflow Host
 ```
 
 - [FoundationaLLM Concepts](#foundationallm-concepts)
@@ -44,11 +50,17 @@ mindmap
       - [Agent Access Token Virtual User](#agent-access-token-virtual-user)
     - [Agent Virtual Security Group](#agent-virtual-security-group)
   - [Chargeback](#chargeback)
+  - [Data Pipeline](#data-pipeline)
+  - [Plugin](#plugin)
+    - [Plugin Package](#plugin-package)
+    - [Plugin](#plugin-1)
   - [Quota](#quota)
     - [API Completion Call Rate](#api-completion-call-rate)
     - [Agent Completion Call Rate](#agent-completion-call-rate)
+  - [Resource Provider](#resource-provider)
   - [Tool](#tool)
   - [Workflow](#workflow)
+    - [Workflow Host](#workflow-host)
 
 ## Authorization
 
@@ -106,6 +118,38 @@ An agent virtual security group is a virtual security group that represents the 
 
 Chargeback is a mechanism for tracking and billing the usage of resources by agents, users, or other entities that can be associated with cost centers. Chargeback allows organizations to allocate costs based on the actual usage of resources by cost center-enabled entities.
 
+## Data Pipeline
+
+## Plugin
+
+A plugin is a software component that can be used to extend the functionality of the FoundationaLLM platform. Plugins can be used to add new features, integrate with external systems, or perform other tasks. Plugins can be managed using the FoundationaLLM Management Portal (interactively) or the FoundationaLLM Management API (programmatically).
+
+### Plugin Package
+
+A FoundationaLLM plugin package is a unit of versioning and deployment of one or more plugins. The Management Portal and Management API allow you to manage plugin packages. The following types of plugin packages are supported by the FoundationaLLM platform:
+
+Platform | Package Type | Description
+--- | --- | ---
+Python | ZIP package | The package can contain agent workflow and agent tool plugins that can be used through a workflow/tool plugin manager. This package type in not currently supported by Management API. It is scheduled to be replaced by a new type of Python package (Wheel) that will be fully supported by Management API.
+.NET | NuGet package | The package can contain data source, data pipeline stage, content text extraction, and content text partitioning plugins that can be used by the data pipelines infrastructure. This package type is fully supported by Management API.
+
+For more details, see [Plugin Packages](./plugin/plugin-package.md).
+
+### Plugin
+
+The following types of plugins are supported by the FoundationaLLM platform:
+
+Platform | Category | Description
+--- | --- | ---
+Python | `Agent Workflow` | A Python agent workflow plugin implements an agent workflow that runs in the LangChain API and is responsible for driving the proccess of tool invocation and response generation.
+Python | `Agent Tool` | A Python agent tool plugin implement an agent tool that can be associated with an agent that uses a workflow that runs the LangChain workflow host (LangChain API).
+.NET | `Data Source` | A .NET data source plugin implements a data source that can be used to retrieve data from an external system and make it available to data pipelines.
+.NET | `Data Pipeline Stage` | A .NET data pipeline stage plugin implements a stage that can be executed as part of a data pipeline.
+.NET | `Content Text Extraction` | A .NET content text extraction plugin implements a content text extraction process that can be used to extract text from binary content (corresponding to various formats like PDF, DOCX, images, etc.).
+.NET | `Content Text Partitioning` | A .NET content text partitioning plugin implements a content text partitioning process that can be used to partition text into segments based on a specific strategy (e.g., token-based or semantic).
+
+For more details, see [Plugins](./plugin/plugin.md).
+
 ## Quota
 
 ### API Completion Call Rate
@@ -120,6 +164,23 @@ The API call rate is the maximum number of Core API completion calls that a clie
 
 For more details, see [Agent Completion Call Rate](./quota/agent-completion-call-rate.md).
 
+## Resource Provider
+
+A resource provider is a platform component that is responsible for managing resources in the FoundationaLLM platform. Resource providers are used to create, update, delete, and retrieve resources such as agents, prompts, data sources, data pipelines, plugins and many more. All resource types available in the FoundationaLLM platform are managed by resource providers. The following resource providers are supported by the FoundationaLLM platform:
+
+Name | Description
+--- | ---
+`FoundationaLLM.Agent` | Manages agents, agent workflows, agent tool, agent access tokens and other agent-related artifacts.
+`FoundationaLLM.AIModel` | Manages AI models used across the platform.
+`FoundationaLLM.Attachment` | Manages attachments that are uploaded by users through the User Portal or programmatically using Core API.
+`FoundationaLLM.Authorization` | Manages the authorization artifacts like roles, policies, and permissions.
+`FoundationaLLM.AzureOpenAI` | Manages artifacts related to the Azure OpenAI integration (e.g., Assistants files, vector stores, threads, etc.).
+`FoundationaLLM.Configuration` | Manages the configuration settings of the FoundationaLLM platform. This includes settings from Azure App Configuration and API endpoint configurations.
+`FoundationaLLM.DataPipeline` | Manages data pipelines, data pipeline stages, data pipeline runs, and other data pipeline-related artifacts.
+`FoundationaLLM.DataSource` | Manages data sources and other data source-related artifacts.
+`FoundationaLLM.Plugin` | Manages plugin packages and plugins.
+`FoundationaLLM.Prompt` | Manages prompts and other prompt-related artifacts.
+
 ## Tool
 
 A tool is a well-defined software component that can be used to perform a specific task as part of the execution of an agent workflow. Tools are used by agents to interact with external systems, process data, or perform other tasks.
@@ -127,4 +188,16 @@ A tool is a well-defined software component that can be used to perform a specif
 ## Workflow
 
 A workflow is a sequence of steps that an agent follows to perform a specific task. Workflows can be simple or complex, and can involve multiple tools and interactions with external systems.
+
+### Workflow Host
+
+A workflow host is an environment that runs agent workflows. The workflow host is responsible for executing agent workflows, managing the execution of tools, and handling the interactions between agents and external systems.
+
+The following workflow hosts are supported by the FoundationaLLM platform:
+
+Name | Platform | Description
+--- | --- | ---
+LangChain | LangChain API (Python) | The LangChain API is a Python-based workflow host that runs agent workflows using the LangChain orchestrator.
+SemanticKernel | Semantic Kernel API (.NET) | The Semantic Kernel API is a .NET-based workflow host that runs agent workflows using the Semantic Kernel orchestrator.
+```
 
