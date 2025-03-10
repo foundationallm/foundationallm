@@ -1,4 +1,5 @@
 using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Constants.Telemetry;
@@ -6,6 +7,7 @@ using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.Quota;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Telemetry;
@@ -37,6 +39,7 @@ namespace FoundationaLLM.Core.API.Controllers
         private readonly IResourceProviderService _agentResourceProvider;
         private readonly ILogger<CompletionsController> _logger;
         private readonly ICallContext _callContext;
+        private readonly IAPIRequestQuotaService _apiRequestQuotaService;
 
         /// <summary>
         /// Methods for orchestration services exposed by the Gatekeeper API service.
@@ -48,11 +51,13 @@ namespace FoundationaLLM.Core.API.Controllers
         /// completions from the orchestrator.</param>
         /// <param name="callContext">The call context for the request.</param>
         /// <param name="resourceProviderServices">The list of <see cref="IResourceProviderService"/> resource provider services.</param>
+        /// <param name="apiRequestQuotaService">The API request quota service.</param>
         /// <param name="logger">The logging interface used to log under the
         /// <see cref="CompletionsController"/> type name.</param>
         public CompletionsController(ICoreService coreService,
             ICallContext callContext,
             IEnumerable<IResourceProviderService> resourceProviderServices,
+            IAPIRequestQuotaService apiRequestQuotaService,
             ILogger<CompletionsController> logger)
         {
             _coreService = coreService;
@@ -63,6 +68,7 @@ namespace FoundationaLLM.Core.API.Controllers
             _agentResourceProvider = agentResourceProvider;
             _logger = logger;
             _callContext = callContext;
+            _apiRequestQuotaService = apiRequestQuotaService;
         }
 
         /// <summary>
@@ -89,6 +95,17 @@ namespace FoundationaLLM.Core.API.Controllers
                     { TelemetryActivityTagNames.UPN, _callContext.CurrentUserIdentity?.UPN ?? "N/A" },
                     { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
                 });
+
+            if (_apiRequestQuotaService.Enabled)
+            {
+                var quotaEvaluationResult = _apiRequestQuotaService.EvaluateCompletionRequestForQuota(
+                    ServiceNames.CoreAPI,
+                    completionRequest);
+                if (quotaEvaluationResult.RateLimitExceeded)
+                    return StatusCode(
+                        StatusCodes.Status429TooManyRequests,
+                        quotaEvaluationResult);
+            }
 
             return !string.IsNullOrWhiteSpace(completionRequest.SessionId)
                 ? Ok(await _coreService.GetChatCompletionAsync(instanceId, completionRequest))
@@ -120,6 +137,17 @@ namespace FoundationaLLM.Core.API.Controllers
                     { TelemetryActivityTagNames.UPN, _callContext.CurrentUserIdentity?.UPN ?? "N/A" },
                     { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
                 });
+
+            if (_apiRequestQuotaService.Enabled)
+            {
+                var quotaEvaluationResult = _apiRequestQuotaService.EvaluateCompletionRequestForQuota(
+                    ServiceNames.CoreAPI,
+                    completionRequest);
+                if (quotaEvaluationResult.RateLimitExceeded)
+                    return StatusCode(
+                        StatusCodes.Status429TooManyRequests,
+                        quotaEvaluationResult);
+            }
 
             var state = await _coreService.StartCompletionOperation(instanceId, completionRequest);
             return Accepted(state);

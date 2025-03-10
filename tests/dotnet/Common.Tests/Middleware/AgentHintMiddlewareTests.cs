@@ -20,6 +20,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             var claimsProviderService = Substitute.For<IUserClaimsProviderService>();
             var identityManagementService = Substitute.For<IIdentityManagementService>();
             var callContext = Substitute.For<ICallContext>();
+            var apiRequestQuotaService = Substitute.For<IAPIRequestQuotaService>();
             var instanceSettings = Options.Create<InstanceSettings>(Substitute.For<InstanceSettings>());
             var middleware = new CallContextMiddleware(next: _ => Task.FromResult(0));
             context.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
@@ -31,7 +32,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             }, "mock"));
 
             // Act
-            await middleware.InvokeAsync(context, claimsProviderService, identityManagementService, callContext, instanceSettings);
+            await middleware.InvokeAsync(context, claimsProviderService, identityManagementService, callContext, apiRequestQuotaService, instanceSettings);
 
             // Assert
             claimsProviderService.Received(1).GetUserIdentity(context.User);
@@ -46,13 +47,14 @@ namespace FoundationaLLM.Common.Tests.Middleware
             var claimsProviderService = Substitute.For<IUserClaimsProviderService>();
             var groupMembershipService = Substitute.For<IIdentityManagementService>();
             var callContext = Substitute.For<ICallContext>();
+            var apiRequestQuotaService = Substitute.For<IAPIRequestQuotaService>();
             var instanceSettings = Options.Create<InstanceSettings>(Substitute.For<InstanceSettings>());
             var middleware = new CallContextMiddleware(next: _ => Task.FromResult(0));
             var userIdentity = new UnifiedUserIdentity { Username = "testuser@example.com", UPN = "testuser@example.com", Name = "testuser" };
             context.Request.Headers[Constants.HttpHeaders.UserIdentity] = JsonSerializer.Serialize(userIdentity);
 
             // Act
-            await middleware.InvokeAsync(context, claimsProviderService, groupMembershipService, callContext, instanceSettings);
+            await middleware.InvokeAsync(context, claimsProviderService, groupMembershipService, callContext, apiRequestQuotaService, instanceSettings);
 
             // Assert
             callContext.Received(1).CurrentUserIdentity = Arg.Is<UnifiedUserIdentity>(x => x.Username == userIdentity.Username && x.UPN == userIdentity.UPN && x.Name == userIdentity.Name);

@@ -7,7 +7,6 @@ using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Common.Services.Users;
 using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
@@ -96,6 +95,9 @@ namespace FoundationaLLM.Core.API
             builder.Services.AddAzureEventGridEvents(
                 builder.Configuration,
                 AppConfigurationKeySections.FoundationaLLM_Events_Profiles_CoreAPI);
+
+            // API request quota service
+            builder.AddAPIRequestQuotaService();
 
             //----------------------------
             // Resource providers
