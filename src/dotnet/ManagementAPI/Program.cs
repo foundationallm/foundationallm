@@ -59,6 +59,8 @@ namespace FoundationaLLM.Management.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Attachment_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AIModel_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataPipeline_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Plugin_Storage);
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
@@ -110,6 +112,8 @@ namespace FoundationaLLM.Management.API
             builder.AddDataSourceResourceProvider();
             builder.AddAttachmentResourceProvider();
             builder.AddAIModelResourceProvider();
+            builder.AddDataPipelineResourceProvider();
+            builder.AddPluginResourceProvider();
 
             builder.AddAzureCosmosDBService();
 

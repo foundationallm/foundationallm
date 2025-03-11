@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Constants.Authorization;
+﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.ResourceProviders;
@@ -80,7 +81,12 @@ namespace FoundationaLLM.Management.API.Controllers
                     if (HttpContext.Request.HasFormContentType)
                         formPayload = HttpContext.Request.Form?.Keys.ToDictionary(k => k, v => HttpContext.Request.Form[v].ToString());
 
+                    // First, attempt to retrieve the serialized resource from the request body.
+                    // If it is not found, attempt to retrieve it from the form payload using the well-known 'resource' key.
                     var bodyContent = await (new StreamReader(HttpContext.Request.Body)).ReadToEndAsync();
+                    if (string.IsNullOrWhiteSpace(bodyContent)
+                        && formPayload != null)
+                        formPayload.TryGetValue(HttpFormDataKeys.Resource, out bodyContent);
                     string? serializedResource = !string.IsNullOrWhiteSpace(bodyContent) ? bodyContent : null;
 
                     if ((formFile == null || formFile.Length == 0) && serializedResource == null)
@@ -123,8 +129,9 @@ namespace FoundationaLLM.Management.API.Controllers
                 resourcePath,
                 async (resourceProviderService) =>
                 {
-                    await resourceProviderService.HandleDeleteAsync($"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}", _callContext.CurrentUserIdentity);
-                    return new OkObjectResult(new ResourceProviderActionResult(true));
+                    var objectId = $"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}";
+                    await resourceProviderService.HandleDeleteAsync(objectId, _callContext.CurrentUserIdentity!);
+                    return new OkObjectResult(new ResourceProviderActionResult(objectId, true));
                 });
 
         private async Task<IActionResult> HandleRequest(string resourceProvider, string resourcePath, Func<IResourceProviderService, Task<IActionResult>> handler)

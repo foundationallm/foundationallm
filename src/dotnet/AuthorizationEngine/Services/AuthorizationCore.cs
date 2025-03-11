@@ -424,8 +424,9 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 if (authorizationRequest.IncludeRoles
                     && allRoleAssignments.Count > 0)
                 {
-                    // Include the display names of the roles in the result.
+                    // Include the display names of the roles in the result that match the scope of the resource.
                     result.Roles = allRoleAssignments
+                        .Where(ra => resourcePath.IncludesResourcePath(ra.ScopeResourcePath!))
                         .Select(ra => ra.RoleDefinition!.DisplayName!)
                         .Distinct()
                         .ToList();

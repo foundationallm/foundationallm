@@ -3,6 +3,51 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-beta101
+
+### Configuration changes
+
+Added the following App Configuration value:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+| `FoundationaLLM:ResourceProviders:DataPipeline:Storage:AccountName` | `<storage_account_name>` | Provides the storage account used by the FoundationaLLM.DataPipeline resource provider. |
+| `FoundationaLLM:ResourceProviders:DataPipeline:Storage:AuthenticationType` | `AzureIdentity` |  Indicates the authentication type used by the FoundationaLLM.DataPipeline resource provider to connect to the storage account. |
+| `FoundationaLLM:ResourceProviders:Plugin:Storage:AccountName` | `<storage_account_name>` | Provides the storage account used by the FoundationaLLM.Plugin resource provider. |
+| `FoundationaLLM:ResourceProviders:Plugin:Storage:AuthenticationType` | `AzureIdentity` |  Indicates the authentication type used by the FoundationaLLM.Plugin resource provider to connect to the storage account. |
+
+### Management API
+
+The `POST /instances/{instanceId}/providers/{resourceProvider}/{resourcePath}` endpoint now supports providing a `resource` form data key in the request body. This key is used to provide the serialized resource FoundationaLLM resource when a file upload is performed using a `form-data` request body.
+
+The call to `POST /instances/{instanceId}/providers/FoundationaLLM.Plugin/pluginPackages/Dotnet-FoundationaLLMDataPipelinePlugins` expects a `form-data` request body with the following keys:
+- `file` (of type file) - the plugin package file to upload.
+- `resource` (of type text) - the serialized plugin package FoundationaLLM resource.
+
+## Starting with 0.9.7-beta100
+
+### Configuration changes
+
+## App configuration settings
+
+The value of the `FoundationaLLM:Events:Profiles:CoreAPI` must be updated to include the `api-statistics` topic. The updated value is as follows:
+
+```json
+{
+    "EventProcessingCycleSeconds": 5,
+    "Topics": [
+        {
+            "Name": "resource-providers",
+            "SubscriptionPrefix": "rp-core"
+        },
+        {
+            "Name": "api-statistics",
+            "SubscriptionPrefix": "as-core"
+        }
+    ]
+}
+```
+
 ## Starting with 0.9.4-rc100
 
 ### Configuration changes
@@ -196,6 +241,120 @@ This version introduces the concept of a well-known virtual security group (`All
     "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
     "principal_type": "Group",
     "scope": "/instances/{{instanceId}}/providers/FoundationaLLM.Configuration/appConfigurations/FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds",
+    "properties": null,
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+},
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "{{externalAgentWorkflowReaderGuid}}",
+    "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{externalAgentWorkflowReaderGuid}}",
+    "display_name": null,
+    "description": "Read Access for ExternalAgentWorkflow for the AllAgentsVirtualSecurityGroup group.",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}/providers/FoundationaLLM.Agent/workflows/ExternalAgentWorkflow",
+    "properties": null,
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+},
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "{{langChainExpressionLanguageReaderGuid}}",
+    "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{langChainExpressionLanguageReaderGuid}}",
+    "display_name": null,
+    "description": "Read Access for LangChainExpressionLanguage for the AllAgentsVirtualSecurityGroup group.",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}/providers/FoundationaLLM.Agent/workflows/LangChainExpressionLanguage",
+    "properties": null,
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+},
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "{{openAIAssistantsFileSearchReaderGuid}}",
+    "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{openAIAssistantsFileSearchReaderGuid}}",
+    "display_name": null,
+    "description": "Read Access for OpenAIAssistantsFileSearch for the AllAgentsVirtualSecurityGroup group.",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch",
+    "properties": null,
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+},
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "{{openAIAssistantsCodeInterpreterReaderGuid}}",
+    "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{openAIAssistantsCodeInterpreterReaderGuid}}",
+    "display_name": null,
+    "description": "Read Access for OpenAIAssistantsCodeInterpreter for the AllAgentsVirtualSecurityGroup group.",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsCodeInterpreter",
+    "properties": null,
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+},
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "{{dalleImageGenerationReaderGuid}}",
+    "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{dalleImageGenerationReaderGuid}}",
+    "display_name": null,
+    "description": "Read Access for DALLEImageGeneration for the AllAgentsVirtualSecurityGroup group.",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}/providers/FoundationaLLM.Agent/tools/DALLEImageGeneration",
+    "properties": null,
+    "created_on": "{{deployTime}}",
+    "updated_on": "{{deployTime}}",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+},
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "{{foundationaLLMContentSearchToolReaderGuid}}",
+    "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{foundationaLLMContentSearchToolReaderGuid}}",
+    "display_name": null,
+    "description": "Read Access for FoundationaLLMContentSearchTool for the AllAgentsVirtualSecurityGroup group.",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+    "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+    "principal_type": "Group",
+    "scope": "/instances/{{instanceId}}/providers/FoundationaLLM.Agent/tools/FoundationaLLMContentSearchTool",
     "properties": null,
     "created_on": "{{deployTime}}",
     "updated_on": "{{deployTime}}",
