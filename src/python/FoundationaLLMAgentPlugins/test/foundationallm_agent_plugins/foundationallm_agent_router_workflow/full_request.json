@@ -1,0 +1,319 @@
+{
+    "agent": {
+        "type": "knowledge-management",
+        "name": "TestAgent",
+        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/agents/TestAgent",
+        "description": "TestAgent",
+        "cost_center": "",
+        "vectorization": {
+            "dedicated_pipeline": true,
+            "data_source_object_id": "",
+            "indexing_profile_object_ids": [
+                ""
+            ],
+            "text_embedding_profile_object_id": "",
+            "text_partitioning_profile_object_id": "",
+            "vectorization_data_pipeline_object_id": "",
+            "trigger_type": "Event",
+            "trigger_cron_schedule": "* * * * *"
+        },
+        "inline_context": true,
+        "sessions_enabled": true,
+        "text_rewrite_settings": {
+            "user_prompt_rewrite_enabled": false,
+            "user_prompt_rewrite_settings": {
+                "user_prompts_window_size": 3
+            }
+        },
+        "cache_settings": {
+            "semantic_cache_enabled": false,
+            "semantic_cache_settings": {
+                "embedding_dimensions": 2048,
+                "minimum_similarity_threshold": 0.97
+            }
+        },
+        "conversation_history_settings": {
+            "enabled": false,
+            "max_history": 5
+        },
+        "gatekeeper_settings": {
+            "use_system_setting": false,
+            "options": []
+        },
+        "workflow": {
+            "type": "external-agent-workflow",
+            "name": "FoundationaLLMAgentRouterWorkflow",
+            "package_name": "FoundationaLLMAgentPlugins",
+            "workflow_host": "LangChain",
+            "resource_object_ids": {
+                "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel": {
+                    "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel",
+                    "properties": {
+                        "object_role": "main_model",
+                        "model_parameters": {
+                            "temperature": 0.5
+                        }
+                    }
+                },
+                "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/TestAgent": {
+                    "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/TestAgent",
+                    "properties": {
+                        "object_role": "main_prompt"
+                    }
+                },
+                "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/TestAgentRouter": {
+                    "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/TestAgentRouter",
+                    "properties": {
+                        "object_role": "router_prompt"
+                    }
+                },
+                "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/workflows/ExternalAgentWorkflow": {
+                    "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/workflows/ExternalAgentWorkflow",
+                    "properties": {}
+                }
+            }
+        },
+        "tools": [           
+            {
+                "name": "FoundationaLLMKnowledgeSearchTool",
+                "description": "Answers questions about the Dune series of books.",
+                "package_name": "foundationallm_agent",
+                "resource_object_ids": {
+                    "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/Claude35SonnetAPIKey": {
+                        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/Claude35SonnetAPIKey",
+                        "properties": {
+                            "object_role": "main_model"
+                        }
+                    },
+                    "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vectorization/textEmbeddingProfiles/gateway-openai-ada002": {
+                        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vectorization/textEmbeddingProfiles/gateway-openai-ada002",
+                        "properties": {
+                            "object_role": "embedding_profile"
+                        }
+                    },
+                    "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vectorization/indexingProfiles/Dune": {
+                        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vectorization/indexingProfiles/Dune",
+                        "properties": {
+                            "object_role": "indexing_profile"
+                        }
+                    }
+                },
+                "properties": {}
+            }
+        ],
+        "virtual_security_group_id": "6525fd96-17ef-40aa-a686-0f9d7234c009",
+        "show_message_tokens": false,
+        "show_message_rating": false,
+        "show_view_prompt": true,
+        "show_file_upload": false,
+        "properties": {
+            "welcome_message": "\u003Cp\u003ETestAgent with FLLMKnowledgeSearchTool\u003C/p\u003E"
+        },
+        "created_on": "0001-01-01T00:00:00+00:00",
+        "updated_on": "2025-02-12T19:04:24.0983562+00:00",
+        "updated_by": "carey@foundationaLLM.ai",
+        "deleted": false
+    },
+    "objects": {
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel": {
+            "type": "completion",
+            "name": "GPT4oCompletionAIModel",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel",
+            "endpoint_object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI",
+            "version": "0.0",
+            "deployment_name": "completions4o",
+            "model_parameters": {
+                "temperature": 0.5
+            },
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "0001-01-01T00:00:00+00:00",
+            "deleted": false
+        },
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI": {
+            "type": "api-endpoint",
+            "name": "AzureOpenAI",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI",
+            "category": "LLM",
+            "authentication_type": "APIKey",
+            "url": "https://openai-l43jljq2i5ox6.openai.azure.com/",
+            "url_exceptions": [],
+            "authentication_parameters": {
+                "api_key_configuration_name": "FoundationaLLM:APIEndpoints:AzureOpenAI:Essentials:APIKey",
+                "api_key_header_name": "api-key"
+            },
+            "timeout_seconds": 60,
+            "retry_strategy_name": "ExponentialBackoff",
+            "provider": "microsoft",
+            "api_version": "2024-07-01-preview",
+            "operation_type": "chat",
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "0001-01-01T00:00:00+00:00",
+            "deleted": false
+        },
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/TestAgent": {
+            "type": "multipart",
+            "name": "TestAgent",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/TestAgent",
+            "description": "System prompt for the TestAgent agent",
+            "cost_center": "",
+            "prefix": "You are a helpful assistant.\n{{foundationallm:router_prompt}}",
+            "suffix": "",
+            "category": "Workflow",
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "2025-02-12T19:04:20.3345658+00:00",
+            "updated_by": "carey@foundationaLLM.ai",
+            "deleted": false
+        },
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/TestAgentRouter": {
+            "type": "multipart",
+            "name": "TestAgentRouter",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/TestAgentRouter",
+            "description": "Router prompt for the TestAgent agent",
+            "cost_center": "",
+            "prefix": "By default use the FoundationaLLMKnowledgeSearchTool.\nYou have the following tools to select from:\n{{foundationallm:tools}}",
+            "suffix": "",
+            "category": "Workflow",
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "2025-02-12T19:04:20.3345658+00:00",
+            "updated_by": "carey@foundationaLLM.ai",
+            "deleted": false
+        },
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/workflows/ExternalAgentWorkflow": {
+            "type": "ExternalAgentWorkflow",
+            "name": "ExternalAgentWorkflow",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/workflows/ExternalAgentWorkflow",
+            "display_name": "ExternalAgentWorkflow",
+            "description": "External agent workflow",
+            "cost_center": null,
+            "properties": null,
+            "created_on": "2024-11-08T10:08:27.1953263+00:00",
+            "updated_on": "0001-01-01T00:00:00+00:00",
+            "created_by": "andrei@foundationaLLM.ai",
+            "updated_by": null,
+            "deleted": false,
+            "expiration_date": null
+        },
+        "GatewayAPIEndpointConfiguration": {
+            "type": "api-endpoint",
+            "name": "GatewayAPI",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/GatewayAPI",
+            "category": "General",
+            "authentication_type": "APIKey",
+            "url": "https://cagatewayapil43jljq2i5ox6.lemondesert-a0804c39.eastus2.azurecontainerapps.io",
+            "url_exceptions": [
+                {
+                    "user_principal_name": "carey@foundationallm.ai",
+                    "url": "https://localhost:7209/",
+                    "enabled": true
+                }
+            ],
+            "authentication_parameters": {
+                "api_key_configuration_name": "FoundationaLLM:APIEndpoints:GatewayAPI:Essentials:APIKey",
+                "api_key_header_name": "X-API-KEY"
+            },
+            "timeout_seconds": 1200,
+            "retry_strategy_name": "ExponentialBackoff",
+            "created_on": "0001-01-01T00:00:00-05:00",
+            "updated_on": "0001-01-01T00:00:00-05:00",
+            "created_by": "SYSTEM",
+            "deleted": false
+        },
+        "FoundationaLLM.InstanceId": "8ac6074c-bdde-43cb-a140-ec0002d96d2b",
+        "FoundationaLLMKnowledgeSearchTool": {},
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vectorization/textEmbeddingProfiles/gateway-openai-ada002": {
+            "type": "text-embedding-profile",
+            "name": "gateway-openai-ada002",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vectorization/textEmbeddingProfiles/gateway-openai-ada002",
+            "text_embedding": "GatewayTextEmbedding",
+            "settings": {
+                "model_name": "text-embedding-ada-002"
+            },
+            "configuration_references": {},
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "0001-01-01T00:00:00+00:00",
+            "created_by": "carey@foundationaLLM.ai",
+            "deleted": false
+        },
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vectorization/indexingProfiles/Dune": {
+            "type": "indexing-profile",
+            "name": "Dune",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vectorization/indexingProfiles/Dune",
+            "display_name": "",
+            "description": "A vector index of the Dune books.",
+            "indexer": "AzureAISearchIndexer",
+            "settings": {
+                "index_name": "fllm-dune",
+                "top_n": "10",
+                "filters": "",
+                "embedding_field_name": "Embedding",
+                "text_field_name": "Text",
+                "api_endpoint_configuration_object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch"
+            },
+            "configuration_references": {},
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "0001-01-01T00:00:00+00:00",
+            "created_by": "carey@foundationaLLM.ai",
+            "updated_by": "carey@foundationaLLM.ai",
+            "deleted": false
+        },
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch": {
+            "type": "api-endpoint",
+            "name": "AzureAISearch",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch",
+            "category": "General",
+            "subcategory": "Indexing",
+            "authentication_type": "AzureIdentity",
+            "url": "https://srch-l43jljq2i5ox6.search.windows.net",
+            "url_exceptions": [],
+            "authentication_parameters": {},
+            "timeout_seconds": 60,
+            "retry_strategy_name": "ExponentialBackoff",
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "0001-01-01T00:00:00+00:00",
+            "deleted": false
+        },  
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/Claude35SonnetAPIKey": {
+            "type": "completion",
+            "name": "Claude35SonnetAPIKey",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/Claude35SonnetAPIKey",
+            "display_name": null,
+            "description": null,
+            "cost_center": null,
+            "endpoint_object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AmazonBedrockAPIKey",
+            "version": "0.0",
+            "deployment_name": "anthropic.claude-3-5-sonnet-20240620-v1:0",
+            "model_parameters": {
+                "temperature": 0
+            }
+        },
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AmazonBedrockAPIKey":{
+            "type": "api-endpoint",
+            "name": "AmazonBedrockAPIKey",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AmazonBedrockAPIKey",
+            "display_name": null,
+            "description": null,
+            "cost_center": null,
+            "category": "General",
+            "subcategory": "AIModel",
+            "authentication_type": "APIKey",    
+            "authentication_parameters": {
+                "access_key": "FoundationaLLM:APIEndpoints:AmazonBedrock:Essentials:AccessKey",
+                "secret_key": "FoundationaLLM:APIEndpoints:AmazonBedrock:Essentials:SecretKey"
+            },
+            "operation_type": "chat",
+            "url": "https://bedrock-runtime.us-east-1.amazonaws.com/",
+            "url_exceptions": [],
+            "timeout_seconds": 120,
+            "retry_strategy_name": "ExponentialBackoff",
+            "provider": "bedrock"
+        },      
+        "ToolNames": [            
+            "FoundationaLLMKnowledgeSearchTool"
+        ]
+    },
+    "attachments": [],
+    "operation_id": "654cbc9f-1139-483b-b3a0-340afda5449c",
+    "long_running_operation": false,
+    "user_prompt": "who is paul?",
+    "message_history": []
+}
