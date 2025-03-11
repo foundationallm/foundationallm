@@ -15,7 +15,7 @@ from foundationallm_agent_plugins import (
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import AgentBase, AgentWorkflowBase
 
-user_prompt = "Who is Paul?"
+user_prompt = "Execute the following python code: print('Hello, world!')"
 user_prompt_rewrite = None
 operation_id = str(uuid.uuid4())
 

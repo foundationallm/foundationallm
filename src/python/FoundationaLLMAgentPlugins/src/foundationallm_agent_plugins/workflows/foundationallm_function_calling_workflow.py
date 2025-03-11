@@ -1,21 +1,17 @@
 """
-Class: FoundationaLLMAgentRouterWorkflow
+Class: FoundationaLLMFunctionCallingWorkflow
 Description: FoundationaLLM Function Calling workflow to invoke tools at a low level.
 """
-
 import re
 import time
-
 from typing import Any, Dict, List, Optional
-
 from langchain_core.messages import (
+    AIMessage,
     BaseMessage,
-    SystemMessage,
-    HumanMessage
+    HumanMessage,
+    SystemMessage   
 )
-from langgraph.prebuilt import create_react_agent
 from opentelemetry.trace import SpanKind
-
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import (
     FoundationaLLMWorkflowBase,
@@ -37,11 +33,7 @@ from foundationallm.models.orchestration import (
     OpenAITextMessageContentItem
 )
 from foundationallm.telemetry import Telemetry
-from foundationallm_agent_plugins.common.constants import (
-    CONTENT_ARTIFACT_TYPE_TOOL_EXECUTION,
-    CONTENT_ARTIFACT_TYPE_TOOL_ERROR,
-    CONTENT_ARTIFACT_TYPE_WORKFLOW_EXECUTION
-)
+from foundationallm_agent_plugins.common.constants import CONTENT_ARTIFACT_TYPE_WORKFLOW_EXECUTION
 
 class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
     """
@@ -107,19 +99,48 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             *message_history,
             HumanMessage(content=user_prompt)
         ]
-
-        tool_responses = ''
+             
         content_artifacts = []
         completion_tokens = 0
         prompt_tokens = 0
-        response_content = None
+        final_response = None
 
         with self.tracer.start_as_current_span(f'{self.name}_workflow', kind=SpanKind.INTERNAL):
             #try:
                 with self.tracer.start_as_current_span(f'{self.name}_workflow_llm_call', kind=SpanKind.INTERNAL):
-                    router_start_time = time.time()                    
-                    response = await self.workflow_llm.ainvoke(messages)
+                    router_start_time = time.time() 
+                    llm_bound_tools = self.workflow_llm.bind_tools(self.tools)                   
+                    response = await llm_bound_tools.ainvoke(messages)
                     router_end_time = time.time()
+                
+                if response.tool_calls:
+                    # create a deep copy of the messages for tool calling.
+                    messages_with_toolchain = messages.copy()
+                    messages_with_toolchain.append(AIMessage(content=response.content))
+                    for tool_call in response.tool_calls:
+                        with self.tracer.start_as_current_span(f'{self.name}_tool_call', kind=SpanKind.INTERNAL) as tool_call_span:
+                            tool_call_span.set_attribute('tool_call_id', tool_call['id'])
+                            tool_call_span.set_attribute('tool_call_function', tool_call['name'])     
+                            # Add tool call as AIMessage                       
+                            messages_with_toolchain.append(AIMessage(
+                                content=f'Calling tool {tool_call["name"]} with args: {tool_call["args"]}'
+                            ))
+                            # Get the tool from the tools list
+                            tool = next((t for t in self.tools if t.name == tool_call['name']), None)
+                            if tool:                               
+                                tool_message = await tool.ainvoke(tool_call)                           
+                                content_artifacts.extend(tool_message.artifact)
+                                # Add tool response as AIMessage
+                                messages_with_toolchain.append(AIMessage(content=str(tool_message)))
+                            else:
+                                tool_response = 'Tool not found'
+                                messages_with_toolchain.append(AIMessage(content=tool_response))
+                
+                    with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):                    
+                        final_llm_response = await self.workflow_llm.ainvoke(messages_with_toolchain, tools=None)
+                        completion_tokens += final_llm_response.usage_metadata['input_tokens']
+                        prompt_tokens += final_llm_response.usage_metadata['output_tokens']
+                        final_response = final_llm_response.content
                 
                 workflow_content_artifact = self.__create_workflow_execution_content_artifact(
                     user_prompt,
@@ -129,9 +150,9 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                     router_end_time - router_start_time)
                 content_artifacts.append(workflow_content_artifact)
                 
-                # Initialize response_content with the result
+                # Initialize response_content with the result, taking final_response as priority.
                 response_content = OpenAITextMessageContentItem(
-                    value= response.content,
+                    value= final_response or response.content,
                     agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
                 )    
 
@@ -149,29 +170,25 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
     def __create_workflow_llm(self):
         """ Creates the workflow LLM instance and saves it to self.workflow_llm. """
-        self.logger.debug("Creating workflow LLM...")
-        self.logger.debug(f"Available objects: {list(self.objects.keys())}")
+        self.logger.debug('Creating workflow LLM...')
+        self.logger.debug(f'Available objects: {list(self.objects.keys())}')
         language_model_factory = LanguageModelFactory(self.objects, self.config)        
         model_object_id = self.workflow_config.get_resource_object_id_properties(
             ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
             AIModelResourceTypeNames.AI_MODELS,
             ResourceObjectIdPropertyNames.OBJECT_ROLE,
             ResourceObjectIdPropertyValues.MAIN_MODEL
-        )
-        self.logger.debug(f"Got model object ID: {model_object_id}")
-        if model_object_id:
-            self.logger.debug(f"Creating language model with object ID: {model_object_id.object_id}")
-            factory_llm = language_model_factory.get_language_model(model_object_id.object_id)
-            self.workflow_llm = factory_llm.bind_tools(self.tools)
-            self.logger.debug("Language model created successfully")
+        )        
+        if model_object_id:            
+            self.workflow_llm = language_model_factory.get_language_model(model_object_id.object_id)                  
         else:
-            error_msg = "No main model found in workflow configuration"
+            error_msg = 'No main model found in workflow configuration'
             self.logger.error(error_msg)
             raise ValueError(error_msg)
 
     def __create_workflow_prompt(self):
         """ Creates the workflow prompt instance and saves it to self.workflow_prompt. """
-        main_prompt = ""
+        main_prompt = ''
         prompt_object_id = self.workflow_config.get_resource_object_id_properties(
             ResourceProviderNames.FOUNDATIONALLM_PROMPT,
             PromptResourceTypeNames.PROMPTS,
@@ -188,35 +205,35 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             ResourceProviderNames.FOUNDATIONALLM_PROMPT,
             PromptResourceTypeNames.PROMPTS,
             ResourceObjectIdPropertyNames.OBJECT_ROLE,
-            "router_prompt"
+            'router_prompt'
         )
         if router_prompt_object_id:
             router_prompt_object_id = router_prompt_object_id.object_id
             router_prompt_properties = self.objects[router_prompt_object_id]
-            router_prompt =router_prompt_properties['prefix']            
-            main_prompt = re.sub(r"{{foundationallm:router_prompt}}", router_prompt, main_prompt)
+            router_prompt = router_prompt_properties['prefix']            
+            main_prompt = re.sub(r'{{foundationallm:router_prompt}}', router_prompt, main_prompt)
 
         # Iterate through the tools add their main_prompt or if that's missing, add the description
-        tool_descriptions = ""
+        tool_descriptions = ''
         for tool in self.tools:
             tool_main_prompt_object_id = tool.tool_config.get_resource_object_id_properties(
                 ResourceProviderNames.FOUNDATIONALLM_PROMPT,
                 PromptResourceTypeNames.PROMPTS,
                 ResourceObjectIdPropertyNames.OBJECT_ROLE,
-                "main_prompt"
+                'main_prompt'
             )           
             if tool_main_prompt_object_id:
                 tool_main_prompt_object_id = tool_main_prompt_object_id.object_id
                 tool_main_prompt_properties = self.objects[tool_main_prompt_object_id]
-                tool_descriptions += tool_main_prompt_properties['prefix'] + "\n"
+                tool_descriptions += tool_main_prompt_properties['prefix'] + '\n'
             else:
                 # if no main_prompt exists, add the tool's description
-                tool_descriptions += f"- {tool.name}: {tool.description}\n"
+                tool_descriptions += f'- {tool.name}: {tool.description}\n'
 
-        main_prompt = re.sub(r"{{foundationallm:tools}}", tool_descriptions, main_prompt)
-        print("****************************")
+        main_prompt = re.sub(r'{{foundationallm:tools}}', tool_descriptions, main_prompt)
+        print('****************************')
         print(main_prompt)
-        print("****************************")
+        print('****************************')
         self.workflow_prompt = main_prompt
 
     def __create_workflow_execution_content_artifact(

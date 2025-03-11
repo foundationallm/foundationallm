@@ -44,7 +44,7 @@ class FoundationaLLMAgentWorkflowPluginManager(WorkflowPluginManagerBase):
         """
         if workflow_config.name == FoundationaLLMAgentWorkflowPluginManager.FOUNDATIONALLM_FUNCTION_CALLING_WORKFLOW_NAME:
             return FoundationaLLMFunctionCallingWorkflow(workflow_config, objects, tools, user_identity, config)
-        raise ValueError(f"Unknown workflow name: {workflow_config.name}")
+        raise ValueError(f'Unknown workflow name: {workflow_config.name}')
 
     def refresh_tools():
         print('Refreshing tools...') 

@@ -42,58 +42,58 @@ knowledgesearch_tool = foundationallmagent_tool_plugin_manager.create_tool(agent
 
 #-------------------------------------------------------------------------------
 # Direct tool invocation
-# response, content_artifacts = asyncio.run(skunkworks_tool._arun('Who is Paul?'))
-#print("**** RESPONSE ****")
-#print(response)
-#print("**** CONTENT ARTIFACTS ****")
-#print(content_artifacts)
-#print("DONE")
+response, content_artifacts = asyncio.run(knowledgesearch_tool._arun('Who is Paul?'))
+print("**** RESPONSE ****")
+print(response)
+print("**** CONTENT ARTIFACTS ****")
+print(content_artifacts)
+print("DONE")
 
 #-------------------------------------------------------------------------------
 # Using LangGraph ReAct Agent
-ai_model_object_properties = workflow.get_resource_object_id_properties(
-    ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
-    AIModelResourceTypeNames.AI_MODELS,
-    ResourceObjectIdPropertyNames.OBJECT_ROLE,
-    ResourceObjectIdPropertyValues.MAIN_MODEL
-)        
-ai_model_object_id = ai_model_object_properties.object_id        
-prompt_object_properties = workflow.get_resource_object_id_properties(
-    ResourceProviderNames.FOUNDATIONALLM_PROMPT,
-    PromptResourceTypeNames.PROMPTS,
-    ResourceObjectIdPropertyNames.OBJECT_ROLE,
-    ResourceObjectIdPropertyValues.MAIN_PROMPT
-)
-prompt_object_id = prompt_object_properties.object_id
-prompt = ObjectUtils.get_object_by_id(prompt_object_id, exploded_objects_json, MultipartPrompt)        
-language_model_factory = LanguageModelFactory(exploded_objects_json, config)        
-llm = language_model_factory.get_language_model(ai_model_object_id)
-
-user_prompt = "In the Dune books, who is Paul?"
-#user_prompt = "What is 2 + 2 ? Answer like you were explaining it to a kindergartner."
-tools = [knowledgesearch_tool]
-
-graph = create_react_agent(llm, tools=tools, state_modifier=prompt.prefix)
-if agent.conversation_history_settings.enabled:
-    # Create a conversation history
-    messages = [        
-        HumanMessage(content='What is the value of Pi?'),
-        AIMessage(content='The value of Pi is 3.14.\n'), 
-        HumanMessage(content='What is the term for a word that is the same backwards as forwards?'),
-        AIMessage(content='That would be a palindrome.\n')
-    ]    
-else:
-    messages = []
-messages.append(HumanMessage(content=user_prompt))
-response = asyncio.run(
-    graph.ainvoke(
-    {'messages': messages},
-    config={"configurable": {"original_user_prompt": user_prompt, **({"recursion_limit": getattr(agent.workflow, 'graph_recursion_limit', 10)} if hasattr(agent.workflow, 'graph_recursion_limit') else {})}}
-    )
-)
-#print("**** RESPONSE ****")
-#print(response)
-last_message = response['messages'][-1]
-print("**** LAST MESSAGE ****")
-print(last_message.content)
-print("DONE")
+#ai_model_object_properties = workflow.get_resource_object_id_properties(
+#    ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
+#    AIModelResourceTypeNames.AI_MODELS,
+#    ResourceObjectIdPropertyNames.OBJECT_ROLE,
+#    ResourceObjectIdPropertyValues.MAIN_MODEL
+#)        
+#ai_model_object_id = ai_model_object_properties.object_id        
+#prompt_object_properties = workflow.get_resource_object_id_properties(
+#    ResourceProviderNames.FOUNDATIONALLM_PROMPT,
+#    PromptResourceTypeNames.PROMPTS,
+#    ResourceObjectIdPropertyNames.OBJECT_ROLE,
+#    ResourceObjectIdPropertyValues.MAIN_PROMPT
+#)
+#prompt_object_id = prompt_object_properties.object_id
+#prompt = ObjectUtils.get_object_by_id(prompt_object_id, exploded_objects_json, MultipartPrompt)        
+#language_model_factory = LanguageModelFactory(exploded_objects_json, config)        
+#llm = language_model_factory.get_language_model(ai_model_object_id)
+#
+#user_prompt = "In the Dune books, who is Paul?"
+##user_prompt = "What is 2 + 2 ? Answer like you were explaining it to a kindergartner."
+#tools = [knowledgesearch_tool]
+#
+#graph = create_react_agent(llm, tools=tools, state_modifier=prompt.prefix)
+#if agent.conversation_history_settings.enabled:
+#    # Create a conversation history
+#    messages = [        
+#        HumanMessage(content='What is the value of Pi?'),
+#        AIMessage(content='The value of Pi is 3.14.\n'), 
+#        HumanMessage(content='What is the term for a word that is the same backwards as forwards?'),
+#        AIMessage(content='That would be a palindrome.\n')
+#    ]    
+#else:
+#    messages = []
+#messages.append(HumanMessage(content=user_prompt))
+#response = asyncio.run(
+#    graph.ainvoke(
+#    {'messages': messages},
+#    config={"configurable": {"original_user_prompt": user_prompt, **({"recursion_limit": getattr(agent.workflow, 'graph_recursion_limit', 10)} if hasattr(agent.workflow, 'graph_recursion_limit') else {})}}
+#    )
+#)
+##print("**** RESPONSE ****")
+##print(response)
+#last_message = response['messages'][-1]
+#print("**** LAST MESSAGE ****")
+#print(last_message.content)
+#print("DONE")

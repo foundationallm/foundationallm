@@ -32,7 +32,7 @@ class FoundationaLLMAgentToolPluginManager(ToolPluginManagerBase):
             case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_KNOWLEDGE_SEARCH_TOOL_NAME:
                 return FoundationaLLMKnowledgeSearchTool(tool_config, objects, user_identity, config)
             case _:
-                raise ValueError(f"Unknown tool name: {tool_config.name}")
+                raise ValueError(f'Unknown tool name: {tool_config.name}')
 
     def refresh_tools():
         print('Refreshing tools...') 
