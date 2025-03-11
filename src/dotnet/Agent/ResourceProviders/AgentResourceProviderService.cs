@@ -854,7 +854,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     {
                         FileObjectId = fileObjectId,
                         ToolObjectId = string.Empty,
-                        ErrorMessage = $"The {fileObjectId} file was not found in the {resourcePath.MainResourceId!} agent private storage."
+                        ErrorMessage = $"The file was not found in the agent private storage."
                     });
 
                     continue;
