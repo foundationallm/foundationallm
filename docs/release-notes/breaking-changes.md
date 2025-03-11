@@ -3,6 +3,19 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-beta103
+
+### Configuration changes
+
+Added the following App Configuration value:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+| `FoundationaLLM:Quota:Storage:AccountName` | `<storage_account_name>` | Provides the storage account used by the FoundationaLLM quota management service. |
+| `FoundationaLLM:Quota:Storage:AuthenticationType` | `AzureIdentity` |  Indicates the authentication type used by the FoundationaLLM quota management service to connect to the storage account. |
+
+A new container named `quota` must be created in the default storage account.
+
 ## Starting from 0.9.7-beta101
 
 ### Configuration changes

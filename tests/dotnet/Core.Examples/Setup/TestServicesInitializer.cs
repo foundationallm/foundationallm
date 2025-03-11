@@ -6,7 +6,6 @@ using FoundationaLLM.Common.Models.Configuration.AzureAI;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.Storage;
-using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Storage;
@@ -15,8 +14,6 @@ using FoundationaLLM.Core.Examples.Exceptions;
 using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Models;
 using FoundationaLLM.Core.Examples.Services;
-using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
-using FoundationaLLM.SemanticKernel.Core.Services.Indexing;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Configuration;
@@ -52,6 +49,8 @@ namespace FoundationaLLM.Core.Examples.Setup
             RegisterAzureAIService(services, configRoot);
             RegisterLogging(services);
 			RegisterServiceManagers(services);
+
+            services.AddAPIRequestQuotaService(configRoot);
         }
 
         private static void RegisterInstance(IServiceCollection services, IConfiguration configuration)

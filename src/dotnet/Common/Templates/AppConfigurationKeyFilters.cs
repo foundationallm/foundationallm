@@ -43,6 +43,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:ResourceProvidersCache:*";
         
         /// <summary>
+        /// Filter for the configuration section used to identify the storage settings for FoundationaLLM quota management.
+        /// </summary>
+        public const string FoundationaLLM_Quota_Storage =
+            "FoundationaLLM:Quota:Storage:*";
+        
+        /// <summary>
         /// Filter for the configuration section used to identify the storage settings for the FoundationaLLM.AIModel resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_AIModel_Storage =

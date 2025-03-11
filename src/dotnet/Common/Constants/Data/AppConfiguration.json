@@ -157,6 +157,39 @@
 		]
 	},
 	{
+		"namespace": "Quota",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used by the FoundationaLLM quota management service."
+		},
+		"configuration_section": null,
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Quota:Storage",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the storage settings for the FoundationaLLM quota management service."
+		},
+		"configuration_keys": [
+			{
+				"name": "AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM quota management service. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AccountName",
+				"description": "The name of the Azure Blob Storage account used by the FoundationaLLM quota management service.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.9.7"
+			}
+		]
+	},
+	{
 		"namespace": "ResourceProviders:AIModel",
 		"dependency_injection_key": {
 			"description": "Dependency injection key used by the FoundationaLLM.AIModel resource provider."

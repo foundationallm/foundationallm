@@ -66,6 +66,8 @@ namespace FoundationaLLM.Core.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AzureOpenAI_Storage);
 
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Quota_Storage);
+
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
                 options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_CoreAPI);
@@ -263,6 +265,8 @@ namespace FoundationaLLM.Core.API
 
             // Register the middleware to extract the user identity context and other HTTP request context data required by the downstream services.
             app.UseMiddleware<CallContextMiddleware>();
+            // Register the middleware to enforce API request quotas.
+            app.UseMiddleware<QuotaMiddleware>();
 
             app.UseExceptionHandler(exceptionHandlerApp
                     => exceptionHandlerApp.Run(async context

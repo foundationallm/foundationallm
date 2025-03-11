@@ -1,5 +1,4 @@
 ﻿using FoundationaLLM.Common.Authentication;
-using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Instance;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
@@ -34,7 +33,6 @@ namespace FoundationaLLM.Common.Middleware
         /// <param name="identityManagementService">Provides group membership services for user principals.</param>
         /// <param name="callContext">Stores context information extracted from the current HTTP request. This information
         /// is primarily used to inject HTTP headers into downstream HTTP calls.</param>
-        /// <param name="apiRequestQuotaService">Provides services for managing API request quotas.</param>
         /// <param name="instanceSettings">Contains the FoundationaLLM instance configuration settings.</param>
         /// <returns></returns>
         public async Task InvokeAsync(
@@ -42,7 +40,6 @@ namespace FoundationaLLM.Common.Middleware
             IUserClaimsProviderService claimsProviderService,
             IIdentityManagementService identityManagementService,
             ICallContext callContext,
-            IAPIRequestQuotaService apiRequestQuotaService,
             IOptions<InstanceSettings> instanceSettings)
         {
             if (context.User is { Identity.IsAuthenticated: true })
@@ -132,21 +129,6 @@ namespace FoundationaLLM.Common.Middleware
                 await context.Response.WriteAsync("Access denied. Invalid instance ID.");
 
                 return; // Short-circuit the request pipeline.
-            }
-
-            if (apiRequestQuotaService.Enabled)
-            {
-                // Evaluate quotas for API requests
-                var quotaEvaluationResult = apiRequestQuotaService.EvaluateRawRequestForQuota(
-                    ServiceNames.CoreAPI,
-                    context,
-                    callContext.CurrentUserIdentity);
-                if (quotaEvaluationResult.RateLimitExceeded)
-                {
-                    context.Response.StatusCode = StatusCodes.Status429TooManyRequests;
-                    await context.Response.WriteAsync(JsonSerializer.Serialize(quotaEvaluationResult));
-                    return; // Short-circuit the request pipeline.
-                }
             }
 
             // Call the next delegate/middleware in the pipeline:

@@ -3,15 +3,15 @@
 namespace FoundationaLLM.Common.Models.Quota
 {
     /// <summary>
-    /// Represents the result of evaluating an API request quota.
+    /// Represents the result of evaluating a quota.
     /// </summary>
-    public class APIRequestQuotaEvaluationResult
+    public class QuotaEvaluationResult
     {
         /// <summary>
         /// Gets or sets a value indicating whether the quota has been exceeded.
         /// </summary>
         [JsonPropertyName("rate_limit_exceeded")]
-        public bool RateLimitExceeded { get; set; }
+        public bool QuotaExceeded { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the quota that was exceeded.

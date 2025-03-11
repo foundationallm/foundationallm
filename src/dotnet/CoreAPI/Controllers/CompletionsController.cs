@@ -39,7 +39,7 @@ namespace FoundationaLLM.Core.API.Controllers
         private readonly IResourceProviderService _agentResourceProvider;
         private readonly ILogger<CompletionsController> _logger;
         private readonly ICallContext _callContext;
-        private readonly IAPIRequestQuotaService _apiRequestQuotaService;
+        private readonly IQuotaService _apiRequestQuotaService;
 
         /// <summary>
         /// Methods for orchestration services exposed by the Gatekeeper API service.
@@ -57,7 +57,7 @@ namespace FoundationaLLM.Core.API.Controllers
         public CompletionsController(ICoreService coreService,
             ICallContext callContext,
             IEnumerable<IResourceProviderService> resourceProviderServices,
-            IAPIRequestQuotaService apiRequestQuotaService,
+            IQuotaService apiRequestQuotaService,
             ILogger<CompletionsController> logger)
         {
             _coreService = coreService;
@@ -100,8 +100,10 @@ namespace FoundationaLLM.Core.API.Controllers
             {
                 var quotaEvaluationResult = _apiRequestQuotaService.EvaluateCompletionRequestForQuota(
                     ServiceNames.CoreAPI,
+                    ControllerContext.ActionDescriptor.ControllerName,
+                    _callContext.CurrentUserIdentity,
                     completionRequest);
-                if (quotaEvaluationResult.RateLimitExceeded)
+                if (quotaEvaluationResult.QuotaExceeded)
                     return StatusCode(
                         StatusCodes.Status429TooManyRequests,
                         quotaEvaluationResult);
@@ -142,8 +144,10 @@ namespace FoundationaLLM.Core.API.Controllers
             {
                 var quotaEvaluationResult = _apiRequestQuotaService.EvaluateCompletionRequestForQuota(
                     ServiceNames.CoreAPI,
+                    ControllerContext.ActionDescriptor.ControllerName,
+                    _callContext.CurrentUserIdentity,
                     completionRequest);
-                if (quotaEvaluationResult.RateLimitExceeded)
+                if (quotaEvaluationResult.QuotaExceeded)
                     return StatusCode(
                         StatusCodes.Status429TooManyRequests,
                         quotaEvaluationResult);
