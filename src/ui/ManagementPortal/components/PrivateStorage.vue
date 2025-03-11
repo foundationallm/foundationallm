@@ -318,6 +318,7 @@ export default {
 			await api.deleteFileFromPrivateStorage(this.agentName, fileName);
 			delete this.fileToolAccess[fileObjectId];
 			await this.getPrivateAgentFiles();
+			await this.handleSaveFileToolAccess();
 			this.$toast.add({
 				severity: 'success',
 				summary: 'Success',
