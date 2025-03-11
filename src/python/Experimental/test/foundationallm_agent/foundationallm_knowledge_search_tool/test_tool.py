@@ -18,10 +18,10 @@ from foundationallm.models.resource_providers.prompts import MultipartPrompt
 from foundationallm.utils import ObjectUtils
 
 sys.path.append('src')
-from skunkworks_foundationallm import SkunkworksToolPluginManager # type: ignore
+from foundationallm_agent import FoundationaLLMAgentToolPluginManager # type: ignore
 
-user_identity_json = {"name": "Skunkworks Test", "user_name":"sw@foundationaLLM.ai","upn":"sw@foundationaLLM.ai"}
-full_request_json_file_name = 'test/foundationallm_content_search_tool/full_request.json' # full original langchain request, contains agent, tools, exploded objects
+user_identity_json = {"name": "Experimental Test", "user_name":"sw@foundationaLLM.ai","upn":"sw@foundationaLLM.ai"}
+full_request_json_file_name = 'test/foundationallm_agent/foundationallm_knowledge_search_tool/full_request.json' # full original langchain request, contains agent, tools, exploded objects
 print(os.environ['FOUNDATIONALLM_APP_CONFIGURATION_URI'])
 
 user_identity = UserIdentity.from_json(user_identity_json)
@@ -35,9 +35,9 @@ agent_tool = AgentTool(**request_json["agent"]["tools"][0])
 exploded_objects_json = request_json["objects"]
 workflow = AgentWorkflowBase.from_object(request_json["agent"]["workflow"])
 
-skunkworks_tool_plugin_manager = SkunkworksToolPluginManager()
+foundationallmagent_tool_plugin_manager = FoundationaLLMAgentToolPluginManager()
 # The AgentTool has the configured description the LLM will use to make a tool choice.
-skunkworks_tool = skunkworks_tool_plugin_manager.create_tool(agent_tool, exploded_objects_json, user_identity, config)
+knowledgesearch_tool = foundationallmagent_tool_plugin_manager.create_tool(agent_tool, exploded_objects_json, user_identity, config)
 
 #-------------------------------------------------------------------------------
 # Direct tool invocation
@@ -70,7 +70,7 @@ llm = language_model_factory.get_language_model(ai_model_object_id)
 
 user_prompt = "In the Dune books, who is Paul?"
 #user_prompt = "What is 2 + 2 ? Answer like you were explaining it to a kindergartner."
-tools = [skunkworks_tool]
+tools = [knowledgesearch_tool]
 
 graph = create_react_agent(llm, tools=tools, state_modifier=prompt.prefix)
 if agent.conversation_history_settings.enabled:
