@@ -99,7 +99,11 @@
 						class="table__button"
 						tabindex="-1"
 						:aria-disabled="!data.actions.includes('FoundationaLLM.Agent/agents/write')"
-						:style="{ pointerEvents: !data.actions.includes('FoundationaLLM.Agent/agents/write') ? 'none' : 'auto' }"
+						:style="{
+							pointerEvents: !data.actions.includes('FoundationaLLM.Agent/agents/write')
+								? 'none'
+								: 'auto',
+						}"
 					>
 						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
 							<Button
