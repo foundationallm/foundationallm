@@ -1,18 +1,13 @@
 """
 Class: FoundationaLLMAgentRouterWorkflow
-Description: FoundationaLLM workflow implementing a router pattern for tool invocation
-using Azure OpenAI completion models.
+Description: FoundationaLLM Function Calling workflow to invoke tools at a low level.
 """
-import asyncio
-import json
+
 import re
 import time
 
 from typing import Any, Dict, List, Optional
-from azure.identity import (
-    DefaultAzureCredential,
-    get_bearer_token_provider
-)
+
 from langchain_core.messages import (
     BaseMessage,
     SystemMessage,
@@ -28,7 +23,6 @@ from foundationallm.langchain.common import (
 )
 from foundationallm.langchain.language_models import LanguageModelFactory
 from foundationallm.models.agents import ExternalAgentWorkflow
-from foundationallm.models.authentication import AuthenticationTypes
 from foundationallm.models.constants import (
     AgentCapabilityCategories,
     ResourceObjectIdPropertyNames,
@@ -80,8 +74,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         super().__init__(workflow_config, objects, tools, user_identity, config)
         self.name = workflow_config.name
         self.logger : Any = Telemetry.get_logger(self.name)
-        self.tracer : Any = Telemetry.get_tracer(self.name)
-        #self.default_credential = DefaultAzureCredential(exclude_environment_credential=True)
+        self.tracer : Any = Telemetry.get_tracer(self.name)        
         self.default_error_message = workflow_config.properties.get(
             'default_error_message',
             'An error occurred while processing the request.') \
@@ -124,80 +117,23 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         with self.tracer.start_as_current_span(f'{self.name}_workflow', kind=SpanKind.INTERNAL):
             #try:
                 with self.tracer.start_as_current_span(f'{self.name}_workflow_llm_call', kind=SpanKind.INTERNAL):
-                    router_start_time = time.time()
-                    graph = create_react_agent(self.workflow_llm, tools=self.tools, state_modifier=self.workflow_prompt)
-                    result = await graph.ainvoke(
-                        {'messages': messages},
-                        config={"configurable": 
-                                    {"original_user_prompt": user_prompt, 
-                                    **({"recursion_limit": self.workflow_config.graph_recursion_limit} 
-                                       if hasattr(self.workflow_config, 'graph_recursion_limit') and self.workflow_config.graph_recursion_limit is not None 
-                                       else {})
-                                    }
-                                }
-                    )
+                    router_start_time = time.time()                    
+                    response = await self.workflow_llm.ainvoke(messages)
                     router_end_time = time.time()
-                final_message = result["messages"][-1]
+                
                 workflow_content_artifact = self.__create_workflow_execution_content_artifact(
                     user_prompt,
-                    final_message.content,
-                    final_message.usage_metadata['input_tokens'],
-                    final_message.usage_metadata['output_tokens'],
+                    response.content,
+                    response.usage_metadata['input_tokens'],
+                    response.usage_metadata['output_tokens'],
                     router_end_time - router_start_time)
                 content_artifacts.append(workflow_content_artifact)
                 
                 # Initialize response_content with the result
                 response_content = OpenAITextMessageContentItem(
-                    value=final_message.content,
+                    value= response.content,
                     agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-                )
-
-            #    if (user_prompt.startswith('(intent):')):
-            #        response_content = OpenAITextMessageContentItem(
-            #            value=result.content,
-            #            agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-            #        )
-            #    else:                
-            #        processed_intents = self.__process_intents(result.content)
-            #        tools_start_time = time.time()
-            #        tool_results = await self.__invoke_tools_async(
-            #            processed_intents,
-            #            user_prompt,
-            #            message_history
-            #        )
-            #        tools_end_time = time.time()
-            #        workflow_content_artifact.metadata['tools_execution_time_seconds'] = str(tools_end_time - tools_start_time)
-#
-            #        for tool_result in tool_results:
-            #            if tool_result[0]:
-            #                tool_responses += tool_result[0]
-            #            if tool_result[1]:
-            #                for content_artifact in tool_result[1]:
-            #                    content_artifacts.append(content_artifact)
-#
-            #        tool_errors = False
-            #        for content_artifact in content_artifacts:
-            #            if content_artifact.type == CONTENT_ARTIFACT_TYPE_TOOL_ERROR:
-            #                tool_errors = True
-            #            if (content_artifact.type == CONTENT_ARTIFACT_TYPE_TOOL_EXECUTION) \
-            #                or (content_artifact.type == CONTENT_ARTIFACT_TYPE_WORKFLOW_EXECUTION):
-            #                prompt_tokens += int(content_artifact.metadata.get('prompt_tokens', 0))
-            #                completion_tokens += int(content_artifact.metadata.get('completion_tokens', 0))
-#
-            #        response_content = OpenAITextMessageContentItem(
-            #                value=self.default_error_message,
-            #                agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-            #            ) if tool_errors or (tool_responses == '') else OpenAITextMessageContentItem(
-            #                value=tool_responses,
-            #                agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-            #            )
-
-            # except Exception as ex:
-            #    self.logger.error('Error invoking workflow for user prompt [%s]: %s', user_prompt, ex)
-            #    response_content = OpenAITextMessageContentItem(
-            #        value=self.default_error_message,
-            #        agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-            #    )
+                )    
 
                 return CompletionResponse(
                     operation_id=operation_id,
@@ -225,7 +161,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         self.logger.debug(f"Got model object ID: {model_object_id}")
         if model_object_id:
             self.logger.debug(f"Creating language model with object ID: {model_object_id.object_id}")
-            self.workflow_llm = language_model_factory.get_language_model(model_object_id.object_id)
+            factory_llm = language_model_factory.get_language_model(model_object_id.object_id)
+            self.workflow_llm = factory_llm.bind_tools(self.tools)
             self.logger.debug("Language model created successfully")
         else:
             error_msg = "No main model found in workflow configuration"
@@ -303,54 +240,3 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             'completion_time_seconds': str(completion_time_seconds)
         }
         return content_artifact
-
-#    def __process_intents(self, raw_intents: str) -> list:
-#
-#        if raw_intents.startswith("```json"):
-#            raw_intents = raw_intents[7:]
-#        if raw_intents.startswith("```"):
-#            raw_intents = raw_intents[3:]
-#        if raw_intents.endswith("```"):
-#            raw_intents = raw_intents[:-3]
-#
-#        try:
-#            intents = json.loads(raw_intents)
-#            if not isinstance(intents, list):
-#                intents = []
-#        except Exception:
-#            intents = []
-#
-#        valid_intents = [intent for intent in intents if intent.get('recommendedTool')]
-#
-#        if len(valid_intents) != len(intents):
-#            self.logger.warning('Invalid intents detected in response: %s', raw_intents)
-#
-#        if len(valid_intents) == 0:
-#            raise Exception('No valid intents detected in router response.')
-#
-#        return valid_intents
-#
-#    async def __invoke_tools_async(
-#            self,
-#            intents: List,
-#            user_prompt: str,
-#            message_history: List[BaseMessage]
-#    ) -> List:
-#
-#        tool_intents = {}
-#
-#        for intent in intents:
-#            if intent['recommendedTool'] in tool_intents:
-#                tool_intents[intent['recommendedTool']].append(intent)
-#            else:
-#                tool_intents[intent['recommendedTool']] = [intent]
-#
-#        tool_invocations = [t.invoke_with_intents_async(
-#            user_prompt,
-#            tool_intents[t.name],
-#            message_history
-#        ) for t in self.tools if t.name in tool_intents]
-#
-#        tool_results = await asyncio.gather(*tool_invocations)
-#
-#        return tool_results
