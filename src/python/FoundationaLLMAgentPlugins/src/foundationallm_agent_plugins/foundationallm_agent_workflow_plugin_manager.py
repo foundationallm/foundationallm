@@ -5,13 +5,12 @@ from foundationallm.models.agents import AgentTool, ExternalAgentWorkflow
 from foundationallm.langchain.common import FoundationaLLMWorkflowBase
 from foundationallm.plugins import WorkflowPluginManagerBase
 
-from foundationallm_agent_plugins.workflows import FoundationaLLMAgentRouterWorkflow
+from foundationallm_agent_plugins.workflows import FoundationaLLMFunctionCallingWorkflow
 
-FOUNDATIONALLM_AGENT_ROUTER_WORKFLOW_NAME = 'FoundationaLLMAgentRouterWorkflow'
 
 class FoundationaLLMAgentWorkflowPluginManager(WorkflowPluginManagerBase):
 
-    AZURE_OPENAI_ROUTER_WORKFLOW_NAME = 'AzureOpenAIRouterWorkflow'
+    FOUNDATIONALLM_FUNCTION_CALLING_WORKFLOW_NAME = 'FoundationaLLMFunctionCallingWorkflow'
 
     def __init__(self):
         super().__init__()
@@ -43,8 +42,8 @@ class FoundationaLLMAgentWorkflowPluginManager(WorkflowPluginManagerBase):
         FoundationaLLMWorkflowBase
             The workflow instance.
         """
-        if workflow_config.name == FOUNDATIONALLM_AGENT_ROUTER_WORKFLOW_NAME:
-            return FoundationaLLMAgentRouterWorkflow(workflow_config, objects, tools, user_identity, config)
+        if workflow_config.name == FoundationaLLMAgentWorkflowPluginManager.FOUNDATIONALLM_FUNCTION_CALLING_WORKFLOW_NAME:
+            return FoundationaLLMFunctionCallingWorkflow(workflow_config, objects, tools, user_identity, config)
         raise ValueError(f"Unknown workflow name: {workflow_config.name}")
 
     def refresh_tools():

@@ -49,7 +49,7 @@ from foundationallm_agent_plugins.common.constants import (
     CONTENT_ARTIFACT_TYPE_WORKFLOW_EXECUTION
 )
 
-class FoundationaLLMAgentRouterWorkflow(FoundationaLLMWorkflowBase):
+class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
     """
     FoundationaLLM workflow implementing a router pattern for tool invocation
     using Azure OpenAI completion models.

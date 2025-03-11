@@ -1,1 +1,1 @@
-from .foundationallm_agent_router_workflow import FoundationaLLMAgentRouterWorkflow
+from .foundationallm_function_calling_workflow import FoundationaLLMFunctionCallingWorkflow
