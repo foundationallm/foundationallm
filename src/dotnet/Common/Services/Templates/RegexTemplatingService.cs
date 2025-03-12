@@ -69,8 +69,14 @@ namespace FoundationaLLM.Common.Services.Templates
                                     replacements.Add(matchedVariable, router_prompt_value);
                                 }
                                 break;
-                            case TemplateVariables.PromptToolsList:
-                                if (tokenAndValues.TryGetValue(TemplateVariables.PromptToolsList, out string? tools_list_value))
+                            case TemplateVariables.ToolRouterPrompts:
+                                if (tokenAndValues.TryGetValue(TemplateVariables.ToolRouterPrompts, out string? tool_router_prompts_value))
+                                {
+                                    replacements.Add(matchedVariable, tool_router_prompts_value);
+                                }
+                                break;
+                            case TemplateVariables.ToolList:
+                                if (tokenAndValues.TryGetValue(TemplateVariables.ToolList, out string? tools_list_value))
                                 {
                                     replacements.Add(matchedVariable, tools_list_value);
                                 }

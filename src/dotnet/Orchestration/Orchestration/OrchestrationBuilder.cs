@@ -324,12 +324,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             #region Tools
 
             List<string> toolNames = [];
-            StringBuilder routerPromptToolsList = new StringBuilder();
+            StringBuilder toolList = new StringBuilder();
+            StringBuilder toolRouterPrompts = new StringBuilder();
 
             foreach (var tool in agentBase.Tools)
             {
                 toolNames.Add(tool.Name);
-                routerPromptToolsList.Append($"- {tool.Name}:{tool.Description}\n");
+                toolList.Append($"- {tool.Name}: {tool.Description}\n");
 
                 // Build the tool parameters dictionary.
                 Dictionary<string, object> toolParameters = [];
@@ -442,19 +443,30 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         case PromptResourceTypeNames.Prompts:
                             var prompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
                                 resourceObjectId.ObjectId,
-                                currentUserIdentity);
+                                currentUserIdentity);                            
+                            
                             if (prompt is MultipartPrompt multipartPrompt)
                             {
-                                // prompt template token replacement
-                                if (multipartPrompt is not null)
+                                if(multipartPrompt is not null)
                                 {
-                                    multipartPrompt.Prefix = templatingService.Transform(multipartPrompt.Prefix!);
-                                    multipartPrompt.Suffix = templatingService.Transform(multipartPrompt.Suffix!);
+                                    if (resourceObjectId.HasObjectRole(ResourceObjectIdPropertyValues.RouterPrompt))
+                                    {
+                                        toolRouterPrompts.Append(multipartPrompt.Prefix +
+                                               (string.IsNullOrEmpty(multipartPrompt.Suffix)
+                                                    ? string.Empty : multipartPrompt.Suffix) + "\n");
+                                    }
+                                    else
+                                    {
+                                        // prompt template token replacement                                        
+                                        multipartPrompt.Prefix = templatingService.Transform(multipartPrompt.Prefix!);
+                                        multipartPrompt.Suffix = templatingService.Transform(multipartPrompt.Suffix!);
+                                        explodedObjectsManager.TryAdd(
+                                            resourceObjectId.ObjectId,
+                                                prompt);                                        
+                                    }
                                 }
-                            }
-                            explodedObjectsManager.TryAdd(
-                                resourceObjectId.ObjectId,
-                                prompt);
+                                
+                            }                            
                             break;
 
                         default:
@@ -480,9 +492,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             
             var tokenReplacements = new Dictionary<string, string>();
             // If tools exist on the agent, prepare for the potential of tools list token replacements in the prompt.
-            if(routerPromptToolsList.Length > 0)
+            if(toolList.Length > 0)
             {
-                tokenReplacements.Add(TemplateVariables.PromptToolsList, routerPromptToolsList.ToString());
+                tokenReplacements.Add(TemplateVariables.ToolList, toolList.ToString());
+            }
+            if(toolRouterPrompts.Length > 0)
+            {
+                tokenReplacements.Add(TemplateVariables.ToolRouterPrompts, toolRouterPrompts.ToString());
             }
 
             if (retrievedMainPrompt is MultipartPrompt mainPrompt)

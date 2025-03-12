@@ -16,8 +16,13 @@
         public const string RouterPrompt = "router_prompt";
 
         /// <summary>
-        /// Token for the router prompt tools list.
+        /// Token for the tool router prompt.
         /// </summary>
-        public const string PromptToolsList = "prompt_tools_list";
+        public const string ToolRouterPrompts = "tool_router_prompts";
+
+        /// <summary>
+        /// Token for the tool list.
+        /// </summary>
+        public const string ToolList = "tool_list";
     }
 }
