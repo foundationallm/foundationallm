@@ -97,8 +97,9 @@
             Plugin Package
             Plugin
         (Quota)
-            API Completion Call Rate
-            Agent Completion Call Rate
+            Quota Definition
+              API Completion Call Rate
+              Agent Completion Call Rate
         (Resource Provider)
         (Tool)
         (Workflow)
@@ -146,6 +147,7 @@
 </li>
 <li><a href="#quota">Quota</a>
 <ul>
+<li><a href="#quota-definition">Quota Definition</a></li>
 <li><a href="#api-completion-call-rate">API Completion Call Rate</a></li>
 <li><a href="#agent-completion-call-rate">Agent Completion Call Rate</a></li>
 </ul>
@@ -270,6 +272,27 @@
 </table>
 <p>For more details, see <a href="plugin/plugin.html">Plugins</a>.</p>
 <h2 id="quota">Quota</h2>
+<p>A FoundationaLLM quota is a set of rules that define the limits on the usage of resources by a client. Quota definitions are used to enforce limits on the usage of resources by clients and to prevent abuse of the FoundationaLLM platform.</p>
+<p>Each quota is enforced on a specific metric, such as the number of API completion calls or the number of agent completion calls. The following quota metrics are supported by the FoundationaLLM platform:</p>
+<ul>
+<li>API requests (quota enforces an API request rate limit).</li>
+<li>Agent completion requests (quota enforces an agent completion request rate limit).</li>
+</ul>
+<p>Quota metric limits can be enforced globally or using specific partitioning mechanisms. The following quota metric partitioning mechanisms are supported by the FoundationaLLM platform:</p>
+<ul>
+<li>None (no partitioning, limit is enforced globally).</li>
+<li>User identifier (limit is enforced per user unique identifier).</li>
+<li>User principal name (limit is enforced per user principal name).</li>
+</ul>
+<p>Examples of FoundationaLLM quotas:</p>
+<ul>
+<li>100 requests per minute for API requests sent to the the <code>Completions</code> endpoint of Core API.</li>
+<li>50 requests per minute per user principal name for API requests sent to the the <code>Completions</code> endpoint of Core API.</li>
+<li>1000 agent completions requests per quarter hour per user identifier for agent completion requests sent to the Core API.</li>
+</ul>
+<h3 id="quota-definition">Quota Definition</h3>
+<p>FoundationaLLM quotas are specified using quota definitions. A quota definition is a JSON object that defines the limits on the usage of resources by a client. Quota definitions are stored in the main FoundationaLLM storage account, in the <code>quota</code> container in a file named <code>quota-store.json</code>.</p>
+<p>For more details, see <a href="quota/quota-definition.html">Quota Definition</a>.</p>
 <h3 id="api-completion-call-rate">API Completion Call Rate</h3>
 <p>The API call rate is the maximum number of Core API completion calls that a client can make to the Core API within a specified time period. The API call rate is used to limit the rate at which a client can perform completions.</p>
 <p>For more details, see <a href="quota/api-completion-call-rate.html">API Completion Call Rate</a>.</p>

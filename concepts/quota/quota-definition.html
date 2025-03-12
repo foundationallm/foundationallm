@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Quota Definition | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Quota Definition | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../media/favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/blob/main/docs/concepts/quota/quota-definition.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../media/fllm-icon.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="quota-definition">Quota Definition</h1>
+
+<p>The quota definitions are stored in the main FoundationaLLM storage account, in the <code>quota</code> container in a file named <code>quota-store.json</code>. If the file does not exist, the file is automatically created. The file contains a list of quota definitions with the following structure:</p>
+<pre><code class="lang-json">{
+	&quot;name&quot;: &quot;TestAPI01CompletionsUPNRawRequestRateLimit&quot;,
+	&quot;description&quot;: &quot;Defines a per UPN raw request rate limit on the TestAPI01 Completions controller.&quot;,
+	&quot;context&quot;: &quot;TestAPI01:Completions&quot;,
+	&quot;type&quot;: &quot;RawRequestRateLimit&quot;,
+	&quot;metric_partition&quot;: &quot;UserPrincipalName&quot;,
+	&quot;metric_limit&quot;: 120,
+	&quot;metric_window_seconds&quot;: 60,
+	&quot;lockout_duration_seconds&quot;: 60,
+	&quot;distributed_enforcement&quot;: false
+}
+</code></pre>
+<p>The following table provides details about the quota definition properties:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>The name of the quota definition.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>A description of the quota definition.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td>The context of the quota definition.</td>
+<td>The format of the context is <code>&lt;service_name&gt;:&lt;controller_name&gt;</code> or <code>&lt;service_name&gt;:&lt;controller_name&gt;:&lt;agent_name&gt;</code>. Currently the following contexts can be used: <code>CoreAPI:Completions</code>, <code>CoreAPI:Completions:&lt;agent_name&gt;</code> where <code>&lt;agent_name&gt;</code> must be a valid agent name.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>The type of the quota enforcement applied.</td>
+<td>The following types are supported: <code>RawRequestRateLimit</code> and <code>AgentRequestRateLimit</code>. <code>RawRequestRateLimt</code> defines the quota metric to be raw API requests and requires a context of <code>&lt;service_name&gt;:&lt;controller_name&gt;</code>. <code>AgentRequestRateLimit</code> defines the quota metric to be agent completion requests and requires a context of <code>&lt;service_name&gt;:&lt;controller_name&gt;:&lt;agent_name&gt;</code>.</td>
+</tr>
+<tr>
+<td><code>metric_partition</code></td>
+<td>The metric partition used to enforce the quota.</td>
+<td>The following partitions are supported: <code>None</code> (the metric is not partitioned) <code>UserPrincipalName</code> (the metric is partitioned by user principal name) and <code>UserIdentifier</code> (the metric is partitioned by user identifier).</td>
+</tr>
+<tr>
+<td><code>metric_limit</code></td>
+<td>The limit of the metric.</td>
+<td>The limit is enforced over the <code>metric_window_seconds</code>. In the example above, a maximum number of 120 raw API requests are allowed per user principal name in a 60-second window.</td>
+</tr>
+<tr>
+<td><code>metric_window_seconds</code></td>
+<td>The time window in seconds over which the limit is enforced.</td>
+<td>In the example above, a maximum number of 120 raw API requests are allowed per user principal name in a 60-second window.</td>
+</tr>
+<tr>
+<td><code>lockout_duration_seconds</code></td>
+<td>The duration in seconds for which the caller is locked out after exceeding the quota.</td>
+<td>The lockout duration is applied after the user exceeds the quota limit. The user is locked out for the specified duration before the quota is reset.</td>
+</tr>
+<tr>
+<td><code>distributed_enforcement</code></td>
+<td>Indicates whether the quota is enforced across multiple instances of the same API.</td>
+<td>If <code>true</code>, the quota is enforced across multiple instances. If <code>false</code>, the quota is enforced on a single instance. Currently, only <code>false</code> is supported.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/docs/concepts/quota/quota-definition.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

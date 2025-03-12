@@ -77,8 +77,103 @@
 <h5>Note</h5>
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
-<h2 id="starting-from-097-beta101">Starting from 0.9.7-beta101</h2>
+<h2 id="starting-from-097-beta103">Starting from 0.9.7-beta103</h2>
 <h3 id="configuration-changes">Configuration changes</h3>
+<p>Added the following App Configuration value:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Quota:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>Provides the storage account used by the FoundationaLLM quota management service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Quota:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>Indicates the authentication type used by the FoundationaLLM quota management service to connect to the storage account.</td>
+</tr>
+</tbody>
+</table>
+<p>A new container named <code>quota</code> must be created in the default storage account.</p>
+<p>The quota definitions are stored in the <code>quota</code> container in a file named <code>quota-store.json</code>. If the file does not exist, the file is automatically created. The file contains a list of quota definitions with the following structure:</p>
+<pre><code class="lang-json">{
+	&quot;name&quot;: &quot;TestAPI01CompletionsUPNRawRequestRateLimit&quot;,
+	&quot;description&quot;: &quot;Defines a per UPN raw request rate limit on the TestAPI01 Completions controller.&quot;,
+	&quot;context&quot;: &quot;TestAPI01:Completions&quot;,
+	&quot;type&quot;: &quot;RawRequestRateLimit&quot;,
+	&quot;metric_partition&quot;: &quot;UserPrincipalName&quot;,
+	&quot;metric_limit&quot;: 120,
+	&quot;metric_window_seconds&quot;: 60,
+	&quot;lockout_duration_seconds&quot;: 60,
+	&quot;distributed_enforcement&quot;: false
+}
+</code></pre>
+<p>The following table provides details about the quota definition properties:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>The name of the quota definition.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>A description of the quota definition.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td>The context of the quota definition.</td>
+<td>The format of the context is <code>&lt;service_name&gt;:&lt;controller_name&gt;</code> or <code>&lt;service_name&gt;:&lt;controller_name&gt;:&lt;agent_name&gt;</code>. Currently the following contexts can be used: <code>CoreAPI:Completions</code>, <code>CoreAPI:Completions:&lt;agent_name&gt;</code> where <code>&lt;agent_name&gt;</code> must be a valid agent name.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>The type of the quota enforcement applied.</td>
+<td>The following types are supported: <code>RawRequestRateLimit</code> and <code>AgentRequestRateLimit</code>. <code>RawRequestRateLimt</code> defines the quota metric to be raw API requests and requires a context of <code>&lt;service_name&gt;:&lt;controller_name&gt;</code>. <code>AgentRequestRateLimit</code> defines the quota metric to be agent completion requests and requires a context of <code>&lt;service_name&gt;:&lt;controller_name&gt;:&lt;agent_name&gt;</code>.</td>
+</tr>
+<tr>
+<td><code>metric_partition</code></td>
+<td>The metric partition used to enforce the quota.</td>
+<td>The following partitions are supported: <code>None</code> (the metric is not partitioned) <code>UserPrincipalName</code> (the metric is partitioned by user principal name) and <code>UserIdentifier</code> (the metric is partitioned by user identifier).</td>
+</tr>
+<tr>
+<td><code>metric_limit</code></td>
+<td>The limit of the metric.</td>
+<td>The limit is enforced over the <code>metric_window_seconds</code>. In the example above, a maximum number of 120 raw API requests are allowed per user principal name in a 60-second window.</td>
+</tr>
+<tr>
+<td><code>metric_window_seconds</code></td>
+<td>The time window in seconds over which the limit is enforced.</td>
+<td>In the example above, a maximum number of 120 raw API requests are allowed per user principal name in a 60-second window.</td>
+</tr>
+<tr>
+<td><code>lockout_duration_seconds</code></td>
+<td>The duration in seconds for which the caller is locked out after exceeding the quota.</td>
+<td>The lockout duration is applied after the user exceeds the quota limit. The user is locked out for the specified duration before the quota is reset.</td>
+</tr>
+<tr>
+<td><code>distributed_enforcement</code></td>
+<td>Indicates whether the quota is enforced across multiple instances of the same API.</td>
+<td>If <code>true</code>, the quota is enforced across multiple instances. If <code>false</code>, the quota is enforced on a single instance. Currently, only <code>false</code> is supported.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="starting-from-097-beta101">Starting from 0.9.7-beta101</h2>
+<h3 id="configuration-changes-1">Configuration changes</h3>
 <p>Added the following App Configuration value:</p>
 <table>
 <thead>
@@ -119,7 +214,7 @@
 <li><code>resource</code> (of type text) - the serialized plugin package FoundationaLLM resource.</li>
 </ul>
 <h2 id="starting-with-097-beta100">Starting with 0.9.7-beta100</h2>
-<h3 id="configuration-changes-1">Configuration changes</h3>
+<h3 id="configuration-changes-2">Configuration changes</h3>
 <h2 id="app-configuration-settings">App configuration settings</h2>
 <p>The value of the <code>FoundationaLLM:Events:Profiles:CoreAPI</code> must be updated to include the <code>api-statistics</code> topic. The updated value is as follows:</p>
 <pre><code class="lang-json">{
@@ -137,7 +232,7 @@
 }
 </code></pre>
 <h2 id="starting-with-094-rc100">Starting with 0.9.4-rc100</h2>
-<h3 id="configuration-changes-2">Configuration changes</h3>
+<h3 id="configuration-changes-3">Configuration changes</h3>
 <h2 id="app-configuration-settings-1">App configuration settings</h2>
 <div class="IMPORTANT">
 <h5>Important</h5>
@@ -778,7 +873,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 <p>Note: The event grid system topics need to be removed.</p>
 </blockquote>
 <p>The following topic needs to be created in the event grid namespace, must have a <code>resource-providers</code> topic with a publisher type of <code>Custom</code> and an input schema of <code>Cloud Events v1.0</code>.</p>
-<h3 id="configuration-changes-3">Configuration changes</h3>
+<h3 id="configuration-changes-4">Configuration changes</h3>
 <p>Added the following App Configuration value:</p>
 <table>
 <thead>
@@ -840,7 +935,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 </ul>
 <p>After the container is created, set the <code>Time to Live</code> property on the container to 300 seconds.</p>
 <h2 id="starting-with-091-rc105">Starting with 0.9.1-rc105</h2>
-<h3 id="configuration-changes-4">Configuration changes</h3>
+<h3 id="configuration-changes-5">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -889,7 +984,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 }
 </code></pre>
 <h2 id="starting-with-091-rc102">Starting with 0.9.1-rc102</h2>
-<h3 id="configuration-changes-5">Configuration changes</h3>
+<h3 id="configuration-changes-6">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -926,7 +1021,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
     },
 </code></pre>
 <h2 id="starting-with-091-rc101">Starting with 0.9.1-rc101</h2>
-<h3 id="configuration-changes-6">Configuration changes</h3>
+<h3 id="configuration-changes-7">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -970,7 +1065,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 </tbody>
 </table>
 <h2 id="starting-with-090">Starting with 0.9.0</h2>
-<h3 id="configuration-changes-7">Configuration changes</h3>
+<h3 id="configuration-changes-8">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -1092,7 +1187,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 <p>Please note that both properties are nullable. Set them to null to clear out the rating and comments.</p>
 </div>
 <h2 id="starting-with-084">Starting with 0.8.4</h2>
-<h3 id="configuration-changes-8">Configuration changes</h3>
+<h3 id="configuration-changes-9">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -1283,7 +1378,7 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 <li><code>FoundationaLLM.AzureOpenAI/assistantUserContexts</code></li>
 <li><code>FoundationaLLM.Conversation/conversations</code></li>
 </ul>
-<h3 id="configuration-changes-9">Configuration changes</h3>
+<h3 id="configuration-changes-10">Configuration changes</h3>
 <h4 id="resource-provider-templates">Resource provider templates</h4>
 <p>The <code>AzureOpenAI.template.json</code> files within <code>deploy/quick-start/data/resource-provider/FoundationaLLM.Configuration</code> and <code>deploy/standard/data/resource-provider/FoundationaLLM.Configuration</code> have been updated to set the <code>category</code> field to the value <code>LLM</code>. This discriminator allows the Management Portal to filter the list of API endpoints by category and provide options to add AI Models to endpoints with the <code>LLM</code> category.</p>
 <p>The existing <code>category</code> property needs to be set to <code>LLM</code> on existing API endpoint configurations in the <code>FoundationaLLM.Configuration</code> resource provider that fit this description, including the <code>AzureOpenAI</code> endpoint configuration.</p>
@@ -1335,7 +1430,7 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 }
 </code></pre>
 <h2 id="starting-with-082">Starting with 0.8.2</h2>
-<h3 id="configuration-changes-10">Configuration changes</h3>
+<h3 id="configuration-changes-11">Configuration changes</h3>
 <p>The following settings are required:</p>
 <table>
 <thead>
