@@ -54,7 +54,7 @@ namespace FoundationaLLM.Core.Examples.Setup
             RegisterAzureAIService(services, configuration);
 			RegisterServiceManagers(services);
 
-            services.AddAPIRequestQuotaService(configuration);
+            services.AddQuotaService(configuration);
         }
 
         private static void RegisterLogging(

@@ -863,7 +863,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             var eventsToProcess = e.Events
                 .Where(e => e.Subject == _name).ToList();
 
-            _logger.LogInformation("{EventsCount} events of type {EventType} received out if which {ResourceProviderEventsCount} are targeted for the {ResourceProviderName} resource provider.",
+            _logger.LogInformation("{EventsCount} events of type {EventType} received out of which {ResourceProviderEventsCount} are targeted for the {ResourceProviderName} resource provider.",
                 originalEventCount,
                 e.EventType,                
                 eventsToProcess.Count,               

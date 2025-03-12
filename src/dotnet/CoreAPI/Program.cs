@@ -99,7 +99,7 @@ namespace FoundationaLLM.Core.API
                 AppConfigurationKeySections.FoundationaLLM_Events_Profiles_CoreAPI);
 
             // API request quota service
-            builder.AddAPIRequestQuotaService();
+            builder.AddQuotaService();
 
             //----------------------------
             // Resource providers
