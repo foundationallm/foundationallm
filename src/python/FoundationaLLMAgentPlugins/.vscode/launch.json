@@ -16,7 +16,7 @@
             "name": "Python: Test Workflow",
             "type": "debugpy",
             "request": "launch",
-            "program": "test/foundationallm_agent_plugins/foundationallm_function_calling_workflow/test_workflow.py",
+            "program": "test/foundationallm_function_calling_workflow/test_workflow.py",
             "console": "integratedTerminal",
             "justMyCode": false,
             "cwd": "${workspaceFolder}"
