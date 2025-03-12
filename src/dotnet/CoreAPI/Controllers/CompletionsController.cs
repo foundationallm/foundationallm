@@ -7,7 +7,6 @@ using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
-using FoundationaLLM.Common.Models.Quota;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Telemetry;
@@ -39,7 +38,7 @@ namespace FoundationaLLM.Core.API.Controllers
         private readonly IResourceProviderService _agentResourceProvider;
         private readonly ILogger<CompletionsController> _logger;
         private readonly ICallContext _callContext;
-        private readonly IQuotaService _apiRequestQuotaService;
+        private readonly IQuotaService _quotaService;
 
         /// <summary>
         /// Methods for orchestration services exposed by the Gatekeeper API service.
@@ -51,13 +50,13 @@ namespace FoundationaLLM.Core.API.Controllers
         /// completions from the orchestrator.</param>
         /// <param name="callContext">The call context for the request.</param>
         /// <param name="resourceProviderServices">The list of <see cref="IResourceProviderService"/> resource provider services.</param>
-        /// <param name="apiRequestQuotaService">The API request quota service.</param>
+        /// <param name="quotaService">The quota service.</param>
         /// <param name="logger">The logging interface used to log under the
         /// <see cref="CompletionsController"/> type name.</param>
         public CompletionsController(ICoreService coreService,
             ICallContext callContext,
             IEnumerable<IResourceProviderService> resourceProviderServices,
-            IQuotaService apiRequestQuotaService,
+            IQuotaService quotaService,
             ILogger<CompletionsController> logger)
         {
             _coreService = coreService;
@@ -68,7 +67,7 @@ namespace FoundationaLLM.Core.API.Controllers
             _agentResourceProvider = agentResourceProvider;
             _logger = logger;
             _callContext = callContext;
-            _apiRequestQuotaService = apiRequestQuotaService;
+            _quotaService = quotaService;
         }
 
         /// <summary>
@@ -96,9 +95,9 @@ namespace FoundationaLLM.Core.API.Controllers
                     { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
                 });
 
-            if (_apiRequestQuotaService.Enabled)
+            if (_quotaService.Enabled)
             {
-                var quotaEvaluationResult = _apiRequestQuotaService.EvaluateCompletionRequestForQuota(
+                var quotaEvaluationResult = _quotaService.EvaluateCompletionRequestForQuota(
                     ServiceNames.CoreAPI,
                     ControllerContext.ActionDescriptor.ControllerName,
                     _callContext.CurrentUserIdentity,
@@ -140,9 +139,9 @@ namespace FoundationaLLM.Core.API.Controllers
                     { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
                 });
 
-            if (_apiRequestQuotaService.Enabled)
+            if (_quotaService.Enabled)
             {
-                var quotaEvaluationResult = _apiRequestQuotaService.EvaluateCompletionRequestForQuota(
+                var quotaEvaluationResult = _quotaService.EvaluateCompletionRequestForQuota(
                     ServiceNames.CoreAPI,
                     ControllerContext.ActionDescriptor.ControllerName,
                     _callContext.CurrentUserIdentity,

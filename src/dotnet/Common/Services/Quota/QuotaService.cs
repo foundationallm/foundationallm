@@ -17,6 +17,7 @@ namespace FoundationaLLM.Common.Services.Quota
     {
         private const string STORAGE_CONTAINER_NAME = "quota";
         private const string QUOTA_STORE_FILE_PATH = "/quota-store.json";
+        private readonly QuotaEvaluationResult QUOTA_NOT_EXCEEDED_EVALUATION_RESULT = new();
 
         private DateTimeOffset _initializationStartTime;
         private bool _isInitialized = false;
@@ -25,6 +26,7 @@ namespace FoundationaLLM.Common.Services.Quota
         // While initialization is in progress, the service is enabled to make sure we can handle the situation where initialization fails.
         private bool _enabled = true;
         private readonly IStorageService _storageService;
+        private readonly ILoggerFactory _loggerFactory;
         private readonly ILogger<QuotaService> _logger;
 
         private List<QuotaDefinition> _quotaDefinitions = [];
@@ -37,13 +39,14 @@ namespace FoundationaLLM.Common.Services.Quota
         /// Initializes a new instance of the <see cref="QuotaService"/> class.
         /// </summary>
         /// <param name="storageService">The storage service used for storing quota configuration.</param>
-        /// <param name="logger">The logger used for logging.</param>
+        /// <param name="loggerFactory">The logger factory used to create loggers.</param>
         public QuotaService(
             IStorageService storageService,
-            ILogger<QuotaService> logger)
+            ILoggerFactory loggerFactory)
         {
             _storageService = storageService;
-            _logger = logger;
+            _loggerFactory = loggerFactory;
+            _logger = _loggerFactory.CreateLogger<QuotaService>();
 
             // Kicks off the initialization on a separate thread and does not wait for it to complete.
             // The completion of the initialization process will be signaled by setting the _isInitialized property.
@@ -56,7 +59,7 @@ namespace FoundationaLLM.Common.Services.Quota
         {
             try
             {
-                _logger.LogInformation("Starting to initialize the APIRequestQuotaService service ...");
+                _logger.LogInformation("Starting to initialize the quota service ...");
                 _initializationStartTime = DateTimeOffset.UtcNow;
 
                 if (await _storageService.FileExistsAsync(
@@ -85,9 +88,12 @@ namespace FoundationaLLM.Common.Services.Quota
                 _quotaContexts = _quotaDefinitions
                     .Select(qd => qd.MetricPartition switch
                     {
-                        QuotaMetricPartition.None => (new PartitionlessQuotaContext { Quota = qd }) as QuotaContextBase,
-                        QuotaMetricPartition.UserIdentifier => (new UserIdentifierQuotaContext { Quota = qd }) as QuotaContextBase,
-                        QuotaMetricPartition.UserPrincipalName => (new UserPrincipalNameQuotaContext { Quota = qd }) as QuotaContextBase,
+                        QuotaMetricPartition.None => (new PartitionlessQuotaContext(
+                            qd, _loggerFactory.CreateLogger<PartitionlessQuotaContext>())) as QuotaContextBase,
+                        QuotaMetricPartition.UserIdentifier => (new UserIdentifierQuotaContext(
+                            qd, _loggerFactory.CreateLogger<UserIdentifierQuotaContext>())) as QuotaContextBase,
+                        QuotaMetricPartition.UserPrincipalName => (new UserPrincipalNameQuotaContext(
+                            qd, _loggerFactory.CreateLogger<UserPrincipalNameQuotaContext>())) as QuotaContextBase,
                         _ => throw new QuotaException($"Unsupported metric partition: {qd.MetricPartition}")
                     })
                     .ToDictionary(qc => qc.Quota.Context);
@@ -100,19 +106,19 @@ namespace FoundationaLLM.Common.Services.Quota
                 _isInitialized = true;
                 _enabled = _quotaDefinitions.Count > 0;
 
-                _logger.LogInformation("The APIRequestQuotaService service was successfully initialized.");
+                _logger.LogInformation("The quota service was successfully initialized.");
 
                 if (!_enabled)
-                _logger.LogWarning("The APIRequestQuotaService service is disabled because there are no quota definitions in the quota store.");
+                _logger.LogWarning("The quota service is disabled because there are no quota definitions in the quota store.");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "The APIRequestQuotaService service failed to initialize.");
+                _logger.LogError(ex, "The quota service failed to initialize.");
             }
         }
 
         /// <summary>
-        /// Checks if the initialization is either complete or pending.
+        /// Checks if the initialization is pending.
         /// </summary>
         /// <remarks>
         /// Initialization is considered to be pending if the service is not yet initialized and the time since initialization started is less than 30 seconds.
@@ -120,10 +126,12 @@ namespace FoundationaLLM.Common.Services.Quota
         /// This will result in an exception to be thrown when the service is used.
         /// </remarks>
         /// <returns>True if the service is initialized or initialization is still pending, False otherwise.</returns>
-        private bool InitializationPendingOrComplete()
+        private bool InitializationPending()
         {
-            if (_isInitialized
-                || (DateTimeOffset.UtcNow - _initializationStartTime).TotalSeconds < 60)
+            if (_isInitialized)
+                return false;
+
+            if ((DateTimeOffset.UtcNow - _initializationStartTime).TotalSeconds < 60)
                 return true;
 
             throw
@@ -139,20 +147,18 @@ namespace FoundationaLLM.Common.Services.Quota
             string? controllerName,
             UnifiedUserIdentity? userIdentity)
         {
-            if (InitializationPendingOrComplete())
-                return new()
-                {
-                    QuotaExceeded = false
-                };
+            if (!_isInitialized)
+                if (InitializationPending())
+                    return QUOTA_NOT_EXCEEDED_EVALUATION_RESULT;
 
             var context = BuildContext([apiName, controllerName]);
             var userIdentifier = userIdentity?.UserId ?? "__default__";
             var userPrincipalName = userIdentity?.UPN ?? "__default__";
 
-            return new()
-            {
-                QuotaExceeded = false
-            };
+            if (_quotaContexts.TryGetValue(context, out var quotaContext))
+                return quotaContext.AddMetricUnitAndEvaluateQuota(userIdentifier, userPrincipalName);
+            else
+                return QUOTA_NOT_EXCEEDED_EVALUATION_RESULT;
         }
 
         /// <inheritdoc/>
@@ -162,20 +168,18 @@ namespace FoundationaLLM.Common.Services.Quota
             UnifiedUserIdentity? userIdentity,
             CompletionRequest completionRequest)
         {
-            if (InitializationPendingOrComplete())
-                return new()
-                {
-                    QuotaExceeded = false
-                };
+            if (!_isInitialized)
+                if (InitializationPending())
+                    return QUOTA_NOT_EXCEEDED_EVALUATION_RESULT;
 
             var context = BuildContext([apiName, controllerName, completionRequest?.AgentName]);
             var userIdentifier = userIdentity?.UserId ?? "__default__";
             var userPrincipalName = userIdentity?.UPN ?? "__default__";
 
-            return new()
-            {
-                QuotaExceeded = false
-            };
+            if (_quotaContexts.TryGetValue(context, out var quotaContext))
+                return quotaContext.AddMetricUnitAndEvaluateQuota(userIdentifier, userPrincipalName);
+            else
+                return QUOTA_NOT_EXCEEDED_EVALUATION_RESULT;
         }
 
         private string BuildContext(string?[] tokens) =>

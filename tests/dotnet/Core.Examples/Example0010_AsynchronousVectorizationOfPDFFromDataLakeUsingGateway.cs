@@ -22,7 +22,7 @@ namespace FoundationaLLM.Core.Examples
     /// Expects the following document in the storage account:
     ///     /vectorization-input/really_big.pdf
     /// </summary>
-    public class Example0010_AsynchronousVectorizationOfPDFFromDataLakeUsingGateway : BaseTest, IClassFixture<TestFixture>
+    public class Example0010_AsynchronousVectorizationOfPDFFromDataLakeUsingGateway : TestBase, IClassFixture<TestFixture>
 	{
 		private readonly IVectorizationTestService _vectorizationTestService;        
         private InstanceSettings _instanceSettings;
@@ -42,7 +42,7 @@ namespace FoundationaLLM.Core.Examples
         private string authenticationTypeAppConfigKey;
 
         public Example0010_AsynchronousVectorizationOfPDFFromDataLakeUsingGateway(ITestOutputHelper output, TestFixture fixture)
-			: base(output, [fixture.ServiceProvider])
+			: base(output, fixture)
 		{
             _vectorizationTestService = GetService<IVectorizationTestService>();
             _instanceSettings = _vectorizationTestService.InstanceSettings;

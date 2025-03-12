@@ -27,19 +27,19 @@ namespace FoundationaLLM.Common.Middleware
         /// <param name="context">The current HTTP request context.</param>
         /// <param name="callContext">Stores context information extracted from the current HTTP request. This information
         /// is primarily used to inject HTTP headers into downstream HTTP calls.</param>
-        /// <param name="apiRequestQuotaService">Provides services for managing API request quotas.</param>
+        /// <param name="quotaService">Provides services for managing quotas.</param>
         /// <param name="instanceSettings">Contains the FoundationaLLM instance configuration settings.</param>
         /// <returns></returns>
         public async Task InvokeAsync(
             HttpContext context,
             ICallContext callContext,
-            IQuotaService apiRequestQuotaService,
+            IQuotaService quotaService,
             IOptions<InstanceSettings> instanceSettings)
         {
-            if (apiRequestQuotaService.Enabled)
+            if (quotaService.Enabled)
             {
                 // Evaluate quotas for API requests
-                var quotaEvaluationResult = apiRequestQuotaService.EvaluateRawRequestForQuota(
+                var quotaEvaluationResult = quotaService.EvaluateRawRequestForQuota(
                     ServiceNames.CoreAPI,
                     context.Request.RouteValues["controller"]?.ToString(),
                     callContext.CurrentUserIdentity);

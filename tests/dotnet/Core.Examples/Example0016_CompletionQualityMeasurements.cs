@@ -8,13 +8,13 @@ namespace FoundationaLLM.Core.Examples
     /// <summary>
     /// Example class for running agent completions and evaluating the quality of the completions using Azure AI Studio.
     /// </summary>
-    public class Example0016_CompletionQualityMeasurements : BaseTest, IClassFixture<TestFixture>
+    public class Example0016_CompletionQualityMeasurements : TestBase, IClassFixture<TestFixture>
 	{
 		private readonly IAgentConversationTestService _agentConversationTestService;
         private readonly IManagementAPITestManager _managementAPITestManager;
 
         public Example0016_CompletionQualityMeasurements(ITestOutputHelper output, TestFixture fixture)
-			: base(output, [fixture.ServiceProvider])
+			: base(output, fixture)
 		{
             _agentConversationTestService = GetService<IAgentConversationTestService>();
             _managementAPITestManager = GetService<IManagementAPITestManager>();

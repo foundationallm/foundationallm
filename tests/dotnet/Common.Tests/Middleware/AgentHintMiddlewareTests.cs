@@ -32,7 +32,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             }, "mock"));
 
             // Act
-            await middleware.InvokeAsync(context, claimsProviderService, identityManagementService, callContext, apiRequestQuotaService, instanceSettings);
+            await middleware.InvokeAsync(context, claimsProviderService, identityManagementService, callContext, instanceSettings);
 
             // Assert
             claimsProviderService.Received(1).GetUserIdentity(context.User);
@@ -54,7 +54,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             context.Request.Headers[Constants.HttpHeaders.UserIdentity] = JsonSerializer.Serialize(userIdentity);
 
             // Act
-            await middleware.InvokeAsync(context, claimsProviderService, groupMembershipService, callContext, apiRequestQuotaService, instanceSettings);
+            await middleware.InvokeAsync(context, claimsProviderService, groupMembershipService, callContext, instanceSettings);
 
             // Assert
             callContext.Received(1).CurrentUserIdentity = Arg.Is<UnifiedUserIdentity>(x => x.Username == userIdentity.Username && x.UPN == userIdentity.UPN && x.Name == userIdentity.Name);

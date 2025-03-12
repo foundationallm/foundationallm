@@ -14,25 +14,28 @@ using FoundationaLLM.Core.Examples.Exceptions;
 using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Models;
 using FoundationaLLM.Core.Examples.Services;
+using FoundationaLLM.Core.Examples.Utils;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Xunit.Abstractions;
 
 namespace FoundationaLLM.Core.Examples.Setup
 {
     public static class TestServicesInitializer
 	{
-		/// <summary>
-		/// Configure base services and dependencies for the tests.
-		/// </summary>
-		/// <param name="services"></param>
-		/// <param name="configRoot"></param>
-		public static void InitializeServices(
+        /// <summary>
+        /// Configure base services and dependencies for the tests.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configRoot"></param>
+        public static void InitializeServices(
 			IServiceCollection services,
-			IConfigurationRoot configRoot)
+			IConfigurationRoot configRoot,
+            ITestOutputHelper testOutputHelper)
 		{
 			TestConfiguration.Initialize(configRoot, services);
 
@@ -42,15 +45,29 @@ namespace FoundationaLLM.Core.Examples.Setup
 
             services.AddScoped<IConfiguration>(_ => configRoot);
 
+            RegisterLogging(services, configRoot, testOutputHelper);
+
             RegisterInstance(services, configRoot);
             RegisterHttpClients(services, configRoot);
             RegisterClientLibraries(services, configRoot);
 			RegisterCosmosDb(services, configRoot);
             RegisterAzureAIService(services, configRoot);
-            RegisterLogging(services);
 			RegisterServiceManagers(services);
 
             services.AddAPIRequestQuotaService(configRoot);
+        }
+
+        private static void RegisterLogging(
+            IServiceCollection services,
+            IConfigurationRoot configRoot,
+            ITestOutputHelper testOutputHelper)
+        {
+            services.AddLogging(builder =>
+            {
+                builder.AddProvider(new XUnitLoggerProvider(testOutputHelper));
+                builder.AddConsole();
+                builder.AddConfiguration(configRoot.GetSection("Logging"));
+            });
         }
 
         private static void RegisterInstance(IServiceCollection services, IConfiguration configuration)
@@ -167,14 +184,6 @@ namespace FoundationaLLM.Core.Examples.Setup
 
             services.Configure<DownstreamAPISettings>(configuration.GetSection("DownstreamAPIs"));
         }
-
-        private static void RegisterLogging(IServiceCollection services)
-		{
-			services.AddLogging(builder =>
-			{
-				builder.AddConsole();
-			});
-		}
 
         private static void RegisterServiceManagers(IServiceCollection services)
         {

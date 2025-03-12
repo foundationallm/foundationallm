@@ -52,7 +52,7 @@ namespace FoundationaLLM
                 new QuotaService(
                     sp.GetRequiredService<IEnumerable<IStorageService>>()
                         .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_Quota),
-                    sp.GetRequiredService<ILogger<QuotaService>>()));
+                    sp.GetRequiredService<ILoggerFactory>()));
             services.ActivateSingleton<IQuotaService>();
         }
     }

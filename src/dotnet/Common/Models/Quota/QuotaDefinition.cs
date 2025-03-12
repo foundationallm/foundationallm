@@ -54,6 +54,12 @@ namespace FoundationaLLM.Common.Models.Quota
         public int MetricWindowSeconds { get; set; }
 
         /// <summary>
+        /// Gets or sets the duration in seconds for which the quota is locked out after it has been exceeded.
+        /// </summary>
+        [JsonPropertyName("lockout_duration_seconds")]
+        public int LockoutDurationSeconds { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the quota is enforced in a distributed manner.
         /// </summary>
         [JsonPropertyName("distributed_enforcement")]
