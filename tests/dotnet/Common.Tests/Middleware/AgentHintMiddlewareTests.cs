@@ -20,6 +20,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             var claimsProviderService = Substitute.For<IUserClaimsProviderService>();
             var identityManagementService = Substitute.For<IIdentityManagementService>();
             var callContext = Substitute.For<ICallContext>();
+            var apiRequestQuotaService = Substitute.For<IQuotaService>();
             var instanceSettings = Options.Create<InstanceSettings>(Substitute.For<InstanceSettings>());
             var middleware = new CallContextMiddleware(next: _ => Task.FromResult(0));
             context.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
@@ -46,6 +47,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             var claimsProviderService = Substitute.For<IUserClaimsProviderService>();
             var groupMembershipService = Substitute.For<IIdentityManagementService>();
             var callContext = Substitute.For<ICallContext>();
+            var apiRequestQuotaService = Substitute.For<IQuotaService>();
             var instanceSettings = Options.Create<InstanceSettings>(Substitute.For<InstanceSettings>());
             var middleware = new CallContextMiddleware(next: _ => Task.FromResult(0));
             var userIdentity = new UnifiedUserIdentity { Username = "testuser@example.com", UPN = "testuser@example.com", Name = "testuser" };

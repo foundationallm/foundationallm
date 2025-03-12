@@ -11,7 +11,7 @@ namespace FoundationaLLM.Core.Examples
     /// <summary>
     /// Example class for sending user queries to a Knowledge Management with inline context agent using the LangChain orchestrator.
     /// </summary>
-    public class Example0020_GenerateConversationsAboutProducts : BaseTest, IClassFixture<TestFixture>
+    public class Example0020_GenerateConversationsAboutProducts : TestBase, IClassFixture<TestFixture>
 	{
         private record Product
         {
@@ -64,7 +64,7 @@ namespace FoundationaLLM.Core.Examples
         private readonly GenerateConversationsConfiguration _settings;
 
 		public Example0020_GenerateConversationsAboutProducts(ITestOutputHelper output, TestFixture fixture)
-			: base(output, [fixture.ServiceProvider])
+			: base(output, fixture)
 		{
             _agentConversationTestService = GetService<IAgentConversationTestService>();
             _products = JsonSerializer.Deserialize<List<Product>>(

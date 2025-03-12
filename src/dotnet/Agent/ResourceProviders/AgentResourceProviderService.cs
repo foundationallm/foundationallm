@@ -821,6 +821,18 @@ namespace FoundationaLLM.Agent.ResourceProviders
         {
             var errors = new List<AgentFileToolAssociationError>();
 
+            if (!ResourcePath.TryParse(
+                $"/instances/{_instanceSettings.Id}/providers/{_name}/{AgentResourceTypeNames.Agents}/{resourcePath.MainResourceId}/{AgentResourceTypeNames.AgentFiles}",
+                [_name],
+                AgentResourceProviderMetadata.AllowedResourceTypes,
+                false,
+                out var agentFilesResourcePath))
+                throw new ResourceProviderException("The object definition is invalid.",
+                    StatusCodes.Status400BadRequest);
+
+            var agentFileResources = await LoadAgentFiles(agentFilesResourcePath!, userIdentity, new ResourceProviderGetOptions() { LoadContent = false });
+            var agentFiles = agentFileResources.Select(x => x.Resource).ToList();
+
             var agentFileToolAssociationRequest = JsonSerializer.Deserialize<AgentFileToolAssociationRequest>(serializedResource)
                 ?? throw new ResourceProviderException("The object definition is invalid.",
                     StatusCodes.Status400BadRequest);
@@ -835,6 +847,18 @@ namespace FoundationaLLM.Agent.ResourceProviders
             {
                 if (!agentFileToolAssociationRequest.AgentFileToolAssociations.TryGetValue(fileObjectId, out var toolAssociations))
                     continue;
+
+                if (!agentFiles.Any(x => x.ObjectId == fileObjectId))
+                {
+                    errors.Add(new AgentFileToolAssociationError()
+                    {
+                        FileObjectId = fileObjectId,
+                        ToolObjectId = string.Empty,
+                        ErrorMessage = $"The file was not found in the agent private storage."
+                    });
+
+                    continue;
+                }
 
                 foreach (var toolObjectId in toolAssociations.Keys)
                 {
