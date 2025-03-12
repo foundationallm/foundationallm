@@ -3,16 +3,15 @@ using FoundationaLLM.Common.Constants.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Hosting;
-using Xunit.Abstractions;
 using Environment = FoundationaLLM.Core.Examples.Utils.Environment;
 
 namespace FoundationaLLM.Core.Examples.Setup
 {
     public class TestFixture : IDisposable
     {
-        public List<IServiceProvider> ServiceProviders { get; private set; } = [];
-
         protected readonly HostApplicationBuilder _hostBuilder;
+
+        public IHostApplicationBuilder HostBuilder => _hostBuilder;
 
         public TestFixture()
         {
@@ -43,23 +42,8 @@ namespace FoundationaLLM.Core.Examples.Setup
                 .Build();
         }
 
-        public void ConfigureServiceProviders(
-            int virtualHostsCount,
-            ITestOutputHelper output,
-            Func<HostApplicationBuilder, ITestOutputHelper, int, List<IServiceProvider>> serviceProviderBuilder)
-        {
-            if (ServiceProviders.Count == 0)
-                ServiceProviders.AddRange(
-                    serviceProviderBuilder(_hostBuilder, output, virtualHostsCount));
-        }
-
         public void Dispose()
         {
-            foreach (var serviceProvider in ServiceProviders)
-                if (serviceProvider is IDisposable disposable)
-                {
-                    disposable.Dispose();
-                }
         }
     }
 }

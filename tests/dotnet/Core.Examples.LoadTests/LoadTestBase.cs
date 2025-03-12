@@ -11,14 +11,10 @@ namespace FoundationaLLM.Core.Examples.LoadTests
     {
         private readonly int _virtualHostsCount = virtualHostsCount;
 
-        override protected void ConfigureServiceProviders(TestFixture fixture, ITestOutputHelper output) =>
-            fixture.ConfigureServiceProviders(
-                _virtualHostsCount,
+        protected override List<IServiceProvider> GetServiceProviders(ITestOutputHelper output, TestFixture fixture) =>
+            LoadTestServicesInitializer.InitializeServices(
+                fixture.HostBuilder,
                 output,
-                (hostBuilder, testOutputHelper, virtualHostsCount) =>
-                    LoadTestServicesInitializer.InitializeServices(
-                        hostBuilder,
-                        testOutputHelper,
-                        virtualHostsCount));
+                _virtualHostsCount);
     }
 }

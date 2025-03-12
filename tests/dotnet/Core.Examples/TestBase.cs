@@ -1,6 +1,5 @@
 ﻿using FoundationaLLM.Core.Examples.Setup;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Xunit.Abstractions;
 
 namespace FoundationaLLM.Core.Examples
@@ -16,27 +15,24 @@ namespace FoundationaLLM.Core.Examples
             TestFixture fixture)
 		{
 			Output = output;
-			ConfigureServiceProviders(fixture, output);
 
-			ServiceProviders = fixture.ServiceProviders;
-			ServiceProvider = fixture.ServiceProviders.First();
+			ServiceProviders = GetServiceProviders(output, fixture);
+			ServiceProvider = ServiceProviders.First();
         }
 
-		protected virtual void ConfigureServiceProviders(TestFixture fixture, ITestOutputHelper output) =>
-            fixture.ConfigureServiceProviders(
-                1,
-                output,
-                (hostBuilder, testOutputHelper, virtualHostsCount) =>
-                {
-                    var _serviceCollection = new ServiceCollection();
+		protected virtual List<IServiceProvider> GetServiceProviders(
+			ITestOutputHelper output,
+			TestFixture fixture)
+        {
+            var _serviceCollection = new ServiceCollection();
 
-                    TestServicesInitializer.InitializeServices(
-                        _serviceCollection,
-                        hostBuilder.Configuration,
-                        testOutputHelper);
+            TestServicesInitializer.InitializeServices(
+                _serviceCollection,
+                fixture.HostBuilder.Configuration,
+                output);
 
-                    return [_serviceCollection.BuildServiceProvider()];
-                });
+            return [_serviceCollection.BuildServiceProvider()];
+        }
 
         /// <summary>
         /// Service locator to get services from the ServiceProvider.
@@ -66,5 +62,7 @@ namespace FoundationaLLM.Core.Examples
 		{
 			this.Output.WriteLine((string)(target ?? string.Empty));
 		}
+
+
 	}
 }

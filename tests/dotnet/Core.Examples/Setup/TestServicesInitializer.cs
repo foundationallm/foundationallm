@@ -31,42 +31,42 @@ namespace FoundationaLLM.Core.Examples.Setup
         /// Configure base services and dependencies for the tests.
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="configRoot"></param>
+        /// <param name="configuration"></param>
         public static void InitializeServices(
 			IServiceCollection services,
-			IConfigurationRoot configRoot,
+			IConfiguration configuration,
             ITestOutputHelper testOutputHelper)
 		{
-			TestConfiguration.Initialize(configRoot, services);
+			TestConfiguration.Initialize(configuration, services);
 
             services.AddOptions<BlobStorageServiceSettings>(
                     DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization_Storage)
-                .Bind(configRoot.GetSection("FoundationaLLM:ResourceProviders:Vectorization:Storage"));
+                .Bind(configuration.GetSection("FoundationaLLM:ResourceProviders:Vectorization:Storage"));
 
-            services.AddScoped<IConfiguration>(_ => configRoot);
+            services.AddScoped<IConfiguration>(_ => configuration);
 
-            RegisterLogging(services, configRoot, testOutputHelper);
+            RegisterLogging(services, configuration, testOutputHelper);
 
-            RegisterInstance(services, configRoot);
-            RegisterHttpClients(services, configRoot);
-            RegisterClientLibraries(services, configRoot);
-			RegisterCosmosDb(services, configRoot);
-            RegisterAzureAIService(services, configRoot);
+            RegisterInstance(services, configuration);
+            RegisterHttpClients(services, configuration);
+            RegisterClientLibraries(services, configuration);
+			RegisterCosmosDb(services, configuration);
+            RegisterAzureAIService(services, configuration);
 			RegisterServiceManagers(services);
 
-            services.AddAPIRequestQuotaService(configRoot);
+            services.AddAPIRequestQuotaService(configuration);
         }
 
         private static void RegisterLogging(
             IServiceCollection services,
-            IConfigurationRoot configRoot,
+            IConfiguration configuration,
             ITestOutputHelper testOutputHelper)
         {
             services.AddLogging(builder =>
             {
                 builder.AddProvider(new XUnitLoggerProvider(testOutputHelper));
                 builder.AddConsole();
-                builder.AddConfiguration(configRoot.GetSection("Logging"));
+                builder.AddConfiguration(configuration.GetSection("Logging"));
             });
         }
 
