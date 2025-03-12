@@ -106,6 +106,20 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:Quota:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Quota:Storage:AccountName",
+            "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:ResourceProviders:AIModel:Storage:AuthenticationType",
             "value": "AzureIdentity",
             "label": null,

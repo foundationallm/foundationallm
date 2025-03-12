@@ -19,7 +19,7 @@ namespace FoundationaLLM.Core.Examples
     /// References:
     ///     PDF public source: https://sandiegozoowildlifealliance.org/Journal/january-2024
     /// </summary>
-    public class Example0007_AsynchronousVectorizationOfPDFFromOneLake : BaseTest, IClassFixture<TestFixture>
+    public class Example0007_AsynchronousVectorizationOfPDFFromOneLake : TestBase, IClassFixture<TestFixture>
     {
         private readonly IVectorizationTestService _vectorizationTestService;
         private InstanceSettings _instanceSettings;
@@ -35,7 +35,7 @@ namespace FoundationaLLM.Core.Examples
         private string id = String.Empty;       
 
         public Example0007_AsynchronousVectorizationOfPDFFromOneLake(ITestOutputHelper output, TestFixture fixture)
-            : base(output, [fixture.ServiceProvider])
+            : base(output, fixture)
         {
             _vectorizationTestService = GetService<IVectorizationTestService>();
             _instanceSettings = _vectorizationTestService.InstanceSettings;
