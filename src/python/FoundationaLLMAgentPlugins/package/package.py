@@ -4,7 +4,7 @@ import re
 from argparse import ArgumentParser
 from pathlib import Path
 
-organization_name = 'skunkworks'
+package_name = 'foundationallm_agent_plugins'
 
 # Using the official Semantic Versioning regex from https://semver.org/ (https://regex101.com/r/Ly7O1x/3/)
 SEMVER_REGEX = '^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$'
@@ -26,9 +26,9 @@ print('Version:', args.version)
 print('Configuration:', args.config)
 
 if args.config == 'Debug':
-    with zipfile.ZipFile(f'{organization_name}_foundationallm_debug-{args.version}.zip', mode='w') as zip_pkg:
-        for f in Path(f'src/{organization_name}_foundationallm').rglob('*.py'):
+    with zipfile.ZipFile(f'{package_name}_debug-{args.version}.zip', mode='w') as zip_pkg:
+        for f in Path(f'src/f{package_name}').rglob('*.py'):
             zip_pkg.write(f, f.relative_to('src'))
 else:
-    with zipfile.PyZipFile(f'{organization_name}_foundationallm-{args.version}.zip', mode='w') as zip_pkg:
-        zip_pkg.writepy(f'src/{organization_name}_foundationallm')
+    with zipfile.PyZipFile(f'{package_name}-{args.version}.zip', mode='w') as zip_pkg:
+        zip_pkg.writepy(f'src/{package_name}')
