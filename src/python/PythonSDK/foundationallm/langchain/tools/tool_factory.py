@@ -14,7 +14,7 @@ class ToolFactory:
     Factory class for creating tools based on the AgentTool configuration.
     """
     FLLM_PACKAGE_NAME = "FoundationaLLM"
-    DALLE_IMAGE_GENERATION_TOOL_NAME = "DALLEImageGeneration"
+    DALLE_IMAGE_GENERATION_TOOL = "DALLEImageGeneration"
     FOUNDATIONALLM_CONTENT_SEARCH_TOOL = "FoundationaLLMContentSearchTool"
 
     def __init__(self, plugin_manager: PluginManager):
@@ -47,9 +47,9 @@ class ToolFactory:
             return self.plugin_manager.object_cache[cache_key]
 
         if tool_config.package_name == self.FLLM_PACKAGE_NAME:
-            # internal tools
-            match tool_config.name:
-                case self.DALLE_IMAGE_GENERATION_TOOL_NAME:
+            # Initialize by class name.
+            match tool_config.class_name:
+                case self.DALLE_IMAGE_GENERATION_TOOL:
                     tool = DALLEImageGenerationTool(tool_config, objects, user_identity, config)
                     self.plugin_manager.object_cache[cache_key] = tool
                 case self.FOUNDATIONALLM_CONTENT_SEARCH_TOOL:
