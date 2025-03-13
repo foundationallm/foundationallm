@@ -1,4 +1,5 @@
 using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Constants.Telemetry;
@@ -37,6 +38,7 @@ namespace FoundationaLLM.Core.API.Controllers
         private readonly IResourceProviderService _agentResourceProvider;
         private readonly ILogger<CompletionsController> _logger;
         private readonly ICallContext _callContext;
+        private readonly IQuotaService _quotaService;
 
         /// <summary>
         /// Methods for orchestration services exposed by the Gatekeeper API service.
@@ -48,11 +50,13 @@ namespace FoundationaLLM.Core.API.Controllers
         /// completions from the orchestrator.</param>
         /// <param name="callContext">The call context for the request.</param>
         /// <param name="resourceProviderServices">The list of <see cref="IResourceProviderService"/> resource provider services.</param>
+        /// <param name="quotaService">The quota service.</param>
         /// <param name="logger">The logging interface used to log under the
         /// <see cref="CompletionsController"/> type name.</param>
         public CompletionsController(ICoreService coreService,
             ICallContext callContext,
             IEnumerable<IResourceProviderService> resourceProviderServices,
+            IQuotaService quotaService,
             ILogger<CompletionsController> logger)
         {
             _coreService = coreService;
@@ -63,6 +67,7 @@ namespace FoundationaLLM.Core.API.Controllers
             _agentResourceProvider = agentResourceProvider;
             _logger = logger;
             _callContext = callContext;
+            _quotaService = quotaService;
         }
 
         /// <summary>
@@ -89,6 +94,19 @@ namespace FoundationaLLM.Core.API.Controllers
                     { TelemetryActivityTagNames.UPN, _callContext.CurrentUserIdentity?.UPN ?? "N/A" },
                     { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
                 });
+
+            if (_quotaService.Enabled)
+            {
+                var quotaEvaluationResult = _quotaService.EvaluateCompletionRequestForQuota(
+                    ServiceNames.CoreAPI,
+                    ControllerContext.ActionDescriptor.ControllerName,
+                    _callContext.CurrentUserIdentity,
+                    completionRequest);
+                if (quotaEvaluationResult.QuotaExceeded)
+                    return StatusCode(
+                        StatusCodes.Status429TooManyRequests,
+                        quotaEvaluationResult);
+            }
 
             return !string.IsNullOrWhiteSpace(completionRequest.SessionId)
                 ? Ok(await _coreService.GetChatCompletionAsync(instanceId, completionRequest))
@@ -120,6 +138,19 @@ namespace FoundationaLLM.Core.API.Controllers
                     { TelemetryActivityTagNames.UPN, _callContext.CurrentUserIdentity?.UPN ?? "N/A" },
                     { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
                 });
+
+            if (_quotaService.Enabled)
+            {
+                var quotaEvaluationResult = _quotaService.EvaluateCompletionRequestForQuota(
+                    ServiceNames.CoreAPI,
+                    ControllerContext.ActionDescriptor.ControllerName,
+                    _callContext.CurrentUserIdentity,
+                    completionRequest);
+                if (quotaEvaluationResult.QuotaExceeded)
+                    return StatusCode(
+                        StatusCodes.Status429TooManyRequests,
+                        quotaEvaluationResult);
+            }
 
             var state = await _coreService.StartCompletionOperation(instanceId, completionRequest);
             return Accepted(state);

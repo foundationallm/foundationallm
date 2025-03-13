@@ -13,6 +13,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
     public static partial class DependencyInjectionKeys
     {        
         /// <summary>
+        /// Dependency injection key used by the FoundationaLLM quota management service.
+        /// </summary>
+        public const string FoundationaLLM_Quota =
+            "FoundationaLLM:Quota";
+        
+        /// <summary>
         /// Dependency injection key used by the FoundationaLLM.AIModel resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_AIModel =

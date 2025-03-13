@@ -7,12 +7,12 @@ namespace FoundationaLLM.Core.Examples
     /// <summary>
     /// Example class for running the default FoundationaLLM agent completions in both session and sessionless modes.
     /// </summary>
-    public class Example0001_FoundationaLLMAgentInteraction : BaseTest, IClassFixture<TestFixture>
+    public class Example0001_FoundationaLLMAgentInteraction : TestBase, IClassFixture<TestFixture>
 	{
 		private readonly IAgentConversationTestService _agentConversationTestService;
 
 		public Example0001_FoundationaLLMAgentInteraction(ITestOutputHelper output, TestFixture fixture)
-			: base(output, [fixture.ServiceProvider])
+			: base(output, fixture)
 		{
             _agentConversationTestService = GetService<IAgentConversationTestService>();
 		}

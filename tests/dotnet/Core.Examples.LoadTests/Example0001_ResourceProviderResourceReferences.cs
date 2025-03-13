@@ -1,12 +1,11 @@
-using Core.Examples.LoadTests.ResourceProviders;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
-using FoundationaLLM.Core.Examples.LoadTests.Setup;
+using FoundationaLLM.Core.Examples.LoadTests.ResourceProviders;
+using FoundationaLLM.Core.Examples.Setup;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Xunit.Abstractions;
@@ -16,10 +15,10 @@ namespace FoundationaLLM.Core.Examples.LoadTests
     /// <summary>
     /// Runs load tests on resource provider resource references.
     /// </summary>
-    public class Example0001_ResourceProviderResourceReferences : BaseTest, IClassFixture<LoadTestFixture>
+    public class Example0001_ResourceProviderResourceReferences : LoadTestBase, IClassFixture<TestFixture>
     {
-        public Example0001_ResourceProviderResourceReferences(ITestOutputHelper output, LoadTestFixture fixture)
-			: base(output, fixture.ServiceProviders)
+        public Example0001_ResourceProviderResourceReferences(ITestOutputHelper output, TestFixture fixture)
+			: base(1, output, fixture)
         {
         }
 
