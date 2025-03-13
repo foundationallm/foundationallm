@@ -173,20 +173,19 @@
 									<InputText v-model="param.default_value" class="w-100" />
 								</div>
 							</div>
-                            <div v-if="stagePluginsDependenciesOptions.find(dep => dep.plugin_object_id === stage.plugin_object_id)?.dependencies.length > 0" class="mb-2">
+                            <div v-if="stagePluginsDependenciesOptions.find(dep => dep.plugin_object_id === stage.plugin_object_id)" class="mb-2">
                                 <label>Dependencies:</label>
                                 <Dropdown
-                                    v-model="stage.plugin_dependencies[0].plugin_object_id"
-                                    :options="stagePluginsDependenciesOptions.find(dep => dep.plugin_object_id === stage.plugin_object_id)?.dependencies || []"
-                                    option-label="display_name"
-                                    option-value="object_id"
+                                    v-model="stage.plugin_dependencies[0]"
+                                    :options="stagePluginsDependenciesOptions.find(dep => dep.plugin_object_id === stage.plugin_object_id)?.dependencyInfo || []"
+                                    option-label="dependencyLabel"
+                                    option-value="dependencies"
                                     class="w-100"
                                     placeholder="Select a dependency"
-                                    @change="handleStagePluginDependencyChange($event, index)"
                                 />
                             </div>
                             <div v-if="stage.plugin_dependencies[0]?.plugin_parameters" class="mb-2">
-                                <label>Dependency Parameters:</label>
+                                <label class="step-header">Dependency Parameters:</label>
                                 <div v-for="(param, paramIndex) in stage?.plugin_dependencies[0]?.plugin_parameters" :key="paramIndex" class="parameter-item">
                                     <label>{{ param.parameter_metadata.name }}:</label>
                                     <div style="font-size: 12px; color: #666;">{{ param.parameter_metadata.description }}</div>
@@ -270,12 +269,12 @@ export default {
 	},
 
     watch: {
-        // pipeline: {
-        //     handler(newVal) {
-        //         console.log(newVal);
-        //     },
-        //     deep: true
-        // },
+        pipeline: {
+            handler(newVal) {
+                console.log(newVal);
+            },
+            deep: true
+        },
         // selectedDataSourcePlugin: {
         //     handler(newVal) {
         //         console.log(newVal);
@@ -386,7 +385,16 @@ export default {
                 this.stagePluginsDependenciesOptions.push({
                     plugin_object_id: this.updateObjectId(plugin.object_id),
                     selection_type: plugin.dependencies[0]?.selection_type || 'Single',
-                    dependencies: resolvedDependencies
+                    dependencyInfo: resolvedDependencies.map(dep => ({
+                        dependencyLabel: dep.display_name,
+                        dependencies: {
+                            plugin_object_id: this.updateObjectId(dep.object_id),
+                            plugin_parameters: dep.parameters.map(param => ({
+                                parameter_metadata: param,
+                                default_value: null
+                            }))
+                        },
+                    }))
                 });
             });
 
