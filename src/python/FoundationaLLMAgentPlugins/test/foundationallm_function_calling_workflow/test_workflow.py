@@ -20,7 +20,7 @@ user_prompt_rewrite = None
 operation_id = str(uuid.uuid4())
 
 user_identity_json = {"name": "Experimental Test", "user_name":"sw@foundationaLLM.ai","upn":"sw@foundationaLLM.ai"}
-full_request_json_file_name = 'test/foundationallm_function_calling_workflow/full_request.json' # full original langchain request, contains agent, tools, exploded objects
+full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
 print(os.environ['FOUNDATIONALLM_APP_CONFIGURATION_URI'])
 
 user_identity = UserIdentity.from_json(user_identity_json)

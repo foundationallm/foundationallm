@@ -169,9 +169,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 )
 
     def __create_workflow_llm(self):
-        """ Creates the workflow LLM instance and saves it to self.workflow_llm. """
-        self.logger.debug('Creating workflow LLM...')
-        self.logger.debug(f'Available objects: {list(self.objects.keys())}')
+        """ Creates the workflow LLM instance and saves it to self.workflow_llm. """        
         language_model_factory = LanguageModelFactory(self.objects, self.config)        
         model_object_id = self.workflow_config.get_resource_object_id_properties(
             ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
@@ -187,8 +185,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             raise ValueError(error_msg)
 
     def __create_workflow_prompt(self):
-        """ Creates the workflow prompt instance and saves it to self.workflow_prompt. """
-        main_prompt = ''
+        """ Creates the workflow prompt instance and saves it to self.workflow_prompt. """        
         prompt_object_id = self.workflow_config.get_resource_object_id_properties(
             ResourceProviderNames.FOUNDATIONALLM_PROMPT,
             PromptResourceTypeNames.PROMPTS,
@@ -198,44 +195,12 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         if prompt_object_id:
             main_prompt_object_id = prompt_object_id.object_id
             main_prompt_properties = self.objects[main_prompt_object_id]
-            main_prompt += main_prompt_properties['prefix']
-
-        # Check if the router prompt exists
-        router_prompt_object_id = self.workflow_config.get_resource_object_id_properties(
-            ResourceProviderNames.FOUNDATIONALLM_PROMPT,
-            PromptResourceTypeNames.PROMPTS,
-            ResourceObjectIdPropertyNames.OBJECT_ROLE,
-            'router_prompt'
-        )
-        if router_prompt_object_id:
-            router_prompt_object_id = router_prompt_object_id.object_id
-            router_prompt_properties = self.objects[router_prompt_object_id]
-            router_prompt = router_prompt_properties['prefix']            
-            main_prompt = re.sub(r'{{foundationallm:router_prompt}}', router_prompt, main_prompt)
-
-        # Iterate through the tools add their main_prompt or if that's missing, add the description
-        tool_descriptions = ''
-        for tool in self.tools:
-            tool_main_prompt_object_id = tool.tool_config.get_resource_object_id_properties(
-                ResourceProviderNames.FOUNDATIONALLM_PROMPT,
-                PromptResourceTypeNames.PROMPTS,
-                ResourceObjectIdPropertyNames.OBJECT_ROLE,
-                'main_prompt'
-            )           
-            if tool_main_prompt_object_id:
-                tool_main_prompt_object_id = tool_main_prompt_object_id.object_id
-                tool_main_prompt_properties = self.objects[tool_main_prompt_object_id]
-                tool_descriptions += tool_main_prompt_properties['prefix'] + '\n'
-            else:
-                # if no main_prompt exists, add the tool's description
-                tool_descriptions += f'- {tool.name}: {tool.description}\n'
-
-        main_prompt = re.sub(r'{{foundationallm:tools}}', tool_descriptions, main_prompt)
-        print('****************************')
-        print(main_prompt)
-        print('****************************')
-        self.workflow_prompt = main_prompt
-
+            self.workflow_prompt = main_prompt_properties['prefix']            
+        else:
+            error_msg = 'No main prompt found in workflow configuration'
+            self.logger.error(error_msg)
+            raise ValueError(error_msg)
+    
     def __create_workflow_execution_content_artifact(
             self,
             original_prompt: str,
