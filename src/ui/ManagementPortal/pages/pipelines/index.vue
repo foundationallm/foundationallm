@@ -5,6 +5,15 @@
 				<h2 class="page-header">Pipelines</h2>
 				<div class="page-subheader">The following pipelines are available.</div>
 			</div>
+
+			<div style="display: flex; align-items: center">
+				<NuxtLink to="/pipelines/create" tabindex="-1">
+					<Button aria-label="Create Pipeline">
+						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
+						Create Pipeline
+					</Button>
+				</NuxtLink>
+			</div>
 		</div>
 
 		<div :class="{ 'grid--loading': loading }">
@@ -65,7 +74,6 @@
 					field="resource.trigger_type"
 					header="Trigger"
 					sortable
-					style="min-width: 200px"
 					:pt="{
 						headerCell: {
 							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -79,7 +87,6 @@
                     field="resource.active"
                     header="Active"
                     sortable
-                    style="min-width: 200px"
                     :pt="{
                         headerCell: {
                             style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -100,7 +107,9 @@
 					}"
 				>
 					<template #body="{ data }">
-                        <Button link label="View" :aria-label="`View ${data.resource.name}`" @click="pipelineToView = data.resource" />
+						<NuxtLink :to="`/pipelines/edit/${data.resource.name}`" tabindex="-1">
+							<Button link label="View" :aria-label="`View ${data.resource.name}`" />
+						</NuxtLink>
 					</template>
 				</Column>
 
@@ -210,7 +219,8 @@ export default {
     watch: {
         pipelineToView(newValue) {
             if (newValue) {
-                this.getPipelineRuns(newValue.name);
+                // this.getPipelineRuns(newValue.name);
+				this.getPipeline(newValue.name);
             }
         },
     },
@@ -251,18 +261,31 @@ export default {
             this.loading = false;
         },
 
-        async getPipelineRuns(pipelineName: string) {
-            try {
-                const runs = await api.getPipelineRuns(pipelineName);
-                console.log(runs);
-            } catch (error) {
-                this.$toast.add({
-                    severity: 'error',
-                    detail: error?.response?._data || error,
-                    life: 5000,
-                });
-            }
-        },
+		async getPipeline(pipelineName: string) {
+			try {
+				const pipeline = await api.getPipeline(pipelineName);
+				console.log(pipeline);
+			} catch (error) {
+				this.$toast.add({
+					severity: 'error',
+					detail: error?.response?._data || error,
+					life: 5000,
+				});
+			}
+		},
+
+        // async getPipelineRuns(pipelineName: string) {
+        //     try {
+        //         const runs = await api.getPipelineRuns(pipelineName);
+        //         console.log(runs);
+        //     } catch (error) {
+        //         this.$toast.add({
+        //             severity: 'error',
+        //             detail: error?.response?._data || error,
+        //             life: 5000,
+        //         });
+        //     }
+        // },
 
 		// async getVectorStores() {
 		// 	this.loading = true;
