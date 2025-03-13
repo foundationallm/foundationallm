@@ -130,9 +130,9 @@ Interface ITemplatingService  <a class="header-action link-secondary" title="Vie
 
   <a id="FoundationaLLM_Common_Interfaces_ITemplatingService_Transform_" data-uid="FoundationaLLM.Common.Interfaces.ITemplatingService.Transform*"></a>
 
-  <h3 id="FoundationaLLM_Common_Interfaces_ITemplatingService_Transform_System_String_" data-uid="FoundationaLLM.Common.Interfaces.ITemplatingService.Transform(System.String)">
-  Transform(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/ITemplatingService.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Interfaces_ITemplatingService_Transform_System_String_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="FoundationaLLM.Common.Interfaces.ITemplatingService.Transform(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+  Transform(string, Dictionary&lt;string, string&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/ITemplatingService.cs/#L14"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Transforms the input string by replacing tokens with the corresponding values.</p>
@@ -140,13 +140,16 @@ Interface ITemplatingService  <a class="header-action link-secondary" title="Vie
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">string Transform(string s)</code></pre>
+    <pre><code class="lang-csharp hljs">string Transform(string s, Dictionary&lt;string, string&gt;? tokenAndValues = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>s</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The input string to be transformed.</p>
+</dd>
+    <dt><code>tokenAndValues</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>Optional dictionary of well-known tokens and the values that should take its place.</p>
 </dd>
   </dl>
 
