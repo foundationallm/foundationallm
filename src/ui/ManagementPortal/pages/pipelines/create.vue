@@ -290,6 +290,7 @@ export default {
         selectedStagePlugins: {
             handler(newVal) {
                 console.log(newVal);
+                this.transformPipelineStages();
             },
             deep: true
         }
@@ -322,6 +323,8 @@ export default {
 				{ label: 'Event', value: 'Event' },
 				{ label: 'Manual', value: 'Manual' }
 			],
+
+            triggerParameterOptions: [] as any[],
 
 			pipeline: {
 				type: 'data-pipeline',
@@ -455,17 +458,21 @@ export default {
 		},
 
 		handleDataSourceChange(event: any) {
-			const selectedPlugin = this.dataSourcePlugins.find(p => p.object_id === event.value);
-			if (selectedPlugin) {
+            // This needs to be updated to handle the data source change
+			const selectedDataSource = this.dataSourceOptions.find(p => p.object_id === event.value.object_id);
+            console.log(this.dataSourceOptions);
+            console.log(event.value);
+            console.log(selectedPlugin);
+			if (selectedDataSource) {
 				// Create a unique name for the data source based on the plugin name
-				const dataSourceName = selectedPlugin.name.split('-').pop() || selectedPlugin.name;
+				const dataSourceName = selectedDataSource.name.split('-').pop() || selectedDataSource.name;
 				
 				this.pipeline.data_source = {
-					data_source_object_id: selectedPlugin.object_id,
+					data_source_object_id: selectedDataSource.object_id,
 					name: dataSourceName,
-					description: selectedPlugin.description,
-					plugin_object_id: selectedPlugin.object_id,
-					plugin_parameters: selectedPlugin.parameters.map(param => ({
+					description: selectedDataSource.description,
+					plugin_object_id: selectedDataSource.object_id,
+					plugin_parameters: selectedDataSource.parameters.map(param => ({
 						parameter_metadata: {
 							name: param.name,
 							type: param.type,
@@ -567,12 +574,25 @@ export default {
                 plugin_parameters: null,
                 plugin_dependencies: [],
             });
+            this.transformPipelineStages();
 		},
 
 		removeStage(index: number) {
 			// this.pipeline.starting_stages.splice(index, 1);
             this.selectedStagePlugins.splice(index, 1);
+            this.transformPipelineStages();
 		},
+
+        transformPipelineStages() {
+            let nested = this.selectedStagePlugins.reduceRight((acc, stage) => {
+                return [{ 
+                    ...stage, 
+                    next_stages: acc 
+                }];
+            }, []);
+
+            this.pipeline.starting_stages = nested;
+        },
 
 		handleCancel() {
 			if (!confirm('Are you sure you want to cancel?')) {
