@@ -129,9 +129,17 @@
 
                 <div id="aria-data-source-parameters" class="mb-2 mt-2">Data source default values:</div>
                 <div class="input-wrapper">
-                    <div v-for="(param, index) in selectedDataSourcePlugin?.parameters" :key="index">
+                    <div v-for="(param, index) in selectedDataSourcePlugin?.parameters" :key="index" style="width: 100%;">
                         <label>{{ param.name }}:</label>
-                        <InputText v-model="param.default_value" style="width: 100%;" />
+                        <template v-if="param.type === 'string' || param.type === 'int' || param.type === 'float' || param.type === 'datetime' || param.type === 'resource_object_id'">
+                            <InputText v-model="param.default_value" style="width: 100%;" />
+                        </template>
+                        <template v-else-if="param.type === 'bool'">
+                            <InputSwitch v-model="param.default_value" />
+                        </template>
+                        <template v-else-if="param.type === 'array'">
+                            <Chips v-model="param.default_value" style="width: 100%;" placeholder="Enter values separated by commas" separator="," ></Chips>
+                        </template>
                     </div>
                 </div>
 			</div>
@@ -170,7 +178,15 @@
 								<div v-for="(param, paramIndex) in stage.plugin_parameters" :key="paramIndex" class="parameter-item">
 									<label>{{ param.parameter_metadata.name }}:</label>
                                     <div style="font-size: 12px; color: #666;">{{ param.parameter_metadata.description }}</div>
-									<InputText v-model="param.default_value" class="w-100" />
+									<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource_object_id'">
+										<InputText v-model="param.default_value" style="width: 100%;" />
+									</template>
+									<template v-else-if="param.parameter_metadata.type === 'bool'">
+										<InputSwitch v-model="param.default_value" />
+									</template>
+									<template v-else-if="param.parameter_metadata.type === 'array'">
+										<Chips v-model="param.default_value" style="width: 100%;" placeholder="Enter values separated by commas" separator="," ></Chips>
+									</template>
 								</div>
 							</div>
                             <div v-if="stagePluginsDependenciesOptions.find(dep => dep.plugin_object_id === stage.plugin_object_id)" class="mb-2">
@@ -189,7 +205,15 @@
                                 <div v-for="(param, paramIndex) in stage?.plugin_dependencies[0]?.plugin_parameters" :key="paramIndex" class="parameter-item">
                                     <label>{{ param.parameter_metadata.name }}:</label>
                                     <div style="font-size: 12px; color: #666;">{{ param.parameter_metadata.description }}</div>
-                                    <InputText v-model="param.default_value" class="w-100" />
+                                    <template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource_object_id'">
+                                        <InputText v-model="param.default_value" class="w-100" />
+                                    </template>
+                                    <template v-else-if="param.parameter_metadata.type === 'bool'">
+                                        <InputSwitch v-model="param.default_value" />
+                                    </template>
+                                    <template v-else-if="param.parameter_metadata.type === 'array'">
+                                        <Chips v-model="param.default_value" style="width: 100%;" placeholder="Enter values separated by commas" separator="," ></Chips>
+                                    </template>
                                 </div>
                             </div>
 						</div>
