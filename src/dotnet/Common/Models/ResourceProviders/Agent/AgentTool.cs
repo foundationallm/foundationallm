@@ -29,6 +29,18 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public required string PackageName { get; set; }
 
         /// <summary>
+        /// Gets or sets the underlying class name of the tool.
+        /// </summary>
+        [JsonPropertyName("class_name")]
+        public string? ClassName
+        {
+            get => string.IsNullOrWhiteSpace(_className) ? Name : _className;
+            set => _className = value ?? string.Empty;
+        }
+        private string _className = string.Empty;
+
+
+        /// <summary>
         /// Gets or sets a dictionary of resource objects.
         /// </summary>
         [JsonPropertyName("resource_object_ids")]

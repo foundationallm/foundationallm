@@ -16,6 +16,11 @@
         public const string MainPrompt = "main_prompt";
 
         /// <summary>
+        /// Router prompt.
+        /// </summary>
+        public const string RouterPrompt = "router_prompt";
+
+        /// <summary>
         /// Main indexing profile.
         /// </summary>
         public const string MainIndexingProfile = "main_indexing_profile";

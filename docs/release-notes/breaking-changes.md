@@ -3,6 +3,58 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+
+## Starting from 0.9.7-beta105
+
+### Configuration changes
+
+The `FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool` definition now contains a `ClassName` property. This should be set to the implementation class name of the tool. The `Name` property of the tool is what will be used for uniqueness in the case multipe tools of the same type/class are used in the same agent. 
+
+>**Note**: This is not a breaking change as if the `ClassName` property is not set, the `Name` property will be used as the class name which is the existing pattern. However, it is recommended to set the `ClassName` property to adhere to the new pattern.
+
+Agent configuration `tools` property is impacted as follows:
+
+Old pattern sample:
+
+```json
+{
+      "name": "DALLEImageGeneration",
+      "description": "Generates an image based on a prompt.",
+      "package_name": "FoundationaLLM",
+      "resource_object_ids": {
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/DALLE3Model": {
+          "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/DALLE3Model",
+          "properties": {
+            "object_role": "main_model",
+            "model_parameters": {}
+          }
+        }
+      },
+      "properties": {}
+    }
+```
+
+New pattern:
+
+```json
+{
+      "name": "DALLETool1",
+      "description": "Generates an image based on a prompt.",
+      "package_name": "FoundationaLLM",
+      "class_name": "DALLEImageGenerationTool",
+      "resource_object_ids": {
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/DALLE3Model": {
+          "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/DALLE3Model",
+          "properties": {
+            "object_role": "main_model",
+            "model_parameters": {}
+          }
+        }
+      },
+      "properties": {}
+    }
+```
+
 ## Starting from 0.9.7-beta103
 
 ### Configuration changes
