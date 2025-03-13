@@ -229,8 +229,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             AIModelBase? mainAIModel = null;
             APIEndpointConfiguration? mainAIModelAPIEndpointConfiguration = null;
 
-            
-
             foreach (var resourceObjectId in agentWorkflow!.ResourceObjectIds.Values)
             {
                 var resourcePath = ResourcePath.GetResourcePath(resourceObjectId.ObjectId);
