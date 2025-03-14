@@ -220,9 +220,9 @@
 			modal
 			style="max-width: 85%"
 		>
-			<p tabindex="0" style="overflow-x: auto">
+			<div tabindex="0" style="overflow-x: auto">
 				<pre>{{ JSON.stringify(selectedContentArtifact, null, 2) }}</pre>
-			</p>
+			</div>
 
 			<template #footer>
 				<Button
