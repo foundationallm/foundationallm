@@ -6,7 +6,6 @@ using FoundationaLLM.Common.Models.Configuration.AzureAI;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.Storage;
-using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Storage;
@@ -15,43 +14,60 @@ using FoundationaLLM.Core.Examples.Exceptions;
 using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Models;
 using FoundationaLLM.Core.Examples.Services;
-using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
-using FoundationaLLM.SemanticKernel.Core.Services.Indexing;
+using FoundationaLLM.Core.Examples.Utils;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Xunit.Abstractions;
 
 namespace FoundationaLLM.Core.Examples.Setup
 {
     public static class TestServicesInitializer
 	{
-		/// <summary>
-		/// Configure base services and dependencies for the tests.
-		/// </summary>
-		/// <param name="services"></param>
-		/// <param name="configRoot"></param>
-		public static void InitializeServices(
+        /// <summary>
+        /// Configure base services and dependencies for the tests.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        public static void InitializeServices(
 			IServiceCollection services,
-			IConfigurationRoot configRoot)
+			IConfiguration configuration,
+            ITestOutputHelper testOutputHelper)
 		{
-			TestConfiguration.Initialize(configRoot, services);
+			TestConfiguration.Initialize(configuration, services);
 
             services.AddOptions<BlobStorageServiceSettings>(
                     DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization_Storage)
-                .Bind(configRoot.GetSection("FoundationaLLM:ResourceProviders:Vectorization:Storage"));
+                .Bind(configuration.GetSection("FoundationaLLM:ResourceProviders:Vectorization:Storage"));
 
-            services.AddScoped<IConfiguration>(_ => configRoot);
+            services.AddScoped<IConfiguration>(_ => configuration);
 
-            RegisterInstance(services, configRoot);
-            RegisterHttpClients(services, configRoot);
-            RegisterClientLibraries(services, configRoot);
-			RegisterCosmosDb(services, configRoot);
-            RegisterAzureAIService(services, configRoot);
-            RegisterLogging(services);
+            RegisterLogging(services, configuration, testOutputHelper);
+
+            RegisterInstance(services, configuration);
+            RegisterHttpClients(services, configuration);
+            RegisterClientLibraries(services, configuration);
+			RegisterCosmosDb(services, configuration);
+            RegisterAzureAIService(services, configuration);
 			RegisterServiceManagers(services);
+
+            services.AddAPIRequestQuotaService(configuration);
+        }
+
+        private static void RegisterLogging(
+            IServiceCollection services,
+            IConfiguration configuration,
+            ITestOutputHelper testOutputHelper)
+        {
+            services.AddLogging(builder =>
+            {
+                builder.AddProvider(new XUnitLoggerProvider(testOutputHelper));
+                builder.AddConsole();
+                builder.AddConfiguration(configuration.GetSection("Logging"));
+            });
         }
 
         private static void RegisterInstance(IServiceCollection services, IConfiguration configuration)
@@ -168,14 +184,6 @@ namespace FoundationaLLM.Core.Examples.Setup
 
             services.Configure<DownstreamAPISettings>(configuration.GetSection("DownstreamAPIs"));
         }
-
-        private static void RegisterLogging(IServiceCollection services)
-		{
-			services.AddLogging(builder =>
-			{
-				builder.AddConsole();
-			});
-		}
 
         private static void RegisterServiceManagers(IServiceCollection services)
         {

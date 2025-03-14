@@ -8,7 +8,7 @@ namespace FoundationaLLM.Core.Examples
     /// <summary>
     /// Example class for Agent-to-Agent Conversations.
     /// </summary>
-    public class Example0015_AgentToAgentConversations : BaseTest, IClassFixture<TestFixture>
+    public class Example0015_AgentToAgentConversations : TestBase, IClassFixture<TestFixture>
     {
         private readonly IAgentConversationTestService _agentConversationTestService;
         private readonly IVectorizationTestService _vectorizationTestService;
@@ -18,7 +18,7 @@ namespace FoundationaLLM.Core.Examples
         private string indexingProfileName = "indexing_profile_dune";
 
         public Example0015_AgentToAgentConversations(ITestOutputHelper output, TestFixture fixture)
-            : base(output, [fixture.ServiceProvider])
+            : base(output, fixture)
         {
             _agentConversationTestService = GetService<IAgentConversationTestService>();
             _vectorizationTestService = GetService<IVectorizationTestService>();

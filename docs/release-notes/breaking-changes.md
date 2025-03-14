@@ -3,6 +3,102 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+
+## Starting from 0.9.7-beta105
+
+### Configuration changes
+
+The `FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool` definition now contains a `ClassName` property. This should be set to the implementation class name of the tool. The `Name` property of the tool is what will be used for uniqueness in the case multipe tools of the same type/class are used in the same agent. 
+
+>**Note**: This is not a breaking change as if the `ClassName` property is not set, the `Name` property will be used as the class name which is the existing pattern. However, it is recommended to set the `ClassName` property to adhere to the new pattern.
+
+Agent configuration `tools` property is impacted as follows:
+
+Old pattern sample:
+
+```json
+{
+      "name": "DALLEImageGeneration",
+      "description": "Generates an image based on a prompt.",
+      "package_name": "FoundationaLLM",
+      "resource_object_ids": {
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/DALLE3Model": {
+          "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/DALLE3Model",
+          "properties": {
+            "object_role": "main_model",
+            "model_parameters": {}
+          }
+        }
+      },
+      "properties": {}
+    }
+```
+
+New pattern:
+
+```json
+{
+      "name": "DALLETool1",
+      "description": "Generates an image based on a prompt.",
+      "package_name": "FoundationaLLM",
+      "class_name": "DALLEImageGenerationTool",
+      "resource_object_ids": {
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/DALLE3Model": {
+          "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/DALLE3Model",
+          "properties": {
+            "object_role": "main_model",
+            "model_parameters": {}
+          }
+        }
+      },
+      "properties": {}
+    }
+```
+
+## Starting from 0.9.7-beta103
+
+### Configuration changes
+
+Added the following App Configuration value:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+| `FoundationaLLM:Quota:Storage:AccountName` | `<storage_account_name>` | Provides the storage account used by the FoundationaLLM quota management service. |
+| `FoundationaLLM:Quota:Storage:AuthenticationType` | `AzureIdentity` |  Indicates the authentication type used by the FoundationaLLM quota management service to connect to the storage account. |
+
+A new container named `quota` must be created in the default storage account.
+
+The quota definitions are stored in the `quota` container in a file named `quota-store.json`. If the file does not exist, the file is automatically created. The file contains a list of quota definitions with the following structure:
+
+```json
+{
+	"name": "TestAPI01CompletionsUPNRawRequestRateLimit",
+	"description": "Defines a per UPN raw request rate limit on the TestAPI01 Completions controller.",
+	"context": "TestAPI01:Completions",
+	"type": "RawRequestRateLimit",
+	"metric_partition": "UserPrincipalName",
+	"metric_limit": 120,
+	"metric_window_seconds": 60,
+	"lockout_duration_seconds": 60,
+	"distributed_enforcement": false
+}
+```
+
+The following table provides details about the quota definition properties:
+
+Name | Description | Notes
+--- | --- | ---
+`name` | The name of the quota definition. |
+`description` | A description of the quota definition. |
+`context` | The context of the quota definition. | The format of the context is `<service_name>:<controller_name>` or `<service_name>:<controller_name>:<agent_name>`. Currently the following contexts can be used: `CoreAPI:Completions`, `CoreAPI:Completions:<agent_name>` where `<agent_name>` must be a valid agent name.
+`type` | The type of the quota enforcement applied. | The following types are supported: `RawRequestRateLimit` and `AgentRequestRateLimit`. `RawRequestRateLimt` defines the quota metric to be raw API requests and requires a context of `<service_name>:<controller_name>`. `AgentRequestRateLimit` defines the quota metric to be agent completion requests and requires a context of `<service_name>:<controller_name>:<agent_name>`.
+`metric_partition` | The metric partition used to enforce the quota. | The following partitions are supported: `None` (the metric is not partitioned) `UserPrincipalName` (the metric is partitioned by user principal name) and `UserIdentifier` (the metric is partitioned by user identifier).
+`metric_limit` | The limit of the metric. | The limit is enforced over the `metric_window_seconds`. In the example above, a maximum number of 120 raw API requests are allowed per user principal name in a 60-second window.
+`metric_window_seconds` | The time window in seconds over which the limit is enforced. | In the example above, a maximum number of 120 raw API requests are allowed per user principal name in a 60-second window.
+`lockout_duration_seconds` | The duration in seconds for which the caller is locked out after exceeding the quota. | The lockout duration is applied after the user exceeds the quota limit. The user is locked out for the specified duration before the quota is reset.
+`distributed_enforcement` | Indicates whether the quota is enforced across multiple instances of the same API. | If `true`, the quota is enforced across multiple instances. If `false`, the quota is enforced on a single instance. Currently, only `false` is supported.
+
+
 ## Starting from 0.9.7-beta101
 
 ### Configuration changes

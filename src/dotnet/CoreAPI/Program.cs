@@ -7,7 +7,6 @@ using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Common.Services.Users;
 using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
@@ -67,6 +66,8 @@ namespace FoundationaLLM.Core.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AzureOpenAI_Storage);
 
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Quota_Storage);
+
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
                 options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_CoreAPI);
@@ -96,6 +97,9 @@ namespace FoundationaLLM.Core.API
             builder.Services.AddAzureEventGridEvents(
                 builder.Configuration,
                 AppConfigurationKeySections.FoundationaLLM_Events_Profiles_CoreAPI);
+
+            // API request quota service
+            builder.AddAPIRequestQuotaService();
 
             //----------------------------
             // Resource providers
@@ -261,6 +265,8 @@ namespace FoundationaLLM.Core.API
 
             // Register the middleware to extract the user identity context and other HTTP request context data required by the downstream services.
             app.UseMiddleware<CallContextMiddleware>();
+            // Register the middleware to enforce API request quotas.
+            app.UseMiddleware<QuotaMiddleware>();
 
             app.UseExceptionHandler(exceptionHandlerApp
                     => exceptionHandlerApp.Run(async context

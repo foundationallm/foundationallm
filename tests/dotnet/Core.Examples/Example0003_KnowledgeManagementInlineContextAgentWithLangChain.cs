@@ -8,13 +8,13 @@ namespace FoundationaLLM.Core.Examples
     /// <summary>
     /// Example class for sending user queries to a Knowledge Management with inline context agent using the LangChain orchestrator.
     /// </summary>
-    public class Example0003_KnowledgeManagementInlineContextAgentWithLangChain : BaseTest, IClassFixture<TestFixture>
+    public class Example0003_KnowledgeManagementInlineContextAgentWithLangChain : TestBase, IClassFixture<TestFixture>
 	{
 		private readonly IAgentConversationTestService _agentConversationTestService;
         private readonly IManagementAPITestManager _managementAPITestManager;
 
 		public Example0003_KnowledgeManagementInlineContextAgentWithLangChain(ITestOutputHelper output, TestFixture fixture)
-			: base(output, [fixture.ServiceProvider])
+			: base(output, fixture)
 		{
             _agentConversationTestService = GetService<IAgentConversationTestService>();
             _managementAPITestManager = GetService<IManagementAPITestManager>();
