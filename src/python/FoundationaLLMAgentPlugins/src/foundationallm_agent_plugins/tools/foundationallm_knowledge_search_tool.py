@@ -64,8 +64,8 @@ class FoundationaLLMKnowledgeSearchTool(FoundationaLLMToolBase):
         # Token usage content artifact
         # Transform all completion.usage_metadata property values to string
         metadata = {
-            'prompt_tokens': completion.usage_metadata['input_tokens'],
-            'completion_tokens': completion.usage_metadata['output_tokens'],
+            'prompt_tokens': str(completion.usage_metadata['input_tokens']),
+            'completion_tokens': str(completion.usage_metadata['output_tokens']),
             'tool_input': prompt
         }
         content_artifacts.append(ContentArtifact(

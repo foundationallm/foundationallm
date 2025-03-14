@@ -46,6 +46,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         content = response.get('result', '') or response.get('stdout', '') or response.get('stderr', '')
         content_artifact = ContentArtifact(
             id = self.name,
+            title = self.name,
             type = CONTENT_ARTIFACT_TYPE_TOOL_EXECUTION,
             content = content,
             metadata = {
