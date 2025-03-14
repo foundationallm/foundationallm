@@ -241,6 +241,21 @@
 						<label>Cron Schedule:</label>
 						<InputText v-model="cronSchedule" class="w-100" placeholder="0 6 * * *" />
 					</div>
+                    <div class="step-header span-2">Trigger Parameters:</div>
+                    <div class="span-2">
+                        <div v-for="(param, index) in triggerParameters" :key="index" class="mb-2">
+                            <label>{{ param.parameter_metadata.name }}:</label>
+                            <template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource_object_id'">
+                                <InputText v-model="pipeline.triggers[0].parameter_values[param.key]" class="w-100" />
+                            </template>
+                            <template v-else-if="param.parameter_metadata.type === 'bool'">
+                                <InputSwitch v-model="pipeline.triggers[0].parameter_values[param.key]" />
+                            </template>
+                            <template v-else-if="param.parameter_metadata.type === 'array'">
+                                <Chips v-model="pipeline.triggers[0].parameter_values[param.key]" style="width: 100%;" placeholder="Enter values separated by commas" separator="," ></Chips>
+                            </template>
+                        </div>
+                    </div>
 				</div>
 			</div>
 
@@ -299,12 +314,13 @@ export default {
             },
             deep: true
         },
-        // selectedDataSourcePlugin: {
-        //     handler(newVal) {
-        //         console.log(newVal);
-        //     },
-        //     deep: true
-        // },
+        selectedDataSourcePlugin: {
+            handler(newVal) {
+                console.log(newVal);
+                this.buildTriggerParameters();
+            },
+            deep: true
+        },
         // selectedDataSource: {
         //     handler(newVal) {
         //         console.log(newVal);
@@ -315,6 +331,7 @@ export default {
             handler(newVal) {
                 console.log(newVal);
                 this.transformPipelineStages();
+                this.buildTriggerParameters();
             },
             deep: true
         }
@@ -348,7 +365,7 @@ export default {
 				{ label: 'Manual', value: 'Manual' }
 			],
 
-            triggerParameterOptions: [] as any[],
+            triggerParameters: [] as any[],
 
 			pipeline: {
 				type: 'data-pipeline',
@@ -448,6 +465,8 @@ export default {
 					this.selectedTriggerType = trigger.trigger_type;
 					this.cronSchedule = trigger.trigger_cron_schedule;
 				}
+
+                this.buildTriggerParameters();
 			}
 		} catch (error) {
 			console.error('Error loading data:', error);
@@ -756,6 +775,73 @@ export default {
                 }
             });
         },
+
+        buildTriggerParameters() {
+            const parameterValues: any[] = [];
+
+            // Check if there are existing trigger parameters
+            const existingTriggerParameters = this.pipeline.triggers.length > 0 ? this.pipeline.triggers[0].parameter_values : {};
+
+            // Data Source Parameters
+            this.pipeline.data_source.plugin_parameters.forEach((param: any) => {
+                const key = `DataSource.${this.pipeline.data_source.name}.${param.parameter_metadata.name}`;
+                const value = existingTriggerParameters[key] !== undefined ? existingTriggerParameters[key] : param.default_value;
+                if (existingTriggerParameters[key] !== undefined) {
+                    existingTriggerParameters[key] = null;
+                }
+                parameterValues.push({
+                    parameter_metadata: param.parameter_metadata,
+                    key: key,
+                    value: value
+                });
+            });
+
+            // Recursive function to handle stages and their dependencies
+            function handleStages(stages: any[]) {
+                stages.forEach(stage => {
+                    // Stage Parameters
+                    if (stage.plugin_parameters) {
+                        stage.plugin_parameters.forEach((param: any) => {
+                            const key = `Stage.${stage.name}.${param.parameter_metadata.name}`;
+                            const value = existingTriggerParameters[key] !== undefined ? existingTriggerParameters[key] : param.default_value;
+                            parameterValues.push({
+                                parameter_metadata: param.parameter_metadata,
+                                key: key,
+                                value: value
+                            });
+                        });
+                    }
+
+                    // Dependency Plugin Parameters
+                    stage.plugin_dependencies.forEach(dep => {
+                        dep.plugin_parameters.forEach((param: any) => {
+                            const depPluginName = dep.plugin_object_id.split('/').pop() || '';
+                            const key = `Stage.${stage.name}.Dependency.${depPluginName}.${param.parameter_metadata.name}`;
+                            const value = existingTriggerParameters[key] !== undefined ? existingTriggerParameters[key] : param.default_value;
+                            parameterValues.push({
+                                parameter_metadata: param.parameter_metadata,
+                                key: key,
+                                value: value
+                            });
+                        });
+                    });
+
+                    // Handle next stages recursively
+                    if (stage.next_stages) {
+                        handleStages(stage.next_stages);
+                    }
+                });
+            }
+
+            console.log(parameterValues);
+
+            // Start with the initial stages
+            handleStages(this.pipeline.starting_stages);
+
+            this.triggerParameters = parameterValues;
+
+            console.log(this.triggerParameters);
+        }
 	},
 };
 </script>
