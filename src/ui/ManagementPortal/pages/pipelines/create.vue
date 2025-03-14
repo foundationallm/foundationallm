@@ -786,8 +786,8 @@ export default {
             this.pipeline.data_source.plugin_parameters.forEach((param: any) => {
                 const key = `DataSource.${this.pipeline.data_source.name}.${param.parameter_metadata.name}`;
                 const value = existingTriggerParameters[key] !== undefined ? existingTriggerParameters[key] : param.default_value;
-                if (existingTriggerParameters[key] !== undefined) {
-                    existingTriggerParameters[key] = null;
+                if (!this.pipeline.triggers[0].parameter_values[key]) {
+                    this.pipeline.triggers[0].parameter_values[key] = null;
                 }
                 parameterValues.push({
                     parameter_metadata: param.parameter_metadata,
