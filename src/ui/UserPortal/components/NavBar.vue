@@ -85,9 +85,9 @@
 							/>
 							<Button
 								class="print-button"
-								@click="handlePrint"
-								aria-label="Print"
 								icon="pi pi-print"
+								aria-label="Print"
+								@click="handlePrint"
 							/>
 						</span>
 					</template>
