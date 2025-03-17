@@ -77,6 +77,8 @@
 <h5>Note</h5>
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
+<h2 id="starting-from-097-beta106">Starting from 0.9.7-beta106</h2>
+<p>For External Agent Workflows, the invocation of the workflow now sends the completion request MessageHistoryItem list vs the translated LangChain BaseMessage construct. This way workflows have more control on how to handle the message history of a conversation.</p>
 <h2 id="starting-from-097-beta105">Starting from 0.9.7-beta105</h2>
 <h3 id="configuration-changes">Configuration changes</h3>
 <p>The <code>FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool</code> definition now contains a <code>ClassName</code> property. This should be set to the implementation class name of the tool. The <code>Name</code> property of the tool is what will be used for uniqueness in the case multipe tools of the same type/class are used in the same agent.</p>
