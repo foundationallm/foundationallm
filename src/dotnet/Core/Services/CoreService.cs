@@ -1034,9 +1034,7 @@ public partial class CoreService(
 
         // Include conversation file history regardless of the conversation history settings.
         if (fileHistory.Any())
-        {
-            // Order the file history in descending order, so the oldest upload is the first file.
-            //fileHistory.Reverse();
+        { 
             request.FileHistory = fileHistory;
         }
 
