@@ -7,8 +7,6 @@ from typing import List, Optional
 
 from azure.identity import DefaultAzureCredential
 
-from langchain_core.messages import BaseMessage
-
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import ExternalAgentWorkflow
 from foundationallm.models.messages.message_history_item import MessageHistoryItem
@@ -58,7 +56,7 @@ class FoundationaLLMWorkflowBase(ABC):
                            user_prompt: str,
                            user_prompt_rewrite: Optional[str],
                            message_history: List[MessageHistoryItem],
-                           file_history: Optional[List[FileHistoryItem]])-> CompletionResponse:
+                           file_history: List[FileHistoryItem])-> CompletionResponse:
         """
         Invokes the workflow asynchronously.
 
