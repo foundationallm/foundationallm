@@ -532,9 +532,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 request.objects,
                 tools,
                 self.user_identity,
-                self.config)
+                self.config)            
             
-            # Get message history          
             with self.tracer.start_as_current_span('langchain_invoke_external_workflow', kind=SpanKind.SERVER) as span:
                 response = await workflow.invoke_async(
                     operation_id=request.operation_id,
