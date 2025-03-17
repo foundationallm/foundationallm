@@ -32,6 +32,15 @@ namespace FoundationaLLM.Plugins.DataPipeline
                             Description = "List of strings defining data lake folders (the first part identifies the container name)."
                         }
                     ],
+                    Dependencies = []
+                },
+                new() {
+                    ObjectId = $"instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PACKAGE_NAME}-TextExtractionDataPipelineStage",
+                    Name = $"{PACKAGE_NAME}-TextExtractionDataPipelineStage",
+                    DisplayName = "Text Extraction Data Pipeline Stage (FoundationaLLM)",
+                    Description = "Provides the FoundationaLLM standard implementation for text extraction data pipeline stages.",
+                    Category = PluginCategoryNames.DataPipelineStage,
+                    Parameters = [],
                     Dependencies = [
                         new() {
                             SelectionType = PluginDependencySelectionTypes.Multiple,
@@ -45,15 +54,6 @@ namespace FoundationaLLM.Plugins.DataPipeline
                             ]
                         }
                     ]
-                },
-                new() {
-                    ObjectId = $"instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PACKAGE_NAME}-TextExtractionDataPipelineStage",
-                    Name = $"{PACKAGE_NAME}-TextExtractionDataPipelineStage",
-                    DisplayName = "Text Extraction Data Pipeline Stage (FoundationaLLM)",
-                    Description = "Provides the FoundationaLLM standard implementation for text extraction data pipeline stages.",
-                    Category = PluginCategoryNames.DataPipelineStage,
-                    Parameters = [],
-                    Dependencies = []
                 },
                 new() {
                     ObjectId = $"instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PACKAGE_NAME}-TextPartitioningDataPipelineStage",
@@ -197,7 +197,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
                 },
                 new() {
                     ObjectId = $"instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PACKAGE_NAME}-ImageMetadataTextExtraction",
-                    Name = $"{PACKAGE_NAME}-ImageMetadataContentTextExtraction",
+                    Name = $"{PACKAGE_NAME}-ImageMetadataTextExtraction",
                     DisplayName = "Image Metadata Text Extraction (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for metadata (description) extraction from image files.",
                     Category = PluginCategoryNames.ContentTextExtraction,

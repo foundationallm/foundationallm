@@ -15,7 +15,7 @@ namespace FoundationaLLM.Common.Services.Quota
         private readonly Dictionary<string, QuotaMetricSequence> _metrics = [];
 
         /// <inheritdoc/>
-        public override QuotaEvaluationResult AddMetricUnitAndEvaluateQuota(
+        protected override QuotaMetricSequence GetQuotaMetricSequence(
             string userIdentifier,
             string userPrincipalName)
         {
@@ -34,18 +34,7 @@ namespace FoundationaLLM.Common.Services.Quota
                 }
             }
 
-            var metricResult = _metrics[userIdentifier].AddUnitAndEvaluateMetric();
-            LogMetricEvaluationResult(metricResult, userIdentifier, userPrincipalName);
-
-            return metricResult.LockedOut
-                ? new QuotaEvaluationResult
-                {
-                    QuotaExceeded = true,
-                    ExceededQuotaName = Quota.Name,
-                    // Add a small buffer to the lockout duration to avoid race conditions at the limit.
-                    TimeUntilRetrySeconds = metricResult.RemainingLockoutSeconds + 5
-                }
-                : new QuotaEvaluationResult();
+            return _metrics[userIdentifier];
         }
     }
 }

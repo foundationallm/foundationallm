@@ -185,7 +185,7 @@ namespace FoundationaLLM.Common.Services.Quota
 
             var originalEventCount = e.Events.Count;
 
-            // Only process events that are targeted for this resource provider.
+            // Only process events that are targeted to the quota service.
             var eventsToProcess = e.Events
                 .Where(e => e.Subject == QUOTA_SERVICE_NAME).ToList();
 
@@ -265,7 +265,7 @@ namespace FoundationaLLM.Common.Services.Quota
             var userPrincipalName = userIdentity?.UPN ?? "__default__";
 
             if (_quotaContexts.TryGetValue(context, out var quotaContext))
-                return quotaContext.AddMetricUnitAndEvaluateQuota(userIdentifier, userPrincipalName);
+                return quotaContext.AddLocalMetricUnitAndEvaluateQuota(userIdentifier, userPrincipalName);
             else
                 return QUOTA_NOT_EXCEEDED_EVALUATION_RESULT;
         }
@@ -286,7 +286,7 @@ namespace FoundationaLLM.Common.Services.Quota
             var userPrincipalName = userIdentity?.UPN ?? "__default__";
 
             if (_quotaContexts.TryGetValue(context, out var quotaContext))
-                return quotaContext.AddMetricUnitAndEvaluateQuota(userIdentifier, userPrincipalName);
+                return quotaContext.AddLocalMetricUnitAndEvaluateQuota(userIdentifier, userPrincipalName);
             else
                 return QUOTA_NOT_EXCEEDED_EVALUATION_RESULT;
         }

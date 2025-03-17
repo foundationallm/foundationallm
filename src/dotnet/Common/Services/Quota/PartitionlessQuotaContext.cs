@@ -18,22 +18,9 @@ namespace FoundationaLLM.Common.Services.Quota
             quota.LockoutDurationSeconds);
 
         /// <inheritdoc/>
-        public override QuotaEvaluationResult AddMetricUnitAndEvaluateQuota(
+        protected override QuotaMetricSequence GetQuotaMetricSequence(
             string userIdentifier,
-            string userPrincipalName)
-        {
-            var metricResult = _metric.AddUnitAndEvaluateMetric();
-            LogMetricEvaluationResult(metricResult, userIdentifier, userPrincipalName);
-
-            return metricResult.LockedOut
-                ? new QuotaEvaluationResult
-                {
-                    QuotaExceeded = true,
-                    ExceededQuotaName = Quota.Name,
-                    // Add a small buffer to the lockout duration to avoid race conditions at the limit.
-                    TimeUntilRetrySeconds = metricResult.RemainingLockoutSeconds + 5
-                }
-                : new QuotaEvaluationResult();
-        }
+            string userPrincipalName) =>
+            _metric;
     }
 }
