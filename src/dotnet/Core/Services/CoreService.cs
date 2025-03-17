@@ -988,18 +988,15 @@ public partial class CoreService(
     {
         request.LongRunningOperation = longRunningOperation;
 
-        if (string.IsNullOrWhiteSpace(request.SessionId) ||
-            !(agent.ConversationHistorySettings?.Enabled ?? false))
-            return request;
-
-        List<MessageHistoryItem> messageHistoryList = [];
-        var max = agent.ConversationHistorySettings?.MaxHistory *2 ?? null;
+        List<MessageHistoryItem> messageHistoryList = [];        
         List<string> contentArtifactTypes = (agent.ConversationHistorySettings?.Enabled ?? false)
             ? [.. (agent.ConversationHistorySettings.HistoryContentArtifactTypes ?? string.Empty).Split(",", StringSplitOptions.RemoveEmptyEntries)]
             : [];
 
-        // Retrieve conversation, including latest prompt.
-        var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!, max);
+        // Retrieve the complete conversation.
+        var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!);
+        var fileHistory = new List<FileHistoryItem>();
+        int attachmentOrder = 0;
         foreach (var message in messages)
         {
             var messageText = message.Text;
@@ -1023,19 +1020,38 @@ public partial class CoreService(
                 if(message.Attachments is { Count: > 0 })
                 {
                     foreach (var attachmentObjectId in message.Attachments)
-                    {
+                    {                        
                         //Get resource path for attachment
                         var rp = ResourcePath.GetResourcePath(attachmentObjectId);
-                        var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(instanceId, rp.MainResourceId!, _userIdentity);
+                        var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(instanceId, rp.MainResourceId!, _userIdentity);                        
                         messageHistoryItem.Attachments.Add(AttachmentDetail.FromAttachmentFile(file));
+                        fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder));
                     }
                 }
                 messageHistoryList.Add(messageHistoryItem);
             }
         }
 
-        request.MessageHistory = messageHistoryList;
+        // Include conversation file history regardless of the conversation history settings.
+        if (fileHistory.Any())
+        { 
+            request.FileHistory = fileHistory;
+        }
 
+        // Only include message history if the conversation history settings are enabled.
+        if (string.IsNullOrWhiteSpace(request.SessionId) ||
+            !(agent.ConversationHistorySettings?.Enabled ?? false))
+            return request;
+
+        // Truncate the message history based on configuration.
+        var max = agent.ConversationHistorySettings?.MaxHistory * 2 ?? null;
+        if (max.HasValue && messageHistoryList.Count > max)
+        {
+            // The list is ordered in descending order, remove items from the end of the list.
+            messageHistoryList.RemoveRange(max.Value, messageHistoryList.Count - max.Value);
+        }
+
+        request.MessageHistory = messageHistoryList;
         return request;
     }
 

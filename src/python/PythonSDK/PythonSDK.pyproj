@@ -62,6 +62,7 @@
     <Compile Include="foundationallm\models\orchestration\analysis_result.py" />
     <Compile Include="foundationallm\models\orchestration\attachment_detail.py" />
     <Compile Include="foundationallm\models\orchestration\completion_request_object_keys.py" />
+    <Compile Include="foundationallm\models\orchestration\file_history_item.py" />
     <Compile Include="foundationallm\models\orchestration\message_content_item_base.py" />
     <Compile Include="foundationallm\models\orchestration\message_content_item_types.py" />
     <Compile Include="foundationallm\models\orchestration\openai_file_path_message_content_item.py" />
