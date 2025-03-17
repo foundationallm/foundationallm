@@ -7,11 +7,10 @@ from typing import List, Optional
 
 from azure.identity import DefaultAzureCredential
 
-from langchain_core.messages import BaseMessage
-
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import ExternalAgentWorkflow
-from foundationallm.models.orchestration import CompletionResponse
+from foundationallm.models.messages.message_history_item import MessageHistoryItem
+from foundationallm.models.orchestration import CompletionResponse, FileHistoryItem
 from foundationallm.telemetry import Telemetry
 
 from .foundationallm_tool_base import FoundationaLLMToolBase
@@ -56,7 +55,8 @@ class FoundationaLLMWorkflowBase(ABC):
                            operation_id: str,
                            user_prompt: str,
                            user_prompt_rewrite: Optional[str],
-                           message_history: List[BaseMessage])-> CompletionResponse:
+                           message_history: List[MessageHistoryItem],
+                           file_history: List[FileHistoryItem])-> CompletionResponse:
         """
         Invokes the workflow asynchronously.
 
@@ -66,7 +66,7 @@ class FoundationaLLMWorkflowBase(ABC):
             The unique identifier of the FoundationaLLM operation.
         user_prompt : str
             The user prompt message.
-        message_history : List[BaseMessage]
+        message_history : List[MessageHistoryItem]
             The message history.
         """
         pass

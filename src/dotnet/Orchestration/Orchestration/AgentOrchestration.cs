@@ -312,6 +312,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 UserPrompt = completionRequest.UserPrompt!,
                 UserPromptRewrite = completionRequest.UserPromptRewrite,
                 MessageHistory = completionRequest.MessageHistory,
+                FileHistory = completionRequest.FileHistory,
                 Attachments = await GetAttachmentPaths(completionRequest.Attachments),
                 Agent = _agent!,
                 Objects = _explodedObjects!
