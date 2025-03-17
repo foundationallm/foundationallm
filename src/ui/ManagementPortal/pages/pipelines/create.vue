@@ -131,7 +131,7 @@
                 <div class="input-wrapper">
                     <div v-for="(param, index) in selectedDataSourcePlugin?.parameters" :key="index" style="width: 100%;">
                         <label>{{ param.name }}:</label>
-                        <template v-if="param.type === 'string' || param.type === 'int' || param.type === 'float' || param.type === 'datetime' || param.type === 'resource_object_id'">
+                        <template v-if="param.type === 'string' || param.type === 'int' || param.type === 'float' || param.type === 'datetime' || param.type === 'resource-object-id'">
                             <InputText v-model="param.default_value" style="width: 100%;" />
                         </template>
                         <template v-else-if="param.type === 'bool'">
@@ -186,7 +186,7 @@
 								<div v-for="(param, paramIndex) in stage.plugin_parameters" :key="paramIndex" class="parameter-item">
 									<label>{{ param.parameter_metadata.name }}:</label>
 									<div style="font-size: 12px; color: #666;">{{ param.parameter_metadata.description }}</div>
-									<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource_object_id'">
+									<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource-object-id'">
 										<InputText v-model="param.default_value" style="width: 100%;" />
 									</template>
 									<template v-else-if="param.parameter_metadata.type === 'bool'">
@@ -197,7 +197,7 @@
 									</template>
 								</div>
 							</div>
-							<div v-if="stagePluginsDependenciesOptions.find(dep => dep.plugin_object_id === stage.plugin_object_id)" class="mb-2">
+							<div class="mb-2">
 								<label>Dependencies:</label>
 								<Dropdown
 									v-model="stage.plugin_dependencies[0]"
@@ -213,7 +213,7 @@
 								<div v-for="(param, paramIndex) in stage?.plugin_dependencies[0]?.plugin_parameters" :key="paramIndex" class="parameter-item">
 									<label>{{ param.parameter_metadata.name }}:</label>
 									<div style="font-size: 12px; color: #666;">{{ param.parameter_metadata.description }}</div>
-									<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource_object_id'">
+									<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource-object-id'">
 										<InputText v-model="param.default_value" class="w-100" />
 									</template>
 									<template v-else-if="param.parameter_metadata.type === 'bool'">
@@ -230,41 +230,50 @@
 				</div>
 			</div>
 
-			<!-- Pipeline Trigger -->
-			<div class="step-header span-2">Configure pipeline trigger</div>
+			<!-- Pipeline Triggers -->
+			<div class="step-header span-2">Configure pipeline triggers</div>
 			<div class="span-2">
 				<div class="trigger-container">
-					<div class="mb-2">
+					<div v-for="(trigger, triggerIndex) in pipeline.triggers" :key="triggerIndex" class="mb-2">
+						<div class="trigger-header">
+							<div class="mb-2">
+								<label>Trigger Name:</label>
+								<InputText v-model="trigger.name" class="w-100" />
+							</div>
+							<Button icon="pi pi-trash" severity="danger" @click="removeTrigger(triggerIndex)" />
+						</div>
+
 						<label>Trigger Type:</label>
 						<Dropdown
-							v-model="selectedTriggerType"
+							v-model="trigger.trigger_type"
 							:options="triggerTypeOptions"
 							option-label="label"
 							option-value="value"
 							class="w-100"
 							placeholder="Select trigger type"
 						/>
-					</div>
-					<div v-if="selectedTriggerType === 'Schedule'" class="mb-2">
-						<label>Cron Schedule:</label>
-						<InputText v-model="cronSchedule" class="w-100" placeholder="0 6 * * *" />
-					</div>
-					<div class="step-header span-2">Trigger Parameters:</div>
-					<div class="span-2">
-						<div v-for="(param, index) in triggerParameters" :key="index" class="mb-2">
-							<label>{{ param.parameter_metadata.name }}:</label>
-							<div style="font-size: 12px; color: #666;">{{ param.parameter_metadata.description }}</div>
-							<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource_object_id'">
-								<InputText v-model="pipeline.triggers[0].parameter_values[param.key]" class="w-100" />
-							</template>
-							<template v-else-if="param.parameter_metadata.type === 'bool'">
-								<InputSwitch v-model="pipeline.triggers[0].parameter_values[param.key]" />
-							</template>
-							<template v-else-if="param.parameter_metadata.type === 'array'">
-								<Chips v-model="pipeline.triggers[0].parameter_values[param.key]" style="width: 100%;" placeholder="Enter values separated by commas" separator="," ></Chips>
-							</template>
+						<div v-if="trigger.trigger_type === 'Schedule'" class="mb-2">
+							<label>Cron Schedule:</label>
+							<InputText v-model="trigger.trigger_cron_schedule" class="w-100" placeholder="0 6 * * *" />
+						</div>
+						<div class="step-header span-2 mb-2">Trigger Parameters:</div>
+						<div class="span-2">
+							<div v-for="(param, index) in triggerParameters" :key="index" class="mb-2">
+								<label>{{ param.parameter_metadata.name }}:</label>
+								<div style="font-size: 12px; color: #666;">{{ param.parameter_metadata.description }}</div>
+								<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource-object-id'">
+									<InputText v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]" class="w-100" />
+								</template>
+								<template v-else-if="param.parameter_metadata.type === 'bool'">
+									<InputSwitch v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]" />
+								</template>
+								<template v-else-if="param.parameter_metadata.type === 'array'">
+									<Chips v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]" style="width: 100%;" placeholder="Enter values separated by commas" separator="," ></Chips>
+								</template>
+							</div>
 						</div>
 					</div>
+					<Button label="Add Trigger" icon="pi pi-plus" @click="addTrigger" />
 				</div>
 			</div>
 
@@ -337,6 +346,7 @@ export default {
 						default_value: param.default_value
 					}));
 				}
+				this.buildTriggerParameters();
 			},
 			deep: true
 		},
@@ -344,7 +354,7 @@ export default {
             handler(newVal) {
                 console.log(newVal);
                 this.transformPipelineStages();
-                // this.buildTriggerParameters();
+                this.buildTriggerParameters();
             },
             deep: true
         }
@@ -430,31 +440,32 @@ export default {
 				...result,
 				object_id: this.updateObjectId(result.object_id)
 			}));
+			console.log(this.stagePluginsOptions);
 
-            const dependencyPromises = this.stagePluginsOptions.map(async (plugin) => {
-                const dependencies = plugin.dependencies[0]?.dependency_plugin_names || [];
-                const dependencyPluginPromises = dependencies.map(async (dependency: string) => {
-                    const dependencyPlugin = await api.getPlugin(dependency);
-                    return dependencyPlugin[0].resource;
-                });
-                const resolvedDependencies = await Promise.all(dependencyPluginPromises);
-                this.stagePluginsDependenciesOptions.push({
-                    plugin_object_id: this.updateObjectId(plugin.object_id),
-                    selection_type: plugin.dependencies[0]?.selection_type || 'Single',
-                    dependencyInfo: resolvedDependencies.map(dep => ({
-                        dependencyLabel: dep.display_name,
-                        dependencies: {
-                            plugin_object_id: this.updateObjectId(dep.object_id),
-                            plugin_parameters: dep.parameters.map(param => ({
-                                parameter_metadata: param,
-                                default_value: null
-                            }))
-                        },
-                    }))
-                });
-            });
+            // const dependencyPromises = this.stagePluginsOptions.map(async (plugin) => {
+            //     const dependencies = plugin.dependencies[0]?.dependency_plugin_names || [];
+            //     const dependencyPluginPromises = dependencies.map(async (dependency: string) => {
+            //         const dependencyPlugin = await api.getPlugin(dependency);
+            //         return dependencyPlugin[0].resource;
+            //     });
+            //     const resolvedDependencies = await Promise.all(dependencyPluginPromises);
+            //     this.stagePluginsDependenciesOptions.push({
+            //         plugin_object_id: this.updateObjectId(plugin.object_id),
+            //         selection_type: plugin.dependencies[0]?.selection_type || 'Single',
+            //         dependencyInfo: resolvedDependencies.map(dep => ({
+            //             dependencyLabel: dep.display_name,
+            //             dependencies: {
+            //                 plugin_object_id: this.updateObjectId(dep.object_id),
+            //                 plugin_parameters: dep.parameters.map(param => ({
+            //                     parameter_metadata: param,
+            //                     default_value: null
+            //                 }))
+            //             },
+            //         }))
+            //     });
+            // });
 
-            await Promise.all(dependencyPromises);
+            // await Promise.all(dependencyPromises);
 
 			if (this.pipelineId) {
 				this.loadingStatusText = `Retrieving pipeline "${this.pipelineId}"...`;
@@ -534,13 +545,18 @@ export default {
 		// },
 
 		handleStagePluginChange(event: any, stageIndex: number) {
+			console.log(event.value);
+			console.log(stageIndex);
+			console.log(this.stagePluginsOptions);
+			console.log(this.selectedStagePlugins);
+			console.log(this.stagePluginsDependenciesOptions);
             const selectedPlugin = this.stagePluginsOptions.find(p => p.object_id === event.value);
             this.selectedStagePlugins[stageIndex].plugin_object_id = selectedPlugin.object_id;
             this.selectedStagePlugins[stageIndex].plugin_parameters = selectedPlugin.parameters.map(param => ({
                 parameter_metadata: param,
                 default_value: null
             }));
-            this.selectedStagePlugins[stageIndex].plugin_dependencies = selectedPlugin?.dependencies;
+            this.selectedStagePlugins[stageIndex].plugin_dependencies = [];
 		},
 
         handleStagePluginDependencyChange(event: any, index: number) {
@@ -571,12 +587,14 @@ export default {
 		},
 
         transformPipelineStages() {
+			console.log(this.selectedStagePlugins);
             let nested = this.selectedStagePlugins.reduceRight((acc, stage) => {
                 return [{ 
                     ...stage, 
                     next_stages: acc 
                 }];
             }, []);
+			console.log(nested);
 
             this.pipeline.starting_stages = nested;
         },
@@ -618,7 +636,7 @@ export default {
 			return newObjectId;
 		},
 
-        handleNextStages(stages: PipelineStage[]) {
+        handleNextStages(stages) {
             stages.forEach(stage => {
                 this.selectedStagePlugins.push({
                     name: stage.name,
@@ -627,6 +645,7 @@ export default {
                     plugin_parameters: stage.plugin_parameters,
                     plugin_dependencies: stage.plugin_dependencies,
                 });
+				this.loadStagePluginDependencies(stage.plugin_object_id);
                 if (stage.next_stages) {
                     this.handleNextStages(stage.next_stages);
                 }
@@ -692,6 +711,8 @@ export default {
                 });
             }
 
+			console.log(this.pipeline.starting_stages);
+
             // Start with the initial stages
             handleStages(this.pipeline.starting_stages);
 
@@ -711,6 +732,46 @@ export default {
                 this.transformPipelineStages();
             }
         },
+
+        addTrigger() {
+            this.pipeline.triggers.push({
+				name: `Trigger${this.pipeline.triggers.length + 1}`,
+                trigger_type: 'Schedule',
+                trigger_cron_schedule: '0 6 * * *',
+                parameter_values: []
+            });
+        },
+
+        removeTrigger(index) {
+            this.pipeline.triggers.splice(index, 1);
+        },
+
+		async loadStagePluginDependencies(pluginObjectId: string) {
+			const plugin = this.stagePluginsOptions.find(p => p.object_id === pluginObjectId);
+			if (plugin && plugin.dependencies.length > 0) {
+				const dependencies = plugin.dependencies[0]?.dependency_plugin_names || [];
+				const dependencyPluginPromises = dependencies.map(async (dependency: string) => {
+					const dependencyPlugin = await api.getPlugin(dependency);
+					return dependencyPlugin[0].resource;
+				});
+				const resolvedDependencies = await Promise.all(dependencyPluginPromises);
+				this.stagePluginsDependenciesOptions.push({
+					plugin_object_id: this.updateObjectId(plugin.object_id),
+					selection_type: plugin.dependencies[0]?.selection_type || 'Single',
+					dependencyInfo: resolvedDependencies.map(dep => ({
+						dependencyLabel: dep.display_name,
+						dependencies: {
+							plugin_object_id: this.updateObjectId(dep.object_id),
+							plugin_parameters: dep.parameters.map(param => ({
+								parameter_metadata: param,
+								default_value: null
+							}))
+						},
+					}))
+				});
+			}
+			console.log(this.stagePluginsDependenciesOptions);
+		},
 	},
 };
 </script>
@@ -790,6 +851,13 @@ input {
 	h3 {
 		margin: 0;
 	}
+}
+
+.trigger-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 16px;
 }
 
 .stage-content {
