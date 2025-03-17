@@ -8,7 +8,7 @@ namespace FoundationaLLM.Core.Examples
     /// <summary>
     /// Example class for the Knowledge Management agent with LangChain.
     /// </summary>
-    public class Example0011_KnowledgeManagementAgentWithSemanticKernel : BaseTest, IClassFixture<TestFixture>
+    public class Example0011_KnowledgeManagementAgentWithSemanticKernel : TestBase, IClassFixture<TestFixture>
     {
         private readonly IAgentConversationTestService _agentConversationTestService;
         private readonly IVectorizationTestService _vectorizationTestService;
@@ -18,7 +18,7 @@ namespace FoundationaLLM.Core.Examples
         private string indexingProfileName = "indexing_profile_sdzwa";
 
         public Example0011_KnowledgeManagementAgentWithSemanticKernel(ITestOutputHelper output, TestFixture fixture)
-            : base(output, [fixture.ServiceProvider])
+            : base(output, fixture)
         {
             _agentConversationTestService = GetService<IAgentConversationTestService>();
             _vectorizationTestService = GetService<IVectorizationTestService>();

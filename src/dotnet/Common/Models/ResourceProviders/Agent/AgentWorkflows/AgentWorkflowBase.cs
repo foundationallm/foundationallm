@@ -70,5 +70,15 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
                 .FirstOrDefault(
                     roid => roid.HasObjectRole(ResourceObjectIdPropertyValues.MainPrompt))
                 ?.ObjectId;
+
+        /// <summary>
+        /// Gets the router prompt object identifier.
+        /// </summary>
+        [JsonIgnore]
+        public string? RouterPromptObjectId =>
+            ResourceObjectIds.Values
+                .FirstOrDefault(
+                    roid => roid.HasObjectRole(ResourceObjectIdPropertyValues.RouterPrompt))
+                ?.ObjectId;
     }
 }

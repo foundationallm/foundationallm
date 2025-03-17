@@ -8,7 +8,7 @@ namespace FoundationaLLM.Core.Examples
     /// <summary>
     /// Creates agents and Vectorization profiles for the load test pipeline.
     /// </summary>
-    public class CreateAgentsForLoadTest : BaseTest, IClassFixture<TestFixture>
+    public class CreateAgentsForLoadTest : TestBase, IClassFixture<TestFixture>
     {
         private readonly IVectorizationTestService _vectorizationTestService;
         private readonly IManagementAPITestManager _managementAPITestManager;
@@ -18,7 +18,7 @@ namespace FoundationaLLM.Core.Examples
         private string indexingProfileSDZWA = "indexing_profile_sdzwa";
 
         public CreateAgentsForLoadTest(ITestOutputHelper output, TestFixture fixture)
-            : base(output, [fixture.ServiceProvider])
+            : base(output, fixture)
         {
             _vectorizationTestService = GetService<IVectorizationTestService>();
             _managementAPITestManager = GetService<IManagementAPITestManager>();

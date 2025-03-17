@@ -73,5 +73,15 @@ namespace FoundationaLLM.Common.Authentication
         /// The <see cref="UnifiedUserIdentity"/> of the service based on its managed identity."/>
         /// </summary>
         public static UnifiedUserIdentity? ServiceIdentity { get; set; }
+
+        /// <summary>
+        /// Creates a new <see cref="TokenCredential"/>.
+        /// </summary>
+        /// <returns>A <see cref="ManagedIdentityCredential"/> instance if <see cref="Production"/> is <see langword="true"/>
+        /// and an <see cref="AzureCliCredential"/> instance otherwise.</returns>
+        public static TokenCredential CreateAzureCredential() =>
+            Production
+                ? new ManagedIdentityCredential(Environment.GetEnvironmentVariable(EnvironmentVariables.AzureClientId))
+                : new AzureCliCredential();
     }
 }

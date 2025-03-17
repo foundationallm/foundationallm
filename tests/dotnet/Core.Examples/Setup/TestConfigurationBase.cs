@@ -18,12 +18,12 @@ namespace FoundationaLLM.Core.Examples.Setup
         protected static TestConfigurationBase? _instance;
         protected static ConfigurationClient? _client;
 
-        protected readonly IConfigurationRoot _configRoot;
+        protected readonly IConfiguration _configuration;
         protected readonly ChainedTokenCredential _tokenCredential;
 
-		public TestConfigurationBase(IConfigurationRoot configRoot)
+		public TestConfigurationBase(IConfiguration configuration)
         {
-            _configRoot = configRoot;
+            _configuration = configuration;
 
             _tokenCredential = new(
                 new AzureCliCredential(),
@@ -33,14 +33,14 @@ namespace FoundationaLLM.Core.Examples.Setup
         /// <summary>
         /// Initializes the test configuration.
         /// </summary>
-        /// <param name="configRoot"></param>
+        /// <param name="configuration"></param>
         /// <param name="services"></param>
-        public static void Initialize(IConfigurationRoot configRoot, IServiceCollection services)
+        public static void Initialize(IConfiguration configuration, IServiceCollection services)
         {
-            _instance = new TestConfigurationBase(configRoot);
+            _instance = new TestConfigurationBase(configuration);
 
             var connectionString =
-                _instance._configRoot.GetValue<string>(EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString);
+                _instance._configuration.GetValue<string>(EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString);
             _client = new ConfigurationClient(connectionString);
         }
 
@@ -72,7 +72,7 @@ namespace FoundationaLLM.Core.Examples.Setup
                 throw new ArgumentNullException(nameof(caller));
             }
 
-            return _instance!._configRoot.GetSection(caller).Get<T>() ??
+            return _instance!._configuration.GetSection(caller).Get<T>() ??
                    throw new ConfigurationNotFoundException(section: caller);
         }
 

@@ -1,6 +1,7 @@
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Constants.Templates;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
@@ -20,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using System.Text;
 using System.Text.Json;
 
 namespace FoundationaLLM.Orchestration.Core.Orchestration
@@ -226,7 +228,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             var agentWorkflow = agentBase.Workflow;
             AIModelBase? mainAIModel = null;
             APIEndpointConfiguration? mainAIModelAPIEndpointConfiguration = null;
-                      
+
             foreach (var resourceObjectId in agentWorkflow!.ResourceObjectIds.Values)
             {
                 var resourcePath = ResourcePath.GetResourcePath(resourceObjectId.ObjectId);
@@ -277,30 +279,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 retrievedAPIEndpointConfiguration);
                         }
 
-                        break;
-                    case PromptResourceTypeNames.Prompts:
-                        if (resourceObjectId.Properties.TryGetValue(ResourceObjectIdPropertyNames.ObjectRole, out var promptObjectRole)
-                            && ((JsonElement)promptObjectRole).GetString() == ResourceObjectIdPropertyValues.MainPrompt)
-                        {
-                            var retrievedPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
-                                        resourceObjectId.ObjectId,
-                                        currentUserIdentity);
-
-                            if (retrievedPrompt is MultipartPrompt multipartPrompt)
-                            {
-                                //check for token replacements, multipartPrompt variable has the same reference as retrievedPrompt therefore this edits the prefix/suffix in place
-                                if (multipartPrompt is not null)
-                                {
-                                        
-                                    multipartPrompt.Prefix = templatingService.Transform(multipartPrompt.Prefix!);
-                                    multipartPrompt.Suffix = templatingService.Transform(multipartPrompt.Suffix!);
-                                }
-                            }
-                            explodedObjectsManager.TryAdd(
-                                retrievedPrompt.ObjectId!,
-                                retrievedPrompt);
-                        }
-                        break;
+                        break;                    
                     case AgentResourceTypeNames.Workflows:
 
                         var retrievedWorkflow = await agentResourceProvider.GetResourceAsync<Workflow>(
@@ -352,10 +331,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             #region Tools
 
             List<string> toolNames = [];
+            StringBuilder toolList = new StringBuilder();
+            StringBuilder toolRouterPrompts = new StringBuilder();
 
             foreach (var tool in agentBase.Tools)
             {
                 toolNames.Add(tool.Name);
+                toolList.Append($"- {tool.Name}: {tool.Description}\n");
 
                 // Build the tool parameters dictionary.
                 Dictionary<string, object> toolParameters = [];
@@ -468,20 +450,30 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         case PromptResourceTypeNames.Prompts:
                             var prompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
                                 resourceObjectId.ObjectId,
-                                currentUserIdentity);
+                                currentUserIdentity);                            
+                            
                             if (prompt is MultipartPrompt multipartPrompt)
                             {
-                                // prompt template token replacement
-                                if (multipartPrompt is not null)
+                                if(multipartPrompt is not null)
                                 {
-
-                                    multipartPrompt.Prefix = templatingService.Transform(multipartPrompt.Prefix!);
-                                    multipartPrompt.Suffix = templatingService.Transform(multipartPrompt.Suffix!);
+                                    if (resourceObjectId.HasObjectRole(ResourceObjectIdPropertyValues.RouterPrompt))
+                                    {
+                                        toolRouterPrompts.Append(multipartPrompt.Prefix +
+                                               (string.IsNullOrEmpty(multipartPrompt.Suffix)
+                                                    ? string.Empty : multipartPrompt.Suffix) + "\n");
+                                    }
+                                    else
+                                    {
+                                        // prompt template token replacement                                        
+                                        multipartPrompt.Prefix = templatingService.Transform(multipartPrompt.Prefix!);
+                                        multipartPrompt.Suffix = templatingService.Transform(multipartPrompt.Suffix!);
+                                        explodedObjectsManager.TryAdd(
+                                            resourceObjectId.ObjectId,
+                                                prompt);                                        
+                                    }
                                 }
-                            }
-                            explodedObjectsManager.TryAdd(
-                                resourceObjectId.ObjectId,
-                                prompt);
+                                
+                            }                            
                             break;
 
                         default:
@@ -494,6 +486,60 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 CompletionRequestObjectsKeys.ToolNames,
                 toolNames);
 
+            #endregion
+
+            #region Build system prompt
+            // Build final prompt via agent resources.
+            // Get main prompt and router prompt if available.
+            var mainPromptObjectId = agentWorkflow!.MainPromptObjectId;
+            
+            var retrievedMainPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
+                                        mainPromptObjectId!,
+                                        currentUserIdentity);        
+            
+            var tokenReplacements = new Dictionary<string, string>();
+            // If tools exist on the agent, prepare for the potential of tools list token replacements in the prompt.
+            if(toolList.Length > 0)
+            {
+                tokenReplacements.Add(TemplateVariables.ToolList, toolList.ToString());
+            }
+            if(toolRouterPrompts.Length > 0)
+            {
+                tokenReplacements.Add(TemplateVariables.ToolRouterPrompts, toolRouterPrompts.ToString());
+            }
+
+            if (retrievedMainPrompt is MultipartPrompt mainPrompt)
+            {
+                //check for token replacements, multipartPrompt variable has the same reference as retrievedPrompt therefore this edits the prefix/suffix in place
+                if (mainPrompt is not null)
+                {
+                    var routerPromptObjectId = agentWorkflow!.RouterPromptObjectId;
+                    if (routerPromptObjectId is not null)
+                    {
+                        var retrievedRouterPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
+                                        routerPromptObjectId!,
+                                        currentUserIdentity);
+                        if (retrievedRouterPrompt is MultipartPrompt routerPrompt)
+                        {
+                            if (retrievedRouterPrompt is not null)
+                            {
+                                // If the router prompt is present, prepare to replace the router prompt token in the main prompt.
+                                tokenReplacements.Add(TemplateVariables.RouterPrompt,
+                                                        routerPrompt.Prefix +
+                                                        (string.IsNullOrEmpty(routerPrompt.Suffix)
+                                                              ? string.Empty : routerPrompt.Suffix));
+                            }                           
+                        }
+                    }
+                   
+                    mainPrompt.Prefix = templatingService.Transform(mainPrompt.Prefix!, tokenReplacements);
+                    mainPrompt.Suffix = templatingService.Transform(mainPrompt.Suffix!, tokenReplacements);
+
+                    explodedObjectsManager.TryAdd(
+                            mainPromptObjectId!,
+                            mainPrompt);
+                }
+            }            
             #endregion
 
             #region Knowledge management processing

@@ -13,7 +13,6 @@ public class CompletionRequest : CompletionRequestBase
     [JsonPropertyName("agent_name")]
     public string? AgentName { get; set; }
 
-
     /// <summary>
     /// A list of Gatekeeper feature names used by the orchestration request.
     /// </summary>

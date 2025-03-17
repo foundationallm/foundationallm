@@ -23,47 +23,77 @@ namespace FoundationaLLM.Common.Services.Templates
         private static partial Regex VariableRegex();
 
         /// <inheritdoc/>
-        public string Transform(string s)
+        public string Transform(string s, Dictionary<string, string>? tokenAndValues = null)
         {
             if (string.IsNullOrWhiteSpace(s))
             {
                 return string.Empty;
             }
+            if (tokenAndValues is null)
+            {
+                tokenAndValues = new Dictionary<string, string>();
+            }
 
             try
             {
                 // Expects the format {{foundationallm:variable_name[:format]}}
-
-                var matches = VariableRegex().Matches(s);
-                Dictionary<string, string> replacements = [];
-
-                foreach (Match match in matches)
-                {
-                    var matchedVariable = match.Value;
-
-                    var variableTokens = match.Groups[1].Value.Split(":", 2);
-                    var variableName = variableTokens[0];
-                    var variableFormat = variableTokens.Length > 1 ? variableTokens[1] : null;
-
-                    switch (variableName)
-                    {
-                        case TemplateVariables.CurrentDateTimeUTC:
-                            replacements.Add(
-                                matchedVariable,
-                                string.IsNullOrWhiteSpace(variableFormat)
-                                    ? DateTime.UtcNow.ToString()
-                                    : DateTime.UtcNow.ToString(variableFormat));
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
                 var transformedString = s;
-                foreach (var replacement in replacements)
+                bool hasMoreTokens;
+
+                do
                 {
-                    transformedString = transformedString.Replace(replacement.Key, replacement.Value);
-                }
+                    hasMoreTokens = false;
+                    var matches = VariableRegex().Matches(transformedString);
+                    Dictionary<string, string> replacements = new Dictionary<string, string>();
+
+                    foreach (Match match in matches)
+                    {
+                        var matchedVariable = match.Value;
+
+                        var variableTokens = match.Groups[1].Value.Split(":", 2);
+                        var variableName = variableTokens[0];
+                        var variableFormat = variableTokens.Length > 1 ? variableTokens[1] : null;
+
+                        switch (variableName)
+                        {
+                            case TemplateVariables.CurrentDateTimeUTC:
+                                replacements.Add(
+                                    matchedVariable,
+                                    string.IsNullOrWhiteSpace(variableFormat)
+                                        ? DateTime.UtcNow.ToString()
+                                        : DateTime.UtcNow.ToString(variableFormat));
+                                break;
+                            case TemplateVariables.RouterPrompt:
+                                if (tokenAndValues.TryGetValue(TemplateVariables.RouterPrompt, out string? router_prompt_value))
+                                {
+                                    replacements.Add(matchedVariable, router_prompt_value);
+                                }
+                                break;
+                            case TemplateVariables.ToolRouterPrompts:
+                                if (tokenAndValues.TryGetValue(TemplateVariables.ToolRouterPrompts, out string? tool_router_prompts_value))
+                                {
+                                    replacements.Add(matchedVariable, tool_router_prompts_value);
+                                }
+                                break;
+                            case TemplateVariables.ToolList:
+                                if (tokenAndValues.TryGetValue(TemplateVariables.ToolList, out string? tools_list_value))
+                                {
+                                    replacements.Add(matchedVariable, tools_list_value);
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    foreach (var replacement in replacements)
+                    {
+                        transformedString = transformedString.Replace(replacement.Key, replacement.Value);
+                    }
+
+                    hasMoreTokens = VariableRegex().IsMatch(transformedString);
+
+                } while (hasMoreTokens);
 
                 return transformedString;
             }
@@ -71,7 +101,6 @@ namespace FoundationaLLM.Common.Services.Templates
             {
                 _logger.LogError(ex, "Error occurred while transforming the string.");
             }
-
             return s;
         }
     }
