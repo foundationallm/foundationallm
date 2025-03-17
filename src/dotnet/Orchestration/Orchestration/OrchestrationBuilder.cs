@@ -260,6 +260,15 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 }
                             }
 
+                            // CompletionRequest AI Model overrides.
+                            if (modelParameterOverrides != null)
+                            {
+                                foreach (var key in modelParameterOverrides.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
+                                {
+                                    retrievedAIModel.ModelParameters[key] = modelParameterOverrides[key];
+                                }
+                            }
+
                             explodedObjectsManager.TryAdd(
                                 retrievedAIModel.ObjectId!,
                                 retrievedAIModel);

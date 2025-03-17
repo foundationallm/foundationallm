@@ -21,7 +21,7 @@
         /// <summary>
         /// The cumulative probability of parameter highest probability vocabulary tokens to keep for nucleus sampling.
         /// Top P (or Top Probabilities) is imilar to temperature, this controls randomness but uses a different method.
-        /// Lowering Top P will narrow the model’s token selection to likelier tokens. Increasing Top P will let the model
+        /// Lowering Top P will narrow the model's token selection to likelier tokens. Increasing Top P will let the model
         /// choose from tokens with both high and low likelihood. Try adjusting temperature or Top P but not both.
         /// </summary>
         public const string TopP = "top_p";
@@ -50,6 +50,10 @@
         /// </summary>
         public const string IgnoreEOS = "ignore_eos";
 
+        public const string FrequencyPenalty = "frequency_penalty";
+
+        public const string PresencePenalty = "presence_penalty";
+
         /// <summary>
         /// All model parameter keys.
         /// </summary>
@@ -60,7 +64,9 @@
             DoSample,
             MaxNewTokens,
             ReturnFullText,
-            IgnoreEOS
+            IgnoreEOS,
+            FrequencyPenalty,
+            PresencePenalty
         ];
     }
 }

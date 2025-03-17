@@ -406,6 +406,51 @@ public partial class CoreService(
     #region Synchronous completion operations
 
     /// <inheritdoc/>
+    public async Task<CompletionResponse> GetRawChatCompletionAsync(string instanceId, CompletionRequest completionRequest)
+    {
+        try
+        {
+            ArgumentNullException.ThrowIfNull(completionRequest.SessionId);
+            var operationStartTime = DateTime.UtcNow;
+
+            var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(
+                instanceId,
+                completionRequest.AgentName!,
+                _userIdentity);
+
+            if (AgentExpired(agentBase, out var message))
+            {
+                return new CompletionResponse()
+                {
+                    OperationId = completionRequest.OperationId!,
+                    IsError = true,
+                    Errors = [message]
+                };
+            }
+
+            completionRequest = await PrepareCompletionRequest(completionRequest, agentBase);
+
+            var agentOption = GetGatekeeperOption(instanceId, agentBase, completionRequest);
+
+            // Generate the completion to return to the user.
+            var completionResponse = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, completionRequest);
+                        
+            return completionResponse;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting completion in conversation {SessionId} for user prompt [{UserPrompt}].",
+                completionRequest.SessionId, completionRequest.UserPrompt);
+            return new CompletionResponse()
+            {
+                OperationId = completionRequest.OperationId!,
+                IsError = true,
+                Errors = [$"Error getting completion in conversation {completionRequest.SessionId} for user prompt [{completionRequest.UserPrompt}]."]
+            };
+        }
+    }
+
+    /// <inheritdoc/>
     public async Task<Message> GetChatCompletionAsync(string instanceId, CompletionRequest completionRequest)
     {
         try
@@ -428,14 +473,11 @@ public partial class CoreService(
                 };
             }
 
-            completionRequest = await PrepareCompletionRequest(completionRequest, agentBase);
+            var completionResponse = await GetRawChatCompletionAsync(instanceId, completionRequest);
 
             var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
 
             var agentOption = GetGatekeeperOption(instanceId, agentBase, completionRequest);
-
-            // Generate the completion to return to the user.
-            var completionResponse = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, completionRequest);
 
             var agentMessage = await ProcessCompletionResponse(
                 new LongRunningOperationContext
@@ -476,6 +518,46 @@ public partial class CoreService(
                 OperationId = completionRequest.OperationId,
                 Status = OperationStatus.Failed,
                 Text = "Could not generate a completion due to an internal error."
+            };
+        }
+    }
+
+    public async Task<CompletionResponse> GetRawCompletionAsync(string instanceId, CompletionRequest directCompletionRequest)
+    {
+        try
+        {
+            var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(
+                instanceId,
+                directCompletionRequest.AgentName!,
+                _userIdentity);
+
+            if (AgentExpired(agentBase, out var message))
+            {
+                return new CompletionResponse()
+                {
+                    OperationId = directCompletionRequest.OperationId!,
+                    IsError = true,
+                    Errors = [message]
+                };
+            }
+
+            directCompletionRequest = await PrepareCompletionRequest(directCompletionRequest, agentBase);
+
+            var agentOption = GetGatekeeperOption(instanceId, agentBase, directCompletionRequest);
+
+            // Generate the completion to return to the user.
+            var result = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, directCompletionRequest);
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error getting completion for user prompt [{directCompletionRequest.UserPrompt}].");
+            return new CompletionResponse()
+            {
+                OperationId = directCompletionRequest.OperationId!,
+                IsError = true,
+                Errors = [$"Error getting completion for user prompt [{directCompletionRequest.UserPrompt}]."]
             };
         }
     }

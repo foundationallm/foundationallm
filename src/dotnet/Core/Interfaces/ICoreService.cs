@@ -2,6 +2,7 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Settings;
@@ -77,11 +78,27 @@ public interface ICoreService
     Task<Message> GetChatCompletionAsync(string instanceId, CompletionRequest completionRequest);
 
     /// <summary>
+    /// Receive a prompt from a user, retrieve the message history from the related session,
+    /// generate a completion response, and log full completion results.
+    /// </summary>
+    /// <param name="instanceId">The instance id.</param>
+    /// <param name="completionRequest">The completion request.</param>
+    Task<CompletionResponse> GetRawChatCompletionAsync(string instanceId, CompletionRequest completionRequest);
+
+    /// <summary>
     /// Provides a completion for a user prompt, without a session.
     /// </summary>
     /// <param name="instanceId">The instance id.</param>
     /// <param name="directCompletionRequest">The completion request.</param>
     Task<Message> GetCompletionAsync(string instanceId, CompletionRequest directCompletionRequest);
+
+    /// <summary>
+    /// Provides a completion for a user prompt, without a session.
+    /// </summary>
+    /// <param name="instanceId">The instance id.</param>
+    /// <param name="directCompletionRequest">The completion request.</param>
+    Task<CompletionResponse> GetRawCompletionAsync(string instanceId, CompletionRequest directCompletionRequest);
+
 
     #endregion
 
