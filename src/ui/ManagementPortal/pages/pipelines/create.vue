@@ -234,7 +234,7 @@
 			<div class="step-header span-2">Configure pipeline triggers</div>
 			<div class="span-2">
 				<div class="trigger-container">
-					<div v-for="(trigger, triggerIndex) in pipeline.triggers" :key="triggerIndex" class="mb-2">
+					<div v-for="(trigger, triggerIndex) in pipeline.triggers" :key="triggerIndex" class="mb-2 trigger-item">
 						<div class="trigger-header">
 							<div class="mb-2">
 								<label>Trigger Name:</label>
@@ -379,8 +379,8 @@ export default {
             selectedStagePlugins: [] as any[],
             stagePluginsDependenciesOptions: [] as any[],
 
-			selectedTriggerType: 'Schedule' as string,
-			cronSchedule: '0 6 * * *' as string,
+			// selectedTriggerType: 'Schedule' as string,
+			// cronSchedule: '0 6 * * *' as string,
 
 			triggerTypeOptions: [
 				{ label: 'Schedule', value: 'Schedule' },
@@ -481,11 +481,11 @@ export default {
                 // const testGetPlugin = await api.getPlugin('Dotnet-FoundationaLLMDataPipelinePlugins-TokenContentTextPartitioning');
 
 				// Set trigger values if they exist
-				if (this.pipeline.triggers.length > 0) {
-					const trigger = this.pipeline.triggers[0];
-					this.selectedTriggerType = trigger.trigger_type;
-					this.cronSchedule = trigger.trigger_cron_schedule;
-				}
+				// if (this.pipeline.triggers.length > 0) {
+				// 	const trigger = this.pipeline.triggers[0];
+				// 	this.selectedTriggerType = trigger.trigger_type;
+				// 	this.cronSchedule = trigger.trigger_cron_schedule;
+				// }
 
                 this.buildTriggerParameters();
 			}
@@ -662,9 +662,11 @@ export default {
             this.pipeline.data_source.plugin_parameters.forEach((param: any) => {
                 const key = `DataSource.${this.pipeline.data_source.name}.${param.parameter_metadata.name}`;
                 const value = existingTriggerParameters[key] !== undefined ? existingTriggerParameters[key] : param.default_value;
-                if (!this.pipeline.triggers[0].parameter_values[key]) {
-                    this.pipeline.triggers[0].parameter_values[key] = null;
-                }
+				this.pipeline.triggers.forEach(trigger => {
+					if (!trigger.parameter_values[key]) {
+						trigger.parameter_values[key] = null;
+					}
+				});
                 parameterValues.push({
                     parameter_metadata: param.parameter_metadata,
                     key: key,
@@ -734,11 +736,15 @@ export default {
         },
 
         addTrigger() {
+			const parameterValues = {}
+			this.triggerParameters.forEach(param => {
+				parameterValues[param.key] = null;
+			});
             this.pipeline.triggers.push({
 				name: `Trigger${this.pipeline.triggers.length + 1}`,
                 trigger_type: 'Schedule',
                 trigger_cron_schedule: '0 6 * * *',
-                parameter_values: []
+                parameter_values: parameterValues
             });
         },
 
@@ -837,6 +843,12 @@ input {
 }
 
 .stage-item {
+	border: 1px solid #e1e1e1;
+	padding: 16px;
+	border-radius: 4px;
+}
+
+.trigger-item {
 	border: 1px solid #e1e1e1;
 	padding: 16px;
 	border-radius: 4px;

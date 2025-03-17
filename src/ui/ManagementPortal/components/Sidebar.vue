@@ -50,11 +50,12 @@
 				<!-- Data Catalog -->
 				<h3 class="sidebar__section-header">
 					<span class="pi pi-database" aria-hidden="true"></span>
-					<span>Data Catalog</span>
+					<span>Data</span>
 				</h3>
 				<ul>
 					<li><NuxtLink to="/data-sources" class="sidebar__item">Data Sources</NuxtLink></li>
 					<li><NuxtLink to="/vector-stores" class="sidebar__item">Vector Stores</NuxtLink></li>
+					<li><NuxtLink to="/pipelines" class="sidebar__item">Data Pipelines</NuxtLink></li>
 				</ul>
 
 				<!-- Models and Endpoints -->
