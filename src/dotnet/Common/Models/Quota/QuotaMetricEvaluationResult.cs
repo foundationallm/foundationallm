@@ -16,8 +16,20 @@
         public int RemainingLockoutSeconds { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of units of the quota metric.
+        /// Gets or sets the number of units of the quota metric that have a local origin
+        /// (the service instance hosting the quota metric sequence).
         /// </summary>
-        public int MetricCount { get; set; }
+        public int LocalMetricCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of units of the quota metric that have a remote origin
+        /// (other service instances than the one hosting the quota metric sequence).
+        /// </summary>
+        public int RemoteMetricCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the total number of units of the quota metric, both local and remote.
+        /// </summary>
+        public int TotalMetricCount { get; set; }
     }
 }

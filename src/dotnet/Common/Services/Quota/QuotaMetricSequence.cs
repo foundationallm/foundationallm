@@ -1,4 +1,6 @@
 ﻿using FoundationaLLM.Common.Models.Quota;
+using Microsoft.Extensions.Azure;
+using OpenTelemetry.Metrics;
 
 namespace FoundationaLLM.Common.Services.Quota
 {
@@ -22,7 +24,15 @@ namespace FoundationaLLM.Common.Services.Quota
         private readonly int _actualMetricLimit = metricLimit / (metricWindowSeconds / METRIC_TIME_UNIT_SECONDS);
 
         private object _syncRoot = new();
-        private readonly List<DateTimeOffset> _metricUnits = [];
+        private int _metricUnitsSum = 0;
+        /// <summary>
+        /// The last time the <see cref="_metricUnits"/> array was shifted.
+        /// </summary>
+        private DateTimeOffset _metricUnitsLastShiftTime = DateTimeOffset.MinValue;
+        /// <summary>
+        /// Holds the number of metric units for each one-second interval that passed before <see cref="_metricUnitsLastShiftTime"/>.
+        /// </summary>
+        private readonly int[] _metricUnits = new int[METRIC_TIME_UNIT_SECONDS];
         private bool _lockedOut = false;
         private DateTimeOffset _lockoutStartTime = DateTimeOffset.MinValue;
 
@@ -44,28 +54,29 @@ namespace FoundationaLLM.Common.Services.Quota
                     {
                         // Lockout period has expired.
                         _lockedOut = false;
-                        AddUnitAndTrim(refTime);
+                        ShiftAndAddLocalUnit(refTime);
                     }
 
-                    metricCount = _metricUnits.Count;
+                    metricCount = _metricUnitsSum;
                 }
                 else
                 {
-                    AddUnitAndTrim(refTime);
-                    metricCount = _metricUnits.Count;
+                    ShiftAndAddLocalUnit(refTime);
+                    metricCount = _metricUnitsSum;
 
                     if (metricCount > _actualMetricLimit)
                     {
                         _lockedOut = true;
                         _lockoutStartTime = refTime;
-                        _metricUnits.Clear();
+                        Array.Clear(_metricUnits, 0, METRIC_TIME_UNIT_SECONDS);
+                        _metricUnitsSum = 0;
                     }
                 }
             }
 
             return new QuotaMetricEvaluationResult
             {
-                MetricCount = metricCount,
+                TotalMetricCount = metricCount,
                 LockedOut = _lockedOut,
                 RemainingLockoutSeconds = _lockedOut
                     ? _lockoutDurationSeconds - (int)(DateTimeOffset.UtcNow - _lockoutStartTime).TotalSeconds
@@ -73,18 +84,39 @@ namespace FoundationaLLM.Common.Services.Quota
             };
         }
 
-        private void AddUnitAndTrim(DateTimeOffset refTime)
+        private void ShiftAndAddLocalUnit(DateTimeOffset refTime)
         {
-            _metricUnits.Add(refTime);
+            // Shift the array to align with the new reference time.
 
-            for (int i = 0; i < _metricUnits.Count; i++)
+            var fractionalSeconds = (refTime - _metricUnitsLastShiftTime).TotalSeconds;
+            if (fractionalSeconds >= 1)
             {
-                if (_metricUnits[i] < refTime.AddSeconds(-_actualMetricWindowSeconds))
+                // More than one second passed since the last unit was added, so we need to shift the one-second buckets.
+                var roundedSeconds = (int) Math.Ceiling(fractionalSeconds);
+
+                if (roundedSeconds >= METRIC_TIME_UNIT_SECONDS)
                 {
-                    _metricUnits.RemoveAt(i);
-                    i--;
+                    // No need to shift anything, too much time has passed since the last unit was added.
+                    Array.Clear(_metricUnits, 0, METRIC_TIME_UNIT_SECONDS);
+                    _metricUnitsSum = 0;
                 }
+                else
+                {
+                    _metricUnitsSum = 0;
+                    for (int i = METRIC_TIME_UNIT_SECONDS - 1; i >= roundedSeconds; i--)
+                    {
+                        _metricUnits[i] = _metricUnits[i - roundedSeconds];
+                        _metricUnitsSum += _metricUnits[i];
+                    }
+                    Array.Clear(_metricUnits, 0, roundedSeconds);
+                }
+
+                _metricUnitsLastShiftTime = refTime;
             }
+
+            // Add the local unit to the metric units.
+            _metricUnits[0]++;
+            _metricUnitsSum++;
         }
     }
 }

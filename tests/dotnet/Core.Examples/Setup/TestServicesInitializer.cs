@@ -54,6 +54,10 @@ namespace FoundationaLLM.Core.Examples.Setup
             RegisterAzureAIService(services, configuration);
 			RegisterServiceManagers(services);
 
+            services.AddAzureResourceManager();
+            services.AddAzureEventGridEvents(
+                configuration,
+                AppConfigurationKeySections.FoundationaLLM_Events_Profiles_CoreAPI);
             services.AddQuotaService(configuration);
         }
 

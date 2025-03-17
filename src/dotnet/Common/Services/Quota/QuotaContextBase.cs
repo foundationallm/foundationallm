@@ -54,7 +54,7 @@ namespace FoundationaLLM.Common.Services.Quota
             string userPrincipalName) =>
             _logger.LogDebug("Quota context: {QuotaContext}, Metric count: {MetricCount}, Quota exceeded: {QuotaExceeded}, Remaining lockout: {RemainingLockout} seconds.",
                 $"{Quota.Context}, {userIdentifier}, {userPrincipalName}",
-                metricResult.MetricCount,
+                $"{metricResult.TotalMetricCount} (local = {metricResult.LocalMetricCount}, remote = {metricResult.RemoteMetricCount})",
                 metricResult.LockedOut,
                 metricResult.RemainingLockoutSeconds);
     }
