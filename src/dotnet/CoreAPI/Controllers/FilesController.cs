@@ -1,15 +1,21 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Constants.Telemetry;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
+using FoundationaLLM.Common.Telemetry;
 using FoundationaLLM.Common.Utils;
 using FoundationaLLM.Core.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
+using System.Diagnostics;
 
 namespace FoundationaLLM.Core.API.Controllers
 {
@@ -62,6 +68,19 @@ namespace FoundationaLLM.Core.API.Controllers
         [HttpPost("upload")]
         public async Task<IActionResult> Upload(string instanceId, string sessionId, string agentName, IFormFile file)
         {
+            using var telemetryActivity = TelemetryActivitySources.CoreAPIActivitySource.StartActivity(
+                TelemetryActivityNames.CoreAPI_Files_Upload,
+                ActivityKind.Server,
+                parentContext: default,
+                tags: new Dictionary<string, object?>
+                    {
+                    { TelemetryActivityTagNames.InstanceId, instanceId },
+                        { TelemetryActivityTagNames.AgentName, agentName ?? "N/A" },
+                        { TelemetryActivityTagNames.ConversationId, sessionId ?? "N/A" },
+                        { TelemetryActivityTagNames.UPN, _callContext.CurrentUserIdentity?.UPN ?? "N/A" },
+                        { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
+                    });
+
             if (file == null || file.Length == 0)
                 return BadRequest("File not selected.");
 
@@ -113,6 +132,19 @@ namespace FoundationaLLM.Core.API.Controllers
         [HttpGet("{fileProvider}/{fileId}")]
         public async Task<IActionResult> Download(string instanceId, string fileProvider, string fileId)
         {
+            using var telemetryActivity = TelemetryActivitySources.CoreAPIActivitySource.StartActivity(
+               TelemetryActivityNames.CoreAPI_Files_Upload,
+               ActivityKind.Server,
+               parentContext: default,
+                tags: new Dictionary<string, object?>
+                   {
+                    { TelemetryActivityTagNames.InstanceId, instanceId },
+                        { TelemetryActivityTagNames.FileProvider, fileProvider ?? "N/A" },
+                        { TelemetryActivityTagNames.FileId, fileId ?? "N/A" },
+                        { TelemetryActivityTagNames.UPN, _callContext.CurrentUserIdentity?.UPN ?? "N/A" },
+                        { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
+                   });
+
             var attachment = await _coreService.DownloadAttachment(instanceId, fileProvider, fileId, _callContext.CurrentUserIdentity!);
 
             return attachment == null
