@@ -285,6 +285,40 @@ Class ServiceContext  <a class="header-action link-secondary" title="View source
 </h2>
 
 
+  <a id="FoundationaLLM_Common_Authentication_ServiceContext_CreateAzureCredential_" data-uid="FoundationaLLM.Common.Authentication.ServiceContext.CreateAzureCredential*"></a>
+
+  <h3 id="FoundationaLLM_Common_Authentication_ServiceContext_CreateAzureCredential" data-uid="FoundationaLLM.Common.Authentication.ServiceContext.CreateAzureCredential">
+  CreateAzureCredential()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="https://learn.microsoft.com/dotnet/api/azure.core.tokencredential">TokenCredential</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TokenCredential CreateAzureCredential()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/azure.core.tokencredential">TokenCredential</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/azure.identity.managedidentitycredential">ManagedIdentityCredential</a> instance if <a class="xref" href="FoundationaLLM.Common.Authentication.ServiceContext.html#FoundationaLLM_Common_Authentication_ServiceContext_Production">Production</a> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>
+and an <a class="xref" href="https://learn.microsoft.com/dotnet/api/azure.identity.azureclicredential">AzureCliCredential</a> instance otherwise.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Authentication_ServiceContext_Initialize_" data-uid="FoundationaLLM.Common.Authentication.ServiceContext.Initialize*"></a>
 
   <h3 id="FoundationaLLM_Common_Authentication_ServiceContext_Initialize_System_Boolean_System_String_System_String_" data-uid="FoundationaLLM.Common.Authentication.ServiceContext.Initialize(System.Boolean,System.String,System.String)">
