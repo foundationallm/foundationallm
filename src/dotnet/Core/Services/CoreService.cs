@@ -1047,8 +1047,8 @@ public partial class CoreService(
         var max = agent.ConversationHistorySettings?.MaxHistory * 2 ?? null;
         if (max.HasValue && messageHistoryList.Count > max)
         {
-            // The list is ordered in descending order, remove items from the end of the list.
-            messageHistoryList.RemoveRange(max.Value, messageHistoryList.Count - max.Value);
+            // Remove messages from the beginning of the list.
+            messageHistoryList.RemoveRange(0, messageHistoryList.Count - max.Value);          
         }
 
         request.MessageHistory = messageHistoryList;
