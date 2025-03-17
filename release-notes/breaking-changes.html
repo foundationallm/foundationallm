@@ -77,6 +77,16 @@
 <h5>Note</h5>
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
+<h2 id="starting-from-097-beta107">Starting from 0.9.7-beta107</h2>
+<p>For External Agent Workflows, the workflow invokation now includes conversation file history. The complete file history is passed regardless of conversation history settings.</p>
+<p>The signature is now as follows:</p>
+<pre><code class="lang-python">async def invoke_async(self,
+                       operation_id: str,
+                       user_prompt: str,
+                       user_prompt_rewrite: Optional[str],
+                       message_history: List[MessageHistoryItem],
+                       file_history: List[FileHistoryItem])-&gt; CompletionResponse:
+</code></pre>
 <h2 id="starting-from-097-beta106">Starting from 0.9.7-beta106</h2>
 <p>For External Agent Workflows, the invocation of the workflow now sends the completion request MessageHistoryItem list vs the translated LangChain BaseMessage construct. This way workflows have more control on how to handle the message history of a conversation.</p>
 <h2 id="starting-from-097-beta105">Starting from 0.9.7-beta105</h2>

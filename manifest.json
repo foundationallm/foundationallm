@@ -5906,6 +5906,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Request.FileHistoryItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Request.FileHistoryItem.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Orchestration.Request.FileHistoryItem",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Orchestration.Request.FileHistoryItem.yml\" sourcestartlinenumber=\"1\">Represents a file history item in a conversation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.yml",
       "output": {
         ".html": {
