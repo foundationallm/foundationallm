@@ -12,7 +12,7 @@ from langchain_core.messages import BaseMessage
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import ExternalAgentWorkflow
 from foundationallm.models.messages.message_history_item import MessageHistoryItem
-from foundationallm.models.orchestration import CompletionResponse
+from foundationallm.models.orchestration import CompletionResponse, FileHistoryItem
 from foundationallm.telemetry import Telemetry
 
 from .foundationallm_tool_base import FoundationaLLMToolBase
@@ -57,7 +57,8 @@ class FoundationaLLMWorkflowBase(ABC):
                            operation_id: str,
                            user_prompt: str,
                            user_prompt_rewrite: Optional[str],
-                           message_history: List[MessageHistoryItem])-> CompletionResponse:
+                           message_history: List[MessageHistoryItem],
+                           file_history: Optional[List[FileHistoryItem]])-> CompletionResponse:
         """
         Invokes the workflow asynchronously.
 

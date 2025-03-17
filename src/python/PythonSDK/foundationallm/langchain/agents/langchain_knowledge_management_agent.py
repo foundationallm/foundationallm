@@ -533,14 +533,15 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 tools,
                 self.user_identity,
                 self.config)
-
+            
             # Get message history          
             with self.tracer.start_as_current_span('langchain_invoke_external_workflow', kind=SpanKind.SERVER) as span:
                 response = await workflow.invoke_async(
                     operation_id=request.operation_id,
                     user_prompt=parsed_user_prompt,
                     user_prompt_rewrite=request.user_prompt_rewrite,
-                    message_history=request.message_history
+                    message_history=request.message_history,
+                    file_history=request.file_history,
                 )
                 # Ensure the user prompt rewrite is returned in the response
                 response.user_prompt_rewrite = request.user_prompt_rewrite
