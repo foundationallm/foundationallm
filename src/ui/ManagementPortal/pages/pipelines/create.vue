@@ -148,13 +148,21 @@
 			<div class="step-header span-2">Configure pipeline stages</div>
 			<div class="span-2">
 				<div class="stages-container">
-					<div v-for="(stage, index) in selectedStagePlugins" :key="index" class="stage-item">
+					<div
+						v-for="(stage, index) in selectedStagePlugins"
+						:key="index"
+						class="stage-item"
+						draggable="true"
+						@dragstart="handleDragStart(index)"
+						@dragover.prevent
+						@drop="handleDrop(index)"
+					>
 						<div class="stage-header">
-                            <div class="mb-2">
-                                <label>Stage Name:</label>
-                                <InputText v-model="stage.name" class="w-100" />
-                            </div>
-                            <Button icon="pi pi-trash" severity="danger" @click="removeStage(index)" />
+							<div class="mb-2">
+								<label>Stage Name:</label>
+								<InputText v-model="stage.name" class="w-100" />
+							</div>
+							<Button icon="pi pi-trash" severity="danger" @click="removeStage(index)" />
 						</div>
 						<div class="stage-content">
 							<div class="mb-2">
@@ -177,7 +185,7 @@
 								<label class="step-header">Parameters:</label>
 								<div v-for="(param, paramIndex) in stage.plugin_parameters" :key="paramIndex" class="parameter-item">
 									<label>{{ param.parameter_metadata.name }}:</label>
-                                    <div style="font-size: 12px; color: #666;">{{ param.parameter_metadata.description }}</div>
+									<div style="font-size: 12px; color: #666;">{{ param.parameter_metadata.description }}</div>
 									<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource_object_id'">
 										<InputText v-model="param.default_value" style="width: 100%;" />
 									</template>
@@ -189,33 +197,33 @@
 									</template>
 								</div>
 							</div>
-                            <div v-if="stagePluginsDependenciesOptions.find(dep => dep.plugin_object_id === stage.plugin_object_id)" class="mb-2">
-                                <label>Dependencies:</label>
-                                <Dropdown
-                                    v-model="stage.plugin_dependencies[0]"
-                                    :options="stagePluginsDependenciesOptions.find(dep => dep.plugin_object_id === stage.plugin_object_id)?.dependencyInfo || []"
-                                    option-label="dependencyLabel"
-                                    option-value="dependencies"
-                                    class="w-100"
-                                    placeholder="Select a dependency"
-                                />
-                            </div>
-                            <div v-if="stage.plugin_dependencies[0]?.plugin_parameters" class="mb-2">
-                                <label class="step-header">Dependency Parameters:</label>
-                                <div v-for="(param, paramIndex) in stage?.plugin_dependencies[0]?.plugin_parameters" :key="paramIndex" class="parameter-item">
-                                    <label>{{ param.parameter_metadata.name }}:</label>
-                                    <div style="font-size: 12px; color: #666;">{{ param.parameter_metadata.description }}</div>
-                                    <template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource_object_id'">
-                                        <InputText v-model="param.default_value" class="w-100" />
-                                    </template>
-                                    <template v-else-if="param.parameter_metadata.type === 'bool'">
-                                        <InputSwitch v-model="param.default_value" />
-                                    </template>
-                                    <template v-else-if="param.parameter_metadata.type === 'array'">
-                                        <Chips v-model="param.default_value" style="width: 100%;" placeholder="Enter values separated by commas" separator="," ></Chips>
-                                    </template>
-                                </div>
-                            </div>
+							<div v-if="stagePluginsDependenciesOptions.find(dep => dep.plugin_object_id === stage.plugin_object_id)" class="mb-2">
+								<label>Dependencies:</label>
+								<Dropdown
+									v-model="stage.plugin_dependencies[0]"
+									:options="stagePluginsDependenciesOptions.find(dep => dep.plugin_object_id === stage.plugin_object_id)?.dependencyInfo || []"
+									option-label="dependencyLabel"
+									option-value="dependencies"
+									class="w-100"
+									placeholder="Select a dependency"
+								/>
+							</div>
+							<div v-if="stage.plugin_dependencies[0]?.plugin_parameters" class="mb-2">
+								<label class="step-header">Dependency Parameters:</label>
+								<div v-for="(param, paramIndex) in stage?.plugin_dependencies[0]?.plugin_parameters" :key="paramIndex" class="parameter-item">
+									<label>{{ param.parameter_metadata.name }}:</label>
+									<div style="font-size: 12px; color: #666;">{{ param.parameter_metadata.description }}</div>
+									<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource_object_id'">
+										<InputText v-model="param.default_value" class="w-100" />
+									</template>
+									<template v-else-if="param.parameter_metadata.type === 'bool'">
+										<InputSwitch v-model="param.default_value" />
+									</template>
+									<template v-else-if="param.parameter_metadata.type === 'array'">
+										<Chips v-model="param.default_value" style="width: 100%;" placeholder="Enter values separated by commas" separator="," ></Chips>
+									</template>
+								</div>
+							</div>
 						</div>
 					</div>
 					<Button label="Add Stage" icon="pi pi-plus" @click="addStage" />
@@ -241,21 +249,22 @@
 						<label>Cron Schedule:</label>
 						<InputText v-model="cronSchedule" class="w-100" placeholder="0 6 * * *" />
 					</div>
-                    <div class="step-header span-2">Trigger Parameters:</div>
-                    <div class="span-2">
-                        <div v-for="(param, index) in triggerParameters" :key="index" class="mb-2">
-                            <label>{{ param.parameter_metadata.name }}:</label>
-                            <template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource_object_id'">
-                                <InputText v-model="pipeline.triggers[0].parameter_values[param.key]" class="w-100" />
-                            </template>
-                            <template v-else-if="param.parameter_metadata.type === 'bool'">
-                                <InputSwitch v-model="pipeline.triggers[0].parameter_values[param.key]" />
-                            </template>
-                            <template v-else-if="param.parameter_metadata.type === 'array'">
-                                <Chips v-model="pipeline.triggers[0].parameter_values[param.key]" style="width: 100%;" placeholder="Enter values separated by commas" separator="," ></Chips>
-                            </template>
-                        </div>
-                    </div>
+					<div class="step-header span-2">Trigger Parameters:</div>
+					<div class="span-2">
+						<div v-for="(param, index) in triggerParameters" :key="index" class="mb-2">
+							<label>{{ param.parameter_metadata.name }}:</label>
+							<div style="font-size: 12px; color: #666;">{{ param.parameter_metadata.description }}</div>
+							<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource_object_id'">
+								<InputText v-model="pipeline.triggers[0].parameter_values[param.key]" class="w-100" />
+							</template>
+							<template v-else-if="param.parameter_metadata.type === 'bool'">
+								<InputSwitch v-model="pipeline.triggers[0].parameter_values[param.key]" />
+							</template>
+							<template v-else-if="param.parameter_metadata.type === 'array'">
+								<Chips v-model="pipeline.triggers[0].parameter_values[param.key]" style="width: 100%;" placeholder="Enter values separated by commas" separator="," ></Chips>
+							</template>
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -314,24 +323,28 @@ export default {
             },
             deep: true
         },
-        selectedDataSourcePlugin: {
-            handler(newVal) {
-                console.log(newVal);
-                this.buildTriggerParameters();
-            },
-            deep: true
-        },
-        // selectedDataSource: {
-        //     handler(newVal) {
-        //         console.log(newVal);
-        //     },
-        //     deep: true
-        // }
+		selectedDataSourcePlugin: {
+			handler(newVal) {
+				console.log(newVal);
+				if (newVal) {
+					this.pipeline.data_source.plugin_object_id = this.updateObjectId(newVal.object_id);
+					this.pipeline.data_source.plugin_parameters = newVal.parameters.map(param => ({
+						parameter_metadata: {
+							name: param.name,
+							type: param.type,
+							description: param.description
+						},
+						default_value: param.default_value
+					}));
+				}
+			},
+			deep: true
+		},
         selectedStagePlugins: {
             handler(newVal) {
                 console.log(newVal);
                 this.transformPipelineStages();
-                this.buildTriggerParameters();
+                // this.buildTriggerParameters();
             },
             deep: true
         }
@@ -395,6 +408,7 @@ export default {
 			},
 
 			debouncedCheckName: null as (() => void) | null,
+			draggedStageIndex: null as number | null,
 		};
 	},
 
@@ -417,15 +431,13 @@ export default {
 				object_id: this.updateObjectId(result.object_id)
 			}));
 
-            const dependencyPromises = this.stagePluginsOptions.map(async (plugin: Plugin) => {
-                // console.log(plugin);
+            const dependencyPromises = this.stagePluginsOptions.map(async (plugin) => {
                 const dependencies = plugin.dependencies[0]?.dependency_plugin_names || [];
                 const dependencyPluginPromises = dependencies.map(async (dependency: string) => {
                     const dependencyPlugin = await api.getPlugin(dependency);
                     return dependencyPlugin[0].resource;
                 });
                 const resolvedDependencies = await Promise.all(dependencyPluginPromises);
-                console.log(resolvedDependencies);
                 this.stagePluginsDependenciesOptions.push({
                     plugin_object_id: this.updateObjectId(plugin.object_id),
                     selection_type: plugin.dependencies[0]?.selection_type || 'Single',
@@ -443,7 +455,6 @@ export default {
             });
 
             await Promise.all(dependencyPromises);
-            console.log(this.stagePluginsDependenciesOptions);
 
 			if (this.pipelineId) {
 				this.loadingStatusText = `Retrieving pipeline "${this.pipelineId}"...`;
@@ -455,7 +466,6 @@ export default {
                 this.selectedDataSourcePlugin = this.dataSourcePluginOptions.find(plugin => this.updateObjectId(plugin.object_id) === this.pipeline.data_source.plugin_object_id);
 
                 this.handleNextStages(this.pipeline.starting_stages);
-                console.log(this.selectedStagePlugins);
 
                 // const testGetPlugin = await api.getPlugin('Dotnet-FoundationaLLMDataPipelinePlugins-TokenContentTextPartitioning');
 
@@ -503,94 +513,38 @@ export default {
 		handleDataSourceChange(event: any) {
             // This needs to be updated to handle the data source change
 			const selectedDataSource = this.dataSourceOptions.find(p => p.object_id === event.value.object_id);
-            console.log(this.dataSourceOptions);
-            console.log(event.value);
-            console.log(selectedPlugin);
 			if (selectedDataSource) {
-				// Create a unique name for the data source based on the plugin name
-				const dataSourceName = selectedDataSource.name.split('-').pop() || selectedDataSource.name;
+				this.selectedDataSourcePlugin = null;
 				
 				this.pipeline.data_source = {
 					data_source_object_id: selectedDataSource.object_id,
-					name: dataSourceName,
-					description: selectedDataSource.description,
-					plugin_object_id: selectedDataSource.object_id,
-					plugin_parameters: selectedDataSource.parameters.map(param => ({
-						parameter_metadata: {
-							name: param.name,
-							type: param.type,
-							description: param.description
-						},
-						default_value: param.type === 'array' ? [] : null
-					})),
+					name: '',
+					description: '',
+					plugin_object_id: '',
+					plugin_parameters: [],
 					plugin_dependencies: []
 				};
-
-				// Handle plugin dependencies
-				if (selectedPlugin.dependencies) {
-					selectedPlugin.dependencies.forEach(dep => {
-						if (dep.selection_type === 'Multiple') {
-							// For multiple selection, add all plugins since they're required for file type handling
-							dep.dependency_plugin_names.forEach(pluginName => {
-								this.pipeline.data_source.plugin_dependencies.push({
-									plugin_object_id: pluginName,
-									plugin_parameters: []
-								});
-							});
-						}
-					});
-				}
 			}
 		},
 
+		// handleDataSourcePluginChange(event: any) {
+		// 	if (event.value) {
+		// 		this.pipeline.data_source.plugin_object_id = event.value.object_id;
+		// 	}
+		// },
+
 		handleStagePluginChange(event: any, stageIndex: number) {
-            // console.log(event);
-            // console.log(stageIndex);
             const selectedPlugin = this.stagePluginsOptions.find(p => p.object_id === event.value);
-            // console.log(selectedPlugin);
-            // console.log(this.selectedStagePlugins);
             this.selectedStagePlugins[stageIndex].plugin_object_id = selectedPlugin.object_id;
             this.selectedStagePlugins[stageIndex].plugin_parameters = selectedPlugin.parameters.map(param => ({
                 parameter_metadata: param,
                 default_value: null
             }));
             this.selectedStagePlugins[stageIndex].plugin_dependencies = selectedPlugin?.dependencies;
-            // console.log(this.selectedStagePlugins[stageIndex]);
-            
-            
-			// const selectedPlugin = this.stagePluginsOptions.find(p => p.object_id === event.value);
-			// if (selectedPlugin) {
-			// 	this.pipeline.starting_stages[stageIndex].plugin_object_id = selectedPlugin.object_id;
-			// 	this.pipeline.starting_stages[stageIndex].plugin_parameters = selectedPlugin.parameters.map(param => ({
-			// 		parameter_metadata: param,
-			// 		default_value: null
-			// 	}));
-
-			// 	// Handle plugin dependencies
-			// 	this.pipeline.starting_stages[stageIndex].plugin_dependencies = [];
-			// 	selectedPlugin.dependencies.forEach(dep => {
-			// 		if (dep.selection_type === 'Single') {
-			// 			// Add first plugin as default for single selection
-			// 			this.pipeline.starting_stages[stageIndex].plugin_dependencies.push({
-			// 				plugin_object_id: dep.dependency_plugin_names[0],
-			// 				plugin_parameters: []
-			// 			});
-			// 		} else if (dep.selection_type === 'Multiple') {
-			// 			// For multiple selection, user needs to select which plugins to use
-			// 			dep.dependency_plugin_names.forEach(pluginName => {
-			// 				this.pipeline.starting_stages[stageIndex].plugin_dependencies.push({
-			// 					plugin_object_id: pluginName,
-			// 					plugin_parameters: []
-			// 				});
-			// 			});
-			// 		}
-			// 	});
-			// }
 		},
 
         handleStagePluginDependencyChange(event: any, index: number) {
             const selectedDependency = event.value;
-            console.log(selectedDependency);
             this.selectedStagePlugins[index].plugin_dependencies = [{
                 plugin_object_id: selectedDependency.object_id,
                 plugin_parameters: selectedDependency.parameters.map(param => ({
@@ -598,18 +552,9 @@ export default {
                     default_value: null
                 })),
             }];
-            console.log(this.selectedStagePlugins[index]);
         },
 
 		addStage() {
-			// this.pipeline.starting_stages.push({
-			// 	name: `Stage${this.pipeline.starting_stages.length + 1}`,
-			// 	description: '',
-			// 	plugin_object_id: '',
-			// 	plugin_parameters: null,
-			// 	plugin_dependencies: [],
-			// 	next_stages: []
-			// });
             this.selectedStagePlugins.push({
                 name: `Stage${this.selectedStagePlugins.length + 1}`,
                 description: '',
@@ -621,7 +566,6 @@ export default {
 		},
 
 		removeStage(index: number) {
-			// this.pipeline.starting_stages.splice(index, 1);
             this.selectedStagePlugins.splice(index, 1);
             this.transformPipelineStages();
 		},
@@ -648,7 +592,7 @@ export default {
 		handleNameInput(event: Event) {
 			const sanitizedValue = (this as any).$filters.sanitizeNameInput(event);
 			this.pipeline.name = sanitizedValue;
-			this.pipeline.display_name = sanitizedValue;
+			// this.pipeline.display_name = sanitizedValue;
 
 			if (!this.isEditing && this.debouncedCheckName) {
 				this.debouncedCheckName();
@@ -656,98 +600,12 @@ export default {
 		},
 
 		async handleCreatePipeline() {
-			// const errors: string[] = [];
-			// if (!this.pipeline.name) {
-			// 	errors.push('Please give the pipeline a name.');
-			// }
-			// if (this.nameValidationStatus === 'invalid') {
-			// 	errors.push(this.validationMessage || 'Invalid name');
-			// }
-			// if (!this.selectedDataSource) {
-			// 	errors.push('Please select a data source.');
-			// }
-			// if (this.pipeline.starting_stages.length === 0) {
-			// 	errors.push('Please add at least one stage to the pipeline.');
-			// }
-
-			// if (errors.length > 0) {
-			// 	(this as any).$toast.add({
-			// 		severity: 'error',
-			// 		detail: errors.join('\n'),
-			// 		life: 5000,
-			// 	});
-
-			// 	return;
-			// }
-
-			// // Add trigger
-			// this.pipeline.triggers = [{
-			// 	name: 'Default pipeline schedule',
-			// 	trigger_type: this.selectedTriggerType,
-			// 	trigger_cron_schedule: this.cronSchedule,
-			// 	parameter_values: this.buildParameterValues()
-			// }];
-
-			// this.loading = true;
-			// let successMessage = null as null | string;
-			// try {
-			// 	this.loadingStatusText = 'Saving pipeline...';
-			// 	await api.createPipeline(this.pipeline);
-			// 	successMessage = `Pipeline "${this.pipeline.name}" was successfully saved.`;
-			// } catch (error: any) {
-			// 	this.loading = false;
-			// 	return (this as any).$toast.add({
-			// 		severity: 'error',
-			// 		detail: error?.response?._data || error,
-			// 		life: 5000,
-			// 	});
-			// }
-
-			// (this as any).$toast.add({
-			// 	severity: 'success',
-			// 	detail: successMessage,
-			// 	life: 5000,
-			// });
-
-			// this.loading = false;
-
-			// if (!this.editId) {
-			// 	(this as any).$router.push('/pipelines');
-			// }
+			console.log(this.pipeline);
+			console.log(this.selectedStagePlugins);
+			console.log(this.triggerParameters);
+			console.log(this.selectedDataSourcePlugin);
+			console.log(this.selectedDataSource);
 		},
-
-		// buildParameterValues(): Record<string, any> {
-		// 	const parameterValues: Record<string, any> = {};
-
-		// 	// Add data source parameters
-		// 	if (this.pipeline.data_source.plugin_parameters) {
-		// 		this.pipeline.data_source.plugin_parameters.forEach(param => {
-		// 			const key = `DataSource.${this.pipeline.data_source.name}.${param.parameter_metadata.name}`;
-		// 			parameterValues[key] = param.default_value;
-		// 		});
-		// 	}
-
-		// 	// Add stage parameters
-		// 	this.pipeline.starting_stages.forEach(stage => {
-		// 		if (stage.plugin_parameters) {
-		// 			stage.plugin_parameters.forEach(param => {
-		// 				const key = `Stage.${stage.name}.${param.parameter_metadata.name}`;
-		// 				parameterValues[key] = param.default_value;
-		// 			});
-		// 		}
-
-		// 		// Add dependency parameters
-		// 		stage.plugin_dependencies.forEach(dep => {
-		// 			dep.plugin_parameters.forEach(param => {
-		// 				const depPluginName = dep.plugin_object_id.split('/').pop() || '';
-		// 				const key = `Stage.${stage.name}.Dependency.${depPluginName}.${param.parameter_metadata.name}`;
-		// 				parameterValues[key] = param.default_value;
-		// 			});
-		// 		});
-		// 	});
-
-		// 	return parameterValues;
-		// },
 
         updateObjectId(objectId: string): string {
 			// Extract the plugin name from the object_id
@@ -762,7 +620,6 @@ export default {
 
         handleNextStages(stages: PipelineStage[]) {
             stages.forEach(stage => {
-                // console.log(this.selectedStagePlugins);
                 this.selectedStagePlugins.push({
                     name: stage.name,
                     description: stage.description,
@@ -813,18 +670,20 @@ export default {
                     }
 
                     // Dependency Plugin Parameters
-                    stage.plugin_dependencies.forEach(dep => {
-                        dep.plugin_parameters.forEach((param: any) => {
+					if (stage.plugin_dependencies) {
+						stage.plugin_dependencies.forEach(dep => {
+							dep.plugin_parameters.forEach((param: any) => {
                             const depPluginName = dep.plugin_object_id.split('/').pop() || '';
                             const key = `Stage.${stage.name}.Dependency.${depPluginName}.${param.parameter_metadata.name}`;
                             const value = existingTriggerParameters[key] !== undefined ? existingTriggerParameters[key] : param.default_value;
                             parameterValues.push({
                                 parameter_metadata: param.parameter_metadata,
-                                key: key,
-                                value: value
-                            });
-                        });
-                    });
+									key: key,
+									value: value
+								});
+							});
+						});
+					}
 
                     // Handle next stages recursively
                     if (stage.next_stages) {
@@ -833,15 +692,25 @@ export default {
                 });
             }
 
-            console.log(parameterValues);
-
             // Start with the initial stages
             handleStages(this.pipeline.starting_stages);
 
             this.triggerParameters = parameterValues;
+        },
 
-            console.log(this.triggerParameters);
-        }
+        handleDragStart(index: number) {
+            this.draggedStageIndex = index;
+        },
+
+        handleDrop(index: number) {
+            if (this.draggedStageIndex !== null) {
+                const draggedStage = this.selectedStagePlugins[this.draggedStageIndex];
+                this.selectedStagePlugins.splice(this.draggedStageIndex, 1);
+                this.selectedStagePlugins.splice(index, 0, draggedStage);
+                this.draggedStageIndex = null;
+                this.transformPipelineStages();
+            }
+        },
 	},
 };
 </script>
