@@ -386,7 +386,7 @@ export default {
 		selectedDataSourcePlugin: {
 			handler(newVal) {
 				if (newVal) {
-					this.pipeline.data_source.plugin_object_id = this.updateObjectId(newVal.object_id);
+					this.pipeline.data_source.plugin_object_id = newVal.object_id;
 					this.pipeline.data_source.plugin_parameters = newVal.parameters.map(param => ({
 						parameter_metadata: {
 							name: param.name,
@@ -499,9 +499,9 @@ export default {
 
 			// Load stage plugins
 			const stagePluginsResponse = await api.filterPlugins(['Data Pipeline Stage']);
-			this.stagePluginsOptions = stagePluginsResponse.map(result => ({
+			this.stagePluginsOptions = stagePluginsResponse.map((result: any) => ({
 				...result,
-				object_id: this.updateObjectId(result.object_id)
+				object_id: result.object_id
 			}));
 			this.stagePluginsOptions.forEach(plugin => {
 				this.buildStagePluginResourceOptions(plugin);
@@ -514,7 +514,7 @@ export default {
 
 				this.selectedDataSource = this.dataSourceOptions.find(option => option.object_id === `/${this.pipeline.data_source.data_source_object_id}`);
 
-                this.selectedDataSourcePlugin = this.dataSourcePluginOptions.find(plugin => this.updateObjectId(plugin.object_id) === this.pipeline.data_source.plugin_object_id);
+                this.selectedDataSourcePlugin = this.dataSourcePluginOptions.find(plugin => plugin.object_id === this.pipeline.data_source.plugin_object_id);
 
                 this.handleNextStages(this.pipeline.starting_stages);
 
@@ -672,17 +672,6 @@ export default {
 				console.error('Error saving pipeline:', error);
 				this.$toast.add({ severity: 'error', detail: 'Error saving pipeline. Please try again.', life: 5000 });
 			}
-		},
-
-        updateObjectId(objectId: string): string {
-			// Extract the plugin name from the object_id
-			let parts = objectId.split('/');
-            const pluginName = parts[parts.length - 1];
-            const newPluginName = pluginName.split('-').pop() || pluginName;
-            parts[parts.length - 1] = newPluginName;
-
-            const newObjectId = parts.join('/');
-			return newObjectId;
 		},
 
         handleNextStages(stages: any[]) {
@@ -848,12 +837,12 @@ export default {
 				});
 
 				this.stagePluginsDependenciesOptions.push({
-					plugin_object_id: this.updateObjectId(plugin.object_id),
+					plugin_object_id: plugin.object_id,
 					selection_type: plugin.dependencies[0]?.selection_type || 'Single',
 					dependencyInfo: resolvedDependencies.map(dep => ({
 						dependencyLabel: dep.display_name,
 						dependencies: {
-							plugin_object_id: this.updateObjectId(dep.object_id),
+							plugin_object_id: dep.object_id,
 							plugin_parameters: dep.parameters.map(param => ({
 								parameter_metadata: param,
 								default_value: null
@@ -870,9 +859,9 @@ export default {
 				return this.resourceOptionsCache[cacheKey];
 			}
 
-			const dataSourcePlugin = this.dataSourcePluginOptions.find(plugin => this.updateObjectId(plugin.object_id) === pluginObjectId);
-			const stagePlugin = this.stagePluginsOptions.find(plugin => this.updateObjectId(plugin.object_id) === pluginObjectId);
-			const dependency = this.resolvedDependencies.find(dep => this.updateObjectId(dep.object_id) === this.updateObjectId(pluginObjectId));
+			const dataSourcePlugin = this.dataSourcePluginOptions.find(plugin => plugin.object_id === pluginObjectId);
+			const stagePlugin = this.stagePluginsOptions.find(plugin => plugin.object_id === pluginObjectId);
+			const dependency = this.resolvedDependencies.find(dep => dep.object_id === pluginObjectId);
 
 			if (stagePlugin || dependency || dataSourcePlugin) {
 				const hints = stagePlugin?.parameter_selection_hints[paramName] || dependency?.parameter_selection_hints[paramName] || dataSourcePlugin?.parameter_selection_hints[paramName];
