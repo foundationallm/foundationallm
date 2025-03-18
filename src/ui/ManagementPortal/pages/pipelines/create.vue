@@ -385,7 +385,6 @@ export default {
         },
 		selectedDataSourcePlugin: {
 			handler(newVal) {
-				console.log(newVal);
 				if (newVal) {
 					this.pipeline.data_source.plugin_object_id = this.updateObjectId(newVal.object_id);
 					this.pipeline.data_source.plugin_parameters = newVal.parameters.map(param => ({
@@ -411,7 +410,6 @@ export default {
 		},
         selectedStagePlugins: {
             handler(newVal) {
-                console.log(newVal);
                 this.transformPipelineStages();
                 this.buildTriggerParameters();
 				newVal.forEach(stage => {
@@ -444,8 +442,6 @@ export default {
             stagePluginsDependenciesOptions: [] as any[],
 			resolvedDependencies: [] as any[],
 			stagePluginDependencyResourceOptions: [] as any[],
-			// selectedTriggerType: 'Schedule' as string,
-			// cronSchedule: '0 6 * * *' as string,
 
 			triggerTypeOptions: [
 				{ label: 'Schedule', value: 'Schedule' },
@@ -572,12 +568,6 @@ export default {
 				};
 			}
 		},
-
-		// handleDataSourcePluginChange(event: any) {
-		// 	if (event.value) {
-		// 		this.pipeline.data_source.plugin_object_id = event.value.object_id;
-		// 	}
-		// },
 
 		handleStagePluginChange(event: any, stageIndex: number) {
             const selectedPlugin = this.stagePluginsOptions.find(p => p.object_id === event.value);
@@ -712,7 +702,6 @@ export default {
         },
 
 		async buildStagePluginResourceOptions(plugin: any) {	
-			console.log(plugin);
 			if (this.stagePluginResourceOptions.find(p => p.parameter_metadata.name === plugin.name)) {
 				return;
 			}
@@ -721,15 +710,12 @@ export default {
 				parameter_selection_hints_options: [],
 			})));
 			this.stagePluginResourceOptions = this.stagePluginResourceOptions.flat();
-			console.log(this.stagePluginResourceOptions);
 			this.stagePluginResourceOptions.forEach(async (param: any) => {
 				param.parameter_selection_hints_options = await this.getResourceOptions(param.parameter_metadata.name, plugin.object_id);
 			});
-			console.log(this.stagePluginResourceOptions);
 		},
 
 		async buildStagePluginDependencyResourceOptions(plugin: any) {
-			console.log(plugin);
 			if (this.stagePluginDependencyResourceOptions.find(p => p.parameter_metadata.name === plugin.name)) {
 				return;
 			}
@@ -738,7 +724,6 @@ export default {
 				parameter_selection_hints_options: [],
 			})));
 			this.stagePluginDependencyResourceOptions = this.stagePluginDependencyResourceOptions.flat();
-			console.log(this.stagePluginDependencyResourceOptions);
 			this.stagePluginDependencyResourceOptions.forEach(async (param: any) => {
 				param.parameter_selection_hints_options = await this.getResourceOptions(param.parameter_metadata.name, plugin.object_id);
 			});
@@ -850,7 +835,6 @@ export default {
 
 		async loadStagePluginDependencies(pluginObjectId: string) {
 			const plugin = this.stagePluginsOptions.find(p => p.object_id === pluginObjectId);
-			console.log(plugin);
 			if (plugin && plugin.dependencies.length > 0) {
 				const dependencies = plugin.dependencies[0]?.dependency_plugin_names || [];
 				const dependencyPluginPromises = dependencies.map(async (dependency: string) => {
@@ -886,7 +870,6 @@ export default {
 				return this.resourceOptionsCache[cacheKey];
 			}
 
-			console.log("Getting resource options for", paramName, pluginObjectId);
 			const dataSourcePlugin = this.dataSourcePluginOptions.find(plugin => this.updateObjectId(plugin.object_id) === pluginObjectId);
 			const stagePlugin = this.stagePluginsOptions.find(plugin => this.updateObjectId(plugin.object_id) === pluginObjectId);
 			const dependency = this.resolvedDependencies.find(dep => this.updateObjectId(dep.object_id) === this.updateObjectId(pluginObjectId));
@@ -894,10 +877,8 @@ export default {
 			if (stagePlugin || dependency || dataSourcePlugin) {
 				const hints = stagePlugin?.parameter_selection_hints[paramName] || dependency?.parameter_selection_hints[paramName] || dataSourcePlugin?.parameter_selection_hints[paramName];
 				if (!hints) return [];
-				console.log(hints);
 				try {
 					const response = await api.filterResources(hints.resourcePath, hints.filterActionPayload);
-					console.log(response);
 					let options;
 					if (hints.filterActionPayload === null) {
 						options = response.map(resource => ({
