@@ -1,6 +1,6 @@
 <template>
 	<Dialog :visible="visible" modal :header="title" :style="{ minWidth: '50%' }" :closable="false">
-		<!-- Property name -->
+		 <!-- Property name -->
 		<div class="mb-1">Property Key:</div>
 		<InputText v-model="propertyKey" type="text" placeholder="Property Key" />
 
@@ -28,9 +28,9 @@
 		<!-- Number -->
 		<InputNumber
 			v-if="propertyType === 'number'"
-			:minFractionDigits="0"
-			:maxFractionDigits="6"
 			v-model="propertyValue"
+			:min-fraction-digits="0"
+			:max-fraction-digits="6"
 			placeholder="Property Value"
 		/>
 
@@ -151,6 +151,8 @@ export default {
 			}
 		},
 	},
+
+	emits: ['update:modelValue', 'update:visible'],
 
 	methods: {
 		handleSave() {
