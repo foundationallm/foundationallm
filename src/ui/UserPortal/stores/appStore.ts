@@ -478,7 +478,7 @@ export const useAppStore = defineStore('app', {
 
 			if (message.status === 'Completed') {
 				// The endpoint likely returned the final message, so we can update the last message in the list.
-				let completedMessage = message.result as Message;
+				const completedMessage = message.result as Message;
 				// Replace the last message with the completed message.
 				this.currentMessages[this.currentMessages.length - 1] = completedMessage;
 				this.calculateMessageProcessingTime();
