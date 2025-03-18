@@ -13,8 +13,8 @@
 			:value="agents"
 			striped-rows
 			scrollable
-			sortField="resource.name"
-			:sortOrder="1"
+			sort-field="resource.name"
+			:sort-order="1"
 			table-style="max-width: 100%"
 			size="small"
 		>
@@ -189,10 +189,10 @@
 		<!-- Delete agent dialog -->
 		<Dialog
 			:visible="agentToDelete !== null"
-			modal
-			v-focustrap
-			header="Delete Agent"
 			:closable="false"
+			v-focustrap
+			modal
+			header="Delete Agent"
 		>
 			<p>Do you want to delete the agent "{{ agentToDelete.name }}" ?</p>
 			<template #footer>
@@ -204,10 +204,10 @@
 		<!-- Set default agent dialog -->
 		<Dialog
 			:visible="agentToSetAsDefault !== null"
-			modal
-			v-focustrap
-			header="Set Default Agent"
 			:closable="false"
+			v-focustrap
+			modal
+			header="Set Default Agent"
 		>
 			<p>
 				Do you want to set the "{{ agentToSetAsDefault.name }}" agent as default?<br />Default
@@ -228,6 +228,8 @@ import type { Agent, ResourceProviderGetResult, ResourceProviderActionResult } f
 export default {
 	name: 'AgentsList',
 
+	emits: ['refresh-agents'],
+
 	props: {
 		agents: {
 			type: Array as () => ResourceProviderGetResult<Agent>[],
@@ -243,12 +245,6 @@ export default {
 		},
 	},
 
-	computed: {
-		columnStyle() {
-			return window.innerWidth <= 768 ? {} : { minWidth: '200px' };
-		},
-	},
-
 	data() {
 		return {
 			agentToDelete: null as Agent | null,
@@ -256,12 +252,18 @@ export default {
 		};
 	},
 
+	computed: {
+		columnStyle() {
+			return window.innerWidth <= 768 ? {} : { minWidth: '200px' };
+		},
+	},
+
 	methods: {
 		async handleDeleteAgent() {
 			try {
 				await api.deleteAgent(this.agentToDelete!.name);
 				this.agentToDelete = null;
-				this.$emit('refreshAgents');
+				this.$emit('refresh-agents');
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',
@@ -273,7 +275,7 @@ export default {
 
 		async handleSetDefaultAgent() {
 			try {
-				let result: ResourceProviderActionResult = await api.setDefaultAgent(
+				const result: ResourceProviderActionResult = await api.setDefaultAgent(
 					this.agentToSetAsDefault!.name,
 				);
 				if (result.isSuccessResult) {
@@ -290,7 +292,7 @@ export default {
 					});
 				}
 				this.agentToSetAsDefault = null;
-				this.$emit('refreshAgents');
+				this.$emit('refresh-agents');
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',

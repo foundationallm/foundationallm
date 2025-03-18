@@ -7,7 +7,7 @@
 			:agents="agents"
 			:loading="loading"
 			:loadingStatusText="loadingStatusText"
-			@refreshAgents="getAgents"
+			@refresh-agents="getAgents"
 		/>
 	</main>
 </template>
