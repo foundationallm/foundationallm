@@ -30,8 +30,8 @@
 				:value="dataSources"
 				striped-rows
 				scrollable
-				sortField="resource.name"
-				:sortOrder="1"
+				:sort-field="resource.name"
+				:sort-order="1"
 				table-style="max-width: 100%"
 				size="small"
 			>
@@ -132,8 +132,8 @@
 		<!-- Delete agent dialog -->
 		<Dialog
 			:visible="dataSourceToDelete !== null"
-			modal
 			v-focustrap
+			modal
 			header="Delete Data Source"
 			:closable="false"
 		>
