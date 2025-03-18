@@ -101,6 +101,7 @@
                         class="w-100"
                         placeholder="Enter a name for the data source"
                         aria-labelledby="aria-data-source-name"
+						@input="handleDataSourceNameInput"
                     />
                 </div>
 
@@ -131,7 +132,7 @@
                 <div class="input-wrapper">
                     <div v-for="(param, index) in selectedDataSourcePlugin?.parameters" :key="index" style="width: 100%;">
                         <label>{{ param.name }}:</label>
-                        <template v-if="param.type === 'string' || param.type === 'int' || param.type === 'float' || param.type === 'datetime' || param.type === 'resource-object-id'">
+                        <template v-if="param.type === 'string' || param.type === 'int' || param.type === 'float' || param.type === 'datetime'">
                             <InputText v-model="param.default_value" style="width: 100%;" />
                         </template>
                         <template v-else-if="param.type === 'bool'">
@@ -139,6 +140,16 @@
                         </template>
                         <template v-else-if="param.type === 'array'">
                             <Chips v-model="param.default_value" style="width: 100%;" placeholder="Enter values separated by commas" separator="," ></Chips>
+                        </template>
+                        <template v-else-if="param.type === 'resource-object-id'">
+                            <Dropdown
+                                v-model="param.default_value"
+                                :options="param.parameter_metadata.parameter_selection_hints_options"
+                                option-label="display_name"
+                                option-value="value"
+                                class="w-100"
+                                placeholder="Select a resource"
+                            />
                         </template>
                     </div>
                 </div>
@@ -160,7 +171,7 @@
 						<div class="stage-header">
 							<div class="mb-2">
 								<label>Stage Name:</label>
-								<InputText v-model="stage.name" class="w-100" />
+								<InputText v-model="stage.name" class="w-100" @input="handleStageNameInput($event, index)" />
 							</div>
 							<Button icon="pi pi-trash" severity="danger" @click="removeStage(index)" />
 						</div>
@@ -186,7 +197,7 @@
 								<div v-for="(param, paramIndex) in stage.plugin_parameters" :key="paramIndex" class="parameter-item">
 									<label>{{ param.parameter_metadata.name }}:</label>
 									<div style="font-size: 12px; color: #666;">{{ param.parameter_metadata.description }}</div>
-									<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource-object-id'">
+									<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime'">
 										<InputText v-model="param.default_value" style="width: 100%;" />
 									</template>
 									<template v-else-if="param.parameter_metadata.type === 'bool'">
@@ -194,6 +205,16 @@
 									</template>
 									<template v-else-if="param.parameter_metadata.type === 'array'">
 										<Chips v-model="param.default_value" style="width: 100%;" placeholder="Enter values separated by commas" separator="," ></Chips>
+									</template>
+									<template v-else-if="param.parameter_metadata.type === 'resource-object-id'">
+										<Dropdown
+											v-model="param.default_value"
+											:options="stagePluginResourceOptions.find(p => p.parameter_metadata.name === param.parameter_metadata.name)?.parameter_selection_hints_options || []"
+											option-label="display_name"
+											option-value="value"
+											class="w-100"
+											placeholder="Select a resource"
+										/>
 									</template>
 								</div>
 							</div>
@@ -213,7 +234,7 @@
 								<div v-for="(param, paramIndex) in stage?.plugin_dependencies[0]?.plugin_parameters" :key="paramIndex" class="parameter-item">
 									<label>{{ param.parameter_metadata.name }}:</label>
 									<div style="font-size: 12px; color: #666;">{{ param.parameter_metadata.description }}</div>
-									<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource-object-id'">
+									<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime'">
 										<InputText v-model="param.default_value" class="w-100" />
 									</template>
 									<template v-else-if="param.parameter_metadata.type === 'bool'">
@@ -221,6 +242,16 @@
 									</template>
 									<template v-else-if="param.parameter_metadata.type === 'array'">
 										<Chips v-model="param.default_value" style="width: 100%;" placeholder="Enter values separated by commas" separator="," ></Chips>
+									</template>
+									<template v-else-if="param.parameter_metadata.type === 'resource-object-id'">
+										<Dropdown
+											v-model="param.default_value"
+											:options="stagePluginDependencyResourceOptions.find(p => p.parameter_metadata.name === param.parameter_metadata.name)?.parameter_selection_hints_options || []"
+											option-label="display_name"
+											option-value="value"
+											class="w-100"
+											placeholder="Select a resource"
+										/>
 									</template>
 								</div>
 							</div>
@@ -261,7 +292,7 @@
 							<div v-for="(param, index) in triggerParameters" :key="index" class="mb-2">
 								<label>{{ param.parameter_metadata.name }}:</label>
 								<div style="font-size: 12px; color: #666;">{{ param.parameter_metadata.description }}</div>
-								<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime' || param.parameter_metadata.type === 'resource-object-id'">
+								<template v-if="param.parameter_metadata.type === 'string' || param.parameter_metadata.type === 'int' || param.parameter_metadata.type === 'float' || param.parameter_metadata.type === 'datetime'">
 									<InputText v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]" class="w-100" />
 								</template>
 								<template v-else-if="param.parameter_metadata.type === 'bool'">
@@ -269,6 +300,16 @@
 								</template>
 								<template v-else-if="param.parameter_metadata.type === 'array'">
 									<Chips v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]" style="width: 100%;" placeholder="Enter values separated by commas" separator="," ></Chips>
+								</template>
+								<template v-else-if="param.parameter_metadata.type === 'resource-object-id'">
+									<Dropdown
+										v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
+										:options="param.resourceOptions"
+										option-label="display_name"
+										option-value="value"
+										class="w-100"
+										placeholder="Select a resource"
+									/>
 								</template>
 							</div>
 						</div>
@@ -345,6 +386,14 @@ export default {
 						},
 						default_value: param.default_value
 					}));
+					if (newVal.parameter_selection_hints) {
+						Object.entries(newVal.parameter_selection_hints).forEach(([key, value]) => {
+							const parameter = this.selectedDataSourcePlugin.parameters.find(param => param.name === key);
+							if (parameter) {
+								parameter.parameter_selection_hints_options = this.getResourceOptions(key, this.selectedDataSourcePlugin.object_id);
+							}
+						});
+					}
 				}
 				this.buildTriggerParameters();
 			},
@@ -355,6 +404,9 @@ export default {
                 console.log(newVal);
                 this.transformPipelineStages();
                 this.buildTriggerParameters();
+				newVal.forEach(stage => {
+					this.loadStagePluginDependencies(stage.plugin_object_id);
+				});
             },
             deep: true
         }
@@ -377,8 +429,11 @@ export default {
             
 			stagePluginsOptions: [] as any[],
             selectedStagePlugins: [] as any[],
-            stagePluginsDependenciesOptions: [] as any[],
+			stagePluginResourceOptions: [] as any[],
 
+            stagePluginsDependenciesOptions: [] as any[],
+			resolvedDependencies: [] as any[],
+			stagePluginDependencyResourceOptions: [] as any[],
 			// selectedTriggerType: 'Schedule' as string,
 			// cronSchedule: '0 6 * * *' as string,
 
@@ -419,6 +474,8 @@ export default {
 
 			debouncedCheckName: null as (() => void) | null,
 			draggedStageIndex: null as number | null,
+			resourceOptions: [] as any[],
+			resourceOptionsCache: {} as Record<string, any[]>, // Cache for resource options
 		};
 	},
 
@@ -440,32 +497,9 @@ export default {
 				...result,
 				object_id: this.updateObjectId(result.object_id)
 			}));
-			console.log(this.stagePluginsOptions);
-
-            // const dependencyPromises = this.stagePluginsOptions.map(async (plugin) => {
-            //     const dependencies = plugin.dependencies[0]?.dependency_plugin_names || [];
-            //     const dependencyPluginPromises = dependencies.map(async (dependency: string) => {
-            //         const dependencyPlugin = await api.getPlugin(dependency);
-            //         return dependencyPlugin[0].resource;
-            //     });
-            //     const resolvedDependencies = await Promise.all(dependencyPluginPromises);
-            //     this.stagePluginsDependenciesOptions.push({
-            //         plugin_object_id: this.updateObjectId(plugin.object_id),
-            //         selection_type: plugin.dependencies[0]?.selection_type || 'Single',
-            //         dependencyInfo: resolvedDependencies.map(dep => ({
-            //             dependencyLabel: dep.display_name,
-            //             dependencies: {
-            //                 plugin_object_id: this.updateObjectId(dep.object_id),
-            //                 plugin_parameters: dep.parameters.map(param => ({
-            //                     parameter_metadata: param,
-            //                     default_value: null
-            //                 }))
-            //             },
-            //         }))
-            //     });
-            // });
-
-            // await Promise.all(dependencyPromises);
+			this.stagePluginsOptions.forEach(plugin => {
+				this.buildStagePluginResourceOptions(plugin);
+			});
 
 			if (this.pipelineId) {
 				this.loadingStatusText = `Retrieving pipeline "${this.pipelineId}"...`;
@@ -477,15 +511,6 @@ export default {
                 this.selectedDataSourcePlugin = this.dataSourcePluginOptions.find(plugin => this.updateObjectId(plugin.object_id) === this.pipeline.data_source.plugin_object_id);
 
                 this.handleNextStages(this.pipeline.starting_stages);
-
-                // const testGetPlugin = await api.getPlugin('Dotnet-FoundationaLLMDataPipelinePlugins-TokenContentTextPartitioning');
-
-				// Set trigger values if they exist
-				// if (this.pipeline.triggers.length > 0) {
-				// 	const trigger = this.pipeline.triggers[0];
-				// 	this.selectedTriggerType = trigger.trigger_type;
-				// 	this.cronSchedule = trigger.trigger_cron_schedule;
-				// }
 
                 this.buildTriggerParameters();
 			}
@@ -545,11 +570,6 @@ export default {
 		// },
 
 		handleStagePluginChange(event: any, stageIndex: number) {
-			console.log(event.value);
-			console.log(stageIndex);
-			console.log(this.stagePluginsOptions);
-			console.log(this.selectedStagePlugins);
-			console.log(this.stagePluginsDependenciesOptions);
             const selectedPlugin = this.stagePluginsOptions.find(p => p.object_id === event.value);
             this.selectedStagePlugins[stageIndex].plugin_object_id = selectedPlugin.object_id;
             this.selectedStagePlugins[stageIndex].plugin_parameters = selectedPlugin.parameters.map(param => ({
@@ -587,14 +607,12 @@ export default {
 		},
 
         transformPipelineStages() {
-			console.log(this.selectedStagePlugins);
             let nested = this.selectedStagePlugins.reduceRight((acc, stage) => {
                 return [{ 
                     ...stage, 
                     next_stages: acc 
                 }];
             }, []);
-			console.log(nested);
 
             this.pipeline.starting_stages = nested;
         },
@@ -617,12 +635,24 @@ export default {
 			}
 		},
 
+		handleDataSourceNameInput(event: Event) {
+			const sanitizedValue = (this as any).$filters.sanitizeNameInput(event);
+			this.pipeline.data_source.name = sanitizedValue;
+		},
+
+		handleStageNameInput(event: Event, index: number) {
+			const sanitizedValue = (this as any).$filters.sanitizeNameInput(event);
+			this.selectedStagePlugins[index].name = sanitizedValue;
+		},
+
 		async handleCreatePipeline() {
 			console.log(this.pipeline);
 			console.log(this.selectedStagePlugins);
 			console.log(this.triggerParameters);
 			console.log(this.selectedDataSourcePlugin);
 			console.log(this.selectedDataSource);
+			console.log(this.stagePluginsOptions);
+			console.log(this.resolvedDependencies);
 		},
 
         updateObjectId(objectId: string): string {
@@ -652,71 +682,108 @@ export default {
             });
         },
 
-        buildTriggerParameters() {
+		async buildStagePluginResourceOptions(plugin: any) {	
+			console.log(plugin);
+			if (this.stagePluginResourceOptions.find(p => p.parameter_metadata.name === plugin.name)) {
+				return;
+			}
+			this.stagePluginResourceOptions.push(plugin.parameters.map(param => ({
+				parameter_metadata: param,
+				parameter_selection_hints_options: [],
+			})));
+			this.stagePluginResourceOptions = this.stagePluginResourceOptions.flat();
+			console.log(this.stagePluginResourceOptions);
+			this.stagePluginResourceOptions.forEach(async (param: any) => {
+				param.parameter_selection_hints_options = await this.getResourceOptions(param.parameter_metadata.name, plugin.object_id);
+			});
+			console.log(this.stagePluginResourceOptions);
+		},
+
+		async buildStagePluginDependencyResourceOptions(plugin: any) {
+			console.log(plugin);
+			if (this.stagePluginDependencyResourceOptions.find(p => p.parameter_metadata.name === plugin.name)) {
+				return;
+			}
+			this.stagePluginDependencyResourceOptions.push(plugin.parameters.map(dep => ({
+				parameter_metadata: dep,
+				parameter_selection_hints_options: [],
+			})));
+			this.stagePluginDependencyResourceOptions = this.stagePluginDependencyResourceOptions.flat();
+			console.log(this.stagePluginDependencyResourceOptions);
+			this.stagePluginDependencyResourceOptions.forEach(async (param: any) => {
+				param.parameter_selection_hints_options = await this.getResourceOptions(param.parameter_metadata.name, plugin.object_id);
+			});
+		},
+
+        async buildTriggerParameters() {
             const parameterValues: any[] = [];
 
             // Check if there are existing trigger parameters
             const existingTriggerParameters = this.pipeline.triggers.length > 0 ? this.pipeline.triggers[0].parameter_values : {};
 
             // Data Source Parameters
-            this.pipeline.data_source.plugin_parameters.forEach((param: any) => {
+            for (const param of this.pipeline.data_source.plugin_parameters) {
                 const key = `DataSource.${this.pipeline.data_source.name}.${param.parameter_metadata.name}`;
                 const value = existingTriggerParameters[key] !== undefined ? existingTriggerParameters[key] : param.default_value;
-				this.pipeline.triggers.forEach(trigger => {
-					if (!trigger.parameter_values[key]) {
-						trigger.parameter_values[key] = null;
-					}
-				});
+                this.pipeline.triggers.forEach(trigger => {
+                    if (!trigger.parameter_values[key]) {
+                        trigger.parameter_values[key] = null;
+                    }
+                });
+                const resourceOptions = await this.getResourceOptions(param.parameter_metadata.name, this.pipeline.data_source.plugin_object_id);
                 parameterValues.push({
                     parameter_metadata: param.parameter_metadata,
                     key: key,
-                    value: value
-                });
-            });
-
-            // Recursive function to handle stages and their dependencies
-            function handleStages(stages: any[]) {
-                stages.forEach(stage => {
-                    // Stage Parameters
-                    if (stage.plugin_parameters) {
-                        stage.plugin_parameters.forEach((param: any) => {
-                            const key = `Stage.${stage.name}.${param.parameter_metadata.name}`;
-                            const value = existingTriggerParameters[key] !== undefined ? existingTriggerParameters[key] : param.default_value;
-                            parameterValues.push({
-                                parameter_metadata: param.parameter_metadata,
-                                key: key,
-                                value: value
-                            });
-                        });
-                    }
-
-                    // Dependency Plugin Parameters
-					if (stage.plugin_dependencies) {
-						stage.plugin_dependencies.forEach(dep => {
-							dep.plugin_parameters.forEach((param: any) => {
-                            const depPluginName = dep.plugin_object_id.split('/').pop() || '';
-                            const key = `Stage.${stage.name}.Dependency.${depPluginName}.${param.parameter_metadata.name}`;
-                            const value = existingTriggerParameters[key] !== undefined ? existingTriggerParameters[key] : param.default_value;
-                            parameterValues.push({
-                                parameter_metadata: param.parameter_metadata,
-									key: key,
-									value: value
-								});
-							});
-						});
-					}
-
-                    // Handle next stages recursively
-                    if (stage.next_stages) {
-                        handleStages(stage.next_stages);
-                    }
+                    value: value,
+                    resourceOptions: resourceOptions
                 });
             }
 
-			console.log(this.pipeline.starting_stages);
+            // Recursive function to handle stages and their dependencies
+            async function handleStages(stages: any[]) {
+                for (const stage of stages) {
+                    // Stage Parameters
+                    if (stage.plugin_parameters) {
+                        for (const param of stage.plugin_parameters) {
+                            const key = `Stage.${stage.name}.${param.parameter_metadata.name}`;
+                            const value = existingTriggerParameters[key] !== undefined ? existingTriggerParameters[key] : param.default_value;
+                            const resourceOptions = await this.getResourceOptions(param.parameter_metadata.name, stage.plugin_object_id);
+                            parameterValues.push({
+                                parameter_metadata: param.parameter_metadata,
+                                key: key,
+                                value: value,
+                                resourceOptions: resourceOptions
+                            });
+                        }
+                    }
+
+                    // Dependency Plugin Parameters
+                    if (stage.plugin_dependencies) {
+                        for (const dep of stage.plugin_dependencies) {
+                            for (const param of dep.plugin_parameters) {
+                                const depPluginName = dep.plugin_object_id.split('/').pop() || '';
+                                const key = `Stage.${stage.name}.Dependency.${depPluginName}.${param.parameter_metadata.name}`;
+                                const value = existingTriggerParameters[key] !== undefined ? existingTriggerParameters[key] : param.default_value;
+                                const resourceOptions = await this.getResourceOptions(param.parameter_metadata.name, dep.plugin_object_id);
+                                parameterValues.push({
+                                    parameter_metadata: param.parameter_metadata,
+                                    key: key,
+                                    value: value,
+                                    resourceOptions: resourceOptions
+                                });
+                            }
+                        }
+                    }
+
+                    // Handle next stages recursively
+                    if (stage.next_stages) {
+                        await handleStages.call(this, stage.next_stages);
+                    }
+                }
+            }
 
             // Start with the initial stages
-            handleStages(this.pipeline.starting_stages);
+            await handleStages.call(this, this.pipeline.starting_stages);
 
             this.triggerParameters = parameterValues;
         },
@@ -754,6 +821,7 @@ export default {
 
 		async loadStagePluginDependencies(pluginObjectId: string) {
 			const plugin = this.stagePluginsOptions.find(p => p.object_id === pluginObjectId);
+			console.log(plugin);
 			if (plugin && plugin.dependencies.length > 0) {
 				const dependencies = plugin.dependencies[0]?.dependency_plugin_names || [];
 				const dependencyPluginPromises = dependencies.map(async (dependency: string) => {
@@ -761,6 +829,11 @@ export default {
 					return dependencyPlugin[0].resource;
 				});
 				const resolvedDependencies = await Promise.all(dependencyPluginPromises);
+				resolvedDependencies.forEach(dep => {
+					this.resolvedDependencies.push(dep);
+					this.buildStagePluginDependencyResourceOptions(dep);
+				});
+
 				this.stagePluginsDependenciesOptions.push({
 					plugin_object_id: this.updateObjectId(plugin.object_id),
 					selection_type: plugin.dependencies[0]?.selection_type || 'Single',
@@ -776,7 +849,57 @@ export default {
 					}))
 				});
 			}
-			console.log(this.stagePluginsDependenciesOptions);
+		},
+
+		async getResourceOptions(paramName: string, pluginObjectId: string) {
+			const cacheKey = `${paramName}-${pluginObjectId}`;
+			if (this.resourceOptionsCache[cacheKey]) {
+				return this.resourceOptionsCache[cacheKey];
+			}
+
+			console.log("Getting resource options for", paramName, pluginObjectId);
+			const dataSourcePlugin = this.dataSourcePluginOptions.find(plugin => this.updateObjectId(plugin.object_id) === pluginObjectId);
+			const stagePlugin = this.stagePluginsOptions.find(plugin => this.updateObjectId(plugin.object_id) === pluginObjectId);
+			const dependency = this.resolvedDependencies.find(dep => this.updateObjectId(dep.object_id) === this.updateObjectId(pluginObjectId));
+
+			if (stagePlugin || dependency || dataSourcePlugin) {
+				const hints = stagePlugin?.parameter_selection_hints[paramName] || dependency?.parameter_selection_hints[paramName] || dataSourcePlugin?.parameter_selection_hints[paramName];
+				if (!hints) return [];
+				console.log(hints);
+				try {
+					const response = await api.filterResources(hints.resourcePath, hints.filterActionPayload);
+					console.log(response);
+					let options;
+					if (hints.filterActionPayload === null) {
+						options = response.map(resource => ({
+							display_name: resource.resource.display_name ?? resource.resource.name,
+							value: resource.resource.object_id
+						}));
+					} else {
+						const filterActionPayload = Object.fromEntries(
+							Object.entries(hints.filterActionPayload).map(([key, value]) => [key.toLowerCase(), value])
+						);
+						const filteredResponse = response.filter((resource: any) => {
+							return Object.keys(filterActionPayload).every(key => {
+								return resource.resource[key] === filterActionPayload[key];
+							});
+						});
+						options = filteredResponse.map(resource => ({
+							display_name: resource.resource.display_name ?? resource.resource.name,
+							value: resource.resource.object_id
+						}));
+					}
+					this.resourceOptionsCache[cacheKey] = options; // Cache the result
+					return options;
+				} catch (error) {
+					console.error('Error fetching resources:', error);
+					return [];
+				}
+			}
+		},
+
+		async updateResourceOptions(paramName: string, pluginObjectId: string) {
+			this.resourceOptions = await this.getResourceOptions(paramName, pluginObjectId);
 		},
 	},
 };

@@ -1251,4 +1251,23 @@ export default {
 			}
 		);
 	},
+
+	// async filterResources(resourcePath: string, filterActionPayload: any): Promise<any> {
+	// 	const data = await this.fetch(
+	// 		`/instances/${this.instanceId}/${resourcePath}?api-version=${this.apiVersion}`,
+	// 		{
+	// 			method: 'POST',
+	// 			body: JSON.stringify(filterActionPayload),
+	// 		},
+	// 	);
+	// 	console.log(data);
+	// 	return data;
+	// },
+
+	async filterResources(resourcePath: string, filterActionPayload: any): Promise<any> {
+		const data = await this.fetch(
+			`/instances/${this.instanceId}/${resourcePath}?api-version=${this.apiVersion}`,
+		);
+		return data;
+	},
 };
