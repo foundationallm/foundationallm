@@ -6,7 +6,7 @@
 		<AgentsList
 			:agents="agents"
 			:loading="loading"
-			:loadingStatusText="loadingStatusText"
+			:loading-status-text="loadingStatusText"
 			@refresh-agents="getAgents"
 		/>
 	</main>
