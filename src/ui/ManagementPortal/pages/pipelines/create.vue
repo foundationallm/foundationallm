@@ -659,13 +659,29 @@ export default {
 		},
 
 		async handleCreatePipeline() {
-			console.log(this.pipeline);
-			console.log(this.selectedStagePlugins);
-			console.log(this.triggerParameters);
-			console.log(this.selectedDataSourcePlugin);
-			console.log(this.selectedDataSource);
-			console.log(this.stagePluginsOptions);
-			console.log(this.resolvedDependencies);
+			const pipeline = {
+				name: this.pipeline.name,
+				type: 'data-pipeline',
+				display_name: this.pipeline.display_name,
+				description: this.pipeline.description,
+				active: false,
+				data_source: this.pipeline.data_source,
+				starting_stages: this.pipeline.starting_stages,
+				triggers: this.pipeline.triggers,
+			}
+			try {
+				if (this.isEditing) {
+					await api.createPipeline(pipeline);
+					this.$toast.add({ severity: 'success', detail: 'Pipeline updated successfully!', life: 3000 });
+				} else {
+					await api.createPipeline(pipeline);
+					this.$toast.add({ severity: 'success', detail: 'Pipeline created successfully!', life: 3000 });
+				}
+				this.$router.push('/pipelines'); // Redirect to the pipelines list
+			} catch (error) {
+				console.error('Error saving pipeline:', error);
+				this.$toast.add({ severity: 'error', detail: 'Error saving pipeline. Please try again.', life: 5000 });
+			}
 		},
 
         updateObjectId(objectId: string): string {
