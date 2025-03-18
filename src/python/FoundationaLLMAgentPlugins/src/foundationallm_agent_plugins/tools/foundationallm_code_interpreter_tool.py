@@ -18,18 +18,46 @@ from foundationallm_agent_plugins.common.constants import CONTENT_ARTIFACT_TYPE_
 
 class FoundationaLLMCodeInterpreterFile(BaseModel):
     """ A file to upload to the code interpreter. """
-    path: str = Field(description="The path to the file.")
-    original_file_name: str = Field(description="The original file name of the file.")
+    path: str = Field(
+        description="The full path to the file in the storage container. Example: 'resource-provider/FoundationaLLM.Attachment/abc123.py'"
+    )
+    original_file_name: str = Field(
+        description="The original name of the file as it should appear in the code interpreter. Example: 'test.py'"
+    )
+    local_file_path: str = Field(
+        description="The local path once the file is uploaded to the code interpreter. This path is in the format '/mnt/data/original_file_name'. Example: '/mnt/data/test.py'"
+    )
 
 class FoundationaLLMCodeInterpreterToolInput(BaseModel):
     """ Input data model for the Code Intepreter tool. """
-    python_code: str = Field(description="The Python code to execute.")
-    files: Optional[List[FoundationaLLMCodeInterpreterFile]] = Field(description="The file paths of the files to upload to the code interpreter. This can be code files or data files.")
+    python_code: str = Field(
+        description="The Python code to execute. This should be the complete code including any file operations."
+    )
+    files: Optional[List[FoundationaLLMCodeInterpreterFile]] = Field(
+        default=None,
+        description="""List of files to upload to the code interpreter. Each file should have:
+        - path: The full path to the file in the storage container
+        - original_file_name: The name the file should have in the code interpreter
+        - local_file_path: The local path once the file is uploaded to the code interpreter. This path is in the format '/mnt/data/original_file_name'. Example: '/mnt/data/test.py'
+        Example:
+        {
+            "python_code": "import pandas as pd\n\ndf = pd.read_csv('/mnt/data/data.csv')",
+            "files": [
+                {
+                    "path": "resource-provider/FoundationaLLM.Attachment/abc123.csv",
+                    "original_file_name": "data.csv",
+                    "local_file_path": "/mnt/data/data.csv"
+                }
+            ]
+        }
+        """
+    )
 
 class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
     """ A tool for executing Python code in a code interpreter. """
     args_schema: Type[BaseModel] = FoundationaLLMCodeInterpreterToolInput
     BLOB_STORAGE_CONTAINER_NAME: ClassVar[str] = "resource-provider"
+    USER_STORAGE_CONTAINER_NAME: ClassVar[str] = "user-storage"
 
     def __init__(self, tool_config: AgentTool, objects: dict, user_identity:UserIdentity, config: Configuration):
         """ Initializes the FoundationaLLMCodeInterpreterTool class with the tool configuration,
@@ -48,21 +76,32 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                 account_name=config.get_value('FoundationaLLM:ResourceProviders:Attachment:Storage:AccountName'),
                 authentication_type="AzureIdentity"
             )
+            self.user_storage_client = BlobStorageManager(
+                container_name=self.USER_STORAGE_CONTAINER_NAME,
+                account_name=config.get_value('FoundationaLLM:ResourceProviders:Attachment:Storage:AccountName'),
+                authentication_type="AzureIdentity"
+            )
         else:
             self.storage_client = BlobStorageManager(
                 container_name=self.BLOB_STORAGE_CONTAINER_NAME,
-                account_name=config.get_value('FoundationaLLM:ResourceProviders:Attachment:Storage:ConnectionString')
-            )        
+                blob_connection_string=config.get_value('FoundationaLLM:ResourceProviders:Attachment:Storage:ConnectionString'),
+                authentication_type="ConnectionString"
+            )    
+            self.user_storage_client = BlobStorageManager(
+                container_name=self.USER_STORAGE_CONTAINER_NAME,
+                blob_connection_string=config.get_value('FoundationaLLM:ResourceProviders:Attachment:Storage:ConnectionString'),
+                authentication_type="ConnectionString"
+            )
     
     def _run(self,                 
-            python_code: str = None,   
-            files: Optional[List[FoundationaLLMCodeInterpreterFile]] = None,
+            python_code: str,
+            files: Optional[List[FoundationaLLMCodeInterpreterFile]],
             run_manager: Optional[CallbackManagerForToolRun] = None
             ) -> str:
         raise ToolException("This tool does not support synchronous execution. Please use the async version of the tool.")
     
     async def _arun(self,                 
-            python_code: str = None,
+            python_code: str,
             files: Optional[List[FoundationaLLMCodeInterpreterFile]] = None,
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
             runnable_config: RunnableConfig = None) -> Tuple[str, List[ContentArtifact]]:
@@ -72,20 +111,36 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         if runnable_config is not None and 'original_user_prompt' in runnable_config['configurable']:        
             original_prompt = runnable_config['configurable']['original_user_prompt']
 
+        content_artifacts = []
         # Upload any files to the code interpreter
         if files:
-            for file in files:  
-                original_file_path = file.path
+            for file in files:              
                 # if the file path begins with the container name, remove it
                 if file.path.startswith(self.BLOB_STORAGE_CONTAINER_NAME):
                     file.path = file.path[len(self.BLOB_STORAGE_CONTAINER_NAME) + 1:]
                 # Get the byte stream of the file through the storage client
                 file_bytes = self.storage_client.read_file_content(file.path, read_into_stream=True)
-                upload_result = self.repl.upload_file(data=file_bytes, remote_file_path=file.original_file_name)
-                # Replace the file path with the remote path in the python code
-                python_code = python_code.replace(original_file_path, upload_result.full_path)
-
+                self.repl.upload_file(data=file_bytes, remote_file_path=file.original_file_name)                
+                
         result = self.repl.invoke(python_code)
+        files_list = self.repl.list_files()
+        if files_list:
+            # Disregard the files in the code interpreter that were uploaded (based on the original file name)
+            generated_files_list = [file for file in files_list if file.filename not in {f.original_file_name for f in (files or [])}]
+            print(f"Generated files in the code interpreter: {generated_files_list}")
+            # Download the files from the code interpreter to the user storage container
+            for generated_file in generated_files_list:
+                file_stream = self.repl.download_file(remote_file_path=generated_file.filename)                
+                # Create path including the user UPN
+                generated_file_storage_path = f"{self.user_identity.upn}/{self.repl.session_id}/{generated_file.filename}"
+                self.user_storage_client.write_file_content(generated_file_storage_path, file_stream)
+                content_artifacts.append(ContentArtifact(
+                    id = self.name,
+                    title = self.name,
+                    type = "file",
+                    source =  generated_file_storage_path,
+                    metadata = {}
+                ))
         response = json.loads(result)
         content = str(response.get('result', '')) or str(response.get('stdout', '')) or str(response.get('stderr', ''))
         content_artifact = ContentArtifact(
@@ -101,4 +156,5 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                 'tool_result': str(response.get('result', ''))
             }
         )
-        return content, [content_artifact]
+        content_artifacts.append(content_artifact)
+        return content, content_artifacts

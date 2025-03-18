@@ -116,23 +116,25 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             *langchain_messages,
             HumanMessage(content=llm_prompt)
         ]
-             
+        messages_with_toolchain = messages.copy()             
         content_artifacts = []
         completion_tokens = 0
         prompt_tokens = 0
         final_response = None
+        max_loops = 10
+        loop_count = 0
 
         with self.tracer.start_as_current_span(f'{self.name}_workflow', kind=SpanKind.INTERNAL):
-            #try:
+            while loop_count < max_loops:
+                loop_count += 1
                 with self.tracer.start_as_current_span(f'{self.name}_workflow_llm_call', kind=SpanKind.INTERNAL):
                     router_start_time = time.time() 
                     llm_bound_tools = self.workflow_llm.bind_tools(self.tools)                   
-                    response = await llm_bound_tools.ainvoke(messages)
+                    response = await llm_bound_tools.ainvoke(messages_with_toolchain)
                     router_end_time = time.time()
                 
                 if response.tool_calls:
-                    # create a deep copy of the messages for tool calling.
-                    messages_with_toolchain = messages.copy()
+                    # create a deep copy of the messages for tool calling.                    
                     messages_with_toolchain.append(AIMessage(content=response.content))
                     for tool_call in response.tool_calls:
                         with self.tracer.start_as_current_span(f'{self.name}_tool_call', kind=SpanKind.INTERNAL) as tool_call_span:
@@ -144,7 +146,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                             ))
                             # Get the tool from the tools list
                             tool = next((t for t in self.tools if t.name == tool_call['name']), None)
-                            if tool:                               
+                            if tool: 
+                                print(f"calling tool: {tool.name} with input: {tool_call}")                              
                                 tool_message = await tool.ainvoke(tool_call)                           
                                 content_artifacts.extend(tool_message.artifact)
                                 # Add tool response as AIMessage
@@ -152,38 +155,50 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                             else:
                                 tool_response = 'Tool not found'
                                 messages_with_toolchain.append(AIMessage(content=tool_response))
-                
-                    with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):                    
-                        final_llm_response = await self.workflow_llm.ainvoke(messages_with_toolchain, tools=None)
-                        completion_tokens += final_llm_response.usage_metadata['input_tokens']
-                        prompt_tokens += final_llm_response.usage_metadata['output_tokens']
-                        final_response = final_llm_response.content
-                
-                workflow_content_artifact = self.__create_workflow_execution_content_artifact(
-                    llm_prompt,
-                    response.content,
-                    response.usage_metadata['input_tokens'],
-                    response.usage_metadata['output_tokens'],
-                    router_end_time - router_start_time)
-                content_artifacts.append(workflow_content_artifact)
-                
-                # Initialize response_content with the result, taking final_response as priority.
-                response_content = OpenAITextMessageContentItem(
-                    value= final_response or response.content,
-                    agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-                )    
 
-                return CompletionResponse(
-                    operation_id=operation_id,
-                    content=[response_content],
-                    content_artifacts=content_artifacts,
-                    user_prompt=llm_prompt,
-                    full_prompt='',
-                    completion_tokens=completion_tokens,
-                    prompt_tokens=prompt_tokens,
-                    total_tokens=prompt_tokens + completion_tokens,
-                    total_cost=0
-                )
+                    # Ask the LLM to verify if the answer is correct if not, loop again with the current messages.
+                    verification_messages = messages_with_toolchain.copy()
+                    verification_messages.append(HumanMessage(content=f'Verify the requirements are met for this request: "{llm_prompt}", use the other messages only for context. If yes, answer with the single word "DONE". If not, generate more detailed instructions to satisfy the request.'))
+                    verification_llm_response = await self.workflow_llm.ainvoke(verification_messages, tools=None)
+                    verification_response = verification_llm_response.content                    
+                    print(f'**Verification response**: {verification_response} Loop count: {loop_count}')
+                    if verification_response.strip().upper() == 'DONE':
+                        break # exit the loop if the requirements are met.
+                    else:
+                        messages_with_toolchain.append(AIMessage(content=verification_response))
+                        continue # loop again if the requirements are not met.
+        
+            with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):                    
+                final_llm_response = await self.workflow_llm.ainvoke(messages_with_toolchain, tools=None)
+                completion_tokens += final_llm_response.usage_metadata['input_tokens']
+                prompt_tokens += final_llm_response.usage_metadata['output_tokens']
+                final_response = final_llm_response.content
+            
+            workflow_content_artifact = self.__create_workflow_execution_content_artifact(
+                llm_prompt,
+                response.content,
+                response.usage_metadata['input_tokens'],
+                response.usage_metadata['output_tokens'],
+                router_end_time - router_start_time)
+            content_artifacts.append(workflow_content_artifact)
+            
+            # Initialize response_content with the result, taking final_response as priority.
+            response_content = OpenAITextMessageContentItem(
+                value= final_response or response.content,
+                agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
+            )    
+
+            return CompletionResponse(
+                operation_id=operation_id,
+                content=[response_content],
+                content_artifacts=content_artifacts,
+                user_prompt=llm_prompt,
+                full_prompt='',
+                completion_tokens=completion_tokens,
+                prompt_tokens=prompt_tokens,
+                total_tokens=prompt_tokens + completion_tokens,
+                total_cost=0
+            )
 
     def __create_workflow_llm(self):
         """ Creates the workflow LLM instance and saves it to self.workflow_llm. """        

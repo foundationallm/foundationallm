@@ -19,9 +19,11 @@ user_prompt = """
 What does this file do?
 
 The following files are available:
-- test.py with the file path "resource-provider/FoundationaLLM.Attachment/a-5351de53-af13-4707-8f95-b6bccb619dc0-638778425064603831.py
+- Original file name: "test.py" with the file path "resource-provider/FoundationaLLM.Attachment/a-5351de53-af13-4707-8f95-b6bccb619dc0-638778425064603831.py
 """
-user_prompt = "Execute the code: print('Hello, world!')"
+user_prompt = "Generate a graph of y=mx+b where m=2 and b=3 and create a PDF with the graph along with text explaining the graph"
+#user_prompt = "Generate a PDF document with the title 'Test' and the content 'This is a test'"
+#user_prompt = "Generate an interactive graph of y=mx+b where m=2 and b=3"
 user_prompt_rewrite = None
 operation_id = str(uuid.uuid4())
 
@@ -66,7 +68,6 @@ workflow = workflow_plugin_manager.create_workflow(
     user_identity,
     config
 )
-
 response = asyncio.run(
     workflow.invoke_async(
         operation_id=operation_id,
