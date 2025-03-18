@@ -96,6 +96,8 @@ export default {
 		},
 	},
 
+	emits: ['update:modelValue', 'update:visible'],
+
 	data() {
 		return {
 			propertyKey: '' as string,
@@ -151,8 +153,6 @@ export default {
 			}
 		},
 	},
-
-	emits: ['update:modelValue', 'update:visible'],
 
 	methods: {
 		handleSave() {
