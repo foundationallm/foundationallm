@@ -66,7 +66,7 @@
 			v-if="showCreateResourceObjectDialog"
 			:visible="showCreateResourceObjectDialog"
 			@update:visible="showCreateResourceObjectDialog = false"
-			@update:modelValue="handleAddToolResource"
+			@update:model-value="handleAddToolResource"
 		/>
 
 		<div class="d-flex justify-content-end mt-4">
@@ -118,7 +118,7 @@ export default {
 		},
 	},
 
-	emits: ['update:modelValue'],
+	emits: ['update:modelValue', 'update:visible'],
 
 	data() {
 		return {
