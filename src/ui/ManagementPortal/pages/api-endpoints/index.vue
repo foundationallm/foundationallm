@@ -164,7 +164,7 @@ export default {
 			this.loading = true;
 			try {
 				const endpoints = await api.getAPIEndpointConfigurations();
-				this.apiEndpoints = endpoints; //.filter(({ resource }) => ['AIModel'].includes(resource.subcategory));
+				this.apiEndpoints = endpoints; // .filter(({ resource }) => ['AIModel'].includes(resource.subcategory));
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',
