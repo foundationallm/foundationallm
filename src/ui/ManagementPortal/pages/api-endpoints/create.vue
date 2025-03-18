@@ -229,7 +229,7 @@
 								v-model="urlExceptionToEdit"
 								:visible="!!urlExceptionToEdit"
 								@update:visible="urlExceptionToEdit = null"
-								@update:modelValue="handleUpdateURLException"
+								@update:model-value="handleUpdateURLException"
 							/>
 						</template>
 					</Column>
@@ -263,7 +263,7 @@
 					v-if="showNewURLExceptionDialog"
 					:visible="!!showNewURLExceptionDialog"
 					@update:visible="showNewURLExceptionDialog = false"
-					@update:modelValue="handleAddNewURLException"
+					@update:model-value="handleAddNewURLException"
 				/>
 			</div>
 
