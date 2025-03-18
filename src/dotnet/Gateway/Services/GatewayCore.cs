@@ -504,7 +504,7 @@ namespace FoundationaLLM.Gateway.Services
 
                 var codeInterpreterToolResources = assistant.Value.ToolResources.CodeInterpreter;
 
-                if (!codeInterpreterToolResources.FileIds.Contains(file))
+                if (codeInterpreterToolResources.FileIds.Contains(file))
                 {
                     codeInterpreterToolResources.FileIds.Remove(file);
                 }

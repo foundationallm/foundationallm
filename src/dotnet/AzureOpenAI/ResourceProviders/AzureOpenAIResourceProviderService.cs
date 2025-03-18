@@ -228,13 +228,18 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
         private async Task<ResourceProviderActionResult<FileContent>> LoadFileContent(AzureOpenAIFileMapping fileMapping)
         {
-            var azureOpenAIClient = new AzureOpenAIClient(new Uri(fileMapping.OpenAIEndpoint), ServiceContext.AzureCredential);
+            // Switched to the less efficient (and not recommended) approach of forcing the creation of
+            // a new TokenCredential object each time we use the Azure OpenAI client SDK.
+            // This is indended to overcome the intermittent issue of 401s due to a potential bug in this SDK.
+            var azureOpenAIClient = new AzureOpenAIClient(
+                new Uri(fileMapping.OpenAIEndpoint),
+                ServiceContext.CreateAzureCredential());
             var fileClient = azureOpenAIClient.GetOpenAIFileClient();
 
             // Retrieve using the OpenAI file ID.           
             var result = await fileClient.DownloadFileAsync(fileMapping!.OpenAIFileId);
 
-            return new ResourceProviderActionResult<FileContent>(true)
+            return new ResourceProviderActionResult<FileContent>(fileMapping.FileObjectId, true)
             {
                 Resource = new()
                 {

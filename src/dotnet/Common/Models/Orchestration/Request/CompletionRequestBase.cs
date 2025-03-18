@@ -43,5 +43,11 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
         /// </summary>
         [JsonPropertyName("message_history")]
         public List<MessageHistoryItem>? MessageHistory { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the file history associated with the completion request.
+        /// </summary>
+        [JsonPropertyName("file_history")]
+        public List<FileHistoryItem> FileHistory { get; set; } = [];
     }
 }

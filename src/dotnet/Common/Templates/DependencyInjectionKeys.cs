@@ -13,6 +13,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
     public static partial class DependencyInjectionKeys
     {        
         /// <summary>
+        /// Dependency injection key used by the FoundationaLLM quota management service.
+        /// </summary>
+        public const string FoundationaLLM_Quota =
+            "FoundationaLLM:Quota";
+        
+        /// <summary>
         /// Dependency injection key used by the FoundationaLLM.AIModel resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_AIModel =
@@ -65,6 +71,30 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_Vectorization_Storage =
             "FoundationaLLM:ResourceProviders:Vectorization:Storage";
+        
+        /// <summary>
+        /// Dependency injection key used by the FoundationaLLM.DataPipeline resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_DataPipeline =
+            "FoundationaLLM:ResourceProviders:DataPipeline";
+        
+        /// <summary>
+        /// Dependency injection key used to inject storage settings for the FoundationaLLM.DataPipeline resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_DataPipeline_Storage =
+            "FoundationaLLM:ResourceProviders:DataPipeline:Storage";
+        
+        /// <summary>
+        /// Dependency injection key used by the FoundationaLLM.Plugin resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Plugin =
+            "FoundationaLLM:ResourceProviders:Plugin";
+        
+        /// <summary>
+        /// Dependency injection key used to inject storage settings for the FoundationaLLM.Plugin resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Plugin_Storage =
+            "FoundationaLLM:ResourceProviders:Plugin:Storage";
         
         /// <summary>
         /// Dependency injection key used to inject the implementation of IIndexingService based on Azure Cosmos DB NoSQL.

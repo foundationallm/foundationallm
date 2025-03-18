@@ -139,7 +139,7 @@
 					}"
 				>
 					<template #body="{ data }">
-						<Button link @click="deletePrivateStorageFile(data.name)">
+						<Button link @click="deletePrivateStorageFile(data.name, data.object_id)">
 							<i class="pi pi-trash" style="font-size: 1.2rem"></i>
 						</Button>
 					</template>
@@ -308,7 +308,7 @@ export default {
 			this.privateStorageDialogOpen = true;
 		},
 
-		async deletePrivateStorageFile(fileName: string) {
+		async deletePrivateStorageFile(fileName: string, fileObjectId: string) {
 			if (!confirm('Are you sure you want to delete this file?')) {
 				return;
 			}
@@ -316,7 +316,9 @@ export default {
 			this.loadingModalStatusText = 'Deleting file...';
 			this.modalLoading = true;
 			await api.deleteFileFromPrivateStorage(this.agentName, fileName);
+			delete this.fileToolAccess[fileObjectId];
 			await this.getPrivateAgentFiles();
+			await this.handleSaveFileToolAccess();
 			this.$toast.add({
 				severity: 'success',
 				summary: 'Success',

@@ -130,6 +130,24 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:Quota:Storage
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Quota:Storage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Blob Storage account used by FoundationaLLM quota management. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_Quota_Storage_AuthenticationType =
+            "FoundationaLLM:Quota:Storage:AuthenticationType";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Quota:Storage:AccountName setting.
+        /// <para>Value description:<br/>The name of the Azure Blob Storage account used by FoundationaLLM quota management.</para>
+        /// </summary>
+        public const string FoundationaLLM_Quota_Storage_AccountName =
+            "FoundationaLLM:Quota:Storage:AccountName";
+
+        #endregion
+
         #region FoundationaLLM:ResourceProviders:AIModel
 
         #endregion
@@ -303,6 +321,50 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_Vectorization_Storage_AccountName =
             "FoundationaLLM:ResourceProviders:Vectorization:Storage:AccountName";
+
+        #endregion
+
+        #region FoundationaLLM:ResourceProviders:DataPipeline
+
+        #endregion
+
+        #region FoundationaLLM:ResourceProviders:DataPipeline:Storage
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:ResourceProviders:DataPipeline:Storage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.DataPipeline resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_DataPipeline_Storage_AuthenticationType =
+            "FoundationaLLM:ResourceProviders:DataPipeline:Storage:AuthenticationType";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:ResourceProviders:DataPipeline:Storage:AccountName setting.
+        /// <para>Value description:<br/>The name of the Azure Blob Storage account used by the FoundationaLLM.DataPipeline resource provider.</para>
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_DataPipeline_Storage_AccountName =
+            "FoundationaLLM:ResourceProviders:DataPipeline:Storage:AccountName";
+
+        #endregion
+
+        #region FoundationaLLM:ResourceProviders:Plugin
+
+        #endregion
+
+        #region FoundationaLLM:ResourceProviders:Plugin:Storage
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:ResourceProviders:Plugin:Storage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.Plugin resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Plugin_Storage_AuthenticationType =
+            "FoundationaLLM:ResourceProviders:Plugin:Storage:AuthenticationType";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:ResourceProviders:Plugin:Storage:AccountName setting.
+        /// <para>Value description:<br/>The name of the Azure Blob Storage account used by the FoundationaLLM.Plugin resource provider.</para>
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Plugin_Storage_AccountName =
+            "FoundationaLLM:ResourceProviders:Plugin:Storage:AccountName";
 
         #endregion
 

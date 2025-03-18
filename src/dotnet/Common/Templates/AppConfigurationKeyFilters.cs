@@ -43,6 +43,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:ResourceProvidersCache:*";
         
         /// <summary>
+        /// Filter for the configuration section used to identify the storage settings for FoundationaLLM quota management.
+        /// </summary>
+        public const string FoundationaLLM_Quota_Storage =
+            "FoundationaLLM:Quota:Storage:*";
+        
+        /// <summary>
         /// Filter for the configuration section used to identify the storage settings for the FoundationaLLM.AIModel resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_AIModel_Storage =
@@ -89,6 +95,18 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_Vectorization_Storage =
             "FoundationaLLM:ResourceProviders:Vectorization:Storage:*";
+        
+        /// <summary>
+        /// Filter for the configuration section used to identify the storage settings for the FoundationaLLM.DataPipeline resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_DataPipeline_Storage =
+            "FoundationaLLM:ResourceProviders:DataPipeline:Storage:*";
+        
+        /// <summary>
+        /// Filter for the configuration section used to identify the storage settings for the FoundationaLLM.Plugin resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Plugin_Storage =
+            "FoundationaLLM:ResourceProviders:Plugin:Storage:*";
         
         /// <summary>
         /// Filter for the configuration section used to identify the settings for all API endpoints.

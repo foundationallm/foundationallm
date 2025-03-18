@@ -8,7 +8,7 @@ namespace FoundationaLLM.Core.Examples
     /// <summary>
     /// Example class for the Knowledge Management agent with SemanticKernel.
     /// </summary>
-    public class Example0013_KnowledgeManagementSemanticKernelWithLargeIndex : BaseTest, IClassFixture<TestFixture>
+    public class Example0013_KnowledgeManagementSemanticKernelWithLargeIndex : TestBase, IClassFixture<TestFixture>
     {
         private readonly IAgentConversationTestService _agentConversationTestService;
         private readonly IVectorizationTestService _vectorizationTestService;
@@ -18,7 +18,7 @@ namespace FoundationaLLM.Core.Examples
         private string indexingProfileName = "indexing_profile_dune";
 
         public Example0013_KnowledgeManagementSemanticKernelWithLargeIndex(ITestOutputHelper output, TestFixture fixture)
-            : base(output, [fixture.ServiceProvider])
+            : base(output, fixture)
         {
             _agentConversationTestService = GetService<IAgentConversationTestService>();
             _vectorizationTestService = GetService<IVectorizationTestService>();
