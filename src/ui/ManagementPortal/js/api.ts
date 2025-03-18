@@ -1074,7 +1074,7 @@ export default {
 
 	/*
 		Indexing Profiles
-	 */
+	*/
 	async getIndexingProfiles(): Promise<any> {
 		const data = (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles?api-version=${this.apiVersion}`,
@@ -1161,6 +1161,113 @@ export default {
 		}
 
 		// Return the updated external orchestration services.
+		return data;
+	},
+
+	/*
+		Pipelines
+	*/
+	// async getPipelines(): Promise<any> {
+	// 	return await this.fetch(
+	// 		`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/vectorizationPipelines?api-version=${this.apiVersion}`,
+	// 	);
+	// },
+
+	// async getPipeline(pipeline: string): Promise<any> {
+	// 	return await this.fetch(
+	// 		`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/vectorizationPipelines/${pipeline}?api-version=${this.apiVersion}`,
+	// 	);
+	// },
+
+	// async getPipelineRuns(pipeline): Promise<any> {
+	// 	return await this.fetch(
+	// 		`/pipeline-state/${pipeline}/${pipeline}-{GUID}.json?api-version=${this.apiVersion}`,
+	// 	);
+	// },
+
+	/*
+		Data Pipelines
+	*/
+	async getPipelines(): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async getPipeline(pipeline: string): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/${pipeline}?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async checkPipelineName(name: string): Promise<CheckNameResponse> {
+		const payload = {
+			name,
+			type: 'data-pipeline'
+		};
+
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/checkname?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		);
+	},
+
+	async createPipeline(pipeline: any): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/${pipeline.name}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: pipeline,
+			},
+		);
+	},
+
+	/*
+		Plugins
+	*/
+	async getPlugins(): Promise<ResourceProviderGetResult<Plugin>[]> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Plugin/plugins?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async getPlugin(pluginId: string): Promise<ResourceProviderGetResult<Plugin>> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Plugin/plugins/${pluginId}?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async filterPlugins(categories: string[]): Promise<ResourceProviderGetResult<Plugin>[]> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Plugin/plugins/filter?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: JSON.stringify({
+					categories
+				})
+			}
+		);
+	},
+
+	// async filterResources(resourcePath: string, filterActionPayload: any): Promise<any> {
+	// 	const data = await this.fetch(
+	// 		`/instances/${this.instanceId}/${resourcePath}?api-version=${this.apiVersion}`,
+	// 		{
+	// 			method: 'POST',
+	// 			body: JSON.stringify(filterActionPayload),
+	// 		},
+	// 	);
+	// 	console.log(data);
+	// 	return data;
+	// },
+
+	async filterResources(resourcePath: string, filterActionPayload: any): Promise<any> {
+		const data = await this.fetch(
+			`/instances/${this.instanceId}/${resourcePath}?api-version=${this.apiVersion}`,
+		);
 		return data;
 	},
 };
