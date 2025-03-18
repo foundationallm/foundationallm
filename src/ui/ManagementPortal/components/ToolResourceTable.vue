@@ -78,7 +78,7 @@
 					:model-value="toolResourceToEdit"
 					:visible="toolResourceToEdit?.object_id === data.value.object_id"
 					@update:visible="toolResourceToEdit = null"
-					@update:modelValue="handleEditResourceObject(data.value)"
+					@update:model-value="handleEditResourceObject(data.value)"
 				/>
 			</template>
 		</Column> -->
@@ -115,14 +115,14 @@
 
 <script lang="ts">
 export default {
-	emits: ['delete'],
-
 	props: {
 		resources: {
 			type: Object,
 			required: true,
 		},
 	},
+
+	emits: ['delete'],
 
 	data() {
 		return {
