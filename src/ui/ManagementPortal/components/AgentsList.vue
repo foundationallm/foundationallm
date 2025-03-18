@@ -188,9 +188,9 @@
 
 		<!-- Delete agent dialog -->
 		<Dialog
+			v-focustrap
 			:visible="agentToDelete !== null"
 			:closable="false"
-			v-focustrap
 			modal
 			header="Delete Agent"
 		>
@@ -203,9 +203,9 @@
 
 		<!-- Set default agent dialog -->
 		<Dialog
+			v-focustrap
 			:visible="agentToSetAsDefault !== null"
 			:closable="false"
-			v-focustrap
 			modal
 			header="Set Default Agent"
 		>
@@ -228,8 +228,6 @@ import type { Agent, ResourceProviderGetResult, ResourceProviderActionResult } f
 export default {
 	name: 'AgentsList',
 
-	emits: ['refresh-agents'],
-
 	props: {
 		agents: {
 			type: Array as () => ResourceProviderGetResult<Agent>[],
@@ -244,6 +242,8 @@ export default {
 			required: true,
 		},
 	},
+
+	emits: ['refresh-agents'],
 
 	data() {
 		return {
