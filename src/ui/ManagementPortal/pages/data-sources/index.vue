@@ -131,11 +131,11 @@
 
 		<!-- Delete agent dialog -->
 		<Dialog
-			:visible="dataSourceToDelete !== null"
 			v-focustrap
+			:closable="false"
+			:visible="dataSourceToDelete !== null"
 			modal
 			header="Delete Data Source"
-			:closable="false"
 		>
 			<p>Do you want to delete the data source "{{ dataSourceToDelete.name }}" ?</p>
 			<template #footer>
