@@ -189,7 +189,7 @@ public partial class CoreService(
                 };
             }
 
-            completionRequest = await PrepareCompletionRequest(completionRequest, agentBase, true);
+            completionRequest = await PrepareCompletionRequest(instanceId, completionRequest, agentBase, true);
 
             var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
 
@@ -428,7 +428,7 @@ public partial class CoreService(
                 };
             }
 
-            completionRequest = await PrepareCompletionRequest(completionRequest, agentBase);
+            completionRequest = await PrepareCompletionRequest(instanceId, completionRequest, agentBase);
 
             var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
 
@@ -500,7 +500,7 @@ public partial class CoreService(
                 };
             }
 
-            directCompletionRequest = await PrepareCompletionRequest(directCompletionRequest, agentBase);
+            directCompletionRequest = await PrepareCompletionRequest(instanceId, directCompletionRequest, agentBase);
 
             var agentOption = GetGatekeeperOption(instanceId, agentBase, directCompletionRequest);
 
@@ -979,26 +979,24 @@ public partial class CoreService(
     /// <summary>
     /// Pre-processing of incoming completion request.
     /// </summary>
+    /// <param name="instanceId">The FoundationaLLM instance ID.</param>
     /// <param name="request">The completion request.</param>
     /// <param name="agent">The <see cref="AgentBase"/> resource object.</param>
     /// <param name="longRunningOperation">Indicates whether this is a long-running operation.</param>
     /// <returns>The updated completion request with pre-processing applied.</returns>
-    private async Task<CompletionRequest> PrepareCompletionRequest(CompletionRequest request, AgentBase agent, bool longRunningOperation = false)
+    private async Task<CompletionRequest> PrepareCompletionRequest(string instanceId, CompletionRequest request, AgentBase agent, bool longRunningOperation = false)
     {
         request.LongRunningOperation = longRunningOperation;
 
-        if (string.IsNullOrWhiteSpace(request.SessionId) ||
-            !(agent.ConversationHistorySettings?.Enabled ?? false))
-            return request;
-
-        List<MessageHistoryItem> messageHistoryList = [];
-        var max = agent.ConversationHistorySettings?.MaxHistory *2 ?? null;
+        List<MessageHistoryItem> messageHistoryList = [];        
         List<string> contentArtifactTypes = (agent.ConversationHistorySettings?.Enabled ?? false)
             ? [.. (agent.ConversationHistorySettings.HistoryContentArtifactTypes ?? string.Empty).Split(",", StringSplitOptions.RemoveEmptyEntries)]
             : [];
 
-        // Retrieve conversation, including latest prompt.
-        var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!, max);
+        // Retrieve the complete conversation.
+        var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!);
+        var fileHistory = new List<FileHistoryItem>();
+        int attachmentOrder = 0;
         foreach (var message in messages)
         {
             var messageText = message.Text;
@@ -1019,12 +1017,41 @@ public partial class CoreService(
                 {
                     ContentArtifacts = message.ContentArtifacts?.Where(ca => contentArtifactTypes.Contains(ca.Type ?? string.Empty)).ToList()
                 };
+                if(message.Attachments is { Count: > 0 })
+                {
+                    foreach (var attachmentObjectId in message.Attachments)
+                    {                        
+                        //Get resource path for attachment
+                        var rp = ResourcePath.GetResourcePath(attachmentObjectId);
+                        var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(instanceId, rp.MainResourceId!, _userIdentity);                        
+                        messageHistoryItem.Attachments.Add(AttachmentDetail.FromAttachmentFile(file));
+                        fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder));
+                    }
+                }
                 messageHistoryList.Add(messageHistoryItem);
             }
         }
 
-        request.MessageHistory = messageHistoryList;
+        // Include conversation file history regardless of the conversation history settings.
+        if (fileHistory.Any())
+        { 
+            request.FileHistory = fileHistory;
+        }
 
+        // Only include message history if the conversation history settings are enabled.
+        if (string.IsNullOrWhiteSpace(request.SessionId) ||
+            !(agent.ConversationHistorySettings?.Enabled ?? false))
+            return request;
+
+        // Truncate the message history based on configuration.
+        var max = agent.ConversationHistorySettings?.MaxHistory * 2 ?? null;
+        if (max.HasValue && messageHistoryList.Count > max)
+        {
+            // Remove messages from the beginning of the list.
+            messageHistoryList.RemoveRange(0, messageHistoryList.Count - max.Value);          
+        }
+
+        request.MessageHistory = messageHistoryList;
         return request;
     }
 

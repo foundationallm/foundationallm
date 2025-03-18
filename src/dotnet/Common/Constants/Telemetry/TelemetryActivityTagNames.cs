@@ -29,5 +29,20 @@
         /// The FoundationaLLM user identifier tag.
         /// </summary>
         public const string UserId = "FoundationaLLM-UserId";
+
+        /// <summary>
+        /// The FoundationaLLM agent name.
+        /// </summary>
+        public const string AgentName = "FoundationaLLM-AgentName";
+
+        /// <summary>
+        /// The FoundationaLLM file provider.
+        /// </summary>
+        public const string FileProvider = "FoundationaLLM-FileProvider";
+
+        /// <summary>
+        /// The FoundationaLLM file id.
+        /// </summary>
+        public const string FileId = "FoundationaLLM-FileId";
     }
 }
