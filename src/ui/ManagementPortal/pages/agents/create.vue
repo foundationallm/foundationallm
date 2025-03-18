@@ -783,7 +783,10 @@
 					</div>
 
 					<!-- Index source -->
-					<CreateAgentStepItem v-model="editIndexSource" focus-query=".step-container__edit__option">
+					<CreateAgentStepItem
+						v-model="editIndexSource"
+						focus-query=".step-container__edit__option"
+					>
 						<template v-if="selectedIndexSource">
 							<div v-if="selectedIndexSource.object_id !== ''">
 								<div class="step-container__header">{{ selectedIndexSource.name }}</div>
