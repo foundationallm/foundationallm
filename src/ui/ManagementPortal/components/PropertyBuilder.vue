@@ -115,6 +115,8 @@ export default {
 		},
 	},
 
+	emits: ['update:modelValue'],
+
 	data() {
 		return {
 			showCreateOrEditPropertyDialog: false,
