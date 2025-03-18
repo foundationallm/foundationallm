@@ -88,7 +88,7 @@
 				v-model="propertyToEdit"
 				:title="propertyToEdit ? 'Edit Property' : 'Create Property'"
 				:visible="showCreateOrEditPropertyDialog"
-				@update:modelValue="handleAddProperty($event)"
+				@update:model-value="handleAddProperty($event)"
 				@update:visible="handleClosePropertyDialog"
 			/>
 
