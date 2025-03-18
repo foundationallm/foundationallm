@@ -119,7 +119,7 @@
 
 			<!-- Agent configuration -->
 			<section aria-labelledby="agent-configuration" class="span-2 steps">
-				<h3 class="step-section-header span-2" id="agent-configuration">Agent Configuration</h3>
+				<h3 id="agent-configuration" class="step-section-header span-2">Agent Configuration</h3>
 
 				<div class="step-header">Should conversations be included in the context?</div>
 				<div class="step-header">How should user-agent interactions be gated?</div>
@@ -594,7 +594,7 @@
 
 			<!-- User portal experience -->
 			<section aria-labelledby="user-portal-experience" class="span-2 steps">
-				<h3 class="step-section-header span-2" id="user-portal-experience">
+				<h3 id="user-portal-experience" class="step-section-header span-2">
 					User Portal Experience
 				</h3>
 
@@ -663,7 +663,7 @@
 
 			<!-- Knowledge source -->
 			<section aria-labelledby="knowledge-source" class="span-2 steps">
-				<h3 class="step-section-header span-2" id="knowledge-source">Knowledge Source</h3>
+				<h3 id="knowledge-source" class="step-section-header span-2">Knowledge Source</h3>
 
 				<div id="aria-inline-context" class="step-header span-2">
 					Does this agent have an inline context?
@@ -843,7 +843,7 @@
 					<!-- Text embedding profiles -->
 					<CreateAgentStepItem
 						v-model="editTextEmbeddingProfile"
-						focusQuery=".step-container__edit__option"
+						focus-query=".step-container__edit__option"
 					>
 						<template v-if="selectedTextEmbeddingProfile">
 							<div v-if="selectedTextEmbeddingProfile.object_id !== ''">
@@ -920,7 +920,7 @@
 
 						<!-- Process indexing -->
 
-						<CreateAgentStepItem focusQuery=".chunk-size-input">
+						<CreateAgentStepItem focus-query=".chunk-size-input">
 							<div class="step-container__header">Splitting & Chunking</div>
 
 							<div>
@@ -959,7 +959,7 @@
 						</CreateAgentStepItem>
 
 						<!-- Trigger -->
-						<CreateAgentStepItem focusQuery=".frequency-dropdown span">
+						<CreateAgentStepItem focus-query=".frequency-dropdown span">
 							<div class="step-container__header">Trigger</div>
 							<div>Runs every time a new item is added to the data source.</div>
 
@@ -1083,7 +1083,7 @@
 				<div class="mb-6">
 					<div id="aria-workflow-model" class="step-header mb-3">Workflow main model:</div>
 					<Dropdown
-						:modelValue="workflowMainAIModel?.object_id"
+						:model-value="workflowMainAIModel?.object_id"
 						:options="aiModelOptions"
 						option-label="name"
 						option-value="object_id"
@@ -1183,7 +1183,7 @@
 								:visible="!!toolToEdit"
 								:existing-tools="agentTools"
 								@update:visible="toolToEdit = null"
-								@update:modelValue="handleUpdateTool"
+								@update:model-value="handleUpdateTool"
 							/>
 						</template>
 					</Column>
@@ -1218,7 +1218,7 @@
 					:visible="!!showNewToolDialog"
 					:existing-tools="agentTools"
 					@update:visible="showNewToolDialog = false"
-					@update:modelValue="handleAddNewTool"
+					@update:model-value="handleAddNewTool"
 				/>
 			</div>
 
@@ -1245,7 +1245,7 @@
 			<template v-if="virtualSecurityGroupId">
 				<div class="step-header">Agent access tokens</div>
 				<div class="span-2">
-					<AgentAccessTokens :agent-name="this.agentName" />
+					<AgentAccessTokens :agent-name="agentName" />
 				</div>
 			</template>
 
@@ -1751,7 +1751,7 @@ export default {
 			this.agentTools = agent.tools;
 
 			this.selectedWorkflow = agent.workflow;
-			this.hasAgentPrivateStorage = agent.workflow?.type == 'azure-openai-assistants-workflow';
+			this.hasAgentPrivateStorage = agent.workflow?.type === 'azure-openai-assistants-workflow';
 			this.showMessageTokens = agent.show_message_tokens ?? false;
 			this.showMessageRating = agent.show_message_rating ?? false;
 			this.showViewPrompt = agent.show_view_prompt ?? false;
