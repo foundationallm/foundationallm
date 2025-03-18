@@ -4,10 +4,10 @@
 			<!-- Editing view -->
 			<div
 				v-if="isOpen"
-				class="step-container__edit"
 				:id="'step-content-' + id"
-				role="region"
 				:aria-labelledby="'step-header-' + id"
+				class="step-container__edit"
+				role="region"
 			>
 				<div class="step-container__edit__inner">
 					<slot name="edit" />
@@ -37,14 +37,14 @@
 
 			<!-- Default view -->
 			<div
+				:aria-expanded="isOpen"
+				:aria-controls="'step-content-' + id"
 				class="step-container__view"
+				role="button"
+				tabindex="0"
 				@click="handleOpen"
 				@keydown.enter.prevent="handleOpen"
 				@keydown.space.prevent="handleOpen"
-				role="button"
-				tabindex="0"
-				:aria-expanded="isOpen"
-				:aria-controls="'step-content-' + id"
 			>
 				<div class="step-container__view__inner">
 					<slot />
