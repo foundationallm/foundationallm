@@ -30,8 +30,8 @@
 				:value="vectorStores"
 				striped-rows
 				scrollable
-				sortField="resource.name"
-				:sortOrder="1"
+				:sort-field="'resource.name'"
+				:sort-order="1"
 				table-style="max-width: 100%"
 				size="small"
 			>
@@ -137,7 +137,7 @@
 			header="Delete Data Source"
 			:closable="false"
 		>
-			<p>Do you want to delete the vector store "{{ vectorStoreToDelete.name }}" ?</p>
+			<p>Do you want to delete the vector store "{{ vectorStoreToDelete!.name }}" ?</p>
 			<template #footer>
 				<Button label="Cancel" text @click="vectorStoreToDelete = null" />
 				<Button label="Delete" severity="danger" autofocus @click="handleDeleteVectorStore" />
