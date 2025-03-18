@@ -30,7 +30,7 @@
 				:value="dataSources"
 				striped-rows
 				scrollable
-				:sort-field="resource.name"
+				:sort-field="'resource.name'"
 				:sort-order="1"
 				table-style="max-width: 100%"
 				size="small"
