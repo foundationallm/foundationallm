@@ -125,7 +125,7 @@
 				<div class="step-header">How should user-agent interactions be gated?</div>
 
 				<!-- Conversation history -->
-				<CreateAgentStepItem focusQuery=".conversation-history-toggle input">
+				<CreateAgentStepItem focus-query=".conversation-history-toggle input">
 					<div class="step-container__header">Conversation History</div>
 
 					<div>
@@ -185,7 +185,7 @@
 				</CreateAgentStepItem>
 
 				<!-- Gatekeeper -->
-				<CreateAgentStepItem focusQuery=".gatekeeper-toggle input">
+				<CreateAgentStepItem focus-query=".gatekeeper-toggle input">
 					<div class="step-container__header">Gatekeeper</div>
 
 					<div>
@@ -245,7 +245,7 @@
 						</div>
 
 						<!-- Content safety -->
-						<div class="mt-2" v-if="!gatekeeperUseSystemDefault">
+						<div v-if="!gatekeeperUseSystemDefault" class="mt-2">
 							<span id="aria-content-safety" class="step-option__header">Content Safety:</span>
 							<MultiSelect
 								v-model="selectedGatekeeperContentSafety"
@@ -259,7 +259,7 @@
 						</div>
 
 						<!-- Data protection -->
-						<div class="mt-2" v-if="!gatekeeperUseSystemDefault">
+						<div v-if="!gatekeeperUseSystemDefault" class="mt-2">
 							<span id="aria-data-prot" class="step-option__header">Data Protection:</span>
 							<!-- <span>Microsoft Presidio</span> -->
 							<MultiSelect
@@ -346,7 +346,7 @@
 				<div class="step-header">Should semantic cache be used?</div>
 
 				<!-- User prompt rewrite -->
-				<CreateAgentStepItem focusQuery=".user-prompt-rewrite-toggle input">
+				<CreateAgentStepItem focus-query=".user-prompt-rewrite-toggle input">
 					<div class="step-container__header">User Prompt Rewrite</div>
 
 					<div>
@@ -409,7 +409,7 @@
 						</div>
 
 						<!-- User prompt rewrite model -->
-						<div class="mt-2" v-if="userPromptRewriteEnabled">
+						<div v-if="userPromptRewriteEnabled" class="mt-2">
 							<!-- What model should be used for the prompt rewrite? -->
 							<span id="aria-user-prompt-rewrite-model" class="step-option__header"
 								>Rewrite Model:</span
@@ -426,7 +426,7 @@
 						</div>
 
 						<!-- User prompt rewrite prompt -->
-						<div class="mt-2" v-if="userPromptRewriteEnabled">
+						<div v-if="userPromptRewriteEnabled" class="mt-2">
 							<!-- What prompt should be used to rewrite the user prompt? -->
 							<span id="aria-user-prompt-rewrite-prompt" class="step-option__header"
 								>Rewrite Prompt:</span
@@ -443,15 +443,15 @@
 						</div>
 
 						<!-- User prompt rewrite window size -->
-						<div class="mt-2" v-if="userPromptRewriteEnabled">
+						<div v-if="userPromptRewriteEnabled" class="mt-2">
 							<!-- What should the rewrite window size be? -->
 							<span id="aria-user-prompt-rewrite-window-size" class="step-option__header"
 								>Rewrite Window Size:</span
 							>
 							<InputNumber
 								v-model="userPromptRewriteWindowSize"
-								:minFractionDigits="0"
-								:maxFractionDigits="0"
+								:min-fraction-digits="0"
+								:max-fraction-digits="0"
 								placeholder="Window size"
 								aria-labelledby="aria-user-prompt-rewrite-window-size"
 							/>
@@ -460,7 +460,7 @@
 				</CreateAgentStepItem>
 
 				<!-- Semantic cache  -->
-				<CreateAgentStepItem focusQuery=".semantic-cache-toggle input">
+				<CreateAgentStepItem focus-query=".semantic-cache-toggle input">
 					<div class="step-container__header">Semantic Cache</div>
 
 					<div>
@@ -519,7 +519,7 @@
 						</div>
 
 						<!-- Semantic cache model -->
-						<div class="mt-2" v-if="semanticCacheEnabled">
+						<div v-if="semanticCacheEnabled" class="mt-2">
 							<!-- What model should be used for the semantic cache? -->
 							<span id="aria-semantic-cache-model" class="step-option__header">Model:</span>
 							<Dropdown
@@ -534,30 +534,30 @@
 						</div>
 
 						<!-- Semantic cache embedding dimensions -->
-						<div class="mt-2" v-if="semanticCacheEnabled">
+						<div v-if="semanticCacheEnabled" class="mt-2">
 							<!-- How many embedding dimensions to use? -->
 							<span id="aria-semantic-cache-embedding-dimensions" class="step-option__header"
 								>Embedding Dimensions:</span
 							>
 							<InputNumber
 								v-model="semanticCacheEmbeddingDimensions"
-								:minFractionDigits="0"
-								:maxFractionDigits="0"
+								:min-fraction-digits="0"
+								:max-fraction-digits="0"
 								placeholder="Embedding dimensions size"
 								aria-labelledby="aria-semantic-cache-embedding-dimensions"
 							/>
 						</div>
 
 						<!-- Semantic cache minimum similarity threshold -->
-						<div class="mt-2" v-if="semanticCacheEnabled">
+						<div v-if="semanticCacheEnabled" class="mt-2">
 							<!-- What should the minimum similarity threshold be? -->
 							<span id="aria-semantic-cache-minimum-similarity" class="step-option__header"
 								>Minimum Similarity Threshold:</span
 							>
 							<InputNumber
 								v-model="semanticCacheMinimumSimilarityThreshold"
-								:minFractionDigits="0"
-								:maxFractionDigits="2"
+								:min-fraction-digits="0"
+								:max-fraction-digits="2"
 								placeholder="Minimum Similarity Threshold"
 								aria-labelledby="aria-semantic-cache-minimum-similarity"
 							/>
@@ -717,7 +717,7 @@
 					<div v-if="dedicated_pipeline">
 						<CreateAgentStepItem
 							v-model="editDataSource"
-							focusQuery=".step-container__edit__option"
+							focus-query=".step-container__edit__option"
 						>
 							<template v-if="selectedDataSource">
 								<div class="step-container__header">{{ selectedDataSource.type }}</div>
@@ -783,7 +783,7 @@
 					</div>
 
 					<!-- Index source -->
-					<CreateAgentStepItem v-model="editIndexSource" focusQuery=".step-container__edit__option">
+					<CreateAgentStepItem v-model="editIndexSource" focus-query=".step-container__edit__option">
 						<template v-if="selectedIndexSource">
 							<div v-if="selectedIndexSource.object_id !== ''">
 								<div class="step-container__header">{{ selectedIndexSource.name }}</div>
