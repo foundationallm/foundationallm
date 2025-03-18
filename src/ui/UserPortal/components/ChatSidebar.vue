@@ -420,6 +420,11 @@ export default {
 	flex: 1;
 	background-color: var(--primary-color);
 	z-index: 3;
+	scrollbar-color: var(--sidebar-scrollbar-default) transparent;
+
+	&:hover {
+		scrollbar-color: var(--sidebar-scrollbar-focused) transparent;
+	}
 }
 
 .chat-sidebar__header {
