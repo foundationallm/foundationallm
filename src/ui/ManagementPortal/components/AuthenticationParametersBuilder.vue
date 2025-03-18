@@ -179,6 +179,8 @@ export default {
 		},
 	},
 
+	emits: ['update:modelValue'],
+
 	data() {
 		return {
 			parameters: {},
@@ -205,7 +207,7 @@ export default {
 	methods: {
 		handleParameterKeyInput(event) {
 			// Filter to only allow lowercase letters and underscores
-			let sanitizedValue = event.target.value.replace(/[^a-zA-Z_]/g, '').toLowerCase();
+			const sanitizedValue = event.target.value.replace(/[^a-zA-Z_]/g, '').toLowerCase();
 
 			event.target.value = sanitizedValue;
 			this.parameterToEdit.key = sanitizedValue;
