@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { modifyHexAlpha } from '@/js/helpers';
+import Color from 'color';
 
 export default {
 	data() {
@@ -57,11 +57,11 @@ export default {
 				'--app-contrast': this.$appStore.highContrastMode ? '2' : '1',
 
 				// Sidebar theming
-				'--sidebar-scrollbar-default': modifyHexAlpha(this.$appConfigStore.secondaryButtonBg, 0.6),
+				'--sidebar-scrollbar-default': Color(this.$appConfigStore.secondaryButtonBg).alpha(0.6),
 				'--sidebar-scrollbar-focused': this.$appConfigStore.secondaryButtonBg,
 
 				// Chat thread theming
-				'--thread-scrollbar-default': modifyHexAlpha(this.$appConfigStore.secondaryButtonBg, 0.6),
+				'--thread-scrollbar-default': Color(this.$appConfigStore.secondaryButtonBg).alpha(0.6),
 				'--thread-scrollbar-focused': this.$appConfigStore.secondaryButtonBg,
 			};
 		},
