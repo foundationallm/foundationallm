@@ -28,6 +28,8 @@
 </template>
 
 <script lang="ts">
+import { modifyHexAlpha } from '@/js/helpers';
+
 export default {
 	data() {
 		return {
@@ -52,6 +54,9 @@ export default {
 				'--secondary-button-text': this.$appConfigStore.secondaryButtonText,
 				'--app-text-size': `${this.$appStore.textSize}rem`,
 				'--app-contrast': this.$appStore.highContrastMode ? '2' : '1',
+
+				'--sidebar-scrollbar-default': modifyHexAlpha(this.$appConfigStore.secondaryButtonBg, 0.6),
+				'--sidebar-scrollbar-focused': this.$appConfigStore.secondaryButtonBg,
 			};
 		},
 	},
