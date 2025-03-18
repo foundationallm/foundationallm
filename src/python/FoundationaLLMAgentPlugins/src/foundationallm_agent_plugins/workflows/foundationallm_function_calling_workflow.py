@@ -27,9 +27,11 @@ from foundationallm.models.constants import (
     AIModelResourceTypeNames,
     PromptResourceTypeNames
 )
+from foundationallm.models.messages import MessageHistoryItem
 from foundationallm.models.orchestration import (
     CompletionResponse,
     ContentArtifact,
+    FileHistoryItem,
     OpenAITextMessageContentItem
 )
 from foundationallm.telemetry import Telemetry
@@ -80,7 +82,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                            operation_id: str,
                            user_prompt:str,
                            user_prompt_rewrite: Optional[str],
-                           message_history: List[BaseMessage])-> CompletionResponse:
+                           message_history: List[MessageHistoryItem],
+                           file_history: List[FileHistoryItem])-> CompletionResponse:
         """
         Invokes the workflow asynchronously.
 
@@ -90,14 +93,28 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             The unique identifier of the FoundationaLLM operation.
         user_prompt : str
             The user prompt message.
+        user_prompt_rewrite : str
+            The user prompt rewrite message containing additional context to clarify the user's intent.
         message_history : List[BaseMessage]
             The message history.
+        file_history : List[FileHistoryItem]
+            The file history.
         """
+        llm_prompt = user_prompt_rewrite or user_prompt
+
+        # Convert message history to LangChain message types
+        langchain_messages = []
+        for msg in message_history:          
+            # Convert MessageHistoryItem to appropriate LangChain message type
+            if msg.sender == "User":
+                langchain_messages.append(HumanMessage(content=msg.text))
+            else:
+                langchain_messages.append(AIMessage(content=msg.text))
 
         messages = [
             SystemMessage(content=self.workflow_prompt),
-            *message_history,
-            HumanMessage(content=user_prompt)
+            *langchain_messages,
+            HumanMessage(content=llm_prompt)
         ]
              
         content_artifacts = []
@@ -143,7 +160,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                         final_response = final_llm_response.content
                 
                 workflow_content_artifact = self.__create_workflow_execution_content_artifact(
-                    user_prompt,
+                    llm_prompt,
                     response.content,
                     response.usage_metadata['input_tokens'],
                     response.usage_metadata['output_tokens'],
@@ -160,7 +177,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                     operation_id=operation_id,
                     content=[response_content],
                     content_artifacts=content_artifacts,
-                    user_prompt=user_prompt,
+                    user_prompt=llm_prompt,
                     full_prompt='',
                     completion_tokens=completion_tokens,
                     prompt_tokens=prompt_tokens,

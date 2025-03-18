@@ -13,14 +13,20 @@ from foundationallm_agent_plugins import (
     FoundationaLLMAgentWorkflowPluginManager
 )
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.models.agents import AgentBase, AgentWorkflowBase
+from foundationallm.models.agents import KnowledgeManagementCompletionRequest
 
-user_prompt = "Who is Paul?"
+user_prompt = """
+What does this file do?
+
+The following files are available:
+- test.py with the file path "resource-provider/FoundationaLLM.Attachment/a-5351de53-af13-4707-8f95-b6bccb619dc0-638778425064603831.py
+"""
+user_prompt = "Execute the code: print('Hello, world!')"
 user_prompt_rewrite = None
 operation_id = str(uuid.uuid4())
 
 user_identity_json = {"name": "Experimental Test", "user_name":"sw@foundationaLLM.ai","upn":"sw@foundationaLLM.ai"}
-full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
+full_request_json_file_name = 'test/full_request_with_files.json' # full original langchain request, contains agent, tools, exploded objects
 print(os.environ['FOUNDATIONALLM_APP_CONFIGURATION_URI'])
 
 user_identity = UserIdentity.from_json(user_identity_json)
@@ -29,9 +35,12 @@ config = Configuration()
 with open(full_request_json_file_name, 'r') as f:
     request_json = json.load(f)
 
-agent = AgentBase(**request_json["agent"])    
-objects = request_json["objects"]
-workflow = AgentWorkflowBase.from_object(request_json["agent"]["workflow"])
+request = KnowledgeManagementCompletionRequest(**request_json)
+agent = request.agent
+objects = request.objects
+workflow = request.agent.workflow
+message_history = request.message_history
+file_history = request.file_history
 
 workflow_plugin_manager = FoundationaLLMAgentWorkflowPluginManager()
 tool_plugin_manager = FoundationaLLMAgentToolPluginManager()
@@ -58,19 +67,16 @@ workflow = workflow_plugin_manager.create_workflow(
     config
 )
 
-# Get message history
-#request.objects['message_history'] = request.message_history[:agent.conversation_history_settings.max_history*2]
-#if agent.conversation_history_settings.enabled:
-#    messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history*2)
-#else:
-#    messages = []
-messages = []
 response = asyncio.run(
     workflow.invoke_async(
         operation_id=operation_id,
         user_prompt=parsed_user_prompt,
         user_prompt_rewrite=user_prompt_rewrite,
-        message_history=messages
+        message_history=message_history,
+        file_history=file_history
     )
 )
 print(response)
+print("*********************************")
+print(response.content)
+print("*********************************")

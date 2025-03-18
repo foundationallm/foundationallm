@@ -8,7 +8,7 @@ from langchain_core.messages import AIMessage, HumanMessage
 from langgraph.prebuilt import create_react_agent
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.language_models import LanguageModelFactory
-from foundationallm.models.agents import AgentBase, AgentTool, AgentWorkflowBase
+from foundationallm.models.agents import AgentBase, AgentTool, AgentWorkflowBase, KnowledgeManagementCompletionRequest
 from foundationallm.models.constants import (
     AIModelResourceTypeNames,
     PromptResourceTypeNames,
@@ -31,10 +31,11 @@ config = Configuration()
 with open(full_request_json_file_name, 'r') as f:
     request_json = json.load(f)
 
-agent = AgentBase(**request_json["agent"])    
-agent_tool = AgentTool(**request_json["agent"]["tools"][0])
-exploded_objects_json = request_json["objects"]
-workflow = AgentWorkflowBase.from_object(request_json["agent"]["workflow"])
+request = KnowledgeManagementCompletionRequest(**request_json)
+agent = request.agent
+agent_tool = request.agent.tools[0]
+exploded_objects_json = request.objects
+workflow = request.agent.workflow
 
 foundationallmagent_tool_plugin_manager = FoundationaLLMAgentToolPluginManager()
 # The AgentTool has the configured description the LLM will use to make a tool choice.
