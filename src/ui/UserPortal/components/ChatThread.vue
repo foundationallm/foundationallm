@@ -136,7 +136,6 @@ export default {
 			if (newPollingSession === this.currentSession.id) {
 				this.isMessagePending = true;
 			} else {
-				console.log(this.pollingSession);
 				this.isMessagePending = false;
 			}
 		},

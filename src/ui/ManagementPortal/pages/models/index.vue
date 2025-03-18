@@ -30,8 +30,8 @@
 				:value="aiModels"
 				striped-rows
 				scrollable
-				:sort-field="sortField"
-				:sort-order="sortOrder"
+				:sort-field="'resource.name'"
+				:sort-order="1"
 				table-style="max-width: 100%"
 				size="small"
 			>
@@ -134,8 +134,6 @@ export default {
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 			itemToDelete: null as AIModel | null,
-			sortField: 'resource.name',
-			sortOrder: 1,
 		};
 	},
 

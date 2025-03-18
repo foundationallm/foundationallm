@@ -130,7 +130,7 @@
 
 		<!-- Delete model/endpoint dialog -->
 		<Dialog :visible="itemToDelete !== null" modal header="Delete Model Endpoint" :closable="false">
-			<p>Do you want to delete the model endpoint "{{ itemToDelete?.name }}" ?</p>
+			<p>Do you want to delete the model endpoint "{{ itemToDelete!.name }}" ?</p>
 			<template #footer>
 				<Button label="Cancel" text @click="itemToDelete = null" />
 				<Button label="Delete" severity="danger" @click="handleDelete" />
