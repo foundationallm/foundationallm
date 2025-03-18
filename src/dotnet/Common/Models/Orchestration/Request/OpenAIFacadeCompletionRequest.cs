@@ -22,6 +22,46 @@ public class OpenAIFacadeCompletionRequest
     public string Prompt { get; set; } = string.Empty;
 
     /// <summary>
+    /// Generates best_of completions server-side and returns the "best" completion.
+    /// </summary>
+    [JsonPropertyName("best_of")]
+    public int? BestOf { get; set; }
+
+    /// <summary>
+    /// Echo back the prompt in addition to the completion.
+    /// </summary>
+    [JsonPropertyName("echo")]
+    public bool? Echo { get; set; }
+
+    /// <summary>
+    /// Return a list of the specified number of most likely tokens sorted by their logprobs.
+    /// Maximum value is 5.
+    /// </summary>
+    [JsonPropertyName("logprobs")]
+    public bool? LogProbs { get; set; }
+
+    /// <summary>
+    /// The number of completions to generate for each prompt.
+    /// </summary>
+    [JsonPropertyName("n")]
+    public int? N { get; set; }
+
+    /// <summary>
+    /// If specified, the system will make a best effort to sample deterministically,
+    /// such that repeated requests with the same seed and parameters should return
+    /// the same result.
+    /// </summary>
+    [JsonPropertyName("seed")]
+    public int? Seed { get; set; }
+
+    /// <summary>
+    /// Sequence where the API will stop generating further tokens.
+    /// The returned text won't contain the stop sequence.
+    /// </summary>
+    [JsonPropertyName("stop")]
+    public string? Stop { get; set; }
+
+    /// <summary>
     /// The maximum number of tokens to generate in the completion.
     /// </summary>
     [JsonPropertyName("max_tokens")]
@@ -34,6 +74,22 @@ public class OpenAIFacadeCompletionRequest
     /// </summary>
     [JsonPropertyName("temperature")]
     public float? Temperature { get; set; }
+
+    /// <summary>
+    /// Sample using called nucleus sampling, where the model considers the results
+    /// of the tokens with top_p probability mass.
+    /// So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+    /// Higher values like 0.8 will make the output more random,
+    /// while lower values like 0.2 will make it more focused and deterministic.
+    /// </summary>
+    [JsonPropertyName("top_p")]
+    public float? TopP { get; set; }
+
+    /// <summary>
+    /// A unique identifier representing the end-user, which can help to monitor and detect abuse.
+    /// </summary>
+    [JsonPropertyName("user")]
+    public string? User { get; set; }
 
     /// <summary>
     /// The suffix that comes after a completion of inserted text.
@@ -59,19 +115,55 @@ public class OpenAIFacadeCompletionRequest
     /// Converts the OpenAI facade completion request to the internal CompletionRequest format.
     /// </summary>
     /// <returns>A CompletionRequest object populated with the facade request data.</returns>
-    public CompletionRequest ToCompletionRequest() => new()
+    public CompletionRequest ToCompletionRequest()
     {
-        AgentName = Model,  // Map the model name to our agent name
-        UserPrompt = Prompt,  // Map to the required UserPrompt field
-        Settings = new OrchestrationSettings
+        var modelParameters = new Dictionary<string, object>();
+
+        // Add parameters only if they are not null
+        if (BestOf.HasValue)
+            modelParameters[ModelParametersKeys.BestOf] = BestOf.Value;
+        
+        if (MaxTokens.HasValue)
+            modelParameters[ModelParametersKeys.MaxTokens] = MaxTokens.Value;
+        
+        if (Temperature.HasValue)
+            modelParameters[ModelParametersKeys.Temperature] = Temperature.Value;
+        
+        if (TopP.HasValue)
+            modelParameters[ModelParametersKeys.TopP] = TopP.Value;
+        
+        if (FrequencyPenalty.HasValue)
+            modelParameters[ModelParametersKeys.FrequencyPenalty] = FrequencyPenalty.Value;
+        
+        if (PresencePenalty.HasValue)
+            modelParameters[ModelParametersKeys.PresencePenalty] = PresencePenalty.Value;
+
+        if (LogProbs.HasValue)
+            modelParameters[ModelParametersKeys.LogProbs] = LogProbs.Value;
+
+        if (N.HasValue)
+            modelParameters[ModelParametersKeys.N] = N.Value;
+
+        if (Seed.HasValue)
+            modelParameters[ModelParametersKeys.Seed] = Seed.Value;
+
+        if (!string.IsNullOrEmpty(Stop))
+            modelParameters[ModelParametersKeys.Stop] = Stop;
+
+        if (!string.IsNullOrEmpty(User))
+            modelParameters[ModelParametersKeys.User] = User;
+
+        if (Echo.HasValue)
+            modelParameters["echo"] = Echo.Value;
+
+        return new CompletionRequest
         {
-            ModelParameters = new Dictionary<string, object>()
+            AgentName = Model,
+            UserPrompt = Prompt,
+            Settings = new OrchestrationSettings
             {
-                { ModelParametersKeys.MaxNewTokens, MaxTokens ?? 100 },
-                { ModelParametersKeys.Temperature, Temperature ?? 0.7f },
-                { ModelParametersKeys.FrequencyPenalty, FrequencyPenalty ?? 0.0f },
-                { ModelParametersKeys.PresencePenalty, PresencePenalty ?? 0.0f }
+                ModelParameters = modelParameters
             }
-        }
-    };
+        };
+    }
 } 

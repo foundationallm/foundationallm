@@ -64,7 +64,7 @@ public class OpenAIFacadeChatCompletionRequest
             {
                 ModelParameters = new Dictionary<string, object>()
                 {
-                    { ModelParametersKeys.MaxNewTokens, MaxTokens! },
+                    { ModelParametersKeys.MaxTokens, MaxTokens! },
                     { ModelParametersKeys.Temperature, Temperature! },
                     { ModelParametersKeys.FrequencyPenalty, FrequencyPenalty! },
                     { ModelParametersKeys.PresencePenalty, PresencePenalty! }

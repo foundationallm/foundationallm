@@ -1,10 +1,48 @@
-﻿namespace FoundationaLLM.Common.Constants.Agents
+﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace FoundationaLLM.Common.Constants.Agents
 {
     /// <summary>
     /// Contains constants of the keys for all overridable model settings.
     /// </summary>
     public static class ModelParametersKeys
     {
+        /// <summary>
+        /// Generates best_of completions server-side and returns the "best" (the one with the highest log probability per token).
+        /// Results can't be streamed.
+        /// 
+        /// When used with n, best_of controls the number of candidate completions and n specifies how many to return.
+        /// best_of must be greater than n.
+        /// </summary>
+        public const string BestOf = "best_of";
+
+        /// <summary>
+        /// Echo back the prompt in addition to the completion.
+        /// </summary>
+        public const string Echo = "echo";
+
+        /// <summary>
+        /// Return a list of the specified number of most likely tokens sorted by their logprobs.
+        /// </summary>
+        public const string LogProbs = "logprobs";
+
+        /// <summary>
+        /// The number of completions to generate for each prompt.
+        /// </summary>
+        public const string N = "n";
+
+        /// <summary>
+        /// If specified, the system will make a best effort to sample deterministically,
+        /// such that repeated requests with the same seed and parameters should return
+        /// the same result.
+        /// </summary>
+        public const string Seed = "seed";
+
+        /// <summary>
+        /// Sequence where the API will stop generating further tokens.
+        /// </summary>
+        public const string Stop = "stop";
+
         /// <summary>
         /// Controls randomness. Lowering the temperature means that the model will produce more repetitive and
         /// deterministic responses. Increasing the temperature will result in more unexpected or creative responses.
@@ -36,7 +74,7 @@
         /// between the prompt (including system message, examples, message history, and user query) and the model's
         /// response. One token is roughly 4 characters for typical English text.
         /// </summary>
-        public const string MaxNewTokens = "max_new_tokens";
+        public const string MaxTokens = "max_tokens";
 
         /// <summary>
         /// Whether or not to return the full text (prompt + response) or only the generated part (response).
@@ -50,8 +88,21 @@
         /// </summary>
         public const string IgnoreEOS = "ignore_eos";
 
+        /// <summary>
+        /// A unique identifier representing the end-user, which can help to monitor and detect abuse.
+        /// </summary>
+        public const string User = "user";
+
+        /// <summary>
+        /// Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing
+        /// frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
+        /// </summary>
         public const string FrequencyPenalty = "frequency_penalty";
 
+        /// <summary>
+        /// Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they
+        /// appear in the text so far, increasing the model's likelihood to talk about new topics.
+        /// </summary>
         public const string PresencePenalty = "presence_penalty";
 
         /// <summary>
@@ -62,11 +113,19 @@
             TopK,
             TopP,
             DoSample,
-            MaxNewTokens,
+            MaxTokens,
             ReturnFullText,
             IgnoreEOS,
             FrequencyPenalty,
-            PresencePenalty
+            PresencePenalty,
+            BestOf,
+            User,
+            Stop,
+            Seed,
+            N,
+            LogProbs,
+            Echo
         ];
+
     }
 }

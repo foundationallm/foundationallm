@@ -428,7 +428,7 @@ public partial class CoreService(
                 };
             }
 
-            completionRequest = await PrepareCompletionRequest(completionRequest, agentBase);
+            completionRequest = await PrepareCompletionRequest(instanceId, completionRequest, agentBase);
 
             var agentOption = GetGatekeeperOption(instanceId, agentBase, completionRequest);
 
@@ -541,7 +541,7 @@ public partial class CoreService(
                 };
             }
 
-            directCompletionRequest = await PrepareCompletionRequest(directCompletionRequest, agentBase);
+            directCompletionRequest = await PrepareCompletionRequest(instanceId, directCompletionRequest, agentBase);
 
             var agentOption = GetGatekeeperOption(instanceId, agentBase, directCompletionRequest);
 
