@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.Quota;
+using Microsoft.Extensions.Logging;
 
 namespace FoundationaLLM.Common.Services.Quota
 {
@@ -11,13 +12,15 @@ namespace FoundationaLLM.Common.Services.Quota
     /// <param name="metricLimit">The limit of the metric for the time window specified by <paramref name="metricWindowSeconds"/>.</param>
     /// <param name="metricWindowSeconds">The time window for the metric limit.</param>
     /// <param name="lockoutDurationSeconds">The duration of the lockout period when the metric limit is exceeded.</param>
+    /// <param name="logger">The logger instance to use for logging.</param>
     public class QuotaMetricPartition(
         string quotaName,
         string quotaContext,
         string quotaMetricPartitionId,
         int metricLimit,
         int metricWindowSeconds,
-        int lockoutDurationSeconds)
+        int lockoutDurationSeconds,
+        ILogger logger)
     {
         private readonly string _quotaName = quotaName;
         private readonly string _quotaContext = quotaContext;
@@ -25,6 +28,7 @@ namespace FoundationaLLM.Common.Services.Quota
         private readonly int _metricLimit = metricLimit;
         private readonly int _metricWindowSeconds = metricWindowSeconds;
         private readonly int _lockoutDurationSeconds = lockoutDurationSeconds;
+        private readonly ILogger _logger = logger;
 
         private const int METRIC_TIME_UNIT_SECONDS = 20;
         private readonly int _actualMetricWindowSeconds = METRIC_TIME_UNIT_SECONDS;
@@ -59,10 +63,10 @@ namespace FoundationaLLM.Common.Services.Quota
         /// <summary>
         /// Adds a local metric unit to the metric partition.
         /// </summary>
-        /// <param name="referenceTime">The time at which the local metric unit was recorded.</param>
+        /// <param name="localReferenceTime">The time at which the local metric unit was recorded.</param>
         /// <returns>A <see cref="QuotaMetricPartitionState"/> instance with the current state of the metric partition.</returns>
         public QuotaMetricPartitionState AddLocalMetricUnit(
-            DateTimeOffset referenceTime)
+            DateTimeOffset localReferenceTime)
         {
             int metricCount = 0;
             int localMetricCount = 0;
@@ -72,11 +76,11 @@ namespace FoundationaLLM.Common.Services.Quota
             {
                 if (_lockedOut)
                 {
-                    if (referenceTime - _lockoutStartTime > TimeSpan.FromSeconds(_lockoutDurationSeconds))
+                    if (localReferenceTime - _lockoutStartTime > TimeSpan.FromSeconds(_lockoutDurationSeconds))
                     {
                         // Lockout period has expired.
                         _lockedOut = false;
-                        ShiftAndAddLocalUnit(referenceTime);
+                        ShiftAndAddLocalUnit(localReferenceTime);
                     }
 
                     localMetricCount = _localMetricUnitsCount;
@@ -85,7 +89,7 @@ namespace FoundationaLLM.Common.Services.Quota
                 }
                 else
                 {
-                    ShiftAndAddLocalUnit(referenceTime);
+                    ShiftAndAddLocalUnit(localReferenceTime);
 
                     localMetricCount = _localMetricUnitsCount;
                     remoteMetricCount = _remoteMetricUnitsCount;
@@ -94,8 +98,9 @@ namespace FoundationaLLM.Common.Services.Quota
                     if (metricCount > _actualMetricLimit)
                     {
                         _lockedOut = true;
-                        _lockoutStartTime = referenceTime;
+                        _lockoutStartTime = localReferenceTime;
                         Array.Clear(_localMetricUnits, 0, METRIC_TIME_UNIT_SECONDS);
+                        Array.Clear(_remoteMetricUnits, 0, METRIC_TIME_UNIT_SECONDS);
                         _localMetricUnitsCount = 0;
                         _remoteMetricUnitsCount = 0;
                     }
@@ -108,8 +113,9 @@ namespace FoundationaLLM.Common.Services.Quota
                 QuotaContext = _quotaContext,
                 QuotaMetricPartitionId = _quotaMetricPartitionId,
                 QuotaExceeded = _lockedOut,
-                // Add a small buffer of 5 seconds to the lockout duration to avoid race conditions at the limit.
-                TimeUntilRetrySeconds = _lockoutDurationSeconds - (int)(DateTimeOffset.UtcNow - _lockoutStartTime).TotalSeconds + 5,
+                TimeUntilRetrySeconds = _lockedOut
+                    ? _lockoutDurationSeconds - (int)(DateTimeOffset.UtcNow - _lockoutStartTime).TotalSeconds
+                    : 0,
                 LocalMetricCount = localMetricCount,
                 RemoteMetricCount = remoteMetricCount,
                 TotalMetricCount = metricCount
@@ -119,28 +125,77 @@ namespace FoundationaLLM.Common.Services.Quota
         /// <summary>
         /// Adds remote metric units to the metric partition.
         /// </summary>
-        /// <param name="referenceTimes">The times at which the remote metric units were recorded.</param>
+        /// <param name="remoteReferenceTimes">The times at which the remote metric units were recorded.</param>
         /// <returns>A <see cref="QuotaMetricPartitionState"/> instance with the current state of the metric partition.</returns>
-        public QuotaMetricPartitionState AddRemoteMetricUnits(
-            List<DateTimeOffset> referenceTimes)
+        public QuotaMetricPartitionState? AddRemoteMetricUnits(
+            List<DateTimeOffset> remoteReferenceTimes)
         {
             int metricCount = 0;
             int localMetricCount = 0;
             int remoteMetricCount = 0;
+            var localReferenceTime = DateTimeOffset.UtcNow;
+
+            #region Validation
+
+            // Adjust for possible clock skew between the local and remote instances.
+            // Only consider remote metric units that were recorded in the past (from the perspective of the local instance)
+            // but not earlier than METRIC_TIME_UNIT_SECONDS seconds.
+            var validRemoteReferenceTimes = remoteReferenceTimes
+                .Where(t =>
+                {
+                    var timeDifference = localReferenceTime - t;
+                    return
+                        timeDifference.TotalSeconds >= 0 // Remote time is in the past relative to local time
+                        && timeDifference.TotalSeconds < _actualMetricWindowSeconds; // Remote time is not too distant in the past.
+                })
+                .ToList();
+            if (validRemoteReferenceTimes.Count == 0)
+            {
+                _logger.LogWarning("All remote metric units where discarded because their timestamps were not valid on the local system.");
+                return null;
+            }
+
+            var invalidRemoteReferenceTimesCount = remoteReferenceTimes.Count - validRemoteReferenceTimes.Count;
+            if (invalidRemoteReferenceTimesCount > 0)
+                _logger.LogWarning(
+                    "{DiscardedUnitsCount} remote metric units were discarded because their timestamps were not valid on the local system.",
+                    invalidRemoteReferenceTimesCount);
+
+            #endregion
 
             lock (_syncRoot)
             {
-                if (!_lockedOut)
+                if (_lockedOut)
                 {
-                    foreach (var referenceTime in referenceTimes)
+                    if (localReferenceTime - _lockoutStartTime > TimeSpan.FromSeconds(_lockoutDurationSeconds))
                     {
-                        // TODO: Implement the logic to add remote metric units.
+                        // Lockout period has expired.
+                        _lockedOut = false;
+                        ShiftAndAddRemoteUnits(localReferenceTime, validRemoteReferenceTimes);
+                    }
+
+                    localMetricCount = _localMetricUnitsCount;
+                    remoteMetricCount = _remoteMetricUnitsCount;
+                    metricCount = localMetricCount + remoteMetricCount;
+                }
+                else
+                {
+                    ShiftAndAddRemoteUnits(localReferenceTime, validRemoteReferenceTimes);
+
+                    localMetricCount = _localMetricUnitsCount;
+                    remoteMetricCount = _remoteMetricUnitsCount;
+                    metricCount = localMetricCount + remoteMetricCount;
+
+                    if (metricCount > _actualMetricLimit)
+                    {
+                        _lockedOut = true;
+                        _lockoutStartTime = localReferenceTime;
+                        Array.Clear(_localMetricUnits, 0, METRIC_TIME_UNIT_SECONDS);
+                        Array.Clear(_remoteMetricUnits, 0, METRIC_TIME_UNIT_SECONDS);
+                        _localMetricUnitsCount = 0;
+                        _remoteMetricUnitsCount = 0;
                     }
                 }
-
-                localMetricCount = _localMetricUnitsCount;
-                remoteMetricCount = _remoteMetricUnitsCount;
-                metricCount = localMetricCount + remoteMetricCount;
             }
 
             return new QuotaMetricPartitionState
@@ -157,7 +212,7 @@ namespace FoundationaLLM.Common.Services.Quota
             };
         }
 
-        private void ShiftAndAddLocalUnit(DateTimeOffset refTime)
+        private void ShiftTimeslots(DateTimeOffset refTime)
         {
             // Shift the array to align with the new reference time.
 
@@ -194,10 +249,29 @@ namespace FoundationaLLM.Common.Services.Quota
 
                 _metricUnitsLastShiftTime = refTime;
             }
+        }
+
+        private void ShiftAndAddLocalUnit(
+            DateTimeOffset refTime)
+        {
+            ShiftTimeslots(refTime);
 
             // Add the local unit to the metric units.
             _localMetricUnits[0]++;
             _localMetricUnitsCount++;
         }
+        private void ShiftAndAddRemoteUnits(
+            DateTimeOffset refTime,
+            List<DateTimeOffset> remoteReferenceTimes)
+        {
+            ShiftTimeslots(refTime);
+
+            // Add the remote units to the metric units.
+            foreach (var remoteReferenceTime in remoteReferenceTimes)
+            {
+                // TODO: Implement the logic to add individual remote units.
+            }
+        }
+
     }
 }

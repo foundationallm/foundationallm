@@ -39,7 +39,7 @@ namespace FoundationaLLM.Common.Models.Quota
         /// </summary>
         [JsonPropertyName("metric_partition")]
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public QuotaMetricPartition MetricPartition { get; set; }
+        public QuotaMetricPartitionType MetricPartition { get; set; }
 
         /// <summary>
         /// Gets or sets the limit of the metric that is used to enforce the quota.

@@ -97,20 +97,21 @@ namespace FoundationaLLM.Common.Services.Quota
             var startTime = DateTimeOffset.UtcNow;
             var metricPartition = GetQuotaMetricPartition(partitionId);
             var metricPartitionState = metricPartition.AddRemoteMetricUnits(referenceTimes);
-
-            _logger.LogDebug(string.Join(Environment.NewLine,
-                [
-                    "Remote metric units added to quota context.",
-                    "Quota context: {QuotaContext}, Reference times: {ReferenceTimes}",
-                    "Metric count: {MetricCount}, Quota exceeded: {QuotaExceeded}",
-                    "Time elapsed: {TimeElapsedMilliseconds} ms",
-                    "----------------------------------------"
-                ]),
-                Quota.Context,
-                referenceTimes,
-                $"{metricPartitionState.TotalMetricCount} (local = {metricPartitionState.LocalMetricCount}, remote = {metricPartitionState.RemoteMetricCount})",
-                metricPartitionState.QuotaExceeded,
-                (DateTimeOffset.UtcNow - startTime).TotalMilliseconds);
+)
+            if (metricPartitionState != null)
+                _logger.LogDebug(string.Join(Environment.NewLine,
+                    [
+                        "Remote metric units added to quota context.",
+                        "Quota context: {QuotaContext}, Reference times: {ReferenceTimes}",
+                        "Metric count: {MetricCount}, Quota exceeded: {QuotaExceeded}",
+                        "Time elapsed: {TimeElapsedMilliseconds} ms",
+                        "----------------------------------------"
+                    ]),
+                    Quota.Context,
+                    referenceTimes,
+                    $"{metricPartitionState.TotalMetricCount} (local = {metricPartitionState.LocalMetricCount}, remote = {metricPartitionState.RemoteMetricCount})",
+                    metricPartitionState.QuotaExceeded,
+                    (DateTimeOffset.UtcNow - startTime).TotalMilliseconds);
         }
     }
 }

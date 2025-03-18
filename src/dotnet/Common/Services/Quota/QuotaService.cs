@@ -1,5 +1,6 @@
 ﻿using Azure.Messaging;
 using FoundationaLLM.Common.Constants.Events;
+using FoundationaLLM.Common.Constants.Quota;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
@@ -22,7 +23,12 @@ namespace FoundationaLLM.Common.Services.Quota
         private const string QUOTA_SERVICE_NAME = "QuotaService";
         private const string STORAGE_CONTAINER_NAME = "quota";
         private const string QUOTA_STORE_FILE_PATH = "/quota-store.json";
-        private readonly QuotaMetricPartitionState QUOTA_NOT_EXCEEDED_EVALUATION_RESULT = new();
+        private readonly QuotaMetricPartitionState QUOTA_NOT_EXCEEDED_EVALUATION_RESULT = new()
+        {
+            QuotaName = "N/A",
+            QuotaContext = "N/A",
+            QuotaMetricPartitionId = "N/A"
+        };
 
         private DateTimeOffset _initializationStartTime;
         private bool _isInitialized = false;
@@ -82,11 +88,11 @@ namespace FoundationaLLM.Common.Services.Quota
                 _quotaContexts = _quotaDefinitions
                     .Select(qd => qd.MetricPartition switch
                     {
-                        QuotaMetricPartition.None => (new SinglePartitionQuotaContext(
+                        QuotaMetricPartitionType.None => (new SinglePartitionQuotaContext(
                             qd, _loggerFactory.CreateLogger<SinglePartitionQuotaContext>())) as QuotaContextBase,
-                        QuotaMetricPartition.UserIdentifier => (new UserIdentifierQuotaContext(
+                        QuotaMetricPartitionType.UserIdentifier => (new UserIdentifierQuotaContext(
                             qd, _loggerFactory.CreateLogger<UserIdentifierQuotaContext>())) as QuotaContextBase,
-                        QuotaMetricPartition.UserPrincipalName => (new UserPrincipalNameQuotaContext(
+                        QuotaMetricPartitionType.UserPrincipalName => (new UserPrincipalNameQuotaContext(
                             qd, _loggerFactory.CreateLogger<UserPrincipalNameQuotaContext>())) as QuotaContextBase,
                         _ => throw new QuotaException($"Unsupported metric partition: {qd.MetricPartition}")
                     })
