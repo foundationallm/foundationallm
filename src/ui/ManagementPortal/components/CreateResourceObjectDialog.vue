@@ -54,14 +54,9 @@
 </template>
 
 <script lang="ts">
-import JsonEditorVue from 'json-editor-vue';
 import api from '@/js/api';
 
 export default {
-	components: {
-		JsonEditorVue,
-	},
-
 	props: {
 		modelValue: {
 			type: [Object, String],
@@ -77,6 +72,8 @@ export default {
 			required: false,
 		},
 	},
+
+	emits: ['update:modelValue'],
 
 	data() {
 		return {
