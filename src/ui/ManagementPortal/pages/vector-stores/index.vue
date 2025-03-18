@@ -131,11 +131,11 @@
 
 		<!-- Delete agent dialog -->
 		<Dialog
-			:visible="vectorStoreToDelete !== null"
-			modal
 			v-focustrap
-			header="Delete Data Source"
+			:visible="vectorStoreToDelete !== null"
 			:closable="false"
+			modal
+			header="Delete Data Source"
 		>
 			<p>Do you want to delete the vector store "{{ vectorStoreToDelete!.name }}" ?</p>
 			<template #footer>
