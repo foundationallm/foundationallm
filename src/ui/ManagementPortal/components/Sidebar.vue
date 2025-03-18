@@ -32,7 +32,7 @@
 			</VTooltip>
 		</div>
 
-		<div class="sidebar__content" v-if="!$appStore.sidebarCollapsed">
+		<div v-if="!$appStore.sidebarCollapsed" class="sidebar__content">
 			<div class="sidebar__navigation">
 				<!-- Agents -->
 				<h3 class="sidebar__section-header">
@@ -121,8 +121,8 @@
 						label="Sign Out"
 						severity="secondary"
 						size="small"
-						@click="$authStore.logout()"
 						aria-label="Sign out of the application"
+						@click="$authStore.logout()"
 					/>
 				</div>
 			</div>
