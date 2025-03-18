@@ -192,14 +192,14 @@ export default {
 		};
 	},
 
-	async created() {
-		await this.getRoleAssignments();
-	},
-
 	computed: {
 		columnStyle() {
 			return window.innerWidth <= 768 ? {} : { minWidth: '200px' };
 		},
+	},
+
+	async created() {
+		await this.getRoleAssignments();
 	},
 
 	methods: {
