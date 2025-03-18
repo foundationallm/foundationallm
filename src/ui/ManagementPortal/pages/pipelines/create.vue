@@ -221,12 +221,22 @@
 							<div class="mb-2">
 								<label>Dependencies:</label>
 								<Dropdown
+									v-if="stagePluginsDependenciesOptions.find(dep => dep.plugin_object_id === stage.plugin_object_id)?.selection_type === 'Single'"
 									v-model="stage.plugin_dependencies[0]"
 									:options="stagePluginsDependenciesOptions.find(dep => dep.plugin_object_id === stage.plugin_object_id)?.dependencyInfo || []"
 									option-label="dependencyLabel"
 									option-value="dependencies"
 									class="w-100"
 									placeholder="Select a dependency"
+								/>
+								<MultiSelect
+									v-if="stagePluginsDependenciesOptions.find(dep => dep.plugin_object_id === stage.plugin_object_id)?.selection_type === 'Multiple'"
+									v-model="stage.plugin_dependencies"
+									:options="stagePluginsDependenciesOptions.find(dep => dep.plugin_object_id === stage.plugin_object_id)?.dependencyInfo || []"
+									option-label="dependencyLabel"
+									option-value="dependencies"
+									class="w-100"
+									placeholder="Select dependencies"
 								/>
 							</div>
 							<div v-if="stage.plugin_dependencies[0]?.plugin_parameters" class="mb-2">
@@ -580,14 +590,17 @@ export default {
 		},
 
         handleStagePluginDependencyChange(event: any, index: number) {
-            const selectedDependency = event.value;
-            this.selectedStagePlugins[index].plugin_dependencies = [{
-                plugin_object_id: selectedDependency.object_id,
-                plugin_parameters: selectedDependency.parameters.map(param => ({
-                    parameter_metadata: param,
-                    default_value: null
-                })),
-            }];
+            const selectedDependencies = event.value || [];
+            this.selectedStagePlugins[index].plugin_dependencies = selectedDependencies.map(dependency => {
+                const selectedDependency = this.stagePluginsOptions.find(p => p.object_id === dependency.plugin_object_id);
+                return {
+                    plugin_object_id: selectedDependency ? selectedDependency.object_id : '',
+                    plugin_parameters: selectedDependency && selectedDependency.parameters ? selectedDependency.parameters.map(param => ({
+                        parameter_metadata: param,
+                        default_value: null
+                    })) : [],
+                };
+            });
         },
 
 		addStage() {
@@ -666,8 +679,8 @@ export default {
 			return newObjectId;
 		},
 
-        handleNextStages(stages) {
-            stages.forEach(stage => {
+        handleNextStages(stages: any[]) {
+            stages.forEach((stage: any) => {
                 this.selectedStagePlugins.push({
                     name: stage.name,
                     description: stage.description,
@@ -675,7 +688,7 @@ export default {
                     plugin_parameters: stage.plugin_parameters,
                     plugin_dependencies: stage.plugin_dependencies,
                 });
-				this.loadStagePluginDependencies(stage.plugin_object_id);
+                this.loadStagePluginDependencies(stage.plugin_object_id);
                 if (stage.next_stages) {
                     this.handleNextStages(stage.next_stages);
                 }
@@ -687,7 +700,7 @@ export default {
 			if (this.stagePluginResourceOptions.find(p => p.parameter_metadata.name === plugin.name)) {
 				return;
 			}
-			this.stagePluginResourceOptions.push(plugin.parameters.map(param => ({
+			this.stagePluginResourceOptions.push(plugin.parameters.map((param: any) => ({
 				parameter_metadata: param,
 				parameter_selection_hints_options: [],
 			})));
@@ -704,7 +717,7 @@ export default {
 			if (this.stagePluginDependencyResourceOptions.find(p => p.parameter_metadata.name === plugin.name)) {
 				return;
 			}
-			this.stagePluginDependencyResourceOptions.push(plugin.parameters.map(dep => ({
+			this.stagePluginDependencyResourceOptions.push(plugin.parameters.map((dep: any) => ({
 				parameter_metadata: dep,
 				parameter_selection_hints_options: [],
 			})));
