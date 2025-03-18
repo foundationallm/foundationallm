@@ -292,16 +292,10 @@
 <script lang="ts">
 import type { PropType } from 'vue';
 import { debounce } from 'lodash';
-
 import api from '@/js/api';
-import JsonEditorVue from 'json-editor-vue';
 
 export default {
 	name: 'CreateAPIEndpoint',
-
-	components: {
-		JsonEditorVue,
-	},
 
 	props: {
 		editId: {
