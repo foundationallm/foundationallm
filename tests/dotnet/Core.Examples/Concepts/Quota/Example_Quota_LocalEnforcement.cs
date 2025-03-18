@@ -53,14 +53,14 @@ namespace FoundationaLLM.Core.Examples
                 Assert.DoesNotContain(evaluationResults, x => x.QuotaExceeded);
         }
 
-        private QuotaEvaluationResult[] RunUserWorkload(
+        private QuotaMetricPartitionState[] RunUserWorkload(
             string apiName,
             string controllerName,
             int userIndex,
             int callCount,
             int callDelayMilliseconds)
         {
-            var evaluationResults = new QuotaEvaluationResult[callCount];
+            var evaluationResults = new QuotaMetricPartitionState[callCount];
 
             for (int i = 0; i < callCount; i++)
             {
