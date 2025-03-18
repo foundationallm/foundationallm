@@ -52,6 +52,7 @@ export default {
 			default: '',
 		},
 	},
+
 	data() {
 		return {
 			apiStatus: null,
@@ -59,9 +60,11 @@ export default {
 			error: null,
 		};
 	},
+
 	async mounted() {
 		await this.fetchApiStatus();
 	},
+
 	methods: {
 		async fetchApiStatus() {
 			this.loading = true;
@@ -73,7 +76,7 @@ export default {
 						(this.statusEndpoint ? `/${this.statusEndpoint.replace(/^\/+/, '')}` : '');
 					const response = await $fetch(`/api/api-status?url=${encodeURIComponent(fullUrl)}`);
 
-					//const response = await $fetch(fullUrl);
+					// const response = await $fetch(fullUrl);
 					if (response.error) {
 						this.error = response.error;
 					} else {
