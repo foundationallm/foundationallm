@@ -280,6 +280,11 @@ export default {
 	overscroll-behavior: auto;
 	scrollbar-gutter: stable;
 	padding: 24px 32px;
+	scrollbar-color: var(--thread-scrollbar-default) transparent;
+
+	&:hover {
+		scrollbar-color: var(--thread-scrollbar-focused) transparent;
+	}
 }
 
 .chat-thread__input {

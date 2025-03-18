@@ -28,6 +28,8 @@
 </template>
 
 <script lang="ts">
+import Color from 'color';
+
 export default {
 	data() {
 		return {
@@ -39,6 +41,7 @@ export default {
 	computed: {
 		style() {
 			return {
+				// Primary theme variables
 				'--primary-bg': this.$appConfigStore.primaryBg,
 				'--primary-color': this.$appConfigStore.primaryColor,
 				'--secondary-color': this.$appConfigStore.secondaryColor,
@@ -52,6 +55,14 @@ export default {
 				'--secondary-button-text': this.$appConfigStore.secondaryButtonText,
 				'--app-text-size': `${this.$appStore.textSize}rem`,
 				'--app-contrast': this.$appStore.highContrastMode ? '2' : '1',
+
+				// Sidebar theming
+				'--sidebar-scrollbar-default': Color(this.$appConfigStore.secondaryButtonBg).alpha(0.6),
+				'--sidebar-scrollbar-focused': this.$appConfigStore.secondaryButtonBg,
+
+				// Chat thread theming
+				'--thread-scrollbar-default': Color(this.$appConfigStore.secondaryButtonBg).alpha(0.6),
+				'--thread-scrollbar-focused': this.$appConfigStore.secondaryButtonBg,
 			};
 		},
 	},
