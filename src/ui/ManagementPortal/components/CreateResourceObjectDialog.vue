@@ -73,7 +73,7 @@ export default {
 		},
 	},
 
-	emits: ['update:modelValue'],
+	emits: ['update:modelValue', 'update:visible'],
 
 	data() {
 		return {
