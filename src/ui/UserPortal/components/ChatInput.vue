@@ -281,10 +281,12 @@
 				</p>
 
 				<textarea
-					v-model="text"
 					id="chat-input"
 					ref="inputRef"
+					v-model="text"
 					class="input"
+					aria-describedby="chat-input-label"
+					autofocus
 					:disabled="disabled || isCurrentAgentExpired"
 					:placeholder="
 						isCurrentAgentExpired ? 'This agent has expired.' : 'What would you like to ask?'
@@ -292,8 +294,6 @@
 					:aria-label="
 						isCurrentAgentExpired ? 'This agent has expired.' : 'What would you like to ask?'
 					"
-					aria-describedby="chat-input-label"
-					autofocus
 					@keydown="handleKeydown"
 				/>
 
