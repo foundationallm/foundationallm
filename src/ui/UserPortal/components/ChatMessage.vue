@@ -244,12 +244,12 @@
 			<Textarea
 				id="rating-textarea"
 				v-model="message.ratingComments"
-				:style="{ width: '100%' }"
+				style="width: 100%"
 				rows="5"
 				type="text"
 				placeholder="Add comments here..."
 				aria-label="Add comments here..."
-				autoResize
+				auto-resize
 				autofocus
 			></Textarea>
 
@@ -310,7 +310,6 @@ import { hideAllPoppers } from 'floating-vue';
 import type { Message, MessageContent, CompletionPrompt } from '@/js/types';
 import api from '@/js/api';
 import { fetchBlobUrl } from '@/js/fileService';
-import TimeAgo from '~/components/TimeAgo.vue';
 
 function processLatex(content) {
 	const blockLatexPattern = /\\\[\s*([\s\S]+?)\s*\\\]/g;
@@ -319,7 +318,7 @@ function processLatex(content) {
 	// Match triple & inline backticks
 	const codeBlockPattern = /```[\s\S]+?```|`[^`]+`/g;
 
-	let codeBlocks = [];
+	const codeBlocks = [];
 
 	// Extract and replace code blocks with placeholders temporarily
 	// to ensure LaTeX within is not altered
