@@ -276,7 +276,7 @@
 </template>
 
 <script lang="ts">
-import { hideAllPoppers, VTooltip } from 'floating-vue';
+import { hideAllPoppers } from 'floating-vue';
 import eventBus from '@/js/eventBus';
 import type { Session } from '@/js/types';
 declare const process: any;
