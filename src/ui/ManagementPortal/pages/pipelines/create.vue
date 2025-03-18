@@ -472,65 +472,6 @@ export default {
 		},
 	},
 
-	computed: {
-		isEditing(): boolean {
-			return Boolean(this.editId);
-		},
-
-		pipelineId(): string | undefined {
-			return typeof this.editId === 'string' ? this.editId : undefined;
-		},
-	},
-
-	watch: {
-		pipeline: {
-			handler(newVal) {
-				console.log(newVal);
-			},
-			deep: true,
-		},
-		selectedDataSourcePlugin: {
-			handler(newVal) {
-				if (newVal) {
-					this.pipeline.data_source.plugin_object_id = newVal.object_id;
-					this.pipeline.data_source.plugin_parameters = newVal.parameters.map((param) => ({
-						parameter_metadata: {
-							name: param.name,
-							type: param.type,
-							description: param.description,
-						},
-						default_value: param.default_value,
-					}));
-					if (newVal.parameter_selection_hints) {
-						Object.entries(newVal.parameter_selection_hints).forEach(([key, value]) => {
-							const parameter = this.selectedDataSourcePlugin.parameters.find(
-								(param) => param.name === key,
-							);
-							if (parameter) {
-								parameter.parameter_selection_hints_options = this.getResourceOptions(
-									key,
-									this.selectedDataSourcePlugin.object_id,
-								);
-							}
-						});
-					}
-				}
-				this.buildTriggerParameters();
-			},
-			deep: true,
-		},
-		selectedStagePlugins: {
-			handler(newVal) {
-				this.transformPipelineStages();
-				this.buildTriggerParameters();
-				newVal.forEach((stage) => {
-					this.loadStagePluginDependencies(stage.plugin_object_id);
-				});
-			},
-			deep: true,
-		},
-	},
-
 	data() {
 		return {
 			loading: true as boolean,
@@ -594,6 +535,65 @@ export default {
 			resourceOptions: [] as any[],
 			resourceOptionsCache: {} as Record<string, any[]>, // Cache for resource options
 		};
+	},
+
+	computed: {
+		isEditing(): boolean {
+			return Boolean(this.editId);
+		},
+
+		pipelineId(): string | undefined {
+			return typeof this.editId === 'string' ? this.editId : undefined;
+		},
+	},
+
+	watch: {
+		pipeline: {
+			handler(newVal) {
+				console.log(newVal);
+			},
+			deep: true,
+		},
+		selectedDataSourcePlugin: {
+			handler(newVal) {
+				if (newVal) {
+					this.pipeline.data_source.plugin_object_id = newVal.object_id;
+					this.pipeline.data_source.plugin_parameters = newVal.parameters.map((param) => ({
+						parameter_metadata: {
+							name: param.name,
+							type: param.type,
+							description: param.description,
+						},
+						default_value: param.default_value,
+					}));
+					if (newVal.parameter_selection_hints) {
+						Object.entries(newVal.parameter_selection_hints).forEach(([key]) => {
+							const parameter = this.selectedDataSourcePlugin.parameters.find(
+								(param) => param.name === key,
+							);
+							if (parameter) {
+								parameter.parameter_selection_hints_options = this.getResourceOptions(
+									key,
+									this.selectedDataSourcePlugin.object_id,
+								);
+							}
+						});
+					}
+				}
+				this.buildTriggerParameters();
+			},
+			deep: true,
+		},
+		selectedStagePlugins: {
+			handler(newVal) {
+				this.transformPipelineStages();
+				this.buildTriggerParameters();
+				newVal.forEach((stage) => {
+					this.loadStagePluginDependencies(stage.plugin_object_id);
+				});
+			},
+			deep: true,
+		},
 	},
 
 	async created() {
@@ -736,7 +736,7 @@ export default {
 		},
 
 		transformPipelineStages() {
-			let nested = this.selectedStagePlugins.reduceRight((acc, stage) => {
+			const nested = this.selectedStagePlugins.reduceRight((acc, stage) => {
 				return [
 					{
 						...stage,
@@ -830,7 +830,7 @@ export default {
 			});
 		},
 
-		async buildStagePluginResourceOptions(plugin: any) {
+		buildStagePluginResourceOptions(plugin: any) {
 			if (this.stagePluginResourceOptions.find((p) => p.parameter_metadata.name === plugin.name)) {
 				return;
 			}
@@ -849,7 +849,7 @@ export default {
 			});
 		},
 
-		async buildStagePluginDependencyResourceOptions(plugin: any) {
+		buildStagePluginDependencyResourceOptions(plugin: any) {
 			if (
 				this.stagePluginDependencyResourceOptions.find(
 					(p) => p.parameter_metadata.name === plugin.name,
@@ -897,9 +897,9 @@ export default {
 				);
 				parameterValues.push({
 					parameter_metadata: param.parameter_metadata,
-					key: key,
-					value: value,
-					resourceOptions: resourceOptions,
+					key,
+					value,
+					resourceOptions,
 				});
 			}
 
@@ -920,9 +920,9 @@ export default {
 							);
 							parameterValues.push({
 								parameter_metadata: param.parameter_metadata,
-								key: key,
-								value: value,
-								resourceOptions: resourceOptions,
+								key,
+								value,
+								resourceOptions,
 							});
 						}
 					}
@@ -943,9 +943,9 @@ export default {
 								);
 								parameterValues.push({
 									parameter_metadata: param.parameter_metadata,
-									key: key,
-									value: value,
-									resourceOptions: resourceOptions,
+									key,
+									value,
+									resourceOptions,
 								});
 							}
 						}

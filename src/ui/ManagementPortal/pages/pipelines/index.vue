@@ -30,8 +30,8 @@
 				:value="pipelines"
 				striped-rows
 				scrollable
-				sortField="resource.name"
-				:sortOrder="1"
+				:sort-field="'resource.name'"
+				:sort-order="1"
 				table-style="max-width: 100%"
 				size="small"
 			>
@@ -194,7 +194,7 @@
 
 <script lang="ts">
 import api from '@/js/api';
-import type { DataSource, ResourceProviderGetResult } from '@/js/types';
+import type { /* DataSource, */ ResourceProviderGetResult } from '@/js/types';
 
 export default {
 	name: 'Pipelines',
