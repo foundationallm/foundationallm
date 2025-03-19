@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace FoundationaLLM.Core.Examples.LoadTests.Setup
+namespace FoundationaLLM.Core.Examples.DistributedTests.Setup
 {
     /// <summary>
     /// Configures the test services for the examples.

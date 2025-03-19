@@ -4,13 +4,13 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Core.Examples.LoadTests.ResourceProviders;
+using FoundationaLLM.Core.Examples.DistributedTests.ResourceProviders;
 using FoundationaLLM.Core.Examples.Setup;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Xunit.Abstractions;
 
-namespace FoundationaLLM.Core.Examples.LoadTests
+namespace FoundationaLLM.Core.Examples.DistributedTests
 {
     /// <summary>
     /// Runs load tests on resource provider resource references.

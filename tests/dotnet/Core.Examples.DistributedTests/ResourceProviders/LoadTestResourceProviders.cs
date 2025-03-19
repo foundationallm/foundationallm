@@ -4,7 +4,7 @@ using FoundationaLLM.Core.Examples.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit.Abstractions;
 
-namespace FoundationaLLM.Core.Examples.LoadTests.ResourceProviders
+namespace FoundationaLLM.Core.Examples.DistributedTests.ResourceProviders
 {
     /// <summary>
     /// Provides the FoundationaLLM resource providers.

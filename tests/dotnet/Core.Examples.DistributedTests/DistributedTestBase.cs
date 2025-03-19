@@ -1,8 +1,8 @@
-﻿using FoundationaLLM.Core.Examples.LoadTests.Setup;
+﻿using FoundationaLLM.Core.Examples.DistributedTests.Setup;
 using FoundationaLLM.Core.Examples.Setup;
 using Xunit.Abstractions;
 
-namespace FoundationaLLM.Core.Examples.LoadTests
+namespace FoundationaLLM.Core.Examples.DistributedTests
 {
     public class DistributedTestBase(
         int virtualHostsCount,

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
-namespace FoundationaLLM.Core.Examples.LoadTests.Setup
+namespace FoundationaLLM.Core.Examples.DistributedTests.Setup
 {
     /// <summary>
     /// Configure base services and dependencies for the tests.
