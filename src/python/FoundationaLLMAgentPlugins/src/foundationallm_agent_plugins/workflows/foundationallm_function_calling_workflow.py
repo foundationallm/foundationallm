@@ -2,12 +2,12 @@
 Class: FoundationaLLMFunctionCallingWorkflow
 Description: FoundationaLLM Function Calling workflow to invoke tools at a low level.
 """
-import re
 import time
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
+from logging import Logger
+from opentelemetry.trace import Tracer
 from langchain_core.messages import (
-    AIMessage,
-    BaseMessage,
+    AIMessage,    
     HumanMessage,
     SystemMessage   
 )
@@ -67,8 +67,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         """
         super().__init__(workflow_config, objects, tools, user_identity, config)
         self.name = workflow_config.name
-        self.logger : Any = Telemetry.get_logger(self.name)
-        self.tracer : Any = Telemetry.get_tracer(self.name)        
+        self.logger : Logger = Telemetry.get_logger(self.name)
+        self.tracer : Tracer = Telemetry.get_tracer(self.name)        
         self.default_error_message = workflow_config.properties.get(
             'default_error_message',
             'An error occurred while processing the request.') \
@@ -111,6 +111,16 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             else:
                 langchain_messages.append(AIMessage(content=msg.text))
 
+        # If there are files attached to the request, add them to the system prompt
+        if file_history:
+            files_prompt = "\nYou have access to the following files:\n"
+            for file in file_history:
+                files_prompt += f'{file.order}. Original file name: "{file.original_file_name}" with the file path "{file.file_path}"\n'
+            files_prompt += "\nIf the question is requesting information about a file and no file is specified, use a recency bias to determine which files to use, the most recent files being at the end of the list.\n"
+            self.workflow_prompt += files_prompt
+
+        self.logger.debug(f'Workflow prompt: {self.workflow_prompt}')
+        print(f'Workflow prompt console: {self.workflow_prompt}')
         messages = [
             SystemMessage(content=self.workflow_prompt),
             *langchain_messages,
@@ -146,8 +156,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                             ))
                             # Get the tool from the tools list
                             tool = next((t for t in self.tools if t.name == tool_call['name']), None)
-                            if tool: 
-                                print(f"calling tool: {tool.name} with input: {tool_call}")                              
+                            if tool:                                                            
                                 tool_message = await tool.ainvoke(tool_call)                           
                                 content_artifacts.extend(tool_message.artifact)
                                 # Add tool response as AIMessage
@@ -160,8 +169,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                     verification_messages = messages_with_toolchain.copy()
                     verification_messages.append(HumanMessage(content=f'Verify the requirements are met for this request: "{llm_prompt}", use the other messages only for context. If yes, answer with the single word "DONE". If not, generate more detailed instructions to satisfy the request.'))
                     verification_llm_response = await self.workflow_llm.ainvoke(verification_messages, tools=None)
-                    verification_response = verification_llm_response.content                    
-                    print(f'**Verification response**: {verification_response} Loop count: {loop_count}')
+                    verification_response = verification_llm_response.content
                     if verification_response.strip().upper() == 'DONE':
                         break # exit the loop if the requirements are met.
                     else:
@@ -226,7 +234,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         )       
         if prompt_object_id:
             main_prompt_object_id = prompt_object_id.object_id
-            main_prompt_properties = self.objects[main_prompt_object_id]
+            main_prompt_properties = self.objects[main_prompt_object_id]          
             self.workflow_prompt = main_prompt_properties['prefix']            
         else:
             error_msg = 'No main prompt found in workflow configuration'

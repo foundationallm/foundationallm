@@ -3,7 +3,6 @@ Test for FoundationaLLM Azure OpenAI Router Workflow.
 """
 import asyncio
 import json
-import os
 import sys
 import uuid
 
@@ -14,14 +13,10 @@ from foundationallm_agent_plugins import (
 )
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import KnowledgeManagementCompletionRequest
+from foundationallm_agent_plugins.common.constants import CONTENT_ARTIFACT_TYPE_FILE
 
-user_prompt = """
-What does this file do?
-
-The following files are available:
-- Original file name: "test.py" with the file path "resource-provider/FoundationaLLM.Attachment/a-5351de53-af13-4707-8f95-b6bccb619dc0-638778425064603831.py
-"""
-user_prompt = "Generate a graph of y=mx+b where m=2 and b=3 and create a PDF with the graph along with text explaining the graph"
+user_prompt = "What does this file do?"
+#user_prompt = "Generate a graph of y=mx+b where m=2 and b=3 and create a PDF with the graph along with text explaining the graph"
 #user_prompt = "Generate a PDF document with the title 'Test' and the content 'This is a test'"
 #user_prompt = "Generate an interactive graph of y=mx+b where m=2 and b=3"
 user_prompt_rewrite = None
@@ -29,7 +24,6 @@ operation_id = str(uuid.uuid4())
 
 user_identity_json = {"name": "Experimental Test", "user_name":"sw@foundationaLLM.ai","upn":"sw@foundationaLLM.ai"}
 full_request_json_file_name = 'test/full_request_with_files.json' # full original langchain request, contains agent, tools, exploded objects
-print(os.environ['FOUNDATIONALLM_APP_CONFIGURATION_URI'])
 
 user_identity = UserIdentity.from_json(user_identity_json)
 config = Configuration()
@@ -77,7 +71,13 @@ response = asyncio.run(
         file_history=file_history
     )
 )
-print(response)
+print("++++++++++++++++++++++++++++++++++++++")
+print('File content artifacts:')
+for content_artifact in response.content_artifacts:
+    if content_artifact.type == CONTENT_ARTIFACT_TYPE_FILE:
+        print(content_artifact.source)
+print("++++++++++++++++++++++++++++++++++++++")
+
 print("*********************************")
 print(response.content)
 print("*********************************")

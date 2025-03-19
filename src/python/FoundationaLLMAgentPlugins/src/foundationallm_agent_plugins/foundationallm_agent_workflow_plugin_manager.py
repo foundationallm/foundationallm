@@ -7,7 +7,6 @@ from foundationallm.plugins import WorkflowPluginManagerBase
 
 from foundationallm_agent_plugins.workflows import FoundationaLLMFunctionCallingWorkflow
 
-
 class FoundationaLLMAgentWorkflowPluginManager(WorkflowPluginManagerBase):
 
     FOUNDATIONALLM_FUNCTION_CALLING_WORKFLOW_NAME = 'FoundationaLLMFunctionCallingWorkflow'

@@ -14,7 +14,7 @@ from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.models.agents import AgentTool
 from foundationallm.models.orchestration import ContentArtifact
 from foundationallm.storage import BlobStorageManager
-from foundationallm_agent_plugins.common.constants import CONTENT_ARTIFACT_TYPE_TOOL_EXECUTION
+from foundationallm_agent_plugins.common.constants import CONTENT_ARTIFACT_TYPE_TOOL_EXECUTION, CONTENT_ARTIFACT_TYPE_FILE
 
 class FoundationaLLMCodeInterpreterFile(BaseModel):
     """ A file to upload to the code interpreter. """
@@ -126,24 +126,23 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         files_list = self.repl.list_files()
         if files_list:
             # Disregard the files in the code interpreter that were uploaded (based on the original file name)
-            generated_files_list = [file for file in files_list if file.filename not in {f.original_file_name for f in (files or [])}]
-            print(f"Generated files in the code interpreter: {generated_files_list}")
+            generated_files_list = [file for file in files_list if file.filename not in {f.original_file_name for f in (files or [])}]            
             # Download the files from the code interpreter to the user storage container
             for generated_file in generated_files_list:
                 file_stream = self.repl.download_file(remote_file_path=generated_file.filename)                
                 # Create path including the user UPN
-                generated_file_storage_path = f"{self.user_identity.upn}/{self.repl.session_id}/{generated_file.filename}"
+                generated_file_storage_path = f"{self.user_identity.upn.replace('@', '_')}/{self.repl.session_id}/{generated_file.filename}"
                 self.user_storage_client.write_file_content(generated_file_storage_path, file_stream)
                 content_artifacts.append(ContentArtifact(
                     id = self.name,
                     title = self.name,
-                    type = "file",
-                    source =  generated_file_storage_path,
+                    type = CONTENT_ARTIFACT_TYPE_FILE,
+                    source = generated_file_storage_path,
                     metadata = {}
                 ))
         response = json.loads(result)
         content = str(response.get('result', '')) or str(response.get('stdout', '')) or str(response.get('stderr', ''))
-        content_artifact = ContentArtifact(
+        content_artifacts.append(ContentArtifact(
             id = self.name,
             title = self.name,
             type = CONTENT_ARTIFACT_TYPE_TOOL_EXECUTION,
@@ -155,6 +154,5 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                 'tool_error': str(response.get('stderr', '')),
                 'tool_result': str(response.get('result', ''))
             }
-        )
-        content_artifacts.append(content_artifact)
+        ))        
         return content, content_artifacts
