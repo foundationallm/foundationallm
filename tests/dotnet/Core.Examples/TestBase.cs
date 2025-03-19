@@ -32,7 +32,7 @@ namespace FoundationaLLM.Core.Examples
         {
             var _serviceCollection = new ServiceCollection();
 
-            TestServicesInitializer.InitializeServices(
+            DependencyInjectionContainerInitializer.InitializeServices(
                 _serviceCollection,
                 fixture.HostBuilder.Configuration,
                 output);

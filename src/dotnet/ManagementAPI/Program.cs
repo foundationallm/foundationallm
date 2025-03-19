@@ -81,7 +81,7 @@ namespace FoundationaLLM.Management.API
             builder.Services.AddOptions<ClientBrandingConfiguration>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Branding));
 
-            builder.Services.AddInstanceProperties(builder.Configuration);
+            builder.AddInstanceProperties();
 
             // Add Azure ARM services
             builder.AddAzureResourceManager();

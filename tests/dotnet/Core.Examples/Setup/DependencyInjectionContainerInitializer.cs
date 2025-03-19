@@ -4,7 +4,6 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.AzureAI;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
-using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
@@ -25,19 +24,25 @@ using Xunit.Abstractions;
 
 namespace FoundationaLLM.Core.Examples.Setup
 {
-    public static class TestServicesInitializer
+    /// <summary>
+    /// Initializes a dependency injection container with the necessary FoundationaLLM services and dependencies.
+    /// </summary>
+    public static class DependencyInjectionContainerInitializer
 	{
         /// <summary>
-        /// Configure base services and dependencies for the tests.
+        /// Configures a dependency injection container service collection.
         /// </summary>
-        /// <param name="services"></param>
-        /// <param name="configuration"></param>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        /// <param name="testOutputHelper">The <see cref="ITestOutputHelper"/> xUnit test output helper used to log test results.</param>
         public static void InitializeServices(
 			IServiceCollection services,
 			IConfiguration configuration,
             ITestOutputHelper testOutputHelper)
 		{
             services.AddDIContainerSettings();
+            services.AddInstanceProperties(configuration);
+            services.AddAuthorizationServiceClient(configuration);
 
             TestConfiguration.Initialize(configuration, services);
 
@@ -49,10 +54,9 @@ namespace FoundationaLLM.Core.Examples.Setup
 
             RegisterLogging(services, configuration, testOutputHelper);
 
-            RegisterInstance(services, configuration);
             RegisterHttpClients(services, configuration);
             RegisterClientLibraries(services, configuration);
-			RegisterCosmosDb(services, configuration);
+			RegisterCosmosDB(services, configuration);
             RegisterAzureAIService(services, configuration);
 			RegisterServiceManagers(services);
             RegisterResourceProviders(services, configuration);
@@ -77,27 +81,20 @@ namespace FoundationaLLM.Core.Examples.Setup
             });
         }
 
-        private static void RegisterInstance(IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddOptions<InstanceSettings>()
-                .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Instance));
-        }
-
         private static void RegisterClientLibraries(IServiceCollection services, IConfiguration configuration)
         {
             var instanceId = configuration.GetValue<string>(AppConfigurationKeys.FoundationaLLM_Instance_Id);
             services.AddCoreClient(
                 configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!,
                 ServiceContext.AzureCredential!,
-                instanceId);
+                instanceId!);
             services.AddManagementClient(
                 configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_ManagementAPI_Essentials_APIUrl]!,
                 ServiceContext.AzureCredential!,
-                instanceId);
-            services.AddAuthorizationServiceClient(configuration);
+                instanceId!);
         }
 
-		private static void RegisterCosmosDb(IServiceCollection services, IConfiguration configuration)
+		private static void RegisterCosmosDB(IServiceCollection services, IConfiguration configuration)
 		{
 			services.AddOptions<CosmosDbSettings>()
 				.Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB));

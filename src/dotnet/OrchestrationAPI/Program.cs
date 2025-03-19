@@ -81,7 +81,7 @@ namespace FoundationaLLM.Orchestration.API
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_OrchestrationAPI_Essentials_AppInsightsConnectionString,
                 ServiceNames.OrchestrationAPI);
 
-            builder.Services.AddInstanceProperties(builder.Configuration);
+            builder.AddInstanceProperties();
 
             // CORS policies
             builder.AddCorsPolicies();

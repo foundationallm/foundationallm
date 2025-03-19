@@ -52,7 +52,7 @@ builder.AddOpenTelemetry(
     AppConfigurationKeys.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials_AppInsightsConnectionString,
     ServiceNames.GatewayAPI);
 
-builder.Services.AddInstanceProperties(builder.Configuration);
+builder.AddInstanceProperties();
 
 // CORS policies
 builder.AddCorsPolicies();
@@ -70,8 +70,6 @@ builder.Services.AddAzureEventGridEvents(
 
 // Core Gateway service
 builder.AddGatewayCore();
-
-builder.Services.AddInstanceProperties(builder.Configuration);
 
 // Open API (Swagger)
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
