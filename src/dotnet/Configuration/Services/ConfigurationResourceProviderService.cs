@@ -150,6 +150,21 @@ namespace FoundationaLLM.Configuration.Services
                 {
                     ResourceProviderActions.CheckName => await CheckResourceName<APIEndpointConfiguration>(
                         JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
+                    ResourceProviderActions.Filter => await Task.Run(async () => {
+                        var resourceFilter = JsonSerializer.Deserialize<APIEndpointConfigurationFilter>(serializedAction)!;
+                        return await FilterResources<APIEndpointConfiguration>(
+                            resourcePath,
+                            resourceFilter,
+                            authorizationResult,
+                            customResourceFilter: x =>
+                                (resourceFilter.Category == null)
+                                || (
+                                    x.Category == resourceFilter.Category
+                                    && (
+                                        resourceFilter.Subcategory == null
+                                        || x.Subcategory == resourceFilter.Subcategory
+                                    )));
+                    }),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },

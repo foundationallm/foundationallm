@@ -127,8 +127,8 @@ namespace FoundationaLLM.Plugins.DataPipeline
                             new() {
                                 ResourcePath = "providers/FoundationaLLM.Configuration/apiEndpointConfigurations",
                                 FilterActionPayload = new {
-                                    Category = "General",
-                                    Subcategory = "Indexing"
+                                    category = "General",
+                                    subcategory = "Indexing"
                                 }
                             }
                         }

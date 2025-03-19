@@ -216,7 +216,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <summary>
         /// Gets all resource references of type T1 in the store.
         /// </summary>
-        /// <returns>A <see cref="List{T}"/> contain</returns>
+        /// <returns>A <see cref="List{T}"/> containing all the resource references of the specified type.</returns>
         /// <remarks>
         /// This method is not safe in scenarios where multiple instances of a resource provider are running at the same time.
         /// </remarks>
