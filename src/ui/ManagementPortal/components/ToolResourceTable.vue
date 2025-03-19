@@ -1,8 +1,8 @@
 <template>
 	<DataTable
-		:value="Object.keys(this.resources).map((key) => ({ key, value: this.resources[key] }))"
-		:expandedRows="expandedRows"
-		dataKey="key"
+		:value="Object.keys(resources).map((key) => ({ key, value: resources[key] }))"
+		:expanded-rows="expandedRows"
+		data-key="key"
 		striped-rows
 		scrollable
 		table-style="max-width: 100%"
@@ -78,7 +78,7 @@
 					:model-value="toolResourceToEdit"
 					:visible="toolResourceToEdit?.object_id === data.value.object_id"
 					@update:visible="toolResourceToEdit = null"
-					@update:modelValue="handleEditResourceObject(data.value)"
+					@update:model-value="handleEditResourceObject(data.value)"
 				/>
 			</template>
 		</Column> -->
@@ -115,14 +115,14 @@
 
 <script lang="ts">
 export default {
-	emits: ['delete'],
-
 	props: {
 		resources: {
 			type: Object,
 			required: true,
 		},
 	},
+
+	emits: ['delete'],
 
 	data() {
 		return {
@@ -131,12 +131,12 @@ export default {
 	},
 
 	methods: {
-		getResourceNameFromId(resourceId) {
+		getResourceNameFromId(resourceId: string): string {
 			const parts = resourceId.split('/').filter(Boolean);
 			return parts.slice(-1)[0];
 		},
 
-		getResourceTypeFromId(resourceId) {
+		getResourceTypeFromId(resourceId: string): string {
 			const parts = resourceId.split('/').filter(Boolean);
 			const type = parts.slice(-2)[0];
 
@@ -155,7 +155,7 @@ export default {
 			return type;
 		},
 
-		handleDelete(resourceToDelete) {
+		handleDelete(resourceToDelete: any): void {
 			this.$emit('delete', resourceToDelete);
 		},
 	},

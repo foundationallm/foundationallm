@@ -97,7 +97,7 @@
 
 			<!-- System prompt -->
 			<section aria-labelledby="system-prompt" class="span-2 steps">
-				<h3 class="step-section-header span-2" id="system-prompt">Prompt Prefix</h3>
+				<h3 id="system-prompt" class="step-section-header span-2">Prompt Prefix</h3>
 
 				<div class="span-2">
 					<Textarea
@@ -130,7 +130,6 @@
 
 <script lang="ts">
 import type { PropType } from 'vue';
-import { ref } from 'vue';
 import { debounce } from 'lodash';
 import api from '@/js/api';
 import type { Prompt, CreatePromptRequest } from '@/js/types';

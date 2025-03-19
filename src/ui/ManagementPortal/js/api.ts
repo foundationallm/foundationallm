@@ -1203,7 +1203,7 @@ export default {
 	async checkPipelineName(name: string): Promise<CheckNameResponse> {
 		const payload = {
 			name,
-			type: 'data-pipeline'
+			type: 'data-pipeline',
 		};
 
 		return await this.fetch(
@@ -1246,9 +1246,9 @@ export default {
 			{
 				method: 'POST',
 				body: JSON.stringify({
-					categories
-				})
-			}
+					categories,
+				}),
+			},
 		);
 	},
 

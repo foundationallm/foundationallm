@@ -229,7 +229,7 @@
 								v-model="urlExceptionToEdit"
 								:visible="!!urlExceptionToEdit"
 								@update:visible="urlExceptionToEdit = null"
-								@update:modelValue="handleUpdateURLException"
+								@update:model-value="handleUpdateURLException"
 							/>
 						</template>
 					</Column>
@@ -263,7 +263,7 @@
 					v-if="showNewURLExceptionDialog"
 					:visible="!!showNewURLExceptionDialog"
 					@update:visible="showNewURLExceptionDialog = false"
-					@update:modelValue="handleAddNewURLException"
+					@update:model-value="handleAddNewURLException"
 				/>
 			</div>
 
@@ -292,16 +292,10 @@
 <script lang="ts">
 import type { PropType } from 'vue';
 import { debounce } from 'lodash';
-
 import api from '@/js/api';
-import JsonEditorVue from 'json-editor-vue';
 
 export default {
 	name: 'CreateAPIEndpoint',
-
-	components: {
-		JsonEditorVue,
-	},
 
 	props: {
 		editId: {

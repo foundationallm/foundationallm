@@ -30,8 +30,8 @@
 				:value="dataSources"
 				striped-rows
 				scrollable
-				sortField="resource.name"
-				:sortOrder="1"
+				:sort-field="'resource.name'"
+				:sort-order="1"
 				table-style="max-width: 100%"
 				size="small"
 			>
@@ -131,11 +131,11 @@
 
 		<!-- Delete agent dialog -->
 		<Dialog
+			v-focustrap
+			:closable="false"
 			:visible="dataSourceToDelete !== null"
 			modal
-			v-focustrap
 			header="Delete Data Source"
-			:closable="false"
 		>
 			<p>Do you want to delete the data source "{{ dataSourceToDelete.name }}" ?</p>
 			<template #footer>

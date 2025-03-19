@@ -1,5 +1,5 @@
 <template>
-	<div class="quill-container" ref="quillContainer">
+	<div ref="quillContainer" class="quill-container">
 		<QuillEditor
 			ref="quillEditor"
 			class="custom-quill-editor"
@@ -59,10 +59,10 @@
 		>
 			<CodeEditor
 				ref="codeEditor"
-				autofocus
 				v-model="rawHtml"
 				:languages="[['html', 'HTML']]"
 				:wrap="true"
+				autofocus
 				theme="github-dark"
 				style="width: 100%; height: 100%"
 				@update:model-value="handleCodeEditorChange"

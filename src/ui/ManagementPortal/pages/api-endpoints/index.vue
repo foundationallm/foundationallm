@@ -30,8 +30,8 @@
 				:value="apiEndpoints"
 				striped-rows
 				scrollable
-				sortField="resource.name"
-				:sortOrder="1"
+				:sort-field="'resource.name'"
+				:sort-order="1"
 				table-style="max-width: 100%"
 				size="small"
 			>
@@ -130,7 +130,7 @@
 
 		<!-- Delete model/endpoint dialog -->
 		<Dialog :visible="itemToDelete !== null" modal header="Delete Model Endpoint" :closable="false">
-			<p>Do you want to delete the model endpoint "{{ itemToDelete.name }}" ?</p>
+			<p>Do you want to delete the model endpoint "{{ itemToDelete!.name }}" ?</p>
 			<template #footer>
 				<Button label="Cancel" text @click="itemToDelete = null" />
 				<Button label="Delete" severity="danger" @click="handleDelete" />
@@ -148,7 +148,7 @@ export default {
 
 	data() {
 		return {
-			apiEndpoints: [] as APIEndpointConfiguration,
+			apiEndpoints: [] as APIEndpointConfiguration[],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 			itemToDelete: null as APIEndpointConfiguration | null,
@@ -163,8 +163,8 @@ export default {
 		async getEndpoints() {
 			this.loading = true;
 			try {
-				this.apiEndpoints = await api.getAPIEndpointConfigurations();
-				this.apiEndpoints = this.apiEndpoints; //.filter(({ resource }) => ['AIModel'].includes(resource.subcategory));
+				const endpoints = await api.getAPIEndpointConfigurations();
+				this.apiEndpoints = endpoints; // .filter(({ resource }) => ['AIModel'].includes(resource.subcategory));
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',

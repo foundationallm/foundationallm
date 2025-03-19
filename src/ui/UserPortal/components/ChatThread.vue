@@ -44,11 +44,15 @@
 
 		<!-- Chat input -->
 		<div class="chat-thread__input">
-			<ChatInput ref="chatInput" :disabled="isLoading || isMessagePending || $appStore.sessionMessagePending" @send="handleSend" />
+			<ChatInput
+				ref="chatInput"
+				:disabled="isLoading || isMessagePending || $appStore.sessionMessagePending"
+				@send="handleSend"
+			/>
 		</div>
 
 		<!-- Footer -->
-		<!-- eslint-disable-next-line vue/no-v-html -->
+		<!-- eslint-disable vue/no-v-html -->
 		<footer
 			v-if="$appConfigStore.footerText"
 			class="chat-thread__footer"
@@ -141,7 +145,7 @@ export default {
 				this.scrollToBottom();
 			},
 			deep: true,
-		}
+		},
 	},
 
 	created() {
@@ -154,11 +158,12 @@ export default {
 
 	methods: {
 		getWelcomeMessage(agent) {
-			const welcomeMessage = agent?.resource?.properties?.welcome_message;
-			return welcomeMessage && welcomeMessage.trim() !== ''
-				? welcomeMessage
-				: (this.$appConfigStore.defaultAgentWelcomeMessage ??
-						'Start the conversation using the text box below.');
+			const welcomeMessage = agent?.resource?.properties?.welcome_message?.trim();
+			return (
+				welcomeMessage ||
+				this.$appConfigStore.defaultAgentWelcomeMessage ||
+				'Start the conversation using the text box below.'
+			);
 		},
 
 		getMessageOrderFromReversedIndex(index) {
@@ -209,7 +214,7 @@ export default {
 			// 	this.longRunningOperations.set(this.currentSession.id, true);
 			// 	await this.pollForCompletion(this.currentSession.id, operationId);
 			// } else {
-			let waitForPolling = await this.$appStore.sendMessage(text);
+			const waitForPolling = await this.$appStore.sendMessage(text);
 
 			if (!waitForPolling) {
 				this.isMessagePending = false;
@@ -227,7 +232,8 @@ export default {
 
 			const previousScrollHeight = container.scrollHeight;
 			const previousScrollTop = container.scrollTop;
-			const isNearBottom = previousScrollTop + container.clientHeight + contentGrowth >= previousScrollHeight - 100;
+			const isNearBottom =
+				previousScrollTop + container.clientHeight + contentGrowth >= previousScrollHeight - 100;
 
 			this.$nextTick(() => {
 				const newScrollHeight = container.scrollHeight;

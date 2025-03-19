@@ -30,9 +30,9 @@
 				:value="prompts"
 				striped-rows
 				scrollable
-				:multiSortMeta="sortingFields"
-				:sortOrder="1"
-				sortMode="multiple"
+				:multi-sort-meta="sortingFields"
+				:sort-order="1"
+				sort-mode="multiple"
 				table-style="max-width: 100%"
 				size="small"
 			>

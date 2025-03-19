@@ -30,8 +30,8 @@
 				:value="pipelines"
 				striped-rows
 				scrollable
-				sortField="resource.name"
-				:sortOrder="1"
+				:sort-field="'resource.name'"
+				:sort-order="1"
 				table-style="max-width: 100%"
 				size="small"
 			>
@@ -69,8 +69,8 @@
 					}"
 				></Column>
 
-                <!-- Trigger -->
-                <Column
+				<!-- Trigger -->
+				<Column
 					field="resource.trigger_type"
 					header="Trigger"
 					sortable
@@ -82,18 +82,18 @@
 					}"
 				></Column>
 
-                <!-- Active -->
-                <Column
-                    field="resource.active"
-                    header="Active"
-                    sortable
-                    :pt="{
-                        headerCell: {
-                            style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
-                        },
-                        sortIcon: { style: { color: 'var(--primary-text)' } },
-                    }"
-                ></Column>
+				<!-- Active -->
+				<Column
+					field="resource.active"
+					header="Active"
+					sortable
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						sortIcon: { style: { color: 'var(--primary-text)' } },
+					}"
+				></Column>
 
 				<!-- View -->
 				<Column
@@ -125,80 +125,76 @@
 					}"
 				>
 					<template #body="{ data }">
-                        <Button
-                            link
-                            label="Run"
-                            :aria-label="`Delete ${data.resource.name}`"
-                            @click="vectorStoreToDelete = data.resource"
-                        />
+						<Button
+							link
+							label="Run"
+							:aria-label="`Delete ${data.resource.name}`"
+							@click="vectorStoreToDelete = data.resource"
+						/>
 					</template>
 				</Column>
 			</DataTable>
 		</div>
 
 		<!-- View Pipeline -->
-		<Dialog
-			:visible="pipelineToView !== null"
-			modal
-			:header="pipelineToView?.name"
-		>
-        <div class="dialog-content">
-            <div class="details-grid">
-                <div class="detail-item">
-                    <h4>Description</h4>
-                    <p>{{ pipelineToView?.description || '-' }}</p>
-                </div>
-                <div class="detail-item">
-                    <h4>Data Source</h4>
-                    <p>{{ pipelineToView?.data_source || '-' }}</p>
-                </div>
-                <div class="detail-item">
-                    <h4>Trigger</h4>
-                    <p>{{ pipelineToView?.trigger_type || '-' }}</p>
-                </div>
-                <div class="detail-item">
-                    <h4>Embedding</h4>
-                    <p>{{ pipelineToView?.embedding || '-' }}</p>
-                </div>
-                <div class="detail-item">
-                    <h4>Active</h4>
-                    <p>{{ pipelineToView?.active ? 'Yes' : 'No' }}</p>
-                </div>
-                <div class="detail-item">
-                    <h4>Vector Store</h4>
-                    <p>{{ pipelineToView?.vector_store || '-' }}</p>
-                </div>
-            </div>
+		<Dialog :visible="pipelineToView !== null" modal :header="pipelineToView?.name">
+			<div class="dialog-content">
+				<div class="details-grid">
+					<div class="detail-item">
+						<h4>Description</h4>
+						<p>{{ pipelineToView?.description || '-' }}</p>
+					</div>
+					<div class="detail-item">
+						<h4>Data Source</h4>
+						<p>{{ pipelineToView?.data_source || '-' }}</p>
+					</div>
+					<div class="detail-item">
+						<h4>Trigger</h4>
+						<p>{{ pipelineToView?.trigger_type || '-' }}</p>
+					</div>
+					<div class="detail-item">
+						<h4>Embedding</h4>
+						<p>{{ pipelineToView?.embedding || '-' }}</p>
+					</div>
+					<div class="detail-item">
+						<h4>Active</h4>
+						<p>{{ pipelineToView?.active ? 'Yes' : 'No' }}</p>
+					</div>
+					<div class="detail-item">
+						<h4>Vector Store</h4>
+						<p>{{ pipelineToView?.vector_store || '-' }}</p>
+					</div>
+				</div>
 
-            <h3>Pipeline Runs</h3>
-            <table class="pipeline-runs-table">
-                <thead>
-                <tr>
-                    <th>Start</th>
-                    <th>End</th>
-                    <th>Status</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="run in pipelineToView?.runs || []" :key="run.id">
-                    <td>{{ run.start }}</td>
-                    <td>{{ run.end }}</td>
-                    <td>{{ run.status }}</td>
-                    <td>
-                    <button class="view-button" @click="viewRun(run)">View</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            </div>
+				<h3>Pipeline Runs</h3>
+				<table class="pipeline-runs-table">
+					<thead>
+						<tr>
+							<th>Start</th>
+							<th>End</th>
+							<th>Status</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="run in pipelineToView?.runs || []" :key="run.id">
+							<td>{{ run.start }}</td>
+							<td>{{ run.end }}</td>
+							<td>{{ run.status }}</td>
+							<td>
+								<button class="view-button" @click="viewRun(run)">View</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</Dialog>
 	</main>
 </template>
 
 <script lang="ts">
 import api from '@/js/api';
-import type { DataSource, ResourceProviderGetResult } from '@/js/types';
+import type { /* DataSource, */ ResourceProviderGetResult } from '@/js/types';
 
 export default {
 	name: 'Pipelines',
@@ -206,8 +202,8 @@ export default {
 	data() {
 		return {
 			// dataSources: [] as ResourceProviderGetResult<DataSource>[],
-            pipelines: [] as ResourceProviderGetResult<Pipeline>[],
-            pipelineToView: null,
+			pipelines: [] as ResourceProviderGetResult<Pipeline>[],
+			pipelineToView: null,
 			// vectorStores: [] as [],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
@@ -216,19 +212,19 @@ export default {
 		};
 	},
 
-    watch: {
-        pipelineToView(newValue) {
-            if (newValue) {
-                // this.getPipelineRuns(newValue.name);
+	watch: {
+		pipelineToView(newValue) {
+			if (newValue) {
+				// this.getPipelineRuns(newValue.name);
 				this.getPipeline(newValue.name);
-            }
-        },
-    },
+			}
+		},
+	},
 
 	async created() {
 		// await this.getAgentDataSources();
 		// await this.getVectorStores();
-        await this.getPipelines();
+		await this.getPipelines();
 	},
 
 	methods: {
@@ -246,20 +242,20 @@ export default {
 		// 	this.loading = false;
 		// },
 
-        async getPipelines() {
-            this.loading = true;
-            try {
-                this.pipelines = await api.getPipelines();
-                console.log(this.pipelines);
-            } catch (error) {
-                this.$toast.add({
-                    severity: 'error',
-                    detail: error?.response?._data || error,
-                    life: 5000,
-                });
-            }
-            this.loading = false;
-        },
+		async getPipelines() {
+			this.loading = true;
+			try {
+				this.pipelines = await api.getPipelines();
+				console.log(this.pipelines);
+			} catch (error) {
+				this.$toast.add({
+					severity: 'error',
+					detail: error?.response?._data || error,
+					life: 5000,
+				});
+			}
+			this.loading = false;
+		},
 
 		async getPipeline(pipelineName: string) {
 			try {
@@ -274,18 +270,18 @@ export default {
 			}
 		},
 
-        // async getPipelineRuns(pipelineName: string) {
-        //     try {
-        //         const runs = await api.getPipelineRuns(pipelineName);
-        //         console.log(runs);
-        //     } catch (error) {
-        //         this.$toast.add({
-        //             severity: 'error',
-        //             detail: error?.response?._data || error,
-        //             life: 5000,
-        //         });
-        //     }
-        // },
+		// async getPipelineRuns(pipelineName: string) {
+		//     try {
+		//         const runs = await api.getPipelineRuns(pipelineName);
+		//         console.log(runs);
+		//     } catch (error) {
+		//         this.$toast.add({
+		//             severity: 'error',
+		//             detail: error?.response?._data || error,
+		//             life: 5000,
+		//         });
+		//     }
+		// },
 
 		// async getVectorStores() {
 		// 	this.loading = true;
@@ -367,30 +363,30 @@ export default {
 }
 
 .dialog-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
 }
 
 .details-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
 }
 
 .detail-item h4 {
-  margin: 0 0 0.5rem;
+	margin: 0 0 0.5rem;
 }
 
 .pipeline-runs-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 1rem;
 }
 
 .pipeline-runs-table th,
 .pipeline-runs-table td {
-  padding: 0.5rem;
-  text-align: left;
+	padding: 0.5rem;
+	text-align: left;
 }
 </style>

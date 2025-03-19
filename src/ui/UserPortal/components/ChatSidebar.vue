@@ -121,7 +121,8 @@
 				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 					<span
 						class="chat-sidebar__username"
-						aria-label="Logged in as {{ $authStore.currentAccount?.username }}">
+						aria-label="Logged in as {{ $authStore.currentAccount?.username }}"
+					>
 						{{ $authStore.currentAccount?.name }}
 					</span>
 					<template #popper>
@@ -275,7 +276,7 @@
 </template>
 
 <script lang="ts">
-import { hideAllPoppers, VTooltip } from 'floating-vue';
+import { hideAllPoppers } from 'floating-vue';
 import eventBus from '@/js/eventBus';
 import type { Session } from '@/js/types';
 declare const process: any;

@@ -358,7 +358,7 @@ export default {
 
 					this.tools.forEach((tool: string) => {
 						this.fileToolAccess[fileId][this.toolNameToObjectId(tool)] =
-							associatedTools.hasOwnProperty(this.toolNameToObjectId(tool));
+							Object.prototype.hasOwnProperty.call(associatedTools, this.toolNameToObjectId(tool));
 					});
 				}
 			});

@@ -6,8 +6,8 @@
 		<AgentsList
 			:agents="agents"
 			:loading="loading"
-			:loadingStatusText="loadingStatusText"
-			@refreshAgents="getAgents"
+			:loading-status-text="loadingStatusText"
+			@refresh-agents="getAgents"
 		/>
 	</main>
 </template>
