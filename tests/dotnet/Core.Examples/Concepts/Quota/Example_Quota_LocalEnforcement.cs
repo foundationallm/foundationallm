@@ -4,7 +4,7 @@ using FoundationaLLM.Common.Models.Quota;
 using FoundationaLLM.Core.Examples.Setup;
 using Xunit.Abstractions;
 
-namespace FoundationaLLM.Core.Examples
+namespace FoundationaLLM.Core.Examples.Concepts.Quota
 {
     /// <summary>
     /// Example class for running the default FoundationaLLM agent completions in both session and sessionless modes.
@@ -21,7 +21,7 @@ namespace FoundationaLLM.Core.Examples
 
         [Theory]
         [MemberData(nameof(TestData))]
-        public async Task Quota_API_Controller(
+        public async Task Quota_API_Controller_LocalEnforcement(
             string apiName,
             string controllerName,
             int userCount,
@@ -29,8 +29,11 @@ namespace FoundationaLLM.Core.Examples
             int callDelayMilliseconds,
             bool expectQuotaExceeded)
         {
-            // Wait 5 seconds to ensure the APIRequestQuotaService is initialized.
-            await Task.Delay(5000);
+            // Wait for all required background services to start.
+            await Task.WhenAll([
+                StartEventsWorker(),
+                StartQuotaService()
+            ]);
 
             WriteLine("============ FoundationaLLM Quota Local Enforcement - API Controller Tests ============");
 
@@ -45,6 +48,9 @@ namespace FoundationaLLM.Core.Examples
 
             var evaluationResults = userWorkloads.SelectMany(x => x.Result).ToArray();
 
+            // Stops the Azure Event Grid event processing infrastructure.
+            await StopEventsWorker();
+
             if (expectQuotaExceeded)
                 // We expect to see at least one situation where the quota has been exceeded.
                 Assert.Contains(evaluationResults, x => x.QuotaExceeded);
@@ -53,14 +59,14 @@ namespace FoundationaLLM.Core.Examples
                 Assert.DoesNotContain(evaluationResults, x => x.QuotaExceeded);
         }
 
-        private QuotaEvaluationResult[] RunUserWorkload(
+        private QuotaMetricPartitionState[] RunUserWorkload(
             string apiName,
             string controllerName,
             int userIndex,
             int callCount,
             int callDelayMilliseconds)
         {
-            var evaluationResults = new QuotaEvaluationResult[callCount];
+            var evaluationResults = new QuotaMetricPartitionState[callCount];
 
             for (int i = 0; i < callCount; i++)
             {

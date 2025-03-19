@@ -27,7 +27,7 @@ builder.AddAzureKeyVaultService(
     EnvironmentVariables.FoundationaLLM_AuthorizationAPI_KeyVaultURI);
 
 // Resource validation.
-builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactory>();
+builder.AddResourceValidatorFactory();
 
 // Authorization core.
 builder.AddAuthorizationCore();

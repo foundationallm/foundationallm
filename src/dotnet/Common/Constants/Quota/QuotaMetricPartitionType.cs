@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the type of partitioning applied to the metric based on which a quota is enforced.
     /// </summary>
-    public enum QuotaMetricPartition
+    public enum QuotaMetricPartitionType
     {
         /// <summary>
         /// No partitioning.

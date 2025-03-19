@@ -37,7 +37,9 @@ namespace FoundationaLLM.Core.Examples.Setup
 			IConfiguration configuration,
             ITestOutputHelper testOutputHelper)
 		{
-			TestConfiguration.Initialize(configuration, services);
+            services.AddDIContainerSettings();
+
+            TestConfiguration.Initialize(configuration, services);
 
             services.AddOptions<BlobStorageServiceSettings>(
                     DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization_Storage)
@@ -53,8 +55,13 @@ namespace FoundationaLLM.Core.Examples.Setup
 			RegisterCosmosDb(services, configuration);
             RegisterAzureAIService(services, configuration);
 			RegisterServiceManagers(services);
+            RegisterResourceProviders(services, configuration);
 
-            services.AddAPIRequestQuotaService(configuration);
+            services.AddAzureResourceManager();
+            services.AddAzureEventGridEvents(
+                configuration,
+                AppConfigurationKeySections.FoundationaLLM_Events_Profiles_CoreAPI);
+            services.AddQuotaService(configuration);
         }
 
         private static void RegisterLogging(
@@ -87,6 +94,7 @@ namespace FoundationaLLM.Core.Examples.Setup
                 configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_ManagementAPI_Essentials_APIUrl]!,
                 ServiceContext.AzureCredential!,
                 instanceId);
+            services.AddAuthorizationServiceClient(configuration);
         }
 
 		private static void RegisterCosmosDb(IServiceCollection services, IConfiguration configuration)
@@ -194,6 +202,14 @@ namespace FoundationaLLM.Core.Examples.Setup
 			services.AddScoped<IAgentConversationTestService, AgentConversationTestService>();
             services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
             services.AddScoped<IVectorizationTestService, VectorizationTestService>();
+        }
+
+        private static void RegisterResourceProviders(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddResourceProviderCacheSettings(configuration);
+            services.AddResourceValidatorFactory();
+
+            services.AddConfigurationResourceProvider(configuration);
         }
     }
 }

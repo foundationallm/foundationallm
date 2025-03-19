@@ -18,6 +18,8 @@ ServiceContext.Initialize(
     builder.Environment.IsProduction(),
     ServiceNames.GatewayAPI);
 
+builder.AddDIContainerSettings();
+
 builder.Configuration.Sources.Clear();
 builder.Configuration.AddJsonFile("appsettings.json", false, true);
 builder.Configuration.AddEnvironmentVariables();
@@ -87,7 +89,7 @@ builder.AddAgentResourceProvider();
 builder.AddAttachmentResourceProvider();
 builder.AddConfigurationResourceProvider();
 
-builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactory>();
+builder.AddResourceValidatorFactory();
 
 // API key validation
 builder.Services.AddTransient<IAPIKeyValidationService, APIKeyValidationService>();

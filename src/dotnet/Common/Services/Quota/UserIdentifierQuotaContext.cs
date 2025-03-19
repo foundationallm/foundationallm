@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.Quota;
+﻿using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Models.Quota;
 using Microsoft.Extensions.Logging;
 
 namespace FoundationaLLM.Common.Services.Quota
@@ -12,40 +13,39 @@ namespace FoundationaLLM.Common.Services.Quota
         QuotaDefinition quota,
         ILogger logger) : QuotaContextBase(quota, logger)
     {
-        private readonly Dictionary<string, QuotaMetricSequence> _metrics = [];
+        private readonly Dictionary<string, QuotaMetricPartition> _metricPartitions = [];
 
         /// <inheritdoc/>
-        public override QuotaEvaluationResult AddMetricUnitAndEvaluateQuota(
+        protected override QuotaMetricPartition GetQuotaMetricPartition(
             string userIdentifier,
             string userPrincipalName)
         {
-            if (!_metrics.ContainsKey(userIdentifier))
+            if (!_metricPartitions.ContainsKey(userIdentifier))
             {
                 lock (_syncRoot)
                 {
                     // Ensure that the key is still not present after acquiring the lock.
-                    if (!_metrics.ContainsKey(userIdentifier))
+                    if (!_metricPartitions.ContainsKey(userIdentifier))
                     {
-                        _metrics[userIdentifier] = new(
+                        _metricPartitions[userIdentifier] = new(
+                            quota.Name,
+                            quota.Context,
+                            userIdentifier,
                             Quota.MetricLimit,
                             Quota.MetricWindowSeconds,
-                            Quota.LockoutDurationSeconds);
+                            Quota.LockoutDurationSeconds,
+                            _logger);
                     }
                 }
             }
 
-            var metricResult = _metrics[userIdentifier].AddUnitAndEvaluateMetric();
-            LogMetricEvaluationResult(metricResult, userIdentifier, userPrincipalName);
-
-            return metricResult.LockedOut
-                ? new QuotaEvaluationResult
-                {
-                    QuotaExceeded = true,
-                    ExceededQuotaName = Quota.Name,
-                    // Add a small buffer to the lockout duration to avoid race conditions at the limit.
-                    TimeUntilRetrySeconds = metricResult.RemainingLockoutSeconds + 5
-                }
-                : new QuotaEvaluationResult();
+            return _metricPartitions[userIdentifier];
         }
+
+        /// <inheritdoc/>
+        protected override QuotaMetricPartition GetQuotaMetricPartition(
+            string partitionId) =>
+            _metricPartitions.GetValueOrDefault(partitionId)
+                ?? throw new QuotaException($"The partition id {partitionId} is not valid in the quota context {Quota.Context}.");
     }
 }

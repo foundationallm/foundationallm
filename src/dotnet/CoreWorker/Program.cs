@@ -1,3 +1,4 @@
+using FoundationaLLM;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
@@ -16,6 +17,8 @@ var builder = Host.CreateApplicationBuilder(args);
 ServiceContext.Initialize(
     builder.Environment.IsProduction(),
     ServiceNames.CoreWorker);
+
+builder.AddDIContainerSettings();
 
 builder.Configuration.Sources.Clear();
 builder.Configuration.AddJsonFile("appsettings.json", false, true);

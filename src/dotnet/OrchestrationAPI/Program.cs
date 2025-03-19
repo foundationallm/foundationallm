@@ -34,6 +34,8 @@ namespace FoundationaLLM.Orchestration.API
                 builder.Environment.IsProduction(),
                 ServiceNames.OrchestrationAPI);
 
+            builder.AddDIContainerSettings();
+
             builder.Configuration.Sources.Clear();
             builder.Configuration.AddJsonFile("appsettings.json", false, true);
             builder.Configuration.AddEnvironmentVariables();
@@ -122,7 +124,7 @@ namespace FoundationaLLM.Orchestration.API
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
             // Resource validation
-            builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactory>();
+            builder.AddResourceValidatorFactory();
 
             // Add authorization services.
             builder.AddGroupMembership();

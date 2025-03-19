@@ -35,6 +35,8 @@ namespace FoundationaLLM.Gatekeeper.API
                 builder.Environment.IsProduction(),
                 ServiceNames.GatekeeperAPI);
 
+            builder.AddDIContainerSettings();
+
             builder.Configuration.Sources.Clear();
             builder.Configuration.AddJsonFile("appsettings.json", false, true);
             builder.Configuration.AddEnvironmentVariables();
@@ -96,7 +98,7 @@ namespace FoundationaLLM.Gatekeeper.API
             // Resource providers
             //----------------------------
             builder.AddResourceProviderCacheSettings();
-            builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactory>();
+            builder.AddResourceValidatorFactory();
 
             builder.AddConfigurationResourceProvider();
 

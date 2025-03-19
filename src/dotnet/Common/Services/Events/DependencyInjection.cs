@@ -16,10 +16,10 @@ namespace FoundationaLLM
         /// Register the dependencies required to support Azure Event Grid events.
         /// </summary>
         /// <param name="services">Application builder service collection.</param>
-        /// <param name="configuration">The <see cref="IConfigurationManager"/> providing access to configuration.</param>
+        /// <param name="configuration">The <see cref="IConfiguration"/> providing access to configuration.</param>
         /// <param name="eventGridProfileSection">The name of the configuration section that contains the Event Grid profile to load.</param>
         public static void AddAzureEventGridEvents(this IServiceCollection services,
-            IConfigurationManager configuration,
+            IConfiguration configuration,
             string eventGridProfileSection)
         {
             services.AddOptions<AzureEventGridEventServiceSettings>()

@@ -33,6 +33,8 @@ namespace FoundationaLLM.Management.API
                 builder.Environment.IsProduction(),
                 ServiceNames.ManagementAPI);
 
+            builder.AddDIContainerSettings();
+
             builder.Configuration.Sources.Clear();
             builder.Configuration.AddJsonFile("appsettings.json", false, true);
             builder.Configuration.AddEnvironmentVariables();
@@ -94,7 +96,7 @@ namespace FoundationaLLM.Management.API
             builder.AddHttpClientFactoryService();
 
             // Resource validation.
-            builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactory>();
+            builder.AddResourceValidatorFactory();
 
             // Register the remote vectorization processor, for calls into the Vectorization API.            
             builder.Services.AddSingleton<IVectorizationRequestProcessor, RemoteVectorizationRequestProcessor>();
