@@ -33,6 +33,8 @@ namespace FoundationaLLM.SemanticKernel.API
                 builder.Environment.IsProduction(),
                 ServiceNames.SemanticKernelAPI);
 
+            builder.AddDIContainerSettings();
+
             builder.Configuration.Sources.Clear();
             builder.Configuration.AddJsonFile("appsettings.json", false, true);
             builder.Configuration.AddEnvironmentVariables();
@@ -77,7 +79,7 @@ namespace FoundationaLLM.SemanticKernel.API
             builder.Services.AddSingleton<IAuthorizationServiceClient, NullAuthorizationServiceClient>();
 
             // Resource validation
-            builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactory>();
+            builder.AddResourceValidatorFactory();
 
             // Add event services
             builder.Services.AddAzureEventGridEvents(

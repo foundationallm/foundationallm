@@ -10,7 +10,6 @@ using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Storage;
 using FoundationaLLM.Common.Services.Tokenizers;
-using FoundationaLLM.Common.Validation;
 using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
 using FoundationaLLM.SemanticKernel.Core.Services.Indexing;
 using FoundationaLLM.Vectorization.Interfaces;
@@ -34,6 +33,8 @@ var builder = WebApplication.CreateBuilder(args);
 ServiceContext.Initialize(
     builder.Environment.IsProduction(),
     ServiceNames.VectorizationAPI);
+
+builder.AddDIContainerSettings();
 
 builder.Configuration.Sources.Clear();
 builder.Configuration.AddJsonFile("appsettings.json", false, true);
@@ -150,7 +151,7 @@ builder.Services.AddSingleton<VectorizationServiceFactory>();
 builder.Services.AddSingleton<IVectorizationRequestProcessor, LocalVectorizationRequestProcessor>();
 
 // Resource validation
-builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactory>();
+builder.AddResourceValidatorFactory();
 
 //----------------------------
 // Resource providers

@@ -33,7 +33,8 @@ namespace FoundationaLLM.Common.Services.Quota
                             userIdentifier,
                             Quota.MetricLimit,
                             Quota.MetricWindowSeconds,
-                            Quota.LockoutDurationSeconds);
+                            Quota.LockoutDurationSeconds,
+                            _logger);
                     }
                 }
             }

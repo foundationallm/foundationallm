@@ -14,9 +14,13 @@ namespace FoundationaLLM.Common.Interfaces
         string ServiceInstanceName { get; }
 
         /// <summary>
-        /// Indicates whether the event service has started successfully and is active.
+        /// Gets the <see cref="TaskCompletionSource{T}"/> (<c>TResult</c> of type <see cref="bool"/>)
+        /// that signals the completion of the initialization task.
         /// </summary>
-        bool Active { get; }
+        /// <remarks>
+        /// The result of the task indicates whether initialization completed successfully or not.
+        /// </remarks>
+        Task<bool> InitializationTask { get; }
 
         /// <summary>
         /// Starts the event service, allowing it to initialize.

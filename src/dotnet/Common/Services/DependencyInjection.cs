@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
+using FoundationaLLM.Common.Models.Configuration.Environment;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
@@ -30,6 +31,27 @@ namespace FoundationaLLM
     /// </summary>
     public static partial class DependencyInjection
     {
+        /// <summary>
+        /// Registers an instance of <see cref="DependencyInjectionContainerSettings"/> with default settings to the dependency injection container.
+        /// </summary>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
+        /// <param name="settings">An optional <see cref="DependencyInjectionContainerSettings"/> instance that overrides the default settings.</param>
+        public static void AddDIContainerSettings(
+            this IHostApplicationBuilder builder,
+            DependencyInjectionContainerSettings? settings = null) =>
+            builder.Services.AddDIContainerSettings(settings);
+
+        /// <summary>
+        /// Registers an instance of <see cref="DependencyInjectionContainerSettings"/> with default settings to the dependency injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="settings">An optional <see cref="DependencyInjectionContainerSettings"/> instance that overrides the default settings.</param>
+        public static void AddDIContainerSettings(
+            this IServiceCollection services,
+            DependencyInjectionContainerSettings? settings = null) =>
+            services.AddSingleton<DependencyInjectionContainerSettings>(
+                settings ?? new DependencyInjectionContainerSettings());
+
         /// <summary>
         /// Adds CORS policies the the dependency injection container.
         /// </summary>
@@ -198,19 +220,30 @@ namespace FoundationaLLM
         /// <param name="builder">The host application builder.</param>
         /// <param name="keyVaultUriConfigurationKeyName">The name of the configuration key that provides the URI of the Azure Key Vault service.</param>
         public static void AddAzureKeyVaultService(this IHostApplicationBuilder builder,
+            string keyVaultUriConfigurationKeyName) =>
+            builder.Services.AddAzureKeyVaultService(
+                builder.Configuration,
+                keyVaultUriConfigurationKeyName);
+
+        /// <summary>
+        /// Registers the <see cref="AzureKeyVaultService"/> service with the dependency injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfiguration"/> configuration provider.</param>
+        /// <param name="keyVaultUriConfigurationKeyName">The name of the configuration key that provides the URI of the Azure Key Vault service.</param>
+        public static void AddAzureKeyVaultService(
+            this IServiceCollection services,
+            IConfiguration configuration,
             string keyVaultUriConfigurationKeyName)
         {
-            builder.Services.AddAzureClients(clientBuilder =>
+            services.AddAzureClients(clientBuilder =>
             {
-                var keyVaultUri = builder.Configuration[keyVaultUriConfigurationKeyName];
+                var keyVaultUri = configuration[keyVaultUriConfigurationKeyName];
                 clientBuilder.AddSecretClient(new Uri(keyVaultUri!))
                     .WithCredential(ServiceContext.AzureCredential);
             });
 
-            // Configure logging to filter out Azure Core and Azure Key Vault informational logs.
-            builder.Logging.AddFilter("Azure.Core", LogLevel.Warning);
-            builder.Logging.AddFilter("Azure.Security.KeyVault.Secrets", LogLevel.Warning);
-            builder.Services.AddSingleton<IAzureKeyVaultService, AzureKeyVaultService>();
+            services.AddSingleton<IAzureKeyVaultService, AzureKeyVaultService>();
         }
 
         /// <summary>

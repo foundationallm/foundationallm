@@ -36,6 +36,8 @@ namespace FoundationaLLM.Common.Services.Quota
         // Once initialization completes, the service will be disabled if there are no quota definitions in the quota store.
         // While initialization is in progress, the service is enabled to make sure we can handle the situation where initialization fails.
         private bool _enabled = true;
+        private readonly TaskCompletionSource<bool> _initializationTaskCompletionSource =
+            new(TaskCreationOptions.RunContinuationsAsynchronously);
         private readonly IStorageService _storageService;
         private readonly IEventService _eventService;
         private readonly ILoggerFactory _loggerFactory;
@@ -52,6 +54,9 @@ namespace FoundationaLLM.Common.Services.Quota
 
         /// <inheritdoc/>
         public bool Enabled => true;
+
+        /// <inheritdoc/>
+        public Task<bool> InitializationTask => _initializationTaskCompletionSource.Task;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QuotaService"/> class.
@@ -107,9 +112,12 @@ namespace FoundationaLLM.Common.Services.Quota
 
                 if (!_enabled)
                     _logger.LogWarning("The quota service is disabled because there are no quota definitions in the quota store.");
+
+                _initializationTaskCompletionSource.SetResult(true);
             }
             catch (Exception ex)
             {
+                _initializationTaskCompletionSource.SetResult(false);
                 _logger.LogError(ex, "The quota service failed to initialize.");
             }
         }

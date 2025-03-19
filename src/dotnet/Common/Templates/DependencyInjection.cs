@@ -51,8 +51,8 @@ namespace FoundationaLLM
         /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.AIModel resource provider.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
-        public static void AddAIModelResourceProviderStorage(this IServiceCollection services, IConfigurationManager configuration)
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddAIModelResourceProviderStorage(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<BlobStorageServiceSettings>(
                 DependencyInjectionKeys.FoundationaLLM_ResourceProviders_AIModel)
@@ -102,8 +102,8 @@ namespace FoundationaLLM
         /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.Agent resource provider.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
-        public static void AddAgentResourceProviderStorage(this IServiceCollection services, IConfigurationManager configuration)
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddAgentResourceProviderStorage(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<BlobStorageServiceSettings>(
                 DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Agent)
@@ -153,8 +153,8 @@ namespace FoundationaLLM
         /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.Attachment resource provider.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
-        public static void AddAttachmentResourceProviderStorage(this IServiceCollection services, IConfigurationManager configuration)
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddAttachmentResourceProviderStorage(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<BlobStorageServiceSettings>(
                 DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Attachment)
@@ -204,8 +204,8 @@ namespace FoundationaLLM
         /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.AzureOpenAI resource provider.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
-        public static void AddAzureOpenAIResourceProviderStorage(this IServiceCollection services, IConfigurationManager configuration)
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddAzureOpenAIResourceProviderStorage(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<BlobStorageServiceSettings>(
                 DependencyInjectionKeys.FoundationaLLM_ResourceProviders_AzureOpenAI)
@@ -255,8 +255,8 @@ namespace FoundationaLLM
         /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.Configuration resource provider.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
-        public static void AddConfigurationResourceProviderStorage(this IServiceCollection services, IConfigurationManager configuration)
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddConfigurationResourceProviderStorage(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<BlobStorageServiceSettings>(
                 DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Configuration)
@@ -306,8 +306,8 @@ namespace FoundationaLLM
         /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.DataSource resource provider.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
-        public static void AddDataSourceResourceProviderStorage(this IServiceCollection services, IConfigurationManager configuration)
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddDataSourceResourceProviderStorage(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<BlobStorageServiceSettings>(
                 DependencyInjectionKeys.FoundationaLLM_ResourceProviders_DataSource)
@@ -357,8 +357,8 @@ namespace FoundationaLLM
         /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.Prompt resource provider.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
-        public static void AddPromptResourceProviderStorage(this IServiceCollection services, IConfigurationManager configuration)
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddPromptResourceProviderStorage(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<BlobStorageServiceSettings>(
                 DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Prompt)
@@ -408,8 +408,8 @@ namespace FoundationaLLM
         /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.Vectorization resource provider.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
-        public static void AddVectorizationResourceProviderStorage(this IServiceCollection services, IConfigurationManager configuration)
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddVectorizationResourceProviderStorage(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<BlobStorageServiceSettings>(
                 DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization)
@@ -459,8 +459,8 @@ namespace FoundationaLLM
         /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.DataPipeline resource provider.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
-        public static void AddDataPipelineResourceProviderStorage(this IServiceCollection services, IConfigurationManager configuration)
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddDataPipelineResourceProviderStorage(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<BlobStorageServiceSettings>(
                 DependencyInjectionKeys.FoundationaLLM_ResourceProviders_DataPipeline)
@@ -510,8 +510,8 @@ namespace FoundationaLLM
         /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.Plugin resource provider.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
-        public static void AddPluginResourceProviderStorage(this IServiceCollection services, IConfigurationManager configuration)
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddPluginResourceProviderStorage(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<BlobStorageServiceSettings>(
                 DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Plugin)

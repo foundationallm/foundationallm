@@ -97,7 +97,7 @@ namespace FoundationaLLM.Common.Services.Quota
             var startTime = DateTimeOffset.UtcNow;
             var metricPartition = GetQuotaMetricPartition(partitionId);
             var metricPartitionState = metricPartition.AddRemoteMetricUnits(referenceTimes);
-)
+
             if (metricPartitionState != null)
                 _logger.LogDebug(string.Join(Environment.NewLine,
                     [

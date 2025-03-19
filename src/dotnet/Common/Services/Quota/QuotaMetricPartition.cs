@@ -25,8 +25,6 @@ namespace FoundationaLLM.Common.Services.Quota
         private readonly string _quotaName = quotaName;
         private readonly string _quotaContext = quotaContext;
         private readonly string _quotaMetricPartitionId = quotaMetricPartitionId;
-        private readonly int _metricLimit = metricLimit;
-        private readonly int _metricWindowSeconds = metricWindowSeconds;
         private readonly int _lockoutDurationSeconds = lockoutDurationSeconds;
         private readonly ILogger _logger = logger;
 
@@ -99,8 +97,8 @@ namespace FoundationaLLM.Common.Services.Quota
                     {
                         _lockedOut = true;
                         _lockoutStartTime = localReferenceTime;
-                        Array.Clear(_localMetricUnits, 0, METRIC_TIME_UNIT_SECONDS);
-                        Array.Clear(_remoteMetricUnits, 0, METRIC_TIME_UNIT_SECONDS);
+                        Array.Clear(_localMetricUnits, 0, _actualMetricWindowSeconds);
+                        Array.Clear(_remoteMetricUnits, 0, _actualMetricWindowSeconds);
                         _localMetricUnitsCount = 0;
                         _remoteMetricUnitsCount = 0;
                     }
@@ -190,8 +188,8 @@ namespace FoundationaLLM.Common.Services.Quota
                     {
                         _lockedOut = true;
                         _lockoutStartTime = localReferenceTime;
-                        Array.Clear(_localMetricUnits, 0, METRIC_TIME_UNIT_SECONDS);
-                        Array.Clear(_remoteMetricUnits, 0, METRIC_TIME_UNIT_SECONDS);
+                        Array.Clear(_localMetricUnits, 0, _actualMetricWindowSeconds);
+                        Array.Clear(_remoteMetricUnits, 0, _actualMetricWindowSeconds);
                         _localMetricUnitsCount = 0;
                         _remoteMetricUnitsCount = 0;
                     }
@@ -221,10 +219,11 @@ namespace FoundationaLLM.Common.Services.Quota
             {
                 // More than one second passed since the last unit was added, so we need to shift the one-second buckets.
 
-                if (fractionalSeconds >= METRIC_TIME_UNIT_SECONDS)
+                if (fractionalSeconds >= _actualMetricWindowSeconds)
                 {
                     // No need to shift anything, too much time has passed since the last unit was added.
-                    Array.Clear(_localMetricUnits, 0, METRIC_TIME_UNIT_SECONDS);
+                    Array.Clear(_localMetricUnits, 0, _actualMetricWindowSeconds);
+                    Array.Clear(_remoteMetricUnits, 0, _actualMetricWindowSeconds);
                     _localMetricUnitsCount = 0;
                     _remoteMetricUnitsCount = 0;
                 }
@@ -235,7 +234,7 @@ namespace FoundationaLLM.Common.Services.Quota
 
                     var roundedSeconds = (int)Math.Ceiling(fractionalSeconds);
 
-                    for (int i = METRIC_TIME_UNIT_SECONDS - 1; i >= roundedSeconds; i--)
+                    for (int i = _actualMetricWindowSeconds - 1; i >= roundedSeconds; i--)
                     {
                         _localMetricUnits[i] = _localMetricUnits[i - roundedSeconds];
                         _localMetricUnitsCount += _localMetricUnits[i];
@@ -260,6 +259,7 @@ namespace FoundationaLLM.Common.Services.Quota
             _localMetricUnits[0]++;
             _localMetricUnitsCount++;
         }
+
         private void ShiftAndAddRemoteUnits(
             DateTimeOffset refTime,
             List<DateTimeOffset> remoteReferenceTimes)
@@ -269,7 +269,13 @@ namespace FoundationaLLM.Common.Services.Quota
             // Add the remote units to the metric units.
             foreach (var remoteReferenceTime in remoteReferenceTimes)
             {
-                // TODO: Implement the logic to add individual remote units.
+                var roundedSeconds = (int)Math.Ceiling((refTime - remoteReferenceTime).TotalSeconds);
+                if (roundedSeconds >= 0
+                    && roundedSeconds < _actualMetricWindowSeconds)
+                {
+                    _remoteMetricUnits[roundedSeconds]++;
+                    _remoteMetricUnitsCount++;
+                }
             }
         }
 

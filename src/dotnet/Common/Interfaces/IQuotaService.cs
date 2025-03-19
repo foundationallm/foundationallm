@@ -15,6 +15,15 @@ namespace FoundationaLLM.Common.Interfaces
         bool Enabled { get; }
 
         /// <summary>
+        /// Gets the <see cref="TaskCompletionSource{T}"/> (<c>TResult</c> of type <see cref="bool"/>)
+        /// that signals the completion of the initialization task.
+        /// </summary>
+        /// <remarks>
+        /// The result of the task indicates whether initialization completed successfully or not.
+        /// </remarks>
+        Task<bool> InitializationTask { get; }
+
+        /// <summary>
         /// Evaluates an HTTP API request to determine if it exceeds any quotas.
         /// </summary>
         /// <param name="apiName">The name of the API handling the request.</param>

@@ -35,6 +35,8 @@ namespace FoundationaLLM.Core.API
                 builder.Environment.IsProduction(),
                 ServiceNames.CoreAPI);
 
+            builder.AddDIContainerSettings();
+
             builder.Configuration.Sources.Clear();
             builder.Configuration.AddJsonFile("appsettings.json", false, true);
             builder.Configuration.AddEnvironmentVariables();
@@ -105,7 +107,7 @@ namespace FoundationaLLM.Core.API
             // Resource providers
             //----------------------------
             builder.AddResourceProviderCacheSettings();
-            builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactory>();
+            builder.AddResourceValidatorFactory();
 
             builder.AddAgentResourceProvider();
             builder.AddAttachmentResourceProvider();

@@ -27,6 +27,8 @@ ServiceContext.Initialize(
     builder.Environment.IsProduction(),
     ServiceNames.StateAPI);
 
+builder.AddDIContainerSettings();
+
 builder.Configuration.Sources.Clear();
 builder.Configuration.AddJsonFile("appsettings.json", false, true);
 builder.Configuration.AddEnvironmentVariables();

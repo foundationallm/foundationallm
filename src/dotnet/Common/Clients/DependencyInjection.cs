@@ -2,7 +2,6 @@
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Authorization;
-using FoundationaLLM.Common.Services.Cache;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,7 +23,6 @@ namespace FoundationaLLM
         {
             builder.Services.AddOptions<AuthorizationServiceClientSettings>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials));
-            //builder.Services.AddSingleton<IAuthorizationServiceClientCacheService, AuthorizationServiceClientCacheService>();
             builder.Services.AddSingleton<IAuthorizationServiceClient, AuthorizationServiceClient>();
         }
 
@@ -32,12 +30,11 @@ namespace FoundationaLLM
         /// Adds the authorization service to the dependency injection container (used by all resource providers).
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
-        public static void AddAuthorizationServiceClient(this IServiceCollection services, IConfigurationManager configuration)
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration manager.</param>
+        public static void AddAuthorizationServiceClient(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<AuthorizationServiceClientSettings>()
                 .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials));
-            //services.AddSingleton<IAuthorizationServiceClientCacheService, AuthorizationServiceClientCacheService>();
             services.AddSingleton<IAuthorizationServiceClient, AuthorizationServiceClient>();
         }
     }

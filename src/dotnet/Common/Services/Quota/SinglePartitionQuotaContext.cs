@@ -19,7 +19,8 @@ namespace FoundationaLLM.Common.Services.Quota
             string.Empty,
             quota.MetricLimit,
             quota.MetricWindowSeconds,
-            quota.LockoutDurationSeconds);
+            quota.LockoutDurationSeconds,
+            logger);
 
         /// <inheritdoc/>
         protected override QuotaMetricPartition GetQuotaMetricPartition(
