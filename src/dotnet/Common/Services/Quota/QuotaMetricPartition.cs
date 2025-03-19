@@ -6,6 +6,7 @@ namespace FoundationaLLM.Common.Services.Quota
     /// <summary>
     /// Represents a partition of a quota metric.
     /// </summary>
+    /// <param name="quotaServiceIdentifier">The identifier of the QuotaService instance managing this quota context.</param>
     /// <param name="quotaName">The name of the quota that this quota metric partition refers to.</param>
     /// <param name="quotaContext">The quota context that this quota metric partition refers to.</param>
     /// <param name="quotaMetricPartitionId">The identifier of the quota metric partion that this sequence refers to.</param>
@@ -14,6 +15,7 @@ namespace FoundationaLLM.Common.Services.Quota
     /// <param name="lockoutDurationSeconds">The duration of the lockout period when the metric limit is exceeded.</param>
     /// <param name="logger">The logger instance to use for logging.</param>
     public class QuotaMetricPartition(
+        string quotaServiceIdentifier,
         string quotaName,
         string quotaContext,
         string quotaMetricPartitionId,
@@ -22,6 +24,7 @@ namespace FoundationaLLM.Common.Services.Quota
         int lockoutDurationSeconds,
         ILogger logger)
     {
+        private readonly string _quotaServiceIdentifier = quotaServiceIdentifier;
         private readonly string _quotaName = quotaName;
         private readonly string _quotaContext = quotaContext;
         private readonly string _quotaMetricPartitionId = quotaMetricPartitionId;
@@ -32,7 +35,7 @@ namespace FoundationaLLM.Common.Services.Quota
         private readonly int _actualMetricWindowSeconds = METRIC_TIME_UNIT_SECONDS;
         private readonly int _actualMetricLimit = metricLimit / (metricWindowSeconds / METRIC_TIME_UNIT_SECONDS);
 
-        private object _syncRoot = new();
+        private readonly object _syncRoot = new();
         private int _localMetricUnitsCount = 0;
         private int _remoteMetricUnitsCount = 0;
         /// <summary>
@@ -149,14 +152,16 @@ namespace FoundationaLLM.Common.Services.Quota
                 .ToList();
             if (validRemoteReferenceTimes.Count == 0)
             {
-                _logger.LogWarning("All remote metric units where discarded because their timestamps were not valid on the local system.");
+                _logger.LogWarning("[QuotaService {ServiceIdentifier}] All remote metric units where discarded because their timestamps were not valid on the local system.",
+                    _quotaServiceIdentifier);
                 return null;
             }
 
             var invalidRemoteReferenceTimesCount = remoteReferenceTimes.Count - validRemoteReferenceTimes.Count;
             if (invalidRemoteReferenceTimesCount > 0)
                 _logger.LogWarning(
-                    "{DiscardedUnitsCount} remote metric units were discarded because their timestamps were not valid on the local system.",
+                    "[QuotaService {ServiceIdentifier}] {DiscardedUnitsCount} remote metric units were discarded because their timestamps were not valid on the local system.",
+                    _quotaServiceIdentifier,
                     invalidRemoteReferenceTimesCount);
 
             #endregion

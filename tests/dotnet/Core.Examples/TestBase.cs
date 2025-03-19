@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration.Environment;
 using FoundationaLLM.Common.Services.Events;
 using FoundationaLLM.Core.Examples.Setup;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,47 +8,56 @@ using Xunit.Abstractions;
 
 namespace FoundationaLLM.Core.Examples
 {
-    public abstract class TestBase
+    public class TestBase
     {
 		protected ITestOutputHelper Output { get; }
-		protected List<IServiceProvider> ServiceProviders { get; }
-        protected IServiceProvider ServiceProvider { get; }
 
-		private IHostedService? _eventsWorker;
-		private CancellationTokenSource _eventsWorkerCancellationTokenSource = new();
+		protected List<ServiceContainer> ServiceContainers { get; }
+        
+		protected ServiceContainer MainServiceContainer { get; }
+
+		protected readonly int _serviceContainerCount;
 
 		public TestBase(
-			ITestOutputHelper output,
+			int serviceContainerCount,
+            ITestOutputHelper output,
             TestFixture fixture)
 		{
-			Output = output;
+            _serviceContainerCount = serviceContainerCount;
 
-			ServiceProviders = GetServiceProviders(output, fixture);
-			ServiceProvider = ServiceProviders.First();
+            Output = output;
+			ServiceContainers = GetServiceContainers(output, fixture);
+			MainServiceContainer = ServiceContainers.First();
         }
 
-		protected virtual List<IServiceProvider> GetServiceProviders(
+		protected virtual List<ServiceContainer> GetServiceContainers(
 			ITestOutputHelper output,
-			TestFixture fixture)
-        {
-            var _serviceCollection = new ServiceCollection();
+			TestFixture fixture) =>
+            [.. Enumerable.Range(1, _serviceContainerCount)
+				.Select(serviceContainerIndex =>
+				{
+                    var serviceCollection = new ServiceCollection();
 
-            DependencyInjectionContainerInitializer.InitializeServices(
-                _serviceCollection,
-                fixture.HostBuilder.Configuration,
-                output);
+                    DependencyInjectionContainerInitializer.InitializeServices(
+                        serviceContainerIndex,
+                        serviceCollection,
+                        fixture.HostBuilder.Configuration,
+                        output);
 
-            return [_serviceCollection.BuildServiceProvider()];
-        }
+					return new ServiceContainer
+					{
+						ServiceProvider = serviceCollection.BuildServiceProvider()
+                    };
+                })];
 
         /// <summary>
-        /// Service locator to get services from the ServiceProvider.
+        /// Service locator to get services from the main service container's service provider.
         /// </summary>
         /// <typeparam name="T">The type of service to retrieve.</typeparam>
         /// <returns></returns>
         protected T GetService<T>() where T : notnull
 		{
-			return ServiceProvider.GetRequiredService<T>();
+			return MainServiceContainer.ServiceProvider.GetRequiredService<T>();
 		}
 
 		/// <summary>
@@ -69,25 +79,43 @@ namespace FoundationaLLM.Core.Examples
 			this.Output.WriteLine((string)(target ?? string.Empty));
 		}
 
-		/// <summary>
-		/// Starts the <see cref="EventsWorker"/> background service which manages the 
-		/// lifetime of the <see cref="AzureEventGridEventService"/> events service.
-		/// </summary>
-		protected async Task StartEventsWorker()
+		protected async Task StartEventsWorkers() =>
+            await Task.WhenAll(
+				ServiceContainers.Select(sc => StartEventsWorker(sc)));
+
+		protected async Task StopEventsWorkers() =>
+            await Task.WhenAll(
+                ServiceContainers.Select(sc => StopEventsWorker(sc)));
+
+		protected async Task WaitForQuotaServices() =>
+            await Task.WhenAll(
+                ServiceContainers.Select(sc => WaitForQuotaService(sc)));
+
+        /// <summary>
+        /// Starts the <see cref="EventsWorker"/> background service which manages the 
+        /// lifetime of the <see cref="AzureEventGridEventService"/> events service.
+        /// </summary>
+		/// <param name="serviceContainer">The <see cref="ServiceContainer"/> providing the service.</param>
+        protected async Task StartEventsWorker(ServiceContainer serviceContainer)
         {
-            _eventsWorker = ServiceProvider
+			var containerProperties = serviceContainer.ServiceProvider
+				.GetRequiredService<DependencyInjectionContainerSettings>();
+
+            serviceContainer.EventsWorker = serviceContainer.ServiceProvider
 				.GetRequiredService<IEnumerable<IHostedService>>()
 				.SingleOrDefault(x => x.GetType() == typeof(EventsWorker));
-            _ = _eventsWorker!.StartAsync(_eventsWorkerCancellationTokenSource.Token);
+            _ = serviceContainer.EventsWorker!.StartAsync(
+				serviceContainer.EventsWorkerCancellationTokenSource.Token);
 
-            WriteLine("Waiting for the AzureEventGridService to become active...");
-			var eventService = ServiceProvider.GetRequiredService<IEventService>();
+            WriteLine($"Service container {containerProperties.Id:D3}: Waiting for the AzureEventGridService in to become active...");
+			
+			var eventService = serviceContainer.ServiceProvider.GetRequiredService<IEventService>();
 			
 			await eventService.InitializationTask;
-			WriteLine($"AzureEventGridService is active with initialization status = {(eventService.InitializationTask.Result ? "Success" : "Error" )}.");
+			WriteLine($"Service container {containerProperties.Id:D3}: AzureEventGridService is active with initialization status = {(eventService.InitializationTask.Result ? "Success" : "Error" )}.");
 
 			if (!eventService.InitializationTask.Result)
-				throw new Exception("AzureEventGridService initialization failed.");
+				throw new Exception($"Service container {containerProperties.Id:D3}: AzureEventGridService initialization failed.");
         }
 
         /// <summary>
@@ -95,25 +123,35 @@ namespace FoundationaLLM.Core.Examples
 		/// which manages the lifetime of the <see cref="AzureEventGridEventService"/> events service.
 		/// Once the cancellation request is processed, the service will stop.
         /// </summary>
-        protected async Task StopEventsWorker()
+		/// <param name="serviceContainer">The <see cref="ServiceContainer"/> providing the service.</param>
+        protected static async Task StopEventsWorker(ServiceContainer serviceContainer)
 		{
-			if (_eventsWorker == null)
+			if (serviceContainer.EventsWorker == null)
 				return;
 
-            _eventsWorkerCancellationTokenSource.Cancel();
-			await _eventsWorker.StopAsync(default);
+            serviceContainer.EventsWorkerCancellationTokenSource.Cancel();
+			await serviceContainer.EventsWorker.StopAsync(default);
         }
 
-		protected async Task StartQuotaService()
+        /// <summary>
+        /// Waits for the <see cref="QuotaService"/> singleton service to complete its startup.
+        /// </summary>
+        /// <param name="serviceContainer">The <see cref="ServiceContainer"/> providing the service.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        protected async Task WaitForQuotaService(ServiceContainer serviceContainer)
 		{
-            var quotaService = ServiceProvider.GetRequiredService<IQuotaService>();
+            var containerProperties = serviceContainer.ServiceProvider
+                .GetRequiredService<DependencyInjectionContainerSettings>();
+            var quotaService = serviceContainer.ServiceProvider
+				.GetRequiredService<IQuotaService>();
 
-            WriteLine("Waiting for the QuotaService to become active...");
+            WriteLine($"Service container {containerProperties.Id:D3}: Waiting for the QuotaService to become active...");
             await quotaService.InitializationTask;
-            WriteLine($"QuotaService is active with initialization status = {(quotaService.InitializationTask.Result ? "Success" : "Error")}.");
+            WriteLine($"Service container {containerProperties.Id:D3}: QuotaService is active with initialization status = {(quotaService.InitializationTask.Result ? "Success" : "Error")}.");
 
             if (!quotaService.InitializationTask.Result)
-                throw new Exception("QuotaService initialization failed.");
+                throw new Exception($"Service container {containerProperties.Id:D3}: QuotaService initialization failed.");
         }
     }
 }

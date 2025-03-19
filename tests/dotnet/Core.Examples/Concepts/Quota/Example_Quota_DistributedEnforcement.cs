@@ -2,26 +2,24 @@
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Quota;
 using FoundationaLLM.Core.Examples.Setup;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit.Abstractions;
 
 namespace FoundationaLLM.Core.Examples.Concepts.Quota
 {
     /// <summary>
-    /// Example class for testing local enforcement of quotas.
+    /// Example class for testing distributed enforcement of quotas.
     /// </summary>
-    public class Example_Quota_LocalEnforcement : TestBase, IClassFixture<TestFixture>
+    public class Example_Quota_DistributedEnforcement : TestBase, IClassFixture<TestFixture>
     {
-        private readonly IQuotaService _quotaService;
-
-        public Example_Quota_LocalEnforcement(ITestOutputHelper output, TestFixture fixture)
-            : base(1, output, fixture)
+        public Example_Quota_DistributedEnforcement(ITestOutputHelper output, TestFixture fixture)
+            : base(2, output, fixture)
         {
-            _quotaService = GetService<IQuotaService>();
         }
 
         [Theory]
         [MemberData(nameof(TestData))]
-        public async Task Quota_API_Controller_LocalEnforcement(
+        public async Task Quota_API_Controller_DistributedEnforcement(
             string apiName,
             string controllerName,
             int userCount,
@@ -35,13 +33,21 @@ namespace FoundationaLLM.Core.Examples.Concepts.Quota
                 WaitForQuotaServices()
             ]);
 
-            WriteLine("============ FoundationaLLM Quota Local Enforcement - API Controller Tests ============");
+            WriteLine("============ FoundationaLLM Quota Distributed Enforcement - API Controller Tests ============");
 
             // Simulates {userCount} users simultaneously sending each a set of
             // {callCount} requests to the {controllerName} controller of the {apiName} API,
             // at intervals of {callDelayMilliseconds} milliseconds.
-            var userWorkloads = Enumerable.Range(1, userCount)
-                .Select(x => Task.Run(() => RunUserWorkload(apiName, controllerName, x, callCount, callDelayMilliseconds)))
+            var userWorkloads = Enumerable.Range(1, _serviceContainerCount)
+                .Select(scIndex => Enumerable.Range(1, userCount)
+                    .Select(userIndex => Task.Run(() => RunUserWorkload(
+                        ServiceContainers[scIndex].ServiceProvider.GetRequiredService<IQuotaService>(),
+                        apiName,
+                        controllerName,
+                        userIndex,
+                        callCount,
+                        callDelayMilliseconds))))
+                .SelectMany(x => x)
                 .ToArray();
 
             await Task.WhenAll(userWorkloads);
@@ -60,6 +66,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Quota
         }
 
         private QuotaMetricPartitionState[] RunUserWorkload(
+            IQuotaService quotaService,
             string apiName,
             string controllerName,
             int userIndex,
@@ -71,7 +78,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Quota
             for (int i = 0; i < callCount; i++)
             {
                 // Each user is identified by a user identifier and a user principal name derived from the numeric user index.
-                evaluationResults[i] = _quotaService.EvaluateRawRequestForQuota(
+                evaluationResults[i] = quotaService.EvaluateRawRequestForQuota(
                     apiName,
                     controllerName,
                     new UnifiedUserIdentity()
@@ -89,8 +96,8 @@ namespace FoundationaLLM.Core.Examples.Concepts.Quota
         public static TheoryData<string, string, int, int, int, bool> TestData =>
             new()
             {
-                { "TestAPI01", "Completions", 10, 60, 400, true },
-                { "TestAPI02", "Completions", 10, 40, 2000, false }
+                { "TestAPI03", "Completions", 10, 60, 400, true },
+                { "TestAPI03", "Completions", 10, 40, 2000, false }
             };
     }
 }

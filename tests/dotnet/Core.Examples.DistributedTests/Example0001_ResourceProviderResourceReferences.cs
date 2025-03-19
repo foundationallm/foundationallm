@@ -4,7 +4,6 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Core.Examples.DistributedTests.ResourceProviders;
 using FoundationaLLM.Core.Examples.Setup;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -15,10 +14,10 @@ namespace FoundationaLLM.Core.Examples.DistributedTests
     /// <summary>
     /// Runs load tests on resource provider resource references.
     /// </summary>
-    public class Example0001_ResourceProviderResourceReferences : DistributedTestBase, IClassFixture<TestFixture>
+    public class Example0001_ResourceProviderResourceReferences : TestBase, IClassFixture<TestFixture>
     {
         public Example0001_ResourceProviderResourceReferences(ITestOutputHelper output, TestFixture fixture)
-			: base(1, output, fixture)
+			: base(2, output, fixture)
         {
         }
 
@@ -29,29 +28,18 @@ namespace FoundationaLLM.Core.Examples.DistributedTests
 
             var simulatedUsersCount = 20;
 
-            // Get resource providers in all DI containers.
-            var resourceProvidersHosts = ServiceProviders
-                .Select(sp => new LoadTestResourceProviders(sp, Output))
-                .ToList();
-
-            // Initialize all resource providers.
-            await Task.WhenAll(resourceProvidersHosts
-                .Select(rps => rps.InitializeAll()));
-
             await Task.WhenAll(
-                Enumerable.Range(1, resourceProvidersHosts.Count)
+                Enumerable.Range(1, _serviceContainerCount)
                 .Select(i => SimulateServiceHostLoad(
                     i,
                     simulatedUsersCount,
-                    resourceProvidersHosts[i],
-                    ServiceProviders[i]))
+                    ServiceContainers[i].ServiceProvider))
                 );
         }
 
         private async Task SimulateServiceHostLoad(
             int hostId,
             int simulatedUsersCount,
-            LoadTestResourceProviders resourceProviders,
             IServiceProvider serviceProvider)
         {
             var instanceSettings = serviceProvider.GetRequiredService<IOptions<InstanceSettings>>().Value;
@@ -63,12 +51,16 @@ namespace FoundationaLLM.Core.Examples.DistributedTests
                 AgentResourceTypeNames.Agents,
                 "MockAgent");
 
+            var resourceProviders = serviceProvider
+                .GetRequiredService<IEnumerable<IResourceProviderService>>()
+                .ToDictionary(x => x.Name);
+
             await Task.WhenAll(
                 userIdentities
                 .Select(userIdentity => SimulateAssistantUserContextCreation(
                     instanceId,
                     agentObjectId,
-                    resourceProviders.AzureOpenAIResourceProvider,
+                    resourceProviders[ResourceProviderNames.FoundationaLLM_AzureOpenAI],
                     userIdentity)));
         }
 

@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration.Environment;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Services.Quota;
 using FoundationaLLM.Common.Services.Storage;
@@ -50,6 +51,7 @@ namespace FoundationaLLM
 
             services.AddSingleton<IQuotaService, QuotaService>(sp =>
                 new QuotaService(
+                    sp.GetRequiredService<DependencyInjectionContainerSettings>(),
                     sp.GetRequiredService<IEnumerable<IStorageService>>()
                         .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_Quota),
                     sp.GetRequiredService<IEventService>(),

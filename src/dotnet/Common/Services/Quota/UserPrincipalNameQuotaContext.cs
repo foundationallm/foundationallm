@@ -7,11 +7,13 @@ namespace FoundationaLLM.Common.Services.Quota
     /// <summary>
     /// Implements a quota context partitioned by user principal name.
     /// </summary>
+    /// <param name="quotaServiceIdentifier">The identifier of the QuotaService instance managing this quota context.</param>
     /// <param name="quota">The <see cref="QuotaDefinition"/> providing the quota configuration.</param>
     /// <param name="logger">The logger used for logging.</param>
     public class UserPrincipalNameQuotaContext(
+        string quotaServiceIdentifier,
         QuotaDefinition quota,
-        ILogger logger) : QuotaContextBase(quota, logger)
+        ILogger logger) : QuotaContextBase(quotaServiceIdentifier, quota, logger)
     {
         private readonly Dictionary<string, QuotaMetricPartition> _metricPartitions = [];
 
@@ -28,8 +30,9 @@ namespace FoundationaLLM.Common.Services.Quota
                     if (!_metricPartitions.ContainsKey(userPrincipalName))
                     {
                         _metricPartitions[userPrincipalName] = new(
-                            quota.Name,
-                            quota.Context,
+                            _quotaServiceIdentifier,
+                            _quota.Name,
+                            _quota.Context,
                             userPrincipalName,
                             Quota.MetricLimit,
                             Quota.MetricWindowSeconds,

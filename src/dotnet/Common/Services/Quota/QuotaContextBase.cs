@@ -7,12 +7,16 @@ namespace FoundationaLLM.Common.Services.Quota
     /// <summary>
     /// Implements the base class for managing the in-memory state of a quota context.
     /// </summary>
+    /// <param name="quotaServiceIdentifier">The identifier of the QuotaService instance managing this quota context.</param>
     /// <param name="quota">The <see cref="QuotaDefinition"/> providing the quota configuration.</param>
     /// <param name="logger">The logger used for logging.</param>
     public abstract class QuotaContextBase(
+        string quotaServiceIdentifier,
         QuotaDefinition quota,
         ILogger logger)
     {
+        protected readonly string _quotaServiceIdentifier = quotaServiceIdentifier;
+
         /// <summary>
         /// The object used to synchronize access to the quota context.
         /// </summary>
@@ -26,7 +30,7 @@ namespace FoundationaLLM.Common.Services.Quota
         /// <summary>
         /// The <see cref="QuotaDefinition"/> providing the quota configuration.
         /// </summary>
-        private readonly QuotaDefinition _quota = quota;
+        protected readonly QuotaDefinition _quota = quota;
 
         /// <summary>
         /// Gets or sets the context.
@@ -69,12 +73,13 @@ namespace FoundationaLLM.Common.Services.Quota
 
             _logger.LogDebug(string.Join(Environment.NewLine,
                 [
-                    "Local metric unit added to quota context.",
+                    "[QuotaService {ServiceIdentifier}] Local metric unit added to quota context.",
                     "Quota context: {QuotaContext}, Reference time: {ReferenceTime}",
                     "Metric count: {MetricCount}, Quota exceeded: {QuotaExceeded}, Remaining lockout: {RemainingLockout} seconds.",
                     "Time elapsed: {TimeElapsedMilliseconds} ms",
                     "----------------------------------------"
                 ]),
+                _quotaServiceIdentifier,
                 $"{Quota.Context}, {userIdentifier}, {userPrincipalName}",
                 referenceTime,
                 $"{metricPartitionState.TotalMetricCount} (local = {metricPartitionState.LocalMetricCount}, remote = {metricPartitionState.RemoteMetricCount})",
@@ -101,12 +106,13 @@ namespace FoundationaLLM.Common.Services.Quota
             if (metricPartitionState != null)
                 _logger.LogDebug(string.Join(Environment.NewLine,
                     [
-                        "Remote metric units added to quota context.",
+                        "[QuotaService {ServiceIdentifier}] Remote metric units added to quota context.",
                         "Quota context: {QuotaContext}, Reference times: {ReferenceTimes}",
                         "Metric count: {MetricCount}, Quota exceeded: {QuotaExceeded}",
                         "Time elapsed: {TimeElapsedMilliseconds} ms",
                         "----------------------------------------"
                     ]),
+                    _quotaServiceIdentifier,
                     Quota.Context,
                     referenceTimes,
                     $"{metricPartitionState.TotalMetricCount} (local = {metricPartitionState.LocalMetricCount}, remote = {metricPartitionState.RemoteMetricCount})",

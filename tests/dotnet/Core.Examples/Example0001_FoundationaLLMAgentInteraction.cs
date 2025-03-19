@@ -12,7 +12,7 @@ namespace FoundationaLLM.Core.Examples
 		private readonly IAgentConversationTestService _agentConversationTestService;
 
 		public Example0001_FoundationaLLMAgentInteraction(ITestOutputHelper output, TestFixture fixture)
-			: base(output, fixture)
+			: base(1, output, fixture)
 		{
             _agentConversationTestService = GetService<IAgentConversationTestService>();
 		}

@@ -4,6 +4,7 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.AzureAI;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
+using FoundationaLLM.Common.Models.Configuration.Environment;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
@@ -32,15 +33,19 @@ namespace FoundationaLLM.Core.Examples.Setup
         /// <summary>
         /// Configures a dependency injection container service collection.
         /// </summary>
+        /// <param name="containerId">The dependency injection container identifier.</param>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
         /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
         /// <param name="testOutputHelper">The <see cref="ITestOutputHelper"/> xUnit test output helper used to log test results.</param>
         public static void InitializeServices(
+            int containerId,
 			IServiceCollection services,
 			IConfiguration configuration,
             ITestOutputHelper testOutputHelper)
 		{
-            services.AddDIContainerSettings();
+            services.AddDIContainerSettings(new DependencyInjectionContainerSettings {
+                Id = containerId
+            });
             services.AddInstanceProperties(configuration);
             services.AddAuthorizationServiceClient(configuration);
 

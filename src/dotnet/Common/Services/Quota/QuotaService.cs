@@ -4,6 +4,7 @@ using FoundationaLLM.Common.Constants.Quota;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Configuration.Environment;
 using FoundationaLLM.Common.Models.Configuration.Events;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.Orchestration.Request;
@@ -20,6 +21,9 @@ namespace FoundationaLLM.Common.Services.Quota
     /// </summary>
     public class QuotaService : IQuotaService
     {
+        private readonly DependencyInjectionContainerSettings _dependencyInjectionContainerSettings;
+        private readonly string _serviceIdentifier;
+
         private const string QUOTA_SERVICE_NAME = "QuotaService";
         private const string STORAGE_CONTAINER_NAME = "quota";
         private const string QUOTA_STORE_FILE_PATH = "/quota-store.json";
@@ -46,11 +50,11 @@ namespace FoundationaLLM.Common.Services.Quota
         private List<QuotaDefinition> _quotaDefinitions = [];
         private Dictionary<string, QuotaContextBase> _quotaContexts = [];
 
-        private object _distributedEnfocementQueueLock = new();
+        private readonly object _distributedEnfocementQueueLock = new();
         private LocalEventService? _localEventService;
-        // Since are in a pure producer-consumer scenario that does not have a dedicated producer thread, we use a Queue instead of a ConcurrentQueue.
+        // Since we are in a pure producer-consumer scenario that does not have a dedicated producer thread, we use a Queue instead of a ConcurrentQueue.
         // For details, see https://learn.microsoft.com/en-us/dotnet/standard/collections/thread-safe/when-to-use-a-thread-safe-collection#concurrentqueuet-vs-queuet.
-        private Queue<DistributedQuotaEnforcementEventData> _distributedEnforcementQueue = [];
+        private readonly Queue<DistributedQuotaEnforcementEventData> _distributedEnforcementQueue = [];
 
         /// <inheritdoc/>
         public bool Enabled => true;
@@ -61,14 +65,18 @@ namespace FoundationaLLM.Common.Services.Quota
         /// <summary>
         /// Initializes a new instance of the <see cref="QuotaService"/> class.
         /// </summary>
+        /// <param name="dependencyInjectionContainerSettings">The <see cref="DependencyInjectionContainerSettings"/> providing the configuration of the dependency injection container.</param>
         /// <param name="storageService">The storage service used for storing quota configuration.</param>
         /// <param name="eventService">The <see cref="IEventService"/> providing event services to the quota service.</param>
         /// <param name="loggerFactory">The logger factory used to create loggers.</param>
         public QuotaService(
+            DependencyInjectionContainerSettings dependencyInjectionContainerSettings,
             IStorageService storageService,
             IEventService eventService,
             ILoggerFactory loggerFactory)
         {
+            _dependencyInjectionContainerSettings = dependencyInjectionContainerSettings;
+            _serviceIdentifier = $"{_dependencyInjectionContainerSettings.Id:D3}";
             _storageService = storageService;
             _eventService = eventService;
             _loggerFactory = loggerFactory;
@@ -85,7 +93,8 @@ namespace FoundationaLLM.Common.Services.Quota
         {
             try
             {
-                _logger.LogInformation("Starting to initialize the quota service ...");
+                _logger.LogInformation("[QuotaService {ServiceIdentifier}] Starting to initialize the quota service ...",
+                    _serviceIdentifier);
                 _initializationStartTime = DateTimeOffset.UtcNow;
 
                 await LoadQuotaDefinitions();
@@ -94,11 +103,11 @@ namespace FoundationaLLM.Common.Services.Quota
                     .Select(qd => qd.MetricPartition switch
                     {
                         QuotaMetricPartitionType.None => (new SinglePartitionQuotaContext(
-                            qd, _loggerFactory.CreateLogger<SinglePartitionQuotaContext>())) as QuotaContextBase,
+                            _serviceIdentifier, qd, _loggerFactory.CreateLogger<SinglePartitionQuotaContext>())) as QuotaContextBase,
                         QuotaMetricPartitionType.UserIdentifier => (new UserIdentifierQuotaContext(
-                            qd, _loggerFactory.CreateLogger<UserIdentifierQuotaContext>())) as QuotaContextBase,
+                            _serviceIdentifier, qd, _loggerFactory.CreateLogger<UserIdentifierQuotaContext>())) as QuotaContextBase,
                         QuotaMetricPartitionType.UserPrincipalName => (new UserPrincipalNameQuotaContext(
-                            qd, _loggerFactory.CreateLogger<UserPrincipalNameQuotaContext>())) as QuotaContextBase,
+                            _serviceIdentifier, qd, _loggerFactory.CreateLogger<UserPrincipalNameQuotaContext>())) as QuotaContextBase,
                         _ => throw new QuotaException($"Unsupported metric partition: {qd.MetricPartition}")
                     })
                     .ToDictionary(qc => qc.Quota.Context);
@@ -108,17 +117,20 @@ namespace FoundationaLLM.Common.Services.Quota
                 _isInitialized = true;
                 _enabled = _quotaDefinitions.Count > 0;
 
-                _logger.LogInformation("The quota service was successfully initialized.");
+                _logger.LogInformation("[QuotaService {ServiceIdentifier}] The quota service was successfully initialized.",
+                    _serviceIdentifier);
 
                 if (!_enabled)
-                    _logger.LogWarning("The quota service is disabled because there are no quota definitions in the quota store.");
+                    _logger.LogWarning("[QuotaService {ServiceIdentifier}] The quota service is disabled because there are no quota definitions in the quota store.",
+                        _serviceIdentifier);
 
                 _initializationTaskCompletionSource.SetResult(true);
             }
             catch (Exception ex)
             {
                 _initializationTaskCompletionSource.SetResult(false);
-                _logger.LogError(ex, "The quota service failed to initialize.");
+                _logger.LogError(ex, "[QuotaService {ServiceIdentifier}] The quota service failed to initialize.",
+                    _serviceIdentifier);
             }
         }
 
@@ -154,7 +166,8 @@ namespace FoundationaLLM.Common.Services.Quota
             {
                 // The quota service does not have any quota definitions that require distributed enforcement.
                 // Therefore, the local event service is not needed.
-                _logger.LogInformation("The local event service is not configured because there are not quotas with distributed enforcement.");
+                _logger.LogInformation("[QuotaService {ServiceIdentifier}] The local event service is not configured because there are not quotas with distributed enforcement.",
+                    _serviceIdentifier);
                 return;
             }
 
@@ -190,7 +203,7 @@ namespace FoundationaLLM.Common.Services.Quota
                 return true;
 
             throw
-                new QuotaException("The APIRequestQuotaService service failed to initialize within the required time interval of 60 seconds.");
+                new QuotaException("The quota service failed to initialize within the required time interval of 60 seconds.");
         }
 
         #endregion
@@ -209,7 +222,8 @@ namespace FoundationaLLM.Common.Services.Quota
             var eventsToProcess = e.Events
                 .Where(e => e.Subject == QUOTA_SERVICE_NAME).ToList();
 
-            _logger.LogDebug("{EventsCount} events of type {EventType} received out of which {QuotaServiceEventsCount} are targeted for the quota service.",
+            _logger.LogDebug("[QuotaService {ServiceIdentifier}] {EventsCount} events of type {EventType} received out of which {QuotaServiceEventsCount} are targeted for the quota service.",
+                _serviceIdentifier,
                 originalEventCount,
                 e.EventType,
                 eventsToProcess.Count);
@@ -225,7 +239,9 @@ namespace FoundationaLLM.Common.Services.Quota
                     HandleQuotaMetricUpdates(eventsToProcess);
                     break;
                 default:
-                    _logger.LogWarning("The quota service does not handle events of type {EventType}.", e.EventType);
+                    _logger.LogWarning("[QuotaService {ServiceIdentifier}] The quota service does not handle events of type {EventType}.",
+                        _serviceIdentifier,
+                        e.EventType);
                     break;
             }
 
@@ -249,11 +265,13 @@ namespace FoundationaLLM.Common.Services.Quota
         {
             if (_eventService == null)
             {
-                _logger.LogWarning("The quota service does not have an event service configured and cannot send events.");
+                _logger.LogWarning("[QuotaService {ServiceIdentifier}] The quota service does not have an event service configured and cannot send events.",
+                    _serviceIdentifier);
                 return;
             }
 
-            _logger.LogInformation("The quota service has started sending distributed enforcement events.");
+            _logger.LogInformation("[QuotaService {ServiceIdentifier}] The quota service has started sending distributed enforcement events.",
+                _serviceIdentifier);
 
             while (true)
             {
@@ -287,7 +305,8 @@ namespace FoundationaLLM.Common.Services.Quota
 
                     if (dataToSend.Count > 0)
                     {
-                        _logger.LogDebug("Starting to send {EventCount} distributed enforcement events.",
+                        _logger.LogDebug("[QuotaService {ServiceIdentifier}] Starting to send {EventCount} distributed enforcement events.",
+                            _serviceIdentifier,
                             dataToSend.Count);
 
                         var eventsSent = 0;
@@ -308,15 +327,17 @@ namespace FoundationaLLM.Common.Services.Quota
                             eventsSent++;
                         }
 
-                        _logger.LogDebug("Successfully sent {EventCount} distributed enforcement events.",
-                           eventsSent);
+                        _logger.LogDebug("[QuotaService {ServiceIdentifier}] Successfully sent {EventCount} distributed enforcement events.",
+                            _serviceIdentifier,
+                            eventsSent);
                     }
 
                     await Task.Delay(TimeSpan.FromSeconds(1));
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "An error occurred while sending distributed enforcement events.");
+                    _logger.LogError(ex, "[QuotaService {ServiceIdentifier}] An error occurred while sending distributed enforcement events.",
+                        _serviceIdentifier);
                 }
             }
         }
@@ -373,7 +394,7 @@ namespace FoundationaLLM.Common.Services.Quota
             return UpdateQuotaContext(referenceTime, context, userIdentity);
         }
 
-        private string BuildContext(string?[] tokens) =>
+        private static string BuildContext(string?[] tokens) =>
             string.Join(":", [.. tokens.Select(t => string.IsNullOrWhiteSpace(t) ? "__default+__" : t)]);
 
         private QuotaMetricPartitionState UpdateQuotaContext(
@@ -410,10 +431,11 @@ namespace FoundationaLLM.Common.Services.Quota
                 _logger.LogDebug(string.Join(
                     Environment.NewLine,
                     [
-                        "Quota context: {QuotaContext}, Metric partition id: {MetricPartitionId}",
+                        "[QuotaService {ServiceIdentifier}] Quota context: {QuotaContext}, Metric partition id: {MetricPartitionId}",
                         "Timestamps: {Timestamps}",
                         "----------------------------------------"
                     ]),
+                    _serviceIdentifier,
                     data.QuotaContext,
                     data.QuotaMetricPartitionId,
                     data.EventTimestamps);
@@ -423,12 +445,14 @@ namespace FoundationaLLM.Common.Services.Quota
                         data.EventTimestamps,
                         data.QuotaMetricPartitionId);
                 else
-                    _logger.LogWarning("The quota context {QuotaContext} does not exist in the quota service.",
+                    _logger.LogWarning("[QuotaService {ServiceIdentifier}] The quota context {QuotaContext} does not exist in the quota service.",
+                        _serviceIdentifier,
                         data.QuotaContext);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while updating the quota context for distributed enforcement (quota context: {QuotaContext}, metric partition id: {MetricPartitionId})",
+                _logger.LogError(ex, "[QuotaService {ServiceIdentifier}] An error occurred while updating the quota context for distributed enforcement (quota context: {QuotaContext}, metric partition id: {MetricPartitionId})",
+                    _serviceIdentifier,
                     data.QuotaContext,
                     data.QuotaMetricPartitionId);
             }

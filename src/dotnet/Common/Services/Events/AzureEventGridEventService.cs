@@ -23,6 +23,8 @@ namespace FoundationaLLM.Common.Services.Events
     public class AzureEventGridEventService : IEventService
     {
         private readonly DependencyInjectionContainerSettings _dependencyInjectionContainerSettings;
+        private readonly string _serviceIdentifier;
+
         private readonly ILogger<AzureEventGridEventService> _logger;
         private readonly AzureEventGridEventServiceSettings _settings;
         private readonly AzureEventGridEventServiceProfile _profile;
@@ -64,6 +66,7 @@ namespace FoundationaLLM.Common.Services.Events
             ILogger<AzureEventGridEventService> logger)
         {
             _dependencyInjectionContainerSettings = dependencyInjectionContainerSettings;
+            _serviceIdentifier = $"{_dependencyInjectionContainerSettings.Id:D3}";
             _serviceInstanceName = $"https://foundationallm.ai/events/serviceinstances/{Environment.GetEnvironmentVariable(EnvironmentVariables.AKS_Pod_Name)
                 ?? Environment.GetEnvironmentVariable(EnvironmentVariables.ACA_Container_App_Replica_Name)
                 ?? Guid.NewGuid().ToString().ToLower()}";
@@ -85,7 +88,8 @@ namespace FoundationaLLM.Common.Services.Events
                 // Set up the topic subscriptions according to the service profile.
                 if (!await SetupTopicSubscriptions(cancellationToken))
                 {
-                    _logger.LogError("The Azure Event Grid event service was not able to create the necessary topic subscriptions and/or sender/receiver clients and will not listen for any events.");
+                    _logger.LogError("[AzureEventGridEventService {ServiceIdentifier}] The Azure Event Grid event service was not able to create the necessary topic subscriptions and/or sender/receiver clients and will not listen for any events.",
+                        _serviceIdentifier);
 
                     // Attempt to delete the topic subscriptions that were successfully created.
                     // No need to keep them around since we're not listening for events anyway.
@@ -95,14 +99,16 @@ namespace FoundationaLLM.Common.Services.Events
                     return;
                 }
 
-                _logger.LogInformation("The Azure Event Grid event service was successfully initialized.");
+                _logger.LogInformation("[AzureEventGridEventService {ServiceIdentifier}] The Azure Event Grid event service was successfully initialized.",
+                    _serviceIdentifier);
 
                 _initializationTaskCompletionSource.SetResult(true);
             }
             catch (Exception ex)
             {
                 _initializationTaskCompletionSource.SetResult(false);
-                _logger.LogError(ex, "The Azure Event Grid event service encountered an error while starting and will not listen for any events.");
+                _logger.LogError(ex, "[AzureEventGridEventService {ServiceIdentifier}] The Azure Event Grid event service encountered an error while starting and will not listen for any events.",
+                    _serviceIdentifier);
             }
         }
 
@@ -115,23 +121,27 @@ namespace FoundationaLLM.Common.Services.Events
         {
             if (!Active())
             {
-                _logger.LogCritical("The Azure Event Grid events service is not properly initialized and will not listen for any events.");
+                _logger.LogCritical("[AzureEventGridEventService {ServiceIdentifier}] The Azure Event Grid events service is not properly initialized and will not listen for any events.",
+                    _serviceIdentifier);
                 return;
             }
 
             if (_profile.Topics.Count == 0)
             {
-                _logger.LogWarning("The Azure Event Grid events service is not configured to listen to any events.");
+                _logger.LogWarning("[AzureEventGridEventService {ServiceIdentifier}] The Azure Event Grid events service is not configured to listen to any events.",
+                    _serviceIdentifier);
                 return;
             }
 
-            _logger.LogInformation("The Azure Event Grid event service is starting to process messages.");
+            _logger.LogInformation("[AzureEventGridEventService {ServiceIdentifier}] The Azure Event Grid event service is starting to process messages.",
+                _serviceIdentifier);
 
             while (true)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    _logger.LogInformation("The Azure Event Grid event service received a cancellation request and will stop processing messages.");
+                    _logger.LogInformation("[AzureEventGridEventService {ServiceIdentifier}] The Azure Event Grid event service received a cancellation request and will stop processing messages.",
+                        _serviceIdentifier);
                     return;
                 }
 
@@ -141,7 +151,8 @@ namespace FoundationaLLM.Common.Services.Events
 
                     if (!_receiverClients.TryGetValue(topic.Name, out var receiverClient))
                     {
-                        _logger.LogError("The Azure Event Grid event service does not have a receiver client for topic {TopicName}.",
+                        _logger.LogError("[AzureEventGridEventService {ServiceIdentifier}] The Azure Event Grid event service does not have a receiver client for topic {TopicName}.",
+                            _serviceIdentifier,
                             topic.Name);
                         continue;
                     }
@@ -161,8 +172,8 @@ namespace FoundationaLLM.Common.Services.Events
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex, "An error occured while trying to retrieve events for topic {TopicName} and subscription {SubscriptionName}.",
-                            topic.Name, topic.SubscriptionName);
+                        _logger.LogError(ex, "[AzureEventGridEventService {ServiceIdentifier}] An error occured while trying to retrieve events for topic {TopicName} and subscription {SubscriptionName}.",
+                            _serviceIdentifier, topic.Name, topic.SubscriptionName);
                     }
                 }
 
@@ -199,21 +210,21 @@ namespace FoundationaLLM.Common.Services.Events
         {
             if (!Active())
             {
-                _logger.LogError("Could not send event {EventId} of type {EventType} from source {EventSource}. The Azure Event Grid event service is not active and cannot send events.",
-                    cloudEvent.Id, cloudEvent.Type, cloudEvent.Source);
+                _logger.LogError("[AzureEventGridEventService {ServiceIdentifier}] Could not send event {EventId} of type {EventType} from source {EventSource}. The Azure Event Grid event service is not active and cannot send events.",
+                    _serviceIdentifier, cloudEvent.Id, cloudEvent.Type, cloudEvent.Source);
                 return;
             }
 
             // Enforce the correct event source when sending through the Azure Event Grid service.
             cloudEvent.Source = _serviceInstanceName;
 
-            _logger.LogInformation("Sending an event with source {EventSource}, type {EventType}, and subject {EventSubject} to topic {TopicName},",
-                cloudEvent.Source, cloudEvent.Type, cloudEvent.Subject, topicName);
+            _logger.LogInformation("[AzureEventGridEventService {ServiceIdentifier}] Sending an event with source {EventSource}, type {EventType}, and subject {EventSubject} to topic {TopicName},",
+                _serviceIdentifier, cloudEvent.Source, cloudEvent.Type, cloudEvent.Subject, topicName);
 
             if (!_senderClients.TryGetValue(topicName, out var senderClient))
             {
-                _logger.LogError("Could not send event {EventId} of type {EventType} from source {EventSource}. The Azure Event Grid event service does not have a sender client for the topic {EventTopic}.",
-                    cloudEvent.Id, cloudEvent.Type, cloudEvent.Source, topicName);
+                _logger.LogError("[AzureEventGridEventService {ServiceIdentifier}] Could not send event {EventId} of type {EventType} from source {EventSource}. The Azure Event Grid event service does not have a sender client for the topic {EventTopic}.",
+                    _serviceIdentifier, cloudEvent.Id, cloudEvent.Type, cloudEvent.Source, topicName);
                 return;
             }
 
@@ -223,8 +234,8 @@ namespace FoundationaLLM.Common.Services.Events
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occured while trying to send event {EventId} of type {EventType} from source {EventSource}.",
-                    cloudEvent.Id, cloudEvent.Type, cloudEvent.Source);
+                _logger.LogError(ex, "[AzureEventGridEventService {ServiceIdentifier}] An error occured while trying to send event {EventId} of type {EventType} from source {EventSource}.",
+                    _serviceIdentifier, cloudEvent.Id, cloudEvent.Type, cloudEvent.Source);
             }
         }
 
@@ -238,8 +249,8 @@ namespace FoundationaLLM.Common.Services.Events
                 topic.SubscriptionName = ServiceContext.Production
                     ? $"{topic.SubscriptionPrefix}-{Guid.NewGuid().ToString("N").ToLower()}"
                     : $"{topic.SubscriptionPrefix}-{_dependencyInjectionContainerSettings.Id:D3}-{ServiceContext.ServiceIdentity!.UPN!.ToLower().NormalizeUserPrincipalName()}";
-                _logger.LogInformation("The Azure Event Grid event service is starting to set up the subscription {SubscriptionName} in topic {TopicName}.",
-                    topic.SubscriptionName, topic.Name);
+                _logger.LogInformation("[AzureEventGridEventService {ServiceIdentifier}] The Azure Event Grid event service is starting to set up the subscription {SubscriptionName} in topic {TopicName}.",
+                    _serviceIdentifier, topic.SubscriptionName, topic.Name);
 
                 try
                 {
@@ -251,8 +262,8 @@ namespace FoundationaLLM.Common.Services.Events
                         cancellationToken);
 
                     if (topic.SubscriptionAvailable)
-                        _logger.LogInformation("The Azure Event Grid event service successfully created the subscription named {SubscriptionName} in topic {TopicName}.",
-                            topic.SubscriptionName, topic.Name);
+                        _logger.LogInformation("[AzureEventGridEventService {ServiceIdentifier}] The Azure Event Grid event service successfully created the subscription named {SubscriptionName} in topic {TopicName}.",
+                            _serviceIdentifier, topic.SubscriptionName, topic.Name);
 
                     _senderClients.Add(topic.Name, await GetSenderClient(topic.Name)
                         ?? throw new EventException($"Failed to create the Azure Event Grid sender client for topic {topic.Name}."));
@@ -261,8 +272,8 @@ namespace FoundationaLLM.Common.Services.Events
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "An error occured while setting up the subscription {SubscriptionName} in topic {TopicName}.",
-                        topic.SubscriptionName, topic.Name);
+                    _logger.LogError(ex, "[AzureEventGridEventService {ServiceIdentifier}] An error occured while setting up the subscription {SubscriptionName} in topic {TopicName}.",
+                        _serviceIdentifier, topic.SubscriptionName, topic.Name);
 
                     return false;
                 }
@@ -280,13 +291,13 @@ namespace FoundationaLLM.Common.Services.Events
 
                 if (!topic.SubscriptionAvailable)
                 {
-                    _logger.LogInformation("The Azure Event Grid event service did not create the subscription named {SubscriptionName} from topic {TopicName}. Delete will not be attempted.",
-                        topic.SubscriptionName, topic.Name);
+                    _logger.LogInformation("[AzureEventGridEventService {ServiceIdentifier}] The Azure Event Grid event service did not create the subscription named {SubscriptionName} from topic {TopicName}. Delete will not be attempted.",
+                        _serviceIdentifier, topic.SubscriptionName, topic.Name);
                     continue;
                 }
 
-                _logger.LogInformation("The Azure Event Grid event service will delete the subscription named {SubscriptionName} from topic {TopicName}.",
-                    topic.SubscriptionName, topic.Name);
+                _logger.LogInformation("[AzureEventGridEventService {ServiceIdentifier}] The Azure Event Grid event service will delete the subscription named {SubscriptionName} from topic {TopicName}.",
+                    _serviceIdentifier, topic.SubscriptionName, topic.Name);
 
                 try
                 {
@@ -297,13 +308,13 @@ namespace FoundationaLLM.Common.Services.Events
                         cancellationToken);
 
                     topic.SubscriptionAvailable = false;
-                    _logger.LogInformation("The Azure Event Grid event service successfully deleted the subscription named {SubscriptionName} from topic {TopicName}.",
-                        topic.SubscriptionName, topic.Name);
+                    _logger.LogInformation("[AzureEventGridEventService {ServiceIdentifier}] The Azure Event Grid event service successfully deleted the subscription named {SubscriptionName} from topic {TopicName}.",
+                        _serviceIdentifier, topic.SubscriptionName, topic.Name);
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "An error occured while deleting the subscription named {SubscriptionName} from topic {TopicName}.",
-                        topic.SubscriptionName, topic.Name);
+                    _logger.LogError(ex, "[AzureEventGridEventService {ServiceIdentifier}] An error occured while deleting the subscription named {SubscriptionName} from topic {TopicName}.",
+                        _serviceIdentifier, topic.SubscriptionName, topic.Name);
                 }
             }
         }
@@ -330,8 +341,8 @@ namespace FoundationaLLM.Common.Services.Events
                 {
                     if (!_eventTypeDelegates.TryGetValue(eventTypeEventsToProcess.Key, out var eventTypeDelegate))
                     {
-                        _logger.LogWarning("The Azure Event Grid event service does not have any event handlers for the event type {EventType}.",
-                            eventTypeEventsToProcess.Key);
+                        _logger.LogWarning("[AzureEventGridEventService {ServiceIdentifier}] The Azure Event Grid event service does not have any event handlers for the event type {EventType}.",
+                            _serviceIdentifier, eventTypeEventsToProcess.Key);
                         continue;
                     }
 
@@ -349,8 +360,8 @@ namespace FoundationaLLM.Common.Services.Events
                         }
                         catch (Exception ex)
                         {
-                            _logger.LogError(ex, "Error invoking registered delegates for event types {EventType}.",
-                                eventTypeEventsToProcess.Key);
+                            _logger.LogError(ex, "[AzureEventGridEventService {ServiceIdentifier}] Error invoking registered delegates for event types {EventType}.",
+                                _serviceIdentifier, eventTypeEventsToProcess.Key);
                         }
                     }
                 }
@@ -370,8 +381,8 @@ namespace FoundationaLLM.Common.Services.Events
 
             foreach (var ackFailure in acknowledgeResult.Value.FailedLockTokens)
             {
-                _logger.LogError("Failed to acknowledge Event Grid message. Lock token: {LockToken}. Error code: {ErrorCode}. Error description: {ErrorDescription}.",
-                    ackFailure.LockToken, ackFailure.Error, ackFailure.ToString());
+                _logger.LogError("[AzureEventGridEventService {ServiceIdentifier}] Failed to acknowledge Event Grid message. Lock token: {LockToken}. Error code: {ErrorCode}. Error description: {ErrorDescription}.",
+                    _serviceIdentifier, ackFailure.LockToken, ackFailure.Error, ackFailure.ToString());
             }
         }
 
@@ -414,7 +425,8 @@ namespace FoundationaLLM.Common.Services.Events
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "There was an error creating the Azure Event Grid client.");
+                _logger.LogError(ex, "[AzureEventGridEventService {ServiceIdentifier}] There was an error creating the Azure Event Grid client.",
+                    _serviceIdentifier);
             }
 
             return client;
@@ -455,7 +467,8 @@ namespace FoundationaLLM.Common.Services.Events
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "There was an error creating the Azure Event Grid client.");
+                _logger.LogError(ex, "[AzureEventGridEventService {ServiceIdentifier}] There was an error creating the Azure Event Grid client.",
+                    _serviceIdentifier);
             }
 
             return client;
