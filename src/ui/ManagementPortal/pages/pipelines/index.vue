@@ -215,59 +215,29 @@
 
 <script lang="ts">
 import api from '@/js/api';
-import type { /* DataSource, */ ResourceProviderGetResult } from '@/js/types';
+import type { ResourceProviderGetResult } from '@/js/types';
 
 export default {
 	name: 'Pipelines',
 
 	data() {
 		return {
-			// dataSources: [] as ResourceProviderGetResult<DataSource>[],
 			pipelines: [] as ResourceProviderGetResult<Pipeline>[],
-			pipelineToView: null,
-			// vectorStores: [] as [],
+			// pipelineToView: null,
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
-			// dataSourceToDelete: null as DataSource | null,
-			// vectorStoreToDelete: null,
 		};
 	},
 
-	watch: {
-		pipelineToView(newValue) {
-			if (newValue) {
-				// this.getPipelineRuns(newValue.name);
-				this.getPipeline(newValue.name);
-			}
-		},
-	},
-
 	async created() {
-		// await this.getAgentDataSources();
-		// await this.getVectorStores();
 		await this.getPipelines();
 	},
 
 	methods: {
-		// async getAgentDataSources() {
-		// 	this.loading = true;
-		// 	try {
-		// 		this.dataSources = await api.getAgentDataSources();
-		// 	} catch (error) {
-		// 		this.$toast.add({
-		// 			severity: 'error',
-		// 			detail: error?.response?._data || error,
-		// 			life: 5000,
-		// 		});
-		// 	}
-		// 	this.loading = false;
-		// },
-
 		async getPipelines() {
 			this.loading = true;
 			try {
 				this.pipelines = await api.getPipelines();
-				console.log(this.pipelines);
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',
@@ -278,18 +248,17 @@ export default {
 			this.loading = false;
 		},
 
-		async getPipeline(pipelineName: string) {
-			try {
-				const pipeline = await api.getPipeline(pipelineName);
-				console.log(pipeline);
-			} catch (error) {
-				this.$toast.add({
-					severity: 'error',
-					detail: error?.response?._data || error,
-					life: 5000,
-				});
-			}
-		},
+		// async getPipeline(pipelineName: string) {
+		// 	try {
+		// 		const pipeline = await api.getPipeline(pipelineName);
+		// 	} catch (error) {
+		// 		this.$toast.add({
+		// 			severity: 'error',
+		// 			detail: error?.response?._data || error,
+		// 			life: 5000,
+		// 		});
+		// 	}
+		// },
 
 		// async getPipelineRuns(pipelineName: string) {
 		//     try {
