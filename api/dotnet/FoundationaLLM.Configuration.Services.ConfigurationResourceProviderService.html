@@ -268,7 +268,7 @@ Class ConfigurationResourceProviderService  <a class="header-action link-seconda
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_CheckResourceName__1_FoundationaLLM_Common_Models_ResourceProviders_ResourceName_">ResourceProviderServiceBase&lt;APIEndpointReference&gt;.CheckResourceName&lt;T&gt;(ResourceName)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_FilterResources__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_ResourceProviders_ResourceFilter_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_System_Func__0_System_Boolean_System_Threading_Tasks_Task___0___">ResourceProviderServiceBase&lt;APIEndpointReference&gt;.FilterResources&lt;T&gt;(ResourcePath, ResourceFilter, ResourcePathAuthorizationResult, ResourceProviderGetOptions, Func&lt;APIEndpointReference, bool, Task&lt;T&gt;&gt;)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_FilterResources__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_ResourceProviders_ResourceFilter_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_System_Func__0_System_Boolean_System_Threading_Tasks_Task___0___System_Func___0_System_Boolean__">ResourceProviderServiceBase&lt;APIEndpointReference&gt;.FilterResources&lt;T&gt;(ResourcePath, ResourceFilter, ResourcePathAuthorizationResult, ResourceProviderGetOptions, Func&lt;APIEndpointReference, bool, Task&lt;T&gt;&gt;, Func&lt;T, bool&gt;)</a>
     </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourceProviderServiceByName_System_String_">ResourceProviderServiceBase&lt;APIEndpointReference&gt;.GetResourceProviderServiceByName(string)</a>
@@ -528,7 +528,7 @@ of the authorization result should be returned (if any).</li></ol>
 
   <h3 id="FoundationaLLM_Configuration_Services_ConfigurationResourceProviderService_GetResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_" data-uid="FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.GetResourceAsyncInternal``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions)">
   GetResourceAsyncInternal&lt;T&gt;(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity, ResourceProviderGetOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Configuration/Services/ConfigurationResourceProviderService.cs/#L164"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Configuration/Services/ConfigurationResourceProviderService.cs/#L179"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of GetResource. Must be overridden in derived classes.</p>
@@ -668,7 +668,7 @@ In this case, only the resources specified in the subordinate authorized resourc
 
   <h3 id="FoundationaLLM_Configuration_Services_ConfigurationResourceProviderService_HandleEventsInternal_FoundationaLLM_Common_Models_Events_EventTypeEventArgs_" data-uid="FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.HandleEventsInternal(FoundationaLLM.Common.Models.Events.EventTypeEventArgs)">
   HandleEventsInternal(EventTypeEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Configuration/Services/ConfigurationResourceProviderService.cs/#L192"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Configuration/Services/ConfigurationResourceProviderService.cs/#L207"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Handles events received from the <a class="xref" href="FoundationaLLM.Common.Interfaces.IEventService.html">IEventService</a> when they are dequeued locally.</p>

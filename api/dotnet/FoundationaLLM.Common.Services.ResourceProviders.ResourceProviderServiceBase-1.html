@@ -1176,7 +1176,7 @@ To fully remove a resource, the delete operation must be followed by a purge ope
 
   <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_EnsureAndValidatePolicyDefinitions_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.EnsureAndValidatePolicyDefinitions(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult)">
   EnsureAndValidatePolicyDefinitions(ResourcePath, ResourcePathAuthorizationResult)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderServiceBase.cs/#L1876"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderServiceBase.cs/#L1888"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1395,9 +1395,9 @@ of the authorization result should be returned (if any).</li></ol>
 
   <a id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_FilterResources_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.FilterResources*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_FilterResources__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_ResourceProviders_ResourceFilter_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_System_Func__0_System_Boolean_System_Threading_Tasks_Task___0___" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.FilterResources``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.ResourceProviders.ResourceFilter,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions,System.Func{`0,System.Boolean,System.Threading.Tasks.Task{``0}})">
-  FilterResources&lt;T&gt;(ResourcePath, ResourceFilter, ResourcePathAuthorizationResult, ResourceProviderGetOptions?, Func&lt;TResourceReference, bool, Task&lt;T&gt;&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderServiceBase.cs/#L1578"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_FilterResources__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_ResourceProviders_ResourceFilter_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_System_Func__0_System_Boolean_System_Threading_Tasks_Task___0___System_Func___0_System_Boolean__" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.FilterResources``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.ResourceProviders.ResourceFilter,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions,System.Func{`0,System.Boolean,System.Threading.Tasks.Task{``0}},System.Func{``0,System.Boolean})">
+  FilterResources&lt;T&gt;(ResourcePath, ResourceFilter, ResourcePathAuthorizationResult, ResourceProviderGetOptions?, Func&lt;TResourceReference, bool, Task&lt;T&gt;&gt;?, Func&lt;T, bool&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderServiceBase.cs/#L1579"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Loads a list of resources filtered based on object IDs.</p>
@@ -1405,7 +1405,7 @@ of the authorization result should be returned (if any).</li></ol>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Task&lt;IEnumerable&lt;T&gt;&gt; FilterResources&lt;T&gt;(ResourcePath resourcePath, ResourceFilter filter, ResourcePathAuthorizationResult authorizationResult, ResourceProviderGetOptions? options = null, Func&lt;TResourceReference, bool, Task&lt;T&gt;&gt;? customResourceLoader = null) where T : ResourceBase</code></pre>
+    <pre><code class="lang-csharp hljs">protected Task&lt;IEnumerable&lt;T&gt;&gt; FilterResources&lt;T&gt;(ResourcePath resourcePath, ResourceFilter filter, ResourcePathAuthorizationResult authorizationResult, ResourceProviderGetOptions? options = null, Func&lt;TResourceReference, bool, Task&lt;T&gt;&gt;? customResourceLoader = null, Func&lt;T, bool&gt;? customResourceFilter = null) where T : ResourceBase</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -1425,6 +1425,9 @@ of the authorization result should be returned (if any).</li></ol>
     <dt><code>customResourceLoader</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;TResourceReference, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;T&gt;&gt;</dt>
     <dd><p>An optional function that loads the resource used to override
 the default resource loading mechanism.</p>
+</dd>
+    <dt><code>customResourceFilter</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>An optional function that filters the list of loaded resources.</p>
 </dd>
   </dl>
 
@@ -1455,7 +1458,7 @@ the default resource loading mechanism.</p>
 
   <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetParsedResourcePath_System_String_System_Boolean_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.GetParsedResourcePath(System.String,System.Boolean)">
   GetParsedResourcePath(string, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderServiceBase.cs/#L1816"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderServiceBase.cs/#L1828"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a> object for the specified string resource path.</p>
@@ -1654,7 +1657,7 @@ the default resource loading mechanism.</p>
 
   <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourcePath_System_String_System_Type_System_String_System_String_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.GetResourcePath(System.String,System.Type,System.String,System.String)">
   GetResourcePath(string, Type, string?, string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderServiceBase.cs/#L1784"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderServiceBase.cs/#L1796"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Get the fully qualified resource path for a specified resource.</p>
@@ -1701,7 +1704,7 @@ the default resource loading mechanism.</p>
 
   <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourceProviderServiceByName_System_String_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.GetResourceProviderServiceByName(System.String)">
   GetResourceProviderServiceByName(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderServiceBase.cs/#L1744"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderServiceBase.cs/#L1756"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a resource provider service by name.</p>
@@ -2606,7 +2609,7 @@ the default resource loading mechanism.</p>
 
   <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpdateBaseProperties_FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Boolean_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.UpdateBaseProperties(FoundationaLLM.Common.Models.ResourceProviders.ResourceBase,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Boolean)">
   UpdateBaseProperties(ResourceBase, UnifiedUserIdentity, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderServiceBase.cs/#L1760"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderServiceBase.cs/#L1772"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates the base properties of an object derived from <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html">ResourceBase</a>.</p>

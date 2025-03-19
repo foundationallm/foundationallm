@@ -7166,6 +7166,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfigurationFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfigurationFilter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfigurationFilter",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfigurationFilter.yml\" sourcestartlinenumber=\"1\">Provides configuration for filtering <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration\" data-throw-if-not-resolved=\"false\"></xref> resources in the FoundationaLLM.Configuration resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.yml",
       "output": {
         ".html": {
