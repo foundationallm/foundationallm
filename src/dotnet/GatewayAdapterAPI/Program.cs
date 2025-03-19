@@ -14,6 +14,8 @@ ServiceContext.Initialize(
     builder.Environment.IsProduction(),
     ServiceNames.GatewayAdapterAPI);
 
+builder.AddDIContainerSettings();
+
 builder.Configuration.Sources.Clear();
 builder.Configuration.AddJsonFile("appsettings.json", false, true);
 builder.Configuration.AddEnvironmentVariables();

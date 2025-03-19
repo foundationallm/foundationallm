@@ -28,9 +28,9 @@
 		<!-- Number -->
 		<InputNumber
 			v-if="propertyType === 'number'"
-			:minFractionDigits="0"
-			:maxFractionDigits="6"
 			v-model="propertyValue"
+			:min-fraction-digits="0"
+			:max-fraction-digits="6"
 			placeholder="Property Value"
 		/>
 
@@ -95,6 +95,8 @@ export default {
 			default: 'Create Property',
 		},
 	},
+
+	emits: ['update:modelValue', 'update:visible'],
 
 	data() {
 		return {

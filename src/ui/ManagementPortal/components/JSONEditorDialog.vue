@@ -38,6 +38,8 @@ export default {
 		},
 	},
 
+	emits: ['update:modelValue', 'update:visible'],
+
 	data() {
 		return {
 			json: {},

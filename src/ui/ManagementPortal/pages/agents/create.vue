@@ -119,13 +119,13 @@
 
 			<!-- Agent configuration -->
 			<section aria-labelledby="agent-configuration" class="span-2 steps">
-				<h3 class="step-section-header span-2" id="agent-configuration">Agent Configuration</h3>
+				<h3 id="agent-configuration" class="step-section-header span-2">Agent Configuration</h3>
 
 				<div class="step-header">Should conversations be included in the context?</div>
 				<div class="step-header">How should user-agent interactions be gated?</div>
 
 				<!-- Conversation history -->
-				<CreateAgentStepItem focusQuery=".conversation-history-toggle input">
+				<CreateAgentStepItem focus-query=".conversation-history-toggle input">
 					<div class="step-container__header">Conversation History</div>
 
 					<div>
@@ -185,7 +185,7 @@
 				</CreateAgentStepItem>
 
 				<!-- Gatekeeper -->
-				<CreateAgentStepItem focusQuery=".gatekeeper-toggle input">
+				<CreateAgentStepItem focus-query=".gatekeeper-toggle input">
 					<div class="step-container__header">Gatekeeper</div>
 
 					<div>
@@ -245,7 +245,7 @@
 						</div>
 
 						<!-- Content safety -->
-						<div class="mt-2" v-if="!gatekeeperUseSystemDefault">
+						<div v-if="!gatekeeperUseSystemDefault" class="mt-2">
 							<span id="aria-content-safety" class="step-option__header">Content Safety:</span>
 							<MultiSelect
 								v-model="selectedGatekeeperContentSafety"
@@ -259,7 +259,7 @@
 						</div>
 
 						<!-- Data protection -->
-						<div class="mt-2" v-if="!gatekeeperUseSystemDefault">
+						<div v-if="!gatekeeperUseSystemDefault" class="mt-2">
 							<span id="aria-data-prot" class="step-option__header">Data Protection:</span>
 							<!-- <span>Microsoft Presidio</span> -->
 							<MultiSelect
@@ -346,7 +346,7 @@
 				<div class="step-header">Should semantic cache be used?</div>
 
 				<!-- User prompt rewrite -->
-				<CreateAgentStepItem focusQuery=".user-prompt-rewrite-toggle input">
+				<CreateAgentStepItem focus-query=".user-prompt-rewrite-toggle input">
 					<div class="step-container__header">User Prompt Rewrite</div>
 
 					<div>
@@ -369,12 +369,16 @@
 					<template v-if="userPromptRewriteEnabled">
 						<div>
 							<span class="step-option__header">Rewrite Model:</span>
-							<span>{{ aiModelOptions.find(model => model.object_id === userPromptRewriteAIModel)?.name }}</span>
+							<span>{{
+								aiModelOptions.find((model) => model.object_id === userPromptRewriteAIModel)?.name
+							}}</span>
 						</div>
 
 						<div>
 							<span class="step-option__header">Rewrite Prompt:</span>
-							<span>{{ promptOptions.find(prompt => prompt.object_id === userPromptRewritePrompt)?.name }}</span>
+							<span>{{
+								promptOptions.find((prompt) => prompt.object_id === userPromptRewritePrompt)?.name
+							}}</span>
 						</div>
 
 						<div>
@@ -405,9 +409,11 @@
 						</div>
 
 						<!-- User prompt rewrite model -->
-						<div class="mt-2" v-if="userPromptRewriteEnabled">
+						<div v-if="userPromptRewriteEnabled" class="mt-2">
 							<!-- What model should be used for the prompt rewrite? -->
-							<span id="aria-user-prompt-rewrite-model" class="step-option__header">Rewrite Model:</span>
+							<span id="aria-user-prompt-rewrite-model" class="step-option__header"
+								>Rewrite Model:</span
+							>
 							<Dropdown
 								v-model="userPromptRewriteAIModel"
 								:options="aiModelOptions"
@@ -420,9 +426,11 @@
 						</div>
 
 						<!-- User prompt rewrite prompt -->
-						<div class="mt-2" v-if="userPromptRewriteEnabled">
+						<div v-if="userPromptRewriteEnabled" class="mt-2">
 							<!-- What prompt should be used to rewrite the user prompt? -->
-							<span id="aria-user-prompt-rewrite-prompt" class="step-option__header">Rewrite Prompt:</span>
+							<span id="aria-user-prompt-rewrite-prompt" class="step-option__header"
+								>Rewrite Prompt:</span
+							>
 							<Dropdown
 								v-model="userPromptRewritePrompt"
 								:options="promptOptions"
@@ -435,13 +443,15 @@
 						</div>
 
 						<!-- User prompt rewrite window size -->
-						<div class="mt-2" v-if="userPromptRewriteEnabled">
+						<div v-if="userPromptRewriteEnabled" class="mt-2">
 							<!-- What should the rewrite window size be? -->
-							<span id="aria-user-prompt-rewrite-window-size" class="step-option__header">Rewrite Window Size:</span>
+							<span id="aria-user-prompt-rewrite-window-size" class="step-option__header"
+								>Rewrite Window Size:</span
+							>
 							<InputNumber
 								v-model="userPromptRewriteWindowSize"
-								:minFractionDigits="0"
-								:maxFractionDigits="0"
+								:min-fraction-digits="0"
+								:max-fraction-digits="0"
 								placeholder="Window size"
 								aria-labelledby="aria-user-prompt-rewrite-window-size"
 							/>
@@ -450,7 +460,7 @@
 				</CreateAgentStepItem>
 
 				<!-- Semantic cache  -->
-				<CreateAgentStepItem focusQuery=".semantic-cache-toggle input">
+				<CreateAgentStepItem focus-query=".semantic-cache-toggle input">
 					<div class="step-container__header">Semantic Cache</div>
 
 					<div>
@@ -473,7 +483,9 @@
 					<template v-if="semanticCacheEnabled">
 						<div>
 							<span class="step-option__header">Model:</span>
-							<span>{{ aiModelOptions.find(model => model.object_id === semanticCacheAIModel)?.name }}</span>
+							<span>{{
+								aiModelOptions.find((model) => model.object_id === semanticCacheAIModel)?.name
+							}}</span>
 						</div>
 
 						<div>
@@ -492,24 +504,22 @@
 
 						<!-- Semantic cache toggle -->
 						<div class="d-flex align-center mt-2">
-							<span id="aria-semantic-cache-enabled" class="step-option__header"
-								>Enabled:</span
-							>
+							<span id="aria-semantic-cache-enabled" class="step-option__header">Enabled:</span>
 							<span>
-							<ToggleButton
-								v-model="semanticCacheEnabled"
-								on-label="Yes"
-								on-icon="pi pi-check-circle"
-								off-label="No"
-								off-icon="pi pi-times-circle"
-								aria-labelledby="aria-semantic-cache-enabled"
-								class="semantic-cache-toggle"
-							/>
+								<ToggleButton
+									v-model="semanticCacheEnabled"
+									on-label="Yes"
+									on-icon="pi pi-check-circle"
+									off-label="No"
+									off-icon="pi pi-times-circle"
+									aria-labelledby="aria-semantic-cache-enabled"
+									class="semantic-cache-toggle"
+								/>
 							</span>
 						</div>
 
 						<!-- Semantic cache model -->
-						<div class="mt-2" v-if="semanticCacheEnabled">
+						<div v-if="semanticCacheEnabled" class="mt-2">
 							<!-- What model should be used for the semantic cache? -->
 							<span id="aria-semantic-cache-model" class="step-option__header">Model:</span>
 							<Dropdown
@@ -524,33 +534,37 @@
 						</div>
 
 						<!-- Semantic cache embedding dimensions -->
-						<div class="mt-2" v-if="semanticCacheEnabled">
+						<div v-if="semanticCacheEnabled" class="mt-2">
 							<!-- How many embedding dimensions to use? -->
-							<span id="aria-semantic-cache-embedding-dimensions" class="step-option__header">Embedding Dimensions:</span>
+							<span id="aria-semantic-cache-embedding-dimensions" class="step-option__header"
+								>Embedding Dimensions:</span
+							>
 							<InputNumber
 								v-model="semanticCacheEmbeddingDimensions"
-								:minFractionDigits="0"
-								:maxFractionDigits="0"
+								:min-fraction-digits="0"
+								:max-fraction-digits="0"
 								placeholder="Embedding dimensions size"
 								aria-labelledby="aria-semantic-cache-embedding-dimensions"
 							/>
 						</div>
 
 						<!-- Semantic cache minimum similarity threshold -->
-						<div class="mt-2" v-if="semanticCacheEnabled">
+						<div v-if="semanticCacheEnabled" class="mt-2">
 							<!-- What should the minimum similarity threshold be? -->
-							<span id="aria-semantic-cache-minimum-similarity" class="step-option__header">Minimum Similarity Threshold:</span>
+							<span id="aria-semantic-cache-minimum-similarity" class="step-option__header"
+								>Minimum Similarity Threshold:</span
+							>
 							<InputNumber
 								v-model="semanticCacheMinimumSimilarityThreshold"
-								:minFractionDigits="0"
-								:maxFractionDigits="2"
+								:min-fraction-digits="0"
+								:max-fraction-digits="2"
 								placeholder="Minimum Similarity Threshold"
 								aria-labelledby="aria-semantic-cache-minimum-similarity"
 							/>
 						</div>
 					</template>
 				</CreateAgentStepItem>
-				
+
 				<!-- Cost center -->
 				<div id="aria-cost-center" class="step-header span-2">
 					Would you like to assign this agent to a cost center?
@@ -580,7 +594,7 @@
 
 			<!-- User portal experience -->
 			<section aria-labelledby="user-portal-experience" class="span-2 steps">
-				<h3 class="step-section-header span-2" id="user-portal-experience">
+				<h3 id="user-portal-experience" class="step-section-header span-2">
 					User Portal Experience
 				</h3>
 
@@ -649,7 +663,7 @@
 
 			<!-- Knowledge source -->
 			<section aria-labelledby="knowledge-source" class="span-2 steps">
-				<h3 class="step-section-header span-2" id="knowledge-source">Knowledge Source</h3>
+				<h3 id="knowledge-source" class="step-section-header span-2">Knowledge Source</h3>
 
 				<div id="aria-inline-context" class="step-header span-2">
 					Does this agent have an inline context?
@@ -703,7 +717,7 @@
 					<div v-if="dedicated_pipeline">
 						<CreateAgentStepItem
 							v-model="editDataSource"
-							focusQuery=".step-container__edit__option"
+							focus-query=".step-container__edit__option"
 						>
 							<template v-if="selectedDataSource">
 								<div class="step-container__header">{{ selectedDataSource.type }}</div>
@@ -769,7 +783,10 @@
 					</div>
 
 					<!-- Index source -->
-					<CreateAgentStepItem v-model="editIndexSource" focusQuery=".step-container__edit__option">
+					<CreateAgentStepItem
+						v-model="editIndexSource"
+						focus-query=".step-container__edit__option"
+					>
 						<template v-if="selectedIndexSource">
 							<div v-if="selectedIndexSource.object_id !== ''">
 								<div class="step-container__header">{{ selectedIndexSource.name }}</div>
@@ -826,7 +843,7 @@
 					<!-- Text embedding profiles -->
 					<CreateAgentStepItem
 						v-model="editTextEmbeddingProfile"
-						focusQuery=".step-container__edit__option"
+						focus-query=".step-container__edit__option"
 					>
 						<template v-if="selectedTextEmbeddingProfile">
 							<div v-if="selectedTextEmbeddingProfile.object_id !== ''">
@@ -903,7 +920,7 @@
 
 						<!-- Process indexing -->
 
-						<CreateAgentStepItem focusQuery=".chunk-size-input">
+						<CreateAgentStepItem focus-query=".chunk-size-input">
 							<div class="step-container__header">Splitting & Chunking</div>
 
 							<div>
@@ -942,7 +959,7 @@
 						</CreateAgentStepItem>
 
 						<!-- Trigger -->
-						<CreateAgentStepItem focusQuery=".frequency-dropdown span">
+						<CreateAgentStepItem focus-query=".frequency-dropdown span">
 							<div class="step-container__header">Trigger</div>
 							<div>Runs every time a new item is added to the data source.</div>
 
@@ -1066,7 +1083,7 @@
 				<div class="mb-6">
 					<div id="aria-workflow-model" class="step-header mb-3">Workflow main model:</div>
 					<Dropdown
-						:modelValue="workflowMainAIModel?.object_id"
+						:model-value="workflowMainAIModel?.object_id"
 						:options="aiModelOptions"
 						option-label="name"
 						option-value="object_id"
@@ -1166,7 +1183,7 @@
 								:visible="!!toolToEdit"
 								:existing-tools="agentTools"
 								@update:visible="toolToEdit = null"
-								@update:modelValue="handleUpdateTool"
+								@update:model-value="handleUpdateTool"
 							/>
 						</template>
 					</Column>
@@ -1201,7 +1218,7 @@
 					:visible="!!showNewToolDialog"
 					:existing-tools="agentTools"
 					@update:visible="showNewToolDialog = false"
-					@update:modelValue="handleAddNewTool"
+					@update:model-value="handleAddNewTool"
 				/>
 			</div>
 
@@ -1228,7 +1245,7 @@
 			<template v-if="virtualSecurityGroupId">
 				<div class="step-header">Agent access tokens</div>
 				<div class="span-2">
-					<AgentAccessTokens :agent-name="this.agentName" />
+					<AgentAccessTokens :agent-name="agentName" />
 				</div>
 			</template>
 
@@ -1734,7 +1751,7 @@ export default {
 			this.agentTools = agent.tools;
 
 			this.selectedWorkflow = agent.workflow;
-			this.hasAgentPrivateStorage = agent.workflow?.type == 'azure-openai-assistants-workflow';
+			this.hasAgentPrivateStorage = agent.workflow?.type === 'azure-openai-assistants-workflow';
 			this.showMessageTokens = agent.show_message_tokens ?? false;
 			this.showMessageRating = agent.show_message_rating ?? false;
 			this.showViewPrompt = agent.show_view_prompt ?? false;

@@ -47,7 +47,10 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     ],
                     Actions = [
                         new ResourceTypeAction(ResourceProviderActions.CheckName, false, true, [
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)]),
+                        ]),
+                        new ResourceTypeAction(ResourceProviderActions.Filter, false, true, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(APIEndpointConfigurationFilter)], [typeof(APIEndpointConfiguration)]),
                         ])
                     ]
                 }

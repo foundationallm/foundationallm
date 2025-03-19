@@ -38,7 +38,7 @@
 			<div class="mt-4">
 				<!-- Table step buttons -->
 				<template v-if="currentStep === STEPS.TABLE_STEP">
-					<Button label="Close" text @click="handleClose" class="pt-2" />
+					<Button label="Close" text class="pt-2" @click="handleClose" />
 
 					<Button v-if="currentStep === STEPS.TABLE_STEP" @click="currentStep = STEPS.CREATE_STEP">
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>

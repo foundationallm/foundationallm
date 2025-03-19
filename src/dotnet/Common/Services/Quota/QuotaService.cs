@@ -1,9 +1,14 @@
-﻿using FoundationaLLM.Common.Constants.Quota;
+﻿using Azure.Messaging;
+using FoundationaLLM.Common.Constants.Events;
+using FoundationaLLM.Common.Constants.Quota;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Configuration.Events;
+using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Quota;
+using FoundationaLLM.Common.Services.Events;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using System.Text.Json;
@@ -15,9 +20,15 @@ namespace FoundationaLLM.Common.Services.Quota
     /// </summary>
     public class QuotaService : IQuotaService
     {
+        private const string QUOTA_SERVICE_NAME = "QuotaService";
         private const string STORAGE_CONTAINER_NAME = "quota";
         private const string QUOTA_STORE_FILE_PATH = "/quota-store.json";
-        private readonly QuotaEvaluationResult QUOTA_NOT_EXCEEDED_EVALUATION_RESULT = new();
+        private readonly QuotaMetricPartitionState QUOTA_NOT_EXCEEDED_EVALUATION_RESULT = new()
+        {
+            QuotaName = "N/A",
+            QuotaContext = "N/A",
+            QuotaMetricPartitionId = "N/A"
+        };
 
         private DateTimeOffset _initializationStartTime;
         private bool _isInitialized = false;
@@ -25,26 +36,41 @@ namespace FoundationaLLM.Common.Services.Quota
         // Once initialization completes, the service will be disabled if there are no quota definitions in the quota store.
         // While initialization is in progress, the service is enabled to make sure we can handle the situation where initialization fails.
         private bool _enabled = true;
+        private readonly TaskCompletionSource<bool> _initializationTaskCompletionSource =
+            new(TaskCreationOptions.RunContinuationsAsynchronously);
         private readonly IStorageService _storageService;
+        private readonly IEventService _eventService;
         private readonly ILoggerFactory _loggerFactory;
         private readonly ILogger<QuotaService> _logger;
 
         private List<QuotaDefinition> _quotaDefinitions = [];
         private Dictionary<string, QuotaContextBase> _quotaContexts = [];
 
+        private object _distributedEnfocementQueueLock = new();
+        private LocalEventService? _localEventService;
+        // Since are in a pure producer-consumer scenario that does not have a dedicated producer thread, we use a Queue instead of a ConcurrentQueue.
+        // For details, see https://learn.microsoft.com/en-us/dotnet/standard/collections/thread-safe/when-to-use-a-thread-safe-collection#concurrentqueuet-vs-queuet.
+        private Queue<DistributedQuotaEnforcementEventData> _distributedEnforcementQueue = [];
+
         /// <inheritdoc/>
         public bool Enabled => true;
+
+        /// <inheritdoc/>
+        public Task<bool> InitializationTask => _initializationTaskCompletionSource.Task;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QuotaService"/> class.
         /// </summary>
         /// <param name="storageService">The storage service used for storing quota configuration.</param>
+        /// <param name="eventService">The <see cref="IEventService"/> providing event services to the quota service.</param>
         /// <param name="loggerFactory">The logger factory used to create loggers.</param>
         public QuotaService(
             IStorageService storageService,
+            IEventService eventService,
             ILoggerFactory loggerFactory)
         {
             _storageService = storageService;
+            _eventService = eventService;
             _loggerFactory = loggerFactory;
             _logger = _loggerFactory.CreateLogger<QuotaService>();
 
@@ -62,46 +88,22 @@ namespace FoundationaLLM.Common.Services.Quota
                 _logger.LogInformation("Starting to initialize the quota service ...");
                 _initializationStartTime = DateTimeOffset.UtcNow;
 
-                if (await _storageService.FileExistsAsync(
-                    STORAGE_CONTAINER_NAME,
-                    QUOTA_STORE_FILE_PATH,
-                    default))
-                {
-                    var fileContent = await _storageService.ReadFileAsync(
-                        STORAGE_CONTAINER_NAME,
-                        QUOTA_STORE_FILE_PATH,
-                        default);
-                    _quotaDefinitions = JsonSerializer.Deserialize<List<QuotaDefinition>>(
-                        Encoding.UTF8.GetString(fileContent.ToArray()))!;
-                }
-                else
-                {
-                    // The quota store file does not exist, so create it.
-                    await _storageService.WriteFileAsync(
-                        STORAGE_CONTAINER_NAME,
-                        QUOTA_STORE_FILE_PATH,
-                        JsonSerializer.Serialize(_quotaDefinitions),
-                        default,
-                        default);
-                }
+                await LoadQuotaDefinitions();
 
                 _quotaContexts = _quotaDefinitions
                     .Select(qd => qd.MetricPartition switch
                     {
-                        QuotaMetricPartition.None => (new PartitionlessQuotaContext(
-                            qd, _loggerFactory.CreateLogger<PartitionlessQuotaContext>())) as QuotaContextBase,
-                        QuotaMetricPartition.UserIdentifier => (new UserIdentifierQuotaContext(
+                        QuotaMetricPartitionType.None => (new SinglePartitionQuotaContext(
+                            qd, _loggerFactory.CreateLogger<SinglePartitionQuotaContext>())) as QuotaContextBase,
+                        QuotaMetricPartitionType.UserIdentifier => (new UserIdentifierQuotaContext(
                             qd, _loggerFactory.CreateLogger<UserIdentifierQuotaContext>())) as QuotaContextBase,
-                        QuotaMetricPartition.UserPrincipalName => (new UserPrincipalNameQuotaContext(
+                        QuotaMetricPartitionType.UserPrincipalName => (new UserPrincipalNameQuotaContext(
                             qd, _loggerFactory.CreateLogger<UserPrincipalNameQuotaContext>())) as QuotaContextBase,
                         _ => throw new QuotaException($"Unsupported metric partition: {qd.MetricPartition}")
                     })
                     .ToDictionary(qc => qc.Quota.Context);
 
-                if (_quotaDefinitions.Any(qd => qd.DistributedEnforcement))
-                {
-                    // Configure the distributed enforcement context.
-                }
+                InitializeLocalEventService();
 
                 _isInitialized = true;
                 _enabled = _quotaDefinitions.Count > 0;
@@ -109,12 +111,65 @@ namespace FoundationaLLM.Common.Services.Quota
                 _logger.LogInformation("The quota service was successfully initialized.");
 
                 if (!_enabled)
-                _logger.LogWarning("The quota service is disabled because there are no quota definitions in the quota store.");
+                    _logger.LogWarning("The quota service is disabled because there are no quota definitions in the quota store.");
+
+                _initializationTaskCompletionSource.SetResult(true);
             }
             catch (Exception ex)
             {
+                _initializationTaskCompletionSource.SetResult(false);
                 _logger.LogError(ex, "The quota service failed to initialize.");
             }
+        }
+
+        private async Task LoadQuotaDefinitions()
+        {
+            if (await _storageService.FileExistsAsync(
+                    STORAGE_CONTAINER_NAME,
+                    QUOTA_STORE_FILE_PATH,
+                    default))
+            {
+                var fileContent = await _storageService.ReadFileAsync(
+                    STORAGE_CONTAINER_NAME,
+                    QUOTA_STORE_FILE_PATH,
+                    default);
+                _quotaDefinitions = JsonSerializer.Deserialize<List<QuotaDefinition>>(
+                    Encoding.UTF8.GetString(fileContent.ToArray()))!;
+            }
+            else
+            {
+                // The quota store file does not exist, so create it.
+                await _storageService.WriteFileAsync(
+                    STORAGE_CONTAINER_NAME,
+                    QUOTA_STORE_FILE_PATH,
+                    JsonSerializer.Serialize(_quotaDefinitions),
+                    default,
+                    default);
+            }
+        }
+
+        private void InitializeLocalEventService()
+        {
+            if (!_quotaDefinitions.Any(qd => qd.DistributedEnforcement))
+            {
+                // The quota service does not have any quota definitions that require distributed enforcement.
+                // Therefore, the local event service is not needed.
+                _logger.LogInformation("The local event service is not configured because there are not quotas with distributed enforcement.");
+                return;
+            }
+
+            _localEventService = new LocalEventService(
+                new LocalEventServiceSettings { EventProcessingCycleSeconds = 5 },
+                _eventService,
+                _loggerFactory.CreateLogger<LocalEventService>());
+            _localEventService.SubscribeToEventTypes(
+                [
+                    EventTypes.FoundationaLLM_Quota_MetricUpdate
+                ]);
+            _localEventService.StartLocalEventProcessing(HandleEvents);
+
+            // Kicks off the continuous loop to send distributed enforcement events.
+            _ = Task.Run(SendDistributedEnforcementEvents);
         }
 
         /// <summary>
@@ -140,9 +195,153 @@ namespace FoundationaLLM.Common.Services.Quota
 
         #endregion
 
+        #region Event Handling
+
+        private async Task HandleEvents(EventTypeEventArgs e)
+        {
+            // If the quota service doesn't have any events to process, return.
+            if (e.Events.Count == 0)
+                return;
+
+            var originalEventCount = e.Events.Count;
+
+            // Only process events that are targeted to the quota service.
+            var eventsToProcess = e.Events
+                .Where(e => e.Subject == QUOTA_SERVICE_NAME).ToList();
+
+            _logger.LogDebug("{EventsCount} events of type {EventType} received out of which {QuotaServiceEventsCount} are targeted for the quota service.",
+                originalEventCount,
+                e.EventType,
+                eventsToProcess.Count);
+
+            // If the quota service doesn't have any events to process, return.
+            if (eventsToProcess.Count == 0)
+                return;
+
+            // Handle the supported events here.
+            switch (e.EventType)
+            {
+                case EventTypes.FoundationaLLM_Quota_MetricUpdate:
+                    HandleQuotaMetricUpdates(eventsToProcess);
+                    break;
+                default:
+                    _logger.LogWarning("The quota service does not handle events of type {EventType}.", e.EventType);
+                    break;
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private void HandleQuotaMetricUpdates(List<CloudEvent> quotaMetricUpdateEvents)
+        {
+            foreach(var eventData in quotaMetricUpdateEvents
+                .Select(qmue => qmue.Data?.ToObjectFromJson<DistributedQuotaEnforcementEventData>())
+                .Where(x => x != null))
+            {
+                UpdateQuotaContextForDistributedEnforcement(eventData!);
+            }
+        }
+
+        /// <summary>
+        /// Runs a continuous loop to send distributed enforcement events.
+        /// </summary>
+        private async Task SendDistributedEnforcementEvents()
+        {
+            if (_eventService == null)
+            {
+                _logger.LogWarning("The quota service does not have an event service configured and cannot send events.");
+                return;
+            }
+
+            _logger.LogInformation("The quota service has started sending distributed enforcement events.");
+
+            while (true)
+            {
+                try
+                {
+                    var dequeuedEvents = new List<DistributedQuotaEnforcementEventData>();
+
+                    // To minimize the time the lock is held, dequeue all events and then send them.
+                    // This is a best-effort approach and does not guarantee that all events will be sent (which is acceptable in this scenario).
+                    lock (_distributedEnfocementQueueLock)
+                    {
+                        while (_distributedEnforcementQueue.TryDequeue(out var eventData))
+                            dequeuedEvents.Add(eventData);
+                    }
+
+                    // Group the events by quota context and quota metric partition id
+                    // to minimize the number of events sent.
+                    var dataToSend = dequeuedEvents.GroupBy(
+                        de => new
+                        {
+                            de.QuotaContext,
+                            de.QuotaMetricPartitionId
+                        },
+                        de => de,
+                        (key, group) => new DistributedQuotaEnforcementEventData
+                        {
+                            QuotaContext = key.QuotaContext,
+                            QuotaMetricPartitionId = key.QuotaMetricPartitionId,
+                            EventTimestamps = [.. group.SelectMany(g => g.EventTimestamps)]
+                        }).ToList();
+
+                    if (dataToSend.Count > 0)
+                    {
+                        _logger.LogDebug("Starting to send {EventCount} distributed enforcement events.",
+                            dataToSend.Count);
+
+                        var eventsSent = 0;
+
+                        foreach (var data in dataToSend)
+                        {
+                            // The CloudEvent source is automatically filled in by the event service.
+                            await _eventService.SendEvent(
+                                EventGridTopics.FoundationaLLM_API_Statistics,
+                                new CloudEvent(
+                                    string.Empty,
+                                    EventTypes.FoundationaLLM_Quota_MetricUpdate,
+                                    data)
+                                {
+                                    Subject = QUOTA_SERVICE_NAME
+                                });
+
+                            eventsSent++;
+                        }
+
+                        _logger.LogDebug("Successfully sent {EventCount} distributed enforcement events.",
+                           eventsSent);
+                    }
+
+                    await Task.Delay(TimeSpan.FromSeconds(1));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "An error occurred while sending distributed enforcement events.");
+                }
+            }
+        }
+
+        private void RegisterForDistributedEnforcement(
+            DateTimeOffset referenceTime,
+            string context,
+            string quotaMetricPartitionId)
+        {
+            lock (_distributedEnfocementQueueLock)
+            {
+                _distributedEnforcementQueue.Enqueue(
+                    new DistributedQuotaEnforcementEventData
+                    {
+                        QuotaContext = context,
+                        QuotaMetricPartitionId = quotaMetricPartitionId,
+                        EventTimestamps = [referenceTime]
+                    });
+            }
+        }
+
+        #endregion
 
         /// <inheritdoc/>
-        public QuotaEvaluationResult EvaluateRawRequestForQuota(
+        public QuotaMetricPartitionState EvaluateRawRequestForQuota(
             string apiName,
             string? controllerName,
             UnifiedUserIdentity? userIdentity)
@@ -151,18 +350,14 @@ namespace FoundationaLLM.Common.Services.Quota
                 if (InitializationPending())
                     return QUOTA_NOT_EXCEEDED_EVALUATION_RESULT;
 
+            var referenceTime = DateTimeOffset.UtcNow;
             var context = BuildContext([apiName, controllerName]);
-            var userIdentifier = userIdentity?.UserId ?? "__default__";
-            var userPrincipalName = userIdentity?.UPN ?? "__default__";
 
-            if (_quotaContexts.TryGetValue(context, out var quotaContext))
-                return quotaContext.AddMetricUnitAndEvaluateQuota(userIdentifier, userPrincipalName);
-            else
-                return QUOTA_NOT_EXCEEDED_EVALUATION_RESULT;
+            return UpdateQuotaContext(referenceTime, context, userIdentity);
         }
 
         /// <inheritdoc/>
-        public QuotaEvaluationResult EvaluateCompletionRequestForQuota(
+        public QuotaMetricPartitionState EvaluateCompletionRequestForQuota(
             string apiName,
             string controllerName,
             UnifiedUserIdentity? userIdentity,
@@ -172,19 +367,71 @@ namespace FoundationaLLM.Common.Services.Quota
                 if (InitializationPending())
                     return QUOTA_NOT_EXCEEDED_EVALUATION_RESULT;
 
+            var referenceTime = DateTimeOffset.UtcNow;
             var context = BuildContext([apiName, controllerName, completionRequest?.AgentName]);
-            var userIdentifier = userIdentity?.UserId ?? "__default__";
-            var userPrincipalName = userIdentity?.UPN ?? "__default__";
 
-            if (_quotaContexts.TryGetValue(context, out var quotaContext))
-                return quotaContext.AddMetricUnitAndEvaluateQuota(userIdentifier, userPrincipalName);
-            else
-                return QUOTA_NOT_EXCEEDED_EVALUATION_RESULT;
+            return UpdateQuotaContext(referenceTime, context, userIdentity);
         }
 
         private string BuildContext(string?[] tokens) =>
-            string.Join(":", tokens
-                .Select(t => string.IsNullOrWhiteSpace(t) ? "__default+__" : t)
-                .ToArray());
+            string.Join(":", [.. tokens.Select(t => string.IsNullOrWhiteSpace(t) ? "__default+__" : t)]);
+
+        private QuotaMetricPartitionState UpdateQuotaContext(
+            DateTimeOffset referenceTime,
+            string context,
+            UnifiedUserIdentity? userIdentity)
+        {
+            var userIdentifier = userIdentity?.UserId ?? "__default__";
+            var userPrincipalName = userIdentity?.UPN ?? "__default__";
+            var evaluationResult = QUOTA_NOT_EXCEEDED_EVALUATION_RESULT;
+
+            if (_quotaContexts.TryGetValue(context, out var quotaContext))
+            {
+                evaluationResult = quotaContext.AddLocalMetricUnit(
+                    referenceTime,
+                    userIdentifier,
+                    userPrincipalName);
+
+                if (quotaContext.Quota.DistributedEnforcement)
+                    RegisterForDistributedEnforcement(
+                        referenceTime,
+                        context,
+                        evaluationResult.QuotaMetricPartitionId);
+            }
+
+            return evaluationResult;
+        }
+
+        private void UpdateQuotaContextForDistributedEnforcement(
+            DistributedQuotaEnforcementEventData data)
+        {
+            try
+            {
+                _logger.LogDebug(string.Join(
+                    Environment.NewLine,
+                    [
+                        "Quota context: {QuotaContext}, Metric partition id: {MetricPartitionId}",
+                        "Timestamps: {Timestamps}",
+                        "----------------------------------------"
+                    ]),
+                    data.QuotaContext,
+                    data.QuotaMetricPartitionId,
+                    data.EventTimestamps);
+
+                if (_quotaContexts.TryGetValue(data.QuotaContext, out var quotaContext))
+                    quotaContext.AddRemoteMetricUnits(
+                        data.EventTimestamps,
+                        data.QuotaMetricPartitionId);
+                else
+                    _logger.LogWarning("The quota context {QuotaContext} does not exist in the quota service.",
+                        data.QuotaContext);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating the quota context for distributed enforcement (quota context: {QuotaContext}, metric partition id: {MetricPartitionId})",
+                    data.QuotaContext,
+                    data.QuotaMetricPartitionId);
+            }
+        }
     }
 }

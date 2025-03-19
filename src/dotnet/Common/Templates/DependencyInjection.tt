@@ -75,8 +75,8 @@ namespace FoundationaLLM
         /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.<#=tokens[1]#> resource provider.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
-        public static void Add<#=tokens[1]#>ResourceProviderStorage(this IServiceCollection services, IConfigurationManager configuration)
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void Add<#=tokens[1]#>ResourceProviderStorage(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<BlobStorageServiceSettings>(
                 DependencyInjectionKeys.FoundationaLLM_ResourceProviders_<#=tokens[1]#>)

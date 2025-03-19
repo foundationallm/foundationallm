@@ -7,7 +7,9 @@ using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration.Environment;
 using FoundationaLLM.Common.Models.Configuration.Events;
 using FoundationaLLM.Common.Models.Events;
 using Microsoft.Extensions.Logging;
@@ -20,6 +22,7 @@ namespace FoundationaLLM.Common.Services.Events
     /// </summary>
     public class AzureEventGridEventService : IEventService
     {
+        private readonly DependencyInjectionContainerSettings _dependencyInjectionContainerSettings;
         private readonly ILogger<AzureEventGridEventService> _logger;
         private readonly AzureEventGridEventServiceSettings _settings;
         private readonly AzureEventGridEventServiceProfile _profile;
@@ -28,7 +31,8 @@ namespace FoundationaLLM.Common.Services.Events
 
         private readonly TimeSpan _eventProcessingCycle;
         private readonly string _serviceInstanceName;
-        private bool _active = false;
+        private readonly TaskCompletionSource<bool> _initializationTaskCompletionSource =
+            new(TaskCreationOptions.RunContinuationsAsynchronously);
 
         private readonly Dictionary<string, EventGridSenderClient> _senderClients = [];
         private readonly Dictionary<string, EventGridReceiverClient> _receiverClients = [];
@@ -40,23 +44,26 @@ namespace FoundationaLLM.Common.Services.Events
         public string ServiceInstanceName => _serviceInstanceName;
 
         /// <inheritdoc/>
-        public bool Active => _active;
+        public Task<bool> InitializationTask => _initializationTaskCompletionSource.Task;
 
         /// <summary>
         /// Creates a new instance of the <see cref="AzureEventGridEventService"/> event service.
         /// </summary>
+        /// <param name="dependencyInjectionContainerSettings">The <see cref="DependencyInjectionContainerSettings"/> providing the configuration of the dependency injection container.</param>
         /// <param name="settingsOptions">The options providing the settings for the service.</param>
         /// <param name="profileOptions">The options providing the profile for the service.</param>
         /// <param name="azureResourceManager">The <see cref="IAzureResourceManagerService"/> service providing access to Azure ARM services.</param>
         /// <param name="httpClientFactory">The <see cref="IHttpClientFactoryService"/> service used to create HTTP clients.</param>
         /// <param name="logger">The logger used for logging.</param>
         public AzureEventGridEventService(
+            DependencyInjectionContainerSettings dependencyInjectionContainerSettings,
             IOptions<AzureEventGridEventServiceSettings> settingsOptions,
             IOptions<AzureEventGridEventServiceProfile> profileOptions,
             IAzureResourceManagerService azureResourceManager,
             IHttpClientFactoryService httpClientFactory,
             ILogger<AzureEventGridEventService> logger)
         {
+            _dependencyInjectionContainerSettings = dependencyInjectionContainerSettings;
             _serviceInstanceName = $"https://foundationallm.ai/events/serviceinstances/{Environment.GetEnvironmentVariable(EnvironmentVariables.AKS_Pod_Name)
                 ?? Environment.GetEnvironmentVariable(EnvironmentVariables.ACA_Container_App_Replica_Name)
                 ?? Guid.NewGuid().ToString().ToLower()}";
@@ -75,8 +82,8 @@ namespace FoundationaLLM.Common.Services.Events
         {
             try
             {
-                // Create the topic subscriptions according to the service profile.
-                if (!await CreateTopicSubscriptions(cancellationToken))
+                // Set up the topic subscriptions according to the service profile.
+                if (!await SetupTopicSubscriptions(cancellationToken))
                 {
                     _logger.LogError("The Azure Event Grid event service was not able to create the necessary topic subscriptions and/or sender/receiver clients and will not listen for any events.");
 
@@ -84,16 +91,18 @@ namespace FoundationaLLM.Common.Services.Events
                     // No need to keep them around since we're not listening for events anyway.
                     await DeleteTopicSubscriptions(cancellationToken);
 
+                    _initializationTaskCompletionSource.SetResult(false);
                     return;
                 }
 
                 _logger.LogInformation("The Azure Event Grid event service was successfully initialized.");
 
-                _active = true;
+                _initializationTaskCompletionSource.SetResult(true);
             }
             catch (Exception ex)
             {
-                throw new EventException("The Azure Event Grid event service encountered an error while starting and will not listen for any events.", ex);
+                _initializationTaskCompletionSource.SetResult(false);
+                _logger.LogError(ex, "The Azure Event Grid event service encountered an error while starting and will not listen for any events.");
             }
         }
 
@@ -104,7 +113,7 @@ namespace FoundationaLLM.Common.Services.Events
         /// <inheritdoc/>
         public async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            if (!_active)
+            if (!Active())
             {
                 _logger.LogCritical("The Azure Event Grid events service is not properly initialized and will not listen for any events.");
                 return;
@@ -120,7 +129,11 @@ namespace FoundationaLLM.Common.Services.Events
 
             while (true)
             {
-                if (cancellationToken.IsCancellationRequested) return;
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    _logger.LogInformation("The Azure Event Grid event service received a cancellation request and will stop processing messages.");
+                    return;
+                }
 
                 foreach (var topic in _profile.Topics)
                 {
@@ -184,7 +197,7 @@ namespace FoundationaLLM.Common.Services.Events
         /// <inheritdoc/>
         public async Task SendEvent(string topicName, CloudEvent cloudEvent)
         {
-            if (!_active)
+            if (!Active())
             {
                 _logger.LogError("Could not send event {EventId} of type {EventType} from source {EventSource}. The Azure Event Grid event service is not active and cannot send events.",
                     cloudEvent.Id, cloudEvent.Type, cloudEvent.Source);
@@ -215,15 +228,17 @@ namespace FoundationaLLM.Common.Services.Events
             }
         }
 
-        private async Task<bool> CreateTopicSubscriptions(CancellationToken cancellationToken)
+        private async Task<bool> SetupTopicSubscriptions(CancellationToken cancellationToken)
         {
             foreach (var topic in _profile.Topics)
             {
                 if (cancellationToken.IsCancellationRequested)
                     return false;
 
-                topic.SubscriptionName = $"{topic.SubscriptionPrefix}-{Guid.NewGuid().ToString("N").ToLower()}";
-                _logger.LogInformation("The Azure Event Grid event service will create a subscription named {SubscriptionName} in topic {TopicName}.",
+                topic.SubscriptionName = ServiceContext.Production
+                    ? $"{topic.SubscriptionPrefix}-{Guid.NewGuid().ToString("N").ToLower()}"
+                    : $"{topic.SubscriptionPrefix}-{_dependencyInjectionContainerSettings.Id:D3}-{ServiceContext.ServiceIdentity!.UPN!.ToLower().NormalizeUserPrincipalName()}";
+                _logger.LogInformation("The Azure Event Grid event service is starting to set up the subscription {SubscriptionName} in topic {TopicName}.",
                     topic.SubscriptionName, topic.Name);
 
                 try
@@ -236,7 +251,7 @@ namespace FoundationaLLM.Common.Services.Events
                         cancellationToken);
 
                     if (topic.SubscriptionAvailable)
-                        _logger.LogInformation("The Azure Event Grid event service successfully created a subscription named {SubscriptionName} in topic {TopicName}.",
+                        _logger.LogInformation("The Azure Event Grid event service successfully created the subscription named {SubscriptionName} in topic {TopicName}.",
                             topic.SubscriptionName, topic.Name);
 
                     _senderClients.Add(topic.Name, await GetSenderClient(topic.Name)
@@ -246,7 +261,7 @@ namespace FoundationaLLM.Common.Services.Events
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "An error occured while creating a subscription named {SubscriptionName} in topic {TopicName}.",
+                    _logger.LogError(ex, "An error occured while setting up the subscription {SubscriptionName} in topic {TopicName}.",
                         topic.SubscriptionName, topic.Name);
 
                     return false;
@@ -359,6 +374,10 @@ namespace FoundationaLLM.Common.Services.Events
                     ackFailure.LockToken, ackFailure.Error, ackFailure.ToString());
             }
         }
+
+        private bool Active() =>
+            _initializationTaskCompletionSource.Task.IsCompletedSuccessfully
+            && _initializationTaskCompletionSource.Task.Result;
 
         #region Create Event Grid client
 

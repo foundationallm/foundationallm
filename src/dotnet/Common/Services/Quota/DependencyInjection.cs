@@ -17,18 +17,18 @@ namespace FoundationaLLM
     public static partial class DependencyInjection
     {
         /// <summary>
-        /// Adds the API request quota service to the dependency injection container.
+        /// Adds the FoundationaLLM quota service to the dependency injection container.
         /// </summary>
         /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
-        public static void AddAPIRequestQuotaService(this IHostApplicationBuilder builder) =>
-            AddAPIRequestQuotaService(builder.Services, builder.Configuration);
+        public static void AddQuotaService(this IHostApplicationBuilder builder) =>
+            AddQuotaService(builder.Services, builder.Configuration);
 
         /// <summary>
-        /// Adds the API request quota service to the dependency injection container.
+        /// Adds the FoundationaLLM quota service to the dependency injection container.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
         /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
-        public static void AddAPIRequestQuotaService(this IServiceCollection services, IConfiguration configuration)
+        public static void AddQuotaService(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<BlobStorageServiceSettings>(
                 DependencyInjectionKeys.FoundationaLLM_Quota)
@@ -52,6 +52,7 @@ namespace FoundationaLLM
                 new QuotaService(
                     sp.GetRequiredService<IEnumerable<IStorageService>>()
                         .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_Quota),
+                    sp.GetRequiredService<IEventService>(),
                     sp.GetRequiredService<ILoggerFactory>()));
             services.ActivateSingleton<IQuotaService>();
         }

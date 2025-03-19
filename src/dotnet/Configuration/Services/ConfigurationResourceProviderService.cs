@@ -39,7 +39,7 @@ namespace FoundationaLLM.Configuration.Services
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
     /// <param name="appConfigurationService">The <see cref="IAzureAppConfigurationService"/> provding access to the app configuration service.</param>
     /// <param name="keyVaultService">The <see cref="IAzureKeyVaultService"/> providing access to the key vault service.</param>
-    /// <param name="configurationManager">The <see cref="IConfigurationManager"/> providing configuration services.</param>
+    /// <param name="configuration">The <see cref="IConfiguration"/> providing configuration services.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     public class ConfigurationResourceProviderService(
@@ -51,7 +51,7 @@ namespace FoundationaLLM.Configuration.Services
         IResourceValidatorFactory resourceValidatorFactory,
         IAzureAppConfigurationService appConfigurationService,
         IAzureKeyVaultService keyVaultService,
-        IConfigurationManager configurationManager,
+        IConfiguration configuration,
         IServiceProvider serviceProvider,
         ILogger<ConfigurationResourceProviderService> logger)
         : ResourceProviderServiceBase<APIEndpointReference>(
@@ -77,7 +77,7 @@ namespace FoundationaLLM.Configuration.Services
 
         private readonly IAzureAppConfigurationService _appConfigurationService = appConfigurationService;
         private readonly IAzureKeyVaultService _keyVaultService = keyVaultService;
-        private readonly IConfigurationManager _configurationManager = configurationManager;
+        private readonly IConfiguration _configuration = configuration;
 
         /// <inheritdoc/>
         protected override string _name => ResourceProviderNames.FoundationaLLM_Configuration;
@@ -150,6 +150,21 @@ namespace FoundationaLLM.Configuration.Services
                 {
                     ResourceProviderActions.CheckName => await CheckResourceName<APIEndpointConfiguration>(
                         JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
+                    ResourceProviderActions.Filter => await Task.Run(async () => {
+                        var resourceFilter = JsonSerializer.Deserialize<APIEndpointConfigurationFilter>(serializedAction)!;
+                        return await FilterResources<APIEndpointConfiguration>(
+                            resourcePath,
+                            resourceFilter,
+                            authorizationResult,
+                            customResourceFilter: x =>
+                                (resourceFilter.Category == null)
+                                || (
+                                    x.Category == resourceFilter.Category
+                                    && (
+                                        resourceFilter.Subcategory == null
+                                        || x.Subcategory == resourceFilter.Subcategory
+                                    )));
+                    }),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
@@ -231,7 +246,7 @@ namespace FoundationaLLM.Configuration.Services
                 }
                 catch { }
 
-                _configurationManager[eventData.Key] = keyValue;
+                _configuration[eventData.Key] = keyValue;
             }
             catch (Exception ex)
             {

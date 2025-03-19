@@ -27,7 +27,7 @@ namespace FoundationaLLM.Common.Services.Events
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "The event service was not able to start. In Core API, this is not considered to be a critical error.");
+                _logger.LogError(ex, "The event service was not able to start.");
             }
 
             _logger.LogInformation("The events worker is preparing to execute the event service.");

@@ -77,7 +77,7 @@
 
 					<div v-for="(content, index) in processedContent" v-else :key="index">
 						<template v-if="content.type === 'text'">
-							<div v-if="message.sender === 'User'" style="white-space: pre-wrap;">
+							<div v-if="message.sender === 'User'" style="white-space: pre-wrap">
 								{{ content.value }}
 							</div>
 
@@ -220,9 +220,9 @@
 			modal
 			style="max-width: 85%"
 		>
-			<p tabindex="0" style="overflow-x: auto;">
+			<div tabindex="0" style="overflow-x: auto">
 				<pre>{{ JSON.stringify(selectedContentArtifact, null, 2) }}</pre>
-			</p>
+			</div>
 
 			<template #footer>
 				<Button
@@ -244,12 +244,12 @@
 			<Textarea
 				id="rating-textarea"
 				v-model="message.ratingComments"
-				:style="{ width: '100%' }"
+				style="width: 100%"
 				rows="5"
 				type="text"
 				placeholder="Add comments here..."
 				aria-label="Add comments here..."
-				autoResize
+				auto-resize
 				autofocus
 			></Textarea>
 
@@ -310,7 +310,6 @@ import { hideAllPoppers } from 'floating-vue';
 import type { Message, MessageContent, CompletionPrompt } from '@/js/types';
 import api from '@/js/api';
 import { fetchBlobUrl } from '@/js/fileService';
-import TimeAgo from '~/components/TimeAgo.vue';
 
 function processLatex(content) {
 	const blockLatexPattern = /\\\[\s*([\s\S]+?)\s*\\\]/g;
@@ -319,7 +318,7 @@ function processLatex(content) {
 	// Match triple & inline backticks
 	const codeBlockPattern = /```[\s\S]+?```|`[^`]+`/g;
 
-	let codeBlocks = [];
+	const codeBlocks = [];
 
 	// Extract and replace code blocks with placeholders temporarily
 	// to ensure LaTeX within is not altered
@@ -331,12 +330,12 @@ function processLatex(content) {
 	try {
 		// Process block LaTeX: \[ ... \]
 		content = content.replace(blockLatexPattern, (_, math) => {
-			return `<div class="katex-block">${katex.renderToString(math, { displayMode: true, throwOnError: false, output: "mathml" })}</div>`;
+			return `<div class="katex-block">${katex.renderToString(math, { displayMode: true, throwOnError: false, output: 'mathml' })}</div>`;
 		});
 
 		// Process inline LaTeX: \( ... \)
 		content = content.replace(inlineLatexPattern, (_, math) => {
-			return `<span class="katex-inline">${katex.renderToString(math, { throwOnError: false, output: "mathml" })}</span>`;
+			return `<span class="katex-inline">${katex.renderToString(math, { throwOnError: false, output: 'mathml' })}</span>`;
 		});
 	} catch (error) {
 		console.error('LaTeX rendering error:', error);

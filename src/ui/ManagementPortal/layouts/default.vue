@@ -13,9 +13,9 @@
 			<!-- Page to render -->
 			<div class="page-content">
 				<div
+					v-show="!$appStore.sidebarCollapsed"
 					class="sidebar-blur"
 					@click="$appStore.sidebarCollapsed = true"
-					v-show="!$appStore.sidebarCollapsed"
 				/>
 				<slot />
 			</div>

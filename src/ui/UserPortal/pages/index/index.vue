@@ -17,7 +17,11 @@
 				class="chat-sidebar-wrapper"
 				role="navigation"
 			>
-				<ChatSidebar class="chat-sidebar" :style="{ width: sidebarWidth + 'px' }" style="padding-right: 5px" />
+				<ChatSidebar
+					class="chat-sidebar"
+					:style="{ width: sidebarWidth + 'px' }"
+					style="padding-right: 5px"
+				/>
 				<VTooltip
 					:auto-hide="isMobile"
 					:popper-triggers="isMobile ? [] : ['hover']"

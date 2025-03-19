@@ -130,8 +130,8 @@
 				>
 					<div id="aria-principal-search-type" class="mb-2">Search type</div>
 					<Dropdown
-						v-model="principalSearchType"
 						id="principal-search-type"
+						v-model="principalSearchType"
 						:options="principalTypeOptions"
 						placeholder="--Select--"
 						class="mb-2 w-100"

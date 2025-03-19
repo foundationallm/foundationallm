@@ -61,7 +61,7 @@ export const useAppStore = defineStore('app', {
 
 		agentShowFileUpload(): boolean {
 			return this.lastSelectedAgent?.resource.show_file_upload ?? true;
-		}
+		},
 	},
 
 	actions: {
@@ -289,7 +289,10 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async getMessages() {
-			if ((this.newSession && this.newSession.id === this.currentSession!.id) || this.currentSession.is_temp) {
+			if (
+				(this.newSession && this.newSession.id === this.currentSession!.id) ||
+				this.currentSession.is_temp
+			) {
 				// This is a new session, no need to fetch messages.
 				this.currentMessages = [];
 				return;
@@ -339,7 +342,9 @@ export const useAppStore = defineStore('app', {
 			// Calculate the processing time for each message
 			this.currentMessages.forEach((message, index) => {
 				if (message.sender === 'Agent' && this.currentMessages[index - 1]?.sender === 'User') {
-					const previousMessageTimeStamp = new Date(this.currentMessages[index - 1].timeStamp).getTime();
+					const previousMessageTimeStamp = new Date(
+						this.currentMessages[index - 1].timeStamp,
+					).getTime();
 					const currentMessageTimeStamp = new Date(message.timeStamp).getTime();
 					message.processingTime = currentMessageTimeStamp - previousMessageTimeStamp;
 				}
@@ -473,7 +478,7 @@ export const useAppStore = defineStore('app', {
 
 			if (message.status === 'Completed') {
 				// The endpoint likely returned the final message, so we can update the last message in the list.
-				let completedMessage = message.result as Message;
+				const completedMessage = message.result as Message;
 				// Replace the last message with the completed message.
 				this.currentMessages[this.currentMessages.length - 1] = completedMessage;
 				this.calculateMessageProcessingTime();

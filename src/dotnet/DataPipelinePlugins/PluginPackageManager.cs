@@ -127,8 +127,8 @@ namespace FoundationaLLM.Plugins.DataPipeline
                             new() {
                                 ResourcePath = "providers/FoundationaLLM.Configuration/apiEndpointConfigurations",
                                 FilterActionPayload = new {
-                                    Category = "General",
-                                    Subcategory = "Indexing"
+                                    category = "General",
+                                    subcategory = "Indexing"
                                 }
                             }
                         }
@@ -197,7 +197,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
                 },
                 new() {
                     ObjectId = $"instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PACKAGE_NAME}-ImageMetadataTextExtraction",
-                    Name = $"{PACKAGE_NAME}-ImageMetadataContentTextExtraction",
+                    Name = $"{PACKAGE_NAME}-ImageMetadataTextExtraction",
                     DisplayName = "Image Metadata Text Extraction (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for metadata (description) extraction from image files.",
                     Category = PluginCategoryNames.ContentTextExtraction,

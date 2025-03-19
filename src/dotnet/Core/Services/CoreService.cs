@@ -1032,6 +1032,18 @@ public partial class CoreService(
             }
         }
 
+        // If there is an attachment in the current message, add it to the file history.
+        if (request.Attachments is { Count: > 0 })
+        {
+            foreach (var attachmentObjectId in request.Attachments)
+            {
+                //Get resource path for attachment
+                var rp = ResourcePath.GetResourcePath(attachmentObjectId);
+                var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(instanceId, rp.MainResourceId!, _userIdentity);
+                fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder));
+            }
+        }
+
         // Include conversation file history regardless of the conversation history settings.
         if (fileHistory.Any())
         { 

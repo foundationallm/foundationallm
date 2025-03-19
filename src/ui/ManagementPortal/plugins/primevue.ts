@@ -10,7 +10,7 @@ import Card from 'primevue/card';
 import Chip from 'primevue/chip';
 import Chips from 'primevue/chips';
 import ToastService from 'primevue/toastservice';
-import Tooltip from 'primevue/tooltip';
+// import Tooltip from 'primevue/tooltip';
 import Divider from 'primevue/divider';
 import Dropdown from 'primevue/dropdown';
 import MultiSelect from 'primevue/multiselect';

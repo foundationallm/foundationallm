@@ -134,7 +134,10 @@ export const useAppConfigStore = defineStore('appConfig', {
 					'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
 				),
 				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowMessageRating', 'false'),
-				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup', 'true'),
+				getConfigValueSafe(
+					'FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup',
+					'true',
+				),
 				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowMessageTokens', 'true'),
 				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowViewPrompt', 'true'),
 				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowFileUpload', 'true'),
