@@ -160,6 +160,42 @@ Interface IQuotaService  <a class="header-action link-secondary" title="View sou
 
 
 
+  <a id="FoundationaLLM_Common_Interfaces_IQuotaService_InitializationTask_" data-uid="FoundationaLLM.Common.Interfaces.IQuotaService.InitializationTask*"></a>
+
+  <h3 id="FoundationaLLM_Common_Interfaces_IQuotaService_InitializationTask" data-uid="FoundationaLLM.Common.Interfaces.IQuotaService.InitializationTask">
+  InitializationTask
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IQuotaService.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.taskcompletionsource-1">TaskCompletionSource&lt;TResult&gt;</a> (<code>TResult</code> of type <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>)
+that signals the completion of the initialization task.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;bool&gt; InitializationTask { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_Common_Interfaces_IQuotaService_InitializationTask_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The result of the task indicates whether initialization completed successfully or not.</p>
+</div>
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
@@ -168,7 +204,7 @@ Interface IQuotaService  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Common_Interfaces_IQuotaService_EvaluateCompletionRequestForQuota_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_" data-uid="FoundationaLLM.Common.Interfaces.IQuotaService.EvaluateCompletionRequestForQuota(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)">
   EvaluateCompletionRequestForQuota(string, string, UnifiedUserIdentity?, CompletionRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IQuotaService.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IQuotaService.cs/#L47"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Evaluates a completion request to determine if it exceeds any quotas.</p>
@@ -176,7 +212,7 @@ Interface IQuotaService  <a class="header-action link-secondary" title="View sou
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">QuotaEvaluationResult EvaluateCompletionRequestForQuota(string apiName, string controllerName, UnifiedUserIdentity? userIdentity, CompletionRequest completionRequest)</code></pre>
+    <pre><code class="lang-csharp hljs">QuotaMetricPartitionState EvaluateCompletionRequestForQuota(string apiName, string controllerName, UnifiedUserIdentity? userIdentity, CompletionRequest completionRequest)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -197,7 +233,7 @@ Interface IQuotaService  <a class="header-action link-secondary" title="View sou
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="FoundationaLLM.Common.Models.Quota.QuotaEvaluationResult.html">QuotaEvaluationResult</a></dt>
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState.html">QuotaMetricPartitionState</a></dt>
     <dd></dd>
   </dl>
 
@@ -215,7 +251,7 @@ Interface IQuotaService  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Common_Interfaces_IQuotaService_EvaluateRawRequestForQuota_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IQuotaService.EvaluateRawRequestForQuota(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   EvaluateRawRequestForQuota(string, string?, UnifiedUserIdentity?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IQuotaService.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IQuotaService.cs/#L34"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Evaluates an HTTP API request to determine if it exceeds any quotas.</p>
@@ -223,7 +259,7 @@ Interface IQuotaService  <a class="header-action link-secondary" title="View sou
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">QuotaEvaluationResult EvaluateRawRequestForQuota(string apiName, string? controllerName, UnifiedUserIdentity? userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">QuotaMetricPartitionState EvaluateRawRequestForQuota(string apiName, string? controllerName, UnifiedUserIdentity? userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -241,8 +277,8 @@ Interface IQuotaService  <a class="header-action link-secondary" title="View sou
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="FoundationaLLM.Common.Models.Quota.QuotaEvaluationResult.html">QuotaEvaluationResult</a></dt>
-    <dd><p>An <a class="xref" href="FoundationaLLM.Common.Models.Quota.QuotaEvaluationResult.html">QuotaEvaluationResult</a> object that indicates if any
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState.html">QuotaMetricPartitionState</a></dt>
+    <dd><p>An <a class="xref" href="FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState.html">QuotaMetricPartitionState</a> object that indicates if any
 quotas where exceeded and provides details in case of a quota breach.</p>
 </dd>
   </dl>

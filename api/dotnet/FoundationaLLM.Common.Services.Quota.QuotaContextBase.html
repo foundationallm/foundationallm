@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Services_Quota_QuotaContextBase" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase" class="text-break">
-Class QuotaContextBase  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L11"><i class="bi bi-code-slash"></i></a>
+Class QuotaContextBase  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L12"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -120,7 +120,7 @@ Class QuotaContextBase  <a class="header-action link-secondary" title="View sour
   <dl class="typelist derived">
     <dt>Derived</dt>
     <dd>
-      <div><a class="xref" href="FoundationaLLM.Common.Services.Quota.PartitionlessQuotaContext.html">PartitionlessQuotaContext</a></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext.html">SinglePartitionQuotaContext</a></div>
       <div><a class="xref" href="FoundationaLLM.Common.Services.Quota.UserIdentifierQuotaContext.html">UserIdentifierQuotaContext</a></div>
       <div><a class="xref" href="FoundationaLLM.Common.Services.Quota.UserPrincipalNameQuotaContext.html">UserPrincipalNameQuotaContext</a></div>
     </dd>
@@ -172,7 +172,7 @@ Class QuotaContextBase  <a class="header-action link-secondary" title="View sour
 
   <h3 id="FoundationaLLM_Common_Services_Quota_QuotaContextBase__ctor_FoundationaLLM_Common_Models_Quota_QuotaDefinition_Microsoft_Extensions_Logging_ILogger_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase.#ctor(FoundationaLLM.Common.Models.Quota.QuotaDefinition,Microsoft.Extensions.Logging.ILogger)">
   QuotaContextBase(QuotaDefinition, ILogger)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L12"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Implements the base class for managing the in-memory state of a quota context.</p>
@@ -211,7 +211,7 @@ Class QuotaContextBase  <a class="header-action link-secondary" title="View sour
 
   <h3 id="FoundationaLLM_Common_Services_Quota_QuotaContextBase__logger" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase._logger">
   _logger
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The logger used for logging.</p>
@@ -242,7 +242,7 @@ Class QuotaContextBase  <a class="header-action link-secondary" title="View sour
 
   <h3 id="FoundationaLLM_Common_Services_Quota_QuotaContextBase__syncRoot" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase._syncRoot">
   _syncRoot
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L19"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The object used to synchronize access to the quota context.</p>
@@ -278,7 +278,7 @@ Class QuotaContextBase  <a class="header-action link-secondary" title="View sour
 
   <h3 id="FoundationaLLM_Common_Services_Quota_QuotaContextBase_Quota" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase.Quota">
   Quota
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L34"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the context.</p>
@@ -310,23 +310,26 @@ Class QuotaContextBase  <a class="header-action link-secondary" title="View sour
 </h2>
 
 
-  <a id="FoundationaLLM_Common_Services_Quota_QuotaContextBase_AddMetricUnitAndEvaluateQuota_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase.AddMetricUnitAndEvaluateQuota*"></a>
+  <a id="FoundationaLLM_Common_Services_Quota_QuotaContextBase_AddLocalMetricUnit_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase.AddLocalMetricUnit*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Quota_QuotaContextBase_AddMetricUnitAndEvaluateQuota_System_String_System_String_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase.AddMetricUnitAndEvaluateQuota(System.String,System.String)">
-  AddMetricUnitAndEvaluateQuota(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Services_Quota_QuotaContextBase_AddLocalMetricUnit_System_DateTimeOffset_System_String_System_String_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase.AddLocalMetricUnit(System.DateTimeOffset,System.String,System.String)">
+  AddLocalMetricUnit(DateTimeOffset, string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L61"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Adds a new unit of the quota metric to the quota context and checks if the quota is exceeded or not.</p>
+  <div class="markdown level1 summary"><p>Adds a new local unit of the quota metric to the quota context and checks if the quota is exceeded or not.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract QuotaEvaluationResult AddMetricUnitAndEvaluateQuota(string userIdentifier, string userPrincipalName)</code></pre>
+    <pre><code class="lang-csharp hljs">public QuotaMetricPartitionState AddLocalMetricUnit(DateTimeOffset referenceTime, string userIdentifier, string userPrincipalName)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
+    <dt><code>referenceTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></dt>
+    <dd><p>The time at which the local metric unit was recorded.</p>
+</dd>
     <dt><code>userIdentifier</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The user identifier associated with the unit of the quota metric.</p>
 </dd>
@@ -337,7 +340,7 @@ Class QuotaContextBase  <a class="header-action link-secondary" title="View sour
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="FoundationaLLM.Common.Models.Quota.QuotaEvaluationResult.html">QuotaEvaluationResult</a></dt>
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState.html">QuotaMetricPartitionState</a></dt>
     <dd><p>The result of the quota evaluation.</p>
 </dd>
   </dl>
@@ -352,34 +355,112 @@ Class QuotaContextBase  <a class="header-action link-secondary" title="View sour
 
 
 
-  <a id="FoundationaLLM_Common_Services_Quota_QuotaContextBase_LogMetricEvaluationResult_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase.LogMetricEvaluationResult*"></a>
+  <a id="FoundationaLLM_Common_Services_Quota_QuotaContextBase_AddRemoteMetricUnits_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase.AddRemoteMetricUnits*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Quota_QuotaContextBase_LogMetricEvaluationResult_FoundationaLLM_Common_Models_Quota_QuotaMetricEvaluationResult_System_String_System_String_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase.LogMetricEvaluationResult(FoundationaLLM.Common.Models.Quota.QuotaMetricEvaluationResult,System.String,System.String)">
-  LogMetricEvaluationResult(QuotaMetricEvaluationResult, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Services_Quota_QuotaContextBase_AddRemoteMetricUnits_System_Collections_Generic_List_System_DateTimeOffset__System_String_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase.AddRemoteMetricUnits(System.Collections.Generic.List{System.DateTimeOffset},System.String)">
+  AddRemoteMetricUnits(List&lt;DateTimeOffset&gt;, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L93"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Logs the result of the evaluation of a quota metric.</p>
+  <div class="markdown level1 summary"><p>Adds remote units of the quota metric to the quota context.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void LogMetricEvaluationResult(QuotaMetricEvaluationResult metricResult, string userIdentifier, string userPrincipalName)</code></pre>
+    <pre><code class="lang-csharp hljs">public void AddRemoteMetricUnits(List&lt;DateTimeOffset&gt; referenceTimes, string partitionId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>metricResult</code> <a class="xref" href="FoundationaLLM.Common.Models.Quota.QuotaMetricEvaluationResult.html">QuotaMetricEvaluationResult</a></dt>
-    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Quota.QuotaMetricEvaluationResult.html">QuotaMetricEvaluationResult</a> providing the result of the evaluation.</p>
+    <dt><code>referenceTimes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a>&gt;</dt>
+    <dd><p>The times at which the remote metric units were recorded.</p>
 </dd>
-    <dt><code>userIdentifier</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The user unique identifier.</p>
-</dd>
-    <dt><code>userPrincipalName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The user principal name.</p>
+    <dt><code>partitionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The quota metric partition identifier.</p>
 </dd>
   </dl>
 
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Services_Quota_QuotaContextBase_GetQuotaMetricPartition_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase.GetQuotaMetricPartition*"></a>
+
+  <h3 id="FoundationaLLM_Common_Services_Quota_QuotaContextBase_GetQuotaMetricPartition_System_String_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase.GetQuotaMetricPartition(System.String)">
+  GetQuotaMetricPartition(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the quota metric partition that corresponds to the specified partition identifier.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract QuotaMetricPartition GetQuotaMetricPartition(string partitionId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>partitionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The quota metric partition id.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.html">QuotaMetricPartition</a></dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.html">QuotaMetricPartition</a> instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Services_Quota_QuotaContextBase_GetQuotaMetricPartition_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase.GetQuotaMetricPartition*"></a>
+
+  <h3 id="FoundationaLLM_Common_Services_Quota_QuotaContextBase_GetQuotaMetricPartition_System_String_System_String_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaContextBase.GetQuotaMetricPartition(System.String,System.String)">
+  GetQuotaMetricPartition(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the quota metric partition that corresponds to the specified user identifier and/or user principal name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract QuotaMetricPartition GetQuotaMetricPartition(string userIdentifier, string userPrincipalName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>userIdentifier</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The user identifier used to get the quota metric partition</p>
+</dd>
+    <dt><code>userPrincipalName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The user principal name used to get the quota metric partition.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.html">QuotaMetricPartition</a></dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.html">QuotaMetricPartition</a> instance.</p>
+</dd>
+  </dl>
 
 
 
@@ -395,7 +476,7 @@ Class QuotaContextBase  <a class="header-action link-secondary" title="View sour
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L11" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaContextBase.cs/#L12" class="edit-link">Edit this page</a>
         </div>
 
 

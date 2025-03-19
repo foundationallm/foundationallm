@@ -2210,17 +2210,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Quota.QuotaMetricPartition.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Quota.QuotaMetricPartitionType.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Quota.QuotaMetricPartition.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Quota.QuotaMetricPartitionType.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Constants.Quota.QuotaMetricPartition",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Quota.QuotaMetricPartition.yml\" sourcestartlinenumber=\"1\">Represents the type of partitioning applied to the metric based on which a quota is enforced.</p>\n"
+      "Title": "FoundationaLLM.Common.Constants.Quota.QuotaMetricPartitionType",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Quota.QuotaMetricPartitionType.yml\" sourcestartlinenumber=\"1\">Represents the type of partitioning applied to the metric based on which a quota is enforced.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4814,6 +4814,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings.yml\" sourcestartlinenumber=\"1\">Represents the settings for the dependency injection container.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.Environment.EnvironmentVariableEntry.yml",
       "output": {
         ".html": {
@@ -6284,6 +6298,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Quota.DistributedQuotaEnforcementEventData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Quota.DistributedQuotaEnforcementEventData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Quota.DistributedQuotaEnforcementEventData",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Quota.DistributedQuotaEnforcementEventData.yml\" sourcestartlinenumber=\"1\">Provides the data associated with a distributed quota enforcement event.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Quota.QuotaDefinition.yml",
       "output": {
         ".html": {
@@ -6298,31 +6326,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Quota.QuotaEvaluationResult.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Quota.QuotaEvaluationResult.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Quota.QuotaEvaluationResult",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Quota.QuotaEvaluationResult.yml\" sourcestartlinenumber=\"1\">Represents the result of evaluating a quota.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Quota.QuotaMetricEvaluationResult.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Quota.QuotaMetricEvaluationResult.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Quota.QuotaMetricEvaluationResult",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Quota.QuotaMetricEvaluationResult.yml\" sourcestartlinenumber=\"1\">Represents the result of evaluating a quota metric.</p>\n"
+      "Title": "FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState.yml\" sourcestartlinenumber=\"1\">Represents the state of a quota metric partition.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -8636,20 +8650,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Quota.PartitionlessQuotaContext.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.Quota.PartitionlessQuotaContext.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Services.Quota.PartitionlessQuotaContext",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Services.Quota.PartitionlessQuotaContext.yml\" sourcestartlinenumber=\"1\">Implements a non-partitioned quota context.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Quota.QuotaContextBase.yml",
       "output": {
         ".html": {
@@ -8664,17 +8664,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Quota.QuotaMetricSequence.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.Quota.QuotaMetricSequence.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Services.Quota.QuotaMetricSequence",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Services.Quota.QuotaMetricSequence.yml\" sourcestartlinenumber=\"1\">Represents a sequence of units of a quota metric.</p>\n"
+      "Title": "FoundationaLLM.Common.Services.Quota.QuotaMetricPartition",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.yml\" sourcestartlinenumber=\"1\">Represents a partition of a quota metric.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -8689,6 +8689,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Services.Quota.QuotaService",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Services.Quota.QuotaService.yml\" sourcestartlinenumber=\"1\">Implements the FoundationaLLM quota service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext.yml\" sourcestartlinenumber=\"1\">Implements a quota context with a single partition.</p>\n"
     },
     {
       "type": "ManagedReference",

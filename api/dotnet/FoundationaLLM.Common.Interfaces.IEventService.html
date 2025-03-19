@@ -128,19 +128,20 @@ Interface IEventService  <a class="header-action link-secondary" title="View sou
 </h2>
 
 
-  <a id="FoundationaLLM_Common_Interfaces_IEventService_Active_" data-uid="FoundationaLLM.Common.Interfaces.IEventService.Active*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IEventService_InitializationTask_" data-uid="FoundationaLLM.Common.Interfaces.IEventService.InitializationTask*"></a>
 
-  <h3 id="FoundationaLLM_Common_Interfaces_IEventService_Active" data-uid="FoundationaLLM.Common.Interfaces.IEventService.Active">
-  Active
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IEventService.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Interfaces_IEventService_InitializationTask" data-uid="FoundationaLLM.Common.Interfaces.IEventService.InitializationTask">
+  InitializationTask
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IEventService.cs/#L23"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Indicates whether the event service has started successfully and is active.</p>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.taskcompletionsource-1">TaskCompletionSource&lt;TResult&gt;</a> (<code>TResult</code> of type <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>)
+that signals the completion of the initialization task.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool Active { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;bool&gt; InitializationTask { get; }</code></pre>
   </div>
 
 
@@ -149,13 +150,16 @@ Interface IEventService  <a class="header-action link-secondary" title="View sou
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
     <dd></dd>
   </dl>
 
 
 
 
+  <h4 class="section" id="FoundationaLLM_Common_Interfaces_IEventService_InitializationTask_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The result of the task indicates whether initialization completed successfully or not.</p>
+</div>
 
 
 
@@ -200,7 +204,7 @@ Interface IEventService  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Common_Interfaces_IEventService_ExecuteAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IEventService.ExecuteAsync(System.Threading.CancellationToken)">
   ExecuteAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IEventService.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IEventService.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Executes the event service until cancellation is signaled.</p>
@@ -238,7 +242,7 @@ Interface IEventService  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Common_Interfaces_IEventService_SendEvent_System_String_Azure_Messaging_CloudEvent_" data-uid="FoundationaLLM.Common.Interfaces.IEventService.SendEvent(System.String,Azure.Messaging.CloudEvent)">
   SendEvent(string, CloudEvent)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IEventService.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IEventService.cs/#L66"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sends an event to the event service.</p>
@@ -279,7 +283,7 @@ Interface IEventService  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Common_Interfaces_IEventService_StartAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IEventService.StartAsync(System.Threading.CancellationToken)">
   StartAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IEventService.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IEventService.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Starts the event service, allowing it to initialize.</p>
@@ -317,7 +321,7 @@ Interface IEventService  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Common_Interfaces_IEventService_StopAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IEventService.StopAsync(System.Threading.CancellationToken)">
   StopAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IEventService.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IEventService.cs/#L37"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Stops the event service, allowing it to cleanup.</p>
@@ -355,7 +359,7 @@ Interface IEventService  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Common_Interfaces_IEventService_SubscribeToEventTypeEvent_System_String_FoundationaLLM_Common_Models_Events_EventTypeEventDelegate_" data-uid="FoundationaLLM.Common.Interfaces.IEventService.SubscribeToEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)">
   SubscribeToEventTypeEvent(string, EventTypeEventDelegate)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IEventService.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IEventService.cs/#L51"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds an event set event delgate to the list of event handlers for a specified event set namespace.</p>
@@ -391,7 +395,7 @@ Interface IEventService  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Common_Interfaces_IEventService_UnsubscribeFromEventTypeEvent_System_String_FoundationaLLM_Common_Models_Events_EventTypeEventDelegate_" data-uid="FoundationaLLM.Common.Interfaces.IEventService.UnsubscribeFromEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)">
   UnsubscribeFromEventTypeEvent(string, EventTypeEventDelegate)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IEventService.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IEventService.cs/#L58"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes an event set event delegate from the list of event handlers for a specified event set namespace.</p>
