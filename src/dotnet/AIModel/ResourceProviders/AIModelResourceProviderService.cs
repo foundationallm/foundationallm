@@ -161,6 +161,10 @@ namespace FoundationaLLM.AIModel.ResourceProviders
                     ResourceProviderActions.CheckName => await CheckResourceName<AIModelBase>(
                         JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
                     ResourceProviderActions.Purge => await PurgeResource<AgentBase>(resourcePath),
+                    ResourceProviderActions.Filter => await FilterResources<AIModelBase>(
+                        resourcePath,
+                        JsonSerializer.Deserialize<ResourceFilter>(serializedAction)!,
+                        authorizationResult),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },

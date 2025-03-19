@@ -1574,13 +1574,15 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
         /// <param name="customResourceLoader">An optional function that loads the resource used to override
         /// the default resource loading mechanism.</param>
+        /// <param name="customResourceFilter">An optional function that filters the list of loaded resources.</param>
         /// <returns>A list of objects of type <typeparamref name="T"/>.</returns>
         protected async Task<IEnumerable<T>> FilterResources<T>(
             ResourcePath resourcePath,
             ResourceFilter filter,
             ResourcePathAuthorizationResult authorizationResult,
             ResourceProviderGetOptions? options = null,
-            Func<TResourceReference, bool, Task<T>>? customResourceLoader = null)
+            Func<TResourceReference, bool, Task<T>>? customResourceLoader = null,
+            Func<T, bool>? customResourceFilter = null)
             where T : ResourceBase
         {
             if (!resourcePath.IsResourceTypePath)
@@ -1595,6 +1597,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                         (await customResourceLoader(resourceReference, options?.LoadContent ?? false))!;
 
             List<string> filterResourceNames = [];
+            bool loadAllResources = false;
 
             if (filter.DefaultResource.HasValue
                 && filter.DefaultResource.Value)
@@ -1608,14 +1611,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
                 filterResourceNames = [_resourceReferenceStore.DefaultResourceName];
             }
-            else
+            else if (filter.ObjectIDs != null)
             {
                 // Filter resources based on the object IDs provided in the filter.
 
-                var filterResourcePaths = filter.ObjectIDs?
+                var filterResourcePaths = filter.ObjectIDs
                     .Select(id => this.GetParsedResourcePath(id, false))
-                    .ToList()
-                    ?? [];
+                    .ToList();
 
                 if (filterResourcePaths.Count == 0
                     || filterResourcePaths.Any(rp => !rp.HasResourceId || !rp.MatchesResourceTypes(resourcePath)))
@@ -1623,9 +1625,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                         "The list of filter object IDs is either empty or contains invalid values.",
                         StatusCodes.Status400BadRequest);
 
-                filterResourceNames = filterResourcePaths
-                    .Select(rp => rp.ResourceId!)
-                    .ToList();
+                filterResourceNames = [.. filterResourcePaths.Select(rp => rp.ResourceId!)];
+            }
+            else
+            {
+                loadAllResources = true;
             }
 
             IEnumerable<TResourceReference> resourceReferencesToLoad = [];
@@ -1637,10 +1641,14 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 await _lock.WaitAsync();
 
                 resourceReferencesToLoad = authorizationResult.Authorized
-                    ? await _resourceReferenceStore!.GetResourceReferences(filterResourceNames)
+                    ? loadAllResources
+                        ? await _resourceReferenceStore!.GetAllResourceReferences<T>()
+                        : await _resourceReferenceStore!.GetResourceReferences(filterResourceNames)
                     : await _resourceReferenceStore!.GetResourceReferences(
                         authorizationResult.SubordinateResourcePathsAuthorizationResults.Values
-                            .Where(sarp => !string.IsNullOrWhiteSpace(sarp.ResourceName) && filterResourceNames.Contains(sarp.ResourceName))
+                            .Where(srpar =>
+                                loadAllResources
+                                || (!string.IsNullOrWhiteSpace(srpar.ResourceName) && filterResourceNames.Contains(srpar.ResourceName)))
                             .Select(sarp => sarp.ResourceName!)
                             .ToList());
             }
@@ -1656,7 +1664,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                         (await resourceLoader(resourceReference))!,
                 options);
 
-            return result.Select(r => r.Resource);
+            return
+                customResourceFilter == null
+                ? result.Select(r => r.Resource)
+                : result.Select(r => r.Resource)
+                    .Where(customResourceFilter);
         }
 
         #region Helpers
