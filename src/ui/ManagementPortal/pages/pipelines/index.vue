@@ -223,7 +223,7 @@ export default {
 	data() {
 		return {
 			pipelines: [] as ResourceProviderGetResult<Pipeline>[],
-			// pipelineToView: null,
+			pipelineToView: null,
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 		};
