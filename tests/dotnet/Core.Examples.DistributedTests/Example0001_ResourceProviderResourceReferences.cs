@@ -15,7 +15,7 @@ namespace FoundationaLLM.Core.Examples.LoadTests
     /// <summary>
     /// Runs load tests on resource provider resource references.
     /// </summary>
-    public class Example0001_ResourceProviderResourceReferences : LoadTestBase, IClassFixture<TestFixture>
+    public class Example0001_ResourceProviderResourceReferences : DistributedTestBase, IClassFixture<TestFixture>
     {
         public Example0001_ResourceProviderResourceReferences(ITestOutputHelper output, TestFixture fixture)
 			: base(1, output, fixture)

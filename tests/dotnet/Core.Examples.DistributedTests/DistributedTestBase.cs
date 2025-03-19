@@ -4,7 +4,7 @@ using Xunit.Abstractions;
 
 namespace FoundationaLLM.Core.Examples.LoadTests
 {
-    public class LoadTestBase(
+    public class DistributedTestBase(
         int virtualHostsCount,
         ITestOutputHelper output,
         TestFixture fixture) : TestBase(output, fixture)
