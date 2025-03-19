@@ -555,10 +555,10 @@ export default {
 			deep: true,
 		},
 		selectedDataSourcePlugin: {
-			handler(newVal) {
+			async handler(newVal) {
 				if (newVal) {
 					this.pipeline.data_source.plugin_object_id = newVal.object_id;
-					this.pipeline.data_source.plugin_parameters = newVal.parameters.map((param) => ({
+					this.pipeline.data_source.plugin_parameters = newVal.parameters.map((param: any) => ({
 						parameter_metadata: {
 							name: param.name,
 							type: param.type,
@@ -566,23 +566,28 @@ export default {
 						},
 						default_value: param.default_value,
 					}));
-					if (newVal.parameter_selection_hints) {
-						Object.entries(newVal.parameter_selection_hints).forEach(([key]) => {
-							const parameter = this.selectedDataSourcePlugin.parameters.find(
-								(param) => param.name === key,
-							);
-							if (parameter) {
-								parameter.parameter_selection_hints_options = this.getResourceOptions(
-									key,
-									this.selectedDataSourcePlugin.object_id,
-								);
-							}
-						});
-					}
+
+					// Avoid multiple API requests
+					const paramsToFetch = newVal.parameter_selection_hints ? Object.keys(newVal.parameter_selection_hints) : [];
+
+					// Use Promise.all to fetch all options in parallel
+					const resourceOptions = await Promise.all(
+						paramsToFetch.map(key =>
+							this.getResourceOptions(key, newVal.object_id).then(options => ({ key, options }))
+						)
+					);
+
+					// Assign options efficiently
+					resourceOptions.forEach(({ key, options }) => {
+						const param = this.selectedDataSourcePlugin.parameters.find(p => p.name === key);
+						if (param) {
+							param.parameter_selection_hints_options = options;
+						}
+					});
 				}
 				this.buildTriggerParameters();
 			},
-			deep: true,
+			deep: true
 		},
 		selectedStagePlugins: {
 			handler(newVal) {
@@ -1028,36 +1033,35 @@ export default {
 
 		async getResourceOptions(paramName: string, pluginObjectId: string) {
 			const cacheKey = `${paramName}-${pluginObjectId}`;
+
+			// Return cached options if available
 			if (this.resourceOptionsCache[cacheKey]) {
 				return this.resourceOptionsCache[cacheKey];
 			}
 
-			const dataSourcePlugin = this.dataSourcePluginOptions.find(
-				(plugin) => plugin.object_id === pluginObjectId,
-			);
-			const stagePlugin = this.stagePluginsOptions.find(
-				(plugin) => plugin.object_id === pluginObjectId,
-			);
-			const dependency = this.resolvedDependencies.find((dep) => dep.object_id === pluginObjectId);
+			const plugin = this.stagePluginsOptions.find(p => p.object_id === pluginObjectId) ||
+				this.resolvedDependencies.find(dep => dep.object_id === pluginObjectId) ||
+				this.dataSourcePluginOptions.find(p => p.object_id === pluginObjectId);
 
-			if (stagePlugin || dependency || dataSourcePlugin) {
-				const hints =
-					stagePlugin?.parameter_selection_hints[paramName] ||
-					dependency?.parameter_selection_hints[paramName] ||
-					dataSourcePlugin?.parameter_selection_hints[paramName];
-				if (!hints) return [];
-				try {
-					const response = await api.filterResources(hints.resourcePath, hints.filterActionPayload);
-					const options = response.map((resource) => ({
-						display_name: resource.display_name ?? resource.name,
-						value: resource.object_id,
-					}));
-					this.resourceOptionsCache[cacheKey] = options; // Cache the result
-					return options;
-				} catch (error) {
-					console.error('Error fetching resources:', error);
-					return [];
-				}
+			if (!plugin || !plugin.parameter_selection_hints || !plugin.parameter_selection_hints[paramName]) {
+				return [];
+			}
+
+			const hints = plugin.parameter_selection_hints[paramName];
+
+			try {
+				const response = await api.filterResources(hints.resourcePath, hints.filterActionPayload);
+				const options = response.map(resource => ({
+					display_name: resource.display_name ?? resource.name,
+					value: resource.object_id
+				}));
+
+				// Cache the response to prevent redundant API calls
+				this.resourceOptionsCache[cacheKey] = options;
+				return options;
+			} catch (error) {
+				console.error('Error fetching resources:', error);
+				return [];
 			}
 		},
 
