@@ -1048,29 +1048,10 @@ export default {
 				if (!hints) return [];
 				try {
 					const response = await api.filterResources(hints.resourcePath, hints.filterActionPayload);
-					let options;
-					if (hints.filterActionPayload === null) {
-						options = response.map((resource) => ({
-							display_name: resource.resource.display_name ?? resource.resource.name,
-							value: resource.resource.object_id,
-						}));
-					} else {
-						const filterActionPayload = Object.fromEntries(
-							Object.entries(hints.filterActionPayload).map(([key, value]) => [
-								key.toLowerCase(),
-								value,
-							]),
-						);
-						const filteredResponse = response.filter((resource: any) => {
-							return Object.keys(filterActionPayload).every((key) => {
-								return resource.resource[key] === filterActionPayload[key];
-							});
-						});
-						options = filteredResponse.map((resource) => ({
-							display_name: resource.resource.display_name ?? resource.resource.name,
-							value: resource.resource.object_id,
-						}));
-					}
+					const options = response.map((resource) => ({
+						display_name: resource.display_name ?? resource.name,
+						value: resource.object_id,
+					}));
 					this.resourceOptionsCache[cacheKey] = options; // Cache the result
 					return options;
 				} catch (error) {
