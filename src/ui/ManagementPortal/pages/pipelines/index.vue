@@ -39,7 +39,7 @@
 					<div role="alert" aria-live="polite">No vector stores found.</div>
 				</template>
 
-				<template #loading>Loading vector stores. Please wait.</template>
+				<template #loading>Loading pipelines. Please wait.</template>
 
 				<!-- Name -->
 				<Column
