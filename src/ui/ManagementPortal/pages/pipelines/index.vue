@@ -2,7 +2,7 @@
 	<main id="main-content">
 		<div style="display: flex">
 			<div style="flex: 1">
-				<h2 class="page-header">Pipelines</h2>
+				<h2 class="page-header">Data Pipelines</h2>
 				<div class="page-subheader">The following pipelines are available.</div>
 			</div>
 
@@ -70,7 +70,7 @@
 				></Column>
 
 				<!-- Trigger -->
-				<Column
+				<!-- <Column
 					field="resource.trigger_type"
 					header="Trigger"
 					sortable
@@ -80,7 +80,7 @@
 						},
 						sortIcon: { style: { color: 'var(--primary-text)' } },
 					}"
-				></Column>
+				></Column> -->
 
 				<!-- Active -->
 				<Column
@@ -96,7 +96,7 @@
 				></Column>
 
 				<!-- View -->
-				<Column
+				<!-- <Column
 					header-style="width:6rem"
 					style="text-align: center"
 					:pt="{
@@ -111,10 +111,31 @@
 							<Button link label="View" :aria-label="`View ${data.resource.name}`" />
 						</NuxtLink>
 					</template>
+				</Column> -->
+
+				<!-- Edit -->
+				<Column
+					header="Edit"
+					header-style="width:6rem"
+					style="text-align: center"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						headerContent: { style: { justifyContent: 'center' } },
+					}"
+				>
+					<template #body="{ data }">
+						<NuxtLink :to="'/pipelines/edit/' + data.resource.name" class="table__button">
+							<Button link>
+								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
+							</Button>
+						</NuxtLink>
+					</template>
 				</Column>
 
 				<!-- Run -->
-				<Column
+				<!-- <Column
 					header-style="width:6rem"
 					style="text-align: center"
 					:pt="{
@@ -128,11 +149,11 @@
 						<Button
 							link
 							label="Run"
-							:aria-label="`Delete ${data.resource.name}`"
-							@click="vectorStoreToDelete = data.resource"
+							:aria-label="`Run ${data.resource.name}`"
+							@click="dataPipelineToRun = data"
 						/>
 					</template>
-				</Column>
+				</Column> -->
 			</DataTable>
 		</div>
 
