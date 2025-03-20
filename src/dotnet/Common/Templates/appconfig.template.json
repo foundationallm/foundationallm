@@ -1259,6 +1259,34 @@
             "label": null,
             "content_type": "application/json",
             "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:ContextAPI",
+            "value": "${env:FOUNDATIONALLM_CONTEXT_API_EVENT_GRID_PROFILE}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:DataPipelineAPI",
+            "value": "${env:FOUNDATIONALLM_DATAPIPELINE_API_EVENT_GRID_PROFILE}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker",
+            "value": "${env:FOUNDATIONALLM_DATAPIPELINE_FRONTENDWORKER_EVENT_GRID_PROFILE}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:DataPipelineBackendWorker",
+            "value": "${env:FOUNDATIONALLM_DATAPIPELINE_BACKENDWORKER_EVENT_GRID_PROFILE}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
         }
     ]
 }

@@ -219,6 +219,26 @@ $services = @{
         miConfigName   = "vectorizationJobMiClientId"
         ingressEnabled = $false
     }
+    contextapi         = @{
+        miName         = "mi-context-api-$svcResourceSuffix"
+        miConfigName   = "contextApiMiClientId"
+        ingressEnabled = $false
+    }
+    datapipelineapi         = @{
+        miName         = "mi-datapipeline-api-$svcResourceSuffix"
+        miConfigName   = "dataPipelineApiMiClientId"
+        ingressEnabled = $false
+    }
+    datapipelinefrontendworker         = @{
+        miName         = "mi-datapipeline-frontendworker-$svcResourceSuffix"
+        miConfigName   = "dataPipelineFrontendWorkerMiClientId"
+        ingressEnabled = $false
+    }
+    datapipelinebackendworker         = @{
+        miName         = "mi-datapipeline-backendworker-$svcResourceSuffix"
+        miConfigName   = "dataPipelineBackendWorkerMiClientId"
+        ingressEnabled = $false
+    }
 }
 
 $tokens.deployTime = $((Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
@@ -497,6 +517,14 @@ $tokens.vectorizationApiMiClientId = $services["vectorizationapi"].miClientId
 $tokens.vectorizationApiMiObjectId = $services["vectorizationapi"].miObjectId
 $tokens.vectorizationJobMiClientId = $services["vectorizationjob"].miClientId
 $tokens.vectorizationJobMiObjectId = $services["vectorizationjob"].miObjectId
+$tokens.contextApiMiClientId = $services["contextapi"].miClientId
+$tokens.contextApiMiObjectId = $services["contextapi"].miObjectId
+$tokens.dataPipelineApiMiClientId = $services["datapipelineapi"].miClientId
+$tokens.dataPipelineApiMiObjectId = $services["datapipelineapi"].miObjectId
+$tokens.dataPipelineFrontendWorkerMiClientId = $services["datapipelinefrontendworker"].miClientId
+$tokens.dataPipelineFrontendWorkerMiObjectId = $services["datapipelinefrontendworker"].miObjectId
+$tokens.dataPipelineBackendWorkerMiClientId = $services["datapipelinebackendworker"].miClientId
+$tokens.dataPipelineBackendWorkerMiObjectId = $services["datapipelinebackendworker"].miObjectId
 
 $eventGridProfiles = @{}
 $eventGridProfileNames = @(
@@ -507,6 +535,10 @@ $eventGridProfileNames = @(
     "management-api-event-profile"
     "vectorization-api-event-profile"
     "vectorization-worker-event-profile"
+    "context-api-event-profile"
+    "datapipeline-api-event-profile"
+    "datapipeline-frontendworker-event-profile"
+    "datapipeline-backendworker-event-profile"
 )
 foreach ($profileName in $eventGridProfileNames) {
     Write-Host "Populating $profileName..." -ForegroundColor Blue
@@ -529,6 +561,10 @@ $tokens.managementApiEventGridProfile = $eventGridProfiles["management-api-event
 $tokens.orchestrationApiEventGridProfile = $eventGridProfiles["orchestration-api-event-profile"]
 $tokens.vectorizationApiEventGridProfile = $eventGridProfiles["vectorization-api-event-profile"]
 $tokens.vectorizationWorkerEventGridProfile = $eventGridProfiles["vectorization-worker-event-profile"]
+$tokens.contextApiEventGridProfile = $eventGridProfiles["context-api-event-profile"]
+$tokens.dataPipelineApiEventGridProfile = $eventGridProfiles["datapipeline-api-event-profile"]
+$tokens.dataPipelineFrontendWorkerEventGridProfile = $eventGridProfiles["datapipeline-frontendworker-event-profile"]
+$tokens.dataPipelineBackendWorkerEventGridProfile = $eventGridProfiles["datapipeline-backendworker-event-profile"]
 $tokens.authKeyvaultUri = $authKeyvault.uri
 $tokens.serviceNamespaceName = $serviceNamespaceName
 
@@ -597,6 +633,12 @@ PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,StateAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,StateAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,VectorizationAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,VectorizationAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,VectorizationWorker.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,VectorizationWorker.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,ContextAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,ContextAPI.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,DataPipelineAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,DataPipelineAPI.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,DataPipelineFrontendWorker.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,DataPipelineFrontendWorker.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,DataPipelineBackendWorker.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,DataPipelineBackendWorker.json"
+
+
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Prompt,FoundationaLLM.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Prompt,FoundationaLLM.json"
 PopulateTemplate $tokens "..,data,role-assignments,DefaultRoleAssignments.template.json" "..,data,role-assignments,$($instanceId).json"
 PopulateTemplate $tokens "..,data,policy-assignments,DefaultPolicyAssignments.template.json" "..,data,policy-assignments,$($instanceId)-policy.json"

@@ -1,31 +1,9 @@
 {
-    "EventProcessingCycleSeconds": 60,
-    "Topics": [
-        {
-            "Name": "storage",
-            "SubscriptionPrefix": "orch",
-            "EventTypeProfiles": [
-                {
-                    "EventType": "Microsoft.Storage.BlobCreated",
-                    "EventSets": [
-                        {
-                            "Namespace": "ResourceProvider.FoundationaLLM.Agent",
-                            "Source": "/subscriptions/{{subscriptionId}}/resourceGroups/{{storageResourceGroup}}/providers/Microsoft.Storage/storageAccounts/{{storageAccountAdlsName}}",
-                            "SubjectPrefix": "/blobServices/default/containers/resource-provider/blobs/FoundationaLLM.Agent"
-                        },
-                        {
-                            "Namespace": "ResourceProvider.FoundationaLLM.Vectorization",
-                            "Source": "/subscriptions/{{subscriptionId}}/resourceGroups/{{storageResourceGroup}}/providers/Microsoft.Storage/storageAccounts/{{storageAccountAdlsName}}",
-                            "SubjectPrefix": "/blobServices/default/containers/resource-provider/blobs/FoundationaLLM.Vectorization"
-                        },
-                        {
-                            "Namespace": "ResourceProvider.FoundationaLLM.Prompt",
-                            "Source": "/subscriptions/{{subscriptionId}}/resourceGroups/{{storageResourceGroup}}/providers/Microsoft.Storage/storageAccounts/{{storageAccountAdlsName}}",
-                            "SubjectPrefix": "/blobServices/default/containers/resource-provider/blobs/FoundationaLLM.Prompt"
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
+  "EventProcessingCycleSeconds": 5,
+  "Topics": [
+    {
+      "Name": "resource-providers",
+      "SubscriptionPrefix": "rp-orch"
+    }
+  ]
 }

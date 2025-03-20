@@ -361,6 +361,9 @@ module eventgrid './shared/eventgrid.bicep' = {
       {
         name: 'resource-providers'
       }
+      {
+        name: 'api-statistics'
+      }
     ]
   }
   scope: rg
@@ -657,7 +660,11 @@ var cosmosRoleTargets = [
   'gateway-api'
   'gatekeeper-api'
   'orchestration-api'
-  'management-api'
+  'management-api',
+  'context-api',
+  'datapipeline-api',
+  'datapipeline-backendworker',
+  'datapipeline-frontendworker'
 ]
 
 module cosmosRoles './shared/sqlRoleAssignments.bicep' = [
@@ -793,3 +800,17 @@ output SERVICE_VECTORIZATION_API_MI_OBJECT_ID string = acaServices[indexOf(servi
 output SERVICE_VECTORIZATION_JOB_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'vectorization-job')].outputs.uri
 output SERVICE_VECTORIZATION_JOB_NAME string = acaServices[indexOf(serviceNames, 'vectorization-job')].outputs.name
 output SERVICE_VECTORIZATION_JOB_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'vectorization-job')].outputs.miPrincipalId
+
+
+output SERVICE_CONTEXT_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'context-api')].outputs.uri
+output SERVICE_CONTEXT_API_NAME string = acaServices[indexOf(serviceNames, 'context-api')].outputs.name
+output SERVICE_CONTEXT_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'context-api')].outputs.miPrincipalId
+output SERVICE_DATAPIPELINE_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'datapipeline-api')].outputs.uri
+output SERVICE_DATAPIPELINE_API_NAME string = acaServices[indexOf(serviceNames, 'datapipeline-api')].outputs.name
+output SERVICE_DATAPIPELINE_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'datapipeline-api')].outputs.miPrincipalId
+output SERVICE_DATAPIPELINE_BACKENDWORKER_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'datapipeline-backendworker')].outputs.uri
+output SERVICE_DATAPIPELINE_BACKENDWORKER_NAME string = acaServices[indexOf(serviceNames, 'datapipeline-backendworker')].outputs.name
+output SERVICE_DATAPIPELINE_BACKENDWORKER_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'datapipeline-backendworker')].outputs.miPrincipalId
+output SERVICE_DATAPIPELINE_FRONTENDWORKER_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'datapipeline-frontendworker')].outputs.uri
+output SERVICE_DATAPIPELINE_FRONTENDWORKER_NAME string = acaServices[indexOf(serviceNames, 'datapipeline-frontendworker')].outputs.name
+output SERVICE_DATAPIPELINE_FRONTENDWORKER_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'datapipeline-frontendworker')].outputs.miPrincipalId

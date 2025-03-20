@@ -1,0 +1,13 @@
+{{- $name := include "datapipeline-api.fullname" . -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-{{ $name }}"
+  labels:
+    app: {{ template "datapipeline-api.name" . }}
+    chart: {{ template "datapipeline-api.chart" .}}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data: 
+  AZURE_CLIENT_ID: {{ .Values.azureWorkloadIdentity.dataPipelineApiClientId }}

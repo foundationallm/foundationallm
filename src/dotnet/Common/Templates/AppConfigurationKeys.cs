@@ -1582,6 +1582,34 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Events_Profiles_GatewayAPI =
             "FoundationaLLM:Events:Profiles:GatewayAPI";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Events:Profiles:ContextAPI setting.
+        /// <para>Value description:<br/>The settings used by the Context API to process Azure Event Grid events.</para>
+        /// </summary>
+        public const string FoundationaLLM_Events_Profiles_ContextAPI =
+            "FoundationaLLM:Events:Profiles:ContextAPI";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Events:Profiles:DataPipelineAPI setting.
+        /// <para>Value description:<br/>The settings used by the Data Pipeline API to process Azure Event Grid events.</para>
+        /// </summary>
+        public const string FoundationaLLM_Events_Profiles_DataPipelineAPI =
+            "FoundationaLLM:Events:Profiles:DataPipelineAPI";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker setting.
+        /// <para>Value description:<br/>The settings used by the Data Pipeline Frontend Worker to process Azure Event Grid events.</para>
+        /// </summary>
+        public const string FoundationaLLM_Events_Profiles_DataPipelineFrontendWorker =
+            "FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Events:Profiles:DataPipelineBackendWorker setting.
+        /// <para>Value description:<br/>The settings used by the Data Pipeline Backend Worker to process Azure Event Grid events.</para>
+        /// </summary>
+        public const string FoundationaLLM_Events_Profiles_DataPipelineBackendWorker =
+            "FoundationaLLM:Events:Profiles:DataPipelineBackendWorker";
 
         #endregion
 
@@ -1610,6 +1638,22 @@ namespace FoundationaLLM.Common.Constants.Configuration
         #endregion
 
         #region FoundationaLLM:Events:Profiles:GatewayAPI
+
+        #endregion
+
+        #region FoundationaLLM:Events:Profiles:ContextAPI
+
+        #endregion
+
+        #region FoundationaLLM:Events:Profiles:DataPipelineAPI
+
+        #endregion
+
+        #region FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker
+
+        #endregion
+
+        #region FoundationaLLM:Events:Profiles:DataPipelineBackendWorker
 
         #endregion
     }

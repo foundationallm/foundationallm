@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "datapipeline-backendworker.fullname" . }}
+  labels:
+    app: {{ template "datapipeline-backendworker.name" . }}
+    chart: {{ template "datapipeline-backendworker.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "datapipeline-backendworker.name" . }}
+    release: {{ .Release.Name }}

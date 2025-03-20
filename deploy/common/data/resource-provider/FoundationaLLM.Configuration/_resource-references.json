@@ -101,6 +101,30 @@
 			"Filename": "/FoundationaLLM.Configuration/AzureEventGrid.json",
 			"Type": "api-endpoint",
 			"Deleted": false
+		},
+		{
+			"Name": "ContextAPI",
+			"Filename": "/FoundationaLLM.Configuration/ContextAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "DataPipelineAPI",
+			"Filename": "/FoundationaLLM.Configuration/DataPipelineAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "DataPipelineBackgroundWorker",
+			"Filename": "/FoundationaLLM.Configuration/DataPipelineBackgroundWorker.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "DataPipelineFrontendWorker",
+			"Filename": "/FoundationaLLM.Configuration/DataPipelineFrontendWorker.json",
+			"Type": "api-endpoint",
+			"Deleted": false
 		}
 	]
 }

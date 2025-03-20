@@ -2131,6 +2131,39 @@
 				"value": "${env:FOUNDATIONALLM_GATEWAY_API_EVENT_GRID_PROFILE}",
 				"content_type": "application/json",
 				"first_version": "0.8.0"
+			},
+
+			{
+				"name": "ContextAPI",
+				"description": "The settings used by the Context API to process Azure Event Grid events.",
+				"secret": "",
+				"value": "${env:FOUNDATIONALLM_CONTEXT_API_EVENT_GRID_PROFILE}",
+				"content_type": "application/json",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "DataPipelineAPI",
+				"description": "The settings used by the Data Pipeline API to process Azure Event Grid events.",
+				"secret": "",
+				"value": "${env:FOUNDATIONALLM_DATAPIPELINE_API_EVENT_GRID_PROFILE}",
+				"content_type": "application/json",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "DataPipelineFrontendWorker",
+				"description": "The settings used by the Data Pipeline Frontend Worker to process Azure Event Grid events.",
+				"secret": "",
+				"value": "${env:FOUNDATIONALLM_DATAPIPELINE_FRONTENDWORKER_EVENT_GRID_PROFILE}",
+				"content_type": "application/json",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "DataPipelineBackendWorker",
+				"description": "The settings used by the Data Pipeline Backend Worker to process Azure Event Grid events.",
+				"secret": "",
+				"value": "${env:FOUNDATIONALLM_DATAPIPELINE_BACKENDWORKER_EVENT_GRID_PROFILE}",
+				"content_type": "application/json",
+				"first_version": "0.9.7"
 			}
 		]
 	},
@@ -2187,6 +2220,38 @@
 		"dependency_injection_key": null,
 		"configuration_section": {
 			"description": "Configuration section used to identify the settings for the events infrastructure used by the Gateway API."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Events:Profiles:ContextAPI",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the events infrastructure used by the Context API."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Events:Profiles:DataPipelineAPI",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the events infrastructure used by the Data Pipeline API."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Events:Profiles:DataPipelineFrontendWorker",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the events infrastructure used by the Data Pipeline Frontend Worker."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Events:Profiles:DataPipelineBackendWorker",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the events infrastructure used by the Data Pipeline Backend Worker."
 		},
 		"configuration_keys": []
 	}
