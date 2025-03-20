@@ -1125,7 +1125,7 @@
 					<div class="step-header mb-3">Additional workflow resources:</div>
 					<ToolResourceTable
 						:resources="workflowExtraResources"
-						@delete="handleDeleteWorkflowResource"
+						@delete="workflowResourceToDelete = $event"
 					/>
 					<CreateResourceObjectDialog
 						v-if="showCreateWorkflowResourceObjectDialog"
@@ -1133,6 +1133,15 @@
 						@update:visible="showCreateWorkflowResourceObjectDialog = false"
 						@update:model-value="handleAddWorkflowResource"
 					/>
+					<ConfirmationDialog
+						v-if="workflowResourceToDelete !== null"
+						header="Delete Workflow Resource"
+						confirmText="Delete"
+						@cancel="workflowResourceToDelete = null"
+						@confirm="handleDeleteWorkflowResource(workflowResourceToDelete)"
+					>
+						<div>Are you sure you want to delete the "{{ getResourceNameFromId(workflowResourceToDelete!.object_id) }}" workflow resource?</div>
+					</ConfirmationDialog>
 					<div class="d-flex justify-content-end mt-4">
 						<Button
 							severity="primary"
@@ -1238,10 +1247,7 @@
 								@cancel="toolToRemove = null"
 								@confirm="handleRemoveTool(toolToRemove)"
 							>
-								<div>
-									Are you sure you want to delete the "{{ toolToRemove!.name }}" tool from this
-									agent?
-								</div>
+								<div>Are you sure you want to delete the "{{ toolToRemove!.name }}" tool from this agent?</div>
 							</ConfirmationDialog>
 						</template>
 					</Column>
@@ -1456,6 +1462,7 @@ export default {
 			workflowHost: '' as string,
 			workflowExtraResources: {},
 			showCreateWorkflowResourceObjectDialog: false,
+			workflowResourceToDelete: null,
 
 			virtualSecurityGroupId: null as string | null,
 
@@ -1889,13 +1896,19 @@ export default {
 			);
 		},
 
+		getResourceNameFromId(resourceId: string): string {
+			const parts = resourceId.split('/').filter(Boolean);
+			return parts.slice(-1)[0];
+		},
+
 		handleAddWorkflowResource(resourceToAdd) {
 			this.workflowExtraResources[resourceToAdd.object_id] = resourceToAdd;
 			this.showCreateWorkflowResourceObjectDialog = false;
 		},
 
-		handleDeleteWorkflowResource(resourceToDelete) {
-			delete this.workflowExtraResources[resourceToDelete.object_id];
+		handleDeleteWorkflowResource() {
+			delete this.workflowExtraResources[this.workflowResourceToDelete.object_id];
+			this.workflowResourceToDelete = null;
 		},
 
 		handleAgentTypeSelect(type: Agent['type']) {
