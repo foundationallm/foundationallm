@@ -7,8 +7,8 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <AssemblyName>Core.Examples.LoadTests</AssemblyName>
-    <RootNamespace>Core.Examples.LoadTests</RootNamespace>
+    <AssemblyName>FoundationaLLM.Core.Examples.DistributedTests</AssemblyName>
+    <RootNamespace>FoundationaLLM.Core.Examples.DistributedTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +29,15 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="testsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

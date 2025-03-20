@@ -64,7 +64,7 @@ namespace FoundationaLLM.Core.Examples
         private readonly GenerateConversationsConfiguration _settings;
 
 		public Example0020_GenerateConversationsAboutProducts(ITestOutputHelper output, TestFixture fixture)
-			: base(output, fixture)
+			: base(1, output, fixture)
 		{
             _agentConversationTestService = GetService<IAgentConversationTestService>();
             _products = JsonSerializer.Deserialize<List<Product>>(

@@ -8,6 +8,6 @@
         /// <summary>
         /// Gets or sets the identifier for the container.
         /// </summary>
-        public int Id { get; set; }
+        public int Id { get; set; } = 1;
     }
 }

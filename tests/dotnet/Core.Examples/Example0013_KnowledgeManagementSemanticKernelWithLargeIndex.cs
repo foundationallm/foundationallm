@@ -18,7 +18,7 @@ namespace FoundationaLLM.Core.Examples
         private string indexingProfileName = "indexing_profile_dune";
 
         public Example0013_KnowledgeManagementSemanticKernelWithLargeIndex(ITestOutputHelper output, TestFixture fixture)
-            : base(output, fixture)
+            : base(1, output, fixture)
         {
             _agentConversationTestService = GetService<IAgentConversationTestService>();
             _vectorizationTestService = GetService<IVectorizationTestService>();

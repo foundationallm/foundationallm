@@ -125,7 +125,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureOpenAI", "dotnet\Azure
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{B9ABEB53-19C8-4224-8820-CF2D82DCC559}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Examples.LoadTests", "..\tests\dotnet\Core.Examples.LoadTests\Core.Examples.LoadTests.csproj", "{ABA2F0F5-6372-4D7A-9B97-E1089C988B59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Examples.DistributedTests", "..\tests\dotnet\Core.Examples.DistributedTests\Core.Examples.DistributedTests.csproj", "{ABA2F0F5-6372-4D7A-9B97-E1089C988B59}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conversation", "dotnet\Conversation\Conversation.csproj", "{EE94F312-488C-448B-92C9-20C4C1816F16}"
 EndProject

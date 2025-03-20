@@ -36,7 +36,7 @@ namespace FoundationaLLM.Core.Examples
         private string id = String.Empty;
         
         public Example0006_SynchronousVectorizationOfPDFFromOneLake(ITestOutputHelper output, TestFixture fixture)
-            : base(output, fixture)
+            : base(1, output, fixture)
         {
             _vectorizationTestService = GetService<IVectorizationTestService>();
             _instanceSettings = _vectorizationTestService.InstanceSettings;

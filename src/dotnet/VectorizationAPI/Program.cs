@@ -81,7 +81,7 @@ builder.AddOpenTelemetry(
 builder.AddCorsPolicies();
 
 // Add configurations to the container
-builder.Services.AddInstanceProperties(builder.Configuration);
+builder.AddInstanceProperties();
 
 // Add Azure ARM services
 builder.AddAzureResourceManager();
