@@ -1208,6 +1208,7 @@
 							<ConfirmationDialog
 								v-if="toolToRemove !== null"
 								header="Delete Tool"
+								confirmText="Delete Tool"
 								@cancel="toolToRemove = null"
 								@confirm="handleRemoveTool(toolToRemove)"
 							>
