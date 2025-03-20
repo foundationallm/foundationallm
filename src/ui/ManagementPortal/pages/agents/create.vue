@@ -1201,9 +1201,19 @@
 						}"
 					>
 						<template #body="{ data }">
-							<Button link @click="handleRemoveTool(data)">
+							<Button link @click="toolToRemove = data">
 								<i class="pi pi-trash" style="font-size: 1.2rem"></i>
 							</Button>
+
+							<ConfirmationDialog
+								v-if="toolToRemove !== null"
+								header="Delete Tool"
+								confirmText="Delete Tool"
+								@cancel="toolToRemove = null"
+								@confirm="handleRemoveTool(toolToRemove)"
+							>
+								<div>Are you sure you want to delete the "{{ toolToRemove!.name }}" tool from this agent?</div>
+							</ConfirmationDialog>
 						</template>
 					</Column>
 				</DataTable>
@@ -1353,6 +1363,7 @@ const getDefaultFormValues = () => {
 		selectedWorkflow: null,
 
 		toolToEdit: null,
+		toolToRemove: null,
 		agentTools: [] as AgentTool[],
 
 		showMessageTokens: true as boolean,
@@ -1891,6 +1902,7 @@ export default {
 		handleRemoveTool(toolToRemove) {
 			const index = this.agentTools.findIndex((tool) => tool.name === toolToRemove.name);
 			this.agentTools.splice(index, 1);
+			this.toolToRemove = null;
 		},
 
 		async handleCreateAgent() {
