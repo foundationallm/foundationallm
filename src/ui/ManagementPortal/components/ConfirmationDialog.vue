@@ -1,11 +1,5 @@
 <template>
-	<Dialog
-		modal
-		:visible="true"
-		:header="header"
-		:style="{ minWidth: '50%' }"
-		:closable="false"
-	>
+	<Dialog modal :visible="true" :header="header" :style="{ minWidth: '50%' }" :closable="false">
 		<!-- Body slot -->
 		<slot />
 
@@ -25,7 +19,7 @@ export default {
 		header: {
 			type: String,
 			required: false,
-			default: 'Confirm?'
+			default: 'Confirm?',
 		},
 
 		confirmText: {

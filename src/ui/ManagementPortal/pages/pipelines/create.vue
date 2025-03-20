@@ -568,18 +568,20 @@ export default {
 					}));
 
 					// Avoid multiple API requests
-					const paramsToFetch = newVal.parameter_selection_hints ? Object.keys(newVal.parameter_selection_hints) : [];
+					const paramsToFetch = newVal.parameter_selection_hints
+						? Object.keys(newVal.parameter_selection_hints)
+						: [];
 
 					// Use Promise.all to fetch all options in parallel
 					const resourceOptions = await Promise.all(
-						paramsToFetch.map(key =>
-							this.getResourceOptions(key, newVal.object_id).then(options => ({ key, options }))
-						)
+						paramsToFetch.map((key) =>
+							this.getResourceOptions(key, newVal.object_id).then((options) => ({ key, options })),
+						),
 					);
 
 					// Assign options efficiently
 					resourceOptions.forEach(({ key, options }) => {
-						const param = this.selectedDataSourcePlugin.parameters.find(p => p.name === key);
+						const param = this.selectedDataSourcePlugin.parameters.find((p) => p.name === key);
 						if (param) {
 							param.parameter_selection_hints_options = options;
 						}
@@ -587,7 +589,7 @@ export default {
 				}
 				this.buildTriggerParameters();
 			},
-			deep: true
+			deep: true,
 		},
 		selectedStagePlugins: {
 			handler(newVal) {
@@ -1039,11 +1041,16 @@ export default {
 				return this.resourceOptionsCache[cacheKey];
 			}
 
-			const plugin = this.stagePluginsOptions.find(p => p.object_id === pluginObjectId) ||
-				this.resolvedDependencies.find(dep => dep.object_id === pluginObjectId) ||
-				this.dataSourcePluginOptions.find(p => p.object_id === pluginObjectId);
+			const plugin =
+				this.stagePluginsOptions.find((p) => p.object_id === pluginObjectId) ||
+				this.resolvedDependencies.find((dep) => dep.object_id === pluginObjectId) ||
+				this.dataSourcePluginOptions.find((p) => p.object_id === pluginObjectId);
 
-			if (!plugin || !plugin.parameter_selection_hints || !plugin.parameter_selection_hints[paramName]) {
+			if (
+				!plugin ||
+				!plugin.parameter_selection_hints ||
+				!plugin.parameter_selection_hints[paramName]
+			) {
 				return [];
 			}
 
@@ -1051,9 +1058,9 @@ export default {
 
 			try {
 				const response = await api.filterResources(hints.resourcePath, hints.filterActionPayload);
-				const options = response.map(resource => ({
+				const options = response.map((resource) => ({
 					display_name: resource.display_name ?? resource.name,
-					value: resource.object_id
+					value: resource.object_id,
 				}));
 
 				// Cache the response to prevent redundant API calls
