@@ -1235,6 +1235,106 @@
 		]
 	},
 	{
+		"namespace": "APIEndpoints:DataPipelineAPI:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Data Pipeline API."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Data Pipeline API.",
+				"secret": "apiendpoints-datapipelineapi-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Data Pipeline API.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.9.7"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:DataPipelineFrontendWorker:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Data Pipeline Frontend Worker service."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Data Pipeline Frontend Worker service.",
+				"secret": "apiendpoints-datapipelinefrontendworker-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Data Pipeline Frontend Worker service.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.9.7"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:DataPipelineBackendWorker:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Data Pipeline Backend Worker service."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Data Pipeline Backend Worker service.",
+				"secret": "apiendpoints-datapipelinebackendworker-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Data Pipeline Backend Worker service.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.9.7"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:ContextAPI:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Context API."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Context API.",
+				"secret": "apiendpoints-contextapi-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Context API.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.9.7"
+			}
+		]
+	},
+	{
 		"namespace": "APIEndpoints:GatewayAPI:Essentials",
 		"dependency_injection_key": null,
 		"configuration_section": {

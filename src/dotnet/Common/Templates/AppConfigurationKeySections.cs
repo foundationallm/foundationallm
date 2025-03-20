@@ -43,7 +43,7 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:ResourceProvidersCache";
         
         /// <summary>
-        /// Configuration section used to identify the storage settings for FoundationaLLM quota management.
+        /// Configuration section used to identify the storage settings for the FoundationaLLM quota management service.
         /// </summary>
         public const string FoundationaLLM_Quota_Storage =
             "FoundationaLLM:Quota:Storage";
@@ -239,6 +239,30 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_VectorizationWorker_Essentials =
             "FoundationaLLM:APIEndpoints:VectorizationWorker:Essentials";
+        
+        /// <summary>
+        /// Configuration section used to identify the essential settings for the Data Pipeline API.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Essentials =
+            "FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials";
+        
+        /// <summary>
+        /// Configuration section used to identify the essential settings for the Data Pipeline Frontend Worker service.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Essentials =
+            "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials";
+        
+        /// <summary>
+        /// Configuration section used to identify the essential settings for the Data Pipeline Backend Worker service.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Essentials =
+            "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials";
+        
+        /// <summary>
+        /// Configuration section used to identify the essential settings for the Context API.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Essentials =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Essentials";
         
         /// <summary>
         /// Configuration section used to identify the essential settings for the Gateway API.
