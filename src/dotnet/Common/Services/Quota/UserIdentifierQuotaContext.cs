@@ -15,40 +15,10 @@ namespace FoundationaLLM.Common.Services.Quota
         QuotaDefinition quota,
         ILogger logger) : QuotaContextBase(quotaServiceIdentifier, quota, logger)
     {
-        private readonly Dictionary<string, QuotaMetricPartition> _metricPartitions = [];
-
         /// <inheritdoc/>
         protected override QuotaMetricPartition GetQuotaMetricPartition(
             string userIdentifier,
-            string userPrincipalName)
-        {
-            if (!_metricPartitions.ContainsKey(userIdentifier))
-            {
-                lock (_syncRoot)
-                {
-                    // Ensure that the key is still not present after acquiring the lock.
-                    if (!_metricPartitions.ContainsKey(userIdentifier))
-                    {
-                        _metricPartitions[userIdentifier] = new(
-                            _quotaServiceIdentifier,
-                            _quota.Name,
-                            _quota.Context,
-                            userIdentifier,
-                            Quota.MetricLimit,
-                            Quota.MetricWindowSeconds,
-                            Quota.LockoutDurationSeconds,
-                            _logger);
-                    }
-                }
-            }
-
-            return _metricPartitions[userIdentifier];
-        }
-
-        /// <inheritdoc/>
-        protected override QuotaMetricPartition GetQuotaMetricPartition(
-            string partitionId) =>
-            _metricPartitions.GetValueOrDefault(partitionId)
-                ?? throw new QuotaException($"The partition id {partitionId} is not valid in the quota context {Quota.Context}.");
+            string userPrincipalName) =>
+            EnsureQuotaMetricPartition(userIdentifier);
     }
 }

@@ -38,7 +38,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Quota
             // Simulates {userCount} users simultaneously sending each a set of
             // {callCount} requests to the {controllerName} controller of the {apiName} API,
             // at intervals of {callDelayMilliseconds} milliseconds.
-            var userWorkloads = Enumerable.Range(1, _serviceContainerCount)
+            var userWorkloads = Enumerable.Range(0, _serviceContainerCount)
                 .Select(scIndex => Enumerable.Range(1, userCount)
                     .Select(userIndex => Task.Run(() => RunUserWorkload(
                         ServiceContainers[scIndex].ServiceProvider.GetRequiredService<IQuotaService>(),

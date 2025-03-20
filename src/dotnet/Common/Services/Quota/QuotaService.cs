@@ -319,7 +319,8 @@ namespace FoundationaLLM.Common.Services.Quota
                                 new CloudEvent(
                                     string.Empty,
                                     EventTypes.FoundationaLLM_Quota_MetricUpdate,
-                                    data)
+                                    data,
+                                    typeof(DistributedQuotaEnforcementEventData))
                                 {
                                     Subject = QUOTA_SERVICE_NAME
                                 });
@@ -419,6 +420,10 @@ namespace FoundationaLLM.Common.Services.Quota
                         context,
                         evaluationResult.QuotaMetricPartitionId);
             }
+            else
+                _logger.LogWarning("[QuotaService {ServiceIdentifier}] The quota context {QuotaContext} does not exist in the quota service.",
+                    _serviceIdentifier,
+                    context);
 
             return evaluationResult;
         }
@@ -431,9 +436,10 @@ namespace FoundationaLLM.Common.Services.Quota
                 _logger.LogDebug(string.Join(
                     Environment.NewLine,
                     [
-                        "[QuotaService {ServiceIdentifier}] Quota context: {QuotaContext}, Metric partition id: {MetricPartitionId}",
-                        "Timestamps: {Timestamps}",
-                        "----------------------------------------"
+                        "----------------------------------------",
+                        "[QuotaService {ServiceIdentifier}] Updating a quota context with remote data.",
+                        "Quota context: {QuotaContext}, Metric partition id: {MetricPartitionId}",
+                        "Timestamps: {Timestamps}"
                     ]),
                     _serviceIdentifier,
                     data.QuotaContext,

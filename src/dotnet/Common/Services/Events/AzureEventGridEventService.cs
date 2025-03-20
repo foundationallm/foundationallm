@@ -12,6 +12,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Environment;
 using FoundationaLLM.Common.Models.Configuration.Events;
 using FoundationaLLM.Common.Models.Events;
+using Microsoft.Azure.Cosmos.Core.Collections;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -145,6 +146,8 @@ namespace FoundationaLLM.Common.Services.Events
                     return;
                 }
 
+                bool hasEvents = false;
+
                 foreach (var topic in _profile.Topics)
                 {
                     if (cancellationToken.IsCancellationRequested) break;
@@ -160,15 +163,19 @@ namespace FoundationaLLM.Common.Services.Events
                     try
                     {
                         var receiveResult = await receiverClient.ReceiveAsync(
-                            maxEvents: 10,
+                            maxEvents: 100,
                             maxWaitTime: TimeSpan.FromSeconds(10),
                             cancellationToken: cancellationToken);
 
                         if (receiveResult?.Value?.Details != null
                             && receiveResult.Value.Details.Count > 0)
+                        {
+                            hasEvents = true;
+
                             await ProcessTopicSubscriptionEvents(
                                 receiverClient,
                                 receiveResult.Value.Details);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -177,7 +184,10 @@ namespace FoundationaLLM.Common.Services.Events
                     }
                 }
 
-                await Task.Delay(_eventProcessingCycle, cancellationToken);
+                // If events were received by any of the topics, we don't need to wait.
+                // Most likely there are more to process.
+                if (!hasEvents)
+                    await Task.Delay(_eventProcessingCycle, cancellationToken);
             }
         }
 

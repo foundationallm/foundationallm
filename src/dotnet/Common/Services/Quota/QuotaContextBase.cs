@@ -15,6 +15,9 @@ namespace FoundationaLLM.Common.Services.Quota
         QuotaDefinition quota,
         ILogger logger)
     {
+        /// <summary>
+        /// The identifier of the QuotaService instance managing this quota context.
+        /// </summary>
         protected readonly string _quotaServiceIdentifier = quotaServiceIdentifier;
 
         /// <summary>
@@ -31,6 +34,14 @@ namespace FoundationaLLM.Common.Services.Quota
         /// The <see cref="QuotaDefinition"/> providing the quota configuration.
         /// </summary>
         protected readonly QuotaDefinition _quota = quota;
+
+        /// <summary>
+        /// The dictionary of <see cref="QuotaMetricPartition"/> instances that correspond to the partition identifiers.
+        /// </summary>
+        /// <remarks>
+        /// Each derived class must implement the specific methods to get the quota metric partition that corresponds to the partition identifier.
+        /// </remarks>
+        protected readonly Dictionary<string, QuotaMetricPartition> _metricPartitions = [];
 
         /// <summary>
         /// Gets or sets the context.
@@ -52,8 +63,39 @@ namespace FoundationaLLM.Common.Services.Quota
         /// </summary>
         /// <param name="partitionId">The quota metric partition id.</param>
         /// <returns>A <see cref="QuotaMetricPartition"/> instance.</returns>
-        protected abstract QuotaMetricPartition GetQuotaMetricPartition(
-            string partitionId);
+        protected virtual QuotaMetricPartition GetQuotaMetricPartition(
+            string partitionId) =>
+            EnsureQuotaMetricPartition(partitionId);
+
+        /// <summary>
+        /// Ensures that the quota metric partition corresponding to the specified partition identifier exists.
+        /// </summary>
+        /// <param name="partitionId">The quota metric partition identifier.</param>
+        /// <returns></returns>
+        protected QuotaMetricPartition EnsureQuotaMetricPartition(string partitionId)
+        {
+            if (!_metricPartitions.ContainsKey(partitionId))
+            {
+                lock (_syncRoot)
+                {
+                    // Ensure that the key is still not present after acquiring the lock.
+                    if (!_metricPartitions.ContainsKey(partitionId))
+                    {
+                        _metricPartitions[partitionId] = new(
+                            _quotaServiceIdentifier,
+                            _quota.Name,
+                            _quota.Context,
+                            partitionId,
+                            _quota.MetricLimit,
+                            _quota.MetricWindowSeconds,
+                            _quota.LockoutDurationSeconds,
+                            _logger);
+                    }
+                }
+            }
+
+            return _metricPartitions[partitionId];
+        }
 
         /// <summary>
         /// Adds a new local unit of the quota metric to the quota context and checks if the quota is exceeded or not.
@@ -73,11 +115,11 @@ namespace FoundationaLLM.Common.Services.Quota
 
             _logger.LogDebug(string.Join(Environment.NewLine,
                 [
+                    "----------------------------------------",
                     "[QuotaService {ServiceIdentifier}] Local metric unit added to quota context.",
                     "Quota context: {QuotaContext}, Reference time: {ReferenceTime}",
                     "Metric count: {MetricCount}, Quota exceeded: {QuotaExceeded}, Remaining lockout: {RemainingLockout} seconds.",
-                    "Time elapsed: {TimeElapsedMilliseconds} ms",
-                    "----------------------------------------"
+                    "Time elapsed: {TimeElapsedMilliseconds} milliseconds."
                 ]),
                 _quotaServiceIdentifier,
                 $"{Quota.Context}, {userIdentifier}, {userPrincipalName}",
@@ -106,11 +148,11 @@ namespace FoundationaLLM.Common.Services.Quota
             if (metricPartitionState != null)
                 _logger.LogDebug(string.Join(Environment.NewLine,
                     [
+                        "----------------------------------------",
                         "[QuotaService {ServiceIdentifier}] Remote metric units added to quota context.",
                         "Quota context: {QuotaContext}, Reference times: {ReferenceTimes}",
                         "Metric count: {MetricCount}, Quota exceeded: {QuotaExceeded}",
-                        "Time elapsed: {TimeElapsedMilliseconds} ms",
-                        "----------------------------------------"
+                        "Time elapsed: {TimeElapsedMilliseconds} milliseconds."
                     ]),
                     _quotaServiceIdentifier,
                     Quota.Context,
