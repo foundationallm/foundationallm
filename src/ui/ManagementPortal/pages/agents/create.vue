@@ -1123,7 +1123,7 @@
 				<!-- Workflow additional resources -->
 				<div class="mb-6">
 					<div class="step-header mb-3">Additional workflow resources:</div>
-					<ToolResourceTable
+					<ResourceTable
 						:resources="workflowExtraResources"
 						@delete="workflowResourceToDelete = $event"
 					/>
@@ -1913,7 +1913,7 @@ export default {
 			this.showCreateWorkflowResourceObjectDialog = false;
 		},
 
-		handleDeleteWorkflowResource(workflowResourceToDelete = this.workflowResourceToDelete) {
+		handleDeleteWorkflowResource() {
 			delete this.workflowExtraResources[this.workflowResourceToDelete.object_id];
 			this.workflowResourceToDelete = null;
 		},
@@ -1970,8 +1970,8 @@ export default {
 			this.toolToEdit = null;
 		},
 
-		handleRemoveTool(toolToRemove = this.toolToRemove) {
-			const index = this.agentTools.findIndex((tool) => tool.name === toolToRemove.name);
+		handleRemoveTool() {
+			const index = this.agentTools.findIndex((tool) => tool.name === this.toolToRemove.name);
 			this.agentTools.splice(index, 1);
 			this.toolToRemove = null;
 		},

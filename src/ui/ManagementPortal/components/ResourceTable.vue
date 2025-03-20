@@ -8,7 +8,7 @@
 		table-style="max-width: 100%"
 		size="small"
 	>
-		<template #empty>No tool resources added.</template>
+		<template #empty>No resources added.</template>
 
 		<Column
 			expander
@@ -22,7 +22,7 @@
 			}"
 		/>
 
-		<!-- Tool resource name -->
+		<!-- Resource name -->
 		<Column
 			field="name"
 			header="Name"
@@ -39,7 +39,7 @@
 			</template>
 		</Column>
 
-		<!-- Tool resource type -->
+		<!-- Resource type -->
 		<Column
 			field="type"
 			header="Type"
@@ -56,7 +56,7 @@
 			</template>
 		</Column>
 
-		<!-- Edit tool resource -->
+		<!-- Edit resource -->
 		<!-- <Column
 			header="Edit"
 			header-style="width:6rem"
@@ -69,21 +69,21 @@
 			}"
 		>
 			<template #body="{ data }">
-				<Button link @click="toolResourceToEdit = data.value">
+				<Button link @click="resourceToEdit = data.value">
 					<i class="pi pi-cog" style="font-size: 1.2rem"></i>
 				</Button>
 
 				<CreateResourceObjectDialog
-					v-if="toolResourceToEdit?.object_id === data.value.object_id"
-					:model-value="toolResourceToEdit"
-					:visible="toolResourceToEdit?.object_id === data.value.object_id"
-					@update:visible="toolResourceToEdit = null"
+					v-if="resourceToEdit?.object_id === data.value.object_id"
+					:model-value="resourceToEdit"
+					:visible="resourceToEdit?.object_id === data.value.object_id"
+					@update:visible="resourceToEdit = null"
 					@update:model-value="handleEditResourceObject(data.value)"
 				/>
 			</template>
 		</Column> -->
 
-		<!-- Delete tool resource -->
+		<!-- Delete resource -->
 		<Column
 			header="Delete"
 			header-style="width:6rem"
