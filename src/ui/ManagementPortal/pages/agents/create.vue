@@ -1140,7 +1140,11 @@
 						@cancel="workflowResourceToDelete = null"
 						@confirm="handleDeleteWorkflowResource(workflowResourceToDelete)"
 					>
-						<div>Are you sure you want to delete the "{{ getResourceNameFromId(workflowResourceToDelete!.object_id) }}" workflow resource?</div>
+						<div>
+							Are you sure you want to delete the "{{
+								getResourceNameFromId(workflowResourceToDelete!.object_id)
+							}}" workflow resource?
+						</div>
 					</ConfirmationDialog>
 					<div class="d-flex justify-content-end mt-4">
 						<Button
@@ -1247,7 +1251,10 @@
 								@cancel="toolToRemove = null"
 								@confirm="handleRemoveTool(toolToRemove)"
 							>
-								<div>Are you sure you want to delete the "{{ toolToRemove!.name }}" tool from this agent?</div>
+								<div>
+									Are you sure you want to delete the "{{ toolToRemove!.name }}" tool from this
+									agent?
+								</div>
 							</ConfirmationDialog>
 						</template>
 					</Column>
