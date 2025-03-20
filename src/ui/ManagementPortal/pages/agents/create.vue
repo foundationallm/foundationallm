@@ -1099,21 +1099,47 @@
 				</div>
 
 				<!-- Workflow main model parameters -->
-				<div class="step-header mb-3">Workflow main model parameters:</div>
-				<PropertyBuilder v-model="workflowMainAIModelParameters" class="mb-6" />
+				<div class="mb-6">
+					<div class="step-header mb-3">Workflow main model parameters:</div>
+					<PropertyBuilder v-model="workflowMainAIModelParameters" />
+				</div>
 
 				<!-- Workflow main prompt -->
-				<div id="aria-persona" class="step-header mb-3">What is the main workflow prompt?</div>
-				<div class="span-2">
-					<Textarea
-						v-model="systemPrompt"
-						class="w-100"
-						auto-resize
-						rows="5"
-						type="text"
-						placeholder="You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional."
-						aria-labelledby="aria-persona"
+				<div class="mb-6">
+					<div id="aria-persona" class="step-header mb-3">What is the main workflow prompt?</div>
+					<div class="span-2">
+						<Textarea
+							v-model="systemPrompt"
+							class="w-100"
+							auto-resize
+							rows="5"
+							type="text"
+							placeholder="You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional."
+							aria-labelledby="aria-persona"
+						/>
+					</div>
+				</div>
+
+				<!-- Workflow additional resources -->
+				<div class="mb-6">
+					<div class="step-header mb-3">Additional workflow resources:</div>
+					<ToolResourceTable
+						:resources="workflowExtraResources"
+						@delete="handleDeleteWorkflowResource"
 					/>
+					<CreateResourceObjectDialog
+						v-if="showCreateWorkflowResourceObjectDialog"
+						:visible="showCreateWorkflowResourceObjectDialog"
+						@update:visible="showCreateWorkflowResourceObjectDialog = false"
+						@update:model-value="handleAddWorkflowResource"
+					/>
+					<div class="d-flex justify-content-end mt-4">
+						<Button
+							severity="primary"
+							label="Add Workflow Resource"
+							@click="showCreateWorkflowResourceObjectDialog = true"
+						/>
+					</div>
 				</div>
 			</div>
 
@@ -1425,6 +1451,8 @@ export default {
 			workflowName: '' as string,
 			workflowPackageName: 'FoundationaLLM' as string,
 			workflowHost: '' as string,
+			workflowExtraResources: {},
+			showCreateWorkflowResourceObjectDialog: false,
 
 			virtualSecurityGroupId: null as string | null,
 
@@ -1667,6 +1695,17 @@ export default {
 					(resource) => resource.properties?.object_role === 'main_model',
 				);
 				this.workflowMainAIModel = existingMainModel ?? null;
+				this.workflowExtraResources = Object.fromEntries(
+					Object.entries(agent.workflow.resource_object_ids).filter(([key, resource]) => {
+						const objectRole = resource.properties?.object_role;
+						const workflowPrefix = `/instances/${this.$appConfigStore.instanceId}/providers/FoundationaLLM.Agent/workflows`;
+						return (
+							objectRole !== 'main_model' &&
+							objectRole !== 'main_prompt' &&
+							!key.startsWith(workflowPrefix)
+						);
+					})
+				);
 			}
 
 			this.loadingStatusText = `Mapping agent values to form...`;
@@ -1845,6 +1884,15 @@ export default {
 			this.selectedWorkflow = clone(
 				this.workflowOptions.find((workflow) => workflow.type === event.value),
 			);
+		},
+
+		handleAddWorkflowResource(resourceToAdd) {
+			this.workflowExtraResources[resourceToAdd.object_id] = resourceToAdd;
+			this.showCreateWorkflowResourceObjectDialog = false;
+		},
+
+		handleDeleteWorkflowResource(resourceToDelete) {
+			delete this.workflowExtraResources[resourceToDelete.object_id];
 		},
 
 		handleAgentTypeSelect(type: Agent['type']) {
@@ -2114,6 +2162,8 @@ export default {
 										},
 									}
 								: {}),
+							
+							...this.workflowExtraResources,
 						},
 					};
 				}
