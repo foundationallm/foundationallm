@@ -1138,7 +1138,7 @@
 						header="Delete Workflow Resource"
 						confirmText="Delete"
 						@cancel="workflowResourceToDelete = null"
-						@confirm="handleDeleteWorkflowResource(workflowResourceToDelete)"
+						@confirm="handleDeleteWorkflowResource"
 					>
 						<div>
 							Are you sure you want to delete the "{{
@@ -1249,7 +1249,7 @@
 								header="Delete Tool"
 								confirmText="Delete Tool"
 								@cancel="toolToRemove = null"
-								@confirm="handleRemoveTool(toolToRemove)"
+								@confirm="handleRemoveTool"
 							>
 								<div>
 									Are you sure you want to delete the "{{ toolToRemove!.name }}" tool from this
@@ -1913,7 +1913,7 @@ export default {
 			this.showCreateWorkflowResourceObjectDialog = false;
 		},
 
-		handleDeleteWorkflowResource() {
+		handleDeleteWorkflowResource(workflowResourceToDelete = this.workflowResourceToDelete) {
 			delete this.workflowExtraResources[this.workflowResourceToDelete.object_id];
 			this.workflowResourceToDelete = null;
 		},
@@ -1970,7 +1970,7 @@ export default {
 			this.toolToEdit = null;
 		},
 
-		handleRemoveTool(toolToRemove) {
+		handleRemoveTool(toolToRemove = this.toolToRemove) {
 			const index = this.agentTools.findIndex((tool) => tool.name === toolToRemove.name);
 			this.agentTools.splice(index, 1);
 			this.toolToRemove = null;
