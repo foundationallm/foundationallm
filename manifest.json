@@ -10120,6 +10120,104 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.API.Controllers.DataPipelinesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.API.Controllers.DataPipelinesController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipeline.API.Controllers.DataPipelinesController",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipeline.API.Controllers.DataPipelinesController.yml\" sourcestartlinenumber=\"1\">Provides the routes for the Data Pipelines API data pipelines controller.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.API.Controllers.StatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.API.Controllers.StatusController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipeline.API.Controllers.StatusController",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipeline.API.Controllers.StatusController.yml\" sourcestartlinenumber=\"1\">Provides methods for checking the status of the service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.API.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.API.Controllers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipeline.API.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.BackendWorker.Controllers.StatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.BackendWorker.Controllers.StatusController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipeline.BackendWorker.Controllers.StatusController",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipeline.BackendWorker.Controllers.StatusController.yml\" sourcestartlinenumber=\"1\">Provides methods for checking the status of the service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.BackendWorker.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.BackendWorker.Controllers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipeline.BackendWorker.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.FrontendWorker.Controllers.StatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.FrontendWorker.Controllers.StatusController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipeline.FrontendWorker.Controllers.StatusController",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipeline.FrontendWorker.Controllers.StatusController.yml\" sourcestartlinenumber=\"1\">Provides methods for checking the status of the service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.FrontendWorker.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.FrontendWorker.Controllers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipeline.FrontendWorker.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.Models.DataPipelineReference.yml",
       "output": {
         ".html": {
