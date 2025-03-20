@@ -1,4 +1,9 @@
 {
-    "EventProcessingCycleSeconds": 60,
-    "Topics": []
+  "EventProcessingCycleSeconds": 5,
+  "Topics": [
+    {
+      "Name": "resource-providers",
+      "SubscriptionPrefix": "rp-mgmt"
+    }
+  ]
 }

@@ -121,6 +121,54 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "foundationallm-appinsights-connectionstring";
 
         /// <summary>
+        /// The name of the Azure Key Vault secret holding the API key for the Data Pipeline API.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Essentials_APIKey =
+            "foundationallm-apiendpoints-datapipelineapi-apikey";
+
+        /// <summary>
+        /// The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Data Pipeline API.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Essentials_AppInsightsConnectionString =
+            "foundationallm-appinsights-connectionstring";
+
+        /// <summary>
+        /// The name of the Azure Key Vault secret holding the API key for the Data Pipeline Frontend Worker service.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Essentials_APIKey =
+            "foundationallm-apiendpoints-datapipelinefrontendworker-apikey";
+
+        /// <summary>
+        /// The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Data Pipeline Frontend Worker service.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Essentials_AppInsightsConnectionString =
+            "foundationallm-appinsights-connectionstring";
+
+        /// <summary>
+        /// The name of the Azure Key Vault secret holding the API key for the Data Pipeline Backend Worker service.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Essentials_APIKey =
+            "foundationallm-apiendpoints-datapipelinebackendworker-apikey";
+
+        /// <summary>
+        /// The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Data Pipeline Backend Worker service.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Essentials_AppInsightsConnectionString =
+            "foundationallm-appinsights-connectionstring";
+
+        /// <summary>
+        /// The name of the Azure Key Vault secret holding the API key for the Context API.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Essentials_APIKey =
+            "foundationallm-apiendpoints-contextapi-apikey";
+
+        /// <summary>
+        /// The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Context API.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Essentials_AppInsightsConnectionString =
+            "foundationallm-appinsights-connectionstring";
+
+        /// <summary>
         /// The name of the Azure Key Vault secret holding the API key for the Gateway API.
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_GatewayAPI_Essentials_APIKey =

@@ -73,5 +73,21 @@
         /// The name of the State API service.
         /// </summary>
         public const string StateAPI = "StateAPI";
+        /// <summary>
+        /// The name of the Data Pipeline API service.
+        /// </summary>
+        public const string DataPipelineAPI = "DataPipelineAPI";
+        /// <summary>
+        /// The name of the Data Pipeline Frontend Worker service.
+        /// </summary>
+        public const string DataPipelineFrontendWorker = "DataPipelineFrontendWorker";
+        /// <summary>
+        /// The name of the Data Pipeline Backend Worker service.
+        /// </summary>
+        public const string DataPipelineBackendWorker = "DataPipelineBackendWorker";
+        /// <summary>
+        /// The name of the Context API service.
+        /// </summary>
+        public const string ContextAPI = "ContextAPI";
     }
 }

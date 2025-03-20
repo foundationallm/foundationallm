@@ -15,6 +15,10 @@ $services = @{
     "foundationallm-prompt-hub-api" = 5008
     "foundationallm-semantic-kernel-api" = 5009
     "foundationallm-vectorization-api" = 5010
+    "foundationallm-context-api" = 5011
+    "foundationallm-datapipeline-api" = 5012
+    "foundationallm-datapipeline-frontendworker" = 5013
+    "foundationallm-datapipeline-backendworker" = 5014
 }
 $jobIds = @()
 

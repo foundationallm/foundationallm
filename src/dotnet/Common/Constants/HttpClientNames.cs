@@ -113,6 +113,26 @@ public static class HttpClientNames
     public const string OneDriveWorkSchoolAPI = "OneDriveWorkSchoolAPI";
 
     /// <summary>
+    /// Named client with matching configuration for the Data Pipeline API.
+    /// </summary>
+    public const string DataPipelineAPI = "DataPipelineAPI";
+
+    /// <summary>
+    /// Named client with matching configuration for the Data Pipeline Frontend Worker.
+    /// </summary>
+    public const string DataPipelineFrontendWorker = "DataPipelineFrontendWorker";
+
+    /// <summary>
+    /// Named client with matching configuration for the Data Pipeline Backend Worker.
+    /// </summary>
+    public const string DataPipelineBackendWorker = "DataPipelineBackendWorker";
+
+    /// <summary>
+    /// Named client with matching configuration for the Context API.
+    /// </summary>
+    public const string ContextAPI = "ContextAPI";
+
+    /// <summary>
     /// All HTTP client names.
     /// </summary>
     public readonly static string[] All = [
@@ -135,7 +155,11 @@ public static class HttpClientNames
         EnkryptGuardrails,
         LakeraGuard,
         AzureEventGrid,
-        StateAPI
+        StateAPI,
+        DataPipelineAPI,
+        DataPipelineFrontendWorker,
+        DataPipelineBackendWorker,
+        ContextAPI
     ];
 
     /// <summary>

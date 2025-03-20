@@ -3,6 +3,23 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-beta112
+
+### Configuration changes
+
+Added the following App Configuration value:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+| `FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:APIKey` | Points to `foundationallm-apiendpoints-datapipelineapi-apikey` | KeyVault reference value pointing to the specified secret. |
+| `FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:AppInsightsConnectionString` | Points to `foundationallm-appinsights-connectionstring` | KeyVault reference value pointing to the specified secret. |
+| `FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials:APIKey` | Points to `foundationallm-apiendpoints-datapipelinefrontendworker-apikey` | KeyVault reference value pointing to the specified secret. |
+| `FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials:AppInsightsConnectionString` | Points to `foundationallm-appinsights-connectionstring` | KeyVault reference value pointing to the specified secret. |
+| `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:APIKey` | Points to `foundationallm-apiendpoints-datapipelinebackendworker-apikey` | KeyVault reference value pointing to the specified secret. |
+| `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:AppInsightsConnectionString` | Points to `foundationallm-appinsights-connectionstring` | KeyVault reference value pointing to the specified secret. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Essentials:APIKey` | Points to `foundationallm-apiendpoints-contextapi-apikey` | KeyVault reference value pointing to the specified secret. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Essentials:AppInsightsConnectionString` | Points to `foundationallm-appinsights-connectionstring` | KeyVault reference value pointing to the specified secret. |
+
 ## Starting from 0.9.7-beta107
 
 For External Agent Workflows, the workflow invokation now includes conversation file history. The complete file history is passed regardless of conversation history settings. 
