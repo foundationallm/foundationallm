@@ -306,6 +306,7 @@ import 'katex/dist/katex.min.css';
 import DOMPurify from 'dompurify';
 import type { PropType } from 'vue';
 import { hideAllPoppers } from 'floating-vue';
+import Image from 'primevue/image';
 
 import type { Message, MessageContent, CompletionPrompt } from '@/js/types';
 import api from '@/js/api';
@@ -385,6 +386,9 @@ const MAX_WORD_SPEED_MS = 15;
 
 export default {
 	name: 'ChatMessage',
+	components: {
+		Image
+	},
 
 	props: {
 		message: {
@@ -418,6 +422,8 @@ export default {
 			processedContent: [],
 			completed: false,
 			isRenderingMessage: false,
+			loading: true,
+			error: false
 		};
 	},
 
@@ -536,10 +542,9 @@ export default {
 		processContentBlock(contentToProcess) {
 			let htmlContent = processLatex(contentToProcess ?? '');
 			htmlContent = marked(htmlContent, { renderer: this.markedRenderer });
+			htmlContent = DOMPurify.sanitize(htmlContent);
 
-			// In case the agent generates html that may be malicious, such as
-			// if the user asks the agent to repeat their malicious input
-			return DOMPurify.sanitize(htmlContent);
+			return htmlContent;
 		},
 
 		computedAverageTimePerWord(newMessage, oldMessage) {
@@ -673,6 +678,43 @@ export default {
 				const encodedCode = encodeURIComponent(sourceCode);
 				return `<pre><code class="${languageClass}" data-code="${encodedCode}" data-language="${highlighted.language}">${highlighted.value}</code></pre>`;
 			};
+
+			// Images
+			this.markedRenderer.image = function({ href, title, text }) {
+				// Find a matching image_file content block in the message's content
+				const matchingImageBlock = this.message.content?.find(
+					(block) => block.type === 'image_file' && block.origValue === href
+				);
+
+				// If we found a matching block and it has a blobUrl, use that
+				if (matchingImageBlock?.blobUrl) {
+					return `<img src="${matchingImageBlock.blobUrl}" alt="${text || ''}" title="${title || ''}" />`;
+				}
+
+				// Create a unique ID for this image
+				const imageId = `image-${Math.random().toString(36).substr(2, 9)}`;
+				
+				// Return a placeholder with the unique ID
+				const placeholder = `<img id="${imageId}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="${text || ''}" title="${title || ''}" />`;
+
+				// Load the image and create a blob URL
+				api.fetchDirect(href).then(response => {
+					const blobUrl = URL.createObjectURL(response);
+					// Update the matching block with the blob URL
+					if (matchingImageBlock) {
+						matchingImageBlock.blobUrl = blobUrl;
+					}
+					// Update the image in the DOM
+					const container = document.getElementById(imageId);
+					if (container) {
+						container.setAttribute('src', blobUrl);
+					}
+				}).catch(error => {
+					console.error(`Failed to fetch image from ${href}`, error);
+				});
+
+				return placeholder;
+			}.bind(this);
 
 			// Links
 			this.markedRenderer.link = ({ href, title, text }) => {
@@ -823,8 +865,8 @@ export default {
 					this.keepScrollingUntilCompleted();
 				}, 100);
 			});
-		},
-	},
+		}
+	}
 };
 </script>
 
