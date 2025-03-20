@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Services_Quota_SinglePartitionQuotaContext" data-uid="FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext" class="text-break">
-Class SinglePartitionQuotaContext  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/SinglePartitionQuotaContext.cs/#L12"><i class="bi bi-code-slash"></i></a>
+Class SinglePartitionQuotaContext  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/SinglePartitionQuotaContext.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -123,13 +123,25 @@ Class SinglePartitionQuotaContext  <a class="header-action link-secondary" title
     <dt>Inherited Members</dt>
     <dd>
     <div>
+      <a class="xref" href="FoundationaLLM.Common.Services.Quota.QuotaContextBase.html#FoundationaLLM_Common_Services_Quota_QuotaContextBase__quotaServiceIdentifier">QuotaContextBase._quotaServiceIdentifier</a>
+    </div>
+    <div>
       <a class="xref" href="FoundationaLLM.Common.Services.Quota.QuotaContextBase.html#FoundationaLLM_Common_Services_Quota_QuotaContextBase__syncRoot">QuotaContextBase._syncRoot</a>
     </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Services.Quota.QuotaContextBase.html#FoundationaLLM_Common_Services_Quota_QuotaContextBase__logger">QuotaContextBase._logger</a>
     </div>
     <div>
+      <a class="xref" href="FoundationaLLM.Common.Services.Quota.QuotaContextBase.html#FoundationaLLM_Common_Services_Quota_QuotaContextBase__quota">QuotaContextBase._quota</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Services.Quota.QuotaContextBase.html#FoundationaLLM_Common_Services_Quota_QuotaContextBase__metricPartitions">QuotaContextBase._metricPartitions</a>
+    </div>
+    <div>
       <a class="xref" href="FoundationaLLM.Common.Services.Quota.QuotaContextBase.html#FoundationaLLM_Common_Services_Quota_QuotaContextBase_Quota">QuotaContextBase.Quota</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Services.Quota.QuotaContextBase.html#FoundationaLLM_Common_Services_Quota_QuotaContextBase_EnsureQuotaMetricPartition_System_String_">QuotaContextBase.EnsureQuotaMetricPartition(string)</a>
     </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Services.Quota.QuotaContextBase.html#FoundationaLLM_Common_Services_Quota_QuotaContextBase_AddLocalMetricUnit_System_DateTimeOffset_System_String_System_String_">QuotaContextBase.AddLocalMetricUnit(DateTimeOffset, string, string)</a>
@@ -178,9 +190,9 @@ Class SinglePartitionQuotaContext  <a class="header-action link-secondary" title
 
   <a id="FoundationaLLM_Common_Services_Quota_SinglePartitionQuotaContext__ctor_" data-uid="FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Quota_SinglePartitionQuotaContext__ctor_FoundationaLLM_Common_Models_Quota_QuotaDefinition_Microsoft_Extensions_Logging_ILogger_" data-uid="FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext.#ctor(FoundationaLLM.Common.Models.Quota.QuotaDefinition,Microsoft.Extensions.Logging.ILogger)">
-  SinglePartitionQuotaContext(QuotaDefinition, ILogger)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/SinglePartitionQuotaContext.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Services_Quota_SinglePartitionQuotaContext__ctor_System_String_FoundationaLLM_Common_Models_Quota_QuotaDefinition_Microsoft_Extensions_Logging_ILogger_" data-uid="FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext.#ctor(System.String,FoundationaLLM.Common.Models.Quota.QuotaDefinition,Microsoft.Extensions.Logging.ILogger)">
+  SinglePartitionQuotaContext(string, QuotaDefinition, ILogger)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/SinglePartitionQuotaContext.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Implements a quota context with a single partition.</p>
@@ -188,11 +200,14 @@ Class SinglePartitionQuotaContext  <a class="header-action link-secondary" title
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SinglePartitionQuotaContext(QuotaDefinition quota, ILogger logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public SinglePartitionQuotaContext(string quotaServiceIdentifier, QuotaDefinition quota, ILogger logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
+    <dt><code>quotaServiceIdentifier</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The identifier of the QuotaService instance managing this quota context.</p>
+</dd>
     <dt><code>quota</code> <a class="xref" href="FoundationaLLM.Common.Models.Quota.QuotaDefinition.html">QuotaDefinition</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Quota.QuotaDefinition.html">QuotaDefinition</a> providing the quota configuration.</p>
 </dd>
@@ -220,7 +235,7 @@ Class SinglePartitionQuotaContext  <a class="header-action link-secondary" title
 
   <h3 id="FoundationaLLM_Common_Services_Quota_SinglePartitionQuotaContext_GetQuotaMetricPartition_System_String_" data-uid="FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext.GetQuotaMetricPartition(System.String)">
   GetQuotaMetricPartition(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/SinglePartitionQuotaContext.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/SinglePartitionQuotaContext.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the quota metric partition that corresponds to the specified partition identifier.</p>
@@ -259,7 +274,7 @@ Class SinglePartitionQuotaContext  <a class="header-action link-secondary" title
 
   <h3 id="FoundationaLLM_Common_Services_Quota_SinglePartitionQuotaContext_GetQuotaMetricPartition_System_String_System_String_" data-uid="FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext.GetQuotaMetricPartition(System.String,System.String)">
   GetQuotaMetricPartition(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/SinglePartitionQuotaContext.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/SinglePartitionQuotaContext.cs/#L29"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the quota metric partition that corresponds to the specified user identifier and/or user principal name.</p>
@@ -301,7 +316,7 @@ Class SinglePartitionQuotaContext  <a class="header-action link-secondary" title
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/SinglePartitionQuotaContext.cs/#L12" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/SinglePartitionQuotaContext.cs/#L13" class="edit-link">Edit this page</a>
         </div>
 
 

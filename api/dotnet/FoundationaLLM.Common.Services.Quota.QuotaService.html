@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Services_Quota_QuotaService" data-uid="FoundationaLLM.Common.Services.Quota.QuotaService" class="text-break">
-Class QuotaService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaService.cs/#L21"><i class="bi bi-code-slash"></i></a>
+Class QuotaService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaService.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -168,9 +168,9 @@ Class QuotaService  <a class="header-action link-secondary" title="View source" 
 
   <a id="FoundationaLLM_Common_Services_Quota_QuotaService__ctor_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Quota_QuotaService__ctor_FoundationaLLM_Common_Interfaces_IStorageService_FoundationaLLM_Common_Interfaces_IEventService_Microsoft_Extensions_Logging_ILoggerFactory_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaService.#ctor(FoundationaLLM.Common.Interfaces.IStorageService,FoundationaLLM.Common.Interfaces.IEventService,Microsoft.Extensions.Logging.ILoggerFactory)">
-  QuotaService(IStorageService, IEventService, ILoggerFactory)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaService.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Services_Quota_QuotaService__ctor_FoundationaLLM_Common_Models_Configuration_Environment_DependencyInjectionContainerSettings_FoundationaLLM_Common_Interfaces_IStorageService_FoundationaLLM_Common_Interfaces_IEventService_Microsoft_Extensions_Logging_ILoggerFactory_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaService.#ctor(FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings,FoundationaLLM.Common.Interfaces.IStorageService,FoundationaLLM.Common.Interfaces.IEventService,Microsoft.Extensions.Logging.ILoggerFactory)">
+  QuotaService(DependencyInjectionContainerSettings, IStorageService, IEventService, ILoggerFactory)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaService.cs/#L72"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Common.Services.Quota.QuotaService.html">QuotaService</a> class.</p>
@@ -178,11 +178,14 @@ Class QuotaService  <a class="header-action link-secondary" title="View source" 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public QuotaService(IStorageService storageService, IEventService eventService, ILoggerFactory loggerFactory)</code></pre>
+    <pre><code class="lang-csharp hljs">public QuotaService(DependencyInjectionContainerSettings dependencyInjectionContainerSettings, IStorageService storageService, IEventService eventService, ILoggerFactory loggerFactory)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
+    <dt><code>dependencyInjectionContainerSettings</code> <a class="xref" href="FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings.html">DependencyInjectionContainerSettings</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings.html">DependencyInjectionContainerSettings</a> providing the configuration of the dependency injection container.</p>
+</dd>
     <dt><code>storageService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IStorageService.html">IStorageService</a></dt>
     <dd><p>The storage service used for storing quota configuration.</p>
 </dd>
@@ -213,7 +216,7 @@ Class QuotaService  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="FoundationaLLM_Common_Services_Quota_QuotaService_Enabled" data-uid="FoundationaLLM.Common.Services.Quota.QuotaService.Enabled">
   Enabled
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaService.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaService.cs/#L60"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Indicates whether the quota service is enabled.</p>
@@ -245,7 +248,7 @@ Class QuotaService  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="FoundationaLLM_Common_Services_Quota_QuotaService_InitializationTask" data-uid="FoundationaLLM.Common.Services.Quota.QuotaService.InitializationTask">
   InitializationTask
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaService.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaService.cs/#L63"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.taskcompletionsource-1">TaskCompletionSource&lt;TResult&gt;</a> (<code>TResult</code> of type <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>)
@@ -285,7 +288,7 @@ that signals the completion of the initialization task.</p>
 
   <h3 id="FoundationaLLM_Common_Services_Quota_QuotaService_EvaluateCompletionRequestForQuota_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaService.EvaluateCompletionRequestForQuota(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)">
   EvaluateCompletionRequestForQuota(string, string, UnifiedUserIdentity?, CompletionRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaService.cs/#L360"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaService.cs/#L382"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Evaluates a completion request to determine if it exceeds any quotas.</p>
@@ -332,7 +335,7 @@ that signals the completion of the initialization task.</p>
 
   <h3 id="FoundationaLLM_Common_Services_Quota_QuotaService_EvaluateRawRequestForQuota_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Services.Quota.QuotaService.EvaluateRawRequestForQuota(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   EvaluateRawRequestForQuota(string, string?, UnifiedUserIdentity?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaService.cs/#L344"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaService.cs/#L366"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Evaluates an HTTP API request to determine if it exceeds any quotas.</p>
@@ -378,7 +381,7 @@ quotas where exceeded and provides details in case of a quota breach.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaService.cs/#L21" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Quota/QuotaService.cs/#L22" class="edit-link">Edit this page</a>
         </div>
 
 
