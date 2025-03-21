@@ -193,8 +193,9 @@
 								/>
 							</div>
 							<Button icon="pi pi-trash" severity="danger" @click="removeStage(index)" />
+							<Button :icon="stage.collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up'" @click="toggleStageCollapse(index)" />
 						</div>
-						<div class="stage-content">
+						<div v-if="!stage.collapsed" class="stage-content">
 							<div class="mb-2">
 								<label>Description:</label>
 								<InputText v-model="stage.description" class="w-100" />
@@ -390,6 +391,9 @@
 						<div class="span-2">
 							<div v-for="(param, index) in triggerParameters" :key="index" class="mb-2">
 								<label>{{ param.parameter_metadata.name }}:</label>
+								<div style="font-size: 12px">
+									{{ param.key }}
+								</div>
 								<div style="font-size: 12px; color: #666">
 									{{ param.parameter_metadata.description }}
 								</div>
@@ -749,6 +753,7 @@ export default {
 				plugin_object_id: '',
 				plugin_parameters: null,
 				plugin_dependencies: [],
+				collapsed: false,
 			});
 			this.transformPipelineStages();
 		},
@@ -760,9 +765,10 @@ export default {
 
 		transformPipelineStages() {
 			const nested = this.selectedStagePlugins.reduceRight((acc, stage) => {
+				const { collapsed, ...stageData } = stage; // Exclude collapsed property
 				return [
 					{
-						...stage,
+						...stageData,
 						next_stages: acc,
 					},
 				];
@@ -845,6 +851,7 @@ export default {
 					plugin_object_id: stage.plugin_object_id,
 					plugin_parameters: stage.plugin_parameters,
 					plugin_dependencies: stage.plugin_dependencies,
+					collapsed: false,
 				});
 
 				this.selectedDependencyIdsMap[stage.name] = stage.plugin_dependencies 
@@ -892,11 +899,13 @@ export default {
 					param.parameter_metadata.name,
 					this.pipeline.data_source.plugin_object_id,
 				);
+				const type = 'data-source';
 				parameterValues.push({
 					parameter_metadata: param.parameter_metadata,
 					key,
 					value,
 					resourceOptions,
+					type,
 				});
 			}
 
@@ -915,11 +924,15 @@ export default {
 								param.parameter_metadata.name,
 								stage.plugin_object_id,
 							);
+							const type = 'stage';
+							const stageName = stage.name;
 							parameterValues.push({
 								parameter_metadata: param.parameter_metadata,
 								key,
 								value,
 								resourceOptions,
+								type,
+								stageName,
 							});
 						}
 					}
@@ -938,11 +951,15 @@ export default {
 									param.parameter_metadata.name,
 									dep.plugin_object_id,
 								);
+								const type = 'dependency';
+								const stageName = stage.name;
 								parameterValues.push({
 									parameter_metadata: param.parameter_metadata,
 									key,
 									value,
 									resourceOptions,
+									type,
+									stageName,
 								});
 							}
 						}
@@ -1082,6 +1099,10 @@ export default {
 
 		async updateResourceOptions(paramName: string, pluginObjectId: string) {
 			this.resourceOptions = await this.getResourceOptions(paramName, pluginObjectId);
+		},
+
+		toggleStageCollapse(index: number) {
+			this.selectedStagePlugins[index].collapsed = !this.selectedStagePlugins[index].collapsed;
 		},
 	},
 };
