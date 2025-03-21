@@ -98,20 +98,32 @@ export const useAppStore = defineStore('app', {
 			if (appConfigStore.isKioskMode) {
 				const newSession = await api.addSession(this.getDefaultChatSessionProperties());
 				this.changeSession(newSession);
+				// Set default agent for kiosk mode
+				const defaultAgent = this.getSessionAgent(newSession);
+				if (defaultAgent) {
+					this.setSessionAgent(newSession, defaultAgent);
+				}
 				return;
 			}
 
 			// If the portal is configured to create a temporary session on startup, and
 			// there is no requested session, then create a temporary one.
 			if (!appConfigStore.showLastConversionOnStartup && !sessionId) {
+				// Clear any existing sessions first
+				this.sessions = [];
+				// Add temporary session
 				this.addTemporarySession();
-
+				// Change to the temporary session
 				this.changeSession(this.sessions[0]);
+				// Set default agent for temporary session
+				const defaultAgent = this.getSessionAgent(this.sessions[0]);
+				if (defaultAgent) {
+					this.setSessionAgent(this.sessions[0], defaultAgent);
+				}
 
+				// Load other sessions in the background
 				this.sessions.push(...(await api.getSessions()));
-
 				await this.getUserProfiles();
-
 				return;
 			}
 
@@ -124,16 +136,35 @@ export const useAppStore = defineStore('app', {
 			// otherwise, (if there are no sessions) create a temporary session.
 			if (requestedSession) {
 				this.changeSession(requestedSession);
+				// Set default agent for requested session if none is set
+				const sessionAgent = this.getSessionAgent(requestedSession);
+				if (sessionAgent) {
+					this.setSessionAgent(requestedSession, sessionAgent);
+				}
 			} else if (appConfigStore.showLastConversionOnStartup && this.sessions.length > 0) {
 				this.changeSession(this.sessions[0]);
+				// Set default agent for last conversion session if none is set
+				const sessionAgent = this.getSessionAgent(this.sessions[0]);
+				if (sessionAgent) {
+					this.setSessionAgent(this.sessions[0], sessionAgent);
+				}
 			} else {
 				this.addToast({
 					severity: 'error',
 					detail: 'The requested session was not found.',
 				});
 
+				// Clear any existing sessions first
+				this.sessions = [];
+				// Add temporary session
 				this.addTemporarySession();
+				// Change to the temporary session
 				this.changeSession(this.sessions[0]);
+				// Set default agent for temporary session
+				const defaultAgent = this.getSessionAgent(this.sessions[0]);
+				if (defaultAgent) {
+					this.setSessionAgent(this.sessions[0], defaultAgent);
+				}
 			}
 
 			await this.getUserProfiles();

@@ -110,13 +110,18 @@ export default {
 
 	watch: {
 		async currentSession(newSession: Session, oldSession: Session) {
-			const isReplacementForTempSession = oldSession?.is_temp && this.messages.length > 0;
-			if (newSession.sessionId === oldSession?.sessionId || isReplacementForTempSession) return;
+			// Skip if it's the same session and not a temporary session replacement
+			if (newSession.sessionId === oldSession?.sessionId && !(oldSession?.is_temp && this.messages.length > 0)) return;
+			
 			this.isMessagePending = false;
 			this.isLoading = true;
 			this.userSentMessage = false;
 
-			await this.$appStore.getMessages();
+			// For temporary sessions, we don't need to load messages
+			if (!newSession.is_temp) {
+				await this.$appStore.getMessages();
+			}
+			
 			await this.$appStore.ensureAgentsLoaded();
 
 			this.$appStore.updateSessionAgentFromMessages(newSession);
@@ -149,7 +154,8 @@ export default {
 	},
 
 	created() {
-		if (!this.$appConfigStore.showLastConversionOnStartup && this.currentSession?.is_temp) {
+		// For temporary sessions, we don't need to load messages
+		if (this.currentSession?.is_temp) {
 			this.isLoading = false;
 			const sessionAgent = this.$appStore.getSessionAgent(this.currentSession);
 			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
