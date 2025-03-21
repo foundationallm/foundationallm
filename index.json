@@ -3579,11 +3579,6 @@
     "title": "Namespace FoundationaLLM.Core.Services | FoundationaLLM",
     "summary": "Namespace FoundationaLLM.Core.Services Classes AzureCosmosDBChangeFeedService Supports all classes in the .NET class hierarchy and provides low-level services to derived classes. This is the ultimate base class of all .NET classes; it is the root of the type hierarchy. CoreService Initializes a new instance of the CoreService class. GatekeeperAPIService Contains methods for interacting with the Gatekeeper API. OneDriveWorkSchoolService Implements IOneDriveWorkSchoolService."
   },
-  "api/dotnet/FoundationaLLM.Core.Utils.FileMethods.html": {
-    "href": "api/dotnet/FoundationaLLM.Core.Utils.FileMethods.html",
-    "title": "Class FileMethods | FoundationaLLM",
-    "summary": "Class FileMethods Namespace FoundationaLLM.Core.Utils Assembly FoundationaLLM.Core.dll Contains methods for working with files. public class FileMethods Inheritance object FileMethods Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Extension Methods ObjectExtensions.GetPropertyValues(object, List<string>) Methods GetMessageContentFileType(string?, string?) Returns the type of the message content based on the file name. public static string GetMessageContentFileType(string? fileName, string? fallbackValue) Parameters fileName string The file name to evaluate. fallbackValue string If populated, defines the fallback type value if a mapping cannot be determined from the passed in file name. Otherwise, the default value is FilePath. Returns string"
-  },
   "api/dotnet/FoundationaLLM.Core.Utils.ObjectExtensions.html": {
     "href": "api/dotnet/FoundationaLLM.Core.Utils.ObjectExtensions.html",
     "title": "Class ObjectExtensions | FoundationaLLM",
@@ -3592,7 +3587,7 @@
   "api/dotnet/FoundationaLLM.Core.Utils.html": {
     "href": "api/dotnet/FoundationaLLM.Core.Utils.html",
     "title": "Namespace FoundationaLLM.Core.Utils | FoundationaLLM",
-    "summary": "Namespace FoundationaLLM.Core.Utils Classes FileMethods Contains methods for working with files. ObjectExtensions Contains extension methods for objects."
+    "summary": "Namespace FoundationaLLM.Core.Utils Classes ObjectExtensions Contains extension methods for objects."
   },
   "api/dotnet/FoundationaLLM.Core.Worker.ChangeFeedWorker.html": {
     "href": "api/dotnet/FoundationaLLM.Core.Worker.ChangeFeedWorker.html",

@@ -10036,20 +10036,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Core.Utils.FileMethods.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Core.Utils.FileMethods.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Core.Utils.FileMethods",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Core.Utils.FileMethods.yml\" sourcestartlinenumber=\"1\">Contains methods for working with files.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Core.Utils.ObjectExtensions.yml",
       "output": {
         ".html": {
