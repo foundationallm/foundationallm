@@ -168,8 +168,8 @@ Class AzureCosmosDBChangeFeedService  <a class="header-action link-secondary" ti
 
   <a id="FoundationaLLM_Core_Services_AzureCosmosDBChangeFeedService__ctor_" data-uid="FoundationaLLM.Core.Services.AzureCosmosDBChangeFeedService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Core_Services_AzureCosmosDBChangeFeedService__ctor_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_Services_AzureCosmosDBChangeFeedService__FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_CosmosDB_CosmosDbSettings__" data-uid="FoundationaLLM.Core.Services.AzureCosmosDBChangeFeedService.#ctor(Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.Services.AzureCosmosDBChangeFeedService},FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.CosmosDbSettings})">
-  AzureCosmosDBChangeFeedService(ILogger&lt;AzureCosmosDBChangeFeedService&gt;, IAzureCosmosDBService, IOptions&lt;CosmosDbSettings&gt;)
+  <h3 id="FoundationaLLM_Core_Services_AzureCosmosDBChangeFeedService__ctor_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_Services_AzureCosmosDBChangeFeedService__FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_CosmosDB_AzureCosmosDBSettings__" data-uid="FoundationaLLM.Core.Services.AzureCosmosDBChangeFeedService.#ctor(Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.Services.AzureCosmosDBChangeFeedService},FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings})">
+  AzureCosmosDBChangeFeedService(ILogger&lt;AzureCosmosDBChangeFeedService&gt;, IAzureCosmosDBService, IOptions&lt;AzureCosmosDBSettings&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Services/AzureCosmosDBChangeFeedService.cs/#L48"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -178,7 +178,7 @@ Class AzureCosmosDBChangeFeedService  <a class="header-action link-secondary" ti
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AzureCosmosDBChangeFeedService(ILogger&lt;AzureCosmosDBChangeFeedService&gt; logger, IAzureCosmosDBService cosmosDBService, IOptions&lt;CosmosDbSettings&gt; settings)</code></pre>
+    <pre><code class="lang-csharp hljs">public AzureCosmosDBChangeFeedService(ILogger&lt;AzureCosmosDBChangeFeedService&gt; logger, IAzureCosmosDBService cosmosDBService, IOptions&lt;AzureCosmosDBSettings&gt; settings)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -191,8 +191,8 @@ Class AzureCosmosDBChangeFeedService  <a class="header-action link-secondary" ti
     <dd><p>Contains standard methods for managing data stored
 within the Azure Cosmos DB workspace.</p>
 </dd>
-    <dt><code>settings</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Configuration.CosmosDB.CosmosDbSettings.html">CosmosDbSettings</a>&gt;</dt>
-    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Configuration.CosmosDB.CosmosDbSettings.html">CosmosDbSettings</a> settings retrieved
+    <dt><code>settings</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings.html">AzureCosmosDBSettings</a>&gt;</dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings.html">AzureCosmosDBSettings</a> settings retrieved
 by the injected <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions&lt;TOptions&gt;</a>.</p>
 </dd>
   </dl>

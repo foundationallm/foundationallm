@@ -168,8 +168,8 @@ Class CosmosDbService  <a class="header-action link-secondary" title="View sourc
 
   <a id="FoundationaLLM_State_Services_CosmosDbService__ctor_" data-uid="FoundationaLLM.State.Services.CosmosDbService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_State_Services_CosmosDbService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_CosmosDB_CosmosDbSettings__Microsoft_Azure_Cosmos_CosmosClient_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_State_Services_CosmosDbService__" data-uid="FoundationaLLM.State.Services.CosmosDbService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.CosmosDbSettings},Microsoft.Azure.Cosmos.CosmosClient,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.State.Services.CosmosDbService})">
-  CosmosDbService(IOptions&lt;CosmosDbSettings&gt;, CosmosClient, ILogger&lt;CosmosDbService&gt;)
+  <h3 id="FoundationaLLM_State_Services_CosmosDbService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_CosmosDB_AzureCosmosDBSettings__Microsoft_Azure_Cosmos_CosmosClient_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_State_Services_CosmosDbService__" data-uid="FoundationaLLM.State.Services.CosmosDbService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings},Microsoft.Azure.Cosmos.CosmosClient,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.State.Services.CosmosDbService})">
+  CosmosDbService(IOptions&lt;AzureCosmosDBSettings&gt;, CosmosClient, ILogger&lt;CosmosDbService&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/State/Services/CosmosDbService.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -178,13 +178,13 @@ Class CosmosDbService  <a class="header-action link-secondary" title="View sourc
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CosmosDbService(IOptions&lt;CosmosDbSettings&gt; settings, CosmosClient client, ILogger&lt;CosmosDbService&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public CosmosDbService(IOptions&lt;AzureCosmosDBSettings&gt; settings, CosmosClient client, ILogger&lt;CosmosDbService&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>settings</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Configuration.CosmosDB.CosmosDbSettings.html">CosmosDbSettings</a>&gt;</dt>
-    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Configuration.CosmosDB.CosmosDbSettings.html">CosmosDbSettings</a> settings retrieved
+    <dt><code>settings</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings.html">AzureCosmosDBSettings</a>&gt;</dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings.html">AzureCosmosDBSettings</a> settings retrieved
 by the injected <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions&lt;TOptions&gt;</a>.</p>
 </dd>
     <dt><code>client</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos.cosmosclient">CosmosClient</a></dt>

@@ -532,7 +532,7 @@ Class DependencyInjection  <a class="header-action link-secondary" title="View s
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/DependencyInjection.cs/#L34"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Adds the authorization service to the dependency injection container (used by all resource providers).</p>
+  <div class="markdown level1 summary"><p>Adds the authorization service client to the dependency injection container (used by all resource providers).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -568,7 +568,7 @@ Class DependencyInjection  <a class="header-action link-secondary" title="View s
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/DependencyInjection.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Adds the authorization service to the dependency injection container (used by all resource providers).</p>
+  <div class="markdown level1 summary"><p>Adds the authorization service client to the dependency injection container (used by all resource providers).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -579,7 +579,8 @@ Class DependencyInjection  <a class="header-action link-secondary" title="View s
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>builder</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a></dt>
-    <dd></dd>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a> application builder.</p>
+</dd>
   </dl>
 
 
@@ -648,6 +649,75 @@ Class DependencyInjection  <a class="header-action link-secondary" title="View s
   <dl class="parameters">
     <dt><code>builder</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a></dt>
     <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a> application builder managing the dependency injection container.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_DependencyInjection_AddAzureCosmosDBFileService_" data-uid="FoundationaLLM.DependencyInjection.AddAzureCosmosDBFileService*"></a>
+
+  <h3 id="FoundationaLLM_DependencyInjection_AddAzureCosmosDBFileService_Microsoft_Extensions_DependencyInjection_IServiceCollection_Microsoft_Extensions_Configuration_IConfiguration_" data-uid="FoundationaLLM.DependencyInjection.AddAzureCosmosDBFileService(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+  AddAzureCosmosDBFileService(IServiceCollection, IConfiguration)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Services/DependencyInjection.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the <a class="xref" href="FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.html">IAzureCosmosDBFileService</a> to the dependency injection container.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddAzureCosmosDBFileService(this IServiceCollection services, IConfiguration configuration)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>services</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a> dependency injection container service collection.</p>
+</dd>
+    <dt><code>configuration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a> application configuration provider.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_DependencyInjection_AddAzureCosmosDBFileService_" data-uid="FoundationaLLM.DependencyInjection.AddAzureCosmosDBFileService*"></a>
+
+  <h3 id="FoundationaLLM_DependencyInjection_AddAzureCosmosDBFileService_Microsoft_Extensions_Hosting_IHostApplicationBuilder_" data-uid="FoundationaLLM.DependencyInjection.AddAzureCosmosDBFileService(Microsoft.Extensions.Hosting.IHostApplicationBuilder)">
+  AddAzureCosmosDBFileService(IHostApplicationBuilder)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Services/DependencyInjection.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the <a class="xref" href="FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.html">IAzureCosmosDBFileService</a> to the dependency injection container.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddAzureCosmosDBFileService(this IHostApplicationBuilder builder)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>builder</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a> application builder.</p>
 </dd>
   </dl>
 
@@ -1193,6 +1263,75 @@ Class DependencyInjection  <a class="header-action link-secondary" title="View s
 
 
 
+  <a id="FoundationaLLM_DependencyInjection_AddContextServiceClient_" data-uid="FoundationaLLM.DependencyInjection.AddContextServiceClient*"></a>
+
+  <h3 id="FoundationaLLM_DependencyInjection_AddContextServiceClient_Microsoft_Extensions_DependencyInjection_IServiceCollection_Microsoft_Extensions_Configuration_IConfiguration_" data-uid="FoundationaLLM.DependencyInjection.AddContextServiceClient(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+  AddContextServiceClient(IServiceCollection, IConfiguration)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/DependencyInjection.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the authorization service to the dependency injection container (used by all resource providers).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddContextServiceClient(this IServiceCollection services, IConfiguration configuration)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>services</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a> dependency injection container service collection.</p>
+</dd>
+    <dt><code>configuration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a> application configuration manager.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_DependencyInjection_AddContextServiceClient_" data-uid="FoundationaLLM.DependencyInjection.AddContextServiceClient*"></a>
+
+  <h3 id="FoundationaLLM_DependencyInjection_AddContextServiceClient_Microsoft_Extensions_Hosting_IHostApplicationBuilder_" data-uid="FoundationaLLM.DependencyInjection.AddContextServiceClient(Microsoft.Extensions.Hosting.IHostApplicationBuilder)">
+  AddContextServiceClient(IHostApplicationBuilder)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/DependencyInjection.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the context service client to the dependency injection container.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddContextServiceClient(this IHostApplicationBuilder builder)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>builder</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a> application builder.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_DependencyInjection_AddConversationResourceProvider_" data-uid="FoundationaLLM.DependencyInjection.AddConversationResourceProvider*"></a>
 
   <h3 id="FoundationaLLM_DependencyInjection_AddConversationResourceProvider_Microsoft_Extensions_DependencyInjection_IServiceCollection_Microsoft_Extensions_Configuration_IConfigurationManager_" data-uid="FoundationaLLM.DependencyInjection.AddConversationResourceProvider(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationManager)">
@@ -1647,6 +1786,75 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 </dd>
     <dt><code>apiServiceName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The name of the API service whose implementation is being registered.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_DependencyInjection_AddFileService_" data-uid="FoundationaLLM.DependencyInjection.AddFileService*"></a>
+
+  <h3 id="FoundationaLLM_DependencyInjection_AddFileService_Microsoft_Extensions_DependencyInjection_IServiceCollection_Microsoft_Extensions_Configuration_IConfiguration_" data-uid="FoundationaLLM.DependencyInjection.AddFileService(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+  AddFileService(IServiceCollection, IConfiguration)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Services/DependencyInjection.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the <a class="xref" href="FoundationaLLM.Context.Interfaces.IFileService.html">IFileService</a> to the dependency injection container.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddFileService(this IServiceCollection services, IConfiguration configuration)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>services</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a> dependency injection container service collection.</p>
+</dd>
+    <dt><code>configuration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a> application configuration provider.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_DependencyInjection_AddFileService_" data-uid="FoundationaLLM.DependencyInjection.AddFileService*"></a>
+
+  <h3 id="FoundationaLLM_DependencyInjection_AddFileService_Microsoft_Extensions_Hosting_IHostApplicationBuilder_" data-uid="FoundationaLLM.DependencyInjection.AddFileService(Microsoft.Extensions.Hosting.IHostApplicationBuilder)">
+  AddFileService(IHostApplicationBuilder)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Services/DependencyInjection.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the <a class="xref" href="FoundationaLLM.Context.Interfaces.IFileService.html">IFileService</a> to the dependency injection container.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddFileService(this IHostApplicationBuilder builder)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>builder</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a> application builder.</p>
 </dd>
   </dl>
 

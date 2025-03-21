@@ -129,8 +129,41 @@
 <td>Points to <code>foundationallm-appinsights-connectionstring</code></td>
 <td>KeyVault reference value pointing to the specified secret.</td>
 </tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileServiceStorage:AccountName</code></td>
+<td><code>&lt;context_api_file_storage_account_name&gt;</code></td>
+<td>The name of the dedicated storage account used by the FoundationaLLM Context API file service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileServiceStorage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Context API file service to connect to the dedicated storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Endpoint</code></td>
+<td><code>&lt;cosmos_db_endpoint&gt;</code></td>
+<td>The endpoint URL of the Azure Cosmos DB.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Database</code></td>
+<td><code>database</code></td>
+<td>The Azure Cosmos DB database name.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Containers</code></td>
+<td><code>Context</code></td>
+<td>The list of Azure CosmosDB containers used by the Context API file service.</td>
+</tr>
 </tbody>
 </table>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>A dedicated storage account for the FoundationaLLM Context API must be created. The account should be isolated in a dedicated resource group and permissions should only be granted to the FoundationaLLM Context API managed identity.</p>
+</div>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>A new Azure Cosmos DB container named <code>Context</code> must be created with a parition key of <code>/upn</code> and an autoscale transactional throughput of maximum 4000 RU/s.</p>
+</div>
 <h2 id="starting-from-097-beta107">Starting from 0.9.7-beta107</h2>
 <p>For External Agent Workflows, the workflow invokation now includes conversation file history. The complete file history is passed regardless of conversation history settings.</p>
 <p>The signature is now as follows:</p>

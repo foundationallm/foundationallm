@@ -1300,6 +1300,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Clients.ContextServiceClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Clients.ContextServiceClient.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Clients.ContextServiceClient",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Clients.ContextServiceClient.yml\" sourcestartlinenumber=\"1\">Provides methods to call the FoundationaLLM Context API service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Clients.GatewayServiceClient.yml",
       "output": {
         ".html": {
@@ -3106,6 +3120,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.CoreServiceException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.CoreServiceException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Exceptions.CoreServiceException",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Exceptions.CoreServiceException.yml\" sourcestartlinenumber=\"1\">Represents an error with accessing content.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.EventException.yml",
       "output": {
         ".html": {
@@ -3299,6 +3327,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Extensions.DictionaryExtensions",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Extensions.DictionaryExtensions.yml\" sourcestartlinenumber=\"1\">Provides extension methods for <xref href=\"System.Collections.Generic.Dictionary%602\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Extensions.GuidExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Extensions.GuidExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Extensions.GuidExtensions",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Extensions.GuidExtensions.yml\" sourcestartlinenumber=\"1\">Extends the <xref href=\"System.Guid\" data-throw-if-not-resolved=\"false\"></xref> interface with helper methods.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3509,6 +3551,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Interfaces.ICodeExecutionService",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.ICodeExecutionService.yml\" sourcestartlinenumber=\"1\">Defines the capabilities for code execution services.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IContextServiceClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IContextServiceClient.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.IContextServiceClient",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IContextServiceClient.yml\" sourcestartlinenumber=\"1\">Provides methods to call the FoundationaLLM Context API service.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4786,17 +4842,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.CosmosDB.CosmosDbSettings.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.CosmosDB.CosmosDbSettings.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Configuration.CosmosDB.CosmosDbSettings",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Configuration.CosmosDB.CosmosDbSettings.yml\" sourcestartlinenumber=\"1\">Stores the Azure Cosmos DB settings from the app configuration.</p>\n"
+      "Title": "FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings.yml\" sourcestartlinenumber=\"1\">Stores the Azure Cosmos DB settings from the app configuration.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5133,6 +5189,34 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.Context.CallContext",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.CallContext.yml\" sourcestartlinenumber=\"1\">Supports all classes in the .NET class hierarchy and provides low-level services to derived classes. This is the ultimate base class of all .NET classes; it is the root of the type hierarchy.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextFileRecord.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextFileRecord.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Context.ContextFileRecord",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.ContextFileRecord.yml\" sourcestartlinenumber=\"1\">Represents a file record.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Context.ContextServiceResponse<T>",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.yml\" sourcestartlinenumber=\"1\">Represents a response from the FoundationaLLM Context API.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -9280,6 +9364,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Text.CosmosSystemTextJsonSerializer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Text.CosmosSystemTextJsonSerializer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Text.CosmosSystemTextJsonSerializer",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Text.CosmosSystemTextJsonSerializer.yml\" sourcestartlinenumber=\"1\">Custom serializer for Cosmos DB that uses System.Text.Json.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Text.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Text.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Text",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Utils.Base58.yml",
       "output": {
         ".html": {
@@ -9634,6 +9746,174 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Configuration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": null,
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.API.Controllers.FilesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.API.Controllers.FilesController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.API.Controllers.FilesController",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.API.Controllers.FilesController.yml\" sourcestartlinenumber=\"1\">Provdes methods for managing files.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.API.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.API.Controllers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.API.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.yml\" sourcestartlinenumber=\"1\">Provides the interface for the Azure Cosmos DB file service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.IFileService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.IFileService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Interfaces.IFileService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Interfaces.IFileService.yml\" sourcestartlinenumber=\"1\">Defines the service interface for the FoundationaLLM File service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Interfaces",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.ContextServiceSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.ContextServiceSettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Models.Configuration.ContextServiceSettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.Configuration.ContextServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides settings for the FoundationaLLM Context API.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.FileServiceSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.FileServiceSettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Models.Configuration.FileServiceSettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.Configuration.FileServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides settings for the FoundationaLLM Context API file service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Models.Configuration",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.AzureCosmosDBFileService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.AzureCosmosDBFileService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Services.AzureCosmosDBFileService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.AzureCosmosDBFileService.yml\" sourcestartlinenumber=\"1\">Provides the implementation for the Azure Cosmos DB file service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.FileService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.FileService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Services.FileService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.FileService.yml\" sourcestartlinenumber=\"1\">Provides the implementation for the FoundationaLLM File service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.html"
         }
       },
       "version": "",
@@ -12930,34 +13210,6 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.State.Models.Configuration",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.State.Serializers.CosmosSystemTextJsonSerializer.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.State.Serializers.CosmosSystemTextJsonSerializer.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.State.Serializers.CosmosSystemTextJsonSerializer",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.State.Serializers.CosmosSystemTextJsonSerializer.yml\" sourcestartlinenumber=\"1\">Custom serializer for Cosmos DB that uses System.Text.Json.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.State.Serializers.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.State.Serializers.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.State.Serializers",
       "Summary": null
     },
     {
