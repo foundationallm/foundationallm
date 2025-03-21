@@ -19,8 +19,8 @@ Added the following App Configuration value:
 | `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:AppInsightsConnectionString` | Points to `foundationallm-appinsights-connectionstring` | KeyVault reference value pointing to the specified secret. |
 | `FoundationaLLM:APIEndpoints:ContextAPI:Essentials:APIKey` | Points to `foundationallm-apiendpoints-contextapi-apikey` | KeyVault reference value pointing to the specified secret. |
 | `FoundationaLLM:APIEndpoints:ContextAPI:Essentials:AppInsightsConnectionString` | Points to `foundationallm-appinsights-connectionstring` | KeyVault reference value pointing to the specified secret. |
-| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileStorage:AccountName` | `<context_api_file_storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Context API. |
-| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileStorage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Context API to connect to the dedicated storage account. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileServiceStorage:AccountName` | `<context_api_file_storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Context API file service. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileServiceStorage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Context API file service to connect to the dedicated storage account. |
 
 >[!IMPORTANT]
 >A dedicated storage account for the FoundationaLLM Context API must be created. The account should be isolated in a dedicated resource group and permissions should only be granted to the FoundationaLLM Context API managed identity.

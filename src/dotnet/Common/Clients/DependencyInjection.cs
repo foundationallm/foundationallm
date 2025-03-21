@@ -16,9 +16,9 @@ namespace FoundationaLLM
     public static partial class DependencyInjection
     {
         /// <summary>
-        /// Adds the authorization service to the dependency injection container (used by all resource providers).
+        /// Adds the authorization service client to the dependency injection container (used by all resource providers).
         /// </summary>
-        /// <param name="builder"></param>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder.</param>
         public static void AddAuthorizationServiceClient(this IHostApplicationBuilder builder)
         {
             builder.Services.AddOptions<AuthorizationServiceClientSettings>()
@@ -27,7 +27,7 @@ namespace FoundationaLLM
         }
 
         /// <summary>
-        /// Adds the authorization service to the dependency injection container (used by all resource providers).
+        /// Adds the authorization service client to the dependency injection container (used by all resource providers).
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
         /// <param name="configuration">The <see cref="IConfiguration"/> application configuration manager.</param>
@@ -37,5 +37,20 @@ namespace FoundationaLLM
                 .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials));
             services.AddSingleton<IAuthorizationServiceClient, AuthorizationServiceClient>();
         }
+
+        /// <summary>
+        /// Adds the context service client to the dependency injection container.
+        /// </summary>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder.</param>
+        public static void AddContextServiceClient(this IHostApplicationBuilder builder) =>
+            builder.Services.AddContextServiceClient(builder.Configuration);
+
+        /// <summary>
+        /// Adds the authorization service to the dependency injection container (used by all resource providers).
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration manager.</param>
+        public static void AddContextServiceClient(this IServiceCollection services, IConfiguration configuration) =>
+            services.AddScoped<IContextServiceClient, ContextServiceClient>();
     }
 }

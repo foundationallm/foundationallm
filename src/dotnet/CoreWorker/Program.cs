@@ -37,12 +37,12 @@ builder.Configuration.AddAzureAppConfiguration(options =>
 if (builder.Environment.IsDevelopment())
     builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 
-builder.Services.AddOptions<CosmosDbSettings>()
+builder.Services.AddOptions<AzureCosmosDBSettings>()
     .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB));
 
 builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
 {
-    var settings = serviceProvider.GetRequiredService<IOptions<CosmosDbSettings>>().Value;
+    var settings = serviceProvider.GetRequiredService<IOptions<AzureCosmosDBSettings>>().Value;
     return new CosmosClientBuilder(settings.Endpoint, ServiceContext.AzureCredential)
         .WithSerializerOptions(new CosmosSerializationOptions
         {
