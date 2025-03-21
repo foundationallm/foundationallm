@@ -535,10 +535,13 @@ export default {
 
 		isRenderingMessage: {
 			handler(newVal, oldVal) {
-				this.$appStore.sessionMessagePending = newVal;
 				if (newVal === oldVal) return;
+				this.$appStore.sessionMessagePending = newVal;
 				if (newVal) {
 					this.keepScrollingUntilCompleted();
+				} else if (this.message.status === 'Completed' || this.message.status === 'Failed') {
+					// Ensure sessionMessagePending is set to false when message is completed
+					this.$appStore.sessionMessagePending = false;
 				}
 			},
 		},

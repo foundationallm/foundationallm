@@ -65,7 +65,7 @@ export const useAppStore = defineStore('app', {
 	},
 
 	actions: {
-		async init(sessionId: string) {
+		async init(sessionId: string | undefined) {
 			const appConfigStore = useAppConfigStore();
 			await this.getAgents();
 
@@ -104,20 +104,17 @@ export const useAppStore = defineStore('app', {
 			// If the portal is configured to create a temporary session on startup, and
 			// there is no requested session, then create a temporary one.
 			if (!appConfigStore.showLastConversionOnStartup && !sessionId) {
+				await this.ensureAgentsLoaded(); // Ensure agents are loaded
 				this.addTemporarySession();
-
 				this.changeSession(this.sessions[0]);
-
 				this.sessions.push(...(await api.getSessions()));
-
 				await this.getUserProfiles();
-
 				return;
 			}
 
 			await this.getSessions();
 
-			const requestedSession = this.sessions.find((s: Session) => s.sessionId === sessionId);
+			const requestedSession = sessionId ? this.sessions.find((s: Session) => s.sessionId === sessionId) : undefined;
 
 			// If there is an existing session matching the one requested in the url, select it.
 			// otherwise, if the portal is configured to show the previous session and it exists, select it.
@@ -132,25 +129,33 @@ export const useAppStore = defineStore('app', {
 					detail: 'The requested session was not found.',
 				});
 
+				await this.ensureAgentsLoaded(); // Ensure agents are loaded
 				this.addTemporarySession();
 				this.changeSession(this.sessions[0]);
 			}
 
 			await this.getUserProfiles();
-
-			// if (this.currentSession) {
-			// 	await this.getMessages();
-			// 	this.updateSessionAgentFromMessages(this.currentSession);
-			// }
 		},
 
 		addTemporarySession() {
-			this.sessions.unshift({
+			const tempSession = {
 				...this.getDefaultChatSessionProperties(),
 				id: 'new',
 				is_temp: true,
 				display_name: 'New Chat',
-			});
+				type: 'chat',
+				sessionId: 'temp',
+				tokensUsed: 0,
+				messages: [],
+			} as Session;
+			this.sessions.unshift(tempSession);
+			
+			// Ensure a default agent is selected for the temporary session
+			const defaultAgent = this.agents.find((agent) => agent.resource.properties?.default_resource) || this.agents[0];
+			if (defaultAgent) {
+				this.setSessionAgent(tempSession, defaultAgent);
+				this.lastSelectedAgent = defaultAgent;
+			}
 		},
 
 		getDefaultChatSessionProperties(): ChatSessionProperties {
@@ -565,6 +570,7 @@ export const useAppStore = defineStore('app', {
 			clearInterval(this.pollingInterval);
 			this.pollingInterval = null;
 			this.pollingSession = null;
+			this.sessionMessagePending = false;
 		},
 
 		/**
