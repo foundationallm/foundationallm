@@ -111,7 +111,7 @@ export default {
 	watch: {
 		async currentSession(newSession: Session, oldSession: Session) {
 			const isReplacementForTempSession = oldSession?.is_temp && this.messages.length > 0;
-			if (newSession.id === oldSession?.id || isReplacementForTempSession) return;
+			if (newSession.sessionId === oldSession?.sessionId || isReplacementForTempSession) return;
 			this.isMessagePending = false;
 			this.isLoading = true;
 			this.userSentMessage = false;
@@ -133,7 +133,7 @@ export default {
 
 		pollingSession(newPollingSession, oldPollingSession) {
 			if (newPollingSession === oldPollingSession) return;
-			if (newPollingSession === this.currentSession.id) {
+			if (newPollingSession === this.currentSession.sessionId) {
 				this.isMessagePending = true;
 			} else {
 				this.isMessagePending = false;
@@ -204,15 +204,15 @@ export default {
 			// if (agent.long_running) {
 			// 	// Handle long-running operations
 			// 	const operationId = await this.$appStore.startLongRunningProcess('/async-completions', {
-			// 		session_id: this.currentSession.id,
+			// 		session_id: this.currentSession.sessionId,
 			// 		user_prompt: text,
 			// 		agent_name: agent.name,
 			// 		settings: null,
 			// 		attachments: this.$appStore.attachments.map((attachment) => String(attachment.id)),
 			// 	});
 
-			// 	this.longRunningOperations.set(this.currentSession.id, true);
-			// 	await this.pollForCompletion(this.currentSession.id, operationId);
+			// 	this.longRunningOperations.set(this.currentSession.sessionId, true);
+			// 	await this.pollForCompletion(this.currentSession.sessionId, operationId);
 			// } else {
 			const waitForPolling = await this.$appStore.sendMessage(text);
 
