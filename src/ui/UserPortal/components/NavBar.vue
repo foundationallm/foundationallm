@@ -152,7 +152,7 @@ export default {
 
 	watch: {
 		currentSession(newSession: Session, oldSession: Session) {
-			if (newSession.id !== oldSession?.id) {
+			if (newSession.sessionId !== oldSession?.sessionId) {
 				this.updateAgentSelection();
 			}
 		},
@@ -287,7 +287,7 @@ export default {
 		},
 
 		// handleCopySession() {
-		// 	const chatLink = `${window.location.origin}?chat=${this.currentSession!.id}`;
+		// 	const chatLink = `${window.location.origin}?chat=${this.currentSession!.sessionId}`;
 		// 	navigator.clipboard.writeText(chatLink);
 
 		// 	this.$appStore.addToast({

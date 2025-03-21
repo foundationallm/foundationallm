@@ -117,7 +117,7 @@ export const useAppStore = defineStore('app', {
 
 			await this.getSessions();
 
-			const requestedSession = this.sessions.find((s: Session) => s.id === sessionId);
+			const requestedSession = this.sessions.find((s: Session) => s.sessionId === sessionId);
 
 			// If there is an existing session matching the one requested in the url, select it.
 			// otherwise, if the portal is configured to show the previous session and it exists, select it.
@@ -182,7 +182,7 @@ export const useAppStore = defineStore('app', {
 				// This is because the passed in session has been updated, most likely renamed.
 				// Since there is a slight delay in the backend updating the session name, this
 				// ensures the session name is updated in the sidebar immediately.
-				const index = sessions.findIndex((s) => s.id === session.id);
+				const index = sessions.findIndex((s) => s.sessionId === session.sessionId);
 				if (index !== -1) {
 					sessions.splice(index, 1, session);
 				}
@@ -193,7 +193,7 @@ export const useAppStore = defineStore('app', {
 
 			// Handle inconsistencies in displaying the renamed session due to potential delays in the backend updating the session name.
 			this.renamedSessions.forEach((renamedSession: Session) => {
-				const existingSession = this.sessions.find((s: Session) => s.id === renamedSession.id);
+				const existingSession = this.sessions.find((s: Session) => s.sessionId === renamedSession.sessionId);
 				if (existingSession) {
 					existingSession.display_name = renamedSession.display_name;
 				}
@@ -201,9 +201,9 @@ export const useAppStore = defineStore('app', {
 
 			// Handle inconsistencies in displaying the deleted session due to potential delays in the backend updating the session list.
 			this.deletedSessions.forEach((deletedSession: Session) => {
-				const existingSession = this.sessions.find((s: Session) => s.id === deletedSession.id);
+				const existingSession = this.sessions.find((s: Session) => s.sessionId === deletedSession.sessionId);
 				if (existingSession) {
-					this.removeSession(deletedSession.id);
+					this.removeSession(deletedSession.sessionId);
 				}
 			});
 		},
@@ -219,7 +219,7 @@ export const useAppStore = defineStore('app', {
 
 			// Only add newSession to the list if it doesn't already exist.
 			// We optionally add it because the backend is sometimes slow to update the session list.
-			if (!this.sessions.find((session: Session) => session.id === newSession.id)) {
+			if (!this.sessions.find((session: Session) => session.sessionId === newSession.sessionId)) {
 				this.sessions = [newSession, ...this.sessions];
 			}
 
@@ -228,7 +228,7 @@ export const useAppStore = defineStore('app', {
 
 		async renameSession(sessionToRename: Session, newSessionName: string) {
 			const existingSession = this.sessions.find(
-				(session: Session) => session.id === sessionToRename.id,
+				(session: Session) => session.sessionId === sessionToRename.sessionId,
 			);
 
 			// Preemptively rename the session for responsiveness, and revert the name if the request fails.
@@ -236,9 +236,9 @@ export const useAppStore = defineStore('app', {
 			existingSession.display_name = newSessionName;
 
 			try {
-				await api.renameSession(sessionToRename.id, newSessionName);
+				await api.renameSession(sessionToRename.sessionId, newSessionName);
 				const existingRenamedSession = this.renamedSessions.find(
-					(session: Session) => session.id === sessionToRename.id,
+					(session: Session) => session.sessionId === sessionToRename.sessionId,
 				);
 				if (existingRenamedSession) {
 					existingRenamedSession.display_name = newSessionName;
@@ -254,10 +254,10 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async deleteSession(sessionToDelete: Session) {
-			await api.deleteSession(sessionToDelete!.id);
+			await api.deleteSession(sessionToDelete!.sessionId);
 			await this.getSessions();
 
-			this.removeSession(sessionToDelete!.id);
+			this.removeSession(sessionToDelete!.sessionId);
 
 			// Add the deleted session to the list of deleted sessions to handle inconsistencies in the backend updating the session list.
 			this.deletedSessions = [sessionToDelete, ...this.deletedSessions];
@@ -265,7 +265,7 @@ export const useAppStore = defineStore('app', {
 			// Ensure there is at least always 1 session
 			if (this.sessions.length === 0) {
 				const newSession = await this.addSession(this.getDefaultChatSessionProperties());
-				this.removeSession(sessionToDelete!.id);
+				this.removeSession(sessionToDelete!.sessionId);
 				this.changeSession(newSession);
 			}
 
@@ -276,7 +276,7 @@ export const useAppStore = defineStore('app', {
 		},
 
 		removeSession(sessionId: string) {
-			this.sessions = this.sessions.filter((session: Session) => session.id !== sessionId);
+			this.sessions = this.sessions.filter((session: Session) => session.sessionId !== sessionId);
 		},
 
 		initializeMessageContent(content: MessageContent) {
@@ -290,7 +290,7 @@ export const useAppStore = defineStore('app', {
 
 		async getMessages() {
 			if (
-				(this.newSession && this.newSession.id === this.currentSession!.id) ||
+				(this.newSession && this.newSession.sessionId === this.currentSession!.sessionId) ||
 				this.currentSession.is_temp
 			) {
 				// This is a new session, no need to fetch messages.
@@ -298,7 +298,7 @@ export const useAppStore = defineStore('app', {
 				return;
 			}
 
-			const messagesResponse = await api.getMessages(this.currentSession.id);
+			const messagesResponse = await api.getMessages(this.currentSession?.sessionId);
 
 			// Temporarily filter out the duplicate streaming message instances
 			// const uniqueMessages = messagesResponse.reduceRight((acc, current) => {
@@ -331,7 +331,7 @@ export const useAppStore = defineStore('app', {
 					latestMessage.operation_id &&
 					(latestMessage.status === 'InProgress' || latestMessage.status === 'Pending')
 				) {
-					this.startPolling(latestMessage, this.currentSession.id);
+					this.startPolling(latestMessage, this.currentSession?.sessionId);
 				}
 			}
 
@@ -383,7 +383,7 @@ export const useAppStore = defineStore('app', {
 
 		getSessionAgent(session: Session) {
 			if (!session) return null;
-			let selectedAgent = this.selectedAgents.get(session.id);
+			let selectedAgent = this.selectedAgents.get(session.sessionId);
 
 			if (!selectedAgent) {
 				if (this.lastSelectedAgent && !isAgentExpired(this.lastSelectedAgent)) {
@@ -403,7 +403,7 @@ export const useAppStore = defineStore('app', {
 
 		setSessionAgent(session: Session, agent: ResourceProviderGetResult<Agent>) {
 			this.lastSelectedAgent = agent;
-			return this.selectedAgents.set(session.id, agent);
+			return this.selectedAgents.set(session.sessionId, agent);
 		},
 
 		/**
@@ -417,7 +417,7 @@ export const useAppStore = defineStore('app', {
 			if (!text) return waitForPolling;
 
 			const agent = this.getSessionAgent(this.currentSession!).resource;
-			const sessionId = this.currentSession!.id;
+			const sessionId = this.currentSession!.sessionId;
 			const relevantAttachments = this.attachments.filter(
 				(attachment) => attachment.sessionId === sessionId,
 			);
@@ -435,7 +435,7 @@ export const useAppStore = defineStore('app', {
 				rating: null,
 				sender: 'User',
 				senderDisplayName: authStore.currentAccount?.name ?? 'You',
-				sessionId: this.currentSession!.id,
+				sessionId: this.currentSession!.sessionId,
 				text,
 				timeStamp: new Date().toISOString(),
 				tokens: 0,
@@ -452,7 +452,7 @@ export const useAppStore = defineStore('app', {
 				rating: null,
 				sender: 'Agent',
 				senderDisplayName: agent.name,
-				sessionId: this.currentSession!.id,
+				sessionId: this.currentSession!.sessionId,
 				text: '',
 				timeStamp: new Date().toISOString(),
 				tokens: 0,
@@ -468,9 +468,9 @@ export const useAppStore = defineStore('app', {
 				this.changeSession(newSession);
 			}
 
-			const initialSession = this.currentSession.id;
+			const initialSession = this.currentSession?.sessionId;
 			const message = await api.sendMessage(
-				this.currentSession!.id,
+				this.currentSession!.sessionId,
 				text,
 				agent,
 				relevantAttachments.map((attachment) => String(attachment.id)),
@@ -498,7 +498,7 @@ export const useAppStore = defineStore('app', {
 			);
 
 			// If the session has changed before above completes we need to prevent polling
-			if (initialSession !== this.currentSession.id) return waitForPolling;
+			if (initialSession !== this.currentSession?.sessionId) return waitForPolling;
 
 			// If the operation failed to start prevent polling
 			if (message.status === 'Failed') return waitForPolling;
@@ -507,10 +507,10 @@ export const useAppStore = defineStore('app', {
 
 			// For older messages that have a status of "Pending" but no operation id, assume
 			// it is complete and do no initiate polling as it will return empty data
-			if (message.operation_id) this.startPolling(message, this.currentSession.id);
+			if (message.operation_id) this.startPolling(message, this.currentSession?.sessionId);
 
 			// Remove the new session if matches this one, now that we have sent the first message.
-			if (this.newSession && this.newSession.id === initialSession) {
+			if (this.newSession && this.newSession.sessionId === initialSession) {
 				this.newSession = null;
 			}
 
@@ -606,7 +606,7 @@ export const useAppStore = defineStore('app', {
 		},
 
 		changeSession(newSession: Session) {
-			this.stopPolling(newSession.id);
+			this.stopPolling(newSession.sessionId);
 
 			const nuxtApp = useNuxtApp();
 			const appConfigStore = useAppConfigStore();
@@ -614,7 +614,7 @@ export const useAppStore = defineStore('app', {
 			if (appConfigStore.isKioskMode || newSession.is_temp) {
 				nuxtApp.$router.push({ query: {} });
 			} else {
-				const query = { chat: newSession.id };
+				const query = { chat: newSession.sessionId };
 				nuxtApp.$router.push({ query });
 			}
 
