@@ -1565,14 +1565,14 @@ export default {
 			this.workflowName = this.selectedWorkflow?.name ?? this.workflowName;
 			this.workflowHost = this.selectedWorkflow?.workflow_host ?? this.workflowHost;
 
-			if (this.selectedWorkflow?.resource_object_ids) {
-				const existingMainModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
-					(resource) => resource.properties?.object_role === 'main_model',
-				);
-				this.workflowMainAIModel = existingMainModel ?? null;
-			} else {
-				this.workflowMainAIModel = null;
-			}
+			// if (this.selectedWorkflow?.resource_object_ids) {
+			// 	const existingMainModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
+			// 		(resource) => resource.properties?.object_role === 'main_model',
+			// 	);
+			// 	this.workflowMainAIModel = existingMainModel ?? null;
+			// } else {
+			// 	this.workflowMainAIModel = null;
+			// }
 
 			this.showWorkflowConfiguration = true;
 
@@ -1817,7 +1817,9 @@ export default {
 
 			this.agentTools = agent.tools;
 
-			this.selectedWorkflow = agent.workflow;
+			this.selectedWorkflow = clone(
+				this.workflowOptions.find((workflow) => workflow.type === agent.workflow?.type),
+			);
 			this.hasAgentPrivateStorage = agent.workflow?.type === 'azure-openai-assistants-workflow';
 			this.showMessageTokens = agent.show_message_tokens ?? false;
 			this.showMessageRating = agent.show_message_rating ?? false;
@@ -2156,7 +2158,7 @@ export default {
 						package_name: this.workflowPackageName,
 
 						resource_object_ids: {
-							...this.selectedWorkflow.resource_object_ids,
+							// ...this.selectedWorkflow.resource_object_ids,
 
 							[this.workflowMainAIModel.object_id]: {
 								object_id: this.workflowMainAIModel.object_id,
