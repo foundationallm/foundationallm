@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Orchestration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Azure.CosmosDB;
@@ -19,16 +20,15 @@ using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Settings;
+using FoundationaLLM.Common.Utils;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
-using FoundationaLLM.Core.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using FoundationaLLM.Common.Utils;
 using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
 using LongRunningOperation = FoundationaLLM.Common.Models.Orchestration.LongRunningOperation;
 using Message = FoundationaLLM.Common.Models.Conversation.Message;
@@ -51,6 +51,8 @@ namespace FoundationaLLM.Core.Services;
 /// <param name="callContext">Contains contextual data for the calling service.</param>
 /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
 /// <param name="configuration">The <see cref="IConfiguration"/> service providing configuration settings.</param>
+/// <param name="httpClientFactory">The <see cref="IHttpClientFactory"/> used to build HTTP clients.</param>
+/// <param name="contextServiceClient">The <see cref="IContextServiceClient"/> used to interact with the Context API.</param>
 public partial class CoreService(
     IAzureCosmosDBService cosmosDBService,
     IEnumerable<IDownstreamAPIService> downstreamAPIServices,
@@ -60,7 +62,8 @@ public partial class CoreService(
     ICallContext callContext,
     IEnumerable<IResourceProviderService> resourceProviderServices,
     IConfiguration configuration,
-    IHttpClientFactoryService httpClientFactory) : ICoreService
+    IHttpClientFactoryService httpClientFactory,
+    IContextServiceClient contextServiceClient) : ICoreService
 {
     private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
     private readonly IDownstreamAPIService _gatekeeperAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.GatekeeperAPI);
@@ -69,7 +72,8 @@ public partial class CoreService(
     private readonly UnifiedUserIdentity _userIdentity = ValidateUserIdentity(callContext.CurrentUserIdentity);
     private readonly string _sessionType = brandingSettings.Value.KioskMode ? ConversationTypes.KioskSession : ConversationTypes.Session;
     private readonly CoreServiceSettings _settings = settings.Value;
-    private readonly IHttpClientFactoryService _httpClientFactory = httpClientFactory;
+    private readonly IContextServiceClient _contextServiceClient = contextServiceClient;
+
     private readonly string _baseUrl = GetBaseUrl(configuration, httpClientFactory, callContext).GetAwaiter().GetResult();
 
     private readonly IResourceProviderService _attachmentResourceProvider =
@@ -115,10 +119,12 @@ public partial class CoreService(
     {
         ArgumentException.ThrowIfNullOrEmpty(chatSessionProperties.Name);
 
-        var newConversationId = Guid.NewGuid().ToString().ToLower();
+        var refId = Guid.NewGuid();
+        var newUniqueId = refId.ToString().ToLower();
+        var newConversationId = $"{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}-{refId.ToBase64String()}";
         Conversation newConversation = new()
         {
-            Id = newConversationId,
+            Id = newUniqueId,
             SessionId = newConversationId,
             Name = newConversationId,
             DisplayName = chatSessionProperties.Name,
@@ -537,23 +543,22 @@ public partial class CoreService(
     public async Task<ResourceProviderUpsertResult<AttachmentFile>> UploadAttachment(string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity)
     {
         var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(instanceId, agentName, userIdentity);
-        var aiModelBase = await _aiModelResourceProvider.GetResourceAsync<AIModelBase>(agentBase.Workflow!.MainAIModelObjectId!, userIdentity);
-        var apiEndpointConfiguration = await _configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(aiModelBase.EndpointObjectId!, userIdentity);
-
         var agentRequiresOpenAIAssistants = agentBase.HasAzureOpenAIAssistantsWorkflow();
 
-        attachmentFile.SecondaryProvider = agentRequiresOpenAIAssistants
-            ? ResourceProviderNames.FoundationaLLM_AzureOpenAI
-            : null;
-        var attachmentUpsertResult = await _attachmentResourceProvider.UpsertResourceAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
+        if (agentRequiresOpenAIAssistants)
+        {
+            var aiModelBase = await _aiModelResourceProvider.GetResourceAsync<AIModelBase>(agentBase.Workflow!.MainAIModelObjectId!, userIdentity);
+            var apiEndpointConfiguration = await _configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(aiModelBase.EndpointObjectId!, userIdentity);
+
+            attachmentFile.SecondaryProvider = ResourceProviderNames.FoundationaLLM_AzureOpenAI;
+
+            var attachmentUpsertResult = await _attachmentResourceProvider.UpsertResourceAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
                 instanceId,
                 attachmentFile,
                 _userIdentity);
 
-        // TODO: Improve the logic of setting MustCreateAssistantFile to avoid unnecessary uploads to the Azure OpenAI file store.
+            // TODO: Improve the logic of setting MustCreateAssistantFile to avoid unnecessary uploads to the Azure OpenAI file store.
 
-        if (agentRequiresOpenAIAssistants)
-        {
             var fileMapping = new AzureOpenAIFileMapping
             {
                 Name = string.Empty,
@@ -600,9 +605,42 @@ public partial class CoreService(
                 },
                 userIdentity);
             attachmentUpsertResult.Resource!.SecondaryProviderObjectId = fileMappingUpsertResult.Resource!.OpenAIFileId;
-        }
 
-        return attachmentUpsertResult;
+            return attachmentUpsertResult;
+        }
+        else
+        {
+            var serviceResult = await _contextServiceClient.CreateFile(
+                instanceId,
+                sessionId,
+                attachmentFile.OriginalFileName,
+                attachmentFile.ContentType!,
+                new MemoryStream(attachmentFile.Content!));
+
+            if (serviceResult.Success)
+            {;
+                return new ResourceProviderUpsertResult<AttachmentFile>
+                {
+                    ObjectId = serviceResult.Result!.FileObjectId,
+                    ResourceExists = false,
+                    Resource = new AttachmentFile
+                    {
+                        Name = serviceResult.Result.FileId,
+                        ObjectId = serviceResult.Result.FileObjectId,
+                        DisplayName = serviceResult.Result.FileName,
+                        CreatedBy = serviceResult.Result.UPN,
+                        CreatedOn = serviceResult.Result.CreatedAt,
+
+                        ContentType = serviceResult.Result.ContentType,
+                        Path = serviceResult.Result.FilePath,
+                        OriginalFileName = serviceResult.Result.FileName,
+                    }
+                };
+            }
+            else
+                throw new CoreServiceException(
+                    serviceResult.ErrorMessage);
+        }
     }
 
     /// <inheritdoc/>

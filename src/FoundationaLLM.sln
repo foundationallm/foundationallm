@@ -145,6 +145,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataPipelineBackendWorker",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContextAPI", "dotnet\ContextAPI\ContextAPI.csproj", "{A20938BC-5DDA-DB4A-A929-959A4CE47A30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Context", "dotnet\Context\Context.csproj", "{D70C225A-5DD6-455A-ACEC-BF350B2FA2B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -370,6 +372,10 @@ Global
 		{A20938BC-5DDA-DB4A-A929-959A4CE47A30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A20938BC-5DDA-DB4A-A929-959A4CE47A30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A20938BC-5DDA-DB4A-A929-959A4CE47A30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D70C225A-5DD6-455A-ACEC-BF350B2FA2B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D70C225A-5DD6-455A-ACEC-BF350B2FA2B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D70C225A-5DD6-455A-ACEC-BF350B2FA2B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D70C225A-5DD6-455A-ACEC-BF350B2FA2B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -441,6 +447,7 @@ Global
 		{7A27035D-E28D-F006-05E2-82C15A136772} = {A5985DC7-94FA-4DD7-A277-0D29577A77CB}
 		{8139DB9C-7952-75A2-676C-5AB7B9690049} = {A5985DC7-94FA-4DD7-A277-0D29577A77CB}
 		{A20938BC-5DDA-DB4A-A929-959A4CE47A30} = {A5985DC7-94FA-4DD7-A277-0D29577A77CB}
+		{D70C225A-5DD6-455A-ACEC-BF350B2FA2B5} = {A5985DC7-94FA-4DD7-A277-0D29577A77CB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF5DE858-4B85-4EE8-8A6D-46E8E4FBA078}

@@ -9,6 +9,7 @@ using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Security;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -34,6 +35,7 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
 
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Essentials);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Configuration);
 }));
 
 if (builder.Environment.IsDevelopment())
@@ -53,13 +55,24 @@ builder.AddCorsPolicies();
 // Add configurations to the container
 builder.AddInstanceProperties();
 
+// Register the downstream services and HTTP clients.
+builder.AddHttpClientFactoryService();
+builder.AddDownstreamAPIService(HttpClientNames.ContextAPI);
+
+// Data services
+builder.AddAzureCosmosDBFileService();
+
+//---------------------------
+// Scoped services
+//---------------------------
+
 builder.Services.AddScoped<ICallContext, CallContext>();
 builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
-builder.AddHttpClientFactoryService();
+builder.AddFileService();
 
-//----------------------------
+//---------------------------
 // Resource providers
-//----------------------------
+//---------------------------
 builder.AddResourceProviderCacheSettings();
 builder.AddResourceValidatorFactory();
 
@@ -74,7 +87,7 @@ builder.AddResourceValidatorFactory();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<APIKeyAuthenticationFilter>();
 builder.Services.AddOptions<APIKeyValidationSettings>()
-    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_DataPipelineAPI_Essentials));
+    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_ContextAPI_Essentials));
 builder.Services.AddTransient<IAPIKeyValidationService, APIKeyValidationService>();
 
 builder.Services
@@ -90,6 +103,16 @@ builder.Services
     .AddApiExplorer();
 
 builder.Services.AddAuthorization();
+
+// Increase request size limit to 512 MB.
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Limits.MaxRequestBodySize = 536870912; // 512 MB
+});
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 536870912; // 512 MB
+});
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

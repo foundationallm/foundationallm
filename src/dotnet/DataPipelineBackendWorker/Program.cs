@@ -74,7 +74,7 @@ builder.AddResourceValidatorFactory();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<APIKeyAuthenticationFilter>();
 builder.Services.AddOptions<APIKeyValidationSettings>()
-    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_DataPipelineAPI_Essentials));
+    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Essentials));
 builder.Services.AddTransient<IAPIKeyValidationService, APIKeyValidationService>();
 
 builder.Services

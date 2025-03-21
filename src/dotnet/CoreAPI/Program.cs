@@ -61,6 +61,7 @@ namespace FoundationaLLM.Core.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatekeeperAPI_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Essentials);
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Attachment_Storage);
@@ -121,6 +122,7 @@ namespace FoundationaLLM.Core.API
             builder.AddDownstreamAPIService(HttpClientNames.GatekeeperAPI);
             builder.AddDownstreamAPIService(HttpClientNames.OrchestrationAPI);
             builder.AddAuthorizationServiceClient();
+            builder.AddContextServiceClient();
 
             builder.AddAzureCosmosDBService();
             builder.Services.AddScoped<ICoreService, CoreService>();

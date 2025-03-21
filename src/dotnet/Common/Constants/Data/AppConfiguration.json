@@ -1335,6 +1335,55 @@
 		]
 	},
 	{
+		"namespace": "APIEndpoints:ContextAPI:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section for the FoundationaLLM Context API."
+		},
+		"configuration_keys": [
+			{
+				"name": "FileService:Storage:AccountName",
+				"description": "The Azure Storage account for the FoundationaLLM Context API file service.",
+				"secret": "",
+				"value": "${env:CONTEXTAPI_FILESERVICE_AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "FileService:Storage:AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "FileService:CosmosDB:Endpoint",
+				"description": "The URL of the Azure Cosmos DB service used by the Context API file service.",
+				"secret": "",
+				"value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "FileService:CosmosDB:Database",
+				"description": "The name of the Azure Cosmos DB database used by the Context API file service.",
+				"secret": "",
+				"value": "database",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "FileService:CosmosDB:Containers",
+				"description": "The comma-separated list of database containers used by the Context API file service.",
+				"secret": "",
+				"value": "Context",
+				"content_type": "",
+				"first_version": "0.9.7"
+			}
+		]
+	},
+	{
 		"namespace": "APIEndpoints:GatewayAPI:Essentials",
 		"dependency_injection_key": null,
 		"configuration_section": {

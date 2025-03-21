@@ -11,8 +11,8 @@ using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Security;
+using FoundationaLLM.Common.Text;
 using FoundationaLLM.State.Interfaces;
-using FoundationaLLM.State.Serializers;
 using FoundationaLLM.State.Services;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
@@ -74,12 +74,12 @@ builder.Services.AddTransient<IAPIKeyValidationService, APIKeyValidationService>
 builder.Services.AddOptions<InstanceSettings>()
     .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Instance));
 
-builder.Services.AddOptions<CosmosDbSettings>()
+builder.Services.AddOptions<AzureCosmosDBSettings>()
     .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_StateAPI_Configuration_CosmosDB));
 
 builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
 {
-    var settings = serviceProvider.GetRequiredService<IOptions<CosmosDbSettings>>().Value;
+    var settings = serviceProvider.GetRequiredService<IOptions<AzureCosmosDBSettings>>().Value;
     var opt = new JsonSerializerOptions()
     {
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull

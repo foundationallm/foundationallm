@@ -980,6 +980,45 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:APIEndpoints:ContextAPI:Configuration
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:Storage:AccountName setting.
+        /// <para>Value description:<br/>The Azure Storage account for the FoundationaLLM Context API file service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_Storage_AccountName =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:Storage:AccountName";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:Storage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_Storage_AuthenticationType =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:Storage:AuthenticationType";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Endpoint setting.
+        /// <para>Value description:<br/>The URL of the Azure Cosmos DB service used by the Context API file service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_CosmosDB_Endpoint =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Endpoint";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Database setting.
+        /// <para>Value description:<br/>The name of the Azure Cosmos DB database used by the Context API file service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_CosmosDB_Database =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Database";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Containers setting.
+        /// <para>Value description:<br/>The comma-separated list of database containers used by the Context API file service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_CosmosDB_Containers =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Containers";
+
+        #endregion
+
         #region FoundationaLLM:APIEndpoints:GatewayAPI:Essentials
         
         /// <summary>

@@ -41,13 +41,13 @@ namespace FoundationaLLM.Core.Services
         /// <see cref="AzureCosmosDBChangeFeedService"/> type name.</param>
         /// <param name="cosmosDBService">Contains standard methods for managing data stored
         /// within the Azure Cosmos DB workspace.</param>
-        /// <param name="settings">The <see cref="CosmosDbSettings"/> settings retrieved
+        /// <param name="settings">The <see cref="AzureCosmosDBSettings"/> settings retrieved
         /// by the injected <see cref="IOptions{TOptions}"/>.</param>
         /// <exception cref="ArgumentException">Thrown if any of the required settings
         /// are null or empty.</exception>
         public AzureCosmosDBChangeFeedService(ILogger<AzureCosmosDBChangeFeedService> logger,
             IAzureCosmosDBService cosmosDBService,
-            IOptions<CosmosDbSettings> settings)
+            IOptions<AzureCosmosDBSettings> settings)
         {
             _cosmosDBService = cosmosDBService;
             _logger = logger;

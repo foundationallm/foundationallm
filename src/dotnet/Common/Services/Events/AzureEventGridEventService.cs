@@ -12,7 +12,6 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Environment;
 using FoundationaLLM.Common.Models.Configuration.Events;
 using FoundationaLLM.Common.Models.Events;
-using Microsoft.Azure.Cosmos.Core.Collections;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

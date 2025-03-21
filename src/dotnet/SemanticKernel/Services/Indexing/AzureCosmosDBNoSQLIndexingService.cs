@@ -124,7 +124,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Services.Indexing
 
         /// <summary>
         /// Creates an <see cref="AzureCosmosDBNoSQLMemoryStore"/> instance using the injected
-        /// <see cref="CosmosClient"/> and <see cref="CosmosDbSettings"/>.
+        /// <see cref="CosmosClient"/> and <see cref="AzureCosmosDBSettings"/>.
         /// </summary>
         /// <returns></returns>
         private AzureCosmosDBNoSQLMemoryStore CreateMemoryStore()
