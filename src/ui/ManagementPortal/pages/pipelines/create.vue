@@ -451,6 +451,12 @@
 					severity="secondary"
 					@click="handleCancel"
 				/>
+				<Button
+					label="Get Values"
+					style="margin-left: 16px"
+					severity="secondary"
+					@click="getValues"
+				/>
 			</div>
 		</div>
 	</main>
@@ -607,39 +613,48 @@ export default {
 		this.loading = true;
 
 		try {
-			// Load data sources
-			const dataSourceResponse = await api.getAgentDataSources();
-			this.dataSourceOptions = dataSourceResponse.map((result) => result.resource);
+			const [dataSources, dataSourcePlugins, stagePlugins] = await Promise.all([
+				api.getAgentDataSources(),
+				api.filterPlugins(['Data Source']),
+				api.filterPlugins(['Data Pipeline Stage'])
+			]);
 
-			// Load data source plugins
-			const dataSourcePluginsResponse = await api.filterPlugins(['Data Source']);
-			this.dataSourcePluginOptions = dataSourcePluginsResponse;
+			this.dataSourceOptions = dataSources.map(result => result.resource);
+			this.dataSourcePluginOptions = dataSourcePlugins;
+			this.stagePluginsOptions = stagePlugins;
 
-			// Load stage plugins
-			const stagePluginsResponse = await api.filterPlugins(['Data Pipeline Stage']);
-			this.stagePluginsOptions = stagePluginsResponse.map((result: any) => ({
-				...result,
-				object_id: result.object_id,
-			}));
-			this.stagePluginsOptions.forEach((plugin) => {
-				this.buildStagePluginResourceOptions(plugin);
-			});
+			this.stagePluginsOptions.map(plugin => {
+				if (Object.keys(plugin.parameter_selection_hints).length > 0) {
+					const pluginParameters = plugin.parameters.filter((param: any) => param.type === 'resource-object-id');
+					pluginParameters.forEach((param: any) => {
+						if (this.stagePluginResourceOptions.find((p) => p.parameter_metadata.name === param.name)) {
+							return;
+						}
+						this.stagePluginResourceOptions.push({
+							parameter_metadata: param,
+							parameter_selection_hints_options: [],
+						});
+					});
+				}
+			})
 
 			if (this.pipelineId) {
 				this.loadingStatusText = `Retrieving pipeline "${this.pipelineId}"...`;
 				const pipelineResult = await api.getPipeline(this.pipelineId);
 				this.pipeline = pipelineResult[0].resource;
 
+				console.log('Pipeline: ', this.pipeline);
+				console.log('Data Source Options: ', this.dataSourceOptions);
 				this.selectedDataSource = this.dataSourceOptions.find(
-					(option) => option.object_id === `/${this.pipeline.data_source.data_source_object_id}`,
+					(option) => option.object_id === this.pipeline.data_source.data_source_object_id,
 				);
+				console.log('Selected Data Source: ', this.selectedDataSource);
 
 				this.selectedDataSourcePlugin = this.dataSourcePluginOptions.find(
 					(plugin) => plugin.object_id === this.pipeline.data_source.plugin_object_id,
 				);
 
 				this.handleNextStages(this.pipeline.starting_stages);
-
 				this.buildTriggerParameters();
 			}
 		} catch (error) {
@@ -693,7 +708,7 @@ export default {
 			}
 		},
 
-		handleStagePluginChange(event: any, stageIndex: number) {
+		async handleStagePluginChange(event: any, stageIndex: number) {
 			const selectedPlugin = this.stagePluginsOptions.find((p) => p.object_id === event.value);
 			this.selectedStagePlugins[stageIndex].plugin_object_id = selectedPlugin.object_id;
 			this.selectedStagePlugins[stageIndex].plugin_parameters = selectedPlugin.parameters.map(
@@ -703,6 +718,18 @@ export default {
 				}),
 			);
 			this.selectedStagePlugins[stageIndex].plugin_dependencies = [];
+
+			console.log('Selected Plugin: ', selectedPlugin);
+			for (const param of selectedPlugin.parameters) {
+				const resourceOption = this.stagePluginResourceOptions.find((p) => p.parameter_metadata.name === param.name);
+				if (resourceOption) {
+					const options = await this.getResourceOptions(
+						param.name,
+						selectedPlugin.object_id,
+					);
+					resourceOption.parameter_selection_hints_options = options;
+				}
+			}
 		},
 
 		handleStagePluginDependencyChange(event: any, index: number) {
@@ -821,8 +848,8 @@ export default {
 			}
 		},
 
-		handleNextStages(stages: any[]) {
-			stages.forEach((stage: any) => {
+		async handleNextStages(stages: any[]) {
+			for (const stage of stages) {
 				this.selectedStagePlugins.push({
 					name: stage.name,
 					description: stage.description,
@@ -830,53 +857,23 @@ export default {
 					plugin_parameters: stage.plugin_parameters,
 					plugin_dependencies: stage.plugin_dependencies,
 				});
+
+				for (const param of stage.plugin_parameters) {
+					const resourceOption = this.stagePluginResourceOptions.find((p) => p.parameter_metadata.name === param.parameter_metadata.name);
+					if (resourceOption) {
+						const options = await this.getResourceOptions(
+							param.parameter_metadata.name,
+							stage.plugin_object_id,
+						);
+						resourceOption.parameter_selection_hints_options = options;
+					}
+				}
+
 				this.loadStagePluginDependencies(stage.plugin_object_id);
 				if (stage.next_stages) {
 					this.handleNextStages(stage.next_stages);
 				}
-			});
-		},
-
-		buildStagePluginResourceOptions(plugin: any) {
-			if (this.stagePluginResourceOptions.find((p) => p.parameter_metadata.name === plugin.name)) {
-				return;
 			}
-			this.stagePluginResourceOptions.push(
-				plugin.parameters.map((param: any) => ({
-					parameter_metadata: param,
-					parameter_selection_hints_options: [],
-				})),
-			);
-			this.stagePluginResourceOptions = this.stagePluginResourceOptions.flat();
-			this.stagePluginResourceOptions.forEach(async (param: any) => {
-				param.parameter_selection_hints_options = await this.getResourceOptions(
-					param.parameter_metadata.name,
-					plugin.object_id,
-				);
-			});
-		},
-
-		buildStagePluginDependencyResourceOptions(plugin: any) {
-			if (
-				this.stagePluginDependencyResourceOptions.find(
-					(p) => p.parameter_metadata.name === plugin.name,
-				)
-			) {
-				return;
-			}
-			this.stagePluginDependencyResourceOptions.push(
-				plugin.parameters.map((dep: any) => ({
-					parameter_metadata: dep,
-					parameter_selection_hints_options: [],
-				})),
-			);
-			this.stagePluginDependencyResourceOptions = this.stagePluginDependencyResourceOptions.flat();
-			this.stagePluginDependencyResourceOptions.forEach(async (param: any) => {
-				param.parameter_selection_hints_options = await this.getResourceOptions(
-					param.parameter_metadata.name,
-					plugin.object_id,
-				);
-			});
 		},
 
 		async buildTriggerParameters() {
@@ -1011,10 +1008,32 @@ export default {
 					return dependencyPlugin[0].resource;
 				});
 				const resolvedDependencies = await Promise.all(dependencyPluginPromises);
-				resolvedDependencies.forEach((dep) => {
-					this.resolvedDependencies.push(dep);
-					this.buildStagePluginDependencyResourceOptions(dep);
+				resolvedDependencies.map((dep) => {
+					if (!this.resolvedDependencies.find((d) => d.object_id === dep.object_id)) {
+						this.resolvedDependencies.push(dep);
+					}
+
+					if (Object.keys(dep.parameter_selection_hints).length > 0) {
+						const depPluginParameters = dep.parameters.filter((param: any) => param.type === 'resource-object-id');
+						depPluginParameters.map(async (param: any) => {
+							if (this.stagePluginDependencyResourceOptions.find((d) => d.parameter_metadata.name === param.name)) {
+								console.log('Dependency Resource Options already exists for: ', param.name);
+								return;
+							}
+							const options = await this.getResourceOptions(
+								param.name,
+								dep.object_id,
+							);
+							this.stagePluginDependencyResourceOptions.push({
+								parameter_metadata: param,
+								parameter_selection_hints_options: options,
+							});
+						});
+					}
 				});
+
+				console.log('Resolved Dependencies: ', this.resolvedDependencies);
+				console.log('Stage Plugin Dependency Resource Options: ', this.stagePluginDependencyResourceOptions);
 
 				this.stagePluginsDependenciesOptions.push({
 					plugin_object_id: plugin.object_id,
@@ -1074,6 +1093,18 @@ export default {
 
 		async updateResourceOptions(paramName: string, pluginObjectId: string) {
 			this.resourceOptions = await this.getResourceOptions(paramName, pluginObjectId);
+		},
+
+		async getValues() {
+			console.log('Pipeline: ', this.pipeline);
+			console.log('Selected Data Source Plugin: ', this.selectedDataSourcePlugin);
+			console.log('Selected Stage Plugins: ', this.selectedStagePlugins);
+			console.log('Stage Plugins Dependencies Options: ', this.stagePluginsDependenciesOptions);
+			console.log('Stage Plugin Resource Options: ', this.stagePluginResourceOptions);
+			console.log('Resolved Dependencies: ', this.resolvedDependencies);
+			console.log('Stage Plugins Options: ', this.stagePluginsOptions);
+			console.log('Data Source Options: ', this.dataSourceOptions);
+			console.log('Data Source Plugin Options: ', this.dataSourcePluginOptions);
 		},
 	},
 };
