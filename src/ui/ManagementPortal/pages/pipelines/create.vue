@@ -211,7 +211,7 @@
 									@change="handleStagePluginChange($event, index)"
 								/>
 							</div>
-							<div v-if="stage.plugin_parameters" class="mb-2">
+							<div v-if="stage.plugin_parameters?.length > 0" class="mb-2">
 								<label class="step-header">Parameters:</label>
 								<div
 									v-for="(param, paramIndex) in stage.plugin_parameters"
@@ -259,7 +259,7 @@
 									</template>
 								</div>
 							</div>
-							<div class="mb-2">
+							<div v-if="stagePluginsDependenciesOptions.find((dep) => dep.plugin_object_id === stage.plugin_object_id,)" class="mb-2">
 								<label>Dependencies:</label>
 								<Dropdown
 									v-if="
@@ -285,7 +285,7 @@
 											(dep) => dep.plugin_object_id === stage.plugin_object_id,
 										)?.selection_type === 'Multiple'
 									"
-									v-model="stage.plugin_dependencies"
+									v-model="selectedDependencyIdsMap[stage.name]"
 									:options="
 										stagePluginsDependenciesOptions.find(
 											(dep) => dep.plugin_object_id === stage.plugin_object_id,
@@ -295,12 +295,13 @@
 									option-value="dependencies.plugin_object_id"
 									class="w-100"
 									placeholder="Select dependencies"
+									@change="handleMultipleStagePluginDependencyChange($event, stage.plugin_object_id, index)"
 								/>
 							</div>
-							<div v-if="stage.plugin_dependencies[0]?.plugin_parameters" class="mb-2">
-								<label class="step-header">Dependency Parameters:</label>
+							<div v-for="dependency in stage.plugin_dependencies" :key="dependency.plugin_object_id" class="mb-2">
+								<label class="step-header">{{ stagePluginsDependenciesOptions.find((dep) => dep.plugin_object_id === stage.plugin_object_id)?.dependencyInfo.find((d) => d.dependencies.plugin_object_id === dependency.plugin_object_id)?.dependencyLabel }} Dependency Parameters:</label>
 								<div
-									v-for="(param, paramIndex) in stage?.plugin_dependencies[0]?.plugin_parameters"
+									v-for="(param, paramIndex) in dependency?.plugin_parameters"
 									:key="paramIndex"
 									class="parameter-item"
 								>
@@ -452,12 +453,6 @@
 					severity="secondary"
 					@click="handleCancel"
 				/>
-				<Button
-					label="Get Values"
-					style="margin-left: 16px"
-					severity="secondary"
-					@click="getValues"
-				/>
 			</div>
 		</div>
 	</main>
@@ -501,6 +496,7 @@ export default {
 			stagePluginsDependenciesOptions: [] as any[],
 			resolvedDependencies: [] as any[],
 			stagePluginDependencyResourceOptions: [] as any[],
+			selectedDependencyIdsMap: {} as any,
 
 			triggerTypeOptions: [
 				{ label: 'Schedule', value: 'Schedule' },
@@ -644,12 +640,9 @@ export default {
 				const pipelineResult = await api.getPipeline(this.pipelineId);
 				this.pipeline = pipelineResult[0].resource;
 
-				console.log('Pipeline: ', this.pipeline);
-				console.log('Data Source Options: ', this.dataSourceOptions);
 				this.selectedDataSource = this.dataSourceOptions.find(
 					(option) => option.object_id === this.pipeline.data_source.data_source_object_id,
 				);
-				console.log('Selected Data Source: ', this.selectedDataSource);
 
 				this.selectedDataSourcePlugin = this.dataSourcePluginOptions.find(
 					(plugin) => plugin.object_id === this.pipeline.data_source.plugin_object_id,
@@ -711,6 +704,7 @@ export default {
 
 		async handleStagePluginChange(event: any, stageIndex: number) {
 			const selectedPlugin = this.stagePluginsOptions.find((p) => p.object_id === event.value);
+
 			this.selectedStagePlugins[stageIndex].plugin_object_id = selectedPlugin.object_id;
 			this.selectedStagePlugins[stageIndex].plugin_parameters = selectedPlugin.parameters.map(
 				(param) => ({
@@ -720,7 +714,6 @@ export default {
 			);
 			this.selectedStagePlugins[stageIndex].plugin_dependencies = [];
 
-			console.log('Selected Plugin: ', selectedPlugin);
 			for (const param of selectedPlugin.parameters) {
 				const resourceOption = this.stagePluginResourceOptions.find((p) => p.parameter_metadata.name === param.name);
 				if (resourceOption) {
@@ -737,6 +730,16 @@ export default {
 			const selectedDependencyOption = this.stagePluginsDependenciesOptions.find((p) => p.plugin_object_id === pluginObjectId);
 			const selectedDependency = selectedDependencyOption.dependencyInfo.find((p) => p.dependencies.plugin_object_id === event.value);
 			this.selectedStagePlugins[index].plugin_dependencies[0].plugin_parameters = selectedDependency.dependencies.plugin_parameters;
+		},
+
+		handleMultipleStagePluginDependencyChange(event: any, pluginObjectId: string, index: number) {
+			const dependencyOptions = this.stagePluginsDependenciesOptions.find(
+				dep => dep.plugin_object_id === pluginObjectId
+			)?.dependencyInfo || [];
+			const selectedDependencies = event.value.map(id =>
+				dependencyOptions.find(option => option.dependencies.plugin_object_id === id)?.dependencies
+			);
+			this.selectedStagePlugins[index].plugin_dependencies = selectedDependencies;
 		},
 
 		addStage() {
@@ -843,6 +846,10 @@ export default {
 					plugin_parameters: stage.plugin_parameters,
 					plugin_dependencies: stage.plugin_dependencies,
 				});
+
+				this.selectedDependencyIdsMap[stage.name] = stage.plugin_dependencies 
+					?.map((dep) => dep.plugin_object_id)
+					?? [];
 
 				for (const param of stage.plugin_parameters) {
 					const resourceOption = this.stagePluginResourceOptions.find((p) => p.parameter_metadata.name === param.parameter_metadata.name);
@@ -1003,7 +1010,6 @@ export default {
 						const depPluginParameters = dep.parameters.filter((param: any) => param.type === 'resource-object-id');
 						depPluginParameters.map(async (param: any) => {
 							if (this.stagePluginDependencyResourceOptions.find((d) => d.parameter_metadata.name === param.name)) {
-								console.log('Dependency Resource Options already exists for: ', param.name);
 								return;
 							}
 							const options = await this.getResourceOptions(
@@ -1018,9 +1024,6 @@ export default {
 					}
 				});
 
-				console.log('Resolved Dependencies: ', this.resolvedDependencies);
-				console.log('Stage Plugin Dependency Resource Options: ', this.stagePluginDependencyResourceOptions);
-
 				this.stagePluginsDependenciesOptions.push({
 					plugin_object_id: plugin.object_id,
 					selection_type: plugin.dependencies[0]?.selection_type || 'Single',
@@ -1030,7 +1033,7 @@ export default {
 							plugin_object_id: dep.object_id,
 							plugin_parameters: dep.parameters.map((param) => ({
 								parameter_metadata: param,
-								default_value: null,
+								default_value: this.selectedStagePlugins.find((p) => p.plugin_object_id === plugin.object_id)?.plugin_dependencies.find((d) => d.plugin_object_id === dep.object_id)?.plugin_parameters.find((p) => p.parameter_metadata.name === param.name)?.default_value || null,
 							})),
 						},
 					})),
@@ -1079,18 +1082,6 @@ export default {
 
 		async updateResourceOptions(paramName: string, pluginObjectId: string) {
 			this.resourceOptions = await this.getResourceOptions(paramName, pluginObjectId);
-		},
-
-		async getValues() {
-			console.log('Pipeline: ', this.pipeline);
-			console.log('Selected Data Source Plugin: ', this.selectedDataSourcePlugin);
-			console.log('Selected Stage Plugins: ', this.selectedStagePlugins);
-			console.log('Stage Plugins Dependencies Options: ', this.stagePluginsDependenciesOptions);
-			console.log('Stage Plugin Resource Options: ', this.stagePluginResourceOptions);
-			console.log('Resolved Dependencies: ', this.resolvedDependencies);
-			console.log('Stage Plugins Options: ', this.stagePluginsOptions);
-			console.log('Data Source Options: ', this.dataSourceOptions);
-			console.log('Data Source Plugin Options: ', this.dataSourcePluginOptions);
 		},
 	},
 };
