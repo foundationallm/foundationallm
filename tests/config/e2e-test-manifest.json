@@ -2,13 +2,6 @@
     "registry": "crfllme2eops.azurecr.io",
     "service_matrix": [
         {
-            "name": "agent-hub-api",
-            "context": "./src/python",
-            "dockerfile": "./src/python/AgentHubAPI/Dockerfile",
-            "helm_chart": "./deploy/common/helm/agent-hub-api",
-            "azd_env_key": "SERVICE_AGENTHUBAPI_IMAGE"
-        },
-        {
             "name": "authorization-api",
             "context": "./src",
             "dockerfile": "./src/dotnet/AuthorizationAPI/Dockerfile",
@@ -35,13 +28,6 @@
             "dockerfile": "./src/dotnet/CoreWorker/Dockerfile",
             "helm_chart": "./deploy/common/helm/core-job",
             "azd_env_key": "SERVICE_COREJOB_IMAGE"
-        },
-        {
-            "name": "data-source-hub-api",
-            "context": "./src/python",
-            "dockerfile": "./src/python/DataSourceHubAPI/Dockerfile",
-            "helm_chart": "./deploy/common/helm/data-source-hub-api",
-            "azd_env_key": "SERVICE_DATASOURCEHUBAPI_IMAGE"
         },
         {
             "name": "gatekeeper-api",
@@ -100,13 +86,6 @@
             "azd_env_key": "SERVICE_ORCHESTRATIONAPI_IMAGE"
         },
         {
-            "name": "prompt-hub-api",
-            "context": "./src/python",
-            "dockerfile": "./src/python/PromptHubAPI/Dockerfile",
-            "helm_chart": "./deploy/common/helm/prompt-hub-api",
-            "azd_env_key": "SERVICE_PROMPTHUBAPI_IMAGE"
-        },
-        {
             "name": "semantic-kernel-api",
             "context": "./src",
             "dockerfile": "./src/dotnet/SemanticKernelAPI/Dockerfile",
@@ -133,6 +112,34 @@
             "dockerfile": "./src/dotnet/VectorizationWorker/Dockerfile",
             "helm_chart": "./deploy/common/helm/vectorization-job",
             "azd_env_key": "SERVICE_VECTORIZATIONJOB_IMAGE"
+        },
+        {
+            "name": "context-api",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/ContextAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/context-api",
+            "azd_env_key": "SERVICE_CONTEXTAPI_IMAGE"
+        },
+        {
+            "name": "datapipeline-api",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/DataPipelineAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/datapipeline-api",
+            "azd_env_key": "SERVICE_DATAPIPELINEAPI_IMAGE"
+        },
+        {
+            "name": "datapipeline-frontendworker",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/DataPipelineFrontendWorker/Dockerfile",
+            "helm_chart": "./deploy/common/helm/datapipeline-frontendworker",
+            "azd_env_key": "SERVICE_DATAPIPELINEFRONTENDWORKER_IMAGE"
+        },
+        {
+            "name": "datapipeline-backendworker",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/DataPipelineBackendWorker/Dockerfile",
+            "helm_chart": "./deploy/common/helm/datapipeline-backendworker",
+            "azd_env_key": "SERVICE_DATAPIPELINEBACKENDWORKER_IMAGE"
         }
     ],
     "test_matrix": [
