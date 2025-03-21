@@ -70,7 +70,7 @@
 </template>
 
 <script lang="ts">
-import type { Message, Session } from '@/js/types';
+import type { Message, Session, ResourceProviderGetResult, Agent } from '@/js/types';
 
 export default {
 	name: 'ChatThread',
@@ -136,6 +136,7 @@ export default {
 			if (newPollingSession === this.currentSession.sessionId) {
 				this.isMessagePending = true;
 			} else {
+				// When polling stops (newPollingSession becomes null), enable the input
 				this.isMessagePending = false;
 			}
 		},
@@ -149,10 +150,24 @@ export default {
 	},
 
 	created() {
-		if (!this.$appConfigStore.showLastConversionOnStartup && this.currentSession?.is_temp) {
+		if (!this.$appConfigStore.showLastConversionOnStartup && (this.currentSession as Session)?.is_temp) {
 			this.isLoading = false;
-			const sessionAgent = this.$appStore.getSessionAgent(this.currentSession);
-			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
+			const sessionAgent = this.$appStore.getSessionAgent(this.currentSession as Session);
+			if (sessionAgent) {
+				this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
+			} else {
+				// If no agent is selected yet, wait for agents to load
+				this.$watch(
+					() => this.$appStore.getSessionAgent(this.currentSession as Session),
+					(newAgent: ResourceProviderGetResult<Agent> | null) => {
+						if (newAgent) {
+							this.isLoading = false;
+							this.welcomeMessage = this.getWelcomeMessage(newAgent);
+						}
+					},
+					{ immediate: true }
+				);
+			}
 		}
 	},
 
