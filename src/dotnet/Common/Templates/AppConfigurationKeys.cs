@@ -980,6 +980,24 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:APIEndpoints:ContextAPI:Configuration
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileStorage:AccountName setting.
+        /// <para>Value description:<br/>The Azure Storage account for the FoundationaLLM Context API file management.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileStorage_AccountName =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileStorage:AccountName";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileStorage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileStorage_AuthenticationType =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileStorage:AuthenticationType";
+
+        #endregion
+
         #region FoundationaLLM:APIEndpoints:GatewayAPI:Essentials
         
         /// <summary>

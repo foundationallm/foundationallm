@@ -32,6 +32,7 @@ using FoundationaLLM.Common.Utils;
 using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
 using LongRunningOperation = FoundationaLLM.Common.Models.Orchestration.LongRunningOperation;
 using Message = FoundationaLLM.Common.Models.Conversation.Message;
+using FoundationaLLM.Common.Extensions;
 
 namespace FoundationaLLM.Core.Services;
 
@@ -115,10 +116,12 @@ public partial class CoreService(
     {
         ArgumentException.ThrowIfNullOrEmpty(chatSessionProperties.Name);
 
-        var newConversationId = Guid.NewGuid().ToString().ToLower();
+        var refId = Guid.NewGuid();
+        var newUniqueId = refId.ToString().ToLower();
+        var newConversationId = $"{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}-{refId.ToBase64String()}";
         Conversation newConversation = new()
         {
-            Id = newConversationId,
+            Id = newUniqueId,
             SessionId = newConversationId,
             Name = newConversationId,
             DisplayName = chatSessionProperties.Name,

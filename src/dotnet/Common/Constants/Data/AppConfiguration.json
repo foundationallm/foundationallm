@@ -1335,6 +1335,31 @@
 		]
 	},
 	{
+		"namespace": "APIEndpoints:ContextAPI:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section for the FoundationaLLM Context API."
+		},
+		"configuration_keys": [
+			{
+				"name": "FileStorage:AccountName",
+				"description": "The Azure Storage account for the FoundationaLLM Context API file management.",
+				"secret": "",
+				"value": "${env:CONTEXTAPI_FILEMANAGEMENT_AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "FileStorage:AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.9.7"
+			}
+		]
+	},
+	{
 		"namespace": "APIEndpoints:GatewayAPI:Essentials",
 		"dependency_injection_key": null,
 		"configuration_section": {

@@ -53,13 +53,20 @@ builder.AddCorsPolicies();
 // Add configurations to the container
 builder.AddInstanceProperties();
 
-builder.Services.AddScoped<ICallContext, CallContext>();
-builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
 builder.AddHttpClientFactoryService();
 
-//----------------------------
+//---------------------------
+// Scoped service
+//---------------------------
+
+builder.Services.AddScoped<ICallContext, CallContext>();
+builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
+builder.AddContextService();
+
+
+//---------------------------
 // Resource providers
-//----------------------------
+//---------------------------
 builder.AddResourceProviderCacheSettings();
 builder.AddResourceValidatorFactory();
 
