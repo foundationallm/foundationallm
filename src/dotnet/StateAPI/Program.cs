@@ -50,7 +50,7 @@ builder.AddOpenTelemetry(
     AppConfigurationKeys.FoundationaLLM_APIEndpoints_StateAPI_Essentials_AppInsightsConnectionString,
     ServiceNames.StateAPI);
 
-builder.Services.AddInstanceProperties(builder.Configuration);
+builder.AddInstanceProperties();
 
 // CORS policies
 builder.AddCorsPolicies();

@@ -7,10 +7,10 @@ using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Services.RequestProcessors;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -38,7 +38,7 @@ namespace FoundationaLLM.Management.API
             builder.Configuration.Sources.Clear();
             builder.Configuration.AddJsonFile("appsettings.json", false, true);
             builder.Configuration.AddEnvironmentVariables();
-            builder.Configuration.AddAzureAppConfiguration((Action<Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions>)(options =>
+            builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOptions>)(options =>
             {
                 options.Connect(builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]);
                 options.ConfigureKeyVault(options => { options.SetCredential(ServiceContext.AzureCredential); });
@@ -81,7 +81,7 @@ namespace FoundationaLLM.Management.API
             builder.Services.AddOptions<ClientBrandingConfiguration>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Branding));
 
-            builder.Services.AddInstanceProperties(builder.Configuration);
+            builder.AddInstanceProperties();
 
             // Add Azure ARM services
             builder.AddAzureResourceManager();

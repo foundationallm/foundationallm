@@ -7,14 +7,14 @@ using Xunit.Abstractions;
 namespace FoundationaLLM.Core.Examples.Concepts.Quota
 {
     /// <summary>
-    /// Example class for running the default FoundationaLLM agent completions in both session and sessionless modes.
+    /// Example class for testing local enforcement of quotas.
     /// </summary>
     public class Example_Quota_LocalEnforcement : TestBase, IClassFixture<TestFixture>
     {
         private readonly IQuotaService _quotaService;
 
         public Example_Quota_LocalEnforcement(ITestOutputHelper output, TestFixture fixture)
-            : base(output, fixture)
+            : base(1, output, fixture)
         {
             _quotaService = GetService<IQuotaService>();
         }
@@ -31,8 +31,8 @@ namespace FoundationaLLM.Core.Examples.Concepts.Quota
         {
             // Wait for all required background services to start.
             await Task.WhenAll([
-                StartEventsWorker(),
-                StartQuotaService()
+                StartEventsWorkers(),
+                WaitForQuotaServices()
             ]);
 
             WriteLine("============ FoundationaLLM Quota Local Enforcement - API Controller Tests ============");
@@ -49,7 +49,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Quota
             var evaluationResults = userWorkloads.SelectMany(x => x.Result).ToArray();
 
             // Stops the Azure Event Grid event processing infrastructure.
-            await StopEventsWorker();
+            await StopEventsWorkers();
 
             if (expectQuotaExceeded)
                 // We expect to see at least one situation where the quota has been exceeded.

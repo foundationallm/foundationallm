@@ -25,30 +25,29 @@ namespace FoundationaLLM.Core.Examples
     public class Example0010_AsynchronousVectorizationOfPDFFromDataLakeUsingGateway : TestBase, IClassFixture<TestFixture>
 	{
 		private readonly IVectorizationTestService _vectorizationTestService;        
-        private InstanceSettings _instanceSettings;
-
-        private string textPartitionProfileName = "text_partition_profile";
-        private string textEmbeddingProfileName = "text_embedding_profile_gateway";
-        private string indexingProfileName = "indexing_profile_really_big";
-        private string genericTextEmbeddingProfileName = "text_embedding_profile_generic";
-        private string dataSourceName = "datalake_vectorization_input";
-        private string containerName = "vectorization-input";
-        private string blobName = "really_big.pdf";
-        private string indexName = "reallybig";
-        private string dataSourceObjectId;
-        private string id = String.Empty;
-        private BlobStorageServiceSettings? _settings;
-        private string accountNameAppConfigKey;
-        private string authenticationTypeAppConfigKey;
+        private readonly InstanceSettings _instanceSettings;
+        private readonly string textPartitionProfileName = "text_partition_profile";
+        private readonly string textEmbeddingProfileName = "text_embedding_profile_gateway";
+        private readonly string indexingProfileName = "indexing_profile_really_big";
+        private readonly string genericTextEmbeddingProfileName = "text_embedding_profile_generic";
+        private readonly string dataSourceName = "datalake_vectorization_input";
+        private readonly string containerName = "vectorization-input";
+        private readonly string blobName = "really_big.pdf";
+        private readonly string indexName = "reallybig";
+        private readonly string dataSourceObjectId;
+        private readonly string id = String.Empty;
+        private readonly BlobStorageServiceSettings? _settings;
+        private readonly string accountNameAppConfigKey;
+        private readonly string authenticationTypeAppConfigKey;
 
         public Example0010_AsynchronousVectorizationOfPDFFromDataLakeUsingGateway(ITestOutputHelper output, TestFixture fixture)
-			: base(output, fixture)
+			: base(1, output, fixture)
 		{
             _vectorizationTestService = GetService<IVectorizationTestService>();
             _instanceSettings = _vectorizationTestService.InstanceSettings;
             dataSourceObjectId = $"/instances/{_instanceSettings.Id}/providers/FoundationaLLM.DataSource/dataSources/{dataSourceName}";
             id = Guid.NewGuid().ToString();
-            _settings = ServiceProvider.GetRequiredService<IOptionsMonitor<BlobStorageServiceSettings>>()
+            _settings = GetService<IOptionsMonitor<BlobStorageServiceSettings>>()
                     .Get(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization_Storage);
             accountNameAppConfigKey = $"FoundationaLLM:DataSources:{dataSourceName}:AccountName";
             authenticationTypeAppConfigKey = $"FoundationaLLM:DataSources:{dataSourceName}:AuthenticationType";
@@ -112,30 +111,30 @@ namespace FoundationaLLM.Core.Examples
 
         private async Task RunExampleAsync()
         {           
-            ContentIdentifier ci = new ContentIdentifier
+            ContentIdentifier ci = new()
             {
                 DataSourceObjectId = dataSourceObjectId,                
-                MultipartId = new List<string>
-                {
+                MultipartId =
+                [
                     $"{_settings!.AccountName}.blob.core.windows.net",
                     containerName,
                     blobName
-                },
-                CanonicalId = containerName + "/" + blobName.Substring(0, blobName.LastIndexOf('.'))
+                ],
+                CanonicalId = $"{containerName}/{(blobName[..blobName.LastIndexOf('.')])}"
             };
 
             WriteLine($"Create the vectorization request: {id} via the Management API");
             List<VectorizationStep> steps =
             [
-                new VectorizationStep { Id = "extract", Parameters = new Dictionary<string, string>() },
+                new VectorizationStep { Id = "extract", Parameters = [] },
                 new VectorizationStep { Id = "partition", Parameters = new Dictionary<string, string>() { { "text_partitioning_profile_name", textPartitionProfileName } } },
                 new VectorizationStep { Id = "embed", Parameters = new Dictionary<string, string>() { { "text_embedding_profile_name", textEmbeddingProfileName } } },
                 new VectorizationStep { Id = "index", Parameters = new Dictionary<string, string>() { { "indexing_profile_name", indexingProfileName } } },
             ];            
             var request = new VectorizationRequest
             {
-                RemainingSteps = new List<string> { "extract", "partition", "embed", "index" },
-                CompletedSteps = new List<string>(),
+                RemainingSteps = ["extract", "partition", "embed", "index"],
+                CompletedSteps = [],
                 ProcessingType = VectorizationProcessingType.Asynchronous,
                 ContentIdentifier = ci,
                 Name = id,
@@ -147,13 +146,9 @@ namespace FoundationaLLM.Core.Examples
 
             WriteLine($"Issue the process action on the vectorization request: {id} via the Management API");
             //Issue the process action on the vectorization request
-            var vectorizationResult = await _vectorizationTestService.ProcessVectorizationRequest(request);
-
-            // Ensure the vectorization request was successful
-            if (vectorizationResult == null)
-                throw new Exception("Vectorization request failed to complete successfully. Invalid result was returned.");
-                
-            if(vectorizationResult.IsSuccess == false)
+            var vectorizationResult = await _vectorizationTestService.ProcessVectorizationRequest(request)
+                ?? throw new Exception("Vectorization request failed to complete successfully. Invalid result was returned.");
+            if (vectorizationResult.IsSuccess == false)
                 throw new Exception($"Vectorization request failed to complete successfully. Message: {vectorizationResult.ErrorMessage}");
 
             WriteLine($"Get the initial processing state for the vectorization request: {id} via the Management API");

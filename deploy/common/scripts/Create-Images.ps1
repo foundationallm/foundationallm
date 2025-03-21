@@ -40,7 +40,11 @@ $workflows =
 'prompt-hub-api-release.yml',
 'semantic-kernel-api-release.yml',
 'vectorization-api-release.yml',
-'vectorization-job-release.yml'
+'vectorization-job-release.yml',
+'context-api-release.yml',
+'datapipeline-api-release.yml',
+'datapipeline-frontendworker-release.yml',
+'datapipeline-backendworker-release.yml'
 
 Write-Host "Running FLLM Workflows from the ${branch} branch."
 

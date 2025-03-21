@@ -181,3 +181,59 @@ services:
       DetailedErrors: 'true'
       Logging__Loglevel__Default: 'Debug'
       Logging__Loglevel__Microsoft__AspNetCore: 'Debug'
+
+  context-api:
+    image: ${REGISTRY:-foundationallm}/context-api:${TAG:-latest}
+    build:
+      context: ../../../src/
+      dockerfile: ./dotnet/ContextAPI/Dockerfile
+    ports:
+    - "80:80"
+    environment:
+      DOTNET_URLS: http://+:80
+      ASPNETCORE_ENVIRONMENT: Production
+      AllowedHosts: '*'
+      Logging__Loglevel__Default: 'Debug'
+      Logging__Loglevel__Microsoft__AspNetCore: 'Debug'
+
+  datapipeline-api:
+    image: ${REGISTRY:-foundationallm}/datapipeline-api:${TAG:-latest}
+    build:
+      context: ../../../src/
+      dockerfile: ./dotnet/DataPipelineAPI/Dockerfile
+    ports:
+    - "80:80"
+    environment:
+      DOTNET_URLS: http://+:80
+      ASPNETCORE_ENVIRONMENT: Production
+      AllowedHosts: '*'
+      Logging__Loglevel__Default: 'Debug'
+      Logging__Loglevel__Microsoft__AspNetCore: 'Debug'
+
+  datapipeline-backendworker:
+    image: ${REGISTRY:-foundationallm}/datapipeline-backendworker:${TAG:-latest}
+    build:
+      context: ../../../src/
+      dockerfile: ./dotnet/DataPipelineBackendWorker/Dockerfile
+    ports:
+    - "80:80"
+    environment:
+      DOTNET_URLS: http://+:80
+      ASPNETCORE_ENVIRONMENT: Production
+      AllowedHosts: '*'
+      Logging__Loglevel__Default: 'Debug'
+      Logging__Loglevel__Microsoft__AspNetCore: 'Debug'
+
+  datapipeline-frontendworker:
+    image: ${REGISTRY:-foundationallm}/datapipeline-frontendworker:${TAG:-latest}
+    build:
+      context: ../../../src/
+      dockerfile: ./dotnet/DataPipelineFrontendWorker/Dockerfile
+    ports:
+    - "80:80"
+    environment:
+      DOTNET_URLS: http://+:80
+      ASPNETCORE_ENVIRONMENT: Production
+      AllowedHosts: '*'
+      Logging__Loglevel__Default: 'Debug'
+      Logging__Loglevel__Microsoft__AspNetCore: 'Debug'

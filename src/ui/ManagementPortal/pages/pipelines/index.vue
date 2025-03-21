@@ -2,7 +2,7 @@
 	<main id="main-content">
 		<div style="display: flex">
 			<div style="flex: 1">
-				<h2 class="page-header">Pipelines</h2>
+				<h2 class="page-header">Data Pipelines</h2>
 				<div class="page-subheader">The following pipelines are available.</div>
 			</div>
 
@@ -39,7 +39,7 @@
 					<div role="alert" aria-live="polite">No vector stores found.</div>
 				</template>
 
-				<template #loading>Loading vector stores. Please wait.</template>
+				<template #loading>Loading pipelines. Please wait.</template>
 
 				<!-- Name -->
 				<Column
@@ -70,7 +70,7 @@
 				></Column>
 
 				<!-- Trigger -->
-				<Column
+				<!-- <Column
 					field="resource.trigger_type"
 					header="Trigger"
 					sortable
@@ -80,7 +80,7 @@
 						},
 						sortIcon: { style: { color: 'var(--primary-text)' } },
 					}"
-				></Column>
+				></Column> -->
 
 				<!-- Active -->
 				<Column
@@ -96,7 +96,7 @@
 				></Column>
 
 				<!-- View -->
-				<Column
+				<!-- <Column
 					header-style="width:6rem"
 					style="text-align: center"
 					:pt="{
@@ -111,10 +111,31 @@
 							<Button link label="View" :aria-label="`View ${data.resource.name}`" />
 						</NuxtLink>
 					</template>
+				</Column> -->
+
+				<!-- Edit -->
+				<Column
+					header="Edit"
+					header-style="width:6rem"
+					style="text-align: center"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						headerContent: { style: { justifyContent: 'center' } },
+					}"
+				>
+					<template #body="{ data }">
+						<NuxtLink :to="'/pipelines/edit/' + data.resource.name" class="table__button">
+							<Button link>
+								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
+							</Button>
+						</NuxtLink>
+					</template>
 				</Column>
 
 				<!-- Run -->
-				<Column
+				<!-- <Column
 					header-style="width:6rem"
 					style="text-align: center"
 					:pt="{
@@ -128,11 +149,11 @@
 						<Button
 							link
 							label="Run"
-							:aria-label="`Delete ${data.resource.name}`"
-							@click="vectorStoreToDelete = data.resource"
+							:aria-label="`Run ${data.resource.name}`"
+							@click="dataPipelineToRun = data"
 						/>
 					</template>
-				</Column>
+				</Column> -->
 			</DataTable>
 		</div>
 
@@ -194,59 +215,29 @@
 
 <script lang="ts">
 import api from '@/js/api';
-import type { /* DataSource, */ ResourceProviderGetResult } from '@/js/types';
+import type { ResourceProviderGetResult } from '@/js/types';
 
 export default {
 	name: 'Pipelines',
 
 	data() {
 		return {
-			// dataSources: [] as ResourceProviderGetResult<DataSource>[],
 			pipelines: [] as ResourceProviderGetResult<Pipeline>[],
 			pipelineToView: null,
-			// vectorStores: [] as [],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
-			// dataSourceToDelete: null as DataSource | null,
-			// vectorStoreToDelete: null,
 		};
 	},
 
-	watch: {
-		pipelineToView(newValue) {
-			if (newValue) {
-				// this.getPipelineRuns(newValue.name);
-				this.getPipeline(newValue.name);
-			}
-		},
-	},
-
 	async created() {
-		// await this.getAgentDataSources();
-		// await this.getVectorStores();
 		await this.getPipelines();
 	},
 
 	methods: {
-		// async getAgentDataSources() {
-		// 	this.loading = true;
-		// 	try {
-		// 		this.dataSources = await api.getAgentDataSources();
-		// 	} catch (error) {
-		// 		this.$toast.add({
-		// 			severity: 'error',
-		// 			detail: error?.response?._data || error,
-		// 			life: 5000,
-		// 		});
-		// 	}
-		// 	this.loading = false;
-		// },
-
 		async getPipelines() {
 			this.loading = true;
 			try {
 				this.pipelines = await api.getPipelines();
-				console.log(this.pipelines);
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',
@@ -257,18 +248,17 @@ export default {
 			this.loading = false;
 		},
 
-		async getPipeline(pipelineName: string) {
-			try {
-				const pipeline = await api.getPipeline(pipelineName);
-				console.log(pipeline);
-			} catch (error) {
-				this.$toast.add({
-					severity: 'error',
-					detail: error?.response?._data || error,
-					life: 5000,
-				});
-			}
-		},
+		// async getPipeline(pipelineName: string) {
+		// 	try {
+		// 		const pipeline = await api.getPipeline(pipelineName);
+		// 	} catch (error) {
+		// 		this.$toast.add({
+		// 			severity: 'error',
+		// 			detail: error?.response?._data || error,
+		// 			life: 5000,
+		// 		});
+		// 	}
+		// },
 
 		// async getPipelineRuns(pipelineName: string) {
 		//     try {

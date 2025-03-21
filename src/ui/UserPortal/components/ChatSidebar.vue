@@ -47,7 +47,7 @@
 					<li v-if="!sessions" role="listitem" class="chat-list-item">No sessions</li>
 					<li
 						v-for="session in sessions"
-						:key="session.id"
+						:key="session.sessionId"
 						class="chat-sidebar__chat chat-list-item"
 						role="listitem"
 						@click="handleSessionSelected(session)"
@@ -56,9 +56,9 @@
 						<div
 							class="chat"
 							:class="{
-								'chat--selected': currentSession?.id === session.id,
-								'chat--editing': session?.id === sessionToRename?.id,
-								'chat--deleting': session?.id === sessionToDelete?.id,
+								'chat--selected': currentSession?.sessionId === session.sessionId,
+								'chat--editing': session?.sessionId === sessionToRename?.sessionId,
+								'chat--deleting': session?.sessionId === sessionToDelete?.sessionId,
 							}"
 						>
 							<!-- Chat name -->

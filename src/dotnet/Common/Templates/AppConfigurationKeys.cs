@@ -130,18 +130,22 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:Quota
+
+        #endregion
+
         #region FoundationaLLM:Quota:Storage
         
         /// <summary>
         /// The app configuration key for the FoundationaLLM:Quota:Storage:AuthenticationType setting.
-        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Blob Storage account used by FoundationaLLM quota management. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM quota management service. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
         /// </summary>
         public const string FoundationaLLM_Quota_Storage_AuthenticationType =
             "FoundationaLLM:Quota:Storage:AuthenticationType";
         
         /// <summary>
         /// The app configuration key for the FoundationaLLM:Quota:Storage:AccountName setting.
-        /// <para>Value description:<br/>The name of the Azure Blob Storage account used by FoundationaLLM quota management.</para>
+        /// <para>Value description:<br/>The name of the Azure Blob Storage account used by the FoundationaLLM quota management service.</para>
         /// </summary>
         public const string FoundationaLLM_Quota_Storage_AccountName =
             "FoundationaLLM:Quota:Storage:AccountName";
@@ -904,6 +908,78 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:APIKey setting.
+        /// <para>Value description:<br/>The name of the Azure Key Vault secret holding the API key for the Data Pipeline API.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Essentials_APIKey =
+            "FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:APIKey";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:AppInsightsConnectionString setting.
+        /// <para>Value description:<br/>The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Data Pipeline API.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Essentials_AppInsightsConnectionString =
+            "FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:AppInsightsConnectionString";
+
+        #endregion
+
+        #region FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials:APIKey setting.
+        /// <para>Value description:<br/>The name of the Azure Key Vault secret holding the API key for the Data Pipeline Frontend Worker service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Essentials_APIKey =
+            "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials:APIKey";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials:AppInsightsConnectionString setting.
+        /// <para>Value description:<br/>The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Data Pipeline Frontend Worker service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Essentials_AppInsightsConnectionString =
+            "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials:AppInsightsConnectionString";
+
+        #endregion
+
+        #region FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:APIKey setting.
+        /// <para>Value description:<br/>The name of the Azure Key Vault secret holding the API key for the Data Pipeline Backend Worker service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Essentials_APIKey =
+            "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:APIKey";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:AppInsightsConnectionString setting.
+        /// <para>Value description:<br/>The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Data Pipeline Backend Worker service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Essentials_AppInsightsConnectionString =
+            "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:AppInsightsConnectionString";
+
+        #endregion
+
+        #region FoundationaLLM:APIEndpoints:ContextAPI:Essentials
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Essentials:APIKey setting.
+        /// <para>Value description:<br/>The name of the Azure Key Vault secret holding the API key for the Context API.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Essentials_APIKey =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Essentials:APIKey";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Essentials:AppInsightsConnectionString setting.
+        /// <para>Value description:<br/>The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Context API.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Essentials_AppInsightsConnectionString =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Essentials:AppInsightsConnectionString";
+
+        #endregion
+
         #region FoundationaLLM:APIEndpoints:GatewayAPI:Essentials
         
         /// <summary>
@@ -1506,6 +1582,34 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Events_Profiles_GatewayAPI =
             "FoundationaLLM:Events:Profiles:GatewayAPI";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Events:Profiles:ContextAPI setting.
+        /// <para>Value description:<br/>The settings used by the Context API to process Azure Event Grid events.</para>
+        /// </summary>
+        public const string FoundationaLLM_Events_Profiles_ContextAPI =
+            "FoundationaLLM:Events:Profiles:ContextAPI";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Events:Profiles:DataPipelineAPI setting.
+        /// <para>Value description:<br/>The settings used by the Data Pipeline API to process Azure Event Grid events.</para>
+        /// </summary>
+        public const string FoundationaLLM_Events_Profiles_DataPipelineAPI =
+            "FoundationaLLM:Events:Profiles:DataPipelineAPI";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker setting.
+        /// <para>Value description:<br/>The settings used by the Data Pipeline Frontend Worker to process Azure Event Grid events.</para>
+        /// </summary>
+        public const string FoundationaLLM_Events_Profiles_DataPipelineFrontendWorker =
+            "FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Events:Profiles:DataPipelineBackendWorker setting.
+        /// <para>Value description:<br/>The settings used by the Data Pipeline Backend Worker to process Azure Event Grid events.</para>
+        /// </summary>
+        public const string FoundationaLLM_Events_Profiles_DataPipelineBackendWorker =
+            "FoundationaLLM:Events:Profiles:DataPipelineBackendWorker";
 
         #endregion
 
@@ -1534,6 +1638,22 @@ namespace FoundationaLLM.Common.Constants.Configuration
         #endregion
 
         #region FoundationaLLM:Events:Profiles:GatewayAPI
+
+        #endregion
+
+        #region FoundationaLLM:Events:Profiles:ContextAPI
+
+        #endregion
+
+        #region FoundationaLLM:Events:Profiles:DataPipelineAPI
+
+        #endregion
+
+        #region FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker
+
+        #endregion
+
+        #region FoundationaLLM:Events:Profiles:DataPipelineBackendWorker
 
         #endregion
     }

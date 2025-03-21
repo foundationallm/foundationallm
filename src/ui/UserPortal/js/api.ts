@@ -38,6 +38,10 @@ export default {
 		this.apiUrl = url.replace(/\/$/, '');
 	},
 
+	getApiUrl() {
+		return this.apiUrl;
+	},
+
 	instanceId: null as string | null,
 	setInstanceId(instanceId: string) {
 		this.instanceId = instanceId;

@@ -89,6 +89,10 @@ var backendServices = {
   'semantic-kernel-api': { displayName: 'SemanticKernelAPI' }
   'state-api': { displayName: 'StateAPI' }
   'vectorization-job': { displayName: 'VectorizationWorker' }
+  'context-api': { displayName: 'ContextAPI' }
+  'datapipeline-api': { displayName: 'DataPipelineAPI' }
+  'datapipeline-frontendworker': { displayName: 'DataPipelineFrontendWorker' }
+  'datapipeline-backendworker': { displayName: 'DataPipelineBackendWorker' }
 }
 var backendServiceNames = [for service in items(backendServices): service.key]
 
@@ -466,6 +470,58 @@ module stateApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
   params: {
     accountName: cosmosDb.name
     principalId: srBackend[indexOf(backendServiceNames, 'state-api')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
+    }
+  }
+  dependsOn: [srBackend]
+}
+
+module contextApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
+  scope: resourceGroup(storageResourceGroupName)
+  name: 'context-api-cosmos-role'
+  params: {
+    accountName: cosmosDb.name
+    principalId: srBackend[indexOf(backendServiceNames, 'context-api')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
+    }
+  }
+  dependsOn: [srBackend]
+}
+
+module dataPipelineApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
+  scope: resourceGroup(storageResourceGroupName)
+  name: 'datapipeline-api-cosmos-role'
+  params: {
+    accountName: cosmosDb.name
+    principalId: srBackend[indexOf(backendServiceNames, 'datapipeline-api')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
+    }
+  }
+  dependsOn: [srBackend]
+}
+
+module dataPipelineFrontendWorkerCosmosRoles './modules/sqlRoleAssignments.bicep' = {
+  scope: resourceGroup(storageResourceGroupName)
+  name: 'datapipeline-frontendworker-cosmos-role'
+  params: {
+    accountName: cosmosDb.name
+    principalId: srBackend[indexOf(backendServiceNames, 'datapipeline-frontendworker')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
+    }
+  }
+  dependsOn: [srBackend]
+}
+
+module dataPipelineBackendWorkerCosmosRoles './modules/sqlRoleAssignments.bicep' = {
+  scope: resourceGroup(storageResourceGroupName)
+  name: 'datapipeline-backendworker-cosmos-role'
+  params: {
+    accountName: cosmosDb.name
+    principalId: srBackend[indexOf(backendServiceNames, 'datapipeline-backendworker')].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
     }

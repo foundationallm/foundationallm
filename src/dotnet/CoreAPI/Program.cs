@@ -83,7 +83,7 @@ namespace FoundationaLLM.Core.API
             // CORS policies
             builder.AddCorsPolicies();
 
-            builder.Services.AddInstanceProperties(builder.Configuration);
+            builder.AddInstanceProperties();
 
             builder.Services.AddOptions<ClientBrandingConfiguration>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Branding));

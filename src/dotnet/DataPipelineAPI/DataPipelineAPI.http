@@ -1,0 +1,6 @@
+@DataPipelineAPI_HostAddress = http://localhost:5044
+
+GET {{DataPipelineAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
