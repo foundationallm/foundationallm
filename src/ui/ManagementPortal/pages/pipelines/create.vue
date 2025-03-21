@@ -267,16 +267,17 @@
 											(dep) => dep.plugin_object_id === stage.plugin_object_id,
 										)?.selection_type === 'Single'
 									"
-									v-model="stage.plugin_dependencies[0]"
+									v-model="stage.plugin_dependencies[0].plugin_object_id"
 									:options="
 										stagePluginsDependenciesOptions.find(
 											(dep) => dep.plugin_object_id === stage.plugin_object_id,
 										)?.dependencyInfo || []
 									"
 									option-label="dependencyLabel"
-									option-value="dependencies"
+									option-value="dependencies.plugin_object_id"
 									class="w-100"
 									placeholder="Select a dependency"
+									@change="handleStagePluginDependencyChange($event, stage.plugin_object_id, index)"
 								/>
 								<MultiSelect
 									v-if="
@@ -291,7 +292,7 @@
 										)?.dependencyInfo || []
 									"
 									option-label="dependencyLabel"
-									option-value="dependencies"
+									option-value="dependencies.plugin_object_id"
 									class="w-100"
 									placeholder="Select dependencies"
 								/>
@@ -732,25 +733,10 @@ export default {
 			}
 		},
 
-		handleStagePluginDependencyChange(event: any, index: number) {
-			const selectedDependencies = event.value || [];
-			this.selectedStagePlugins[index].plugin_dependencies = selectedDependencies.map(
-				(dependency) => {
-					const selectedDependency = this.stagePluginsOptions.find(
-						(p) => p.object_id === dependency.plugin_object_id,
-					);
-					return {
-						plugin_object_id: selectedDependency ? selectedDependency.object_id : '',
-						plugin_parameters:
-							selectedDependency && selectedDependency.parameters
-								? selectedDependency.parameters.map((param) => ({
-										parameter_metadata: param,
-										default_value: null,
-									}))
-								: [],
-					};
-				},
-			);
+		handleStagePluginDependencyChange(event: any, pluginObjectId: string, index: number) {
+			const selectedDependencyOption = this.stagePluginsDependenciesOptions.find((p) => p.plugin_object_id === pluginObjectId);
+			const selectedDependency = selectedDependencyOption.dependencyInfo.find((p) => p.dependencies.plugin_object_id === event.value);
+			this.selectedStagePlugins[index].plugin_dependencies[0].plugin_parameters = selectedDependency.dependencies.plugin_parameters;
 		},
 
 		addStage() {
