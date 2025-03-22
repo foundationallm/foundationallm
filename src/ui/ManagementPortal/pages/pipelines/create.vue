@@ -851,7 +851,7 @@ export default {
 					plugin_object_id: stage.plugin_object_id,
 					plugin_parameters: stage.plugin_parameters,
 					plugin_dependencies: stage.plugin_dependencies,
-					collapsed: false,
+					collapsed: true,
 				});
 
 				this.selectedDependencyIdsMap[stage.name] = stage.plugin_dependencies 
