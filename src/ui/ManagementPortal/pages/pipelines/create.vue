@@ -389,7 +389,7 @@
 						</div>
 						<div class="step-header span-2 mb-2">Trigger Parameters:</div>
 						<div class="span-2">
-							<div v-for="(param, index) in triggerParameters" :key="index" class="mb-2">
+							<div v-for="(param, index) in triggerParameters[trigger.name]" :key="index" class="mb-2">
 								<label>{{ param.parameter_metadata.name }}:</label>
 								<div style="font-size: 12px">
 									{{ param.key }}
@@ -509,6 +509,7 @@ export default {
 			],
 
 			triggerParameters: [] as any[],
+			triggerParametersMap: {} as any,
 
 			pipeline: {
 				type: 'data-pipeline',
@@ -877,81 +878,62 @@ export default {
 		},
 
 		async buildTriggerParameters() {
-			const parameterValues: any[] = [];
+			// // Check if there are existing trigger parameters
+			// const existingTriggerParameters =
+			// 	this.pipeline.triggers.length > 0 ? this.pipeline.triggers[0].parameter_values : {};
+			const existingTriggerParameters = {};
 
-			// Check if there are existing trigger parameters
-			const existingTriggerParameters =
-				this.pipeline.triggers.length > 0 ? this.pipeline.triggers[0].parameter_values : {};
+			this.pipeline.triggers.forEach((trigger) => {
+				existingTriggerParameters[trigger.name] = trigger.parameter_values;
+			});
 
-			// Data Source Parameters
-			for (const param of this.pipeline.data_source.plugin_parameters) {
-				const key = `DataSource.${this.pipeline.data_source.name}.${param.parameter_metadata.name}`;
-				const value =
-					existingTriggerParameters[key] !== undefined
-						? existingTriggerParameters[key]
-						: param.default_value;
-				this.pipeline.triggers.forEach((trigger) => {
-					if (!trigger.parameter_values[key]) {
-						trigger.parameter_values[key] = null;
-					}
-				});
-				const resourceOptions = await this.getResourceOptions(
-					param.parameter_metadata.name,
-					this.pipeline.data_source.plugin_object_id,
-				);
-				const type = 'data-source';
-				parameterValues.push({
-					parameter_metadata: param.parameter_metadata,
-					key,
-					value,
-					resourceOptions,
-					type,
-				});
-			}
-
-			// Recursive function to handle stages and their dependencies
-			async function handleStages(stages: any[]) {
-				for (const stage of stages) {
-					// Stage Parameters
-					if (stage.plugin_parameters) {
-						for (const param of stage.plugin_parameters) {
-							const key = `Stage.${stage.name}.${param.parameter_metadata.name}`;
-							const value =
-								existingTriggerParameters[key] !== undefined
-									? existingTriggerParameters[key]
-									: param.default_value;
-							const resourceOptions = await this.getResourceOptions(
-								param.parameter_metadata.name,
-								stage.plugin_object_id,
-							);
-							const type = 'stage';
-							const stageName = stage.name;
-							parameterValues.push({
-								parameter_metadata: param.parameter_metadata,
-								key,
-								value,
-								resourceOptions,
-								type,
-								stageName,
-							});
+			this.pipeline.triggers.forEach(async (trigger) => {
+				const parameterValues: any[] = [];
+				// Data Source Parameters
+				for (const param of this.pipeline.data_source.plugin_parameters) {
+					const key = `DataSource.${this.pipeline.data_source.name}.${param.parameter_metadata.name}`;
+					const value =
+						existingTriggerParameters[trigger.name][key] !== undefined
+							? existingTriggerParameters[trigger.name][key]
+							: param.default_value;
+					this.pipeline.triggers.forEach((trigger) => {
+						if (!trigger.parameter_values[key]) {
+							trigger.parameter_values[key] = null;
 						}
+					});
+					const resourceOptions = await this.getResourceOptions(
+						param.parameter_metadata.name,
+						this.pipeline.data_source.plugin_object_id,
+					);
+					const type = 'data-source';
+					parameterValues.push({
+						parameter_metadata: param.parameter_metadata,
+						key,
+						value,
+						resourceOptions,
+						type,
+					});
+					if (!this.triggerParametersMap[key]) {
+						this.triggerParametersMap[key] = param.default_value;
 					}
+				}
 
-					// Dependency Plugin Parameters
-					if (stage.plugin_dependencies) {
-						for (const dep of stage.plugin_dependencies) {
-							for (const param of dep.plugin_parameters) {
-								const depPluginName = dep.plugin_object_id.split('/').pop() || '';
-								const key = `Stage.${stage.name}.Dependency.${depPluginName}.${param.parameter_metadata.name}`;
+				// Recursive function to handle stages and their dependencies
+				async function handleStages(stages: any[]) {
+					for (const stage of stages) {
+						// Stage Parameters
+						if (stage.plugin_parameters) {
+							for (const param of stage.plugin_parameters) {
+								const key = `Stage.${stage.name}.${param.parameter_metadata.name}`;
 								const value =
-									existingTriggerParameters[key] !== undefined
-										? existingTriggerParameters[key]
+									existingTriggerParameters[trigger.name][key] !== undefined
+										? existingTriggerParameters[trigger.name][key]
 										: param.default_value;
 								const resourceOptions = await this.getResourceOptions(
 									param.parameter_metadata.name,
-									dep.plugin_object_id,
+									stage.plugin_object_id,
 								);
-								const type = 'dependency';
+								const type = 'stage';
 								const stageName = stage.name;
 								parameterValues.push({
 									parameter_metadata: param.parameter_metadata,
@@ -961,21 +943,55 @@ export default {
 									type,
 									stageName,
 								});
+								if (!this.triggerParametersMap[key]) {
+									this.triggerParametersMap[key] = param.default_value;
+								}
 							}
 						}
-					}
 
-					// Handle next stages recursively
-					if (stage.next_stages) {
-						await handleStages.call(this, stage.next_stages);
+						// Dependency Plugin Parameters
+						if (stage.plugin_dependencies) {
+							for (const dep of stage.plugin_dependencies) {
+								for (const param of dep.plugin_parameters) {
+									const depPluginName = dep.plugin_object_id.split('/').pop() || '';
+									const key = `Stage.${stage.name}.Dependency.${depPluginName}.${param.parameter_metadata.name}`;
+									const value =
+										existingTriggerParameters[trigger.name][key] !== undefined
+											? existingTriggerParameters[trigger.name][key]
+											: param.default_value;
+									const resourceOptions = await this.getResourceOptions(
+										param.parameter_metadata.name,
+										dep.plugin_object_id,
+									);
+									const type = 'dependency';
+									const stageName = stage.name;
+									parameterValues.push({
+										parameter_metadata: param.parameter_metadata,
+										key,
+										value,
+										resourceOptions,
+										type,
+										stageName,
+									});
+									if (!this.triggerParametersMap[key]) {
+										this.triggerParametersMap[key] = param.default_value;
+									}
+								}
+							}
+						}
+
+						// Handle next stages recursively
+						if (stage.next_stages) {
+							await handleStages.call(this, stage.next_stages);
+						}
 					}
 				}
-			}
 
-			// Start with the initial stages
-			await handleStages.call(this, this.pipeline.starting_stages);
+				// Start with the initial stages
+				await handleStages.call(this, this.pipeline.starting_stages);
 
-			this.triggerParameters = parameterValues;
+				this.triggerParameters[trigger.name] = parameterValues;
+			});
 		},
 
 		handleDragStart(index: number) {
@@ -993,16 +1009,14 @@ export default {
 		},
 
 		addTrigger() {
-			const parameterValues = {};
-			this.triggerParameters.forEach((param) => {
-				parameterValues[param.key] = null;
-			});
+			// this.buildTriggerParameters();
 			this.pipeline.triggers.push({
 				name: `Trigger${this.pipeline.triggers.length + 1}`,
 				trigger_type: 'Schedule',
 				trigger_cron_schedule: '0 6 * * *',
-				parameter_values: parameterValues,
+				parameter_values: { ...this.triggerParametersMap },
 			});
+			this.buildTriggerParameters();
 		},
 
 		removeTrigger(index) {
