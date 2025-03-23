@@ -37,7 +37,7 @@ namespace FoundationaLLM.Common.Services.Azure
         private readonly Lazy<Task<Container>> _userProfiles;
         private Task<Container> _userProfilesTask => _userProfiles.Value;
         private readonly Database _database;
-        private readonly CosmosDbSettings _settings;
+        private readonly AzureCosmosDBSettings _settings;
         private readonly ResiliencePipeline _resiliencePipeline;
         private readonly ILogger _logger;
 
@@ -48,7 +48,7 @@ namespace FoundationaLLM.Common.Services.Azure
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureCosmosDBService"/> class.
         /// </summary>
-        /// <param name="settings">The <see cref="CosmosDbSettings"/> settings retrieved
+        /// <param name="settings">The <see cref="AzureCosmosDBSettings"/> settings retrieved
         /// by the injected <see cref="IOptions{TOptions}"/>.</param>
         /// <param name="client">The Cosmos DB client.</param>
         /// <param name="logger">The logging interface used to log under the
@@ -56,7 +56,7 @@ namespace FoundationaLLM.Common.Services.Azure
         /// <exception cref="ArgumentException">Thrown if any of the required settings
         /// are null or empty.</exception>
         public AzureCosmosDBService(
-            IOptions<CosmosDbSettings> settings,
+            IOptions<AzureCosmosDBSettings> settings,
             CosmosClient client,
             ILogger<AzureCosmosDBService> logger)
         {

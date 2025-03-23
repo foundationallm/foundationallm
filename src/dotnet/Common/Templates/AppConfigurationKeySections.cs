@@ -43,7 +43,7 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:ResourceProvidersCache";
         
         /// <summary>
-        /// Configuration section used to identify the storage settings for FoundationaLLM quota management.
+        /// Configuration section used to identify the storage settings for the FoundationaLLM quota management service.
         /// </summary>
         public const string FoundationaLLM_Quota_Storage =
             "FoundationaLLM:Quota:Storage";
@@ -241,6 +241,36 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:VectorizationWorker:Essentials";
         
         /// <summary>
+        /// Configuration section used to identify the essential settings for the Data Pipeline API.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Essentials =
+            "FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials";
+        
+        /// <summary>
+        /// Configuration section used to identify the essential settings for the Data Pipeline Frontend Worker service.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Essentials =
+            "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials";
+        
+        /// <summary>
+        /// Configuration section used to identify the essential settings for the Data Pipeline Backend Worker service.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Essentials =
+            "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials";
+        
+        /// <summary>
+        /// Configuration section used to identify the essential settings for the Context API.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Essentials =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Essentials";
+        
+        /// <summary>
+        /// Configuration section for the FoundationaLLM Context API.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration";
+        
+        /// <summary>
         /// Configuration section used to identify the essential settings for the Gateway API.
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_GatewayAPI_Essentials =
@@ -401,5 +431,29 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Events_Profiles_GatewayAPI =
             "FoundationaLLM:Events:Profiles:GatewayAPI";
+        
+        /// <summary>
+        /// Configuration section used to identify the settings for the events infrastructure used by the Context API.
+        /// </summary>
+        public const string FoundationaLLM_Events_Profiles_ContextAPI =
+            "FoundationaLLM:Events:Profiles:ContextAPI";
+        
+        /// <summary>
+        /// Configuration section used to identify the settings for the events infrastructure used by the Data Pipeline API.
+        /// </summary>
+        public const string FoundationaLLM_Events_Profiles_DataPipelineAPI =
+            "FoundationaLLM:Events:Profiles:DataPipelineAPI";
+        
+        /// <summary>
+        /// Configuration section used to identify the settings for the events infrastructure used by the Data Pipeline Frontend Worker.
+        /// </summary>
+        public const string FoundationaLLM_Events_Profiles_DataPipelineFrontendWorker =
+            "FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker";
+        
+        /// <summary>
+        /// Configuration section used to identify the settings for the events infrastructure used by the Data Pipeline Backend Worker.
+        /// </summary>
+        public const string FoundationaLLM_Events_Profiles_DataPipelineBackendWorker =
+            "FoundationaLLM:Events:Profiles:DataPipelineBackendWorker";
     }
 }

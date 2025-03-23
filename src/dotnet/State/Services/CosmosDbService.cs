@@ -20,13 +20,13 @@ namespace FoundationaLLM.State.Services
     public class CosmosDbService : ICosmosDbService
     {
         private readonly Container _state;
-        private readonly CosmosDbSettings _settings;
+        private readonly AzureCosmosDBSettings _settings;
         private readonly ILogger _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CosmosDbService"/> class.
         /// </summary>
-        /// <param name="settings">The <see cref="CosmosDbSettings"/> settings retrieved
+        /// <param name="settings">The <see cref="AzureCosmosDBSettings"/> settings retrieved
         /// by the injected <see cref="IOptions{TOptions}"/>.</param>
         /// <param name="client">The Cosmos DB client.</param>
         /// <param name="logger">The logging interface used to log under the
@@ -34,7 +34,7 @@ namespace FoundationaLLM.State.Services
         /// <exception cref="ArgumentException">Thrown if any of the required settings
         /// are null or empty.</exception>
         public CosmosDbService(
-            IOptions<CosmosDbSettings> settings,
+            IOptions<AzureCosmosDBSettings> settings,
             CosmosClient client,
             ILogger<CosmosDbService> logger)
         {

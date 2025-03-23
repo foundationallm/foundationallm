@@ -708,6 +708,97 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:APIKey",
+            "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-datapipelineapi-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:AppInsightsConnectionString",
+            "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials:APIKey",
+            "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-datapipelinefrontendworker-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials:AppInsightsConnectionString",
+            "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:APIKey",
+            "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-datapipelinebackendworker-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:AppInsightsConnectionString",
+            "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Essentials:APIKey",
+            "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-contextapi-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Essentials:AppInsightsConnectionString",
+            "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:Storage:AccountName",
+            "value": "${env:CONTEXTAPI_FILESERVICE_AZURE_STORAGE_ACCOUNT_NAME}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Endpoint",
+            "value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Database",
+            "value": "database",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Containers",
+            "value": "Context",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-gatewayapi-apikey\"}",
             "label": null,
@@ -1200,6 +1291,34 @@
         {
             "key": "FoundationaLLM:Events:Profiles:GatewayAPI",
             "value": "${env:FOUNDATIONALLM_GATEWAY_API_EVENT_GRID_PROFILE}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:ContextAPI",
+            "value": "${env:FOUNDATIONALLM_CONTEXT_API_EVENT_GRID_PROFILE}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:DataPipelineAPI",
+            "value": "${env:FOUNDATIONALLM_DATAPIPELINE_API_EVENT_GRID_PROFILE}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker",
+            "value": "${env:FOUNDATIONALLM_DATAPIPELINE_FRONTENDWORKER_EVENT_GRID_PROFILE}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:DataPipelineBackendWorker",
+            "value": "${env:FOUNDATIONALLM_DATAPIPELINE_BACKENDWORKER_EVENT_GRID_PROFILE}",
             "label": null,
             "content_type": "application/json",
             "tags": {}

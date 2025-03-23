@@ -70,7 +70,7 @@
 </template>
 
 <script lang="ts">
-import type { Message, Session } from '@/js/types';
+import type { Message, Session, ResourceProviderGetResult, Agent } from '@/js/types';
 
 export default {
 	name: 'ChatThread',
@@ -111,7 +111,7 @@ export default {
 	watch: {
 		async currentSession(newSession: Session, oldSession: Session) {
 			const isReplacementForTempSession = oldSession?.is_temp && this.messages.length > 0;
-			if (newSession.id === oldSession?.id || isReplacementForTempSession) return;
+			if (newSession.sessionId === oldSession?.sessionId || isReplacementForTempSession) return;
 			this.isMessagePending = false;
 			this.isLoading = true;
 			this.userSentMessage = false;
@@ -133,9 +133,10 @@ export default {
 
 		pollingSession(newPollingSession, oldPollingSession) {
 			if (newPollingSession === oldPollingSession) return;
-			if (newPollingSession === this.currentSession.id) {
+			if (newPollingSession === this.currentSession.sessionId) {
 				this.isMessagePending = true;
 			} else {
+				// When polling stops (newPollingSession becomes null), enable the input
 				this.isMessagePending = false;
 			}
 		},
@@ -149,10 +150,24 @@ export default {
 	},
 
 	created() {
-		if (!this.$appConfigStore.showLastConversionOnStartup && this.currentSession?.is_temp) {
+		if (!this.$appConfigStore.showLastConversionOnStartup && (this.currentSession as Session)?.is_temp) {
 			this.isLoading = false;
-			const sessionAgent = this.$appStore.getSessionAgent(this.currentSession);
-			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
+			const sessionAgent = this.$appStore.getSessionAgent(this.currentSession as Session);
+			if (sessionAgent) {
+				this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
+			} else {
+				// If no agent is selected yet, wait for agents to load
+				this.$watch(
+					() => this.$appStore.getSessionAgent(this.currentSession as Session),
+					(newAgent: ResourceProviderGetResult<Agent> | null) => {
+						if (newAgent) {
+							this.isLoading = false;
+							this.welcomeMessage = this.getWelcomeMessage(newAgent);
+						}
+					},
+					{ immediate: true }
+				);
+			}
 		}
 	},
 
@@ -204,15 +219,15 @@ export default {
 			// if (agent.long_running) {
 			// 	// Handle long-running operations
 			// 	const operationId = await this.$appStore.startLongRunningProcess('/async-completions', {
-			// 		session_id: this.currentSession.id,
+			// 		session_id: this.currentSession.sessionId,
 			// 		user_prompt: text,
 			// 		agent_name: agent.name,
 			// 		settings: null,
 			// 		attachments: this.$appStore.attachments.map((attachment) => String(attachment.id)),
 			// 	});
 
-			// 	this.longRunningOperations.set(this.currentSession.id, true);
-			// 	await this.pollForCompletion(this.currentSession.id, operationId);
+			// 	this.longRunningOperations.set(this.currentSession.sessionId, true);
+			// 	await this.pollForCompletion(this.currentSession.sessionId, operationId);
 			// } else {
 			const waitForPolling = await this.$appStore.sendMessage(text);
 

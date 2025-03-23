@@ -3,6 +3,34 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-beta112
+
+### Configuration changes
+
+Added the following App Configuration value:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+| `FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:APIKey` | Points to `foundationallm-apiendpoints-datapipelineapi-apikey` | KeyVault reference value pointing to the specified secret. |
+| `FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:AppInsightsConnectionString` | Points to `foundationallm-appinsights-connectionstring` | KeyVault reference value pointing to the specified secret. |
+| `FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials:APIKey` | Points to `foundationallm-apiendpoints-datapipelinefrontendworker-apikey` | KeyVault reference value pointing to the specified secret. |
+| `FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials:AppInsightsConnectionString` | Points to `foundationallm-appinsights-connectionstring` | KeyVault reference value pointing to the specified secret. |
+| `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:APIKey` | Points to `foundationallm-apiendpoints-datapipelinebackendworker-apikey` | KeyVault reference value pointing to the specified secret. |
+| `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:AppInsightsConnectionString` | Points to `foundationallm-appinsights-connectionstring` | KeyVault reference value pointing to the specified secret. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Essentials:APIKey` | Points to `foundationallm-apiendpoints-contextapi-apikey` | KeyVault reference value pointing to the specified secret. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Essentials:AppInsightsConnectionString` | Points to `foundationallm-appinsights-connectionstring` | KeyVault reference value pointing to the specified secret. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileServiceStorage:AccountName` | `<context_api_file_storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Context API file service. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileServiceStorage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Context API file service to connect to the dedicated storage account. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Endpoint` | `<cosmos_db_endpoint>` | The endpoint URL of the Azure Cosmos DB. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Database` | `database` | The Azure Cosmos DB database name. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Containers` | `Context` | The list of Azure CosmosDB containers used by the Context API file service. |
+
+>[!IMPORTANT]
+>A dedicated storage account for the FoundationaLLM Context API must be created. The account should be isolated in a dedicated resource group and permissions should only be granted to the FoundationaLLM Context API managed identity.
+
+>[!IMPORTANT]
+>A new Azure Cosmos DB container named `Context` must be created with a parition key of `/upn` and an autoscale transactional throughput of maximum 4000 RU/s.
+
 ## Starting from 0.9.7-beta107
 
 For External Agent Workflows, the workflow invokation now includes conversation file history. The complete file history is passed regardless of conversation history settings. 

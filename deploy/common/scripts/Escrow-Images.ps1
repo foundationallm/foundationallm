@@ -36,6 +36,10 @@ $services = @{
         "state-api"
         "vectorization-api"
         "vectorization-job"
+        "context-api"
+        "datapipeline-api"
+        "datapipeline-frontendworker"
+        "datapipeline-backendworker"
     )
 }
 

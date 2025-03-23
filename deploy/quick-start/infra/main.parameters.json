@@ -98,7 +98,11 @@
           "semantic-kernel-api": "${SERVICE_SEMANTICKERNELAPI_RESOURCE_EXISTS=false}",
           "state-api": "${SERVICE_STATEAPI_RESOURCE_EXISTS=false}",
           "vectorization-api": "${SERVICE_VECTORIZATIONAPI_RESOURCE_EXISTS=false}",
-          "vectorization-job": "${SERVICE_VECTORIZATIONJOB_RESOURCE_EXISTS=false}"
+          "vectorization-job": "${SERVICE_VECTORIZATIONJOB_RESOURCE_EXISTS=false}",
+          "context-api": "${SERVICE_CONTEXTAPI_RESOURCE_EXISTS=false}",
+          "datapipeline-api": "${SERVICE_DATAPIPELINEAPI_RESOURCE_EXISTS=false}",
+          "datapipeline-frontendworker": "${SERVICE_FRONTENDWORKER_RESOURCE_EXISTS=false}",
+          "datapipeline-backendworker": "${SERVICE_BACKENDWORKER_RESOURCE_EXISTS=false}"
         }
       },
       "serviceDefinition": {
@@ -314,6 +318,50 @@
             "cpu": "${SERVICE_VECTORIZATIONJOB_CPU=1.0}",
             "memory": "${SERVICE_VECTORIZATIONJOB_MEMORY=2.0Gi}",
             "replicaCount": "${SERVICE_VECTORIZATIONJOB_REPLICAS}"
+          },
+          {
+            "name": "context-api",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "image": "${SERVICE_CONTEXTAPI_IMAGE=cropseastus2svinternal.azurecr.io/context-api:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
+            "apiKeySecretName": "foundationallm-apiendpoints-contextapi-apikey",
+            "cpu": "${SERVICE_CONTEXTAPI_CPU=1.0}",
+            "memory": "${SERVICE_CONTEXTAPI_MEMORY=2.0Gi}",
+            "replicaCount": "${SERVICE_CONTEXTAPI_REPLICAS}"
+          },
+          {
+            "name": "datapipeline-api",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "image": "${SERVICE_DATAPIPELINEAPI_IMAGE=cropseastus2svinternal.azurecr.io/datapipeline-api:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
+            "apiKeySecretName": "foundationallm-apiendpoints-datapipelineapi-apikey",
+            "cpu": "${SERVICE_DATAPIPELINEAPI_CPU=1.0}",
+            "memory": "${SERVICE_DATAPIPELINEAPI_MEMORY=2.0Gi}",
+            "replicaCount": "${SERVICE_DATAPIPELINEAPI_REPLICAS}"
+          },
+          {
+            "name": "datapipeline-backendworker",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "image": "${SERVICE_DATAPIPELINEBACKENDWORKER_IMAGE=cropseastus2svinternal.azurecr.io/datapipeline-api:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
+            "apiKeySecretName": "foundationallm-apiendpoints-datapipelinebackendworker-apikey",
+            "cpu": "${SERVICE_DATAPIPELINEBACKENDWORKER_CPU=1.0}",
+            "memory": "${SERVICE_DATAPIPELINEBACKENDWORKER_MEMORY=2.0Gi}",
+            "replicaCount": "${SERVICE_DATAPIPELINEBACKENDWORKER_REPLICAS}"
+          },
+          {
+            "name": "datapipeline-frontendworker",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "image": "${SERVICE_DATAPIPELINEFRONTENDWORKER_IMAGE=cropseastus2svinternal.azurecr.io/datapipeline-frontendworker:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
+            "apiKeySecretName": "foundationallm-apiendpoints-datapipelinefrontendworker-apikey",
+            "cpu": "${SERVICE_DATAPIPELINEFRONTENDWORKER_CPU=1.0}",
+            "memory": "${SERVICE_DATAPIPELINEFRONTENDWORKER_MEMORY=2.0Gi}",
+            "replicaCount": "${SERVICE_DATAPIPELINEFRONTENDWORKER_REPLICAS}"
           }
         ]
       },

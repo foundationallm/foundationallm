@@ -1099,21 +1099,60 @@
 				</div>
 
 				<!-- Workflow main model parameters -->
-				<div class="step-header mb-3">Workflow main model parameters:</div>
-				<PropertyBuilder v-model="workflowMainAIModelParameters" class="mb-6" />
+				<div class="mb-6">
+					<div class="step-header mb-3">Workflow main model parameters:</div>
+					<PropertyBuilder v-model="workflowMainAIModelParameters" />
+				</div>
 
 				<!-- Workflow main prompt -->
-				<div id="aria-persona" class="step-header mb-3">What is the main workflow prompt?</div>
-				<div class="span-2">
-					<Textarea
-						v-model="systemPrompt"
-						class="w-100"
-						auto-resize
-						rows="5"
-						type="text"
-						placeholder="You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional."
-						aria-labelledby="aria-persona"
+				<div class="mb-6">
+					<div id="aria-persona" class="step-header mb-3">What is the main workflow prompt?</div>
+					<div class="span-2">
+						<Textarea
+							v-model="systemPrompt"
+							class="w-100"
+							auto-resize
+							rows="5"
+							type="text"
+							placeholder="You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional."
+							aria-labelledby="aria-persona"
+						/>
+					</div>
+				</div>
+
+				<!-- Workflow additional resources -->
+				<div class="mb-6">
+					<div class="step-header mb-3">Additional workflow resources:</div>
+					<ResourceTable
+						:resources="workflowExtraResources"
+						@delete="workflowResourceToDelete = $event"
 					/>
+					<CreateResourceObjectDialog
+						v-if="showCreateWorkflowResourceObjectDialog"
+						:visible="showCreateWorkflowResourceObjectDialog"
+						@update:visible="showCreateWorkflowResourceObjectDialog = false"
+						@update:model-value="handleAddWorkflowResource"
+					/>
+					<ConfirmationDialog
+						v-if="workflowResourceToDelete !== null"
+						header="Delete Workflow Resource"
+						confirmText="Delete"
+						@cancel="workflowResourceToDelete = null"
+						@confirm="handleDeleteWorkflowResource"
+					>
+						<div>
+							Are you sure you want to delete the "{{
+								getResourceNameFromId(workflowResourceToDelete!.object_id)
+							}}" workflow resource?
+						</div>
+					</ConfirmationDialog>
+					<div class="d-flex justify-content-end mt-4">
+						<Button
+							severity="primary"
+							label="Add Workflow Resource"
+							@click="showCreateWorkflowResourceObjectDialog = true"
+						/>
+					</div>
 				</div>
 			</div>
 
@@ -1210,9 +1249,12 @@
 								header="Delete Tool"
 								confirmText="Delete Tool"
 								@cancel="toolToRemove = null"
-								@confirm="handleRemoveTool(toolToRemove)"
+								@confirm="handleRemoveTool"
 							>
-								<div>Are you sure you want to delete the "{{ toolToRemove!.name }}" tool from this agent?</div>
+								<div>
+									Are you sure you want to delete the "{{ toolToRemove!.name }}" tool from this
+									agent?
+								</div>
 							</ConfirmationDialog>
 						</template>
 					</Column>
@@ -1425,6 +1467,9 @@ export default {
 			workflowName: '' as string,
 			workflowPackageName: 'FoundationaLLM' as string,
 			workflowHost: '' as string,
+			workflowExtraResources: {},
+			showCreateWorkflowResourceObjectDialog: false,
+			workflowResourceToDelete: null,
 
 			virtualSecurityGroupId: null as string | null,
 
@@ -1520,14 +1565,14 @@ export default {
 			this.workflowName = this.selectedWorkflow?.name ?? this.workflowName;
 			this.workflowHost = this.selectedWorkflow?.workflow_host ?? this.workflowHost;
 
-			if (this.selectedWorkflow?.resource_object_ids) {
-				const existingMainModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
-					(resource) => resource.properties?.object_role === 'main_model',
-				);
-				this.workflowMainAIModel = existingMainModel ?? null;
-			} else {
-				this.workflowMainAIModel = null;
-			}
+			// if (this.selectedWorkflow?.resource_object_ids) {
+			// 	const existingMainModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
+			// 		(resource) => resource.properties?.object_role === 'main_model',
+			// 	);
+			// 	this.workflowMainAIModel = existingMainModel ?? null;
+			// } else {
+			// 	this.workflowMainAIModel = null;
+			// }
 
 			this.showWorkflowConfiguration = true;
 
@@ -1667,6 +1712,17 @@ export default {
 					(resource) => resource.properties?.object_role === 'main_model',
 				);
 				this.workflowMainAIModel = existingMainModel ?? null;
+				this.workflowExtraResources = Object.fromEntries(
+					Object.entries(agent.workflow.resource_object_ids).filter(([key, resource]) => {
+						const objectRole = resource.properties?.object_role;
+						const workflowPrefix = `/instances/${this.$appConfigStore.instanceId}/providers/FoundationaLLM.Agent/workflows`;
+						return (
+							objectRole !== 'main_model' &&
+							objectRole !== 'main_prompt' &&
+							!key.startsWith(workflowPrefix)
+						);
+					}),
+				);
 			}
 
 			this.loadingStatusText = `Mapping agent values to form...`;
@@ -1761,7 +1817,9 @@ export default {
 
 			this.agentTools = agent.tools;
 
-			this.selectedWorkflow = agent.workflow;
+			this.selectedWorkflow = clone(
+				this.workflowOptions.find((workflow) => workflow.type === agent.workflow?.type),
+			);
 			this.hasAgentPrivateStorage = agent.workflow?.type === 'azure-openai-assistants-workflow';
 			this.showMessageTokens = agent.show_message_tokens ?? false;
 			this.showMessageRating = agent.show_message_rating ?? false;
@@ -1847,6 +1905,21 @@ export default {
 			);
 		},
 
+		getResourceNameFromId(resourceId: string): string {
+			const parts = resourceId.split('/').filter(Boolean);
+			return parts.slice(-1)[0];
+		},
+
+		handleAddWorkflowResource(resourceToAdd) {
+			this.workflowExtraResources[resourceToAdd.object_id] = resourceToAdd;
+			this.showCreateWorkflowResourceObjectDialog = false;
+		},
+
+		handleDeleteWorkflowResource() {
+			delete this.workflowExtraResources[this.workflowResourceToDelete.object_id];
+			this.workflowResourceToDelete = null;
+		},
+
 		handleAgentTypeSelect(type: Agent['type']) {
 			this.agentType = type;
 		},
@@ -1899,8 +1972,8 @@ export default {
 			this.toolToEdit = null;
 		},
 
-		handleRemoveTool(toolToRemove) {
-			const index = this.agentTools.findIndex((tool) => tool.name === toolToRemove.name);
+		handleRemoveTool() {
+			const index = this.agentTools.findIndex((tool) => tool.name === this.toolToRemove.name);
 			this.agentTools.splice(index, 1);
 			this.toolToRemove = null;
 		},
@@ -2085,7 +2158,7 @@ export default {
 						package_name: this.workflowPackageName,
 
 						resource_object_ids: {
-							...this.selectedWorkflow.resource_object_ids,
+							// ...this.selectedWorkflow.resource_object_ids,
 
 							[this.workflowMainAIModel.object_id]: {
 								object_id: this.workflowMainAIModel.object_id,
@@ -2114,6 +2187,8 @@ export default {
 										},
 									}
 								: {}),
+
+							...this.workflowExtraResources,
 						},
 					};
 				}

@@ -2,7 +2,7 @@
 	<Dialog
 		:visible="visible"
 		modal
-		header="Create Tool Resource"
+		header="Add Resource"
 		:style="{ minWidth: '50%' }"
 		:closable="false"
 	>

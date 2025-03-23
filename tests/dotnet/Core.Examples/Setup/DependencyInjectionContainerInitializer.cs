@@ -101,12 +101,12 @@ namespace FoundationaLLM.Core.Examples.Setup
 
 		private static void RegisterCosmosDB(IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddOptions<CosmosDbSettings>()
+			services.AddOptions<AzureCosmosDBSettings>()
 				.Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB));
 
 			services.AddSingleton<CosmosClient>(serviceProvider =>
 			{
-				var settings = serviceProvider.GetRequiredService<IOptions<CosmosDbSettings>>().Value;
+				var settings = serviceProvider.GetRequiredService<IOptions<AzureCosmosDBSettings>>().Value;
 				return new CosmosClientBuilder(settings.Endpoint, ServiceContext.AzureCredential)
 					.WithSerializerOptions(new CosmosSerializationOptions
 					{

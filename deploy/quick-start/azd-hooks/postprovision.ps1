@@ -143,6 +143,26 @@ $envConfiguraitons = @{
         render       = './config/vectorization-worker-event-profile.json'
         variableName = 'FOUNDATIONALLM_VECTORIZATION_WORKER_EVENT_GRID_PROFILE'
     }
+    "context-api-event-profile"    = @{
+        template     = './config/context-api-event-profile.template.json'
+        render       = './config/context-api-event-profile.json'
+        variableName = 'FOUNDATIONALLM_CONTEXT_API_EVENT_GRID_PROFILE'
+    }
+    "datapipeline-api-event-profile"    = @{
+        template     = './config/datapipeline-api-event-profile.template.json'
+        render       = './config/datapipeline-api-event-profile.json'
+        variableName = 'FOUNDATIONALLM_DATAPIPELINE_API_EVENT_GRID_PROFILE'
+    }
+    "datapipeline-frontendworker-event-profile"    = @{
+        template     = './config/datapipeline-frontendworker-event-profile.template.json'
+        render       = './config/datapipeline-frontendworker-event-profile.json'
+        variableName = 'FOUNDATIONALLM_DATAPIPELINE_FRONTENDWORKER_EVENT_GRID_PROFILE'
+    }
+    "datapipeline-backendworker-event-profile"    = @{
+        template     = './config/datapipeline-backendworker-event-profile.template.json'
+        render       = './config/datapipeline-backendworker-event-profile.json'
+        variableName = 'FOUNDATIONALLM_DATAPIPELINE_BACKENDWORKER_EVENT_GRID_PROFILE'
+    }
 }
 
 foreach ($envConfiguraiton in $envConfiguraitons.GetEnumerator()) {

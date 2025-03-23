@@ -293,6 +293,26 @@
 				/>
 			</template>
 		</Dialog>
+
+		<!-- Image Preview Modal -->
+		<Dialog
+			v-model:visible="isImagePreviewVisible"
+			modal
+			:style="{ width: '90vw', maxWidth: '1200px' }"
+			:closable="true"
+			:showHeader="false"
+			:dismissableMask="true"
+		>
+			<div class="image-preview-container">
+				<img :src="previewImageUrl" alt="Preview" class="preview-image" />
+				<Button
+					class="p-button-rounded p-button-text p-button-plain close-button"
+					icon="pi pi-times"
+					@click="isImagePreviewVisible = false"
+					aria-label="Close"
+				/>
+			</div>
+		</Dialog>
 	</div>
 </template>
 
@@ -306,6 +326,8 @@ import 'katex/dist/katex.min.css';
 import DOMPurify from 'dompurify';
 import type { PropType } from 'vue';
 import { hideAllPoppers } from 'floating-vue';
+import Image from 'primevue/image';
+import Dialog from 'primevue/dialog';
 
 import type { Message, MessageContent, CompletionPrompt } from '@/js/types';
 import api from '@/js/api';
@@ -385,6 +407,10 @@ const MAX_WORD_SPEED_MS = 15;
 
 export default {
 	name: 'ChatMessage',
+	components: {
+		Image,
+		Dialog
+	},
 
 	props: {
 		message: {
@@ -418,6 +444,10 @@ export default {
 			processedContent: [],
 			completed: false,
 			isRenderingMessage: false,
+			loading: true,
+			error: false,
+			isImagePreviewVisible: false,
+			previewImageUrl: '',
 		};
 	},
 
@@ -490,15 +520,28 @@ export default {
 			deep: true,
 			handler() {
 				this.markSkippableContent();
+				// Bind click handlers to any new images
+				this.$nextTick(() => {
+					const messageImages = this.$el.querySelectorAll('.message-image');
+					messageImages.forEach(img => {
+						// Remove any existing click handlers to prevent duplicates
+						img.removeEventListener('click', this.handleImageClick);
+						// Add the click handler
+						img.addEventListener('click', this.handleImageClick);
+					});
+				});
 			},
 		},
 
 		isRenderingMessage: {
 			handler(newVal, oldVal) {
-				this.$appStore.sessionMessagePending = newVal;
 				if (newVal === oldVal) return;
+				this.$appStore.sessionMessagePending = newVal;
 				if (newVal) {
 					this.keepScrollingUntilCompleted();
+				} else if (this.message.status === 'Completed' || this.message.status === 'Failed') {
+					// Ensure sessionMessagePending is set to false when message is completed
+					this.$appStore.sessionMessagePending = false;
 				}
 			},
 		},
@@ -533,13 +576,18 @@ export default {
 	methods: {
 		hideAllPoppers,
 
+		handleImageClick(event) {
+			const img = event.currentTarget;
+			this.previewImageUrl = img.getAttribute('data-src') || img.src;
+			this.isImagePreviewVisible = true;
+		},
+
 		processContentBlock(contentToProcess) {
 			let htmlContent = processLatex(contentToProcess ?? '');
 			htmlContent = marked(htmlContent, { renderer: this.markedRenderer });
+			htmlContent = DOMPurify.sanitize(htmlContent);
 
-			// In case the agent generates html that may be malicious, such as
-			// if the user asks the agent to repeat their malicious input
-			return DOMPurify.sanitize(htmlContent);
+			return htmlContent;
 		},
 
 		computedAverageTimePerWord(newMessage, oldMessage) {
@@ -673,6 +721,65 @@ export default {
 				const encodedCode = encodeURIComponent(sourceCode);
 				return `<pre><code class="${languageClass}" data-code="${encodedCode}" data-language="${highlighted.language}">${highlighted.value}</code></pre>`;
 			};
+
+			// Images
+			this.markedRenderer.image = function({ href, title, text }) {
+				// Find a matching image_file content block in the message's content
+				const matchingImageBlock = this.message.content?.find(
+					(block) => block.type === 'image_file' && block.origValue === href
+				);
+
+				// If we found a matching block and it has a blobUrl, use that
+				if (matchingImageBlock?.blobUrl) {
+					return `<img src="${matchingImageBlock.blobUrl}" alt="${text || ''}" title="${title || ''}" class="message-image" data-src="${matchingImageBlock.blobUrl}" />`;
+				}
+
+				// Create a unique ID for this image
+				const imageId = `image-${Math.random().toString(36).substr(2, 9)}`;
+				
+				// For non-API URLs, use the href directly in the placeholder
+				if (!href.startsWith(api.getApiUrl())) {
+					return `<img id="${imageId}" src="${href}" alt="${text || ''}" title="${title || ''}" class="message-image" data-src="${href}" />`;
+				}
+				
+				// For API URLs, use the placeholder and fetch the image
+				const placeholder = `<img id="${imageId}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="${text || ''}" title="${title || ''}" class="message-image" />`;
+
+				// Only fetch the image if we haven't already started fetching it
+				if (!this.message.content?.some(block => 
+					block.type === 'image_file' && 
+					block.origValue === href && 
+					block.isLoading
+				)) {
+					// Mark the block as loading
+					if (matchingImageBlock) {
+						matchingImageBlock.isLoading = true;
+					}
+
+					// Load the image and create a blob URL
+					api.fetchDirect(href).then(response => {
+						const blobUrl = URL.createObjectURL(response);
+						// Update the matching block with the blob URL
+						if (matchingImageBlock) {
+							matchingImageBlock.blobUrl = blobUrl;
+							matchingImageBlock.isLoading = false;
+						}
+						// Update the image in the DOM
+						const container = document.getElementById(imageId);
+						if (container) {
+							container.setAttribute('src', blobUrl);
+							container.setAttribute('data-src', blobUrl);
+						}
+					}).catch(error => {
+						console.error(`Failed to fetch image from ${href}`, error);
+						if (matchingImageBlock) {
+							matchingImageBlock.isLoading = false;
+						}
+					});
+				}
+
+				return placeholder;
+			}.bind(this);
 
 			// Links
 			this.markedRenderer.link = ({ href, title, text }) => {
@@ -823,8 +930,17 @@ export default {
 					this.keepScrollingUntilCompleted();
 				}, 100);
 			});
-		},
+		}
 	},
+	mounted() {
+		// Initial binding of click handlers
+		this.$nextTick(() => {
+			const messageImages = this.$el.querySelectorAll('.message-image');
+			messageImages.forEach(img => {
+				img.addEventListener('click', this.handleImageClick);
+			});
+		});
+	}
 };
 </script>
 
@@ -1018,6 +1134,58 @@ $textColor: #131833;
 .prompt-dialog__button:focus {
 	box-shadow: 0 0 0 0.1rem #000;
 }
+
+.message__body img {
+	max-width: 55% !important;
+	height: auto !important;
+	display: block !important;
+	cursor: pointer;
+	transition: opacity 0.2s ease-in-out;
+
+	&:hover {
+		opacity: 0.9;
+	}
+}
+
+.image-preview-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+	background-color: var(--surface-ground);
+	border-radius: 0.5rem;
+	position: relative;
+
+	.close-button {
+		position: fixed;
+		top: 1rem;
+		right: 1rem;
+		z-index: 1000;
+		background-color: rgba(0, 0, 0, 0.5);
+		color: white !important;
+		width: 2.5rem;
+		height: 2.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		transition: background-color 0.2s ease-in-out;
+
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.7);
+		}
+
+		&:focus {
+			box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.5);
+		}
+	}
+}
+
+.preview-image {
+	max-width: 100%;
+	height: auto;
+	border-radius: 0.5rem;
+}
 </style>
 
 <style lang="scss">
@@ -1030,9 +1198,18 @@ $textColor: #131833;
 }
 
 .message__body img {
-	max-width: 100% !important;
+	max-width: 55% !important;
 	height: auto !important;
 	display: block !important;
+}
+
+.message-image {
+	cursor: pointer;
+	transition: opacity 0.2s ease-in-out;
+
+	&:hover {
+		opacity: 0.9;
+	}
 }
 
 @media only screen and (max-width: 950px) {

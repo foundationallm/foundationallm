@@ -57,6 +57,7 @@
 <script>
 import api from '@/js/api';
 import { fetchBlobUrl } from '@/js/fileService';
+import { useAppStore } from '@/stores/appStore';
 
 export default {
 	props: {
@@ -105,6 +106,23 @@ export default {
 							this.content.blobUrl = URL.createObjectURL(blob);
 						} else if (this.content.type === 'image_file') {
 							this.content.blobUrl = URL.createObjectURL(response);
+							// Update the blob URL in the Pinia store
+							const appStore = useAppStore();
+							const messageIndex = appStore.currentMessages.findIndex(message => 
+								message.content?.some(content => 
+									content.type === 'image_file' && content.origValue === this.content.origValue
+								)
+							);
+							
+							if (messageIndex !== -1) {
+								const contentIndex = appStore.currentMessages[messageIndex].content.findIndex(content =>
+									content.type === 'image_file' && content.origValue === this.content.origValue
+								);
+								
+								if (contentIndex !== -1) {
+									appStore.currentMessages[messageIndex].content[contentIndex].blobUrl = this.content.blobUrl;
+								}
+							}
 						}
 					}
 				} catch (error) {

@@ -57,7 +57,7 @@
 		/>
 
 		<div class="mt-6 mb-2 font-weight-bold">Tool resources:</div>
-		<ToolResourceTable
+		<ResourceTable
 			:resources="toolObject.resource_object_ids"
 			@delete="handleDeleteToolResource"
 		/>
