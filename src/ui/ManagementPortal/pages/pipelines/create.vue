@@ -1038,7 +1038,7 @@ export default {
 				trigger_cron_schedule: '0 6 * * *',
 				parameter_values: { ...this.triggerParametersMap },
 			});
-			this.triggerCollapseState[newTriggerName] = true; // Initialize as collapsed
+			this.triggerCollapseState[newTriggerName] = false; // Initialize as collapsed
 			this.previousTriggerNames[this.pipeline.triggers.length - 1] = newTriggerName; // Track the initial name
 			this.buildTriggerParameters();
 		},
