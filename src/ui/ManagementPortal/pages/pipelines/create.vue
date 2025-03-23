@@ -371,78 +371,80 @@
 						<div class="trigger-header">
 							<div class="mb-2">
 								<label>Trigger Name:</label>
-								<InputText v-model="trigger.name" class="w-100" />
+								<InputText v-model="trigger.name" class="w-100" @input="handleTriggerNameChange(triggerIndex)" />
 							</div>
 							<Button icon="pi pi-trash" severity="danger" @click="removeTrigger(triggerIndex)" />
+							<Button :icon="triggerCollapseState[trigger.name] ? 'pi pi-chevron-down' : 'pi pi-chevron-up'" @click="toggleTriggerCollapse(triggerIndex)" />
 						</div>
-
-						<label>Trigger Type:</label>
-						<Dropdown
-							v-model="trigger.trigger_type"
-							:options="triggerTypeOptions"
-							option-label="label"
-							option-value="value"
-							class="w-100"
-							placeholder="Select trigger type"
-						/>
-						<div v-if="trigger.trigger_type === 'Schedule'" class="mb-2">
-							<label>Cron Schedule:</label>
-							<InputText
-								v-model="trigger.trigger_cron_schedule"
+						<div v-if="!triggerCollapseState[trigger.name]">
+							<label>Trigger Type:</label>
+							<Dropdown
+								v-model="trigger.trigger_type"
+								:options="triggerTypeOptions"
+								option-label="label"
+								option-value="value"
 								class="w-100"
-								placeholder="0 6 * * *"
+								placeholder="Select trigger type"
 							/>
-						</div>
-						<template v-if="triggerParameters[trigger.name]?.length > 0">
-							<div class="step-header span-2 mb-2">Trigger Parameters:</div>
-							<div class="span-2">
-								<div v-for="(param, index) in triggerParameters[trigger.name]" :key="index" class="mb-2">
-									<label>{{ param.parameter_metadata.name }}:</label>
-									<div style="font-size: 12px">
-										{{ param.key }}
-									</div>
-									<div style="font-size: 12px; color: #666">
-										{{ param.parameter_metadata.description }}
-									</div>
-									<template
-										v-if="
-											param.parameter_metadata.type === 'string' ||
-											param.parameter_metadata.type === 'int' ||
-											param.parameter_metadata.type === 'float' ||
-											param.parameter_metadata.type === 'datetime'
-										"
-									>
-										<InputText
-											v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
-											class="w-100"
-										/>
-									</template>
-									<template v-else-if="param.parameter_metadata.type === 'bool'">
-										<InputSwitch
-											v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
-										/>
-									</template>
-									<template v-else-if="param.parameter_metadata.type === 'array'">
-										<Chips
-											v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
-											style="width: 100%"
-											placeholder="Enter values separated by commas"
-											separator=","
-										></Chips>
-									</template>
-									<template v-else-if="param.parameter_metadata.type === 'resource-object-id'">
-										<Dropdown
-											v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
-											:options="param.resourceOptions"
-											option-label="display_name"
-											option-value="value"
-											class="w-100"
-											placeholder="Select a resource"
-										/>
-									</template>
-								</div>
+							<div v-if="trigger.trigger_type === 'Schedule'" class="mb-2">
+								<label>Cron Schedule:</label>
+								<InputText
+									v-model="trigger.trigger_cron_schedule"
+									class="w-100"
+									placeholder="0 6 * * *"
+								/>
 							</div>
-						</template>
+							<template v-if="triggerParameters[trigger.name]?.length > 0">
+								<div class="step-header span-2 mb-2">Trigger Parameters:</div>
+								<div class="span-2">
+									<div v-for="(param, index) in triggerParameters[trigger.name]" :key="index" class="mb-2">
+										<label>{{ param.parameter_metadata.name }}:</label>
+										<div style="font-size: 12px">
+											{{ param.key }}
+										</div>
+										<div style="font-size: 12px; color: #666">
+											{{ param.parameter_metadata.description }}
+										</div>
+										<template
+											v-if="
+												param.parameter_metadata.type === 'string' ||
+												param.parameter_metadata.type === 'int' ||
+												param.parameter_metadata.type === 'float' ||
+												param.parameter_metadata.type === 'datetime'
+											"
+										>
+											<InputText
+												v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
+												class="w-100"
+											/>
+										</template>
+										<template v-else-if="param.parameter_metadata.type === 'bool'">
+											<InputSwitch
+												v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
+											/>
+										</template>
+										<template v-else-if="param.parameter_metadata.type === 'array'">
+											<Chips
+												v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
+												style="width: 100%"
+												placeholder="Enter values separated by commas"
+												separator=","
+											></Chips>
+										</template>
+										<template v-else-if="param.parameter_metadata.type === 'resource-object-id'">
+											<Dropdown
+												v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
+												:options="param.resourceOptions"
+												option-label="display_name"
+												option-value="value"
+												class="w-100"
+												placeholder="Select a resource"
+											/>
+										</template>
+									</div>
+								</div>
+							</template>
+						</div>
 					</div>
 					<Button label="Add Trigger" icon="pi pi-plus" @click="addTrigger" />
 				</div>
@@ -550,6 +552,8 @@ export default {
 			draggedStageIndex: null as number | null,
 			resourceOptions: [] as any[],
 			resourceOptionsCache: {} as Record<string, any[]>, // Cache for resource options
+			triggerCollapseState: {} as Record<string, boolean>,
+			previousTriggerNames: {} as Record<number, string>,
 		};
 	},
 
@@ -663,6 +667,12 @@ export default {
 
 				await this.handleNextStages(this.pipeline.starting_stages);
 				this.buildTriggerParameters();
+
+				// Initialize previousTriggerNames and triggerCollapseState for existing triggers
+				this.pipeline.triggers.forEach((trigger, index) => {
+					this.previousTriggerNames[index] = trigger.name;
+					this.triggerCollapseState[trigger.name] = true; // Set initial state to collapsed
+				});
 			} else {
 				this.addTrigger();
 			}
@@ -1021,17 +1031,27 @@ export default {
 		},
 
 		addTrigger() {
+			const newTriggerName = `Trigger${this.pipeline.triggers.length + 1}`;
 			this.pipeline.triggers.push({
-				name: `Trigger${this.pipeline.triggers.length + 1}`,
+				name: newTriggerName,
 				trigger_type: 'Schedule',
 				trigger_cron_schedule: '0 6 * * *',
 				parameter_values: { ...this.triggerParametersMap },
 			});
+			this.triggerCollapseState[newTriggerName] = true; // Initialize as collapsed
+			this.previousTriggerNames[this.pipeline.triggers.length - 1] = newTriggerName; // Track the initial name
 			this.buildTriggerParameters();
 		},
 
 		removeTrigger(index) {
+			const triggerName = this.pipeline.triggers[index].name;
 			this.pipeline.triggers.splice(index, 1);
+			delete this.triggerCollapseState[triggerName]; // Remove the collapse state
+		},
+
+		toggleTriggerCollapse(index: number) {
+			const triggerName = this.pipeline.triggers[index].name;
+			this.triggerCollapseState[triggerName] = !this.triggerCollapseState[triggerName];
 		},
 
 		async loadStagePluginDependencies(pluginObjectId: string) {
@@ -1128,6 +1148,24 @@ export default {
 
 		toggleStageCollapse(index: number) {
 			this.selectedStagePlugins[index].collapsed = !this.selectedStagePlugins[index].collapsed;
+		},
+
+		handleTriggerNameChange(triggerIndex: number) {
+			const previousName = this.previousTriggerNames[triggerIndex];
+			const newName = this.pipeline.triggers[triggerIndex].name;
+
+			if (previousName !== newName) {
+				// Update the collapse state with the new trigger name
+				this.triggerCollapseState[newName] = this.triggerCollapseState[previousName];
+				delete this.triggerCollapseState[previousName];
+
+				// Update the trigger parameters with the new trigger name
+				this.triggerParameters[newName] = this.triggerParameters[previousName];
+				delete this.triggerParameters[previousName];
+
+				// Update the previous name to the new name
+				this.previousTriggerNames[triggerIndex] = newName;
+			}
 		},
 	},
 };
