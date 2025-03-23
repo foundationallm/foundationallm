@@ -195,7 +195,7 @@
 									@input="handleStageNameInput($event, index)"
 								/>
 							</div>
-							<Button icon="pi pi-trash" severity="danger" @click="removeStage(index)" />
+							<Button icon="pi pi-trash" severity="danger" @click="stageToDelete = index" />
 							<Button :icon="stage.collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up'" @click="toggleStageCollapse(index)" />
 						</div>
 						<div v-if="!stage.collapsed" class="stage-content">
@@ -373,7 +373,7 @@
 								<label>Trigger Name:</label>
 								<InputText v-model="trigger.name" class="w-100" @input="handleTriggerNameChange(triggerIndex)" />
 							</div>
-							<Button icon="pi pi-trash" severity="danger" @click="removeTrigger(triggerIndex)" />
+							<Button icon="pi pi-trash" severity="danger" @click="triggerToDelete = triggerIndex" />
 							<Button :icon="triggerCollapseState[trigger.name] ? 'pi pi-chevron-down' : 'pi pi-chevron-up'" @click="toggleTriggerCollapse(triggerIndex)" />
 						</div>
 						<div v-if="!triggerCollapseState[trigger.name]">
@@ -469,6 +469,22 @@
 				/>
 			</div>
 		</div>
+
+		<Dialog :visible="stageToDelete !== null" modal header="Delete Stage" :closable="false">
+			<p>Do you want to delete the stage "{{ selectedStagePlugins[stageToDelete].name }}" ?</p>
+			<template #footer>
+				<Button label="Cancel" text @click="stageToDelete = null" />
+				<Button label="Delete" severity="danger" @click="removeStage(stageToDelete)" />
+			</template>
+		</Dialog>
+
+		<Dialog :visible="triggerToDelete !== null" modal header="Delete Trigger" :closable="false">
+			<p>Do you want to delete the trigger "{{ pipeline.triggers[triggerToDelete].name }}" ?</p>
+			<template #footer>
+				<Button label="Cancel" text @click="triggerToDelete = null" />
+				<Button label="Delete" severity="danger" @click="removeTrigger(triggerToDelete)" />
+			</template>
+		</Dialog>
 	</main>
 </template>
 
@@ -554,6 +570,8 @@ export default {
 			resourceOptionsCache: {} as Record<string, any[]>, // Cache for resource options
 			triggerCollapseState: {} as Record<string, boolean>,
 			previousTriggerNames: {} as Record<number, string>,
+			stageToDelete: null as number | null,
+			triggerToDelete: null as number | null,
 		};
 	},
 
@@ -782,6 +800,7 @@ export default {
 		removeStage(index: number) {
 			this.selectedStagePlugins.splice(index, 1);
 			this.transformPipelineStages();
+			this.stageToDelete = null;
 		},
 
 		transformPipelineStages() {
@@ -1055,6 +1074,7 @@ export default {
 				updatedPreviousTriggerNames[i] = this.previousTriggerNames[i >= index ? i + 1 : i];
 			});
 			this.previousTriggerNames = updatedPreviousTriggerNames;
+			this.triggerToDelete = null;
 		},
 
 		toggleTriggerCollapse(index: number) {
