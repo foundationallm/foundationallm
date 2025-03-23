@@ -92,82 +92,85 @@
 					placeholder="Select a data source"
 					@change="handleDataSourceChange"
 				/>
-
-				<div id="aria-data-source-name" class="mb-2 mt-2">Data source name:</div>
-				<div class="input-wrapper">
-					<InputText
-						v-model="pipeline.data_source.name"
-						type="text"
-						class="w-100"
-						placeholder="Enter a name for the data source"
-						aria-labelledby="aria-data-source-name"
-						@input="handleDataSourceNameInput"
-					/>
-				</div>
-
-				<div id="aria-data-source-description" class="mb-2 mt-2">Data source description:</div>
-				<div class="input-wrapper">
-					<InputText
-						v-model="pipeline.data_source.description"
-						type="text"
-						class="w-100"
-						placeholder="Enter a description for the data source"
-						aria-labelledby="aria-data-source-description"
-					/>
-				</div>
-
-				<div id="aria-data-source-plugin" class="mb-2 mt-2">Data source plugin:</div>
-				<div class="input-wrapper">
-					<Dropdown
-						v-model="selectedDataSourcePlugin"
-						:options="dataSourcePluginOptions"
-						option-label="display_name"
-						class="w-100"
-						placeholder="Select a data source plugin"
-					/>
-				</div>
-
-				<div id="aria-data-source-parameters" class="mb-2 mt-2">Data source default values:</div>
-				<div class="input-wrapper">
-					<div
-						v-for="(param, index) in selectedDataSourcePlugin?.parameters"
-						:key="index"
-						style="width: 100%"
-					>
-						<label>{{ param.name }}:</label>
-						<template
-							v-if="
-								param.type === 'string' ||
-								param.type === 'int' ||
-								param.type === 'float' ||
-								param.type === 'datetime'
-							"
-						>
-							<InputText v-model="param.default_value" style="width: 100%" />
-						</template>
-						<template v-else-if="param.type === 'bool'">
-							<InputSwitch v-model="param.default_value" />
-						</template>
-						<template v-else-if="param.type === 'array'">
-							<Chips
-								v-model="param.default_value"
-								style="width: 100%"
-								placeholder="Enter values separated by commas"
-								separator=","
-							></Chips>
-						</template>
-						<template v-else-if="param.type === 'resource-object-id'">
-							<Dropdown
-								v-model="param.default_value"
-								:options="param.parameter_metadata.parameter_selection_hints_options"
-								option-label="display_name"
-								option-value="value"
-								class="w-100"
-								placeholder="Select a resource"
-							/>
-						</template>
+				<template v-if="selectedDataSource">
+					<div id="aria-data-source-name" class="mb-2 mt-2">Data source name:</div>
+					<div class="input-wrapper">
+						<InputText
+							v-model="pipeline.data_source.name"
+							type="text"
+							class="w-100"
+							placeholder="Enter a name for the data source"
+							aria-labelledby="aria-data-source-name"
+							@input="handleDataSourceNameInput"
+						/>
 					</div>
-				</div>
+
+					<div id="aria-data-source-description" class="mb-2 mt-2">Data source description:</div>
+					<div class="input-wrapper">
+						<InputText
+							v-model="pipeline.data_source.description"
+							type="text"
+							class="w-100"
+							placeholder="Enter a description for the data source"
+							aria-labelledby="aria-data-source-description"
+						/>
+					</div>
+
+					<div id="aria-data-source-plugin" class="mb-2 mt-2">Data source plugin:</div>
+					<div class="input-wrapper">
+						<Dropdown
+							v-model="selectedDataSourcePlugin"
+							:options="dataSourcePluginOptions"
+							option-label="display_name"
+							class="w-100"
+							placeholder="Select a data source plugin"
+						/>
+					</div>
+
+					<template v-if="selectedDataSourcePlugin">
+						<div id="aria-data-source-parameters" class="mb-2 mt-2">Data source default values:</div>
+						<div class="input-wrapper">
+							<div
+								v-for="(param, index) in selectedDataSourcePlugin?.parameters"
+								:key="index"
+								style="width: 100%"
+							>
+								<label>{{ param.name }}:</label>
+								<template
+									v-if="
+										param.type === 'string' ||
+										param.type === 'int' ||
+										param.type === 'float' ||
+										param.type === 'datetime'
+									"
+								>
+									<InputText v-model="param.default_value" style="width: 100%" />
+								</template>
+								<template v-else-if="param.type === 'bool'">
+									<InputSwitch v-model="param.default_value" />
+								</template>
+								<template v-else-if="param.type === 'array'">
+									<Chips
+										v-model="param.default_value"
+										style="width: 100%"
+										placeholder="Enter values separated by commas"
+										separator=","
+									></Chips>
+								</template>
+								<template v-else-if="param.type === 'resource-object-id'">
+									<Dropdown
+										v-model="param.default_value"
+										:options="param.parameter_metadata.parameter_selection_hints_options"
+										option-label="display_name"
+										option-value="value"
+										class="w-100"
+										placeholder="Select a resource"
+									/>
+								</template>
+							</div>
+						</div>
+					</template>
+				</template>
 			</div>
 
 			<!-- Pipeline Stages -->
@@ -260,13 +263,14 @@
 									</template>
 								</div>
 							</div>
-							<div v-if="stagePluginsDependenciesOptions.find((dep) => dep.plugin_object_id === stage.plugin_object_id,)" class="mb-2">
+							<div v-if="stagePluginsDependenciesOptions.find((dep) => dep.plugin_object_id === stage.plugin_object_id)" class="mb-2">
 								<label>Dependencies:</label>
 								<Dropdown
 									v-if="
 										stagePluginsDependenciesOptions.find(
 											(dep) => dep.plugin_object_id === stage.plugin_object_id,
 										)?.selection_type === 'Single'
+										&& stage.plugin_dependencies
 									"
 									v-model="stage.plugin_dependencies[0].plugin_object_id"
 									:options="
@@ -300,52 +304,54 @@
 								/>
 							</div>
 							<div v-for="dependency in stage.plugin_dependencies" :key="dependency.plugin_object_id" class="mb-2">
-								<label class="step-header">{{ stagePluginsDependenciesOptions.find((dep) => dep.plugin_object_id === stage.plugin_object_id)?.dependencyInfo.find((d) => d.dependencies.plugin_object_id === dependency.plugin_object_id)?.dependencyLabel }} Dependency Parameters:</label>
-								<div
-									v-for="(param, paramIndex) in dependency?.plugin_parameters"
-									:key="paramIndex"
-									class="parameter-item"
-								>
-									<label>{{ param.parameter_metadata.name }}:</label>
-									<div style="font-size: 12px; color: #666">
-										{{ param.parameter_metadata.description }}
-									</div>
-									<template
-										v-if="
-											param.parameter_metadata.type === 'string' ||
-											param.parameter_metadata.type === 'int' ||
-											param.parameter_metadata.type === 'float' ||
-											param.parameter_metadata.type === 'datetime'
-										"
+								<template v-if="dependency.plugin_parameters?.length > 0">
+									<label class="step-header">{{ stagePluginsDependenciesOptions.find((dep) => dep.plugin_object_id === stage.plugin_object_id)?.dependencyInfo.find((d) => d.dependencies.plugin_object_id === dependency.plugin_object_id)?.dependencyLabel }} Dependency Parameters:</label>
+									<div
+										v-for="(param, paramIndex) in dependency?.plugin_parameters"
+										:key="paramIndex"
+										class="parameter-item"
 									>
-										<InputText v-model="param.default_value" class="w-100" />
-									</template>
-									<template v-else-if="param.parameter_metadata.type === 'bool'">
-										<InputSwitch v-model="param.default_value" />
-									</template>
-									<template v-else-if="param.parameter_metadata.type === 'array'">
-										<Chips
-											v-model="param.default_value"
-											style="width: 100%"
-											placeholder="Enter values separated by commas"
-											separator=","
-										></Chips>
-									</template>
-									<template v-else-if="param.parameter_metadata.type === 'resource-object-id'">
-										<Dropdown
-											v-model="param.default_value"
-											:options="
-												stagePluginDependencyResourceOptions.find(
-													(p) => p.parameter_metadata.name === param.parameter_metadata.name,
-												)?.parameter_selection_hints_options || []
+										<label>{{ param.parameter_metadata.name }}:</label>
+										<div style="font-size: 12px; color: #666">
+											{{ param.parameter_metadata.description }}
+										</div>
+										<template
+											v-if="
+												param.parameter_metadata.type === 'string' ||
+												param.parameter_metadata.type === 'int' ||
+												param.parameter_metadata.type === 'float' ||
+												param.parameter_metadata.type === 'datetime'
 											"
-											option-label="display_name"
-											option-value="value"
-											class="w-100"
-											placeholder="Select a resource"
-										/>
-									</template>
-								</div>
+										>
+											<InputText v-model="param.default_value" class="w-100" />
+										</template>
+										<template v-else-if="param.parameter_metadata.type === 'bool'">
+											<InputSwitch v-model="param.default_value" />
+										</template>
+										<template v-else-if="param.parameter_metadata.type === 'array'">
+											<Chips
+												v-model="param.default_value"
+												style="width: 100%"
+												placeholder="Enter values separated by commas"
+												separator=","
+											></Chips>
+										</template>
+										<template v-else-if="param.parameter_metadata.type === 'resource-object-id'">
+											<Dropdown
+												v-model="param.default_value"
+												:options="
+													stagePluginDependencyResourceOptions.find(
+														(p) => p.parameter_metadata.name === param.parameter_metadata.name,
+													)?.parameter_selection_hints_options || []
+												"
+												option-label="display_name"
+												option-value="value"
+												class="w-100"
+												placeholder="Select a resource"
+											/>
+										</template>
+									</div>
+								</template>
 							</div>
 						</div>
 					</div>
@@ -387,54 +393,56 @@
 								placeholder="0 6 * * *"
 							/>
 						</div>
-						<div class="step-header span-2 mb-2">Trigger Parameters:</div>
-						<div class="span-2">
-							<div v-for="(param, index) in triggerParameters[trigger.name]" :key="index" class="mb-2">
-								<label>{{ param.parameter_metadata.name }}:</label>
-								<div style="font-size: 12px">
-									{{ param.key }}
+						<template v-if="triggerParameters[trigger.name]?.length > 0">
+							<div class="step-header span-2 mb-2">Trigger Parameters:</div>
+							<div class="span-2">
+								<div v-for="(param, index) in triggerParameters[trigger.name]" :key="index" class="mb-2">
+									<label>{{ param.parameter_metadata.name }}:</label>
+									<div style="font-size: 12px">
+										{{ param.key }}
+									</div>
+									<div style="font-size: 12px; color: #666">
+										{{ param.parameter_metadata.description }}
+									</div>
+									<template
+										v-if="
+											param.parameter_metadata.type === 'string' ||
+											param.parameter_metadata.type === 'int' ||
+											param.parameter_metadata.type === 'float' ||
+											param.parameter_metadata.type === 'datetime'
+										"
+									>
+										<InputText
+											v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
+											class="w-100"
+										/>
+									</template>
+									<template v-else-if="param.parameter_metadata.type === 'bool'">
+										<InputSwitch
+											v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
+										/>
+									</template>
+									<template v-else-if="param.parameter_metadata.type === 'array'">
+										<Chips
+											v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
+											style="width: 100%"
+											placeholder="Enter values separated by commas"
+											separator=","
+										></Chips>
+									</template>
+									<template v-else-if="param.parameter_metadata.type === 'resource-object-id'">
+										<Dropdown
+											v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
+											:options="param.resourceOptions"
+											option-label="display_name"
+											option-value="value"
+											class="w-100"
+											placeholder="Select a resource"
+										/>
+									</template>
 								</div>
-								<div style="font-size: 12px; color: #666">
-									{{ param.parameter_metadata.description }}
-								</div>
-								<template
-									v-if="
-										param.parameter_metadata.type === 'string' ||
-										param.parameter_metadata.type === 'int' ||
-										param.parameter_metadata.type === 'float' ||
-										param.parameter_metadata.type === 'datetime'
-									"
-								>
-									<InputText
-										v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
-										class="w-100"
-									/>
-								</template>
-								<template v-else-if="param.parameter_metadata.type === 'bool'">
-									<InputSwitch
-										v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
-									/>
-								</template>
-								<template v-else-if="param.parameter_metadata.type === 'array'">
-									<Chips
-										v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
-										style="width: 100%"
-										placeholder="Enter values separated by commas"
-										separator=","
-									></Chips>
-								</template>
-								<template v-else-if="param.parameter_metadata.type === 'resource-object-id'">
-									<Dropdown
-										v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
-										:options="param.resourceOptions"
-										option-label="display_name"
-										option-value="value"
-										class="w-100"
-										placeholder="Select a resource"
-									/>
-								</template>
 							</div>
-						</div>
+						</template>
 					</div>
 					<Button label="Add Trigger" icon="pi pi-plus" @click="addTrigger" />
 				</div>
@@ -638,7 +646,7 @@ export default {
 						});
 					});
 				}
-			})
+			});
 
 			if (this.pipelineId) {
 				this.loadingStatusText = `Retrieving pipeline "${this.pipelineId}"...`;
@@ -653,8 +661,10 @@ export default {
 					(plugin) => plugin.object_id === this.pipeline.data_source.plugin_object_id,
 				);
 
-				this.handleNextStages(this.pipeline.starting_stages);
+				await this.handleNextStages(this.pipeline.starting_stages);
 				this.buildTriggerParameters();
+			} else {
+				this.addTrigger();
 			}
 		} catch (error) {
 			console.error('Error loading data:', error);
@@ -717,7 +727,7 @@ export default {
 					default_value: null,
 				}),
 			);
-			this.selectedStagePlugins[stageIndex].plugin_dependencies = [];
+			this.selectedStagePlugins[stageIndex].plugin_dependencies = [{plugin_object_id: null}];
 
 			for (const param of selectedPlugin.parameters) {
 				const resourceOption = this.stagePluginResourceOptions.find((p) => p.parameter_metadata.name === param.name);
@@ -872,7 +882,7 @@ export default {
 
 				this.loadStagePluginDependencies(stage.plugin_object_id);
 				if (stage.next_stages) {
-					this.handleNextStages(stage.next_stages);
+					await this.handleNextStages(stage.next_stages);
 				}
 			}
 		},
@@ -952,29 +962,31 @@ export default {
 						// Dependency Plugin Parameters
 						if (stage.plugin_dependencies) {
 							for (const dep of stage.plugin_dependencies) {
-								for (const param of dep.plugin_parameters) {
-									const depPluginName = dep.plugin_object_id.split('/').pop() || '';
-									const key = `Stage.${stage.name}.Dependency.${depPluginName}.${param.parameter_metadata.name}`;
-									const value =
-										existingTriggerParameters[trigger.name][key] !== undefined
-											? existingTriggerParameters[trigger.name][key]
-											: param.default_value;
-									const resourceOptions = await this.getResourceOptions(
-										param.parameter_metadata.name,
-										dep.plugin_object_id,
-									);
-									const type = 'dependency';
-									const stageName = stage.name;
-									parameterValues.push({
-										parameter_metadata: param.parameter_metadata,
-										key,
-										value,
-										resourceOptions,
-										type,
-										stageName,
-									});
-									if (!this.triggerParametersMap[key]) {
-										this.triggerParametersMap[key] = param.default_value;
+								if(dep.plugin_parameters?.length > 0) {
+									for (const param of dep.plugin_parameters) {
+										const depPluginName = dep.plugin_object_id.split('/').pop() || '';
+										const key = `Stage.${stage.name}.Dependency.${depPluginName}.${param.parameter_metadata.name}`;
+										const value =
+											existingTriggerParameters[trigger.name][key] !== undefined
+												? existingTriggerParameters[trigger.name][key]
+												: param.default_value;
+										const resourceOptions = await this.getResourceOptions(
+											param.parameter_metadata.name,
+											dep.plugin_object_id,
+										);
+										const type = 'dependency';
+										const stageName = stage.name;
+										parameterValues.push({
+											parameter_metadata: param.parameter_metadata,
+											key,
+											value,
+											resourceOptions,
+											type,
+											stageName,
+										});
+										if (!this.triggerParametersMap[key]) {
+											this.triggerParametersMap[key] = param.default_value;
+										}
 									}
 								}
 							}
@@ -1009,7 +1021,6 @@ export default {
 		},
 
 		addTrigger() {
-			// this.buildTriggerParameters();
 			this.pipeline.triggers.push({
 				name: `Trigger${this.pipeline.triggers.length + 1}`,
 				trigger_type: 'Schedule',
