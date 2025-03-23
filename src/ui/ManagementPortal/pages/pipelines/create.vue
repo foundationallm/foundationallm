@@ -1043,10 +1043,18 @@ export default {
 			this.buildTriggerParameters();
 		},
 
-		removeTrigger(index) {
+		removeTrigger(index: number) {
 			const triggerName = this.pipeline.triggers[index].name;
 			this.pipeline.triggers.splice(index, 1);
 			delete this.triggerCollapseState[triggerName]; // Remove the collapse state
+			delete this.previousTriggerNames[index]; // Remove the previous name entry
+
+			// Shift down the indexes in previousTriggerNames
+			const updatedPreviousTriggerNames: Record<number, string> = {};
+			this.pipeline.triggers.forEach((trigger, i) => {
+				updatedPreviousTriggerNames[i] = this.previousTriggerNames[i >= index ? i + 1 : i];
+			});
+			this.previousTriggerNames = updatedPreviousTriggerNames;
 		},
 
 		toggleTriggerCollapse(index: number) {
