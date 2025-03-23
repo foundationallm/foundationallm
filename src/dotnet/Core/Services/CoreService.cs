@@ -119,12 +119,10 @@ public partial class CoreService(
     {
         ArgumentException.ThrowIfNullOrEmpty(chatSessionProperties.Name);
 
-        var refId = Guid.NewGuid();
-        var newUniqueId = refId.ToString().ToLower();
-        var newConversationId = $"{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}-{refId.ToBase64String()}";
+        var newConversationId = $"{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToBase64String()}";
         Conversation newConversation = new()
         {
-            Id = newUniqueId,
+            Id = newConversationId,
             SessionId = newConversationId,
             Name = newConversationId,
             DisplayName = chatSessionProperties.Name,
