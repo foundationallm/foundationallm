@@ -13,6 +13,7 @@ from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.models.agents import AgentTool
 from foundationallm.models.orchestration import ContentArtifact
+from foundationallm.serivces import HttpClientService
 from foundationallm_agent_plugins.common.constants import CONTENT_ARTIFACT_TYPE_TOOL_EXECUTION, CONTENT_ARTIFACT_TYPE_FILE
 
 class FoundationaLLMCodeInterpreterFile(BaseModel):

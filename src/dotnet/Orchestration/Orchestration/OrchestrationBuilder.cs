@@ -309,6 +309,15 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 CompletionRequestObjectsKeys.GatewayAPIEndpointConfiguration,
                 gatewayAPIEndpointConfiguration);
 
+            var contextAPIEnpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                instanceId,
+                ServiceNames.ContextAPI,
+                currentUserIdentity);
+
+            explodedObjectsManager.TryAdd(
+                CompletionRequestObjectsKeys.ContextAPIEndpointConfiguration,
+                contextAPIEnpointConfiguration);
+
             explodedObjectsManager.TryAdd(
                 CompletionRequestObjectsKeys.InstanceId,
                 instanceId);
