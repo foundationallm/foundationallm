@@ -624,7 +624,7 @@ public partial class CoreService(
                     Resource = new AttachmentFile
                     {
                         Name = serviceResult.Result.Id,
-                        ObjectId = serviceResult.Result.FileObjectId,
+                        ObjectId = serviceResult.Result.Id,
                         DisplayName = serviceResult.Result.FileName,
                         CreatedBy = serviceResult.Result.UPN,
                         CreatedOn = serviceResult.Result.CreatedAt,
@@ -1074,10 +1074,18 @@ public partial class CoreService(
         {
             foreach (var attachmentObjectId in request.Attachments)
             {
-                //Get resource path for attachment
-                var rp = ResourcePath.GetResourcePath(attachmentObjectId);
-                var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(instanceId, rp.MainResourceId!, _userIdentity);
-                fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder));
+                if(ResourcePath.TryParseResourceProvider(attachmentObjectId, out var resourceProviderName))
+                {                   
+                    //Get resource path for attachment
+                    var rp = ResourcePath.GetResourcePath(attachmentObjectId);
+                    var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(instanceId, rp.MainResourceId!, _userIdentity);
+                    fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder));                   
+                }
+                else
+                {
+                    //_contextServiceClient.GetFileRecord();
+                }
+               
             }
         }
 
