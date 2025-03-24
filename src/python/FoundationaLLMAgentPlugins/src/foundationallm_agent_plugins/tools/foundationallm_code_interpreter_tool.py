@@ -104,7 +104,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         if files:            
             file_names = [f.original_file_name for f in files]
             # returns the operation_id
-            operation_id = self.context_api_client.post(
+            operation_id = await self.context_api_client.post_async(
                 f"/instances/{self.instance_id}/codeSessions/{self.repl.session_id}/uploadFiles",
                 {
                     "file_names": file_names
@@ -117,7 +117,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         # Get the list of files from the code interpreter
         files_list = []
         if operation_id:           
-            files_list = self.context_api_client.post(
+            files_list = await self.context_api_client.post_async(
                 f"/instances/{self.instance_id}/codeSessions/{self.repl.session_id}/downloadFiles",
                 {
                     "operation_id": operation_id
