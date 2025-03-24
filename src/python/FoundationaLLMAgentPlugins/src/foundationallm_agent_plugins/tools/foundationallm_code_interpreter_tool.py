@@ -77,6 +77,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             )
         else:
             raise ToolException("The Context API endpoint configuration is required to use the Code Interpreter tool.")
+        self.instance_id = objects.get(CompletionRequestObjectKeys.INSTANCE_ID, None)
     
     def _run(self,                 
             python_code: str,
@@ -104,7 +105,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             file_names = [f.original_file_name for f in files]
             # returns the operation_id
             operation_id = self.context_api_client.post(
-                f"/codeSessions/{self.repl.session_id}/uploadFiles",
+                f"/instances/{self.instance_id}/codeSessions/{self.repl.session_id}/uploadFiles",
                 {
                     "file_names": file_names
                 }
@@ -117,7 +118,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         files_list = []
         if operation_id:           
             files_list = self.context_api_client.post(
-                f"/codeSessions/{self.repl.session_id}/downloadFiles",
+                f"/instances/{self.instance_id}/codeSessions/{self.repl.session_id}/downloadFiles",
                 {
                     "operation_id": operation_id
                 }
