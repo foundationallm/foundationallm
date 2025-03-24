@@ -14,7 +14,7 @@ namespace Gatekeeper.Tests.Services
 
         private readonly ILogger<AzureContentSafetyService> _logger = Substitute.For<ILogger<AzureContentSafetyService>>();
         private readonly IOptions<AzureContentSafetySettings> _settings = Substitute.For<IOptions<AzureContentSafetySettings>>();
-        private readonly ICallContext _callContext = Substitute.For<ICallContext>();
+        private readonly IOrchestrationContext _callContext = Substitute.For<IOrchestrationContext>();
         private readonly IHttpClientFactoryService _httpClientFactoryService = Substitute.For<IHttpClientFactoryService>();
 
         public AzureContentSafetyServiceTests()

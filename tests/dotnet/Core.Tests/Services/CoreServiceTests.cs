@@ -23,7 +23,7 @@ namespace FoundationaLLM.Core.Tests.Services
 
         private readonly IAzureCosmosDBService _cosmosDbService = Substitute.For<IAzureCosmosDBService>();
         private readonly IGatekeeperAPIService _gatekeeperAPIService = Substitute.For<IGatekeeperAPIService>();
-        private readonly ICallContext _callContext = Substitute.For<ICallContext>();
+        private readonly IOrchestrationContext _callContext = Substitute.For<IOrchestrationContext>();
         private readonly IEnumerable<IResourceProviderService> _resourceProviderServices = Substitute.For<IEnumerable<IResourceProviderService>>();
         private readonly ILogger<CoreService> _logger = Substitute.For<ILogger<CoreService>>();
         private readonly IOptions<ClientBrandingConfiguration> _brandingConfig = Substitute.For<IOptions<ClientBrandingConfiguration>>();

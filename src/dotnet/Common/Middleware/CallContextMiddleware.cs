@@ -39,7 +39,7 @@ namespace FoundationaLLM.Common.Middleware
             HttpContext context,
             IUserClaimsProviderService claimsProviderService,
             IIdentityManagementService identityManagementService,
-            ICallContext callContext,
+            IOrchestrationContext callContext,
             IOptions<InstanceSettings> instanceSettings)
         {
             if (context.User is { Identity.IsAuthenticated: true })

@@ -2,7 +2,7 @@
 using Microsoft.Azure.Cosmos;
 using System.Text.Json;
 
-namespace FoundationaLLM.State.Serializers
+namespace FoundationaLLM.Common.Text
 {
     /// <summary>
     /// Custom serializer for Cosmos DB that uses System.Text.Json.

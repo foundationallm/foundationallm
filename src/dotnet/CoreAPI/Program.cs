@@ -5,7 +5,7 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
-using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Core.Interfaces;
@@ -61,6 +61,7 @@ namespace FoundationaLLM.Core.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatekeeperAPI_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Essentials);
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Attachment_Storage);
@@ -121,6 +122,7 @@ namespace FoundationaLLM.Core.API
             builder.AddDownstreamAPIService(HttpClientNames.GatekeeperAPI);
             builder.AddDownstreamAPIService(HttpClientNames.OrchestrationAPI);
             builder.AddAuthorizationServiceClient();
+            builder.AddContextServiceClient();
 
             builder.AddAzureCosmosDBService();
             builder.Services.AddScoped<ICoreService, CoreService>();
@@ -128,7 +130,7 @@ namespace FoundationaLLM.Core.API
             builder.Services.AddScoped<IOneDriveWorkSchoolService, OneDriveWorkSchoolService>();
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-            builder.Services.AddScoped<ICallContext, CallContext>();
+            builder.Services.AddScoped<IOrchestrationContext, OrchestrationContext>();
 
             // Add authentication configuration.
             var e2ETestEnvironmentValue = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Environment) ?? string.Empty;

@@ -11,16 +11,16 @@ namespace FoundationaLLM.Gateway.API.Controllers
     /// Methods for managing agent capabilities.
     /// </summary>
     /// <param name="gatewayCore">The <see cref="IGatewayCore"/> that provides LLM gateway services.</param>
-    /// <param name="callContext">The <see cref="ICallContext"/> call context of the request being handled.</param>
+    /// <param name="callContext">The <see cref="IOrchestrationContext"/> call context of the request being handled.</param>
     [ApiController]
     [APIKeyAuthentication]
     [Route("instances/{instanceId}/[controller]")]
     public class AgentCapabilitiesController(
         IGatewayCore gatewayCore,
-        ICallContext callContext)
+        IOrchestrationContext callContext)
     {
         readonly IGatewayCore _gatewayCore = gatewayCore;
-        private readonly ICallContext _callContext = callContext;
+        private readonly IOrchestrationContext _callContext = callContext;
 
         /// <summary>
         /// Creates an agent capability.

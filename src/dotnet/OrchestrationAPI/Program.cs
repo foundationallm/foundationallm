@@ -6,7 +6,7 @@ using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Instance;
-using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Cache;
 using FoundationaLLM.Common.Services.Security;
@@ -66,7 +66,6 @@ namespace FoundationaLLM.Orchestration.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Code_CodeExecution);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_OrchestrationAPI_Configuration);
 
                 options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_OrchestrationAPI);
@@ -112,7 +111,7 @@ namespace FoundationaLLM.Orchestration.API
             builder.Services.AddOptions<LangChainServiceSettings>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_LangChainAPI_Configuration));
 
-            builder.Services.AddScoped<ICallContext, CallContext>();
+            builder.Services.AddScoped<IOrchestrationContext, OrchestrationContext>();
             builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
             builder.AddUserProfileService();
 
@@ -133,9 +132,6 @@ namespace FoundationaLLM.Orchestration.API
             // Add the templating engine.
             builder.AddRegexTemplatingService();
 
-            // Add the code execution service.
-            builder.AddAzureContainerAppsCodeExecutionService();
-
             //----------------------------
             // Resource providers
             //----------------------------
@@ -154,6 +150,7 @@ namespace FoundationaLLM.Orchestration.API
             builder.AddHttpClientFactoryService();
             builder.AddLLMOrchestrationServices();
             builder.AddOrchestrationService();
+            builder.AddContextServiceClient();
 
             builder.AddAzureCosmosDBService();
 

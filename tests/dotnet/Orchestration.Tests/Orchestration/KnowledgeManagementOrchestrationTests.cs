@@ -15,7 +15,7 @@ namespace FoundationaLLM.Orchestration.Tests.Orchestration
         private readonly string _instanceId = "00000000-0000-0000-0000-000000000000";
         private AgentOrchestration _knowledgeManagementOrchestration;
         private KnowledgeManagementAgent _agent = new KnowledgeManagementAgent() { Name = "Test_agent", ObjectId="Test_objctid", Type = AgentTypes.KnowledgeManagement };
-        private ICallContext _callContext = Substitute.For<ICallContext>();
+        private IOrchestrationContext _callContext = Substitute.For<IOrchestrationContext>();
         private ILLMOrchestrationService _orchestrationService = Substitute.For<ILLMOrchestrationService>();
         private ILogger<OrchestrationBase> _logger = Substitute.For<ILogger<OrchestrationBase>>();
 

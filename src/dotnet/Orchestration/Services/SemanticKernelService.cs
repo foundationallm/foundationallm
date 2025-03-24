@@ -30,7 +30,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
     public class SemanticKernelService(
         IOptions<SemanticKernelServiceSettings> options,
         ILogger<SemanticKernelService> logger,
-        ICallContext callContext,
+        IOrchestrationContext callContext,
         IHttpClientFactoryService httpClientFactoryService) : ISemanticKernelService
     {
         readonly SemanticKernelServiceSettings _settings = options.Value;

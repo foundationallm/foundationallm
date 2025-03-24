@@ -396,7 +396,7 @@ namespace FoundationaLLM.Common.Services.Quota
         }
 
         private static string BuildContext(string?[] tokens) =>
-            string.Join(":", [.. tokens.Select(t => string.IsNullOrWhiteSpace(t) ? "__default+__" : t)]);
+            string.Join(":", [.. tokens.Select(t => string.IsNullOrWhiteSpace(t) ? "__default__" : t)]);
 
         private QuotaMetricPartitionState UpdateQuotaContext(
             DateTimeOffset referenceTime,

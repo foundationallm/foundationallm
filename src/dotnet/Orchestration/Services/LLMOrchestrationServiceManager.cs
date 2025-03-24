@@ -107,7 +107,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         }
 
         /// <inheritdoc/>
-        public ILLMOrchestrationService GetService(string instanceId, string serviceName, IServiceProvider serviceProvider, ICallContext callContext)
+        public ILLMOrchestrationService GetService(string instanceId, string serviceName, IServiceProvider serviceProvider, IOrchestrationContext callContext)
         {
             var internalOrchestrationService = serviceProvider.GetServices<ILLMOrchestrationService>()
                 .SingleOrDefault(srv => srv.Name == serviceName);
@@ -136,6 +136,6 @@ namespace FoundationaLLM.Orchestration.Core.Services
                             eosn,
                             serviceProvider.GetRequiredService<ILogger<LLMOrchestrationService>>(),
                             serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
-                            serviceProvider.GetRequiredService<ICallContext>())));
+                            serviceProvider.GetRequiredService<IOrchestrationContext>())));
     }
 }

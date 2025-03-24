@@ -277,7 +277,7 @@ namespace FoundationaLLM
             builder.Services.AddScoped<IDownstreamAPIService, DownstreamAPIService>(
                 (serviceProvider) => new DownstreamAPIService(
                     apiServiceName,
-                    serviceProvider.GetService<ICallContext>()!,
+                    serviceProvider.GetService<IOrchestrationContext>()!,
                     serviceProvider.GetService<IHttpClientFactoryService>()!,
                     serviceProvider.GetService<ILogger<DownstreamAPIService>>()!
                 ));
@@ -312,12 +312,12 @@ namespace FoundationaLLM
         /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
         public static void AddAzureCosmosDBService(this IServiceCollection services, IConfigurationManager configuration)
         {
-            services.AddOptions<CosmosDbSettings>()
+            services.AddOptions<AzureCosmosDBSettings>()
                 .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB));
 
             services.AddSingleton<CosmosClient>(serviceProvider =>
             {
-                var settings = serviceProvider.GetRequiredService<IOptions<CosmosDbSettings>>().Value;
+                var settings = serviceProvider.GetRequiredService<IOptions<AzureCosmosDBSettings>>().Value;
                 return new CosmosClientBuilder(settings.Endpoint, ServiceContext.AzureCredential)
                     .WithSerializerOptions(new CosmosSerializationOptions
                     {

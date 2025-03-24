@@ -19,17 +19,17 @@ namespace FoundationaLLM.Core.API.Controllers
     [Route("instances/{instanceId}/[controller]")]
     public class OneDriveWorkSchoolController : ControllerBase
     {
-        private readonly ICallContext _callContext;
+        private readonly IOrchestrationContext _callContext;
         private readonly IOneDriveWorkSchoolService _oneDriveWorkSchoolService;
 
         /// <summary>
         /// The controller for OneDrive integration.
         /// </summary>
-        /// <param name="callContext">The <see cref="ICallContext"/> call context of the request being handled.</param>
+        /// <param name="callContext">The <see cref="IOrchestrationContext"/> call context of the request being handled.</param>
         /// <param name="oneDriveService">The <see cref="IOneDriveWorkSchoolService"/> OneDrive service.</param>
         /// <exception cref="ResourceProviderException"></exception>
         public OneDriveWorkSchoolController(
-            ICallContext callContext,
+            IOrchestrationContext callContext,
             IOneDriveWorkSchoolService oneDriveWorkSchoolService)
         {
             _callContext = callContext;

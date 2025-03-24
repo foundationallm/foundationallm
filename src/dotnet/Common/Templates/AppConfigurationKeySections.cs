@@ -265,6 +265,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:ContextAPI:Essentials";
         
         /// <summary>
+        /// Configuration section for the FoundationaLLM Context API.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration";
+        
+        /// <summary>
         /// Configuration section used to identify the essential settings for the Gateway API.
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_GatewayAPI_Essentials =

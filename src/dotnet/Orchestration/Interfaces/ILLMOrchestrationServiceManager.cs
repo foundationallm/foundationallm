@@ -21,8 +21,8 @@ namespace FoundationaLLM.Orchestration.Core.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance ID.</param>
         /// <param name="serviceName">The name of the <see cref="ILLMOrchestrationService"/> to be retrieved.</param>
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/> provding dependency injection services for the current scope.</param>
-        /// <param name="callContext">The <see cref="ICallContext"/> call context of the request being handled.</param>
+        /// <param name="callContext">The <see cref="IOrchestrationContext"/> call context of the request being handled.</param>
         /// <returns></returns>
-        ILLMOrchestrationService GetService(string instanceId, string serviceName, IServiceProvider serviceProvider, ICallContext callContext);
+        ILLMOrchestrationService GetService(string instanceId, string serviceName, IServiceProvider serviceProvider, IOrchestrationContext callContext);
     }
 }

@@ -6,7 +6,7 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
-using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Security;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
@@ -53,7 +53,7 @@ builder.AddCorsPolicies();
 // Add configurations to the container
 builder.AddInstanceProperties();
 
-builder.Services.AddScoped<ICallContext, CallContext>();
+builder.Services.AddScoped<IOrchestrationContext, OrchestrationContext>();
 builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
 builder.AddHttpClientFactoryService();
 
@@ -74,7 +74,7 @@ builder.AddResourceValidatorFactory();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<APIKeyAuthenticationFilter>();
 builder.Services.AddOptions<APIKeyValidationSettings>()
-    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_DataPipelineAPI_Essentials));
+    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Essentials));
 builder.Services.AddTransient<IAPIKeyValidationService, APIKeyValidationService>();
 
 builder.Services

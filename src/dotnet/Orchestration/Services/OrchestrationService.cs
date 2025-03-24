@@ -31,11 +31,11 @@ public class OrchestrationService : IOrchestrationService
     private readonly ILLMOrchestrationServiceManager _llmOrchestrationServiceManager;
     private readonly IAzureCosmosDBService _cosmosDBService;
     private readonly ITemplatingService _templatingService;
-    private readonly ICodeExecutionService _codeExecutionService;
+    private readonly IContextServiceClient _contextServiceClient;
     private readonly IUserProfileService _userProfileService;
     private readonly IUserPromptRewriteService _userPromptRewriteService;
     private readonly ISemanticCacheService _semanticCacheService;
-    private readonly ICallContext _callContext;
+    private readonly IOrchestrationContext _callContext;
     private readonly IConfiguration _configuration;
     private readonly ILogger<OrchestrationService> _logger;
     private readonly ILoggerFactory _loggerFactory;
@@ -53,7 +53,7 @@ public class OrchestrationService : IOrchestrationService
     /// <param name="llmOrchestrationServiceManager">The <see cref="ILLMOrchestrationServiceManager"/> managing the internal and external LLM orchestration services.</param>
     /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> used to interact with the Cosmos DB database.</param>
     /// <param name="templatingService">The <see cref="ITemplatingService"/> used to render templates.</param>
-    /// <param name="codeExecutionService">The <see cref="ICodeExecutionService"/> used to execute code.</param>
+    /// <param name="contextServiceClient">The <see cref="IContextServiceClient"/> used to call the Context API.</param>
     /// <param name="userProfileService">The <see cref="IUserProfileService"/> used to interact with user profiles.</param>
     /// <param name="userPromptRewriteService">The <see cref="IUserPromptRewriteService"/> used to rewrite user prompts.</param>
     /// <param name="semanticCacheService">The <see cref="ISemanticCacheService"/> used to cache and retrieve completion responses.</param>
@@ -67,11 +67,11 @@ public class OrchestrationService : IOrchestrationService
         ILLMOrchestrationServiceManager llmOrchestrationServiceManager,
         IAzureCosmosDBService cosmosDBService,
         ITemplatingService templatingService,
-        ICodeExecutionService codeExecutionService,
+        IContextServiceClient contextServiceClient,
         IUserProfileService userProfileService,
         IUserPromptRewriteService userPromptRewriteService,
         ISemanticCacheService semanticCacheService,
-        ICallContext callContext,
+        IOrchestrationContext callContext,
         IConfiguration configuration,
         IServiceProvider serviceProvider,
         ILoggerFactory loggerFactory)
@@ -82,7 +82,7 @@ public class OrchestrationService : IOrchestrationService
         _llmOrchestrationServiceManager = llmOrchestrationServiceManager;
         _cosmosDBService = cosmosDBService;
         _templatingService = templatingService;
-        _codeExecutionService = codeExecutionService;
+        _contextServiceClient = contextServiceClient;
         _userProfileService = userProfileService;
 
         _userPromptRewriteService = userPromptRewriteService;
@@ -136,7 +136,7 @@ public class OrchestrationService : IOrchestrationService
                 _llmOrchestrationServiceManager,
                 _cosmosDBService,
                 _templatingService,
-                _codeExecutionService,
+                _contextServiceClient,
                 _userPromptRewriteService,
                 _semanticCacheService,
                 _serviceProvider,
@@ -180,7 +180,7 @@ public class OrchestrationService : IOrchestrationService
                 _llmOrchestrationServiceManager,
                 _cosmosDBService,
                 _templatingService,
-                _codeExecutionService,
+                _contextServiceClient,
                 _userPromptRewriteService,
                 _semanticCacheService,
                 _serviceProvider,
@@ -299,7 +299,7 @@ public class OrchestrationService : IOrchestrationService
                 _llmOrchestrationServiceManager,
                 _cosmosDBService,
                 _templatingService,
-                _codeExecutionService,
+                _contextServiceClient,
                 _userPromptRewriteService,
                 _semanticCacheService,
                 _serviceProvider,

@@ -10,7 +10,7 @@ namespace FoundationaLLM.Orchestration.Tests.Orchestration
     {
         private string userPrompt = "TestPrompt";
         private readonly ILangChainService _langChainService = Substitute.For<ILangChainService>();
-        private readonly ICallContext _callContext = Substitute.For<ICallContext>();
+        private readonly IOrchestrationContext _callContext = Substitute.For<IOrchestrationContext>();
         private Dictionary<string, IResourceProviderService> _resourceProviderServices = new Dictionary<string, IResourceProviderService>();
         private readonly ISemanticKernelService _semanticKernelService = Substitute.For<ISemanticKernelService>();
         private readonly IEnumerable<ILLMOrchestrationService> _orchestrationServices;

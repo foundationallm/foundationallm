@@ -3,7 +3,7 @@
     /// <summary>
     /// Stores the Azure Cosmos DB settings from the app configuration.
     /// </summary>
-    public record CosmosDbSettings
+    public record AzureCosmosDBSettings
     {
         /// <summary>
         /// The Azure Cosmos DB endpoint URL.

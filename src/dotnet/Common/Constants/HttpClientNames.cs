@@ -171,6 +171,7 @@ public static class HttpClientNames
         OrchestrationAPI,
         AgentHubAPI,
         PromptHubAPI,
-        DataSourceHubAPI
+        DataSourceHubAPI,
+        ContextAPI
     ];
 }

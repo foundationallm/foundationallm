@@ -25,12 +25,12 @@ namespace FoundationaLLM.Orchestration.Core.Services
     /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
     public class AzureOpenAIDirectService(
         ILogger<AzureOpenAIDirectService> logger,
-        ICallContext callContext,
+        IOrchestrationContext callContext,
         IHttpClientFactoryService httpClientFactoryService,
         IEnumerable<IResourceProviderService> resourceProviderServices) : IAzureOpenAIDirectService
     {
         private readonly ILogger<AzureOpenAIDirectService> _logger = logger;
-        private readonly ICallContext _callContext = callContext;
+        private readonly IOrchestrationContext _callContext = callContext;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
         private readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
         private readonly Dictionary<string, IResourceProviderService> _resourceProviderServices = resourceProviderServices.ToDictionary(

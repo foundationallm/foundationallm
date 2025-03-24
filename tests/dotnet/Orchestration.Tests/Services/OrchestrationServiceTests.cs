@@ -24,7 +24,7 @@ namespace FoundationaLLM.Orchestration.Tests.Services
         {
             Substitute.For<IResourceProviderService>()
         };
-        private readonly ICallContext _callContext = Substitute.For<ICallContext>();
+        private readonly IOrchestrationContext _callContext = Substitute.For<IOrchestrationContext>();
         private readonly ILoggerFactory _loggerFactory =  Substitute.For<ILoggerFactory>();
         private readonly IConfiguration _configuration = Substitute.For<IConfiguration>();
 
