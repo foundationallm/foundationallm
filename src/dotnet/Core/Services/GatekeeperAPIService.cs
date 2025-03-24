@@ -13,7 +13,7 @@ namespace FoundationaLLM.Core.Services
     /// </summary>
     public class GatekeeperAPIService : IGatekeeperAPIService
     {
-        private readonly ICallContext _callContext;
+        private readonly IOrchestrationContext _callContext;
         private readonly IHttpClientFactoryService _httpClientFactoryService;
         readonly JsonSerializerOptions _jsonSerializerOptions;
 
@@ -26,7 +26,7 @@ namespace FoundationaLLM.Core.Services
         /// used to retrieve an <see cref="HttpClient"/> instance that contains required
         /// headers for Gateway API requests.</param>
         public GatekeeperAPIService(
-            ICallContext callContext,
+            IOrchestrationContext callContext,
             IHttpClientFactoryService httpClientFactoryService)
         {
             _callContext = callContext;

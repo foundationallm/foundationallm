@@ -23,7 +23,7 @@ namespace FoundationaLLM.Management.API.Controllers
     [Produces("application/json")]
     [Route($"instances/{{instanceId}}/providers/{{resourceProvider}}")]
     public class ResourceController(
-        ICallContext callContext,
+        IOrchestrationContext callContext,
         IEnumerable<IResourceProviderService> resourceProviderServices,
         ILogger<ResourceController> logger) : Controller
     {
@@ -31,7 +31,7 @@ namespace FoundationaLLM.Management.API.Controllers
             resourceProviderServices.ToDictionary<IResourceProviderService, string>(
                 rps => rps.Name);
         private readonly ILogger<ResourceController> _logger = logger;
-        private readonly ICallContext _callContext = callContext;
+        private readonly IOrchestrationContext _callContext = callContext;
 
         /// <summary>
         /// Gets one or more resources.

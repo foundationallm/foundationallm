@@ -11,7 +11,7 @@ namespace FoundationaLLM.Orchestration.Tests.Services
     {
         private readonly IOptions<LangChainServiceSettings> _options = Substitute.For<IOptions<LangChainServiceSettings>>();
         private readonly ILogger<LangChainService> _logger = Substitute.For<ILogger<LangChainService>>();
-        private readonly ICallContext _callContext = Substitute.For<ICallContext>();
+        private readonly IOrchestrationContext _callContext = Substitute.For<IOrchestrationContext>();
         private readonly IHttpClientFactoryService _httpClientFactoryService = Substitute.For<IHttpClientFactoryService>();
         private readonly LangChainService _langChainService;
 

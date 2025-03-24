@@ -1,10 +1,10 @@
 ﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 
-namespace FoundationaLLM.Common.Models.Context
+namespace FoundationaLLM.Common.Models.Orchestration
 {
     /// <inheritdoc/>
-    public class CallContext : ICallContext
+    public class OrchestrationContext : IOrchestrationContext
     {
         /// <inheritdoc/>
         public UnifiedUserIdentity? CurrentUserIdentity { get; set; }

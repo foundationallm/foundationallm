@@ -9,7 +9,7 @@ namespace FoundationaLLM.Common.Services.Users
     {
         private readonly IAzureCosmosDBService _cosmosDbService;
         private readonly ILogger<UserProfileService> _logger;
-        private readonly ICallContext _callContext;
+        private readonly IOrchestrationContext _callContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreService"/> class.
@@ -21,7 +21,7 @@ namespace FoundationaLLM.Common.Services.Users
         /// <param name="callContext">Contains contextual data for the calling service.</param>
         public UserProfileService(IAzureCosmosDBService cosmosDbService,
             ILogger<UserProfileService> logger,
-            ICallContext callContext)
+            IOrchestrationContext callContext)
         {
             _cosmosDbService = cosmosDbService;
             _logger = logger;

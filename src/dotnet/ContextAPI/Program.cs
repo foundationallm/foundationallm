@@ -6,7 +6,7 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
-using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Security;
 using Microsoft.AspNetCore.Http.Features;
@@ -36,6 +36,8 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
 
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Essentials);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Configuration);
+
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_Code_CodeExecution);
 }));
 
 if (builder.Environment.IsDevelopment())
@@ -52,23 +54,27 @@ builder.AddOpenTelemetry(
 // CORS policies
 builder.AddCorsPolicies();
 
-// Add configurations to the container
+// FoundationaLLM instance-leve services
 builder.AddInstanceProperties();
 
-// Register the downstream services and HTTP clients.
+// HTTP services
 builder.AddHttpClientFactoryService();
-builder.AddDownstreamAPIService(HttpClientNames.ContextAPI);
 
-// Data services
-builder.AddAzureCosmosDBFileService();
+//---------------------------
+// Singleton services
+//---------------------------
+
+builder.AddAzureCosmosDBContextServices();
+builder.AddAzureContainerAppsCodeSessionProviderService();
 
 //---------------------------
 // Scoped services
 //---------------------------
 
-builder.Services.AddScoped<ICallContext, CallContext>();
+builder.Services.AddScoped<IOrchestrationContext, OrchestrationContext>();
 builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
 builder.AddFileService();
+builder.AddCodeSessionService();
 
 //---------------------------
 // Resource providers

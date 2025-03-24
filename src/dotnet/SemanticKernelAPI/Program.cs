@@ -7,7 +7,7 @@ using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Instance;
-using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Security;
 using FoundationaLLM.Common.Validation;
@@ -98,7 +98,7 @@ namespace FoundationaLLM.SemanticKernel.API
             builder.AddAIModelResourceProvider();
 
             builder.AddHttpClientFactoryService();
-            builder.Services.AddScoped<ICallContext, CallContext>();
+            builder.Services.AddScoped<IOrchestrationContext, OrchestrationContext>();
             builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
 
             builder.Services.AddAuthorization();

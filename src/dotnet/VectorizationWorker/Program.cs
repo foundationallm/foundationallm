@@ -6,7 +6,7 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Storage;
-using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Storage;
 using FoundationaLLM.Common.Services.Tokenizers;
@@ -168,7 +168,7 @@ builder.Services.ActivateKeyedSingleton<ITokenizerService>(TokenizerServiceNames
 builder.Services.AddKeyedScoped<ITextEmbeddingService, GatewayTextEmbeddingService>(
     DependencyInjectionKeys.FoundationaLLM_Vectorization_TextEmbedding_Gateway);
 
-builder.Services.AddScoped<ICallContext, CallContext>();
+builder.Services.AddScoped<IOrchestrationContext, OrchestrationContext>();
 builder.AddHttpClientFactoryService();
 
 // Indexing

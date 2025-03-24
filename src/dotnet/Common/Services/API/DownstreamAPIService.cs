@@ -19,12 +19,12 @@ namespace FoundationaLLM.Common.Services.API
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     public class DownstreamAPIService(
         string downstreamHttpClientName,
-        ICallContext callContext,
+        IOrchestrationContext callContext,
         IHttpClientFactoryService httpClientFactoryService,
         ILogger<DownstreamAPIService> logger) : IDownstreamAPIService
     {
         private readonly string _downstreamHttpClientName = downstreamHttpClientName;
-        private readonly ICallContext _callContext = callContext;
+        private readonly IOrchestrationContext _callContext = callContext;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
         private readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
         private readonly ILogger<DownstreamAPIService> _logger = logger;

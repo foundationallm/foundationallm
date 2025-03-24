@@ -24,13 +24,13 @@ namespace FoundationaLLM.Common.Services.Azure
         IOptions<AzureAISettings> azureAISettings,
         ILogger<AzureAIService> logger,
         IStorageService blobStorageService,
-        ICallContext callContext,
+        IOrchestrationContext callContext,
         IHttpClientFactoryService httpClientFactoryService) : IAzureAIService
     {
         private readonly ILogger<AzureAIService> _logger = logger;
         private readonly IStorageService _blobStorageService = blobStorageService;
         private readonly AzureAISettings _settings = azureAISettings.Value;
-        private readonly ICallContext _callContext = callContext;
+        private readonly IOrchestrationContext _callContext = callContext;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
         private readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
 

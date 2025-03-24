@@ -32,7 +32,7 @@ namespace FoundationaLLM.Common.Middleware
         /// <returns></returns>
         public async Task InvokeAsync(
             HttpContext context,
-            ICallContext callContext,
+            IOrchestrationContext callContext,
             IQuotaService quotaService,
             IOptions<InstanceSettings> instanceSettings)
         {

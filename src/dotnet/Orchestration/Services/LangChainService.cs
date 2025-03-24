@@ -34,7 +34,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         public LangChainService(
             IOptions<LangChainServiceSettings> options,
             ILogger<LangChainService> logger,
-            ICallContext callContext,
+            IOrchestrationContext callContext,
             IHttpClientFactoryService httpClientFactoryService) 
         {
             _settings = options.Value;

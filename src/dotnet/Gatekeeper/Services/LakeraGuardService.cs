@@ -15,7 +15,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
     /// </summary>
     public class LakeraGuardService : ILakeraGuardService
     {
-        private readonly ICallContext _callContext;
+        private readonly IOrchestrationContext _callContext;
         private readonly IHttpClientFactoryService _httpClientFactoryService;
         private readonly LakeraGuardServiceSettings _settings;
         private readonly ILogger _logger;
@@ -29,7 +29,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <param name="options">The configuration options for the Azure Content Safety service.</param>
         /// <param name="logger">The logger for the Azure Content Safety service.</param>
         public LakeraGuardService(
-            ICallContext callContext,
+            IOrchestrationContext callContext,
             IHttpClientFactoryService httpClientFactoryService,
             IOptions<LakeraGuardServiceSettings> options,
             ILogger<LakeraGuardService> logger)

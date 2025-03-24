@@ -14,7 +14,7 @@ namespace FoundationaLLM.Core.Tests.Services
         private readonly string _instanceId = "00000000-0000-0000-0000-000000000000";
         private readonly GatekeeperAPIService _testedService;
 
-        private readonly ICallContext _callContext = Substitute.For<ICallContext>();
+        private readonly IOrchestrationContext _callContext = Substitute.For<IOrchestrationContext>();
         private readonly IHttpClientFactoryService _httpClientFactoryService = Substitute.For<IHttpClientFactoryService>();
 
         public GatekeeperAPIServiceTests()

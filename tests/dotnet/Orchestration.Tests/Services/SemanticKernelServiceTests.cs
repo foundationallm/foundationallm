@@ -17,7 +17,7 @@ namespace FoundationaLLM.Orchestration.Tests.Services
         private readonly string _instanceId = "00000000-0000-0000-0000-000000000000";
         private readonly IOptions<SemanticKernelServiceSettings> options = Substitute.For<IOptions<SemanticKernelServiceSettings>>();
         private readonly ILogger<SemanticKernelService> logger = Substitute.For<ILogger<SemanticKernelService>>();
-        private readonly ICallContext callContext = Substitute.For<ICallContext>();
+        private readonly IOrchestrationContext callContext = Substitute.For<IOrchestrationContext>();
         private readonly IHttpClientFactoryService httpClientFactoryService = Substitute.For<IHttpClientFactoryService>();
         private readonly SemanticKernelService semanticKernelService;
 

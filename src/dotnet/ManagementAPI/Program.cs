@@ -5,7 +5,7 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
-using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Services.RequestProcessors;
@@ -92,7 +92,7 @@ namespace FoundationaLLM.Management.API
                 AppConfigurationKeySections.FoundationaLLM_Events_Profiles_ManagementAPI);
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-            builder.Services.AddScoped<ICallContext, CallContext>();
+            builder.Services.AddScoped<IOrchestrationContext, OrchestrationContext>();
             builder.AddHttpClientFactoryService();
 
             // Resource validation.

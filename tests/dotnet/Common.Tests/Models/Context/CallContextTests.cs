@@ -1,5 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.Orchestration;
 using NSubstitute;
 
 namespace FoundationaLLM.Common.Tests.Models.Context
@@ -10,7 +10,7 @@ namespace FoundationaLLM.Common.Tests.Models.Context
         public void TestCurrentUserIdentityWithNSubstitute()
         {
             // Arrange
-            var callContext = new CallContext();
+            var callContext = new OrchestrationContext();
             var userIdentity = Substitute.For<UnifiedUserIdentity>();
             userIdentity.Name = "TestName";
             userIdentity.Username = "TestUsername";
@@ -29,7 +29,7 @@ namespace FoundationaLLM.Common.Tests.Models.Context
         public void TestDefaultCurrentUserIdentity()
         {
             // Arrange
-            var callContext = new CallContext();
+            var callContext = new OrchestrationContext();
 
             // Assert
             Assert.Null(callContext.CurrentUserIdentity);

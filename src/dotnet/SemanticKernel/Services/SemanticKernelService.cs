@@ -28,12 +28,12 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
     /// <param name="taskPool">The global <see cref="TaskPool"/> object that keeps track of active completion tasks.</param>
     public class SemanticKernelService(
         ILoggerFactory loggerFactory,
-        ICallContext callContext,
+        IOrchestrationContext callContext,
         IEnumerable<IResourceProviderService> resourceProviderServices,
         IHttpClientFactoryService httpClientFactoryService,
         ConcurrentTaskPool taskPool) : ISemanticKernelService
     {
-        private readonly ICallContext _callContext = callContext;
+        private readonly IOrchestrationContext _callContext = callContext;
         private readonly IEnumerable<IResourceProviderService> _resourceProviderServices = resourceProviderServices;
         private readonly ILoggerFactory _loggerFactory = loggerFactory;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
