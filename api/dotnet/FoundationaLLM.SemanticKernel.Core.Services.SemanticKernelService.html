@@ -168,8 +168,8 @@ Class SemanticKernelService  <a class="header-action link-secondary" title="View
 
   <a id="FoundationaLLM_SemanticKernel_Core_Services_SemanticKernelService__ctor_" data-uid="FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_SemanticKernel_Core_Services_SemanticKernelService__ctor_Microsoft_Extensions_Logging_ILoggerFactory_FoundationaLLM_Common_Interfaces_ICallContext_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_FoundationaLLM_Common_Tasks_ConcurrentTaskPool_" data-uid="FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelService.#ctor(Microsoft.Extensions.Logging.ILoggerFactory,FoundationaLLM.Common.Interfaces.ICallContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,FoundationaLLM.Common.Tasks.ConcurrentTaskPool)">
-  SemanticKernelService(ILoggerFactory, ICallContext, IEnumerable&lt;IResourceProviderService&gt;, IHttpClientFactoryService, ConcurrentTaskPool)
+  <h3 id="FoundationaLLM_SemanticKernel_Core_Services_SemanticKernelService__ctor_Microsoft_Extensions_Logging_ILoggerFactory_FoundationaLLM_Common_Interfaces_IOrchestrationContext_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_FoundationaLLM_Common_Tasks_ConcurrentTaskPool_" data-uid="FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelService.#ctor(Microsoft.Extensions.Logging.ILoggerFactory,FoundationaLLM.Common.Interfaces.IOrchestrationContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,FoundationaLLM.Common.Tasks.ConcurrentTaskPool)">
+  SemanticKernelService(ILoggerFactory, IOrchestrationContext, IEnumerable&lt;IResourceProviderService&gt;, IHttpClientFactoryService, ConcurrentTaskPool)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/SemanticKernel/Services/SemanticKernelService.cs/#L29"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -178,7 +178,7 @@ Class SemanticKernelService  <a class="header-action link-secondary" title="View
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SemanticKernelService(ILoggerFactory loggerFactory, ICallContext callContext, IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices, IHttpClientFactoryService httpClientFactoryService, ConcurrentTaskPool taskPool)</code></pre>
+    <pre><code class="lang-csharp hljs">public SemanticKernelService(ILoggerFactory loggerFactory, IOrchestrationContext callContext, IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices, IHttpClientFactoryService httpClientFactoryService, ConcurrentTaskPool taskPool)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -186,7 +186,7 @@ Class SemanticKernelService  <a class="header-action link-secondary" title="View
     <dt><code>loggerFactory</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory">ILoggerFactory</a></dt>
     <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory">ILoggerFactory</a> used to build loggers for logging.</p>
 </dd>
-    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a></dt>
     <dd><p>Stores context information extracted from the current HTTP request. This information
 is primarily used to inject HTTP headers into downstream HTTP calls.</p>
 </dd>

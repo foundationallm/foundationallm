@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Interfaces_IContextServiceClient" data-uid="FoundationaLLM.Common.Interfaces.IContextServiceClient" class="text-break">
-Interface IContextServiceClient  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IContextServiceClient.cs/#L8"><i class="bi bi-code-slash"></i></a>
+Interface IContextServiceClient  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IContextServiceClient.cs/#L9"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -128,11 +128,59 @@ Interface IContextServiceClient  <a class="header-action link-secondary" title="
 </h2>
 
 
+  <a id="FoundationaLLM_Common_Interfaces_IContextServiceClient_CreateCodeSession_" data-uid="FoundationaLLM.Common.Interfaces.IContextServiceClient.CreateCodeSession*"></a>
+
+  <h3 id="FoundationaLLM_Common_Interfaces_IContextServiceClient_CreateCodeSession_System_String_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Interfaces.IContextServiceClient.CreateCodeSession(System.String,System.String,System.String,System.String)">
+  CreateCodeSession(string, string, string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IContextServiceClient.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calls the Context API service to create a code session.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;ContextServiceResponse&lt;CreateCodeSessionResponse&gt;&gt; CreateCodeSession(string instanceId, string agentName, string conversationId, string context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>agentName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the agent.</p>
+</dd>
+    <dt><code>conversationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The conversation identifier.</p>
+</dd>
+    <dt><code>context</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The context within the conversation in which the code session must be created (e.g., an agent tool name).</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html">CreateCodeSessionResponse</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse&lt;T&gt;</a> instance where <code>T</code> is of type <a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html">CreateCodeSessionResponse</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Interfaces_IContextServiceClient_CreateFile_" data-uid="FoundationaLLM.Common.Interfaces.IContextServiceClient.CreateFile*"></a>
 
   <h3 id="FoundationaLLM_Common_Interfaces_IContextServiceClient_CreateFile_System_String_System_String_System_String_System_String_System_IO_Stream_" data-uid="FoundationaLLM.Common.Interfaces.IContextServiceClient.CreateFile(System.String,System.String,System.String,System.String,System.IO.Stream)">
   CreateFile(string, string, string, string, Stream)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IContextServiceClient.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IContextServiceClient.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls the Context API service to create a file.</p>
@@ -183,7 +231,7 @@ Interface IContextServiceClient  <a class="header-action link-secondary" title="
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IContextServiceClient.cs/#L8" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IContextServiceClient.cs/#L9" class="edit-link">Edit this page</a>
         </div>
 
 

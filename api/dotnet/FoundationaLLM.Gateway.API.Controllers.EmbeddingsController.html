@@ -165,8 +165,8 @@ public class EmbeddingsController</code></pre>
 
   <a id="FoundationaLLM_Gateway_API_Controllers_EmbeddingsController__ctor_" data-uid="FoundationaLLM.Gateway.API.Controllers.EmbeddingsController.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Gateway_API_Controllers_EmbeddingsController__ctor_FoundationaLLM_Gateway_Interfaces_IGatewayCore_FoundationaLLM_Common_Interfaces_ICallContext_" data-uid="FoundationaLLM.Gateway.API.Controllers.EmbeddingsController.#ctor(FoundationaLLM.Gateway.Interfaces.IGatewayCore,FoundationaLLM.Common.Interfaces.ICallContext)">
-  EmbeddingsController(IGatewayCore, ICallContext)
+  <h3 id="FoundationaLLM_Gateway_API_Controllers_EmbeddingsController__ctor_FoundationaLLM_Gateway_Interfaces_IGatewayCore_FoundationaLLM_Common_Interfaces_IOrchestrationContext_" data-uid="FoundationaLLM.Gateway.API.Controllers.EmbeddingsController.#ctor(FoundationaLLM.Gateway.Interfaces.IGatewayCore,FoundationaLLM.Common.Interfaces.IOrchestrationContext)">
+  EmbeddingsController(IGatewayCore, IOrchestrationContext)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/GatewayAPI/Controllers/EmbeddingsController.cs/#L14"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -175,7 +175,7 @@ public class EmbeddingsController</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public EmbeddingsController(IGatewayCore gatewayCore, ICallContext callContext)</code></pre>
+    <pre><code class="lang-csharp hljs">public EmbeddingsController(IGatewayCore gatewayCore, IOrchestrationContext callContext)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -183,8 +183,8 @@ public class EmbeddingsController</code></pre>
     <dt><code>gatewayCore</code> <a class="xref" href="FoundationaLLM.Gateway.Interfaces.IGatewayCore.html">IGatewayCore</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Gateway.Interfaces.IGatewayCore.html">IGatewayCore</a> that provides LLM gateway services.</p>
 </dd>
-    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
-    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a> call context of the request being handled.</p>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a> call context of the request being handled.</p>
 </dd>
   </dl>
 

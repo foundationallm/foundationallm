@@ -168,8 +168,8 @@ Class UserProfileService  <a class="header-action link-secondary" title="View so
 
   <a id="FoundationaLLM_Common_Services_Users_UserProfileService__ctor_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Users_UserProfileService__ctor_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Users_UserProfileService__FoundationaLLM_Common_Interfaces_ICallContext_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.#ctor(FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Users.UserProfileService},FoundationaLLM.Common.Interfaces.ICallContext)">
-  UserProfileService(IAzureCosmosDBService, ILogger&lt;UserProfileService&gt;, ICallContext)
+  <h3 id="FoundationaLLM_Common_Services_Users_UserProfileService__ctor_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Users_UserProfileService__FoundationaLLM_Common_Interfaces_IOrchestrationContext_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.#ctor(FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Users.UserProfileService},FoundationaLLM.Common.Interfaces.IOrchestrationContext)">
+  UserProfileService(IAzureCosmosDBService, ILogger&lt;UserProfileService&gt;, IOrchestrationContext)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -178,7 +178,7 @@ Class UserProfileService  <a class="header-action link-secondary" title="View so
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UserProfileService(IAzureCosmosDBService cosmosDbService, ILogger&lt;UserProfileService&gt; logger, ICallContext callContext)</code></pre>
+    <pre><code class="lang-csharp hljs">public UserProfileService(IAzureCosmosDBService cosmosDbService, ILogger&lt;UserProfileService&gt; logger, IOrchestrationContext callContext)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -191,7 +191,7 @@ user profiles.</p>
     <dd><p>The logging interface used to log under the
 <a class="xref" href="FoundationaLLM.Common.Services.Users.UserProfileService.html">UserProfileService</a> type name.</p>
 </dd>
-    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a></dt>
     <dd><p>Contains contextual data for the calling service.</p>
 </dd>
   </dl>

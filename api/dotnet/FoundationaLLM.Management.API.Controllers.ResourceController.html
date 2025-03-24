@@ -763,8 +763,8 @@ public class ResourceController : Controller, IActionFilter, IAsyncActionFilter,
 
   <a id="FoundationaLLM_Management_API_Controllers_ResourceController__ctor_" data-uid="FoundationaLLM.Management.API.Controllers.ResourceController.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Management_API_Controllers_ResourceController__ctor_FoundationaLLM_Common_Interfaces_ICallContext_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Management_API_Controllers_ResourceController__" data-uid="FoundationaLLM.Management.API.Controllers.ResourceController.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Management.API.Controllers.ResourceController})">
-  ResourceController(ICallContext, IEnumerable&lt;IResourceProviderService&gt;, ILogger&lt;ResourceController&gt;)
+  <h3 id="FoundationaLLM_Management_API_Controllers_ResourceController__ctor_FoundationaLLM_Common_Interfaces_IOrchestrationContext_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Management_API_Controllers_ResourceController__" data-uid="FoundationaLLM.Management.API.Controllers.ResourceController.#ctor(FoundationaLLM.Common.Interfaces.IOrchestrationContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Management.API.Controllers.ResourceController})">
+  ResourceController(IOrchestrationContext, IEnumerable&lt;IResourceProviderService&gt;, ILogger&lt;ResourceController&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/ResourceController.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -773,12 +773,12 @@ public class ResourceController : Controller, IActionFilter, IAsyncActionFilter,
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ResourceController(ICallContext callContext, IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices, ILogger&lt;ResourceController&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public ResourceController(IOrchestrationContext callContext, IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices, ILogger&lt;ResourceController&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a></dt>
     <dd><p>The call context containing user identity details.</p>
 </dd>
     <dt><code>resourceProviderServices</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Interfaces.IResourceProviderService.html">IResourceProviderService</a>&gt;</dt>

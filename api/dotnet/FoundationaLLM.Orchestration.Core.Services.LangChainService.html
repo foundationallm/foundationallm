@@ -169,8 +169,8 @@ Class LangChainService  <a class="header-action link-secondary" title="View sour
 
   <a id="FoundationaLLM_Orchestration_Core_Services_LangChainService__ctor_" data-uid="FoundationaLLM.Orchestration.Core.Services.LangChainService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Orchestration_Core_Services_LangChainService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Orchestration_Core_Models_ConfigurationOptions_LangChainServiceSettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Orchestration_Core_Services_LangChainService__FoundationaLLM_Common_Interfaces_ICallContext_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_" data-uid="FoundationaLLM.Orchestration.Core.Services.LangChainService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions.LangChainServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.LangChainService},FoundationaLLM.Common.Interfaces.ICallContext,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService)">
-  LangChainService(IOptions&lt;LangChainServiceSettings&gt;, ILogger&lt;LangChainService&gt;, ICallContext, IHttpClientFactoryService)
+  <h3 id="FoundationaLLM_Orchestration_Core_Services_LangChainService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Orchestration_Core_Models_ConfigurationOptions_LangChainServiceSettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Orchestration_Core_Services_LangChainService__FoundationaLLM_Common_Interfaces_IOrchestrationContext_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_" data-uid="FoundationaLLM.Orchestration.Core.Services.LangChainService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions.LangChainServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.LangChainService},FoundationaLLM.Common.Interfaces.IOrchestrationContext,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService)">
+  LangChainService(IOptions&lt;LangChainServiceSettings&gt;, ILogger&lt;LangChainService&gt;, IOrchestrationContext, IHttpClientFactoryService)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/LangChainService.cs/#L34"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -179,7 +179,7 @@ Class LangChainService  <a class="header-action link-secondary" title="View sour
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LangChainService(IOptions&lt;LangChainServiceSettings&gt; options, ILogger&lt;LangChainService&gt; logger, ICallContext callContext, IHttpClientFactoryService httpClientFactoryService)</code></pre>
+    <pre><code class="lang-csharp hljs">public LangChainService(IOptions&lt;LangChainServiceSettings&gt; options, ILogger&lt;LangChainService&gt; logger, IOrchestrationContext callContext, IHttpClientFactoryService httpClientFactoryService)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -188,7 +188,7 @@ Class LangChainService  <a class="header-action link-secondary" title="View sour
     <dd></dd>
     <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="FoundationaLLM.Orchestration.Core.Services.LangChainService.html">LangChainService</a>&gt;</dt>
     <dd></dd>
-    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a></dt>
     <dd></dd>
     <dt><code>httpClientFactoryService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IHttpClientFactoryService.html">IHttpClientFactoryService</a></dt>
     <dd></dd>

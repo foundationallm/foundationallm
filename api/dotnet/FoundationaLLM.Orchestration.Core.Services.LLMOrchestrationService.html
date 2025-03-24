@@ -168,8 +168,8 @@ Class LLMOrchestrationService  <a class="header-action link-secondary" title="Vi
 
   <a id="FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationService__ctor_" data-uid="FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationService__ctor_System_String_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationService__FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_FoundationaLLM_Common_Interfaces_ICallContext_" data-uid="FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationService.#ctor(System.String,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationService},FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,FoundationaLLM.Common.Interfaces.ICallContext)">
-  LLMOrchestrationService(string, ILogger&lt;LLMOrchestrationService&gt;, IHttpClientFactoryService, ICallContext)
+  <h3 id="FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationService__ctor_System_String_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationService__FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_FoundationaLLM_Common_Interfaces_IOrchestrationContext_" data-uid="FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationService.#ctor(System.String,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationService},FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,FoundationaLLM.Common.Interfaces.IOrchestrationContext)">
+  LLMOrchestrationService(string, ILogger&lt;LLMOrchestrationService&gt;, IHttpClientFactoryService, IOrchestrationContext)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/LLMOrchestrationService.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -178,7 +178,7 @@ Class LLMOrchestrationService  <a class="header-action link-secondary" title="Vi
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LLMOrchestrationService(string serviceName, ILogger&lt;LLMOrchestrationService&gt; logger, IHttpClientFactoryService httpClientFactoryService, ICallContext callContext)</code></pre>
+    <pre><code class="lang-csharp hljs">public LLMOrchestrationService(string serviceName, ILogger&lt;LLMOrchestrationService&gt; logger, IHttpClientFactoryService httpClientFactoryService, IOrchestrationContext callContext)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -189,7 +189,7 @@ Class LLMOrchestrationService  <a class="header-action link-secondary" title="Vi
     <dd></dd>
     <dt><code>httpClientFactoryService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IHttpClientFactoryService.html">IHttpClientFactoryService</a></dt>
     <dd></dd>
-    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a></dt>
     <dd></dd>
   </dl>
 

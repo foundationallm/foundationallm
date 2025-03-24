@@ -168,8 +168,8 @@ Class GatekeeperIntegrationAPIService  <a class="header-action link-secondary" t
 
   <a id="FoundationaLLM_Gatekeeper_Core_Services_GatekeeperIntegrationAPIService__ctor_" data-uid="FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Gatekeeper_Core_Services_GatekeeperIntegrationAPIService__ctor_FoundationaLLM_Common_Interfaces_ICallContext_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_" data-uid="FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService)">
-  GatekeeperIntegrationAPIService(ICallContext, IHttpClientFactoryService)
+  <h3 id="FoundationaLLM_Gatekeeper_Core_Services_GatekeeperIntegrationAPIService__ctor_FoundationaLLM_Common_Interfaces_IOrchestrationContext_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_" data-uid="FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.#ctor(FoundationaLLM.Common.Interfaces.IOrchestrationContext,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService)">
+  GatekeeperIntegrationAPIService(IOrchestrationContext, IHttpClientFactoryService)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gatekeeper/Services/GatekeeperIntegrationAPIService.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -178,12 +178,12 @@ Class GatekeeperIntegrationAPIService  <a class="header-action link-secondary" t
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GatekeeperIntegrationAPIService(ICallContext callContext, IHttpClientFactoryService httpClientFactoryService)</code></pre>
+    <pre><code class="lang-csharp hljs">public GatekeeperIntegrationAPIService(IOrchestrationContext callContext, IHttpClientFactoryService httpClientFactoryService)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a></dt>
     <dd><p>Stores context information extracted from the current HTTP request. This information
 is primarily used to inject HTTP headers into downstream HTTP calls.</p>
 </dd>

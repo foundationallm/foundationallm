@@ -255,8 +255,8 @@ Class LLMOrchestrationServiceManager  <a class="header-action link-secondary" ti
 
   <a id="FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationServiceManager_GetService_" data-uid="FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationServiceManager.GetService*"></a>
 
-  <h3 id="FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationServiceManager_GetService_System_String_System_String_System_IServiceProvider_FoundationaLLM_Common_Interfaces_ICallContext_" data-uid="FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationServiceManager.GetService(System.String,System.String,System.IServiceProvider,FoundationaLLM.Common.Interfaces.ICallContext)">
-  GetService(string, string, IServiceProvider, ICallContext)
+  <h3 id="FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationServiceManager_GetService_System_String_System_String_System_IServiceProvider_FoundationaLLM_Common_Interfaces_IOrchestrationContext_" data-uid="FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationServiceManager.GetService(System.String,System.String,System.IServiceProvider,FoundationaLLM.Common.Interfaces.IOrchestrationContext)">
+  GetService(string, string, IServiceProvider, IOrchestrationContext)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/LLMOrchestrationServiceManager.cs/#L110"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -265,7 +265,7 @@ Class LLMOrchestrationServiceManager  <a class="header-action link-secondary" ti
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ILLMOrchestrationService GetService(string instanceId, string serviceName, IServiceProvider serviceProvider, ICallContext callContext)</code></pre>
+    <pre><code class="lang-csharp hljs">public ILLMOrchestrationService GetService(string instanceId, string serviceName, IServiceProvider serviceProvider, IOrchestrationContext callContext)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -279,8 +279,8 @@ Class LLMOrchestrationServiceManager  <a class="header-action link-secondary" ti
     <dt><code>serviceProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></dt>
     <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> provding dependency injection services for the current scope.</p>
 </dd>
-    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
-    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a> call context of the request being handled.</p>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a> call context of the request being handled.</p>
 </dd>
   </dl>
 

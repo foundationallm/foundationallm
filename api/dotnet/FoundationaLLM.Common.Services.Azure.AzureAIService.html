@@ -171,8 +171,8 @@ Class AzureAIService  <a class="header-action link-secondary" title="View source
 
   <a id="FoundationaLLM_Common_Services_Azure_AzureAIService__ctor_" data-uid="FoundationaLLM.Common.Services.Azure.AzureAIService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Azure_AzureAIService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_AzureAI_AzureAISettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Azure_AzureAIService__FoundationaLLM_Common_Interfaces_IStorageService_FoundationaLLM_Common_Interfaces_ICallContext_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_" data-uid="FoundationaLLM.Common.Services.Azure.AzureAIService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.AzureAI.AzureAISettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Azure.AzureAIService},FoundationaLLM.Common.Interfaces.IStorageService,FoundationaLLM.Common.Interfaces.ICallContext,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService)">
-  AzureAIService(IOptions&lt;AzureAISettings&gt;, ILogger&lt;AzureAIService&gt;, IStorageService, ICallContext, IHttpClientFactoryService)
+  <h3 id="FoundationaLLM_Common_Services_Azure_AzureAIService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_AzureAI_AzureAISettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Azure_AzureAIService__FoundationaLLM_Common_Interfaces_IStorageService_FoundationaLLM_Common_Interfaces_IOrchestrationContext_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_" data-uid="FoundationaLLM.Common.Services.Azure.AzureAIService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.AzureAI.AzureAISettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Azure.AzureAIService},FoundationaLLM.Common.Interfaces.IStorageService,FoundationaLLM.Common.Interfaces.IOrchestrationContext,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService)">
+  AzureAIService(IOptions&lt;AzureAISettings&gt;, ILogger&lt;AzureAIService&gt;, IStorageService, IOrchestrationContext, IHttpClientFactoryService)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureAIService.cs/#L23"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -181,7 +181,7 @@ Class AzureAIService  <a class="header-action link-secondary" title="View source
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AzureAIService(IOptions&lt;AzureAISettings&gt; azureAISettings, ILogger&lt;AzureAIService&gt; logger, IStorageService blobStorageService, ICallContext callContext, IHttpClientFactoryService httpClientFactoryService)</code></pre>
+    <pre><code class="lang-csharp hljs">public AzureAIService(IOptions&lt;AzureAISettings&gt; azureAISettings, ILogger&lt;AzureAIService&gt; logger, IStorageService blobStorageService, IOrchestrationContext callContext, IHttpClientFactoryService httpClientFactoryService)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -192,7 +192,7 @@ Class AzureAIService  <a class="header-action link-secondary" title="View source
     <dd></dd>
     <dt><code>blobStorageService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IStorageService.html">IStorageService</a></dt>
     <dd></dd>
-    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a></dt>
     <dd></dd>
     <dt><code>httpClientFactoryService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IHttpClientFactoryService.html">IHttpClientFactoryService</a></dt>
     <dd></dd>
@@ -205,7 +205,7 @@ Class AzureAIService  <a class="header-action link-secondary" title="View source
 
 
 
-  <h4 class="section" id="FoundationaLLM_Common_Services_Azure_AzureAIService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_AzureAI_AzureAISettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Azure_AzureAIService__FoundationaLLM_Common_Interfaces_IStorageService_FoundationaLLM_Common_Interfaces_ICallContext_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService__remarks">Remarks</h4>
+  <h4 class="section" id="FoundationaLLM_Common_Services_Azure_AzureAIService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_AzureAI_AzureAISettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Azure_AzureAIService__FoundationaLLM_Common_Interfaces_IStorageService_FoundationaLLM_Common_Interfaces_IOrchestrationContext_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService__remarks">Remarks</h4>
   <div class="markdown level1 remarks"><p>Constructor for Azure AI Service.</p>
 </div>
 

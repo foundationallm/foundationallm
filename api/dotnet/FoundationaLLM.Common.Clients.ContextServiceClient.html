@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Clients_ContextServiceClient" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient" class="text-break">
-Class ContextServiceClient  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L13"><i class="bi bi-code-slash"></i></a>
+Class ContextServiceClient  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -168,9 +168,9 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <a id="FoundationaLLM_Common_Clients_ContextServiceClient__ctor_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient__ctor_FoundationaLLM_Common_Interfaces_ICallContext_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Clients_ContextServiceClient__" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Clients.ContextServiceClient})">
-  ContextServiceClient(ICallContext, IHttpClientFactoryService, ILogger&lt;ContextServiceClient&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient__ctor_FoundationaLLM_Common_Interfaces_IOrchestrationContext_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Clients_ContextServiceClient__" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.#ctor(FoundationaLLM.Common.Interfaces.IOrchestrationContext,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Clients.ContextServiceClient})">
+  ContextServiceClient(IOrchestrationContext, IHttpClientFactoryService, ILogger&lt;ContextServiceClient&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Provides methods to call the FoundationaLLM Context API service.</p>
@@ -178,12 +178,12 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ContextServiceClient(ICallContext callContext, IHttpClientFactoryService httpClientFactoryService, ILogger&lt;ContextServiceClient&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public ContextServiceClient(IOrchestrationContext callContext, IHttpClientFactoryService httpClientFactoryService, ILogger&lt;ContextServiceClient&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a></dt>
     <dd></dd>
     <dt><code>httpClientFactoryService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IHttpClientFactoryService.html">IHttpClientFactoryService</a></dt>
     <dd></dd>
@@ -206,11 +206,59 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 </h2>
 
 
+  <a id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateCodeSession_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateCodeSession*"></a>
+
+  <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateCodeSession_System_String_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateCodeSession(System.String,System.String,System.String,System.String)">
+  CreateCodeSession(string, string, string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calls the Context API service to create a code session.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;CreateCodeSessionResponse&gt;&gt; CreateCodeSession(string instanceId, string agentName, string conversationId, string context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>agentName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the agent.</p>
+</dd>
+    <dt><code>conversationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The conversation identifier.</p>
+</dd>
+    <dt><code>context</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The context within the conversation in which the code session must be created (e.g., an agent tool name).</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html">CreateCodeSessionResponse</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse&lt;T&gt;</a> instance where <code>T</code> is of type <a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html">CreateCodeSessionResponse</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateFile_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateFile*"></a>
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateFile_System_String_System_String_System_String_System_String_System_IO_Stream_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateFile(System.String,System.String,System.String,System.String,System.IO.Stream)">
   CreateFile(string, string, string, string, Stream)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls the Context API service to create a file.</p>
@@ -261,7 +309,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L13" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L15" class="edit-link">Edit this page</a>
         </div>
 
 

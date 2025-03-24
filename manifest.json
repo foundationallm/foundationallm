@@ -1874,6 +1874,62 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames.yml\" sourcestartlinenumber=\"1\">Provides the names of the metadata properties for context file records.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.ContextRecordOrigins.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.ContextRecordOrigins.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Context.ContextRecordOrigins",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Context.ContextRecordOrigins.yml\" sourcestartlinenumber=\"1\">Provides the names of the context record origins.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.ContextRecordTypeNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.ContextRecordTypeNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Context.ContextRecordTypeNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Context.ContextRecordTypeNames.yml\" sourcestartlinenumber=\"1\">Provides the names of the context record types.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Context",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.CorsPolicyNames.yml",
       "output": {
         ".html": {
@@ -3526,34 +3582,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.ICallContext.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.ICallContext.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Interfaces.ICallContext",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.ICallContext.yml\" sourcestartlinenumber=\"1\">Stores context information for the current HTTP request.</p>\n<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.ICallContext.yml\" sourcestartlinenumber=\"3\">The CurrentUserIdentity stores a <xref href=\"FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity\" data-throw-if-not-resolved=\"false\"></xref> object\nresolved from one or more services.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.ICodeExecutionService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.ICodeExecutionService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Interfaces.ICodeExecutionService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.ICodeExecutionService.yml\" sourcestartlinenumber=\"1\">Defines the capabilities for code execution services.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IContextServiceClient.yml",
       "output": {
         ".html": {
@@ -3663,6 +3691,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Interfaces.IManagementProviderService",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IManagementProviderService.yml\" sourcestartlinenumber=\"1\">Provides core services required by the Management API.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IOrchestrationContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IOrchestrationContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.IOrchestrationContext",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IOrchestrationContext.yml\" sourcestartlinenumber=\"1\">Stores context information for the current HTTP request.</p>\n<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IOrchestrationContext.yml\" sourcestartlinenumber=\"3\">The CurrentUserIdentity stores a <xref href=\"FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity\" data-throw-if-not-resolved=\"false\"></xref> object\nresolved from one or more services.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4562,17 +4604,129 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeExecutionSession.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequest.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeExecutionSession.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequest.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.CodeExecution.CodeExecutionSession",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeExecutionSession.yml\" sourcestartlinenumber=\"1\">Provides details about a code execution session.</p>\n"
+      "Title": "FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to download newly created files from a code session.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequestValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequestValidator",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequestValidator.yml\" sourcestartlinenumber=\"1\">Provides validation for the <xref href=\"FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequest\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse.yml\" sourcestartlinenumber=\"1\">Provides the result of downloading files from a code session.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to upload files to a code session.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequestValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequestValidator",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequestValidator.yml\" sourcestartlinenumber=\"1\">Provides validation for the <xref href=\"FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse.yml\" sourcestartlinenumber=\"1\">Provides the result of uploading files to a code session.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to create a code session.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequestValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequestValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequestValidator",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequestValidator.yml\" sourcestartlinenumber=\"1\">Provides validation for the <xref href=\"FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.yml\" sourcestartlinenumber=\"1\">Provides the result of creating a code execution session.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4810,34 +4964,6 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.Configuration.Branding",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.CodeExecution.AzureContainerAppsCodeExecutionServiceSettings.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.CodeExecution.AzureContainerAppsCodeExecutionServiceSettings.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Configuration.CodeExecution.AzureContainerAppsCodeExecutionServiceSettings",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Configuration.CodeExecution.AzureContainerAppsCodeExecutionServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides settings for the Azure Container Apps code execution service.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.CodeExecution.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.CodeExecution.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Configuration.CodeExecution",
       "Summary": null
     },
     {
@@ -5178,17 +5304,31 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.CallContext.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.CallContext.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Context.CallContext",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.CallContext.yml\" sourcestartlinenumber=\"1\">Supports all classes in the .NET class hierarchy and provides low-level services to derived classes. This is the ultimate base class of all .NET classes; it is the root of the type hierarchy.</p>\n"
+      "Title": "FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord.yml\" sourcestartlinenumber=\"1\">Represents a file record.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord.yml\" sourcestartlinenumber=\"1\">Represents a file record.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5203,6 +5343,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.Context.ContextFileRecord",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.ContextFileRecord.yml\" sourcestartlinenumber=\"1\">Represents a file record.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextRecord.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextRecord.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Context.ContextRecord",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.ContextRecord.yml\" sourcestartlinenumber=\"1\">Represents a file record.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5959,6 +6113,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.Orchestration.OperationStatus",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Orchestration.OperationStatus.yml\" sourcestartlinenumber=\"1\">Represents the status of a long-running operation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.OrchestrationContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.OrchestrationContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Orchestration.OrchestrationContext",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Orchestration.OrchestrationContext.yml\" sourcestartlinenumber=\"1\">Supports all classes in the .NET class hierarchy and provides low-level services to derived classes. This is the ultimate base class of all .NET classes; it is the root of the type hierarchy.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -8636,34 +8804,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.CodeExecution.AzureContainerAppsCodeExecutionService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.CodeExecution.AzureContainerAppsCodeExecutionService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Services.CodeExecution.AzureContainerAppsCodeExecutionService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Services.CodeExecution.AzureContainerAppsCodeExecutionService.yml\" sourcestartlinenumber=\"1\">Provides a code execution service that uses Azure Container Apps Dynamic Sessions to execute code.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.CodeExecution.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.CodeExecution.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Services.CodeExecution",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Events.AzureEventGridEventService.yml",
       "output": {
         ".html": {
@@ -9532,6 +9672,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Validation.StandardValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Validation.StandardValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Validation.StandardValidator",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Validation.StandardValidator.yml\" sourcestartlinenumber=\"1\">Provides the standard validation implementation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Validation.yml",
       "output": {
         ".html": {
@@ -9756,6 +9910,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.API.Controllers.CodeSessionsController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.API.Controllers.CodeSessionsController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.API.Controllers.CodeSessionsController",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.API.Controllers.CodeSessionsController.yml\" sourcestartlinenumber=\"1\">Provdes methods for managing code sessions.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Context.API.Controllers.FilesController.yml",
       "output": {
         ".html": {
@@ -9784,6 +9952,76 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Constants.CodeSessionProviderNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Constants.CodeSessionProviderNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Constants.CodeSessionProviderNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Constants.CodeSessionProviderNames.yml\" sourcestartlinenumber=\"1\">Provides constants for the code session provider names.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Constants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Constants.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Constants",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Exceptions.ContextServiceException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Exceptions.ContextServiceException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Exceptions.ContextServiceException",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Exceptions.ContextServiceException.yml\" sourcestartlinenumber=\"1\">Represents an exception that occurs when a service error occurs in the Context API.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Exceptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Exceptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Exceptions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.yml\" sourcestartlinenumber=\"1\">Defines the interface for the Azure Cosmos DB service that services the Context API Code Session service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.yml",
       "output": {
         ".html": {
@@ -9794,7 +10032,49 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.yml\" sourcestartlinenumber=\"1\">Provides the interface for the Azure Cosmos DB file service.</p>\n"
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.yml\" sourcestartlinenumber=\"1\">Defines the interface for the Azure Cosmos DB service that services the Context API File service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.yml\" sourcestartlinenumber=\"1\">Defines the interface for the Azure Cosmos DB service that provides core database services.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Interfaces.ICodeSessionProviderService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.yml\" sourcestartlinenumber=\"1\">Defines the interface for code session provider services.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.ICodeSessionService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.ICodeSessionService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Interfaces.ICodeSessionService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Interfaces.ICodeSessionService.yml\" sourcestartlinenumber=\"1\">Definest the interface for the FoundationaLLM Code Session service.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -9823,6 +10103,48 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Context.Interfaces",
       "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.CodeSessionFileStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.CodeSessionFileStore.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Models.CodeSessionFileStore",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.CodeSessionFileStore.yml\" sourcestartlinenumber=\"1\">Represents the files associated with a code session.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.CodeSessionFileStoreItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.CodeSessionFileStoreItem.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Models.CodeSessionFileStoreItem",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.CodeSessionFileStoreItem.yml\" sourcestartlinenumber=\"1\">Represents an file system item in a code session.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeSessionProviderServiceSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeSessionProviderServiceSettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeSessionProviderServiceSettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeSessionProviderServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides settings for the Azure Container Apps code execution service.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -9868,17 +10190,101 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.AzureCosmosDBFileService.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.AzureCosmosDBFileService.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Context.Services.AzureCosmosDBFileService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.AzureCosmosDBFileService.yml\" sourcestartlinenumber=\"1\">Provides the implementation for the Azure Cosmos DB file service.</p>\n"
+      "Title": "FoundationaLLM.Context.Models",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsCodeSessionProviderService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsCodeSessionProviderService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Services.AzureContainerAppsCodeSessionProviderService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsCodeSessionProviderService.yml\" sourcestartlinenumber=\"1\">Provides a code session service that uses Azure Container Apps Dynamic Sessions to execute code.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.CodeSessionService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.CodeSessionService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Services.CodeSessionService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.CodeSessionService.yml\" sourcestartlinenumber=\"1\">Implements the FoundationaLLM Code Session service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.yml\" sourcestartlinenumber=\"1\">Provides the implementation for the Azure Cosmos DB code session service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBFileService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBFileService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBFileService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBFileService.yml\" sourcestartlinenumber=\"1\">Provides the implementation for the Azure Cosmos DB file service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.yml\" sourcestartlinenumber=\"1\">Provides the base implementation for the Azure Cosmos DB services.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.CosmosDB.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.CosmosDB.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Services.CosmosDB",
+      "Summary": null
     },
     {
       "type": "ManagedReference",

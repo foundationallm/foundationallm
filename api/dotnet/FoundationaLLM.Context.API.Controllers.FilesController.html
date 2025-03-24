@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Context_API_Controllers_FilesController" data-uid="FoundationaLLM.Context.API.Controllers.FilesController" class="text-break">
-Class FilesController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L14"><i class="bi bi-code-slash"></i></a>
+Class FilesController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -685,9 +685,9 @@ public class FilesController : ControllerBase</code></pre>
 
   <a id="FoundationaLLM_Context_API_Controllers_FilesController__ctor_" data-uid="FoundationaLLM.Context.API.Controllers.FilesController.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Context_API_Controllers_FilesController__ctor_FoundationaLLM_Context_Interfaces_IFileService_FoundationaLLM_Common_Interfaces_ICallContext_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Context_API_Controllers_FilesController__" data-uid="FoundationaLLM.Context.API.Controllers.FilesController.#ctor(FoundationaLLM.Context.Interfaces.IFileService,FoundationaLLM.Common.Interfaces.ICallContext,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.API.Controllers.FilesController})">
-  FilesController(IFileService, ICallContext, ILogger&lt;FilesController&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Context_API_Controllers_FilesController__ctor_FoundationaLLM_Context_Interfaces_IFileService_FoundationaLLM_Common_Interfaces_IOrchestrationContext_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Context_API_Controllers_FilesController__" data-uid="FoundationaLLM.Context.API.Controllers.FilesController.#ctor(FoundationaLLM.Context.Interfaces.IFileService,FoundationaLLM.Common.Interfaces.IOrchestrationContext,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.API.Controllers.FilesController})">
+  FilesController(IFileService, IOrchestrationContext, ILogger&lt;FilesController&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Provdes methods for managing files.</p>
@@ -695,7 +695,7 @@ public class FilesController : ControllerBase</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FilesController(IFileService fileService, ICallContext callContext, ILogger&lt;FilesController&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public FilesController(IFileService fileService, IOrchestrationContext callContext, ILogger&lt;FilesController&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -703,9 +703,9 @@ public class FilesController : ControllerBase</code></pre>
     <dt><code>fileService</code> <a class="xref" href="FoundationaLLM.Context.Interfaces.IFileService.html">IFileService</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Context.Interfaces.IFileService.html">IFileService</a> file service.</p>
 </dd>
-    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a></dt>
     <dd><blockquote>
-<p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a> call context associated with the current request.</p>
+<p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a> call context associated with the current request.</p>
 </blockquote>
 </dd>
     <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="FoundationaLLM.Context.API.Controllers.FilesController.html">FilesController</a>&gt;</dt>
@@ -732,7 +732,7 @@ public class FilesController : ControllerBase</code></pre>
 
   <h3 id="FoundationaLLM_Context_API_Controllers_FilesController_UploadFile_System_String_System_String_" data-uid="FoundationaLLM.Context.API.Controllers.FilesController.UploadFile(System.String,System.String)">
   UploadFile(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Uploads a file to a conversation.</p>
@@ -774,7 +774,7 @@ public Task&lt;IActionResult&gt; UploadFile(string instanceId, string conversati
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L14" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L15" class="edit-link">Edit this page</a>
         </div>
 
 

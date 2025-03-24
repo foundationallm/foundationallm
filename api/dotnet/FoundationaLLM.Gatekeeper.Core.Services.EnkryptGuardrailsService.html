@@ -168,8 +168,8 @@ Class EnkryptGuardrailsService  <a class="header-action link-secondary" title="V
 
   <a id="FoundationaLLM_Gatekeeper_Core_Services_EnkryptGuardrailsService__ctor_" data-uid="FoundationaLLM.Gatekeeper.Core.Services.EnkryptGuardrailsService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Gatekeeper_Core_Services_EnkryptGuardrailsService__ctor_FoundationaLLM_Common_Interfaces_ICallContext_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Gatekeeper_Core_Models_ConfigurationOptions_EnkryptGuardrailsServiceSettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Gatekeeper_Core_Services_EnkryptGuardrailsService__" data-uid="FoundationaLLM.Gatekeeper.Core.Services.EnkryptGuardrailsService.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.EnkryptGuardrailsServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Gatekeeper.Core.Services.EnkryptGuardrailsService})">
-  EnkryptGuardrailsService(ICallContext, IHttpClientFactoryService, IOptions&lt;EnkryptGuardrailsServiceSettings&gt;, ILogger&lt;EnkryptGuardrailsService&gt;)
+  <h3 id="FoundationaLLM_Gatekeeper_Core_Services_EnkryptGuardrailsService__ctor_FoundationaLLM_Common_Interfaces_IOrchestrationContext_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Gatekeeper_Core_Models_ConfigurationOptions_EnkryptGuardrailsServiceSettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Gatekeeper_Core_Services_EnkryptGuardrailsService__" data-uid="FoundationaLLM.Gatekeeper.Core.Services.EnkryptGuardrailsService.#ctor(FoundationaLLM.Common.Interfaces.IOrchestrationContext,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.EnkryptGuardrailsServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Gatekeeper.Core.Services.EnkryptGuardrailsService})">
+  EnkryptGuardrailsService(IOrchestrationContext, IHttpClientFactoryService, IOptions&lt;EnkryptGuardrailsServiceSettings&gt;, ILogger&lt;EnkryptGuardrailsService&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gatekeeper/Services/EnkryptGuardrailsService.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -178,12 +178,12 @@ Class EnkryptGuardrailsService  <a class="header-action link-secondary" title="V
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public EnkryptGuardrailsService(ICallContext callContext, IHttpClientFactoryService httpClientFactoryService, IOptions&lt;EnkryptGuardrailsServiceSettings&gt; options, ILogger&lt;EnkryptGuardrailsService&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public EnkryptGuardrailsService(IOrchestrationContext callContext, IHttpClientFactoryService httpClientFactoryService, IOptions&lt;EnkryptGuardrailsServiceSettings&gt; options, ILogger&lt;EnkryptGuardrailsService&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a></dt>
     <dd><p>Stores context information extracted from the current HTTP request. This information
 is primarily used to inject HTTP headers into downstream HTTP calls.</p>
 </dd>

@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Models_Context_ContextFileRecord" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord" class="text-break">
-Class ContextFileRecord  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L10"><i class="bi bi-code-slash"></i></a>
+Class ContextFileRecord  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextFileRecord.cs/#L11"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -102,7 +102,7 @@ Class ContextFileRecord  <a class="header-action link-secondary" title="View sou
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ContextFileRecord</code></pre>
+    <pre><code class="lang-csharp hljs">public class ContextFileRecord : ContextRecord</code></pre>
   </div>
 
 
@@ -112,6 +112,7 @@ Class ContextFileRecord  <a class="header-action link-secondary" title="View sou
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.Context.ContextRecord.html">ContextRecord</a></div>
       <div><span class="xref">ContextFileRecord</span></div>
     </dd>
   </dl>
@@ -121,6 +122,36 @@ Class ContextFileRecord  <a class="header-action link-secondary" title="View sou
   <dl class="typelist inheritedMembers">
     <dt>Inherited Members</dt>
     <dd>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_Id">ContextRecord.Id</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_InstanceId">ContextRecord.InstanceId</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_UPN">ContextRecord.UPN</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_Origin">ContextRecord.Origin</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_CreatedAt">ContextRecord.CreatedAt</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_CreatedBy">ContextRecord.CreatedBy</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_UpdatedAt">ContextRecord.UpdatedAt</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_UpdatedBy">ContextRecord.UpdatedBy</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_Deleted">ContextRecord.Deleted</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_Metadata">ContextRecord.Metadata</a>
+    </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
@@ -164,7 +195,7 @@ Class ContextFileRecord  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord__ctor" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.#ctor">
   ContextFileRecord()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L107"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextFileRecord.cs/#L67"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a> class.</p>
@@ -189,9 +220,9 @@ Class ContextFileRecord  <a class="header-action link-secondary" title="View sou
 
   <a id="FoundationaLLM_Common_Models_Context_ContextFileRecord__ctor_" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord__ctor_System_String_System_String_System_String_System_String_System_Int64_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.#ctor(System.String,System.String,System.String,System.String,System.Int64,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
-  ContextFileRecord(string, string, string, string, long, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord__ctor_System_String_System_String_System_String_System_String_System_String_System_Int64_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.#ctor(System.String,System.String,System.String,System.String,System.String,System.Int64,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})">
+  ContextFileRecord(string, string, string, string, string, long, UnifiedUserIdentity, Dictionary&lt;string, string&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextFileRecord.cs/#L84"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a> class.</p>
@@ -199,13 +230,16 @@ Class ContextFileRecord  <a class="header-action link-secondary" title="View sou
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ContextFileRecord(string instanceId, string conversationId, string fileName, string contentType, long fileSizeBytes, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">public ContextFileRecord(string instanceId, string origin, string conversationId, string fileName, string contentType, long fileSizeBytes, UnifiedUserIdentity userIdentity, Dictionary&lt;string, string&gt;? metadata = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>origin</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The origin of the record.</p>
 </dd>
     <dt><code>conversationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The conversation identifier.</p>
@@ -221,6 +255,9 @@ Class ContextFileRecord  <a class="header-action link-secondary" title="View sou
 </dd>
     <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> providing details about the user identity.</p>
+</dd>
+    <dt><code>metadata</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>Optional metadata dictionary associated with the context file record.</p>
 </dd>
   </dl>
 
@@ -243,7 +280,7 @@ Class ContextFileRecord  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord_ContentType" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.ContentType">
   ContentType
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextFileRecord.cs/#L45"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the content type.</p>
@@ -252,7 +289,7 @@ Class ContextFileRecord  <a class="header-action link-secondary" title="View sou
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;content_type&quot;)]
-[JsonPropertyOrder(2)]
+[JsonPropertyOrder(3)]
 public string ContentType { get; set; }</code></pre>
   </div>
 
@@ -277,7 +314,7 @@ public string ContentType { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord_ConversationId" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.ConversationId">
   ConversationId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextFileRecord.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the conversation identifier.</p>
@@ -286,110 +323,8 @@ public string ContentType { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;conversation_id&quot;)]
-[JsonPropertyOrder(-3)]
+[JsonPropertyOrder(0)]
 public string ConversationId { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_Context_ContextFileRecord_CreatedAt_" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.CreatedAt*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord_CreatedAt" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.CreatedAt">
-  CreatedAt
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L92"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the time of the file creation.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;created_at&quot;)]
-[JsonPropertyOrder(5)]
-public DateTimeOffset CreatedAt { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_Context_ContextFileRecord_Deleted_" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.Deleted*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord_Deleted" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.Deleted">
-  Deleted
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L99"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the flag that indicates if the file was deleted.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;deleted&quot;)]
-[JsonPropertyOrder(6)]
-public bool Deleted { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_Context_ContextFileRecord_FileId_" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.FileId*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord_FileId" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.FileId">
-  FileId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L50"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the file identifier.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;file_id&quot;)]
-[JsonPropertyOrder(-1)]
-public string FileId { get; set; }</code></pre>
   </div>
 
 
@@ -413,7 +348,7 @@ public string FileId { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord_FileName" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.FileName">
   FileName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextFileRecord.cs/#L38"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the file name.</p>
@@ -422,7 +357,7 @@ public string FileId { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;file_name&quot;)]
-[JsonPropertyOrder(1)]
+[JsonPropertyOrder(2)]
 public string FileName { get; set; }</code></pre>
   </div>
 
@@ -447,7 +382,7 @@ public string FileName { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord_FileObjectId" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.FileObjectId">
   FileObjectId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextFileRecord.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the FoundationaLLM object identifier of the file</p>
@@ -456,7 +391,7 @@ public string FileName { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;file_object_id&quot;)]
-[JsonPropertyOrder(0)]
+[JsonPropertyOrder(1)]
 public string FileObjectId { get; set; }</code></pre>
   </div>
 
@@ -481,7 +416,7 @@ public string FileObjectId { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord_FilePath" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.FilePath">
   FilePath
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextFileRecord.cs/#L52"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the file path on the storage account.</p>
@@ -490,7 +425,7 @@ public string FileObjectId { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;file_path&quot;)]
-[JsonPropertyOrder(3)]
+[JsonPropertyOrder(4)]
 public string FilePath { get; set; }</code></pre>
   </div>
 
@@ -515,7 +450,7 @@ public string FilePath { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord_FileSizeBytes" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.FileSizeBytes">
   FileSizeBytes
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextFileRecord.cs/#L59"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the file size in bytes.</p>
@@ -524,7 +459,7 @@ public string FilePath { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;file_size_bytes&quot;)]
-[JsonPropertyOrder(4)]
+[JsonPropertyOrder(5)]
 public long FileSizeBytes { get; set; }</code></pre>
   </div>
 
@@ -545,79 +480,11 @@ public long FileSizeBytes { get; set; }</code></pre>
 
 
 
-  <a id="FoundationaLLM_Common_Models_Context_ContextFileRecord_Id_" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.Id*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord_Id" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.Id">
-  Id
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L15"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the Cosmos DB identifier.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;id&quot;)]
-[JsonPropertyOrder(-6)]
-public string Id { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_Context_ContextFileRecord_InstanceId_" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.InstanceId*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord_InstanceId" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.InstanceId">
-  InstanceId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L29"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the FoundationaLLM instance identifier.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;instance_id&quot;)]
-[JsonPropertyOrder(-4)]
-public string InstanceId { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
   <a id="FoundationaLLM_Common_Models_Context_ContextFileRecord_Type_" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.Type*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord_Type" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.Type">
   Type
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextFileRecord.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the type of the context record.</p>
@@ -626,42 +493,8 @@ public string InstanceId { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;type&quot;)]
-[JsonPropertyOrder(-5)]
-public string Type { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_Context_ContextFileRecord_UPN_" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.UPN*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Context_ContextFileRecord_UPN" data-uid="FoundationaLLM.Common.Models.Context.ContextFileRecord.UPN">
-  UPN
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L43"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the user prinicpal name of the user that owns the file.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;upn&quot;)]
-[JsonPropertyOrder(-2)]
-public string UPN { get; set; }</code></pre>
+[JsonPropertyOrder(-99)]
+public override string Type { get; set; }</code></pre>
   </div>
 
 
@@ -685,7 +518,7 @@ public string UPN { get; set; }</code></pre>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Files/ContextFileRecord.cs/#L10" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextFileRecord.cs/#L11" class="edit-link">Edit this page</a>
         </div>
 
 

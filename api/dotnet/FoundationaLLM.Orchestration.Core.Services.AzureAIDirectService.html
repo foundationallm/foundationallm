@@ -169,8 +169,8 @@ Class AzureAIDirectService  <a class="header-action link-secondary" title="View 
 
   <a id="FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService__ctor_" data-uid="FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService__ctor_FoundationaLLM_Common_Interfaces_ICallContext_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService__FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__" data-uid="FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService},FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})">
-  AzureAIDirectService(ICallContext, ILogger&lt;AzureAIDirectService&gt;, IHttpClientFactoryService, IEnumerable&lt;IResourceProviderService&gt;)
+  <h3 id="FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService__ctor_FoundationaLLM_Common_Interfaces_IOrchestrationContext_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService__FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__" data-uid="FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService.#ctor(FoundationaLLM.Common.Interfaces.IOrchestrationContext,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService},FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})">
+  AzureAIDirectService(IOrchestrationContext, ILogger&lt;AzureAIDirectService&gt;, IHttpClientFactoryService, IEnumerable&lt;IResourceProviderService&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/AzureAIDirectService.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -179,13 +179,13 @@ Class AzureAIDirectService  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AzureAIDirectService(ICallContext callContext, ILogger&lt;AzureAIDirectService&gt; logger, IHttpClientFactoryService httpClientFactoryService, IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices)</code></pre>
+    <pre><code class="lang-csharp hljs">public AzureAIDirectService(IOrchestrationContext callContext, ILogger&lt;AzureAIDirectService&gt; logger, IHttpClientFactoryService httpClientFactoryService, IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
-    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a> providing details about the call context.</p>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a> providing details about the call context.</p>
 </dd>
     <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService.html">AzureAIDirectService</a>&gt;</dt>
     <dd><p>The logger used for logging.</p>

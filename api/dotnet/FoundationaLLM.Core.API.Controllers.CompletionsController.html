@@ -689,8 +689,8 @@ public class CompletionsController : ControllerBase</code></pre>
 
   <a id="FoundationaLLM_Core_API_Controllers_CompletionsController__ctor_" data-uid="FoundationaLLM.Core.API.Controllers.CompletionsController.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Core_API_Controllers_CompletionsController__ctor_FoundationaLLM_Core_Interfaces_ICoreService_FoundationaLLM_Common_Interfaces_ICallContext_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__FoundationaLLM_Common_Interfaces_IQuotaService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_API_Controllers_CompletionsController__" data-uid="FoundationaLLM.Core.API.Controllers.CompletionsController.#ctor(FoundationaLLM.Core.Interfaces.ICoreService,FoundationaLLM.Common.Interfaces.ICallContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Common.Interfaces.IQuotaService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.API.Controllers.CompletionsController})">
-  CompletionsController(ICoreService, ICallContext, IEnumerable&lt;IResourceProviderService&gt;, IQuotaService, ILogger&lt;CompletionsController&gt;)
+  <h3 id="FoundationaLLM_Core_API_Controllers_CompletionsController__ctor_FoundationaLLM_Core_Interfaces_ICoreService_FoundationaLLM_Common_Interfaces_IOrchestrationContext_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__FoundationaLLM_Common_Interfaces_IQuotaService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_API_Controllers_CompletionsController__" data-uid="FoundationaLLM.Core.API.Controllers.CompletionsController.#ctor(FoundationaLLM.Core.Interfaces.ICoreService,FoundationaLLM.Common.Interfaces.IOrchestrationContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Common.Interfaces.IQuotaService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.API.Controllers.CompletionsController})">
+  CompletionsController(ICoreService, IOrchestrationContext, IEnumerable&lt;IResourceProviderService&gt;, IQuotaService, ILogger&lt;CompletionsController&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -699,7 +699,7 @@ public class CompletionsController : ControllerBase</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CompletionsController(ICoreService coreService, ICallContext callContext, IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices, IQuotaService quotaService, ILogger&lt;CompletionsController&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public CompletionsController(ICoreService coreService, IOrchestrationContext callContext, IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices, IQuotaService quotaService, ILogger&lt;CompletionsController&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -708,7 +708,7 @@ public class CompletionsController : ControllerBase</code></pre>
     <dd><p>The Core service provides methods for getting
 completions from the orchestrator.</p>
 </dd>
-    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a></dt>
     <dd><p>The call context for the request.</p>
 </dd>
     <dt><code>resourceProviderServices</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Interfaces.IResourceProviderService.html">IResourceProviderService</a>&gt;</dt>
@@ -730,7 +730,7 @@ completions from the orchestrator.</p>
 
 
 
-  <h4 class="section" id="FoundationaLLM_Core_API_Controllers_CompletionsController__ctor_FoundationaLLM_Core_Interfaces_ICoreService_FoundationaLLM_Common_Interfaces_ICallContext_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__FoundationaLLM_Common_Interfaces_IQuotaService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_API_Controllers_CompletionsController___remarks">Remarks</h4>
+  <h4 class="section" id="FoundationaLLM_Core_API_Controllers_CompletionsController__ctor_FoundationaLLM_Core_Interfaces_ICoreService_FoundationaLLM_Common_Interfaces_IOrchestrationContext_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__FoundationaLLM_Common_Interfaces_IQuotaService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_API_Controllers_CompletionsController___remarks">Remarks</h4>
   <div class="markdown level1 remarks"><p>Constructor for the Orchestration Controller.</p>
 </div>
 

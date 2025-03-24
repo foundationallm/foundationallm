@@ -198,8 +198,8 @@ Class QuotaMiddleware  <a class="header-action link-secondary" title="View sourc
 
   <a id="FoundationaLLM_Common_Middleware_QuotaMiddleware_InvokeAsync_" data-uid="FoundationaLLM.Common.Middleware.QuotaMiddleware.InvokeAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Middleware_QuotaMiddleware_InvokeAsync_Microsoft_AspNetCore_Http_HttpContext_FoundationaLLM_Common_Interfaces_ICallContext_FoundationaLLM_Common_Interfaces_IQuotaService_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__" data-uid="FoundationaLLM.Common.Middleware.QuotaMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,FoundationaLLM.Common.Interfaces.ICallContext,FoundationaLLM.Common.Interfaces.IQuotaService,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings})">
-  InvokeAsync(HttpContext, ICallContext, IQuotaService, IOptions&lt;InstanceSettings&gt;)
+  <h3 id="FoundationaLLM_Common_Middleware_QuotaMiddleware_InvokeAsync_Microsoft_AspNetCore_Http_HttpContext_FoundationaLLM_Common_Interfaces_IOrchestrationContext_FoundationaLLM_Common_Interfaces_IQuotaService_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__" data-uid="FoundationaLLM.Common.Middleware.QuotaMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,FoundationaLLM.Common.Interfaces.IOrchestrationContext,FoundationaLLM.Common.Interfaces.IQuotaService,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings})">
+  InvokeAsync(HttpContext, IOrchestrationContext, IQuotaService, IOptions&lt;InstanceSettings&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Middleware/QuotaMiddleware.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -208,7 +208,7 @@ Class QuotaMiddleware  <a class="header-action link-secondary" title="View sourc
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task InvokeAsync(HttpContext context, ICallContext callContext, IQuotaService quotaService, IOptions&lt;InstanceSettings&gt; instanceSettings)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task InvokeAsync(HttpContext context, IOrchestrationContext callContext, IQuotaService quotaService, IOptions&lt;InstanceSettings&gt; instanceSettings)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -216,7 +216,7 @@ Class QuotaMiddleware  <a class="header-action link-secondary" title="View sourc
     <dt><code>context</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext">HttpContext</a></dt>
     <dd><p>The current HTTP request context.</p>
 </dd>
-    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IOrchestrationContext.html">IOrchestrationContext</a></dt>
     <dd><p>Stores context information extracted from the current HTTP request. This information
 is primarily used to inject HTTP headers into downstream HTTP calls.</p>
 </dd>
