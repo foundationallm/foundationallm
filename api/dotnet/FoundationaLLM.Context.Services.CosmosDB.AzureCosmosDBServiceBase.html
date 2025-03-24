@@ -366,6 +366,51 @@ Class AzureCosmosDBServiceBase  <a class="header-action link-secondary" title="V
 </h2>
 
 
+  <a id="FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBServiceBase_RetrieveItems_" data-uid="FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.RetrieveItems*"></a>
+
+  <h3 id="FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBServiceBase_RetrieveItems__1_Microsoft_Azure_Cosmos_QueryDefinition_" data-uid="FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.RetrieveItems``1(Microsoft.Azure.Cosmos.QueryDefinition)">
+  RetrieveItems&lt;T&gt;(QueryDefinition)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Services/CosmosDB/AzureCosmosDBServiceBase.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves items from Azure Cosmos DB.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;List&lt;T&gt;&gt; RetrieveItems&lt;T&gt;(QueryDefinition query)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>query</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos.querydefinition">QueryDefinition</a></dt>
+    <dd><p>The query definition used to retrieve the items.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;T&gt;&gt;</dt>
+    <dd><p>The list of retrieved items.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of item to retrieve.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBServiceBase_UpsertItemAsync_" data-uid="FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.UpsertItemAsync*"></a>
 
   <h3 id="FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBServiceBase_UpsertItemAsync__1_System_String___0_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)">
