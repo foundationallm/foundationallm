@@ -25,6 +25,28 @@ namespace FoundationaLLM.Context.Services.CosmosDB
             await _cosmosDB.UpsertItemAsync<ContextFileRecord>(fileRecord.UPN, fileRecord);
 
         /// <inheritdoc/>
+        public async Task<ContextFileRecord> GetFileRecord(
+            string instanceId,
+            string fileId,
+            string userPrincipalName)
+        {
+            var select =
+                $"SELECT * FROM c WHERE c.instance_id = @instanceId AND c.type = @type AND c.upn = @upn AND c.id = @fileId  AND {SOFT_DELETE_RESTRICTION}";
+            var query = new QueryDefinition(select)
+                    .WithParameter("@instanceId", instanceId)
+                    .WithParameter("@type", ContextRecordTypeNames.FileRecord)
+                    .WithParameter("@upn", userPrincipalName)
+                    .WithParameter("@fileId", fileId);
+
+            var results = await _cosmosDB.RetrieveItems<ContextFileRecord>(query);
+
+            if (results.Count == 0)
+                throw new Exception($"File record with id {fileId} not found.");
+
+            return results.First();
+        }
+
+        /// <inheritdoc/>
         public async Task<List<ContextFileRecord>> GetFileRecords(
             string instanceId,
             string conversationId,
@@ -40,16 +62,9 @@ namespace FoundationaLLM.Context.Services.CosmosDB
                     .WithParameter("@conversationId", conversationId)
                     .WithParameter("@fileName", fileName);
 
-            var results = _cosmosDB.ContextContainer.GetItemQueryIterator<ContextFileRecord>(query);
+            var results = await _cosmosDB.RetrieveItems<ContextFileRecord>(query);
 
-            List<ContextFileRecord> output = [];
-            while (results.HasMoreResults)
-            {
-                var response = await results.ReadNextAsync();
-                output.AddRange(response);
-            }
-
-            return output;
+            return results;
         }
     }
 }

@@ -37,11 +37,35 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="conversationId">The conversation identifier.</param>
         /// <param name="fileName">The name of the file to retrieve.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing details about the user identity.</param>
-        /// <returns>A stream with the binary content of the file.</returns>
-        Task<Stream?>GetFileContent(
+        /// <returns>A <see cref="ContextFileContent"/> instance with the content of the file.</returns>
+        Task<ContextFileContent?>GetFileContent(
             string instanceId,
             string conversationId,
             string fileName,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Get the binary content of a file.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="fileId">The identifier of the file.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing details about the user identity.</param>
+        /// <returns>A <see cref="ContextFileContent"/> instance with the content of the file.</returns>
+        Task<ContextFileContent?> GetFileContent(
+            string instanceId,
+            string fileId,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Get the file record associated with a file.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="fileId">The identifier of the file.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing details about the user identity.</param>
+        /// <returns>A <see cref="ContextFileRecord"/> with the file record.</returns>
+        Task<ContextFileRecord?> GetFileRecord(
+            string instanceId,
+            string fileId,
             UnifiedUserIdentity userIdentity);
     }
 }

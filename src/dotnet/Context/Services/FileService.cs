@@ -55,7 +55,7 @@ namespace FoundationaLLM.Context.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Stream?> GetFileContent(
+        public async Task<ContextFileContent?> GetFileContent(
             string instanceId,
             string conversationId,
             string fileName,
@@ -77,7 +77,50 @@ namespace FoundationaLLM.Context.Services
                 fileRecord.FilePath,
                 default);
 
-            return fileContent.ToStream();
+            return new ContextFileContent
+            {
+                FileName = fileRecord.FileName,
+                ContentType = fileRecord.ContentType,
+                FileContent = fileContent.ToStream()
+            };
+        }
+
+        /// <inheritdoc/>
+        public async Task<ContextFileContent?> GetFileContent(
+            string instanceId,
+            string fileId,
+            UnifiedUserIdentity userIdentity)
+        {
+            var fileRecord = await _cosmosDBService.GetFileRecord(
+                instanceId,
+                fileId,
+                userIdentity.UPN!);
+
+            var fileContent = await _storageService.ReadFileAsync(
+                instanceId,
+                fileRecord.FilePath,
+                default);
+
+            return new ContextFileContent
+            {
+                FileName = fileRecord.FileName,
+                ContentType = fileRecord.ContentType,
+                FileContent = fileContent.ToStream()
+            };
+        }
+
+        /// <inheritdoc/>
+        public async Task<ContextFileRecord?> GetFileRecord(
+            string instanceId,
+            string fileId,
+            UnifiedUserIdentity userIdentity)
+        {
+            var fileRecord = await _cosmosDBService.GetFileRecord(
+                instanceId,
+                fileId,
+                userIdentity.UPN!);
+
+            return fileRecord;
         }
     }
 }

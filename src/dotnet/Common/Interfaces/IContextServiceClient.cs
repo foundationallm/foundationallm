@@ -25,6 +25,26 @@ namespace FoundationaLLM.Common.Interfaces
             Stream fileContent);
 
         /// <summary>
+        /// Calls the Context API service to get the content of a file.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="fileId">The unique identifier of the file.</param>
+        /// <returns>A <see cref="ContextServiceResponse{T}"/> instance where <c>T</c> is of type <see cref="ContextFileContent"/>.</returns>
+        Task<ContextServiceResponse<ContextFileContent>> GetFileContent(
+            string instanceId,
+            string fileId);
+
+        /// <summary>
+        /// Calls the Context API service to get a file record.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="fileId">The unique identifier of the file.</param>
+        /// <returns>A <see cref="ContextServiceResponse{T}"/> instance where <c>T</c> is of type <see cref="ContextFileRecord"/>.</returns>
+        Task<ContextServiceResponse<ContextFileRecord>> GetFileRecord(
+            string instanceId,
+            string fileId);
+
+        /// <summary>
         /// Calls the Context API service to create a code session.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

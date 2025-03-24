@@ -103,11 +103,12 @@ namespace FoundationaLLM.Context.Services
 
                 uploadResults[fileName] =
                     fileContent != null
+                    && fileContent.FileContent != null
                     && await _codeSessionProviderService.UploadFileToCodeSession(
                         codeSessionRecord.Id,
                         codeSessionRecord.Endpoint,
                         fileName,
-                        fileContent);
+                        fileContent.FileContent!);
             }
 
             var codeSessionFileUpload = new ContextCodeSessionFileUploadRecord(
