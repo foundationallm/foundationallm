@@ -58,6 +58,11 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
         public const string FoundationaLLM_Conversation = "FoundationaLLM.Conversation";
 
         /// <summary>
+        /// The name of the FoundationaLLM.ContextAPI resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ContextAPI = "FoundationaLLM.ContextAPI";
+
+        /// <summary>
         /// The name of the FoundationaLLM.DataPipeline resource provider.
         /// </summary>
         public const string FoundationaLLM_DataPipeline = "FoundationaLLM.DataPipeline";
@@ -74,6 +79,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             FoundationaLLM_Vectorization,
             FoundationaLLM_Agent,
             FoundationaLLM_Configuration,
+            FoundationaLLM_ContextAPI,
             FoundationaLLM_Prompt,
             FoundationaLLM_DataSource,
             FoundationaLLM_Attachment,
