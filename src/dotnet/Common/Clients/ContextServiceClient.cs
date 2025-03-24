@@ -22,6 +22,106 @@ namespace FoundationaLLM.Common.Clients
         private readonly ILogger<ContextServiceClient> _logger = logger;
 
         /// <inheritdoc/>
+        public async Task<ContextServiceResponse<ContextFileContent>> GetFileContent(
+            string instanceId,
+            string fileId)
+        {
+            try
+            {
+                var client = await _httpClientFactoryService.CreateClient(
+                    HttpClientNames.ContextAPI,
+                    _callContext.CurrentUserIdentity!);
+
+                var responseMessage = await client.GetAsync($"instances/{instanceId}/files/{fileId}");
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return new ContextServiceResponse<ContextFileContent>
+                    {
+                        Success = true,
+                        Result = new ContextFileContent
+                        {
+                            FileContent = await responseMessage.Content.ReadAsStreamAsync(),
+                            FileName = responseMessage!.Content.Headers.ContentDisposition!.FileName!,
+                            ContentType = responseMessage!.Content.Headers.ContentType!.MediaType!
+                        }
+                    };
+                }
+
+                _logger.LogError(
+                    "An error occurred while retrieving the file content. Status code: {StatusCode}.",
+                    responseMessage.StatusCode);
+
+                return new ContextServiceResponse<ContextFileContent>
+                {
+                    Success = false,
+                    ErrorMessage = "The service responded with an error status code."
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving the file content.");
+                return new ContextServiceResponse<ContextFileContent>
+                {
+                    Success = false,
+                    ErrorMessage = "An error occurred while retrieving the file content."
+                };
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<ContextServiceResponse<ContextFileRecord>> GetFileRecord(
+            string instanceId,
+            string fileId)
+        {
+            try
+            {
+                var client = await _httpClientFactoryService.CreateClient(
+                    HttpClientNames.ContextAPI,
+                    _callContext.CurrentUserIdentity!);
+
+                var responseMessage = await client.GetAsync($"instances/{instanceId}/fileRecords/{fileId}");
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                    var response = JsonSerializer.Deserialize<ContextFileRecord>(responseContent);
+
+                    return response == null
+                        ? new ContextServiceResponse<ContextFileRecord>
+                        {
+                            Success = false,
+                            ErrorMessage = "An error occurred deserializing the response from the service."
+                        }
+                        : new ContextServiceResponse<ContextFileRecord>
+                        {
+                            Success = true,
+                            Result = response
+                        };
+                }
+
+                _logger.LogError(
+                    "An error occurred while retrieving the file record. Status code: {StatusCode}.",
+                    responseMessage.StatusCode);
+
+                return new ContextServiceResponse<ContextFileRecord>
+                {
+                    Success = false,
+                    ErrorMessage = "The service responded with an error status code."
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving the file record.");
+                return new ContextServiceResponse<ContextFileRecord>
+                {
+                    Success = false,
+                    ErrorMessage = "An error occurred while retrieving the file record."
+                };
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task<ContextServiceResponse<ContextFileRecord>> CreateFile(
             string instanceId,
             string conversationId,

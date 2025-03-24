@@ -1,4 +1,5 @@
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Orchestration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -646,22 +647,45 @@ public partial class CoreService(
     {
         try
         {
-            if (fileProvider == ResourceProviderNames.FoundationaLLM_AzureOpenAI)
+            switch (fileProvider)
             {
-                var result = await _azureOpenAIResourceProvider.ExecuteResourceActionAsync<AzureOpenAIFileMapping, object?, ResourceProviderActionResult<FileContent>>(
-                    instanceId,
-                    fileId,
-                    ResourceProviderActions.LoadFileContent,
-                    null,
-                    userIdentity);
 
-                return new AttachmentFile
-                {
-                    Name = result.Resource!.Name,
-                    OriginalFileName = result.Resource!.OriginalFileName,
-                    ContentType = result.Resource!.ContentType,
-                    Content = result.Resource!.BinaryContent!.Value.ToArray()
-                };
+                case ResourceProviderNames.FoundationaLLM_AzureOpenAI:
+
+                    var result = await _azureOpenAIResourceProvider.ExecuteResourceActionAsync<AzureOpenAIFileMapping, object?, ResourceProviderActionResult<FileContent>>(
+                        instanceId,
+                        fileId,
+                        ResourceProviderActions.LoadFileContent,
+                        null,
+                        userIdentity);
+
+                    return new AttachmentFile
+                    {
+                        Name = result.Resource!.Name,
+                        OriginalFileName = result.Resource!.OriginalFileName,
+                        ContentType = result.Resource!.ContentType,
+                        Content = result.Resource!.BinaryContent!.Value.ToArray()
+                    };
+
+                case AgentCapabilityCategoryNames.FoundationaLLMKnowledgeManagement:
+
+                    var responseMessage = await _contextServiceClient.GetFileContent(instanceId, fileId);
+
+                    if (responseMessage.Success)
+                    {
+                        var content = new MemoryStream();
+                        await responseMessage.Result!.FileContent!.CopyToAsync(content);
+
+                        return new AttachmentFile
+                        {
+                            Name = responseMessage.Result!.FileName,
+                            OriginalFileName = responseMessage.Result!.FileName,
+                            ContentType = responseMessage.Result!.ContentType,
+                            Content = content.ToArray()
+                        };
+                    }
+
+                    break;
             }
         }
         catch (Exception ex)

@@ -59,5 +59,46 @@ namespace FoundationaLLM.Context.API.Controllers
 
             return new OkObjectResult(fileRecord);
         }
+
+        /// <summary>
+        /// Downloads a file.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="fileId">The identifier of the file to be downloaded.</param>
+        /// <returns></returns>
+        [HttpGet("files/{fileId}")]
+        public async Task<IActionResult> DownloadFile(
+            string instanceId,
+            string fileId)
+        {
+            var fileContent = await _fileService.GetFileContent(
+                instanceId,
+                fileId,
+                _callContext.CurrentUserIdentity!);
+
+            return File(
+                fileContent!.FileContent!,
+                fileContent!.ContentType!,
+                fileContent!.FileName!);
+        }
+
+        /// <summary>
+        /// Retrieves a file record.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="fileId">The identifier of the file to be retrieved.</param>
+        /// <returns></returns>
+        [HttpGet("fileRecords/{fileId}")]
+        public async Task<IActionResult> GetFileRecord(
+            string instanceId,
+            string fileId)
+        {
+            var fileRecord = await _fileService.GetFileRecord(
+                instanceId,
+                fileId,
+                _callContext.CurrentUserIdentity!);
+
+            return new OkObjectResult(fileRecord);
+        }
     }
 }

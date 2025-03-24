@@ -15,6 +15,18 @@ namespace FoundationaLLM.Context.Interfaces
             ContextFileRecord fileRecord);
 
         /// <summary>
+        /// Gets the file record for a specified file identifier.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="fileId">The idenfier of the file.</param>
+        /// <param name="userPrincipalName">The user principal name of the user associated with the code session.</param>
+        /// <returns></returns>
+        Task<ContextFileRecord> GetFileRecord(
+            string instanceId,
+            string fileId,
+            string userPrincipalName);
+
+        /// <summary>
         /// Gets the file records matching the specified criteria.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
