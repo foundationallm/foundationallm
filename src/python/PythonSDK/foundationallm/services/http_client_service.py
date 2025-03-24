@@ -30,6 +30,10 @@ class HttpClientService:
         else:
             raise Exception(f"Authentication type {self.api_endpoint_configuration.authentication_type} is not currently supported.")
 
+        # If the user identity is provided, add the user principal name to the headers.
+        if self.user_identity is not None:
+            headers["X-USER-IDENTITY"] = self.user_identity.model_dump_json(by_alias=True)
+            
         # Check for base URL exceptions.
         for url_exception in self.api_endpoint_configuration.url_exceptions:
             if url_exception.user_principal_name == self.user_identity.upn and url_exception.enabled:
@@ -49,7 +53,7 @@ class HttpClientService:
             response.raise_for_status()
             return response.json()
 
-    def post(self, endpoint: str, data: dict = None):
+    def post(self, endpoint: str, data = None):
         """
         Execute a synchronous POST request.
         """        
@@ -70,7 +74,7 @@ class HttpClientService:
                 response.raise_for_status()
                 return await response.json()
 
-    async def post_async(self, endpoint: str, data: dict = None):
+    async def post_async(self, endpoint: str, data = None):
         """
         Execute an asynchronous POST request.
         """

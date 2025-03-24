@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
+﻿using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Orchestration.Request
@@ -52,5 +53,20 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
             FilePath = attachmentFile.Path,
             ContentType = attachmentFile.ContentType
         };
+
+        /// <summary>
+        /// Creates an instance of FileHistoryItem based on a ContextFileRecord.
+        /// </summary>
+        /// <param name="fileRecord">The ContextFileRecord to convert to FileHistoryItem.</param>
+        /// <param name="Order">The order in which the file appeared in the conversation.</param>
+        /// <returns>The FileHistoryItem object based on the ContextFileRecord.</returns>
+        public static FileHistoryItem FromContextFileRecord(ContextFileRecord fileRecord, int Order) => new FileHistoryItem
+        {
+            Order = Order,
+            OriginalFileName = fileRecord.FileName,
+            ObjectId = fileRecord.FileObjectId,
+            FilePath = fileRecord.FilePath,
+            ContentType = fileRecord.ContentType
+        };  
     }
 }

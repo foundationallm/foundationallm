@@ -128,6 +128,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     result.DataSourceAccessDenied,
                     vectorStoreId,
                     null,
+                    contextServiceClient,
                     completionRequestObserver);
 
                 return kmOrchestration;

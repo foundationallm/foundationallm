@@ -620,12 +620,12 @@ public partial class CoreService(
             {;
                 return new ResourceProviderUpsertResult<AttachmentFile>
                 {
-                    ObjectId = serviceResult.Result!.FileObjectId,
+                    ObjectId = serviceResult.Result!.Id,
                     ResourceExists = false,
                     Resource = new AttachmentFile
                     {
                         Name = serviceResult.Result.Id,
-                        ObjectId = serviceResult.Result.FileObjectId,
+                        ObjectId = serviceResult.Result.Id,
                         DisplayName = serviceResult.Result.FileName,
                         CreatedBy = serviceResult.Result.UPN,
                         CreatedOn = serviceResult.Result.CreatedAt,
@@ -1081,12 +1081,26 @@ public partial class CoreService(
                 if(message.Attachments is { Count: > 0 })
                 {
                     foreach (var attachmentObjectId in message.Attachments)
-                    {                        
-                        //Get resource path for attachment
-                        var rp = ResourcePath.GetResourcePath(attachmentObjectId);
-                        var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(instanceId, rp.MainResourceId!, _userIdentity);                        
-                        messageHistoryItem.Attachments.Add(AttachmentDetail.FromAttachmentFile(file));
-                        fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder));
+                    {
+                        if (ResourcePath.TryParseResourceProvider(attachmentObjectId, out var resourceProviderName))
+                        {
+                            //Get resource path for attachment
+                            var rp = ResourcePath.GetResourcePath(attachmentObjectId);
+                            var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(instanceId, rp.MainResourceId!, _userIdentity);
+                            fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder));
+                        }
+                        else
+                        {
+                            var fileResponse = await _contextServiceClient.GetFileRecord(instanceId, attachmentObjectId);
+                            if (fileResponse.Success)
+                            {
+                                fileHistory.Add(FileHistoryItem.FromContextFileRecord(fileResponse.Result!, ++attachmentOrder));
+                            }
+                            else
+                            {
+                                _logger.LogError("Failed to retrieve file record for attachment {AttachmentObjectId}.", attachmentObjectId);
+                            }
+                        }
                     }
                 }
                 messageHistoryList.Add(messageHistoryItem);
@@ -1098,10 +1112,25 @@ public partial class CoreService(
         {
             foreach (var attachmentObjectId in request.Attachments)
             {
-                //Get resource path for attachment
-                var rp = ResourcePath.GetResourcePath(attachmentObjectId);
-                var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(instanceId, rp.MainResourceId!, _userIdentity);
-                fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder));
+                if(ResourcePath.TryParseResourceProvider(attachmentObjectId, out var resourceProviderName))
+                {                   
+                    //Get resource path for attachment
+                    var rp = ResourcePath.GetResourcePath(attachmentObjectId);
+                    var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(instanceId, rp.MainResourceId!, _userIdentity);
+                    fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder));                   
+                }
+                else
+                {
+                    var fileResponse = await _contextServiceClient.GetFileRecord(instanceId, attachmentObjectId);
+                    if (fileResponse.Success)
+                    {
+                        fileHistory.Add(FileHistoryItem.FromContextFileRecord(fileResponse.Result!, ++attachmentOrder));
+                    }
+                    else
+                    {
+                        _logger.LogError("Failed to retrieve file record for attachment {AttachmentObjectId}.", attachmentObjectId);
+                    }                    
+                }               
             }
         }
 

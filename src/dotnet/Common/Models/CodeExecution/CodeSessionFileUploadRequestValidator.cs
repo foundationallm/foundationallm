@@ -12,6 +12,7 @@ namespace FoundationaLLM.Common.Models.CodeExecution
         /// </summary>
         public CodeSessionFileUploadRequestValidator()
         {
+            /*
             RuleFor(request => request.FileNames)
                 .NotEmpty()
                 .WithMessage("The list of file names must be provided.");
@@ -19,6 +20,7 @@ namespace FoundationaLLM.Common.Models.CodeExecution
             RuleForEach(request => request.FileNames)
                 .NotEmpty()
                 .WithMessage("None of the file names can be null or whitespace.");
+            */
         }
     }
 }

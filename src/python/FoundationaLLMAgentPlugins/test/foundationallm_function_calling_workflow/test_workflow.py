@@ -15,15 +15,15 @@ from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import KnowledgeManagementCompletionRequest
 from foundationallm_agent_plugins.common.constants import CONTENT_ARTIFACT_TYPE_FILE
 
-#user_prompt = "What does this file do?"
-user_prompt = "Generate a graph of y=mx+b where m=2 and b=3 and create a PDF with the graph along with text explaining the graph"
+user_prompt = "What does this file do?"
+#user_prompt = "Generate a graph of y=mx+b where m=2 and b=3 and create a PDF with the graph along with text explaining the graph"
 #user_prompt = "Generate a PDF document with the title 'Test' and the content 'This is a test'"
 #user_prompt = "Generate an interactive graph of y=mx+b where m=2 and b=3"
-user_prompt = "Generate a graph of y=mx+b where m=2 and b=3"
+#user_prompt = "Generate a graph of y=mx+b where m=2 and b=3"
 user_prompt_rewrite = None
 operation_id = str(uuid.uuid4())
 
-user_identity_json = {"name": "Experimental Test", "user_name":"sw@foundationaLLM.ai","upn":"sw@foundationaLLM.ai"}
+user_identity_json = {"name": "Experimental Test", "user_name":"carey@foundationaLLM.ai","upn":"carey@foundationaLLM.ai"}
 full_request_json_file_name = 'test/full_request_with_files.json' # full original langchain request, contains agent, tools, exploded objects
 
 user_identity = UserIdentity.from_json(user_identity_json)
