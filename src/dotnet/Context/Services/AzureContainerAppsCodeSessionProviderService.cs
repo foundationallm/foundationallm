@@ -3,10 +3,12 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.CodeExecution;
 using FoundationaLLM.Context.Exceptions;
 using FoundationaLLM.Context.Interfaces;
+using FoundationaLLM.Context.Models;
 using FoundationaLLM.Context.Models.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace FoundationaLLM.Context.Services
 {
@@ -79,6 +81,98 @@ namespace FoundationaLLM.Context.Services
 
             return responseMessage.IsSuccessStatusCode;
         }
+
+        /// <inheritdoc />
+        public async Task<List<CodeSessionFileStoreItem>> GetCodeSessionFileStoreItems(
+            string codeSessionId,
+            string endpoint)
+        {
+            var httpClient = await CreateHttpClient();
+
+            var rootUrl = $"{endpoint}/files?api-version=2024-10-02-preview&identifier={codeSessionId}";
+            var rootFileStore = await GetCodeSessionFileStore(
+                httpClient,
+                rootUrl,
+                string.Empty);
+
+            if (rootFileStore.Items.Count == 0)
+                return [];
+
+            var itemsToReturn = rootFileStore.Items
+                .Where(item => item.Type == "file")
+                .ToList();
+
+            var itemsToProcess = rootFileStore.Items
+                .Where(item => item.Type == "directory")
+                .Select(x =>
+                {
+                    x.ParentPath = string.Empty;
+                    return x;
+                })
+                .ToList();
+
+            while (itemsToProcess.Count > 0)
+            {
+                var itemToProcess = itemsToProcess.First();
+                var fileStore = await GetCodeSessionFileStore(
+                    httpClient,
+                    rootUrl,
+                    $"{itemToProcess.ParentPath}/{itemToProcess.Name}");
+
+                itemsToProcess.RemoveAt(0);
+
+                if (fileStore.Items.Count > 0)
+                {
+                    itemsToReturn.AddRange(fileStore.Items.Where(item => item.Type == "file"));
+                    itemsToProcess.AddRange(fileStore.Items.Where(item => item.Type == "directory"));
+                }
+            }
+
+            return itemsToReturn;
+        }
+
+        /// <inheritdoc />
+        public async Task<Stream?> DownloadFileFromCodeSession(
+            string codeSessionId,
+            string endpoint,
+            string fileName,
+            string filePath)
+        {
+            var httpClient = await CreateHttpClient();
+
+            var responseMessage = await httpClient.GetAsync(
+                $"{endpoint}/files/{fileName}/content?api-version=2024-10-02-preview&identifier={codeSessionId}&path={filePath}");
+
+            if (responseMessage.IsSuccessStatusCode)
+                return responseMessage.Content.ReadAsStream();
+            else
+                return null;
+        }
+
+        private async Task<CodeSessionFileStore> GetCodeSessionFileStore(
+            HttpClient httpClient,
+            string url,
+            string path)
+        {
+            var urlWithPath = $"{url}{(string.IsNullOrWhiteSpace(path) ? string.Empty : $"&path={path}")}";
+            var responseMessage = await httpClient.GetAsync(urlWithPath);
+
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                return new();
+            }
+            else
+            {
+                var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                var fileStore = JsonSerializer.Deserialize<CodeSessionFileStore>(responseContent);
+                foreach (var item in fileStore!.Items)
+                    item.ParentPath = (string.IsNullOrWhiteSpace(path) && item.Type == "file")
+                        ? "/"
+                        : path;
+                return fileStore!;
+            }
+        }
+
 
         private async Task<HttpClient> CreateHttpClient()
         {

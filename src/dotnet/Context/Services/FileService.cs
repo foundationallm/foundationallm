@@ -24,19 +24,23 @@ namespace FoundationaLLM.Context.Services
         /// <inheritdoc/>
         public async Task<ContextFileRecord> CreateFile(
             string instanceId,
+            string origin,
             string conversationId,
             string fileName,
             string contentType,
             Stream content,
-            UnifiedUserIdentity userIdentity)
+            UnifiedUserIdentity userIdentity,
+            Dictionary<string, string>? metadata)
         {
             var fileRecord = new ContextFileRecord(
                 instanceId,
+                origin,
                 conversationId,
                 fileName,
                 contentType,
                 content.Length,
-                userIdentity);
+                userIdentity,
+                metadata);
 
             await _cosmosDBService.UpsertFileRecord(fileRecord);
 
@@ -58,6 +62,7 @@ namespace FoundationaLLM.Context.Services
             UnifiedUserIdentity userIdentity)
         {
             var fileRecords = await _cosmosDBService.GetFileRecords(
+                instanceId,
                 conversationId,
                 fileName,
                 userIdentity.UPN!);

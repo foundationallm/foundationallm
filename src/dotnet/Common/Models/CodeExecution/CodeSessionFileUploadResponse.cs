@@ -18,5 +18,11 @@ namespace FoundationaLLM.Common.Models.CodeExecution
         /// </summary>
         [JsonPropertyName("file_upload_success")]
         public Dictionary<string, bool> FileUploadSuccess { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets a value indicating whether all files were uploaded successfully.
+        /// </summary>
+        [JsonPropertyName("all_files_uploaded")]
+        public bool AllFilesUploaded { get; set; }
     }
 }

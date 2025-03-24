@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.Context;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Context.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -49,6 +50,7 @@ namespace FoundationaLLM.Context.API.Controllers
 
             var fileRecord = await _fileService.CreateFile(
                 instanceId,
+                ContextRecordOrigins.UserUpload,
                 conversationId,
                 fileName,
                 contentType,

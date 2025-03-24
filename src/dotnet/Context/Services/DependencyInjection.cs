@@ -66,6 +66,7 @@ namespace FoundationaLLM
             // Register validators.
             services.AddSingleton<IValidator<CreateCodeSessionRequest>, CreateCodeSessionRequestValidator>();
             services.AddSingleton<IValidator<CodeSessionFileUploadRequest>, CodeSessionFileUploadRequestValidator>();
+            services.AddSingleton<IValidator<CodeSessionFileDownloadRequest>, CodeSessionFileDownloadRequestValidator>();
 
             services.AddScoped<ICodeSessionService, CodeSessionService>();
         }

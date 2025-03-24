@@ -37,6 +37,13 @@ namespace FoundationaLLM.Common.Models.Context
         public string UPN { get; set; }
 
         /// <summary>
+        /// Gets or sets the origin of the context record.
+        /// </summary>
+        [JsonPropertyName("origin")]
+        [JsonPropertyOrder(-96)]
+        public string Origin { get; set; }
+
+        /// <summary>
         /// Gets or sets the time of the record creation.
         /// </summary>
         [JsonPropertyName("created_at")]
@@ -72,6 +79,13 @@ namespace FoundationaLLM.Common.Models.Context
         public bool Deleted { get; set; }
 
         /// <summary>
+        /// Gets or sets the metadata associated with the context record.
+        /// </summary>
+        [JsonPropertyName("metadata")]
+        [JsonPropertyOrder(105)]
+        public Dictionary<string, string> Metadata { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ContextRecord"/> class.
         /// </summary>
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
@@ -86,15 +100,21 @@ namespace FoundationaLLM.Common.Models.Context
         /// </summary>
         /// <param name="id">The identifier of the context record.</param>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="origin">The origin of the context record.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing details about the user identity.</param>
+        /// <param name="metadata">Optional metadata dictionary associated with the context record.</param>
         public ContextRecord(
             string id,
             string instanceId,
-            UnifiedUserIdentity userIdentity)
+            string origin,
+            UnifiedUserIdentity userIdentity,
+            Dictionary<string, string>? metadata = null)
         {
             Id = id;
             InstanceId = instanceId;
             UPN = userIdentity.UPN!;
+            Origin = origin;
+            Metadata = metadata ?? [];
             CreatedAt = DateTimeOffset.UtcNow;
             CreatedBy = userIdentity.UPN!;
         }

@@ -24,11 +24,27 @@ namespace FoundationaLLM.Context.Interfaces
         /// <summary>
         /// Gets a code session record from the Azure Cosmos DB.
         /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="sessionId">The identifier of the code session.</param>
         /// <param name="userPrincipalName">The user principal name of the user associated with the code session.</param>
         /// <returns>The requests code session record.</returns>
         Task<ContextCodeSessionRecord?> GetCodeSessionRecord(
+            string instanceId,
             string sessionId,
+            string userPrincipalName);
+
+        /// <summary>
+        /// Gets a code session file upload record from the Azure Cosmos DB.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="sessionId">The identifier of the code session.</param>
+        /// <param name="operationId">The identifier of the code session file upload record.</param>
+        /// <param name="userPrincipalName">The user principal name of the user associated with the code session file upload.</param>
+        /// <returns>The requested code session file upload record.</returns>
+        Task<ContextCodeSessionFileUploadRecord?> GetCodeSessionFileUploadRecord(
+            string instanceId,
+            string sessionId,
+            string operationId,
             string userPrincipalName);
     }
 }

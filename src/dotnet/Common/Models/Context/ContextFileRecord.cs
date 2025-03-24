@@ -74,21 +74,27 @@ namespace FoundationaLLM.Common.Models.Context
         /// Initializes a new instance of the <see cref="ContextFileRecord"/> class.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="origin">The origin of the record.</param>
         /// <param name="conversationId">The conversation identifier.</param>
         /// <param name="fileName">The original name of the file.</param>
         /// <param name="contentType">The content type of the file.</param>
         /// <param name="fileSizeBytes">The size of the file in bytes.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing details about the user identity.</param>
+        /// <param name="metadata">Optional metadata dictionary associated with the context file record.</param>
         public ContextFileRecord(
             string instanceId,
+            string origin,
             string conversationId,
             string fileName,
             string contentType,
             long fileSizeBytes,
-            UnifiedUserIdentity userIdentity) : base(
+            UnifiedUserIdentity userIdentity,
+            Dictionary<string, string>? metadata = null) : base(
                 string.Empty,
                 instanceId,
-                userIdentity)
+                origin,
+                userIdentity,
+                metadata)
         {
             var fileId = $"file-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToBase64String()}";
             var fileObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.ContextAPI/files/{fileId}";

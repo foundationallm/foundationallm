@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Context.Interfaces;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph.Models.CallRecords;
 
 namespace FoundationaLLM.Context.Services.CosmosDB
 {
@@ -34,26 +35,59 @@ namespace FoundationaLLM.Context.Services.CosmosDB
 
         /// <inheritdoc/>
         public async Task<ContextCodeSessionRecord?> GetCodeSessionRecord(
+            string instanceId,
             string sessionId,
             string userPrincipalName)
         {
             var select =
-                $"SELECT * FROM c WHERE c.id = @sessionId AND c.type = @type AND c.upn = @upn AND {SOFT_DELETE_RESTRICTION}";
+                $"SELECT * FROM c WHERE c.instance_id = @instanceId AND c.type = @type AND c.upn = @upn AND c.id = @sessionId AND {SOFT_DELETE_RESTRICTION}";
             var query = new QueryDefinition(select)
-                    .WithParameter("@sessionId", sessionId)
+                    .WithParameter("@instanceId", instanceId)
                     .WithParameter("@type", ContextRecordTypeNames.CodeSessionRecord)
-                    .WithParameter("@upn", userPrincipalName);
+                    .WithParameter("@upn", userPrincipalName)
+                    .WithParameter("@sessionId", sessionId);
 
-            var results = _cosmosDB.ContextContainer.GetItemQueryIterator<ContextCodeSessionRecord>(query);
+            var results = await RetrieveItems<ContextCodeSessionRecord>(query);
 
-            List<ContextCodeSessionRecord> output = [];
+            return results.Count == 1 ? results[0] : null;
+        }
+
+        /// <inheritdoc/>
+        public async Task<ContextCodeSessionFileUploadRecord?> GetCodeSessionFileUploadRecord(
+            string instanceId,
+            string sessionId,
+            string operationId,
+            string userPrincipalName)
+        {
+            var select =
+                $"SELECT * FROM c WHERE c.instance_id = @instanceId AND c.type = @type AND c.upn = @upn AND c.code_session_id = @sessionId AND c.id = @operationId AND {SOFT_DELETE_RESTRICTION}";
+            var query = new QueryDefinition(select)
+                    .WithParameter("@instanceId", instanceId)
+                    .WithParameter("@type", ContextRecordTypeNames.CodeSessionFileUploadRecord)
+                    .WithParameter("@upn", userPrincipalName)
+                    .WithParameter("@sessionId", sessionId)
+                    .WithParameter("@operationId", operationId);
+
+            var results = await RetrieveItems<ContextCodeSessionFileUploadRecord>(query);
+
+            return results.Count == 1
+                ? results[0]
+                : null;
+        }
+
+        private async Task<List<T>> RetrieveItems<T>(
+            QueryDefinition query)
+        {
+            var results = _cosmosDB.ContextContainer.GetItemQueryIterator<T>(query);
+
+            List<T> output = [];
             while (results.HasMoreResults)
             {
                 var response = await results.ReadNextAsync();
                 output.AddRange(response);
             }
 
-            return output.Count == 1 ? output[0] : null;
+            return output;
         }
     }
 }

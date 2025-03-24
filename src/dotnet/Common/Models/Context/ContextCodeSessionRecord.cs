@@ -66,6 +66,7 @@ namespace FoundationaLLM.Common.Models.Context
             UnifiedUserIdentity userIdentity) : base(
                 codeSessionId,
                 instanceId,
+                string.Empty,
                 userIdentity)
         {
             ConversationId = conversationId;

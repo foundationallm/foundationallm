@@ -26,17 +26,19 @@ namespace FoundationaLLM.Context.Services.CosmosDB
 
         /// <inheritdoc/>
         public async Task<List<ContextFileRecord>> GetFileRecords(
+            string instanceId,
             string conversationId,
             string fileName,
             string userPrincipalName)
         {
             var select =
-                $"SELECT * FROM c WHERE c.conversation_id = @conversationId AND c.file_name = @fileName AND c.type = @type AND c.upn = @upn AND {SOFT_DELETE_RESTRICTION} ORDER BY c.created_at DESC";
+                $"SELECT * FROM c WHERE c.instance_id = @instanceId AND c.type = @type AND c.upn = @upn AND c.conversation_id = @conversationId AND c.file_name = @fileName  AND {SOFT_DELETE_RESTRICTION} ORDER BY c.created_at DESC";
             var query = new QueryDefinition(select)
-                    .WithParameter("@conversationId", conversationId)
+                    .WithParameter("@instanceId", instanceId)
                     .WithParameter("@type", ContextRecordTypeNames.FileRecord)
-                    .WithParameter("@fileName", fileName)
-                    .WithParameter("@upn", userPrincipalName);
+                    .WithParameter("@upn", userPrincipalName)
+                    .WithParameter("@conversationId", conversationId)
+                    .WithParameter("@fileName", fileName);
 
             var results = _cosmosDB.ContextContainer.GetItemQueryIterator<ContextFileRecord>(query);
 

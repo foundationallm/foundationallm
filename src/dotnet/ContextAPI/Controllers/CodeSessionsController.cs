@@ -64,5 +64,27 @@ namespace FoundationaLLM.Context.API.Controllers
 
             return new OkObjectResult(response);
         }
+
+        /// <summary>
+        /// Downloads files from a code session.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="sessionId">The identifier of the code session from where the files must be downloaded.</param>
+        /// <param name="request">The <see cref="CodeSessionFileDownloadRequest"/> providing the details of the request.</param>
+        /// <returns></returns>
+        [HttpPost("{sessionId}/downloadFiles")]
+        public async Task<IActionResult> DownloadFilesFromCodeSession(
+            string instanceId,
+            string sessionId,
+            [FromBody] CodeSessionFileDownloadRequest request)
+        {
+            var response = await _codeSessionService.DownloadFilesFromCodeSession(
+                instanceId,
+                sessionId,
+                request.OperationId,
+                _callContext.CurrentUserIdentity!);
+
+            return new OkObjectResult(response);
+        }
     }
 }

@@ -17,11 +17,13 @@ namespace FoundationaLLM.Context.Interfaces
         /// <summary>
         /// Gets the file records matching the specified criteria.
         /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="conversationId">The idenfier of the conversation to which the file is associated.</param>
         /// <param name="fileName">The name of the file.</param>
         /// <param name="userPrincipalName">The user principal name of the user associated with the code session.</param>
         /// <returns></returns>
         Task<List<ContextFileRecord>> GetFileRecords(
+            string instanceId,
             string conversationId,
             string fileName,
             string userPrincipalName);

@@ -55,6 +55,7 @@ namespace FoundationaLLM.Common.Models.Context
             UnifiedUserIdentity userIdentity) : base(
                 Guid.NewGuid().ToString().ToLowerInvariant(),
                 instanceId,
+                string.Empty,
                 userIdentity)
         {
             CodeSessionId = codeSessionId;
