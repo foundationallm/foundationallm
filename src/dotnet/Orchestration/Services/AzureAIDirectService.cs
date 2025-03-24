@@ -18,17 +18,17 @@ namespace FoundationaLLM.Orchestration.Core.Services
     /// <summary>
     /// The Azure AI direct orchestration service.
     /// </summary>
-    /// <param name="callContext">The <see cref="ICallContext"/> providing details about the call context.</param>
+    /// <param name="callContext">The <see cref="IOrchestrationContext"/> providing details about the call context.</param>
     /// <param name="logger">The logger used for logging.</param>
     /// <param name="httpClientFactoryService">The HTTP client factory service.</param>
     /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
     public class AzureAIDirectService(
-        ICallContext callContext,
+        IOrchestrationContext callContext,
         ILogger<AzureAIDirectService> logger,
         IHttpClientFactoryService httpClientFactoryService,
         IEnumerable<IResourceProviderService> resourceProviderServices) : IAzureAIDirectService
     {
-        private readonly ICallContext _callContext = callContext;
+        private readonly IOrchestrationContext _callContext = callContext;
         private readonly ILogger<AzureAIDirectService> _logger = logger;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
         private readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();

@@ -9,18 +9,18 @@ namespace FoundationaLLM.Context.API.Controllers
     /// Provdes methods for managing files.
     /// </summary>
     /// <param name="fileService">The <see cref="IFileService"/> file service.</param>
-    /// <param name="callContext">>The <see cref="ICallContext"/> call context associated with the current request.</param>
+    /// <param name="callContext">>The <see cref="IOrchestrationContext"/> call context associated with the current request.</param>
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     [ApiController]
     [APIKeyAuthentication]
     [Route("instances/{instanceId}")]
     public class FilesController(
         IFileService fileService,
-        ICallContext callContext,
+        IOrchestrationContext callContext,
         ILogger<FilesController> logger): ControllerBase
     {
         private readonly IFileService _fileService = fileService;
-        private readonly ICallContext _callContext = callContext;
+        private readonly IOrchestrationContext _callContext = callContext;
         private readonly ILogger<FilesController> _logger = logger;
 
         /// <summary>

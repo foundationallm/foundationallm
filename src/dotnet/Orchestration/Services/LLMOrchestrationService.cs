@@ -32,7 +32,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
             string serviceName,
             ILogger<LLMOrchestrationService> logger,
             IHttpClientFactoryService httpClientFactoryService,
-            ICallContext callContext) 
+            IOrchestrationContext callContext) 
         {
             _serviceName = serviceName;
             _logger = logger;

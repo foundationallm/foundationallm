@@ -31,6 +31,17 @@ Added the following App Configuration value:
 >[!IMPORTANT]
 >A new Azure Cosmos DB container named `Context` must be created with a parition key of `/upn` and an autoscale transactional throughput of maximum 4000 RU/s.
 
+### Role assignment changes
+
+The following role assignments must be added to the Context API's Managed Identity:
+
+Name | Target
+--- | ---
+
+
+
+Azure ContainerApps Session Executor
+
 ## Starting from 0.9.7-beta107
 
 For External Agent Workflows, the workflow invokation now includes conversation file history. The complete file history is passed regardless of conversation history settings. 

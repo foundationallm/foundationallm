@@ -1,10 +1,8 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Text;
 using FoundationaLLM.Context.Interfaces;
-using FoundationaLLM.Context.Models;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Logging;
@@ -13,35 +11,38 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Context.Services
+namespace FoundationaLLM.Context.Services.CosmosDB
 {
     /// <summary>
-    /// Provides the implementation for the Azure Cosmos DB file service.
+    /// Provides the base implementation for the Azure Cosmos DB services.
     /// </summary>
-    public class AzureCosmosDBFileService: IAzureCosmosDBFileService
+    public class AzureCosmosDBServiceBase : IAzureCosmosDBServiceBase
     {
-        private readonly AzureCosmosDBSettings _settings;
-        private readonly ILogger<AzureCosmosDBFileService> _logger;
+        protected readonly AzureCosmosDBSettings _settings;
+        protected readonly ILogger<AzureCosmosDBServiceBase> _logger;
 
-        private readonly CosmosClient _cosmosClient;
-        private readonly Container _contextContainer;
+        protected readonly CosmosClient _cosmosClient;
+        protected readonly Container _contextContainer;
+
+        /// <inheritdoc/>
+        public Container ContextContainer => _contextContainer;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AzureCosmosDBFileService"/> class.
+        /// Initializes a new instance of the <see cref="AzureCosmosDBServiceBase"/> class.
         /// </summary>
         /// <param name="options">The <see cref="IOptions"/> providing the <see cref="AzureCosmosDBSettings"/>) with the Azure Cosmos DB settings.</param>
         /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
-        public AzureCosmosDBFileService(
+        public AzureCosmosDBServiceBase(
             IOptions<AzureCosmosDBSettings> options,
-            ILogger<AzureCosmosDBFileService> logger)
+            ILogger<AzureCosmosDBServiceBase> logger)
         {
             _settings = options.Value;
             _logger = logger;
 
-            _logger.LogInformation("Initializing Azure Cosmos DB file service...");
+            _logger.LogInformation("Initializing the Azure Cosmos DB service base...");
             _cosmosClient = GetCosmosDBClient();
             _contextContainer = GetCosmosDBContextContainer();
-            _logger.LogInformation("Successfully initialized Azure Cosmos DB file service.");
+            _logger.LogInformation("Successfully initialized the Azure Cosmos DB service base.");
         }
 
         #region Initialization

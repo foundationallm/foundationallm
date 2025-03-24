@@ -29,7 +29,7 @@ namespace FoundationaLLM.Core.API.Controllers
     [Route("instances/{instanceId}/[controller]")]
     public class FilesController : ControllerBase
     {
-        private readonly ICallContext _callContext;
+        private readonly IOrchestrationContext _callContext;
         private readonly InstanceSettings _instanceSettings;
         private readonly ICoreService _coreService;
         private readonly ILogger<FilesController> _logger;
@@ -37,13 +37,13 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <summary>
         /// The controller for managing files.
         /// </summary>
-        /// <param name="callContext">The <see cref="ICallContext"/> call context of the request being handled.</param>
+        /// <param name="callContext">The <see cref="IOrchestrationContext"/> call context of the request being handled.</param>
         /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>
         /// <param name="coreService">The <see cref="ICoreService"/> core service.</param>
         /// <param name="logger"></param>
         /// <exception cref="ResourceProviderException"></exception>
         public FilesController(
-            ICallContext callContext,
+            IOrchestrationContext callContext,
             IOptions<InstanceSettings> instanceOptions,
             ICoreService coreService,
             ILogger<FilesController> logger)

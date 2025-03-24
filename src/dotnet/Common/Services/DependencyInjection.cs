@@ -277,7 +277,7 @@ namespace FoundationaLLM
             builder.Services.AddScoped<IDownstreamAPIService, DownstreamAPIService>(
                 (serviceProvider) => new DownstreamAPIService(
                     apiServiceName,
-                    serviceProvider.GetService<ICallContext>()!,
+                    serviceProvider.GetService<IOrchestrationContext>()!,
                     serviceProvider.GetService<IHttpClientFactoryService>()!,
                     serviceProvider.GetService<ILogger<DownstreamAPIService>>()!
                 ));

@@ -10,16 +10,16 @@ namespace FoundationaLLM.Gateway.API.Controllers
     /// Methods for managing embedding requests.
     /// </summary>
     /// <param name="gatewayCore">The <see cref="IGatewayCore"/> that provides LLM gateway services.</param>
-    /// <param name="callContext">The <see cref="ICallContext"/> call context of the request being handled.</param>
+    /// <param name="callContext">The <see cref="IOrchestrationContext"/> call context of the request being handled.</param>
     [ApiController]
     [APIKeyAuthentication]
     [Route("instances/{instanceId}/[controller]")]
     public class EmbeddingsController(
         IGatewayCore gatewayCore,
-        ICallContext callContext)
+        IOrchestrationContext callContext)
     {
         private readonly IGatewayCore _gatewayCore = gatewayCore;
-        private readonly ICallContext _callContext = callContext;
+        private readonly IOrchestrationContext _callContext = callContext;
 
         /// <summary>
         /// Handles an incoming text embedding request by starting a new embedding operation.

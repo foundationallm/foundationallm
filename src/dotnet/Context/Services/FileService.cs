@@ -9,26 +9,17 @@ namespace FoundationaLLM.Context.Services
     /// <summary>
     /// Provides the implementation for the FoundationaLLM File service.
     /// </summary>
-    public class FileService : IFileService
+    /// <param name="cosmosDBService">The Azure Cosmos DB service providing database services.</param>
+    /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
+    /// <param name="logger">The logger used for logging.</param>
+    public class FileService(
+        IAzureCosmosDBFileService cosmosDBService,
+        IStorageService storageService,
+        ILogger<FileService> logger) : IFileService
     {
-        private readonly IAzureCosmosDBFileService _azureCosmosDBFileService;
-        private readonly IStorageService _storageService;
-        private readonly ILogger<FileService> _logger;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileService"/> class.
-        /// </summary>
-        /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
-        /// <param name="logger">The logger used for logging.</param>
-        public FileService(
-            IAzureCosmosDBFileService azureCosmosDBFileService,
-            IStorageService storageService,
-            ILogger<FileService> logger)
-        {
-            _azureCosmosDBFileService = azureCosmosDBFileService;
-            _storageService = storageService;
-            _logger = logger;
-        }
+        private readonly IAzureCosmosDBFileService _cosmosDBService = cosmosDBService;
+        private readonly IStorageService _storageService = storageService;
+        private readonly ILogger<FileService> _logger = logger;
 
         /// <inheritdoc/>
         public async Task<ContextFileRecord> CreateFile(
@@ -47,9 +38,7 @@ namespace FoundationaLLM.Context.Services
                 content.Length,
                 userIdentity);
 
-            fileRecord = await _azureCosmosDBFileService.UpsertItemAsync<ContextFileRecord>(
-                fileRecord.UPN,
-                fileRecord);
+            await _cosmosDBService.UpsertFileRecord(fileRecord);
 
             await _storageService.WriteFileAsync(
                 instanceId,
@@ -59,6 +48,31 @@ namespace FoundationaLLM.Context.Services
                 CancellationToken.None);
 
             return fileRecord;
+        }
+
+        /// <inheritdoc/>
+        public async Task<Stream?> GetFileContent(
+            string instanceId,
+            string conversationId,
+            string fileName,
+            UnifiedUserIdentity userIdentity)
+        {
+            var fileRecords = await _cosmosDBService.GetFileRecords(
+                conversationId,
+                fileName,
+                userIdentity.UPN!);
+
+            if (fileRecords.Count == 0)
+                return null;
+
+            var fileRecord = fileRecords.First();
+
+            var fileContent = await _storageService.ReadFileAsync(
+                instanceId,
+                fileRecord.FilePath,
+                default);
+
+            return fileContent.ToStream();
         }
     }
 }

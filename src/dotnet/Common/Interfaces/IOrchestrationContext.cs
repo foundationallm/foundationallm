@@ -8,7 +8,7 @@ namespace FoundationaLLM.Common.Interfaces
     /// The CurrentUserIdentity stores a <see cref="UnifiedUserIdentity"/> object
     /// resolved from one or more services.
     /// </summary>
-    public interface ICallContext
+    public interface IOrchestrationContext
     {
         /// <summary>
         /// The current <see cref="UnifiedUserIdentity"/> object resolved

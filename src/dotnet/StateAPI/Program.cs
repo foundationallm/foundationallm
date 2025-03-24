@@ -8,7 +8,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Instance;
-using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Security;
 using FoundationaLLM.Common.Text;
@@ -65,7 +65,7 @@ builder.Services.AddControllers();
 
 // Add API Key Authorization
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<ICallContext, CallContext>();
+builder.Services.AddScoped<IOrchestrationContext, OrchestrationContext>();
 builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
 builder.Services.AddScoped<APIKeyAuthenticationFilter>();
 builder.Services.AddOptions<APIKeyValidationSettings>()

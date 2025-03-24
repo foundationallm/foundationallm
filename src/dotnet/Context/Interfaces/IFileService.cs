@@ -25,5 +25,19 @@ namespace FoundationaLLM.Context.Interfaces
             string contentType,
             Stream content,
             UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Get the binary content of a file.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="conversationId">The conversation identifier.</param>
+        /// <param name="fileName">The name of the file to retrieve.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing details about the user identity.</param>
+        /// <returns>A stream with the binary content of the file.</returns>
+        Task<Stream?>GetFileContent(
+            string instanceId,
+            string conversationId,
+            string fileName,
+            UnifiedUserIdentity userIdentity);
     }
 }

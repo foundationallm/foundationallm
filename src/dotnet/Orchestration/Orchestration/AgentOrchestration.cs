@@ -48,7 +48,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         KnowledgeManagementAgent? agent,
         string agentWorkflowMainAIModelAPIEndpoint,
         Dictionary<string, object>? explodedObjects,
-        ICallContext callContext,
+        IOrchestrationContext callContext,
         ILLMOrchestrationService orchestrationService,
         IUserPromptRewriteService userPromptRewriteService,
         ISemanticCacheService semanticCacheService,
@@ -65,7 +65,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private readonly KnowledgeManagementAgent? _agent = agent;
         private readonly string _agentWorkflowMainAIModelAPIEndpoint = agentWorkflowMainAIModelAPIEndpoint;
         private readonly Dictionary<string, object>? _explodedObjects = explodedObjects;
-        private readonly ICallContext _callContext = callContext;
+        private readonly IOrchestrationContext _callContext = callContext;
         private readonly ILogger<OrchestrationBase> _logger = logger;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
         private readonly bool? _dataSourceAccessDenied = dataSourceAccessDenied;

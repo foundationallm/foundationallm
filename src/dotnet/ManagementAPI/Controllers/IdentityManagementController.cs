@@ -21,12 +21,12 @@ namespace FoundationaLLM.Management.API.Controllers
     [Produces("application/json")]
     [Route($"instances/{{instanceId}}/identity")]
     public class IdentityManagementController(
-        ICallContext callContext,
+        IOrchestrationContext callContext,
         IIdentityManagementService identityManagementService,
         ILogger<IdentityManagementController> logger) : Controller
     {
         private readonly ILogger<IdentityManagementController> _logger = logger;
-        private readonly ICallContext _callContext = callContext;
+        private readonly IOrchestrationContext _callContext = callContext;
 
         /// <summary>
         /// Retrieves a list of group accounts with filtering and paging options.

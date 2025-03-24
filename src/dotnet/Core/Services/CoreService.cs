@@ -59,7 +59,7 @@ public partial class CoreService(
     ILogger<CoreService> logger,
     IOptions<ClientBrandingConfiguration> brandingSettings,
     IOptions<CoreServiceSettings> settings,
-    ICallContext callContext,
+    IOrchestrationContext callContext,
     IEnumerable<IResourceProviderService> resourceProviderServices,
     IConfiguration configuration,
     IHttpClientFactoryService httpClientFactory,
@@ -623,7 +623,7 @@ public partial class CoreService(
                     ResourceExists = false,
                     Resource = new AttachmentFile
                     {
-                        Name = serviceResult.Result.FileId,
+                        Name = serviceResult.Result.Id,
                         ObjectId = serviceResult.Result.FileObjectId,
                         DisplayName = serviceResult.Result.FileName,
                         CreatedBy = serviceResult.Result.UPN,
@@ -1133,7 +1133,7 @@ public partial class CoreService(
     private static async Task<string> GetBaseUrl(
         IConfiguration configuration,
         IHttpClientFactoryService httpClientFactory,
-        ICallContext callContext)
+        IOrchestrationContext callContext)
     {
         var baseUrl = configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!;
         try

@@ -43,7 +43,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         /// <param name="llmOrchestrationServiceManager">The <see cref="ILLMOrchestrationServiceManager"/> that manages internal and external orchestration services.</param>
         /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> used to interact with the Cosmos DB database.</param>
         /// <param name="templatingService">The <see cref="ITemplatingService"/> used to render templates.</param>
-        /// <param name="codeExecutionService">The <see cref="ICodeExecutionService"/> used to execute code.</param>
+        /// <param name="contextServiceClient">The <see cref="IContextServiceClient"/> client used to call the Context API.</param>
         /// <param name="userPromptRewriteService">The <see cref="IUserPromptRewriteService"/> used to rewrite user prompts.</param>
         /// <param name="semanticCacheService">The <see cref="ISemanticCacheService"/> used to cache and retrieve completion responses.</param>
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/> provding dependency injection services for the current scope.</param>
@@ -55,13 +55,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             string instanceId,
             string agentName,
             CompletionRequest originalRequest,
-            ICallContext callContext,
+            IOrchestrationContext callContext,
             IConfiguration configuration,
             Dictionary<string, IResourceProviderService> resourceProviderServices,
             ILLMOrchestrationServiceManager llmOrchestrationServiceManager,
             IAzureCosmosDBService cosmosDBService,
             ITemplatingService templatingService,
-            ICodeExecutionService codeExecutionService,
+            IContextServiceClient contextServiceClient,
             IUserPromptRewriteService userPromptRewriteService,
             ISemanticCacheService semanticCacheService,
             IServiceProvider serviceProvider,
@@ -77,7 +77,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 originalRequest.Settings?.ModelParameters,
                 resourceProviderServices,
                 templatingService,
-                codeExecutionService,
+                contextServiceClient,
                 callContext.CurrentUserIdentity!,
                 logger);
 
@@ -154,7 +154,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         public static async Task<OrchestrationBase?> BuildForStatus(
             string instanceId,
             string operationId,
-            ICallContext callContext,
+            IOrchestrationContext callContext,
             IConfiguration configuration,
             Dictionary<string, IResourceProviderService> resourceProviderServices,
             ILLMOrchestrationServiceManager llmOrchestrationServiceManager,
@@ -192,16 +192,23 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             return kmOrchestration;
         }
 
-        private static async Task<(AgentBase? Agent, AIModelBase? AIModel, APIEndpointConfiguration? APIEndpointConfiguration,  ExplodedObjectsManager ExplodedObjectsManager, bool DataSourceAccessDenied)> LoadAgent(
-            string instanceId,
-            string agentName,
-            string? conversationId,
-            Dictionary<string, object>? modelParameterOverrides,
-            Dictionary<string, IResourceProviderService> resourceProviderServices,
-            ITemplatingService templatingService,
-            ICodeExecutionService codeExecutionService,
-            UnifiedUserIdentity currentUserIdentity,
-            ILogger<OrchestrationBuilder> logger)
+        private static async Task<(
+            AgentBase? Agent,
+            AIModelBase? AIModel,
+            APIEndpointConfiguration? APIEndpointConfiguration,
+            ExplodedObjectsManager ExplodedObjectsManager,
+            bool DataSourceAccessDenied
+            )>
+            LoadAgent(
+                string instanceId,
+                string agentName,
+                string? conversationId,
+                Dictionary<string, object>? modelParameterOverrides,
+                Dictionary<string, IResourceProviderService> resourceProviderServices,
+                ITemplatingService templatingService,
+                IContextServiceClient contextServiceClient,
+                UnifiedUserIdentity currentUserIdentity,
+                ILogger<OrchestrationBuilder> logger)
         {
             if (string.IsNullOrWhiteSpace(agentName))
                 throw new OrchestrationException("The agent name provided in the completion request is invalid.");
@@ -337,18 +344,23 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         AgentToolPropertyNames.FoundationaLLM_AzureContainerApps_CodeExecution_Enabled, out bool requiresCodeExecution)
                     && requiresCodeExecution)
                 {
-                    var codeExecutionSession = await codeExecutionService.CreateCodeExecutionSession(
+                    var contextServiceResponse = await contextServiceClient.CreateCodeSession(
                         instanceId,
-                        tool.Name,
+                        agentName,
                         conversationId!,
-                        currentUserIdentity);
+                        tool.Name);
 
-                    toolParameters.Add(
-                        AgentToolPropertyNames.FoundationaLLM_AzureContainerApps_CodeExecution_Endpoint,
-                        codeExecutionSession.Endpoint);
-                    toolParameters.Add(
-                        AgentToolPropertyNames.FoundationaLLM_AzureContainerApps_CodeExecution_SessionId,
-                        codeExecutionSession.SessionId);
+                    if (contextServiceResponse.Success)
+                    {
+                        toolParameters.Add(
+                            AgentToolPropertyNames.FoundationaLLM_AzureContainerApps_CodeExecution_Endpoint,
+                            contextServiceResponse.Result!.Endpoint);
+                        toolParameters.Add(
+                            AgentToolPropertyNames.FoundationaLLM_AzureContainerApps_CodeExecution_SessionId,
+                            contextServiceResponse.Result!.SessionId);
+                    }
+                    else
+                        throw new OrchestrationException($"The Context API was not able to create code session: {contextServiceResponse.ErrorMessage}");
                 }
 
                 explodedObjectsManager.TryAdd(

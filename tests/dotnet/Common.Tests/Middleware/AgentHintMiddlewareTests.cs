@@ -19,7 +19,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             var context = new DefaultHttpContext();
             var claimsProviderService = Substitute.For<IUserClaimsProviderService>();
             var identityManagementService = Substitute.For<IIdentityManagementService>();
-            var callContext = Substitute.For<ICallContext>();
+            var callContext = Substitute.For<IOrchestrationContext>();
             var apiRequestQuotaService = Substitute.For<IQuotaService>();
             var instanceSettings = Options.Create<InstanceSettings>(Substitute.For<InstanceSettings>());
             var middleware = new CallContextMiddleware(next: _ => Task.FromResult(0));
@@ -46,7 +46,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             var context = new DefaultHttpContext();
             var claimsProviderService = Substitute.For<IUserClaimsProviderService>();
             var groupMembershipService = Substitute.For<IIdentityManagementService>();
-            var callContext = Substitute.For<ICallContext>();
+            var callContext = Substitute.For<IOrchestrationContext>();
             var apiRequestQuotaService = Substitute.For<IQuotaService>();
             var instanceSettings = Options.Create<InstanceSettings>(Substitute.For<InstanceSettings>());
             var middleware = new CallContextMiddleware(next: _ => Task.FromResult(0));

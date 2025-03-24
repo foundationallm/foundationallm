@@ -37,7 +37,7 @@ namespace FoundationaLLM.Core.API.Controllers
         private readonly ICoreService _coreService;
         private readonly IResourceProviderService _agentResourceProvider;
         private readonly ILogger<CompletionsController> _logger;
-        private readonly ICallContext _callContext;
+        private readonly IOrchestrationContext _callContext;
         private readonly IQuotaService _quotaService;
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="logger">The logging interface used to log under the
         /// <see cref="CompletionsController"/> type name.</param>
         public CompletionsController(ICoreService coreService,
-            ICallContext callContext,
+            IOrchestrationContext callContext,
             IEnumerable<IResourceProviderService> resourceProviderServices,
             IQuotaService quotaService,
             ILogger<CompletionsController> logger)
