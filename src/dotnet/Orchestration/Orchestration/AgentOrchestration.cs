@@ -58,7 +58,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         bool? dataSourceAccessDenied,
         string? openAIVectorStoreId,
         LongRunningOperationContext? longRunningOperationContext,
-        Func<LLMCompletionRequest, Task>? completionRequestObserver = null) : OrchestrationBase(orchestrationService)
+        IContextServiceClient contextServiceClient,
+        Func<LLMCompletionRequest, Task>? completionRequestObserver = null
+        ) : OrchestrationBase(orchestrationService)
     {
         private readonly string _instanceId = instanceId;
         private readonly string _agentObjectId = agentObjectId;
@@ -81,6 +83,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
         private readonly IUserPromptRewriteService _userPromptRewriteService = userPromptRewriteService;
         private readonly ISemanticCacheService _semanticCacheService = semanticCacheService;
+        private readonly IContextServiceClient _contextServiceClient = contextServiceClient;
 
         /// <inheritdoc/>
         public override async Task<LongRunningOperation> StartCompletionOperation(CompletionRequest completionRequest)
@@ -323,12 +326,27 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (attachmentObjectIds.Count == 0)
                 return [];
 
-            var attachments = attachmentObjectIds
+            var contextAttachmentObjectIds = new List<string>();
+            var legacyAttachmentObjectIds = new List<string>();
+
+            foreach (var attachmentObjectId in attachmentObjectIds)
+            {
+                if (ResourcePath.TryParseResourceProvider(attachmentObjectId, out string? resourceProvider))
+                {
+                    legacyAttachmentObjectIds.Add(attachmentObjectId);
+                }                    
+                else
+                {                    
+                    contextAttachmentObjectIds.Add(attachmentObjectId);
+                }                    
+            }
+
+            var legacyAttachments = legacyAttachmentObjectIds
                 .ToAsyncEnumerable()
                 .SelectAwait(async x => await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(x, _callContext.CurrentUserIdentity!));
 
             List<AttachmentProperties> result = [];            
-            await foreach (var attachment in attachments)
+            await foreach (var attachment in legacyAttachments)
             {
                 if (string.IsNullOrWhiteSpace(attachment.SecondaryProvider))
                 {
@@ -392,6 +410,20 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 }
             }
 
+
+            var contextAttachmentResponses = contextAttachmentObjectIds
+                .ToAsyncEnumerable()
+                .SelectAwait(async x => await _contextServiceClient.GetFileRecord(_instanceId, x));
+            await foreach(var contextFileResponse in contextAttachmentResponses)
+            {
+                result.Add(new AttachmentProperties
+                {
+                    OriginalFileName = contextFileResponse.Result!.FileName,
+                    ContentType = contextFileResponse.Result.ContentType!,
+                    Provider = "FoundationaLLM.ContextAPI",
+                    ProviderFileName = contextFileResponse.Result.FilePath                    
+                });
+            }
             return result;
         }
 

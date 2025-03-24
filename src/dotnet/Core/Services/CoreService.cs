@@ -620,7 +620,7 @@ public partial class CoreService(
             {;
                 return new ResourceProviderUpsertResult<AttachmentFile>
                 {
-                    ObjectId = serviceResult.Result!.FileObjectId,
+                    ObjectId = serviceResult.Result!.Id,
                     ResourceExists = false,
                     Resource = new AttachmentFile
                     {
@@ -1107,9 +1107,16 @@ public partial class CoreService(
                 }
                 else
                 {
-                    //_contextServiceClient.GetFileRecord();
-                }
-               
+                    var fileResponse = await _contextServiceClient.GetFileRecord(instanceId, attachmentObjectId);
+                    if (fileResponse.Success)
+                    {
+                        fileHistory.Add(FileHistoryItem.FromContextFileRecord(fileResponse.Result!, ++attachmentOrder));
+                    }
+                    else
+                    {
+                        _logger.LogError("Failed to retrieve file record for attachment {AttachmentObjectId}.", attachmentObjectId);
+                    }                    
+                }               
             }
         }
 
