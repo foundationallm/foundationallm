@@ -115,8 +115,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
 
         # Get the list of files from the code interpreter
         files_list = []
-        if operation_id:
-            # issue a post request sending in the operation_id value to the codeSessions/sessionId/downloadFiles endpoint
+        if operation_id:           
             files_list = self.context_api_client.post(
                 f"/codeSessions/{self.repl.session_id}/downloadFiles",
                 {
