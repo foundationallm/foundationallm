@@ -12,8 +12,8 @@ from pydantic import BaseModel, Field
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.models.agents import AgentTool
-from foundationallm.models.orchestration import ContentArtifact
-from foundationallm.serivces import HttpClientService
+from foundationallm.models.orchestration import CompletionRequestObjectKeys, ContentArtifact
+from foundationallm.services import HttpClientService
 from foundationallm_agent_plugins.common.constants import CONTENT_ARTIFACT_TYPE_TOOL_EXECUTION, CONTENT_ARTIFACT_TYPE_FILE
 
 class FoundationaLLMCodeInterpreterFile(BaseModel):
@@ -67,7 +67,16 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             session_id=tool_config.properties[self.DYNAMIC_SESSION_ID] if self.DYNAMIC_SESSION_ID in tool_config.properties else str(uuid4()),
             pool_management_endpoint=tool_config.properties[self.DYNAMIC_SESSION_ENDPOINT]
         )
-        self.description = tool_config.description or self.repl.description       
+        self.description = tool_config.description or self.repl.description
+        context_api_endpoint_configuration = objects.get(CompletionRequestObjectKeys.CONTEXT_API_ENDPOINT_CONFIGURATION, None)        
+        if context_api_endpoint_configuration:
+            self.context_api_client = HttpClientService(
+                context_api_endpoint_configuration,
+                user_identity,
+                config
+            )
+        else:
+            raise ToolException("The Context API endpoint configuration is required to use the Code Interpreter tool.")
     
     def _run(self,                 
             python_code: str,
@@ -88,14 +97,34 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             original_prompt = runnable_config['configurable']['original_user_prompt']
 
         content_artifacts = []
-        # Upload any files to the code interpreter
-        ## TO DO: Add context api to upload files to the dynamic session using the list of files.
+        operation_id = None
+
+        # Upload any files to the code interpreter        
+        if files:            
+            file_names = [f.original_file_name for f in files]
+            # returns the operation_id
+            operation_id = self.context_api_client.post(
+                f"/codeSessions/{self.session_id}/uploadFiles",
+                {
+                    "file_names": file_names
+                }
+            ).get('operation_id')
                
         # Execute the code
         result = self.repl.invoke(python_code)
 
         # Get the list of files from the code interpreter
-        files_list = self.repl.list_files()
+        files_list = []
+        if operation_id:
+            # issue a post request sending in the operation_id value to the codeSessions/sessionId/downloadFiles endpoint
+            files_list = self.context_api_client.post(
+                f"/codeSessions/{self.session_id}/downloadFiles",
+                {
+                    "operation_id": operation_id
+                }
+            ).get('file_records')
+        
+        # files_list = self.repl.list_files()
         if files_list:
             # Disregard the files in the code interpreter that were uploaded (based on the original file name)
             generated_files_list = [file for file in files_list if file.filename not in {f.original_file_name for f in (files or [])}]            
