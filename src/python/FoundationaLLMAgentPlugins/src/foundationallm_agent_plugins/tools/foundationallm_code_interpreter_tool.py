@@ -104,7 +104,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             file_names = [f.original_file_name for f in files]
             # returns the operation_id
             operation_id = self.context_api_client.post(
-                f"/codeSessions/{self.session_id}/uploadFiles",
+                f"/codeSessions/{self.repl.session_id}/uploadFiles",
                 {
                     "file_names": file_names
                 }
@@ -118,7 +118,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         if operation_id:
             # issue a post request sending in the operation_id value to the codeSessions/sessionId/downloadFiles endpoint
             files_list = self.context_api_client.post(
-                f"/codeSessions/{self.session_id}/downloadFiles",
+                f"/codeSessions/{self.repl.session_id}/downloadFiles",
                 {
                     "operation_id": operation_id
                 }
