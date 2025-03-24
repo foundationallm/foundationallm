@@ -33,7 +33,7 @@ Added the following App Configuration value:
 >A new Azure Cosmos DB container named `Context` must be created with a parition key of `/upn` and an autoscale transactional throughput of maximum 4000 RU/s.
 
 >[!IMPORTANT]
->A new Azure Container Apps Session Pool must be created with in the same resource groups as the Context API storage account.
+>A new Azure Container Apps Session Pool must be created with in the same resource groups as the Context API storage account. Network egress should be disabled.
 >The `FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions` must be set to the following value:
 >```json
 >{"DynamicSessionsEndpoints": [
