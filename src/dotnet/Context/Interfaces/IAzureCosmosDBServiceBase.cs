@@ -24,5 +24,14 @@ namespace FoundationaLLM.Context.Interfaces
             string partitionKey,
             T item,
             CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Retrieves items from Azure Cosmos DB.
+        /// </summary>
+        /// <typeparam name="T">The type of item to retrieve.</typeparam>
+        /// <param name="query">The query definition used to retrieve the items.</param>
+        /// <returns>The list of retrieved items.</returns>
+        Task<List<T>> RetrieveItems<T>(
+            QueryDefinition query);
     }
 }

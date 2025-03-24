@@ -47,7 +47,7 @@ namespace FoundationaLLM.Context.Services.CosmosDB
                     .WithParameter("@upn", userPrincipalName)
                     .WithParameter("@sessionId", sessionId);
 
-            var results = await RetrieveItems<ContextCodeSessionRecord>(query);
+            var results = await _cosmosDB.RetrieveItems<ContextCodeSessionRecord>(query);
 
             return results.Count == 1 ? results[0] : null;
         }
@@ -68,26 +68,11 @@ namespace FoundationaLLM.Context.Services.CosmosDB
                     .WithParameter("@sessionId", sessionId)
                     .WithParameter("@operationId", operationId);
 
-            var results = await RetrieveItems<ContextCodeSessionFileUploadRecord>(query);
+            var results = await _cosmosDB.RetrieveItems<ContextCodeSessionFileUploadRecord>(query);
 
             return results.Count == 1
                 ? results[0]
                 : null;
-        }
-
-        private async Task<List<T>> RetrieveItems<T>(
-            QueryDefinition query)
-        {
-            var results = _cosmosDB.ContextContainer.GetItemQueryIterator<T>(query);
-
-            List<T> output = [];
-            while (results.HasMoreResults)
-            {
-                var response = await results.ReadNextAsync();
-                output.AddRange(response);
-            }
-
-            return output;
         }
     }
 }

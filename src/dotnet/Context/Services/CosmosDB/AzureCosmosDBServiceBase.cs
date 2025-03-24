@@ -104,5 +104,20 @@ namespace FoundationaLLM.Context.Services.CosmosDB
 
             return response.Resource;
         }
+
+        public async Task<List<T>> RetrieveItems<T>(
+            QueryDefinition query)
+        {
+            var results = _contextContainer.GetItemQueryIterator<T>(query);
+
+            List<T> output = [];
+            while (results.HasMoreResults)
+            {
+                var response = await results.ReadNextAsync();
+                output.AddRange(response);
+            }
+
+            return output;
+        }
     }
 }
