@@ -795,8 +795,8 @@ export default {
 					// Append file icon if there's a matching file_path
 					const fileName = matchingFileBlock?.fileName.split('/').pop() ?? '';
 					const fileIcon = matchingFileBlock
-						? `<i class="${this.$getFileIconClass(fileName, true)} attachment-icon" style="margin-right: 4px"></i>`
-						: `<i class="pi pi-file" class="attachment-icon" style="margin-right: 4px"></i>`;
+						? `<i class="${this.$getFileIconClass(fileName, true)} attachment-icon"></i>`
+						: `<i class="pi pi-file" class="attachment-icon"></i>`;
 					return `${fileIcon}<a href="#" data-href="${href}" data-filename="${fileName}" title="${title || ''}" class="file-download-link">${text}</a>`;
 				} else {
 					const linkHTML = `<a href="${href}" title="${title || ''}" target="_blank">${text}</a>`;
