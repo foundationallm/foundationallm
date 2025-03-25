@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Models_Orchestration_Response_MessageContentItemBase" data-uid="FoundationaLLM.Common.Models.Orchestration.Response.MessageContentItemBase" class="text-break">
-Class MessageContentItemBase  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Response/MessageContentItemBase.cs/#L11"><i class="bi bi-code-slash"></i></a>
+Class MessageContentItemBase  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Response/MessageContentItemBase.cs/#L10"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -103,9 +103,9 @@ Class MessageContentItemBase  <a class="header-action link-secondary" title="Vie
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPolymorphic(TypeDiscriminatorPropertyName = &quot;type&quot;)]
-[JsonDerivedType(typeof(OpenAITextMessageContentItem), &quot;text&quot;)]
-[JsonDerivedType(typeof(OpenAIImageFileMessageContentItem), &quot;image_file&quot;)]
-[JsonDerivedType(typeof(OpenAIFilePathContentItem), &quot;file_path&quot;)]
+[JsonDerivedType(typeof(TextMessageContentItem), &quot;text&quot;)]
+[JsonDerivedType(typeof(ImageFileMessageContentItem), &quot;image_file&quot;)]
+[JsonDerivedType(typeof(FilePathContentItem), &quot;file_path&quot;)]
 public class MessageContentItemBase</code></pre>
   </div>
 
@@ -124,9 +124,9 @@ public class MessageContentItemBase</code></pre>
   <dl class="typelist derived">
     <dt>Derived</dt>
     <dd>
-      <div><a class="xref" href="FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.OpenAIFilePathContentItem.html">OpenAIFilePathContentItem</a></div>
-      <div><a class="xref" href="FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.OpenAIImageFileMessageContentItem.html">OpenAIImageFileMessageContentItem</a></div>
-      <div><a class="xref" href="FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.OpenAITextMessageContentItem.html">OpenAITextMessageContentItem</a></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.Orchestration.Response.FilePathContentItem.html">FilePathContentItem</a></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.Orchestration.Response.ImageFileMessageContentItem.html">ImageFileMessageContentItem</a></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.Orchestration.Response.TextMessageContentItem.html">TextMessageContentItem</a></div>
     </dd>
   </dl>
 
@@ -176,7 +176,7 @@ public class MessageContentItemBase</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Orchestration_Response_MessageContentItemBase_AgentCapabilityCategory" data-uid="FoundationaLLM.Common.Models.Orchestration.Response.MessageContentItemBase.AgentCapabilityCategory">
   AgentCapabilityCategory
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Response/MessageContentItemBase.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Response/MessageContentItemBase.cs/#L29"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The FoundationaLLM agent capability category that generated the message content item.</p>
@@ -213,7 +213,7 @@ public required string AgentCapabilityCategory { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Orchestration_Response_MessageContentItemBase_Type" data-uid="FoundationaLLM.Common.Models.Orchestration.Response.MessageContentItemBase.Type">
   Type
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Response/MessageContentItemBase.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Response/MessageContentItemBase.cs/#L19"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The type of the message content item.</p>
@@ -247,7 +247,7 @@ public virtual string? Type { get; set; }</code></pre>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Response/MessageContentItemBase.cs/#L11" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Response/MessageContentItemBase.cs/#L10" class="edit-link">Edit this page</a>
         </div>
 
 

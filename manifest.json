@@ -1888,6 +1888,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.ContextProviderNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.ContextProviderNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Context.ContextProviderNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Context.ContextProviderNames.yml\" sourcestartlinenumber=\"1\">Provides the names of the FoundationaLLM context providers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.ContextRecordOrigins.yml",
       "output": {
         ".html": {
@@ -6298,6 +6312,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.FilePathContentItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.FilePathContentItem.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Orchestration.Response.FilePathContentItem",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.FilePathContentItem.yml\" sourcestartlinenumber=\"1\">File content item used to generate a message content item.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ImageFileMessageContentItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ImageFileMessageContentItem.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Orchestration.Response.ImageFileMessageContentItem",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ImageFileMessageContentItem.yml\" sourcestartlinenumber=\"1\">An OpenAI image file message content item.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse.yml",
       "output": {
         ".html": {
@@ -6326,59 +6368,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.OpenAIFilePathContentItem.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.TextMessageContentItem.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.OpenAIFilePathContentItem.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.TextMessageContentItem.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.OpenAIFilePathContentItem",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.OpenAIFilePathContentItem.yml\" sourcestartlinenumber=\"1\">File content item used to generate a message content item.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.OpenAIImageFileMessageContentItem.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.OpenAIImageFileMessageContentItem.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.OpenAIImageFileMessageContentItem",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.OpenAIImageFileMessageContentItem.yml\" sourcestartlinenumber=\"1\">An OpenAI image file message content item.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.OpenAITextMessageContentItem.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.OpenAITextMessageContentItem.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.OpenAITextMessageContentItem",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.OpenAITextMessageContentItem.yml\" sourcestartlinenumber=\"1\">An OpenAI text message content item.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.OpenAI.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Orchestration.Response.OpenAI",
-      "Summary": null
+      "Title": "FoundationaLLM.Common.Models.Orchestration.Response.TextMessageContentItem",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.TextMessageContentItem.yml\" sourcestartlinenumber=\"1\">An OpenAI text message content item.</p>\n"
     },
     {
       "type": "ManagedReference",
