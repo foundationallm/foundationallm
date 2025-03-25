@@ -41,14 +41,13 @@
 
 		<!-- File -->
 		<div v-else-if="content.type === 'file_path'">
-			Download <i :class="$getFileIconClass(content.fileName, true)" class="attachment-icon"></i>
+			<i :class="$getFileIconClass(content.fileName, true)" class="attachment-icon"></i>
 			<a
 				:download="content.fileName ?? content.blobUrl ?? content.origValue"
 				href="#"
 				target="_blank"
 				@click.prevent="handleFileDownload(content)"
-			>
-				{{ content.fileName ?? content.blobUrl ?? content.origValue }}
+			>Download {{ content.fileName ?? content.blobUrl ?? content.origValue }}
 			</a>
 		</div>
 	</div>
@@ -214,12 +213,5 @@ iframe {
 		font-style: italic;
 		line-height: 1.5;
 	}
-}
-
-.attachment-icon {
-	width: 24px;
-	margin-right: 4px;
-	vertical-align: middle;
-	line-height: 1;
 }
 </style>
