@@ -130,7 +130,7 @@ namespace FoundationaLLM.Core.API.Controllers
         public async Task<IActionResult> Download(string instanceId, string fileProvider, string fileId)
         {
             using var telemetryActivity = TelemetryActivitySources.CoreAPIActivitySource.StartActivity(
-               TelemetryActivityNames.CoreAPI_Files_Upload,
+               TelemetryActivityNames.CoreAPI_Files_Download,
                ActivityKind.Server,
                parentContext: default,
                 tags: new Dictionary<string, object?>

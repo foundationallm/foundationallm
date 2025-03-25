@@ -207,14 +207,14 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             for artifact in content_artifacts:
                 if artifact.type == CONTENT_ARTIFACT_TYPE_FILE:
                     # if the file path has an image extension, add it to the response_content as an OpenAIImageFileMessageContentItem.    
-                    if any(artifact.filepath.lower().endswith(ext) for ext in ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff', '.ico', '.webp']):
+                    if any(artifact.metadata['original_file_name'].lower().endswith(ext) for ext in ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff', '.ico', '.webp']):
                         response_content.append(OpenAIImageFileMessageContentItem(
                             file_id = artifact.filepath,
                             agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
                         ))
                     else:
                         # if it's not an image, add it to the final_response_content as an annotation of type OpenAIFilePathMessageContentItem.
-                        final_response_content.annotations.append(OpenAIFilePathMessageContentItem(
+                        response_content[0].annotations.append(OpenAIFilePathMessageContentItem(
                             file_id = artifact.filepath,
                             agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
                         ))           

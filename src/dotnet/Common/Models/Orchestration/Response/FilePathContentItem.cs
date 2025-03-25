@@ -1,12 +1,12 @@
 ﻿using FoundationaLLM.Common.Constants.Orchestration;
 using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models.Orchestration.Response.OpenAI
+namespace FoundationaLLM.Common.Models.Orchestration.Response
 {
     /// <summary>
     /// File content item used to generate a message content item.
     /// </summary>
-    public class OpenAIFilePathContentItem : MessageContentItemBase
+    public class FilePathContentItem : MessageContentItemBase
     {
         /// <inheritdoc/>
         [JsonIgnore]
@@ -45,7 +45,7 @@ namespace FoundationaLLM.Common.Models.Orchestration.Response.OpenAI
         /// <summary>
         /// Set default property values.
         /// </summary>
-        public OpenAIFilePathContentItem() =>
+        public FilePathContentItem() =>
             Type = MessageContentItemTypes.FilePath;
     }
 }

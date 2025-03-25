@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
+using FoundationaLLM.Common.Constants.Context;
 using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -8,7 +9,6 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
-using FoundationaLLM.Common.Models.Orchestration.Response.OpenAI;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
@@ -420,7 +420,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 {
                     OriginalFileName = contextFileResponse.Result!.FileName,
                     ContentType = contextFileResponse.Result.ContentType!,
-                    Provider = "FoundationaLLM.ContextAPI",
+                    Provider = ContextProviderNames.FoundationaLLM_ContextAPI,
                     ProviderFileName = contextFileResponse.Result.FilePath                    
                 });
             }
@@ -432,7 +432,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (llmCompletionResponse.ContentArtifacts != null)
             {
                 llmCompletionResponse.ContentArtifacts = llmCompletionResponse.ContentArtifacts
-                    .GroupBy(c => c.Filepath)
+                    .GroupBy(c => new { c.Title, c.Filepath })
                     .Select(g => g.First())
                     .ToArray();
             }
@@ -467,10 +467,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             List<AzureOpenAIFileMapping> newFileMappings = [];
             if (contentItems == null || contentItems.Count == 0)
                 return [];
-
-            if (contentItems.All(ci => ci.AgentCapabilityCategory == AgentCapabilityCategoryNames.FoundationaLLMKnowledgeManagement))
-                return contentItems;
-
+         
             var result = contentItems.Select(ci => TransformContentItem(ci, newFileMappings)).ToList();
             var upsertOptions = new ResourceProviderUpsertOptions
             {
@@ -504,65 +501,65 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private MessageContentItemBase TransformOpenAIAssistantsContentItem(MessageContentItemBase contentItem, List<AzureOpenAIFileMapping> newFileMappings) =>
             contentItem switch
             {
-                OpenAIImageFileMessageContentItem openAIImageFile => TransformOpenAIAssistantsImageFile(openAIImageFile, newFileMappings),
-                OpenAITextMessageContentItem openAITextMessage => TransformOpenAIAssistantsTextMessage(openAITextMessage, newFileMappings),
+                ImageFileMessageContentItem imageFile => TransformOpenAIAssistantsImageFile(imageFile, newFileMappings),
+                TextMessageContentItem textMessage => TransformOpenAIAssistantsTextMessage(textMessage, newFileMappings),
                 _ => throw new OrchestrationException($"The content item type {contentItem.GetType().Name} is not supported.")
             };
 
-        private OpenAIImageFileMessageContentItem TransformOpenAIAssistantsImageFile(OpenAIImageFileMessageContentItem openAIImageFile, List<AzureOpenAIFileMapping> newFileMappings)
+        private ImageFileMessageContentItem TransformOpenAIAssistantsImageFile(ImageFileMessageContentItem imageFile, List<AzureOpenAIFileMapping> newFileMappings)
         {
             newFileMappings.Add(new AzureOpenAIFileMapping
             {
-                Name = openAIImageFile.FileId!,
-                Id = openAIImageFile.FileId!,
+                Name = imageFile.FileId!,
+                Id = imageFile.FileId!,
                 UPN = _callContext.CurrentUserIdentity!.UPN!,
                 InstanceId = _instanceId,
-                FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileMappings}/{openAIImageFile.FileId}",
-                OriginalFileName = openAIImageFile.FileId!,
+                FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileMappings}/{imageFile.FileId}",
+                OriginalFileName = imageFile.FileId!,
                 FileContentType = "image/png",
                 OpenAIEndpoint = _agentWorkflowMainAIModelAPIEndpoint,
-                OpenAIFileId = openAIImageFile.FileId!,
+                OpenAIFileId = imageFile.FileId!,
                 OpenAIAssistantsFileGeneratedOn = DateTimeOffset.UtcNow
             });
-            openAIImageFile.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{openAIImageFile.FileId}";
-            return openAIImageFile;
+            imageFile.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{imageFile.FileId}";
+            return imageFile;
         }
 
-        private OpenAIFilePathContentItem TransformOpenAIAssistantsFilePath(OpenAIFilePathContentItem openAIFilePath, List<AzureOpenAIFileMapping> newFileMappings)
+        private FilePathContentItem TransformOpenAIAssistantsFilePath(FilePathContentItem filePath, List<AzureOpenAIFileMapping> newFileMappings)
         {
-            if (!string.IsNullOrWhiteSpace(openAIFilePath.FileId))
+            if (!string.IsNullOrWhiteSpace(filePath.FileId))
             {
                 // Empty file ids occur when dealing with file search annotations.
                 // Looks like the assistant is providing "internal" RAG pattern references to vectorized text chunks that were included in the context.
                 // In this case, we should not generate a file mapping as it will result in invalid file urls.
                 newFileMappings.Add(new AzureOpenAIFileMapping
                 {
-                    Name = openAIFilePath.FileId!,
-                    Id = openAIFilePath.FileId!,
+                    Name = filePath.FileId!,
+                    Id = filePath.FileId!,
                     UPN = _callContext.CurrentUserIdentity!.UPN!,
                     InstanceId = _instanceId,
-                    FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileMappings}/{openAIFilePath.FileId}",
-                    OriginalFileName = openAIFilePath.FileId!,
+                    FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileMappings}/{filePath.FileId}",
+                    OriginalFileName = filePath.FileId!,
                     FileContentType = "application/octet-stream",
                     OpenAIEndpoint = _agentWorkflowMainAIModelAPIEndpoint,
-                    OpenAIFileId = openAIFilePath.FileId!,
+                    OpenAIFileId = filePath.FileId!,
                     OpenAIAssistantsFileGeneratedOn = DateTimeOffset.UtcNow
                 });
-                openAIFilePath.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{openAIFilePath.FileId}";
+                filePath.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{filePath.FileId}";
             }
             else
-                openAIFilePath.FileUrl = null;
+                filePath.FileUrl = null;
 
-            return openAIFilePath;
+            return filePath;
         }
 
-        private OpenAITextMessageContentItem TransformOpenAIAssistantsTextMessage(OpenAITextMessageContentItem openAITextMessage, List<AzureOpenAIFileMapping> newFileMappings)
+        private TextMessageContentItem TransformOpenAIAssistantsTextMessage(TextMessageContentItem textMessage, List<AzureOpenAIFileMapping> newFileMappings)
         {
             var pattern = new Regex(@"\【[0-9:]+†.+?\】");
 
-            openAITextMessage.Value = pattern.Replace(openAITextMessage.Value!, string.Empty);
+            textMessage.Value = pattern.Replace(textMessage.Value!, string.Empty);
 
-            openAITextMessage.Annotations = openAITextMessage.Annotations
+            textMessage.Annotations = textMessage.Annotations
                 .Where(a => !pattern.Match(a.Text!).Success)
                 .Select(a => TransformOpenAIAssistantsFilePath(a, newFileMappings))
                 .ToList();
@@ -571,7 +568,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             // Code interpreter placeholders are assumed to be in the form of (sandbox:file-id).
             // They are expected to be unique and have a valid corresponding file url.
-            var codeInterpreterPlaceholders = openAITextMessage.Annotations
+            var codeInterpreterPlaceholders = textMessage.Annotations
                 .Where(a => !string.IsNullOrWhiteSpace(a.FileUrl) && !string.IsNullOrWhiteSpace(a.Text))
                 .DistinctBy(a => a.Text)
                 .ToDictionary(
@@ -579,12 +576,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     a => $"({a.FileUrl})");
             
 
-            var input = openAITextMessage.Value!;
+            var input = textMessage.Value!;
             var regex = new Regex(@"\(sandbox:[^)]*\)");
             var matches = regex.Matches(input);
 
             if (matches.Count == 0)
-                return openAITextMessage;
+                return textMessage;
 
             Match? previousMatch = null;
             List<string> output = [];
@@ -604,14 +601,14 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             output.Add(input.Substring(previousMatch!.Index + previousMatch.Length));
 
-            openAITextMessage.Value = string.Join("", output);
+            textMessage.Value = string.Join("", output);
 
             #endregion
 
             #region Replace file search placeholders with empty strings
 
             // File search placeholders are assumed to be unique and not have a corresponding file url.
-            var fileSearchPlaceholders = openAITextMessage.Annotations
+            var fileSearchPlaceholders = textMessage.Annotations
                 .Where(a => string.IsNullOrWhiteSpace(a.FileUrl) && !string.IsNullOrWhiteSpace(a.Text))
                 .DistinctBy(a => a.Text)
                 .Select(a => a.Text!)
@@ -619,12 +616,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             foreach (var fileSearchPlaceholder in fileSearchPlaceholders)
             {
-                openAITextMessage.Value = openAITextMessage.Value.Replace(fileSearchPlaceholder, string.Empty);
+                textMessage.Value = textMessage.Value.Replace(fileSearchPlaceholder, string.Empty);
             }
 
             #endregion
 
-            return openAITextMessage;
+            return textMessage;
         }
 
         #endregion
@@ -632,7 +629,33 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         #region FoundationaLLM Knowledge Management content items
 
         private MessageContentItemBase TransformFoundationaLLMKnowledgeManagementContentItem(MessageContentItemBase contentItem) =>
-            contentItem;
+        contentItem switch
+        {
+            ImageFileMessageContentItem imageFile => TransformFoundationaLLMImageFile(imageFile),
+            TextMessageContentItem textMessage => TransformFoundationaLLMTextMessage(textMessage),
+            _ => throw new OrchestrationException($"The content item type {contentItem.GetType().Name} is not supported.")
+        };
+
+        private MessageContentItemBase TransformFoundationaLLMTextMessage(TextMessageContentItem textMessage)
+        {
+            if(textMessage.Annotations!=null)
+            {
+               foreach(var annotation in textMessage.Annotations)
+               {
+                    if(annotation.Type == "file_path")
+                    {
+                        annotation.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ContextProviderNames.FoundationaLLM_ContextAPI}/{annotation.FileId}";
+                    }
+               }              
+            }
+            return textMessage;
+        }
+        
+        private MessageContentItemBase TransformFoundationaLLMImageFile(ImageFileMessageContentItem imageFile)
+        {        
+            imageFile.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ContextProviderNames.FoundationaLLM_ContextAPI}/{imageFile.FileId}";
+            return imageFile;
+        }
 
         #endregion
     }

@@ -3,7 +3,6 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
-using FoundationaLLM.Common.Models.Orchestration.Response.OpenAI;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using Microsoft.Extensions.Options;
@@ -180,9 +179,9 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
                         {
                             foreach(var contentItem in completionResponse.Content)
                             {
-                                if (contentItem is OpenAITextMessageContentItem openAITextMessageContentItem)
+                                if (contentItem is TextMessageContentItem textMessageContentItem)
                                 {
-                                    (contentItem as OpenAITextMessageContentItem)!.Value = await _gatekeeperIntegrationAPIService.AnonymizeText(openAITextMessageContentItem.Value!);                                    
+                                    (contentItem as TextMessageContentItem)!.Value = await _gatekeeperIntegrationAPIService.AnonymizeText(textMessageContentItem.Value!);                                    
                                 }                                
                             }
                         }

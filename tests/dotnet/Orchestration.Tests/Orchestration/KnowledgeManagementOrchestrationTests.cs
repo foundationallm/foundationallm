@@ -16,6 +16,7 @@ namespace FoundationaLLM.Orchestration.Tests.Orchestration
         private AgentOrchestration _knowledgeManagementOrchestration;
         private KnowledgeManagementAgent _agent = new KnowledgeManagementAgent() { Name = "Test_agent", ObjectId="Test_objctid", Type = AgentTypes.KnowledgeManagement };
         private IOrchestrationContext _callContext = Substitute.For<IOrchestrationContext>();
+        private IContextServiceClient _contextServiceClient = Substitute.For<IContextServiceClient>();
         private ILLMOrchestrationService _orchestrationService = Substitute.For<ILLMOrchestrationService>();
         private ILogger<OrchestrationBase> _logger = Substitute.For<ILogger<OrchestrationBase>>();
 
@@ -36,7 +37,8 @@ namespace FoundationaLLM.Orchestration.Tests.Orchestration
                 null,
                 false,
                 string.Empty,
-                null);
+                null,
+                _contextServiceClient);
         }
 
         [Fact]
