@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
+using FoundationaLLM.Common.Constants.Context;
 using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -420,7 +421,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 {
                     OriginalFileName = contextFileResponse.Result!.FileName,
                     ContentType = contextFileResponse.Result.ContentType!,
-                    Provider = "FoundationaLLM.ContextAPI",
+                    Provider = ContextServiceValues.QualifiedServiceName,
                     ProviderFileName = contextFileResponse.Result.FilePath                    
                 });
             }
@@ -467,10 +468,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             List<AzureOpenAIFileMapping> newFileMappings = [];
             if (contentItems == null || contentItems.Count == 0)
                 return [];
-
-            if (contentItems.All(ci => ci.AgentCapabilityCategory == AgentCapabilityCategoryNames.FoundationaLLMKnowledgeManagement))
-                return contentItems;
-
+         
             var result = contentItems.Select(ci => TransformContentItem(ci, newFileMappings)).ToList();
             var upsertOptions = new ResourceProviderUpsertOptions
             {
@@ -632,7 +630,20 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         #region FoundationaLLM Knowledge Management content items
 
         private MessageContentItemBase TransformFoundationaLLMKnowledgeManagementContentItem(MessageContentItemBase contentItem) =>
-            contentItem;
+        contentItem switch
+        {
+            OpenAIImageFileMessageContentItem openAIImageFile => TransformFoundationaLLMImageFile(openAIImageFile),
+            OpenAITextMessageContentItem openAITextMessage => TransformFoundationaLLMTextMessage(openAITextMessage),
+            _ => throw new OrchestrationException($"The content item type {contentItem.GetType().Name} is not supported.")
+        };
+        private MessageContentItemBase TransformFoundationaLLMTextMessage(OpenAITextMessageContentItem openAITextMessage)
+        => openAITextMessage;
+        
+        private MessageContentItemBase TransformFoundationaLLMImageFile(OpenAIImageFileMessageContentItem openAIImageFile)
+        {        
+            openAIImageFile.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ContextServiceValues.QualifiedServiceName}/{openAIImageFile.FileId}";
+            return openAIImageFile;
+        }
 
         #endregion
     }

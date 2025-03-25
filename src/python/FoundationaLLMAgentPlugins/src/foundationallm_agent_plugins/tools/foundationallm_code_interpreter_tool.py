@@ -122,19 +122,19 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                     "operation_id": operation_id
                 })
             )
-            files_list = files_list_response['file_records']
+            files_list = files_list_response['file_records']        
         
-        #repl_files_list = self.repl.list_files()
-        if files_list:          
+        if files_list:
             # Download the files from the code interpreter to the user storage container           
             for file_name, file_data in files_list.items():                
                 content_artifacts.append(ContentArtifact(
                     id = self.name,
                     title = self.name,
                     type = CONTENT_ARTIFACT_TYPE_FILE,
-                    filepath = file_data['file_object_id'],
+                    filepath = file_name,
                     metadata = {
-                        'file_name': file_name,
+                        'file_object_id': file_data['file_object_id'],
+                        'original_file_name': file_data['file_name'],
                         'file_path': file_data['file_path'],
                         'file_size': str(file_data['file_size_bytes']),
                         'content_type': file_data['content_type'],

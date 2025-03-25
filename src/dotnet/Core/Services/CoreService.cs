@@ -1,6 +1,7 @@
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Constants.Context;
 using FoundationaLLM.Common.Constants.Orchestration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -667,7 +668,7 @@ public partial class CoreService(
                         Content = result.Resource!.BinaryContent!.Value.ToArray()
                     };
 
-                case AgentCapabilityCategoryNames.FoundationaLLMKnowledgeManagement:
+                case ContextServiceValues.QualifiedServiceName:
 
                     var responseMessage = await _contextServiceClient.GetFileContent(instanceId, fileId);
 
