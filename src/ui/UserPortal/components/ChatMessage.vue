@@ -680,6 +680,7 @@ export default {
 						content,
 						value: content,
 						origValue: this.messageContent[currentContentIndex]?.value,
+						fileName: this.messageContent[currentContentIndex]?.fileName,
 					};
 				}
 			}
