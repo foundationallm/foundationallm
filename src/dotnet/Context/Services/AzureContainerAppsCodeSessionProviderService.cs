@@ -89,46 +89,34 @@ namespace FoundationaLLM.Context.Services
         {
             var httpClient = await CreateHttpClient();
 
-            var rootUrl = $"{endpoint}/files?api-version=2024-10-02-preview&identifier={codeSessionId}";
-            var rootFileStore = await GetCodeSessionFileStore(
-                httpClient,
-                rootUrl,
-                string.Empty);
-
-            if (rootFileStore.Items.Count == 0)
-                return [];
-
-            var itemsToReturn = rootFileStore.Items
-                .Where(item => item.Type == "file")
-                .ToList();
-
-            var itemsToProcess = rootFileStore.Items
-                .Where(item => item.Type == "directory")
-                .Select(x =>
-                {
-                    x.ParentPath = string.Empty;
-                    return x;
-                })
-                .ToList();
-
-            while (itemsToProcess.Count > 0)
-            {
-                var itemToProcess = itemsToProcess.First();
-                var fileStore = await GetCodeSessionFileStore(
-                    httpClient,
-                    rootUrl,
-                    $"{itemToProcess.ParentPath}/{itemToProcess.Name}");
-
-                itemsToProcess.RemoveAt(0);
-
-                if (fileStore.Items.Count > 0)
-                {
-                    itemsToReturn.AddRange(fileStore.Items.Where(item => item.Type == "file"));
-                    itemsToProcess.AddRange(fileStore.Items.Where(item => item.Type == "directory"));
-                }
-            }
+            var itemsToReturn = await GetCodeSessionFileStoreItems(
+                codeSessionId,
+                endpoint,
+                httpClient);
 
             return itemsToReturn;
+        }
+
+        public async Task DeleteCodeSessionFileStoreItems(
+            string codeSessionId,
+            string endpoint)
+        {
+            var httpClient = await CreateHttpClient();
+
+            var itemsToDelete = await GetCodeSessionFileStoreItems(
+                codeSessionId,
+                endpoint,
+                httpClient,
+                includeFolders: true);
+
+            foreach (var item in itemsToDelete)
+            {
+                var responseMessage = await httpClient.DeleteAsync(
+                    $"{endpoint}/files/{item.Name}?api-version=2024-10-02-preview&identifier={codeSessionId}&path={item.ParentPath}");
+                if (!responseMessage.IsSuccessStatusCode)
+                    _logger.LogError("Unable to delete file {FileName} from code session {CodeSession}.",
+                        item.Name, codeSessionId);
+            }
         }
 
         /// <inheritdoc />
@@ -147,6 +135,60 @@ namespace FoundationaLLM.Context.Services
                 return responseMessage.Content.ReadAsStream();
             else
                 return null;
+        }
+
+        private async Task<List<CodeSessionFileStoreItem>> GetCodeSessionFileStoreItems(
+            string codeSessionId,
+            string endpoint,
+            HttpClient httpClient,
+            bool includeFolders = false)
+        {
+            var rootUrl = $"{endpoint}/files?api-version=2024-10-02-preview&identifier={codeSessionId}";
+            var rootFileStore = await GetCodeSessionFileStore(
+                httpClient,
+                rootUrl,
+                string.Empty);
+
+            if (rootFileStore.Items.Count == 0)
+                return [];
+
+            var filesToReturn = rootFileStore.Items
+                .Where(item => item.Type == "file")
+                .ToList();
+
+            var directoriesToReturn = new List<CodeSessionFileStoreItem>();
+
+            var directoriesToProcess = rootFileStore.Items
+                .Where(item => item.Type == "directory")
+                .Select(x =>
+                {
+                    x.ParentPath = string.Empty;
+                    return x;
+                })
+                .ToList();
+
+            while (directoriesToProcess.Count > 0)
+            {
+                var directoryToProcess = directoriesToProcess.First();
+                var fileStore = await GetCodeSessionFileStore(
+                    httpClient,
+                    rootUrl,
+                    $"{directoryToProcess.ParentPath}/{directoryToProcess.Name}");
+
+                if (includeFolders)
+                    directoriesToReturn.Add(directoryToProcess);
+                directoriesToProcess.RemoveAt(0);
+
+                if (fileStore.Items.Count > 0)
+                {
+                    filesToReturn.AddRange(fileStore.Items.Where(item => item.Type == "file"));
+                    directoriesToProcess.AddRange(fileStore.Items.Where(item => item.Type == "directory"));
+                }
+            }
+
+            return includeFolders
+                ? [.. filesToReturn, .. directoriesToReturn]
+                : filesToReturn;
         }
 
         private async Task<CodeSessionFileStore> GetCodeSessionFileStore(
@@ -172,7 +214,6 @@ namespace FoundationaLLM.Context.Services
                 return fileStore!;
             }
         }
-
 
         private async Task<HttpClient> CreateHttpClient()
         {

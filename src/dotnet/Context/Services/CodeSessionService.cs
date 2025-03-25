@@ -90,6 +90,11 @@ namespace FoundationaLLM.Context.Services
             var uploadResults = request.FileNames.Distinct()
                 .ToDictionary(x => x, x => false);
 
+            //Attempt to cleanup the code session by removing any existing files.
+            await _codeSessionProviderService.DeleteCodeSessionFileStoreItems(
+                codeSessionRecord.Id,
+                codeSessionRecord.Endpoint);
+
             // Attempt to retrieve the file content for each file name and upload it to the code session.
             // Approach the upload in a best-effort manner, where we upload as many files as possible.
             // It is left to the caller to determine what to do if some files fail to upload.

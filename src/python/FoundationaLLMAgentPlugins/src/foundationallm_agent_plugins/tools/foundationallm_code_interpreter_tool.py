@@ -151,7 +151,8 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             filepath = str(uuid4()), # needs to have a unique filepath to not be filtered out upstream.
             metadata = {
                 'original_user_prompt': original_prompt,
-                'tool_input': python_code,
+                'tool_input_python_code': python_code,
+                'tool_input_files': ', '.join([f.file_name for f in files]) if files else '',
                 'tool_output': str(response.get('stdout', '')),
                 'tool_error': str(response.get('stderr', '')),
                 'tool_result': str(response.get('result', ''))

@@ -62,5 +62,15 @@ namespace FoundationaLLM.Context.Interfaces
             string endpoint,
             string fileName,
             string filePath);
+
+        /// <summary>
+        /// Deletes all files from a code session.
+        /// </summary>
+        /// <param name="codeSessionId">The identifier of the code session.</param>
+        /// <param name="endpoint">The endpoint of the code session service.</param>
+        /// <returns></returns>
+        Task DeleteCodeSessionFileStoreItems(
+            string codeSessionId,
+            string endpoint);
     }
 }
