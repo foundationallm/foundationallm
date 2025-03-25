@@ -795,9 +795,9 @@ export default {
 					// Append file icon if there's a matching file_path
 					const fileName = matchingFileBlock?.fileName.split('/').pop() ?? '';
 					const fileIcon = matchingFileBlock
-						? `<i class="${this.$getFileIconClass(fileName, true)}" class="attachment-icon"></i>`
+						? `<i class="${this.$getFileIconClass(fileName, true)} attachment-icon"></i>`
 						: `<i class="pi pi-file" class="attachment-icon"></i>`;
-					return `${fileIcon} &nbsp;<a href="#" data-href="${href}" data-filename="${fileName}" title="${title || ''}" class="file-download-link">${text}</a>`;
+					return `${fileIcon}<a href="#" data-href="${href}" data-filename="${fileName}" title="${title || ''}" class="file-download-link">${text}</a>`;
 				} else {
 					const linkHTML = `<a href="${href}" title="${title || ''}" target="_blank">${text}</a>`;
 					// Process link html again in case it contains nested markdown content
@@ -908,6 +908,7 @@ export default {
 				const content: MessageContent = {
 					type: 'file_path',
 					value: link.dataset.href,
+					origValue: link.dataset.href,
 					fileName: link.dataset.filename || link.textContent,
 				};
 
@@ -944,6 +945,14 @@ export default {
 	}
 };
 </script>
+<style lang="scss">
+.attachment-icon {
+	width: 24px;
+	margin-right: 6px;
+	vertical-align: middle;
+	line-height: 1;
+}	
+</style>
 
 <style lang="scss" scoped>
 @keyframes loading-shimmer {
