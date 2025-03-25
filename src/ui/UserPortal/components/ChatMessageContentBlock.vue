@@ -47,7 +47,7 @@
 				href="#"
 				target="_blank"
 				@click.prevent="handleFileDownload(content)"
-			>Download {{ content.fileName ?? content.blobUrl ?? content.origValue }}
+			>{{ content.fileName ?? content.blobUrl ?? content.origValue }}
 			</a>
 		</div>
 	</div>
