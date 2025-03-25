@@ -56,6 +56,15 @@
 			aria-labelledby="aria-tool-package-name"
 		/>
 
+		<div id="aria-tool-class-name" class="mt-6 mb-2 font-weight-bold">Tool class name:</div>
+		<InputText
+			v-model="toolObject.class_name"
+			type="text"
+			class="w-100"
+			placeholder="Enter tool class name"
+			aria-labelledby="aria-tool-class-name"
+		/>
+
 		<div class="mt-6 mb-2 font-weight-bold">Tool resources:</div>
 		<ResourceTable
 			:resources="toolObject.resource_object_ids"
@@ -102,6 +111,7 @@ export default {
 				name: '' as string,
 				description: '' as string,
 				package_name: 'FoundationaLLM' as string,
+				class_name: '' as string,
 				resource_object_ids: {},
 			}),
 		},
@@ -127,6 +137,7 @@ export default {
 				name: '' as string,
 				description: '' as string,
 				package_name: 'FoundationaLLM' as string,
+				class_name: '' as string,
 				resource_object_ids: {},
 			},
 			showCreateResourceObjectDialog: false,
