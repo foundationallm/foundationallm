@@ -84,7 +84,7 @@
 							<ChatMessageTextBlock v-else :value="content.value" />
 						</template>
 
-						<ChatMessageContentBlock v-else :value="content" />
+						<ChatMessageContentBlock v-else-if="content.type !== 'file_path'" :value="content" />
 					</div>
 
 					<div v-for="artifact in message.contentArtifacts" :key="artifact.id">
@@ -106,7 +106,7 @@
 
 				<!-- Assistant message footer -->
 				<div v-if="message.sender !== 'User'" class="message__footer">
-					<!-- Content Artifacts -->
+					<!-- Content artifacts -->
 					<div v-if="message.contentArtifacts?.length" class="content-artifacts">
 						<span><b>Content Artifacts: </b></span>
 						<span
@@ -119,6 +119,14 @@
 							<i class="pi pi-file"></i>
 							{{ artifact.title ? artifact.title?.split('/').pop() : '(No Title)' }}
 						</span>
+					</div>
+
+					<!-- Additional content -->
+					<div v-if="processedContent.some((content) => content.type === 'file_path' && !content.skip)" class="additional-content">
+						<div><b>Additional Content: </b></div>
+						<div v-for="(content, index) in processedContent.filter((content) => content.type === 'file_path')" :key="index">
+							<ChatMessageContentBlock :value="content" />
+						</div>
 					</div>
 
 					<!-- Rating -->
@@ -520,6 +528,7 @@ export default {
 			deep: true,
 			handler() {
 				this.markSkippableContent();
+
 				// Bind click handlers to any new images
 				this.$nextTick(() => {
 					const messageImages = this.$el.querySelectorAll('.message-image');
@@ -1111,6 +1120,11 @@ $textColor: #131833;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+.additional-content {
+	width: 100%;
+	padding: 8px 12px;
 }
 
 .ratings {
