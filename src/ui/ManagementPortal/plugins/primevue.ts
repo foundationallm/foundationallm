@@ -29,6 +29,8 @@ import InputNumber from 'primevue/inputnumber';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import Checkbox from 'primevue/checkbox';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 
 import { defineNuxtPlugin } from '#app';
 
@@ -62,6 +64,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('TabView', TabView);
 	nuxtApp.vueApp.component('TabPanel', TabPanel);
 	nuxtApp.vueApp.component('Checkbox', Checkbox);
-
+	nuxtApp.vueApp.component('IconField', IconField);
+	nuxtApp.vueApp.component('InputIcon', InputIcon);
 	nuxtApp.vueApp.use(ToastService);
 });
