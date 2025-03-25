@@ -566,6 +566,7 @@ export default {
 					content,
 					value: this.processContentBlock(content.value),
 					origValue: content.value,
+					fileName: content?.fileName,
 				};
 			});
 		} else if (this.message.text) {
