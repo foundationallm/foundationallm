@@ -683,7 +683,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 // so we need to remove it from the token before checking for a replacement.
                 var token = input
                     .Substring(match.Index, match.Length)
-                    .Replace("sandbox:/mnt/data", string.Empty);
+                    .Replace("sandbox:/mnt/data/", string.Empty);
                 if (codeInterpreterPlaceholders.TryGetValue(token, out var replacement))
                     output.Add(replacement);
                 else
