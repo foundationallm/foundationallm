@@ -679,7 +679,11 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 var startIndex = previousMatch == null ? 0 : previousMatch.Index + previousMatch.Length;
                 output.Add(input[startIndex..match.Index]);
-                var token = input.Substring(match.Index, match.Length);
+                // The file names in the annotations are not prefixed with "sandbox:/mnt/data",
+                // so we need to remove it from the token before checking for a replacement.
+                var token = input
+                    .Substring(match.Index, match.Length)
+                    .Replace("sandbox:/mnt/data", string.Empty);
                 if (codeInterpreterPlaceholders.TryGetValue(token, out var replacement))
                     output.Add(replacement);
                 else
