@@ -908,6 +908,7 @@ export default {
 				const content: MessageContent = {
 					type: 'file_path',
 					value: link.dataset.href,
+					origValue: link.dataset.href,
 					fileName: link.dataset.filename || link.textContent,
 				};
 

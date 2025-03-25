@@ -43,12 +43,12 @@
 		<div v-else-if="content.type === 'file_path'">
 			Download <i :class="$getFileIconClass(content.fileName, true)" class="attachment-icon"></i>
 			<a
-				:download="content.fileName ?? content.blobUrl ?? content.value"
+				:download="content.fileName ?? content.blobUrl ?? content.origValue"
 				href="#"
 				target="_blank"
 				@click.prevent="handleFileDownload(content)"
 			>
-				{{ content.fileName ?? content.blobUrl ?? content.value }}
+				{{ content.fileName ?? content.blobUrl ?? content.origValue }}
 			</a>
 		</div>
 	</div>
