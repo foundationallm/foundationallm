@@ -1,6 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Orchestration;
-using FoundationaLLM.Common.Models.Orchestration.Response.OpenAI;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Orchestration.Response
@@ -9,9 +8,9 @@ namespace FoundationaLLM.Common.Models.Orchestration.Response
     /// Base message content item model.
     /// </summary>
     [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
-    [JsonDerivedType(typeof(OpenAITextMessageContentItem), MessageContentItemTypes.Text)]
-    [JsonDerivedType(typeof(OpenAIImageFileMessageContentItem), MessageContentItemTypes.ImageFile)]
-    [JsonDerivedType(typeof(OpenAIFilePathContentItem), MessageContentItemTypes.FilePath)]
+    [JsonDerivedType(typeof(TextMessageContentItem), MessageContentItemTypes.Text)]
+    [JsonDerivedType(typeof(ImageFileMessageContentItem), MessageContentItemTypes.ImageFile)]
+    [JsonDerivedType(typeof(FilePathContentItem), MessageContentItemTypes.FilePath)]
     public class MessageContentItemBase
     {
         /// <summary>

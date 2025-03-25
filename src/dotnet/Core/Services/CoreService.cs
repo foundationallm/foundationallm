@@ -1,5 +1,4 @@
 using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Context;
 using FoundationaLLM.Common.Constants.Orchestration;
@@ -14,7 +13,6 @@ using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
-using FoundationaLLM.Common.Models.Orchestration.Response.OpenAI;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
@@ -519,7 +517,7 @@ public partial class CoreService(
                 OperationId = directCompletionRequest.OperationId,
                 Status = OperationStatus.Completed,
                 Text = result.Completion
-                    ?? (result.Content?.Where(c => c.Type == MessageContentItemTypes.Text).FirstOrDefault() as OpenAITextMessageContentItem)?.Value
+                    ?? (result.Content?.Where(c => c.Type == MessageContentItemTypes.Text).FirstOrDefault() as TextMessageContentItem)?.Value
                         ?? "Could not generate a completion due to an internal error."
             };
         }
@@ -668,7 +666,7 @@ public partial class CoreService(
                         Content = result.Resource!.BinaryContent!.Value.ToArray()
                     };
 
-                case ContextServiceValues.QualifiedServiceName:
+                case ContextProviderNames.FoundationaLLM_ContextAPI:
 
                     var responseMessage = await _contextServiceClient.GetFileContent(instanceId, fileId);
 
@@ -954,7 +952,7 @@ public partial class CoreService(
             {
                 switch (content)
                 {
-                    case OpenAITextMessageContentItem textMessageContent:
+                    case TextMessageContentItem textMessageContent:
                         if (textMessageContent.Annotations.Count > 0)
                         {
                             foreach (var annotation in textMessageContent.Annotations)
@@ -973,7 +971,7 @@ public partial class CoreService(
                             Value = textMessageContent.Value
                         });
                         break;
-                    case OpenAIImageFileMessageContentItem imageFileMessageContent:
+                    case ImageFileMessageContentItem imageFileMessageContent:
                         newContent.Add(new MessageContent
                         {
                             Type = imageFileMessageContent.Type,
