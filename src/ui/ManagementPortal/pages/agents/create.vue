@@ -1562,7 +1562,7 @@ export default {
 
 	watch: {
 		selectedWorkflow() {
-			this.workflowName = this.workflowName ?? this.selectedWorkflow?.name;
+			this.workflowName = this.workflowName || this.selectedWorkflow?.name;
 			this.workflowHost = this.selectedWorkflow?.workflow_host ?? this.workflowHost;
 
 			// if (this.selectedWorkflow?.resource_object_ids) {
