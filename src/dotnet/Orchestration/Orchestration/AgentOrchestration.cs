@@ -42,7 +42,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// <param name="openAIVectorStoreId">The OpenAI Assistants vector store id.</param>
     /// <param name="longRunningOperationContext">The <see cref="LongRunningOperationContext"/> providing the context of the long-running operation.</param>
     /// <param name="completionRequestObserver">An optional observer for completion requests.</param>
-    public class AgentOrchestration(
+    public partial class AgentOrchestration(
         string instanceId,
         string agentObjectId,
         KnowledgeManagementAgent? agent,
@@ -555,7 +555,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
         private TextMessageContentItem TransformOpenAIAssistantsTextMessage(TextMessageContentItem textMessage, List<AzureOpenAIFileMapping> newFileMappings)
         {
-            var pattern = new Regex(@"\【[0-9:]+†.+?\】");
+            var pattern = SpecialCharactersRegex();
 
             textMessage.Value = pattern.Replace(textMessage.Value!, string.Empty);
 
@@ -577,7 +577,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             
 
             var input = textMessage.Value!;
-            var regex = new Regex(@"\(sandbox:[^)]*\)");
+            var regex = SandboxRegex();
             var matches = regex.Matches(input);
 
             if (matches.Count == 0)
@@ -636,26 +636,78 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             _ => throw new OrchestrationException($"The content item type {contentItem.GetType().Name} is not supported.")
         };
 
-        private MessageContentItemBase TransformFoundationaLLMTextMessage(TextMessageContentItem textMessage)
+        private TextMessageContentItem TransformFoundationaLLMTextMessage(TextMessageContentItem textMessage)
         {
-            if(textMessage.Annotations!=null)
+            var pattern = SpecialCharactersRegex();
+
+            textMessage.Value = pattern.Replace(textMessage.Value!, string.Empty);
+
+            if (textMessage.Annotations == null)
+                return textMessage;
+
+            foreach (var annotation in textMessage.Annotations)
             {
-               foreach(var annotation in textMessage.Annotations)
-               {
-                    if(annotation.Type == "file_path")
-                    {
-                        annotation.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ContextProviderNames.FoundationaLLM_ContextAPI}/{annotation.FileId}";
-                    }
-               }              
+                if (annotation.Type == "file_path")
+                {
+                    annotation.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ContextProviderNames.FoundationaLLM_ContextAPI}/{annotation.FileId}";
+                }
             }
+
+            #region Replace code interpreter placeholders with file urls
+
+            // Code interpreter placeholders are assumed to be in the form of (sandbox:file-id).
+            // They are expected to be unique and have a valid corresponding file url.
+            var codeInterpreterPlaceholders = textMessage.Annotations
+                .Where(a => !string.IsNullOrWhiteSpace(a.FileUrl) && !string.IsNullOrWhiteSpace(a.Text))
+                .DistinctBy(a => a.Text)
+                .ToDictionary(
+                    a => $"({a.Text!})",
+                    a => $"({a.FileUrl})");
+
+
+            var input = textMessage.Value!;
+            var regex = SandboxRegex();
+            var matches = regex.Matches(input);
+
+            if (matches.Count == 0)
+                return textMessage;
+
+            Match? previousMatch = null;
+            List<string> output = [];
+
+            foreach (Match match in matches)
+            {
+                var startIndex = previousMatch == null ? 0 : previousMatch.Index + previousMatch.Length;
+                output.Add(input[startIndex..match.Index]);
+                var token = input.Substring(match.Index, match.Length);
+                if (codeInterpreterPlaceholders.TryGetValue(token, out var replacement))
+                    output.Add(replacement);
+                else
+                    output.Add(token);
+
+                previousMatch = match;
+            }
+
+            output.Add(input.Substring(previousMatch!.Index + previousMatch.Length));
+
+            textMessage.Value = string.Join("", output);
+
+            #endregion
+
             return textMessage;
         }
-        
-        private MessageContentItemBase TransformFoundationaLLMImageFile(ImageFileMessageContentItem imageFile)
+
+        private ImageFileMessageContentItem TransformFoundationaLLMImageFile(ImageFileMessageContentItem imageFile)
         {        
             imageFile.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ContextProviderNames.FoundationaLLM_ContextAPI}/{imageFile.FileId}";
             return imageFile;
         }
+
+        [GeneratedRegex(@"\【[0-9:]+†.+?\】")]
+        private static partial Regex SpecialCharactersRegex();
+
+        [GeneratedRegex(@"\(sandbox:[^)]*\)")]
+        private static partial Regex SandboxRegex();
 
         #endregion
     }

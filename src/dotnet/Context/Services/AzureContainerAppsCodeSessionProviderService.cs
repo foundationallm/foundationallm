@@ -111,8 +111,8 @@ namespace FoundationaLLM.Context.Services
 
             foreach (var item in itemsToDelete)
             {
-                var responseMessage = await httpClient.DeleteAsync(
-                    $"{endpoint}/files/{item.Name}?api-version=2024-10-02-preview&identifier={codeSessionId}&path={item.ParentPath}");
+                var url = $"{endpoint}/files/{item.Name}?api-version=2024-10-02-preview&identifier={codeSessionId}&path={item.ParentPath}";
+                var responseMessage = await httpClient.DeleteAsync(url);
                 if (!responseMessage.IsSuccessStatusCode)
                     _logger.LogError("Unable to delete file {FileName} from code session {CodeSession}.",
                         item.Name, codeSessionId);
