@@ -147,8 +147,8 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         content_artifacts.append(ContentArtifact(
             id = self.name,
             title = self.name,
-            type = CONTENT_ARTIFACT_TYPE_TOOL_EXECUTION,
-            content = content,
+            type = CONTENT_ARTIFACT_TYPE_TOOL_EXECUTION,            
+            filepath = str(uuid4()), # needs to have a unique filepath to not be filtered out upstream.
             metadata = {
                 'original_user_prompt': original_prompt,
                 'tool_input': python_code,

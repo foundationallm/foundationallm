@@ -433,7 +433,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (llmCompletionResponse.ContentArtifacts != null)
             {
                 llmCompletionResponse.ContentArtifacts = llmCompletionResponse.ContentArtifacts
-                    .GroupBy(c => c.Filepath)
+                    .GroupBy(c => new { c.Title, c.Filepath })
                     .Select(g => g.First())
                     .ToArray();
             }
@@ -637,7 +637,19 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             _ => throw new OrchestrationException($"The content item type {contentItem.GetType().Name} is not supported.")
         };
         private MessageContentItemBase TransformFoundationaLLMTextMessage(OpenAITextMessageContentItem openAITextMessage)
-        => openAITextMessage;
+        {
+            if(openAITextMessage.Annotations!=null)
+            {
+               foreach(var annotation in openAITextMessage.Annotations)
+               {
+                    if(annotation.Type == "file_path")
+                    {
+                        annotation.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ContextServiceValues.QualifiedServiceName}/{annotation.FileId}";
+                    }
+               }              
+            }
+            return openAITextMessage;
+        }
         
         private MessageContentItemBase TransformFoundationaLLMImageFile(OpenAIImageFileMessageContentItem openAIImageFile)
         {        

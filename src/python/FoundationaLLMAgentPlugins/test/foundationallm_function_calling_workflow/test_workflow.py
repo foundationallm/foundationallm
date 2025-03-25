@@ -19,7 +19,8 @@ from foundationallm_agent_plugins.common.constants import CONTENT_ARTIFACT_TYPE_
 #user_prompt = "Generate a graph of y=mx+b where m=2 and b=3 and create a PDF with the graph along with text explaining the graph"
 #user_prompt = "Generate a PDF document with the title 'Test' and the content 'This is a test'"
 #user_prompt = "Generate an interactive graph of y=mx+b where m=2 and b=3"
-user_prompt = "Generate a graph of y=mx+b where m=2 and b=3"
+#user_prompt = "Generate a graph of y=mx+b where m=2 and b=3"
+user_prompt = "Generate a PDF with the text 'Hello World'"
 user_prompt_rewrite = None
 operation_id = str(uuid.uuid4())
 

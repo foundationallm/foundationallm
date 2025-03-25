@@ -214,7 +214,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                         ))
                     else:
                         # if it's not an image, add it to the final_response_content as an annotation of type OpenAIFilePathMessageContentItem.
-                        final_response_content.annotations.append(OpenAIFilePathMessageContentItem(
+                        response_content[0].annotations.append(OpenAIFilePathMessageContentItem(
                             file_id = artifact.filepath,
                             agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
                         ))           
