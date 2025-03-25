@@ -97,6 +97,7 @@ namespace FoundationaLLM.Context.Services
             return itemsToReturn;
         }
 
+        /// <inheritdoc/>
         public async Task DeleteCodeSessionFileStoreItems(
             string codeSessionId,
             string endpoint)
@@ -141,7 +142,8 @@ namespace FoundationaLLM.Context.Services
             string codeSessionId,
             string endpoint,
             HttpClient httpClient,
-            bool includeFolders = false)
+            bool includeFolders = false,
+            bool includeLocalPath = false)
         {
             var rootUrl = $"{endpoint}/files?api-version=2024-10-02-preview&identifier={codeSessionId}";
             var rootFileStore = await GetCodeSessionFileStore(
@@ -186,9 +188,17 @@ namespace FoundationaLLM.Context.Services
                 }
             }
 
-            return includeFolders
+            var result = includeFolders
                 ? [.. filesToReturn, .. directoriesToReturn]
                 : filesToReturn;
+
+            return includeLocalPath
+                ? [.. result.Select(x =>
+                    {
+                        x.ParentPath = $"/mnt/data{x.ParentPath}";
+                        return x;
+                    })]
+                : result;
         }
 
         private async Task<CodeSessionFileStore> GetCodeSessionFileStore(
