@@ -106,6 +106,14 @@
 
 				<!-- Assistant message footer -->
 				<div v-if="message.sender !== 'User'" class="message__footer">
+					<!-- Additional content -->
+					<div v-if="processedContent.some((content) => content.type === 'file_path' && !content.skip)" class="additional-content">
+						<div><b>Additional Content: </b></div>
+						<div v-for="(content, index) in processedContent.filter((content) => content.type === 'file_path')" :key="index">
+							<ChatMessageContentBlock :value="content" />
+						</div>
+					</div>
+
 					<!-- Content artifacts -->
 					<div v-if="message.contentArtifacts?.length" class="content-artifacts">
 						<span><b>Content Artifacts: </b></span>
@@ -119,14 +127,6 @@
 							<i class="pi pi-file"></i>
 							{{ artifact.title ? artifact.title?.split('/').pop() : '(No Title)' }}
 						</span>
-					</div>
-
-					<!-- Additional content -->
-					<div v-if="processedContent.some((content) => content.type === 'file_path' && !content.skip)" class="additional-content">
-						<div><b>Additional Content: </b></div>
-						<div v-for="(content, index) in processedContent.filter((content) => content.type === 'file_path')" :key="index">
-							<ChatMessageContentBlock :value="content" />
-						</div>
 					</div>
 
 					<!-- Rating -->
