@@ -65,7 +65,7 @@ Invoke-AndRequireSuccess "Deploy ingress-nginx" {
         --install gateway ingress-nginx/ingress-nginx `
         --namespace ${gatewayNamespace} `
         --values ${ingressNginxValues} `
-        --version 4.10.0
+        --version 4.12.1
 }
 
 # **** Service Namespace ****
