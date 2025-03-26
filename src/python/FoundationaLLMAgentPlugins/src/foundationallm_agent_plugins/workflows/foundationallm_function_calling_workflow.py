@@ -131,16 +131,18 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             *langchain_messages,
             HumanMessage(content=llm_prompt)
         ]
-        messages_with_toolchain = messages.copy()             
+        messages_with_toolchain = messages.copy()    
         content_artifacts: List[ContentArtifact] = []
         completion_tokens = 0
         prompt_tokens = 0
         final_response = None
-        max_loops = 10
+        max_loops = 5
         loop_count = 0
 
         with self.tracer.start_as_current_span(f'{self.name}_workflow', kind=SpanKind.INTERNAL):
             while loop_count < max_loops:
+                # reset the content artifacts for each loop, so we only keep the artifacts from the last loop.
+                content_artifacts = []
                 loop_count += 1
                 with self.tracer.start_as_current_span(f'{self.name}_workflow_llm_call', kind=SpanKind.INTERNAL):
                     router_start_time = time.time() 
@@ -198,7 +200,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             # Initialize response_content with the result, taking final_response as priority.   
             response_content = []         
             final_response_content = OpenAITextMessageContentItem(
-                value= final_response or response.content,
+                value= final_response or response.content or 'Failed to generate a response.',
                 agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
             )
             response_content.append(final_response_content)

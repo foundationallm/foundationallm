@@ -95,8 +95,8 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
 
         content_artifacts = []
         operation_id = None
-
-        # Upload any files to the code interpreter
+       
+        # Upload any files required by this execution to the code interpreter
         file_names = [f.file_name for f in files] if files else []              
         
         # returns the operation_id
@@ -107,13 +107,22 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                 "file_names": file_names
             })
         )
-
         operation_id = operation_response['operation_id']
+
+        # Obtain beginning file list from the context API
+        beginning_files_list = []
+        beginning_files_list_response = await self.context_api_client.post_async(
+                endpoint = f"/instances/{self.instance_id}/codeSessions/{self.repl.session_id}/downloadFiles",
+                data = json.dumps({
+                    "operation_id": operation_id
+                })
+            )
+        beginning_files_list = beginning_files_list_response['file_records']
 
         # Execute the code
         result = self.repl.invoke(python_code)
 
-        # Get the list of files from the code interpreter
+        # Get an updated list of files from the code interpreter
         files_list = []
         if operation_id:           
             files_list_response = await self.context_api_client.post_async(
@@ -122,10 +131,11 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                     "operation_id": operation_id
                 })
             )
-            files_list = files_list_response['file_records']        
+            files_list = files_list_response['file_records']            
+            # Remove any files that were already present in the beginning of the session
+            files_list = {key: value for key, value in files_list.items() if key not in beginning_files_list}
         
-        if files_list:
-            # Download the files from the code interpreter to the user storage container           
+        if files_list:                     
             for file_name, file_data in files_list.items():                
                 content_artifacts.append(ContentArtifact(
                     id = self.name,
