@@ -4,10 +4,10 @@ ENV FOUNDATIONALLM_VERSION=${FOUNDATIONALLM_VERSION:-0.0.0}
 
 WORKDIR /code
 
-COPY ./CodeSesisonAPI/requirements.txt /code/requirements.txt
+COPY ./CodeSessionAPI/requirements.txt /code/requirements.txt
 RUN python3 -m pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-COPY ./CodeSesisonAPI /code
+COPY ./CodeSessionAPI /code
 
 EXPOSE 80
 
