@@ -66,10 +66,7 @@
 		/>
 
 		<div class="mt-6 mb-2 font-weight-bold">Tool resources:</div>
-		<ResourceTable
-			:resources="toolObject.resource_object_ids"
-			@delete="handleDeleteToolResource"
-		/>
+		<ResourceTable :resources="toolObject.resource_object_ids" @delete="handleDeleteToolResource" />
 
 		<CreateResourceObjectDialog
 			v-if="showCreateResourceObjectDialog"

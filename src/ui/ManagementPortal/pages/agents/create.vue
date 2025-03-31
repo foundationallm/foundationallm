@@ -1063,6 +1063,18 @@
 					/>
 				</div>
 
+				<!-- Workflow class name -->
+				<div class="mb-6">
+					<div id="aria-workflow-class-name" class="step-header mb-3">Workflow class name:</div>
+					<InputText
+						v-model="workflowClassName"
+						type="text"
+						class="w-50"
+						placeholder="Enter workflow class name"
+						aria-labelledby="aria-workflow-class-name"
+					/>
+				</div>
+
 				<!-- Workflow host -->
 				<div class="mb-6">
 					<div id="aria-workflow-host" class="step-header mb-3">Workflow host:</div>
@@ -1466,6 +1478,7 @@ export default {
 			workflowMainAIModelParameters: {} as object,
 			workflowName: '' as string,
 			workflowPackageName: 'FoundationaLLM' as string,
+			workflowClassName: '' as string,
 			workflowHost: '' as string,
 			workflowExtraResources: {},
 			showCreateWorkflowResourceObjectDialog: false,
@@ -1564,6 +1577,14 @@ export default {
 		selectedWorkflow() {
 			this.workflowName = this.workflowName || this.selectedWorkflow?.name;
 			this.workflowHost = this.selectedWorkflow?.workflow_host ?? this.workflowHost;
+
+			// Only set the class name to the selected workflow name if it doesn't already have a custom value
+			const workflowClassNameIsResourceDefault = this.workflowOptions.some(
+				(workflowOption) => this.workflowClassName === workflowOption.name,
+			);
+			if (workflowClassNameIsResourceDefault || !this.workflowClassName) {
+				this.workflowClassName = this.selectedWorkflow?.name ?? '';
+			}
 
 			// if (this.selectedWorkflow?.resource_object_ids) {
 			// 	const existingMainModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
@@ -1706,6 +1727,7 @@ export default {
 			if (agent.workflow) {
 				this.workflowName = agent.workflow.name ?? '';
 				this.workflowPackageName = agent.workflow.package_name ?? '';
+				this.workflowClassName = agent.workflow.class_name ?? '';
 				this.workflowHost = agent.workflow.workflow_host ?? '';
 
 				const existingMainModel = Object.values(agent.workflow.resource_object_ids).find(
@@ -2156,6 +2178,7 @@ export default {
 						workflow_host: this.workflowHost,
 						name: this.workflowName,
 						package_name: this.workflowPackageName,
+						class_name: this.workflowClassName,
 
 						resource_object_ids: {
 							// ...this.selectedWorkflow.resource_object_ids,
