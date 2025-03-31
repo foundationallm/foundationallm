@@ -1579,7 +1579,9 @@ export default {
 			this.workflowHost = this.selectedWorkflow?.workflow_host ?? this.workflowHost;
 
 			// Only set the class name to the selected workflow name if it doesn't already have a custom value
-			const workflowClassNameIsResourceDefault = this.workflowOptions.some(workflowOption => this.workflowClassName === workflowOption.name);
+			const workflowClassNameIsResourceDefault = this.workflowOptions.some(
+				(workflowOption) => this.workflowClassName === workflowOption.name,
+			);
 			if (workflowClassNameIsResourceDefault || !this.workflowClassName) {
 				this.workflowClassName = this.selectedWorkflow?.name ?? '';
 			}
