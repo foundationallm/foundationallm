@@ -25,7 +25,7 @@ user_prompt_rewrite = None
 operation_id = str(uuid.uuid4())
 
 user_identity_json = {"name": "Experimental Test", "user_name":"carey@foundationaLLM.ai","upn":"carey@foundationaLLM.ai"}
-full_request_json_file_name = 'test/full_request_with_files.json' # full original langchain request, contains agent, tools, exploded objects
+full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
 
 user_identity = UserIdentity.from_json(user_identity_json)
 config = Configuration()
@@ -54,7 +54,8 @@ if explicit_tool is not None:
 else:
     # Populate tools list from agent configuration
     for tool in agent.tools:
-        tools.append(tool_plugin_manager.create_tool(tool, objects, user_identity, config))
+        if tool.package_name == 'foundationallm_agent_plugins':
+            tools.append(tool_plugin_manager.create_tool(tool, objects, user_identity, config))
 
 # create the workflow
 workflow = workflow_plugin_manager.create_workflow(
