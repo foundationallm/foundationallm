@@ -90,8 +90,8 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         # SessionsPythonREPLTool only supports synchronous execution.
         # Get the original prompt
         original_prompt = python_code
-        if runnable_config is not None and 'original_user_prompt' in runnable_config['configurable']:
-            original_prompt = runnable_config['configurable']['original_user_prompt']
+        if runnable_config is not None and 'user_prompt' in runnable_config['configurable']:
+            original_prompt = runnable_config['configurable']['user_prompt']
 
         content_artifacts = []
         operation_id = None

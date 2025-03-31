@@ -49,8 +49,8 @@ class FoundationaLLMKnowledgeSearchTool(FoundationaLLMToolBase):
         # Azure AI Search retriever only supports synchronous execution.
         # Get the original prompt
         original_prompt = prompt
-        if runnable_config is not None and 'original_user_prompt' in runnable_config['configurable']:
-            original_prompt = runnable_config['configurable']['original_user_prompt']
+        if runnable_config is not None and 'user_prompt' in runnable_config['configurable']:
+            original_prompt = runnable_config['configurable']['user_prompt']
 
         docs = self.retriever.invoke(prompt)
         context = self.retriever.format_docs(docs)
