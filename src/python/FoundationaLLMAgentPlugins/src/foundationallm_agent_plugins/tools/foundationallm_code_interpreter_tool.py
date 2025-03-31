@@ -133,7 +133,9 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                     "operation_id": operation_id
                 })
             )
-            files_list = files_list_response['file_records']        
+            files_list = files_list_response['file_records']
+            # Remove files that were already present in the beginning of the session
+            files_list = {key: value for key, value in files_list.items() if key not in beginning_files_list}     
         
         if files_list:
             # Download the files from the code interpreter to the user storage container           
