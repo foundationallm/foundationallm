@@ -3,6 +3,12 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-beta128
+
+## Configuration changes
+
+Agent Workflow configuration now has a `class_name` field. This is the underlying implementation class of the workflow. This is not a breaking change, as in previous versions the `name` field contained the class name and if the `class_name` field is empty, it will default to the `name` field. However, it is recommended to set the `class_name` field to the implementation class name.
+
 ## Starting from 0.9.7-beta112
 
 ### Configuration changes
@@ -1010,7 +1016,7 @@ The following new App Configuration settings are required:
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType` | `-` | `-` |
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer` | `-` | `-` |
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules` | `-` | `-` |
-|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:PollingIntervalSeconds` | `10` | The interval in seconds at which the LangChain API will be polled for status. |
+|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:PollingIntervalSeconds` | `1` | The interval in seconds at which the LangChain API will be polled for status. |
 |`FoundationaLLM:UserPortal:Configuration:ShowMessageRating` | `true` | If `true`, rating options on agent messages will appear. |
 |`FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup` | `false` | If `true`, the last conversation will be displayed when the user logs in. Otherwise, a new conversation placeholder appears on page load. |
 |`FoundationaLLM:UserPortal:Configuration:ShowMessageTokens` | `true` | If `true`, the number of consumed tokens on agent and user messages will appear. |

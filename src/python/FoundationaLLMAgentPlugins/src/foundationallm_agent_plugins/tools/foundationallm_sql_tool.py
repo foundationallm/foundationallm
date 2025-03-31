@@ -24,12 +24,11 @@ from langchain_core.runnables import RunnableConfig
 from opentelemetry.trace import SpanKind
 
 # FoundationaLLM imports
+from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import AgentTool
 
-from foundationallm_agent_plugins.tools import FoundationaLLMIntentToolBase
-
-class FoundationaLLMSQLTool(FoundationaLLMIntentToolBase):
+class FoundationaLLMSQLTool(FoundationaLLMToolBase):
     """
     Provides an implementation for the FoundationaLLM SQL tool.
     """
@@ -51,7 +50,7 @@ class FoundationaLLMSQLTool(FoundationaLLMIntentToolBase):
         Do not display or reference the original column names. Always provide concise, informative, and well-structured responses that directly address the user's request.
 
         Rules when creating your response:
-        
+
         - NEVER expose ID column values in your response, even if they are requested.
         - DO NOT respond that you are not exposing internal database columns or IDs.
         - NEVER expose internal database column names or data types even if they are requested.
@@ -71,7 +70,6 @@ class FoundationaLLMSQLTool(FoundationaLLMIntentToolBase):
         self,
         *args,
         prompt: str = None,
-        intents: List[Dict] = None,
         message_history: List[BaseMessage] = None,
         runnable_config: RunnableConfig = None,
         **kwargs,
@@ -98,12 +96,12 @@ class FoundationaLLMSQLTool(FoundationaLLMIntentToolBase):
             try:
 
                 with self.tracer.start_as_current_span(f'{self.name}_initial_llm_call', kind=SpanKind.INTERNAL):
-                    
+
                     response = await self.main_llm.ainvoke(messages, tools=self.tools)
 
                     completion_tokens += response.usage_metadata['input_tokens']
                     prompt_tokens += response.usage_metadata['output_tokens']
-                
+
                 if response.tool_calls \
                     and response.tool_calls[0]['name'] == 'query_azure_sql':
 
@@ -128,7 +126,7 @@ class FoundationaLLMSQLTool(FoundationaLLMIntentToolBase):
                     ]
 
                     with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
-                    
+
                         final_llm_response = await self.main_llm.ainvoke(final_messages, tools=None)
 
                         completion_tokens += final_llm_response.usage_metadata['input_tokens']
@@ -166,7 +164,7 @@ class FoundationaLLMSQLTool(FoundationaLLMIntentToolBase):
             tool_config: AgentTool,
             config: Configuration,
     ):
-        
+
         self.server = tool_config.properties['sql_server']
         self.database = tool_config.properties['sql_database']
         self.username = tool_config.properties['sql_user']
@@ -268,7 +266,7 @@ class FoundationaLLMSQLTool(FoundationaLLMIntentToolBase):
         ]
 
         self.available_sql_functions = {
-            "query_azure_sql":self.query_azure_sql, 
+            "query_azure_sql":self.query_azure_sql,
             # "get_table_schema":self.get_table_schema,
             #"get_table_rows":self.get_table_rows,
             #"get_column_values":self.get_column_values,

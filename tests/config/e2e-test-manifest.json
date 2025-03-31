@@ -140,6 +140,13 @@
             "dockerfile": "./src/dotnet/DataPipelineBackendWorker/Dockerfile",
             "helm_chart": "./deploy/common/helm/datapipeline-backendworker",
             "azd_env_key": "SERVICE_DATAPIPELINEBACKENDWORKER_IMAGE"
+        },
+        {
+            "name": "codesession-api",
+            "context": "./src/python",
+            "dockerfile": "./src/python/CodeSessionAPI/Dockerfile",
+            "helm_chart": null,
+            "azd_env_key": "SERVICE_CODESESSIONAPI_IMAGE"
         }
     ],
     "test_matrix": [

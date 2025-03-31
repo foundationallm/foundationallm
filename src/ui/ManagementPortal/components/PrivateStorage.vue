@@ -89,9 +89,9 @@
 			<Divider />
 
 			<!-- Files table -->
-			<DataTable 
+			<DataTable
 				:value="agentFiles.uploadedFiles"
-				paginator 
+				paginator
 				:rows="10"
 				:rowsPerPageOptions="[5, 10, 20, 50]"
 				:paginatorTemplate="'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'"
@@ -109,7 +109,13 @@
 			>
 				<template #header>
 					<div class="filter-container">
-						<Button type="button" icon="pi pi-filter-slash" label="Clear" outlined @click="clearFilter" />
+						<Button
+							type="button"
+							icon="pi pi-filter-slash"
+							label="Clear"
+							outlined
+							@click="clearFilter"
+						/>
 						<IconField>
 							<InputIcon>
 								<i class="pi pi-search" />
@@ -212,13 +218,13 @@ const FilterMatchMode = {
 	DATE_IS_NOT: 'dateIsNot',
 	DATE_BEFORE: 'dateBefore',
 	DATE_AFTER: 'dateAfter',
-	CUSTOM: 'custom'
+	CUSTOM: 'custom',
 };
 
 // Define filter operators
 const FilterOperator = {
 	AND: 'and',
-	OR: 'or'
+	OR: 'or',
 };
 
 export default {
@@ -255,7 +261,10 @@ export default {
 			},
 			filters: {
 				global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-				display_name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }] }
+				display_name: {
+					operator: FilterOperator.AND,
+					constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+				},
 			},
 			sortField: 'display_name',
 			sortOrder: 1,
@@ -397,9 +406,7 @@ export default {
 
 		async getPrivateAgentFiles() {
 			this.agentFiles.localFiles = [];
-			const files = (await api.getPrivateStorageFiles(this.agentName)).map(
-				(r) => r.resource,
-			);
+			const files = (await api.getPrivateStorageFiles(this.agentName)).map((r) => r.resource);
 			this.agentFiles.uploadedFiles = files;
 		},
 
@@ -532,7 +539,10 @@ export default {
 		clearFilter() {
 			this.filters = {
 				global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-				display_name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }] }
+				display_name: {
+					operator: FilterOperator.AND,
+					constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+				},
 			};
 		},
 	},

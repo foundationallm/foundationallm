@@ -76,6 +76,15 @@
             "python": "${workspaceFolder}/src/python/LangChainAPI/env/Scripts/python.exe"
         },
         {
+            "name": "Python: CodeSessionAPI",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "cwd" : "${workspaceFolder}/src/python/CodeSessionAPI/app",
+            "args": ["main:app","--reload", "--port", "8000"],
+            "python": "${workspaceFolder}/src/python/CodeSessionAPI/.venv/Scripts/python.exe"
+        },
+        {
             "name": "Python: Current File",
             "type": "debugpy",
             "request": "launch",
