@@ -128,7 +128,9 @@
 					</div>
 
 					<template v-if="selectedDataSourcePlugin">
-						<div id="aria-data-source-parameters" class="mb-2 mt-2">Data source default values:</div>
+						<div id="aria-data-source-parameters" class="mb-2 mt-2">
+							Data source default values:
+						</div>
 						<div class="input-wrapper">
 							<div
 								v-for="(param, index) in selectedDataSourcePlugin?.parameters"
@@ -196,7 +198,10 @@
 								/>
 							</div>
 							<Button icon="pi pi-trash" severity="danger" @click="stageToDelete = index" />
-							<Button :icon="stage.collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up'" @click="toggleStageCollapse(index)" />
+							<Button
+								:icon="stage.collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up'"
+								@click="toggleStageCollapse(index)"
+							/>
 						</div>
 						<div v-if="!stage.collapsed" class="stage-content">
 							<div class="mb-2">
@@ -263,14 +268,20 @@
 									</template>
 								</div>
 							</div>
-							<div v-if="stagePluginsDependenciesOptions.find((dep) => dep.plugin_object_id === stage.plugin_object_id)" class="mb-2">
+							<div
+								v-if="
+									stagePluginsDependenciesOptions.find(
+										(dep) => dep.plugin_object_id === stage.plugin_object_id,
+									)
+								"
+								class="mb-2"
+							>
 								<label>Dependencies:</label>
 								<Dropdown
 									v-if="
 										stagePluginsDependenciesOptions.find(
 											(dep) => dep.plugin_object_id === stage.plugin_object_id,
-										)?.selection_type === 'Single'
-										&& stage.plugin_dependencies
+										)?.selection_type === 'Single' && stage.plugin_dependencies
 									"
 									v-model="stage.plugin_dependencies[0].plugin_object_id"
 									:options="
@@ -300,12 +311,27 @@
 									option-value="dependencies.plugin_object_id"
 									class="w-100"
 									placeholder="Select dependencies"
-									@change="handleMultipleStagePluginDependencyChange($event, stage.plugin_object_id, index)"
+									@change="
+										handleMultipleStagePluginDependencyChange($event, stage.plugin_object_id, index)
+									"
 								/>
 							</div>
-							<div v-for="dependency in stage.plugin_dependencies" :key="dependency.plugin_object_id" class="mb-2">
+							<div
+								v-for="dependency in stage.plugin_dependencies"
+								:key="dependency.plugin_object_id"
+								class="mb-2"
+							>
 								<template v-if="dependency.plugin_parameters?.length > 0">
-									<label class="step-header">{{ stagePluginsDependenciesOptions.find((dep) => dep.plugin_object_id === stage.plugin_object_id)?.dependencyInfo.find((d) => d.dependencies.plugin_object_id === dependency.plugin_object_id)?.dependencyLabel }} Dependency Parameters:</label>
+									<label class="step-header"
+										>{{
+											stagePluginsDependenciesOptions
+												.find((dep) => dep.plugin_object_id === stage.plugin_object_id)
+												?.dependencyInfo.find(
+													(d) => d.dependencies.plugin_object_id === dependency.plugin_object_id,
+												)?.dependencyLabel
+										}}
+										Dependency Parameters:</label
+									>
 									<div
 										v-for="(param, paramIndex) in dependency?.plugin_parameters"
 										:key="paramIndex"
@@ -371,10 +397,23 @@
 						<div class="trigger-header">
 							<div class="mb-2">
 								<label>Trigger Name:</label>
-								<InputText v-model="trigger.name" class="w-100" @input="handleTriggerNameChange(triggerIndex)" />
+								<InputText
+									v-model="trigger.name"
+									class="w-100"
+									@input="handleTriggerNameChange(triggerIndex)"
+								/>
 							</div>
-							<Button icon="pi pi-trash" severity="danger" @click="triggerToDelete = triggerIndex" />
-							<Button :icon="triggerCollapseState[trigger.name] ? 'pi pi-chevron-down' : 'pi pi-chevron-up'" @click="toggleTriggerCollapse(triggerIndex)" />
+							<Button
+								icon="pi pi-trash"
+								severity="danger"
+								@click="triggerToDelete = triggerIndex"
+							/>
+							<Button
+								:icon="
+									triggerCollapseState[trigger.name] ? 'pi pi-chevron-down' : 'pi pi-chevron-up'
+								"
+								@click="toggleTriggerCollapse(triggerIndex)"
+							/>
 						</div>
 						<div v-if="!triggerCollapseState[trigger.name]">
 							<label>Trigger Type:</label>
@@ -397,7 +436,11 @@
 							<template v-if="triggerParameters[trigger.name]?.length > 0">
 								<div class="step-header span-2 mb-2">Trigger Parameters:</div>
 								<div class="span-2">
-									<div v-for="(param, index) in triggerParameters[trigger.name]" :key="index" class="mb-2">
+									<div
+										v-for="(param, index) in triggerParameters[trigger.name]"
+										:key="index"
+										class="mb-2"
+									>
 										<label>{{ param.parameter_metadata.name }}:</label>
 										<div style="font-size: 12px">
 											{{ param.key }}
@@ -648,18 +691,22 @@ export default {
 			const [dataSources, dataSourcePlugins, stagePlugins] = await Promise.all([
 				api.getAgentDataSources(),
 				api.filterPlugins(['Data Source']),
-				api.filterPlugins(['Data Pipeline Stage'])
+				api.filterPlugins(['Data Pipeline Stage']),
 			]);
 
-			this.dataSourceOptions = dataSources.map(result => result.resource);
+			this.dataSourceOptions = dataSources.map((result) => result.resource);
 			this.dataSourcePluginOptions = dataSourcePlugins;
 			this.stagePluginsOptions = stagePlugins;
 
-			this.stagePluginsOptions.map(plugin => {
+			this.stagePluginsOptions.map((plugin) => {
 				if (Object.keys(plugin.parameter_selection_hints).length > 0) {
-					const pluginParameters = plugin.parameters.filter((param: any) => param.type === 'resource-object-id');
+					const pluginParameters = plugin.parameters.filter(
+						(param: any) => param.type === 'resource-object-id',
+					);
 					pluginParameters.forEach((param: any) => {
-						if (this.stagePluginResourceOptions.find((p) => p.parameter_metadata.name === param.name)) {
+						if (
+							this.stagePluginResourceOptions.find((p) => p.parameter_metadata.name === param.name)
+						) {
 							return;
 						}
 						this.stagePluginResourceOptions.push({
@@ -755,32 +802,38 @@ export default {
 					default_value: null,
 				}),
 			);
-			this.selectedStagePlugins[stageIndex].plugin_dependencies = [{plugin_object_id: null}];
+			this.selectedStagePlugins[stageIndex].plugin_dependencies = [{ plugin_object_id: null }];
 
 			for (const param of selectedPlugin.parameters) {
-				const resourceOption = this.stagePluginResourceOptions.find((p) => p.parameter_metadata.name === param.name);
+				const resourceOption = this.stagePluginResourceOptions.find(
+					(p) => p.parameter_metadata.name === param.name,
+				);
 				if (resourceOption) {
-					const options = await this.getResourceOptions(
-						param.name,
-						selectedPlugin.object_id,
-					);
+					const options = await this.getResourceOptions(param.name, selectedPlugin.object_id);
 					resourceOption.parameter_selection_hints_options = options;
 				}
 			}
 		},
 
 		handleStagePluginDependencyChange(event: any, pluginObjectId: string, index: number) {
-			const selectedDependencyOption = this.stagePluginsDependenciesOptions.find((p) => p.plugin_object_id === pluginObjectId);
-			const selectedDependency = selectedDependencyOption.dependencyInfo.find((p) => p.dependencies.plugin_object_id === event.value);
-			this.selectedStagePlugins[index].plugin_dependencies[0].plugin_parameters = selectedDependency.dependencies.plugin_parameters;
+			const selectedDependencyOption = this.stagePluginsDependenciesOptions.find(
+				(p) => p.plugin_object_id === pluginObjectId,
+			);
+			const selectedDependency = selectedDependencyOption.dependencyInfo.find(
+				(p) => p.dependencies.plugin_object_id === event.value,
+			);
+			this.selectedStagePlugins[index].plugin_dependencies[0].plugin_parameters =
+				selectedDependency.dependencies.plugin_parameters;
 		},
 
 		handleMultipleStagePluginDependencyChange(event: any, pluginObjectId: string, index: number) {
-			const dependencyOptions = this.stagePluginsDependenciesOptions.find(
-				dep => dep.plugin_object_id === pluginObjectId
-			)?.dependencyInfo || [];
-			const selectedDependencies = event.value.map(id =>
-				dependencyOptions.find(option => option.dependencies.plugin_object_id === id)?.dependencies
+			const dependencyOptions =
+				this.stagePluginsDependenciesOptions.find((dep) => dep.plugin_object_id === pluginObjectId)
+					?.dependencyInfo || [];
+			const selectedDependencies = event.value.map(
+				(id) =>
+					dependencyOptions.find((option) => option.dependencies.plugin_object_id === id)
+						?.dependencies,
 			);
 			this.selectedStagePlugins[index].plugin_dependencies = selectedDependencies;
 		},
@@ -894,12 +947,13 @@ export default {
 					collapsed: true,
 				});
 
-				this.selectedDependencyIdsMap[stage.name] = stage.plugin_dependencies 
-					?.map((dep) => dep.plugin_object_id)
-					?? [];
+				this.selectedDependencyIdsMap[stage.name] =
+					stage.plugin_dependencies?.map((dep) => dep.plugin_object_id) ?? [];
 
 				for (const param of stage.plugin_parameters) {
-					const resourceOption = this.stagePluginResourceOptions.find((p) => p.parameter_metadata.name === param.parameter_metadata.name);
+					const resourceOption = this.stagePluginResourceOptions.find(
+						(p) => p.parameter_metadata.name === param.parameter_metadata.name,
+					);
 					if (resourceOption) {
 						const options = await this.getResourceOptions(
 							param.parameter_metadata.name,
@@ -991,7 +1045,7 @@ export default {
 						// Dependency Plugin Parameters
 						if (stage.plugin_dependencies) {
 							for (const dep of stage.plugin_dependencies) {
-								if(dep.plugin_parameters?.length > 0) {
+								if (dep.plugin_parameters?.length > 0) {
 									for (const param of dep.plugin_parameters) {
 										const depPluginName = dep.plugin_object_id.split('/').pop() || '';
 										const key = `Stage.${stage.name}.Dependency.${depPluginName}.${param.parameter_metadata.name}`;
@@ -1097,15 +1151,18 @@ export default {
 					}
 
 					if (Object.keys(dep.parameter_selection_hints).length > 0) {
-						const depPluginParameters = dep.parameters.filter((param: any) => param.type === 'resource-object-id');
+						const depPluginParameters = dep.parameters.filter(
+							(param: any) => param.type === 'resource-object-id',
+						);
 						depPluginParameters.map(async (param: any) => {
-							if (this.stagePluginDependencyResourceOptions.find((d) => d.parameter_metadata.name === param.name)) {
+							if (
+								this.stagePluginDependencyResourceOptions.find(
+									(d) => d.parameter_metadata.name === param.name,
+								)
+							) {
 								return;
 							}
-							const options = await this.getResourceOptions(
-								param.name,
-								dep.object_id,
-							);
+							const options = await this.getResourceOptions(param.name, dep.object_id);
 							this.stagePluginDependencyResourceOptions.push({
 								parameter_metadata: param,
 								parameter_selection_hints_options: options,
@@ -1123,7 +1180,12 @@ export default {
 							plugin_object_id: dep.object_id,
 							plugin_parameters: dep.parameters.map((param) => ({
 								parameter_metadata: param,
-								default_value: this.selectedStagePlugins.find((p) => p.plugin_object_id === plugin.object_id)?.plugin_dependencies.find((d) => d.plugin_object_id === dep.object_id)?.plugin_parameters.find((p) => p.parameter_metadata.name === param.name)?.default_value || null,
+								default_value:
+									this.selectedStagePlugins
+										.find((p) => p.plugin_object_id === plugin.object_id)
+										?.plugin_dependencies.find((d) => d.plugin_object_id === dep.object_id)
+										?.plugin_parameters.find((p) => p.parameter_metadata.name === param.name)
+										?.default_value || null,
 							})),
 						},
 					})),
