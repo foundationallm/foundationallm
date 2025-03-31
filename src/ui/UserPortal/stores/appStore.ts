@@ -114,7 +114,9 @@ export const useAppStore = defineStore('app', {
 
 			await this.getSessions();
 
-			const requestedSession = sessionId ? this.sessions.find((s: Session) => s.sessionId === sessionId) : undefined;
+			const requestedSession = sessionId
+				? this.sessions.find((s: Session) => s.sessionId === sessionId)
+				: undefined;
 
 			// If there is an existing session matching the one requested in the url, select it.
 			// otherwise, if the portal is configured to show the previous session and it exists, select it.
@@ -149,9 +151,10 @@ export const useAppStore = defineStore('app', {
 				messages: [],
 			} as Session;
 			this.sessions.unshift(tempSession);
-			
+
 			// Ensure a default agent is selected for the temporary session
-			const defaultAgent = this.agents.find((agent) => agent.resource.properties?.default_resource) || this.agents[0];
+			const defaultAgent =
+				this.agents.find((agent) => agent.resource.properties?.default_resource) || this.agents[0];
 			if (defaultAgent) {
 				this.setSessionAgent(tempSession, defaultAgent);
 				this.lastSelectedAgent = defaultAgent;
@@ -198,7 +201,9 @@ export const useAppStore = defineStore('app', {
 
 			// Handle inconsistencies in displaying the renamed session due to potential delays in the backend updating the session name.
 			this.renamedSessions.forEach((renamedSession: Session) => {
-				const existingSession = this.sessions.find((s: Session) => s.sessionId === renamedSession.sessionId);
+				const existingSession = this.sessions.find(
+					(s: Session) => s.sessionId === renamedSession.sessionId,
+				);
 				if (existingSession) {
 					existingSession.display_name = renamedSession.display_name;
 				}
@@ -206,7 +211,9 @@ export const useAppStore = defineStore('app', {
 
 			// Handle inconsistencies in displaying the deleted session due to potential delays in the backend updating the session list.
 			this.deletedSessions.forEach((deletedSession: Session) => {
-				const existingSession = this.sessions.find((s: Session) => s.sessionId === deletedSession.sessionId);
+				const existingSession = this.sessions.find(
+					(s: Session) => s.sessionId === deletedSession.sessionId,
+				);
 				if (existingSession) {
 					this.removeSession(deletedSession.sessionId);
 				}

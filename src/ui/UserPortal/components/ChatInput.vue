@@ -536,7 +536,14 @@ export default {
 		},
 
 		handleKeydown(event: KeyboardEvent) {
-			if (event.key === 'Enter' && !event.shiftKey && !this.agentListOpen && !this.disabled && !this.isCurrentAgentExpired && !this.isUploading) {
+			if (
+				event.key === 'Enter' &&
+				!event.shiftKey &&
+				!this.agentListOpen &&
+				!this.disabled &&
+				!this.isCurrentAgentExpired &&
+				!this.isUploading
+			) {
 				event.preventDefault();
 				this.handleSend();
 			}

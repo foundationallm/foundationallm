@@ -150,7 +150,10 @@ export default {
 	},
 
 	created() {
-		if (!this.$appConfigStore.showLastConversionOnStartup && (this.currentSession as Session)?.is_temp) {
+		if (
+			!this.$appConfigStore.showLastConversionOnStartup &&
+			(this.currentSession as Session)?.is_temp
+		) {
 			this.isLoading = false;
 			const sessionAgent = this.$appStore.getSessionAgent(this.currentSession as Session);
 			if (sessionAgent) {
@@ -165,7 +168,7 @@ export default {
 							this.welcomeMessage = this.getWelcomeMessage(newAgent);
 						}
 					},
-					{ immediate: true }
+					{ immediate: true },
 				);
 			}
 		}
