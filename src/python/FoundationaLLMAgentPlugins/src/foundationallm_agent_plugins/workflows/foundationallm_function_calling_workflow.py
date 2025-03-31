@@ -126,7 +126,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             files_prompt = "\nYou have access to the following files:\n"
             for file in file_history:
                 files_prompt += f'{file.order}. {file.original_file_name}\n'
-            files_prompt += "\nIf the question is requesting information about a file and no file is specified, use a recency bias to determine which files to use, the most recent files being at the end of the list.\n"
+            files_prompt += "\nIf the question is requesting information about a file and no file is specified, assume the question is about the last file in the list.\n"
             self.workflow_prompt += files_prompt
 
         self.logger.debug(f'Workflow prompt: {self.workflow_prompt}')
