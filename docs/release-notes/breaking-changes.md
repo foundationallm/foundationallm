@@ -3,6 +3,12 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-beta128
+
+## Configuration changes
+
+Agent Workflow configuration now has a `class_name` field. This is the underlying implementation class of the workflow. This is not a breaking change, as in previous versions the `name` field contained the class name and if the `class_name` field is empty, it will default to the `name` field. However, it is recommended to set the `class_name` field to the implementation class name.
+
 ## Starting from 0.9.7-beta112
 
 ### Configuration changes
