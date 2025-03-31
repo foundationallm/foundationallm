@@ -26,6 +26,7 @@ from foundationallm.models.constants import (
     ResourceObjectIdPropertyNames,
     ResourceObjectIdPropertyValues,
     ResourceProviderNames,
+    RunnableConfigKeys,
     AIModelResourceTypeNames,
     PromptResourceTypeNames
 )
@@ -106,11 +107,10 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         llm_prompt = user_prompt_rewrite or user_prompt
         runnable_config = RunnableConfig(
             config={
-                'original_user_prompt': user_prompt,
-                'original_user_prompt_rewrite': user_prompt_rewrite
+                RunnableConfigKeys.ORIGINAL_USER_PROMPT: user_prompt,
+                RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE: user_prompt_rewrite
             }
-        )
-        
+        )       
 
         # Convert message history to LangChain message types
         langchain_messages = []

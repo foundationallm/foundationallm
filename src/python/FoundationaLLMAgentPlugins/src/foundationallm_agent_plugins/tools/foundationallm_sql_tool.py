@@ -27,6 +27,7 @@ from opentelemetry.trace import SpanKind
 from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import AgentTool
+from foundationallm.models.constants import RunnableConfigKeys
 
 class FoundationaLLMSQLTool(FoundationaLLMToolBase):
     """
@@ -84,7 +85,7 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
         if runnable_config is None:
             original_prompt = prompt
         else:
-            original_prompt = runnable_config['configurable']['original_user_prompt']
+            original_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
 
         messages = [
             SystemMessage(content=self.main_prompt),

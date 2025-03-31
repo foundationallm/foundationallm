@@ -10,7 +10,9 @@ from foundationallm.models.constants import (
     ContentArtifactTypeNames,
     ResourceObjectIdPropertyNames,
     ResourceObjectIdPropertyValues,
-    ResourceProviderNames)
+    ResourceProviderNames,
+    RunnableConfigKeys
+)
 from foundationallm.models.orchestration import CompletionRequestObjectKeys, ContentArtifact
 from foundationallm.models.resource_providers import ResourcePath
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
@@ -49,8 +51,8 @@ class FoundationaLLMKnowledgeSearchTool(FoundationaLLMToolBase):
         # Azure AI Search retriever only supports synchronous execution.
         # Get the original prompt
         original_prompt = prompt
-        if runnable_config is not None and 'original_user_prompt' in runnable_config['configurable']:
-            original_prompt = runnable_config['configurable']['original_user_prompt']
+        if runnable_config is not None and RunnableConfigKeys.ORIGINAL_USER_PROMPT in runnable_config['configurable']:
+            original_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
 
         docs = self.retriever.invoke(prompt)
         context = self.retriever.format_docs(docs)

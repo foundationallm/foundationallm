@@ -10,6 +10,7 @@ from langchain_core.tools import ToolException
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.models.agents import AgentTool
+from foundationallm.models.constants import RunnableConfigKeys
 
 class FoundationaLLMNopTool(FoundationaLLMToolBase):
     def __init__(self, tool_config: AgentTool, objects: dict, user_identity:UserIdentity, config: Configuration):
@@ -29,6 +30,6 @@ class FoundationaLLMNopTool(FoundationaLLMToolBase):
         run_manager: Optional[AsyncCallbackManagerForToolRun] = None
         ) -> str:
 
-        original_prompt = runnable_config['configurable']['original_user_prompt']
+        original_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
         self.logger.info(f'Running NOP tool with prompt: {original_prompt}')
         return "Sometimes there is a lot of value in doing nothing."
