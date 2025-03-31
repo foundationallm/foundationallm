@@ -106,8 +106,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         llm_prompt = user_prompt_rewrite or user_prompt
         runnable_config = RunnableConfig(
             config={
-                'user_prompt': user_prompt,
-                'user_prompt_rewrite': user_prompt_rewrite
+                'original_user_prompt': user_prompt,
+                'original_user_prompt_rewrite': user_prompt_rewrite
             }
         )
         
