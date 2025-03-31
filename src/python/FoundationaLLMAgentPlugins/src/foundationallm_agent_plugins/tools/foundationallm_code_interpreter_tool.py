@@ -13,7 +13,9 @@ from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.models.agents import AgentTool
 from foundationallm.models.constants import (
-    ContentArtifactTypeNames)
+    ContentArtifactTypeNames,
+    RunnableConfigKeys
+)
 from foundationallm.models.orchestration import CompletionRequestObjectKeys, ContentArtifact
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.services import HttpClientService
@@ -90,15 +92,15 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         # SessionsPythonREPLTool only supports synchronous execution.
         # Get the original prompt
         original_prompt = python_code
-        if runnable_config is not None and 'original_user_prompt' in runnable_config['configurable']:
-            original_prompt = runnable_config['configurable']['original_user_prompt']
+        if runnable_config is not None and RunnableConfigKeys.ORIGINAL_USER_PROMPT in runnable_config['configurable']:
+            original_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
 
         content_artifacts = []
         operation_id = None
-
-        # Upload any files to the code interpreter
-        file_names = [f.file_name for f in files] if files else []
-
+       
+        # Upload any files required by this execution to the code interpreter
+        file_names = [f.file_name for f in files] if files else []              
+        
         # returns the operation_id
         self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
         operation_response = await self.context_api_client.post_async(
@@ -107,13 +109,22 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                 "file_names": file_names
             })
         )
-
         operation_id = operation_response['operation_id']
+
+        # Obtain beginning file list from the context API
+        beginning_files_list = []
+        beginning_files_list_response = await self.context_api_client.post_async(
+                endpoint = f"/instances/{self.instance_id}/codeSessions/{self.repl.session_id}/downloadFiles",
+                data = json.dumps({
+                    "operation_id": operation_id
+                })
+            )
+        beginning_files_list = beginning_files_list_response['file_records']
 
         # Execute the code
         result = self.repl.invoke(python_code)
 
-        # Get the list of files from the code interpreter
+        # Get an updated list of files from the code interpreter
         files_list = []
         if operation_id:
             files_list_response = await self.context_api_client.post_async(
@@ -122,11 +133,11 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                     "operation_id": operation_id
                 })
             )
-            files_list = files_list_response['file_records']
-
+            files_list = files_list_response['file_records']        
+        
         if files_list:
-            # Download the files from the code interpreter to the user storage container
-            for file_name, file_data in files_list.items():
+            # Download the files from the code interpreter to the user storage container           
+            for file_name, file_data in files_list.items():                
                 content_artifacts.append(ContentArtifact(
                     id = self.name,
                     title = self.name,

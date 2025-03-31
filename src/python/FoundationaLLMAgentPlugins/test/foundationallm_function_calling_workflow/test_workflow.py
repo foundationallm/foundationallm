@@ -19,8 +19,9 @@ from foundationallm.models.constants import ContentArtifactTypeNames
 #user_prompt = "Generate a PDF document with the title 'Test' and the content 'This is a test'"
 #user_prompt = "Generate an interactive graph of y=mx+b where m=2 and b=3"
 #user_prompt = "Generate a graph of y=mx+b where m=2 and b=3"
-user_prompt = "Generate a PDF with the text 'Hello World'"
-user_prompt_rewrite = None
+#user_prompt = "Generate a PDF with the text 'Hello World'"
+user_prompt = "What is the average of 42 plus 84 plus 168. Do your calculations in Python and show your work. Also Create a bar chart of the aforementioned numbers showing the average line on that bar chart."
+#user_prompt = "Generate a graph based on this data."
 operation_id = str(uuid.uuid4())
 
 user_identity_json = {"name": "Experimental Test", "user_name":"carey@foundationaLLM.ai","upn":"carey@foundationaLLM.ai"}
@@ -38,6 +39,7 @@ objects = request.objects
 workflow = request.agent.workflow
 message_history = request.message_history
 file_history = request.file_history
+user_prompt_rewrite = request.user_prompt_rewrite
 
 workflow_plugin_manager = FoundationaLLMAgentWorkflowPluginManager()
 tool_plugin_manager = FoundationaLLMAgentToolPluginManager()
