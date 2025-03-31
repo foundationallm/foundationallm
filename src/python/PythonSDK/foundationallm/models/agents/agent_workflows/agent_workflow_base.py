@@ -1,5 +1,5 @@
-from pydantic import BaseModel, Field
-from typing import Any, Self, Optional, Dict
+from pydantic import Field
+from typing import Any, Self, Optional
 from ..resource_object_ids_model_base import ResourceObjectIdsModelBase
 from foundationallm.utils import ObjectUtils
 from foundationallm.langchain.exceptions import LangChainException
@@ -12,6 +12,7 @@ class AgentWorkflowBase(ResourceObjectIdsModelBase):
     workflow_host: str = Field(None, alias="workflow_host")
     name: str = Field(None, alias="name")
     package_name: str=Field(None, alias="package_name")
+    class_name: str=Field(None, alias="class_name")
     properties: Optional[dict] = Field(default=[], description="A dictionary of properties for the agent workflow.")
 
     @staticmethod
