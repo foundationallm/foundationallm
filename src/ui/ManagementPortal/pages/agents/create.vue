@@ -1578,6 +1578,12 @@ export default {
 			this.workflowName = this.workflowName || this.selectedWorkflow?.name;
 			this.workflowHost = this.selectedWorkflow?.workflow_host ?? this.workflowHost;
 
+			// Only set the class name to the selected workflow name if it doesn't already have a custom value
+			const workflowClassNameIsResourceDefault = this.workflowOptions.some(workflowOption => this.workflowClassName === workflowOption.name);
+			if (workflowClassNameIsResourceDefault || !this.workflowClassName) {
+				this.workflowClassName = this.selectedWorkflow?.name ?? '';
+			}
+
 			// if (this.selectedWorkflow?.resource_object_ids) {
 			// 	const existingMainModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
 			// 		(resource) => resource.properties?.object_role === 'main_model',
@@ -1719,7 +1725,7 @@ export default {
 			if (agent.workflow) {
 				this.workflowName = agent.workflow.name ?? '';
 				this.workflowPackageName = agent.workflow.package_name ?? '';
-				this.workflowClassName = agent.workflow.class_name ?? agent.workflow.name ?? '';
+				this.workflowClassName = agent.workflow.class_name ?? '';
 				this.workflowHost = agent.workflow.workflow_host ?? '';
 
 				const existingMainModel = Object.values(agent.workflow.resource_object_ids).find(
