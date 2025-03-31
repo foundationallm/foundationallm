@@ -13,8 +13,7 @@ from foundationallm_agent_plugins import (
 )
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import KnowledgeManagementCompletionRequest
-from foundationallm_agent_plugins.common.constants import CONTENT_ARTIFACT_TYPE_FILE
-
+from foundationallm.models.constants import ContentArtifactTypeNames
 #user_prompt = "What does this file do?"
 #user_prompt = "Generate a graph of y=mx+b where m=2 and b=3 and create a PDF with the graph along with text explaining the graph"
 #user_prompt = "Generate a PDF document with the title 'Test' and the content 'This is a test'"
@@ -77,7 +76,7 @@ response = asyncio.run(
 print("++++++++++++++++++++++++++++++++++++++")
 print('File content artifacts:')
 for content_artifact in response.content_artifacts:
-    if content_artifact.type == CONTENT_ARTIFACT_TYPE_FILE:
+    if content_artifact.type == ContentArtifactTypeNames.FILE:
         print(content_artifact.filepath)
 print("++++++++++++++++++++++++++++++++++++++")
 

@@ -11,6 +11,7 @@ from langchain_core.messages import (
     HumanMessage,
     SystemMessage
 )
+from langchain_core.runnables import RunnableConfig
 from opentelemetry.trace import SpanKind
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import (
@@ -103,6 +104,13 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             The file history.
         """
         llm_prompt = user_prompt_rewrite or user_prompt
+        runnable_config = RunnableConfig(
+            config={
+                'original_user_prompt': user_prompt,
+                'original_user_prompt_rewrite': user_prompt_rewrite
+            }
+        )
+        
 
         # Convert message history to LangChain message types
         langchain_messages = []
@@ -159,7 +167,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                             # Get the tool from the tools list
                             tool = next((t for t in self.tools if t.name == tool_call['name']), None)
                             if tool:
-                                tool_message = await tool.ainvoke(tool_call)
+                                tool_message = await tool.ainvoke(tool_call, runnable_config)
                                 content_artifacts.extend(tool_message.artifact)
                                 # Add tool response as AIMessage
                                 messages_with_toolchain.append(AIMessage(content=str(tool_message)))
