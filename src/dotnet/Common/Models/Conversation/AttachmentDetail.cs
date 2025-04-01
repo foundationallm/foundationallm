@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
+﻿using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Conversation
@@ -36,6 +37,18 @@ namespace FoundationaLLM.Common.Models.Conversation
             ObjectId = attachmentFile.ObjectId,
             DisplayName = !string.IsNullOrWhiteSpace(attachmentFile.DisplayName) ? attachmentFile.DisplayName : attachmentFile.OriginalFileName,
             ContentType = attachmentFile.ContentType
+        };
+
+        /// <summary>
+        /// Creates an <see cref="AttachmentDetail"/> instance from a <see cref="ContextFileRecord"/> instance.
+        /// </summary>
+        /// <param name="contextFileRecord">The <see cref="ContextFileRecord"/> used to initialize the instance.</param>
+        /// <returns>The newly created <see cref="AttachmentDetail"/> instance.</returns>
+        public static AttachmentDetail FromContextFileRecord(ContextFileRecord contextFileRecord) => new()
+        {
+            ObjectId = contextFileRecord.Id,
+            DisplayName = contextFileRecord.FileName,
+            ContentType = contextFileRecord.ContentType
         };
     }
 }
