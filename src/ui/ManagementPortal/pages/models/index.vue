@@ -81,9 +81,16 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink :to="'/models/edit/' + data.resource.name" class="table__button">
-							<Button link>
-								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
+						<NuxtLink
+							:to="'/models/edit/' + data.resource.name"
+							:aria-disabled="!data.actions.includes('FoundationaLLM.AIModel/aiModels/write')"
+							:style="{ pointerEvents: !data.actions.includes('FoundationaLLM.AIModel/aiModels/write') ? 'none' : 'auto' }"
+							class="table__button">
+							<Button
+								link
+								:disabled="!data.actions.includes('FoundationaLLM.AIModel/aiModels/write')"
+								:aria-label="`Edit ${data.resource.name}`">
+									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
 							</Button>
 						</NuxtLink>
 					</template>
@@ -102,8 +109,12 @@
 					}"
 				>
 					<template #body="{ data }">
-						<Button link @click="itemToDelete = data.resource">
-							<i class="pi pi-trash" style="font-size: 1.2rem"></i>
+						<Button
+							link
+							:aria-label="`Delete ${data.resource.name}`"
+							:disabled="!data.actions.includes('FoundationaLLM.AIModel/aiModels/delete')"
+							@click="itemToDelete = data.resource">
+							<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
 						</Button>
 					</template>
 				</Column>
