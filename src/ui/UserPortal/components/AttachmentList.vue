@@ -5,6 +5,7 @@
 			<span class="attachment-name">{{ attachment.displayName }}</span>
 		</div>
 	</div>
+
 	<div v-else-if="attachmentIds && attachmentIds.length > 0" class="attachments">
 		<div v-for="attachmentId in attachmentIds" :key="attachmentId" class="attachment-item">
 			<i class="pi pi-exclamation-triangle attachment-icon"></i>
@@ -17,20 +18,22 @@
 import { defineComponent, type PropType } from 'vue';
 import type { AttachmentDetail } from '@/js/types';
 
-export default defineComponent({
+export default {
 	name: 'AttachmentList',
+
 	props: {
 		attachments: {
 			type: Array as PropType<Array<AttachmentDetail>>,
 			required: true,
 		},
+
 		attachmentIds: {
 			type: Array as PropType<Array<string>>,
 			required: false,
 			default: () => [],
 		},
 	},
-});
+};
 </script>
 
 <style scoped>
@@ -38,7 +41,7 @@ export default defineComponent({
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
-	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .attachment-item {
