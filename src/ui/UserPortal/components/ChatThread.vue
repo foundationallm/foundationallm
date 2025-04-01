@@ -17,6 +17,18 @@
 				</div>
 			</template>
 
+			<template v-else-if="loadingFailed">
+				<div class="chat-thread__loading" role="status">
+					<i
+						class="pi pi-exclamation-triangle"
+						style="font-size: 1rem; margin-right: 8px"
+						role="img"
+						aria-label="Error"
+					></i>
+					<span>Failed to load session messages.</span>
+				</div>
+			</template>
+
 			<template v-else>
 				<!-- Messages -->
 				<template v-if="messages.length !== 0">
@@ -46,7 +58,7 @@
 		<div class="chat-thread__input">
 			<ChatInput
 				ref="chatInput"
-				:disabled="isLoading || isMessagePending || $appStore.sessionMessagePending"
+				:disabled="isLoading || loadingFailed || isMessagePending || $appStore.sessionMessagePending"
 				@send="handleSend"
 			/>
 		</div>
@@ -83,10 +95,11 @@ export default {
 
 	data() {
 		return {
-			isLoading: true,
-			userSentMessage: false,
-			isMessagePending: false,
-			welcomeMessage: '',
+			isLoading: true as boolean,
+			loadingFailed: false as boolean,
+			userSentMessage: false as boolean,
+			isMessagePending: false as boolean,
+			welcomeMessage: '' as string,
 		};
 	},
 
@@ -114,9 +127,14 @@ export default {
 			if (newSession.sessionId === oldSession?.sessionId || isReplacementForTempSession) return;
 			this.isMessagePending = false;
 			this.isLoading = true;
+			this.loadingFailed = false;
 			this.userSentMessage = false;
 
-			await this.$appStore.getMessages();
+			try {
+				await this.$appStore.getMessages();
+			} catch(error) {
+				this.loadingFailed = true;
+			}
 			await this.$appStore.ensureAgentsLoaded();
 
 			this.$appStore.updateSessionAgentFromMessages(newSession);
