@@ -126,9 +126,16 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink :to="'/pipelines/edit/' + data.resource.name" class="table__button">
-							<Button link>
-								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
+						<NuxtLink
+							:to="'/pipelines/edit/' + data.resource.name"
+							:aria-disabled="!data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write')"
+							:style="{ pointerEvents: !data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write') ? 'none' : 'auto' }"
+							class="table__button">
+							<Button
+								link
+								:disabled="!data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write')"
+								:aria-label="`Edit ${data.resource.name}`">
+									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
 							</Button>
 						</NuxtLink>
 					</template>
