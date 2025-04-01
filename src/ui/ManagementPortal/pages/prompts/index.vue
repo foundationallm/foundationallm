@@ -143,7 +143,7 @@ export default {
 			loadingStatusText: 'Retrieving data...' as string,
 			accessControlModalOpen: false,
 			sortingFields: [
-				{ field: 'resource.category', order: 1 },
+				// { field: 'resource.category', order: 2 },
 				{ field: 'resource.name', order: 1 },
 			],
 		};
