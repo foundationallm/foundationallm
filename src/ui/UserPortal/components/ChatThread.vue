@@ -58,7 +58,9 @@
 		<div class="chat-thread__input">
 			<ChatInput
 				ref="chatInput"
-				:disabled="isLoading || loadingFailed || isMessagePending || $appStore.sessionMessagePending"
+				:disabled="
+					isLoading || loadingFailed || isMessagePending || $appStore.sessionMessagePending
+				"
 				@send="handleSend"
 			/>
 		</div>
@@ -132,7 +134,7 @@ export default {
 
 			try {
 				await this.$appStore.getMessages();
-			} catch(error) {
+			} catch (error) {
 				this.loadingFailed = true;
 			}
 			await this.$appStore.ensureAgentsLoaded();
