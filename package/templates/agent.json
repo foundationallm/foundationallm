@@ -1,0 +1,73 @@
+{
+    "type": "knowledge-management",
+    "name": "{{AGENT_NAME}}",
+    "object_id": null,
+    "display_name": "{{AGENT_DISPLAY_NAME}}",
+    "description": "{{AGENT_DESCRIPTION}}",
+    "cost_center": "",
+    "vectorization": null,
+    "inline_context": true,
+    "sessions_enabled": true,
+    "text_rewrite_settings": {
+      "user_prompt_rewrite_enabled": false,
+      "user_prompt_rewrite_settings": null
+    },
+    "cache_settings": {
+      "semantic_cache_enabled": false,
+      "semantic_cache_settings": null
+    },
+    "conversation_history_settings": {
+      "enabled": true,
+      "max_history": 5,
+      "history_content_artifact_types": null
+    },
+    "gatekeeper_settings": {
+      "use_system_setting": false,
+      "options": []
+    },
+    "workflow": {
+      "type": "external-agent-workflow",
+      "name": "{{AGENT_WORKFLOW_NAME}}",
+      "class_name": "{{AGENT_WORKFLOW_CLASS_NAME}}",
+      "package_name": "{{AGENT_WORKFLOW_PACKAGE_NAME}}",
+      "workflow_host": "{{AGENT_WORKFLOW_HOST}}",
+      "resource_object_ids": {
+        "/instances/{{INSTANCE_ID}}/providers/FoundationaLLM.AIModel/aiModels/{{AGENT_WORKFLOW_MAIN_MODEL}}": {
+          "object_id": "/instances/{{INSTANCE_ID}}/providers/FoundationaLLM.AIModel/aiModels/{{AGENT_WORKFLOW_MAIN_MODEL}}",
+          "properties": {
+            "object_role": "main_model",
+            "model_parameters": {
+              "temperature": 0.5
+            }
+          }
+        },
+        "/instances/{{INSTANCE_ID}}/providers/FoundationaLLM.Prompt/prompts/{{AGENT_WORKFLOW_MAIN_PROMPT}}": {
+          "object_id": "/instances/{{INSTANCE_ID}}/providers/FoundationaLLM.Prompt/prompts/{{AGENT_WORKFLOW_MAIN_PROMPT}}",
+          "properties": {
+            "object_role": "main_prompt"
+          }
+        },
+        "/instances/{{INSTANCE_ID}}/providers/FoundationaLLM.Agent/workflows/ExternalAgentWorkflow": {
+          "object_id": "/instances/{{INSTANCE_ID}}/providers/FoundationaLLM.Agent/workflows/ExternalAgentWorkflow",
+          "properties": {}
+        },
+        "/instances/{{INSTANCE_ID}}/providers/FoundationaLLM.Prompt/prompts/{{AGENT_WORKFLOW_ROUTER_PROMPT}}": {
+          "object_id": "/instances/{{INSTANCE_ID}}/providers/FoundationaLLM.Prompt/prompts/{{AGENT_WORKFLOW_ROUTER_PROMPT}}",
+          "properties": {
+            "object_role": "router_prompt"
+          }
+        }
+      },
+      "properties": null
+    },
+    "tools": [
+      {{AGENT_TOOLS}}
+    ],
+    "show_message_tokens": true,
+    "show_message_rating": true,
+    "show_view_prompt": true,
+    "show_file_upload": true,
+    "properties": {
+      "welcome_message": "{{AGENT_WELCOME_MESSAGE}}"
+    }
+  }
