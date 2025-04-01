@@ -92,6 +92,41 @@ function Get-ObjectId {
     return "/instances/$($global:InstanceId)/providers/$($Type)/$($Name)"
 }
 
+function Get-ResourceObjectIds {
+    param (
+        [array]$Resources
+    )
+
+    $resourceObjectIds = [ordered]@{}
+    $Resources | ForEach-Object {
+        $resource = $_
+        $resourceObjectId = (Get-ObjectId -Name $resource.name -Type $resource.type)
+        $resourceObjectIds[$resourceObjectId] = [ordered]@{}
+        $resourceObjectIds[$resourceObjectId]["object_id"] = $resourceObjectId
+        $resourceObjectIds[$resourceObjectId]["properties"] = [ordered]@{}
+        if ($resource.Contains("role") ){
+            $resourceObjectIds[$resourceObjectId]["properties"]["object_role"] = $resource.role
+        }
+        if ($resource.Contains("properties") ){
+            $resource["properties"] | ForEach-Object {
+                $propertyList = $_
+                $currentDict = $resourceObjectIds[$resourceObjectId]["properties"]
+                for ($i = 0; $i -lt $propertyList.Length - 2; $i++) {
+                    if ($currentDict.Contains($propertyList[$i])) {
+                        $currentDict = $currentDict[$propertyList[$i]]
+                    } else {
+                        $currentDict[$propertyList[$i].ToString()] = [ordered]@{}
+                        $currentDict = $currentDict[$propertyList[$i]]
+                    }
+                }
+                $currentDict[$propertyList[$i].ToString()] = $propertyList[$i + 1]
+            }
+        }
+    }
+
+    return $resourceObjectIds
+}
+
 function Invoke-ManagementAPI {
     param (
         [string]$Method,

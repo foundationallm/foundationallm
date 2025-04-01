@@ -8,27 +8,11 @@ function Get-AllPrompts {
 
 function Merge-Prompt {
     param (
-        [string]$Name,
-        [string]$DisplayName,
-        [string]$Description,
-        [string]$Body,
-        [string]$Category,
-        [hashtable]$Properties = @{}
+        [hashtable]$Prompt
     )
-
-    $requestBody = [ordered]@{
-        type = "multipart"
-        name = $Name
-        display_name = $DisplayName
-        description = $Description
-        prefix = $Body
-        category = $Category
-        properties = $Properties
-    }
 
     return Invoke-ManagementAPI `
         -Method POST `
-        -RelativeUri "providers/FoundationaLLM.Prompt/prompts/$($Name)" `
-        -Body $requestBody
+        -RelativeUri "providers/FoundationaLLM.Prompt/prompts/$($Prompt.name)" `
+        -Body $Prompt
 }
-
