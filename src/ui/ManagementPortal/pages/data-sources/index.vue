@@ -86,9 +86,14 @@
 							:to="'/data-sources/edit/' + data.resource.name"
 							class="table__button"
 							tabindex="-1"
+							:aria-disabled="!data.actions.includes('FoundationaLLM.DataSource/dataSources/write')"
+							:style="{ pointerEvents: !data.actions.includes('FoundationaLLM.DataSource/dataSources/write') ? 'none' : 'auto' }"
 						>
 							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-								<Button link :aria-label="`Edit ${data.resource.name}`">
+								<Button
+									link
+									:disabled="!data.actions.includes('FoundationaLLM.DataSource/dataSources/write')"
+									:aria-label="`Edit ${data.resource.name}`">
 									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
 								</Button>
 								<template #popper
@@ -116,6 +121,7 @@
 							<Button
 								link
 								:aria-label="`Delete ${data.resource.name}`"
+								:disabled="!data.actions.includes('FoundationaLLM.DataSource/dataSources/delete')"
 								@click="dataSourceToDelete = data.resource"
 							>
 								<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
