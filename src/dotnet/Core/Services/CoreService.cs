@@ -759,20 +759,47 @@ public partial class CoreService(
         var attachmentIds = messages.SelectMany(m => m.Attachments ?? Enumerable.Empty<string>()).Distinct().ToList();
         if (attachmentIds.Count > 0)
         {
-            var filter = new ResourceFilter
-            {
-                ObjectIDs = attachmentIds
-            };
-            // Get the attachment details from the attachment resource provider.
-            var result = await _attachmentResourceProvider!.HandlePostAsync(
-                $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Attachment}/{AttachmentResourceTypeNames.Attachments}/{ResourceProviderActions.Filter}",
-                JsonSerializer.Serialize(filter),
-                null,
-                _userIdentity);
-            //var list = result as IEnumerator<AttachmentFile>;
+            var contextAttachmentIds = new List<string>();
+            var legacyAttachmentIds = new List<string>();
             var attachmentReferences = new List<AttachmentDetail>();
 
-            attachmentReferences.AddRange(from attachment in (IEnumerable<AttachmentFile>)result select AttachmentDetail.FromAttachmentFile(attachment));
+            foreach (var attachmentObjectId in attachmentIds)
+            {
+                if (ResourcePath.TryParseResourceProvider(attachmentObjectId, out string? resourceProvider))
+                {
+                    legacyAttachmentIds.Add(attachmentObjectId);
+                }
+                else
+                {
+                    contextAttachmentIds.Add(attachmentObjectId);
+                }
+            }
+
+            if(legacyAttachmentIds.Any())
+            {
+                var filter = new ResourceFilter
+                {
+                    ObjectIDs = legacyAttachmentIds
+                };
+                // Get the attachment details from the attachment resource provider.
+                var result = await _attachmentResourceProvider!.HandlePostAsync(
+                    $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Attachment}/{AttachmentResourceTypeNames.Attachments}/{ResourceProviderActions.Filter}",
+                    JsonSerializer.Serialize(filter),
+                    null,
+                    _userIdentity);
+                attachmentReferences.AddRange(from attachment in (IEnumerable<AttachmentFile>)result select AttachmentDetail.FromAttachmentFile(attachment));
+            }
+            else
+            {
+                var contextAttachmentResult =
+                    contextAttachmentIds
+                    .ToAsyncEnumerable()
+                    .SelectAwait(async x => await _contextServiceClient.GetFileRecord(instanceId, x));
+                await foreach (var attachment in contextAttachmentResult)
+                {
+                    attachmentReferences.Add(AttachmentDetail.FromContextFileRecord(attachment.Result!));
+                }
+            }            
 
             if (attachmentReferences.Count > 0)
             {
