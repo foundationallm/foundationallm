@@ -198,9 +198,9 @@ body,
 // 	justify-self: end;
 // }
 
-.font-weight-bold {
-	font-weight: bold;
-}
+// .font-weight-bold {
+// 	font-weight: bold;
+// }
 
 .cursor-pointer {
 	cursor: pointer;

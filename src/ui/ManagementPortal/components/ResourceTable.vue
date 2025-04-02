@@ -104,7 +104,7 @@
 
 		<template #expansion="{ data }">
 			<div style="padding-left: 16px">
-				<div class="mb-2 font-weight-bold">
+				<div class="mb-2 font-bold">
 					{{ getResourceNameFromId(data.value.object_id) }} properties:
 				</div>
 				<PropertyBuilder v-model="resources[data.value.object_id].properties" />
