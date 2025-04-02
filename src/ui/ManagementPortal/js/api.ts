@@ -1045,27 +1045,6 @@ export default {
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations?api-version=${this.apiVersion}`,
 		)) as ResourceProviderGetResult<ExternalOrchestrationService>[];
 
-		// Retrieve all the app config values for the external orchestration services..
-		const appConfigFilter = `FoundationaLLM:ExternalAPIs:*`;
-		const appConfigResults = await this.getAppConfigs(appConfigFilter);
-
-		// Loop through the external orchestration services and replace the app config keys with the real values.
-		for (const externalOrchestrationService of data) {
-			externalOrchestrationService.resource.resolved_api_key = '';
-
-			if (resolveApiKey) {
-				// Find a matching app config for the API Key. The app config name should be in the format FoundationaLLM:ExternalAPIs:<ServiceName>:APIKey
-				const apiKeyAppConfig = appConfigResults.find(
-					(appConfig) =>
-						appConfig.resource.name ===
-						`FoundationaLLM:ExternalAPIs:${externalOrchestrationService.resource.name}:APIKey`,
-				);
-				if (apiKeyAppConfig) {
-					externalOrchestrationService.resource.resolved_api_key = apiKeyAppConfig.resource.value;
-				}
-			}
-		}
-
 		// Return the updated external orchestration services.
 		return data;
 	},
