@@ -87,13 +87,18 @@
 							class="table__button"
 							tabindex="-1"
 							:aria-disabled="!data.actions.includes('FoundationaLLM.DataSource/dataSources/write')"
-							:style="{ pointerEvents: !data.actions.includes('FoundationaLLM.DataSource/dataSources/write') ? 'none' : 'auto' }"
+							:style="{
+								pointerEvents: !data.actions.includes('FoundationaLLM.DataSource/dataSources/write')
+									? 'none'
+									: 'auto',
+							}"
 						>
 							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
 								<Button
 									link
 									:disabled="!data.actions.includes('FoundationaLLM.DataSource/dataSources/write')"
-									:aria-label="`Edit ${data.resource.name}`">
+									:aria-label="`Edit ${data.resource.name}`"
+								>
 									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
 								</Button>
 								<template #popper

@@ -36,8 +36,8 @@
 				</div>
 			</template>
 
-			<div class="span-2">
-				<div id="aria-prompt-name" class="step-header mb-2">Prompt name:</div>
+			<div class="col-span-2">
+				<div id="aria-prompt-name" class="step-header !mb-2">Prompt name:</div>
 				<div id="aria-prompt-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
 				</div>
@@ -46,7 +46,7 @@
 						v-model="prompt.name"
 						:disabled="editPrompt"
 						type="text"
-						class="w-100"
+						class="w-full"
 						placeholder="Enter prompt name"
 						aria-labelledby="aria-prompt-name aria-prompt-name-desc"
 						@input="handleNameInput"
@@ -69,21 +69,21 @@
 					</span>
 				</div>
 			</div>
-			<div class="span-2">
-				<div class="step-header mb-2">Description:</div>
+			<div class="col-span-2">
+				<div class="step-header !mb-2">Description:</div>
 				<div id="aria-description" class="mb-2">
 					Provide a description to help others understand the prompt's purpose.
 				</div>
 				<InputText
 					v-model="prompt.description"
 					type="text"
-					class="w-100"
+					class="w-full"
 					placeholder="Enter prompt description"
 					aria-labelledby="aria-description"
 				/>
 			</div>
-			<div class="span-2">
-				<div class="step-header mb-2">Category:</div>
+			<div class="col-span-2">
+				<div class="step-header !mb-2">Category:</div>
 				<Dropdown
 					v-model="prompt.category"
 					:options="categoryOptions"
@@ -96,13 +96,13 @@
 			</div>
 
 			<!-- System prompt -->
-			<section aria-labelledby="system-prompt" class="span-2 steps">
-				<h3 id="system-prompt" class="step-section-header span-2">Prompt Prefix</h3>
+			<section aria-labelledby="system-prompt" class="col-span-2 steps">
+				<h3 id="system-prompt" class="step-section-header col-span-2">Prompt Prefix</h3>
 
-				<div class="span-2">
+				<div class="col-span-2">
 					<Textarea
 						v-model="prompt.prefix"
-						class="w-100"
+						class="w-full"
 						auto-resize
 						rows="5"
 						type="text"
@@ -112,7 +112,7 @@
 				</div>
 			</section>
 
-			<div class="span-2 d-flex justify-content-end" style="gap: 16px">
+			<div class="flex col-span-2 justify-end gap-4">
 				<!-- Create prompt -->
 				<Button
 					:label="editPrompt ? 'Save Changes' : 'Create Prompt'"

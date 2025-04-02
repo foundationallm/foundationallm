@@ -23,8 +23,8 @@
 			</template>
 
 			<!-- Scope -->
-			<div class="step-header span-2">What is the assignment scope?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What is the assignment scope?</div>
+			<div class="col-span-2">
 				<div id="aria-scope" class="mb-2">Scope</div>
 				<div class="input-wrapper">
 					<InputText
@@ -32,33 +32,33 @@
 						readonly
 						placeholder="Instance"
 						type="text"
-						class="w-100"
+						class="w-full"
 						aria-labelledby="aria-scope"
 					/>
 				</div>
 			</div>
 
 			<!-- Description -->
-			<div class="step-header span-2">What is the description of the role assignment?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What is the description of the role assignment?</div>
+			<div class="col-span-2">
 				<div id="aria-description" class="mb-2">Data description:</div>
 				<div class="input-wrapper">
 					<InputText
 						v-model="roleAssignment.description"
 						placeholder="Enter a description for this role assignment"
 						type="text"
-						class="w-100"
+						class="w-full"
 						aria-labelledby="aria-description"
 					/>
 				</div>
 			</div>
 
 			<!-- Principal -->
-			<div class="step-header span-2">What principal to assign?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What principal to assign?</div>
+			<div class="col-span-2">
 				<!-- Type -->
 				<div id="aria-principal-type" class="mb-2">Principal Type:</div>
-				<div class="d-flex gap-4">
+				<div class="flex gap-4">
 					<!-- <InputText
 						v-model="principal.object_type"
 						readonly
@@ -71,14 +71,14 @@
 						v-model="principal.object_type"
 						:options="principalTypeOptions"
 						placeholder="--Select--"
-						class="mb-2 w-100"
+						class="mb-2 w-full"
 						aria-labelledby="aria-principal-type"
 					/>
 				</div>
 
 				<!-- Name -->
 				<div id="aria-principal-name" class="mb-2 mt-2">Principal Name:</div>
-				<div class="d-flex gap-4">
+				<div class="flex gap-4">
 					<InputText
 						v-model="principal.display_name"
 						readonly
@@ -91,7 +91,7 @@
 
 				<!-- Email -->
 				<div id="aria-principal-email" class="mb-2 mt-2">Principal Email:</div>
-				<div class="d-flex gap-4">
+				<div class="flex gap-4">
 					<InputText
 						v-model="principal.email"
 						readonly
@@ -104,7 +104,7 @@
 
 				<!-- ID -->
 				<div id="aria-principal-id" class="mb-2 mt-2">Principal ID:</div>
-				<div class="d-flex gap-4">
+				<div class="flex gap-4">
 					<InputText
 						v-model="roleAssignment.principal_id"
 						placeholder="Browse for selection"
@@ -134,7 +134,7 @@
 						v-model="principalSearchType"
 						:options="principalTypeOptions"
 						placeholder="--Select--"
-						class="mb-2 w-100"
+						class="mb-2 w-full"
 						aria-labelledby="aria-principal-search-type"
 					/>
 
@@ -147,7 +147,7 @@
 						dropdown
 						data-key="id"
 						option-label="display_name"
-						class="w-100"
+						class="w-full"
 						aria-labelledby="aria-principal-search-query"
 						@show="handlePrincipalDropdownShow"
 						@hide="handlePrincipalDropdownHide"
@@ -169,8 +169,8 @@
 			</div>
 
 			<!-- Role -->
-			<div id="aria-role" class="step-header span-2">What role to assign?</div>
-			<div class="span-2">
+			<div id="aria-role" class="step-header col-span-2">What role to assign?</div>
+			<div class="col-span-2">
 				<Dropdown
 					v-model="roleAssignment.role_definition_id"
 					:options="roleOptions"
@@ -182,7 +182,7 @@
 			</div>
 
 			<!-- Buttons -->
-			<div v-if="!headless" class="button-container column-2 justify-self-end">
+			<div v-if="!headless" class="flex col-span-2 justify-end gap-4">
 				<!-- Create role assignment -->
 				<Button
 					:label="editId ? 'Save Changes' : 'Create Role Assignment'"
@@ -193,7 +193,6 @@
 				<!-- Cancel -->
 				<Button
 					v-if="editId"
-					style="margin-left: 16px"
 					label="Cancel"
 					severity="secondary"
 					@click="handleCancel"

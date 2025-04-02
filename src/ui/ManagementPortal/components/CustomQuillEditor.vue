@@ -284,6 +284,8 @@ export default {
 
 <style lang="scss">
 .custom-quill-editor {
+	height: auto;
+
 	.ql-container {
 		height: auto;
 	}
