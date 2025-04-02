@@ -170,9 +170,9 @@ body,
 // 	flex: 1;
 // }
 
-.gap-4 {
-	gap: 16px;
-}
+// .gap-4 {
+// 	gap: 16px;
+// }
 
 // .flex-column {
 // 	flex-direction: column;
