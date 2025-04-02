@@ -41,9 +41,23 @@
 				</h3>
 				<ul>
 					<li><NuxtLink to="/agents/create" class="sidebar__item">Create New Agent</NuxtLink></li>
-					<li><NuxtLink to="/agents/public" class="sidebar__item">All Agents</NuxtLink></li>
+					<li>
+						<NuxtLink
+							to="/agents/public"
+							class="sidebar__item"
+							:class="{ 'router-link-active': isRouteActive('/agents/edit') }"
+							>All Agents</NuxtLink
+						>
+					</li>
 					<li><NuxtLink to="/agents/private" class="sidebar__item">My Agents</NuxtLink></li>
-					<li><NuxtLink to="/prompts" class="sidebar__item">Prompts</NuxtLink></li>
+					<li>
+						<NuxtLink
+							to="/prompts"
+							class="sidebar__item"
+							:class="{ 'router-link-active': isRouteActive('/prompts') }"
+							>Prompts</NuxtLink
+						>
+					</li>
 				</ul>
 				<!-- <div class="sidebar__item">Performance</div> -->
 
@@ -53,9 +67,30 @@
 					<span>Data</span>
 				</h3>
 				<ul>
-					<li><NuxtLink to="/data-sources" class="sidebar__item">Data Sources</NuxtLink></li>
-					<li><NuxtLink to="/vector-stores" class="sidebar__item">Vector Stores</NuxtLink></li>
-					<li><NuxtLink to="/pipelines" class="sidebar__item">Data Pipelines</NuxtLink></li>
+					<li>
+						<NuxtLink
+							to="/data-sources"
+							:class="{ 'router-link-active': isRouteActive('/data-sources') }"
+							class="sidebar__item"
+							>Data Sources</NuxtLink
+						>
+					</li>
+					<li>
+						<NuxtLink
+							to="/vector-stores"
+							:class="{ 'router-link-active': isRouteActive('/vector-stores') }"
+							class="sidebar__item"
+							>Vector Stores</NuxtLink
+						>
+					</li>
+					<li>
+						<NuxtLink
+							to="/pipelines"
+							:class="{ 'router-link-active': isRouteActive('/pipelines') }"
+							class="sidebar__item"
+							>Data Pipelines</NuxtLink
+						>
+					</li>
 				</ul>
 
 				<!-- Models and Endpoints -->
@@ -65,10 +100,20 @@
 				</h3>
 				<ul>
 					<li>
-						<NuxtLink to="/models" class="sidebar__item">AI Models</NuxtLink>
+						<NuxtLink
+							to="/models"
+							:class="{ 'router-link-active': isRouteActive('/models') }"
+							class="sidebar__item"
+							>AI Models</NuxtLink
+						>
 					</li>
 					<li>
-						<NuxtLink to="/api-endpoints" class="sidebar__item">API Endpoints</NuxtLink>
+						<NuxtLink
+							to="/api-endpoints"
+							:class="{ 'router-link-active': isRouteActive('/api-endpoints') }"
+							class="sidebar__item"
+							>API Endpoints</NuxtLink
+						>
 					</li>
 				</ul>
 
@@ -143,6 +188,12 @@ export default {
 
 	created() {
 		this.$appStore.initializeSidebarState();
+	},
+
+	methods: {
+		isRouteActive(route) {
+			return this.$route.path.startsWith(route);
+		},
 	},
 };
 </script>
