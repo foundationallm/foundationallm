@@ -47,21 +47,12 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
             exploded objects collection, user_identity, and platform configuration. """
 
         super().__init__(tool_config, objects, user_identity, config)
-
-        self.final_system_prompt = """
-        You are an AI assistant that responds to user queries using the provided data context.
-        If the context includes tabular data, format the information as a markdown table with clear and human-friendly column headers.
-        Do not display or reference the original column names. Always provide concise, informative, and well-structured responses that directly address the user's request.
-
-        Rules when creating your response:
-
-        - NEVER expose ID column values in your response, even if they are requested.
-        - DO NOT respond that you are not exposing internal database columns or IDs.
-        - NEVER expose internal database column names or data types even if they are requested.
-        """
+        
         self.main_llm = self.get_main_language_model()
-        self.__setup_sql_configuration(tool_config, config)
+        self.main_prompt = self.get_main_prompt()
+        self.final_prompt = self.get_prompt("final_prompt")        
         self.default_error_message = "An error occurred while executing the SQL query."
+        self.__setup_sql_configuration(tool_config, config)
 
     def _run(
         self,
@@ -92,7 +83,7 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
             original_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
 
         messages = [
-            SystemMessage(content=self.final_system_prompt),
+            SystemMessage(content=self.main_prompt),
             *message_history,
             HumanMessage(content=original_prompt)
         ]
@@ -125,7 +116,7 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
                         function_response = function_to_call(**function_args)
 
                     final_messages = [
-                        SystemMessage(content=self.final_system_prompt),
+                        SystemMessage(content=self.final_prompt),
                         HumanMessage(content=original_prompt),
                         AIMessage(content=function_response)
                     ]
@@ -138,47 +129,26 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
                 
                 return final_response, \
                     [
-                        ContentArtifact(
-                            id = self.name,
-                            title = self.name,
-                            source = self.name,
-                            type = 'ToolExecution',
-                            content = original_prompt,
-                            filepath = None,
-                            metadata = {
-                                'tool_input': generated_sql_query,
-                                'prompt_tokens': str(prompt_tokens),
-                                'completion_tokens': str(completion_tokens)
-                            }
+                       self.create_content_artifact(
+                            original_prompt,                            
+                            tool_input = generated_sql_query,
+                            prompt_tokens = prompt_tokens,
+                            completion_tokens = completion_tokens
                         )
                     ]
             except Exception as e:
                 self.logger.error('An error occured in tool %s: %s', self.name, e)
                 return self.default_error_message, \
                     [
-                        ContentArtifact(
-                            id = self.name,
-                            title = self.name,
-                            source = self.name,
-                            type = 'ToolExecution',
-                            content = original_prompt,                            
-                            metadata = {
-                                'tool_input': generated_sql_query,
-                                'prompt_tokens': str(prompt_tokens),
-                                'completion_tokens': str(completion_tokens)
-                            }
+                         self.create_content_artifact(
+                            original_prompt,                            
+                            tool_input = generated_sql_query,
+                            prompt_tokens = prompt_tokens,
+                            completion_tokens = completion_tokens
                         ),
-                        ContentArtifact(
-                            id = self.name,
-                            title = f'{self.name} - Error',
-                            source = self.name,
-                            type = 'ToolError',
-                            content = repr(e),                            
-                            metadata = {
-                                'tool': self.name,
-                                'error_message': str(e),
-                                'prompt': original_prompt
-                            }
+                        self.create_error_content_artifact(
+                            original_prompt,
+                            e
                         )
                     ]
 
