@@ -115,7 +115,7 @@ class FoundationaLLMToolBase(BaseTool):
         tool_artifact = ContentArtifact(id=self.name)
         tool_artifact.title = f'{self.name} - {title}' if title else self.name
         tool_artifact.source = self.name
-        tool_artifact.type = ContentArtifactTypeNames.TOOL_EXECUTION,
+        tool_artifact.type = ContentArtifactTypeNames.TOOL_EXECUTION
         tool_artifact.content = original_prompt
         tool_artifact.filepath = None
         tool_artifact.metadata = {
@@ -138,7 +138,7 @@ class FoundationaLLMToolBase(BaseTool):
         error_artifact = ContentArtifact(id=self.name)
         error_artifact.title = f'{self.name} - Error'
         error_artifact.source = self.name
-        error_artifact.type = ContentArtifactTypeNames.TOOL_ERROR,
+        error_artifact.type = ContentArtifactTypeNames.TOOL_ERROR
         error_artifact.content = repr(e)
         error_artifact.metadata = {
             'tool': self.name,
