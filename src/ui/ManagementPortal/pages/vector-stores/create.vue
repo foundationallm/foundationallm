@@ -35,7 +35,7 @@
 						v-model="vectorStore.name"
 						:disabled="editId"
 						type="text"
-						class="w-100"
+						class="w-full"
 						placeholder="Enter vector store name"
 						aria-labelledby="aria-source-name aria-source-name-desc"
 						:invalid="errors.name?.length > 0"
@@ -67,7 +67,7 @@
 				<InputText
 					v-model="vectorStore.description"
 					type="text"
-					class="w-100"
+					class="w-full"
 					placeholder="Enter a description for this vector store"
 					aria-labelledby="aria-data-desc"
 				/>
@@ -104,7 +104,7 @@
 					<InputText
 						v-model="vectorStore.settings[indexerSetting.fieldName]"
 						type="text"
-						class="w-100"
+						class="w-full"
 						:placeholder="`Enter ${indexerSetting.label}`"
 						:aria-labelledby="`aria-${indexerSetting.fieldName}`"
 						:invalid="errors[indexerSetting.fieldName]?.length > 0"

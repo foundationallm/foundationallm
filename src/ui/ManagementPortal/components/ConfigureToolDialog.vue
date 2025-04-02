@@ -31,7 +31,7 @@
 		<InputText
 			v-model="toolObject.name"
 			type="text"
-			class="w-100"
+			class="w-full"
 			placeholder="Enter tool name"
 			aria-labelledby="aria-tool-name"
 		/>
@@ -42,7 +42,7 @@
 			auto-resize
 			rows="5"
 			type="text"
-			class="w-100"
+			class="w-full"
 			placeholder="Enter tool description"
 			aria-labelledby="aria-tool-description"
 		/>
@@ -51,7 +51,7 @@
 		<InputText
 			v-model="toolObject.package_name"
 			type="text"
-			class="w-100"
+			class="w-full"
 			placeholder="Enter tool package name"
 			aria-labelledby="aria-tool-package-name"
 		/>
@@ -60,7 +60,7 @@
 		<InputText
 			v-model="toolObject.class_name"
 			type="text"
-			class="w-100"
+			class="w-full"
 			placeholder="Enter tool class name"
 			aria-labelledby="aria-tool-class-name"
 		/>

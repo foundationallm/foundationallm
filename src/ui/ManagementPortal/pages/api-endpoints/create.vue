@@ -31,7 +31,7 @@
 						v-model="apiEndpoint.name"
 						:disabled="editId"
 						type="text"
-						class="w-100"
+						class="w-full"
 						placeholder="Enter API endpoint name"
 						aria-labelledby="aria-source-name aria-source-name-desc"
 						@input="handleNameInput"
@@ -75,7 +75,7 @@
 				<InputText
 					v-model="apiEndpoint.description"
 					type="text"
-					class="w-100 mb-4"
+					class="w-full mb-4"
 					placeholder="Enter API endpoint description"
 					aria-labelledby="aria-description"
 				/>
@@ -126,25 +126,25 @@
 				<div class="mb-2">Endpoint URL:</div>
 				<InputText
 					v-model="apiEndpoint.url"
-					class="w-100 mb-4"
+					class="w-full mb-4"
 					type="text"
 					placeholder="Enter API endpoint URL"
 				/>
 
 				<!-- API Version -->
 				<div class="mb-2">API Version:</div>
-				<InputText v-model="apiEndpoint.api_version" class="w-100 mb-4" type="text" />
+				<InputText v-model="apiEndpoint.api_version" class="w-full mb-4" type="text" />
 
 				<!-- Timeout -->
 				<div class="mb-2">Timeout (seconds):</div>
-				<InputNumber v-model="apiEndpoint.timeout_seconds" class="w-100 mb-4" />
+				<InputNumber v-model="apiEndpoint.timeout_seconds" class="w-full mb-4" />
 
 				<!-- Status Endpoint -->
 				<div id="aria-status-endpoint" class="mb-2">Status Endpoint (relative path):</div>
 				<InputText
 					v-model="apiEndpoint.status_endpoint"
 					type="text"
-					class="w-100 mb-4"
+					class="w-full mb-4"
 					placeholder="Enter the status endpoint"
 					aria-labelledby="aria-status-endpoint"
 				/>

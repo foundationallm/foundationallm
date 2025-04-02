@@ -98,7 +98,7 @@
 		</DataTable>
 
 		<!-- Add parameter button -->
-		<div class="flex w-100 justify-content-end">
+		<div class="flex w-full justify-content-end">
 			<Button
 				severity="primary"
 				style="word-wrap: none"

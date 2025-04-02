@@ -114,7 +114,7 @@
 							v-model="accessToken.description"
 							placeholder="Enter a description for this access token"
 							type="text"
-							class="w-100"
+							class="w-full"
 							aria-labelledby="aria-description"
 						/>
 					</div>

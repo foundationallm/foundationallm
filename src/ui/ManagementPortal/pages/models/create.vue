@@ -31,7 +31,7 @@
 						v-model="aiModel.name"
 						:disabled="editId"
 						type="text"
-						class="w-100"
+						class="w-full"
 						placeholder="Enter model name"
 						aria-labelledby="aria-source-name aria-source-name-desc"
 						@input="handleNameInput"
@@ -90,7 +90,7 @@
 				<InputText
 					v-model="aiModel.deployment_name"
 					type="text"
-					class="w-100"
+					class="w-full"
 					placeholder="Enter the model deployment name"
 					aria-labelledby="aria-deployment-name aria-deployment-name-desc"
 				/>
@@ -103,7 +103,7 @@
 				<InputText
 					v-model="aiModel.version"
 					type="text"
-					class="w-100"
+					class="w-full"
 					placeholder="Enter the model version"
 					aria-labelledby="aria-deployment-version"
 				/>

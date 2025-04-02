@@ -46,7 +46,7 @@
 						v-model="prompt.name"
 						:disabled="editPrompt"
 						type="text"
-						class="w-100"
+						class="w-full"
 						placeholder="Enter prompt name"
 						aria-labelledby="aria-prompt-name aria-prompt-name-desc"
 						@input="handleNameInput"
@@ -77,7 +77,7 @@
 				<InputText
 					v-model="prompt.description"
 					type="text"
-					class="w-100"
+					class="w-full"
 					placeholder="Enter prompt description"
 					aria-labelledby="aria-description"
 				/>
@@ -102,7 +102,7 @@
 				<div class="span-2">
 					<Textarea
 						v-model="prompt.prefix"
-						class="w-100"
+						class="w-full"
 						auto-resize
 						rows="5"
 						type="text"

@@ -47,7 +47,7 @@
 						v-model="dataSource.name"
 						:disabled="editId"
 						type="text"
-						class="w-100"
+						class="w-full"
 						placeholder="Enter data source name"
 						aria-labelledby="aria-source-name aria-source-name-desc"
 						@input="handleNameInput"
@@ -75,7 +75,7 @@
 					<InputText
 						v-model="dataSource.description"
 						type="text"
-						class="w-100"
+						class="w-full"
 						placeholder="Enter a description for this data source"
 						aria-labelledby="aria-data-desc"
 					/>
@@ -147,7 +147,7 @@
 						<div id="aria-endpoint" class="mb-2 mt-2">Endpoint:</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.Endpoint"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter API endpoint"
 							aria-labelledby="aria-endpoint"
@@ -164,7 +164,7 @@
 						<div id="aria-account-name" class="mb-2 mt-2">Account name:</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.AccountName"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter account name"
 							aria-labelledby="aria-account-name"
@@ -178,7 +178,7 @@
 					<Chips
 						v-model="folders"
 						v-create-chip-on-blur:folders
-						class="w-100"
+						class="w-full"
 						separator=","
 						aria-labelledby="aria-folders"
 						aria-describedby="aria-folders-desc"
@@ -230,7 +230,7 @@
 						<div id="aria-endpoint" class="mb-2 mt-2">Endpoint:</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.Endpoint"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter API endpoint"
 							aria-labelledby="aria-endpoint"
@@ -247,7 +247,7 @@
 						<div id="aria-account-name" class="mb-2 mt-2">Account name:</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.AccountName"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter account name"
 							aria-labelledby="aria-account-name"
@@ -261,7 +261,7 @@
 					<Chips
 						v-model="workspaces"
 						v-create-chip-on-blur:workspaces
-						class="w-100"
+						class="w-full"
 						separator=","
 						aria-labelledby="aria-workspaces aria-workspaces-desc"
 						:pt="{ input: { 'aria-labelledby': 'aria-workspaces aria-workspaces-desc' } }"
@@ -288,7 +288,7 @@
 							<Chips
 								v-model="tables"
 								v-create-chip-on-blur:tables
-								class="w-100"
+								class="w-full"
 								separator=","
 								aria-labelledby="aria-table-names aria-table-names-desc"
 								:pt="{ input: { 'aria-labelledby': 'aria-table-names aria-table-names-desc' } }"
@@ -303,7 +303,7 @@
 						<div id="aria-client-id" class="mb-2">App ID (Client ID):</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.ClientId"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter app ID (client ID)"
 							aria-labelledby="aria-client-id"
@@ -312,7 +312,7 @@
 						<div id="aria-tenant-id" class="mb-2 mt-2">Tenant ID:</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.TenantId"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter tenant ID"
 							aria-labelledby="aria-tenant-id"
@@ -321,7 +321,7 @@
 						<div id="aria-cert-name" class="mb-2 mt-2">Certificate Name:</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.CertificateName"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter certificate name"
 							aria-labelledby="aria-cert-name"
@@ -330,7 +330,7 @@
 						<div id="aria-key-vault" class="mb-2 mt-2">Key Vault URL:</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.KeyVaultURL"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter key vault URL"
 							aria-labelledby="aria-key-vault"
@@ -339,7 +339,7 @@
 						<div id="aria-site-url" class="mb-2 mt-2">Site URL:</div>
 						<InputText
 							v-model="dataSource.site_url"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter site URL"
 							aria-labelledby="aria-site-url"
@@ -354,7 +354,7 @@
 							<Chips
 								v-model="documentLibraries"
 								v-create-chip-on-blur:documentLibraries
-								class="w-100"
+								class="w-full"
 								separator=","
 								aria-labelledby="aria-document-libs aria-document-libs-desc"
 								:pt="{ input: { 'aria-labelledby': 'aria-document-libs aria-document-libs-desc' } }"

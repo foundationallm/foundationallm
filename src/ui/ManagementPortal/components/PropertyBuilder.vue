@@ -93,7 +93,7 @@
 			/>
 
 			<!-- Add property -->
-			<div class="w-100 flex justify-content-end mt-4">
+			<div class="w-full flex justify-content-end mt-4">
 				<Button
 					label="Add Property"
 					severity="primary"

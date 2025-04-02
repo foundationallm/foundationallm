@@ -53,7 +53,7 @@
 						v-model="agentName"
 						:disabled="editAgent"
 						type="text"
-						class="w-100"
+						class="w-full"
 						placeholder="Enter agent name"
 						aria-labelledby="aria-agent-name aria-agent-name-desc"
 						@input="handleNameInput"
@@ -84,7 +84,7 @@
 				<InputText
 					v-model="agentDisplayName"
 					type="text"
-					class="w-100"
+					class="w-full"
 					placeholder="Enter agent display name"
 				/>
 			</div>
@@ -96,7 +96,7 @@
 				<InputText
 					v-model="agentDescription"
 					type="text"
-					class="w-100"
+					class="w-full"
 					placeholder="Enter agent description"
 					aria-labelledby="aria-description"
 				/>
@@ -110,7 +110,7 @@
 				<CustomQuillEditor
 					v-model="agentWelcomeMessage"
 					:initial-content="JSON.parse(JSON.stringify(agentWelcomeMessage))"
-					class="w-100"
+					class="w-full"
 					placeholder="Enter agent welcome message"
 					aria-labelledby="aria-welcome-message-desc"
 					@content-update="updateAgentWelcomeMessage($event)"
@@ -1122,7 +1122,7 @@
 					<div class="span-2">
 						<Textarea
 							v-model="systemPrompt"
-							class="w-100"
+							class="w-full"
 							auto-resize
 							rows="5"
 							type="text"

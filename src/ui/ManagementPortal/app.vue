@@ -154,13 +154,13 @@ body,
 // 	margin-bottom: 24px !important;
 // }
 
-.w-100 {
-	width: 100%;
-}
+// .w-100 {
+// 	width: 100%;
+// }
 
-.h-100 {
-	height: 100%;
-}
+// .h-100 {
+// 	height: 100%;
+// }
 
 // .flex {
 // 	display: flex;

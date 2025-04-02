@@ -32,7 +32,7 @@
 						readonly
 						placeholder="Instance"
 						type="text"
-						class="w-100"
+						class="w-full"
 						aria-labelledby="aria-scope"
 					/>
 				</div>
@@ -47,7 +47,7 @@
 						v-model="roleAssignment.description"
 						placeholder="Enter a description for this role assignment"
 						type="text"
-						class="w-100"
+						class="w-full"
 						aria-labelledby="aria-description"
 					/>
 				</div>
@@ -71,7 +71,7 @@
 						v-model="principal.object_type"
 						:options="principalTypeOptions"
 						placeholder="--Select--"
-						class="mb-2 w-100"
+						class="mb-2 w-full"
 						aria-labelledby="aria-principal-type"
 					/>
 				</div>
@@ -134,7 +134,7 @@
 						v-model="principalSearchType"
 						:options="principalTypeOptions"
 						placeholder="--Select--"
-						class="mb-2 w-100"
+						class="mb-2 w-full"
 						aria-labelledby="aria-principal-search-type"
 					/>
 
@@ -147,7 +147,7 @@
 						dropdown
 						data-key="id"
 						option-label="display_name"
-						class="w-100"
+						class="w-full"
 						aria-labelledby="aria-principal-search-query"
 						@show="handlePrincipalDropdownShow"
 						@hide="handlePrincipalDropdownHide"

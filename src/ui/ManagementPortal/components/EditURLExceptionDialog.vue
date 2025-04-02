@@ -10,7 +10,7 @@
 		<InputText
 			v-model="urlException.url"
 			type="text"
-			class="w-100"
+			class="w-full"
 			placeholder="Enter url"
 			aria-labelledby="aria-url-exception-url"
 		/>
@@ -21,7 +21,7 @@
 		<InputText
 			v-model="urlException.user_principal_name"
 			type="text"
-			class="w-100"
+			class="w-full"
 			placeholder="Enter user principal name"
 			aria-labelledby="aria-url-exception-user-principal-name"
 		/>
