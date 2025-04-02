@@ -162,9 +162,9 @@ body,
 	height: 100%;
 }
 
-.d-flex {
-	display: flex;
-}
+// .flex {
+// 	display: flex;
+// }
 
 .flex-1 {
 	flex: 1;

@@ -58,7 +58,7 @@
 			<div class="span-2">
 				<!-- Type -->
 				<div id="aria-principal-type" class="mb-2">Principal Type:</div>
-				<div class="d-flex gap-4">
+				<div class="flex gap-4">
 					<!-- <InputText
 						v-model="principal.object_type"
 						readonly
@@ -78,7 +78,7 @@
 
 				<!-- Name -->
 				<div id="aria-principal-name" class="mb-2 mt-2">Principal Name:</div>
-				<div class="d-flex gap-4">
+				<div class="flex gap-4">
 					<InputText
 						v-model="principal.display_name"
 						readonly
@@ -91,7 +91,7 @@
 
 				<!-- Email -->
 				<div id="aria-principal-email" class="mb-2 mt-2">Principal Email:</div>
-				<div class="d-flex gap-4">
+				<div class="flex gap-4">
 					<InputText
 						v-model="principal.email"
 						readonly
@@ -104,7 +104,7 @@
 
 				<!-- ID -->
 				<div id="aria-principal-id" class="mb-2 mt-2">Principal ID:</div>
-				<div class="d-flex gap-4">
+				<div class="flex gap-4">
 					<InputText
 						v-model="roleAssignment.principal_id"
 						placeholder="Browse for selection"

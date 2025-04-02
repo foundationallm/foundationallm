@@ -155,7 +155,7 @@
 							Conversation History
 						</div>
 
-						<div class="d-flex align-center mt-2">
+						<div class="flex align-center mt-2">
 							<span id="aria-conversation-history-enabled" class="step-option__header"
 								>Enabled:</span
 							>
@@ -227,7 +227,7 @@
 						<div id="aria-gatekeeper" class="step-container__header">Gatekeeper</div>
 
 						<!-- Gatekeeper toggle -->
-						<div class="d-flex align-center mt-2">
+						<div class="flex align-center mt-2">
 							<span id="aria-gatekeeper-enabled" class="step-option__header"
 								>Use system default:</span
 							>
@@ -391,7 +391,7 @@
 						<div id="aria-gatekeeper" class="step-container__header">User Prompt Rewrite</div>
 
 						<!-- User prompt rewrite toggle -->
-						<div class="d-flex align-center mt-2">
+						<div class="flex align-center mt-2">
 							<span id="aria-user-prompt-rewrite-enabled" class="step-option__header"
 								>Enabled:</span
 							>
@@ -503,7 +503,7 @@
 						<div id="aria-gatekeeper" class="step-container__header">Semantic Cache</div>
 
 						<!-- Semantic cache toggle -->
-						<div class="d-flex align-center mt-2">
+						<div class="flex align-center mt-2">
 							<span id="aria-semantic-cache-enabled" class="step-option__header">Enabled:</span>
 							<span>
 								<ToggleButton
@@ -669,7 +669,7 @@
 					Does this agent have an inline context?
 				</div>
 				<div class="span-2">
-					<div class="d-flex align-center mt-2">
+					<div class="flex align-center mt-2">
 						<span>
 							<ToggleButton
 								v-model="inline_context"
@@ -688,7 +688,7 @@
 						Do you want this agent to have a dedicated pipeline?
 					</div>
 					<div class="span-2">
-						<div class="d-flex align-center mt-2">
+						<div class="flex align-center mt-2">
 							<span>
 								<ToggleButton
 									v-model="dedicated_pipeline"
@@ -1158,7 +1158,7 @@
 							}}" workflow resource?
 						</div>
 					</ConfirmationDialog>
-					<div class="d-flex justify-content-end mt-4">
+					<div class="flex justify-content-end mt-4">
 						<Button
 							severity="primary"
 							label="Add Workflow Resource"
@@ -1273,7 +1273,7 @@
 				</DataTable>
 
 				<!-- Add new tool -->
-				<div class="d-flex justify-content-end mt-4">
+				<div class="flex justify-content-end mt-4">
 					<Button @click="showNewToolDialog = true">Add New Tool</Button>
 				</div>
 
@@ -1292,7 +1292,7 @@
 			<!-- Virtual security group id -->
 			<template v-if="virtualSecurityGroupId">
 				<div class="step-header">Virtual security group ID</div>
-				<div class="span-2 d-flex gap-4">
+				<div class="span-2 flex gap-4">
 					<InputText
 						:value="virtualSecurityGroupId"
 						disabled
@@ -1314,7 +1314,7 @@
 			</template>
 
 			<!-- Form buttons -->
-			<div class="span-2 d-flex justify-content-end gap-4">
+			<div class="span-2 flex justify-content-end gap-4">
 				<!-- Create agent -->
 				<Button
 					:label="editAgent ? 'Save Changes' : 'Create Agent'"

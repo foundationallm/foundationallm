@@ -255,7 +255,7 @@
 				</DataTable>
 
 				<!-- Add url exception -->
-				<div class="d-flex justify-content-end mt-4">
+				<div class="flex justify-content-end mt-4">
 					<Button @click="showNewURLExceptionDialog = true">Add URL Exception</Button>
 				</div>
 
