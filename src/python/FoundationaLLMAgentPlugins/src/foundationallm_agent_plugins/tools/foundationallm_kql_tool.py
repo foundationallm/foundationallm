@@ -44,6 +44,10 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
 
         super().__init__(tool_config, objects, user_identity, config)
 
+        self.main_llm = self.get_main_language_model()
+        self.main_prompt = self.get_main_prompt()
+        self.final_prompt = self.get_prompt("final_prompt")
+        self.default_error_message = "An error occurred while executing the KQL query."
         self.__setup_kql_configuration(tool_config, config)
 
     def _run(
@@ -58,14 +62,14 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
         self,
         *args,
         prompt: str = None,
-        message_history: List[BaseMessage] = None,
+        message_history: List[BaseMessage] = [],
         runnable_config: RunnableConfig = None,
         **kwargs,
         ) -> str:
 
         prompt_tokens = 0
         completion_tokens = 0
-        generated_sql_query = ''
+        generated_query = ''
         final_response = ''
 
         # Get the original prompt
@@ -91,7 +95,7 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
                     prompt_tokens += response.usage_metadata['output_tokens']
 
                 if response.tool_calls \
-                    and response.tool_calls[0]['name'] == 'query_azure_sql':
+                    and response.tool_calls[0]['name'] == 'query_kql':
 
                     tool_call = response.tool_calls[0]
 
@@ -103,14 +107,14 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
                         function_to_call = self.available_sql_functions[function_name]
                         function_args = tool_call['args']
                         if 'query' in function_args:
-                            generated_sql_query = function_args['query']
+                            generated_query = function_args['query']
 
                         function_response = function_to_call(**function_args)
 
                     final_messages = [
-                        SystemMessage(content=self.final_system_prompt),
+                        SystemMessage(content=self.final_prompt),
                         HumanMessage(content=original_prompt),
-                        AIMessage(content=function_response)
+                        AIMessage(content=json.dumps(function_response))
                     ]
 
                     with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
@@ -123,9 +127,9 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
 
                 return final_response, \
                     [
-                        self.create_tool_content_artifact(
+                        self.create_content_artifact(
                             original_prompt,
-                            generated_sql_query,
+                            generated_query,
                             prompt_tokens,
                             completion_tokens
                         )
@@ -135,7 +139,7 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
                 self.logger.error('An error occured in tool %s: %s', self.name, e)
                 return self.default_error_message, \
                     [
-                        self.create_tool_content_artifact(
+                        self.create_content_artifact(
                             original_prompt,
                             prompt,
                             prompt_tokens,
@@ -159,6 +163,30 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
         credential = DefaultAzureCredential()
         self.kusto_token = credential.get_token("https://api.kusto.windows.net")
 
+        self.tools = [
+            {
+                "type": "function",
+                "function": {
+                    "name": "query_kql",
+                    "description": "Execute a KQL query to retrieve information from a database",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "query": {
+                                "type": "string",
+                                "description": "The KQL query to execute",
+                            },
+                        },
+                        "required": ["query"],
+                    },
+                }
+            }
+        ]
+
+        self.available_sql_functions = {
+            "query_kql": self.execute_kql_query
+        }
+
 
     def execute_kql_query(self, query: str) -> str:
         """Run a KQL query against the Fabric Kusto query endpoint."""
@@ -171,8 +199,12 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
             with requests.Session() as session:
                 session.headers.update(headers)
                 url = self.kusto_query_endpoint + "/v1/rest/query"
-                response = session.get(url, timeout=120, verify=False)
+                body = {
+                    "db": self.kusto_database,
+                    "csl": query
+                }
+                response = session.post(url, data=json.dumps(body), timeout=120, verify=True)
                 response.raise_for_status()
-                return response.json()
+                return response.json()['Tables'][0]
         except requests.HTTPError as e:
             self.logger.error("Error occurred while executing a KQL query. Error: %s; Query: %s", e, query)
