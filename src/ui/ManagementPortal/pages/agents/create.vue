@@ -2095,7 +2095,7 @@ export default {
 
 			this.loading = true;
 			this.loadingStatusText = 'Saving agent...';
-			
+
 			const promptRequest = {
 				type: 'multipart',
 				name: this.agentPrompt?.resource.name || this.agentName,
@@ -2105,7 +2105,7 @@ export default {
 				suffix: '',
 				category: 'Workflow',
 			};
-			
+
 			const tokenTextPartitionRequest = {
 				text_splitter: 'TokenTextSplitter',
 				name: this.agentName,

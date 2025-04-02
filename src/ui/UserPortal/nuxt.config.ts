@@ -20,11 +20,11 @@ export default defineNuxtConfig({
 	modules: ['@pinia/nuxt', '@nuxtjs/eslint-module', 'floating-vue/nuxt', '@nuxtjs/tailwindcss'],
 	tailwindcss: {
 		config: {
-	    corePlugins: {
-		    preflight: false,
-	  	},
-	  },
-  },
+			corePlugins: {
+				preflight: false,
+			},
+		},
+	},
 	components: true,
 	app: {
 		head: {

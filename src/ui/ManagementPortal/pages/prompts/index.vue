@@ -101,7 +101,11 @@
 							class="table__button"
 							tabindex="-1"
 							:aria-disabled="!data.actions.includes('FoundationaLLM.Prompt/prompts/write')"
-							:style="{ pointerEvents: !data.actions.includes('FoundationaLLM.Prompt/prompts/write') ? 'none' : 'auto' }"
+							:style="{
+								pointerEvents: !data.actions.includes('FoundationaLLM.Prompt/prompts/write')
+									? 'none'
+									: 'auto',
+							}"
 						>
 							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
 								<Button

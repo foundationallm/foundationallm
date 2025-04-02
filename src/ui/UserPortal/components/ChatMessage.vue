@@ -998,7 +998,14 @@ $textColor: #131833;
 	animation-name: loading-shimmer;
 	background: $textColor
 		gradient(linear, 100% 0, 0 0, from($textColor), color-stop(0.5, $shimmerColor), to($textColor));
-	background: $textColor -webkit-gradient(linear, 100% 0, 0 0, from($textColor), color-stop(0.5, $shimmerColor), to($textColor));
+	background: $textColor -webkit-gradient(
+			linear,
+			100% 0,
+			0 0,
+			from($textColor),
+			color-stop(0.5, $shimmerColor),
+			to($textColor)
+		);
 	background-clip: text;
 	-webkit-background-clip: text;
 	background-repeat: no-repeat;
