@@ -44,7 +44,7 @@
 			</template>
 
 			<div class="span-2">
-				<div id="aria-agent-name" class="step-header mb-2">Agent name:</div>
+				<div id="aria-agent-name" class="step-header !mb-2">Agent name:</div>
 				<div id="aria-agent-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
 				</div>
@@ -77,7 +77,7 @@
 				</div>
 			</div>
 			<div class="span-2">
-				<div class="step-header mb-2">Agent Display Name:</div>
+				<div class="step-header !mb-2">Agent Display Name:</div>
 				<div class="mb-2">
 					This is the name that will be displayed to users when interacting with the agent.
 				</div>
@@ -89,7 +89,7 @@
 				/>
 			</div>
 			<div class="span-2">
-				<div class="step-header mb-2">Description:</div>
+				<div class="step-header !mb-2">Description:</div>
 				<div id="aria-description" class="mb-2">
 					Provide a description to help others understand the agent's purpose.
 				</div>
@@ -102,7 +102,7 @@
 				/>
 			</div>
 			<div class="span-2">
-				<div class="step-header mb-2">Welcome message:</div>
+				<div class="step-header !mb-2">Welcome message:</div>
 				<div id="aria-welcome-message-desc" class="mb-2">
 					Provide a message to display when a user starts a new conversation with the agent. If a
 					message is not provided, the default welcome message will be displayed.
@@ -1041,7 +1041,7 @@
 			<div v-if="showWorkflowConfiguration" class="span-2">
 				<!-- Workflow name -->
 				<div class="mb-6">
-					<div id="aria-workflow-name" class="step-header mb-3">Workflow name:</div>
+					<div id="aria-workflow-name" class="step-header !mb-3">Workflow name:</div>
 					<InputText
 						v-model="workflowName"
 						type="text"
@@ -1053,7 +1053,7 @@
 
 				<!-- Workflow package name -->
 				<div class="mb-6">
-					<div id="aria-workflow-package-name" class="step-header mb-3">Workflow package name:</div>
+					<div id="aria-workflow-package-name" class="step-header !mb-3">Workflow package name:</div>
 					<InputText
 						v-model="workflowPackageName"
 						type="text"
@@ -1065,7 +1065,7 @@
 
 				<!-- Workflow class name -->
 				<div class="mb-6">
-					<div id="aria-workflow-class-name" class="step-header mb-3">Workflow class name:</div>
+					<div id="aria-workflow-class-name" class="step-header !mb-3">Workflow class name:</div>
 					<InputText
 						v-model="workflowClassName"
 						type="text"
@@ -1077,7 +1077,7 @@
 
 				<!-- Workflow host -->
 				<div class="mb-6">
-					<div id="aria-workflow-host" class="step-header mb-3">Workflow host:</div>
+					<div id="aria-workflow-host" class="step-header !mb-3">Workflow host:</div>
 					<div class="span-2">
 						<Dropdown
 							v-model="workflowHost"
@@ -1093,7 +1093,7 @@
 
 				<!-- Workflow main model -->
 				<div class="mb-6">
-					<div id="aria-workflow-model" class="step-header mb-3">Workflow main model:</div>
+					<div id="aria-workflow-model" class="step-header !mb-3">Workflow main model:</div>
 					<Dropdown
 						:model-value="workflowMainAIModel?.object_id"
 						:options="aiModelOptions"
@@ -1112,13 +1112,13 @@
 
 				<!-- Workflow main model parameters -->
 				<div class="mb-6">
-					<div class="step-header mb-3">Workflow main model parameters:</div>
+					<div class="step-header !mb-3">Workflow main model parameters:</div>
 					<PropertyBuilder v-model="workflowMainAIModelParameters" />
 				</div>
 
 				<!-- Workflow main prompt -->
 				<div class="mb-6">
-					<div id="aria-persona" class="step-header mb-3">What is the main workflow prompt?</div>
+					<div id="aria-persona" class="step-header !mb-3">What is the main workflow prompt?</div>
 					<div class="span-2">
 						<Textarea
 							v-model="systemPrompt"
@@ -1134,7 +1134,7 @@
 
 				<!-- Workflow additional resources -->
 				<div class="mb-6">
-					<div class="step-header mb-3">Additional workflow resources:</div>
+					<div class="step-header !mb-3">Additional workflow resources:</div>
 					<ResourceTable
 						:resources="workflowExtraResources"
 						@delete="workflowResourceToDelete = $event"

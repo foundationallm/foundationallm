@@ -101,7 +101,7 @@
 			<!-- Connection details -->
 			<!-- Show this section only if a source type is selected -->
 			<div v-if="dataSource.type" class="span-2">
-				<div class="step-header mb-2">What are the connection details?</div>
+				<div class="step-header !mb-2">What are the connection details?</div>
 
 				<!-- Azure data lake -->
 				<div v-if="isAzureDataLakeDataSource(dataSource)">
@@ -171,7 +171,7 @@
 						/>
 					</div>
 
-					<div id="aria-folders" class="step-header mb-2 mt-2">Folder(s):</div>
+					<div id="aria-folders" class="mb-2 mt-2">Folder(s):</div>
 					<div id="aria-folders-desc" class="mb-2">
 						Press <strong>Enter</strong> or <strong>,</strong> after typing each folder name.
 					</div>
@@ -254,7 +254,7 @@
 						/>
 					</div>
 
-					<div id="aria-workspaces" class="step-header mb-2 mt-2">Workspace(s):</div>
+					<div id="aria-workspaces" class="step-header !mb-2 !mt-2">Workspace(s):</div>
 					<div id="aria-workspaces-desc" class="mb-2">
 						Press <strong>Enter</strong> or <strong>,</strong> after typing each workspace name.
 					</div>
@@ -281,7 +281,7 @@
 						/>
 
 						<template v-if="dataSource.tables">
-							<div id="aria-table-names" class="step-header mb-2 mt-2">Table Name(s):</div>
+							<div id="aria-table-names" class="step-header !mb-2 !mt-2">Table Name(s):</div>
 							<div id="aria-table-names-desc" class="mb-2">
 								Press <strong>Enter</strong> or <strong>,</strong> after typing each table name.
 							</div>
@@ -346,7 +346,7 @@
 						/>
 
 						<template v-if="dataSource.document_libraries">
-							<div id="aria-document-libs" class="step-header mb-2 mt-2">Document Library(s):</div>
+							<div id="aria-document-libs" class="step-header !mb-2 !mt-2">Document Library(s):</div>
 							<div id="aria-document-libs-desc" class="mb-2">
 								Press <strong>Enter</strong> or <strong>,</strong> after typing each document
 								library name.

@@ -37,7 +37,7 @@
 			</template>
 
 			<div class="span-2">
-				<div id="aria-prompt-name" class="step-header mb-2">Prompt name:</div>
+				<div id="aria-prompt-name" class="step-header !mb-2">Prompt name:</div>
 				<div id="aria-prompt-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
 				</div>
@@ -70,7 +70,7 @@
 				</div>
 			</div>
 			<div class="span-2">
-				<div class="step-header mb-2">Description:</div>
+				<div class="step-header !mb-2">Description:</div>
 				<div id="aria-description" class="mb-2">
 					Provide a description to help others understand the prompt's purpose.
 				</div>
@@ -83,7 +83,7 @@
 				/>
 			</div>
 			<div class="span-2">
-				<div class="step-header mb-2">Category:</div>
+				<div class="step-header !mb-2">Category:</div>
 				<Dropdown
 					v-model="prompt.category"
 					:options="categoryOptions"

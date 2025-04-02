@@ -434,7 +434,7 @@
 								/>
 							</div>
 							<template v-if="triggerParameters[trigger.name]?.length > 0">
-								<div class="step-header span-2 mb-2">Trigger Parameters:</div>
+								<div class="step-header span-2 !mb-2">Trigger Parameters:</div>
 								<div class="span-2">
 									<div
 										v-for="(param, index) in triggerParameters[trigger.name]"

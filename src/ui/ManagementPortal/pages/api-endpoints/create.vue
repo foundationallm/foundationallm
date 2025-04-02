@@ -68,7 +68,7 @@
 
 			<!-- Description -->
 			<div class="span-2">
-				<div class="step-header mb-2">What are the endpoint details?</div>
+				<div class="step-header !mb-2">What are the endpoint details?</div>
 				<div id="aria-description" class="mb-2">
 					Provide a description to help others understand the API endpoint's purpose.
 				</div>
