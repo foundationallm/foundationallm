@@ -4,7 +4,7 @@
 			v-if="textarea"
 			:value="displayValue"
 			:readonly="isHidden || readonly"
-			class="w-100"
+			class="w-full"
 			auto-resize
 			rows="5"
 			type="text"
@@ -17,7 +17,7 @@
 			v-else
 			:value="displayValue"
 			:readonly="isHidden || readonly"
-			class="w-100"
+			class="w-full"
 			type="text"
 			:placeholder="placeholder"
 			:aria-labelledby="ariaLabelledby"

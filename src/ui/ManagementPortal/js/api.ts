@@ -301,7 +301,7 @@ export default {
 		// If data is empty, return an empty array.
 		if (!data) {
 			return [];
-		}	
+		}
 
 		if (addDefaultOption) {
 			const defaultAgentIndex: AgentIndex = {
@@ -351,7 +351,7 @@ export default {
 		if (!data) {
 			return [];
 		}
-				
+
 		return data;
 	},
 

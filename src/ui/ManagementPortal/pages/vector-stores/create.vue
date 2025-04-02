@@ -25,8 +25,8 @@
 			</template>
 
 			<!-- Name -->
-			<div class="step-header span-2">Vector Store Name:</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">Vector Store Name:</div>
+			<div class="col-span-2">
 				<div id="aria-source-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
 				</div>
@@ -35,7 +35,7 @@
 						v-model="vectorStore.name"
 						:disabled="editId"
 						type="text"
-						class="w-100"
+						class="w-full"
 						placeholder="Enter vector store name"
 						aria-labelledby="aria-source-name aria-source-name-desc"
 						:invalid="errors.name?.length > 0"
@@ -62,22 +62,22 @@
 			</div>
 
 			<!-- Description -->
-			<div class="step-header span-2">Vector Store Description:</div>
-			<div class="input-wrapper span-2">
+			<div class="step-header col-span-2">Vector Store Description:</div>
+			<div class="input-wrapper col-span-2">
 				<InputText
 					v-model="vectorStore.description"
 					type="text"
-					class="w-100"
+					class="w-full"
 					placeholder="Enter a description for this vector store"
 					aria-labelledby="aria-data-desc"
 				/>
 			</div>
 
 			<!-- Indexer -->
-			<div id="aria-source-type" class="step-header span-2">
+			<div id="aria-source-type" class="step-header col-span-2">
 				What is the indexer of the vector store?
 			</div>
-			<div class="span-2">
+			<div class="col-span-2">
 				<Dropdown
 					v-model="vectorStore.indexer"
 					:options="profileIndexerOptions"
@@ -97,14 +97,14 @@
 				v-for="indexerSetting in indexerSettingFields"
 				:key="indexerSetting.fieldName"
 			>
-				<div :id="`aria-${indexerSetting.fieldName}`" class="step-header span-2">
+				<div :id="`aria-${indexerSetting.fieldName}`" class="step-header col-span-2">
 					{{ indexerSetting.label }}
 				</div>
-				<div class="span-2">
+				<div class="col-span-2">
 					<InputText
 						v-model="vectorStore.settings[indexerSetting.fieldName]"
 						type="text"
-						class="w-100"
+						class="w-full"
 						:placeholder="`Enter ${indexerSetting.label}`"
 						:aria-labelledby="`aria-${indexerSetting.fieldName}`"
 						:invalid="errors[indexerSetting.fieldName]?.length > 0"
@@ -117,10 +117,10 @@
 			</template>
 
 			<!-- Indexing Service -->
-			<div id="aria-api-endpoint-configuration-object-id" class="step-header span-2">
+			<div id="aria-api-endpoint-configuration-object-id" class="step-header col-span-2">
 				Indexing Service:
 			</div>
-			<div class="span-2">
+			<div class="col-span-2">
 				<Dropdown
 					v-model="vectorStore.settings.api_endpoint_configuration_object_id"
 					:options="profileIndexerAPIEndpointOptions"
@@ -141,7 +141,7 @@
 			</div>
 
 			<!-- Buttons -->
-			<div class="button-container column-2 justify-self-end">
+			<div class="button-container col-2 justify-self-end">
 				<!-- Create Vector Store -->
 				<Button
 					:label="editId ? 'Save Changes' : 'Create Vector Store'"

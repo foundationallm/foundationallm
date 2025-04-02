@@ -25,8 +25,8 @@
 			</template>
 
 			<!-- Name -->
-			<div class="step-header span-2">What is the name of the pipeline?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What is the name of the pipeline?</div>
+			<div class="col-span-2">
 				<div id="aria-pipeline-name" class="mb-2">Pipeline name:</div>
 				<div id="aria-pipeline-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
@@ -36,7 +36,7 @@
 						v-model="pipeline.name"
 						:disabled="isEditing"
 						type="text"
-						class="w-100"
+						class="w-full"
 						placeholder="Enter pipeline name"
 						aria-labelledby="aria-pipeline-name aria-pipeline-name-desc"
 						@input="handleNameInput"
@@ -64,7 +64,7 @@
 					<InputText
 						v-model="pipeline.display_name"
 						type="text"
-						class="w-100"
+						class="w-full"
 						placeholder="Enter a display name for this pipeline"
 					/>
 				</div>
@@ -74,7 +74,7 @@
 					<InputText
 						v-model="pipeline.description"
 						type="text"
-						class="w-100"
+						class="w-full"
 						placeholder="Enter a description for this pipeline"
 						aria-labelledby="aria-pipeline-desc"
 					/>
@@ -82,13 +82,13 @@
 			</div>
 
 			<!-- Data Source -->
-			<div class="step-header span-2">Select a data source</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">Select a data source</div>
+			<div class="col-span-2">
 				<Dropdown
 					v-model="selectedDataSource"
 					:options="dataSourceOptions"
 					option-label="name"
-					class="w-100"
+					class="w-full"
 					placeholder="Select a data source"
 					@change="handleDataSourceChange"
 				/>
@@ -98,7 +98,7 @@
 						<InputText
 							v-model="pipeline.data_source.name"
 							type="text"
-							class="w-100"
+							class="w-full"
 							placeholder="Enter a name for the data source"
 							aria-labelledby="aria-data-source-name"
 							@input="handleDataSourceNameInput"
@@ -110,7 +110,7 @@
 						<InputText
 							v-model="pipeline.data_source.description"
 							type="text"
-							class="w-100"
+							class="w-full"
 							placeholder="Enter a description for the data source"
 							aria-labelledby="aria-data-source-description"
 						/>
@@ -122,7 +122,7 @@
 							v-model="selectedDataSourcePlugin"
 							:options="dataSourcePluginOptions"
 							option-label="display_name"
-							class="w-100"
+							class="w-full"
 							placeholder="Select a data source plugin"
 						/>
 					</div>
@@ -165,7 +165,7 @@
 										:options="param.parameter_metadata.parameter_selection_hints_options"
 										option-label="display_name"
 										option-value="value"
-										class="w-100"
+										class="w-full"
 										placeholder="Select a resource"
 									/>
 								</template>
@@ -176,8 +176,8 @@
 			</div>
 
 			<!-- Pipeline Stages -->
-			<div class="step-header span-2">Configure pipeline stages</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">Configure pipeline stages</div>
+			<div class="col-span-2">
 				<div class="stages-container">
 					<div
 						v-for="(stage, index) in selectedStagePlugins"
@@ -193,7 +193,7 @@
 								<label>Stage Name:</label>
 								<InputText
 									v-model="stage.name"
-									class="w-100"
+									class="w-full"
 									@input="handleStageNameInput($event, index)"
 								/>
 							</div>
@@ -206,7 +206,7 @@
 						<div v-if="!stage.collapsed" class="stage-content">
 							<div class="mb-2">
 								<label>Description:</label>
-								<InputText v-model="stage.description" class="w-100" />
+								<InputText v-model="stage.description" class="w-full" />
 							</div>
 							<div class="mb-2">
 								<label>Plugin:</label>
@@ -215,7 +215,7 @@
 									:options="stagePluginsOptions"
 									option-label="display_name"
 									option-value="object_id"
-									class="w-100"
+									class="w-full"
 									placeholder="Select a plugin"
 									@change="handleStagePluginChange($event, index)"
 								/>
@@ -262,7 +262,7 @@
 											"
 											option-label="display_name"
 											option-value="value"
-											class="w-100"
+											class="w-full"
 											placeholder="Select a resource"
 										/>
 									</template>
@@ -291,7 +291,7 @@
 									"
 									option-label="dependencyLabel"
 									option-value="dependencies.plugin_object_id"
-									class="w-100"
+									class="w-full"
 									placeholder="Select a dependency"
 									@change="handleStagePluginDependencyChange($event, stage.plugin_object_id, index)"
 								/>
@@ -309,7 +309,7 @@
 									"
 									option-label="dependencyLabel"
 									option-value="dependencies.plugin_object_id"
-									class="w-100"
+									class="w-full"
 									placeholder="Select dependencies"
 									@change="
 										handleMultipleStagePluginDependencyChange($event, stage.plugin_object_id, index)
@@ -349,7 +349,7 @@
 												param.parameter_metadata.type === 'datetime'
 											"
 										>
-											<InputText v-model="param.default_value" class="w-100" />
+											<InputText v-model="param.default_value" class="w-full" />
 										</template>
 										<template v-else-if="param.parameter_metadata.type === 'bool'">
 											<InputSwitch v-model="param.default_value" />
@@ -372,7 +372,7 @@
 												"
 												option-label="display_name"
 												option-value="value"
-												class="w-100"
+												class="w-full"
 												placeholder="Select a resource"
 											/>
 										</template>
@@ -386,8 +386,8 @@
 			</div>
 
 			<!-- Pipeline Triggers -->
-			<div class="step-header span-2">Configure pipeline triggers</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">Configure pipeline triggers</div>
+			<div class="col-span-2">
 				<div class="trigger-container">
 					<div
 						v-for="(trigger, triggerIndex) in pipeline.triggers"
@@ -399,7 +399,7 @@
 								<label>Trigger Name:</label>
 								<InputText
 									v-model="trigger.name"
-									class="w-100"
+									class="w-full"
 									@input="handleTriggerNameChange(triggerIndex)"
 								/>
 							</div>
@@ -422,20 +422,20 @@
 								:options="triggerTypeOptions"
 								option-label="label"
 								option-value="value"
-								class="w-100"
+								class="w-full"
 								placeholder="Select trigger type"
 							/>
 							<div v-if="trigger.trigger_type === 'Schedule'" class="mb-2">
 								<label>Cron Schedule:</label>
 								<InputText
 									v-model="trigger.trigger_cron_schedule"
-									class="w-100"
+									class="w-full"
 									placeholder="0 6 * * *"
 								/>
 							</div>
 							<template v-if="triggerParameters[trigger.name]?.length > 0">
-								<div class="step-header span-2 mb-2">Trigger Parameters:</div>
-								<div class="span-2">
+								<div class="step-header col-span-2 !mb-2">Trigger Parameters:</div>
+								<div class="col-span-2">
 									<div
 										v-for="(param, index) in triggerParameters[trigger.name]"
 										:key="index"
@@ -458,7 +458,7 @@
 										>
 											<InputText
 												v-model="pipeline.triggers[triggerIndex].parameter_values[param.key]"
-												class="w-100"
+												class="w-full"
 											/>
 										</template>
 										<template v-else-if="param.parameter_metadata.type === 'bool'">
@@ -480,7 +480,7 @@
 												:options="param.resourceOptions"
 												option-label="display_name"
 												option-value="value"
-												class="w-100"
+												class="w-full"
 												placeholder="Select a resource"
 											/>
 										</template>
@@ -494,7 +494,7 @@
 			</div>
 
 			<!-- Buttons -->
-			<div class="button-container column-2 justify-self-end">
+			<div class="flex col-span-2 justify-end gap-4">
 				<!-- Create pipeline -->
 				<Button
 					:label="editId ? 'Save Changes' : 'Create Pipeline'"
@@ -505,7 +505,6 @@
 				<!-- Cancel -->
 				<Button
 					v-if="editId"
-					style="margin-left: 16px"
 					label="Cancel"
 					severity="secondary"
 					@click="handleCancel"
