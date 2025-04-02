@@ -202,9 +202,9 @@ body,
 // 	font-weight: bold;
 // }
 
-.cursor-pointer {
-	cursor: pointer;
-}
+// .cursor-pointer {
+// 	cursor: pointer;
+// }
 
 .p-component {
 	border-radius: 0px;
