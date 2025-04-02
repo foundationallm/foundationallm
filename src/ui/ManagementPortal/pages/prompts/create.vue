@@ -112,7 +112,7 @@
 				</div>
 			</section>
 
-			<div class="col-span-2 flex justify-end" style="gap: 16px">
+			<div class="flex col-span-2 justify-end gap-4">
 				<!-- Create prompt -->
 				<Button
 					:label="editPrompt ? 'Save Changes' : 'Create Prompt'"

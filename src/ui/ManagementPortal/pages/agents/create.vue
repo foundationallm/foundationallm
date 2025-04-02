@@ -1314,7 +1314,7 @@
 			</template>
 
 			<!-- Form buttons -->
-			<div class="col-span-2 flex justify-end gap-4">
+			<div class="flex col-span-2 justify-end gap-4">
 				<!-- Create agent -->
 				<Button
 					:label="editAgent ? 'Save Changes' : 'Create Agent'"

@@ -182,7 +182,7 @@
 			</div>
 
 			<!-- Buttons -->
-			<div v-if="!headless" class="button-container col-2 justify-self-end">
+			<div v-if="!headless" class="flex col-span-2 justify-end gap-4">
 				<!-- Create role assignment -->
 				<Button
 					:label="editId ? 'Save Changes' : 'Create Role Assignment'"
@@ -193,7 +193,6 @@
 				<!-- Cancel -->
 				<Button
 					v-if="editId"
-					style="margin-left: 16px"
 					label="Cancel"
 					severity="secondary"
 					@click="handleCancel"

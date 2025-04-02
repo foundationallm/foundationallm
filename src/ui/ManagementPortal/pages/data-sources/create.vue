@@ -378,7 +378,7 @@
 			</div>
 
 			<!-- Buttons -->
-			<div class="button-container col-2 justify-self-end">
+			<div class="flex col-span-2 justify-end gap-4">
 				<!-- Create data source -->
 				<Button
 					:label="editId ? 'Save Changes' : 'Create Data Source'"
@@ -389,7 +389,6 @@
 				<!-- Cancel -->
 				<Button
 					v-if="editId"
-					style="margin-left: 16px"
 					label="Cancel"
 					severity="secondary"
 					@click="handleCancel"
