@@ -29,7 +29,7 @@ from opentelemetry.trace import SpanKind
 from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import AgentTool
-from foundationallm.models.constants import RunnableConfigKeys
+from foundationallm.models.constants import RunnableConfigKeys, ContentArtifactTypeNames
 from foundationallm.models.orchestration import ContentArtifact
 
 class FoundationaLLMSQLTool(FoundationaLLMToolBase):
@@ -138,28 +138,47 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
                 
                 return final_response, \
                     [
-                        self.create_content_artifact(
-                            original_prompt,
-                            self.name,
-                            generated_sql_query,
-                            prompt_tokens,
-                            completion_tokens
+                        ContentArtifact(
+                            id = self.name,
+                            title = self.name,
+                            source = self.name,
+                            type = 'ToolExecution',
+                            content = original_prompt,
+                            filepath = None,
+                            metadata = {
+                                'tool_input': generated_sql_query,
+                                'prompt_tokens': str(prompt_tokens),
+                                'completion_tokens': str(completion_tokens)
+                            }
                         )
                     ]
             except Exception as e:
                 self.logger.error('An error occured in tool %s: %s', self.name, e)
                 return self.default_error_message, \
                     [
-                        self.create_content_artifact(
-                            original_prompt,
-                            self.name,
-                            generated_sql_query,
-                            prompt_tokens,
-                            completion_tokens
+                        ContentArtifact(
+                            id = self.name,
+                            title = self.name,
+                            source = self.name,
+                            type = 'ToolExecution',
+                            content = original_prompt,                            
+                            metadata = {
+                                'tool_input': generated_sql_query,
+                                'prompt_tokens': str(prompt_tokens),
+                                'completion_tokens': str(completion_tokens)
+                            }
                         ),
-                        self.create_error_content_artifact(
-                            original_prompt,
-                            e
+                        ContentArtifact(
+                            id = self.name,
+                            title = f'{self.name} - Error',
+                            source = self.name,
+                            type = 'ToolError',
+                            content = repr(e),                            
+                            metadata = {
+                                'tool': self.name,
+                                'error_message': str(e),
+                                'prompt': original_prompt
+                            }
                         )
                     ]
 
