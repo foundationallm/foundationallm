@@ -268,7 +268,7 @@
 			</div>
 
 			<!-- Buttons -->
-			<div class="button-container col-2 justify-self-end">
+			<div class="flex col-span-2 justify-end gap-4">
 				<!-- Create API endpoint -->
 				<Button
 					:label="editId ? 'Save Changes' : 'Create API Endpoint'"
@@ -277,13 +277,7 @@
 				/>
 
 				<!-- Cancel -->
-				<Button
-					v-if="editId"
-					style="margin-left: 16px"
-					label="Cancel"
-					severity="secondary"
-					@click="handleCancel"
-				/>
+				<Button label="Cancel" severity="secondary" @click="handleCancel" />
 			</div>
 		</div>
 	</div>

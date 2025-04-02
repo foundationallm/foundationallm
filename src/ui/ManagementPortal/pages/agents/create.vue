@@ -1014,7 +1014,9 @@
 
 			<!-- Workflow -->
 			<div class="step-section-header col-span-2">Workflow</div>
-			<div id="aria-workflow" class="step-header col-span-2">What workflow should the agent use?</div>
+			<div id="aria-workflow" class="step-header col-span-2">
+				What workflow should the agent use?
+			</div>
 
 			<!-- Workflow selection -->
 			<div class="col-span-2">
@@ -1053,7 +1055,9 @@
 
 				<!-- Workflow package name -->
 				<div class="mb-6">
-					<div id="aria-workflow-package-name" class="step-header !mb-3">Workflow package name:</div>
+					<div id="aria-workflow-package-name" class="step-header !mb-3">
+						Workflow package name:
+					</div>
 					<InputText
 						v-model="workflowPackageName"
 						type="text"
@@ -1170,7 +1174,9 @@
 
 			<!-- Tools -->
 			<div class="step-section-header col-span-2">Tools</div>
-			<div id="aria-orchestrator" class="step-header col-span-2">What tools should the agent use?</div>
+			<div id="aria-orchestrator" class="step-header col-span-2">
+				What tools should the agent use?
+			</div>
 
 			<!-- Tools table -->
 			<div class="col-span-2">
@@ -1324,7 +1330,7 @@
 				/>
 
 				<!-- Cancel -->
-				<Button v-if="editAgent" label="Cancel" severity="secondary" @click="handleCancel" />
+				<Button label="Cancel" severity="secondary" @click="handleCancel" />
 			</div>
 		</div>
 	</main>

@@ -141,7 +141,7 @@
 			</div>
 
 			<!-- Buttons -->
-			<div class="button-container col-2 justify-self-end">
+			<div class="flex col-span-2 justify-end gap-4">
 				<!-- Create Vector Store -->
 				<Button
 					:label="editId ? 'Save Changes' : 'Create Vector Store'"
@@ -150,13 +150,7 @@
 				/>
 
 				<!-- Cancel -->
-				<Button
-					v-if="editId"
-					style="margin-left: 16px"
-					label="Cancel"
-					severity="secondary"
-					@click="handleCancel"
-				/>
+				<Button label="Cancel" severity="secondary" @click="handleCancel" />
 			</div>
 		</div>
 	</main>

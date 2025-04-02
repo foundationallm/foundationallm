@@ -346,7 +346,9 @@
 						/>
 
 						<template v-if="dataSource.document_libraries">
-							<div id="aria-document-libs" class="step-header !mb-2 !mt-2">Document Library(s):</div>
+							<div id="aria-document-libs" class="step-header !mb-2 !mt-2">
+								Document Library(s):
+							</div>
 							<div id="aria-document-libs-desc" class="mb-2">
 								Press <strong>Enter</strong> or <strong>,</strong> after typing each document
 								library name.
@@ -387,12 +389,7 @@
 				/>
 
 				<!-- Cancel -->
-				<Button
-					v-if="editId"
-					label="Cancel"
-					severity="secondary"
-					@click="handleCancel"
-				/>
+				<Button label="Cancel" severity="secondary" @click="handleCancel" />
 			</div>
 		</div>
 	</main>
