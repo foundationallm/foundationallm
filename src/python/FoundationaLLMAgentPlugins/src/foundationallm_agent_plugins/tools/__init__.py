@@ -3,3 +3,4 @@ from .foundationallm_data_analysis_tool import FoundationaLLMDataAnalysisTool
 from .foundationallm_knowledge_search_tool import FoundationaLLMKnowledgeSearchTool
 from .foundationallm_nop_tool import FoundationaLLMNopTool
 from .foundationallm_sql_tool import FoundationaLLMSQLTool
+from .foundationallm_kql_tool import FoundationaLLMKQLTool
