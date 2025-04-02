@@ -25,10 +25,10 @@ from foundationallm.models.constants import (
     ContentArtifactTypeNames,
     ResourceObjectIdPropertyNames,
     ResourceObjectIdPropertyValues,
-    ResourceProviderNames,
+    ResourceProviderNames,   
     RunnableConfigKeys,
     AIModelResourceTypeNames,
-    PromptResourceTypeNames
+    PromptResourceTypeNames    
 )
 from foundationallm.models.messages import MessageHistoryItem
 from foundationallm.models.orchestration import (
@@ -106,7 +106,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         """
         llm_prompt = user_prompt_rewrite or user_prompt
         runnable_config = RunnableConfig(
-            config={
+            {
                 RunnableConfigKeys.ORIGINAL_USER_PROMPT: user_prompt,
                 RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE: user_prompt_rewrite
             }
