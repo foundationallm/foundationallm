@@ -1,5 +1,5 @@
 <template>
-	<div class="d-flex flex-column gap-4">
+	<div class="flex flex-column gap-4">
 		<!-- Authenication parameters table -->
 		<DataTable
 			:value="Object.keys(parameters).map((key) => ({ key, value: parameters[key] }))"
@@ -98,7 +98,7 @@
 		</DataTable>
 
 		<!-- Add parameter button -->
-		<div class="d-flex w-100 justify-content-end">
+		<div class="flex w-100 justify-content-end">
 			<Button
 				severity="primary"
 				style="word-wrap: none"
@@ -109,7 +109,7 @@
 		</div>
 
 		<!-- Create / edit parameter dialog -->
-		<div class="d-flex gap-4">
+		<div class="flex gap-4">
 			<Dialog
 				v-if="showCreateOrEditParameterDialog"
 				:visible="showCreateOrEditParameterDialog"

@@ -1,5 +1,5 @@
 <template>
-	<div class="d-flex flex-column gap-4">
+	<div class="flex flex-column gap-4">
 		<DataTable
 			:value="Object.keys(properties).map((key) => ({ key, value: properties[key] }))"
 			striped-rows
@@ -82,7 +82,7 @@
 			</Column>
 		</DataTable>
 
-		<div class="d-flex gap-4">
+		<div class="flex gap-4">
 			<PropertyDialog
 				v-if="showCreateOrEditPropertyDialog"
 				v-model="propertyToEdit"
@@ -93,7 +93,7 @@
 			/>
 
 			<!-- Add property -->
-			<div class="w-100 d-flex justify-content-end mt-4">
+			<div class="w-100 flex justify-content-end mt-4">
 				<Button
 					label="Add Property"
 					severity="primary"
