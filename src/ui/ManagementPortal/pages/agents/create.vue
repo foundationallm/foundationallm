@@ -2095,17 +2095,17 @@ export default {
 
 			this.loading = true;
 			this.loadingStatusText = 'Saving agent...';
-
+			
 			const promptRequest = {
 				type: 'multipart',
-				name: this.agentName,
+				name: this.agentPrompt?.resource.name || this.agentName,
 				cost_center: this.cost_center,
 				description: `System prompt for the ${this.agentName} agent`,
 				prefix: this.systemPrompt,
 				suffix: '',
 				category: 'Workflow',
 			};
-
+			
 			const tokenTextPartitionRequest = {
 				text_splitter: 'TokenTextSplitter',
 				name: this.agentName,
@@ -2122,7 +2122,7 @@ export default {
 				// Handle Prompt creation/update.
 				let promptObjectId = '';
 				if (promptRequest.prefix !== '') {
-					const promptResponse = await api.createOrUpdatePrompt(this.agentName, promptRequest);
+					const promptResponse = await api.createOrUpdatePrompt(promptRequest.name, promptRequest);
 					promptObjectId = promptResponse.objectId;
 				}
 
