@@ -3,15 +3,17 @@ Provides an implementation for the FoundationaLLM SQL tool.
 """
 
 # Platform imports
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
 from datetime import datetime, time, date
 import json
 import pandas as pd
 import pyodbc
+import struct
+from itertools import chain, repeat
 
 #Azure imports
-
+from azure.identity import DefaultAzureCredential
 # LangChain imports
 from langchain_core.messages import (
     BaseMessage,
@@ -27,7 +29,8 @@ from opentelemetry.trace import SpanKind
 from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import AgentTool
-from foundationallm.models.constants import RunnableConfigKeys
+from foundationallm.models.constants import RunnableConfigKeys, ContentArtifactTypeNames
+from foundationallm.models.orchestration import ContentArtifact
 
 class FoundationaLLMSQLTool(FoundationaLLMToolBase):
     """
@@ -56,14 +59,15 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
         - DO NOT respond that you are not exposing internal database columns or IDs.
         - NEVER expose internal database column names or data types even if they are requested.
         """
-
+        self.main_llm = self.get_main_language_model()
         self.__setup_sql_configuration(tool_config, config)
+        self.default_error_message = "An error occurred while executing the SQL query."
 
     def _run(
         self,
         *args,
         **kwargs
-        ) -> str:
+        ) -> Tuple[str, List[ContentArtifact]]:
 
         raise NotImplementedError()
 
@@ -71,16 +75,16 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
         self,
         *args,
         prompt: str = None,
-        message_history: List[BaseMessage] = None,
+        message_history: List[BaseMessage] = [],
         runnable_config: RunnableConfig = None,
         **kwargs,
-        ) -> str:
+        ) -> Tuple[str, List[ContentArtifact]]:
 
         prompt_tokens = 0
         completion_tokens = 0
         generated_sql_query = ''
         final_response = ''
-
+        
         # Get the original prompt
         if runnable_config is None:
             original_prompt = prompt
@@ -88,7 +92,7 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
             original_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
 
         messages = [
-            SystemMessage(content=self.main_prompt),
+            SystemMessage(content=self.final_system_prompt),
             *message_history,
             HumanMessage(content=original_prompt)
         ]
@@ -127,36 +131,54 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
                     ]
 
                     with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
-
                         final_llm_response = await self.main_llm.ainvoke(final_messages, tools=None)
-
                         completion_tokens += final_llm_response.usage_metadata['input_tokens']
                         prompt_tokens += final_llm_response.usage_metadata['output_tokens']
                         final_response = final_llm_response.content
-
+                
                 return final_response, \
                     [
-                        self.create_tool_content_artifact(
-                            original_prompt,
-                            generated_sql_query,
-                            prompt_tokens,
-                            completion_tokens
+                        ContentArtifact(
+                            id = self.name,
+                            title = self.name,
+                            source = self.name,
+                            type = 'ToolExecution',
+                            content = original_prompt,
+                            filepath = None,
+                            metadata = {
+                                'tool_input': generated_sql_query,
+                                'prompt_tokens': str(prompt_tokens),
+                                'completion_tokens': str(completion_tokens)
+                            }
                         )
                     ]
-
             except Exception as e:
                 self.logger.error('An error occured in tool %s: %s', self.name, e)
                 return self.default_error_message, \
                     [
-                        self.create_tool_content_artifact(
-                            original_prompt,
-                            prompt,
-                            prompt_tokens,
-                            completion_tokens
+                        ContentArtifact(
+                            id = self.name,
+                            title = self.name,
+                            source = self.name,
+                            type = 'ToolExecution',
+                            content = original_prompt,                            
+                            metadata = {
+                                'tool_input': generated_sql_query,
+                                'prompt_tokens': str(prompt_tokens),
+                                'completion_tokens': str(completion_tokens)
+                            }
                         ),
-                        self.create_error_content_artifact(
-                            original_prompt,
-                            e
+                        ContentArtifact(
+                            id = self.name,
+                            title = f'{self.name} - Error',
+                            source = self.name,
+                            type = 'ToolError',
+                            content = repr(e),                            
+                            metadata = {
+                                'tool': self.name,
+                                'error_message': str(e),
+                                'prompt': original_prompt
+                            }
                         )
                     ]
 
@@ -166,12 +188,18 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
             config: Configuration,
     ):
 
+        # Expects Azure credentials to authenticate to the database.
         self.server = tool_config.properties['sql_server']
         self.database = tool_config.properties['sql_database']
-        self.username = tool_config.properties['sql_user']
-        self.password = config.get_value(tool_config.properties['sql_password_secret_key'])
-
-        self.connection_string = f'Driver={{ODBC Driver 18 for SQL Server}};Server=tcp:{self.server},1433;Database={self.database};Uid={self.username};Pwd={self.password};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'
+      
+        # Get access token for Fabric        
+        credential = DefaultAzureCredential()
+        token = credential.get_token('https://database.windows.net/.default')
+        token_as_bytes = bytes(token.token, "UTF-8")
+        encoded_bytes = bytes(chain.from_iterable(zip(token_as_bytes, repeat(0)))) # Encode the bytes to a Windows byte string
+        token_bytes = struct.pack("<i", len(encoded_bytes)) + encoded_bytes # Package the token into a bytes object
+        self.connection_attrs_before = {1256: token_bytes}  # Attribute pointing to SQL_COPT_SS_ACCESS_TOKEN to pass access token to the driver
+        self.connection_string = f'Driver={{ODBC Driver 18 for SQL Server}};Server=tcp:{self.server},1433;Database={self.database};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'      
 
         self.tools = [
             {
@@ -278,7 +306,7 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
         """Run a SQL query on Azure SQL and return results as a pandas DataFrame"""
         print(f"Executing query on Azure SQL: {query}")
         try:
-            conn = pyodbc.connect(self.connection_string)
+            conn = pyodbc.connect(self.connection_string, attrs_before=self.connection_attrs_before)
             df = pd.read_sql(query, conn)
             df = self.__convert_datetime_columns_to_string(df)
             return json.dumps(df.to_dict(orient='records'))

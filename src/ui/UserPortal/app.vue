@@ -111,14 +111,6 @@ main {
 	color: red;
 }
 
-.d-flex {
-	display: flex;
-}
-
-.justify-center {
-	justify-content: center;
-}
-
 .p-component {
 	border-radius: 0px;
 }

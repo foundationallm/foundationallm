@@ -6,7 +6,7 @@
 		:style="{ minWidth: '80%' }"
 		:closable="false"
 	>
-		<!-- 	<div id="aria-tool-type" class="mb-2 font-weight-bold">Tool type:</div>
+		<!-- 	<div id="aria-tool-type" class="mb-2 font-bold">Tool type:</div>
 		<Dropdown
 			v-model="toolType"
 			:options="toolTypeOptions"
@@ -16,7 +16,7 @@
 			aria-labelledby="aria-tool-type"
 		/> -->
 
-		<!-- 		<div id="aria-tool-name" class="mb-2 font-weight-bold">Tool:</div>
+		<!-- 		<div id="aria-tool-name" class="mb-2 font-bold">Tool:</div>
 		<Dropdown
 			v-model="toolObject.name"
 			:options="toolOptions"
@@ -27,45 +27,45 @@
 			@change="handleToolSelection"
 		/> -->
 
-		<div id="aria-tool-name" class="mb-2 font-weight-bold">Tool name:</div>
+		<div id="aria-tool-name" class="mb-2 font-bold">Tool name:</div>
 		<InputText
 			v-model="toolObject.name"
 			type="text"
-			class="w-100"
+			class="w-full"
 			placeholder="Enter tool name"
 			aria-labelledby="aria-tool-name"
 		/>
 
-		<div id="aria-tool-description" class="mt-6 mb-2 font-weight-bold">Tool description:</div>
+		<div id="aria-tool-description" class="mt-6 mb-2 font-bold">Tool description:</div>
 		<Textarea
 			v-model="toolObject.description"
 			auto-resize
 			rows="5"
 			type="text"
-			class="w-100"
+			class="w-full"
 			placeholder="Enter tool description"
 			aria-labelledby="aria-tool-description"
 		/>
 
-		<div id="aria-tool-package-name" class="mt-6 mb-2 font-weight-bold">Tool package name:</div>
+		<div id="aria-tool-package-name" class="mt-6 mb-2 font-bold">Tool package name:</div>
 		<InputText
 			v-model="toolObject.package_name"
 			type="text"
-			class="w-100"
+			class="w-full"
 			placeholder="Enter tool package name"
 			aria-labelledby="aria-tool-package-name"
 		/>
 
-		<div id="aria-tool-class-name" class="mt-6 mb-2 font-weight-bold">Tool class name:</div>
+		<div id="aria-tool-class-name" class="mt-6 mb-2 font-bold">Tool class name:</div>
 		<InputText
 			v-model="toolObject.class_name"
 			type="text"
-			class="w-100"
+			class="w-full"
 			placeholder="Enter tool class name"
 			aria-labelledby="aria-tool-class-name"
 		/>
 
-		<div class="mt-6 mb-2 font-weight-bold">Tool resources:</div>
+		<div class="mt-6 mb-2 font-bold">Tool resources:</div>
 		<ResourceTable :resources="toolObject.resource_object_ids" @delete="handleDeleteToolResource" />
 
 		<CreateResourceObjectDialog
@@ -75,7 +75,7 @@
 			@update:model-value="handleAddToolResource"
 		/>
 
-		<div class="d-flex justify-content-end mt-4">
+		<div class="flex justify-end mt-4">
 			<Button
 				severity="primary"
 				label="Add Tool Resource"
@@ -83,7 +83,7 @@
 			/>
 		</div>
 
-		<div class="mt-6 mb-2 font-weight-bold">Tool properties:</div>
+		<div class="mt-6 mb-2 font-bold">Tool properties:</div>
 		<PropertyBuilder v-model="toolObject.properties" />
 
 		<template #footer>

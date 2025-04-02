@@ -6,27 +6,27 @@
 		:style="{ minWidth: '80%' }"
 		:closable="false"
 	>
-		<div id="aria-url-exception-url" class="mb-2 font-weight-bold">URL:</div>
+		<div id="aria-url-exception-url" class="mb-2 font-bold">URL:</div>
 		<InputText
 			v-model="urlException.url"
 			type="text"
-			class="w-100"
+			class="w-full"
 			placeholder="Enter url"
 			aria-labelledby="aria-url-exception-url"
 		/>
 
-		<div id="aria-url-exception-user-principal-name" class="mt-6 mb-2 font-weight-bold">
+		<div id="aria-url-exception-user-principal-name" class="mt-6 mb-2 font-bold">
 			User Principal Name:
 		</div>
 		<InputText
 			v-model="urlException.user_principal_name"
 			type="text"
-			class="w-100"
+			class="w-full"
 			placeholder="Enter user principal name"
 			aria-labelledby="aria-url-exception-user-principal-name"
 		/>
 
-		<div id="aria-url-exception-enabled" class="mt-6 mb-2 font-weight-bold">Enabled:</div>
+		<div id="aria-url-exception-enabled" class="mt-6 mb-2 font-bold">Enabled:</div>
 		<InputSwitch v-model="urlException.enabled" aria-labelledby="aria-url-exception-enabled" />
 
 		<template #footer>

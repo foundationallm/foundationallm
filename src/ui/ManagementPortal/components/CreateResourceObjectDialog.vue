@@ -38,7 +38,7 @@
 		<InputText
 			v-model="resourceRole"
 			type="text"
-			class="w-100"
+			class="w-full"
 			placeholder="Enter resource role"
 			aria-labelledby="aria-cost-center"
 		/>
