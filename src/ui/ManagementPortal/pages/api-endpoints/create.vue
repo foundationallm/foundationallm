@@ -21,8 +21,8 @@
 			</template>
 
 			<!-- Name -->
-			<div class="step-header span-2">What is the API endpoint name?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What is the API endpoint name?</div>
+			<div class="col-span-2">
 				<div id="aria-source-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
 				</div>
@@ -54,8 +54,8 @@
 			</div>
 
 			<!-- Model type -->
-			<!-- <div class="step-header span-2">What is the model type?</div>
-			<div class="span-2">
+			<!-- <div class="step-header col-span-2">What is the model type?</div>
+			<div class="col-span-2">
 				<Dropdown
 					v-model="apiEndpoint.name"
 					:options="orchestratorOptions"
@@ -67,7 +67,7 @@
 			</div> -->
 
 			<!-- Description -->
-			<div class="span-2">
+			<div class="col-span-2">
 				<div class="step-header !mb-2">What are the endpoint details?</div>
 				<div id="aria-description" class="mb-2">
 					Provide a description to help others understand the API endpoint's purpose.
@@ -106,8 +106,8 @@
 			</div>
 
 			<!-- Connection type -->
-			<div class="step-header span-2">What is the connection type?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What is the connection type?</div>
+			<div class="col-span-2">
 				<div class="mb-2">Auth Type:</div>
 				<Dropdown
 					v-model="apiEndpoint.authentication_type"
@@ -120,8 +120,8 @@
 			</div>
 
 			<!-- Connection details -->
-			<div class="step-header span-2">What are the connection details?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What are the connection details?</div>
+			<div class="col-span-2">
 				<!-- Endpoint URL -->
 				<div class="mb-2">Endpoint URL:</div>
 				<InputText
@@ -151,14 +151,14 @@
 			</div>
 
 			<!-- Authentication parameters -->
-			<div class="step-header span-2">What are the authentication parameters?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What are the authentication parameters?</div>
+			<div class="col-span-2">
 				<AuthenticationParametersBuilder v-model="apiEndpoint.authentication_parameters" />
 			</div>
 
 			<!-- URL exceptions -->
-			<div class="step-header span-2">URL exceptions:</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">URL exceptions:</div>
+			<div class="col-span-2">
 				<DataTable
 					:value="apiEndpoint.url_exceptions"
 					striped-rows
@@ -255,7 +255,7 @@
 				</DataTable>
 
 				<!-- Add url exception -->
-				<div class="flex justify-content-end mt-4">
+				<div class="flex justify-end mt-4">
 					<Button @click="showNewURLExceptionDialog = true">Add URL Exception</Button>
 				</div>
 
@@ -268,7 +268,7 @@
 			</div>
 
 			<!-- Buttons -->
-			<div class="button-container column-2 justify-self-end">
+			<div class="button-container col-2 justify-self-end">
 				<!-- Create API endpoint -->
 				<Button
 					:label="editId ? 'Save Changes' : 'Create API Endpoint'"

@@ -21,8 +21,8 @@
 			</template>
 
 			<!-- Name -->
-			<div class="step-header span-2">What would you like the model display name to be?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What would you like the model display name to be?</div>
+			<div class="col-span-2">
 				<div id="aria-source-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
 				</div>
@@ -54,8 +54,8 @@
 			</div>
 
 			<!-- Model type -->
-			<div class="step-header span-2">What is the model type?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What is the model type?</div>
+			<div class="col-span-2">
 				<div class="mb-2">Model Type:</div>
 				<Dropdown
 					v-model="aiModel.type"
@@ -67,8 +67,8 @@
 			</div>
 
 			<!-- Model endpoint -->
-			<div class="step-header span-2">What is the model endpoint?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What is the model endpoint?</div>
+			<div class="col-span-2">
 				<div class="mb-2">Model Endpoint:</div>
 				<Dropdown
 					v-model="aiModel.endpoint_object_id"
@@ -80,8 +80,8 @@
 			</div>
 
 			<!-- Deployment name -->
-			<div class="step-header span-2">What is the model deployment name?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What is the model deployment name?</div>
+			<div class="col-span-2">
 				<div id="aria-deployment-name" class="mb-2">Model deployment name:</div>
 				<div id="aria-deployment-name-desc" class="mb-2">
 					Depending on the service, this may be the deployment name or the model name that includes
@@ -97,8 +97,8 @@
 			</div>
 
 			<!-- Model Version -->
-			<div class="step-header span-2">What is the model version?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What is the model version?</div>
+			<div class="col-span-2">
 				<div id="aria-model-version" class="mb-2">Model version:</div>
 				<InputText
 					v-model="aiModel.version"
@@ -110,13 +110,13 @@
 			</div>
 
 			<!-- Model parameters -->
-			<div class="step-header span-2">What are the model parameters?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What are the model parameters?</div>
+			<div class="col-span-2">
 				<PropertyBuilder v-model="aiModel.model_parameters" />
 			</div>
 
 			<!-- Buttons -->
-			<div class="button-container column-2 justify-self-end">
+			<div class="button-container col-2 justify-self-end">
 				<!-- Create model -->
 				<Button
 					:label="editId ? 'Save Changes' : 'Create Model'"

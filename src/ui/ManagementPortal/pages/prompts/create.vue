@@ -36,7 +36,7 @@
 				</div>
 			</template>
 
-			<div class="span-2">
+			<div class="col-span-2">
 				<div id="aria-prompt-name" class="step-header !mb-2">Prompt name:</div>
 				<div id="aria-prompt-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
@@ -69,7 +69,7 @@
 					</span>
 				</div>
 			</div>
-			<div class="span-2">
+			<div class="col-span-2">
 				<div class="step-header !mb-2">Description:</div>
 				<div id="aria-description" class="mb-2">
 					Provide a description to help others understand the prompt's purpose.
@@ -82,7 +82,7 @@
 					aria-labelledby="aria-description"
 				/>
 			</div>
-			<div class="span-2">
+			<div class="col-span-2">
 				<div class="step-header !mb-2">Category:</div>
 				<Dropdown
 					v-model="prompt.category"
@@ -96,10 +96,10 @@
 			</div>
 
 			<!-- System prompt -->
-			<section aria-labelledby="system-prompt" class="span-2 steps">
-				<h3 id="system-prompt" class="step-section-header span-2">Prompt Prefix</h3>
+			<section aria-labelledby="system-prompt" class="col-span-2 steps">
+				<h3 id="system-prompt" class="step-section-header col-span-2">Prompt Prefix</h3>
 
-				<div class="span-2">
+				<div class="col-span-2">
 					<Textarea
 						v-model="prompt.prefix"
 						class="w-full"
@@ -112,7 +112,7 @@
 				</div>
 			</section>
 
-			<div class="span-2 flex justify-content-end" style="gap: 16px">
+			<div class="col-span-2 flex justify-end" style="gap: 16px">
 				<!-- Create prompt -->
 				<Button
 					:label="editPrompt ? 'Save Changes' : 'Create Prompt'"

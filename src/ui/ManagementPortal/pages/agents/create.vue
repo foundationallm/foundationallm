@@ -43,7 +43,7 @@
 				</div>
 			</template>
 
-			<div class="span-2">
+			<div class="col-span-2">
 				<div id="aria-agent-name" class="step-header !mb-2">Agent name:</div>
 				<div id="aria-agent-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
@@ -76,7 +76,7 @@
 					</span>
 				</div>
 			</div>
-			<div class="span-2">
+			<div class="col-span-2">
 				<div class="step-header !mb-2">Agent Display Name:</div>
 				<div class="mb-2">
 					This is the name that will be displayed to users when interacting with the agent.
@@ -88,7 +88,7 @@
 					placeholder="Enter agent display name"
 				/>
 			</div>
-			<div class="span-2">
+			<div class="col-span-2">
 				<div class="step-header !mb-2">Description:</div>
 				<div id="aria-description" class="mb-2">
 					Provide a description to help others understand the agent's purpose.
@@ -101,7 +101,7 @@
 					aria-labelledby="aria-description"
 				/>
 			</div>
-			<div class="span-2">
+			<div class="col-span-2">
 				<div class="step-header !mb-2">Welcome message:</div>
 				<div id="aria-welcome-message-desc" class="mb-2">
 					Provide a message to display when a user starts a new conversation with the agent. If a
@@ -118,8 +118,8 @@
 			</div>
 
 			<!-- Agent configuration -->
-			<section aria-labelledby="agent-configuration" class="span-2 steps">
-				<h3 id="agent-configuration" class="step-section-header span-2">Agent Configuration</h3>
+			<section aria-labelledby="agent-configuration" class="col-span-2 steps">
+				<h3 id="agent-configuration" class="step-section-header col-span-2">Agent Configuration</h3>
 
 				<div class="step-header">Should conversations be included in the context?</div>
 				<div class="step-header">How should user-agent interactions be gated?</div>
@@ -155,7 +155,7 @@
 							Conversation History
 						</div>
 
-						<div class="flex align-center mt-2">
+						<div class="flex items-center mt-2">
 							<span id="aria-conversation-history-enabled" class="step-option__header"
 								>Enabled:</span
 							>
@@ -227,7 +227,7 @@
 						<div id="aria-gatekeeper" class="step-container__header">Gatekeeper</div>
 
 						<!-- Gatekeeper toggle -->
-						<div class="flex align-center mt-2">
+						<div class="flex items-center mt-2">
 							<span id="aria-gatekeeper-enabled" class="step-option__header"
 								>Use system default:</span
 							>
@@ -391,7 +391,7 @@
 						<div id="aria-gatekeeper" class="step-container__header">User Prompt Rewrite</div>
 
 						<!-- User prompt rewrite toggle -->
-						<div class="flex align-center mt-2">
+						<div class="flex items-center mt-2">
 							<span id="aria-user-prompt-rewrite-enabled" class="step-option__header"
 								>Enabled:</span
 							>
@@ -503,7 +503,7 @@
 						<div id="aria-gatekeeper" class="step-container__header">Semantic Cache</div>
 
 						<!-- Semantic cache toggle -->
-						<div class="flex align-center mt-2">
+						<div class="flex items-center mt-2">
 							<span id="aria-semantic-cache-enabled" class="step-option__header">Enabled:</span>
 							<span>
 								<ToggleButton
@@ -566,10 +566,10 @@
 				</CreateAgentStepItem>
 
 				<!-- Cost center -->
-				<div id="aria-cost-center" class="step-header span-2">
+				<div id="aria-cost-center" class="step-header col-span-2">
 					Would you like to assign this agent to a cost center?
 				</div>
-				<div class="span-2">
+				<div class="col-span-2">
 					<InputText
 						v-model="cost_center"
 						type="text"
@@ -580,8 +580,8 @@
 				</div>
 
 				<!-- Expiration -->
-				<div class="step-header span-2">Would you like to set an expiration on this agent?</div>
-				<div class="span-2">
+				<div class="step-header col-span-2">Would you like to set an expiration on this agent?</div>
+				<div class="col-span-2">
 					<Calendar
 						v-model="expirationDate"
 						show-icon
@@ -593,8 +593,8 @@
 			</section>
 
 			<!-- User portal experience -->
-			<section aria-labelledby="user-portal-experience" class="span-2 steps">
-				<h3 id="user-portal-experience" class="step-section-header span-2">
+			<section aria-labelledby="user-portal-experience" class="col-span-2 steps">
+				<h3 id="user-portal-experience" class="step-section-header col-span-2">
 					User Portal Experience
 				</h3>
 
@@ -662,14 +662,14 @@
 			</section>
 
 			<!-- Knowledge source -->
-			<section aria-labelledby="knowledge-source" class="span-2 steps">
-				<h3 id="knowledge-source" class="step-section-header span-2">Knowledge Source</h3>
+			<section aria-labelledby="knowledge-source" class="col-span-2 steps">
+				<h3 id="knowledge-source" class="step-section-header col-span-2">Knowledge Source</h3>
 
-				<div id="aria-inline-context" class="step-header span-2">
+				<div id="aria-inline-context" class="step-header col-span-2">
 					Does this agent have an inline context?
 				</div>
-				<div class="span-2">
-					<div class="flex align-center mt-2">
+				<div class="col-span-2">
+					<div class="flex items-center mt-2">
 						<span>
 							<ToggleButton
 								v-model="inline_context"
@@ -684,11 +684,11 @@
 				</div>
 
 				<template v-if="!inline_context">
-					<div id="aria-dedicated-pipeline" class="step-header span-2">
+					<div id="aria-dedicated-pipeline" class="step-header col-span-2">
 						Do you want this agent to have a dedicated pipeline?
 					</div>
-					<div class="span-2">
-						<div class="flex align-center mt-2">
+					<div class="col-span-2">
+						<div class="flex items-center mt-2">
 							<span>
 								<ToggleButton
 									v-model="dedicated_pipeline"
@@ -1013,11 +1013,11 @@
 			<!-- End of Knowledge Source -->
 
 			<!-- Workflow -->
-			<div class="step-section-header span-2">Workflow</div>
-			<div id="aria-workflow" class="step-header span-2">What workflow should the agent use?</div>
+			<div class="step-section-header col-span-2">Workflow</div>
+			<div id="aria-workflow" class="step-header col-span-2">What workflow should the agent use?</div>
 
 			<!-- Workflow selection -->
-			<div class="span-2">
+			<div class="col-span-2">
 				<Dropdown
 					:model-value="selectedWorkflow?.type"
 					:options="workflowOptions"
@@ -1038,7 +1038,7 @@
 			</div>
 
 			<!-- Workflow configuration -->
-			<div v-if="showWorkflowConfiguration" class="span-2">
+			<div v-if="showWorkflowConfiguration" class="col-span-2">
 				<!-- Workflow name -->
 				<div class="mb-6">
 					<div id="aria-workflow-name" class="step-header !mb-3">Workflow name:</div>
@@ -1078,7 +1078,7 @@
 				<!-- Workflow host -->
 				<div class="mb-6">
 					<div id="aria-workflow-host" class="step-header !mb-3">Workflow host:</div>
-					<div class="span-2">
+					<div class="col-span-2">
 						<Dropdown
 							v-model="workflowHost"
 							:options="orchestratorOptions"
@@ -1119,7 +1119,7 @@
 				<!-- Workflow main prompt -->
 				<div class="mb-6">
 					<div id="aria-persona" class="step-header !mb-3">What is the main workflow prompt?</div>
-					<div class="span-2">
+					<div class="col-span-2">
 						<Textarea
 							v-model="systemPrompt"
 							class="w-full"
@@ -1158,7 +1158,7 @@
 							}}" workflow resource?
 						</div>
 					</ConfirmationDialog>
-					<div class="flex justify-content-end mt-4">
+					<div class="flex justify-end mt-4">
 						<Button
 							severity="primary"
 							label="Add Workflow Resource"
@@ -1169,11 +1169,11 @@
 			</div>
 
 			<!-- Tools -->
-			<div class="step-section-header span-2">Tools</div>
-			<div id="aria-orchestrator" class="step-header span-2">What tools should the agent use?</div>
+			<div class="step-section-header col-span-2">Tools</div>
+			<div id="aria-orchestrator" class="step-header col-span-2">What tools should the agent use?</div>
 
 			<!-- Tools table -->
-			<div class="span-2">
+			<div class="col-span-2">
 				<DataTable
 					:value="agentTools"
 					striped-rows
@@ -1273,7 +1273,7 @@
 				</DataTable>
 
 				<!-- Add new tool -->
-				<div class="flex justify-content-end mt-4">
+				<div class="flex justify-end mt-4">
 					<Button @click="showNewToolDialog = true">Add New Tool</Button>
 				</div>
 
@@ -1287,12 +1287,12 @@
 			</div>
 
 			<!-- Security -->
-			<div v-if="virtualSecurityGroupId" class="step-section-header span-2">Security</div>
+			<div v-if="virtualSecurityGroupId" class="step-section-header col-span-2">Security</div>
 
 			<!-- Virtual security group id -->
 			<template v-if="virtualSecurityGroupId">
 				<div class="step-header">Virtual security group ID</div>
-				<div class="span-2 flex gap-4">
+				<div class="col-span-2 flex gap-4">
 					<InputText
 						:value="virtualSecurityGroupId"
 						disabled
@@ -1308,13 +1308,13 @@
 			<!-- Access tokens -->
 			<template v-if="virtualSecurityGroupId">
 				<div class="step-header">Agent access tokens</div>
-				<div class="span-2">
+				<div class="col-span-2">
 					<AgentAccessTokens :agent-name="agentName" />
 				</div>
 			</template>
 
 			<!-- Form buttons -->
-			<div class="span-2 flex justify-content-end gap-4">
+			<div class="col-span-2 flex justify-end gap-4">
 				<!-- Create agent -->
 				<Button
 					:label="editAgent ? 'Save Changes' : 'Create Agent'"

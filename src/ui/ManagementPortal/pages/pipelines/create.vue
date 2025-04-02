@@ -25,8 +25,8 @@
 			</template>
 
 			<!-- Name -->
-			<div class="step-header span-2">What is the name of the pipeline?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What is the name of the pipeline?</div>
+			<div class="col-span-2">
 				<div id="aria-pipeline-name" class="mb-2">Pipeline name:</div>
 				<div id="aria-pipeline-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
@@ -82,8 +82,8 @@
 			</div>
 
 			<!-- Data Source -->
-			<div class="step-header span-2">Select a data source</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">Select a data source</div>
+			<div class="col-span-2">
 				<Dropdown
 					v-model="selectedDataSource"
 					:options="dataSourceOptions"
@@ -176,8 +176,8 @@
 			</div>
 
 			<!-- Pipeline Stages -->
-			<div class="step-header span-2">Configure pipeline stages</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">Configure pipeline stages</div>
+			<div class="col-span-2">
 				<div class="stages-container">
 					<div
 						v-for="(stage, index) in selectedStagePlugins"
@@ -386,8 +386,8 @@
 			</div>
 
 			<!-- Pipeline Triggers -->
-			<div class="step-header span-2">Configure pipeline triggers</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">Configure pipeline triggers</div>
+			<div class="col-span-2">
 				<div class="trigger-container">
 					<div
 						v-for="(trigger, triggerIndex) in pipeline.triggers"
@@ -434,8 +434,8 @@
 								/>
 							</div>
 							<template v-if="triggerParameters[trigger.name]?.length > 0">
-								<div class="step-header span-2 !mb-2">Trigger Parameters:</div>
-								<div class="span-2">
+								<div class="step-header col-span-2 !mb-2">Trigger Parameters:</div>
+								<div class="col-span-2">
 									<div
 										v-for="(param, index) in triggerParameters[trigger.name]"
 										:key="index"
@@ -494,7 +494,7 @@
 			</div>
 
 			<!-- Buttons -->
-			<div class="button-container column-2 justify-self-end">
+			<div class="button-container col-2 justify-self-end">
 				<!-- Create pipeline -->
 				<Button
 					:label="editId ? 'Save Changes' : 'Create Pipeline'"

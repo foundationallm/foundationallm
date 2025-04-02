@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<div class="steps">
-			<div v-for="key in orderedKeys" :key="key" class="step span-2">
+			<div v-for="key in orderedKeys" :key="key" class="step col-span-2">
 				<div :id="key.split(':').pop()" class="step-header !mb-2">{{ getFriendlyName(key) }}</div>
 				<div class="mb-2">{{ getBrandingDescription(key) }}</div>
 				<InputSwitch
@@ -66,10 +66,10 @@
 			<div
 				v-for="group in orderedKeyColorsGrouped"
 				:key="group.label"
-				class="step span-2 color-group-container"
+				class="step col-span-2 color-group-container"
 			>
 				<div class="color-group">
-					<div v-for="key in group.keys" :key="key.key" class="step span-2">
+					<div v-for="key in group.keys" :key="key.key" class="step col-span-2">
 						<div :id="key.key.split(':').pop()" class="step-header !mb-2">
 							{{ getFriendlyName(key.key) }}
 						</div>
@@ -167,7 +167,7 @@
 				</div>
 			</div>
 			<div v-if="unorderedKeys.length > 0" class="divider" />
-			<div v-for="key in unorderedKeys" :key="key" class="step span-2">
+			<div v-for="key in unorderedKeys" :key="key" class="step col-span-2">
 				<div :id="key.split(':').pop()" class="step-header !mb-2">{{ getFriendlyName(key) }}</div>
 				<div class="mb-2">{{ getBrandingDescription(key) }}</div>
 				<InputText
@@ -177,7 +177,7 @@
 					@input="updateBrandingValue(key, $event.target.value)"
 				/>
 			</div>
-			<div class="button-container span-2 justify-self-end">
+			<div class="button-container col-span-2 justify-self-end">
 				<Button
 					:disabled="JSON.stringify(branding) === JSON.stringify(brandingOriginal)"
 					label="Reset"

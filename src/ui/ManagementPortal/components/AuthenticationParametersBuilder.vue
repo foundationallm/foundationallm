@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-column gap-4">
+	<div class="flex flex-col gap-4">
 		<!-- Authenication parameters table -->
 		<DataTable
 			:value="Object.keys(parameters).map((key) => ({ key, value: parameters[key] }))"
@@ -98,7 +98,7 @@
 		</DataTable>
 
 		<!-- Add parameter button -->
-		<div class="flex w-full justify-content-end">
+		<div class="flex w-full justify-end">
 			<Button
 				severity="primary"
 				style="word-wrap: none"

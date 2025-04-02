@@ -75,7 +75,7 @@
 			@update:model-value="handleAddToolResource"
 		/>
 
-		<div class="flex justify-content-end mt-4">
+		<div class="flex justify-end mt-4">
 			<Button
 				severity="primary"
 				label="Add Tool Resource"

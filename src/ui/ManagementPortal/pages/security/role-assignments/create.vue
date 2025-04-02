@@ -23,8 +23,8 @@
 			</template>
 
 			<!-- Scope -->
-			<div class="step-header span-2">What is the assignment scope?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What is the assignment scope?</div>
+			<div class="col-span-2">
 				<div id="aria-scope" class="mb-2">Scope</div>
 				<div class="input-wrapper">
 					<InputText
@@ -39,8 +39,8 @@
 			</div>
 
 			<!-- Description -->
-			<div class="step-header span-2">What is the description of the role assignment?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What is the description of the role assignment?</div>
+			<div class="col-span-2">
 				<div id="aria-description" class="mb-2">Data description:</div>
 				<div class="input-wrapper">
 					<InputText
@@ -54,8 +54,8 @@
 			</div>
 
 			<!-- Principal -->
-			<div class="step-header span-2">What principal to assign?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What principal to assign?</div>
+			<div class="col-span-2">
 				<!-- Type -->
 				<div id="aria-principal-type" class="mb-2">Principal Type:</div>
 				<div class="flex gap-4">
@@ -169,8 +169,8 @@
 			</div>
 
 			<!-- Role -->
-			<div id="aria-role" class="step-header span-2">What role to assign?</div>
-			<div class="span-2">
+			<div id="aria-role" class="step-header col-span-2">What role to assign?</div>
+			<div class="col-span-2">
 				<Dropdown
 					v-model="roleAssignment.role_definition_id"
 					:options="roleOptions"
@@ -182,7 +182,7 @@
 			</div>
 
 			<!-- Buttons -->
-			<div v-if="!headless" class="button-container column-2 justify-self-end">
+			<div v-if="!headless" class="button-container col-2 justify-self-end">
 				<!-- Create role assignment -->
 				<Button
 					:label="editId ? 'Save Changes' : 'Create Role Assignment'"

@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-column gap-4">
+	<div class="flex flex-col gap-4">
 		<DataTable
 			:value="Object.keys(properties).map((key) => ({ key, value: properties[key] }))"
 			striped-rows
@@ -93,7 +93,7 @@
 			/>
 
 			<!-- Add property -->
-			<div class="w-full flex justify-content-end mt-4">
+			<div class="w-full flex justify-end mt-4">
 				<Button
 					label="Add Property"
 					severity="primary"

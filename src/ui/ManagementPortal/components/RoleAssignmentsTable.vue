@@ -51,7 +51,7 @@
 				}"
 			>
 				<template #body="{ data }">
-					<div class="flex align-center" style="gap: 12px; margin-left: 32px">
+					<div class="flex items-center" style="gap: 12px; margin-left: 32px">
 						<i v-if="data.principal_type === 'Group'" class="pi pi-users"></i>
 						<i v-else-if="data.principal_type === 'User'" class="pi pi-user"></i>
 						<i v-else class="pi pi-verified"></i>

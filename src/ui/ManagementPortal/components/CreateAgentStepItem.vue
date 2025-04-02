@@ -12,7 +12,7 @@
 				<div class="step-container__edit__inner">
 					<slot name="edit" />
 
-					<div class="flex justify-content-end">
+					<div class="flex justify-end">
 						<Button
 							class="mt-2"
 							label="Done"

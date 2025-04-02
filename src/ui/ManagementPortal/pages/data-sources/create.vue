@@ -36,8 +36,8 @@
 			</template>
 
 			<!-- Name -->
-			<div class="step-header span-2">What is the name of the data source?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What is the name of the data source?</div>
+			<div class="col-span-2">
 				<div id="aria-source-name" class="mb-2">Data source name:</div>
 				<div id="aria-source-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
@@ -83,10 +83,10 @@
 			</div>
 
 			<!-- Type -->
-			<div id="aria-source-type" class="step-header span-2">
+			<div id="aria-source-type" class="step-header col-span-2">
 				What is the type of the data source?
 			</div>
-			<div class="span-2">
+			<div class="col-span-2">
 				<Dropdown
 					v-model="dataSource.type"
 					:options="sourceTypeOptions"
@@ -100,7 +100,7 @@
 
 			<!-- Connection details -->
 			<!-- Show this section only if a source type is selected -->
-			<div v-if="dataSource.type" class="span-2">
+			<div v-if="dataSource.type" class="col-span-2">
 				<div class="step-header !mb-2">What are the connection details?</div>
 
 				<!-- Azure data lake -->
@@ -121,7 +121,7 @@
 						v-if="
 							dataSource.resolved_configuration_references.AuthenticationType === 'ConnectionString'
 						"
-						class="span-2"
+						class="col-span-2"
 					>
 						<div id="aria-connection-string" class="mb-2 mt-2">Connection string:</div>
 						<SecretKeyInput
@@ -135,7 +135,7 @@
 					<!-- API Key -->
 					<div
 						v-if="dataSource.resolved_configuration_references.AuthenticationType === 'AccountKey'"
-						class="span-2"
+						class="col-span-2"
 					>
 						<div id="aria-api-key" class="mb-2 mt-2">API Key:</div>
 						<SecretKeyInput
@@ -159,7 +159,7 @@
 						v-if="
 							dataSource.resolved_configuration_references.AuthenticationType === 'AzureIdentity'
 						"
-						class="span-2"
+						class="col-span-2"
 					>
 						<div id="aria-account-name" class="mb-2 mt-2">Account name:</div>
 						<InputText
@@ -204,7 +204,7 @@
 						v-if="
 							dataSource.resolved_configuration_references.AuthenticationType === 'ConnectionString'
 						"
-						class="span-2"
+						class="col-span-2"
 					>
 						<div id="aria-connection-string" class="mb-2 mt-2">Connection string:</div>
 						<SecretKeyInput
@@ -218,7 +218,7 @@
 					<!-- API Key -->
 					<div
 						v-if="dataSource.resolved_configuration_references.AuthenticationType === 'AccountKey'"
-						class="span-2"
+						class="col-span-2"
 					>
 						<div id="aria-api-key" class="mb-2 mt-2">API Key:</div>
 						<SecretKeyInput
@@ -242,7 +242,7 @@
 						v-if="
 							dataSource.resolved_configuration_references.AuthenticationType === 'AzureIdentity'
 						"
-						class="span-2"
+						class="col-span-2"
 					>
 						<div id="aria-account-name" class="mb-2 mt-2">Account name:</div>
 						<InputText
@@ -271,7 +271,7 @@
 				<!-- Azure SQL database -->
 				<div v-if="isAzureSQLDatabaseDataSource(dataSource)">
 					<!-- Connection string -->
-					<div class="span-2">
+					<div class="col-span-2">
 						<div id="aria-connection-string" class="mb-2">Connection string:</div>
 						<SecretKeyInput
 							v-model="dataSource.resolved_configuration_references.ConnectionString"
@@ -299,7 +299,7 @@
 
 				<!-- Sharepoint online -->
 				<div v-if="isSharePointOnlineSiteDataSource(dataSource)">
-					<div class="span-2">
+					<div class="col-span-2">
 						<div id="aria-client-id" class="mb-2">App ID (Client ID):</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.ClientId"
@@ -364,10 +364,10 @@
 				</div>
 			</div>
 
-			<div id="aria-cost-center" class="step-header span-2">
+			<div id="aria-cost-center" class="step-header col-span-2">
 				Would you like to assign this data source to a cost center?
 			</div>
-			<div class="span-2">
+			<div class="col-span-2">
 				<InputText
 					v-model="dataSource.cost_center"
 					type="text"
@@ -378,7 +378,7 @@
 			</div>
 
 			<!-- Buttons -->
-			<div class="button-container column-2 justify-self-end">
+			<div class="button-container col-2 justify-self-end">
 				<!-- Create data source -->
 				<Button
 					:label="editId ? 'Save Changes' : 'Create Data Source'"
