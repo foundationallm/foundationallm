@@ -129,9 +129,9 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
                     [
                         self.create_content_artifact(
                             original_prompt,
-                            generated_query,
-                            prompt_tokens,
-                            completion_tokens
+                            tool_input=generated_query,
+                            prompt_tokens=prompt_tokens,
+                            completion_tokens=completion_tokens
                         )
                     ]
 
@@ -141,9 +141,9 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
                     [
                         self.create_content_artifact(
                             original_prompt,
-                            prompt,
-                            prompt_tokens,
-                            completion_tokens
+                            tool_input=prompt,
+                            prompt_tokens=prompt_tokens,
+                            completion_tokens=completion_tokens
                         ),
                         self.create_error_content_artifact(
                             original_prompt,
