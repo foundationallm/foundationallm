@@ -95,8 +95,8 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             }
             else
             {
-                _logger.LogError(
-                    "An invalid context was specified when looking for secret keys in context {ContextId} and instance {InstanceId}.",
+                _logger.LogWarning(
+                    "The context {ContextId} does not exist in instance {InstanceId}. This is expected for contexts in which secret keys were not persisted yet.",
                     contextId,
                     _instanceId);
             }
