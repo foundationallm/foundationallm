@@ -503,12 +503,7 @@
 				/>
 
 				<!-- Cancel -->
-				<Button
-					v-if="editId"
-					label="Cancel"
-					severity="secondary"
-					@click="handleCancel"
-				/>
+				<Button label="Cancel" severity="secondary" @click="handleCancel" />
 			</div>
 		</div>
 

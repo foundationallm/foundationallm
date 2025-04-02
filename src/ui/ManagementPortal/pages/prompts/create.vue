@@ -122,7 +122,7 @@
 				/>
 
 				<!-- Cancel -->
-				<Button v-if="editPrompt" label="Cancel" severity="secondary" @click="handleCancel" />
+				<Button label="Cancel" severity="secondary" @click="handleCancel" />
 			</div>
 		</div>
 	</main>
