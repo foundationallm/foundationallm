@@ -1,6 +1,4 @@
-from enum import Enum
-
-class ContentArtifactTypeNames(str, Enum):
+class ContentArtifactTypeNames:
     """The names of the content artifact types."""
     TOOL_EXECUTION = 'ToolExecution'
     TOOL_ERROR = 'ToolError'

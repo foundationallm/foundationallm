@@ -12,6 +12,15 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Python: Test SQL Tool",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "test/foundationallm_sql_tool/test_tool.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}"
         }
     ]
 }
