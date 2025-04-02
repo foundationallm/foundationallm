@@ -77,10 +77,8 @@ response = asyncio.run(
     )
 )
 print("++++++++++++++++++++++++++++++++++++++")
-print('File content artifacts:')
-for content_artifact in response.content_artifacts:
-    if content_artifact.type == ContentArtifactTypeNames.FILE:
-        print(content_artifact.filepath)
+print('Content artifacts:')
+print(response.content_artifacts)
 print("++++++++++++++++++++++++++++++++++++++")
 
 print("*********************************")
