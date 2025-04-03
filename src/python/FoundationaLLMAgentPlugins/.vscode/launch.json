@@ -4,32 +4,41 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        {
-            "name": "Python: Test Workflow",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "test/foundationallm_function_calling_workflow/test_workflow.py",
-            "console": "integratedTerminal",
-            "justMyCode": false,
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "name": "Python: Test SQL Tool",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "test/foundationallm_sql_tool/test_tool.py",
-            "console": "integratedTerminal",
-            "justMyCode": false,
-            "cwd": "${workspaceFolder}"
-        },
-				{
-					"name": "Python: Test KQL Tool",
+			{
+					"name": "Python: Test Workflow",
 					"type": "debugpy",
 					"request": "launch",
-					"program": "test/foundationallm_kql_tool/test_tool.py",
+					"program": "test/foundationallm_function_calling_workflow/test_workflow.py",
 					"console": "integratedTerminal",
 					"justMyCode": false,
 					"cwd": "${workspaceFolder}"
+			},
+			{
+					"name": "Python: Test SQL Tool",
+					"type": "debugpy",
+					"request": "launch",
+					"program": "test/foundationallm_sql_tool/test_tool.py",
+					"console": "integratedTerminal",
+					"justMyCode": false,
+					"cwd": "${workspaceFolder}"
+			},
+			{
+				"name": "Python: Test KQL Tool",
+				"type": "debugpy",
+				"request": "launch",
+				"program": "test/foundationallm_kql_tool/test_tool.py",
+				"console": "integratedTerminal",
+				"justMyCode": false,
+				"cwd": "${workspaceFolder}"
+			},
+			{
+				"name": "Python: Test FileAnalysis Tool",
+				"type": "debugpy",
+				"request": "launch",
+				"program": "test/foundationallm_file_analysis_tool/test_tool.py",
+				"console": "integratedTerminal",
+				"justMyCode": false,
+				"cwd": "${workspaceFolder}"
 			}
     ]
 }

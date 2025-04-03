@@ -4,7 +4,7 @@ Implements the FoundationaLLM file analysis tool.
 
 # Platform imports
 import asyncio
-from typing import Any, Optional, List
+from typing import Any, Optional, List, ClassVar
 
 # Azure imports
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
@@ -31,7 +31,8 @@ from foundationallm.models.agents import AgentTool
 
 class FoundationaLLMFileAnalysisTool(FoundationaLLMToolBase):
 
-    response_format: str = 'content'
+    DYNAMIC_SESSION_ENDPOINT: ClassVar[str] = "foundationallm_aca_code_execution_endpoint"
+    DYNAMIC_SESSION_ID: ClassVar[str] = "foundationallm_aca_code_execution_session_id"
 
     def __init__(self, tool_config: AgentTool, objects: dict, user_identity:UserIdentity, config: Configuration):
         """ Initializes the FoundationaLLMDataAnalysisTool class with the tool configuration,
@@ -39,68 +40,15 @@ class FoundationaLLMFileAnalysisTool(FoundationaLLMToolBase):
 
         super().__init__(tool_config, objects, user_identity, config)
 
+        self.main_llm = self.get_main_language_model()
+        self.main_prompt = self.get_main_prompt()
+        self.final_prompt = self.get_prompt("final_prompt")
+        self.default_error_message = "An error occurred while analyzing the file."
+
         self.code_interpreter_tool = SessionsPythonREPLTool(
-            session_id='skunkworks-0001',
-            response_format='content_and_artifact',
-            pool_management_endpoint=tool_config.properties['pool_management_endpoint']
+            session_id=objects[tool_config.name][self.DYNAMIC_SESSION_ID],
+            pool_management_endpoint=objects[tool_config.name][self.DYNAMIC_SESSION_ENDPOINT]
         )
-
-        self.__create_code_gen_llm()
-        self.__create_code_gen_prompt()
-
-    def __create_code_gen_llm(self):
-        """ Creates the main LLM instance and saves it to self.main_llm. """
-
-        model_object_id = self.tool_config.get_resource_object_id_properties(
-            ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
-            AIModelResourceTypeNames.AI_MODELS,
-            ResourceObjectIdPropertyNames.OBJECT_ROLE,
-            ResourceObjectIdPropertyValues.MAIN_MODEL
-        )
-
-        if model_object_id:
-
-            main_llm_model_object_id = model_object_id.object_id
-            main_llm_model_properties = self.objects[main_llm_model_object_id]
-            main_llm_endpoint_object_id = main_llm_model_properties['endpoint_object_id']
-            main_llm_deployment_name = main_llm_model_properties['deployment_name']
-            main_llm_endpoint_properties = self.objects[main_llm_endpoint_object_id]
-            main_llm_endpoint_url = main_llm_endpoint_properties['url']
-            main_llm_endpoint_api_version = main_llm_endpoint_properties['api_version']
-
-            scope = 'https://cognitiveservices.azure.com/.default'
-            # Set up a Azure AD token provider.
-            token_provider = get_bearer_token_provider(
-                self.default_credential,
-                scope
-            )
-
-            self.code_gen_llm = AzureChatOpenAI(
-                azure_endpoint=main_llm_endpoint_url,
-                api_version=main_llm_endpoint_api_version,
-                openai_api_type='azure_ad',
-                azure_ad_token_provider=token_provider,
-                azure_deployment=main_llm_deployment_name,
-                temperature=0.5,
-                top_p=0.5,
-                tool_choice=None
-            )
-
-    def __create_code_gen_prompt(self):
-
-        prompt_object_id = self.tool_config.get_resource_object_id_properties(
-            ResourceProviderNames.FOUNDATIONALLM_PROMPT,
-            PromptResourceTypeNames.PROMPTS,
-            ResourceObjectIdPropertyNames.OBJECT_ROLE,
-            ResourceObjectIdPropertyValues.MAIN_PROMPT
-        )
-
-        if prompt_object_id:
-            main_prompt_object_id = prompt_object_id.object_id
-            main_prompt_properties = self.objects[main_prompt_object_id]
-            main_prompt = main_prompt_properties['prefix']
-
-            self.code_gen_prompt = main_prompt
 
     def __build_messages(
         self,
