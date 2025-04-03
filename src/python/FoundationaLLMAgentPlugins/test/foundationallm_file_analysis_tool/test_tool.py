@@ -7,11 +7,15 @@ import sys
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import KnowledgeManagementCompletionRequest
 
+# import pandas as pd
+# df = pd.read_json('.\\test\\ProductCatalog.json')
+# df.to_parquet('.\\test\\ProductCatalog.parquet', index=False)
+
 sys.path.append('src')
 from foundationallm_agent_plugins import FoundationaLLMAgentToolPluginManager # type: ignore
 
 user_identity_json = {"name": "Experimental Test", "user_name":"sw@foundationaLLM.ai","upn":"sw@foundationaLLM.ai"}
-full_request_json_file_name = 'test/full_request_sql.json' # full original langchain request, contains agent, tools, exploded objects
+full_request_json_file_name = 'test/full_request_file_analysis.json' # full original langchain request, contains agent, tools, exploded objects
 print(os.environ['FOUNDATIONALLM_APP_CONFIGURATION_URI'])
 
 user_identity = UserIdentity.from_json(user_identity_json)
@@ -28,11 +32,11 @@ workflow = request.agent.workflow
 
 foundationallmagent_tool_plugin_manager = FoundationaLLMAgentToolPluginManager()
 # The AgentTool has the configured description the LLM will use to make a tool choice.
-sql_tool = foundationallmagent_tool_plugin_manager.create_tool(agent_tool, exploded_objects_json, user_identity, config)
+file_analysis_tool = foundationallmagent_tool_plugin_manager.create_tool(agent_tool, exploded_objects_json, user_identity, config)
 
 #-------------------------------------------------------------------------------
 # Direct tool invocation
-response, content_artifacts = asyncio.run(sql_tool._arun(prompt='What is the average precipitation per geography?'))
+response, content_artifacts = asyncio.run(file_analysis_tool._arun(prompt='What is the average price of products of type Jackets?'))
 print("**** RESPONSE ****")
 print(response)
 print("**** CONTENT ARTIFACTS ****")

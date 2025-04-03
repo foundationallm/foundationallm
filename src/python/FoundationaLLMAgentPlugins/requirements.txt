@@ -25,3 +25,4 @@ wikipedia==1.4.0
 
 
 pyodbc==5.2.0
+pyarrow==18.1.0
