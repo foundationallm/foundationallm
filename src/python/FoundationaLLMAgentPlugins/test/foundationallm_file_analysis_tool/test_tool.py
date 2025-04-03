@@ -15,7 +15,7 @@ sys.path.append('src')
 from foundationallm_agent_plugins import FoundationaLLMAgentToolPluginManager # type: ignore
 
 user_identity_json = {"name": "Experimental Test", "user_name":"sw@foundationaLLM.ai","upn":"sw@foundationaLLM.ai"}
-full_request_json_file_name = 'test/full_request_kql.json' # full original langchain request, contains agent, tools, exploded objects
+full_request_json_file_name = 'test/full_request_file_analysis.json' # full original langchain request, contains agent, tools, exploded objects
 print(os.environ['FOUNDATIONALLM_APP_CONFIGURATION_URI'])
 
 user_identity = UserIdentity.from_json(user_identity_json)
