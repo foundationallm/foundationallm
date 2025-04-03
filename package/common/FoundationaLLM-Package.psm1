@@ -104,33 +104,41 @@ function Deploy-Package {
         Write-Host "Prompt created: $($promptResult)" -ForegroundColor Green
     }
 
-    $agent = Get-Content "$($PackageRoot)/artifacts/agent.json" `
-        | Resolve-Placeholders -Parameters $Parameters `
-        | ConvertFrom-Json -AsHashTable
+    if (Test-Path -Path "$($PackageRoot)/artifacts/agent.json") {
+    
+        $agent = Get-Content "$($PackageRoot)/artifacts/agent.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
 
-    $workflow = Get-Content "$($PackageRoot)/artifacts/workflow.json" `
-        | Resolve-Placeholders -Parameters $Parameters `
-        | ConvertFrom-Json -AsHashTable
-    $resourceObjectIds = (Get-ResourceObjectIds -Resources $workflow.resources)
-    $workflow["resource_object_ids"] = $resourceObjectIds
-    $workflow.Remove("resources")
-    $agent["workflow"] = $workflow
-    $agent["tools"] = @()
+        $workflow = Get-Content "$($PackageRoot)/artifacts/workflow.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+        
+        $resourceObjectIds = (Get-ResourceObjectIds -Resources $workflow.resources)
+        $workflow["resource_object_ids"] = $resourceObjectIds
+        $workflow.Remove("resources")
+        $agent["workflow"] = $workflow
+        $agent["tools"] = @()
 
-    $tools = Get-Content "$($PackageRoot)/artifacts/tools.json" `
-        | Resolve-Placeholders -Parameters $Parameters `
-        | ConvertFrom-Json -AsHashTable
-    $tools | ForEach-Object {
-        $tool = $_
-        $toolResourceObjectIds = (Get-ResourceObjectIds -Resources $tool.resources)
-        $tool["resource_object_ids"] = $toolResourceObjectIds
-        $tool.Remove("resources")
-        $agent["tools"] += $tool
+        $tools = Get-Content "$($PackageRoot)/artifacts/tools.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        $tools | ForEach-Object {
+            if ((-not $Parameters.ContainsKey("AGENT_TOOLS")) -or $Parameters["AGENT_TOOLS"].Contains($_.name)) {
+                
+                $tool = $_
+                $toolResourceObjectIds = (Get-ResourceObjectIds -Resources $tool.resources)
+                $tool["resource_object_ids"] = $toolResourceObjectIds
+                $tool.Remove("resources")
+                $agent["tools"] += $tool
+            }
+        }
+
+        Write-Host "Creating agent: $($agent.name)"
+        $agentResult = (Merge-Agent -Agent $agent)
+        Write-Host "Agent created: $($agentResult)" -ForegroundColor Green
     }
-
-    Write-Host "Creating agent: $($agent.name)"
-    $agentResult = (Merge-Agent -Agent $agent)
-    Write-Host "Agent created: $($agentResult)" -ForegroundColor Green
 
     Merge-RoleAssignments -PackageRoot $PackageRoot -Parameters $Parameters
 }
