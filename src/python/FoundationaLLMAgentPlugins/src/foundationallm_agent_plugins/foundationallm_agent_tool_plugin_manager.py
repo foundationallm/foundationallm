@@ -7,7 +7,8 @@ from foundationallm_agent_plugins.tools import (
     FoundationaLLMSQLTool,
     FoundationaLLMKQLTool,
     FoundationaLLMCodeInterpreterTool,
-    FoundationaLLMKnowledgeSearchTool
+    FoundationaLLMKnowledgeSearchTool,
+    FoundationaLLMFileAnalysisTool
 )
 
 class FoundationaLLMAgentToolPluginManager(ToolPluginManagerBase):
@@ -16,6 +17,7 @@ class FoundationaLLMAgentToolPluginManager(ToolPluginManagerBase):
     FOUNDATIONALLM_KNOWLEDGE_SEARCH_TOOL_CLASS = 'FoundationaLLMKnowledgeSearchTool'
     FOUNDATIONALLM_SQL_TOOL_CLASS = 'FoundationaLLMSQLTool'
     FOUNDATIONALLM_KQL_TOOL_CLASS = 'FoundationaLLMKQLTool'
+    FOUNDATIONALLM_FILE_ANALYSIS_TOOL_CLASS = 'FoundationaLLMFileAnalysisTool'
 
     def __init__(self):
         super().__init__()
@@ -35,6 +37,8 @@ class FoundationaLLMAgentToolPluginManager(ToolPluginManagerBase):
                 return FoundationaLLMSQLTool(tool_config, objects, user_identity, config)
             case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_KQL_TOOL_CLASS:
                 return FoundationaLLMKQLTool(tool_config, objects, user_identity, config)
+            case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_FILE_ANALYSIS_TOOL_CLASS:
+                return FoundationaLLMFileAnalysisTool(tool_config, objects, user_identity, config)
             case _:
                 raise ValueError(f'Unknown tool class: {tool_config.class_name}')
 

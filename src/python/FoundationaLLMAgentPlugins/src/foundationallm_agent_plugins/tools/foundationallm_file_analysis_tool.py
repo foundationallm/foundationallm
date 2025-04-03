@@ -1,3 +1,7 @@
+"""
+Implements the FoundationaLLM file analysis tool.
+"""
+
 # Platform imports
 import asyncio
 from typing import Any, Optional, List
@@ -25,16 +29,16 @@ from foundationallm.models.constants import (
 from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.models.agents import AgentTool
 
-class FoundationaLLMDataAnalysisTool(FoundationaLLMToolBase):
+class FoundationaLLMFileAnalysisTool(FoundationaLLMToolBase):
 
     response_format: str = 'content'
 
     def __init__(self, tool_config: AgentTool, objects: dict, user_identity:UserIdentity, config: Configuration):
         """ Initializes the FoundationaLLMDataAnalysisTool class with the tool configuration,
             exploded objects collection, user_identity, and platform configuration. """
-        
+
         super().__init__(tool_config, objects, user_identity, config)
-        
+
         self.code_interpreter_tool = SessionsPythonREPLTool(
             session_id='skunkworks-0001',
             response_format='content_and_artifact',
@@ -83,7 +87,7 @@ class FoundationaLLMDataAnalysisTool(FoundationaLLMToolBase):
             )
 
     def __create_code_gen_prompt(self):
-        
+
         prompt_object_id = self.tool_config.get_resource_object_id_properties(
             ResourceProviderNames.FOUNDATIONALLM_PROMPT,
             PromptResourceTypeNames.PROMPTS,
@@ -105,7 +109,7 @@ class FoundationaLLMDataAnalysisTool(FoundationaLLMToolBase):
     ) -> List[BaseMessage]:
 
         user_prompt = runnable_config['configurable']['original_user_prompt'] if 'original_user_prompt' in runnable_config['configurable'] else prompt
-        
+
         messages = [
             SystemMessage(content=self.code_gen_prompt),
             HumanMessage(content=user_prompt)
@@ -118,10 +122,10 @@ class FoundationaLLMDataAnalysisTool(FoundationaLLMToolBase):
             runnable_config: RunnableConfig = None,
             run_manager: Optional[CallbackManagerForToolRun] = None
             ) -> str:
-        
+
         result = self.code_gen_llm.invoke(
             self.__build_messages(prompt, runnable_config))
-        
+
         code_result = self.code_interpreter_tool.invoke(result.content)
 
         return code_result
