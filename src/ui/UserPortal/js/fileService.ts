@@ -15,7 +15,7 @@ export async function fetchBlobUrl(content: MessageContent) {
 			appStore.addToast({
 				severity: 'error',
 				summary: 'Error downloading file',
-				detail: `Failed to download "${content.fileName}". ${error.message || error}`,
+				detail: `Failed to download "${content.fileName}".`,
 			});
 			content.error = true;
 		} finally {
