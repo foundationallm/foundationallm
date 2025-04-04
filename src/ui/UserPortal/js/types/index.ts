@@ -186,12 +186,8 @@ export interface OneDriveWorkSchool {
 export interface RateLimitError {
 	quota_name: string;
 	quota_context: string;
-	quotaMetricPartitionId: string;
 	quota_exceeded: boolean;
 	time_until_retry_seconds: number;
-	localMetricCount: number;
-	remoteMetricCount: number;
-	totalMetricCount: number;
 }
 
 export interface MessageResponse {
