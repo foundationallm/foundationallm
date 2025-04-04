@@ -13,6 +13,8 @@ import type {
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
 	ResourceProviderDeleteResults,
+	RateLimitError,
+	MessageResponse,
 } from '@/js/types';
 
 export default {
@@ -54,10 +56,7 @@ export default {
 	 * @returns The bearer token.
 	 */
 	async getBearerToken() {
-		// When the scope is specific on aquireTokenSilent this seems to be instant
-		// otherwise we would have to store the token and check if it has expired here
-		// to determine if we need to fetch it again
-		const token = await useNuxtApp().$authStore.getApiToken();
+		const token = await useNuxtApp().$authStore.getApiToken() as { accessToken: string };
 		return token.accessToken;
 	},
 
@@ -80,12 +79,12 @@ export default {
 	 * @param opts The options for the fetch request.
 	 * @returns A promise that resolves to the fetched data.
 	 */
-	async fetch(url: string, opts: any = {}) {
+	async fetch<T>(url: string, opts: any = {}): Promise<T> {
 		const response = await this.fetchDirect(`${this.apiUrl}${url}`, opts);
-		return response;
+		return response as T;
 	},
 
-	async fetchDirect(url: string, opts: any = {}) {
+	async fetchDirect<T>(url: string, opts: any = {}): Promise<T> {
 		const options = opts;
 		options.headers = opts.headers || {};
 
@@ -109,15 +108,18 @@ export default {
 		}
 
 		try {
-			const response = await $fetch(url, options);
-			if (response.status >= 400) {
+			const response = await $fetch(url, options) as T & { status?: number };
+			if (response.status && response.status >= 400) {
 				throw response;
 			}
-			return response;
+			return response as T;
 		} catch (error) {
-			// If the error is an HTTP error, extract the message directly.
-			const errorMessage = formatError(error);
-			throw new Error(errorMessage);
+			// Preserve the original error structure
+			if (error.data?.quota_exceeded) {
+				throw error;
+			}
+			// For other errors, format them
+			throw new Error(formatError(error));
 		}
 	},
 
@@ -128,12 +130,16 @@ export default {
 	 * @returns A Promise that resolves to the operation ID if the process is successfully started.
 	 * @throws An error if the process fails to start.
 	 */
-	async startLongRunningProcess(requestBody: any) {
+	async startLongRunningProcess(requestBody: any): Promise<string> {
 		try {
-			const response = await this.fetch(`/instances/${this.instanceId}/async-completions`, {
-				method: 'POST',
-				body: requestBody,
-			});
+			const response = await this.fetch<{ status: number; operationId: string }>(
+				`/instances/${this.instanceId}/async-completions`,
+				{
+					method: 'POST',
+					body: requestBody,
+				},
+			);
+
 			if (response.status === 202) {
 				return response.operationId;
 			} else {
@@ -150,15 +156,10 @@ export default {
 	 * @returns A Promise that resolves to the response from the server.
 	 * @throws If an error occurs during the API call.
 	 */
-	async checkProcessStatus(operationId: string) {
-		try {
-			const response = (await this.fetch(
-				`/instances/${this.instanceId}/async-completions/${operationId}/status`,
-			)) as LongRunningOperation;
-			return response;
-		} catch (error) {
-			throw new Error(formatError(error));
-		}
+	async checkProcessStatus(operationId: string): Promise<LongRunningOperation> {
+		return await this.fetch<LongRunningOperation>(
+			`/instances/${this.instanceId}/async-completions/${operationId}/status`,
+		);
 	},
 
 	/**
@@ -166,11 +167,11 @@ export default {
 	 * @param operationId - The ID of the operation to poll for completion.
 	 * @returns A promise that resolves to the result of the operation when it is completed.
 	 */
-	async pollForCompletion(operationId: string) {
+	async pollForCompletion(operationId: string): Promise<Message> {
 		while (true) {
 			const status = await this.checkProcessStatus(operationId);
 			if (status.isCompleted) {
-				return status.result;
+				return status.result as Message;
 			}
 			await new Promise((resolve) => setTimeout(resolve, 2000)); // Poll every 2 seconds
 		}
@@ -180,19 +181,19 @@ export default {
 	 * Retrieves the chat sessions from the API.
 	 * @returns {Promise<Array<Session>>} A promise that resolves to an array of sessions.
 	 */
-	async getSessions() {
-		return (await this.fetch(`/instances/${this.instanceId}/sessions`)) as Array<Session>;
+	async getSessions(): Promise<Session[]> {
+		return await this.fetch<Session[]>(`/instances/${this.instanceId}/sessions`);
 	},
 
 	/**
 	 * Adds a new chat session.
 	 * @returns {Promise<Session>} A promise that resolves to the created session.
 	 */
-	async addSession(properties: ChatSessionProperties) {
-		return (await this.fetch(`/instances/${this.instanceId}/sessions`, {
+	async addSession(properties: ChatSessionProperties): Promise<Session> {
+		return await this.fetch<Session>(`/instances/${this.instanceId}/sessions`, {
 			method: 'POST',
 			body: properties,
-		})) as Session;
+		});
 	},
 
 	/**
@@ -201,12 +202,12 @@ export default {
 	 * @param newChatSessionName The new name for the session.
 	 * @returns The renamed session.
 	 */
-	async renameSession(sessionId: string, newChatSessionName: string) {
+	async renameSession(sessionId: string, newChatSessionName: string): Promise<Session> {
 		const properties: ChatSessionProperties = { name: newChatSessionName };
-		return (await this.fetch(`/instances/${this.instanceId}/sessions/${sessionId}/rename`, {
+		return await this.fetch<Session>(`/instances/${this.instanceId}/sessions/${sessionId}/rename`, {
 			method: 'POST',
 			body: properties,
-		})) as Session;
+		});
 	},
 
 	/**
@@ -214,10 +215,10 @@ export default {
 	 * @param sessionId The ID of the session to delete.
 	 * @returns A promise that resolves to the deleted session.
 	 */
-	async deleteSession(sessionId: string) {
-		return (await this.fetch(`/instances/${this.instanceId}/sessions/${sessionId}`, {
+	async deleteSession(sessionId: string): Promise<Session> {
+		return await this.fetch<Session>(`/instances/${this.instanceId}/sessions/${sessionId}`, {
 			method: 'DELETE',
-		})) as Session;
+		});
 	},
 
 	// Mock polling route
@@ -231,10 +232,10 @@ export default {
 	 * @param promptId The ID of the prompt.
 	 * @returns The completion prompt.
 	 */
-	async getPrompt(sessionId: string, promptId: string) {
-		return (await this.fetch(
+	async getPrompt(sessionId: string, promptId: string): Promise<CompletionPrompt> {
+		return await this.fetch<CompletionPrompt>(
 			`/instances/${this.instanceId}/sessions/${sessionId}/completionprompts/${promptId}`,
-		)) as CompletionPrompt;
+		);
 	},
 
 	/**
@@ -242,10 +243,10 @@ export default {
 	 * @param sessionId - The ID of the session.
 	 * @returns An array of messages.
 	 */
-	async getMessages(sessionId: string) {
-		return (await this.fetch(
+	async getMessages(sessionId: string): Promise<Message[]> {
+		return await this.fetch<Message[]>(
 			`/instances/${this.instanceId}/sessions/${sessionId}/messages`,
-		)) as Array<Message>;
+		);
 	},
 
 	/**
@@ -276,28 +277,21 @@ export default {
 	 * @param sessionId The ID of the session.
 	 * @param text The text of the message.
 	 * @param agent The agent object.
-	 * @returns A promise that resolves to a string representing the server response.
+	 * @returns A promise that resolves to a MessageResponse or rejects with a RateLimitError.
 	 */
-	async sendMessage(sessionId: string, text: string, agent: Agent, attachments: string[] = []) {
+	async sendMessage(sessionId: string, text: string, agent: Agent, attachments: string[] = []): Promise<MessageResponse> {
 		const orchestrationRequest: CompletionRequest = {
 			session_id: sessionId,
 			user_prompt: text,
 			agent_name: agent.name,
-			settings: null,
+			settings: undefined,
 			attachments,
 		};
 
-		// if (agent.long_running) {
 		return (await this.fetch(`/instances/${this.instanceId}/async-completions`, {
 			method: 'POST',
 			body: orchestrationRequest,
-		})) as string;
-		// } else {
-		// 	return (await this.fetch(`/instances/${this.instanceId}/completions`, {
-		// 		method: 'POST',
-		// 		body: orchestrationRequest,
-		// 	})) as string;
-		// }
+		})) as MessageResponse;
 	},
 
 	/**
