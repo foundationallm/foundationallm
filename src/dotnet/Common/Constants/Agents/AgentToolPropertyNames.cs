@@ -8,7 +8,7 @@
         /// <summary>
         /// Indicates whether code execution is enabled or not.
         /// </summary>
-        public const string FoundationaLLM_AzureContainerApps_CodeExecution_Enabled = "foundationallm_aca_code_execution_enabled";
+        public const string CodeSessionEndpointProvider = "code_session_endpoint_provider";
 
         /// <summary>
         /// The session identifier required to execute code in Azure Container Apps Dynamic Sessions.
