@@ -27,6 +27,13 @@
 
 			<!-- Table -->
 			<DataTable
+				:globalFilterFields="['resource.name', 'resource.description']"
+				v-model:filters="filters"
+				filterDisplay="menu"
+				paginator
+				:rows="10"
+				:rowsPerPageOptions="[10, 25, 50, 100]"
+				:paginatorTemplate="'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'"
 				:value="apiEndpoints"
 				striped-rows
 				scrollable
@@ -35,6 +42,10 @@
 				table-style="max-width: 100%"
 				size="small"
 			>
+				<template #header>
+					<TableSearch v-model="filters" placeholder="Search endpoints" class="-ml-2" />
+				</template>
+
 				<template #empty>
 					No models/endpoints found. Please use the menu on the left to create a new model/endpoint.
 				</template>
@@ -183,6 +194,7 @@ export default {
 			apiEndpoints: [] as APIEndpointConfiguration[],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
+			filters: {},
 			itemToDelete: null as APIEndpointConfiguration | null,
 		};
 	},

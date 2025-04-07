@@ -27,6 +27,13 @@
 
 			<!-- Table -->
 			<DataTable
+				:globalFilterFields="['resource.name']"
+				v-model:filters="filters"
+				filterDisplay="menu"
+				paginator
+				:rows="10"
+				:rowsPerPageOptions="[10, 25, 50, 100]"
+				:paginatorTemplate="'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'"
 				:value="dataSources"
 				striped-rows
 				scrollable
@@ -35,6 +42,10 @@
 				table-style="max-width: 100%"
 				size="small"
 			>
+				<template #header>
+					<TableSearch v-model="filters" placeholder="Search data sources" class="-ml-2" />
+				</template>
+
 				<template #empty>
 					<div role="alert" aria-live="polite">No data sources found.</div>
 				</template>
@@ -169,6 +180,7 @@ export default {
 			dataSources: [] as ResourceProviderGetResult<DataSource>[],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
+			filters: {},
 			dataSourceToDelete: null as DataSource | null,
 		};
 	},

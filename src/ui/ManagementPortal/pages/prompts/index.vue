@@ -28,6 +28,13 @@
 			<!-- Table -->
 			<DataTable
 				:value="prompts"
+				:globalFilterFields="['resource.name', 'resource.description']"
+				v-model:filters="filters"
+				filterDisplay="menu"
+				paginator
+				:rows="10"
+				:rowsPerPageOptions="[10, 25, 50, 100]"
+				:paginatorTemplate="'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'"
 				striped-rows
 				scrollable
 				:multi-sort-meta="sortingFields"
@@ -36,6 +43,10 @@
 				table-style="max-width: 100%"
 				size="small"
 			>
+				<template #header>
+					<TableSearch v-model="filters" placeholder="Search prompts" class="-ml-2" />
+				</template>
+
 				<template #empty>
 					<div role="alert" aria-live="polite">No prompts found.</div>
 				</template>
@@ -145,11 +156,12 @@ export default {
 			prompts: [] as ResourceProviderGetResult<Prompt>[],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
-			accessControlModalOpen: false,
+			filters: {},
 			sortingFields: [
 				// { field: 'resource.category', order: 2 },
 				{ field: 'resource.name', order: 1 },
 			],
+			accessControlModalOpen: false,
 		};
 	},
 
