@@ -43,7 +43,14 @@
 				size="small"
 			>
 				<template #header>
-					<TableSearch v-model="filters" placeholder="Search data sources" class="-ml-2" />
+					<div class="w-full flex justify-between">
+						<TableSearch v-model="filters" placeholder="Search data sources" />
+						<Button
+							type="button"
+							icon="pi pi-refresh"
+							@click="getAgentDataSources"
+						/>
+					</div>
 				</template>
 
 				<template #empty>
