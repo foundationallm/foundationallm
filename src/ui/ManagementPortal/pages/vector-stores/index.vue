@@ -27,7 +27,7 @@
 
 			<!-- Table -->
 			<DataTable
-				:globalFilterFields="['resource.name', 'resource.description']"
+				:globalFilterFields="['resource.name']"
 				v-model:filters="filters"
 				filterDisplay="menu"
 				paginator
