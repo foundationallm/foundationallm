@@ -250,7 +250,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .table__button {
 	color: var(--primary-button-bg);
 }
