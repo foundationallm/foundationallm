@@ -79,6 +79,19 @@
 					placeholder="Enter API endpoint description"
 					aria-labelledby="aria-description"
 				/>
+				<div class="step-header !mb-2">What service provides the model?</div>
+				<div id="aria-description" class="mb-2">
+					Select the service that provides the model.
+				</div>
+				<Dropdown
+					v-model="apiEndpoint.provider"
+					:options="providerOptions"
+					option-label="label"
+					option-value="value"
+					placeholder="--Select--"
+					class="mb-4"
+					aria-labelledby="aria-category"
+				/>
 
 				<!-- Category -->
 				<div id="aria-category" class="mb-2">Category:</div>
@@ -420,6 +433,25 @@ export default {
 					value: 'AzureIdentity',
 				},
 			],
+
+			providerOptions: [
+				{
+					label: 'Azure AI Inference API',
+					value: 'azureai',
+				},
+				{
+					label: 'Microsoft',
+					value: 'microsoft',
+				},
+				{
+					label: 'Amazon Bedrock',
+					value: 'bedrock',
+				},
+				{
+					label: 'Google VertexAI',
+					value: 'vertexai',
+				}
+			]
 		};
 	},
 
