@@ -14,6 +14,8 @@ Name | Content Type | Description | Default value
 `FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CodeInterpreter` | `application/json` | The settings for the Azure Container Apps Dynamic Sessions code interpreter. | `{ "Endpoints": { "Python": [], "CSharp": []} }`
 `FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CustomContainer` | `application/json` | The settings for the Azure Container Apps Dynamic Sessions custom container. | `{ "Endpoints": { "Python": [], "CSharp": []} }`
 
+FoundationaLLM now supports Azure AI Inference APIs accessible to the agent using the LangChain workflow host. This functionality expects an Azure AI Service resource. Authentication is accomplished support is via Azure Identity (Entra) or API Key. If using Azure Identity, ensure the LangChain managed identity has `Cognitive Services User` role on the Azure AI Service resource (may be inherited). Within the project defined in AI Foundry, ensure the LangChain managed identity has the `Azure AI Developer` role. If using API Key, ensure the API Key is securely stored in the key vault and exposed via an Application Configuration value. When defining the API Endpoint Configuration, add the authentication parameter `api_key_configuration_name` with the name of the Application Configuration key.
+
 ## Code sessions
 
 The tool property `foundationallm_aca_code_execution_enabled` has been renamed to `code_session_required`. The property indicates whether the tool requires a code session during its execution. If the property is set to `true`, the following additional properties must be set:

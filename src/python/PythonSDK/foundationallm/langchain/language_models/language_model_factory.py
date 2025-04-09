@@ -1,7 +1,9 @@
 import boto3
 import json
+from azure.core.credentials import AzureKeyCredential
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from google.oauth2 import service_account
+from langchain_azure_ai.chat_models import AzureAIChatCompletionsModel
 from langchain_core.language_models import BaseLanguageModel
 from langchain_aws import ChatBedrockConverse
 from langchain_google_vertexai import ChatVertexAI
@@ -48,6 +50,40 @@ class LanguageModelFactory:
             raise LangChainException("API endpoint configuration settings are missing.", 400)
         
         match api_endpoint.provider:
+            case LanguageModelProvider.AZUREAI:                
+                if api_endpoint.authentication_type == AuthenticationTypes.AZURE_IDENTITY:                    
+                    try:
+                        scope = api_endpoint.authentication_parameters.get('scope', 'https://cognitiveservices.azure.com/.default')
+                        credential = DefaultAzureCredential(exclude_environment_credential=True)                                         
+                        language_model = AzureAIChatCompletionsModel(
+                            endpoint=api_endpoint.url,
+                            credential=credential,
+                            model_name=ai_model.deployment_name,
+                            client_kwargs={
+                                "credential_scopes": [scope]
+                            }
+                        )
+                        if api_endpoint.api_version is not None:
+                            language_model.api_version = api_endpoint.api_version
+
+                    except Exception as e:
+                        raise LangChainException(f"Failed to create Azure OpenAI API connector: {str(e)}", 500)
+                else: # Key-based authentication                    
+                    try:                        
+                        api_key = self.config.get_value(api_endpoint.authentication_parameters.get('api_key_configuration_name'))                        
+                    except Exception as e:
+                        raise LangChainException(f"Failed to retrieve API key: {str(e)}", 500)
+
+                    if api_key is None:
+                        raise LangChainException("API key is missing from the configuration settings.", 400)                    
+                    credential = AzureKeyCredential(api_key)
+                    language_model = AzureAIChatCompletionsModel(
+                        endpoint=api_endpoint.url,
+                        credential = credential,
+                        model_name=ai_model.deployment_name
+                    )
+                    if api_endpoint.api_version is not None:
+                            language_model.api_version = api_endpoint.api_version                    
             case LanguageModelProvider.MICROSOFT:
                 op_type = api_endpoint.operation_type
                 if override_operation_type is not None:

@@ -27,6 +27,13 @@
 
 			<!-- Table -->
 			<DataTable
+				:globalFilterFields="['resource.name']"
+				:filters="filters"
+				filterDisplay="menu"
+				paginator
+				:rows="10"
+				:rowsPerPageOptions="[10, 25, 50, 100]"
+				:paginatorTemplate="'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'"
 				:value="aiModels"
 				striped-rows
 				scrollable
@@ -35,9 +42,21 @@
 				table-style="max-width: 100%"
 				size="small"
 			>
+				<template #header>
+					<div class="w-full flex justify-between">
+						<TableSearch v-model="filters" placeholder="Search models" />
+						<Button
+							type="button"
+							icon="pi pi-refresh"
+							@click="getModels"
+						/>
+					</div>
+				</template>
+
 				<template #empty>
 					No models/endpoints found. Please use the menu on the left to create a new model/endpoint.
 				</template>
+
 				<template #loading>Loading model & endpoints. Please wait.</template>
 
 				<!-- Name -->
@@ -151,6 +170,7 @@ export default {
 			aiModels: [] as AIModel,
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
+			filters: {},
 			itemToDelete: null as AIModel | null,
 		};
 	},
@@ -197,7 +217,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .table__button {
 	color: var(--primary-button-bg);
 }

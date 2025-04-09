@@ -21,6 +21,16 @@
 			table-style="max-width: 100%"
 			size="small"
 		>
+			<template #header>
+				<div class="w-full flex justify-end">
+					<Button
+						type="button"
+						icon="pi pi-refresh"
+						@click="getRoleAssignments"
+					/>
+				</div>
+			</template>
+
 			<template #empty> No role assignments found. </template>
 
 			<template #loading>Loading data sources. Please wait.</template>
@@ -266,7 +276,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .table__button {
 	color: var(--primary-button-bg);
 }

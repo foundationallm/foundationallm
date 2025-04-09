@@ -27,6 +27,13 @@
 
 			<!-- Table -->
 			<DataTable
+				:globalFilterFields="['resource.name', 'resource.description']"
+				v-model:filters="filters"
+				filterDisplay="menu"
+				paginator
+				:rows="10"
+				:rowsPerPageOptions="[10, 25, 50, 100]"
+				:paginatorTemplate="'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'"
 				:value="pipelines"
 				striped-rows
 				scrollable
@@ -35,6 +42,17 @@
 				table-style="max-width: 100%"
 				size="small"
 			>
+				<template #header>
+					<div class="w-full flex justify-between">
+						<TableSearch v-model="filters" placeholder="Search pipelines" />
+						<Button
+							type="button"
+							icon="pi pi-refresh"
+							@click="$emit('refresh-agents')"
+						/>
+					</div>
+				</template>
+
 				<template #empty>
 					<div role="alert" aria-live="polite">No vector stores found.</div>
 				</template>
@@ -245,6 +263,7 @@ export default {
 			pipelineToView: null,
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
+			filters: {},
 		};
 	},
 
@@ -339,7 +358,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .table__button {
 	color: var(--primary-button-bg);
 }

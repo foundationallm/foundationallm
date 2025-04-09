@@ -22,6 +22,7 @@ namespace FoundationaLLM.Common.Models.Quota
         /// <summary>
         /// Gets or sets the identifier of the quota metric partition used for evaluation.
         /// </summary>
+        [JsonIgnore]
         public required string QuotaMetricPartitionId { get; set; }
 
         /// <summary>
@@ -40,17 +41,20 @@ namespace FoundationaLLM.Common.Models.Quota
         /// Gets or sets the number of units of the quota metric that have a local origin
         /// (the service instance hosting the quota metric sequence).
         /// </summary>
+        [JsonIgnore]
         public int LocalMetricCount { get; set; }
 
         /// <summary>
         /// Gets or sets the number of units of the quota metric that have a remote origin
         /// (other service instances than the one hosting the quota metric sequence).
         /// </summary>
+        [JsonIgnore]
         public int RemoteMetricCount { get; set; }
 
         /// <summary>
         /// Gets or sets the total number of units of the quota metric, both local and remote.
         /// </summary>
+        [JsonIgnore]
         public int TotalMetricCount { get; set; }
     }
 }

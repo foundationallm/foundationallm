@@ -126,4 +126,9 @@ body,
 		color: var(--primary-button-text);
 	}
 }
+
+.p-datatable-header {
+	padding-left: 0;
+	padding-right: 0;
+}
 </style>
