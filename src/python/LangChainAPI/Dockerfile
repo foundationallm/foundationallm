@@ -14,9 +14,9 @@ RUN curl -O https://download.microsoft.com/download/7/6/d/76de322a-d860-4894-994
 RUN curl -O https://download.microsoft.com/download/fae28b9a-d880-42fd-9b98-d779f0fdd77f/msodbcsql18_18.5.1.1-1_$architecture.sig
 RUN curl -O https://download.microsoft.com/download/7/6/d/76de322a-d860-4894-9945-f0cc5d6a45f8/mssql-tools18_18.4.1.1-1_$architecture.sig
 
-RUN curl https://packages.microsoft.com/keys/microsoft.asc  | gpg --import -
-RUN gpg --verify msodbcsql18_18.5.1.1-1_$architecture.sig msodbcsql18_18.5.1.1-1_$architecture.apk
-RUN gpg --verify mssql-tools18_18.4.1.1-1_$architecture.sig mssql-tools18_18.4.1.1-1_$architecture.apk
+# RUN curl https://packages.microsoft.com/keys/microsoft.asc  | gpg --import -
+# RUN gpg --verify msodbcsql18_18.5.1.1-1_$architecture.sig msodbcsql18_18.5.1.1-1_$architecture.apk
+# RUN gpg --verify mssql-tools18_18.4.1.1-1_$architecture.sig mssql-tools18_18.4.1.1-1_$architecture.apk
 
 #Install the package(s)
 RUN apk add --allow-untrusted msodbcsql18_18.5.1.1-1_$architecture.apk
