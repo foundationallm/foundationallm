@@ -24,7 +24,7 @@ on:
   
 jobs:
   helm_build:
-    if: ${{ inputs.package_chart == 'true' }}
+    if: inputs.package_chart
     runs-on: ubuntu-latest
     permissions:
       contents: read
