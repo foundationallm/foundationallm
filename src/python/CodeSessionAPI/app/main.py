@@ -4,13 +4,16 @@ Main entry-point for the FoundationaLLM LangChainAPI.
 
 import io
 import sys
-from fastapi import FastAPI, HTTPException
+from fastapi import (
+    FastAPI,
+    HTTPException,
+    UploadFile
+)
 
 app = FastAPI(
-    title=f'FoundationaLLM Code Session API',
+    title='FoundationaLLM Code Session API',
     summary='API for managing code sessions content and code execution.',
-    description=f"""The FoundationaLLM Code Session API exposes code session capabilities required by the
-        FoundationaLLM custom Python container.""",
+    description='The FoundationaLLM Code Session API exposes code session capabilities required by the FoundationaLLM custom Python container.',
     version='1.0.0',
     contact={
         'name':'FoundationaLLM, Inc.',
@@ -50,11 +53,39 @@ async def execute_code(request_body: dict):
         new_stdout = io.StringIO()
         sys.stdout = new_stdout
 
+        # pylint: disable=exec-used
         exec(code, {}, namespace)
+        # pylint: enable=exec-used
 
         output = new_stdout.getvalue()
         sys.stdout = old_stdout
 
         return { 'results': namespace, 'output': output }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error executing code: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error executing code.") from e
+
+@app.post('files/upload')
+async def upload_file(file: UploadFile):
+    """
+    Upload a file to the code session.
+
+    Parameters
+    ----------
+    file : UploadFile
+        The file to upload.
+
+    Returns
+    -------
+    dict
+        The response containing the file upload status.
+    """
+
+    try:
+        contents = await file.read()
+        # Save the file to the code session
+        with open(file.filename, 'wb') as f:
+            f.write(contents)
+
+        return { 'status': 'success', 'filename': file.filename }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error uploading file.") from e
