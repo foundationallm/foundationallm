@@ -9,6 +9,7 @@ azure-storage-blob==12.21.0
 boto3==1.36.13
 langchain==0.3.17
 langchain-aws==0.2.12
+langchain-azure-ai==0.1.2
 langchain-experimental==0.3.4
 langchain-google-vertexai==2.0.13
 langchain-openai==0.3.3

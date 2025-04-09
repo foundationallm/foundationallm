@@ -3,6 +3,12 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-beta138
+
+## Configuration changes
+
+FoundationaLLM now supports Azure AI Inference APIs accessible to the agent using the LangChain workflow host. This functionality expects an Azure AI Service resource. Authentication is accomplished support is via Azure Identity (Entra) or API Key. If using Azure Identity, ensure the LangChain managed identity has `Cognitive Services User` role on the Azure AI Service resource (may be inherited). Within the project defined in AI Foundry, ensure the LangChain managed identity has the `Azure AI Developer` role. If using API Key, ensure the API Key is securely stored in the key vault and exposed via an Application Configuration value. When defining the API Endpoint Configuration, add the authentication parameter `api_key_configuration_name` with the name of the Application Configuration key.
+
 ## Starting from 0.9.7-beta128
 
 ## Configuration changes
