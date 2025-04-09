@@ -8,7 +8,7 @@ namespace FoundationaLLM.Common.Constants.OpenAI
     /// <remarks>
     /// The constants are used by the callers of the <see cref="GatewayServiceClient"/> implementations.
     /// </remarks>
-    public static class OpenAIAgentServiceCapabilityParameterNames
+    public static class OpenAIAgentCapabilityParameterNames
     {
         #region Requests
 
