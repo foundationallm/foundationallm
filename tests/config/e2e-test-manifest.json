@@ -6,140 +6,160 @@
             "context": "./src",
             "dockerfile": "./src/dotnet/AuthorizationAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/authorization-api",
-            "azd_env_key": "SERVICE_AUTHORIZATIONAPI_IMAGE"
+            "azd_env_key": "SERVICE_AUTHORIZATIONAPI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "chat-ui",
             "context": "./src/ui/UserPortal",
             "dockerfile": "./src/ui/UserPortal/Dockerfile",
             "helm_chart": "./deploy/common/helm/chat-ui",
-            "azd_env_key": "SERVICE_CHATUI_IMAGE"
+            "azd_env_key": "SERVICE_CHATUI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "core-api",
             "context": "./src",
             "dockerfile": "./src/dotnet/CoreAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/core-api",
-            "azd_env_key": "SERVICE_COREAPI_IMAGE"
+            "azd_env_key": "SERVICE_COREAPI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "core-job",
             "context": "./src",
             "dockerfile": "./src/dotnet/CoreWorker/Dockerfile",
             "helm_chart": "./deploy/common/helm/core-job",
-            "azd_env_key": "SERVICE_COREJOB_IMAGE"
+            "azd_env_key": "SERVICE_COREJOB_IMAGE",
+            "package_helm": true
         },
         {
             "name": "gatekeeper-api",
             "context": "./src",
             "dockerfile": "./src/dotnet/GatekeeperAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/gatekeeper-api", 
-            "azd_env_key": "SERVICE_GATEKEEPERAPI_IMAGE"
+            "azd_env_key": "SERVICE_GATEKEEPERAPI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "gatekeeper-integration-api",
             "context": "./src/python",
             "dockerfile": "./src/python/GatekeeperIntegrationAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/gatekeeper-integration-api",
-            "azd_env_key": "SERVICE_GATEKEEPERINTEGRATIONAPI_IMAGE"
+            "azd_env_key": "SERVICE_GATEKEEPERINTEGRATIONAPI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "gateway-api",
             "context": "./src",
             "dockerfile": "./src/dotnet/GatewayAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/gateway-api", 
-            "azd_env_key": "SERVICE_GATEWAYAPI_IMAGE"
+            "azd_env_key": "SERVICE_GATEWAYAPI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "gateway-adapter-api",
             "context": "./src",
             "dockerfile": "./src/dotnet/GatewayAdapterAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/gateway-adapter-api", 
-            "azd_env_key": "SERVICE_GATEWAYADAPTERAPI_IMAGE"
+            "azd_env_key": "SERVICE_GATEWAYADAPTERAPI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "langchain-api",
             "context": "./src/python",
             "dockerfile": "./src/python/LangChainAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/langchain-api",
-            "azd_env_key": "SERVICE_LANGCHAINAPI_IMAGE"
+            "azd_env_key": "SERVICE_LANGCHAINAPI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "management-api",
             "context": "./src",
             "dockerfile": "./src/dotnet/ManagementAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/management-api",
-            "azd_env_key": "SERVICE_MANAGEMENTAPI_IMAGE"
+            "azd_env_key": "SERVICE_MANAGEMENTAPI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "management-ui",
             "context": "./src/ui/ManagementPortal",
             "dockerfile": "./src/ui/ManagementPortal/Dockerfile",
             "helm_chart": "./deploy/common/helm/management-ui",
-            "azd_env_key": "SERVICE_MANAGEMENTUI_IMAGE"
+            "azd_env_key": "SERVICE_MANAGEMENTUI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "orchestration-api",
             "context": "./src",
             "dockerfile": "./src/dotnet/OrchestrationAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/orchestration-api",
-            "azd_env_key": "SERVICE_ORCHESTRATIONAPI_IMAGE"
+            "azd_env_key": "SERVICE_ORCHESTRATIONAPI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "semantic-kernel-api",
             "context": "./src",
             "dockerfile": "./src/dotnet/SemanticKernelAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/semantic-kernel-api",
-            "azd_env_key": "SERVICE_SEMANTICKERNELAPI_IMAGE"
+            "azd_env_key": "SERVICE_SEMANTICKERNELAPI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "state-api",
             "context": "./src",
             "dockerfile": "./src/dotnet/StateAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/state-api",
-            "azd_env_key": "SERVICE_STATEAPI_IMAGE"
+            "azd_env_key": "SERVICE_STATEAPI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "vectorization-api",
             "context": "./src",
             "dockerfile": "./src/dotnet/VectorizationAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/vectorization-api",
-            "azd_env_key": "SERVICE_VECTORIZATIONAPI_IMAGE"
+            "azd_env_key": "SERVICE_VECTORIZATIONAPI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "vectorization-job",
             "context": "./src",
             "dockerfile": "./src/dotnet/VectorizationWorker/Dockerfile",
             "helm_chart": "./deploy/common/helm/vectorization-job",
-            "azd_env_key": "SERVICE_VECTORIZATIONJOB_IMAGE"
+            "azd_env_key": "SERVICE_VECTORIZATIONJOB_IMAGE",
+            "package_helm": true
         },
         {
             "name": "context-api",
             "context": "./src",
             "dockerfile": "./src/dotnet/ContextAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/context-api",
-            "azd_env_key": "SERVICE_CONTEXTAPI_IMAGE"
+            "azd_env_key": "SERVICE_CONTEXTAPI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "datapipeline-api",
             "context": "./src",
             "dockerfile": "./src/dotnet/DataPipelineAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/datapipeline-api",
-            "azd_env_key": "SERVICE_DATAPIPELINEAPI_IMAGE"
+            "azd_env_key": "SERVICE_DATAPIPELINEAPI_IMAGE",
+            "package_helm": true
         },
         {
             "name": "datapipeline-frontendworker",
             "context": "./src",
             "dockerfile": "./src/dotnet/DataPipelineFrontendWorker/Dockerfile",
             "helm_chart": "./deploy/common/helm/datapipeline-frontendworker",
-            "azd_env_key": "SERVICE_DATAPIPELINEFRONTENDWORKER_IMAGE"
+            "azd_env_key": "SERVICE_DATAPIPELINEFRONTENDWORKER_IMAGE",
+            "package_helm": true
         },
         {
             "name": "datapipeline-backendworker",
             "context": "./src",
             "dockerfile": "./src/dotnet/DataPipelineBackendWorker/Dockerfile",
             "helm_chart": "./deploy/common/helm/datapipeline-backendworker",
-            "azd_env_key": "SERVICE_DATAPIPELINEBACKENDWORKER_IMAGE"
+            "azd_env_key": "SERVICE_DATAPIPELINEBACKENDWORKER_IMAGE",
+            "package_helm": true
         },
         {
             "name": "codesession-api",
