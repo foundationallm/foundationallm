@@ -379,14 +379,14 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             string.Empty,
                             new()
                             {
-                                { OpenAIAgentCapabilityParameterNames.CreateOpenAIFile, false },
-                                { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, fileMapping.OpenAIEndpoint },
-                                { OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStore, fileMapping.FileRequiresVectorization },
-                                { OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, _openAIVectorStoreId! },
-                                { OpenAIAgentCapabilityParameterNames.OpenAIFileId, fileMapping.OpenAIFileId! }
+                                { OpenAIAgentServiceCapabilityParameterNames.CreateOpenAIFile, false },
+                                { OpenAIAgentServiceCapabilityParameterNames.OpenAIEndpoint, fileMapping.OpenAIEndpoint },
+                                { OpenAIAgentServiceCapabilityParameterNames.AddOpenAIFileToVectorStore, fileMapping.FileRequiresVectorization },
+                                { OpenAIAgentServiceCapabilityParameterNames.OpenAIVectorStoreId, _openAIVectorStoreId! },
+                                { OpenAIAgentServiceCapabilityParameterNames.OpenAIFileId, fileMapping.OpenAIFileId! }
                             });
 
-                        vectorizationResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess, out var vectorizationSuccessObject);
+                        vectorizationResult.TryGetValue(OpenAIAgentServiceCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess, out var vectorizationSuccessObject);
                         var vectorizationSuccess = ((JsonElement)vectorizationSuccessObject!).Deserialize<bool>();
 
                         if (!vectorizationSuccess)

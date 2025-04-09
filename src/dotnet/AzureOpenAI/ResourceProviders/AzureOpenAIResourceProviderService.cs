@@ -301,9 +301,9 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
                 Dictionary<string, object> parameters = new()
                 {
-                    { OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, openAIAssistantId },
-                    { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantThread, mustCreateAssistantThread },
-                    { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, conversationMapping.OpenAIEndpoint }
+                    { OpenAIAgentServiceCapabilityParameterNames.OpenAIAssistantId, openAIAssistantId },
+                    { OpenAIAgentServiceCapabilityParameterNames.CreateOpenAIAssistantThread, mustCreateAssistantThread },
+                    { OpenAIAgentServiceCapabilityParameterNames.OpenAIEndpoint, conversationMapping.OpenAIEndpoint }
                 };
 
                 var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
@@ -314,11 +314,11 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
                 var referenceTime = DateTime.UtcNow;
 
-                if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIAssistantThreadId, out var newOpenAIAssistantThreadIdObject)
+                if (agentCapabilityResult.TryGetValue(OpenAIAgentServiceCapabilityParameterNames.OpenAIAssistantThreadId, out var newOpenAIAssistantThreadIdObject)
                     && newOpenAIAssistantThreadIdObject != null)
                     newOpenAIAssistantThreadId = ((JsonElement)newOpenAIAssistantThreadIdObject!).Deserialize<string>();
 
-                if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject)
+                if (agentCapabilityResult.TryGetValue(OpenAIAgentServiceCapabilityParameterNames.OpenAIVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject)
                     && newOpenAIAssistantVectorStoreIdObject != null)
                     newOpenAIVectorStoreId = ((JsonElement)newOpenAIAssistantVectorStoreIdObject!).Deserialize<string>();
 
@@ -386,9 +386,9 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
                 Dictionary<string, object> parameters = new()
                     {
-                        { OpenAIAgentCapabilityParameterNames.CreateOpenAIFile, true },
-                        { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, fileMapping.OpenAIEndpoint },
-                        { OpenAIAgentCapabilityParameterNames.AttachmentObjectId,  attachmentObjectId }
+                        { OpenAIAgentServiceCapabilityParameterNames.CreateOpenAIFile, true },
+                        { OpenAIAgentServiceCapabilityParameterNames.OpenAIEndpoint, fileMapping.OpenAIEndpoint },
+                        { OpenAIAgentServiceCapabilityParameterNames.AttachmentObjectId,  attachmentObjectId }
                     };
 
                 var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
@@ -399,7 +399,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
                 var referenceTime = DateTime.UtcNow;
 
-                if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileId, out var newOpenAIFileIdObject)
+                if (agentCapabilityResult.TryGetValue(OpenAIAgentServiceCapabilityParameterNames.OpenAIFileId, out var newOpenAIFileIdObject)
                     && newOpenAIFileIdObject != null)
                         newOpenAIFileId = ((JsonElement)newOpenAIFileIdObject!).Deserialize<string>();
 

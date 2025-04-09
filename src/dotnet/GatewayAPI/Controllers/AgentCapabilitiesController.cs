@@ -32,7 +32,7 @@ namespace FoundationaLLM.Gateway.API.Controllers
         /// The supported categories are:
         /// <list type="bullet">
         /// <item>
-        /// OpenAI.Assistants (the names of the keys for the output dictionary are defined in <see cref="OpenAIAgentCapabilityParameterNames"/>)
+        /// OpenAI.Assistants (the names of the keys for the output dictionary are defined in <see cref="OpenAIAgentServiceCapabilityParameterNames"/>)
         /// </item>
         /// </list>
         /// </remarks>

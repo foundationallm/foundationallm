@@ -3,6 +3,17 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+
+## Starting from 0.9.7-beta139
+
+## Configuration changes
+
+The following App Configuration value has been added:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+| `FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureAIAgentServiceMaxVectorizationTimeSeconds` | `120` | The maximum time in seconds allowed for an Azure AI Agent Service vectorization process to complete. |
+
 ## Starting from 0.9.7-beta138
 
 ## Configuration changes

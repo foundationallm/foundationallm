@@ -298,10 +298,10 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
                     Dictionary<string, object> parameters = new()
                         {
-                            { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant, true },
-                            { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpoint.Url },
-                            { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, agentAIModel.DeploymentName! },
-                            { OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt, (agentPrompt as MultipartPrompt)!.Prefix! }
+                            { OpenAIAgentServiceCapabilityParameterNames.CreateOpenAIAssistant, true },
+                            { OpenAIAgentServiceCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpoint.Url },
+                            { OpenAIAgentServiceCapabilityParameterNames.OpenAIModelDeploymentName, agentAIModel.DeploymentName! },
+                            { OpenAIAgentServiceCapabilityParameterNames.OpenAIAssistantPrompt, (agentPrompt as MultipartPrompt)!.Prefix! }
                         };
 
                     var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
@@ -312,12 +312,12 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
                     var newOpenAIAssistantId = default(string);
 
-                    if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, out var newOpenAIAssistantIdObject)
+                    if (agentCapabilityResult.TryGetValue(OpenAIAgentServiceCapabilityParameterNames.OpenAIAssistantId, out var newOpenAIAssistantIdObject)
                         && newOpenAIAssistantIdObject != null)
                         newOpenAIAssistantId = ((JsonElement)newOpenAIAssistantIdObject!).Deserialize<string>();
 
                     var newOpenAIAssistantVectorStoreId = default(string);
-                    if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject)
+                    if (agentCapabilityResult.TryGetValue(OpenAIAgentServiceCapabilityParameterNames.OpenAIVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject)
                         && newOpenAIAssistantVectorStoreIdObject != null)
                         newOpenAIAssistantVectorStoreId = ((JsonElement)newOpenAIAssistantVectorStoreIdObject!).Deserialize<string>();
 
@@ -345,10 +345,10 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         // Add vector store to existing assistant
                         Dictionary<string, object> parameters = new()
                         {
-                            { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantVectorStore, true },
-                            { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpoint.Url },
-                            { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, agentAIModel.DeploymentName! },
-                            { OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, openAIAssistantId }
+                            { OpenAIAgentServiceCapabilityParameterNames.CreateOpenAIAssistantVectorStore, true },
+                            { OpenAIAgentServiceCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpoint.Url },
+                            { OpenAIAgentServiceCapabilityParameterNames.OpenAIModelDeploymentName, agentAIModel.DeploymentName! },
+                            { OpenAIAgentServiceCapabilityParameterNames.OpenAIAssistantId, openAIAssistantId }
                         };
 
                         // Pass the existing assistant id as the capability name
@@ -359,7 +359,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                             parameters);
 
                         var newOpenAIAssistantVectorStoreId = default(string);
-                        if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject)
+                        if (agentCapabilityResult.TryGetValue(OpenAIAgentServiceCapabilityParameterNames.OpenAIVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject)
                             && newOpenAIAssistantVectorStoreIdObject != null)
                             newOpenAIAssistantVectorStoreId = ((JsonElement)newOpenAIAssistantVectorStoreIdObject!).Deserialize<string>();
                         if (string.IsNullOrWhiteSpace(newOpenAIAssistantVectorStoreId))
@@ -988,9 +988,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     {
                         Dictionary<string, object> parameters = new()
                         {
-                            { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpoint.Url },
-                            { OpenAIAgentCapabilityParameterNames.CreateOpenAIFile, true },
-                            { OpenAIAgentCapabilityParameterNames.AgentFileObjectId, fileObjectId! }
+                            { OpenAIAgentServiceCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpoint.Url },
+                            { OpenAIAgentServiceCapabilityParameterNames.CreateOpenAIFile, true },
+                            { OpenAIAgentServiceCapabilityParameterNames.AgentFileObjectId, fileObjectId! }
                         };
 
                         var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
@@ -999,7 +999,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                             string.Empty,
                             parameters);
 
-                        agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileId, out var openAIFileIdObject);
+                        agentCapabilityResult.TryGetValue(OpenAIAgentServiceCapabilityParameterNames.OpenAIFileId, out var openAIFileIdObject);
                         fileToolAssociation.OpenAIFileId = ((JsonElement)openAIFileIdObject!).Deserialize<string>();
                     }
 
@@ -1037,9 +1037,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     {
                         Dictionary<string, object> parameters = new()
                         {
-                            { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpointCI.Url },
-                            { OpenAIAgentCapabilityParameterNames.CreateOpenAIFile, true },
-                            { OpenAIAgentCapabilityParameterNames.AgentFileObjectId, fileObjectId! }
+                            { OpenAIAgentServiceCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpointCI.Url },
+                            { OpenAIAgentServiceCapabilityParameterNames.CreateOpenAIFile, true },
+                            { OpenAIAgentServiceCapabilityParameterNames.AgentFileObjectId, fileObjectId! }
                         };
 
                         var agentCapabilityResult = await gatewayClientCI!.CreateAgentCapability(
@@ -1048,7 +1048,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                             string.Empty,
                             parameters);
 
-                        agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileId, out var openAIFileIdObject);
+                        agentCapabilityResult.TryGetValue(OpenAIAgentServiceCapabilityParameterNames.OpenAIFileId, out var openAIFileIdObject);
                         fileToolAssociation.OpenAIFileId = ((JsonElement)openAIFileIdObject!).Deserialize<string>();
                     }
 
@@ -1200,11 +1200,11 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
             Dictionary<string, object> parameters = new()
             {
-                { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, apiEndpointUrl },
-                { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, deploymentName },
-                { OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStore, true },
-                { OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, vectorStoreId },
-                { OpenAIAgentCapabilityParameterNames.OpenAIFileId, fileId }
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIEndpoint, apiEndpointUrl },
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIModelDeploymentName, deploymentName },
+                { OpenAIAgentServiceCapabilityParameterNames.AddOpenAIFileToVectorStore, true },
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIVectorStoreId, vectorStoreId },
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIFileId, fileId }
             };
             var vectorizationResult = await gatewayClient!.CreateAgentCapability(
                             instanceId,
@@ -1212,7 +1212,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                             string.Empty,
                             parameters);
 
-            vectorizationResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess, out var vectorizationSuccessObject);
+            vectorizationResult.TryGetValue(OpenAIAgentServiceCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess, out var vectorizationSuccessObject);
             var vectorizationSuccess = ((JsonElement)vectorizationSuccessObject!).Deserialize<bool>();
             if (!vectorizationSuccess)
                 throw new OrchestrationException($"The vectorization of file id {fileId} into the vector store with id {vectorStoreId} failed.");
@@ -1236,11 +1236,11 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
             Dictionary<string, object> parameters = new()
             {
-                { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, apiEndpointUrl },
-                { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, deploymentName },
-                { OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromVectorStore, true },
-                { OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, vectorStoreId },
-                { OpenAIAgentCapabilityParameterNames.OpenAIFileId, fileId }
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIEndpoint, apiEndpointUrl },
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIModelDeploymentName, deploymentName },
+                { OpenAIAgentServiceCapabilityParameterNames.RemoveOpenAIFileFromVectorStore, true },
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIVectorStoreId, vectorStoreId },
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIFileId, fileId }
             };
             var removalResult = await gatewayClient!.CreateAgentCapability(
                             instanceId,
@@ -1248,7 +1248,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                             string.Empty,
                             parameters);
 
-            removalResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess, out var vectorStoreSuccessObject);
+            removalResult.TryGetValue(OpenAIAgentServiceCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess, out var vectorStoreSuccessObject);
             var removalSuccess = ((JsonElement)vectorStoreSuccessObject!).Deserialize<bool>();
             if (!removalSuccess)
                 throw new OrchestrationException($"The removal of file id {fileId} from the vector store with id {vectorStoreId} failed.");
@@ -1272,11 +1272,11 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
             Dictionary<string, object> parameters = new()
             {
-                { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, apiEndpointUrl },
-                { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, deploymentName },
-                { OpenAIAgentCapabilityParameterNames.AddOpenAIFileToCodeInterpreter, true },
-                { OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, assistantId },
-                { OpenAIAgentCapabilityParameterNames.OpenAIFileId, fileId }
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIEndpoint, apiEndpointUrl },
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIModelDeploymentName, deploymentName },
+                { OpenAIAgentServiceCapabilityParameterNames.AddOpenAIFileToCodeInterpreter, true },
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIAssistantId, assistantId },
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIFileId, fileId }
             };
             var additionResult = await gatewayClient!.CreateAgentCapability(
                             instanceId,
@@ -1284,7 +1284,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                             string.Empty,
                             parameters);
 
-            additionResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnCodeInterpreterSuccess, out var codeInterpreterSuccessObject);
+            additionResult.TryGetValue(OpenAIAgentServiceCapabilityParameterNames.OpenAIFileActionOnCodeInterpreterSuccess, out var codeInterpreterSuccessObject);
             var additionSuccess = ((JsonElement)codeInterpreterSuccessObject!).Deserialize<bool>();
             if (!additionSuccess)
                 throw new OrchestrationException($"The addition of file id {fileId} into the code interpreter resources of the assistant with id {assistantId} failed.");
@@ -1308,11 +1308,11 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
             Dictionary<string, object> parameters = new()
             {
-                { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, apiEndpointUrl },
-                { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, deploymentName },
-                { OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromCodeInterpreter, true },
-                { OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, assistantId },
-                { OpenAIAgentCapabilityParameterNames.OpenAIFileId, fileId }
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIEndpoint, apiEndpointUrl },
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIModelDeploymentName, deploymentName },
+                { OpenAIAgentServiceCapabilityParameterNames.RemoveOpenAIFileFromCodeInterpreter, true },
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIAssistantId, assistantId },
+                { OpenAIAgentServiceCapabilityParameterNames.OpenAIFileId, fileId }
             };
             var removalResult = await gatewayClient!.CreateAgentCapability(
                             instanceId,
@@ -1320,7 +1320,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                             string.Empty,
                             parameters);
 
-            removalResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnCodeInterpreterSuccess, out var codeInterpreterSuccessObject);
+            removalResult.TryGetValue(OpenAIAgentServiceCapabilityParameterNames.OpenAIFileActionOnCodeInterpreterSuccess, out var codeInterpreterSuccessObject);
             var removalSuccess = ((JsonElement)codeInterpreterSuccessObject!).Deserialize<bool>();
             if (!removalSuccess)
                 throw new OrchestrationException($"The removal of file id {fileId} from the code interpreter resources for assistant with id {assistantId} failed.");
