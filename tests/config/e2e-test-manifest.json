@@ -146,7 +146,8 @@
             "context": "./src/python",
             "dockerfile": "./src/python/CodeSessionAPI/Dockerfile",
             "helm_chart": null,
-            "azd_env_key": "SERVICE_CODESESSIONAPI_IMAGE"
+            "azd_env_key": "SERVICE_CODESESSIONAPI_IMAGE",
+            "package_helm": false
         }
     ],
     "test_matrix": [
