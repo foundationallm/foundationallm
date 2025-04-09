@@ -243,7 +243,7 @@ namespace FoundationaLLM.Gateway.Services
                     UriComponents.Host,
                     UriFormat.SafeUnescaped,
                     StringComparison.OrdinalIgnoreCase) == 0)
-                ?? throw new GatewayException($"The Gateway service is not configured to use the {endpoint} projectConnectionString.");
+                ?? throw new GatewayException($"The Gateway service is not configured to use the {endpoint} endpoint.");
 
             if (createAssistant)
             {
@@ -270,7 +270,7 @@ namespace FoundationaLLM.Gateway.Services
                         modelDeploymentName,
                         d.Name,
                         true) == 0)
-                    ?? throw new GatewayException($"The Gateway service cannot find the {modelDeploymentName} model deployment in the account with projectConnectionString {endpoint}.");
+                    ?? throw new GatewayException($"The Gateway service cannot find the {modelDeploymentName} model deployment in the account with endpoint {endpoint}.");
 
                 var assistantResult = await assistantClient.CreateAssistantAsync(modelDeploymentName, new AssistantCreationOptions()
                 {
@@ -393,7 +393,6 @@ namespace FoundationaLLM.Gateway.Services
                 {
                     throw new GatewayException("The file content is null.", StatusCodes.Status400BadRequest);
                 }
-
                 var fileResult = await fileClient.UploadFileAsync(
                     new MemoryStream(fileContent!),
                     originalFileName,
@@ -452,7 +451,7 @@ namespace FoundationaLLM.Gateway.Services
                 // iterate through associations as removing a file that is not in the vector store will throw an exception
                 await foreach (var association in associations)
                 {
-                    if (association.FileId == fileId)
+                    if(association.FileId == fileId)
                     {
                         var vectorizationResult = await vectorStoreClient.RemoveFileFromStoreAsync(vectorStoreId, fileId);
                         isRemoved = vectorizationResult.Value.Removed;
@@ -462,7 +461,7 @@ namespace FoundationaLLM.Gateway.Services
                 result[OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess] = isRemoved;
             }
 
-            if (addAssistantFileToCodeInterpreter)
+            if(addAssistantFileToCodeInterpreter)
             {
                 var assistantClient = GetAzureOpenAIAssistantClient(azureOpenAIAccount.Endpoint);
                 var assistantId = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.OpenAIAssistantId);
