@@ -1,4 +1,4 @@
-FROM python:3.11-bookworm
+FROM python:3.11-slim
 ARG FOUNDATIONALLM_VERSION
 ENV FOUNDATIONALLM_VERSION=${FOUNDATIONALLM_VERSION:-0.0.0}
 ENV APPLICATIONINSIGHTS_STATSBEAT_DISABLED_ALL=true
@@ -8,7 +8,12 @@ RUN apt-get update \
         && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
         && curl https://packages.microsoft.com/config/debian/11/prod.list > /etc/apt/sources.list.d/mssql-release.list \
         && apt-get update \
-        && ACCEPT_EULA=Y apt-get install -y msodbcsql18 mssql-tools
+        && ACCEPT_EULA=Y apt-get install -y msodbcsql18 mssql-tools \
+        && apt-get clean \
+        && rm -rf /var/lib/apt/lists/*
+
+RUN python3 -m pip install --no-cache-dir --upgrade pip
+RUN python3 -m pip install --no-cache-dir --upgrade setuptools==70.3.0
 
 WORKDIR /code
 COPY ./GatekeeperIntegrationAPI/requirements.txt /code/requirements.txt
