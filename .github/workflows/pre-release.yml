@@ -78,6 +78,26 @@ jobs:
       target: sandbox
     secrets: inherit
 
+  base_docker_build:
+    name: Build Base Docker Images
+    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')
+    needs: generate_matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        object: ${{ fromJson(needs.generate_matrix.outputs.base_images) }}
+    uses: ./.github/workflows/build-docker-image.yml
+    with:
+      image: ${{ matrix.object.name }}
+      context: ${{ matrix.object.context }}
+      dockerfile: ${{ matrix.object.dockerfile }}
+      registry: ${{ needs.generate_matrix.outputs.registry }}
+      tag: ${{ needs.generate_matrix.outputs.docker_tag }}
+      username: e2e-token
+      target: sandbox
+    secrets: inherit
+
+
   docker_build:
     name: Build Docker Images
     if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')
