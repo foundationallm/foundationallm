@@ -19,7 +19,7 @@ langchain-deepseek-official==0.1.0
 langgraph==0.2.53
 openai==1.61.0
 pandas==2.2.2
-pyarrow==18.1.0
+pyarrow==19.0.1
 pydantic==2.10.6
 pylint==3.2.6
 pyodbc==5.2.0
