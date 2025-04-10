@@ -64,14 +64,35 @@ jobs:
           ${{ inputs.registry }}/${{ inputs.image }}
         tags: |
           type=semver,pattern={{version}},value=${{ inputs.tag }}
+          type=raw,value=cache
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Cache Docker layers
+      uses: actions/cache@v4
+      with:
+        path: ${{ runner.temp }}/.buildx-cache
+        key: ${{ runner.os }}-${{ inputs.image }}-buildx-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-${{ inputs.image }}-buildx-
 
     - name: Build and push Docker images
       uses: docker/build-push-action@v5
       with:
+        cache-from: type=local,src=${{ runner.temp }}/.buildx-cache
+        cache-to: type=local,dest=${{ runner.temp }}/.buildx-cache-new,mode=max
         context: ${{ inputs.context }}
         file: ${{ inputs.dockerfile }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         push: true
         build-args: |
+          FOUNDATIONALLM_REGISTRY=${{ inputs.registry }}
           FOUNDATIONALLM_VERSION=${{ inputs.tag }}
+          PYTHON_FLLM_BASE_VERSION=${{ inputs.tag }}
+
+    - name: Move cache
+      run: |
+        rm -rf ${{ runner.temp }}/.buildx-cache
+        mv ${{ runner.temp }}/.buildx-cache-new ${{ runner.temp }}/.buildx-cache

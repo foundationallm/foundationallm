@@ -1,5 +1,12 @@
 {
     "registry": "crfllme2eops.azurecr.io",
+    "base_images": [
+        {
+            "name": "fllm-python-base",
+            "context": "./src/python/Base",
+            "dockerfile": "./src/python/Base/Dockerfile"
+        }
+    ],
     "service_matrix": [
         {
             "name": "authorization-api",
