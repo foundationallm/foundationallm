@@ -138,11 +138,13 @@ async def download_file(request_body: dict):
         raise HTTPException(status_code=400, detail="The file name was not provided in the request body.")
 
     try:
-        if not os.path.isfile(filename):
+        base_path = os.getcwd()  # Define the safe root directory
+        fullpath = os.path.normpath(os.path.join(base_path, filename))
+        if not fullpath.startswith(base_path) or not os.path.isfile(fullpath):
             raise HTTPException(status_code=404, detail="File not found.")
 
-        headers = {'Content-Disposition': f'attachment; filename="{filename}"'}
-        return FileResponse(filename, media_type='application/octet-stream', headers=headers)
+        headers = {'Content-Disposition': f'attachment; filename="{os.path.basename(fullpath)}"'}
+        return FileResponse(fullpath, media_type='application/octet-stream', headers=headers)
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error downloading file.") from e
 
