@@ -1874,6 +1874,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.CodeSessionLanguages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.CodeSessionLanguages.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Context.CodeSessionLanguages",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Context.CodeSessionLanguages.yml\" sourcestartlinenumber=\"1\">Provides constants for the code session programming languages.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames.yml",
       "output": {
         ".html": {
@@ -10148,17 +10162,45 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeSessionProviderServiceSettings.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeInterpreterServiceSettings.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeSessionProviderServiceSettings.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeInterpreterServiceSettings.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeSessionProviderServiceSettings",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeSessionProviderServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides settings for the Azure Container Apps code execution service.</p>\n"
+      "Title": "FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeInterpreterServiceSettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeInterpreterServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides settings for the Azure Container Apps Dynamic Sessions code interpreter service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCustomContainerServiceSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCustomContainerServiceSettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCustomContainerServiceSettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCustomContainerServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides settings for the Azure Container Apps Dynamic Sessions custom container service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.AzureContainerAppsServiceSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.AzureContainerAppsServiceSettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Models.Configuration.AzureContainerAppsServiceSettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.Configuration.AzureContainerAppsServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides settings for an Azure Container Apps Dynamic Sessions service.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -10218,17 +10260,45 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsCodeSessionProviderService.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsCodeInterpreterService.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsCodeSessionProviderService.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsCodeInterpreterService.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Context.Services.AzureContainerAppsCodeSessionProviderService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsCodeSessionProviderService.yml\" sourcestartlinenumber=\"1\">Provides a code session service that uses Azure Container Apps Dynamic Sessions to execute code.</p>\n"
+      "Title": "FoundationaLLM.Context.Services.AzureContainerAppsCodeInterpreterService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsCodeInterpreterService.yml\" sourcestartlinenumber=\"1\">Provides a code session service that uses Azure Container Apps Dynamic Sessions to execute code.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsCustomContainerService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsCustomContainerService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Services.AzureContainerAppsCustomContainerService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsCustomContainerService.yml\" sourcestartlinenumber=\"1\">Provides a code session service that uses Azure Container Apps Dynamic Sessions to execute code.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsServiceBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsServiceBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Services.AzureContainerAppsServiceBase",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsServiceBase.yml\" sourcestartlinenumber=\"1\">Base class for Azure Container Apps Dynamic Sessions services.</p>\n"
     },
     {
       "type": "ManagedReference",

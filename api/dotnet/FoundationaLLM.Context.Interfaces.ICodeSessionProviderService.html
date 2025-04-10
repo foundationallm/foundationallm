@@ -124,15 +124,51 @@ Interface ICodeSessionProviderService  <a class="header-action link-secondary" t
 
 
 
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FoundationaLLM_Context_Interfaces_ICodeSessionProviderService_ProviderName_" data-uid="FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.ProviderName*"></a>
+
+  <h3 id="FoundationaLLM_Context_Interfaces_ICodeSessionProviderService_ProviderName" data-uid="FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.ProviderName">
+  ProviderName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/ICodeSessionProviderService.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the name of the code session provider.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string ProviderName { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
 
   <a id="FoundationaLLM_Context_Interfaces_ICodeSessionProviderService_CreateCodeSession_" data-uid="FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.CreateCodeSession*"></a>
 
-  <h3 id="FoundationaLLM_Context_Interfaces_ICodeSessionProviderService_CreateCodeSession_System_String_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.CreateCodeSession(System.String,System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
-  CreateCodeSession(string, string, string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/ICodeSessionProviderService.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Context_Interfaces_ICodeSessionProviderService_CreateCodeSession_System_String_System_String_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.CreateCodeSession(System.String,System.String,System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  CreateCodeSession(string, string, string, string, string, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/ICodeSessionProviderService.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new code session.</p>
@@ -140,7 +176,7 @@ Interface ICodeSessionProviderService  <a class="header-action link-secondary" t
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;CreateCodeSessionResponse&gt; CreateCodeSession(string instanceId, string agentName, string conversationId, string context, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;CreateCodeSessionResponse&gt; CreateCodeSession(string instanceId, string agentName, string conversationId, string context, string language, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -156,6 +192,9 @@ Interface ICodeSessionProviderService  <a class="header-action link-secondary" t
 </dd>
     <dt><code>context</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The context in which the code execution session is created. This is usually the name of the agent tool, but it is not limited to that.</p>
+</dd>
+    <dt><code>language</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The code session programing language.</p>
 </dd>
     <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> providing the user identity information.</p>
@@ -183,7 +222,7 @@ Interface ICodeSessionProviderService  <a class="header-action link-secondary" t
 
   <h3 id="FoundationaLLM_Context_Interfaces_ICodeSessionProviderService_DeleteCodeSessionFileStoreItems_System_String_System_String_" data-uid="FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.DeleteCodeSessionFileStoreItems(System.String,System.String)">
   DeleteCodeSessionFileStoreItems(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/ICodeSessionProviderService.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/ICodeSessionProviderService.cs/#L79"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes all files from a code session.</p>
@@ -224,7 +263,7 @@ Interface ICodeSessionProviderService  <a class="header-action link-secondary" t
 
   <h3 id="FoundationaLLM_Context_Interfaces_ICodeSessionProviderService_DownloadFileFromCodeSession_System_String_System_String_System_String_System_String_" data-uid="FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.DownloadFileFromCodeSession(System.String,System.String,System.String,System.String)">
   DownloadFileFromCodeSession(string, string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/ICodeSessionProviderService.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/ICodeSessionProviderService.cs/#L67"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Downloads a file from a code session.</p>
@@ -272,7 +311,7 @@ Interface ICodeSessionProviderService  <a class="header-action link-secondary" t
 
   <h3 id="FoundationaLLM_Context_Interfaces_ICodeSessionProviderService_GetCodeSessionFileStoreItems_System_String_System_String_" data-uid="FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.GetCodeSessionFileStoreItems(System.String,System.String)">
   GetCodeSessionFileStoreItems(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/ICodeSessionProviderService.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/ICodeSessionProviderService.cs/#L55"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Lists files from a code session.</p>
@@ -314,7 +353,7 @@ Interface ICodeSessionProviderService  <a class="header-action link-secondary" t
 
   <h3 id="FoundationaLLM_Context_Interfaces_ICodeSessionProviderService_UploadFileToCodeSession_System_String_System_String_System_String_System_IO_Stream_" data-uid="FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.UploadFileToCodeSession(System.String,System.String,System.String,System.IO.Stream)">
   UploadFileToCodeSession(string, string, string, Stream)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/ICodeSessionProviderService.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/ICodeSessionProviderService.cs/#L43"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Uploads a file to a code execution session.</p>

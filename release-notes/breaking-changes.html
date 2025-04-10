@@ -79,7 +79,43 @@
 </div>
 <h2 id="starting-from-097-beta138">Starting from 0.9.7-beta138</h2>
 <h2 id="configuration-changes">Configuration changes</h2>
+<p>The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</code> configuration setting has been replaced by the following configuration settings:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Content Type</th>
+<th>Description</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CodeInterpreter</code></td>
+<td><code>application/json</code></td>
+<td>The settings for the Azure Container Apps Dynamic Sessions code interpreter.</td>
+<td><code>{ &quot;Endpoints&quot;: { &quot;Python&quot;: [], &quot;CSharp&quot;: []} }</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CustomContainer</code></td>
+<td><code>application/json</code></td>
+<td>The settings for the Azure Container Apps Dynamic Sessions custom container.</td>
+<td><code>{ &quot;Endpoints&quot;: { &quot;Python&quot;: [], &quot;CSharp&quot;: []} }</code></td>
+</tr>
+</tbody>
+</table>
 <p>FoundationaLLM now supports Azure AI Inference APIs accessible to the agent using the LangChain workflow host. This functionality expects an Azure AI Service resource. Authentication is accomplished support is via Azure Identity (Entra) or API Key. If using Azure Identity, ensure the LangChain managed identity has <code>Cognitive Services User</code> role on the Azure AI Service resource (may be inherited). Within the project defined in AI Foundry, ensure the LangChain managed identity has the <code>Azure AI Developer</code> role. If using API Key, ensure the API Key is securely stored in the key vault and exposed via an Application Configuration value. When defining the API Endpoint Configuration, add the authentication parameter <code>api_key_configuration_name</code> with the name of the Application Configuration key.</p>
+<h2 id="code-sessions">Code sessions</h2>
+<p>The tool property <code>foundationallm_aca_code_execution_enabled</code> has been renamed to <code>code_session_required</code>. The property indicates whether the tool requires a code session during its execution. If the property is set to <code>true</code>, the following additional properties must be set:</p>
+<ul>
+<li><code>code_session_endpoint_provider</code>: Supported values are <code>AzureContainerAppsCodeInterpreter</code> (indicates that the code session is provided by the Azure Container Apps Dynamic Sessions code interpreter) and <code>AzureContainerAppsCustomContainer</code> (indicates that the code session is provided by the Azure Container Apps Dynamic Sessions custom container).</li>
+<li><code>code_session_language</code>: Supported values are <code>Python</code> and <code>CSharp</code>.</li>
+</ul>
+<p>Tools that require a code session should expect the following properties to be injected:</p>
+<ul>
+<li><code>code_session_endpoint</code> (instead of the previous <code>foundationallm_aca_code_execution_session_id</code>)</li>
+<li><code>code_session_id</code> (instead of the previous <code>foundationallm_aca_code_execution_session_id</code>)</li>
+</ul>
 <h2 id="starting-from-097-beta128">Starting from 0.9.7-beta128</h2>
 <h2 id="configuration-changes-1">Configuration changes</h2>
 <p>Agent Workflow configuration now has a <code>class_name</code> field. This is the underlying implementation class of the workflow. This is not a breaking change, as in previous versions the <code>name</code> field contained the class name and if the <code>class_name</code> field is empty, it will default to the <code>name</code> field. However, it is recommended to set the <code>class_name</code> field to the implementation class name.</p>

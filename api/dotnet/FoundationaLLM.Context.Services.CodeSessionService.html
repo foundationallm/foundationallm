@@ -168,8 +168,8 @@ Class CodeSessionService  <a class="header-action link-secondary" title="View so
 
   <a id="FoundationaLLM_Context_Services_CodeSessionService__ctor_" data-uid="FoundationaLLM.Context.Services.CodeSessionService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Context_Services_CodeSessionService__ctor_FoundationaLLM_Context_Interfaces_IFileService_FoundationaLLM_Context_Interfaces_IAzureCosmosDBCodeSessionService_FoundationaLLM_Context_Interfaces_ICodeSessionProviderService_FoundationaLLM_Common_Interfaces_IResourceValidatorFactory_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Context_Services_CodeSessionService__" data-uid="FoundationaLLM.Context.Services.CodeSessionService.#ctor(FoundationaLLM.Context.Interfaces.IFileService,FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService,FoundationaLLM.Context.Interfaces.ICodeSessionProviderService,FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CodeSessionService})">
-  CodeSessionService(IFileService, IAzureCosmosDBCodeSessionService, ICodeSessionProviderService, IResourceValidatorFactory, ILogger&lt;CodeSessionService&gt;)
+  <h3 id="FoundationaLLM_Context_Services_CodeSessionService__ctor_FoundationaLLM_Context_Interfaces_IFileService_FoundationaLLM_Context_Interfaces_IAzureCosmosDBCodeSessionService_System_Collections_Generic_IEnumerable_FoundationaLLM_Context_Interfaces_ICodeSessionProviderService__FoundationaLLM_Common_Interfaces_IResourceValidatorFactory_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Context_Services_CodeSessionService__" data-uid="FoundationaLLM.Context.Services.CodeSessionService.#ctor(FoundationaLLM.Context.Interfaces.IFileService,FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService,System.Collections.Generic.IEnumerable{FoundationaLLM.Context.Interfaces.ICodeSessionProviderService},FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CodeSessionService})">
+  CodeSessionService(IFileService, IAzureCosmosDBCodeSessionService, IEnumerable&lt;ICodeSessionProviderService&gt;, IResourceValidatorFactory, ILogger&lt;CodeSessionService&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Services/CodeSessionService.cs/#L23"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -178,7 +178,7 @@ Class CodeSessionService  <a class="header-action link-secondary" title="View so
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CodeSessionService(IFileService fileService, IAzureCosmosDBCodeSessionService cosmosDBService, ICodeSessionProviderService codeSessionProviderService, IResourceValidatorFactory resourceValidatorFactory, ILogger&lt;CodeSessionService&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public CodeSessionService(IFileService fileService, IAzureCosmosDBCodeSessionService cosmosDBService, IEnumerable&lt;ICodeSessionProviderService&gt; codeSessionProviderServices, IResourceValidatorFactory resourceValidatorFactory, ILogger&lt;CodeSessionService&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -189,8 +189,8 @@ Class CodeSessionService  <a class="header-action link-secondary" title="View so
     <dt><code>cosmosDBService</code> <a class="xref" href="FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html">IAzureCosmosDBCodeSessionService</a></dt>
     <dd><p>The Azure Cosmos DB service providing database services.</p>
 </dd>
-    <dt><code>codeSessionProviderService</code> <a class="xref" href="FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.html">ICodeSessionProviderService</a></dt>
-    <dd><p>The code session provider service.</p>
+    <dt><code>codeSessionProviderServices</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.html">ICodeSessionProviderService</a>&gt;</dt>
+    <dd><p>The code session provider services.</p>
 </dd>
     <dt><code>resourceValidatorFactory</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IResourceValidatorFactory.html">IResourceValidatorFactory</a></dt>
     <dd><p>The resource validator factory.</p>
@@ -219,7 +219,7 @@ Class CodeSessionService  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Context_Services_CodeSessionService_CreateCodeSession_System_String_FoundationaLLM_Common_Models_CodeExecution_CreateCodeSessionRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Services.CodeSessionService.CreateCodeSession(System.String,FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   CreateCodeSession(string, CreateCodeSessionRequest, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Services/CodeSessionService.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Services/CodeSessionService.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new code session using one of the registered code session providers.</p>
@@ -264,7 +264,7 @@ Class CodeSessionService  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Context_Services_CodeSessionService_DownloadFilesFromCodeSession_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Services.CodeSessionService.DownloadFilesFromCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   DownloadFilesFromCodeSession(string, string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Services/CodeSessionService.cs/#L136"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Services/CodeSessionService.cs/#L159"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Downloads newly created files from a code session.</p>
@@ -316,7 +316,7 @@ The <code class="paramref">operationId</code> is the identifier of the file uplo
 
   <h3 id="FoundationaLLM_Context_Services_CodeSessionService_UploadFilesToCodeSession_System_String_System_String_FoundationaLLM_Common_Models_CodeExecution_CodeSessionFileUploadRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Services.CodeSessionService.UploadFilesToCodeSession(System.String,System.String,FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   UploadFilesToCodeSession(string, string, CodeSessionFileUploadRequest, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Services/CodeSessionService.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Services/CodeSessionService.cs/#L92"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Uploads files to a code session.</p>
