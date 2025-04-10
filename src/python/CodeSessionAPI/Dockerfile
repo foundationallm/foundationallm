@@ -1,10 +1,11 @@
 ARG FOUNDATIONALLM_REGISTRY="ghcr.io/solliancenet/foundationallm"
 ARG PYTHON_FLLM_BASE_VERSION="latest"
-ARG BASE_IMAGE="${FOUNDATIONALLM_REGISTRY}/python-fllm-base:${PYTHON_FLLM_BASE_VERSION}"
+ARG BASE_IMAGE="${FOUNDATIONALLM_REGISTRY}/fllm-python-base:${PYTHON_FLLM_BASE_VERSION}"
 FROM ${BASE_IMAGE}
 ARG FOUNDATIONALLM_VERSION
 ENV FOUNDATIONALLM_VERSION=${FOUNDATIONALLM_VERSION:-0.0.0}
 
+WORKDIR /code
 COPY ./CodeSessionAPI/requirements.txt /code/requirements.txt
 RUN python3 -m pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
