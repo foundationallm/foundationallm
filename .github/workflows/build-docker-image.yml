@@ -69,8 +69,8 @@ jobs:
     - name: Build and push Docker images
       uses: docker/build-push-action@v5
       with:
-        # cache-from: ${{ inputs.registry }}/${{ inputs.image }}:cache
-        # cache-to: type=inline
+        cache-from: ${{ inputs.registry }}/${{ inputs.image }}:cache
+        cache-to: type=inline
         context: ${{ inputs.context }}
         file: ${{ inputs.dockerfile }}
         tags: ${{ steps.meta.outputs.tags }}
@@ -79,3 +79,4 @@ jobs:
         build-args: |
           FOUNDATIONALLM_REGISTRY=${{ inputs.registry }}
           FOUNDATIONALLM_VERSION=${{ inputs.tag }}
+          PYTHON_FLLM_BASE_VERSION=${{ inputs.tag }}
