@@ -3,12 +3,16 @@ Main entry-point for the FoundationaLLM LangChainAPI.
 """
 
 import io
+import json
+import os
 import sys
+
 from fastapi import (
     FastAPI,
     HTTPException,
-    UploadFile
+    UploadFile,
 )
+from fastapi.responses import FileResponse
 
 app = FastAPI(
     title='FoundationaLLM Code Session API',
@@ -60,11 +64,11 @@ async def execute_code(request_body: dict):
         output = new_stdout.getvalue()
         sys.stdout = old_stdout
 
-        return { 'results': namespace, 'output': output }
+        return { 'results': get_json_serializable_dict(namespace), 'output': output }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error executing code.") from e
+        raise HTTPException(status_code=500, detail="Error executing code.") from e
 
-@app.post('files/upload')
+@app.post('/files/upload')
 async def upload_file(file: UploadFile):
     """
     Upload a file to the code session.
@@ -88,4 +92,80 @@ async def upload_file(file: UploadFile):
 
         return { 'status': 'success', 'filename': file.filename }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error uploading file.") from e
+        raise HTTPException(status_code=500, detail="Error uploading file.") from e
+    
+@app.get('/files')
+async def list_files():
+    """
+    List files in the code session.
+
+    Returns
+    -------
+    dict
+        The response containing the list of files.
+    """
+
+    try:
+        file_paths = []
+        file_store_root = os.getcwd()
+        for root, _, files in os.walk(file_store_root):
+            for file in files:
+                rel_dir = os.path.relpath(root, file_store_root)
+                file_paths.append(os.path.join(rel_dir, file))
+
+        return { 'files': file_paths }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error listing files.") from e
+    
+@app.post('/files/download')
+async def download_file(request_body: dict):
+    """
+    Download a file from the code session.
+
+    Parameters
+    ----------
+    request_body : dict
+        The request body containing the filename to download.
+
+    Returns
+    -------
+    FileResponse
+        The response containing the file to download.
+    """
+
+    filename = request_body.get('file_name', None)
+    if filename is None:
+        raise HTTPException(status_code=400, detail="The file name was not provided in the request body.")
+
+    try:
+        if not os.path.isfile(filename):
+            raise HTTPException(status_code=404, detail="File not found.")
+
+        headers = {'Content-Disposition': f'attachment; filename="{filename}"'}
+        return FileResponse(filename, media_type='application/octet-stream', headers=headers)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error downloading file.") from e
+
+def get_json_serializable_dict(d: dict) -> dict:
+    """
+    Remove non-JSON serializable values from a dictionary.
+
+    Parameters
+    ----------
+    d : dict
+        The dictionary to convert.
+
+    Returns
+    -------
+    dict
+        The JSON serializable dictionary.
+    """
+    
+    result = {}
+    for key, value in d.items():
+        try:
+            json.dumps(value)
+            result[key] = value
+        except (TypeError, OverflowError):
+            pass
+    return result
