@@ -312,7 +312,7 @@
 		</div>
 
 		<Button
-			:disabled="disabled || isCurrentAgentExpired"
+			:disabled="disabled || isCurrentAgentExpired || isUploading"
 			class="submit"
 			icon="pi pi-send"
 			label="Send"
@@ -536,7 +536,14 @@ export default {
 		},
 
 		handleKeydown(event: KeyboardEvent) {
-			if (event.key === 'Enter' && !event.shiftKey && !this.agentListOpen) {
+			if (
+				event.key === 'Enter' &&
+				!event.shiftKey &&
+				!this.agentListOpen &&
+				!this.disabled &&
+				!this.isCurrentAgentExpired &&
+				!this.isUploading
+			) {
 				event.preventDefault();
 				this.handleSend();
 			}

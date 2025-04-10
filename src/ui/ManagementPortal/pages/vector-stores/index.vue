@@ -27,6 +27,13 @@
 
 			<!-- Table -->
 			<DataTable
+				:globalFilterFields="['resource.name']"
+				v-model:filters="filters"
+				filterDisplay="menu"
+				paginator
+				:rows="10"
+				:rowsPerPageOptions="[10, 25, 50, 100]"
+				:paginatorTemplate="'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'"
 				:value="vectorStores"
 				striped-rows
 				scrollable
@@ -35,6 +42,17 @@
 				table-style="max-width: 100%"
 				size="small"
 			>
+				<template #header>
+					<div class="w-full flex justify-between">
+						<TableSearch v-model="filters" placeholder="Search vector stores" />
+						<Button
+							type="button"
+							icon="pi pi-refresh"
+							@click="getVectorStores"
+						/>
+					</div>
+				</template>
+
 				<template #empty>
 					<div role="alert" aria-live="polite">No vector stores found.</div>
 				</template>
@@ -159,6 +177,7 @@ export default {
 			vectorStores: [] as [],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
+			filters: {},
 			dataSourceToDelete: null as DataSource | null,
 			vectorStoreToDelete: null,
 		};
@@ -231,7 +250,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .table__button {
 	color: var(--primary-button-bg);
 }

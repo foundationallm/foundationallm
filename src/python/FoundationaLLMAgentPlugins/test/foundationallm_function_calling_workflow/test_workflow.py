@@ -13,19 +13,20 @@ from foundationallm_agent_plugins import (
 )
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import KnowledgeManagementCompletionRequest
-from foundationallm_agent_plugins.common.constants import CONTENT_ARTIFACT_TYPE_FILE
-
+from foundationallm.models.constants import ContentArtifactTypeNames
 #user_prompt = "What does this file do?"
 #user_prompt = "Generate a graph of y=mx+b where m=2 and b=3 and create a PDF with the graph along with text explaining the graph"
 #user_prompt = "Generate a PDF document with the title 'Test' and the content 'This is a test'"
 #user_prompt = "Generate an interactive graph of y=mx+b where m=2 and b=3"
 #user_prompt = "Generate a graph of y=mx+b where m=2 and b=3"
-user_prompt = "Generate a PDF with the text 'Hello World'"
-user_prompt_rewrite = None
+#user_prompt = "Generate a PDF with the text 'Hello World'"
+#user_prompt = "What is the average of 42 plus 84 plus 168. Do your calculations in Python and show your work. Also Create a bar chart of the aforementioned numbers showing the average line on that bar chart."
+#user_prompt = "Generate a graph based on this data."
+user_prompt = "Give me 5 examples of Geography"
 operation_id = str(uuid.uuid4())
 
 user_identity_json = {"name": "Experimental Test", "user_name":"carey@foundationaLLM.ai","upn":"carey@foundationaLLM.ai"}
-full_request_json_file_name = 'test/full_request_with_files.json' # full original langchain request, contains agent, tools, exploded objects
+full_request_json_file_name = 'test/full_request_sql.json' # full original langchain request, contains agent, tools, exploded objects
 
 user_identity = UserIdentity.from_json(user_identity_json)
 config = Configuration()
@@ -39,6 +40,7 @@ objects = request.objects
 workflow = request.agent.workflow
 message_history = request.message_history
 file_history = request.file_history
+user_prompt_rewrite = request.user_prompt_rewrite
 
 workflow_plugin_manager = FoundationaLLMAgentWorkflowPluginManager()
 tool_plugin_manager = FoundationaLLMAgentToolPluginManager()
@@ -54,7 +56,8 @@ if explicit_tool is not None:
 else:
     # Populate tools list from agent configuration
     for tool in agent.tools:
-        tools.append(tool_plugin_manager.create_tool(tool, objects, user_identity, config))
+        if tool.package_name == 'foundationallm_agent_plugins':
+            tools.append(tool_plugin_manager.create_tool(tool, objects, user_identity, config))
 
 # create the workflow
 workflow = workflow_plugin_manager.create_workflow(
@@ -74,10 +77,8 @@ response = asyncio.run(
     )
 )
 print("++++++++++++++++++++++++++++++++++++++")
-print('File content artifacts:')
-for content_artifact in response.content_artifacts:
-    if content_artifact.type == CONTENT_ARTIFACT_TYPE_FILE:
-        print(content_artifact.filepath)
+print('Content artifacts:')
+print(response.content_artifacts)
 print("++++++++++++++++++++++++++++++++++++++")
 
 print("*********************************")

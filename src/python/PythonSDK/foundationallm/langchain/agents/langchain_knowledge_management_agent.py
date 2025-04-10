@@ -532,8 +532,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 request.objects,
                 tools,
                 self.user_identity,
-                self.config)            
-            
+                self.config)
+
             with self.tracer.start_as_current_span('langchain_invoke_external_workflow', kind=SpanKind.SERVER) as span:
                 response = await workflow.invoke_async(
                     operation_id=request.operation_id,
@@ -596,10 +596,11 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 # add output parser to openai callback
                 chain = chain | StrOutputParser()
                 try:
-                    if self.has_retriever:
-                        completion = chain.invoke(request.user_prompt)
-                    else:
-                        completion = await chain.ainvoke(request.user_prompt)
+                    with self.tracer.start_as_current_span('langchain_invoke_lcel_workflow', kind=SpanKind.SERVER):
+                        if self.has_retriever:
+                            completion = chain.invoke(request.user_prompt)
+                        else:
+                            completion = await chain.ainvoke(request.user_prompt)
 
                     response_content = OpenAITextMessageContentItem(
                         value = completion,
@@ -619,10 +620,11 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 except Exception as e:
                     raise LangChainException(f"An unexpected exception occurred when executing the completion request: {str(e)}", 500)
         else:
-            if self.has_retriever:
-                completion = chain.invoke(request.user_prompt)
-            else:
-                completion = await chain.ainvoke(request.user_prompt)
+            with self.tracer.start_as_current_span('langchain_invoke_lcel_workflow', kind=SpanKind.SERVER):
+                if self.has_retriever:
+                    completion = chain.invoke(request.user_prompt)
+                else:
+                    completion = await chain.ainvoke(request.user_prompt)
             response_content = OpenAITextMessageContentItem(
                 value = completion.content,
                 agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT

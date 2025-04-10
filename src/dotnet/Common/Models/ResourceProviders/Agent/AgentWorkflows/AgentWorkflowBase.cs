@@ -34,6 +34,19 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
         public required string PackageName { get; set; }
 
         /// <summary>
+        /// The class name of the workflow.
+        /// For internal workflows, this value will be FoundationaLLM
+        /// For external workflows, this value will be the name of the implementation class.
+        /// </summary>
+        [JsonPropertyName("class_name")]
+        public string? ClassName
+        {
+            get => string.IsNullOrWhiteSpace(_className) ? Name : _className;
+            set => _className = value ?? string.Empty;
+        }
+        private string _className = string.Empty;
+
+        /// <summary>
         /// The host of the workflow environment.
         /// </summary>
         [JsonPropertyName("workflow_host")]

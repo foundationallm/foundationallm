@@ -21,6 +21,16 @@
 			table-style="max-width: 100%"
 			size="small"
 		>
+			<template #header>
+				<div class="w-full flex justify-end">
+					<Button
+						type="button"
+						icon="pi pi-refresh"
+						@click="getRoleAssignments"
+					/>
+				</div>
+			</template>
+
 			<template #empty> No role assignments found. </template>
 
 			<template #loading>Loading data sources. Please wait.</template>
@@ -51,7 +61,7 @@
 				}"
 			>
 				<template #body="{ data }">
-					<div class="d-flex align-center" style="gap: 12px; margin-left: 32px">
+					<div class="flex items-center" style="gap: 12px; margin-left: 32px">
 						<i v-if="data.principal_type === 'Group'" class="pi pi-users"></i>
 						<i v-else-if="data.principal_type === 'User'" class="pi pi-user"></i>
 						<i v-else class="pi pi-verified"></i>
@@ -266,7 +276,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .table__button {
 	color: var(--primary-button-bg);
 }

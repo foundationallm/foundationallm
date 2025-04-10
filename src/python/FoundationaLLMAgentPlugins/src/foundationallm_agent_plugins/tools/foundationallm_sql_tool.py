@@ -3,15 +3,17 @@ Provides an implementation for the FoundationaLLM SQL tool.
 """
 
 # Platform imports
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
 from datetime import datetime, time, date
 import json
 import pandas as pd
 import pyodbc
+import struct
+from itertools import chain, repeat
 
 #Azure imports
-
+from azure.identity import DefaultAzureCredential
 # LangChain imports
 from langchain_core.messages import (
     BaseMessage,
@@ -24,12 +26,13 @@ from langchain_core.runnables import RunnableConfig
 from opentelemetry.trace import SpanKind
 
 # FoundationaLLM imports
+from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import AgentTool
+from foundationallm.models.constants import RunnableConfigKeys, ContentArtifactTypeNames
+from foundationallm.models.orchestration import ContentArtifact
 
-from foundationallm_agent_plugins.tools import FoundationaLLMIntentToolBase
-
-class FoundationaLLMSQLTool(FoundationaLLMIntentToolBase):
+class FoundationaLLMSQLTool(FoundationaLLMToolBase):
     """
     Provides an implementation for the FoundationaLLM SQL tool.
     """
@@ -44,26 +47,18 @@ class FoundationaLLMSQLTool(FoundationaLLMIntentToolBase):
             exploded objects collection, user_identity, and platform configuration. """
 
         super().__init__(tool_config, objects, user_identity, config)
-
-        self.final_system_prompt = """
-        You are an AI assistant that responds to user queries using the provided data context.
-        If the context includes tabular data, format the information as a markdown table with clear and human-friendly column headers.
-        Do not display or reference the original column names. Always provide concise, informative, and well-structured responses that directly address the user's request.
-
-        Rules when creating your response:
         
-        - NEVER expose ID column values in your response, even if they are requested.
-        - DO NOT respond that you are not exposing internal database columns or IDs.
-        - NEVER expose internal database column names or data types even if they are requested.
-        """
-
+        self.main_llm = self.get_main_language_model()
+        self.main_prompt = self.get_main_prompt()
+        self.final_prompt = self.get_prompt("final_prompt")        
+        self.default_error_message = "An error occurred while executing the SQL query."
         self.__setup_sql_configuration(tool_config, config)
 
     def _run(
         self,
         *args,
         **kwargs
-        ) -> str:
+        ) -> Tuple[str, List[ContentArtifact]]:
 
         raise NotImplementedError()
 
@@ -71,22 +66,21 @@ class FoundationaLLMSQLTool(FoundationaLLMIntentToolBase):
         self,
         *args,
         prompt: str = None,
-        intents: List[Dict] = None,
-        message_history: List[BaseMessage] = None,
+        message_history: List[BaseMessage] = [],
         runnable_config: RunnableConfig = None,
         **kwargs,
-        ) -> str:
+        ) -> Tuple[str, List[ContentArtifact]]:
 
         prompt_tokens = 0
         completion_tokens = 0
         generated_sql_query = ''
         final_response = ''
-
+        
         # Get the original prompt
         if runnable_config is None:
             original_prompt = prompt
         else:
-            original_prompt = runnable_config['configurable']['original_user_prompt']
+            original_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
 
         messages = [
             SystemMessage(content=self.main_prompt),
@@ -98,12 +92,12 @@ class FoundationaLLMSQLTool(FoundationaLLMIntentToolBase):
             try:
 
                 with self.tracer.start_as_current_span(f'{self.name}_initial_llm_call', kind=SpanKind.INTERNAL):
-                    
+
                     response = await self.main_llm.ainvoke(messages, tools=self.tools)
 
                     completion_tokens += response.usage_metadata['input_tokens']
                     prompt_tokens += response.usage_metadata['output_tokens']
-                
+
                 if response.tool_calls \
                     and response.tool_calls[0]['name'] == 'query_azure_sql':
 
@@ -122,38 +116,35 @@ class FoundationaLLMSQLTool(FoundationaLLMIntentToolBase):
                         function_response = function_to_call(**function_args)
 
                     final_messages = [
-                        SystemMessage(content=self.final_system_prompt),
+                        SystemMessage(content=self.final_prompt),
                         HumanMessage(content=original_prompt),
                         AIMessage(content=function_response)
                     ]
 
                     with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
-                    
                         final_llm_response = await self.main_llm.ainvoke(final_messages, tools=None)
-
                         completion_tokens += final_llm_response.usage_metadata['input_tokens']
                         prompt_tokens += final_llm_response.usage_metadata['output_tokens']
                         final_response = final_llm_response.content
-
+                
                 return final_response, \
                     [
-                        self.create_tool_content_artifact(
-                            original_prompt,
-                            generated_sql_query,
-                            prompt_tokens,
-                            completion_tokens
+                       self.create_content_artifact(
+                            original_prompt,                            
+                            tool_input = generated_sql_query,
+                            prompt_tokens = prompt_tokens,
+                            completion_tokens = completion_tokens
                         )
                     ]
-
             except Exception as e:
                 self.logger.error('An error occured in tool %s: %s', self.name, e)
                 return self.default_error_message, \
                     [
-                        self.create_tool_content_artifact(
-                            original_prompt,
-                            prompt,
-                            prompt_tokens,
-                            completion_tokens
+                         self.create_content_artifact(
+                            original_prompt,                            
+                            tool_input = generated_sql_query,
+                            prompt_tokens = prompt_tokens,
+                            completion_tokens = completion_tokens
                         ),
                         self.create_error_content_artifact(
                             original_prompt,
@@ -166,13 +157,19 @@ class FoundationaLLMSQLTool(FoundationaLLMIntentToolBase):
             tool_config: AgentTool,
             config: Configuration,
     ):
-        
+
+        # Expects Azure credentials to authenticate to the database.
         self.server = tool_config.properties['sql_server']
         self.database = tool_config.properties['sql_database']
-        self.username = tool_config.properties['sql_user']
-        self.password = config.get_value(tool_config.properties['sql_password_secret_key'])
-
-        self.connection_string = f'Driver={{ODBC Driver 18 for SQL Server}};Server=tcp:{self.server},1433;Database={self.database};Uid={self.username};Pwd={self.password};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'
+      
+        # Get access token for Fabric        
+        credential = DefaultAzureCredential()
+        token = credential.get_token('https://database.windows.net/.default')
+        token_as_bytes = bytes(token.token, "UTF-8")
+        encoded_bytes = bytes(chain.from_iterable(zip(token_as_bytes, repeat(0)))) # Encode the bytes to a Windows byte string
+        token_bytes = struct.pack("<i", len(encoded_bytes)) + encoded_bytes # Package the token into a bytes object
+        self.connection_attrs_before = {1256: token_bytes}  # Attribute pointing to SQL_COPT_SS_ACCESS_TOKEN to pass access token to the driver
+        self.connection_string = f'Driver={{ODBC Driver 18 for SQL Server}};Server=tcp:{self.server},1433;Database={self.database};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'      
 
         self.tools = [
             {
@@ -268,7 +265,7 @@ class FoundationaLLMSQLTool(FoundationaLLMIntentToolBase):
         ]
 
         self.available_sql_functions = {
-            "query_azure_sql":self.query_azure_sql, 
+            "query_azure_sql":self.query_azure_sql,
             # "get_table_schema":self.get_table_schema,
             #"get_table_rows":self.get_table_rows,
             #"get_column_values":self.get_column_values,
@@ -279,7 +276,7 @@ class FoundationaLLMSQLTool(FoundationaLLMIntentToolBase):
         """Run a SQL query on Azure SQL and return results as a pandas DataFrame"""
         print(f"Executing query on Azure SQL: {query}")
         try:
-            conn = pyodbc.connect(self.connection_string)
+            conn = pyodbc.connect(self.connection_string, attrs_before=self.connection_attrs_before)
             df = pd.read_sql(query, conn)
             df = self.__convert_datetime_columns_to_string(df)
             return json.dumps(df.to_dict(orient='records'))

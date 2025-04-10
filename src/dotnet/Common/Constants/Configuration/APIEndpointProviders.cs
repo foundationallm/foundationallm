@@ -6,6 +6,10 @@
     public static class APIEndpointProviders
     {
         /// <summary>
+        /// Azure AI Inferencing API
+        /// </summary>
+        public const string AZUREAI = "azureai";
+        /// <summary>
         /// Microsoft
         /// </summary>
         public const string MICROSOFT = "microsoft";
@@ -28,6 +32,6 @@
         /// <summary>
         /// All providers.
         /// </summary>
-        public readonly static string[] All = [MICROSOFT, OPENAI, BEDROCK, VERTEXAI];
+        public readonly static string[] All = [AZUREAI, MICROSOFT, OPENAI, BEDROCK, VERTEXAI];
     }
 }

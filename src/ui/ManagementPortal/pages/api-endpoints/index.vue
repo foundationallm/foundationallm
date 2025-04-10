@@ -27,6 +27,13 @@
 
 			<!-- Table -->
 			<DataTable
+				:globalFilterFields="['resource.name', 'resource.description']"
+				v-model:filters="filters"
+				filterDisplay="menu"
+				paginator
+				:rows="10"
+				:rowsPerPageOptions="[10, 25, 50, 100]"
+				:paginatorTemplate="'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'"
 				:value="apiEndpoints"
 				striped-rows
 				scrollable
@@ -35,6 +42,17 @@
 				table-style="max-width: 100%"
 				size="small"
 			>
+				<template #header>
+					<div class="w-full flex justify-between">
+						<TableSearch v-model="filters" placeholder="Search endpoints" />
+						<Button
+							type="button"
+							icon="pi pi-refresh"
+							@click="getEndpoints"
+						/>
+					</div>
+				</template>
+
 				<template #empty>
 					No models/endpoints found. Please use the menu on the left to create a new model/endpoint.
 				</template>
@@ -99,9 +117,32 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink :to="'/api-endpoints/edit/' + data.resource.name" class="table__button">
-							<Button link>
-								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
+						<NuxtLink
+							:to="'/api-endpoints/edit/' + data.resource.name"
+							:aria-disabled="
+								!data.actions.includes(
+									'FoundationaLLM.Configuration/apiEndpointConfigurations/write',
+								)
+							"
+							:style="{
+								pointerEvents: !data.actions.includes(
+									'FoundationaLLM.Configuration/apiEndpointConfigurations/write',
+								)
+									? 'none'
+									: 'auto',
+							}"
+							class="table__button"
+						>
+							<Button
+								link
+								:disabled="
+									!data.actions.includes(
+										'FoundationaLLM.Configuration/apiEndpointConfigurations/write',
+									)
+								"
+								:aria-label="`Edit ${data.resource.name}`"
+							>
+								<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
 							</Button>
 						</NuxtLink>
 					</template>
@@ -120,8 +161,17 @@
 					}"
 				>
 					<template #body="{ data }">
-						<Button link @click="itemToDelete = data.resource">
-							<i class="pi pi-trash" style="font-size: 1.2rem"></i>
+						<Button
+							link
+							:aria-label="`Delete ${data.resource.name}`"
+							:disabled="
+								!data.actions.includes(
+									'FoundationaLLM.Configuration/apiEndpointConfigurations/delete',
+								)
+							"
+							@click="itemToDelete = data.resource"
+						>
+							<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
 						</Button>
 					</template>
 				</Column>
@@ -151,6 +201,7 @@ export default {
 			apiEndpoints: [] as APIEndpointConfiguration[],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
+			filters: {},
 			itemToDelete: null as APIEndpointConfiguration | null,
 		};
 	},
@@ -193,7 +244,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .table__button {
 	color: var(--primary-button-bg);
 }

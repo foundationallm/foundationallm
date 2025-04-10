@@ -85,7 +85,7 @@ namespace FoundationaLLM.Common.Models.Orchestration
 
         /// <summary>
         /// Gets or sets the settings for the semantic cache.
-        /// </summary>
+        /// </summary>  
         [JsonProperty("semanticCacheSettings")]
         public AgentSemanticCacheSettings? SemanticCacheSettings { get; set; }
 

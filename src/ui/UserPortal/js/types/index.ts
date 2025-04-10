@@ -98,6 +98,7 @@ export interface LongRunningOperation {
 	ttl: number;
 	prompt_tokens: number;
 	result?: Message;
+	isCompleted: boolean;
 }
 
 export interface CompletionPrompt {
@@ -180,4 +181,18 @@ export interface OneDriveWorkSchool {
 	name?: string;
 	mimeType?: string;
 	access_token?: string;
+}
+
+export interface RateLimitError {
+	quota_name: string;
+	quota_context: string;
+	quota_exceeded: boolean;
+	time_until_retry_seconds: number;
+}
+
+export interface MessageResponse {
+	status: string;
+	result?: Message;
+	operation_id?: string;
+	status_message?: string;
 }

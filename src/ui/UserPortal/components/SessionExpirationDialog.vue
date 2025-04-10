@@ -6,7 +6,7 @@
 		header="Your session is about to expire"
 	>
 		For security and protection of your personal data, you will be logged out in
-		<h2 class="d-flex justify-center" :class="{ 'text--danger': minutes === 0 && seconds < 30 }">
+		<h2 class="flex justify-center" :class="{ 'text--danger': minutes === 0 && seconds < 30 }">
 			{{ pad(minutes) }}:{{ pad(seconds) }}
 		</h2>
 		Would you like to stay logged in?

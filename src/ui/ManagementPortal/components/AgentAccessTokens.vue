@@ -2,7 +2,7 @@
 	<div>
 		<!-- Loading overlay -->
 		<template v-if="loadingAccessTokens">
-			<div class="d-flex flex-column justify-content-center align-center">
+			<div class="flex flex-col justify-center items-center">
 				<LoadingGrid />
 				<div>Loading agent access tokens...</div>
 			</div>
@@ -71,7 +71,7 @@
 				</Column>
 			</DataTable>
 
-			<div class="d-flex justify-content-end mt-4">
+			<div class="flex justify-end mt-4">
 				<Button @click="createAccessTokenDialogOpen = true"> Create Access Token </Button>
 			</div>
 		</template>
@@ -114,7 +114,7 @@
 							v-model="accessToken.description"
 							placeholder="Enter a description for this access token"
 							type="text"
-							class="w-100"
+							class="w-full"
 							aria-labelledby="aria-description"
 						/>
 					</div>

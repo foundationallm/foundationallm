@@ -27,6 +27,13 @@
 
 			<!-- Table -->
 			<DataTable
+				:globalFilterFields="['resource.name']"
+				v-model:filters="filters"
+				filterDisplay="menu"
+				paginator
+				:rows="10"
+				:rowsPerPageOptions="[10, 25, 50, 100]"
+				:paginatorTemplate="'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'"
 				:value="dataSources"
 				striped-rows
 				scrollable
@@ -35,6 +42,17 @@
 				table-style="max-width: 100%"
 				size="small"
 			>
+				<template #header>
+					<div class="w-full flex justify-between">
+						<TableSearch v-model="filters" placeholder="Search data sources" />
+						<Button
+							type="button"
+							icon="pi pi-refresh"
+							@click="getAgentDataSources"
+						/>
+					</div>
+				</template>
+
 				<template #empty>
 					<div role="alert" aria-live="polite">No data sources found.</div>
 				</template>
@@ -86,9 +104,19 @@
 							:to="'/data-sources/edit/' + data.resource.name"
 							class="table__button"
 							tabindex="-1"
+							:aria-disabled="!data.actions.includes('FoundationaLLM.DataSource/dataSources/write')"
+							:style="{
+								pointerEvents: !data.actions.includes('FoundationaLLM.DataSource/dataSources/write')
+									? 'none'
+									: 'auto',
+							}"
 						>
 							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-								<Button link :aria-label="`Edit ${data.resource.name}`">
+								<Button
+									link
+									:disabled="!data.actions.includes('FoundationaLLM.DataSource/dataSources/write')"
+									:aria-label="`Edit ${data.resource.name}`"
+								>
 									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
 								</Button>
 								<template #popper
@@ -116,6 +144,7 @@
 							<Button
 								link
 								:aria-label="`Delete ${data.resource.name}`"
+								:disabled="!data.actions.includes('FoundationaLLM.DataSource/dataSources/delete')"
 								@click="dataSourceToDelete = data.resource"
 							>
 								<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
@@ -158,6 +187,7 @@ export default {
 			dataSources: [] as ResourceProviderGetResult<DataSource>[],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
+			filters: {},
 			dataSourceToDelete: null as DataSource | null,
 		};
 	},
@@ -199,7 +229,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .table__button {
 	color: var(--primary-button-bg);
 }

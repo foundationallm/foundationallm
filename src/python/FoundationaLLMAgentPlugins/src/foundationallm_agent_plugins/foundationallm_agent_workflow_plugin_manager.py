@@ -9,7 +9,7 @@ from foundationallm_agent_plugins.workflows import FoundationaLLMFunctionCalling
 
 class FoundationaLLMAgentWorkflowPluginManager(WorkflowPluginManagerBase):
 
-    FOUNDATIONALLM_FUNCTION_CALLING_WORKFLOW_NAME = 'FoundationaLLMFunctionCallingWorkflow'
+    FOUNDATIONALLM_FUNCTION_CALLING_WORKFLOW_CLASS_NAME = 'FoundationaLLMFunctionCallingWorkflow'
 
     def __init__(self):
         super().__init__()
@@ -41,7 +41,7 @@ class FoundationaLLMAgentWorkflowPluginManager(WorkflowPluginManagerBase):
         FoundationaLLMWorkflowBase
             The workflow instance.
         """
-        if workflow_config.name == FoundationaLLMAgentWorkflowPluginManager.FOUNDATIONALLM_FUNCTION_CALLING_WORKFLOW_NAME:
+        if workflow_config.class_name == FoundationaLLMAgentWorkflowPluginManager.FOUNDATIONALLM_FUNCTION_CALLING_WORKFLOW_CLASS_NAME:
             return FoundationaLLMFunctionCallingWorkflow(workflow_config, objects, tools, user_identity, config)
         raise ValueError(f'Unknown workflow name: {workflow_config.name}')
 

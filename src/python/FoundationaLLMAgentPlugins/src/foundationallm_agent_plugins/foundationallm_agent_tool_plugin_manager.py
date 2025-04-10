@@ -4,15 +4,20 @@ from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.plugins import ToolPluginManagerBase
 
 from foundationallm_agent_plugins.tools import (
-    FoundationaLLMNopTool,
+    FoundationaLLMSQLTool,
+    FoundationaLLMKQLTool,
     FoundationaLLMCodeInterpreterTool,
-    FoundationaLLMKnowledgeSearchTool
+    FoundationaLLMKnowledgeSearchTool,
+    FoundationaLLMFileAnalysisTool
 )
 
 class FoundationaLLMAgentToolPluginManager(ToolPluginManagerBase):
-    
+
     FOUNDATIONALLM_CODE_INTERPRETER_TOOL_CLASS = 'FoundationaLLMCodeInterpreterTool'
     FOUNDATIONALLM_KNOWLEDGE_SEARCH_TOOL_CLASS = 'FoundationaLLMKnowledgeSearchTool'
+    FOUNDATIONALLM_SQL_TOOL_CLASS = 'FoundationaLLMSQLTool'
+    FOUNDATIONALLM_KQL_TOOL_CLASS = 'FoundationaLLMKQLTool'
+    FOUNDATIONALLM_FILE_ANALYSIS_TOOL_CLASS = 'FoundationaLLMFileAnalysisTool'
 
     def __init__(self):
         super().__init__()
@@ -28,8 +33,14 @@ class FoundationaLLMAgentToolPluginManager(ToolPluginManagerBase):
                 return FoundationaLLMCodeInterpreterTool(tool_config, objects, user_identity, config)
             case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_KNOWLEDGE_SEARCH_TOOL_CLASS:
                 return FoundationaLLMKnowledgeSearchTool(tool_config, objects, user_identity, config)
+            case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_SQL_TOOL_CLASS:
+                return FoundationaLLMSQLTool(tool_config, objects, user_identity, config)
+            case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_KQL_TOOL_CLASS:
+                return FoundationaLLMKQLTool(tool_config, objects, user_identity, config)
+            case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_FILE_ANALYSIS_TOOL_CLASS:
+                return FoundationaLLMFileAnalysisTool(tool_config, objects, user_identity, config)
             case _:
                 raise ValueError(f'Unknown tool class: {tool_config.class_name}')
 
     def refresh_tools():
-        print('Refreshing tools...') 
+        print('Refreshing tools...')

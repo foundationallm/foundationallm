@@ -3,6 +3,37 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-beta138
+
+## Configuration changes
+
+The `FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions` configuration setting has been replaced by the following configuration settings:
+
+Name | Content Type | Description | Default value
+--- | --- | --- | ---
+`FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CodeInterpreter` | `application/json` | The settings for the Azure Container Apps Dynamic Sessions code interpreter. | `{ "Endpoints": { "Python": [], "CSharp": []} }`
+`FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CustomContainer` | `application/json` | The settings for the Azure Container Apps Dynamic Sessions custom container. | `{ "Endpoints": { "Python": [], "CSharp": []} }`
+
+FoundationaLLM now supports Azure AI Inference APIs accessible to the agent using the LangChain workflow host. This functionality expects an Azure AI Service resource. Authentication is accomplished support is via Azure Identity (Entra) or API Key. If using Azure Identity, ensure the LangChain managed identity has `Cognitive Services User` role on the Azure AI Service resource (may be inherited). Within the project defined in AI Foundry, ensure the LangChain managed identity has the `Azure AI Developer` role. If using API Key, ensure the API Key is securely stored in the key vault and exposed via an Application Configuration value. When defining the API Endpoint Configuration, add the authentication parameter `api_key_configuration_name` with the name of the Application Configuration key.
+
+## Code sessions
+
+The tool property `foundationallm_aca_code_execution_enabled` has been renamed to `code_session_required`. The property indicates whether the tool requires a code session during its execution. If the property is set to `true`, the following additional properties must be set:
+
+- `code_session_endpoint_provider`: Supported values are `AzureContainerAppsCodeInterpreter` (indicates that the code session is provided by the Azure Container Apps Dynamic Sessions code interpreter) and `AzureContainerAppsCustomContainer` (indicates that the code session is provided by the Azure Container Apps Dynamic Sessions custom container).
+- `code_session_language`: Supported values are `Python` and `CSharp`.
+
+Tools that require a code session should expect the following properties to be injected:
+
+- `code_session_endpoint` (instead of the previous `foundationallm_aca_code_execution_session_id`)
+- `code_session_id` (instead of the previous `foundationallm_aca_code_execution_session_id`)
+
+## Starting from 0.9.7-beta128
+
+## Configuration changes
+
+Agent Workflow configuration now has a `class_name` field. This is the underlying implementation class of the workflow. This is not a breaking change, as in previous versions the `name` field contained the class name and if the `class_name` field is empty, it will default to the `name` field. However, it is recommended to set the `class_name` field to the implementation class name.
+
 ## Starting from 0.9.7-beta112
 
 ### Configuration changes
@@ -1010,7 +1041,7 @@ The following new App Configuration settings are required:
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType` | `-` | `-` |
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer` | `-` | `-` |
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules` | `-` | `-` |
-|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:PollingIntervalSeconds` | `10` | The interval in seconds at which the LangChain API will be polled for status. |
+|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:PollingIntervalSeconds` | `1` | The interval in seconds at which the LangChain API will be polled for status. |
 |`FoundationaLLM:UserPortal:Configuration:ShowMessageRating` | `true` | If `true`, rating options on agent messages will appear. |
 |`FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup` | `false` | If `true`, the last conversation will be displayed when the user logs in. Otherwise, a new conversation placeholder appears on page load. |
 |`FoundationaLLM:UserPortal:Configuration:ShowMessageTokens` | `true` | If `true`, the number of consumed tokens on agent and user messages will appear. |

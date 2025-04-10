@@ -89,20 +89,60 @@
 			<Divider />
 
 			<!-- Files table -->
-			<DataTable :value="agentFiles.uploadedFiles">
+			<DataTable
+				:value="agentFiles.uploadedFiles"
+				paginator
+				:rows="10"
+				:rowsPerPageOptions="[5, 10, 20, 50]"
+				:paginatorTemplate="'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'"
+				:globalFilterFields="['display_name']"
+				v-model:filters="filters"
+				filterDisplay="menu"
+				showGridlines
+				stripedRows
+				removableSort
+				:sortMode="'single'"
+				:sortField="sortField"
+				:sortOrder="sortOrder"
+				@sort="onSort"
+				tableStyle="min-width: 50rem"
+			>
+				<template #header>
+					<div class="filter-container">
+						<Button
+							type="button"
+							icon="pi pi-filter-slash"
+							label="Clear"
+							outlined
+							@click="clearFilter"
+						/>
+						<IconField>
+							<InputIcon>
+								<i class="pi pi-search" />
+							</InputIcon>
+							<InputText v-model="filters['global'].value" placeholder="Search filenames..." />
+						</IconField>
+					</div>
+				</template>
+
 				<template #empty>There are no private storage files uploaded for this agent.</template>
 
 				<!-- Name -->
 				<Column
 					field="display_name"
 					header="File Name"
+					sortable
 					:pt="{
 						headerCell: {
 							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
 						},
 						sortIcon: { style: { color: 'var(--primary-text)' } },
 					}"
-				></Column>
+				>
+					<template #filter="{ filterModel }">
+						<InputText v-model="filterModel.value" type="text" placeholder="Search by name" />
+					</template>
+				</Column>
 
 				<!-- Tools -->
 				<Column
@@ -162,6 +202,31 @@
 import type { PropType } from 'vue';
 import api from '@/js/api';
 
+// Define filter match modes
+const FilterMatchMode = {
+	STARTS_WITH: 'startsWith',
+	CONTAINS: 'contains',
+	EQUALS: 'equals',
+	IN: 'in',
+	LESS_THAN: 'lt',
+	GREATER_THAN: 'gt',
+	LESS_THAN_OR_EQUAL: 'lte',
+	GREATER_THAN_OR_EQUAL: 'gte',
+	AFTER: 'after',
+	BEFORE: 'before',
+	DATE_IS: 'dateIs',
+	DATE_IS_NOT: 'dateIsNot',
+	DATE_BEFORE: 'dateBefore',
+	DATE_AFTER: 'dateAfter',
+	CUSTOM: 'custom',
+};
+
+// Define filter operators
+const FilterOperator = {
+	AND: 'and',
+	OR: 'or',
+};
+
 export default {
 	props: {
 		agentName: {
@@ -179,7 +244,7 @@ export default {
 	data() {
 		return {
 			privateStorageDialogOpen: false,
-			maxFiles: 10,
+			maxFiles: 1000,
 			isMobile: window.screen.width < 950,
 			loading: false as boolean,
 			modalLoading: false as boolean,
@@ -194,6 +259,15 @@ export default {
 					[key: string]: boolean;
 				};
 			},
+			filters: {
+				global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+				display_name: {
+					operator: FilterOperator.AND,
+					constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+				},
+			},
+			sortField: 'display_name',
+			sortOrder: 1,
 		};
 	},
 
@@ -206,6 +280,7 @@ export default {
 	methods: {
 		handleClosePrivateStorage() {
 			this.privateStorageDialogOpen = false;
+			this.clearFilter();
 		},
 
 		browseFiles() {
@@ -302,6 +377,7 @@ export default {
 
 		async handleOpenPrivateStorageDialog() {
 			this.loading = true;
+			this.clearFilter();
 			await this.getPrivateAgentFiles();
 			await this.getPrivateAgentFileToolAssociations();
 			this.loading = false;
@@ -330,9 +406,8 @@ export default {
 
 		async getPrivateAgentFiles() {
 			this.agentFiles.localFiles = [];
-			this.agentFiles.uploadedFiles = (await api.getPrivateStorageFiles(this.agentName)).map(
-				(r) => r.resource,
-			);
+			const files = (await api.getPrivateStorageFiles(this.agentName)).map((r) => r.resource);
+			this.agentFiles.uploadedFiles = files;
 		},
 
 		toolNameToObjectId(toolName: string): string {
@@ -455,6 +530,21 @@ export default {
 				}
 			});
 		},
+
+		onSort(event: any) {
+			this.sortField = event.sortField;
+			this.sortOrder = event.sortOrder;
+		},
+
+		clearFilter() {
+			this.filters = {
+				global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+				display_name: {
+					operator: FilterOperator.AND,
+					constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+				},
+			};
+		},
 	},
 };
 </script>
@@ -527,5 +617,27 @@ export default {
 	align-items: center;
 	margin-left: 10px;
 	gap: 0.5rem;
+}
+
+.filter-container {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	width: 100%;
+}
+
+:deep(.p-datatable-header) {
+	padding: 1rem;
+	background: transparent;
+	border: none;
+}
+
+:deep(.p-input-icon-left) {
+	flex: 1;
+}
+
+:deep(.p-input-icon-left input) {
+	width: 100%;
+	padding-left: 2.5rem;
 }
 </style>

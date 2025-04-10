@@ -52,10 +52,12 @@
     <Compile Include="foundationallm\models\authentication\authentication_parameters_keys.py" />
     <Compile Include="foundationallm\models\constants\agent_capability_categories.py" />
     <Compile Include="foundationallm\models\constants\ai_model_resource_type_names.py" />
+    <Compile Include="foundationallm\models\constants\content_artifact_type_names.py" />
     <Compile Include="foundationallm\models\constants\prompt_resource_type_names.py" />
     <Compile Include="foundationallm\models\constants\resource_object_id_property_names.py" />
     <Compile Include="foundationallm\models\constants\resource_object_id_property_values.py" />
     <Compile Include="foundationallm\models\constants\resource_provider_names.py" />
+    <Compile Include="foundationallm\models\constants\runnable_config_keys.py" />
     <Compile Include="foundationallm\models\constants\vectorization_resource_type_names.py" />
     <Compile Include="foundationallm\models\constants\__init__.py" />
     <Compile Include="foundationallm\models\messages\__init__.py" />

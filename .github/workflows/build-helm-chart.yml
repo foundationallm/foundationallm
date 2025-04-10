@@ -12,6 +12,9 @@ on:
       tag:
         type: string
         required: true
+      package_chart:
+        type: boolean
+        default: true
       username:
         type: string
         required: true
@@ -21,6 +24,7 @@ on:
   
 jobs:
   helm_build:
+    if: inputs.package_chart
     runs-on: ubuntu-latest
     permissions:
       contents: read

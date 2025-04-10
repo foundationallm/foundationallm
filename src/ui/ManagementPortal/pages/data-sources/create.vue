@@ -36,8 +36,8 @@
 			</template>
 
 			<!-- Name -->
-			<div class="step-header span-2">What is the name of the data source?</div>
-			<div class="span-2">
+			<div class="step-header col-span-2">What is the name of the data source?</div>
+			<div class="col-span-2">
 				<div id="aria-source-name" class="mb-2">Data source name:</div>
 				<div id="aria-source-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
@@ -47,7 +47,7 @@
 						v-model="dataSource.name"
 						:disabled="editId"
 						type="text"
-						class="w-100"
+						class="w-full"
 						placeholder="Enter data source name"
 						aria-labelledby="aria-source-name aria-source-name-desc"
 						@input="handleNameInput"
@@ -75,7 +75,7 @@
 					<InputText
 						v-model="dataSource.description"
 						type="text"
-						class="w-100"
+						class="w-full"
 						placeholder="Enter a description for this data source"
 						aria-labelledby="aria-data-desc"
 					/>
@@ -83,10 +83,10 @@
 			</div>
 
 			<!-- Type -->
-			<div id="aria-source-type" class="step-header span-2">
+			<div id="aria-source-type" class="step-header col-span-2">
 				What is the type of the data source?
 			</div>
-			<div class="span-2">
+			<div class="col-span-2">
 				<Dropdown
 					v-model="dataSource.type"
 					:options="sourceTypeOptions"
@@ -100,8 +100,8 @@
 
 			<!-- Connection details -->
 			<!-- Show this section only if a source type is selected -->
-			<div v-if="dataSource.type" class="span-2">
-				<div class="step-header mb-2">What are the connection details?</div>
+			<div v-if="dataSource.type" class="col-span-2">
+				<div class="step-header !mb-2">What are the connection details?</div>
 
 				<!-- Azure data lake -->
 				<div v-if="isAzureDataLakeDataSource(dataSource)">
@@ -121,7 +121,7 @@
 						v-if="
 							dataSource.resolved_configuration_references.AuthenticationType === 'ConnectionString'
 						"
-						class="span-2"
+						class="col-span-2"
 					>
 						<div id="aria-connection-string" class="mb-2 mt-2">Connection string:</div>
 						<SecretKeyInput
@@ -135,7 +135,7 @@
 					<!-- API Key -->
 					<div
 						v-if="dataSource.resolved_configuration_references.AuthenticationType === 'AccountKey'"
-						class="span-2"
+						class="col-span-2"
 					>
 						<div id="aria-api-key" class="mb-2 mt-2">API Key:</div>
 						<SecretKeyInput
@@ -147,7 +147,7 @@
 						<div id="aria-endpoint" class="mb-2 mt-2">Endpoint:</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.Endpoint"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter API endpoint"
 							aria-labelledby="aria-endpoint"
@@ -159,26 +159,26 @@
 						v-if="
 							dataSource.resolved_configuration_references.AuthenticationType === 'AzureIdentity'
 						"
-						class="span-2"
+						class="col-span-2"
 					>
 						<div id="aria-account-name" class="mb-2 mt-2">Account name:</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.AccountName"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter account name"
 							aria-labelledby="aria-account-name"
 						/>
 					</div>
 
-					<div id="aria-folders" class="step-header mb-2 mt-2">Folder(s):</div>
+					<div id="aria-folders" class="mb-2 mt-2">Folder(s):</div>
 					<div id="aria-folders-desc" class="mb-2">
 						Press <strong>Enter</strong> or <strong>,</strong> after typing each folder name.
 					</div>
 					<Chips
 						v-model="folders"
 						v-create-chip-on-blur:folders
-						class="w-100"
+						class="w-full"
 						separator=","
 						aria-labelledby="aria-folders"
 						aria-describedby="aria-folders-desc"
@@ -204,7 +204,7 @@
 						v-if="
 							dataSource.resolved_configuration_references.AuthenticationType === 'ConnectionString'
 						"
-						class="span-2"
+						class="col-span-2"
 					>
 						<div id="aria-connection-string" class="mb-2 mt-2">Connection string:</div>
 						<SecretKeyInput
@@ -218,7 +218,7 @@
 					<!-- API Key -->
 					<div
 						v-if="dataSource.resolved_configuration_references.AuthenticationType === 'AccountKey'"
-						class="span-2"
+						class="col-span-2"
 					>
 						<div id="aria-api-key" class="mb-2 mt-2">API Key:</div>
 						<SecretKeyInput
@@ -230,7 +230,7 @@
 						<div id="aria-endpoint" class="mb-2 mt-2">Endpoint:</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.Endpoint"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter API endpoint"
 							aria-labelledby="aria-endpoint"
@@ -242,26 +242,26 @@
 						v-if="
 							dataSource.resolved_configuration_references.AuthenticationType === 'AzureIdentity'
 						"
-						class="span-2"
+						class="col-span-2"
 					>
 						<div id="aria-account-name" class="mb-2 mt-2">Account name:</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.AccountName"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter account name"
 							aria-labelledby="aria-account-name"
 						/>
 					</div>
 
-					<div id="aria-workspaces" class="step-header mb-2 mt-2">Workspace(s):</div>
+					<div id="aria-workspaces" class="step-header !mb-2 !mt-2">Workspace(s):</div>
 					<div id="aria-workspaces-desc" class="mb-2">
 						Press <strong>Enter</strong> or <strong>,</strong> after typing each workspace name.
 					</div>
 					<Chips
 						v-model="workspaces"
 						v-create-chip-on-blur:workspaces
-						class="w-100"
+						class="w-full"
 						separator=","
 						aria-labelledby="aria-workspaces aria-workspaces-desc"
 						:pt="{ input: { 'aria-labelledby': 'aria-workspaces aria-workspaces-desc' } }"
@@ -271,7 +271,7 @@
 				<!-- Azure SQL database -->
 				<div v-if="isAzureSQLDatabaseDataSource(dataSource)">
 					<!-- Connection string -->
-					<div class="span-2">
+					<div class="col-span-2">
 						<div id="aria-connection-string" class="mb-2">Connection string:</div>
 						<SecretKeyInput
 							v-model="dataSource.resolved_configuration_references.ConnectionString"
@@ -281,14 +281,14 @@
 						/>
 
 						<template v-if="dataSource.tables">
-							<div id="aria-table-names" class="step-header mb-2 mt-2">Table Name(s):</div>
+							<div id="aria-table-names" class="step-header !mb-2 !mt-2">Table Name(s):</div>
 							<div id="aria-table-names-desc" class="mb-2">
 								Press <strong>Enter</strong> or <strong>,</strong> after typing each table name.
 							</div>
 							<Chips
 								v-model="tables"
 								v-create-chip-on-blur:tables
-								class="w-100"
+								class="w-full"
 								separator=","
 								aria-labelledby="aria-table-names aria-table-names-desc"
 								:pt="{ input: { 'aria-labelledby': 'aria-table-names aria-table-names-desc' } }"
@@ -299,11 +299,11 @@
 
 				<!-- Sharepoint online -->
 				<div v-if="isSharePointOnlineSiteDataSource(dataSource)">
-					<div class="span-2">
+					<div class="col-span-2">
 						<div id="aria-client-id" class="mb-2">App ID (Client ID):</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.ClientId"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter app ID (client ID)"
 							aria-labelledby="aria-client-id"
@@ -312,7 +312,7 @@
 						<div id="aria-tenant-id" class="mb-2 mt-2">Tenant ID:</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.TenantId"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter tenant ID"
 							aria-labelledby="aria-tenant-id"
@@ -321,7 +321,7 @@
 						<div id="aria-cert-name" class="mb-2 mt-2">Certificate Name:</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.CertificateName"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter certificate name"
 							aria-labelledby="aria-cert-name"
@@ -330,7 +330,7 @@
 						<div id="aria-key-vault" class="mb-2 mt-2">Key Vault URL:</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.KeyVaultURL"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter key vault URL"
 							aria-labelledby="aria-key-vault"
@@ -339,14 +339,16 @@
 						<div id="aria-site-url" class="mb-2 mt-2">Site URL:</div>
 						<InputText
 							v-model="dataSource.site_url"
-							class="w-100"
+							class="w-full"
 							type="text"
 							placeholder="Enter site URL"
 							aria-labelledby="aria-site-url"
 						/>
 
 						<template v-if="dataSource.document_libraries">
-							<div id="aria-document-libs" class="step-header mb-2 mt-2">Document Library(s):</div>
+							<div id="aria-document-libs" class="step-header !mb-2 !mt-2">
+								Document Library(s):
+							</div>
 							<div id="aria-document-libs-desc" class="mb-2">
 								Press <strong>Enter</strong> or <strong>,</strong> after typing each document
 								library name.
@@ -354,7 +356,7 @@
 							<Chips
 								v-model="documentLibraries"
 								v-create-chip-on-blur:documentLibraries
-								class="w-100"
+								class="w-full"
 								separator=","
 								aria-labelledby="aria-document-libs aria-document-libs-desc"
 								:pt="{ input: { 'aria-labelledby': 'aria-document-libs aria-document-libs-desc' } }"
@@ -364,10 +366,10 @@
 				</div>
 			</div>
 
-			<div id="aria-cost-center" class="step-header span-2">
+			<div id="aria-cost-center" class="step-header col-span-2">
 				Would you like to assign this data source to a cost center?
 			</div>
-			<div class="span-2">
+			<div class="col-span-2">
 				<InputText
 					v-model="dataSource.cost_center"
 					type="text"
@@ -378,7 +380,7 @@
 			</div>
 
 			<!-- Buttons -->
-			<div class="button-container column-2 justify-self-end">
+			<div class="flex col-span-2 justify-end gap-4">
 				<!-- Create data source -->
 				<Button
 					:label="editId ? 'Save Changes' : 'Create Data Source'"
@@ -387,13 +389,7 @@
 				/>
 
 				<!-- Cancel -->
-				<Button
-					v-if="editId"
-					style="margin-left: 16px"
-					label="Cancel"
-					severity="secondary"
-					@click="handleCancel"
-				/>
+				<Button label="Cancel" severity="secondary" @click="handleCancel" />
 			</div>
 		</div>
 	</main>

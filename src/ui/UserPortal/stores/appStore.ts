@@ -15,6 +15,7 @@ import type {
 	ResourceProviderDeleteResults,
 	Attachment,
 	MessageContent,
+	RateLimitError,
 } from '@/js/types';
 import api from '@/js/api';
 import { isAgentExpired } from '@/js/helpers';
@@ -114,7 +115,9 @@ export const useAppStore = defineStore('app', {
 
 			await this.getSessions();
 
-			const requestedSession = sessionId ? this.sessions.find((s: Session) => s.sessionId === sessionId) : undefined;
+			const requestedSession = sessionId
+				? this.sessions.find((s: Session) => s.sessionId === sessionId)
+				: undefined;
 
 			// If there is an existing session matching the one requested in the url, select it.
 			// otherwise, if the portal is configured to show the previous session and it exists, select it.
@@ -149,9 +152,10 @@ export const useAppStore = defineStore('app', {
 				messages: [],
 			} as Session;
 			this.sessions.unshift(tempSession);
-			
+
 			// Ensure a default agent is selected for the temporary session
-			const defaultAgent = this.agents.find((agent) => agent.resource.properties?.default_resource) || this.agents[0];
+			const defaultAgent =
+				this.agents.find((agent) => agent.resource.properties?.default_resource) || this.agents[0];
 			if (defaultAgent) {
 				this.setSessionAgent(tempSession, defaultAgent);
 				this.lastSelectedAgent = defaultAgent;
@@ -198,7 +202,9 @@ export const useAppStore = defineStore('app', {
 
 			// Handle inconsistencies in displaying the renamed session due to potential delays in the backend updating the session name.
 			this.renamedSessions.forEach((renamedSession: Session) => {
-				const existingSession = this.sessions.find((s: Session) => s.sessionId === renamedSession.sessionId);
+				const existingSession = this.sessions.find(
+					(s: Session) => s.sessionId === renamedSession.sessionId,
+				);
 				if (existingSession) {
 					existingSession.display_name = renamedSession.display_name;
 				}
@@ -206,7 +212,9 @@ export const useAppStore = defineStore('app', {
 
 			// Handle inconsistencies in displaying the deleted session due to potential delays in the backend updating the session list.
 			this.deletedSessions.forEach((deletedSession: Session) => {
-				const existingSession = this.sessions.find((s: Session) => s.sessionId === deletedSession.sessionId);
+				const existingSession = this.sessions.find(
+					(s: Session) => s.sessionId === deletedSession.sessionId,
+				);
 				if (existingSession) {
 					this.removeSession(deletedSession.sessionId);
 				}
@@ -417,7 +425,7 @@ export const useAppStore = defineStore('app', {
 		 * @param text - The text of the message to send.
 		 * @returns A boolean indicating whether to wait for a polling operation to complete.
 		 */
-		async sendMessage(text: string): boolean {
+		async sendMessage(text: string): Promise<boolean> {
 			let waitForPolling = false;
 			if (!text) return waitForPolling;
 
@@ -474,52 +482,111 @@ export const useAppStore = defineStore('app', {
 			}
 
 			const initialSession = this.currentSession?.sessionId;
-			const message = await api.sendMessage(
-				this.currentSession!.sessionId,
-				text,
-				agent,
-				relevantAttachments.map((attachment) => String(attachment.id)),
-			);
+			
+			try {
+				const message = await api.sendMessage(
+					this.currentSession!.sessionId,
+					text,
+					agent,
+					relevantAttachments.map((attachment) => String(attachment.id)),
+				);
 
-			if (message.status === 'Completed') {
-				// The endpoint likely returned the final message, so we can update the last message in the list.
-				const completedMessage = message.result as Message;
-				// Replace the last message with the completed message.
-				this.currentMessages[this.currentMessages.length - 1] = completedMessage;
-				this.calculateMessageProcessingTime();
+				if (message.status === 'Completed') {
+					// The endpoint likely returned the final message, so we can update the last message in the list.
+					const completedMessage = message.result as Message;
+					// Replace the last message with the completed message.
+					this.currentMessages[this.currentMessages.length - 1] = completedMessage;
+					this.calculateMessageProcessingTime();
+					return waitForPolling;
+				}
+
+				this.currentMessages[this.currentMessages.length - 1] = {
+					...tempAssistantMessage,
+					...message,
+					sender: 'Agent',
+					type: 'Message',
+					text: message.status_message,
+				};
+
+				this.attachments = this.attachments.filter(
+					(attachment) => attachment.sessionId !== sessionId,
+				);
+
+				// If the session has changed before above completes we need to prevent polling
+				if (initialSession !== this.currentSession?.sessionId) return waitForPolling;
+
+				// If the operation failed to start prevent polling
+				if (message.status === 'Failed') return waitForPolling;
+
+				waitForPolling = true;
+
+				// For older messages that have a status of "Pending" but no operation id, assume
+				// it is complete and do no initiate polling as it will return empty data
+				if (message.operation_id) this.startPolling(message, this.currentSession?.sessionId);
+
+				// Remove the new session if matches this one, now that we have sent the first message.
+				if (this.newSession && this.newSession.sessionId === initialSession) {
+					this.newSession = null;
+				}
+
 				return waitForPolling;
+			} catch (error: any) {
+				// Remove the temporary messages we added
+				this.currentMessages = this.currentMessages.slice(0, -2);
+				
+				// Check if the error is a rate limit error
+				if (error.data?.quota_exceeded) {
+					const rateLimitError = error.data as RateLimitError;
+					const waitTime = rateLimitError.time_until_retry_seconds;
+					
+					// Format the wait time in a more natural way
+					let timeString;
+					if (waitTime < 60) {
+						timeString = `${waitTime} second${waitTime !== 1 ? 's' : ''}`;
+					} else {
+						const minutes = Math.floor(waitTime / 60);
+						const seconds = waitTime % 60;
+						if (seconds === 0) {
+							timeString = `${minutes} minute${minutes !== 1 ? 's' : ''}`;
+						} else {
+							timeString = `${minutes} minute${minutes !== 1 ? 's' : ''} and ${seconds} second${seconds !== 1 ? 's' : ''}`;
+						}
+					}
+					
+					this.addToast({
+						severity: 'warn',
+						summary: 'Rate Limited',
+						detail: `You have sent too many messages in a short period of time. Please wait ${timeString} before trying again.`,
+						life: 5000,
+					});
+				} else {
+					// Handle different types of errors
+					let errorMessage = 'Failed to send message. Please try again.';
+					
+					if (error.message?.includes('Failed to fetch')) {
+						errorMessage = 'Unable to connect to the server. Please check your internet connection and try again.';
+					} else if (error.message?.includes('NetworkError')) {
+						errorMessage = 'Network error occurred. Please check your connection and try again.';
+					} else if (error.message?.includes('timeout')) {
+						errorMessage = 'The request timed out. Please try again.';
+					} else if (error.message) {
+						// If there's a specific error message, use it but clean it up
+						errorMessage = error.message
+							.replace(/^https?:\/\/[^/]+\//, '') // Remove URL prefix
+							.replace(/<no response>/g, '') // Remove "no response" text
+							.trim();
+					}
+					
+					this.addToast({
+						severity: 'error',
+						summary: 'Error',
+						detail: errorMessage,
+						life: 5000,
+					});
+				}
+				
+				return false;
 			}
-
-			this.currentMessages[this.currentMessages.length - 1] = {
-				...tempAssistantMessage,
-				...message,
-				sender: 'Agent',
-				type: 'Message',
-				text: message.status_message,
-			};
-
-			this.attachments = this.attachments.filter(
-				(attachment) => attachment.sessionId !== sessionId,
-			);
-
-			// If the session has changed before above completes we need to prevent polling
-			if (initialSession !== this.currentSession?.sessionId) return waitForPolling;
-
-			// If the operation failed to start prevent polling
-			if (message.status === 'Failed') return waitForPolling;
-
-			waitForPolling = true;
-
-			// For older messages that have a status of "Pending" but no operation id, assume
-			// it is complete and do no initiate polling as it will return empty data
-			if (message.operation_id) this.startPolling(message, this.currentSession?.sessionId);
-
-			// Remove the new session if matches this one, now that we have sent the first message.
-			if (this.newSession && this.newSession.sessionId === initialSession) {
-				this.newSession = null;
-			}
-
-			return waitForPolling;
 		},
 
 		getPollingRateMS() {

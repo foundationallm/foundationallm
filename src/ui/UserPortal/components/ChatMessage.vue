@@ -84,7 +84,7 @@
 							<ChatMessageTextBlock v-else :value="content.value" />
 						</template>
 
-						<ChatMessageContentBlock v-else :value="content" />
+						<ChatMessageContentBlock v-else-if="content.type !== 'file_path'" :value="content" />
 					</div>
 
 					<div v-for="artifact in message.contentArtifacts" :key="artifact.id">
@@ -106,7 +106,23 @@
 
 				<!-- Assistant message footer -->
 				<div v-if="message.sender !== 'User'" class="message__footer">
-					<!-- Content Artifacts -->
+					<!-- Additional content -->
+					<div
+						v-if="processedContent.some((content) => content.type === 'file_path' && !content.skip)"
+						class="additional-content"
+					>
+						<div><b>Additional Content: </b></div>
+						<div
+							v-for="(content, index) in processedContent.filter(
+								(content) => content.type === 'file_path',
+							)"
+							:key="index"
+						>
+							<ChatMessageContentBlock :value="content" />
+						</div>
+					</div>
+
+					<!-- Content artifacts -->
 					<div v-if="message.contentArtifacts?.length" class="content-artifacts">
 						<span><b>Content Artifacts: </b></span>
 						<span
@@ -409,7 +425,7 @@ export default {
 	name: 'ChatMessage',
 	components: {
 		Image,
-		Dialog
+		Dialog,
 	},
 
 	props: {
@@ -520,10 +536,11 @@ export default {
 			deep: true,
 			handler() {
 				this.markSkippableContent();
+
 				// Bind click handlers to any new images
 				this.$nextTick(() => {
 					const messageImages = this.$el.querySelectorAll('.message-image');
-					messageImages.forEach(img => {
+					messageImages.forEach((img) => {
 						// Remove any existing click handlers to prevent duplicates
 						img.removeEventListener('click', this.handleImageClick);
 						// Add the click handler
@@ -680,6 +697,7 @@ export default {
 						content,
 						value: content,
 						origValue: this.messageContent[currentContentIndex]?.value,
+						fileName: this.messageContent[currentContentIndex]?.fileName,
 					};
 				}
 			}
@@ -724,10 +742,10 @@ export default {
 			};
 
 			// Images
-			this.markedRenderer.image = function({ href, title, text }) {
+			this.markedRenderer.image = function ({ href, title, text }) {
 				// Find a matching image_file content block in the message's content
 				const matchingImageBlock = this.message.content?.find(
-					(block) => block.type === 'image_file' && block.origValue === href
+					(block) => block.type === 'image_file' && block.origValue === href,
 				);
 
 				// If we found a matching block and it has a blobUrl, use that
@@ -737,46 +755,49 @@ export default {
 
 				// Create a unique ID for this image
 				const imageId = `image-${Math.random().toString(36).substr(2, 9)}`;
-				
+
 				// For non-API URLs, use the href directly in the placeholder
 				if (!href.startsWith(api.getApiUrl())) {
 					return `<img id="${imageId}" src="${href}" alt="${text || ''}" title="${title || ''}" class="message-image" data-src="${href}" />`;
 				}
-				
+
 				// For API URLs, use the placeholder and fetch the image
 				const placeholder = `<img id="${imageId}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="${text || ''}" title="${title || ''}" class="message-image" />`;
 
 				// Only fetch the image if we haven't already started fetching it
-				if (!this.message.content?.some(block => 
-					block.type === 'image_file' && 
-					block.origValue === href && 
-					block.isLoading
-				)) {
+				if (
+					!this.message.content?.some(
+						(block) => block.type === 'image_file' && block.origValue === href && block.isLoading,
+					)
+				) {
 					// Mark the block as loading
 					if (matchingImageBlock) {
 						matchingImageBlock.isLoading = true;
 					}
 
 					// Load the image and create a blob URL
-					api.fetchDirect(href).then(response => {
-						const blobUrl = URL.createObjectURL(response);
-						// Update the matching block with the blob URL
-						if (matchingImageBlock) {
-							matchingImageBlock.blobUrl = blobUrl;
-							matchingImageBlock.isLoading = false;
-						}
-						// Update the image in the DOM
-						const container = document.getElementById(imageId);
-						if (container) {
-							container.setAttribute('src', blobUrl);
-							container.setAttribute('data-src', blobUrl);
-						}
-					}).catch(error => {
-						console.error(`Failed to fetch image from ${href}`, error);
-						if (matchingImageBlock) {
-							matchingImageBlock.isLoading = false;
-						}
-					});
+					api
+						.fetchDirect(href)
+						.then((response) => {
+							const blobUrl = URL.createObjectURL(response);
+							// Update the matching block with the blob URL
+							if (matchingImageBlock) {
+								matchingImageBlock.blobUrl = blobUrl;
+								matchingImageBlock.isLoading = false;
+							}
+							// Update the image in the DOM
+							const container = document.getElementById(imageId);
+							if (container) {
+								container.setAttribute('src', blobUrl);
+								container.setAttribute('data-src', blobUrl);
+							}
+						})
+						.catch((error) => {
+							console.error(`Failed to fetch image from ${href}`, error);
+							if (matchingImageBlock) {
+								matchingImageBlock.isLoading = false;
+							}
+						});
 				}
 
 				return placeholder;
@@ -932,17 +953,17 @@ export default {
 					this.keepScrollingUntilCompleted();
 				}, 100);
 			});
-		}
+		},
 	},
 	mounted() {
 		// Initial binding of click handlers
 		this.$nextTick(() => {
 			const messageImages = this.$el.querySelectorAll('.message-image');
-			messageImages.forEach(img => {
+			messageImages.forEach((img) => {
 				img.addEventListener('click', this.handleImageClick);
 			});
 		});
-	}
+	},
 };
 </script>
 <style lang="scss">
@@ -951,7 +972,7 @@ export default {
 	margin-right: 6px;
 	vertical-align: middle;
 	line-height: 1;
-}	
+}
 </style>
 
 <style lang="scss" scoped>
@@ -977,7 +998,14 @@ $textColor: #131833;
 	animation-name: loading-shimmer;
 	background: $textColor
 		gradient(linear, 100% 0, 0 0, from($textColor), color-stop(0.5, $shimmerColor), to($textColor));
-	background: $textColor -webkit-gradient(linear, 100% 0, 0 0, from($textColor), color-stop(0.5, $shimmerColor), to($textColor));
+	background: $textColor -webkit-gradient(
+			linear,
+			100% 0,
+			0 0,
+			from($textColor),
+			color-stop(0.5, $shimmerColor),
+			to($textColor)
+		);
 	background-clip: text;
 	-webkit-background-clip: text;
 	background-repeat: no-repeat;
@@ -1110,6 +1138,11 @@ $textColor: #131833;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+.additional-content {
+	width: 100%;
+	padding: 8px 12px;
 }
 
 .ratings {

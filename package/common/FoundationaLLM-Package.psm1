@@ -1,0 +1,144 @@
+Import-Module "./package/common/FoundationaLLM-Core.psm1" -Force -NoClobber
+Import-Module "./package/common/FoundationaLLM-Authorization.psm1" -Force -NoClobber
+Import-Module "./package/common/FoundationaLLM-Agent.psm1" -Force -NoClobber
+Import-Module "./package/common/FoundationaLLM-Prompt.psm1" -Force -NoClobber
+
+function Resolve-Placeholders {
+    param (
+        [Parameter(ValueFromPipeline)]
+        [string]$Content,
+        [hashtable]$Parameters = @{}
+    )
+
+    process {
+        foreach ($key in $Parameters.Keys) {
+            $placeholder = "{{" + $key + "}}"
+            $value = $Parameters[$key]
+            $Content = $Content -replace $placeholder, $value
+        }
+    
+        $Content
+    }
+}
+
+function Merge-RoleAssignments {
+    param (
+        [string]$PackageRoot,
+        [hashtable]$Parameters = @{}
+    )
+
+    Test-RoleDefinitionIds
+
+    $roleAssignments = Get-Content "$($PackageRoot)/artifacts/roleAssignments.json" `
+        | Resolve-Placeholders -Parameters $Parameters `
+        | ConvertFrom-Json -AsHashTable
+
+    $roleAssignments | ForEach-Object {
+
+        $securityPrincipal = $_
+        if ($securityPrincipal.principal_type -eq "User") {
+            $securityPrincipalId = Get-EntraUserId -UPN $securityPrincipal.principal_name
+        } else {
+            $securityPrincipalId = Get-EntraSecurityGroupId -Name $securityPrincipal.principal_name
+        }
+
+        Write-Host "Assigning roles for [$($securityPrincipal.principal_name)]($($securityPrincipalId))"
+
+        foreach ($roleAssignment in $securityPrincipal.role_assignments) {
+            $scope = Get-ObjectId -Name $roleAssignment[2] -Type $roleAssignment[1]
+            $roleDefinitionId = $global:RoleDefinitionIds[$roleAssignment[0]]
+            Write-Host "Assigning role [$($roleAssignment[0])]($($roleDefinitionId)) to $($scope)"
+
+            $roleAssignmentRequest = [ordered]@{
+                type = "FoundationaLLM.Authorization/roleAssignments"
+                name = (New-Guid).ToString("D")
+                description = "$($roleAssignment[0]) role for $($securityPrincipal.principal_name)"
+                principal_id = $securityPrincipalId
+                principal_type = $securityPrincipal.principal_type
+                role_definition_id = $roleDefinitionId
+                scope = $scope
+            }
+
+            try {
+                $roleAssignmentResponse = Merge-RoleAssignment -RoleAssignment $roleAssignmentRequest
+                Write-Host "Role assignment created: $($roleAssignmentResponse)" -ForegroundColor Green
+            }
+            catch [System.Net.Http.HttpRequestException] {
+                if ($_.Exception.Response.StatusCode -eq 409) {
+                    Write-Host "Role assignment already exists." -ForegroundColor Yellow
+                } else {
+                    throw $_
+                }
+            }
+        }
+    }
+}
+
+function Deploy-Package {
+    param (
+        [string]$PackageRoot,
+        [hashtable]$Parameters = @{}
+    )
+
+    Write-Host "Deploying package from $($PackageRoot)" -ForegroundColor Blue
+    Write-Host "Creating prompts..."
+
+    $prompts = Get-Content "$($PackageRoot)/artifacts/prompts.json" `
+        | Resolve-Placeholders -Parameters $Parameters `
+        | ConvertFrom-Json -AsHashTable
+    
+    $prompts | ForEach-Object {
+
+        $prompt = $_
+
+        Write-Host "Creating prompt: $($prompt.name)"
+
+        if ($prompt["prefix"].EndsWith(".txt")) {
+            # The actual content of the prompt is in a TXT file.
+            $promptBody = Get-Content "$($PackageRoot)/artifacts/$($prompt["prefix"])" -Raw -Encoding UTF8 `
+                | Resolve-Placeholders -Parameters $Parameters
+            $prompt["prefix"] = $promptBody
+        }
+
+        $promptResult = (Merge-Prompt -Prompt $prompt)
+        Write-Host "Prompt created: $($promptResult)" -ForegroundColor Green
+    }
+
+    if (Test-Path -Path "$($PackageRoot)/artifacts/agent.json") {
+    
+        $agent = Get-Content "$($PackageRoot)/artifacts/agent.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        $workflow = Get-Content "$($PackageRoot)/artifacts/workflow.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+        
+        $resourceObjectIds = (Get-ResourceObjectIds -Resources $workflow.resources)
+        $workflow["resource_object_ids"] = $resourceObjectIds
+        $workflow.Remove("resources")
+        $agent["workflow"] = $workflow
+        $agent["tools"] = @()
+
+        $tools = Get-Content "$($PackageRoot)/artifacts/tools.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        $tools | ForEach-Object {
+            if ((-not $Parameters.ContainsKey("AGENT_TOOLS")) -or $Parameters["AGENT_TOOLS"].Contains($_.name)) {
+                
+                $tool = $_
+                $toolResourceObjectIds = (Get-ResourceObjectIds -Resources $tool.resources)
+                $tool["resource_object_ids"] = $toolResourceObjectIds
+                $tool.Remove("resources")
+                $agent["tools"] += $tool
+            }
+        }
+
+        Write-Host "Creating agent: $($agent.name)"
+        $agentResult = (Merge-Agent -Agent $agent)
+        Write-Host "Agent created: $($agentResult)" -ForegroundColor Green
+    }
+
+    Merge-RoleAssignments -PackageRoot $PackageRoot -Parameters $Parameters
+}

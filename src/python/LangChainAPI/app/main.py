@@ -14,9 +14,9 @@ app = FastAPI(
                 contained in the foundationallm.core Python SDK.""",
     version='1.0.0',
     contact={
-        'name':'Solliance, Inc.',
-        'email':'contact@solliance.net',
-        'url':'https://solliance.net/'
+        'name':'FoundationaLLM, Inc.',
+        'email':'contact@foundationallm.ai',
+        'url':'https://foundationallm.ai/'
     },
     openapi_url='/swagger/v1/swagger.json',
     docs_url='/swagger',

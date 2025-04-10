@@ -47,7 +47,7 @@
 				href="#"
 				target="_blank"
 				@click.prevent="handleFileDownload(content)"
-			>Download {{ content.fileName ?? content.blobUrl ?? content.origValue }}
+				>{{ content.fileName ?? content.blobUrl ?? content.origValue }}
 			</a>
 		</div>
 	</div>
@@ -107,19 +107,22 @@ export default {
 							this.content.blobUrl = URL.createObjectURL(response);
 							// Update the blob URL in the Pinia store
 							const appStore = useAppStore();
-							const messageIndex = appStore.currentMessages.findIndex(message => 
-								message.content?.some(content => 
-									content.type === 'image_file' && content.origValue === this.content.origValue
-								)
+							const messageIndex = appStore.currentMessages.findIndex((message) =>
+								message.content?.some(
+									(content) =>
+										content.type === 'image_file' && content.origValue === this.content.origValue,
+								),
 							);
-							
+
 							if (messageIndex !== -1) {
-								const contentIndex = appStore.currentMessages[messageIndex].content.findIndex(content =>
-									content.type === 'image_file' && content.origValue === this.content.origValue
+								const contentIndex = appStore.currentMessages[messageIndex].content.findIndex(
+									(content) =>
+										content.type === 'image_file' && content.origValue === this.content.origValue,
 								);
-								
+
 								if (contentIndex !== -1) {
-									appStore.currentMessages[messageIndex].content[contentIndex].blobUrl = this.content.blobUrl;
+									appStore.currentMessages[messageIndex].content[contentIndex].blobUrl =
+										this.content.blobUrl;
 								}
 							}
 						}
