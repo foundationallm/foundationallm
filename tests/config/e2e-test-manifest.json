@@ -3,8 +3,8 @@
     "base_images": [
         {
             "name": "fllm-python-base",
-            "context": "./src/python/base",
-            "dockerfile": "./src/python/base/Dockerfile"
+            "context": "./src/python/Base",
+            "dockerfile": "./src/python/Base/Dockerfile"
         }
     ],
     "service_matrix": [
