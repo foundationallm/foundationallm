@@ -17,7 +17,8 @@ from fastapi.responses import FileResponse
 app = FastAPI(
     title='FoundationaLLM Code Session API',
     summary='API for managing code sessions content and code execution.',
-    description='The FoundationaLLM Code Session API exposes code session capabilities required by the FoundationaLLM custom Python container.',
+    description="""The FoundationaLLM Code Session API exposes code session capabilities
+    required by the FoundationaLLM custom Python container.""",
     version='1.0.0',
     contact={
         'name':'FoundationaLLM, Inc.',
@@ -29,6 +30,8 @@ app = FastAPI(
         'url': 'https://www.foundationallm.ai/license',
     }
 )
+
+ROOT_DATA_PATH = '/mnt/data'
 
 @app.post('/code/execute')
 async def execute_code(request_body: dict):
@@ -85,15 +88,21 @@ async def upload_file(file: UploadFile):
     """
 
     try:
+        base_path = os.path.normpath(ROOT_DATA_PATH)  # Define the safe root directory
+        full_path = os.path.normpath(os.path.join(base_path, file.filename))
+        if not full_path.startswith(base_path):
+            raise HTTPException(status_code=400, detail="Invalid file name.")
+
         contents = await file.read()
+
         # Save the file to the code session
-        with open(file.filename, 'wb') as f:
+        with open(full_path, 'wb') as f:
             f.write(contents)
 
         return { 'status': 'success', 'filename': file.filename }
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error uploading file.") from e
-    
+
 @app.get('/files')
 async def list_files():
     """
@@ -107,7 +116,7 @@ async def list_files():
 
     try:
         file_paths = []
-        file_store_root = os.getcwd()
+        file_store_root = os.path.normpath(ROOT_DATA_PATH)
         for root, _, files in os.walk(file_store_root):
             for file in files:
                 rel_dir = os.path.relpath(root, file_store_root)
@@ -116,7 +125,7 @@ async def list_files():
         return { 'files': file_paths }
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error listing files.") from e
-    
+
 @app.post('/files/download')
 async def download_file(request_body: dict):
     """
@@ -135,10 +144,11 @@ async def download_file(request_body: dict):
 
     filename = request_body.get('file_name', None)
     if filename is None:
-        raise HTTPException(status_code=400, detail="The file name was not provided in the request body.")
+        raise HTTPException(status_code=400,
+                            detail="The file name was not provided in the request body.")
 
     try:
-        base_path = os.getcwd()  # Define the safe root directory
+        base_path = os.path.normpath(ROOT_DATA_PATH)  # Define the safe root directory
         fullpath = os.path.normpath(os.path.join(base_path, filename))
         if not fullpath.startswith(base_path) or not os.path.isfile(fullpath):
             raise HTTPException(status_code=404, detail="File not found.")
@@ -162,7 +172,7 @@ def get_json_serializable_dict(d: dict) -> dict:
     dict
         The JSON serializable dictionary.
     """
-    
+
     result = {}
     for key, value in d.items():
         try:
