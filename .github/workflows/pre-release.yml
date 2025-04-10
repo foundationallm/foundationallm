@@ -97,11 +97,12 @@ jobs:
       target: sandbox
     secrets: inherit
 
-
   docker_build:
     name: Build Docker Images
     if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')
-    needs: generate_matrix
+    needs: 
+      - generate_matrix
+      - base_docker_build
     strategy:
       fail-fast: false
       matrix:
