@@ -1,0 +1,59 @@
+name: Pre-release Build
+
+on:
+  push:
+    branches:
+    - release/**
+  workflow_dispatch:
+    inputs: {}
+
+jobs:
+  generate_matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      registry: ${{ steps.set-registry.outputs.result }}
+      base_images: ${{ steps.set-base-images.outputs.result }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set Base Images
+      uses: actions/github-script@v7
+      id: set-base-images
+      with:
+        result-encoding: string
+        script: |
+          const fs = require('fs')
+          const jsonString = fs.readFileSync('./tests/config/e2e-test-manifest.json')
+          var data = JSON.parse(jsonString)
+          return JSON.stringify(data.base_images)
+    
+    - name: Set Container registry
+      uses: actions/github-script@v7
+      id: set-registry
+      with:
+        result-encoding: string
+        script: |
+          const fs = require('fs')
+          const jsonString = fs.readFileSync('./tests/config/sandbox-registry.json')
+          var data = JSON.parse(jsonString)
+          return data.registry    
+
+  base_docker_build:
+    name: Build Base Docker Images
+    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')
+    needs: generate_matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        object: ${{ fromJson(needs.generate_matrix.outputs.base_images) }}
+    uses: ./.github/workflows/build-docker-image.yml
+    with:
+      image: ${{ matrix.object.name }}
+      context: ${{ matrix.object.context }}
+      dockerfile: ${{ matrix.object.dockerfile }}
+      registry: ${{ needs.generate_matrix.outputs.registry }}
+      tag: latest
+      username: e2e-token
+      target: sandbox
+    secrets: inherit
