@@ -754,6 +754,174 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Controllers.CodeController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Controllers.CodeController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.CSharpCodeSession.API.Controllers.CodeController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Controllers.FilesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Controllers.FilesController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.CSharpCodeSession.API.Controllers.FilesController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Controllers.StatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Controllers.StatusController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.CSharpCodeSession.API.Controllers.StatusController",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.CSharpCodeSession.API.Controllers.StatusController.yml\" sourcestartlinenumber=\"1\">Provides methods for checking the status of the service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Controllers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.CSharpCodeSession.API.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.CodeExecutionRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.CodeExecutionRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.CSharpCodeSession.API.Models.CodeExecutionRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.CodeExecutionRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to execute code.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.CodeExecutionResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.CodeExecutionResponse.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.CSharpCodeSession.API.Models.CodeExecutionResponse",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.CodeExecutionResponse.yml\" sourcestartlinenumber=\"1\">Represents the response from executing code.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.DownloadFileRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.DownloadFileRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.CSharpCodeSession.API.Models.DownloadFileRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.DownloadFileRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to download a file.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.ListFilesResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.ListFilesResponse.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.CSharpCodeSession.API.Models.ListFilesResponse",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.ListFilesResponse.yml\" sourcestartlinenumber=\"1\">Represents the response for listing files.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.StatusResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.StatusResponse.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.CSharpCodeSession.API.Models.StatusResponse",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.StatusResponse.yml\" sourcestartlinenumber=\"1\">Basic response model that indicates the status of an operation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.UploadFileResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.UploadFileResponse.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.CSharpCodeSession.API.Models.UploadFileResponse",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.UploadFileResponse.yml\" sourcestartlinenumber=\"1\">Response model for file upload.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.Models.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.CSharpCodeSession.API.Models",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.CSharpCodeSession.API.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": null,
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Client.Core.CoreClient.yml",
       "output": {
         ".html": {
@@ -9963,6 +10131,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Context.API.Controllers.FilesController",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.API.Controllers.FilesController.yml\" sourcestartlinenumber=\"1\">Provdes methods for managing files.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.API.Controllers.StatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.API.Controllers.StatusController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.API.Controllers.StatusController",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.API.Controllers.StatusController.yml\" sourcestartlinenumber=\"1\">Provides methods for checking the status of the service.</p>\n"
     },
     {
       "type": "ManagedReference",
