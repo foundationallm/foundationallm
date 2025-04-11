@@ -10,7 +10,6 @@ using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Cache;
 using FoundationaLLM.Common.Services.Security;
-using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;

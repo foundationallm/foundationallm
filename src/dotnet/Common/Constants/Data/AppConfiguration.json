@@ -622,6 +622,14 @@
 				"first_version": "0.8.0"
 			},
 			{
+				"name": "AzureAIAgentsFileSearchExensions",
+				"description": "The comma-separated list file extensions that are supported by the Azure AI Agent Service file search tool.",
+				"secret": "",
+				"value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
 				"name": "AllowedUploadFileExtensions",
 				"description": "The comma-separated list file extensions that users are allowed to upload to a conversation.",
 				"secret": "",
@@ -1405,6 +1413,14 @@
 				"value": "120",
 				"content_type": "",
 				"first_version": "0.8.3"
+			},
+			{
+				"name": "AzureAIAgentServiceMaxVectorizationTimeSeconds",
+				"description": "The maximum time in seconds allowed for an Azure AI Agent Service vectorization process to complete.",
+				"secret": "",
+				"value": "120",
+				"content_type": "",
+				"first_version": "0.9.7"
 			}
 		]
 	},

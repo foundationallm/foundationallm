@@ -330,6 +330,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureAIAgentsFileSearchExensions",
+            "value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions",
             "value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
             "label": null,
@@ -814,6 +821,13 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAssistantsMaxVectorizationTimeSeconds",
+            "value": "120",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureAIAgentServiceMaxVectorizationTimeSeconds",
             "value": "120",
             "label": null,
             "content_type": "",

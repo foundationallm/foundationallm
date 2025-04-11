@@ -449,6 +449,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions";
         
         /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureAIAgentsFileSearchExensions setting.
+        /// <para>Value description:<br/>The comma-separated list file extensions that are supported by the Azure AI Agent Service file search tool.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_AzureAIAgentsFileSearchExensions =
+            "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureAIAgentsFileSearchExensions";
+        
+        /// <summary>
         /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions setting.
         /// <para>Value description:<br/>The comma-separated list file extensions that users are allowed to upload to a conversation.</para>
         /// </summary>
@@ -1037,6 +1044,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureOpenAIAssistantsMaxVectorizationTimeSeconds =
             "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAssistantsMaxVectorizationTimeSeconds";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureAIAgentServiceMaxVectorizationTimeSeconds setting.
+        /// <para>Value description:<br/>The maximum time in seconds allowed for an Azure AI Agent Service vectorization process to complete.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureAIAgentServiceMaxVectorizationTimeSeconds =
+            "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureAIAgentServiceMaxVectorizationTimeSeconds";
 
         #endregion
 
