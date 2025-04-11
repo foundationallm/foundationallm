@@ -13,7 +13,7 @@
         /// <summary>
         /// Indicates the agent has the Azure AI Agents Service capability.
         /// </summary>
-        public const string AzureAIAgents = "AzureAI.Agents";
+        public const string AzureAIAgents = "AzureAI.AgentService";
 
         /// <summary>
         /// Indicates the agent has the FoundationaLLM Knowledge Management capability.

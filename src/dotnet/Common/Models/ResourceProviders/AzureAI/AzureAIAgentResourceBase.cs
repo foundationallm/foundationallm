@@ -24,10 +24,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.AzureAI
         /// </remarks>
         public string PartitionKey =>
             $"{UPN.NormalizeUserPrincipalName()}-{InstanceId}";
-
+                
         /// <summary>
-        /// The Azure AI Foundry project connection string.
+        /// The Azure AI project connection string for the agent resource.
         /// </summary>
-        public required string ProjectConnectionString { get; set; }
+        public required string ProjectConnectionString { get; set; }    
+
     }
 }

@@ -52,6 +52,18 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         ])
                     ]
                 }
+            },
+            {
+                AzureAIResourceTypeNames.Projects,
+                new ResourceTypeDescriptor(
+                        AzureAIResourceTypeNames.Projects,
+                        typeof(AzureAIProject))
+                {
+                    AllowedTypes = [
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AzureAIProject>)])
+                    ],
+                    Actions = []
+                }
             }
         };
     }

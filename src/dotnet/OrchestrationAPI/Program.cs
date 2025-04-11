@@ -143,6 +143,7 @@ namespace FoundationaLLM.Orchestration.API
             builder.AddAttachmentResourceProvider();
             builder.AddAIModelResourceProvider();
             builder.AddAzureOpenAIResourceProvider();
+            builder.AddAzureAIResourceProvider();
 
             // Register the downstream services and HTTP clients.
             builder.AddHttpClientFactoryService();

@@ -554,7 +554,7 @@ public partial class CoreService(
         var agentRequiresOpenAIAssistants = agentBase.HasAzureOpenAIAssistantsWorkflow();
         var agentRequiresAzureAIAgentService = agentBase.HasAzureAIAgentServiceWorkflow();
 
-        if (agentRequiresOpenAIAssistants || agentRequiresAzureAIAgentService)
+        if (agentRequiresOpenAIAssistants)
         {
             var aiModelBase = await _aiModelResourceProvider.GetResourceAsync<AIModelBase>(agentBase.Workflow!.MainAIModelObjectId!, userIdentity);            
             attachmentFile.SecondaryProvider = agentRequiresOpenAIAssistants ? ResourceProviderNames.FoundationaLLM_AzureOpenAI : ResourceProviderNames.FoundationaLLM_AzureAI;
@@ -565,91 +565,110 @@ public partial class CoreService(
 
             var newFileId = string.Empty;
 
-            if(agentRequiresOpenAIAssistants)
+            var apiEndpointConfiguration = await _configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(aiModelBase.EndpointObjectId!, userIdentity);
+
+            var fileMapping = new AzureOpenAIFileMapping
             {
-                var apiEndpointConfiguration = await _configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(aiModelBase.EndpointObjectId!, userIdentity);
+                Name = string.Empty,
+                Id = string.Empty,
+                UPN = userIdentity.UPN!,
+                InstanceId = instanceId,
+                FileObjectId = attachmentUpsertResult.ObjectId!,
+                OriginalFileName = attachmentFile.OriginalFileName,
+                FileContentType = attachmentFile.ContentType!,
+                OpenAIEndpoint = apiEndpointConfiguration.Url,
+                OpenAIFileId = string.Empty
+            };
 
-                var fileMapping = new AzureOpenAIFileMapping
-                {
-                    Name = string.Empty,
-                    Id = string.Empty,
-                    UPN = userIdentity.UPN!,
-                    InstanceId = instanceId,
-                    FileObjectId = attachmentUpsertResult.ObjectId!,
-                    OriginalFileName = attachmentFile.OriginalFileName,
-                    FileContentType = attachmentFile.ContentType!,
-                    OpenAIEndpoint = apiEndpointConfiguration.Url,
-                    OpenAIFileId = string.Empty
-                };
-
-                var resourceProviderUpsertOptions = new ResourceProviderUpsertOptions
-                {
-                    Parameters = new()
-                    {
-                        { AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId, agentBase.ObjectId! },
-                        { AzureOpenAIResourceProviderUpsertParameterNames.ConversationId, sessionId },
-                        { AzureOpenAIResourceProviderUpsertParameterNames.AttachmentObjectId, attachmentUpsertResult.ObjectId },
-                        { AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIFile, true }
-                    }
-                };
-
-                var extension = Path.GetExtension(attachmentFile.OriginalFileName).ToLowerInvariant().Replace(".", string.Empty);
-                if (_azureOpenAIFileSearchFileExtensions.Contains(extension))
-                {
-                    // The file also needs to be vectorized for the OpenAI assistant.
-                    fileMapping.FileRequiresVectorization = true;
-                }
-
-                var fileMappingUpsertResult = await _azureOpenAIResourceProvider.UpsertResourceAsync<AzureOpenAIFileMapping, ResourceProviderUpsertResult<AzureOpenAIFileMapping>>(
-                    instanceId,
-                    fileMapping,
-                    userIdentity,
-                    resourceProviderUpsertOptions);
-
-                newFileId = fileMappingUpsertResult.Resource!.OpenAIFileId;
-            }
-            else // OpenAI Agent Service
+            var resourceProviderUpsertOptions = new ResourceProviderUpsertOptions
             {
-                var workflow = agentBase.Workflow as AzureAIAgentServiceAgentWorkflow;
-                var fileMapping = new AzureAIAgentFileMapping
+                Parameters = new()
                 {
-                    Name = string.Empty,
-                    Id = string.Empty,
-                    UPN = userIdentity.UPN!,
-                    InstanceId = instanceId,
-                    FileObjectId = attachmentUpsertResult.ObjectId!,
-                    OriginalFileName = attachmentFile.OriginalFileName,
-                    FileContentType = attachmentFile.ContentType!,                    
-                    ProjectConnectionString = workflow!.ProjectConnectionString,
-                    AzureAIAgentFileId = string.Empty
-                };
-
-                var resourceProviderUpsertOptions = new ResourceProviderUpsertOptions
-                {
-                    Parameters = new()
-                    {
-                        { AzureAIResourceProviderUpsertParameterNames.AgentObjectId, agentBase.ObjectId! },
-                        { AzureAIResourceProviderUpsertParameterNames.ConversationId, sessionId },
-                        { AzureAIResourceProviderUpsertParameterNames.AttachmentObjectId, attachmentUpsertResult.ObjectId },
-                        { AzureAIResourceProviderUpsertParameterNames.MustCreateAzureAIAgentFile, true }
-                    }
-                };
-
-                var extension = Path.GetExtension(attachmentFile.OriginalFileName).ToLowerInvariant().Replace(".", string.Empty);
-                if (_azureAIAgentServiceFileSearchFileExtensions.Contains(extension))
-                {
-                    // The file also needs to be vectorized for the Azure AI Agent Service agent.
-                    fileMapping.FileRequiresVectorization = true;
+                    { AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId, agentBase.ObjectId! },
+                    { AzureOpenAIResourceProviderUpsertParameterNames.ConversationId, sessionId },
+                    { AzureOpenAIResourceProviderUpsertParameterNames.AttachmentObjectId, attachmentUpsertResult.ObjectId },
+                    { AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIFile, true }
                 }
+            };
 
-                var fileMappingUpsertResult = await _azureAIResourceProvider.UpsertResourceAsync<AzureAIAgentFileMapping, ResourceProviderUpsertResult<AzureAIAgentFileMapping>>(
-                    instanceId,
-                    fileMapping,
-                    userIdentity,
-                    resourceProviderUpsertOptions);
-
-                newFileId = fileMappingUpsertResult.Resource!.AzureAIAgentFileId;
+            var extension = Path.GetExtension(attachmentFile.OriginalFileName).ToLowerInvariant().Replace(".", string.Empty);
+            if (_azureOpenAIFileSearchFileExtensions.Contains(extension))
+            {
+                // The file also needs to be vectorized for the OpenAI assistant.
+                fileMapping.FileRequiresVectorization = true;
             }
+
+            var fileMappingUpsertResult = await _azureOpenAIResourceProvider.UpsertResourceAsync<AzureOpenAIFileMapping, ResourceProviderUpsertResult<AzureOpenAIFileMapping>>(
+                instanceId,
+                fileMapping,
+                userIdentity,
+                resourceProviderUpsertOptions);
+
+            newFileId = fileMappingUpsertResult.Resource!.OpenAIFileId;            
+            
+            await _attachmentResourceProvider.UpdateResourcePropertiesAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
+                instanceId,
+                attachmentFile.Name!,
+                new Dictionary<string, object?>
+                {
+                    { "/secondaryProviderObjectId", newFileId }
+                },
+                userIdentity);
+            attachmentUpsertResult.Resource!.SecondaryProviderObjectId = newFileId;
+
+            return attachmentUpsertResult;
+        }
+
+        if (agentRequiresAzureAIAgentService)
+        {
+            attachmentFile.SecondaryProvider = agentRequiresOpenAIAssistants ? ResourceProviderNames.FoundationaLLM_AzureOpenAI : ResourceProviderNames.FoundationaLLM_AzureAI;
+            var attachmentUpsertResult = await _attachmentResourceProvider.UpsertResourceAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
+                instanceId,
+                attachmentFile,
+                _userIdentity);
+
+            var newFileId = string.Empty;
+           
+            var workflow = agentBase.Workflow as AzureAIAgentServiceAgentWorkflow;
+            var fileMapping = new AzureAIAgentFileMapping
+            {
+                Name = string.Empty,
+                Id = string.Empty,
+                UPN = userIdentity.UPN!,
+                InstanceId = instanceId,
+                FileObjectId = attachmentUpsertResult.ObjectId!,
+                OriginalFileName = attachmentFile.OriginalFileName,
+                FileContentType = attachmentFile.ContentType!,
+                ProjectConnectionString = workflow!.ProjectConnectionString,
+                AzureAIAgentFileId = string.Empty
+            };
+
+            var resourceProviderUpsertOptions = new ResourceProviderUpsertOptions
+            {
+                Parameters = new()
+                {
+                    { AzureAIResourceProviderUpsertParameterNames.AgentObjectId, agentBase.ObjectId! },
+                    { AzureAIResourceProviderUpsertParameterNames.ConversationId, sessionId },
+                    { AzureAIResourceProviderUpsertParameterNames.AttachmentObjectId, attachmentUpsertResult.ObjectId },
+                    { AzureAIResourceProviderUpsertParameterNames.MustCreateAzureAIAgentFile, true }
+                }
+            };
+
+            var extension = Path.GetExtension(attachmentFile.OriginalFileName).ToLowerInvariant().Replace(".", string.Empty);
+            if (_azureAIAgentServiceFileSearchFileExtensions.Contains(extension))
+            {
+                // The file also needs to be vectorized for the Azure AI Agent Service agent.
+                fileMapping.FileRequiresVectorization = true;
+            }
+
+            var fileMappingUpsertResult = await _azureAIResourceProvider.UpsertResourceAsync<AzureAIAgentFileMapping, ResourceProviderUpsertResult<AzureAIAgentFileMapping>>(
+                instanceId,
+                fileMapping,
+                userIdentity,
+                resourceProviderUpsertOptions);
+
+            newFileId = fileMappingUpsertResult.Resource!.AzureAIAgentFileId;
+            
 
             await _attachmentResourceProvider.UpdateResourcePropertiesAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
                 instanceId,
@@ -662,40 +681,39 @@ public partial class CoreService(
             attachmentUpsertResult.Resource!.SecondaryProviderObjectId = newFileId;
 
             return attachmentUpsertResult;
-        }        
-        else
-        {
-            var serviceResult = await _contextServiceClient.CreateFile(
-                instanceId,
-                sessionId,
-                attachmentFile.OriginalFileName,
-                attachmentFile.ContentType!,
-                new MemoryStream(attachmentFile.Content!));
-
-            if (serviceResult.Success)
-            {;
-                return new ResourceProviderUpsertResult<AttachmentFile>
-                {
-                    ObjectId = serviceResult.Result!.Id,
-                    ResourceExists = false,
-                    Resource = new AttachmentFile
-                    {
-                        Name = serviceResult.Result.Id,
-                        ObjectId = serviceResult.Result.Id,
-                        DisplayName = serviceResult.Result.FileName,
-                        CreatedBy = serviceResult.Result.UPN,
-                        CreatedOn = serviceResult.Result.CreatedAt,
-
-                        ContentType = serviceResult.Result.ContentType,
-                        Path = serviceResult.Result.FilePath,
-                        OriginalFileName = serviceResult.Result.FileName,
-                    }
-                };
-            }
-            else
-                throw new CoreServiceException(
-                    serviceResult.ErrorMessage);
         }
+       
+        var serviceResult = await _contextServiceClient.CreateFile(
+            instanceId,
+            sessionId,
+            attachmentFile.OriginalFileName,
+            attachmentFile.ContentType!,
+            new MemoryStream(attachmentFile.Content!));
+
+        if (serviceResult.Success)
+        {;
+            return new ResourceProviderUpsertResult<AttachmentFile>
+            {
+                ObjectId = serviceResult.Result!.Id,
+                ResourceExists = false,
+                Resource = new AttachmentFile
+                {
+                    Name = serviceResult.Result.Id,
+                    ObjectId = serviceResult.Result.Id,
+                    DisplayName = serviceResult.Result.FileName,
+                    CreatedBy = serviceResult.Result.UPN,
+                    CreatedOn = serviceResult.Result.CreatedAt,
+
+                    ContentType = serviceResult.Result.ContentType,
+                    Path = serviceResult.Result.FilePath,
+                    OriginalFileName = serviceResult.Result.FileName,
+                }
+            };
+        }
+        else
+            throw new CoreServiceException(
+                serviceResult.ErrorMessage);
+        
     }
 
     /// <inheritdoc/>

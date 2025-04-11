@@ -14,5 +14,10 @@
         /// Azure AI Agent Service to FoundationaLLM file mappings.
         /// </summary>
         public const string AgentFileMappings = "agentFileMappings";
+
+        /// <summary>
+        /// Azure AI Projects.
+        /// </summary>
+        public const string Projects = "projects";
     }
 }
