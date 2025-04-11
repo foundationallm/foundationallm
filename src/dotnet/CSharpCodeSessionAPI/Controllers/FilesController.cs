@@ -9,7 +9,7 @@ namespace FoundationaLLM.CSharpCodeSession.API.Controllers
     {
         private readonly ILogger<FilesController> _logger = logger;
 
-        private const string ROOT_PATH = "\\mnt\\data";
+        private const string ROOT_PATH = "/mnt/data";
 
         [HttpPost("upload")]
         public async Task<IActionResult> UploadFile(IFormFile file)
