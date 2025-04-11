@@ -43,6 +43,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// <param name="dataSourceAccessDenied">Inidicates that access was denied to all underlying data sources.</param>
     /// <param name="openAIVectorStoreId">The OpenAI Assistants vector store id.</param>
     /// <param name="longRunningOperationContext">The <see cref="LongRunningOperationContext"/> providing the context of the long-running operation.</param>
+    /// <param name="contextServiceClient"> The <see cref="IContextServiceClient"/> used to interact with the context service.</param>
     /// <param name="completionRequestObserver">An optional observer for completion requests.</param>
     public partial class AgentOrchestration(
         string instanceId,
@@ -83,7 +84,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private readonly IResourceProviderService _azureOpenAIResourceProvider =
             resourceProviderServices[ResourceProviderNames.FoundationaLLM_AzureOpenAI];
         private readonly string? _openAIVectorStoreId = openAIVectorStoreId;
-        private GatewayServiceClient _gatewayClient;
+        private GatewayServiceClient? _gatewayClient;
 
         private readonly IUserPromptRewriteService _userPromptRewriteService = userPromptRewriteService;
         private readonly ISemanticCacheService _semanticCacheService = semanticCacheService;
