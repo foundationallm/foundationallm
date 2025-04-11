@@ -22,5 +22,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
         /// </summary>
         [JsonPropertyName("vector_store_id")]
         public string? VectorStoreId { get; set; }
+
+        /// <summary>
+        /// The Azure AI project connection string for the agent workflow.
+        /// </summary>
+        [JsonPropertyName("project_connection_string")]
+        public required string ProjectConnectionString { get; set; }
     }
 }

@@ -433,9 +433,16 @@ namespace FoundationaLLM.Gateway.Services
                     result[OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess] = false;
                 }
                 else
-                {
+                {                    
                     _logger.LogInformation("Completed vectorization of file {FileId} in vector store {VectorStoreId} in {TotalSeconds} with result {VectorizationResult}.",
                         fileId, vectorStoreId, (DateTimeOffset.UtcNow - startTime).TotalSeconds, fileAssociationResult.Value.Status);
+
+                    if (fileAssociationResult.Value.Status == VectorStoreFileAssociationStatus.Failed)
+                    {
+                        _logger.LogError("The vectorization of file {FileId} in vector store {VectorStoreId} failed with error {ErrorMessage}.",
+                                                       fileId, vectorStoreId, fileAssociationResult.Value.LastError);
+                    }
+                    
                     result[OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess] =
                         fileAssociationResult.Value.Status == VectorStoreFileAssociationStatus.Completed;
                 }
@@ -738,6 +745,11 @@ namespace FoundationaLLM.Gateway.Services
                 {
                     _logger.LogInformation("Completed vectorization of file {FileId} in vector store {VectorStoreId} in {TotalSeconds} with result {VectorizationResult}.",
                         fileId, vectorStoreId, (DateTimeOffset.UtcNow - startTime).TotalSeconds, vectorStoreFileResponse.Value.Status);
+                    if (vectorStoreFileResponse.Value.Status == VectorStoreFileStatus.Failed)
+                    {
+                        _logger.LogError("The vectorization of file {FileId} in vector store {VectorStoreId} failed with error {ErrorMessage}.",
+                                                       fileId, vectorStoreId, vectorStoreFileResponse.Value.LastError);
+                    }
                     result[AzureAIAgentServiceCapabilityParameterNames.FileActionOnVectorStoreSuccess] =
                         vectorStoreFileResponse.Value.Status == VectorStoreFileStatus.Completed;
                 }
