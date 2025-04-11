@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
+using FoundationaLLM.Common.Constants.AzureAI;
 using FoundationaLLM.Common.Constants.Context;
 using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -41,7 +42,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// <param name="httpClientFactoryService">The <see cref="IHttpClientFactoryService"/> used to create HttpClient instances.</param>
     /// <param name="resourceProviderServices">The dictionary of <see cref="IResourceProviderService"/></param>
     /// <param name="dataSourceAccessDenied">Inidicates that access was denied to all underlying data sources.</param>
-    /// <param name="openAIVectorStoreId">The OpenAI Assistants vector store id.</param>
+    /// <param name="vectorStoreId">The OpenAI Assistants or Azure AI Agent Service vector store id.</param>
     /// <param name="longRunningOperationContext">The <see cref="LongRunningOperationContext"/> providing the context of the long-running operation.</param>
     /// <param name="contextServiceClient"> The <see cref="IContextServiceClient"/> used to interact with the context service.</param>
     /// <param name="completionRequestObserver">An optional observer for completion requests.</param>
@@ -59,7 +60,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         IHttpClientFactoryService httpClientFactoryService,
         Dictionary<string, IResourceProviderService> resourceProviderServices,
         bool? dataSourceAccessDenied,
-        string? openAIVectorStoreId,
+        string? vectorStoreId,
         LongRunningOperationContext? longRunningOperationContext,
         IContextServiceClient contextServiceClient,
         Func<LLMCompletionRequest, Task>? completionRequestObserver = null
@@ -83,7 +84,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             resourceProviderServices[ResourceProviderNames.FoundationaLLM_AzureAI];
         private readonly IResourceProviderService _azureOpenAIResourceProvider =
             resourceProviderServices[ResourceProviderNames.FoundationaLLM_AzureOpenAI];
-        private readonly string? _openAIVectorStoreId = openAIVectorStoreId;
+        private readonly string? _vectorStoreId = vectorStoreId;
         private GatewayServiceClient? _gatewayClient;
 
         private readonly IUserPromptRewriteService _userPromptRewriteService = userPromptRewriteService;
@@ -377,7 +378,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                         if (fileMapping.FileRequiresVectorization)
                         {
-                            if (string.IsNullOrWhiteSpace(_openAIVectorStoreId))
+                            if (string.IsNullOrWhiteSpace(_vectorStoreId))
                                 throw new OrchestrationException($"The file {attachment.OriginalFileName} with file id {fileMapping.OpenAIFileId!} requires vectorization but the vector store id is invalid.");
 
                             var vectorizationResult = await _gatewayClient!.CreateAgentCapability(
@@ -389,7 +390,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 { OpenAIAgentCapabilityParameterNames.CreateOpenAIFile, false },
                                 { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, fileMapping.OpenAIEndpoint },
                                 { OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStore, fileMapping.FileRequiresVectorization },
-                                { OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, _openAIVectorStoreId! },
+                                { OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, _vectorStoreId! },
                                 { OpenAIAgentCapabilityParameterNames.OpenAIFileId, fileMapping.OpenAIFileId! }
                                 });
 
@@ -397,7 +398,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             var vectorizationSuccess = ((JsonElement)vectorizationSuccessObject!).Deserialize<bool>();
 
                             if (!vectorizationSuccess)
-                                throw new OrchestrationException($"The vectorization of file {attachment.OriginalFileName} with file id {fileMapping.OpenAIFileId!} into the vector store with id {_openAIVectorStoreId} failed.");
+                                throw new OrchestrationException($"The vectorization of file {attachment.OriginalFileName} with file id {fileMapping.OpenAIFileId!} into the vector store with id {_vectorStoreId} failed.");
                         }
 
                         result.Add(new AttachmentProperties
@@ -415,12 +416,37 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 : null
                         });
                     }
-                    else //AzureAIAgentFileMapping
+                    if (attachment.SecondaryProvider == ResourceProviderNames.FoundationaLLM_AzureAI)                    
                     {
                         var fileMapping = await _azureAIResourceProvider.GetResourceAsync<AzureAIAgentFileMapping>(
                                                        _instanceId,
                                                        attachment.SecondaryProviderObjectId!,
                                                        _callContext.CurrentUserIdentity!);
+
+                        if (fileMapping.FileRequiresVectorization)
+                        {
+                            if (string.IsNullOrWhiteSpace(_vectorStoreId))
+                                throw new OrchestrationException($"The file {attachment.OriginalFileName} with file id {fileMapping.AzureAIAgentFileId!} requires vectorization but the vector store id is invalid.");
+
+                            var vectorizationResult = await _gatewayClient!.CreateAgentCapability(
+                                _instanceId,
+                                AgentCapabilityCategoryNames.OpenAIAssistants,
+                                string.Empty,
+                                new()
+                                {
+                                { AzureAIAgentServiceCapabilityParameterNames.CreateFile, false },
+                                { AzureAIAgentServiceCapabilityParameterNames.ProjectConnectionString, fileMapping.ProjectConnectionString },
+                                { AzureAIAgentServiceCapabilityParameterNames.AddFileToVectorStore, fileMapping.FileRequiresVectorization },
+                                { AzureAIAgentServiceCapabilityParameterNames.VectorStoreId, _vectorStoreId },
+                                { AzureAIAgentServiceCapabilityParameterNames.FileId, fileMapping.AzureAIAgentFileId }
+                                });
+
+                            vectorizationResult.TryGetValue(AzureAIAgentServiceCapabilityParameterNames.FileActionOnVectorStoreSuccess, out var vectorizationSuccessObject);
+                            var vectorizationSuccess = ((JsonElement)vectorizationSuccessObject!).Deserialize<bool>();
+
+                            if (!vectorizationSuccess)
+                                throw new OrchestrationException($"The vectorization of file {attachment.OriginalFileName} with file id {fileMapping.AzureAIAgentFileId} into the vector store with id {_vectorStoreId} failed.");
+                        }
 
                         result.Add(new AttachmentProperties
                         {
