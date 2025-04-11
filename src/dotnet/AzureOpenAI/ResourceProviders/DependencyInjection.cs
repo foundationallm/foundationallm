@@ -35,8 +35,6 @@ namespace FoundationaLLM
         /// </remarks>
         public static void AddAzureOpenAIResourceProvider(this IServiceCollection services, IConfigurationManager configuration)
         {
-            services.AddAzureOpenAIResourceProviderStorage(configuration);
-
             services.AddSingleton<IResourceProviderService, AzureOpenAIResourceProviderService>(sp =>
                 new AzureOpenAIResourceProviderService(
                     sp.GetRequiredService<IOptions<InstanceSettings>>(),
