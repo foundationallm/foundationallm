@@ -73,9 +73,9 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ${{ runner.temp }}/.buildx-cache
-        key: ${{ runner.os }}-${{ inputs.image }}-buildx-${{ github.sha }}
+        key: ${{ runner.os }}-${{ inputs.image }}-buildx
         restore-keys: |
-          ${{ runner.os }}-${{ inputs.image }}-buildx-
+          ${{ runner.os }}-${{ inputs.image }}-buildx
 
     - name: Build and push Docker images
       uses: docker/build-push-action@v5
@@ -90,7 +90,7 @@ jobs:
         build-args: |
           FOUNDATIONALLM_REGISTRY=${{ inputs.registry }}
           FOUNDATIONALLM_VERSION=${{ inputs.tag }}
-          PYTHON_FLLM_BASE_VERSION=${{ inputs.tag }}
+          PYTHON_FLLM_BASE_VERSION=latest
 
     - name: Move cache
       run: |
