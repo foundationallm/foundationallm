@@ -20,6 +20,6 @@ RUN dotnet publish "dotnet/CSharpCodeSessionAPI/CSharpCodeSessionAPI.csproj" -c 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "FoundationaLLM.CSharpCodeSession.API.dll"]
+ENTRYPOINT ["/bin/sh", "-c", "mkdir -p /mnt/data && dotnet FoundationaLLM.CSharpCodeSession.API.dll"]
 LABEL org.opencontainers.image.source=https://github.com/solliancenet/foundationallm
 LABEL ai.foundationallm.version=${FOUNDATIONALLM_VERSION:-0.0.0}
