@@ -818,9 +818,9 @@
 							>
 								<div v-if="indexSource.object_id !== ''">
 									<div class="step-container__header">{{ indexSource.name }}</div>
-									<div v-if="indexSource.resolved_configuration_references.Endpoint">
+									<div v-if="indexSource.resolved_configuration_references?.Endpoint">
 										<span class="step-option__header">URL:</span>
-										<span>{{ indexSource.resolved_configuration_references.Endpoint }}</span>
+										<span>{{ indexSource.resolved_configuration_references?.Endpoint }}</span>
 									</div>
 									<div v-if="indexSource.settings.index_name">
 										<span class="step-option__header">Index Name:</span>
