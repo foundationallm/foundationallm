@@ -5,7 +5,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
     /// <summary>
     /// Provides an agent workflow configuration for an Azure AI Agent Service workflow.
     /// </summary>
-    public class AzureAIAgentServiceWorkflow : AgentWorkflowBase
+    public class AzureAIAgentServiceAgentWorkflow : AgentWorkflowBase
     {
         /// <inheritdoc/>
         [JsonIgnore]

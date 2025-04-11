@@ -713,7 +713,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
         private ImageFileMessageContentItem TransformAzureAIAgentImageFile(ImageFileMessageContentItem imageFile, List<IFileMapping> newFileMappings)
         {
-            var workflow = _agent!.Workflow as AzureAIAgentServiceWorkflow;
+            var workflow = _agent!.Workflow as AzureAIAgentServiceAgentWorkflow;
             newFileMappings.Add(new AzureAIAgentFileMapping
             {
                 Name = imageFile.FileId!,
@@ -735,7 +735,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         {
             if (!string.IsNullOrWhiteSpace(filePath.FileId))
             {
-                var workflow = _agent!.Workflow as AzureAIAgentServiceWorkflow;
+                var workflow = _agent!.Workflow as AzureAIAgentServiceAgentWorkflow;
 
                 // Empty file ids occur when dealing with file search annotations.
                 // Looks like the assistant is providing "internal" RAG pattern references to vectorized text chunks that were included in the context.

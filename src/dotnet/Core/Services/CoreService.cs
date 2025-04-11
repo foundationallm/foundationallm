@@ -610,7 +610,7 @@ public partial class CoreService(
             }
             else // OpenAI Agent Service
             {
-                var workflow = agentBase.Workflow as AzureAIAgentServiceWorkflow;
+                var workflow = agentBase.Workflow as AzureAIAgentServiceAgentWorkflow;
                 var fileMapping = new AzureAIAgentFileMapping
                 {
                     Name = string.Empty,

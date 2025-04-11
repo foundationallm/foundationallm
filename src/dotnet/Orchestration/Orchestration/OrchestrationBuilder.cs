@@ -302,7 +302,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         ?? throw new OrchestrationException("The OpenAI Assistants assistant identifier was not found in the agent workflow."));
             }
 
-            if (agentWorkflow is AzureAIAgentServiceWorkflow azureAIAgentServiceWorkflow)
+            if (agentWorkflow is AzureAIAgentServiceAgentWorkflow azureAIAgentServiceWorkflow)
             {
                 explodedObjectsManager.TryAdd(
                     CompletionRequestObjectsKeys.AzureAIAgentServiceAgentId,
@@ -757,12 +757,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 return vectorStoreId;
             }
 
-            if (agent.Workflow is AzureAIAgentServiceWorkflow)
+            if (agent.Workflow is AzureAIAgentServiceAgentWorkflow)
             {
                 if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_AzureAI, out var azureAIResourceProvider))
                     throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureAI} was not loaded.");
 
-                var workflow = agent.Workflow as AzureAIAgentServiceWorkflow;
+                var workflow = agent.Workflow as AzureAIAgentServiceAgentWorkflow;
 
                 explodedObjectsManager.TryGet<string>(CompletionRequestObjectsKeys.AzureAIAgentServiceAgentId, out string? azureAIAgentId);
                 

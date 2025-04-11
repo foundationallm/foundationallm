@@ -118,6 +118,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// </summary>
         /// <returns></returns>
         public bool HasAzureAIAgentServiceWorkflow() =>
-            Workflow != null && Workflow is AzureAIAgentServiceWorkflow;
+            Workflow != null && Workflow is AzureAIAgentServiceAgentWorkflow;
     }
 }
