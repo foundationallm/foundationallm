@@ -76,7 +76,7 @@ export default {
 		},
 
 		handleClearFilter() {
-			this.filters = this.initialFilters;
+			this.filters['global'].value = null;
 			this.$emit('update:modelValue', this.filters);
 		},
 	},

@@ -818,9 +818,9 @@
 							>
 								<div v-if="indexSource.object_id !== ''">
 									<div class="step-container__header">{{ indexSource.name }}</div>
-									<div v-if="indexSource.resolved_configuration_references.Endpoint">
+									<div v-if="indexSource.resolved_configuration_references?.Endpoint">
 										<span class="step-option__header">URL:</span>
-										<span>{{ indexSource.resolved_configuration_references.Endpoint }}</span>
+										<span>{{ indexSource.resolved_configuration_references?.Endpoint }}</span>
 									</div>
 									<div v-if="indexSource.settings.index_name">
 										<span class="step-option__header">Index Name:</span>
@@ -1482,6 +1482,8 @@ export default {
 			workflowMainAIModel: null as AIModel | null,
 			// workflowMainPrompt: '' as string,
 			workflowMainAIModelParameters: {} as object,
+			workflowAssistantId: '' as string,
+			workflowVectorStoreId: '' as string,
 			workflowName: '' as string,
 			workflowPackageName: 'FoundationaLLM' as string,
 			workflowClassName: '' as string,
@@ -1731,6 +1733,8 @@ export default {
 			}
 
 			if (agent.workflow) {
+				this.workflowAssistantId = agent.workflow.assistant_id ?? '';
+				this.workflowVectorStoreId = agent.workflow.vector_store_id ?? '';
 				this.workflowName = agent.workflow.name ?? '';
 				this.workflowPackageName = agent.workflow.package_name ?? '';
 				this.workflowClassName = agent.workflow.class_name ?? '';
@@ -2182,6 +2186,8 @@ export default {
 					workflow = {
 						...this.selectedWorkflow,
 						workflow_host: this.workflowHost,
+						assistant_id: this.workflowAssistantId,
+						vector_store_id: this.workflowVectorStoreId,
 						name: this.workflowName,
 						package_name: this.workflowPackageName,
 						class_name: this.workflowClassName,
