@@ -449,11 +449,11 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions";
         
         /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureAIAgentsFileSearchExensions setting.
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureAIAgentsFileSearchFileExtensions setting.
         /// <para>Value description:<br/>The comma-separated list file extensions that are supported by the Azure AI Agent Service file search tool.</para>
         /// </summary>
-        public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_AzureAIAgentsFileSearchExensions =
-            "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureAIAgentsFileSearchExensions";
+        public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_AzureAIAgentsFileSearchFileExtensions =
+            "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureAIAgentsFileSearchFileExtensions";
         
         /// <summary>
         /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions setting.

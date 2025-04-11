@@ -330,7 +330,7 @@
             "tags": {}
         },
         {
-            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureAIAgentsFileSearchExensions",
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureAIAgentsFileSearchFileExtensions",
             "value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt",
             "label": null,
             "content_type": "",

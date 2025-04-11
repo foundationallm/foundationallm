@@ -622,7 +622,7 @@
 				"first_version": "0.8.0"
 			},
 			{
-				"name": "AzureAIAgentsFileSearchExensions",
+				"name": "AzureAIAgentsFileSearchFileExtensions",
 				"description": "The comma-separated list file extensions that are supported by the Azure AI Agent Service file search tool.",
 				"secret": "",
 				"value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt",
