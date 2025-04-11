@@ -225,28 +225,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
-        #region FoundationaLLM:ResourceProviders:AzureOpenAI
-
-        #endregion
-
-        #region FoundationaLLM:ResourceProviders:AzureOpenAI:Storage
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:ResourceProviders:AzureOpenAI:Storage:AuthenticationType setting.
-        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.AzureOpenAI resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
-        /// </summary>
-        public const string FoundationaLLM_ResourceProviders_AzureOpenAI_Storage_AuthenticationType =
-            "FoundationaLLM:ResourceProviders:AzureOpenAI:Storage:AuthenticationType";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:ResourceProviders:AzureOpenAI:Storage:AccountName setting.
-        /// <para>Value description:<br/>The name of the Azure Blob Storage account used by the FoundationaLLM.AzureOpenAI resource provider.</para>
-        /// </summary>
-        public const string FoundationaLLM_ResourceProviders_AzureOpenAI_Storage_AccountName =
-            "FoundationaLLM:ResourceProviders:AzureOpenAI:Storage:AccountName";
-
-        #endregion
-
         #region FoundationaLLM:ResourceProviders:Configuration
 
         #endregion

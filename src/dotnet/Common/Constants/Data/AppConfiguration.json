@@ -295,40 +295,7 @@
 				"first_version": "0.8.0"
 			}
 		]
-	},
-	{
-		"namespace": "ResourceProviders:AzureOpenAI",
-		"dependency_injection_key": {
-			"description": "Dependency injection key used by the FoundationaLLM.AzureOpenAI resource provider."
-		},
-		"configuration_section": null,
-		"configuration_keys": []
-	},
-	{
-		"namespace": "ResourceProviders:AzureOpenAI:Storage",
-		"dependency_injection_key": null,
-		"configuration_section": {
-			"description": "Configuration section used to identify the storage settings for the FoundationaLLM.AzureOpenAI resource provider."
-		},
-		"configuration_keys": [
-			{
-				"name": "AuthenticationType",
-				"description": "The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.AzureOpenAI resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
-				"secret": "",
-				"value": "AzureIdentity",
-				"content_type": "",
-				"first_version": "0.8.0"
-			},
-			{
-				"name": "AccountName",
-				"description": "The name of the Azure Blob Storage account used by the FoundationaLLM.AzureOpenAI resource provider.",
-				"secret": "",
-				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
-				"content_type": "",
-				"first_version": "0.8.0"
-			}
-		]
-	},
+	},	
 	{
 		"namespace": "ResourceProviders:Configuration",
 		"dependency_injection_key": {
