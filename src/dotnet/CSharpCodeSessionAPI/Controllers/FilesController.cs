@@ -12,15 +12,21 @@ namespace FoundationaLLM.CSharpCodeSession.API.Controllers
         private const string ROOT_PATH = "\\mnt\\data";
 
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadFile([FromForm] IFormFile file)
+        public async Task<IActionResult> UploadFile(IFormFile file)
         {
             if (file == null || file.Length == 0)
                 return BadRequest("No file uploaded.");
 
-            var filePath = NormalizePath(Path.Combine(ROOT_PATH, file.FileName));
+            var filePath = Path.Combine(ROOT_PATH, file.FileName);
+
+            // Normalize and validate file path
+            var normalizedPath = Path.GetFullPath(filePath);
+            if (!normalizedPath.StartsWith(Path.GetFullPath(ROOT_PATH)))
+                return BadRequest("Invalid file path.");
+
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
-                file.CopyTo(stream);
+                await file.CopyToAsync(stream);
             }
             return Ok(new UploadFileResponse
             {
@@ -28,8 +34,46 @@ namespace FoundationaLLM.CSharpCodeSession.API.Controllers
             });
         }
 
-        private static string NormalizePath(string path) =>
-            Path.GetFullPath(new Uri(path).LocalPath)
-                .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+        [HttpGet]
+        public IActionResult ListFiles()
+        {
+            var rootPath = Path.GetFullPath(ROOT_PATH);
+
+            return Ok(new ListFilesResponse
+            {
+                Files = [.. Directory
+                    .EnumerateFiles(rootPath, "*.*", SearchOption.AllDirectories)
+                    .Select(path => Path.GetRelativePath(rootPath, path))
+                ]
+            });
+        }
+
+        [HttpPost("download")]
+        public IActionResult DownloadFile([FromBody] DownloadFileRequest downloadFileRequest)
+        {
+            if (downloadFileRequest == null || string.IsNullOrWhiteSpace(downloadFileRequest.FileName))
+                return BadRequest("Invalid file name.");
+
+            var filePath = Path.Combine(ROOT_PATH, downloadFileRequest.FileName);
+
+            // Normalize and validate file path
+            var normalizedPath = Path.GetFullPath(filePath);
+            if (!normalizedPath.StartsWith(Path.GetFullPath(ROOT_PATH)))
+                return BadRequest("Invalid file path.");
+
+            if (!System.IO.File.Exists(filePath))
+                return NotFound("File not found.");
+
+            var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            return File(stream, "application/octet-stream", Path.GetFileName(filePath));
+        }
+
+        [HttpPost("delete")]
+        public IActionResult DeleteFiles()
+        {
+            Directory.Delete(ROOT_PATH, true);
+            Directory.CreateDirectory(ROOT_PATH);
+            return Ok(new StatusResponse());
+        }
     }
 }
