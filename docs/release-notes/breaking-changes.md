@@ -15,6 +15,11 @@ The following App Configuration value has been added:
 | `FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureAIAgentServiceMaxVectorizationTimeSeconds` | `120` | The maximum time in seconds allowed for an Azure AI Agent Service vectorization process to complete. |
 | `FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureAIAgentsFileSearchExensions` | `c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt` | The comma-separated list file extensions that are supported by the Azure AI Agent Service file search tool. |
 
+The following App Configuration value has been removed as they are no longer needed:
+
+1. ResourceProviders:AzureOpenAI:Storage:AuthenticationType
+2. ResourceProviders:AzureOpenAI:Storage:AccountName
+
 ## Starting from 0.9.7-beta138
 
 ## Configuration changes
