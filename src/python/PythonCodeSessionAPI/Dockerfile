@@ -6,7 +6,7 @@ ARG FOUNDATIONALLM_VERSION
 ENV FOUNDATIONALLM_VERSION=${FOUNDATIONALLM_VERSION:-0.0.0}
 
 WORKDIR /code
-COPY ./CodeSessionAPI/requirements.txt /code/requirements.txt
+COPY ./PythonCodeSessionAPI/requirements.txt /code/requirements.txt
 RUN python3 -m pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY ./PythonCodeSessionAPI /code
