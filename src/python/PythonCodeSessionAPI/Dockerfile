@@ -9,7 +9,7 @@ WORKDIR /code
 COPY ./CodeSessionAPI/requirements.txt /code/requirements.txt
 RUN python3 -m pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-COPY ./CodeSessionAPI /code
+COPY ./PythonCodeSessionAPI /code
 
 RUN mkdir -p /mnt/data
 

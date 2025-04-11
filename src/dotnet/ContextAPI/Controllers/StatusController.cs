@@ -4,7 +4,7 @@ using FoundationaLLM.Common.Models.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FoundationaLLM.DataPipeline.BackendWorker.Controllers
+namespace FoundationaLLM.Context.API.Controllers
 {
     /// <summary>
     /// Provides methods for checking the status of the service.
