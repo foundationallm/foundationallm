@@ -5,6 +5,7 @@ Main entry-point for the FoundationaLLM LangChainAPI.
 import io
 import json
 import os
+import shutil
 import sys
 
 from fastapi import (
@@ -32,6 +33,7 @@ app = FastAPI(
 )
 
 ROOT_DATA_PATH = '/mnt/data'
+ROOT_PATH = '/mnt'
 
 @app.post('/code/execute')
 async def execute_code(request_body: dict):
@@ -55,6 +57,8 @@ async def execute_code(request_body: dict):
         raise HTTPException(status_code=400, detail="Code not provided in the request body.")
 
     try:
+        os.chdir(ROOT_DATA_PATH)  # Change the working directory to the data path
+
         namespace = {}
         old_stdout = sys.stdout
         new_stdout = io.StringIO()
@@ -157,6 +161,31 @@ async def download_file(request_body: dict):
         return FileResponse(fullpath, media_type='application/octet-stream', headers=headers)
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error downloading file.") from e
+
+@app.post('/files/delete')
+async def delete_files():
+    """
+    Delete all files from the code session.
+
+    Parameters
+    ----------
+    request_body : dict
+        The request body.
+
+    Returns
+    -------
+    dict
+        The response containing the file deletion status.
+    """
+
+    try:
+        os.chdir(ROOT_PATH)
+        shutil.rmtree(ROOT_DATA_PATH)
+        os.makedirs(ROOT_DATA_PATH, exist_ok=True)  # Recreate the directory after deletion
+
+        return { 'status': 'success' }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error deleting files.") from e
 
 def get_json_serializable_dict(d: dict) -> dict:
     """

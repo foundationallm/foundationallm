@@ -169,11 +169,19 @@
             "package_helm": true
         },
         {
-            "name": "codesession-api",
+            "name": "python-codesession-api",
             "context": "./src/python",
-            "dockerfile": "./src/python/CodeSessionAPI/Dockerfile",
+            "dockerfile": "./src/python/PythonCodeSessionAPI/Dockerfile",
             "helm_chart": null,
-            "azd_env_key": "SERVICE_CODESESSIONAPI_IMAGE",
+            "azd_env_key": "SERVICE_PYTHONCODESESSIONAPI_IMAGE",
+            "package_helm": false
+        },
+        {
+            "name": "csharp-codesession-api",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/CSharpCodeSessionAPI/Dockerfile",
+            "helm_chart": null,
+            "azd_env_key": "SERVICE_CSHARPCODESESSIONAPI_IMAGE",
             "package_helm": false
         }
     ],
