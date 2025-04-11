@@ -99,6 +99,12 @@ public partial class CoreService(
             .Select(s => s.ToLowerInvariant())
             .ToHashSet();
 
+    private readonly HashSet<string> _azureAIAgentServiceFileSearchFileExtensions =
+        settings.Value.AzureAIAgentsFileSearchFileExtensions
+            .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .Select(s => s.ToLowerInvariant())
+            .ToHashSet();
+
     #region Conversation management - FoundationaLLM.Conversation resource provider
 
     /// <inheritdoc/>
@@ -630,7 +636,7 @@ public partial class CoreService(
                 };
 
                 var extension = Path.GetExtension(attachmentFile.OriginalFileName).ToLowerInvariant().Replace(".", string.Empty);
-                if (_azureOpenAIFileSearchFileExtensions.Contains(extension))
+                if (_azureAIAgentServiceFileSearchFileExtensions.Contains(extension))
                 {
                     // The file also needs to be vectorized for the Azure AI Agent Service agent.
                     fileMapping.FileRequiresVectorization = true;
