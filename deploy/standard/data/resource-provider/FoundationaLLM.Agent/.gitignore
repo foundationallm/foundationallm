@@ -1,0 +1,5 @@
+# Ignore Everything
+*
+# Except templates
+!*.template.json
+!.gitignore
