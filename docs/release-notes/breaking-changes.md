@@ -20,6 +20,26 @@ The following App Configuration value has been removed as they are no longer nee
 1. ResourceProviders:AzureOpenAI:Storage:AuthenticationType
 2. ResourceProviders:AzureOpenAI:Storage:AccountName
 
+A new workflow resource must be added to support the AzureAIAgentServiceWorkflow.
+
+```json
+{
+    "type": "azure-ai-agent-service-workflow",
+    "name": "AzureAIAgentServiceWorkflow",
+    "object_id": "/instances/{instanceId}/providers/FoundationaLLM.Agent/workflows/AzureAIAgentServiceWorkflow",
+    "display_name": "AzureAIAgentServiceWorkflow",
+    "description": "Azure AI Agent Service Workflow",
+    "cost_center": null,
+    "properties": null,
+    "created_on": "2024-11-08T10:08:27.1953263+00:00",
+    "updated_on": "0001-01-01T00:00:00+00:00",
+    "created_by": "SYSTEM",
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+}
+```
+
 ## Starting from 0.9.7-beta138
 
 ## Configuration changes
