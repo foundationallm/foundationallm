@@ -102,7 +102,7 @@ Class AzureOpenAIFileMapping  <a class="header-action link-secondary" title="Vie
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class AzureOpenAIFileMapping : AzureOpenAIResourceBase</code></pre>
+    <pre><code class="lang-csharp hljs">public class AzureOpenAIFileMapping : AzureOpenAIResourceBase, IFileMapping</code></pre>
   </div>
 
 
@@ -120,6 +120,12 @@ Class AzureOpenAIFileMapping  <a class="header-action link-secondary" title="Vie
     </dd>
   </dl>
 
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.IFileMapping.html">IFileMapping</a></div>
+    </dd>
+  </dl>
 
 
   <dl class="typelist inheritedMembers">
@@ -222,7 +228,7 @@ Class AzureOpenAIFileMapping  <a class="header-action link-secondary" title="Vie
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIFileMapping__ctor" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping.#ctor">
   AzureOpenAIFileMapping()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L54"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Set default property values.</p>
@@ -253,7 +259,7 @@ Class AzureOpenAIFileMapping  <a class="header-action link-secondary" title="Vie
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIFileMapping_FileContentType" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping.FileContentType">
   FileContentType
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The content type of the file.</p>
@@ -286,7 +292,7 @@ public required string FileContentType { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIFileMapping_FileObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping.FileObjectId">
   FileObjectId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L12"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The FoundationaLLM.Attachment resource object id.</p>
@@ -319,7 +325,7 @@ public required string FileObjectId { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIFileMapping_FileRequiresVectorization" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping.FileRequiresVectorization">
   FileRequiresVectorization
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Indicates whether the file requires vectorization or not.</p>
@@ -352,7 +358,7 @@ public bool FileRequiresVectorization { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIFileMapping_OpenAIAssistantsFileGeneratedOn" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping.OpenAIAssistantsFileGeneratedOn">
   OpenAIAssistantsFileGeneratedOn
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L42"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The time when the file was generated by OpenAI.</p>
@@ -385,7 +391,7 @@ public DateTimeOffset? OpenAIAssistantsFileGeneratedOn { get; set; }</code></pre
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIFileMapping_OpenAIFileId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping.OpenAIFileId">
   OpenAIFileId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The OpenAI file id associated with the FoundationaLLM file (attachment) id.</p>
@@ -418,7 +424,7 @@ public required string OpenAIFileId { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIFileMapping_OpenAIFileUploadedOn" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping.OpenAIFileUploadedOn">
   OpenAIFileUploadedOn
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The time when the file was uploaded to OpenAI.</p>
@@ -451,7 +457,7 @@ public DateTimeOffset? OpenAIFileUploadedOn { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIFileMapping_OpenAIVectorStoreId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping.OpenAIVectorStoreId">
   OpenAIVectorStoreId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L48"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The OpenAI vector store id holding the vectorized content of the OpenAI file.</p>
@@ -484,7 +490,7 @@ public string? OpenAIVectorStoreId { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIFileMapping_OriginalFileName" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping.OriginalFileName">
   OriginalFileName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIFileMapping.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The original file name of the file.</p>
