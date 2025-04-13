@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Agent\Agent.csproj" />
     <ProjectReference Include="..\AIModel\AIModel.csproj" />
+    <ProjectReference Include="..\AzureAI\AzureAI.csproj" />
     <ProjectReference Include="..\AzureOpenAI\AzureOpenAI.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Prompt\Prompt.csproj" />
