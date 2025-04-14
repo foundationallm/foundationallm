@@ -13,7 +13,7 @@
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.17.1" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureAISearch" Version="1.13.0-alpha" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureCosmosDBNoSQL" Version="1.13.0-alpha" />
-    <PackageReference Include="Microsoft.SemanticKernel.Connectors.Postgres" Version="1.13.0-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.Postgres" Version="1.46.0-preview" />
     <PackageReference Include="Microsoft.SemanticKernel.Plugins.Memory" Version="1.13.0-alpha" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>
