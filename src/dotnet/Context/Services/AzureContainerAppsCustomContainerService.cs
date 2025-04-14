@@ -5,10 +5,12 @@ using FoundationaLLM.Context.Exceptions;
 using FoundationaLLM.Context.Interfaces;
 using FoundationaLLM.Context.Models;
 using FoundationaLLM.Context.Models.Configuration;
+using FoundationaLLM.Context.Models.CustomContainer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace FoundationaLLM.Context.Services
@@ -71,7 +73,7 @@ namespace FoundationaLLM.Context.Services
             multipartFormDataContent.Add(streamContent);
 
             var responseMessage = await httpClient.PostAsync(
-                $"{endpoint}/files?api-version=2024-10-02-preview&identifier={codeSessionId}",
+                $"{endpoint}/files/upload?api-version=2024-10-02-preview&identifier={codeSessionId}",
                 multipartFormDataContent);
 
             return responseMessage.IsSuccessStatusCode;
@@ -84,12 +86,30 @@ namespace FoundationaLLM.Context.Services
         {
             var httpClient = await CreateHttpClient();
 
-            var itemsToReturn = await GetCodeSessionFileStoreItems(
-                codeSessionId,
-                endpoint,
-                httpClient);
+            var responseMessage = await httpClient.GetAsync(
+                $"{endpoint}/files?api-version=2024-10-02-preview&identifier={codeSessionId}");
 
-            return itemsToReturn;
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                _logger.LogError("Unable to get file store items from code session {CodeSession} on endpoint {EndpointId}.",
+                    codeSessionId, endpoint);
+                return [];
+            }
+            else
+            {
+                var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                var listFilesResponse = JsonSerializer.Deserialize<ListFilesResponse>(responseContent);
+
+                return listFilesResponse!.Files?.Select(f => new CodeSessionFileStoreItem
+                {
+                    Name = Path.GetFileName(f),
+                    Type = "file",
+                    ParentPath = Path.GetDirectoryName(f) ?? string.Empty,
+                    SizeInBytes = 0,
+                    LastModifiedAt = DateTime.UtcNow,
+                    ContentType = string.Empty
+                }).ToList() ?? [];
+            }
         }
 
         /// <inheritdoc/>
@@ -99,20 +119,9 @@ namespace FoundationaLLM.Context.Services
         {
             var httpClient = await CreateHttpClient();
 
-            var itemsToDelete = await GetCodeSessionFileStoreItems(
-                codeSessionId,
-                endpoint,
-                httpClient,
-                includeFolders: true);
-
-            foreach (var item in itemsToDelete)
-            {
-                var url = $"{endpoint}/files/{item.Name}?api-version=2024-10-02-preview&identifier={codeSessionId}&path={item.ParentPath}";
-                var responseMessage = await httpClient.DeleteAsync(url);
-                if (!responseMessage.IsSuccessStatusCode)
-                    _logger.LogError("Unable to delete file {FileName} from code session {CodeSession}.",
-                        item.Name, codeSessionId);
-            }
+            await httpClient.PostAsync(
+                $"{endpoint}/files/delete?api-version=2024-10-02-preview&identifier={codeSessionId}",
+                new StringContent("{}"));
         }
 
         /// <inheritdoc />
@@ -124,100 +133,17 @@ namespace FoundationaLLM.Context.Services
         {
             var httpClient = await CreateHttpClient();
 
-            var responseMessage = await httpClient.GetAsync(
-                $"{endpoint}/files/{fileName}/content?api-version=2024-10-02-preview&identifier={codeSessionId}&path={filePath}");
+            var responseMessage = await httpClient.PostAsync(
+                $"{endpoint}/files/download?api-version=2024-10-02-preview&identifier={codeSessionId}",
+                JsonContent.Create<DownloadFileRequest>(new DownloadFileRequest
+                {
+                    FileName = Path.Combine(filePath, fileName)
+                }));
 
             if (responseMessage.IsSuccessStatusCode)
                 return responseMessage.Content.ReadAsStream();
             else
                 return null;
-        }
-
-        private async Task<List<CodeSessionFileStoreItem>> GetCodeSessionFileStoreItems(
-            string codeSessionId,
-            string endpoint,
-            HttpClient httpClient,
-            bool includeFolders = false,
-            bool includeLocalPath = false)
-        {
-            var rootUrl = $"{endpoint}/files?api-version=2024-10-02-preview&identifier={codeSessionId}";
-            var rootFileStore = await GetCodeSessionFileStore(
-                httpClient,
-                rootUrl,
-                string.Empty);
-
-            if (rootFileStore.Items.Count == 0)
-                return [];
-
-            var filesToReturn = rootFileStore.Items
-                .Where(item => item.Type == "file")
-                .ToList();
-
-            var directoriesToReturn = new List<CodeSessionFileStoreItem>();
-
-            var directoriesToProcess = rootFileStore.Items
-                .Where(item => item.Type == "directory")
-                .Select(x =>
-                {
-                    x.ParentPath = string.Empty;
-                    return x;
-                })
-                .ToList();
-
-            while (directoriesToProcess.Count > 0)
-            {
-                var directoryToProcess = directoriesToProcess.First();
-                var fileStore = await GetCodeSessionFileStore(
-                    httpClient,
-                    rootUrl,
-                    $"{directoryToProcess.ParentPath}/{directoryToProcess.Name}");
-
-                if (includeFolders)
-                    directoriesToReturn.Add(directoryToProcess);
-                directoriesToProcess.RemoveAt(0);
-
-                if (fileStore.Items.Count > 0)
-                {
-                    filesToReturn.AddRange(fileStore.Items.Where(item => item.Type == "file"));
-                    directoriesToProcess.AddRange(fileStore.Items.Where(item => item.Type == "directory"));
-                }
-            }
-
-            var result = includeFolders
-                ? [.. filesToReturn, .. directoriesToReturn]
-                : filesToReturn;
-
-            return includeLocalPath
-                ? [.. result.Select(x =>
-                    {
-                        x.ParentPath = $"/mnt/data{x.ParentPath}";
-                        return x;
-                    })]
-                : result;
-        }
-
-        private async Task<CodeSessionFileStore> GetCodeSessionFileStore(
-            HttpClient httpClient,
-            string url,
-            string path)
-        {
-            var urlWithPath = $"{url}{(string.IsNullOrWhiteSpace(path) ? string.Empty : $"&path={path}")}";
-            var responseMessage = await httpClient.GetAsync(urlWithPath);
-
-            if (!responseMessage.IsSuccessStatusCode)
-            {
-                return new();
-            }
-            else
-            {
-                var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var fileStore = JsonSerializer.Deserialize<CodeSessionFileStore>(responseContent);
-                foreach (var item in fileStore!.Items)
-                    item.ParentPath = (string.IsNullOrWhiteSpace(path) && item.Type == "file")
-                        ? "/"
-                        : path;
-                return fileStore!;
-            }
         }
     }
 }

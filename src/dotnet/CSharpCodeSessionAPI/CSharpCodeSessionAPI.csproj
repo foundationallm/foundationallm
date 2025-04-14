@@ -12,4 +12,8 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.13.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Context\Context.csproj" />
+  </ItemGroup>
+
 </Project>

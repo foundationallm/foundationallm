@@ -1,14 +1,14 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.CSharpCodeSession.API.Models
+namespace FoundationaLLM.Context.Models.CustomContainer
 {
     /// <summary>
-    /// Response model for file upload.
+    /// Represents a request to download a file.
     /// </summary>
-    public class UploadFileResponse : StatusResponse
+    public class DownloadFileRequest
     {
         /// <summary>
-        /// Gets or sets the name of the file that was uploaded.
+        /// Gets or sets the file name to be downloaded.
         /// </summary>
         [JsonPropertyName("file_name")]
         public required string FileName { get; set; }

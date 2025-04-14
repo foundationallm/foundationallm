@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.CSharpCodeSession.API.Models
+namespace FoundationaLLM.Context.Models.CustomContainer
 {
     /// <summary>
     /// Basic response model that indicates the status of an operation.
