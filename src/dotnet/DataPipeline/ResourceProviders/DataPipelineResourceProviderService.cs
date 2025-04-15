@@ -26,20 +26,20 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>    
     /// <param name="cacheOptions">The options providing the <see cref="ResourceProviderCacheSettings"/> with settings for the resource provider cache.</param>
     /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
+    /// <param name="dataPipelineServiceClient">The client for the Data Pipeline API.</param>
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
-    /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> providing Cosmos DB services.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="loggerFactory">The factory responsible for creating loggers.</param>    
     public class DataPipelineResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
         IOptions<ResourceProviderCacheSettings> cacheOptions,
         IAuthorizationServiceClient authorizationService,
+        IDataPipelineServiceClient dataPipelineServiceClient,
         [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_DataPipeline_Storage)] IStorageService storageService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
-        IAzureCosmosDBService cosmosDBService,
         IServiceProvider serviceProvider,
         ILoggerFactory loggerFactory)
         : ResourceProviderServiceBase<DataPipelineReference>(
@@ -56,7 +56,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             ],
             useInternalReferencesStore: true)
     {
-        private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
+        private readonly IDataPipelineServiceClient _dataPipelineService = dataPipelineServiceClient;
 
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
@@ -155,6 +155,30 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
         }
 
         #endregion
+
+        #endregion
+
+        #region Resource provider strongly typed operations
+
+        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            T resource,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderUpsertOptions? options = null)
+        {
+            switch (typeof(TResult))
+            {
+                case Type t when t == typeof(DataPipelineRun):
+                    return await _dataPipelineService.CreateDataPipelineRunAsync(resource as DataPipelineRun)
+                        as TResult ?? throw new ResourceProviderException("The object definition is invalid.",
+                            StatusCodes.Status400BadRequest);
+                default:
+                    throw new ResourceProviderException(
+                        $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest);
+            }
+        }
 
         #endregion
     }

@@ -1363,6 +1363,14 @@
 				"value": "Context",
 				"content_type": "",
 				"first_version": "0.9.7"
+			},
+			{
+				"name": "FileService:KnowledgeSearchFileExtensions",
+				"description": "The comma-separated list of file extensions that are subject to knowledge search.",
+				"secret": "",
+				"value": "Context",
+				"content_type": "",
+				"first_version": "0.9.7"
 			}
 		]
 	},

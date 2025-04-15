@@ -46,6 +46,7 @@ namespace FoundationaLLM
                         Options.Create<BlobStorageServiceSettings>(
                             sp.GetRequiredService<IOptions<ContextServiceSettings>>().Value.FileService.Storage),
                         sp.GetRequiredService<ILogger<BlobStorageService>>()),
+                    settings: sp.GetRequiredService<IOptions<ContextServiceSettings>>().Value.FileService,
                     logger: sp.GetRequiredService<ILogger<FileService>>()));
         }
 

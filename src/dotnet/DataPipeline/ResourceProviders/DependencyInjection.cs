@@ -38,11 +38,11 @@ namespace FoundationaLLM
                     sp.GetRequiredService<IOptions<InstanceSettings>>(),
                     sp.GetRequiredService<IOptions<ResourceProviderCacheSettings>>(),
                     sp.GetRequiredService<IAuthorizationServiceClient>(),
+                    sp.GetRequiredService<IDataPipelineServiceClient>(),
                     sp.GetRequiredService<IEnumerable<IStorageService>>()
                         .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_ResourceProviders_DataPipeline),
                     sp.GetRequiredService<IEventService>(),
                     sp.GetRequiredService<IResourceValidatorFactory>(),
-                    sp.GetRequiredService<IAzureCosmosDBService>(),
                     sp,                    
                     sp.GetRequiredService<ILoggerFactory>()));          
 

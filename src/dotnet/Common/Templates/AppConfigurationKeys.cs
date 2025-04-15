@@ -1008,6 +1008,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_CosmosDB_Containers =
             "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Containers";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions setting.
+        /// <para>Value description:<br/>The comma-separated list of file extensions that are subject to knowledge search.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_KnowledgeSearchFileExtensions =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions";
 
         #endregion
 
