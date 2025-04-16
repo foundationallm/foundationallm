@@ -3,7 +3,6 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Models.CodeExecution;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Storage;
-using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using FoundationaLLM.Common.Services.Storage;
 using FoundationaLLM.Context.Interfaces;
 using FoundationaLLM.Context.Models.Configuration;

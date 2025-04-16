@@ -36,11 +36,11 @@ namespace FoundationaLLM.Common.Clients
         {
             try
             {
-                var newRun = await resourceProviderService.UpsertResourceAsync<TResource, ResourceProviderUpsertResult<TResource>>(
+                var upsertResult = await resourceProviderService.UpsertResourceAsync<TResource, ResourceProviderUpsertResult<TResource>>(
                     instanceId,
                     resource,
                     userIdentity);
-                var runnableResource = newRun.Resource as IRunnableResource;
+                var runnableResource = upsertResult.Resource as IRunnableResource;
 
                 if (runnableResource!.Completed)
                     return runnableResource.Successful;
@@ -66,11 +66,11 @@ namespace FoundationaLLM.Common.Clients
                         pollingCounter,
                         totalPollingTime.TotalSeconds);
 
-                    var existingRun = await resourceProviderService.UpsertResourceAsync<TResource, ResourceProviderUpsertResult<TResource>>(
+                    var existingResource = await resourceProviderService.GetResourceAsync<TResource>(
                     instanceId,
-                    resource,
+                    upsertResult.Resource!.Name,
                     userIdentity);
-                    runnableResource = existingRun.Resource as IRunnableResource;
+                    runnableResource = existingResource as IRunnableResource;
 
                     if (runnableResource!.Completed)
                         return runnableResource.Successful;

@@ -16,8 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\DataPipeline\DataPipeline.csproj" />
+    <ProjectReference Include="..\DataPipelineEngine\DataPipelineEngine.csproj" />
   </ItemGroup>
 
 </Project>

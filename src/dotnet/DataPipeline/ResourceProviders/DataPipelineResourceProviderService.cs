@@ -11,6 +11,7 @@ using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Services.ResourceProviders;
+using FoundationaLLM.DataPipeline.Interfaces;
 using FoundationaLLM.DataPipeline.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,7 +57,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             ],
             useInternalReferencesStore: true)
     {
-        private readonly IDataPipelineServiceClient _dataPipelineService = dataPipelineServiceClient;
+        private readonly IDataPipelineServiceClient _dataPipelineServiceClient = dataPipelineServiceClient;
 
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
@@ -165,20 +166,33 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             ResourcePathAuthorizationResult authorizationResult,
             T resource,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderUpsertOptions? options = null)
-        {
-            switch (typeof(TResult))
+            ResourceProviderUpsertOptions? options = null) =>
+            typeof(TResult) switch
             {
-                case Type t when t == typeof(DataPipelineRun):
-                    return await _dataPipelineService.CreateDataPipelineRunAsync(resource as DataPipelineRun)
-                        as TResult ?? throw new ResourceProviderException("The object definition is invalid.",
-                            StatusCodes.Status400BadRequest);
-                default:
-                    throw new ResourceProviderException(
+                Type t when t == typeof(DataPipelineRun) =>
+                    await _dataPipelineServiceClient.CreateDataPipelineRunAsync((resource as DataPipelineRun)!) as TResult
+                        ?? throw new ResourceProviderException("The object definition is invalid.",
+                            StatusCodes.Status400BadRequest),
+                _ => throw new ResourceProviderException(
                         $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",
-                        StatusCodes.Status400BadRequest);
-            }
-        }
+                            StatusCodes.Status400BadRequest)
+            };
+
+        protected override async Task<T> GetResourceAsyncInternal<T>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null) =>
+            typeof(T) switch
+            {
+                Type t when t == typeof(DataPipelineRun) =>
+                    await _dataPipelineServiceClient.GetDataPipelineRunAsync(resourcePath.MainResourceId) as T
+                        ?? throw new ResourceProviderException("The object definition is invalid.",
+                            StatusCodes.Status400BadRequest),
+                _ => throw new ResourceProviderException(
+                        $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",
+                            StatusCodes.Status400BadRequest)
+            };
 
         #endregion
     }

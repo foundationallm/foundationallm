@@ -12,9 +12,61 @@ The following App Configuration value have been added:
 |Name | Default value | Description |
 |--- | --- | --- |
 | `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions` | `c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt` | The comma-separated list file extensions that are processed as sources for knowledge search. |
+| `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Containers` | `DataPipelines` | The names of the Azure Cosmos DB containers used by the Data Pipeline API. |
+| `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Database` | `database` | The Azure Cosmos DB database name used by the Data Pipeline API. |
+| `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Endpoint` | `<cosmos_db_endpoint>` | The endpoint URL of the Azure Cosmos DB used by the Data Pipeline API. |
+| `FoundationaLLM:Events:Profiles:DataPipelineAPI` | `{"EventProcessingCycleSeconds":60,"Topics":[]}` | The event processing settings for the Data Pipeline API. |
 
 >[!IMPORTANT]
 >A new Azure Cosmos DB container named `DataPipelines` must be created with a parition key of `/partitionKey` and an autoscale transactional throughput of maximum 4000 RU/s.
+
+>[!IMPORTANT]
+>A new `APIEndpointConfiguration` artifact named `DataPipelineAPI` must be created and saved to a file named `DataPipelineAPI.json`. The file must be created in the `FoundationaLLM.Configuration` resource provider folder of the FoundationaLLM storage account. The file must contain the following content:
+
+```json
+{
+  "type": "api-endpoint",
+  "name": "DataPipelineAPI",
+  "object_id": "/instances/<instance_id>/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/DataPipelineAPI",
+  "display_name": null,
+  "description": null,
+  "cost_center": null,
+  "category": "General",
+  "subcategory": null,
+  "authentication_type": "APIKey",
+  "url": "<deployed_api_endpoint>",
+  "status_endpoint": "/instances/<instance_id>/status",
+  "url_exceptions": [],
+  "authentication_parameters": {
+    "api_key_configuration_name": "FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:APIKey",
+    "api_key_header_name": "X-API-KEY"
+  },
+  "timeout_seconds": 2400,
+  "retry_strategy_name": "ExponentialBackoff",
+  "provider": null,
+  "api_version": null,
+  "operation_type": null,
+  "properties": null,
+  "created_on": "0001-01-01T00:00:00-05:00",
+  "updated_on": "2025-02-25T11:10:55.3458874-05:00",
+  "created_by": null,
+  "updated_by": "ciprian@foundationaLLM.ai",
+  "deleted": false,
+  "expiration_date": null
+}
+```
+
+>where `<deployed_api_endpoint>` is the endpoint of the Data Pipeline API.
+>
+>Also, a new entry must be added to the `_resource-references.json` file from the `FoundationaLLM.Configuration` resource provider folder with the following content:
+```json
+{
+    "Name": "DataPipelineAPI",
+    "Filename": "/FoundationaLLM.Configuration/DataPipelineAPI.json",
+    "Type": "api-endpoint",
+    "Deleted": false
+}
+```
 
 ## Starting from 0.9.7-beta139
 

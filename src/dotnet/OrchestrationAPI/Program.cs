@@ -25,7 +25,7 @@ namespace FoundationaLLM.Orchestration.API
         /// Entry point for the Orchestration API
         /// </summary>
         /// <param name="args"></param>
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -147,7 +147,7 @@ namespace FoundationaLLM.Orchestration.API
             builder.AddAIModelResourceProvider();
             builder.AddAzureOpenAIResourceProvider();
             builder.AddAzureAIResourceProvider();
-            builder.AddDataPipelineResourceProvider();
+            await builder.AddDataPipelineResourceProvider();
 
             // Register the downstream services and HTTP clients.
             builder.AddHttpClientFactoryService();

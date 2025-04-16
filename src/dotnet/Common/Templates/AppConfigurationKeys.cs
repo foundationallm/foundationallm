@@ -918,6 +918,31 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Endpoint setting.
+        /// <para>Value description:<br/>The URL of the Azure Cosmos DB service used by the Data Pipeline API file service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Configuration_CosmosDB_Endpoint =
+            "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Endpoint";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Database setting.
+        /// <para>Value description:<br/>The name of the Azure Cosmos DB database used by the Data Pipeline API file service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Configuration_CosmosDB_Database =
+            "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Database";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Containers setting.
+        /// <para>Value description:<br/>The comma-separated list of database containers used by the Data Pipeline API file service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Configuration_CosmosDB_Containers =
+            "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Containers";
+
+        #endregion
+
         #region FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials
         
         /// <summary>

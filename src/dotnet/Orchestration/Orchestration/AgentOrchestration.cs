@@ -501,11 +501,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     if (string.IsNullOrWhiteSpace(_vectorStoreId))
                         throw new OrchestrationException($"The agent {_agent.Name} does not have a valid vector store identifier for conversation {_conversationId}.");
 
-                    var newDataPipelineRunId = $"run-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToBase64String()}";
                     var newDataPipelineRun = new DataPipelineRun
                     {
-                        Name = newDataPipelineRunId,
-                        Id = newDataPipelineRunId,
+                        Name = string.Empty,
+                        Id = string.Empty,
                         UPN = ServiceContext.ServiceIdentity!.UPN!,
                         InstanceId = _instanceId,
                         DataPipelineObjectId = knowledgeSearchSettings.FileUploadDataPipelineObjectId,
