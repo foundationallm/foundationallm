@@ -1,10 +1,8 @@
 ﻿using Azure.AI.OpenAI;
-using Azure.Search.Documents.Indexes.Models;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
-using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -17,11 +15,11 @@ using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Common.Services.ResourceProviders;
+using FoundationaLLM.Common.Services.Storage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Graph.Drives.Item.Items.Item.Workbook.Functions.False;
 using System.Text.Json;
 
 namespace FoundationaLLM.AzureOpenAI.ResourceProviders
@@ -31,8 +29,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
     /// </summary>
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>
     /// <param name="cacheOptions">The options providing the <see cref="ResourceProviderCacheSettings"/> with settings for the resource provider cache.</param>
-    /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
-    /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
+    /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>    
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
     /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> providing Cosmos DB services.</param>
@@ -41,8 +38,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
     public class AzureOpenAIResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
         IOptions<ResourceProviderCacheSettings> cacheOptions,
-        IAuthorizationServiceClient authorizationService,
-        [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_AzureOpenAI)] IStorageService storageService,
+        IAuthorizationServiceClient authorizationService,        
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
         IAzureCosmosDBService cosmosDBService,
@@ -52,7 +48,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
             instanceOptions.Value,
             cacheOptions.Value,
             authorizationService,
-            storageService,
+            new NullStorageService(),
             eventService,
             resourceValidatorFactory,
             serviceProvider,
