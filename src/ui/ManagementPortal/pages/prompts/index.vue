@@ -1,15 +1,15 @@
 <template>
 	<main id="main-content">
-		<div style="display: flex">
-			<div style="flex: 1">
+		<div class="flex">
+			<div class="flex-1">
 				<h2 class="page-header">Prompts</h2>
 				<div class="page-subheader">The following agent and tool prompts are available.</div>
 			</div>
 
-			<div style="display: flex; align-items: center">
+			<div class="flex items-center">
 				<NuxtLink to="/prompts/create" tabindex="-1">
 					<Button aria-label="Create prompt">
-						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
+						<i class="pi pi-plus mr-2" style="color: var(--text-primary)"></i>
 						Create Prompt
 					</Button>
 				</NuxtLink>
@@ -105,7 +105,7 @@
 				<Column
 					header="Edit"
 					header-style="width:6rem"
-					style="text-align: center"
+					class="text-center"
 					:pt="{
 						headerCell: {
 							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
