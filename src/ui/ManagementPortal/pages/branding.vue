@@ -9,7 +9,7 @@
 		<h2 class="page-header">Branding</h2>
 		<div class="page-subheader">
 			<p>Customize the look and feel of your UI.</p>
-			<div style="display: flex; flex-direction: row; align-items: center; gap: 0.5rem">
+			<div class="flex flex-row items-center gap-2">
 				<p>Show contrast information</p>
 				<InputSwitch
 					v-model="showContrastInfo"
