@@ -1,8 +1,8 @@
 <template>
 	<main id="main-content">
-		<div style="display: flex">
+		<div class="flex">
 			<!-- Title -->
-			<div style="flex: 1">
+			<div class="flex-1">
 				<h2 class="page-header">{{ editId ? 'Edit Pipeline' : 'Create Pipeline' }}</h2>
 				<div class="page-subheader">
 					{{
@@ -135,7 +135,7 @@
 							<div
 								v-for="(param, index) in selectedDataSourcePlugin?.parameters"
 								:key="index"
-								style="width: 100%"
+								class="w-full"
 							>
 								<label>{{ param.name }}:</label>
 								<template
@@ -146,7 +146,7 @@
 										param.type === 'datetime'
 									"
 								>
-									<InputText v-model="param.default_value" style="width: 100%" />
+									<InputText v-model="param.default_value" class="w-full" />
 								</template>
 								<template v-else-if="param.type === 'bool'">
 									<InputSwitch v-model="param.default_value" />
