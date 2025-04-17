@@ -1,8 +1,8 @@
 <template>
 	<main id="main-content">
-		<div style="display: flex">
+		<div class="flex">
 			<!-- Title -->
-			<div style="flex: 1">
+			<div class="flex-1">
 				<h2 class="page-header">{{ editAgent ? 'Edit Agent' : 'Create New Agent' }}</h2>
 				<div class="page-subheader">
 					{{
@@ -13,7 +13,7 @@
 				</div>
 			</div>
 
-			<div style="display: flex; align-items: center">
+			<div class="flex items-center">
 				<!-- Private storage -->
 				<PrivateStorage v-if="hasAgentPrivateStorage" :agent-name="agentName" />
 
