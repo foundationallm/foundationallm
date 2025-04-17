@@ -1,8 +1,8 @@
 <template>
 	<!-- Trigger button -->
-	<div style="display: flex; align-items: center">
+	<div class="flex items-center">
 		<Button @click="dialogOpen = true">
-			<i class="pi pi-lock" style="color: var(--text-primary); margin-right: 8px"></i>
+			<i class="pi pi-lock mr-2" style="color: var(--text-primary)"></i>
 			Access Control
 		</Button>
 	</div>
@@ -41,7 +41,7 @@
 					<Button label="Close" text class="pt-2" @click="handleClose" />
 
 					<Button v-if="currentStep === STEPS.TABLE_STEP" @click="currentStep = STEPS.CREATE_STEP">
-						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
+						<i class="pi pi-plus mr-2" style="color: var(--text-primary)"></i>
 						Add role assignment for this {{ currentScope.label }}
 					</Button>
 				</template>
@@ -51,7 +51,7 @@
 					<Button label="Back" text @click="currentStep = STEPS.TABLE_STEP" />
 
 					<Button @click="handleCreateRoleAssignment">
-						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
+						<i class="pi pi-plus mr-2" style="color: var(--text-primary)"></i>
 						Create role assignment
 					</Button>
 				</template>
