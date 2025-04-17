@@ -1,15 +1,15 @@
 <template>
 	<div>
-		<div style="display: flex">
-			<div style="flex: 1">
+		<div class="flex">
+			<div class="flex-1">
 				<h2 class="page-header">Models</h2>
 				<div class="page-subheader">The following language models are available.</div>
 			</div>
 
-			<div style="display: flex; align-items: center">
+			<div class="flex items-center">
 				<NuxtLink to="/models/create">
 					<Button>
-						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
+						<i class="pi pi-plus mr-2" style="color: var(--text-primary)"></i>
 						Create Model
 					</Button>
 				</NuxtLink>
@@ -125,7 +125,7 @@
 				<Column
 					header="Delete"
 					header-style="width:6rem"
-					style="text-align: center"
+					class="text-center"
 					:pt="{
 						headerCell: {
 							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
