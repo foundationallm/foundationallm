@@ -87,7 +87,7 @@
 		<Column
 			header="Delete"
 			header-style="width:6rem"
-			style="text-align: center"
+			class="text-center"
 			:pt="{
 				headerCell: {
 					style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -103,7 +103,7 @@
 		</Column>
 
 		<template #expansion="{ data }">
-			<div style="padding-left: 16px">
+			<div class="pl-4">
 				<div class="mb-2 font-bold">
 					{{ getResourceNameFromId(data.value.object_id) }} properties:
 				</div>
