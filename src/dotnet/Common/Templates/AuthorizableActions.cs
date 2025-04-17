@@ -104,6 +104,69 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Agent")
                 },
                 {
+                    AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Read,
+                        "Read Azure AI Agent Service conversation mappings.",
+                        "AzureAI")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Write,
+                        "Create or update Azure AI Agent Service conversation mappings.",
+                        "AzureAI")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_AzureAI_ConversationMappings_Delete,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_AzureAI_ConversationMappings_Delete,
+                        "Delete Azure AI Agent Service conversation mappings.",
+                        "AzureAI")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Read,
+                        "Read Azure AI Agent Service file mappings.",
+                        "AzureAI")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Write,
+                        "Create or update Azure AI Agent Service file mappings.",
+                        "AzureAI")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Delete,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Delete,
+                        "Delete Azure AI Agent Service file mappings.",
+                        "AzureAI")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Read,
+                        "Read Azure AI Agent Service project resources.",
+                        "AzureAI")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Write,
+                        "Create or update Azure AI project resource.",
+                        "AzureAI")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Delete,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Delete,
+                        "Delete Azure AI project resources.",
+                        "AzureAI")
+                },
+                {
                     AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Read,
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Read,

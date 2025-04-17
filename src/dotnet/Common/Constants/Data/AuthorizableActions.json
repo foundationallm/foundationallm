@@ -75,6 +75,56 @@
 		]
 	},
 	{
+		"category": "AzureAI",
+		"actions": [
+			{
+				"name": "FoundationaLLM.AzureAI/agentConversationMappings/read",
+				"description": "Read Azure AI Agent Service conversation mappings.",
+				"field_name": "FoundationaLLM_AzureAI_AgentConversationMappings_Read"
+			},
+			{
+				"name": "FoundationaLLM.AzureAI/agentConversationMappings/write",
+				"description": "Create or update Azure AI Agent Service conversation mappings.",
+				"field_name": "FoundationaLLM_AzureAI_AgentConversationMappings_Write"
+			},
+			{
+				"name": "FoundationaLLM.AzureAI/agentConversationMappings/delete",
+				"description": "Delete Azure AI Agent Service conversation mappings.",
+				"field_name": "FoundationaLLM_AzureAI_ConversationMappings_Delete"
+			},
+			{
+				"name": "FoundationaLLM.AzureAI/agentFileMappings/read",
+				"description": "Read Azure AI Agent Service file mappings.",
+				"field_name": "FoundationaLLM_AzureAI_AgentFileMappings_Read"
+			},
+			{
+				"name": "FoundationaLLM.AzureAI/agentFileMappings/write",
+				"description": "Create or update Azure AI Agent Service file mappings.",
+				"field_name": "FoundationaLLM_AzureAI_AgentFileMappings_Write"
+			},
+			{
+				"name": "FoundationaLLM.AzureAI/agentFileMappings/delete",
+				"description": "Delete Azure AI Agent Service file mappings.",
+				"field_name": "FoundationaLLM_AzureAI_AgentFileMappings_Delete"
+			},
+			{
+				"name": "FoundationaLLM.AzureAI/projects/read",
+				"description": "Read Azure AI Agent Service project resources.",
+				"field_name": "FoundationaLLM_AzureAI_Projects_Read"
+			},
+			{
+				"name": "FoundationaLLM.AzureAI/projects/write",
+				"description": "Create or update Azure AI project resource.",
+				"field_name": "FoundationaLLM_AzureAI_Projects_Write"
+			},
+			{
+				"name": "FoundationaLLM.AzureAI/projects/delete",
+				"description": "Delete Azure AI project resources.",
+				"field_name": "FoundationaLLM_AzureAI_Projects_Delete"
+			}
+		]
+	},
+	{
 		"category": "AzureOpenAI",
 		"actions": [
 			{
