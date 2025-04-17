@@ -1,8 +1,8 @@
 <template>
 	<main id="main-content">
-		<div style="display: flex">
+		<div class="flex">
 			<!-- Title -->
-			<div style="flex: 1">
+			<div class="flex-1">
 				<h2 class="page-header">{{ editId ? 'Edit Data Source' : 'Create Data Source' }}</h2>
 				<div class="page-subheader">
 					{{
