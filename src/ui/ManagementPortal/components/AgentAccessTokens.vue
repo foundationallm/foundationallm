@@ -55,7 +55,7 @@
 				<Column
 					header="Delete"
 					header-style="width:6rem"
-					style="text-align: center"
+					class="text-center"
 					:pt="{
 						headerCell: {
 							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -174,7 +174,7 @@
 
 					<!-- Create -->
 					<Button @click="handleCreateAccessToken">
-						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
+						<i class="pi pi-plus mr-2" style="color: var(--text-primary)"></i>
 						Create access token
 					</Button>
 				</template>
@@ -204,7 +204,7 @@
 
 				<!-- Delete -->
 				<Button :disabled="loadingDeleteAccessToken" @click="handleDeleteAccessToken">
-					<i class="pi pi-trash" style="color: var(--text-primary); margin-right: 8px"></i>
+					<i class="pi pi-trash mr-2" style="color: var(--text-primary)"></i>
 					Delete access token
 				</Button>
 			</template>
