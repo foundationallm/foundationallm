@@ -47,7 +47,7 @@
 			<Column
 				header="Edit"
 				header-style="width:6rem"
-				style="text-align: center"
+				class="text-center"
 				:pt="{
 					headerCell: {
 						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -66,7 +66,7 @@
 			<Column
 				header="Delete"
 				header-style="width:6rem"
-				style="text-align: center"
+				class="text-center"
 				:pt="{
 					headerCell: {
 						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -97,7 +97,7 @@
 				<Button
 					label="Add Property"
 					severity="primary"
-					style="word-wrap: none"
+					class="text-nowrap"
 					@click="showCreateOrEditPropertyDialog = true"
 				/>
 			</div>
