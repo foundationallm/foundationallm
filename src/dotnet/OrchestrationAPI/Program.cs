@@ -25,7 +25,7 @@ namespace FoundationaLLM.Orchestration.API
         /// Entry point for the Orchestration API
         /// </summary>
         /// <param name="args"></param>
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -112,7 +112,7 @@ namespace FoundationaLLM.Orchestration.API
             builder.Services.AddOptions<LangChainServiceSettings>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_LangChainAPI_Configuration));
 
-            builder.Services.AddScoped<IOrchestrationContext, OrchestrationContext>();
+            builder.AddOrchestrationContext();
             builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
             builder.AddUserProfileService();
 
@@ -147,7 +147,8 @@ namespace FoundationaLLM.Orchestration.API
             builder.AddAIModelResourceProvider();
             builder.AddAzureOpenAIResourceProvider();
             builder.AddAzureAIResourceProvider();
-            await builder.AddDataPipelineResourceProvider();
+            builder.AddRemoteDataPipelineServiceClient(); // Required by the DataPipeline resource provider.
+            builder.AddDataPipelineResourceProvider();
 
             // Register the downstream services and HTTP clients.
             builder.AddHttpClientFactoryService();

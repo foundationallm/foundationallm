@@ -116,5 +116,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
 
             return output;
         }
+
+        public async Task<T> RetrieveItem<T>(string id, string partitionKey)
+        {
+            var result = await _dataPipelineContainer.ReadItemAsync<T>(id, new PartitionKey(partitionKey));
+
+            return result;
+        }
     }
 }

@@ -170,7 +170,10 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             typeof(TResult) switch
             {
                 Type t when t == typeof(DataPipelineRun) =>
-                    await _dataPipelineServiceClient.CreateDataPipelineRunAsync((resource as DataPipelineRun)!) as TResult
+                    await _dataPipelineServiceClient.CreateDataPipelineRunAsync(
+                        resourcePath.InstanceId!,
+                        (resource as DataPipelineRun)!,
+                        userIdentity) as TResult
                         ?? throw new ResourceProviderException("The object definition is invalid.",
                             StatusCodes.Status400BadRequest),
                 _ => throw new ResourceProviderException(
@@ -186,7 +189,10 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             typeof(T) switch
             {
                 Type t when t == typeof(DataPipelineRun) =>
-                    await _dataPipelineServiceClient.GetDataPipelineRunAsync(resourcePath.MainResourceId) as T
+                    await _dataPipelineServiceClient.GetDataPipelineRunAsync(
+                        resourcePath.InstanceId!,
+                        resourcePath.MainResourceId!,
+                        userIdentity) as T
                         ?? throw new ResourceProviderException("The object definition is invalid.",
                             StatusCodes.Status400BadRequest),
                 _ => throw new ResourceProviderException(

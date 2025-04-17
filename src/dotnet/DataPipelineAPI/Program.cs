@@ -6,7 +6,6 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Security;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
@@ -74,11 +73,13 @@ builder.Services.AddAzureEventGridEvents(
 //---------------------------
 
 builder.AddAzureCosmosDBDataPipelineService();
+builder.AddDataPipelineTriggerService();
+builder.AddDataPipelineStateService();
 
 //---------------------------
 // Scoped services
 //---------------------------
-builder.Services.AddScoped<IOrchestrationContext, OrchestrationContext>();
+builder.AddOrchestrationContext();
 builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
 builder.AddDataPipelineService();
 
@@ -88,7 +89,8 @@ builder.AddDataPipelineService();
 builder.AddResourceProviderCacheSettings();
 builder.AddResourceValidatorFactory();
 builder.AddConfigurationResourceProvider();
-await builder.AddDataPipelineResourceProvider();
+builder.AddLocalDataPipelineServiceClient(); // Required by the DataPipeline resource provider.
+builder.AddDataPipelineResourceProvider();
 
 
 // Add API Key Authorization

@@ -501,22 +501,17 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     if (string.IsNullOrWhiteSpace(_vectorStoreId))
                         throw new OrchestrationException($"The agent {_agent.Name} does not have a valid vector store identifier for conversation {_conversationId}.");
 
-                    var newDataPipelineRun = new DataPipelineRun
-                    {
-                        Name = string.Empty,
-                        Id = string.Empty,
-                        UPN = ServiceContext.ServiceIdentity!.UPN!,
-                        InstanceId = _instanceId,
-                        DataPipelineObjectId = knowledgeSearchSettings.FileUploadDataPipelineObjectId,
-                        TriggeringUPN = _callContext.CurrentUserIdentity!.UPN!,
-                        TriggerName = DataPipelineTriggerNames.DefaultManualTrigger,
-                        TriggerParameterValues = new()
-                            {
-                                { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId,  contextFileResponse.Result.FileObjectId},
-                                { DataPipelineTriggerParameterNames.StageIndexVectorDatabaseObjectId, knowledgeSearchSettings.FileUploadVectorDatabaseObjectId },
-                                { DataPipelineTriggerParameterNames.StageIndexVectorStoreId, _vectorStoreId }
-                            }
-                    };
+                    var newDataPipelineRun = DataPipelineRun.Create(
+                        knowledgeSearchSettings.FileUploadDataPipelineObjectId,
+                        DataPipelineTriggerNames.DefaultManualTrigger,
+                        new()
+                        {
+                            { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId,  contextFileResponse.Result.FileObjectId},
+                            { DataPipelineTriggerParameterNames.StageIndexVectorDatabaseObjectId, knowledgeSearchSettings.FileUploadVectorDatabaseObjectId },
+                            { DataPipelineTriggerParameterNames.StageIndexVectorStoreId, _vectorStoreId }
+                        },
+                        _callContext.CurrentUserIdentity!.UPN!,
+                        ServiceContext.ServiceIdentity!.UPN!);
 
                     fileProcessingTasks[contextFileResponse.Result.FileObjectId] =
                         PollingResourceRunner<DataPipelineRun>.Start(

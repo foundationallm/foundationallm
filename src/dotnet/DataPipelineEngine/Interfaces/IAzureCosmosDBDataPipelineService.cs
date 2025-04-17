@@ -23,10 +23,21 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
         /// <summary>
         /// Retrieves items from Azure Cosmos DB.
         /// </summary>
-        /// <typeparam name="T">The type of item to retrieve.</typeparam>
+        /// <typeparam name="T">The type of the items to retrieve.</typeparam>
         /// <param name="query">The query definition used to retrieve the items.</param>
         /// <returns>The list of retrieved items.</returns>
         Task<List<T>> RetrieveItems<T>(
             QueryDefinition query);
+
+        /// <summary>
+        /// Retrieves an item from Azure Cosmos DB.
+        /// </summary>
+        /// <typeparam name="T">The type of the item to retrieve.</typeparam>
+        /// <param name="id">The identifier of the item.</param>
+        /// <param name="partitionKey">The partition key of the item.</param>
+        /// <returns></returns>
+        Task<T> RetrieveItem<T>(
+            string id,
+            string partitionKey);
     }
 }

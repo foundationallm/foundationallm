@@ -9,6 +9,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
     public class DataPipelineRun : AzureCosmosDBResource, IRunnableResource
     {
         /// <summary>
+        /// The unique identifier of the data pipeline run.
+        /// </summary>
+        public string RunId => Id;
+
+        /// <summary>
         /// Gets or sets the object identifier of the data pipeline.
         /// </summary>
         public required string DataPipelineObjectId { get; set; }
@@ -35,18 +40,37 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
         public bool Successful { get; set; }
 
         /// <summary>
-        /// The logical partition key for the data pipeline run.
-        /// </summary>
-        /// <remarks>
-        /// This property is used by storage providers that support partitioning of data (e.g. Azure Cosmos DB).
-        /// </remarks>
-        public string PartitionKey =>
-            $"{Id}-{InstanceId}";
-
-        /// <summary>
         /// Set default property values.
         /// </summary>
         public DataPipelineRun() =>
             Type = DataPipelineTypes.DataPipelineRun;
+
+        /// <summary>
+        /// Creates a new <see cref="DataPipelineRun"/> instance.
+        /// </summary>
+        /// <param name="dataPipelineObjectId">The object identifier of the data pipeline.</param>
+        /// <param name="triggerName">The name of the data pipeline trigger.</param>
+        /// <param name="triggerParameterValues">The dictionary of data pipeline parameter values required by the trigger.</param>
+        /// <param name="upn">The UPN that is associated with the data pipeline run.</param>
+        /// <param name="triggeringUPN">The UPN that triggered the data pipeline run.</param>
+        /// <returns></returns>
+        public static DataPipelineRun Create(
+            string dataPipelineObjectId,
+            string triggerName,
+            Dictionary<string, object> triggerParameterValues,
+            string upn,
+            string triggeringUPN) =>
+            new()
+            {
+                DataPipelineObjectId = dataPipelineObjectId,
+                TriggerName = triggerName,
+                TriggerParameterValues = triggerParameterValues,
+                UPN = upn,
+
+                Name = string.Empty,
+                Id = string.Empty,
+                InstanceId = string.Empty,
+                TriggeringUPN = string.Empty
+            };
     }
 }

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using FoundationaLLM.Common.Constants.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
+using FoundationaLLM.Common.Validation;
+using FoundationaLLM.Common.Validation.ResourceProvider;
 
 namespace FoundationaLLM.DataPipeline.Validation
 {
@@ -15,17 +15,11 @@ namespace FoundationaLLM.DataPipeline.Validation
         /// </summary>
         public DataPipelineRunValidator()
         {
-            RuleFor(dpr => dpr.UPN)
-                .NotEmpty()
-                .WithMessage("The user principal name is required for the data pipeline run.");
+            Include(new AzureCosmosDBResourceValidator());
 
             RuleFor(dpr => dpr.TriggeringUPN)
                 .NotEmpty()
                 .WithMessage("The triggering user principal name is required for the data pipeline run.");
-
-            RuleFor(dpr => dpr.InstanceId)
-                .Must(ValidateGuid)
-                .WithMessage("The FoundationaLLM instance identifier must be a valid GUID.");
 
             RuleFor(dpr => dpr.TriggerName)
                 .NotEmpty()
@@ -33,18 +27,8 @@ namespace FoundationaLLM.DataPipeline.Validation
 
             RuleFor(dpr => dpr.DataPipelineObjectId)
                 .NotEmpty()
-                .Must(ValidateObjectId)
+                .Must(ValidationUtils.ValidateObjectId)
                 .WithMessage("The data pipeline object identifier is required for the data pipeline run and it must be a valid FoundationaLLM object identifier.");
         }
-
-        private bool ValidateGuid(string guid) => Guid.TryParse(guid, out _);
-
-        private bool ValidateObjectId(string objectId) =>
-            ResourcePath.TryParse(
-                objectId,
-                ResourceProviderNames.All,
-                ResourceProviderMetadata.AllAllowedResourceTypes,
-                true,
-                out _);
     }
 }
