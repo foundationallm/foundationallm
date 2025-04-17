@@ -101,7 +101,7 @@
 		<div class="flex w-full justify-end">
 			<Button
 				severity="primary"
-				style="word-wrap: none"
+				class="text-nowrap"
 				@click="showCreateOrEditParameterDialog = true"
 			>
 				Add Authentication Parameter
