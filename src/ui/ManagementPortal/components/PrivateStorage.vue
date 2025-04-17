@@ -11,10 +11,10 @@
 		<!-- Trigger button -->
 		<Button
 			v-if="isButtonVisible"
-			style="margin-right: 8px"
+			class="mr-2"
 			@click="handleOpenPrivateStorageDialog"
 		>
-			<i class="pi pi-box" style="font-size: 1.2rem; margin-right: 8px"></i>
+			<i class="pi pi-box mr-2" style="font-size: 1.2rem"></i>
 			Private Storage
 		</Button>
 
@@ -46,7 +46,7 @@
 						<div>
 							<div>
 								<Button @click="chooseCallback()">
-									<i class="pi pi-file-plus" style="font-size: 1.2rem; margin-right: 8px"></i>
+									<i class="pi pi-file-plus mr-2" style="font-size: 1.2rem"></i>
 									Select file from Computer
 								</Button>
 								<Button
@@ -69,7 +69,7 @@
 								class="file-upload-file"
 							>
 								<div class="file-upload-file_info">
-									<span style="font-weight: 600">{{ file.name }}</span>
+									<span class="font-semibold">{{ file.name }}</span>
 								</div>
 								<div class="file-info-right">
 									<Badge v-if="!isMobile" value="Local Computer" />
