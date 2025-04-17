@@ -1,6 +1,10 @@
 #See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine3.21 AS base
 ARG FOUNDATIONALLM_VERSION
+
+RUN apk update
+RUN apk add icu-libs icu-data-full
+
 WORKDIR /app
 EXPOSE 80
 
@@ -8,7 +12,7 @@ ENV ASPNETCORE_URLS=http://+:80
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV FOUNDATIONALLM_VERSION=${FOUNDATIONALLM_VERSION:-0.0.0}
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine3.21 AS build
 WORKDIR /src
 COPY . .
 
