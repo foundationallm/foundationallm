@@ -1,5 +1,5 @@
 <template>
-	<div :class="{ 'grid--loading': loading }" style="overflow: auto">
+	<div :class="{ 'grid--loading': loading }" class="overflow-auto">
 		<!-- Loading overlay -->
 		<template v-if="loading">
 			<div class="grid__loading-overlay" role="status" aria-live="polite">
@@ -62,7 +62,7 @@
 						{{ data.resource.display_name ? `(${data.resource.display_name})` : '' }}</span
 					>
 					<template v-if="data.resource.properties?.default_resource === 'true'">
-						<Chip label="Default" icon="pi pi-star" style="margin-left: 8px" />
+						<Chip label="Default" icon="pi pi-star" class="ml-2" />
 					</template>
 				</template>
 			</Column>
@@ -103,7 +103,7 @@
 			<Column
 				header="Edit"
 				header-style="width:6rem"
-				style="text-align: center"
+				class="text-center"
 				:pt="{
 					headerCell: {
 						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -145,7 +145,7 @@
 			<Column
 				header="Delete"
 				header-style="width:6rem"
-				style="text-align: center"
+				class="text-center"
 				:pt="{
 					headerCell: {
 						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
@@ -176,7 +176,7 @@
 			<Column
 				header="Set Default"
 				header-style="width:6rem"
-				style="text-align: center"
+				class="text-center"
 				:pt="{
 					headerCell: {
 						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
