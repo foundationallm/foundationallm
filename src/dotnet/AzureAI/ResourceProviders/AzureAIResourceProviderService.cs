@@ -1,9 +1,12 @@
 ﻿using Azure.AI.Projects;
+using AzureAI.Models.Resources;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.AzureAI;
+using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
@@ -15,7 +18,6 @@ using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureAI;
 using FoundationaLLM.Common.Services.ResourceProviders;
-using FoundationaLLM.Common.Services.Storage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -38,30 +40,33 @@ namespace AzureAI.ResourceProviders
     public class AzureAIResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
         IOptions<ResourceProviderCacheSettings> cacheOptions,
-        IAuthorizationServiceClient authorizationService,        
+        IAuthorizationServiceClient authorizationService,
+        [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Prompt)] IStorageService storageService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
         IAzureCosmosDBService cosmosDBService,
         IServiceProvider serviceProvider,
         ILogger<AzureAIResourceProviderService> logger)
-        : ResourceProviderServiceBase<ResourceReference>(
+        : ResourceProviderServiceBase<AzureAIReference>(
             instanceOptions.Value,
             cacheOptions.Value,
             authorizationService,
-            new NullStorageService(),
+            storageService,
             eventService,
             resourceValidatorFactory,
             serviceProvider,
             logger,
-            eventTypesToSubscribe: null,
-            useInternalReferencesStore: false)
+            [
+                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
+            ],
+            useInternalReferencesStore: true)
     {
         
         private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
 
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
-            AzureOpenAIResourceProviderMetadata.AllowedResourceTypes;
+            AzureAIResourceProviderMetadata.AllowedResourceTypes;
 
         /// <inheritdoc/>
         protected override string _name => ResourceProviderNames.FoundationaLLM_AzureAI;
@@ -71,7 +76,94 @@ namespace AzureAI.ResourceProviders
 
         #region Resource provider support for Management API
 
-        // This resource provider does not support the Management API.
+        /// <inheritdoc/>
+        protected override async Task<object> GetResourcesAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null) =>
+            resourcePath.ResourceTypeName switch
+            {
+                AzureAIResourceTypeNames.AgentConversationMappings => await GetResourceAsyncInternal<AzureAIAgentConversationMapping>(resourcePath, authorizationResult, userIdentity, options),
+                AzureAIResourceTypeNames.AgentFileMappings => await GetResourceAsyncInternal<AzureAIAgentFileMapping>(resourcePath, authorizationResult, userIdentity, options),
+                AzureAIResourceTypeNames.Projects => await LoadResources<AzureAIProject>(
+                    resourcePath.ResourceTypeInstances[0],
+                    authorizationResult,
+                    options ?? new ResourceProviderGetOptions
+                    {
+                        IncludeRoles = resourcePath.IsResourceTypePath,
+                    }),              
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
+                    StatusCodes.Status400BadRequest)
+            };
+
+        /// <inheritdoc/>
+        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string? serializedResource, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity)
+        {
+            switch(resourcePath.ResourceTypeName)
+            {               
+                case AzureAIResourceTypeNames.AgentConversationMappings:
+                    var conversationMapping = JsonSerializer.Deserialize<AzureAIAgentConversationMapping>(serializedResource!)
+                        ?? throw new ResourceProviderException("The object definition is invalid.",
+                        StatusCodes.Status400BadRequest);
+                    return await UpsertResourceAsyncInternal<AzureAIAgentConversationMapping, AzureAIAgentConversationMappingUpsertResult>(resourcePath, null!, conversationMapping, userIdentity);
+                case AzureAIResourceTypeNames.AgentFileMappings:
+                    var fileMapping = JsonSerializer.Deserialize<AzureAIAgentFileMapping>(serializedResource!)
+                        ?? throw new ResourceProviderException("The object definition is invalid.",
+                                               StatusCodes.Status400BadRequest);
+                    return await UpsertResourceAsyncInternal<AzureAIAgentFileMapping, ResourceProviderUpsertResult<AzureAIAgentFileMapping>>(resourcePath, null!, fileMapping, userIdentity);
+                case AzureAIResourceTypeNames.Projects:
+                    var project = JsonSerializer.Deserialize<AzureAIProject>(serializedResource!)
+                        ?? throw new ResourceProviderException("The object definition is invalid.",
+                                               StatusCodes.Status400BadRequest);
+                    return await UpdateAzureAIProjectAsync(project, userIdentity);
+                default:
+                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
+                    StatusCodes.Status400BadRequest);
+            }
+        }
+         
+
+        /// <inheritdoc/>
+        protected override async Task<object> ExecuteActionAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity) =>
+            resourcePath.ResourceTypeName switch
+            {
+                AzureAIResourceTypeNames.Projects => resourcePath.Action switch
+                {
+                    ResourceProviderActions.CheckName => await CheckResourceName<AzureAIProject>(
+                        JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
+
+                    ResourceProviderActions.Purge => await PurgeResource<AzureAIProject>(resourcePath),
+
+                    ResourceProviderActions.SetDefault => await SetDefaultResource<AzureAIProject>(resourcePath),
+
+                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+                },
+                AzureAIResourceTypeNames.AgentFileMappings => await ExecuteResourceActionAsyncInternal<AzureAIAgentFileMapping, object?, ResourceProviderActionResult<FileContent>>(resourcePath, authorizationResult, serializedAction, userIdentity),
+                _ => throw new ResourceProviderException()
+            };
+
+        /// <inheritdoc/>
+        protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
+        {
+            switch (resourcePath.ResourceTypeName)
+            {
+                case AzureAIResourceTypeNames.Projects:
+                    await DeleteResource<AzureAIProject>(resourcePath);
+                    break;
+                default:
+                    throw new ResourceProviderException(
+                        $"The resource type {resourcePath.ResourceTypeName} deletion action is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest);
+            }
+            await SendResourceProviderEvent(
+                    EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
+        }
 
         #endregion
 
@@ -80,6 +172,18 @@ namespace AzureAI.ResourceProviders
         /// <inheritdoc/>
         protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
         {
+            if (resourcePath.ResourceTypeName == AzureAIResourceTypeNames.Projects)
+            {
+                var resources = await LoadResources<AzureAIProject>(
+                    resourcePath.ResourceTypeInstances[0],
+                    authorizationResult);
+
+                return resources.FirstOrDefault()?.Resource as T
+                    ?? throw new ResourceProviderException(
+                               $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource.",
+                               StatusCodes.Status404NotFound);
+            }
+
             _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
 
             // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to load the resource.
@@ -104,6 +208,17 @@ namespace AzureAI.ResourceProviders
         /// <inheritdoc/>
         protected override async Task<(bool Exists, bool Deleted)> ResourceExistsAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity)
         {
+            if (resourcePath.ResourceTypeName == AzureAIResourceTypeNames.Projects)
+            {
+                var resources = await LoadResources<AzureAIProject>(
+                    resourcePath.ResourceTypeInstances[0],
+                    authorizationResult);
+
+                if (resources == null || resources.Count()==0)
+                    return (false, false);
+                return (true, resources.First().Resource.Deleted);
+            }
+            
             _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
 
             // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to load the resource.
@@ -116,6 +231,7 @@ namespace AzureAI.ResourceProviders
                 $"{userIdentity.UPN!.NormalizeUserPrincipalName()}-{_instanceSettings.Id}");
 
             return (result != null, result?.Deleted ?? false);
+                      
         }
 
         /// <inheritdoc/>
@@ -422,6 +538,45 @@ namespace AzureAI.ResourceProviders
                 ResourceExists = isNew,
                 Resource = fileMapping
             };
+        }
+
+        private async Task<ResourceProviderUpsertResult<AzureAIProject>> UpdateAzureAIProjectAsync(
+            AzureAIProject project,           
+            UnifiedUserIdentity userIdentity)
+        {
+            var existingProjectReference = await _resourceReferenceStore!.GetResourceReference(project.Name);
+
+            project.ObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name,
+                               AzureAIResourceTypeNames.Projects, project.Name);
+
+            UpdateBaseProperties(project, userIdentity, isNew: true);
+
+            if (existingProjectReference is null)
+            {
+
+                var projectReference = new AzureAIReference
+                {
+                    Name = project.Name!,
+                    Type = AzureAITypes.Project,
+                    Filename = $"/{_name}/{project.Name}.json",
+                    Deleted = false
+                };
+                
+                await CreateResource<AzureAIProject>(projectReference, project);
+            }
+            else
+            {
+                await SaveResource<AzureAIProject>(existingProjectReference!, project);
+            }                
+
+            var upsertResult = new ResourceProviderUpsertResult<AzureAIProject>
+            {
+                ObjectId = project.ObjectId!,
+                ResourceExists = !(existingProjectReference is null)
+            };
+
+            return upsertResult;
+
         }
 
         #endregion

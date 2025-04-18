@@ -31,6 +31,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:ResourceProviders:Agent";
         
         /// <summary>
+        /// Dependency injection key used by the FoundationaLLM.AzureAI resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_AzureAI =
+            "FoundationaLLM:ResourceProviders:AzureAI";
+        
+        /// <summary>
         /// Dependency injection key used by the FoundationaLLM.Attachment resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_Attachment =

@@ -3,6 +3,14 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-beta147
+
+The following App Configuration value has been added:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+| `FoundationaLLM:ResourceProviders:AzureAI:Storage:AccountName` | The name of the deployment storage account. | The name of the Azure Blob Storage account used by the FoundationaLLM.AzureAI resource provider. |
+| `FoundationaLLM:ResourceProviders:AzureAI:Storage:AuthenticationType` | `AzureIdentity` | The authentication type used by the FoundationaLLM.AzureAI resource provider to connect to the storage account. |
 
 ## Starting from 0.9.7-beta139
 
@@ -20,7 +28,7 @@ The following App Configuration value has been removed as they are no longer nee
 1. ResourceProviders:AzureOpenAI:Storage:AuthenticationType
 2. ResourceProviders:AzureOpenAI:Storage:AccountName
 
-A new workflow resource must be added to support the AzureAIAgentServiceWorkflow.
+A new workflow resource must be added to support the AzureAIAgentServiceWorkflow. Ensure the reference is added to `_resource-references.json` as well.
 
 ```json
 {

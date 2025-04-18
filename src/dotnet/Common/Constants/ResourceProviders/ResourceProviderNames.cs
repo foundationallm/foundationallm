@@ -84,6 +84,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             FoundationaLLM_Attachment,
             FoundationaLLM_Authorization,
             FoundationaLLM_AIModel,
+            FoundationaLLM_AzureAI,
             FoundationaLLM_AzureOpenAI,
             FoundationaLLM_Conversation,
             FoundationaLLM_DataPipeline,

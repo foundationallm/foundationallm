@@ -155,6 +155,20 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:ResourceProviders:AzureAI:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:AzureAI:Storage:AccountName",
+            "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:ResourceProviders:Attachment:Storage:AuthenticationType",
             "value": "AzureIdentity",
             "label": null,

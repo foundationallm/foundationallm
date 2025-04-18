@@ -723,7 +723,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileMappings}/{imageFile.FileId}",
                 OriginalFileName = imageFile.FileId!,
                 FileContentType = "image/png",
-                ProjectConnectionString = workflow!.ProjectConnectionString,
+                ProjectConnectionString = workflow!.ProjectConnectionString!,
                 AzureAIAgentFileId = imageFile.FileId!,
                 AzureAIAgentFileGeneratedOn = DateTimeOffset.UtcNow
             });
@@ -749,7 +749,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileMappings}/{filePath.FileId}",
                     OriginalFileName = filePath.FileId,
                     FileContentType = "application/octet-stream",
-                    ProjectConnectionString = workflow!.ProjectConnectionString,
+                    ProjectConnectionString = workflow!.ProjectConnectionString!,
                     AzureAIAgentFileId = filePath.FileId,
                     AzureAIAgentFileGeneratedOn = DateTimeOffset.UtcNow
                 });

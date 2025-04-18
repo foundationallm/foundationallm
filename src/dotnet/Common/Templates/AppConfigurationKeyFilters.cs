@@ -61,6 +61,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:ResourceProviders:Agent:Storage:*";
         
         /// <summary>
+        /// Filter for the configuration section used to identify the storage settings for the FoundationaLLM.AzureAI resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_AzureAI_Storage =
+            "FoundationaLLM:ResourceProviders:AzureAI:Storage:*";
+        
+        /// <summary>
         /// Filter for the configuration section used to identify the storage settings for the FoundationaLLM.Attachment resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_Attachment_Storage =

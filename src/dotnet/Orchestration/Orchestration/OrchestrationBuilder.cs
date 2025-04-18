@@ -792,7 +792,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         UPN = currentUserIdentity.UPN!,
                         InstanceId = instanceId,
                         ConversationId = conversationId,
-                        ProjectConnectionString = workflow!.ProjectConnectionString,
+                        ProjectConnectionString = workflow!.ProjectConnectionString!,
                         AzureAIAgentId = azureAIAgentId!
                     };
 
