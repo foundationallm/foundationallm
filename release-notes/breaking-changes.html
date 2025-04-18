@@ -77,6 +77,29 @@
 <h5>Note</h5>
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
+<h2 id="starting-from-097-beta147">Starting from 0.9.7-beta147</h2>
+<p>The following App Configuration value has been added:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:AzureAI:Storage:AccountName</code></td>
+<td>The name of the deployment storage account.</td>
+<td>The name of the Azure Blob Storage account used by the FoundationaLLM.AzureAI resource provider.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:AzureAI:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The authentication type used by the FoundationaLLM.AzureAI resource provider to connect to the storage account.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="starting-from-097-beta139">Starting from 0.9.7-beta139</h2>
 <h2 id="configuration-changes">Configuration changes</h2>
 <p>The following App Configuration value has been added:</p>
@@ -106,7 +129,7 @@
 <li>ResourceProviders:AzureOpenAI:Storage:AuthenticationType</li>
 <li>ResourceProviders:AzureOpenAI:Storage:AccountName</li>
 </ol>
-<p>A new workflow resource must be added to support the AzureAIAgentServiceWorkflow.</p>
+<p>A new workflow resource must be added to support the AzureAIAgentServiceWorkflow. Ensure the reference is added to <code>_resource-references.json</code> as well.</p>
 <pre><code class="lang-json">{
     &quot;type&quot;: &quot;azure-ai-agent-service-workflow&quot;,
     &quot;name&quot;: &quot;AzureAIAgentServiceWorkflow&quot;,

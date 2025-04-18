@@ -89,7 +89,7 @@
 
 
   <h1 id="AzureAI_ResourceProviders_AzureAIResourceProviderService" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService" class="text-break">
-Class AzureAIResourceProviderService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L38"><i class="bi bi-code-slash"></i></a>
+Class AzureAIResourceProviderService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -102,7 +102,7 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class AzureAIResourceProviderService : ResourceProviderServiceBase&lt;ResourceReference&gt;, IResourceProviderService, IManagementProviderService</code></pre>
+    <pre><code class="lang-csharp hljs">public class AzureAIResourceProviderService : ResourceProviderServiceBase&lt;AzureAIReference&gt;, IResourceProviderService, IManagementProviderService</code></pre>
   </div>
 
 
@@ -112,7 +112,7 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html">ResourceProviderServiceBase</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceReference.html">ResourceReference</a>&gt;</div>
+      <div><a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html">ResourceProviderServiceBase</a>&lt;<a class="xref" href="AzureAI.Models.Resources.AzureAIReference.html">AzureAIReference</a>&gt;</div>
       <div><span class="xref">AzureAIResourceProviderService</span></div>
     </dd>
   </dl>
@@ -130,166 +130,154 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
     <dt>Inherited Members</dt>
     <dd>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__resourceReferenceStore">ResourceProviderServiceBase&lt;ResourceReference&gt;._resourceReferenceStore</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__resourceReferenceStore">ResourceProviderServiceBase&lt;AzureAIReference&gt;._resourceReferenceStore</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__serviceProvider">ResourceProviderServiceBase&lt;ResourceReference&gt;._serviceProvider</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__serviceProvider">ResourceProviderServiceBase&lt;AzureAIReference&gt;._serviceProvider</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__authorizationServiceClient">ResourceProviderServiceBase&lt;ResourceReference&gt;._authorizationServiceClient</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__authorizationServiceClient">ResourceProviderServiceBase&lt;AzureAIReference&gt;._authorizationServiceClient</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__storageService">ResourceProviderServiceBase&lt;ResourceReference&gt;._storageService</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__storageService">ResourceProviderServiceBase&lt;AzureAIReference&gt;._storageService</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__eventService">ResourceProviderServiceBase&lt;ResourceReference&gt;._eventService</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__eventService">ResourceProviderServiceBase&lt;AzureAIReference&gt;._eventService</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__resourceValidatorFactory">ResourceProviderServiceBase&lt;ResourceReference&gt;._resourceValidatorFactory</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__resourceValidatorFactory">ResourceProviderServiceBase&lt;AzureAIReference&gt;._resourceValidatorFactory</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__logger">ResourceProviderServiceBase&lt;ResourceReference&gt;._logger</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__logger">ResourceProviderServiceBase&lt;AzureAIReference&gt;._logger</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__instanceSettings">ResourceProviderServiceBase&lt;ResourceReference&gt;._instanceSettings</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__instanceSettings">ResourceProviderServiceBase&lt;AzureAIReference&gt;._instanceSettings</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__storageContainerName">ResourceProviderServiceBase&lt;ResourceReference&gt;._storageContainerName</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__storageContainerName">ResourceProviderServiceBase&lt;AzureAIReference&gt;._storageContainerName</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__serializerSettings">ResourceProviderServiceBase&lt;ResourceReference&gt;._serializerSettings</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__serializerSettings">ResourceProviderServiceBase&lt;AzureAIReference&gt;._serializerSettings</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_Name">ResourceProviderServiceBase&lt;ResourceReference&gt;.Name</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_Name">ResourceProviderServiceBase&lt;AzureAIReference&gt;.Name</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_IsInitialized">ResourceProviderServiceBase&lt;ResourceReference&gt;.IsInitialized</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_IsInitialized">ResourceProviderServiceBase&lt;AzureAIReference&gt;.IsInitialized</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_AllowedResourceTypes">ResourceProviderServiceBase&lt;ResourceReference&gt;.AllowedResourceTypes</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_AllowedResourceTypes">ResourceProviderServiceBase&lt;AzureAIReference&gt;.AllowedResourceTypes</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_StorageAccountName">ResourceProviderServiceBase&lt;ResourceReference&gt;.StorageAccountName</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_StorageAccountName">ResourceProviderServiceBase&lt;AzureAIReference&gt;.StorageAccountName</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_StorageContainerName">ResourceProviderServiceBase&lt;ResourceReference&gt;.StorageContainerName</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_StorageContainerName">ResourceProviderServiceBase&lt;AzureAIReference&gt;.StorageContainerName</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_Initialize">ResourceProviderServiceBase&lt;ResourceReference&gt;.Initialize()</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_Initialize">ResourceProviderServiceBase&lt;AzureAIReference&gt;.Initialize()</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_WaitForInitialization">ResourceProviderServiceBase&lt;ResourceReference&gt;.WaitForInitialization()</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_WaitForInitialization">ResourceProviderServiceBase&lt;AzureAIReference&gt;.WaitForInitialization()</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandleGetAsync_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_">ResourceProviderServiceBase&lt;ResourceReference&gt;.HandleGetAsync(string, UnifiedUserIdentity, ResourceProviderGetOptions)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandleGetAsync_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.HandleGetAsync(string, UnifiedUserIdentity, ResourceProviderGetOptions)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandlePostAsync_System_String_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.HandlePostAsync(string, string, ResourceProviderFormFile, UnifiedUserIdentity)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandlePostAsync_System_String_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.HandlePostAsync(string, string, ResourceProviderFormFile, UnifiedUserIdentity)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandleDeleteAsync_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.HandleDeleteAsync(string, UnifiedUserIdentity)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandleDeleteAsync_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.HandleDeleteAsync(string, UnifiedUserIdentity)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourcesAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_">ResourceProviderServiceBase&lt;ResourceReference&gt;.GetResourcesAsync(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity, ResourceProviderGetOptions)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourcesAsync__1_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.GetResourcesAsync&lt;T&gt;(string, UnifiedUserIdentity, ResourceProviderGetOptions)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.UpsertResourceAsync(ResourcePath, string, ResourceProviderFormFile, UnifiedUserIdentity)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourceAsync__1_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.GetResourceAsync&lt;T&gt;(string, UnifiedUserIdentity, ResourceProviderGetOptions)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_ExecuteActionAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.ExecuteActionAsync(ResourcePath, ResourcePathAuthorizationResult, string, UnifiedUserIdentity)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourceAsync__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.GetResourceAsync&lt;T&gt;(string, string, UnifiedUserIdentity, ResourceProviderGetOptions)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_DeleteResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.DeleteResourceAsync(ResourcePath, UnifiedUserIdentity)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpsertResourceAsync__2_System_String___0_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderUpsertOptions_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.UpsertResourceAsync&lt;T, TResult&gt;(string, T, UnifiedUserIdentity, ResourceProviderUpsertOptions)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourcesAsync__1_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_">ResourceProviderServiceBase&lt;ResourceReference&gt;.GetResourcesAsync&lt;T&gt;(string, UnifiedUserIdentity, ResourceProviderGetOptions)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpdateResourcePropertiesAsync__2_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.UpdateResourcePropertiesAsync&lt;T, TResult&gt;(string, string, Dictionary&lt;string, object&gt;, UnifiedUserIdentity)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourceAsync__1_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_">ResourceProviderServiceBase&lt;ResourceReference&gt;.GetResourceAsync&lt;T&gt;(string, UnifiedUserIdentity, ResourceProviderGetOptions)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_ExecuteResourceActionAsync__3_System_String_System_String_System_String___1_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.ExecuteResourceActionAsync&lt;T, TAction, TResult&gt;(string, string, string, TAction, UnifiedUserIdentity)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourceAsync__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_">ResourceProviderServiceBase&lt;ResourceReference&gt;.GetResourceAsync&lt;T&gt;(string, string, UnifiedUserIdentity, ResourceProviderGetOptions)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_ResourceExistsAsync__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.ResourceExistsAsync&lt;T&gt;(string, string, UnifiedUserIdentity)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpsertResourceAsync__2_System_String___0_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderUpsertOptions_">ResourceProviderServiceBase&lt;ResourceReference&gt;.UpsertResourceAsync&lt;T, TResult&gt;(string, T, UnifiedUserIdentity, ResourceProviderUpsertOptions)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_DeleteResourceAsync__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.DeleteResourceAsync&lt;T&gt;(string, string, UnifiedUserIdentity)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpdateResourcePropertiesAsync__2_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.UpdateResourcePropertiesAsync&lt;T, TResult&gt;(string, string, Dictionary&lt;string, object&gt;, UnifiedUserIdentity)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpdateResourcePropertiesAsyncInternal__2_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.UpdateResourcePropertiesAsyncInternal&lt;T, TResult&gt;(ResourcePath, ResourcePathAuthorizationResult, Dictionary&lt;string, object&gt;, UnifiedUserIdentity)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_ExecuteResourceActionAsync__3_System_String_System_String_System_String___1_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.ExecuteResourceActionAsync&lt;T, TAction, TResult&gt;(string, string, string, TAction, UnifiedUserIdentity)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_DeleteResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.DeleteResourceAsyncInternal&lt;T&gt;(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_ResourceExistsAsync__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.ResourceExistsAsync&lt;T&gt;(string, string, UnifiedUserIdentity)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_SendResourceProviderEvent_System_String_System_Object_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.SendResourceProviderEvent(string, object)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_DeleteResourceAsync__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.DeleteResourceAsync&lt;T&gt;(string, string, UnifiedUserIdentity)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandleCacheResetCommand">ResourceProviderServiceBase&lt;AzureAIReference&gt;.HandleCacheResetCommand()</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpdateResourcePropertiesAsyncInternal__2_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.UpdateResourcePropertiesAsyncInternal&lt;T, TResult&gt;(ResourcePath, ResourcePathAuthorizationResult, Dictionary&lt;string, object&gt;, UnifiedUserIdentity)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandleEventsInternal_FoundationaLLM_Common_Models_Events_EventTypeEventArgs_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.HandleEventsInternal(EventTypeEventArgs)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_DeleteResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.DeleteResourceAsyncInternal&lt;T&gt;(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_LoadResources__1_FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeInstance_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_System_Func__0_System_Boolean_System_Threading_Tasks_Task___0___">ResourceProviderServiceBase&lt;AzureAIReference&gt;.LoadResources&lt;T&gt;(ResourceTypeInstance, ResourcePathAuthorizationResult, ResourceProviderGetOptions, Func&lt;AzureAIReference, bool, Task&lt;T&gt;&gt;)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_SendResourceProviderEvent_System_String_System_Object_">ResourceProviderServiceBase&lt;ResourceReference&gt;.SendResourceProviderEvent(string, object)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_LoadResource__1__0_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.LoadResource&lt;T&gt;(AzureAIReference)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandleCacheResetCommand">ResourceProviderServiceBase&lt;ResourceReference&gt;.HandleCacheResetCommand()</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_LoadResource__1_System_String_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.LoadResource&lt;T&gt;(string)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandleEventsInternal_FoundationaLLM_Common_Models_Events_EventTypeEventArgs_">ResourceProviderServiceBase&lt;ResourceReference&gt;.HandleEventsInternal(EventTypeEventArgs)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_CreateResource__1__0___0_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.CreateResource&lt;T&gt;(AzureAIReference, T)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_LoadResources__1_FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeInstance_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_System_Func__0_System_Boolean_System_Threading_Tasks_Task___0___">ResourceProviderServiceBase&lt;ResourceReference&gt;.LoadResources&lt;T&gt;(ResourceTypeInstance, ResourcePathAuthorizationResult, ResourceProviderGetOptions, Func&lt;ResourceReference, bool, Task&lt;T&gt;&gt;)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_CreateResource__0_System_IO_Stream_System_String_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.CreateResource(AzureAIReference, Stream, string)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_LoadResource__1__0_">ResourceProviderServiceBase&lt;ResourceReference&gt;.LoadResource&lt;T&gt;(ResourceReference)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_CreateResources__2__0___0__0___1_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.CreateResources&lt;T1, T2&gt;(AzureAIReference, T1, AzureAIReference, T2)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_LoadResource__1_System_String_">ResourceProviderServiceBase&lt;ResourceReference&gt;.LoadResource&lt;T&gt;(string)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_SaveResource__1__0___0_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.SaveResource&lt;T&gt;(AzureAIReference, T)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_CreateResource__1__0___0_">ResourceProviderServiceBase&lt;ResourceReference&gt;.CreateResource&lt;T&gt;(ResourceReference, T)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_DeleteResource__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.DeleteResource&lt;T&gt;(ResourcePath)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_CreateResource__0_System_IO_Stream_System_String_">ResourceProviderServiceBase&lt;ResourceReference&gt;.CreateResource(ResourceReference, Stream, string)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_PurgeResource__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.PurgeResource&lt;T&gt;(ResourcePath)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_CreateResources__2__0___0__0___1_">ResourceProviderServiceBase&lt;ResourceReference&gt;.CreateResources&lt;T1, T2&gt;(ResourceReference, T1, ResourceReference, T2)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_SetDefaultResource__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.SetDefaultResource&lt;T&gt;(ResourcePath)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_SaveResource__1__0___0_">ResourceProviderServiceBase&lt;ResourceReference&gt;.SaveResource&lt;T&gt;(ResourceReference, T)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_CheckResourceName__1_FoundationaLLM_Common_Models_ResourceProviders_ResourceName_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.CheckResourceName&lt;T&gt;(ResourceName)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_DeleteResource__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_">ResourceProviderServiceBase&lt;ResourceReference&gt;.DeleteResource&lt;T&gt;(ResourcePath)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_FilterResources__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_ResourceProviders_ResourceFilter_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_System_Func__0_System_Boolean_System_Threading_Tasks_Task___0___System_Func___0_System_Boolean__">ResourceProviderServiceBase&lt;AzureAIReference&gt;.FilterResources&lt;T&gt;(ResourcePath, ResourceFilter, ResourcePathAuthorizationResult, ResourceProviderGetOptions, Func&lt;AzureAIReference, bool, Task&lt;T&gt;&gt;, Func&lt;T, bool&gt;)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_PurgeResource__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_">ResourceProviderServiceBase&lt;ResourceReference&gt;.PurgeResource&lt;T&gt;(ResourcePath)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourceProviderServiceByName_System_String_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.GetResourceProviderServiceByName(string)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_SetDefaultResource__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_">ResourceProviderServiceBase&lt;ResourceReference&gt;.SetDefaultResource&lt;T&gt;(ResourcePath)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpdateBaseProperties_FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Boolean_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.UpdateBaseProperties(ResourceBase, UnifiedUserIdentity, bool)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_CheckResourceName__1_FoundationaLLM_Common_Models_ResourceProviders_ResourceName_">ResourceProviderServiceBase&lt;ResourceReference&gt;.CheckResourceName&lt;T&gt;(ResourceName)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourcePath_System_String_System_Type_System_String_System_String_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.GetResourcePath(string, Type, string, string)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_FilterResources__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_ResourceProviders_ResourceFilter_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_System_Func__0_System_Boolean_System_Threading_Tasks_Task___0___System_Func___0_System_Boolean__">ResourceProviderServiceBase&lt;ResourceReference&gt;.FilterResources&lt;T&gt;(ResourcePath, ResourceFilter, ResourcePathAuthorizationResult, ResourceProviderGetOptions, Func&lt;ResourceReference, bool, Task&lt;T&gt;&gt;, Func&lt;T, bool&gt;)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetParsedResourcePath_System_String_System_Boolean_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.GetParsedResourcePath(string, bool)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourceProviderServiceByName_System_String_">ResourceProviderServiceBase&lt;ResourceReference&gt;.GetResourceProviderServiceByName(string)</a>
-    </div>
-    <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpdateBaseProperties_FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Boolean_">ResourceProviderServiceBase&lt;ResourceReference&gt;.UpdateBaseProperties(ResourceBase, UnifiedUserIdentity, bool)</a>
-    </div>
-    <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourcePath_System_String_System_Type_System_String_System_String_">ResourceProviderServiceBase&lt;ResourceReference&gt;.GetResourcePath(string, Type, string, string)</a>
-    </div>
-    <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetParsedResourcePath_System_String_System_Boolean_">ResourceProviderServiceBase&lt;ResourceReference&gt;.GetParsedResourcePath(string, bool)</a>
-    </div>
-    <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_EnsureAndValidatePolicyDefinitions_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_">ResourceProviderServiceBase&lt;ResourceReference&gt;.EnsureAndValidatePolicyDefinitions(ResourcePath, ResourcePathAuthorizationResult)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_EnsureAndValidatePolicyDefinitions_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.EnsureAndValidatePolicyDefinitions(ResourcePath, ResourcePathAuthorizationResult)</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
@@ -332,9 +320,9 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
 
   <a id="AzureAI_ResourceProviders_AzureAIResourceProviderService__ctor_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.#ctor*"></a>
 
-  <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_ResourceProviders_ResourceProviderCacheSettings__FoundationaLLM_Common_Interfaces_IAuthorizationServiceClient_FoundationaLLM_Common_Interfaces_IEventService_FoundationaLLM_Common_Interfaces_IResourceValidatorFactory_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_System_IServiceProvider_Microsoft_Extensions_Logging_ILogger_AzureAI_ResourceProviders_AzureAIResourceProviderService__" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.ResourceProviders.ResourceProviderCacheSettings},FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient,FoundationaLLM.Common.Interfaces.IEventService,FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,System.IServiceProvider,Microsoft.Extensions.Logging.ILogger{AzureAI.ResourceProviders.AzureAIResourceProviderService})">
-  AzureAIResourceProviderService(IOptions&lt;InstanceSettings&gt;, IOptions&lt;ResourceProviderCacheSettings&gt;, IAuthorizationServiceClient, IEventService, IResourceValidatorFactory, IAzureCosmosDBService, IServiceProvider, ILogger&lt;AzureAIResourceProviderService&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_ResourceProviders_ResourceProviderCacheSettings__FoundationaLLM_Common_Interfaces_IAuthorizationServiceClient_FoundationaLLM_Common_Interfaces_IStorageService_FoundationaLLM_Common_Interfaces_IEventService_FoundationaLLM_Common_Interfaces_IResourceValidatorFactory_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_System_IServiceProvider_Microsoft_Extensions_Logging_ILogger_AzureAI_ResourceProviders_AzureAIResourceProviderService__" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.ResourceProviders.ResourceProviderCacheSettings},FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient,FoundationaLLM.Common.Interfaces.IStorageService,FoundationaLLM.Common.Interfaces.IEventService,FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,System.IServiceProvider,Microsoft.Extensions.Logging.ILogger{AzureAI.ResourceProviders.AzureAIResourceProviderService})">
+  AzureAIResourceProviderService(IOptions&lt;InstanceSettings&gt;, IOptions&lt;ResourceProviderCacheSettings&gt;, IAuthorizationServiceClient, IStorageService, IEventService, IResourceValidatorFactory, IAzureCosmosDBService, IServiceProvider, ILogger&lt;AzureAIResourceProviderService&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Implements the FoundationaLLM.AzureAI resource provider.</p>
@@ -342,7 +330,7 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AzureAIResourceProviderService(IOptions&lt;InstanceSettings&gt; instanceOptions, IOptions&lt;ResourceProviderCacheSettings&gt; cacheOptions, IAuthorizationServiceClient authorizationService, IEventService eventService, IResourceValidatorFactory resourceValidatorFactory, IAzureCosmosDBService cosmosDBService, IServiceProvider serviceProvider, ILogger&lt;AzureAIResourceProviderService&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public AzureAIResourceProviderService(IOptions&lt;InstanceSettings&gt; instanceOptions, IOptions&lt;ResourceProviderCacheSettings&gt; cacheOptions, IAuthorizationServiceClient authorizationService, IStorageService storageService, IEventService eventService, IResourceValidatorFactory resourceValidatorFactory, IAzureCosmosDBService cosmosDBService, IServiceProvider serviceProvider, ILogger&lt;AzureAIResourceProviderService&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -356,6 +344,8 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
     <dt><code>authorizationService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.html">IAuthorizationServiceClient</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.html">IAuthorizationServiceClient</a> providing authorization services.</p>
 </dd>
+    <dt><code>storageService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IStorageService.html">IStorageService</a></dt>
+    <dd></dd>
     <dt><code>eventService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IEventService.html">IEventService</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.IEventService.html">IEventService</a> providing event services.</p>
 </dd>
@@ -392,7 +382,7 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService__name" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService._name">
   _name
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L72"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The name of the resource provider. Must be overridden in derived classes.</p>
@@ -424,11 +414,108 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
 </h2>
 
 
+  <a id="AzureAI_ResourceProviders_AzureAIResourceProviderService_DeleteResourceAsync_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.DeleteResourceAsync*"></a>
+
+  <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_DeleteResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.DeleteResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  DeleteResourceAsync(ResourcePath, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L152"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The internal implementation of DeleteResourceAsync. Must be overridden in derived classes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>resourcePath</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a></dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a> containing information about the resource path.</p>
+</dd>
+    <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> with details about the identity of the user.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AzureAI_ResourceProviders_AzureAIResourceProviderService_ExecuteActionAsync_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.ExecuteActionAsync*"></a>
+
+  <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_ExecuteActionAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.ExecuteActionAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  ExecuteActionAsync(ResourcePath, ResourcePathAuthorizationResult, string, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L128"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The internal implementation of ExecuteActionAsync. Must be overriden in derived classes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Task&lt;object&gt; ExecuteActionAsync(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, string serializedAction, UnifiedUserIdentity userIdentity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>resourcePath</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a></dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a> containing information about the resource path.</p>
+</dd>
+    <dt><code>authorizationResult</code> <a class="xref" href="FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.html">ResourcePathAuthorizationResult</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.html">ResourcePathAuthorizationResult</a> containing the result
+of the resource path authorization request.</p>
+</dd>
+    <dt><code>serializedAction</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The serialized details of the action being executed.</p>
+</dd>
+    <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> with details about the identity of the user.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="AzureAI_ResourceProviders_AzureAIResourceProviderService_ExecuteActionAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>In the special case of the <code>filter</code> action, the override must handle the authorization result and return
+the appropriate response as follows:</p>
+<ol><li>The read action is authorized for the resource path itself.
+In this case, all matching resources must be returned according to the PBAC policies specified by the authorization result (if any).</li><li>The read action is denied for the resource path itself.
+In this case, only the matching resources specified in the subordinate authorized resource paths list
+of the authorization result should be returned (if any).</li></ol>
+</div>
+
+
+
+
   <a id="AzureAI_ResourceProviders_AzureAIResourceProviderService_ExecuteResourceActionAsyncInternal_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.ExecuteResourceActionAsyncInternal*"></a>
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_ExecuteResourceActionAsyncInternal__3_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult___1_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.ExecuteResourceActionAsyncInternal``3(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,``1,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   ExecuteResourceActionAsyncInternal&lt;T, TAction, TResult&gt;(ResourcePath, ResourcePathAuthorizationResult, TAction, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L238"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of ExecuteResourceActionAsync. Must be overridden in derived classes.</p>
@@ -493,7 +580,7 @@ of the authorization result should be returned (if any).</li></ol>
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_GetResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.GetResourceAsyncInternal``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions)">
   GetResourceAsyncInternal&lt;T&gt;(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity, ResourceProviderGetOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L173"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of GetResource. Must be overridden in derived classes.</p>
@@ -545,7 +632,7 @@ of the authorization result should be returned (if any).</li></ol>
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_GetResourceTypes" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.GetResourceTypes">
   GetResourceTypes()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L68"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the details about the resource types managed by the resource provider.</p>
@@ -574,11 +661,66 @@ of the authorization result should be returned (if any).</li></ol>
 
 
 
+  <a id="AzureAI_ResourceProviders_AzureAIResourceProviderService_GetResourcesAsync_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.GetResourcesAsync*"></a>
+
+  <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_GetResourcesAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.GetResourcesAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions)">
+  GetResourcesAsync(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity, ResourceProviderGetOptions?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The internal implementation of GetResourcesAsync. Must be overridden in derived classes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Task&lt;object&gt; GetResourcesAsync(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>resourcePath</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a></dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a> containing information about the resource path.</p>
+</dd>
+    <dt><code>authorizationResult</code> <a class="xref" href="FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.html">ResourcePathAuthorizationResult</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.html">ResourcePathAuthorizationResult</a> containing the result of the resource path authorization request.</p>
+</dd>
+    <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> with details about the identity of the user.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions.html">ResourceProviderGetOptions</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions.html">ResourceProviderGetOptions</a> which provides operation parameters.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="AzureAI_ResourceProviders_AzureAIResourceProviderService_GetResourcesAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The override implementation should return a list of resources or a single resource, depending on the resource path.
+It also must handle the authorization result and return the appropriate response as follows:</p>
+<ol><li>The resource path refers to a single resource. In this case, the authorization is already confirmed and
+the specific resource should be returned.</li><li>The resource path refers to a resource type and the read action is authorized for the resource path itself.
+In this case, all resources must be returned according to the PBAC policies specified by the authorization result (if any).</li><li>The resource path refers to a resource type and the read action is denied for the resource path itself.
+In this case, only the resources specified in the subordinate authorized resource paths list of the authorization result should be returned (if any).</li></ol>
+</div>
+
+
+
+
   <a id="AzureAI_ResourceProviders_AzureAIResourceProviderService_InitializeInternal_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.InitializeInternal*"></a>
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_InitializeInternal" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.InitializeInternal">
   InitializeInternal()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L74"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of Initialize. Must be overridden in derived classes.</p>
@@ -610,7 +752,7 @@ of the authorization result should be returned (if any).</li></ol>
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_ResourceExistsAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.ResourceExistsAsyncInternal``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   ResourceExistsAsyncInternal&lt;T&gt;(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L209"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of ResourceExistsAsync. Must be overridden in derived classes.</p>
@@ -660,11 +802,58 @@ of the authorization result should be returned (if any).</li></ol>
 
 
 
+  <a id="AzureAI_ResourceProviders_AzureAIResourceProviderService_UpsertResourceAsync_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.UpsertResourceAsync*"></a>
+
+  <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The internal implementation of UpsertResourceAsync. Must be overridden in derived classes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Task&lt;object&gt; UpsertResourceAsync(ResourcePath resourcePath, string? serializedResource, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>resourcePath</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a></dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a> containing information about the resource path.</p>
+</dd>
+    <dt><code>serializedResource</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The optional serialized resource being created or updated.</p>
+</dd>
+    <dt><code>formFile</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.html">ResourceProviderFormFile</a></dt>
+    <dd><p>The optional file attached to the request.</p>
+</dd>
+    <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> with details about the identity of the user.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="AzureAI_ResourceProviders_AzureAIResourceProviderService_UpsertResourceAsyncInternal_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.UpsertResourceAsyncInternal*"></a>
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_UpsertResourceAsyncInternal__2_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult___0_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderUpsertOptions_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.UpsertResourceAsyncInternal``2(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,``0,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertOptions)">
   UpsertResourceAsyncInternal&lt;T, TResult&gt;(ResourcePath, ResourcePathAuthorizationResult, T, UnifiedUserIdentity, ResourceProviderUpsertOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L152"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L268"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of UpsertResourceAsync. Must be overridden in derived classes.</p>
@@ -723,7 +912,7 @@ of the authorization result should be returned (if any).</li></ol>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L38" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L40" class="edit-link">Edit this page</a>
         </div>
 
 

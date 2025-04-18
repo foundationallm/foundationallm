@@ -12,6 +12,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/AzureAI.Models.Resources.AzureAIReference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/AzureAI.Models.Resources.AzureAIReference.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AzureAI.Models.Resources.AzureAIReference",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/AzureAI.Models.Resources.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/AzureAI.Models.Resources.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AzureAI.Models.Resources",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/AzureAI.ResourceProviders.AzureAIResourceProviderService.yml",
       "output": {
         ".html": {
@@ -36,6 +64,20 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AzureAI.ResourceProviders",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/AzureAI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/AzureAI.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": null,
       "Summary": null
     },
     {
