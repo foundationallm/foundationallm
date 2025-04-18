@@ -12,6 +12,41 @@ The following App Configuration value has been added:
 | `FoundationaLLM:ResourceProviders:AzureAI:Storage:AccountName` | The name of the deployment storage account. | The name of the Azure Blob Storage account used by the FoundationaLLM.AzureAI resource provider. |
 | `FoundationaLLM:ResourceProviders:AzureAI:Storage:AuthenticationType` | `AzureIdentity` | The authentication type used by the FoundationaLLM.AzureAI resource provider to connect to the storage account. |
 
+### Policy assignment changes
+
+The `FLLM-Users` will need an entry in the `policy-assignments` file for `agentConversationMappings` and `agentFileMappings` resources in the `FoundationaLLM.AzureAI` resource provider.
+
+```json
+{
+    "name": "87e6fd6e-ddd3-4054-b382-d7f0fa190aa9",
+    "type": "FoundationaLLM.Authorization/policyAssignments",
+    "object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/87e6fd6e-ddd3-4054-b382-d7f0fa190aa9",
+    "description": "Ownership on agent conversation mapping resources managed by the FoundationaLLM.AzureAI resource provider.",
+    "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+    "principal_id": "c54871ba-1fa1-439a-9e86-30d74dfe4a4a",
+    "principal_type": "Group",
+    "scope": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AzureAI/agentConversationMappings",
+    "created_on": "2025-01-14T17:58:19.5954014Z",
+    "updated_on": "2025-01-14T17:58:19.5954014Z",
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+},
+{
+    "name": "0e7684d2-e8b9-40ba-88b4-3f358f93afa3",
+    "type": "FoundationaLLM.Authorization/policyAssignments",
+    "object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/0e7684d2-e8b9-40ba-88b4-3f358f93afa3",
+    "description": "Ownership on agent file mapping resources managed by the FoundationaLLM.AzureAI resource provider.",
+    "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+    "principal_id": "c54871ba-1fa1-439a-9e86-30d74dfe4a4a",
+    "principal_type": "Group",
+    "scope": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AzureAI/agentFileMappings",
+    "created_on": "2025-01-14T17:58:19.5954014Z",
+    "updated_on": "2025-01-14T17:58:19.5954014Z",
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+}
+```
+
 ## Starting from 0.9.7-beta139
 
 ## Configuration changes
