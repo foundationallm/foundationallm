@@ -7,3 +7,4 @@ class ResourceObjectIdPropertyValues(str, Enum):
     MAIN_INDEXING_PROFILE = 'main_indexing_profile'
     INDEXING_PROFILE = 'indexing_profile'
     EMBEDDING_PROFILE = 'embedding_profile'
+    AI_PROJECT = 'ai_project'
