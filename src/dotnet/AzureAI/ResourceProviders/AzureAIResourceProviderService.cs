@@ -16,13 +16,9 @@ using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureAI;
 using FoundationaLLM.Common.Services.ResourceProviders;
-using FoundationaLLM.Common.Services.Storage;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -176,6 +172,18 @@ namespace AzureAI.ResourceProviders
         /// <inheritdoc/>
         protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
         {
+            if (resourcePath.ResourceTypeName == AzureAIResourceTypeNames.Projects)
+            {
+                var resources = await LoadResources<AzureAIProject>(
+                    resourcePath.ResourceTypeInstances[0],
+                    authorizationResult);
+
+                return resources.FirstOrDefault() as T
+                    ?? throw new ResourceProviderException(
+                                               $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource.",
+                                                                      StatusCodes.Status404NotFound);
+            }
+
             _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
 
             // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to load the resource.
@@ -200,6 +208,17 @@ namespace AzureAI.ResourceProviders
         /// <inheritdoc/>
         protected override async Task<(bool Exists, bool Deleted)> ResourceExistsAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity)
         {
+            if (resourcePath.ResourceTypeName == AzureAIResourceTypeNames.Projects)
+            {
+                var resources = await LoadResources<AzureAIProject>(
+                    resourcePath.ResourceTypeInstances[0],
+                    authorizationResult);
+
+                if (resources == null || resources.Count()==0)
+                    return (false, false);
+                return (true, resources.First().Resource.Deleted);
+            }
+            
             _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
 
             // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to load the resource.
@@ -212,6 +231,7 @@ namespace AzureAI.ResourceProviders
                 $"{userIdentity.UPN!.NormalizeUserPrincipalName()}-{_instanceSettings.Id}");
 
             return (result != null, result?.Deleted ?? false);
+                      
         }
 
         /// <inheritdoc/>

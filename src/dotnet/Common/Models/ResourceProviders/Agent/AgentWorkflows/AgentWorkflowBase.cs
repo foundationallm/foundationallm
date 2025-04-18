@@ -94,5 +94,15 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
                 .FirstOrDefault(
                     roid => roid.HasObjectRole(ResourceObjectIdPropertyValues.RouterPrompt))
                 ?.ObjectId;
+
+        /// <summary>
+        /// Gets the AI object identifier.
+        /// </summary>
+        [JsonIgnore]
+        public string? AIProjectObjectId =>
+            ResourceObjectIds.Values
+                .FirstOrDefault(
+                    roid => roid.HasObjectRole(ResourceObjectIdPropertyValues.AIProject))
+                ?.ObjectId;
     }
 }

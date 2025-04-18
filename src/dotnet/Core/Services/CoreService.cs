@@ -639,7 +639,7 @@ public partial class CoreService(
                 FileObjectId = attachmentUpsertResult.ObjectId!,
                 OriginalFileName = attachmentFile.OriginalFileName,
                 FileContentType = attachmentFile.ContentType!,
-                ProjectConnectionString = workflow!.ProjectConnectionString,
+                ProjectConnectionString = workflow!.ProjectConnectionString!,
                 AzureAIAgentFileId = string.Empty
             };
 
