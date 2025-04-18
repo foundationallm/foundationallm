@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace AzureAI.Models.Resources
 {
-    public class ProjectReference : ResourceReference
+    public class AzureAIReference : ResourceReference
     {
         /// <summary>
         /// The object type of the agent.

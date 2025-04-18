@@ -47,7 +47,7 @@ namespace AzureAI.ResourceProviders
         IAzureCosmosDBService cosmosDBService,
         IServiceProvider serviceProvider,
         ILogger<AzureAIResourceProviderService> logger)
-        : ResourceProviderServiceBase<ResourceReference>(
+        : ResourceProviderServiceBase<AzureAIReference>(
             instanceOptions.Value,
             cacheOptions.Value,
             authorizationService,
@@ -178,10 +178,10 @@ namespace AzureAI.ResourceProviders
                     resourcePath.ResourceTypeInstances[0],
                     authorizationResult);
 
-                return resources.FirstOrDefault() as T
+                return resources.FirstOrDefault()?.Resource as T
                     ?? throw new ResourceProviderException(
-                                               $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource.",
-                                                                      StatusCodes.Status404NotFound);
+                               $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource.",
+                               StatusCodes.Status404NotFound);
             }
 
             _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
@@ -554,10 +554,10 @@ namespace AzureAI.ResourceProviders
             if (existingProjectReference is null)
             {
 
-                var projectReference = new ProjectReference
+                var projectReference = new AzureAIReference
                 {
                     Name = project.Name!,
-                    Type = project.Type!,
+                    Type = AzureAITypes.Project,
                     Filename = $"/{_name}/{project.Name}.json",
                     Deleted = false
                 };
