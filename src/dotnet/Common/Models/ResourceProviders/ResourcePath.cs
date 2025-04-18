@@ -171,6 +171,19 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
             : _rawResourcePath;
 
         /// <summary>
+        /// Gets the resource object identifier associated with the resource path without the action name.
+        /// </summary>
+        /// <remarks>
+        /// Only fully qualified resource paths can be converted to object identifiers.
+        /// </remarks>
+        public string? ObjectIdWithoutAction =>
+            string.IsNullOrWhiteSpace(_instanceId) || string.IsNullOrWhiteSpace(_rawResourcePath)
+            ? null
+            : HasAction
+                ? _rawResourcePath.Substring(0, _rawResourcePath.LastIndexOf('/'))
+                : _rawResourcePath;
+
+        /// <summary>
         /// Creates a new resource identifier from a resource path optionally allowing an action.
         /// </summary>
         /// <param name="resourcePath">The resource path used to create the resource identifier.</param>
@@ -437,6 +450,22 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         }
 
         /// <summary>
+        /// Joins a resource path with a subordinate resource path.
+        /// </summary>
+        /// <param name="resourcePath">The main resource path.</param>
+        /// <param name="subordinateResourcePath">The subordinate resource path.</param>
+        /// <returns>The combined resource path.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static string Join(string resourcePath, string subordinateResourcePath)
+        {
+            if (string.IsNullOrWhiteSpace(resourcePath))
+                throw new ArgumentNullException(nameof(resourcePath));
+            if (string.IsNullOrWhiteSpace(subordinateResourcePath))
+                throw new ArgumentNullException(nameof(subordinateResourcePath));
+            return $"{resourcePath.TrimEnd('/')}/{subordinateResourcePath.TrimStart('/')}";
+        }
+
+        /// <summary>
         /// Retrieves the allowed resource types for a specified resource provider.
         /// </summary>
         /// <param name="resourceProvider">The name of the resource provider.</param>
@@ -451,6 +480,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                 ResourceProviderNames.FoundationaLLM_Attachment => AttachmentResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_Authorization => AuthorizationResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_AIModel => AIModelResourceProviderMetadata.AllowedResourceTypes,
+                ResourceProviderNames.FoundationaLLM_AzureAI => AzureAIResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_AzureOpenAI => AzureOpenAIResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_Conversation => ConversationResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_DataPipeline => DataPipelineResourceProviderMetadata.AllowedResourceTypes,
@@ -633,7 +663,8 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                     ? 2
                     : 0;
 
-                if (tokens[startIndex] == RESOURCE_PROVIDER_TOKEN)
+                if (startIndex + 1 < tokens.Length
+                    && tokens[startIndex] == RESOURCE_PROVIDER_TOKEN)
                 {
                     if (ResourceProviderNames.All.Contains(tokens[startIndex + 1]))
                         return tokens[startIndex + 1];

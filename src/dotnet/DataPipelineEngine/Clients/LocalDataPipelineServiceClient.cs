@@ -1,7 +1,9 @@
-﻿using FoundationaLLM.Common.Models.Authentication;
+﻿using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipeline.Interfaces;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
+using Microsoft.Extensions.Hosting;
 
 namespace FoundationaLLM.DataPipelineEngine.Clients
 {
@@ -10,11 +12,18 @@ namespace FoundationaLLM.DataPipelineEngine.Clients
     /// </summary>
     /// <param name="dataPipelineTriggerService">The data pipeline triggering service.</param>
     public class LocalDataPipelineServiceClient(
-        IDataPipelineTriggerService dataPipelineTriggerService,
+        IEnumerable<IHostedService> hostedServices,
         IDataPipelineStateService dataPipelineStateService) : IDataPipelineServiceClient
     {
-        private readonly IDataPipelineTriggerService _dataPipelineTriggerService = dataPipelineTriggerService;
+        private readonly IDataPipelineTriggerService _dataPipelineTriggerService =
+            (hostedServices.Single(hs => hs is IDataPipelineTriggerService) as IDataPipelineTriggerService)!;
         private readonly IDataPipelineStateService _dataPipelineStateService = dataPipelineStateService;
+
+        /// <inheritdoc/>
+        public IEnumerable<IResourceProviderService> ResourceProviders
+        {
+            set => _dataPipelineTriggerService.ResourceProviders = value;
+        }
 
         /// <inheritdoc/>
         public async Task<DataPipelineRun?> CreateDataPipelineRunAsync(

@@ -6,7 +6,7 @@ namespace FoundationaLLM.DataPipeline.Interfaces
     /// <summary>
     /// Defines the interface for Data Pipeline API clients.
     /// </summary>
-    public interface IDataPipelineServiceClient
+    public interface IDataPipelineServiceClient : IDataPipelineResourceProviderClient
     {
         /// <summary>
         /// Gets a data pipeline run by its identifier.

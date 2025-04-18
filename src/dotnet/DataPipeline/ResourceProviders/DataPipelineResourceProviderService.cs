@@ -27,7 +27,6 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>    
     /// <param name="cacheOptions">The options providing the <see cref="ResourceProviderCacheSettings"/> with settings for the resource provider cache.</param>
     /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
-    /// <param name="dataPipelineServiceClient">The client for the Data Pipeline API.</param>
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
@@ -37,7 +36,6 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
         IOptions<InstanceSettings> instanceOptions,
         IOptions<ResourceProviderCacheSettings> cacheOptions,
         IAuthorizationServiceClient authorizationService,
-        IDataPipelineServiceClient dataPipelineServiceClient,
         [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_DataPipeline_Storage)] IStorageService storageService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
@@ -57,7 +55,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             ],
             useInternalReferencesStore: true)
     {
-        private readonly IDataPipelineServiceClient _dataPipelineServiceClient = dataPipelineServiceClient;
+        private IDataPipelineServiceClient _dataPipelineServiceClient = null!;
 
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
@@ -65,8 +63,22 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
 
         protected override string _name => ResourceProviderNames.FoundationaLLM_DataPipeline;
 
-        protected override async Task InitializeInternal() =>
+        protected override async Task InitializeInternal()
+        {
+            // Defer resolving to this point to avoid circular dependency issues.
+            _dataPipelineServiceClient = _serviceProvider.GetRequiredService<IDataPipelineServiceClient>();
+
+            var pluginResourceProvider = _serviceProvider.GetRequiredService<IEnumerable<IResourceProviderService>>()
+                .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Plugin);
+
+            List<IResourceProviderService> resourceProviders = pluginResourceProvider != null
+                ? [pluginResourceProvider, this]
+                : [this];
+
+            (_dataPipelineServiceClient as IDataPipelineResourceProviderClient)!.ResourceProviders = resourceProviders;
+
             await Task.CompletedTask;
+        }
 
         #region Resource provider support for Management API
 
@@ -167,15 +179,12 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             T resource,
             UnifiedUserIdentity userIdentity,
             ResourceProviderUpsertOptions? options = null) =>
-            typeof(TResult) switch
+            typeof(T) switch
             {
-                Type t when t == typeof(DataPipelineRun) =>
-                    await _dataPipelineServiceClient.CreateDataPipelineRunAsync(
-                        resourcePath.InstanceId!,
-                        (resource as DataPipelineRun)!,
-                        userIdentity) as TResult
-                        ?? throw new ResourceProviderException("The object definition is invalid.",
-                            StatusCodes.Status400BadRequest),
+                Type t when t == typeof(DataPipelineRun) => (await CreateDataPipelineRun(
+                    resourcePath,
+                    (resource as DataPipelineRun)!,
+                    userIdentity) as TResult)!,
                 _ => throw new ResourceProviderException(
                         $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",
                             StatusCodes.Status400BadRequest)
@@ -188,6 +197,10 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             ResourceProviderGetOptions? options = null) =>
             typeof(T) switch
             {
+                Type t when t == typeof(DataPipelineDefinition) =>
+                    await LoadResource<DataPipelineDefinition>(resourcePath.MainResourceId!) as T
+                        ?? throw new ResourceProviderException("The object definition is invalid.",
+                            StatusCodes.Status400BadRequest),
                 Type t when t == typeof(DataPipelineRun) =>
                     await _dataPipelineServiceClient.GetDataPipelineRunAsync(
                         resourcePath.InstanceId!,
@@ -199,6 +212,25 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                         $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",
                             StatusCodes.Status400BadRequest)
             };
+
+        private async Task<ResourceProviderUpsertResult<DataPipelineRun>> CreateDataPipelineRun(
+            ResourcePath resourcePath,
+            DataPipelineRun dataPipelineRun,
+            UnifiedUserIdentity userIdentity)
+        {
+            var result = await _dataPipelineServiceClient.CreateDataPipelineRunAsync(
+                resourcePath.InstanceId!,
+                dataPipelineRun,
+                userIdentity)
+                ?? throw new ResourceProviderException("The object definition is invalid.",
+                    StatusCodes.Status400BadRequest);
+            return new ResourceProviderUpsertResult<DataPipelineRun>
+            {
+                ObjectId = result.ObjectId!,
+                Resource = result,
+                ResourceExists = false
+            };
+        }
 
         #endregion
     }

@@ -1,12 +1,13 @@
 ﻿using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
+using FoundationaLLM.DataPipeline.Interfaces;
 
 namespace FoundationaLLM.DataPipelineEngine.Interfaces
 {
     /// <summary>
     /// Defines the interface for the Data Pipeline Trigger service.
     /// </summary>
-    public interface IDataPipelineTriggerService
+    public interface IDataPipelineTriggerService : IDataPipelineResourceProviderClient
     {
         /// <summary>
         /// Creates a new data pipeline run.

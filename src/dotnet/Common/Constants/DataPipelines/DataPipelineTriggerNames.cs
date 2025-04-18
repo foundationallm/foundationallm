@@ -8,6 +8,6 @@
         /// <summary>
         /// The default manual trigger name.
         /// </summary>
-        public const string DefaultManualTrigger = "DefaultManualTrigger";
+        public const string DefaultManualTrigger = "Default Manual Trigger";
     }
 }

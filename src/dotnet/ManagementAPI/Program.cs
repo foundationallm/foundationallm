@@ -114,6 +114,7 @@ namespace FoundationaLLM.Management.API
             builder.AddDataSourceResourceProvider();
             builder.AddAttachmentResourceProvider();
             builder.AddAIModelResourceProvider();
+            builder.AddRemoteDataPipelineServiceClient(); // Required by the DataPipeline resource provider.
             builder.AddDataPipelineResourceProvider();
             builder.AddPluginResourceProvider();
 

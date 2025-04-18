@@ -32,6 +32,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         where TResourceReference : ResourceReference
     {
         private bool _isInitialized = false;
+        private Task _initializationTask = Task.CompletedTask;
 
         private LocalEventService? _localEventService;
         private readonly List<string>? _eventTypesToSubscribe;
@@ -111,6 +112,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         public bool IsInitialized  => _isInitialized;
 
         /// <inheritdoc/>
+        public Task InitializationTask => _initializationTask;
+
+        /// <inheritdoc/>
         public Dictionary<string, ResourceTypeDescriptor> AllowedResourceTypes => _allowedResourceTypes;
 
         /// <inheritdoc/>
@@ -168,7 +172,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             // Kicks off the initialization on a separate thread and does not wait for it to complete.
             // The completion of the initialization process will be signaled by setting the _isInitialized property.
-            _ = Task.Run(Initialize);
+            _initializationTask = Task.Run(Initialize);
         }
 
         #region Initialization
@@ -530,7 +534,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             where TResult : ResourceProviderUpsertResult<T>
         {
             EnsureServiceInitialization();
-            var (ParsedResourcePath, AuthorizableOperation) = CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T), resourceName: resource.Name);
+            var (ParsedResourcePath, AuthorizableOperation) = string.IsNullOrWhiteSpace(resource.ObjectId)
+                ? CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T), resourceName: resource.Name)
+                : ParseAndValidateResourcePath(resource.ObjectId, HttpMethod.Post, false, typeof(T));
 
             // Authorize access to the resource path.
             var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);

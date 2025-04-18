@@ -38,6 +38,9 @@ namespace FoundationaLLM.DataPipeline.Clients
                 ServiceContext.ServiceIdentity!);
 
         /// <inheritdoc/>
+        public IEnumerable<IResourceProviderService> ResourceProviders { set { } }
+
+        /// <inheritdoc/>
         public async Task<DataPipelineRun?> CreateDataPipelineRunAsync(
             string instanceId,
             DataPipelineRun dataPipelineRun,

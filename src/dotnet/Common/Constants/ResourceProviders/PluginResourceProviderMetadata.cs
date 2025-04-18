@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Plugin;
 
@@ -26,6 +27,9 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], [])
                     ],
                     Actions = [
+                        new ResourceTypeAction(ResourceProviderActions.LoadPluginPackage, true, false, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderActionResult<PluginPackageManagerInstance>)])
+                        ]),
                         new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
                         ])

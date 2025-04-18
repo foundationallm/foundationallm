@@ -19,6 +19,14 @@ namespace FoundationaLLM.Common.Interfaces
         bool IsInitialized { get; }
 
         /// <summary>
+        /// The task that is executed when the resource provider is initialized.
+        /// </summary>
+        /// <remarks>
+        /// This task enables the consumers of the resource provider to wait for the initialization to be completed.
+        /// </remarks>
+        Task InitializationTask { get; }
+
+        /// <summary>
         /// The metadata describing the resource types allowed by the resource provider.
         /// </summary>
         Dictionary<string, ResourceTypeDescriptor> AllowedResourceTypes { get; }

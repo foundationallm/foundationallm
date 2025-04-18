@@ -36,6 +36,7 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
 
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage); 
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataPipeline_Storage);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Plugin_Storage);
 
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_DataPipelineAPI_Essentials);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_DataPipelineAPI_Configuration);
@@ -89,6 +90,7 @@ builder.AddDataPipelineService();
 builder.AddResourceProviderCacheSettings();
 builder.AddResourceValidatorFactory();
 builder.AddConfigurationResourceProvider();
+builder.AddPluginResourceProvider();
 builder.AddLocalDataPipelineServiceClient(); // Required by the DataPipeline resource provider.
 builder.AddDataPipelineResourceProvider();
 

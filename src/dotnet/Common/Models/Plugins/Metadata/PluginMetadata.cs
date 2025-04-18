@@ -38,6 +38,12 @@ namespace FoundationaLLM.Common.Models.Plugins.Metadata
         public required string Category { get; set; }
 
         /// <summary>
+        /// Gets or sets the subcategory of the plugin.
+        /// </summary>
+        [JsonPropertyName("subcategory")]
+        public string? Subcategory { get; set; }
+
+        /// <summary>
         /// Gets or sets the metadata associated with the plugin parameters.
         /// </summary>
         [JsonPropertyName("parameters")]

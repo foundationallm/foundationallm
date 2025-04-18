@@ -1,7 +1,6 @@
 ﻿using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
-using FoundationaLLM.DataPipeline.Clients;
 using FoundationaLLM.DataPipeline.Interfaces;
 using FoundationaLLM.DataPipelineEngine.Clients;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
@@ -81,11 +80,8 @@ namespace FoundationaLLM
         /// Registers the Data Pipeline Trigger service used by the Data Pipeline API to the dependency injection container.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        public static void AddDataPipelineTriggerService(this IServiceCollection services)
-        {
-            services.AddSingleton<IDataPipelineTriggerService, DataPipelineTriggerService>();
-            services.ActivateSingleton<IDataPipelineTriggerService>();
-        }
+        public static void AddDataPipelineTriggerService(this IServiceCollection services) =>
+            services.AddHostedService<DataPipelineTriggerService>();
 
         /// <summary>
         /// Registers the Data Pipeline State service used by the Data Pipeline API to the dependency injection container.

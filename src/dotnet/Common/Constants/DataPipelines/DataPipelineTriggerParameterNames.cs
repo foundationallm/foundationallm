@@ -18,6 +18,6 @@
         /// <summary>
         /// The vector store identifier for the indexing stage.
         /// </summary>
-        public const string StageIndexVectorStoreId = "Stage.Index.VectorStoreId";
+        public const string StageIndexVectorStoreObjectId = "Stage.Index.VectorStoreObjectId";
     }
 }

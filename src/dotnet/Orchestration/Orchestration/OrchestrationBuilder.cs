@@ -841,6 +841,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             }           
 
             // The default vector store identifier is derived directly from the conversation identifier.
+
             return $"vector-{conversationId}";
         }
     }

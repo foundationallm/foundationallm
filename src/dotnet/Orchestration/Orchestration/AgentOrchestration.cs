@@ -508,10 +508,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         {
                             { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId,  contextFileResponse.Result.FileObjectId},
                             { DataPipelineTriggerParameterNames.StageIndexVectorDatabaseObjectId, knowledgeSearchSettings.FileUploadVectorDatabaseObjectId },
-                            { DataPipelineTriggerParameterNames.StageIndexVectorStoreId, _vectorStoreId }
+                            { DataPipelineTriggerParameterNames.StageIndexVectorStoreObjectId,
+                                ResourcePath.Join(
+                                    knowledgeSearchSettings.FileUploadVectorDatabaseObjectId,
+                                    $"vectorStores/{_vectorStoreId}") }
                         },
-                        _callContext.CurrentUserIdentity!.UPN!,
-                        ServiceContext.ServiceIdentity!.UPN!);
+                        _callContext.CurrentUserIdentity!.UPN!);
 
                     fileProcessingTasks[contextFileResponse.Result.FileObjectId] =
                         PollingResourceRunner<DataPipelineRun>.Start(

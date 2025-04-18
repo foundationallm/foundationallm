@@ -16,7 +16,7 @@ namespace FoundationaLLM.Context.API.Controllers
     public class StatusController() : ControllerBase
     {
         /// <summary>
-        /// Returns the status of the Orchestration API service.
+        /// Returns the status of the Context API service.
         /// </summary>
         [AllowAnonymous]
         [HttpGet(Name = "GetServiceStatus")]
@@ -31,7 +31,7 @@ namespace FoundationaLLM.Context.API.Controllers
             };
 
         /// <summary>
-        /// Returns the allowed HTTP methods for the Orchestration API service.
+        /// Returns the allowed HTTP methods for the Context API service.
         /// </summary>
         [AllowAnonymous]
         [HttpOptions]

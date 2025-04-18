@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
     <ProjectReference Include="..\DataPipeline\DataPipeline.csproj" />
+    <ProjectReference Include="..\Plugin\Plugin.csproj" />
   </ItemGroup>
 
 </Project>

@@ -34,5 +34,10 @@
         /// Set the resource as the default.
         /// </summary>
         public const string SetDefault = "set-default";
+
+        /// <summary>
+        /// Load a plugin package.
+        /// </summary>
+        public const string LoadPluginPackage = "load-plugin-package";
     }
 }
