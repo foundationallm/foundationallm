@@ -108,13 +108,21 @@ class AzureAIAgentServiceWorkflow(FoundationaLLMWorkflowBase):
             if run.status == RunStatus.FAILED:
                 raise Exception(f"Azure AI Agent Service run failed: {run.failure_reason}")
                       
- 
+            # Get messages from the thread
+            messages = self.client.agents.list_messages(thread_id=self.thread_id)
+            print(f"Messages: {messages}")
+
+            # Get the last message from the sender
+            last_msg = messages.get_last_text_message_by_role("assistant")
+            if last_msg:
+                print(f"Last Message: {last_msg.text.value}")
+
         retvalue = CompletionResponse(
             operation_id=operation_id,
             content = "Under development",
             content_artifacts=[],
             user_prompt=llm_prompt,
-            full_prompt=self.workflow_prompt,
+            full_prompt="Under development",
             completion_tokens=0,
             prompt_tokens=0,
             total_tokens=0,
