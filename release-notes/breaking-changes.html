@@ -100,6 +100,37 @@
 </tr>
 </tbody>
 </table>
+<h3 id="policy-assignment-changes">Policy assignment changes</h3>
+<p>The <code>FLLM-Users</code> will need an entry in the <code>policy-assignments</code> file for <code>agentConversationMappings</code> and <code>agentFileMappings</code> resources in the <code>FoundationaLLM.AzureAI</code> resource provider.</p>
+<pre><code class="lang-json">{
+    &quot;name&quot;: &quot;87e6fd6e-ddd3-4054-b382-d7f0fa190aa9&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/87e6fd6e-ddd3-4054-b382-d7f0fa190aa9&quot;,
+    &quot;description&quot;: &quot;Ownership on agent conversation mapping resources managed by the FoundationaLLM.AzureAI resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;c54871ba-1fa1-439a-9e86-30d74dfe4a4a&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AzureAI/agentConversationMappings&quot;,
+    &quot;created_on&quot;: &quot;2025-01-14T17:58:19.5954014Z&quot;,
+    &quot;updated_on&quot;: &quot;2025-01-14T17:58:19.5954014Z&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
+},
+{
+    &quot;name&quot;: &quot;0e7684d2-e8b9-40ba-88b4-3f358f93afa3&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/0e7684d2-e8b9-40ba-88b4-3f358f93afa3&quot;,
+    &quot;description&quot;: &quot;Ownership on agent file mapping resources managed by the FoundationaLLM.AzureAI resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;c54871ba-1fa1-439a-9e86-30d74dfe4a4a&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AzureAI/agentFileMappings&quot;,
+    &quot;created_on&quot;: &quot;2025-01-14T17:58:19.5954014Z&quot;,
+    &quot;updated_on&quot;: &quot;2025-01-14T17:58:19.5954014Z&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
+}
+</code></pre>
 <h2 id="starting-from-097-beta139">Starting from 0.9.7-beta139</h2>
 <h2 id="configuration-changes">Configuration changes</h2>
 <p>The following App Configuration value has been added:</p>
