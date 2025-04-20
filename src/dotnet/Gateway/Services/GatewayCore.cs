@@ -716,6 +716,8 @@ namespace FoundationaLLM.Gateway.Services
                 var startTime = DateTimeOffset.UtcNow;
                 _logger.LogInformation("Started vectorization of file {FileId} in vector store {VectorStoreId}.", fileId, vectorStoreId);
 
+                _ = await agentsClient.CreateVectorStoreFileAsync(vectorStoreId, fileId: fileId);
+
                 var vectorStoreFileResponse = await agentsClient.GetVectorStoreFileAsync(
                     vectorStoreId: vectorStoreId,
                     fileId: fileId

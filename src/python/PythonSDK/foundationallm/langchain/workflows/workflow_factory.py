@@ -6,6 +6,7 @@ from typing import List
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMWorkflowBase
 from foundationallm.langchain.exceptions import LangChainException
+from foundationallm.langchain.workflows.azure_ai.azure_ai_agent_service_workflow import AzureAIAgentServiceWorkflow
 from foundationallm.models.agents import AgentTool, ExternalAgentWorkflow
 from foundationallm.plugins import PluginManager, PluginManagerTypes
 
@@ -47,12 +48,15 @@ class WorkflowFactory:
             The user identity of the user initiating the request.
         config : Configuration
             The application configuration for FoundationaLLM.
-        """
-
+        """        
         if workflow_config.package_name == "FoundationaLLM":
-            # internal workflows
-            # TODO: Refactor internal workflows to use the plugin manager
-            raise LangChainException("Internal workflows are not supported by the plugin manager.")
+             # internal workflows
+            AZURE_AI_AGENT_SERVICE_WORKFLOW_CLASS_NAME = "AzureAIAgentServiceWorkflow"
+            
+            if workflow_config.class_name == AZURE_AI_AGENT_SERVICE_WORKFLOW_CLASS_NAME:                                
+                return AzureAIAgentServiceWorkflow(workflow_config, objects, tools, user_identity, config)
+            
+            raise LangChainException(f"FoundationaLLM workflow class {workflow_config.class_name} is not supported by the workflow factory.")
         else:
             workflow_plugin_manager = None
 

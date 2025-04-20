@@ -621,7 +621,7 @@ public partial class CoreService(
 
         if (agentRequiresAzureAIAgentService)
         {
-            attachmentFile.SecondaryProvider = agentRequiresOpenAIAssistants ? ResourceProviderNames.FoundationaLLM_AzureOpenAI : ResourceProviderNames.FoundationaLLM_AzureAI;
+            attachmentFile.SecondaryProvider = ResourceProviderNames.FoundationaLLM_AzureAI;
             var attachmentUpsertResult = await _attachmentResourceProvider.UpsertResourceAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
                 instanceId,
                 attachmentFile,
@@ -741,7 +741,7 @@ public partial class CoreService(
                         Content = result.Resource!.BinaryContent!.Value.ToArray()
                     };
                 case ResourceProviderNames.FoundationaLLM_AzureAI:
-                    var azureAIResponse = await _azureOpenAIResourceProvider.ExecuteResourceActionAsync<AzureAIAgentFileMapping, object?, ResourceProviderActionResult<FileContent>>(
+                    var azureAIResponse = await _azureAIResourceProvider.ExecuteResourceActionAsync<AzureAIAgentFileMapping, object?, ResourceProviderActionResult<FileContent>>(
                         instanceId,
                         fileId,
                         ResourceProviderActions.LoadFileContent,
