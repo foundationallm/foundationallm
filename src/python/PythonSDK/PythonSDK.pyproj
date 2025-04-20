@@ -35,6 +35,7 @@
     <Compile Include="foundationallm\langchain\common\__init__.py" />
     <Compile Include="foundationallm\langchain\language_models\language_model_factory.py" />
     <Compile Include="foundationallm\langchain\tools\foundationallm_content_search_tool.py" />
+    <Compile Include="foundationallm\langchain\workflows\azure_ai\azure_ai_agent_service_workflow.py" />
     <Compile Include="foundationallm\langchain\workflows\workflow_factory.py" />
     <Compile Include="foundationallm\langchain\workflows\__init__.py" />
     <Compile Include="foundationallm\models\agents\agent_tool.py" />
@@ -207,6 +208,7 @@
     <Folder Include="foundationallm\langchain\language_models\" />
     <Folder Include="foundationallm\langchain\exceptions\" />
     <Folder Include="foundationallm\langchain\workflows\" />
+    <Folder Include="foundationallm\langchain\workflows\azure_ai\" />
     <Folder Include="foundationallm\models\agents\agent_workflows\" />
     <Folder Include="foundationallm\models\attachments\" />
     <Folder Include="foundationallm\models\constants\" />
