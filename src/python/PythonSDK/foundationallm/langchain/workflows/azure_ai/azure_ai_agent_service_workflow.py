@@ -8,8 +8,11 @@ from azure.ai.projects.aio import AIProjectClient
 from azure.ai.projects.models import (
     AsyncAgentEventHandler,
     AgentStreamEvent,
+    CodeInterpreterToolDefinition,
+    FileSearchToolDefinition,
     FunctionTool,
     ListSortOrder,
+    MessageAttachment,
     MessageRole, 
     MessageDeltaChunk,
     MessageImageFileContent,
@@ -103,8 +106,7 @@ class AzureAIAgentServiceAgentAsyncEventHandler(AsyncAgentEventHandler):
     #             )
 
     async def on_run_step(self, step: "RunStep") -> None:
-        if(step.type == "tool_calls" and step.status == "completed"):
-            self.run_id = step.run_id
+        if(step.type == "tool_calls" and step.status == "completed"):            
             self.run_steps.append(step)
 
 class AzureAIAgentServiceWorkflow(FoundationaLLMWorkflowBase):
@@ -169,17 +171,36 @@ class AzureAIAgentServiceWorkflow(FoundationaLLMWorkflowBase):
         llm_prompt = user_prompt_rewrite or user_prompt
         analysis_results = []
 
+        # Check file_history for any items for the current attachments, associate the appropriate tool(s).
+        # https://learn.microsoft.com/en-us/azure/ai-services/agents/how-to/tools/code-interpreter?tabs=python&pivots=supported-filetypes
+        # https://learn.microsoft.com/en-us/azure/ai-services/agents/how-to/tools/file-search?tabs=python&pivots=supported-filetypes
+        code_interpreter_extensions = ['.c', '.cpp', '.csv', 'docx', '.html', '.java', '.json', '.md', '.pdf', '.php', '.pptx', '.py', '.rb' '.tex', '.txt', '.css', '.jpeg', '.jpg', '.js', '.gif', '.png', '.tar', '.ts', '.xlsx', '.xml', '.zip']
+        file_search_extensions = ['.c', '.cs', '.cpp', '.doc', '.docx', '.html', '.java', '.json', '.md', '.pdf', '.php', '.pptx', '.py', '.rb', '.tex', '.txt', '.css', '.js', '.sh', '.ts']
+        message_file_attachments = [
+            MessageAttachment(
+                tools=[
+                    tool for ext, tool in [
+                        (code_interpreter_extensions, CodeInterpreterToolDefinition()),
+                        (file_search_extensions, FileSearchToolDefinition())
+                    ] if any(file.original_file_name.endswith(e) for e in ext)
+                ],
+                file_id=file.secondary_provider_object_id
+            ) for file in file_history
+            if file.current_message_attachment  # Grab only the current message attachments
+            and file.secondary_provider == ResourceProviderNames.FOUNDATIONALLM_AZUREAI
+        ]
+        
         async with DefaultAzureCredential(exclude_environment_credential=True) as credential:
             async with AIProjectClient.from_connection_string(
                 credential = credential,
                 conn_str = self.project_connection_string
-            ) as project_client:               
-               
+            ) as project_client:
                 # Add current message to the thread.
                 message = await project_client.agents.create_message(
                     thread_id = self.thread_id,
                     role = MessageRole.USER,
-                    content = llm_prompt
+                    content = llm_prompt,
+                    attachments=message_file_attachments
                 )
 
                 event_handler = AzureAIAgentServiceAgentAsyncEventHandler(None)
@@ -188,8 +209,7 @@ class AzureAIAgentServiceWorkflow(FoundationaLLMWorkflowBase):
                     agent_id = self.agent_id, 
                     event_handler = event_handler
                 ) as stream:
-                    await stream.until_done()
-              
+                    await stream.until_done()              
 
                 # Get messages from the thread
                 messages = await project_client.agents.list_messages(

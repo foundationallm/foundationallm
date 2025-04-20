@@ -15,6 +15,13 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
         [JsonPropertyName("order")]
         public required int Order { get; set; }
 
+
+        /// <summary>
+        /// Indicates if the file is an attachment to the current message.
+        /// </summary>
+        [JsonPropertyName("current_message_attachment")]
+        public required bool CurrentMessageAttachment { get; set; }
+
         /// <summary>
         /// The original file name of the attachment.
         /// </summary>
@@ -40,29 +47,47 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
         public string? ContentType { get; set; }
 
         /// <summary>
+        /// The provider that manages the file.
+        /// </summary>
+        [JsonPropertyName("secondary_provider")]
+        public string? SecondaryProvider { get; set; } = null;
+
+        /// <summary>
+        /// The identifier of the file attachment resource in the secondary provider.
+        /// </summary>
+        [JsonPropertyName("secondary_provider_object_id")]
+        public string? SecondaryProviderObjectId { get; set; } = null;
+
+        /// <summary>
         /// Creates an instance of FileHistoryItem based on an AttachmentFile.
         /// </summary>
         /// <param name="attachmentFile">The AttachmentFile resource.</param>
         /// <param name="Order">The order in which the file has appeared in the conversation.</param>
+        /// <param name="currentMessageAttachment"> Indicates if the file is an attachment to the current message.</param>
         /// <returns>The FileHistoryItem object based on the AttachmentFile.</returns>
-        public static FileHistoryItem FromAttachmentFile(AttachmentFile attachmentFile, int Order) => new FileHistoryItem
+        public static FileHistoryItem FromAttachmentFile(AttachmentFile attachmentFile, int Order, bool currentMessageAttachment) => new FileHistoryItem
         {
             Order = Order,
+            CurrentMessageAttachment = currentMessageAttachment,
             OriginalFileName = attachmentFile.OriginalFileName,
             ObjectId = attachmentFile.ObjectId!,
             FilePath = attachmentFile.Path,
-            ContentType = attachmentFile.ContentType
+            ContentType = attachmentFile.ContentType,
+            SecondaryProvider = attachmentFile.SecondaryProvider,
+            SecondaryProviderObjectId = attachmentFile.SecondaryProviderObjectId
         };
 
         /// <summary>
-        /// Creates an instance of FileHistoryItem based on a ContextFileRecord.
+        /// Creates an instance of FileHistoryItem based on a ContextFileRecord. Context files are managed entirely by FoundationaLLM.
         /// </summary>
         /// <param name="fileRecord">The ContextFileRecord to convert to FileHistoryItem.</param>
         /// <param name="Order">The order in which the file appeared in the conversation.</param>
+        /// <param name="currentMessageAttachment"> Indicates if the file is an attachment to the current message.</param>
         /// <returns>The FileHistoryItem object based on the ContextFileRecord.</returns>
-        public static FileHistoryItem FromContextFileRecord(ContextFileRecord fileRecord, int Order) => new FileHistoryItem
+        public static FileHistoryItem FromContextFileRecord(ContextFileRecord fileRecord, int Order, bool currentMessageAttachment) => new FileHistoryItem
         {
             Order = Order,
+            CurrentMessageAttachment = currentMessageAttachment,
             OriginalFileName = fileRecord.FileName,
             ObjectId = fileRecord.FileObjectId,
             FilePath = fileRecord.FilePath,
