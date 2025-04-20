@@ -14,7 +14,12 @@ from foundationallm.langchain.language_models import LanguageModelFactory
 from foundationallm.langchain.retrievers import RetrieverFactory, ContentArtifactRetrievalBase
 from foundationallm.langchain.tools import ToolFactory
 from foundationallm.langchain.workflows import WorkflowFactory
-from foundationallm.models.agents import AzureOpenAIAssistantsAgentWorkflow, ExternalAgentWorkflow, LangGraphReactAgentWorkflow
+from foundationallm.models.agents import (
+    AzureAIAgentServiceAgentWorkflow,
+    AzureOpenAIAssistantsAgentWorkflow,
+    ExternalAgentWorkflow,
+    LangGraphReactAgentWorkflow
+)
 from foundationallm.models.constants import (
     AgentCapabilityCategories,
     ResourceObjectIdPropertyNames,
@@ -443,6 +448,32 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             )
         # End Assistants API implementation
+
+        # Start Azure AI Agent Service workflow implementation
+        if isinstance(agent.workflow, AzureAIAgentServiceAgentWorkflow):
+            # create the workflow
+            tools = []
+            parsed_user_prompt = request.user_prompt
+            workflow_factory = WorkflowFactory(self.plugin_manager)
+            workflow = workflow_factory.get_workflow(
+                agent.workflow,
+                request.objects,
+                tools,
+                self.user_identity,
+                self.config)
+
+            with self.tracer.start_as_current_span('langchain_invoke_azure_ai_agent_service_workflow', kind=SpanKind.SERVER) as span:
+                response = await workflow.invoke_async(
+                    operation_id=request.operation_id,
+                    user_prompt=parsed_user_prompt,
+                    user_prompt_rewrite=request.user_prompt_rewrite,
+                    message_history=request.message_history,
+                    file_history=request.file_history,
+                )
+                # Ensure the user prompt rewrite is returned in the response
+                response.user_prompt_rewrite = request.user_prompt_rewrite
+            return response
+        # End Azure AI Agent Service workflow implementation
 
         # Start LangGraph ReAct Agent workflow implementation
         if isinstance(agent.workflow, LangGraphReactAgentWorkflow):

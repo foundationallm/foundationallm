@@ -68,9 +68,10 @@ class AzureAIAgentServiceAgentAsyncEventHandler(AsyncAgentEventHandler):
         self.functions = functions
         self.run_steps = []
         self.run_id = None
-  
+    
     # TODO: Implement function calling as well as state api updates
-    # def on_thread_run(self, run: "ThreadRun") -> None:
+    async def on_thread_run(self, run: "ThreadRun") -> None:
+        self.run_id = run.id
     #     print(f"ThreadRun status: {run.status}")
 
     #     if run.status == "failed":
@@ -172,25 +173,23 @@ class AzureAIAgentServiceWorkflow(FoundationaLLMWorkflowBase):
             async with AIProjectClient.from_connection_string(
                 credential = credential,
                 conn_str = self.project_connection_string
-            ) as project_client:
-                
-                ##### FOR TESTING CREATE A NEW THREAD EACH RUN #####
-                self.thread_id = (await project_client.agents.create_thread()).id
-                ####################################################
-                
+            ) as project_client:               
+               
                 # Add current message to the thread.
                 message = await project_client.agents.create_message(
                     thread_id = self.thread_id,
                     role = MessageRole.USER,
                     content = llm_prompt
                 )
-                               
+
+                event_handler = AzureAIAgentServiceAgentAsyncEventHandler(None)
                 async with await project_client.agents.create_stream(
                     thread_id = self.thread_id, 
                     agent_id = self.agent_id, 
-                    event_handler = AzureAIAgentServiceAgentAsyncEventHandler(None)
+                    event_handler = event_handler
                 ) as stream:
                     await stream.until_done()
+              
 
                 # Get messages from the thread
                 messages = await project_client.agents.list_messages(
@@ -200,22 +199,20 @@ class AzureAIAgentServiceWorkflow(FoundationaLLMWorkflowBase):
                 )
                 content = [] 
                 for message in messages.data:
-                    message_content = self.__parse_message(message)
-                    # Flatten the list of content items
+                    message_content = self.__parse_message(message)              
                     if message_content:
                         content.extend(message_content)
-
-                # stream contains the instance of the event handler. 
-                # It has an accumulator for completed tool calling run steps. 
+                        
+                # event_handler has an accumulator for completed tool calling run steps. 
                 # It also has a property with the run_id for the run associated with the stream.
-                if(len(stream.run_steps) > 0):
-                    for step in stream.run_steps:
+                if(len(event_handler.run_steps) > 0):
+                    for step in event_handler.run_steps:
                         analysis_result = self.__parse_run_step(step)
                         if analysis_result is not None:
                             analysis_results.append(analysis_result)
                 run = await project_client.agents.get_run(
                     thread_id=self.thread_id,
-                    run_id=stream.run_id
+                    run_id=event_handler.run_id
                 )
                 # Get final usage details from the run  
                 #  prompt_tokens = run.usage.prompt_tokens
