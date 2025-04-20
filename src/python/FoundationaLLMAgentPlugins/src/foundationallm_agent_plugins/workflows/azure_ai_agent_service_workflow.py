@@ -2,10 +2,31 @@
 Class: AzureAIAgentServiceWorkflow
 Description: Workflow that integrates with the Azure AI Agent Service.
 """
-from azure.identity import DefaultAzureCredential
-from azure.ai.projects import AIProjectClient
-from azure.ai.projects.models import MessageRole, RunStatus
-from typing import Dict, List, Optional
+import json
+from azure.identity.aio import DefaultAzureCredential
+from azure.ai.projects.aio import AIProjectClient
+from azure.ai.projects.models import (
+    AsyncAgentEventHandler,
+    AgentStreamEvent,
+    FunctionTool,
+    ListSortOrder,
+    MessageRole, 
+    MessageDeltaChunk,
+    MessageImageFileContent,
+    MessageTextContent,
+    MessageTextFilePathAnnotation,
+    MessageTextFileCitationAnnotation,    
+    RequiredFunctionToolCall,
+    RunStep, 
+    RunStepCodeInterpreterToolCall,
+    RunStepDeltaChunk,
+    RunStepFunctionToolCall,
+    SubmitToolOutputsAction,
+    ToolOutput,
+    ThreadMessage,    
+    ThreadRun
+)
+from typing import Any,Dict, Optional, List
 from logging import Logger
 from opentelemetry.trace import Tracer
 from opentelemetry.trace import SpanKind
@@ -27,6 +48,7 @@ from foundationallm.models.constants import (
 )
 from foundationallm.models.messages import MessageHistoryItem
 from foundationallm.models.orchestration import (
+    AnalysisResult,
     CompletionRequestObjectKeys,
     CompletionResponse,
     ContentArtifact,
@@ -36,6 +58,53 @@ from foundationallm.models.orchestration import (
     OpenAIFilePathMessageContentItem
 )
 from foundationallm.telemetry import Telemetry
+
+class AzureAIAgentServiceAgentAsyncEventHandler(AsyncAgentEventHandler):
+    """
+    Event handler for the Azure AI Agent Service.
+    """
+    def __init__(self, functions: FunctionTool) -> None:
+        super().__init__()
+        self.functions = functions
+        self.run_steps = []
+        self.run_id = None
+  
+    # TODO: Implement function calling as well as state api updates
+    # def on_thread_run(self, run: "ThreadRun") -> None:
+    #     print(f"ThreadRun status: {run.status}")
+
+    #     if run.status == "failed":
+    #         print(f"Run failed. Error: {run.last_error}")
+
+    #     if run.status == "requires_action" and isinstance(run.required_action, SubmitToolOutputsAction):
+    #         tool_calls = run.required_action.submit_tool_outputs.tool_calls
+
+    #         tool_outputs = []
+    #         for tool_call in tool_calls:
+    #             if isinstance(tool_call, RequiredFunctionToolCall):
+    #                 try:
+    #                     output = self.functions.execute(tool_call)
+    #                     tool_outputs.append(
+    #                         ToolOutput(
+    #                             tool_call_id=tool_call.id,
+    #                             output=output,
+    #                         )
+    #                     )
+    #                 except Exception as e:
+    #                     print(f"Error executing tool_call {tool_call.id}: {e}")
+
+    #         print(f"Tool outputs: {tool_outputs}")
+    #         if tool_outputs:
+    #             # Once we receive 'requires_action' status, the next event will be DONE.
+    #             # Here we associate our existing event handler to the next stream.
+    #             self.client.agents.submit_tool_outputs_to_stream(
+    #                 thread_id=run.thread_id, run_id=run.id, tool_outputs=tool_outputs, event_handler=self
+    #             )
+
+    async def on_run_step(self, step: "RunStep") -> None:
+        if(step.type == "tool_calls" and step.status == "completed"):
+            self.run_id = step.run_id
+            self.run_steps.append(step)
 
 class AzureAIAgentServiceWorkflow(FoundationaLLMWorkflowBase):
     """
@@ -71,14 +140,15 @@ class AzureAIAgentServiceWorkflow(FoundationaLLMWorkflowBase):
             'default_error_message',
             'An error occurred while processing the request.') \
             if workflow_config.properties else 'An error occurred while processing the request.'
+        # Resolves agent_id, thread_id, and project_connection_string
         self.__resolve_ai_agent_service_resources()
        
     async def invoke_async(self,
-                           operation_id: str,
-                           user_prompt:str,
-                           user_prompt_rewrite: Optional[str],
-                           message_history: List[MessageHistoryItem],
-                           file_history: List[FileHistoryItem])-> CompletionResponse:
+        operation_id: str,
+        user_prompt:str,
+        user_prompt_rewrite: Optional[str],
+        message_history: List[MessageHistoryItem],
+        file_history: List[FileHistoryItem])-> CompletionResponse:
         """
         Invokes the workflow asynchronously.
 
@@ -96,44 +166,89 @@ class AzureAIAgentServiceWorkflow(FoundationaLLMWorkflowBase):
             The file history.
         """
         llm_prompt = user_prompt_rewrite or user_prompt
-        with self.client:
-            # Add current message to the thread.
-            message = self.client.agents.create_message(
-                thread_id = self.thread_id,
-                role = MessageRole.USER,
-                content = llm_prompt
-            )
-            # Get the response from the agent.
-            run = self.client.agents.create_and_process_run(thread_id=self.thread_id, agent_id=self.agent_id)
-            if run.status == RunStatus.FAILED:
-                raise Exception(f"Azure AI Agent Service run failed: {run.failure_reason}")
-                      
-            # Get messages from the thread
-            messages = self.client.agents.list_messages(thread_id=self.thread_id)
-            print(f"Messages: {messages}")
+        analysis_results = []
 
-            # Get the last message from the sender
-            last_msg = messages.get_last_text_message_by_role("assistant")
-            if last_msg:
-                print(f"Last Message: {last_msg.text.value}")
+        async with DefaultAzureCredential(exclude_environment_credential=True) as credential:
+            async with AIProjectClient.from_connection_string(
+                credential = credential,
+                conn_str = self.project_connection_string
+            ) as project_client:
+                
+                ##### FOR TESTING CREATE A NEW THREAD EACH RUN #####
+                self.thread_id = (await project_client.agents.create_thread()).id
+                ####################################################
+                
+                # Add current message to the thread.
+                message = await project_client.agents.create_message(
+                    thread_id = self.thread_id,
+                    role = MessageRole.USER,
+                    content = llm_prompt
+                )
+                               
+                async with await project_client.agents.create_stream(
+                    thread_id = self.thread_id, 
+                    agent_id = self.agent_id, 
+                    event_handler = AzureAIAgentServiceAgentAsyncEventHandler(None)
+                ) as stream:
+                    await stream.until_done()
 
-        retvalue = CompletionResponse(
-            operation_id=operation_id,
-            content = "Under development",
-            content_artifacts=[],
-            user_prompt=llm_prompt,
-            full_prompt="Under development",
-            completion_tokens=0,
-            prompt_tokens=0,
-            total_tokens=0,
-            total_cost=0
-        )
-        return retvalue    
+                # Get messages from the thread
+                messages = await project_client.agents.list_messages(
+                    thread_id = self.thread_id,
+                    order = ListSortOrder.ASCENDING,
+                    after = message.id
+                )
+                content = [] 
+                for message in messages.data:
+                    message_content = self.__parse_message(message)
+                    # Flatten the list of content items
+                    if message_content:
+                        content.extend(message_content)
+
+                # stream contains the instance of the event handler. 
+                # It has an accumulator for completed tool calling run steps. 
+                # It also has a property with the run_id for the run associated with the stream.
+                if(len(stream.run_steps) > 0):
+                    for step in stream.run_steps:
+                        analysis_result = self.__parse_run_step(step)
+                        if analysis_result is not None:
+                            analysis_results.append(analysis_result)
+                run = await project_client.agents.get_run(
+                    thread_id=self.thread_id,
+                    run_id=stream.run_id
+                )
+                # Get final usage details from the run  
+                #  prompt_tokens = run.usage.prompt_tokens
+                prompt_tokens = 0
+                completion_tokens = 0
+                total_tokens = 0                  
+                if run.usage:
+                    prompt_tokens = run.usage.prompt_tokens
+                    completion_tokens = run.usage.completion_tokens
+                    total_tokens = run.usage.total_tokens                       
+                workflow_execution_content_artifact = self.__create_workflow_execution_content_artifact(
+                    llm_prompt, 
+                    prompt_tokens, 
+                    completion_tokens, 
+                    total_tokens)
+                retvalue = CompletionResponse(
+                    operation_id = operation_id,
+                    analysis_results = analysis_results,
+                    content = content,
+                    content_artifacts = [workflow_execution_content_artifact],
+                    user_prompt = llm_prompt,
+                    full_prompt = run.instructions,
+                    completion_tokens = completion_tokens,
+                    prompt_tokens = prompt_tokens,
+                    total_tokens = total_tokens,
+                    total_cost = 0
+                )               
+                return retvalue    
     
     def __resolve_ai_agent_service_resources(self):
         """
         Resolves the Azure AI Agent Service resources from the objects dictionary.
-        Populates the agent_id, thread_id, and creates the client based on the Azure AI Project.
+        Populates the agent_id, thread_id, and project_connection_string.
         """
         # Populate the agent id and thread id from the objects dictionary
         self.agent_id = self.objects.get(CompletionRequestObjectKeys.AZUREAI_AGENT_ID)
@@ -159,18 +274,28 @@ class AzureAIAgentServiceWorkflow(FoundationaLLMWorkflowBase):
                 
         # Get the Azure AI Agent Service client only supports Azure Identity.
         credential = DefaultAzureCredential(exclude_environment_credential=True)
-        self.client = AIProjectClient.from_connection_string(
-            credential = credential,
-            conn_str = project_object['project_connection_string']
-        )
-
+        self.project_connection_string = project_object['project_connection_string']
+        
     def __create_workflow_execution_content_artifact(
             self,
             original_prompt: str,            
             prompt_tokens: int = 0,
             completion_tokens: int = 0,
             completion_time_seconds: float = 0) -> ContentArtifact:
+        """
+        Creates a content artifact for the workflow execution.
 
+        Parameters
+        ----------
+        original_prompt : str
+            The original prompt.
+        prompt_tokens : int
+            The number of prompt tokens.
+        completion_tokens : int
+            The number of completion tokens.
+        completion_time_seconds : float
+            The completion time in seconds.
+        """
         content_artifact = ContentArtifact(id=self.workflow_config.name)
         content_artifact.source = self.workflow_config.name
         content_artifact.type = ContentArtifactTypeNames.WORKFLOW_EXECUTION
@@ -183,3 +308,112 @@ class AzureAIAgentServiceWorkflow(FoundationaLLMWorkflowBase):
             'completion_time_seconds': str(completion_time_seconds)
         }
         return content_artifact
+    
+    def __parse_run_step(self, run_step: RunStep) -> AnalysisResult:
+        """
+        Parses a run step from the Azure AI Agent Service.
+
+        Parameters
+        ----------
+        run_step : RunStep
+            The run step to parse.
+
+        Returns
+        -------
+        AnalysisResult
+            The analysis result from the run step.
+        OR None
+            If the run step does not contain a tool call
+            to the code interpreter tool.
+        """
+        step_details = run_step.step_details
+        if step_details and step_details.type == "tool_calls":
+            tool_call_detail = step_details.tool_calls
+            for details in tool_call_detail:
+                if isinstance(details, RunStepCodeInterpreterToolCall):
+                    result = AnalysisResult(
+                        tool_name = details.type,
+                        agent_capability_category = AgentCapabilityCategories.AZURE_AI_AGENTS
+                    )
+                    result.tool_input += details.code_interpreter.input  # Source code
+                    for output in details.code_interpreter.outputs:  # Tool execution output                        
+                        if hasattr(output, 'image') and output.image:
+                            result.tool_output += "# Generated image file: " + output.image.file_id
+                        elif hasattr(output, 'logs') and output.logs:
+                            result.tool_output += output.logs
+                    return result
+                elif isinstance(details, RunStepFunctionToolCall):
+                    result = AnalysisResult(
+                        tool_name = details.function.name,
+                        agent_capability_category = AgentCapabilityCategories.AZURE_AI_AGENTS
+                    )
+                    result.tool_input += details.function.arguments
+                    if details.function.output:
+                        fn_output = json.loads(details.function.output)
+                        if 'data' in fn_output:
+                            output_data = json.loads(details.function.output)['data'][0]
+                            result.tool_output += json.dumps({"url": output_data['url'], "description": output_data['revised_prompt']})
+                        else:
+                            # indicative of a failure during the function call, append error message to output
+                            print("Error in function call: " + fn_output)
+                            result.tool_output += json.dumps(fn_output)                            
+                                
+        return None
+    
+    def __parse_message(self, message: ThreadMessage):
+        """
+        Parses a message from the Azure AI Agent Service.
+
+        Parameters
+        ----------
+        message : Message
+            The message to parse.
+
+        Returns
+        -------
+        List[MessageContentItemBase]
+            The content items within the message along with any annotations.
+        """
+        ret_content = []
+        # for each content item in the message
+        for ci in message.content:
+                match ci:
+                    case MessageTextContent():
+                        text_ci = OpenAITextMessageContentItem(
+                            value=ci.text.value,
+                            agent_capability_category = AgentCapabilityCategories.AZURE_AI_AGENTS
+                        )
+                        for annotation in ci.text.annotations:
+                            match annotation:
+                                case MessageTextFilePathAnnotation():
+                                    file_an = OpenAIFilePathMessageContentItem(
+                                        file_id=annotation.file_path.file_id,
+                                        start_index=annotation.start_index,
+                                        end_index=annotation.end_index,
+                                        text=annotation.text,
+                                        agent_capability_category = AgentCapabilityCategories.AZURE_AI_AGENTS
+                                    )
+                                    text_ci.annotations.append(file_an)
+                                case MessageTextFileCitationAnnotation():
+                                    file_cit = OpenAIFilePathMessageContentItem(
+                                        file_id=annotation.file_citation.file_id,
+                                        start_index=annotation.start_index,
+                                        end_index=annotation.end_index,
+                                        text=annotation.text,
+                                        agent_capability_category = AgentCapabilityCategories.AZURE_AI_AGENTS
+                                    )
+                                    text_ci.annotations.append(file_cit)
+                        ret_content.append(text_ci)
+                    case MessageImageFileContent():
+                        ci_img = OpenAIImageFileMessageContentItem(
+                            file_id=ci.image_file.file_id,
+                            agent_capability_category = AgentCapabilityCategories.AZURE_AI_AGENTS
+                        )
+                        ret_content.append(ci_img)
+                    #case MessageImageURLContent():
+                    #    ci_img_url = OpenAIImageFileMessageContentItem(
+                    #        file_url=ci.image_url.url,
+                    #        agent_capability_category = AgentCapabilityCategories.AZURE_AI_AGENTS
+                    #    )
+                    #    ret_content.append(ci_img_url)
+        return ret_content

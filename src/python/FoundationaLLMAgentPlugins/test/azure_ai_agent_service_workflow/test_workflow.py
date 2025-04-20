@@ -15,7 +15,9 @@ from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import KnowledgeManagementCompletionRequest
 from foundationallm.models.constants import ContentArtifactTypeNames
 
-user_prompt = "What is 1+1, explain it to me like I'm a kindergartner"
+#user_prompt = "What is 1+1, explain it to me like I'm a kindergartner"
+#user_prompt = 'Execute the code "print(str(1+3))" and tell me the output.'
+user_prompt = "Could you please create a bar chart for the operating profit using the following data and provide the file to me? Company A: $1.2 million, Company B: $2.5 million, Company C: $3.0 million, Company D: $1.8 million."
 operation_id = str(uuid.uuid4())
 
 user_identity_json = {"name": "Experimental Test", "user_name":"carey@foundationaLLM.ai","upn":"carey@foundationaLLM.ai"}
