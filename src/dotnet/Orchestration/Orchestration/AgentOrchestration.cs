@@ -432,7 +432,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                             var vectorizationResult = await _gatewayClient!.CreateAgentCapability(
                                 _instanceId,
-                                AgentCapabilityCategoryNames.OpenAIAssistants,
+                                AgentCapabilityCategoryNames.AzureAIAgents,
                                 string.Empty,
                                 new()
                                 {
