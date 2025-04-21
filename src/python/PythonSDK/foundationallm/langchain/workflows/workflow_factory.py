@@ -8,13 +8,14 @@ from foundationallm.langchain.common import FoundationaLLMWorkflowBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.workflows.azure_ai.azure_ai_agent_service_workflow import AzureAIAgentServiceWorkflow
 from foundationallm.models.agents import AgentTool, ExternalAgentWorkflow
+from foundationallm.operations.operations_manager import OperationsManager
 from foundationallm.plugins import PluginManager, PluginManagerTypes
 
 class WorkflowFactory:
     """
     Factory class for creating an external agent workflow instance based on the Agent workflow configuration.
     """   
-    def __init__(self, plugin_manager: PluginManager):
+    def __init__(self, plugin_manager: PluginManager, operations_manager: OperationsManager):
         """
         Initializes the workflow factory.
 
@@ -24,6 +25,7 @@ class WorkflowFactory:
             The plugin manager object used to load external workflows.
         """
         self.plugin_manager = plugin_manager
+        self.operations_manager = operations_manager
 
     def get_workflow(
         self,
@@ -54,7 +56,7 @@ class WorkflowFactory:
             AZURE_AI_AGENT_SERVICE_WORKFLOW_CLASS_NAME = "AzureAIAgentServiceWorkflow"
             
             if workflow_config.class_name == AZURE_AI_AGENT_SERVICE_WORKFLOW_CLASS_NAME:                                
-                return AzureAIAgentServiceWorkflow(workflow_config, objects, tools, user_identity, config)
+                return AzureAIAgentServiceWorkflow(workflow_config, objects, tools, user_identity, config, self.operations_manager)
             
             raise LangChainException(f"FoundationaLLM workflow class {workflow_config.class_name} is not supported by the workflow factory.")
         else:

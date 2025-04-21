@@ -1202,14 +1202,14 @@ public partial class CoreService(
                             //Get resource path for attachment
                             var rp = ResourcePath.GetResourcePath(attachmentObjectId);
                             var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(instanceId, rp.MainResourceId!, _userIdentity);
-                            fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder));
+                            fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder, false));
                         }
                         else
                         {
                             var fileResponse = await _contextServiceClient.GetFileRecord(instanceId, attachmentObjectId);
                             if (fileResponse.Success)
                             {
-                                fileHistory.Add(FileHistoryItem.FromContextFileRecord(fileResponse.Result!, ++attachmentOrder));
+                                fileHistory.Add(FileHistoryItem.FromContextFileRecord(fileResponse.Result!, ++attachmentOrder, false));
                             }
                             else
                             {
@@ -1232,14 +1232,14 @@ public partial class CoreService(
                     //Get resource path for attachment
                     var rp = ResourcePath.GetResourcePath(attachmentObjectId);
                     var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(instanceId, rp.MainResourceId!, _userIdentity);
-                    fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder));                   
+                    fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder, true));                   
                 }
                 else
                 {
                     var fileResponse = await _contextServiceClient.GetFileRecord(instanceId, attachmentObjectId);
                     if (fileResponse.Success)
                     {
-                        fileHistory.Add(FileHistoryItem.FromContextFileRecord(fileResponse.Result!, ++attachmentOrder));
+                        fileHistory.Add(FileHistoryItem.FromContextFileRecord(fileResponse.Result!, ++attachmentOrder, true));
                     }
                     else
                     {
