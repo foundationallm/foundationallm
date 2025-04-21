@@ -26,7 +26,8 @@ class LanguageModelFactory:
     
     def get_language_model(self,
                            ai_model_object_id:str,
-                           override_operation_type: OperationTypes = None
+                           override_operation_type: OperationTypes = None,
+                           agent_model_parameter_overrides:dict = None,
                           ) -> BaseLanguageModel:
         """
         Create a language model using the specified endpoint settings.
@@ -243,9 +244,15 @@ class LanguageModelFactory:
                     credentials=service_account_credentials
                 )
 
-        # Set model parameters.
-        for key, value in ai_model.model_parameters.items():
-            if hasattr(language_model, key):
+        # Set model parameters.        
+        for key, value in ai_model.model_parameters.items():            
+            if hasattr(language_model, key):                
                 setattr(language_model, key, value)
         
+        # Set agent model overrides.        
+        if agent_model_parameter_overrides is not None:           
+            for key, value in agent_model_parameter_overrides.items():                
+                if hasattr(language_model, key):                    
+                    setattr(language_model, key, value)
+
         return language_model
