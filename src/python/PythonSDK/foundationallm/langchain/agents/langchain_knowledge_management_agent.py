@@ -356,7 +356,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 await assistant_svc.add_thread_message_async(
                     thread_id = assistant_req.thread_id,
                     role = "user",
-                    content = "Analyze any attached images.",
+                    content = "Analyze any attached images.", 
                     attachments = []
                 )
                 # Add assistant message
@@ -454,7 +454,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             # create the workflow
             tools = []
             parsed_user_prompt = request.user_prompt
-            workflow_factory = WorkflowFactory(self.plugin_manager)
+            workflow_factory = WorkflowFactory(self.plugin_manager, self.operations_manager)
             workflow = workflow_factory.get_workflow(
                 agent.workflow,
                 request.objects,

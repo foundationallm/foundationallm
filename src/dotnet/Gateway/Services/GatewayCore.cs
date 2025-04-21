@@ -439,7 +439,7 @@ namespace FoundationaLLM.Gateway.Services
                     if (fileAssociationResult.Value.Status == VectorStoreFileAssociationStatus.Failed)
                     {
                         _logger.LogError("The vectorization of file {FileId} in vector store {VectorStoreId} failed with error {ErrorMessage}.",
-                                                       fileId, vectorStoreId, fileAssociationResult.Value.LastError);
+                                                       fileId, vectorStoreId, fileAssociationResult.Value.LastError.Message);
                     }
                     
                     result[OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess] =
@@ -749,7 +749,7 @@ namespace FoundationaLLM.Gateway.Services
                     if (vectorStoreFileResponse.Value.Status == VectorStoreFileStatus.Failed)
                     {
                         _logger.LogError("The vectorization of file {FileId} in vector store {VectorStoreId} failed with error {ErrorMessage}.",
-                                                       fileId, vectorStoreId, vectorStoreFileResponse.Value.LastError);
+                                                       fileId, vectorStoreId, vectorStoreFileResponse.Value.LastError.Message);
                     }
                     result[AzureAIAgentServiceCapabilityParameterNames.FileActionOnVectorStoreSuccess] =
                         vectorStoreFileResponse.Value.Status == VectorStoreFileStatus.Completed;
