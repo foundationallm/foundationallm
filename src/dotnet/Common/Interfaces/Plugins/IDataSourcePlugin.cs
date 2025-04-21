@@ -1,4 +1,6 @@
-﻿namespace FoundationaLLM.Common.Interfaces.Plugins
+﻿using FoundationaLLM.Common.Models.DataPipelines;
+
+namespace FoundationaLLM.Common.Interfaces.Plugins
 {
     /// <summary>
     /// Defines the interface for a data source plugin.
@@ -9,6 +11,6 @@
         /// Gets the list of content items from the data source.
         /// </summary>
         /// <returns></returns>
-        List<string> GetContentItems();
+        List<DataPipelineContentItem> GetContentItems();
     }
 }

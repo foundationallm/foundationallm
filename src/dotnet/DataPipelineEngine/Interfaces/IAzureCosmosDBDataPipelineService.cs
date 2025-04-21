@@ -21,6 +21,13 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
             CancellationToken cancellationToken = default);
 
         /// <summary>
+        /// Batch create or update data pipeline run items.
+        /// </summary>
+        /// <param name="dataPipelineRunItems">Data pipeline run items to create or replace.</param>
+        /// <returns><see langword="true"/> if the batch is successfully processed.</returns>
+        Task<bool> UpsertDataPipelineRunBatchAsync(params dynamic[] dataPipelineRunItems);
+
+        /// <summary>
         /// Retrieves items from Azure Cosmos DB.
         /// </summary>
         /// <typeparam name="T">The type of the items to retrieve.</typeparam>

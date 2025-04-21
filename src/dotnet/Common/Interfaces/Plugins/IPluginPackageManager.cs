@@ -19,12 +19,14 @@ namespace FoundationaLLM.Common.Interfaces.Plugins
         /// Gets a data source plugin by its name.
         /// </summary>
         /// <param name="pluginName">The name of the data source plugin.</param>
+        /// <param name="dataSourceObjectId">The FoundationaLLM object identifier of the data source.</param>
         /// <param name="pluginParameters">The dictionary containing the plugin parameters.</param>
         /// <param name="serviceProvider">The service provider of the dependency injection container.</param>
         /// <returns>The <see cref="IDataSourcePlugin"/> interface implemented by the data source plugin.</returns>
         /// <exception cref="NotImplementedException"></exception>
         IDataSourcePlugin GetDataSourcePlugin(
             string pluginName,
+            string dataSourceObjectId,
             Dictionary<string, object> pluginParameters,
             IServiceProvider serviceProvider);
 

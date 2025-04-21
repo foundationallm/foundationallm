@@ -13,38 +13,52 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
         /// The unique identifier of the data pipeline run.
         /// </summary>
         [JsonPropertyName("run_id")]
+        [JsonPropertyOrder(1)]
         public string RunId => Id;
 
         /// <summary>
         /// Gets or sets the object identifier of the data pipeline.
         /// </summary>
         [JsonPropertyName("data_pipeline_object_id")]
+        [JsonPropertyOrder(2)]
         public required string DataPipelineObjectId { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the manual trigger used to start the pipeline.
         /// </summary>
         [JsonPropertyName("trigger_name")]
+        [JsonPropertyOrder(3)]
         public required string TriggerName { get; set; }
 
         /// <summary>
         /// Gets or sets a dictionary that contains the parameter values required to trigger the pipeline.
         /// </summary>
         [JsonPropertyName("trigger_parameter_values")]
+        [JsonPropertyOrder(4)]
         public required Dictionary<string, object> TriggerParameterValues { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the user principal name (UPN) of the user that triggered the creation of the data pipeline run.
         /// </summary>
         [JsonPropertyName("triggering_upn")]
+        [JsonPropertyOrder(5)]
         public required string TriggeringUPN { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of active stages in the data pipeline run.
+        /// </summary>
+        [JsonPropertyName("active_stages")]
+        [JsonPropertyOrder(6)]
+        public List<string> ActiveStages { get; set; } = [];
 
         /// <inheritdoc/>
         [JsonPropertyName("completed")]
+        [JsonPropertyOrder(7)]
         public bool Completed { get; set; }
 
         /// <inheritdoc/>
         [JsonPropertyName("successful")]
+        [JsonPropertyOrder(8)]
         public bool Successful { get; set; }
 
         /// <summary>

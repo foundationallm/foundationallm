@@ -39,6 +39,18 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     SubTypes = new()
                     {
                         {
+                            DataPipelineResourceTypeNames.DataPipelineSnapshots,
+                            new ResourceTypeDescriptor(
+                                DataPipelineResourceTypeNames.DataPipelineSnapshots,
+                                typeof(DataPipelineDefinitionSnapshot))
+                            {
+                                AllowedTypes = [
+                                    new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<DataPipelineDefinitionSnapshot>)])
+                                ],
+                                Actions = []
+                            }
+                        },
+                        {
                             DataPipelineResourceTypeNames.DataPipelineRuns,
                             new ResourceTypeDescriptor (
                                 DataPipelineResourceTypeNames.DataPipelineRuns,

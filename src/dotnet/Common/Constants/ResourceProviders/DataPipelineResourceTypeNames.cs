@@ -11,6 +11,11 @@
         public const string DataPipelines = "dataPipelines";
 
         /// <summary>
+        /// Data pipeline snapshots.
+        /// </summary>
+        public const string DataPipelineSnapshots = "dataPipelineSnapshots";
+
+        /// <summary>
         /// Data pipeline runs.
         /// </summary>
         public const string DataPipelineRuns = "dataPipelineRuns";

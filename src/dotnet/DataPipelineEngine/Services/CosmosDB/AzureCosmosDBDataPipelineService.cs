@@ -123,5 +123,25 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
 
             return result;
         }
+
+        public async Task<bool> UpsertDataPipelineRunBatchAsync(params dynamic[] dataPipelineRunItems)
+        {
+            if (dataPipelineRunItems.Select(m => m.RunId).Distinct().Count() > 1)
+            {
+                throw new ArgumentException("All items must have the same partition key.");
+            }
+
+            PartitionKey partitionKey = new(dataPipelineRunItems.First().RunId);
+            var batch = _dataPipelineContainer.CreateTransactionalBatch(partitionKey);
+            foreach (var message in dataPipelineRunItems)
+            {
+                batch.UpsertItem(
+                    item: message
+                );
+            }
+
+            var result = await batch.ExecuteAsync();
+            return result.IsSuccessStatusCode;
+        }
     }
 }

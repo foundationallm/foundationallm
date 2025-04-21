@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
@@ -154,16 +155,46 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                         StatusCodes.Status400BadRequest);
             }
 
-            UpdateBaseProperties(dataPipeline, userIdentity, isNew: existingDataPipelineReference == null);
-            if (existingDataPipelineReference == null)
+            UpdateBaseProperties(dataPipeline, userIdentity, isNew: existingDataPipelineReference is null);
+
+            var snapshotName =
+                $"{dataPipeline.Name}-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToBase64String()}";
+            var snapshotObjectId =
+                ResourcePath.Join(dataPipeline.ObjectId, $"{DataPipelineResourceTypeNames.DataPipelineSnapshots}/{snapshotName}");
+            dataPipeline.MostRecentSnapshotObjectId = snapshotObjectId;
+
+            if (existingDataPipelineReference is null)
                 await CreateResource<DataPipelineDefinition>(dataPipelineReference, dataPipeline);
             else
                 await SaveResource<DataPipelineDefinition>(dataPipelineReference, dataPipeline);
 
+            #region Create a snapshot of the data pipeline every time it is updated
+
+            var dataPipelineSnapshotReference = new DataPipelineReference
+            {
+                Name = snapshotName,
+                Type = DataPipelineTypes.DataPipelineSnapshot,
+                Filename = $"/{_name}/{dataPipeline.Name}/{snapshotName}.json"
+            };
+
+            // Using SaveResourcr to avoid polluting the resource reference store with snapshots.
+            await SaveResource<DataPipelineDefinitionSnapshot>(
+                dataPipelineSnapshotReference,
+                new DataPipelineDefinitionSnapshot
+                {
+                    Name = snapshotName,
+                    DataPipelineDefinition = dataPipeline,
+                    ObjectId = snapshotObjectId,
+                    CreatedOn = DateTimeOffset.UtcNow,
+                    CreatedBy = userIdentity.UPN!
+                });
+
+            #endregion
+
             return new ResourceProviderUpsertResult
             {
                 ObjectId = dataPipeline!.ObjectId,
-                ResourceExists = existingDataPipelineReference != null
+                ResourceExists = existingDataPipelineReference is not null
             };
         }
 
@@ -201,6 +232,13 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                     await LoadResource<DataPipelineDefinition>(resourcePath.MainResourceId!) as T
                         ?? throw new ResourceProviderException("The object definition is invalid.",
                             StatusCodes.Status400BadRequest),
+                Type t when t == typeof(DataPipelineDefinitionSnapshot) =>
+                    await LoadDataPipelineSnapshot(
+                        resourcePath,
+                        authorizationResult,
+                        userIdentity) as T
+                        ?? throw new ResourceProviderException("The object definition is invalid.",
+                            StatusCodes.Status400BadRequest),
                 Type t when t == typeof(DataPipelineRun) =>
                     await _dataPipelineServiceClient.GetDataPipelineRunAsync(
                         resourcePath.InstanceId!,
@@ -230,6 +268,40 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 Resource = result,
                 ResourceExists = false
             };
+        }
+
+        private async Task<DataPipelineDefinitionSnapshot> LoadDataPipelineSnapshot(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity)
+        {
+            var finalResourcePath = resourcePath;
+
+            if (resourcePath.ResourceId! == "latest")
+            {
+                var dataPipeline = await LoadResource<DataPipelineDefinition>(resourcePath.ParentResourceId!);
+                if (dataPipeline!.MostRecentSnapshotObjectId is null)
+                    throw new ResourceProviderException("The object identifier is invalid.",
+                        StatusCodes.Status400BadRequest);
+                if (!ResourcePath.TryParse(
+                    dataPipeline.MostRecentSnapshotObjectId,
+                    [_name],
+                    DataPipelineResourceProviderMetadata.AllowedResourceTypes,
+                    false,
+                    out finalResourcePath))
+                    throw new ResourceProviderException($"The {dataPipeline.Name} has an invalid snapshot object identifier.",
+                        StatusCodes.Status400BadRequest);
+            }
+
+            var dataPipelineSnapshotReference = new DataPipelineReference
+            {
+                Name = finalResourcePath!.MainResourceId!,
+                Type = DataPipelineTypes.DataPipelineSnapshot,
+                Filename = $"/{_name}/{resourcePath.ParentResourceId}/{finalResourcePath.ResourceId!}.json"
+            };
+
+            return (await LoadResource<DataPipelineDefinitionSnapshot>(
+                dataPipelineSnapshotReference))!;
         }
 
         #endregion

@@ -138,6 +138,33 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
             && !string.IsNullOrWhiteSpace(_resourceTypeInstances.Last().ResourceId);
 
         /// <summary>
+        /// Gets the resource type name of the parent resource of the path.
+        /// </summary>
+        public string? ParentResourceTypeName =>
+            _resourceTypeInstances is null
+            || _resourceTypeInstances.Count <= 1
+            ? null
+            : _resourceTypeInstances[^2].ResourceTypeName;
+
+        /// <summary>
+        /// Gets the resource type of the parent resource of the path.
+        /// </summary>
+        public Type? ParentResourceType =>
+            _resourceTypeInstances is null
+            || _resourceTypeInstances.Count <= 1
+            ? null
+            : _resourceTypeInstances[^2].ResourceType;
+
+        /// <summary>
+        /// Gets the resource id of the parent resource of the path.
+        /// </summary>
+        public string? ParentResourceId =>
+            _resourceTypeInstances is null
+            || _resourceTypeInstances.Count <= 1
+            ? null
+            : _resourceTypeInstances[^2].ResourceId;
+
+        /// <summary>
         /// Gets the action (if any) specified in the resource path.
         /// </summary>
         public string? Action =>
@@ -182,6 +209,17 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
             : HasAction
                 ? _rawResourcePath.Substring(0, _rawResourcePath.LastIndexOf('/'))
                 : _rawResourcePath;
+
+        /// <summary>
+        /// Gets the parent object identifier of the resource path.
+        /// </summary>
+        public string? ParentObjectId =>
+            string.IsNullOrWhiteSpace(_instanceId)
+            || string.IsNullOrWhiteSpace(_rawResourcePath)
+            || _resourceTypeInstances is null
+            || _resourceTypeInstances.Count <= 1
+            ? null
+            : string.Join('/', _rawResourcePath.Split('/')[..^2]);
 
         /// <summary>
         /// Creates a new resource identifier from a resource path optionally allowing an action.
@@ -316,7 +354,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
             {
                 var resourceTypePath = _resourceTypeInstances.Count == 1
                     ? _resourceTypeInstances[0].ResourceTypeName
-                    : string.Join("/", _resourceTypeInstances.Select(i => i.ResourceTypeName).ToArray());
+                    : string.Join("/", [.. _resourceTypeInstances.Select(i => i.ResourceTypeName)]);
 
                 return $"/instances/{_instanceId}/providers/{_resourceProvider}/{resourceTypePath}";
             }

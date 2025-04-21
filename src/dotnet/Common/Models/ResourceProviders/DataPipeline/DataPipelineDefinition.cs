@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Reflection.Metadata;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
 {
@@ -33,5 +34,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
         /// </summary>
         [JsonPropertyName("triggers")]
         public List<DataPipelineTrigger> Triggers { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the object identifier of the most recent snapshot of the data pipeline.
+        /// </summary>
+        [JsonPropertyName("most_recent_snapshot_object_id")]
+        public string MostRecentSnapshotObjectId { get; set; } = null!;
     }
 }

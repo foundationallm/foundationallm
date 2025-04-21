@@ -84,6 +84,20 @@ namespace FoundationaLLM
             services.AddHostedService<DataPipelineTriggerService>();
 
         /// <summary>
+        /// Registers the Data Pipeline Runner service used by the Data Pipeline API to the dependency injection container.
+        /// </summary>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder.</param>
+        public static void AddDataPipelineRunnerService(this IHostApplicationBuilder builder) =>
+            builder.Services.AddDataPipelineRunnerService();
+
+        /// <summary>
+        /// Registers the Data Pipeline Runner service used by the Data Pipeline API to the dependency injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        public static void AddDataPipelineRunnerService(this IServiceCollection services) =>
+            services.AddHostedService<DataPipelineRunnerService>();
+
+        /// <summary>
         /// Registers the Data Pipeline State service used by the Data Pipeline API to the dependency injection container.
         /// </summary>
         /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder.</param>
