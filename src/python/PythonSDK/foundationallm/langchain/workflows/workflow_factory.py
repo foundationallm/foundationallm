@@ -15,7 +15,7 @@ class WorkflowFactory:
     """
     Factory class for creating an external agent workflow instance based on the Agent workflow configuration.
     """   
-    def __init__(self, plugin_manager: PluginManager, operations_manager: OperationsManager):
+    def __init__(self, plugin_manager: PluginManager, operations_manager: OperationsManager = None):
         """
         Initializes the workflow factory.
 
