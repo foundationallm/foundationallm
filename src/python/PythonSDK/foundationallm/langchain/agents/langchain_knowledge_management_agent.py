@@ -302,8 +302,13 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         )
         prompt_object_id = prompt_object_properties.object_id
         prompt = ObjectUtils.get_object_by_id(prompt_object_id, request.objects, MultipartPrompt)
+        
+        agent_model_overrides = ai_model_object_properties.properties.get('model_parameters', None)
         language_model_factory = LanguageModelFactory(request.objects, self.config)
-        llm = language_model_factory.get_language_model(ai_model_object_id)
+        llm = language_model_factory.get_language_model(
+            ai_model_object_id=ai_model_object_id,
+            agent_model_parameter_overrides=agent_model_overrides
+        )                
 
         # Used by image analysis and LCEL chain only
         ai_model = ObjectUtils.get_object_by_id(ai_model_object_id, request.objects, AIModelBase)
