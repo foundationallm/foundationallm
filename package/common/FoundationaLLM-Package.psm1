@@ -36,7 +36,10 @@ function Merge-RoleAssignments {
     $roleAssignments | ForEach-Object {
 
         $securityPrincipal = $_
-        if ($securityPrincipal.principal_type -eq "User") {
+
+        if ($null -ne $securityPrincipal.principal_id){
+            $securityPrincipalId = $securityPrincipal.principal_id
+        } elseif ($securityPrincipal.principal_type -eq "User") {
             $securityPrincipalId = Get-EntraUserId -UPN $securityPrincipal.principal_name
         } else {
             $securityPrincipalId = Get-EntraSecurityGroupId -Name $securityPrincipal.principal_name
@@ -81,31 +84,37 @@ function Deploy-Package {
     )
 
     Write-Host "Deploying package from $($PackageRoot)" -ForegroundColor Blue
-    Write-Host "Creating prompts..."
 
-    $prompts = Get-Content "$($PackageRoot)/artifacts/prompts.json" `
-        | Resolve-Placeholders -Parameters $Parameters `
-        | ConvertFrom-Json -AsHashTable
-    
-    $prompts | ForEach-Object {
+    if (Test-Path -Path "$($PackageRoot)/artifacts/agent.json") {
 
-        $prompt = $_
+        Write-Host "Creating prompts..."
 
-        Write-Host "Creating prompt: $($prompt.name)"
+        $prompts = Get-Content "$($PackageRoot)/artifacts/prompts.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+        
+        $prompts | ForEach-Object {
 
-        if ($prompt["prefix"].EndsWith(".txt")) {
-            # The actual content of the prompt is in a TXT file.
-            $promptBody = Get-Content "$($PackageRoot)/artifacts/$($prompt["prefix"])" -Raw -Encoding UTF8 `
-                | Resolve-Placeholders -Parameters $Parameters
-            $prompt["prefix"] = $promptBody
+            $prompt = $_
+
+            Write-Host "Creating prompt: $($prompt.name)"
+
+            if ($prompt["prefix"].EndsWith(".txt")) {
+                # The actual content of the prompt is in a TXT file.
+                $promptBody = Get-Content "$($PackageRoot)/artifacts/$($prompt["prefix"])" -Raw -Encoding UTF8 `
+                    | Resolve-Placeholders -Parameters $Parameters
+                $prompt["prefix"] = $promptBody
+            }
+
+            $promptResult = (Merge-Prompt -Prompt $prompt)
+            Write-Host "Prompt created: $($promptResult)" -ForegroundColor Green
         }
-
-        $promptResult = (Merge-Prompt -Prompt $prompt)
-        Write-Host "Prompt created: $($promptResult)" -ForegroundColor Green
     }
 
     if (Test-Path -Path "$($PackageRoot)/artifacts/agent.json") {
     
+        Write-Host "Creating agent..."
+
         $agent = Get-Content "$($PackageRoot)/artifacts/agent.json" `
             | Resolve-Placeholders -Parameters $Parameters `
             | ConvertFrom-Json -AsHashTable
@@ -139,6 +148,8 @@ function Deploy-Package {
         $agentResult = (Merge-Agent -Agent $agent)
         Write-Host "Agent created: $($agentResult)" -ForegroundColor Green
     }
+
+    Write-Host "Creating role assignments..."
 
     Merge-RoleAssignments -PackageRoot $PackageRoot -Parameters $Parameters
 }
