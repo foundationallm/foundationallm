@@ -16,13 +16,17 @@ namespace FoundationaLLM.DataPipelineEngine.Clients
         IDataPipelineStateService dataPipelineStateService) : IDataPipelineServiceClient
     {
         private readonly IDataPipelineTriggerService _dataPipelineTriggerService =
-            (hostedServices.Single(hs => hs is IDataPipelineTriggerService) as IDataPipelineTriggerService)!;
+            (hostedServices.SingleOrDefault(hs => hs is IDataPipelineTriggerService) as IDataPipelineTriggerService)!;
         private readonly IDataPipelineStateService _dataPipelineStateService = dataPipelineStateService;
 
         /// <inheritdoc/>
         public IEnumerable<IResourceProviderService> ResourceProviders
         {
-            set => _dataPipelineTriggerService.ResourceProviders = value;
+            set
+            {
+                if (null != _dataPipelineTriggerService)
+                    _dataPipelineTriggerService.ResourceProviders = value;
+            }
         }
 
         /// <inheritdoc/>

@@ -32,6 +32,8 @@ The following App Configuration value have been added:
 | `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Data Pipeline Backend Worker service to connect to the dedicated storage account. |
 | `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Queue` | `frontend-worker` | The queue used to process data pipeline work items by the Data Pipeline Backend Worker service. |
 | `FoundationaLLM:Events:Profiles:DataPipelineAPI` | `{"EventProcessingCycleSeconds":60,"Topics":[]}` | The event processing settings for the Data Pipeline API. |
+| `FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker` | `{"EventProcessingCycleSeconds":60,"Topics":[]}` | The event processing settings for the Data Pipeline Frontend Worker service. |
+| `FoundationaLLM:Events:Profiles:DataPipelineBackendWorker` | `{"EventProcessingCycleSeconds":60,"Topics":[]}` | The event processing settings for the Data Pipeline Backend Worker service. |
 
 >[!IMPORTANT]
 >A new Azure Cosmos DB container named `DataPipelines` must be created with a parition key of `/runId` and an autoscale transactional throughput of maximum 4000 RU/s.

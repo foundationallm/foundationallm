@@ -1,9 +1,9 @@
 ﻿namespace FoundationaLLM.DataPipelineEngine.Models.Configuration
 {
     /// <summary>
-    /// Provides the base settings for Data Pipeline worker services.
+    /// Provides the settings for the Data Pipeline Worker service.
     /// </summary>
-    public class DataPipelineWorkerServiceSettingsBase : DataPipelineServiceSettingsBase
+    public class DataPipelineWorkerServiceSettings : DataPipelineServiceSettingsBase
     {
         /// <summary>
         /// Gets or sets the name of the queue used for processing data pipeline work items.
