@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using FoundationaLLM.Common.Models.DataPipelines;
+using Microsoft.Azure.Cosmos;
 
 namespace FoundationaLLM.DataPipelineEngine.Interfaces
 {
@@ -33,7 +34,7 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
         /// <typeparam name="T">The type of the items to retrieve.</typeparam>
         /// <param name="query">The query definition used to retrieve the items.</param>
         /// <returns>The list of retrieved items.</returns>
-        Task<List<T>> RetrieveItems<T>(
+        Task<List<T>> RetrieveItemsAsync<T>(
             QueryDefinition query);
 
         /// <summary>
@@ -46,5 +47,12 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
         Task<T> RetrieveItem<T>(
             string id,
             string partitionKey);
+
+        /// <summary>
+        /// Patches the status of data pipeline run work items in Azure Cosmos DB.
+        /// </summary>
+        /// <param name="workItems">The list of data pipeline work items that need the status update.</param>
+        Task PatchDataPipelineRunWorkItemsStatusAsync(
+            List<DataPipelineRunWorkItem> workItems);
     }
 }

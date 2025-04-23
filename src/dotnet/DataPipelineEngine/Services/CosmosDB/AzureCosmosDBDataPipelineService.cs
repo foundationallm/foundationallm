@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
+using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Text;
 using FoundationaLLM.DataPipelineEngine.Exceptions;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
@@ -57,6 +58,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
                     _settings.Endpoint,
                     ServiceContext.AzureCredential)
                 .WithCustomSerializer(serializer)
+                .WithBulkExecution(true)
                 .WithConnectionModeGateway()
                 .Build();
 
@@ -102,7 +104,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
             return response.Resource;
         }
 
-        public async Task<List<T>> RetrieveItems<T>(
+        public async Task<List<T>> RetrieveItemsAsync<T>(
             QueryDefinition query)
         {
             var results = _dataPipelineContainer.GetItemQueryIterator<T>(query);
@@ -142,6 +144,27 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
 
             var result = await batch.ExecuteAsync();
             return result.IsSuccessStatusCode;
+        }
+
+        public async Task PatchDataPipelineRunWorkItemsStatusAsync(
+            List<DataPipelineRunWorkItem> workItems)
+        {
+            var concurrentTasks = new List<Task>();
+            foreach (var workItem in workItems)
+                concurrentTasks.Add(
+                    _dataPipelineContainer.PatchItemAsync<DataPipelineRunWorkItem>(
+                        id: workItem.Id,
+                        partitionKey: new PartitionKey(workItem.RunId),
+                        patchOperations: new[]
+                        {
+                            PatchOperation.Replace("/completed", workItem.Completed),
+                            PatchOperation.Replace("/successful", workItem.Successful),
+                            PatchOperation.Replace("/error", workItem.Error)
+                        }
+                    )
+                );
+
+            await Task.WhenAll(concurrentTasks);
         }
     }
 }

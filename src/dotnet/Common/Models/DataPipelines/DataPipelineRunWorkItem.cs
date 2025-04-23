@@ -47,6 +47,27 @@ namespace FoundationaLLM.Common.Models.DataPipelines
         public required string ArtifactId { get; set; }
 
         /// <summary>
+        /// Gets or sets the completion status of the work item.
+        /// </summary>
+        [JsonPropertyName("completed")]
+        [JsonPropertyOrder(6)]
+        public bool Completed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the success status of the work item.
+        /// </summary>
+        [JsonPropertyName("successful")]
+        [JsonPropertyOrder(7)]
+        public bool Successful { get; set; }
+
+        /// <summary>
+        /// Gets or sets the error message if the work item failed.
+        /// </summary>
+        [JsonPropertyName("error")]
+        [JsonPropertyOrder(8)]
+        public string? Error { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DataPipelineRunWorkItem"/> class.
         /// </summary>
         public DataPipelineRunWorkItem() =>

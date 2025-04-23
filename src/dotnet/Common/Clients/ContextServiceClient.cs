@@ -91,7 +91,7 @@ namespace FoundationaLLM.Common.Clients
                         ? new ContextServiceResponse<ContextFileRecord>
                         {
                             Success = false,
-                            ErrorMessage = "An error occurred deserializing the response from the service."
+                            ErrorMessage = $"An error occurred deserializing the response from the service for file {fileId}."
                         }
                         : new ContextServiceResponse<ContextFileRecord>
                         {
@@ -101,22 +101,22 @@ namespace FoundationaLLM.Common.Clients
                 }
 
                 _logger.LogError(
-                    "An error occurred while retrieving the file record. Status code: {StatusCode}.",
-                    responseMessage.StatusCode);
+                    "An error occurred while retrieving the file record for file {FileId}. Status code: {StatusCode}.",
+                    fileId, responseMessage.StatusCode);
 
                 return new ContextServiceResponse<ContextFileRecord>
                 {
                     Success = false,
-                    ErrorMessage = "The service responded with an error status code."
+                    ErrorMessage = $"The service responded with an error status code for file {fileId}."
                 };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while retrieving the file record.");
+                _logger.LogError(ex, "An error occurred while retrieving the file record for file {FileId}.", fileId);
                 return new ContextServiceResponse<ContextFileRecord>
                 {
                     Success = false,
-                    ErrorMessage = "An error occurred while retrieving the file record."
+                    ErrorMessage = $"An error occurred while retrieving the file record for file {fileId}."
                 };
             }
         }

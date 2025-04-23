@@ -8,7 +8,6 @@ using FoundationaLLM.Common.Constants.DataPipelines;
 using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
@@ -22,7 +21,6 @@ using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Logging;
-using System.Security;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -357,13 +355,14 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 }                    
             }
 
+            List<AttachmentProperties> result = [];
+
             #region Prepare legacy attachments
 
             var legacyAttachments = legacyAttachmentObjectIds
                 .ToAsyncEnumerable()
                 .SelectAwait(async x => await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(x, _callContext.CurrentUserIdentity!));
-
-            List<AttachmentProperties> result = [];            
+            
             await foreach (var attachment in legacyAttachments)
             {
                 if (string.IsNullOrWhiteSpace(attachment.SecondaryProvider))
@@ -486,69 +485,81 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 .SingleOrDefault();
 
             var fileProcessingTasks = new Dictionary<string, Task<bool>>();
+            var candidateResult = new Dictionary<string, AttachmentProperties>();
+
             var contextAttachmentResponses = contextAttachmentObjectIds
                 .ToAsyncEnumerable()
                 .SelectAwait(async x => await _contextServiceClient.GetFileRecord(_instanceId, x));
             await foreach(var contextFileResponse in contextAttachmentResponses)
             {
-                if (contextFileResponse.Result?.FileProcessingType == FileProcessingTypes.ConversationDataPipeline)
+                if (contextFileResponse.Success)
                 {
-                    // The file must be processed by the conversation data pipeline.
+                    candidateResult[contextFileResponse.Result!.FileObjectId] = new AttachmentProperties
+                    {
+                        OriginalFileName = contextFileResponse.Result!.FileName,
+                        ContentType = contextFileResponse.Result.ContentType!,
+                        Provider = ContextProviderNames.FoundationaLLM_ContextAPI,
+                        ProviderFileName = contextFileResponse.Result.FilePath
+                    };
 
-                    if (knowledgeSearchSettings == null)
-                        throw new OrchestrationException($"The agent {_agent.Name} does not have the required knowledge search settings set.");
+                    if (contextFileResponse.Result.FileProcessingType == FileProcessingTypes.ConversationDataPipeline)
+                    {
+                        // The file must be processed by the conversation data pipeline.
 
-                    if (string.IsNullOrWhiteSpace(_vectorStoreId))
-                        throw new OrchestrationException($"The agent {_agent.Name} does not have a valid vector store identifier for conversation {_conversationId}.");
+                        if (knowledgeSearchSettings == null)
+                            throw new OrchestrationException($"The agent {_agent.Name} does not have the required knowledge search settings set.");
 
-                    var newDataPipelineRun = DataPipelineRun.Create(
-                        knowledgeSearchSettings.FileUploadDataPipelineObjectId,
-                        DataPipelineTriggerNames.DefaultManualTrigger,
-                        new()
-                        {
+                        if (string.IsNullOrWhiteSpace(_vectorStoreId))
+                            throw new OrchestrationException($"The agent {_agent.Name} does not have a valid vector store identifier for conversation {_conversationId}.");
+
+                        var newDataPipelineRun = DataPipelineRun.Create(
+                            knowledgeSearchSettings.FileUploadDataPipelineObjectId,
+                            DataPipelineTriggerNames.DefaultManualTrigger,
+                            new()
+                            {
                             { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId,  contextFileResponse.Result.FileObjectId},
                             { DataPipelineTriggerParameterNames.StageIndexVectorDatabaseObjectId, knowledgeSearchSettings.FileUploadVectorDatabaseObjectId },
                             { DataPipelineTriggerParameterNames.StageIndexVectorStoreObjectId,
                                 ResourcePath.Join(
                                     knowledgeSearchSettings.FileUploadVectorDatabaseObjectId,
                                     $"vectorStores/{_vectorStoreId}") }
-                        },
-                        _callContext.CurrentUserIdentity!.UPN!,
-                        DataPipelineRunProcessors.Frontend);
+                            },
+                            _callContext.CurrentUserIdentity!.UPN!,
+                            DataPipelineRunProcessors.Frontend);
 
-                    fileProcessingTasks[contextFileResponse.Result.FileObjectId] =
-                        PollingResourceRunner<DataPipelineRun>.Start(
-                            _instanceId,
-                            _dataPipelineResourceProvider,
-                            newDataPipelineRun,
-                            TimeSpan.FromSeconds(1),
-                            TimeSpan.FromSeconds(300),
-                            _logger,
-                            ServiceContext.ServiceIdentity);
+                        fileProcessingTasks[contextFileResponse.Result.FileObjectId] =
+                            PollingResourceRunner<DataPipelineRun>.Start(
+                                _instanceId,
+                                _dataPipelineResourceProvider,
+                                newDataPipelineRun,
+                                TimeSpan.FromSeconds(1),
+                                TimeSpan.FromSeconds(300),
+                                _logger,
+                                ServiceContext.ServiceIdentity!);
+                    }
                 }
-
-                await Task.WhenAll(fileProcessingTasks.Values);
-
-                var failedFiles = fileProcessingTasks
-                    .Where(kvp => !kvp.Value.Result)
-                    .Select(kvp => kvp.Key)
-                    .ToList();
-
-                if (failedFiles.Count > 0)
-                {
-                    var failedFileNames = string.Join(Environment.NewLine, failedFiles);
-                    _logger.LogError("The processing failed for the following files: {FileNames}", failedFileNames);
-                }
-
-                result.Add(new AttachmentProperties
-                {
-                    OriginalFileName = contextFileResponse.Result!.FileName,
-                    ContentType = contextFileResponse.Result.ContentType!,
-                    Provider = ContextProviderNames.FoundationaLLM_ContextAPI,
-                    ProviderFileName = contextFileResponse.Result.FilePath                    
-                });
+                else
+                    _logger.LogError(contextFileResponse.ErrorMessage);
             }
-            return result;
+
+            await Task.WhenAll(fileProcessingTasks.Values);
+
+            var failedFiles = fileProcessingTasks
+                .Where(kvp => !kvp.Value.Result)
+                .Select(kvp => kvp.Key)
+                .ToList();
+
+            if (failedFiles.Count > 0)
+            {
+                var failedFileObjectIds = string.Join(Environment.NewLine, failedFiles);
+                _logger.LogError("The processing failed for the following files: {FileObjectIds}", failedFileObjectIds);
+
+
+                foreach (var failedFile in failedFiles)
+                    candidateResult.Remove(failedFile);
+            }
+
+            return [.. result, .. candidateResult.Values];
         }
 
         private async Task<CompletionResponse> GetCompletionResponse(string operationId, LLMCompletionResponse llmCompletionResponse)

@@ -48,6 +48,9 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
         /// <summary>
         /// Gets or sets the name of the processor that is used to process the data pipeline run.
         /// </summary>
+        /// <remarks>
+        /// Must be one of the values from <see cref="DataPipelineRunProcessors"/>.
+        /// </remarks>
         [JsonPropertyName("processor")]
         [JsonPropertyOrder(6)]
         public required string Processor { get; set; }

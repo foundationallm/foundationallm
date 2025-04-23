@@ -1,31 +1,54 @@
-﻿using FoundationaLLM.Common.Extensions;
+﻿using Azure.Storage.Queues;
+using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.DataPipelines;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Exceptions;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
+using FoundationaLLM.DataPipelineEngine.Models.Configuration;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace FoundationaLLM.DataPipelineEngine.Services
 {
     /// <summary>
     /// Provides capabilities for running data pipelines.
     /// </summary>
-    /// <param name="cosmosDBService">The Azure Cosmos DB service providing database services.</param>
-    /// <param name="serviceProvider">The service collection provided by the dependency injection container.</param>
-    /// <param name="logger">The logger used for logging.</param>
-    public class DataPipelineRunnerService(
-        IAzureCosmosDBDataPipelineService cosmosDBService,
-        IServiceProvider serviceProvider,
-        ILogger<DataPipelineRunnerService> logger) :
-            DataPipelineBackgroundService(
-                TimeSpan.FromMinutes(1),
-                serviceProvider,
-                logger), IDataPipelineRunnerService
+    public class DataPipelineRunnerService :
+            DataPipelineBackgroundService, IDataPipelineRunnerService
     {
         protected override string ServiceName => "Data Pipeline Runner Service";
 
-        private readonly IAzureCosmosDBDataPipelineService _cosmosDBService = cosmosDBService;
+        private readonly DataPipelineServiceSettings _settings;
+        private readonly IAzureCosmosDBDataPipelineService _cosmosDBService;
+        private readonly QueueClient _frontendQueueClient;
+        private readonly QueueClient _backendQueueClient;
+
+        /// <summary>
+        /// Initializes a new instance of the service.
+        /// </summary>
+        /// <param name="cosmosDBService">The Azure Cosmos DB service providing database services.</param>
+        /// <param name="serviceProvider">The service collection provided by the dependency injection container.</param>
+        /// <param name="logger">The logger used for logging.</param>
+        public DataPipelineRunnerService(
+            IAzureCosmosDBDataPipelineService cosmosDBService,
+            IServiceProvider serviceProvider,
+            IOptions<DataPipelineServiceSettings> options,
+            ILogger<DataPipelineRunnerService> logger) :
+                base(TimeSpan.FromMinutes(1), serviceProvider, logger)
+        {
+            _settings = options.Value;
+            _cosmosDBService = cosmosDBService;
+
+            var queueServiceClient = new QueueServiceClient(
+                new Uri($"https://{_settings.Storage.AccountName}.queue.core.windows.net"),
+                ServiceContext.AzureCredential);
+            _frontendQueueClient = queueServiceClient.GetQueueClient(_settings.FrontendWorkerQueue);
+            _backendQueueClient = queueServiceClient.GetQueueClient(_settings.BackendWorkerQueue);
+        }
 
         /// <inheritdoc/>
         protected override async Task ExecuteAsyncInternal(
@@ -64,13 +87,52 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 .Concat(workItems)
                 .ToArray();
 
-            var result = await _cosmosDBService.UpsertDataPipelineRunBatchAsync(combinedArray);
+            var upsertResultSuccessfull = await _cosmosDBService.UpsertDataPipelineRunBatchAsync(combinedArray);
 
-            if (!result)
+            if (!upsertResultSuccessfull)
                 throw new DataPipelineServiceException($"Failed to upsert data pipeline run {dataPipelineRun.RunId}.");
 
-            // Send the newly created workitems to the work item queue
+            #region Send the newly created workitems to the work item queue
 
+            var queueClient = dataPipelineRun.Processor switch
+            {
+                DataPipelineRunProcessors.Frontend => _frontendQueueClient,
+                DataPipelineRunProcessors.Backend => _backendQueueClient,
+                _ => throw new DataPipelineServiceException(
+                        $"Unsupported processor type: {dataPipelineRun.Processor}",
+                        StatusCodes.Status400BadRequest)
+            };
+
+            _logger.LogInformation("Starting to queue data pipeline work items for {ProcessorName}...",
+                dataPipelineRun.Processor);
+
+            var failedWorkItems = new List<DataPipelineRunWorkItem>();
+
+            foreach (var workItem in workItems)
+            {
+                try
+                {
+                    await queueClient.SendMessageAsync(workItem.Id);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to queue work item {WorkItemId} for {ProcessorName}.",
+                        workItem.Id, dataPipelineRun.Processor);
+                    workItem.Completed = true;
+                    workItem.Successful = false;
+                    workItem.Error = "The data pipeline item could not be queued.";
+                    failedWorkItems.Add(workItem);
+                }
+
+            }
+
+            if (failedWorkItems.Count > 0)
+                await _cosmosDBService.PatchDataPipelineRunWorkItemsStatusAsync(failedWorkItems);
+
+            _logger.LogInformation("Finished queueing data pipeline work items for {ProcessorName}.",
+                dataPipelineRun.Processor);
+
+            #endregion
 
             return dataPipelineRun;
         }
