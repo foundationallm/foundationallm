@@ -1,4 +1,6 @@
-﻿using FoundationaLLM.Common.Interfaces.Plugins;
+﻿using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Interfaces.Plugins;
+using FoundationaLLM.Common.Models.DataPipelines;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 {
@@ -14,5 +16,17 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
         IServiceProvider serviceProvider)
         : PluginBase(pluginParameters, packageManager, serviceProvider), IDataPipelineStagePlugin
     {
+        protected override string Name => PluginNames.TEXTPARTITIONING_DATAPIPELINESTAGE;
+
+        /// <inheritdoc/>
+        public async Task<List<DataPipelineRunWorkItem>> GetStartingStageWorkItems(
+            List<DataPipelineContentItem> contentItems,
+            string dataPipelineRunId,
+            string dataPipelineStageName)
+        {
+            await Task.CompletedTask;
+            throw new DataPipelineException(
+                $"The {nameof(TextExtractionDataPipelineStagePlugin)} data pipeline stage plugin cannot be used for a starting stage.");
+        }
     }
 }

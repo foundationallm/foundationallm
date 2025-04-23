@@ -295,7 +295,7 @@
 				"first_version": "0.8.0"
 			}
 		]
-	},	
+	},
 	{
 		"namespace": "ResourceProviders:Configuration",
 		"dependency_injection_key": {
@@ -1251,7 +1251,7 @@
 		"configuration_keys": [
 			{
 				"name": "CosmosDB:Endpoint",
-				"description": "The URL of the Azure Cosmos DB service used by the Data Pipeline API file service.",
+				"description": "The URL of the Azure Cosmos DB service used by the Data Pipeline API service.",
 				"secret": "",
 				"value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
 				"content_type": "",
@@ -1259,7 +1259,7 @@
 			},
 			{
 				"name": "CosmosDB:Database",
-				"description": "The name of the Azure Cosmos DB database used by the Data Pipeline API file service.",
+				"description": "The name of the Azure Cosmos DB database used by the Data Pipeline API service.",
 				"secret": "",
 				"value": "database",
 				"content_type": "",
@@ -1267,9 +1267,41 @@
 			},
 			{
 				"name": "CosmosDB:Containers",
-				"description": "The comma-separated list of database containers used by the Data Pipeline API file service.",
+				"description": "The comma-separated list of database containers used by the Data Pipeline API service.",
 				"secret": "",
 				"value": "Context",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "Storage:AccountName",
+				"description": "The Azure Storage account for the FoundationaLLM Data Pipeline API service.",
+				"secret": "",
+				"value": "${env:DATAPIPELINEAPI_AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "Storage:AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "FrontendWorkerQueue",
+				"description": "The queue used to submit data pipeline work items for the Data Pipeline Frontend Worker service.",
+				"secret": "",
+				"value": "frontend-worker",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "BackendWorkerQueue",
+				"description": "The queue used to submit data pipeline work items for the Data Pipeline Backend Worker service.",
+				"secret": "",
+				"value": "backend-worker",
 				"content_type": "",
 				"first_version": "0.9.7"
 			}
@@ -1301,6 +1333,63 @@
 		]
 	},
 	{
+		"namespace": "APIEndpoints:DataPipelineFrontendWorker:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section for the FoundationaLLM Data Pipeline Frontend Worker service."
+		},
+		"configuration_keys": [
+			{
+				"name": "CosmosDB:Endpoint",
+				"description": "The URL of the Azure Cosmos DB service used by the Data Pipeline Frontend Worker service.",
+				"secret": "",
+				"value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "CosmosDB:Database",
+				"description": "The name of the Azure Cosmos DB database used by the Data Pipeline Frontend Worker service.",
+				"secret": "",
+				"value": "database",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "CosmosDB:Containers",
+				"description": "The comma-separated list of database containers used by the Data Pipeline Frontend Worker service.",
+				"secret": "",
+				"value": "Context",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "Storage:AccountName",
+				"description": "The Azure Storage account for the FoundationaLLM Data Pipeline Frontend Worker service.",
+				"secret": "",
+				"value": "${env:DATAPIPELINEFRONTENDWORKER_AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "Storage:AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "Queue",
+				"description": "The queue used to process data pipeline work items by the Data Pipeline Frontend Worker service.",
+				"secret": "",
+				"value": "frontend-worker",
+				"content_type": "",
+				"first_version": "0.9.7"
+			}
+		]
+	},
+	{
 		"namespace": "APIEndpoints:DataPipelineBackendWorker:Essentials",
 		"dependency_injection_key": null,
 		"configuration_section": {
@@ -1320,6 +1409,63 @@
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Data Pipeline Backend Worker service.",
 				"secret": "appinsights-connectionstring",
 				"value": "",
+				"content_type": "",
+				"first_version": "0.9.7"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:DataPipelineBackendWorker:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section for the FoundationaLLM Data Pipeline Backend Worker service."
+		},
+		"configuration_keys": [
+			{
+				"name": "CosmosDB:Endpoint",
+				"description": "The URL of the Azure Cosmos DB service used by the Data Pipeline Backend Worker service.",
+				"secret": "",
+				"value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "CosmosDB:Database",
+				"description": "The name of the Azure Cosmos DB database used by the Data Pipeline Backend Worker service.",
+				"secret": "",
+				"value": "database",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "CosmosDB:Containers",
+				"description": "The comma-separated list of database containers used by the Data Pipeline Backend Worker service.",
+				"secret": "",
+				"value": "Context",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "Storage:AccountName",
+				"description": "The Azure Storage account for the FoundationaLLM Data Pipeline Backend Worker service.",
+				"secret": "",
+				"value": "${env:DATAPIPELINEBACKENDWORKER_AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "Storage:AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "Queue",
+				"description": "The queue used to process data pipeline work items by the Data Pipeline Backend Worker service.",
+				"secret": "",
+				"value": "backend-worker",
 				"content_type": "",
 				"first_version": "0.9.7"
 			}

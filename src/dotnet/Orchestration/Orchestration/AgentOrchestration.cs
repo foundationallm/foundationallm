@@ -513,7 +513,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                     knowledgeSearchSettings.FileUploadVectorDatabaseObjectId,
                                     $"vectorStores/{_vectorStoreId}") }
                         },
-                        _callContext.CurrentUserIdentity!.UPN!);
+                        _callContext.CurrentUserIdentity!.UPN!,
+                        DataPipelineRunProcessors.Frontend);
 
                     fileProcessingTasks[contextFileResponse.Result.FileObjectId] =
                         PollingResourceRunner<DataPipelineRun>.Start(

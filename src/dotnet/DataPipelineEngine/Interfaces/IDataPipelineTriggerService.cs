@@ -14,7 +14,7 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="dataPipelineRun">The data pipeline run to create.</param>
-        /// <param name="userIdentiy">The identity of the user running the operation.</param>
+        /// <param name="userIdentity">The identity of the user running the operation.</param>
         /// <returns>The newly created data pipeline run.</returns>
         Task<DataPipelineRun?> TriggerDataPipeline(
             string instanceId,

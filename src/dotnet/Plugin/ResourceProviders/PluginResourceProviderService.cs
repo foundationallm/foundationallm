@@ -60,12 +60,16 @@ namespace FoundationaLLM.Plugin.ResourceProviders
             ],
             useInternalReferencesStore: true)
     {
+        private readonly Dictionary<string, PluginPackageManagerInstance> _pluginPackageManagerInstances = [];
+
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
             PluginResourceProviderMetadata.AllowedResourceTypes;
 
+        /// <inheritdoc/>
         protected override string _name => ResourceProviderNames.FoundationaLLM_Plugin;
 
+        /// <inheritdoc/>
         protected override async Task InitializeInternal() =>
             await Task.CompletedTask;
 
@@ -381,6 +385,10 @@ namespace FoundationaLLM.Plugin.ResourceProviders
         private async Task<PluginPackageManagerInstance> CreatePluginPackageManagerInstance(
             string pluginPackageName)
         {
+            // Check if the package manager instance is already cached and return it if so.
+            if (_pluginPackageManagerInstances.TryGetValue(pluginPackageName, out var cachedPackageManagerInstance))
+                return cachedPackageManagerInstance;
+
             var existingPluginPackageReference =
                 await _resourceReferenceStore!.GetResourceReference(pluginPackageName);
 
@@ -398,6 +406,9 @@ namespace FoundationaLLM.Plugin.ResourceProviders
 
             var packageManagerInstance = await LoadPackage(
                 new MemoryStream(pluginPackageBinaryContent.ToArray()));
+
+            // Add the newly created package manager instance to the cache.
+            _pluginPackageManagerInstances[pluginPackageName] = packageManagerInstance;
 
             return packageManagerInstance;
         }

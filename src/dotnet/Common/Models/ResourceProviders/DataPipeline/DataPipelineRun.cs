@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+﻿using FoundationaLLM.Common.Constants.DataPipelines;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using System.Text.Json.Serialization;
 
@@ -45,20 +46,27 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
         public required string TriggeringUPN { get; set; }
 
         /// <summary>
+        /// Gets or sets the name of the processor that is used to process the data pipeline run.
+        /// </summary>
+        [JsonPropertyName("processor")]
+        [JsonPropertyOrder(6)]
+        public required string Processor { get; set; }
+
+        /// <summary>
         /// Gets or sets the list of active stages in the data pipeline run.
         /// </summary>
         [JsonPropertyName("active_stages")]
-        [JsonPropertyOrder(6)]
+        [JsonPropertyOrder(7)]
         public List<string> ActiveStages { get; set; } = [];
 
         /// <inheritdoc/>
         [JsonPropertyName("completed")]
-        [JsonPropertyOrder(7)]
+        [JsonPropertyOrder(8)]
         public bool Completed { get; set; }
 
         /// <inheritdoc/>
         [JsonPropertyName("successful")]
-        [JsonPropertyOrder(8)]
+        [JsonPropertyOrder(9)]
         public bool Successful { get; set; }
 
         /// <summary>
@@ -74,18 +82,22 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
         /// <param name="triggerName">The name of the data pipeline trigger.</param>
         /// <param name="triggerParameterValues">The dictionary of data pipeline parameter values required by the trigger.</param>
         /// <param name="upn">The UPN that is associated with the data pipeline run.</param>
+        /// <param name="processor">The name of the processor that is used to process the data pipeline run.
+        /// Must be one of the values from <see cref="DataPipelineRunProcessors"/>.</param>
         /// <returns></returns>
         public static DataPipelineRun Create(
             string dataPipelineObjectId,
             string triggerName,
             Dictionary<string, object> triggerParameterValues,
-            string upn) =>
+            string upn,
+            string processor) =>
             new()
             {
                 DataPipelineObjectId = dataPipelineObjectId,
                 TriggerName = triggerName,
                 TriggerParameterValues = triggerParameterValues,
                 UPN = upn,
+                Processor = processor,
 
                 ObjectId = ResourcePath.Join(dataPipelineObjectId, "dataPipelineRuns/new"),
                 Name = string.Empty,

@@ -253,10 +253,22 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials";
         
         /// <summary>
+        /// Configuration section for the FoundationaLLM Data Pipeline Frontend Worker service.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Configuration =
+            "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration";
+        
+        /// <summary>
         /// Configuration section used to identify the essential settings for the Data Pipeline Backend Worker service.
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Essentials =
             "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials";
+        
+        /// <summary>
+        /// Configuration section for the FoundationaLLM Data Pipeline Backend Worker service.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Configuration =
+            "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration";
         
         /// <summary>
         /// Configuration section used to identify the essential settings for the Context API.

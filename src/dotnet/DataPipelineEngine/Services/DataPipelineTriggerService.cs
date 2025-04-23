@@ -4,7 +4,6 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
-using FoundationaLLM.Common.Models.ResourceProviders.Plugin;
 using FoundationaLLM.Common.Validation;
 using FoundationaLLM.DataPipelineEngine.Exceptions;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
@@ -24,55 +23,26 @@ namespace FoundationaLLM.DataPipelineEngine.Services
     public class DataPipelineTriggerService(
         IResourceValidatorFactory resourceValidatorFactory,
         IServiceProvider serviceProvider,
-        ILogger<DataPipelineTriggerService> logger) : BackgroundService, IDataPipelineTriggerService
+        ILogger<DataPipelineTriggerService> logger) :
+            DataPipelineBackgroundService(
+                TimeSpan.FromMinutes(1),
+                serviceProvider,
+                logger),
+            IDataPipelineTriggerService
     {
+        protected override string ServiceName => "Data Pipeline Trigger Service";
+
         private readonly StandardValidator _validator = new(
             resourceValidatorFactory,
             s => new DataPipelineServiceException(s, StatusCodes.Status400BadRequest));
-        private readonly IServiceProvider _serviceProvider = serviceProvider;
-        private readonly ILogger<DataPipelineTriggerService> _logger = logger;
-
-        private Task _initializationTask = null!;
-
-        private IResourceProviderService _dataPipelineResourceProvider = null!;
-        private IResourceProviderService _pluginResourceProvider = null!;
         private IDataPipelineRunnerService _dataPipelineRunnerService = null!;
 
         #region Initialization
 
         /// <inheritdoc/>
-        public IEnumerable<IResourceProviderService> ResourceProviders
-        {
-            set
-            {
-                _dataPipelineResourceProvider = value
-                    .Single(rp => rp.Name == ResourceProviderNames.FoundationaLLM_DataPipeline);
-
-                _pluginResourceProvider = value
-                    .Single(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Plugin);
-            }
-        }
-
-        private async Task EnsureDependencyInjectionResolution(
+        protected override void EnsureDependencyInjectionResolutionInternal(
             CancellationToken stoppingToken)
         {
-            // Wait until the Data Pipeline Resource Provider is set and then
-            // wait for its initialization task to complete.
-            while (_dataPipelineResourceProvider == null)
-            {
-                _logger.LogWarning("The Data Pipeline Resource Provider is not set. Waiting for it to be set...");
-                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
-                if (stoppingToken.IsCancellationRequested)
-                {
-                    _logger.LogInformation("The Data Pipeline Trigger service is stopping.");
-                    return;
-                }
-            }
-
-            _logger.LogInformation("The Data Pipeline Resource Provider is set. Waiting for its initialization task to complete...");
-            await _dataPipelineResourceProvider.InitializationTask;
-            _logger.LogInformation("The Data Pipeline Resource Provider is initialized.");
-
             var hostedServices = _serviceProvider.GetRequiredService<IEnumerable<IHostedService>>();
             _dataPipelineRunnerService =
                 (hostedServices.Single(hs => hs is IDataPipelineRunnerService) as IDataPipelineRunnerService)!;
@@ -85,25 +55,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
         #endregion
 
-        /// <inheritdoc/>
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsyncInternal(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("The Data Pipeline Trigger service is starting...");
-
-            // Perform dependency injection resolution and wait for the initialization task to complete.
-            // This is necessary to ensure that all dependencies are resolved before the service starts and
-            // cirucular references are avoided.
-            _initializationTask = EnsureDependencyInjectionResolution(stoppingToken);
-            await _initializationTask;
-
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                _logger.LogInformation("The Data Pipeline Trigger service is running.");
-                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
-            }
-
-            _logger.LogInformation("The Data Pipeline Trigger service is stopping.");
+            _logger.LogInformation("The {ServiceName} service is executing...", ServiceName);
+            await Task.CompletedTask;
         }
+
 
         /// <inheritdoc/>
         public async Task<DataPipelineRun?> TriggerDataPipeline(
@@ -135,33 +92,23 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             dataPipelineRun.DataPipelineObjectId = dataPipelineSnapshot.ObjectId!;
             var dataPipeline = dataPipelineSnapshot.DataPipelineDefinition;
 
-            var dataSourcePluginDefinition = await _pluginResourceProvider.GetResourceAsync<PluginDefinition>(
-                dataPipeline.DataSource.PluginObjectId,
-                userIdentity);
-
-            var pluginPackage = await _pluginResourceProvider.ExecuteResourceActionAsync<PluginPackageDefinition, object, ResourceProviderActionResult<PluginPackageManagerInstance>>(
+            var dataSourcePlugin = await GetDataSourcePlugin(
                 instanceId,
-                ResourcePath.GetResourcePath(dataSourcePluginDefinition.PluginPackageObjectId).MainResourceId!,
-                ResourceProviderActions.LoadPluginPackage,
-                null!,
-                userIdentity);
-            var packageManager = pluginPackage.Resource!.Instance;
-
-            var dataSourcePlugin = packageManager.GetDataSourcePlugin(
-                dataSourcePluginDefinition.Name,
-                dataPipeline.DataSource.DataSourceObjectId,
+                dataPipeline.DataSource.PluginObjectId,
                 dataPipelineRun.TriggerParameterValues.FilterKeys(
                     $"DataSource.{dataPipeline.DataSource.Name}."),
-                _serviceProvider);
+                dataPipeline.DataSource.DataSourceObjectId,
+                userIdentity);
 
             var contentItems = dataSourcePlugin.GetContentItems();
 
             var updatedDataPipelineRun = await _dataPipelineRunnerService.StartRun(
                 dataPipelineRun,
                 contentItems,
-                dataPipeline);
+                dataPipeline,
+                userIdentity);
 
-            return updatedDataPipelineRun;
+            return updatedDataPipelineRun!;
         }
     }
 }

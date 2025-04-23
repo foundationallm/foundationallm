@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FoundationaLLM.Common.Constants.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Common.Validation.ResourceProvider;
@@ -29,6 +30,11 @@ namespace FoundationaLLM.DataPipeline.Validation
                 .NotEmpty()
                 .Must(ValidationUtils.ValidateObjectId)
                 .WithMessage("The data pipeline object identifier is required for the data pipeline run and it must be a valid FoundationaLLM object identifier.");
+
+            RuleFor(dpr => dpr.Processor)
+                .NotEmpty()
+                .Must(p => DataPipelineRunProcessors.All.Contains(p))
+                .WithMessage($"The processor name is required for the data pipeline run and it must be one of the following values: {string.Join(", ", DataPipelineRunProcessors.All)}.");
         }
     }
 }

@@ -1,10 +1,9 @@
-﻿using FoundationaLLM.Common.Constants.ResourceProviders;
-using FoundationaLLM.Common.Interfaces;
+﻿using FoundationaLLM.Common.Extensions;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Exceptions;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace FoundationaLLM.DataPipelineEngine.Services
@@ -18,79 +17,83 @@ namespace FoundationaLLM.DataPipelineEngine.Services
     public class DataPipelineRunnerService(
         IAzureCosmosDBDataPipelineService cosmosDBService,
         IServiceProvider serviceProvider,
-        ILogger<DataPipelineRunnerService> logger) : BackgroundService, IDataPipelineRunnerService
+        ILogger<DataPipelineRunnerService> logger) :
+            DataPipelineBackgroundService(
+                TimeSpan.FromMinutes(1),
+                serviceProvider,
+                logger), IDataPipelineRunnerService
     {
+        protected override string ServiceName => "Data Pipeline Runner Service";
+
         private readonly IAzureCosmosDBDataPipelineService _cosmosDBService = cosmosDBService;
-        private readonly IServiceProvider _serviceProvider = serviceProvider;
-        private readonly ILogger<DataPipelineRunnerService> _logger = logger;
-
-        private IResourceProviderService _dataPipelineResourceProvider = null!;
-        private IResourceProviderService _pluginResourceProvider = null!;
 
         /// <inheritdoc/>
-        public IEnumerable<IResourceProviderService> ResourceProviders
+        protected override async Task ExecuteAsyncInternal(
+            CancellationToken stoppingToken)
         {
-            set
-            {
-                _dataPipelineResourceProvider = value
-                    .Single(rp => rp.Name == ResourceProviderNames.FoundationaLLM_DataPipeline);
-
-                _pluginResourceProvider = value
-                    .Single(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Plugin);
-            }
-        }
-
-        /// <inheritdoc/>
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            _logger.LogInformation("The Data Pipeline Runner service is starting...");
-
-            // Wait until the Data Pipeline Resource Provider is set and then
-            // wait for its initialization task to complete.
-            while (_dataPipelineResourceProvider == null)
-            {
-                _logger.LogWarning("The Data Pipeline Resource Provider is not set. Waiting for it to be set...");
-                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
-                if (stoppingToken.IsCancellationRequested)
-                {
-                    _logger.LogInformation("The Data Pipeline Runner service is stopping.");
-                    return;
-                }
-            }
-
-            _logger.LogInformation("The Data Pipeline Resource Provider is set. Waiting for its initialization task to complete...");
-            await _dataPipelineResourceProvider.InitializationTask;
-            _logger.LogInformation("The Data Pipeline Resource Provider is initialized.");
-
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                _logger.LogInformation("The Data Pipeline Runner service is running.");
-                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
-            }
-
-            _logger.LogInformation("The Data Pipeline Runner service is stopping.");
+            _logger.LogInformation("The {ServiceName} service is executing...", ServiceName);
+            await Task.CompletedTask;
         }
 
         /// <inheritdoc/>
         public async Task<DataPipelineRun> StartRun(
             DataPipelineRun dataPipelineRun,
             List<DataPipelineContentItem> contentItems,
-            DataPipelineDefinition dataPipelineDefinition)
+            DataPipelineDefinition dataPipelineDefinition,
+            UnifiedUserIdentity userIdentity)
         {
+            // Wait for the initialization task to complete before proceeding.
+            // At this point this task should be completed and the await should have no performance impact.
+            // This is necessary to avoid any issues during the initialization of the service.
+            await _initializationTask;
+
             foreach (var contentItem in contentItems)
                 contentItem.RunId = dataPipelineRun.RunId;
 
             dataPipelineRun.ActiveStages = [.. dataPipelineDefinition.StartingStages.Select(s => s.Name)];
 
+            // Fetch work items for all starting stages and consolidate them into a single list
+            var workItems = (await Task.WhenAll(
+                dataPipelineDefinition.StartingStages.Select(s =>
+                    GetStartingStageWorkItems(dataPipelineRun, s, contentItems, userIdentity))
+            )).SelectMany(w => w).ToList();
+
             // Combine dataPipelineRun and contentItems into a single array
-            var combinedArray = new object[] { dataPipelineRun }.Concat(contentItems).ToArray();
+            var combinedArray = new object[] { dataPipelineRun }
+                .Concat(contentItems)
+                .Concat(workItems)
+                .ToArray();
 
             var result = await _cosmosDBService.UpsertDataPipelineRunBatchAsync(combinedArray);
 
             if (!result)
                 throw new DataPipelineServiceException($"Failed to upsert data pipeline run {dataPipelineRun.RunId}.");
 
+            // Send the newly created workitems to the work item queue
+
+
             return dataPipelineRun;
+        }
+
+        private async Task<List<DataPipelineRunWorkItem>> GetStartingStageWorkItems(
+            DataPipelineRun dataPipelineRun,
+            DataPipelineStage dataPipelineStage,
+            List<DataPipelineContentItem> contentItems,
+            UnifiedUserIdentity userIdentity)
+        {
+            var dataPipelineStagePlugin = await GetDataPipelineStagePlugin(
+                dataPipelineRun.InstanceId,
+                dataPipelineStage.PluginObjectId,
+                dataPipelineRun.TriggerParameterValues.FilterKeys(
+                    $"Stage.{dataPipelineStage.Name}."),
+                userIdentity);
+
+            var workItems = await dataPipelineStagePlugin.GetStartingStageWorkItems(
+                contentItems,
+                dataPipelineRun.RunId,
+                dataPipelineStage.Name);
+
+            return workItems;
         }
     }
 }

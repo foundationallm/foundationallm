@@ -24,5 +24,10 @@
         /// Data Pipeline content item type.
         /// </summary>
         public const string DataPipelineContentItem = "data-pipeline-content-item";
+
+        /// <summary>
+        /// Data Pipeline run work item type.
+        /// </summary>
+        public const string DataPipelineRunWorkItem = "data-pipeline-run-work-item";
     }
 }
