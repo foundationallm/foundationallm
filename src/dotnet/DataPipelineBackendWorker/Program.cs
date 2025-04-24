@@ -76,6 +76,7 @@ builder.Services.AddAzureEventGridEvents(
 
 builder.AddAzureCosmosDBDataPipelineService();
 builder.AddDataPipelineStateService();
+builder.AddDataPipelineBackendWorkerService();
 
 //---------------------------
 // Scoped services

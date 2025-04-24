@@ -115,6 +115,46 @@ namespace FoundationaLLM
         }
 
         /// <summary>
+        /// Registers the Data Pipeline Frontend Worker service to the dependency injection container.
+        /// </summary>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder.</param>
+        public static void AddDataPipelineFrontendWorkerService(this IHostApplicationBuilder builder) =>
+            builder.Services.AddDataPipelineFrontendWorkerService(builder.Configuration);
+
+        /// <summary>
+        /// Registers the Data Pipeline Frontend Worker service to the dependency injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddDataPipelineFrontendWorkerService(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddOptions<DataPipelineWorkerServiceSettings>()
+                .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Configuration));
+
+            services.AddHostedService<DataPipelineWorkerService>();
+        }
+
+        /// <summary>
+        /// Registers the Data Pipeline Backend Worker service to the dependency injection container.
+        /// </summary>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder.</param>
+        public static void AddDataPipelineBackendWorkerService(this IHostApplicationBuilder builder) =>
+            builder.Services.AddDataPipelineBackendWorkerService(builder.Configuration);
+
+        /// <summary>
+        /// Registers the Data Pipeline Backend Worker service to the dependency injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddDataPipelineBackendWorkerService(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddOptions<DataPipelineWorkerServiceSettings>()
+                .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Configuration));
+
+            services.AddHostedService<DataPipelineWorkerService>();
+        }
+
+        /// <summary>
         /// Registers the local data pipeline service client with the Dependency Injection container.
         /// </summary>
         /// <param name="builder">The application builder.</param>
