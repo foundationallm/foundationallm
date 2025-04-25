@@ -80,7 +80,9 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
         if runnable_config is None:
             original_prompt = prompt
         else:
-            original_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
+            original_prompt = \
+                runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE] \
+                or runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
 
         messages = [
             SystemMessage(content=self.main_prompt),
