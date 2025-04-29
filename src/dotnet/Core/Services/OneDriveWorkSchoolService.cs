@@ -116,8 +116,7 @@ namespace FoundationaLLM.Core.Services
                         ContentType = contentType,
                         OriginalFileName = fileName
                     },
-                    agentName,
-                    userIdentity);
+                    agentName);
 
             return new OneDriveWorkSchoolItem()
             {
