@@ -632,8 +632,6 @@ public partial class CoreService(
                 attachmentFile,
                 _userIdentity);
 
-            var newFileId = string.Empty;
-
             var apiEndpointConfiguration = await _configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(aiModelBase.EndpointObjectId!, _userIdentity);
 
             var fileMapping = new AzureOpenAIFileMapping
@@ -673,7 +671,7 @@ public partial class CoreService(
                 _userIdentity,
                 resourceProviderUpsertOptions);
 
-            newFileId = fileMappingUpsertResult.Resource!.OpenAIFileId;            
+            var newFileId = fileMappingUpsertResult.Resource!.OpenAIFileId;            
             
             await _attachmentResourceProvider.UpdateResourcePropertiesAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
                 instanceId,
@@ -696,8 +694,6 @@ public partial class CoreService(
                 attachmentFile,
                 _userIdentity);
 
-            var newFileId = string.Empty;
-           
             var workflow = agentBase.Workflow as AzureAIAgentServiceAgentWorkflow;
             var fileMapping = new AzureAIAgentFileMapping
             {
@@ -736,7 +732,7 @@ public partial class CoreService(
                 _userIdentity,
                 resourceProviderUpsertOptions);
 
-            newFileId = fileMappingUpsertResult.Resource!.AzureAIAgentFileId;
+            var newFileId = fileMappingUpsertResult.Resource!.AzureAIAgentFileId;
             
 
             await _attachmentResourceProvider.UpdateResourcePropertiesAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
