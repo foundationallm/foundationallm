@@ -280,7 +280,7 @@ public partial class CoreService(
                 OperationId = completionRequest.OperationId,
                 Status = OperationStatus.Failed,
                 StatusMessage = rpex.StatusCode == StatusCodes.Status403Forbidden
-                              ? "Could not start completion operation. Forbidden."
+                              ? "Could not start completion operation because access is forbidden."
                               : "Could not start completion operation due to an internal error."
             };
         }
@@ -324,7 +324,7 @@ public partial class CoreService(
                 OperationId = operationId,
                 Status = OperationStatus.Failed,
                 StatusMessage = rpex.StatusCode == StatusCodes.Status403Forbidden
-                              ? "Could not retrieve the status of the operation. Forbidden."
+                              ? "Could not retrieve the status of the operation because access is forbidden."
                               : "Could not retrieve the status of the operation due to an internal error."
             };
         }
@@ -517,7 +517,7 @@ public partial class CoreService(
                 OperationId = completionRequest.OperationId,
                 Status = OperationStatus.Failed,
                 Text = rpex.StatusCode == StatusCodes.Status403Forbidden
-                     ? "Could not generate a completion. Forbidden."
+                     ? "Could not generate a completion because access is forbidden."
                      : "Could not generate a completion due to an internal error."
             };
         }
@@ -579,7 +579,7 @@ public partial class CoreService(
                 OperationId = directCompletionRequest.OperationId,
                 Status = OperationStatus.Failed,
                 Text = rpex.StatusCode == StatusCodes.Status403Forbidden
-                     ? "Could not generate a completion. Forbidden."
+                     ? "Could not generate a completion because access is forbidden."
                      : "Could not generate a completion due to an internal error."
             };
         }
