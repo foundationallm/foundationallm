@@ -23,6 +23,7 @@ using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Common.Utils;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -269,6 +270,20 @@ public partial class CoreService(
 
             return result;
         }
+        catch (ResourceProviderException rpex)
+        {
+            _logger.LogError(rpex, "Error starting completion operation in conversation {SessionId}.",
+                completionRequest.SessionId);
+
+            return new LongRunningOperation
+            {
+                OperationId = completionRequest.OperationId,
+                Status = OperationStatus.Failed,
+                StatusMessage = rpex.StatusCode == StatusCodes.Status403Forbidden
+                              ? "Could not start completion operation. Forbidden."
+                              : "Could not start completion operation due to an internal error."
+            };
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error starting completion operation in conversation {SessionId}.",
@@ -298,6 +313,20 @@ public partial class CoreService(
 
             var processedOperation = await ProcessLongRunningOperation(operationContext, operation);
             return processedOperation;
+        }
+        catch (ResourceProviderException rpex)
+        {
+            _logger.LogError(rpex, "Error retrieving the status for the operation with id {OperationId}.",
+                operationId);
+
+            return new LongRunningOperation
+            {
+                OperationId = operationId,
+                Status = OperationStatus.Failed,
+                StatusMessage = rpex.StatusCode == StatusCodes.Status403Forbidden
+                              ? "Could not retrieve the status of the operation. Forbidden."
+                              : "Could not retrieve the status of the operation due to an internal error."
+            };
         }
         catch (Exception ex)
         {
@@ -478,6 +507,20 @@ public partial class CoreService(
 
             return agentMessage;
         }
+        catch (ResourceProviderException rpex)
+        {
+            _logger.LogError(rpex, "Error getting completion in conversation {SessionId} for user prompt [{UserPrompt}].",
+                 completionRequest.SessionId, completionRequest.UserPrompt);
+
+            return new Message
+            {
+                OperationId = completionRequest.OperationId,
+                Status = OperationStatus.Failed,
+                Text = rpex.StatusCode == StatusCodes.Status403Forbidden
+                     ? "Could not generate a completion. Forbidden."
+                     : "Could not generate a completion due to an internal error."
+            };
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error getting completion in conversation {SessionId} for user prompt [{UserPrompt}].",
@@ -527,9 +570,23 @@ public partial class CoreService(
                         ?? "Could not generate a completion due to an internal error."
             };
         }
+        catch (ResourceProviderException rpex)
+        {
+            _logger.LogError(rpex, $"Error getting completion for user prompt [{{UserPrompt}}].", directCompletionRequest.UserPrompt);
+
+            return new Message
+            {
+                OperationId = directCompletionRequest.OperationId,
+                Status = OperationStatus.Failed,
+                Text = rpex.StatusCode == StatusCodes.Status403Forbidden
+                     ? "Could not generate a completion. Forbidden."
+                     : "Could not generate a completion due to an internal error."
+            };
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, $"Error getting completion for user prompt [{{UserPrompt}}].", directCompletionRequest.UserPrompt);
+
             return new Message
             {
                 OperationId = directCompletionRequest.OperationId,
