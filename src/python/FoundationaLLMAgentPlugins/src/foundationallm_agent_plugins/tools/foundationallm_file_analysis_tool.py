@@ -50,21 +50,6 @@ class FoundationaLLMFileAnalysisTool(FoundationaLLMToolBase):
 
         self.__setup_file_analysis_configuration(tool_config, objects, config)
 
-    def __build_messages(
-        self,
-        prompt: str,
-        runnable_config: RunnableConfig
-    ) -> List[BaseMessage]:
-
-        user_prompt = runnable_config['configurable']['original_user_prompt'] if 'original_user_prompt' in runnable_config['configurable'] else prompt
-
-        messages = [
-            SystemMessage(content=self.code_gen_prompt),
-            HumanMessage(content=user_prompt)
-        ] if self.code_gen_prompt else [HumanMessage(content=user_prompt)]
-
-        return messages
-
     def _run(self,
             prompt: str,
             runnable_config: RunnableConfig = None,
@@ -91,7 +76,9 @@ class FoundationaLLMFileAnalysisTool(FoundationaLLMToolBase):
         if runnable_config is None:
             original_prompt = prompt
         else:
-            original_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
+            original_prompt = \
+                runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE] \
+                or runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
 
         messages = [
             SystemMessage(content=self.main_prompt),

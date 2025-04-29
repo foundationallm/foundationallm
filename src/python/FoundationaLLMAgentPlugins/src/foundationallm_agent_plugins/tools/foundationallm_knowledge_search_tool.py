@@ -52,7 +52,9 @@ class FoundationaLLMKnowledgeSearchTool(FoundationaLLMToolBase):
         # Get the original prompt
         original_prompt = prompt
         if runnable_config is not None and RunnableConfigKeys.ORIGINAL_USER_PROMPT in runnable_config['configurable']:
-            original_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
+            original_prompt = \
+                runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE] \
+                or runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
 
         docs = self.retriever.invoke(prompt)
         context = self.retriever.format_docs(docs)
