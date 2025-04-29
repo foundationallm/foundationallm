@@ -23,12 +23,12 @@ using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Common.Utils;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
 using LongRunningOperation = FoundationaLLM.Common.Models.Orchestration.LongRunningOperation;
 using Message = FoundationaLLM.Common.Models.Conversation.Message;
@@ -194,11 +194,13 @@ public partial class CoreService(
                 };
             }
 
+            _ = await _conversationResourceProvider.GetResourceAsync<Conversation>(instanceId, completionRequest.SessionId, _userIdentity);
+
             completionRequest = await PrepareCompletionRequest(instanceId, completionRequest, agentBase, true);
 
-            var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
+            var conversationItems = await CreateConversationItemsAsync(completionRequest, _userIdentity);
 
-            var agentOption = GetGatekeeperOption(instanceId, agentBase, completionRequest);
+            var agentOption = GetGatekeeperOption(agentBase, completionRequest);
 
             var operationContext = new LongRunningOperationContext
             {
@@ -268,6 +270,20 @@ public partial class CoreService(
 
             return result;
         }
+        catch (ResourceProviderException rpex)
+        {
+            _logger.LogError(rpex, "Error starting completion operation in conversation {SessionId}.",
+                completionRequest.SessionId);
+
+            return new LongRunningOperation
+            {
+                OperationId = completionRequest.OperationId,
+                Status = OperationStatus.Failed,
+                StatusMessage = rpex.StatusCode == StatusCodes.Status403Forbidden
+                              ? "Could not start completion operation because access is forbidden."
+                              : "Could not start completion operation due to an internal error."
+            };
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error starting completion operation in conversation {SessionId}.",
@@ -290,10 +306,27 @@ public partial class CoreService(
         try
         {
             var operationContext = await _cosmosDBService.GetLongRunningOperationContextAsync(operationId);
+
+            _ = await _conversationResourceProvider.GetResourceAsync<Conversation>(instanceId, operationContext.SessionId, _userIdentity);
+
             var operation = await GetDownstreamAPIService(operationContext.GatekeeperOverride).GetCompletionOperationStatus(instanceId, operationId);
 
             var processedOperation = await ProcessLongRunningOperation(operationContext, operation);
             return processedOperation;
+        }
+        catch (ResourceProviderException rpex)
+        {
+            _logger.LogError(rpex, "Error retrieving the status for the operation with id {OperationId}.",
+                operationId);
+
+            return new LongRunningOperation
+            {
+                OperationId = operationId,
+                Status = OperationStatus.Failed,
+                StatusMessage = rpex.StatusCode == StatusCodes.Status403Forbidden
+                              ? "Could not retrieve the status of the operation because access is forbidden."
+                              : "Could not retrieve the status of the operation due to an internal error."
+            };
         }
         catch (Exception ex)
         {
@@ -347,7 +380,7 @@ public partial class CoreService(
                     }
                 };
 
-            var patchedItems = await _cosmosDBService.PatchMultipleSessionsItemsInTransactionAsync(
+            _ = await _cosmosDBService.PatchMultipleSessionsItemsInTransactionAsync(
                 operationContext.SessionId,
                 patchOperations
             );
@@ -433,11 +466,13 @@ public partial class CoreService(
                 };
             }
 
+            _ = await _conversationResourceProvider.GetResourceAsync<Conversation>(instanceId, completionRequest.SessionId, _userIdentity);
+
             completionRequest = await PrepareCompletionRequest(instanceId, completionRequest, agentBase);
 
-            var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
+            var conversationItems = await CreateConversationItemsAsync(completionRequest, _userIdentity);
 
-            var agentOption = GetGatekeeperOption(instanceId, agentBase, completionRequest);
+            var agentOption = GetGatekeeperOption(agentBase, completionRequest);
 
             // Generate the completion to return to the user.
             var completionResponse = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, completionRequest);
@@ -471,6 +506,20 @@ public partial class CoreService(
             }
 
             return agentMessage;
+        }
+        catch (ResourceProviderException rpex)
+        {
+            _logger.LogError(rpex, "Error getting completion in conversation {SessionId} for user prompt [{UserPrompt}].",
+                 completionRequest.SessionId, completionRequest.UserPrompt);
+
+            return new Message
+            {
+                OperationId = completionRequest.OperationId,
+                Status = OperationStatus.Failed,
+                Text = rpex.StatusCode == StatusCodes.Status403Forbidden
+                     ? "Could not generate a completion because access is forbidden."
+                     : "Could not generate a completion due to an internal error."
+            };
         }
         catch (Exception ex)
         {
@@ -507,7 +556,7 @@ public partial class CoreService(
 
             directCompletionRequest = await PrepareCompletionRequest(instanceId, directCompletionRequest, agentBase);
 
-            var agentOption = GetGatekeeperOption(instanceId, agentBase, directCompletionRequest);
+            var agentOption = GetGatekeeperOption(agentBase, directCompletionRequest);
 
             // Generate the completion to return to the user.
             var result = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, directCompletionRequest);
@@ -521,9 +570,23 @@ public partial class CoreService(
                         ?? "Could not generate a completion due to an internal error."
             };
         }
+        catch (ResourceProviderException rpex)
+        {
+            _logger.LogError(rpex, $"Error getting completion for user prompt [{{UserPrompt}}].", directCompletionRequest.UserPrompt);
+
+            return new Message
+            {
+                OperationId = directCompletionRequest.OperationId,
+                Status = OperationStatus.Failed,
+                Text = rpex.StatusCode == StatusCodes.Status403Forbidden
+                     ? "Could not generate a completion because access is forbidden."
+                     : "Could not generate a completion due to an internal error."
+            };
+        }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error getting completion for user prompt [{directCompletionRequest.UserPrompt}].");
+            _logger.LogError(ex, $"Error getting completion for user prompt [{{UserPrompt}}].", directCompletionRequest.UserPrompt);
+
             return new Message
             {
                 OperationId = directCompletionRequest.OperationId,
@@ -538,15 +601,19 @@ public partial class CoreService(
     #region Attachments
 
     /// <inheritdoc/>
-    public async Task<ResourceProviderUpsertResult<AttachmentFile>> UploadAttachment(string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity)
+    public async Task<ResourceProviderUpsertResult<AttachmentFile>> UploadAttachment(
+        string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName)
     {
-        var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(instanceId, agentName, userIdentity);
+        var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(instanceId, agentName, _userIdentity);
+
+        _ = await _conversationResourceProvider.GetResourceAsync<Conversation>(instanceId, sessionId, _userIdentity);
+
         var agentRequiresOpenAIAssistants = agentBase.HasAzureOpenAIAssistantsWorkflow();
 
         if (agentRequiresOpenAIAssistants)
         {
-            var aiModelBase = await _aiModelResourceProvider.GetResourceAsync<AIModelBase>(agentBase.Workflow!.MainAIModelObjectId!, userIdentity);
-            var apiEndpointConfiguration = await _configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(aiModelBase.EndpointObjectId!, userIdentity);
+            var aiModelBase = await _aiModelResourceProvider.GetResourceAsync<AIModelBase>(agentBase.Workflow!.MainAIModelObjectId!, _userIdentity);
+            var apiEndpointConfiguration = await _configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(aiModelBase.EndpointObjectId!, _userIdentity);
 
             attachmentFile.SecondaryProvider = ResourceProviderNames.FoundationaLLM_AzureOpenAI;
 
@@ -561,7 +628,7 @@ public partial class CoreService(
             {
                 Name = string.Empty,
                 Id = string.Empty,
-                UPN = userIdentity.UPN!,
+                UPN = _userIdentity.UPN!,
                 InstanceId = instanceId,
                 FileObjectId = attachmentUpsertResult.ObjectId!,
                 OriginalFileName = attachmentFile.OriginalFileName,
@@ -591,7 +658,7 @@ public partial class CoreService(
             var fileMappingUpsertResult = await _azureOpenAIResourceProvider.UpsertResourceAsync<AzureOpenAIFileMapping, ResourceProviderUpsertResult<AzureOpenAIFileMapping>>(
                 instanceId,
                 fileMapping,
-                userIdentity,
+                _userIdentity,
                 resourceProviderUpsertOptions);
 
             await _attachmentResourceProvider.UpdateResourcePropertiesAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
@@ -601,7 +668,7 @@ public partial class CoreService(
                 {
                     { "/secondaryProviderObjectId", fileMappingUpsertResult.Resource!.OpenAIFileId }
                 },
-                userIdentity);
+                _userIdentity);
             attachmentUpsertResult.Resource!.SecondaryProviderObjectId = fileMappingUpsertResult.Resource!.OpenAIFileId;
 
             return attachmentUpsertResult;
@@ -616,7 +683,7 @@ public partial class CoreService(
                 new MemoryStream(attachmentFile.Content!));
 
             if (serviceResult.Success)
-            {;
+            {
                 return new ResourceProviderUpsertResult<AttachmentFile>
                 {
                     ObjectId = serviceResult.Result!.Id,
@@ -642,7 +709,7 @@ public partial class CoreService(
     }
 
     /// <inheritdoc/>
-    public async Task<AttachmentFile?> DownloadAttachment(string instanceId, string fileProvider, string fileId, UnifiedUserIdentity userIdentity)
+    public async Task<AttachmentFile?> DownloadAttachment(string instanceId, string fileProvider, string fileId)
     {
         try
         {
@@ -656,7 +723,7 @@ public partial class CoreService(
                         fileId,
                         ResourceProviderActions.LoadFileContent,
                         null,
-                        userIdentity);
+                        _userIdentity);
 
                     return new AttachmentFile
                     {
@@ -697,7 +764,7 @@ public partial class CoreService(
 
     /// <inheritdoc/>
     public async Task<Dictionary<string, ResourceProviderDeleteResult?>> DeleteAttachments(
-        string instanceId, List<string> resourcePaths, UnifiedUserIdentity userIdentity)
+        string instanceId, List<string> resourcePaths)
     {
         var results = resourcePaths.ToDictionary(key => key, value => (ResourceProviderDeleteResult?)null);
 
@@ -713,7 +780,7 @@ public partial class CoreService(
                     throw new ResourceProviderException(
                         $"The resource provider [{resourceProviderName}] is not supported by the delete attachments endpoint.");
 
-                await _attachmentResourceProvider.HandleDeleteAsync(resourcePath, userIdentity);
+                await _attachmentResourceProvider.HandleDeleteAsync(resourcePath, _userIdentity);
                 results[resourcePath] = new ResourceProviderDeleteResult()
                 {
                     Deleted = true
@@ -752,6 +819,9 @@ public partial class CoreService(
     public async Task<List<Message>> GetChatSessionMessagesAsync(string instanceId, string sessionId)
     {
         ArgumentNullException.ThrowIfNull(sessionId);
+
+        _ = await _conversationResourceProvider.GetResourceAsync<Conversation>(instanceId, sessionId, _userIdentity);
+
         var messages = await _cosmosDBService.GetSessionMessagesAsync(sessionId, _userIdentity.UPN ??
             throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat messages."));
 
@@ -775,7 +845,7 @@ public partial class CoreService(
                 }
             }
 
-            if(legacyAttachmentIds.Any())
+            if (legacyAttachmentIds.Count > 0)
             {
                 var filter = new ResourceFilter
                 {
@@ -799,7 +869,7 @@ public partial class CoreService(
                 {
                     attachmentReferences.Add(AttachmentDetail.FromContextFileRecord(attachment.Result!));
                 }
-            }            
+            }
 
             if (attachmentReferences.Count > 0)
             {
@@ -834,14 +904,15 @@ public partial class CoreService(
             }
         }
 
-        return messages.ToList();
+        return [.. messages];
     }
 
     /// <inheritdoc/>
     public async Task RateMessageAsync(string instanceId, string id, string sessionId, MessageRatingRequest rating)
     {
-        ArgumentNullException.ThrowIfNull(id);
         ArgumentNullException.ThrowIfNull(sessionId);
+
+        _ = await _conversationResourceProvider.GetResourceAsync<Conversation>(instanceId, sessionId, _userIdentity);
 
         await _cosmosDBService.PatchSessionsItemPropertiesAsync<Message>(
             id,
@@ -859,6 +930,8 @@ public partial class CoreService(
         ArgumentNullException.ThrowIfNullOrEmpty(sessionId);
         ArgumentNullException.ThrowIfNullOrEmpty(completionPromptId);
 
+        _ = await _conversationResourceProvider.GetResourceAsync<Conversation>(instanceId, sessionId, _userIdentity);
+
         return await _cosmosDBService.GetCompletionPromptAsync(sessionId, completionPromptId);
     }
 
@@ -867,19 +940,19 @@ public partial class CoreService(
     #region Configuration
 
     /// <inheritdoc/>
-    public async Task<CoreConfiguration> GetCoreConfiguration(string instanceId, UnifiedUserIdentity userIdentity)
+    public async Task<CoreConfiguration> GetCoreConfiguration(string instanceId)
     {
         var configuration = new CoreConfiguration
         {
-            FileStoreConnectors = await GetFileStoreConnectors(instanceId, userIdentity),
+            FileStoreConnectors = await GetFileStoreConnectors(instanceId, _userIdentity),
             MaxUploadsPerMessage = await GetCoreConfigurationValue<int>(
                 instanceId,
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage,
-                userIdentity),
+                _userIdentity),
             CompletionResponsePollingIntervalSeconds = await GetCoreConfigurationValue<int>(
                 instanceId,
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalSeconds,
-                userIdentity),
+                _userIdentity),
         };
 
         return configuration;
@@ -903,7 +976,8 @@ public partial class CoreService(
             ? _orchestrationAPIService
             : _gatekeeperAPIService;
 
-    private AgentGatekeeperOverrideOption GetGatekeeperOption(string instanceId, AgentBase agent, CompletionRequest completionRequest)
+    private static AgentGatekeeperOverrideOption GetGatekeeperOption(
+        AgentBase agent, CompletionRequest completionRequest)
     {
         if (agent.GatekeeperSettings?.UseSystemSetting == false)
         {
@@ -922,7 +996,8 @@ public partial class CoreService(
     /// <summary>
     /// Add session message
     /// </summary>
-    private async Task<(Message UserMessage, Message AgentMessage, CompletionPrompt CompletionPrompt)> CreateConversationItemsAsync(string instanceId, CompletionRequest request, UnifiedUserIdentity userIdentity)
+    private async Task<(Message UserMessage, Message AgentMessage, CompletionPrompt CompletionPrompt)> CreateConversationItemsAsync(
+        CompletionRequest request, UnifiedUserIdentity userIdentity)
     {
         var userMessage = new Message
         {
@@ -965,9 +1040,7 @@ public partial class CoreService(
     }
 
     private async Task<Message> ProcessCompletionResponse(
-        LongRunningOperationContext operationContext,
-        CompletionResponse completionResponse,
-        OperationStatus operationStatus)
+        LongRunningOperationContext operationContext, CompletionResponse completionResponse, OperationStatus operationStatus)
     {
         #region Process content
 
@@ -1071,11 +1144,12 @@ public partial class CoreService(
     /// <param name="agent">The <see cref="AgentBase"/> resource object.</param>
     /// <param name="longRunningOperation">Indicates whether this is a long-running operation.</param>
     /// <returns>The updated completion request with pre-processing applied.</returns>
-    private async Task<CompletionRequest> PrepareCompletionRequest(string instanceId, CompletionRequest request, AgentBase agent, bool longRunningOperation = false)
+    private async Task<CompletionRequest> PrepareCompletionRequest(
+        string instanceId, CompletionRequest request, AgentBase agent, bool longRunningOperation = false)
     {
         request.LongRunningOperation = longRunningOperation;
 
-        List<MessageHistoryItem> messageHistoryList = [];        
+        List<MessageHistoryItem> messageHistoryList = [];
         List<string> contentArtifactTypes = (agent.ConversationHistorySettings?.Enabled ?? false)
             ? [.. (agent.ConversationHistorySettings.HistoryContentArtifactTypes ?? string.Empty).Split(",", StringSplitOptions.RemoveEmptyEntries)]
             : [];
@@ -1104,7 +1178,7 @@ public partial class CoreService(
                 {
                     ContentArtifacts = message.ContentArtifacts?.Where(ca => contentArtifactTypes.Contains(ca.Type ?? string.Empty)).ToList()
                 };
-                if(message.Attachments is { Count: > 0 })
+                if (message.Attachments is { Count: > 0 })
                 {
                     foreach (var attachmentObjectId in message.Attachments)
                     {
@@ -1138,12 +1212,12 @@ public partial class CoreService(
         {
             foreach (var attachmentObjectId in request.Attachments)
             {
-                if(ResourcePath.TryParseResourceProvider(attachmentObjectId, out var resourceProviderName))
-                {                   
+                if (ResourcePath.TryParseResourceProvider(attachmentObjectId, out var resourceProviderName))
+                {
                     //Get resource path for attachment
                     var rp = ResourcePath.GetResourcePath(attachmentObjectId);
                     var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(instanceId, rp.MainResourceId!, _userIdentity);
-                    fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder));                   
+                    fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder));
                 }
                 else
                 {
@@ -1155,14 +1229,14 @@ public partial class CoreService(
                     else
                     {
                         _logger.LogError("Failed to retrieve file record for attachment {AttachmentObjectId}.", attachmentObjectId);
-                    }                    
-                }               
+                    }
+                }
             }
         }
 
         // Include conversation file history regardless of the conversation history settings.
-        if (fileHistory.Any())
-        { 
+        if (fileHistory.Count > 0)
+        {
             request.FileHistory = fileHistory;
         }
 
@@ -1176,7 +1250,7 @@ public partial class CoreService(
         if (max.HasValue && messageHistoryList.Count > max)
         {
             // Remove messages from the beginning of the list.
-            messageHistoryList.RemoveRange(0, messageHistoryList.Count - max.Value);          
+            messageHistoryList.RemoveRange(0, messageHistoryList.Count - max.Value);
         }
 
         request.MessageHistory = messageHistoryList;
@@ -1217,7 +1291,7 @@ public partial class CoreService(
         var baseUrl = configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!;
         try
         {
-            if (callContext.CurrentUserIdentity is {AssociatedWithAccessToken: false})
+            if (callContext.CurrentUserIdentity is { AssociatedWithAccessToken: false })
             {
                 var baseUrlOverride = await httpClientFactory.CreateClient<string?>(
                     HttpClientNames.CoreAPI,
@@ -1241,10 +1315,7 @@ public partial class CoreService(
     private static string? BuildClient(Dictionary<string, object> parameters) =>
         parameters[HttpClientFactoryServiceKeyNames.Endpoint].ToString();
 
-    [GeneratedRegex(@"[^\w\s]")]
-    private static partial Regex ChatSessionNameReplacementRegex();
-
-    private string? ResolveContentDeepLinks(string? text, string rootUrl)
+    private static string? ResolveContentDeepLinks(string? text, string rootUrl)
     {
         if (string.IsNullOrWhiteSpace(text))
         {
