@@ -44,7 +44,19 @@
 			</template>
 
 			<div class="col-span-2">
-				<div id="aria-agent-name" class="step-header !mb-2">Agent name:</div>
+				<div class="step-header !mb-2">Agent Display Name:</div>
+				<div class="mb-2">
+					This is the name that will be displayed to users when interacting with the agent.
+				</div>
+				<InputText
+					v-model="agentDisplayName"
+					type="text"
+					class="w-full"
+					placeholder="Enter agent display name"
+				/>
+			</div>
+			<div class="col-span-2">
+				<div id="aria-agent-name" class="step-header !mb-2">Agent Name:</div>
 				<div id="aria-agent-name-desc" class="mb-2">
 					No special characters or spaces, use letters and numbers with dashes and underscores only.
 				</div>
@@ -77,18 +89,6 @@
 				</div>
 			</div>
 			<div class="col-span-2">
-				<div class="step-header !mb-2">Agent Display Name:</div>
-				<div class="mb-2">
-					This is the name that will be displayed to users when interacting with the agent.
-				</div>
-				<InputText
-					v-model="agentDisplayName"
-					type="text"
-					class="w-full"
-					placeholder="Enter agent display name"
-				/>
-			</div>
-			<div class="col-span-2">
 				<div class="step-header !mb-2">Description:</div>
 				<div id="aria-description" class="mb-2">
 					Provide a description to help others understand the agent's purpose.
@@ -102,7 +102,7 @@
 				/>
 			</div>
 			<div class="col-span-2">
-				<div class="step-header !mb-2">Welcome message:</div>
+				<div class="step-header !mb-2">Welcome Message:</div>
 				<div id="aria-welcome-message-desc" class="mb-2">
 					Provide a message to display when a user starts a new conversation with the agent. If a
 					message is not provided, the default welcome message will be displayed.
@@ -1588,34 +1588,25 @@ export default {
 
 			// Only set the class name to the selected workflow name if it doesn't already have a custom value
 			const workflowClassNameIsResourceDefault = this.workflowOptions.some(
-				(workflowOption) => this.workflowClassName === workflowOption.name,
+				(workflow) => workflow.name === this.workflowClassName,
 			);
 			if (workflowClassNameIsResourceDefault || !this.workflowClassName) {
 				this.workflowClassName = this.selectedWorkflow?.name ?? '';
 			}
-
-			// if (this.selectedWorkflow?.resource_object_ids) {
-			// 	const existingMainModel = Object.values(this.selectedWorkflow.resource_object_ids).find(
-			// 		(resource) => resource.properties?.object_role === 'main_model',
-			// 	);
-			// 	this.workflowMainAIModel = existingMainModel ?? null;
-			// } else {
-			// 	this.workflowMainAIModel = null;
-			// }
-
-			this.showWorkflowConfiguration = true;
-
-			// if (!this.selectedWorkflow?.type) {
-			// 	this.showWorkflowConfiguration = false;
-			// 	this.selectedWorkflow = null;
-			// }
 		},
-
-		workflowMainAIModel() {
-			const mainModel = this.workflowMainAIModel;
-			const existingMainModelParamters =
-				mainModel?.model_parameters ?? mainModel?.properties?.model_parameters;
-			this.workflowMainAIModelParameters = existingMainModelParamters ?? {};
+		agentDisplayName(newValue) {
+			if (!this.editAgent) {
+				// Only update if we're creating a new agent
+				const sanitizedValue = newValue
+					.toLowerCase()
+					.replace(/\s+/g, '-') // Replace spaces with dashes
+					.replace(/[^a-z0-9-_]/g, '') // Remove all non-alphanumeric characters except dashes and underscores
+					.replace(/-+/g, '-') // Replace multiple dashes with single dash
+					.replace(/_+/g, '_') // Replace multiple underscores with single underscore
+					.replace(/-$/, ''); // Remove trailing dash if it exists
+				this.agentName = sanitizedValue;
+				this.debouncedCheckName();
+			}
 		},
 	},
 
