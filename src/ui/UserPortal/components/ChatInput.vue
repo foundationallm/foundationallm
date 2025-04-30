@@ -286,7 +286,7 @@
 					v-model="text"
 					class="input"
 					aria-describedby="chat-input-label"
-					autofocus
+					:autofocus="!isInIframe"
 					:disabled="disabled || isCurrentAgentExpired"
 					:placeholder="
 						isCurrentAgentExpired ? 'This agent has expired.' : 'What would you like to ask?'
@@ -402,6 +402,7 @@ export default {
 			deleteFileProcessing: false,
 			connectingOneDrive: true,
 			maxFiles: 10,
+			isInIframe: window.self !== window.top,
 		};
 	},
 
@@ -483,6 +484,13 @@ export default {
 	mounted() {
 		this.adjustTextareaHeight();
 		window.addEventListener('resize', this.handleResize);
+		
+		// If we're in an iframe, focus the input after a short delay
+		if (this.isInIframe) {
+			setTimeout(() => {
+				this.$refs.inputRef?.focus();
+			}, 100);
+		}
 	},
 
 	beforeUnmount() {

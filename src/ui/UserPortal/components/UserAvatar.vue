@@ -1,11 +1,10 @@
 <template>
-	<!-- <Avatar v-if="loading" icon="pi pi-spinner" /> -->
-	<Avatar v-if="profilePhotoSrc" :image="profilePhotoSrc" />
-	<Avatar
-		v-else
-		:label="userInitials"
-		:style="`background-color: ${userColors.background}; color: ${userColors.text};`"
-	/>
+	<div class="user-avatar">
+		<img v-if="profilePhotoUrl" :src="profilePhotoUrl" alt="User avatar" />
+		<div v-else class="default-avatar">
+			<i class="pi pi-user" />
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
@@ -86,10 +85,11 @@ function getInitials(text) {
 }
 
 export default {
+	name: 'UserAvatar',
+
 	data() {
 		return {
-			// loading: false,
-			profilePhotoSrc: null,
+			profilePhotoUrl: null as string | null,
 		};
 	},
 
@@ -108,16 +108,18 @@ export default {
 	},
 
 	async created() {
-		// this.loading = true;
 		try {
-			this.profilePhotoSrc = await this.$authStore.getProfilePhoto();
-			if (!this.profilePhotoSrc) {
-				await this.loadGravatarImage();
-			}
+			this.profilePhotoUrl = await this.$authStore.getProfilePhoto();
 		} catch (error) {
-			// console.error(error);
+			console.warn('Failed to load profile photo:', error);
+			this.profilePhotoUrl = null;
 		}
-		// this.loading = false;
+	},
+
+	beforeUnmount() {
+		if (this.profilePhotoUrl) {
+			URL.revokeObjectURL(this.profilePhotoUrl);
+		}
 	},
 
 	methods: {
@@ -134,8 +136,41 @@ export default {
 			const emailHash = md5(this.$authStore.currentAccount?.username?.toLowerCase()); // Hash the email
 			const gravatarUrl = `https://www.gravatar.com/avatar/${emailHash}?d=404`;
 			const gravatarImage = await this.loadImage(gravatarUrl);
-			this.profilePhotoSrc = gravatarImage;
+			this.profilePhotoUrl = gravatarImage;
 		},
 	},
 };
 </script>
+
+<style lang="scss" scoped>
+.user-avatar {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #e1e1e1;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.default-avatar {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: #e1e1e1;
+		color: #666;
+
+		i {
+			font-size: 1.2rem;
+		}
+	}
+}
+</style>

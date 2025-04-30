@@ -125,53 +125,113 @@ export const useAuthStore = defineStore('auth', {
 				const resp = await this.msalInstance.acquireTokenSilent(oneDriveWorkSchoolAPIScopes);
 				accessToken = resp.accessToken;
 			} catch (error) {
-				// Redirect to get token or login
-				localStorage.setItem('oneDriveWorkSchoolConsentRedirect', JSON.stringify(true));
-
-				oneDriveWorkSchoolAPIScopes.state = 'Core API redirect';
-				await this.msalInstance.loginRedirect(oneDriveWorkSchoolAPIScopes);
+				try {
+					// Try popup first
+					const response = await this.msalInstance.acquireTokenPopup(oneDriveWorkSchoolAPIScopes);
+					accessToken = response.accessToken;
+				} catch (popupError) {
+					if (popupError.name === 'BrowserAuthError' && popupError.errorCode === 'popup_window_error') {
+						// Fallback to redirect if popup is blocked
+						localStorage.setItem('oneDriveWorkSchoolConsentRedirect', JSON.stringify(true));
+						oneDriveWorkSchoolAPIScopes.state = 'Core API redirect';
+						await this.msalInstance.acquireTokenRedirect(oneDriveWorkSchoolAPIScopes);
+					} else {
+						throw popupError;
+					}
+				}
 			}
 			return accessToken;
 		},
 
-		async getOneDriveWorkSchoolToken(): string | null {
-			const appStore = useAppStore();
-			const oneDriveBaseURL = appStore.coreConfiguration?.fileStoreConnectors?.find(
-				(connector) => connector.subcategory === 'OneDriveWorkSchool',
-			)?.url;
-			const oneDriveToken = await this.msalInstance.acquireTokenSilent({
-				account: this.currentAccount,
-				scopes: [`${oneDriveBaseURL}${this.oneDriveWorkSchoolScopes}`],
-			});
-
-			return oneDriveToken;
-		},
-
-		async getProfilePhoto(): string | null {
+		async getOneDriveWorkSchoolToken(): Promise<string | null> {
 			try {
-				const graphScopes = ['https://graph.microsoft.com/User.Read'];
-				const graphToken = await this.msalInstance.acquireTokenSilent({
+				const appStore = useAppStore();
+				const oneDriveBaseURL = appStore.coreConfiguration?.fileStoreConnectors?.find(
+					(connector) => connector.subcategory === 'OneDriveWorkSchool',
+				)?.url;
+
+				if (!oneDriveBaseURL || !this.oneDriveWorkSchoolScopes) {
+					console.warn('OneDrive configuration not found');
+					return null;
+				}
+
+				const scopes = [`${oneDriveBaseURL}${this.oneDriveWorkSchoolScopes}`];
+				const oneDriveToken = await this.msalInstance?.acquireTokenSilent({
 					account: this.currentAccount,
-					scopes: graphScopes,
+					scopes,
 				});
 
-				const profilePhotoBlob = await $fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
-					method: 'GET',
+				if (!oneDriveToken) {
+					console.warn('Failed to acquire OneDrive token');
+					return null;
+				}
+
+				return oneDriveToken;
+			} catch (error) {
+				console.warn('Error acquiring OneDrive token:', error);
+				return null;
+			}
+		},
+
+		async getProfilePhoto() {
+			try {
+				const token = await this.getOneDriveWorkSchoolToken();
+				if (!token) {
+					return null;
+				}
+
+				const response = await fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
 					headers: {
-						Authorization: `Bearer ${graphToken.accessToken}`,
+						Authorization: `Bearer ${token.accessToken}`,
 					},
 				});
 
-				return URL.createObjectURL(profilePhotoBlob);
+				if (!response.ok) {
+					if (response.status === 404) {
+						// User doesn't have a profile photo, return default avatar
+						return null;
+					}
+					throw new Error(`Failed to get profile photo: ${response.statusText}`);
+				}
+
+				const blob = await response.blob();
+				return URL.createObjectURL(blob);
 			} catch (error) {
+				console.warn('Failed to get profile photo:', error);
 				return null;
 			}
 		},
 
 		async login() {
-			return await this.msalInstance.loginRedirect({
-				scopes: this.apiScopes,
-			});
+			try {
+				const response = await this.msalInstance.loginPopup({
+					scopes: this.apiScopes,
+				});
+				
+				// Set the active account after successful login
+				if (response.account) {
+					this.msalInstance.setActiveAccount(response.account);
+				}
+				
+				// After setting the active account, get the token
+				await this.getApiToken();
+				
+				// Force a refresh of the current window
+				if (window.self !== window.top) {
+					// We're in an iframe
+					window.location.reload();
+				}
+				
+				return response;
+			} catch (error) {
+				if (error.name === 'BrowserAuthError' && error.errorCode === 'popup_window_error') {
+					// Fallback to redirect if popup is blocked
+					return await this.msalInstance.loginRedirect({
+						scopes: this.apiScopes,
+					});
+				}
+				throw error;
+			}
 		},
 
 		async clearLocalSession() {
@@ -180,15 +240,47 @@ export const useAuthStore = defineStore('auth', {
 
 		async logoutSilent() {
 			const logoutHint = this.currentAccount.idTokenClaims.login_hint;
-			await this.msalInstance.logoutRedirect({
-				logoutHint,
-			});
+			try {
+				await this.msalInstance.logoutPopup({
+					logoutHint,
+				});
+				
+				// Force a refresh of the current window if in iframe
+				if (window.self !== window.top) {
+					window.location.reload();
+				}
+			} catch (error) {
+				if (error.name === 'BrowserAuthError' && error.errorCode === 'popup_window_error') {
+					// Fallback to redirect if popup is blocked
+					await this.msalInstance.logoutRedirect({
+						logoutHint,
+					});
+				} else {
+					throw error;
+				}
+			}
 		},
 
 		async logout() {
-			await this.msalInstance.logoutRedirect({
-				account: this.currentAccount,
-			});
+			try {
+				await this.msalInstance.logoutPopup({
+					account: this.currentAccount,
+				});
+				
+				// Force a refresh of the current window if in iframe
+				if (window.self !== window.top) {
+					window.location.reload();
+				}
+			} catch (error) {
+				if (error.name === 'BrowserAuthError' && error.errorCode === 'popup_window_error') {
+					// Fallback to redirect if popup is blocked
+					await this.msalInstance.logoutRedirect({
+						account: this.currentAccount,
+					});
+				} else {
+					throw error;
+				}
+			}
 
 			useNuxtApp().$router.push({ name: 'auth/login' });
 		},
