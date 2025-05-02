@@ -28,6 +28,15 @@ namespace FoundationaLLM.Vectorization.Interfaces
         Task<IEnumerable<VectorizationDequeuedRequest>> ReceiveRequests(int count);
 
         /// <summary>
+        /// Tries to update the visibility timeout of a request.
+        /// </summary>
+        /// <param name="messageId">The underlying message identifier of the request being updated.</param>
+        /// <param name="popReceipt">The value requiored to update the underlying message.</param>
+        /// <param name="visibilityTimeout">The new visibility timeout of the request.</param>
+        /// <returns><see langword="true"/> if the update is successfull, <see langword="false"/> otherwise.</returns>
+        Task<bool> TryUpdateRequest(string messageId, string popReceipt, TimeSpan visibilityTimeout);
+
+        /// <summary>
         /// Removes a specified vectorization request from the source.
         /// This should happen when the request was successfully processed.
         /// </summary>
@@ -40,8 +49,7 @@ namespace FoundationaLLM.Vectorization.Interfaces
         /// Submits a new vectorization request to the source.
         /// </summary>
         /// <param name="requestName">The name (unique identifier) of the vectorization request.</param>
-        /// <returns></returns>
-        Task SubmitRequest(string requestName);
-
+        /// <returns>The underlying message identifier of the request being submitted.</returns>
+        Task<string> SubmitRequest(string requestName);
     }
 }

@@ -32,7 +32,7 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationStates
         private const string EXECUTION_STATE_DIRECTORY = "execution-state";
         private const string PIPELINE_STATE_DIRECTORY = "pipeline-state";
 
-        private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+        private static readonly SemaphoreSlim _semaphore = new(1, 1);
 
         /// <inheritdoc/>
         public async Task<bool> HasState(VectorizationRequest request) =>
@@ -258,13 +258,22 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationStates
         }
 
         /// <inheritdoc/>
-        public async Task SavePipelineState(VectorizationPipelineState state)
+        public async Task SavePipelineState(
+            VectorizationPipelineExecution pipelineExecution,
+            VectorizationPipelineExecutionDetail? pipelineExecutionDetail)
         {
             //pipeline object id format: "/instances/{instanceId}/providers/FoundationaLLM.Vectorization/vectorizationPipelines/{pipeline-name}"
-            var pipelineName = state.PipelineObjectId.Split('/').Last();
-            //vectorization-state/pipeline-state/pipeline-name/pipeline-name-pipeline-execution-id.json
-            var pipelineStatePath = $"{PIPELINE_STATE_DIRECTORY}/{pipelineName}/{pipelineName}-{state.ExecutionId}.json";
-            var content = JsonSerializer.Serialize(state);
+            var pipelineName = pipelineExecution.PipelineObjectId.Split('/').Last();
+
+            var pipelineExecutionPath = $"{PIPELINE_STATE_DIRECTORY}/{pipelineName}/{pipelineExecution.Name}.json";
+            var pipelineExecutionContent = JsonSerializer.Serialize(pipelineExecution);
+
+            var pipelineExecutionDetailPath = pipelineExecutionDetail == null
+                ? null
+                : $"{PIPELINE_STATE_DIRECTORY}/{pipelineName}/{pipelineExecution.Name}-detail.json";
+            var pipelineExecutionDetailContent = pipelineExecutionDetail == null
+                ? null
+                : JsonSerializer.Serialize(pipelineExecutionDetail);
 
             // add SemaphoreSlim async lock to avoid pipeline file contention - allows for a lock with an await in the body
             await _semaphore.WaitAsync();
@@ -272,10 +281,20 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationStates
             {
                 await _storageService.WriteFileAsync(
                     BLOB_STORAGE_CONTAINER_NAME,
-                    pipelineStatePath,
-                    content,
+                    pipelineExecutionPath,
+                    pipelineExecutionContent,
                     default,
                     default);
+
+                if (pipelineExecutionDetail != null)
+                {
+                    await _storageService.WriteFileAsync(
+                        BLOB_STORAGE_CONTAINER_NAME,
+                        pipelineExecutionDetailPath!,
+                        pipelineExecutionDetailContent!,
+                        default,
+                        default);
+                }
             }
             finally
             {
@@ -284,16 +303,54 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationStates
         }
 
         /// <inheritdoc/>
-        public async Task<VectorizationPipelineState> ReadPipelineState(string pipelineName, string pipelineExecutionId)
+        public async Task UpdatePipelineStateFromVectorizationRequest(
+            VectorizationRequest vectorizationRequest)
         {
-            var pipelineStatePath = $"{PIPELINE_STATE_DIRECTORY}/{pipelineName}/{pipelineName}-{pipelineExecutionId}.json";
-            var content = await _storageService.ReadFileAsync(
-                BLOB_STORAGE_CONTAINER_NAME,
-                pipelineStatePath,
-                default);
+            var pipelineName = vectorizationRequest.PipelineName;
+            var pipelineExecutionStart = vectorizationRequest.PipelineExecutionStart;
+            var pipelineExecutionId = vectorizationRequest.PipelineExecutionId;
 
-            return JsonSerializer.Deserialize<VectorizationPipelineState>(content)!;
+            var pipelineExecutionPath =
+                $"{PIPELINE_STATE_DIRECTORY}/{pipelineName}/{pipelineExecutionId}.json";
 
+            await _semaphore.WaitAsync();
+            try
+            {
+                await _storageService.UpdateJSONFileAsync<VectorizationPipelineExecution>(
+                    BLOB_STORAGE_CONTAINER_NAME,
+                    pipelineExecutionPath,
+                    vpe =>
+                    {
+                        if (vectorizationRequest.ProcessingState == VectorizationProcessingState.Completed)
+                            vpe.VectorizationRequestSuccessesCount++;
+                        else if (vectorizationRequest.ProcessingState == VectorizationProcessingState.Failed)
+                            vpe.VectorizationRequestFailuresCount++;
+
+                        if (vpe.ProcessingState == VectorizationProcessingState.Completed
+                            || vpe.ProcessingState == VectorizationProcessingState.Failed)
+                            vpe.ExecutionEnd = DateTimeOffset.UtcNow;
+
+                        return vpe;
+                    },
+                    default);
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
         }
+
+        /// <inheritdoc/>
+        //public async Task<VectorizationPipelineExecutionDetail> ReadPipelineState(string pipelineName, string pipelineExecutionId)
+        //{
+        //    var pipelineStatePath = $"{PIPELINE_STATE_DIRECTORY}/{pipelineName}/{pipelineName}-{pipelineExecutionId}.json";
+        //    var content = await _storageService.ReadFileAsync(
+        //        BLOB_STORAGE_CONTAINER_NAME,
+        //        pipelineStatePath,
+        //        default);
+
+        //    return JsonSerializer.Deserialize<VectorizationPipelineExecutionDetail>(content)!;
+
+        //}
     }
 }

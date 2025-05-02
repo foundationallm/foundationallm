@@ -11,6 +11,11 @@
         public const string VectorizationPipelines = "vectorizationPipelines";
 
         /// <summary>
+        /// Vectorization pipeline executions.
+        /// </summary>
+        public const string VectorizationPipelineExecutions = "vectorizationPipelineExecutions";
+
+        /// <summary>
         /// Vectorization requests.
         /// </summary>
         public const string VectorizationRequests = "vectorizationRequests";

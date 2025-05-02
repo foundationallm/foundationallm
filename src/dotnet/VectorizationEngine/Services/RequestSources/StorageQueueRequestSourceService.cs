@@ -87,6 +87,25 @@ namespace FoundationaLLM.Vectorization.Services.RequestSources
         }
 
         /// <inheritdoc/>
+        public async Task<bool> TryUpdateRequest(string messageId, string popReceipt, TimeSpan visibilityTimeout)
+        {
+            try
+            {
+                await _queueClient.UpdateMessageAsync(
+                    messageId,
+                    popReceipt,
+                    visibilityTimeout: visibilityTimeout).ConfigureAwait(false);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating message with id {MessageId}.", messageId);
+                return false;
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task DeleteRequest(string messageId, string popReceipt)
         {
             var response = await _queueClient.DeleteMessageAsync(messageId, popReceipt).ConfigureAwait(false);
@@ -101,10 +120,11 @@ namespace FoundationaLLM.Vectorization.Services.RequestSources
         }            
 
         /// <inheritdoc/>
-        public async Task SubmitRequest(string requestName)
+        public async Task<string> SubmitRequest(string requestName)
         {
             var serializedMessage = requestName;
-            await _queueClient.SendMessageAsync(serializedMessage).ConfigureAwait(false);
+            var response = await _queueClient.SendMessageAsync(serializedMessage).ConfigureAwait(false);
+            return response.Value.MessageId;
         }
         
     }

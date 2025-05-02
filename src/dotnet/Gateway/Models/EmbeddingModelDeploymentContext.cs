@@ -56,9 +56,8 @@ namespace FoundationaLLM.Gateway.Models
         {
             UpdateRateWindows();
 
-            if (_tokenRateWindowTokenCount + textChunk.TokensCount > _deployment.TokenRateLimit
-                || _currentRequestTokenCount + textChunk.TokensCount > OPENAI_MAX_INPUT_SIZE_TOKENS)
-                // Adding a new text chunk would either push us over to the token rate limit or exceed the maximum input size, so we need to refuse.
+            if (_tokenRateWindowTokenCount + textChunk.TokensCount > _deployment.TokenRateLimit)
+                // Adding a new text chunk would push us over to the token rate limit, so we need to refuse.
                 return false;
 
             if (_requestRateWindowRequestCount == _deployment.RequestRateLimit)
