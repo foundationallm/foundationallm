@@ -13,15 +13,19 @@ namespace FoundationaLLM.Gateway.Models
     /// </summary>
     /// <param name="deployment">The <see cref="AzureOpenAIAccountDeployment"/> object with the details of the model deployment.</param>
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to create loggers for logging.</param>
+    /// <param name="metrics">The FoundationaLLM Gateway telemetry metrics.</param>
     public class EmbeddingModelDeploymentContext(
         AzureOpenAIAccountDeployment deployment,
-        ILoggerFactory loggerFactory)
+        ILoggerFactory loggerFactory,
+        GatewayMetrics metrics)
     {
         private const int OPENAI_MAX_INPUT_SIZE_TOKENS = 8191;
 
         private readonly AzureOpenAIAccountDeployment _deployment = deployment;
         private readonly ILoggerFactory _loggerFactory = loggerFactory;
         private readonly ILogger<EmbeddingModelDeploymentContext> _logger = loggerFactory.CreateLogger<EmbeddingModelDeploymentContext>();
+        private readonly GatewayMetrics _metrics = metrics;
+
         private List<TextChunk> _inputTextChunks = [];
 
         private readonly ITextEmbeddingService _textEmbeddingService = new AzureOpenAITextEmbeddingService(
@@ -106,6 +110,11 @@ namespace FoundationaLLM.Gateway.Models
                     _logger.LogWarning("The text embedding request with id {RequestId} failed with the following error: {ErrorMessage}",
                         gatewayMetrics.Id,
                         embeddingResult.ErrorMessage!);
+                else
+                {
+                    _metrics.IncrementTextChunksEmbedded(_inputTextChunks.Count);
+                    _metrics.IncrementTextChunksSizeTokens(_inputTextChunks.Sum(tc => tc.TokensCount));
+                }
 
                 return embeddingResult;
             }

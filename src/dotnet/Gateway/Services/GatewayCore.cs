@@ -34,11 +34,13 @@ namespace FoundationaLLM.Gateway.Services
     /// <param name="options">The options providing the <see cref="GatewayCoreSettings"/> object.</param>
     /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to create loggers for logging.</param>
+    /// <param name="metrics">The FoundationaLLM Gateway telemetry metrics.</param>
     public class GatewayCore(
         IAzureResourceManagerService armService,
         IOptions<GatewayCoreSettings> options,
         IEnumerable<IResourceProviderService> resourceProviderServices,
-        ILoggerFactory loggerFactory) : IGatewayCore
+        ILoggerFactory loggerFactory,
+        GatewayMetrics metrics) : IGatewayCore
     {
         private readonly IAzureResourceManagerService _armService = armService;
         private readonly GatewayCoreSettings _settings = options.Value;
@@ -48,6 +50,7 @@ namespace FoundationaLLM.Gateway.Services
         private readonly IResourceProviderService _agentResourceProvider =
             resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Agent);
         private readonly ILogger<GatewayCore> _logger = loggerFactory.CreateLogger<GatewayCore>();
+        private readonly GatewayMetrics _metrics = metrics;
 
         private bool _initialized = false;
 
@@ -80,7 +83,8 @@ namespace FoundationaLLM.Gateway.Services
                             {
                                 var embeddingModelContext = new EmbeddingModelDeploymentContext(
                                     deployment,
-                                    _loggerFactory);
+                                    _loggerFactory,
+                                    _metrics);
 
                                 if (!_embeddingModels.ContainsKey(deployment.ModelName))
                                     _embeddingModels[deployment.ModelName] = new EmbeddingModelContext(

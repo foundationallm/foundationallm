@@ -51,6 +51,7 @@ if (builder.Environment.IsDevelopment())
 builder.AddOpenTelemetry(
     AppConfigurationKeys.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials_AppInsightsConnectionString,
     ServiceNames.GatewayAPI);
+builder.AddGatewayMetrics();
 
 builder.AddInstanceProperties();
 
