@@ -20,7 +20,7 @@ DATA_SOURCE_NAME = "default-storage"
 VECTOR_STORE_NAME = "default-index"
 
 result = management_client.create_vectorization_pipeline(
-    "Test02",
+    "Test04",
     "Sample vectorization pipeline.",
     DATA_SOURCE_NAME,
     VECTOR_STORE_NAME
