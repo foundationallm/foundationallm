@@ -51,13 +51,17 @@ namespace FoundationaLLM.Vectorization.Services.RequestSources
         }
 
         /// <inheritdoc/>
+        public async Task<bool> TryUpdateRequest(string requestId, string popReceipt, TimeSpan visibilityTimeout) =>
+            await Task.FromResult(true);
+
+        /// <inheritdoc/>
         public Task DeleteRequest(string requestId, string popReceipt) => Task.CompletedTask;
 
         /// <inheritdoc/>
-        public Task SubmitRequest(string requestName)
+        public async Task<string> SubmitRequest(string requestName)
         {
             _requests.Enqueue(requestName);
-            return Task.CompletedTask;
+            return await Task.FromResult(string.Empty);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Common.Models.Vectorization;
 
@@ -36,7 +37,22 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
                         ])
-                    ]
+                    ],
+                    SubTypes = new()
+                    {
+                        {
+                            VectorizationResourceTypeNames.VectorizationPipelineExecutions,
+                            new ResourceTypeDescriptor (
+                                VectorizationResourceTypeNames.VectorizationPipelineExecutions,
+                                typeof(VectorizationPipelineExecution))
+                            {
+                                AllowedTypes = [
+                                    new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderGetResult<VectorizationPipelineExecution>)]),
+                                ],
+                                Actions = []
+                            }
+                        }
+                    }
                 }
             },
             {
