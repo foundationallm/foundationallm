@@ -109,6 +109,7 @@ class ManagementClient:
                 "text_partitioning_profile_object_id": f"/instances/{self.__foundationallm_instance_id}/providers/FoundationaLLM.Vectorization/textPartitioningProfiles/{self.default_text_partitioning_profile}",
                 "text_embedding_profile_object_id": f"/instances/{self.__foundationallm_instance_id}/providers/FoundationaLLM.Vectorization/textEmbeddingProfiles/{self.default_text_embedding_profile}",
                 "indexing_profile_object_id": f"/instances/{self.__foundationallm_instance_id}/providers/FoundationaLLM.Vectorization/indexingProfiles/{vector_store_name}",
+                "trigger_type": "Manual"
             }
         )
 
