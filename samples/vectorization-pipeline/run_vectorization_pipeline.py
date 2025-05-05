@@ -4,9 +4,16 @@ This sample shows how to run and monitor a vectorization pipeline using the Foun
 
 import os
 import time
+from datetime import datetime, timezone
 from dotenv import load_dotenv
 
 from clients import ManagementClient
+
+def format_timedelta(td):
+    days = td.days
+    hours, remainder = divmod(td.seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return f"{days} days, {hours} hours, {minutes} minutes, {seconds} seconds"
 
 # Load environment variables from .env file
 load_dotenv()
@@ -58,6 +65,8 @@ if (previous_latest_execution_id is not None):
 #-----------------------------------------------------------------------------------------------
 
 print("Preparing to activate pipeline...")
+# record start time
+start_time = datetime.now(timezone.utc)
 activation_result = management_client.activate_vectorization_pipeline(
     VECTORIZATION_PIPELINE_NAME
 )
@@ -124,7 +133,7 @@ while (vectorization_request_successes_count + vectorization_request_failures_co
     vectorization_request_failures_count = pipeline_execution["vectorization_request_failures_count"]
     vectorization_request_successes_count = pipeline_execution["vectorization_request_successes_count"]
 
-    print(f"Pipeline execution status: {vectorization_request_count} vectorization requests ({vectorization_request_successes_count} successes and {vectorization_request_failures_count} failures).")
+    print(f"Pipeline execution status: {vectorization_request_count} vectorization requests ({vectorization_request_successes_count} successes and {vectorization_request_failures_count} failures, elapsed time {format_timedelta(datetime.now(timezone.utc) - start_time)}).")
 
 if (vectorization_request_failures_count > 0):
     print(f"ERROR: Pipeline execution completed with {vectorization_request_failures_count} vectorization request failures.")

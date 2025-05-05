@@ -18,10 +18,12 @@ management_client = ManagementClient(
 
 DATA_SOURCE_NAME = "default-storage"
 VECTOR_STORE_NAME = "default-index"
+VECTORIZATION_PIPELINE_NAME = "Test04"
+VECTORIZATION_PIPELINE_DESCRIPTION = "Sample vectorization pipeline."
 
 result = management_client.create_vectorization_pipeline(
-    "Test04",
-    "Sample vectorization pipeline.",
+    VECTORIZATION_PIPELINE_NAME,
+    VECTORIZATION_PIPELINE_DESCRIPTION,
     DATA_SOURCE_NAME,
     VECTOR_STORE_NAME
 )
