@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 
 namespace FoundationaLLM.Common.Services.Storage
 {
@@ -142,6 +143,104 @@ namespace FoundationaLLM.Common.Services.Storage
                 new MemoryStream(Encoding.UTF8.GetBytes(fileContent)),
                 contentType,
                 cancellationToken).ConfigureAwait(false);
+
+        /// <inheritdoc/>
+        public async Task UpdateJSONFileAsync<T>(
+            string containerName,
+            string filePath,
+            Func<T, T> objectTransformer,
+            CancellationToken cancellationToken) where T : class
+        {
+            var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+            var blobClient = containerClient.GetBlobClient(filePath);
+            var blobLeaseClient = blobClient.GetBlobLeaseClient();
+
+            // We are using pessimistic concurrency by default.
+            // For more details, see https://learn.microsoft.com/en-us/azure/storage/blobs/concurrency-manage.
+
+            BlobLease? blobLease = default;
+
+            try
+            {
+                // Always acquire a lease for the blob to ensure that we have exclusive access to it.
+                blobLease = await blobLeaseClient.AcquireAsyncWithWait(TimeSpan.FromSeconds(60), cancellationToken: cancellationToken);
+                if (blobLease == null)
+                {
+                    _logger.LogError("Could not get a lease for the blob {FilePath} from container {ContainerName}. Reason: unkown.", filePath, containerName);
+                    throw new StorageException($"Could not get a lease for the blob {filePath} from container {containerName}. Reason: unknown.");
+                }
+
+                var contentResult = await blobClient.DownloadContentAsync(cancellationToken).ConfigureAwait(false);
+
+                var fileContent = default(T);
+                if (contentResult != null && contentResult.HasValue)
+                {
+                    if (JsonSerializer.Deserialize(contentResult.Value.Content, typeof(T)) is T content)
+                    {
+                        fileContent = objectTransformer(content);
+                    }
+                    else
+                    {
+                        _logger.LogError("Could not deserialize the content of the blob {FilePath} from container {ContainerName} to type {TypeName}.",
+                            filePath, containerName, nameof(T));
+                        throw new StorageException(
+                            $"Could not deserialize the content of the blob {filePath} from container {containerName} to type {nameof(T)}.");
+                    }
+                }
+                else
+                    throw new StorageException($"Cannot read file {filePath} from container {containerName}.");
+
+                BlobUploadOptions options = new()
+                {
+                    HttpHeaders = new BlobHttpHeaders()
+                    {
+                        ContentType = "application/json"
+                    },
+                    Conditions = (blobLease != null)
+                    ? new BlobRequestConditions()
+                    {
+                        LeaseId = blobLease!.LeaseId
+                    }
+                    : default
+                };
+
+                await blobClient.UploadAsync(
+                    new BinaryData(JsonSerializer.Serialize(fileContent)),
+                    options,
+                    cancellationToken).ConfigureAwait(false);
+            }
+            catch (StorageException)
+            {
+                throw;
+            }
+            catch (RequestFailedException ex) when (ex.Status == (int)HttpStatusCode.NotFound)
+            {
+                _logger.LogError("File not found: {FilePath}", filePath);
+                throw new StorageException("File not found.", ex);
+            }
+            catch (RequestFailedException ex) when (
+                ex.Status == (int)HttpStatusCode.Conflict
+                && ex.ErrorCode == "LeaseAlreadyPresent")
+            {
+                _logger.LogError(ex, "Could not get a lease for the blob {FilePath} from container {ContainerName}. " +
+                    "Reason: an existing lease is preventing acquiring a new lease.",
+                    filePath, containerName);
+                throw new StorageException($"Could not get a lease for the blob {filePath} from container {containerName}. " +
+                    "Reason: an existing lease is preventing acquiring a new lease.", ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating the JSON file {FilePath} in container {ContainerName}.",
+                    filePath,
+                    containerName);
+                throw new StorageException($"An error occurred while updating the JSON file {filePath} in container {containerName}.", ex);
+            }
+            finally
+            {
+                if (blobLease != null)
+                    await blobLeaseClient.ReleaseAsync(cancellationToken: cancellationToken);
+            }
+        }
 
         /// <inheritdoc/>
         public async Task DeleteFileAsync(string containerName, string filePath,

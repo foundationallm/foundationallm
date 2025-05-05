@@ -20,6 +20,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using System.Diagnostics;
@@ -125,6 +126,13 @@ namespace FoundationaLLM
                             return true;
                         })
                     .AddAzureMonitorTraceExporter(azureMonitorOptions =>
+                        {
+                            azureMonitorOptions.ConnectionString = builder.Configuration[connectionStringConfigurationKey];
+                        }))
+                .WithMetrics(meterProviderBuilder => meterProviderBuilder
+                    .SetResourceBuilder(resourceBuilder)
+                    .AddAspNetCoreInstrumentation()
+                    .AddAzureMonitorMetricExporter(azureMonitorOptions =>
                         {
                             azureMonitorOptions.ConnectionString = builder.Configuration[connectionStringConfigurationKey];
                         }));

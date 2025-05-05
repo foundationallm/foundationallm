@@ -14,7 +14,11 @@ namespace FoundationaLLM.Vectorization.Validation.Resources
         public VectorizationRequestValidator()
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage("The vectorization request Name field is required.");
-                        
+
+            RuleFor(x => x.Name)
+                .Must(ValidateStartsWithDate)
+                .WithMessage("The vectorization request name must start with a date in the format YYYYMMDD followed by a '-' character.");
+
             // Optionally validate ObjectId if there are specific criteria it needs to meet, such as format.
             RuleFor(x => x.ObjectId)
                 .NotEmpty().When(x => x.ObjectId != null)
@@ -31,6 +35,15 @@ namespace FoundationaLLM.Vectorization.Validation.Resources
                 .Must(steps => steps.Select(step => step.Id).Distinct().Count() == steps.Count)
                 .When(steps => steps != null) // This condition ensures that we don't evaluate the Must if Steps is null
                 .WithMessage("The list of vectorization steps must contain unique names.");
+        }
+
+        private bool ValidateStartsWithDate(string name)
+        {
+            var startToken = name.Split('-').First();
+            if (startToken.Length != 8)
+                return false;
+            
+            return DateTime.TryParseExact(startToken, "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out _);
         }
     }
 

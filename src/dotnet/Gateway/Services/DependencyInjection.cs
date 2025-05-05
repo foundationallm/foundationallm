@@ -24,5 +24,12 @@ namespace FoundationaLLM
             builder.Services.AddSingleton<IGatewayCore, GatewayCore>();
             builder.Services.AddHostedService<GatewayWorker>();
         }
+
+        /// <summary>
+        /// Adds the Gateway API metrics the the dependency injection container.
+        /// </summary>
+        /// <param name="builder">The host application builder.</param>
+        public static void AddGatewayMetrics(this IHostApplicationBuilder builder) =>
+            builder.Services.AddSingleton<GatewayMetrics>();
     }
 }

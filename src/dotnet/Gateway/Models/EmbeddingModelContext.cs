@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using FoundationaLLM.Gateway.Services;
+using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 
 namespace FoundationaLLM.Gateway.Models

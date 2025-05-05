@@ -22,6 +22,7 @@ using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.Configuration;
 using Microsoft.Extensions.Options;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Extensions;
 
 namespace FoundationaLLM.Vectorization.Services.Pipelines
 {
@@ -82,32 +83,50 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                     if(!vectorizationResourceProvider.IsInitialized)
                     {
                         _logger.LogInformation("Vectorization resource provider has not finished initializing.");
-                        await Task.Delay(TimeSpan.FromSeconds(5));
+                        await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
                         continue;
                     }
                     var activePipelines = await vectorizationResourceProvider.GetActivePipelines();
 
                     foreach (var activePipeline in activePipelines)
                     {
-                        //deactivate the pipeline bing processed.
-                        await vectorizationResourceProvider.TogglePipelineActivation(activePipeline.ObjectId!, false, ServiceContext.ServiceIdentity!);
+                        //deactivate the pipeline being processed.
+                        await vectorizationResourceProvider.TogglePipelineActivation(
+                            activePipeline.ObjectId!,
+                            false,
+                            ServiceContext.ServiceIdentity!);
 
                         // initialize pipeline execution state
-                        var pipelineExecutionId = Guid.NewGuid().ToString();
+                        var refTime = DateTimeOffset.UtcNow;
                         var pipelineName = activePipeline.Name;
-                        var pipelineState = new VectorizationPipelineState
+                        var pipelineExecutionId =
+                            $"{pipelineName}-{refTime:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToBase64String()}";
+                        
+                        var pipelineExecution = new VectorizationPipelineExecution
                         {
-                            ExecutionId = pipelineExecutionId,
+                            Name = pipelineExecutionId,
                             PipelineObjectId = activePipeline.ObjectId!,
-                            ExecutionStart = DateTime.UtcNow,
-                            ProcessingState = VectorizationProcessingState.InProgress
+                            ExecutionStart = refTime
                         };
 
-                        await stateService.SavePipelineState(pipelineState);
+                        await stateService.SavePipelineState(pipelineExecution, null);
+
+                        activePipeline.LatestExecutionId = pipelineExecution.Name;
+                        await vectorizationResourceProvider.UpsertResourceAsync<VectorizationPipeline, ResourceProviderUpsertResult<VectorizationPipeline>>(
+                            _instanceSettings.Id,
+                            activePipeline,
+                            ServiceContext.ServiceIdentity!);
+
+                        var pipelineExecutionDetail = new VectorizationPipelineExecutionDetail
+                        {
+                            PipelineObjectId = activePipeline.ObjectId!,
+                            ExecutionId = pipelineExecutionId
+                        };
 
                         try
                         {
-                            _logger.LogInformation($"Executing pipeline {pipelineName} with execution ID {pipelineExecutionId}.");
+                            _logger.LogInformation("Executing pipeline {PipelineName} with execution identifier {PipelineExecutionId}.",
+                                pipelineName, pipelineExecutionId);
 
                             var dataSource = await GetResource<DataSourceBase>(
                                 activePipeline.DataSourceObjectId,
@@ -162,8 +181,12 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                     {
                                         firstMultipartToken = $"{blobStorageServiceSettings.AccountName}.dfs.fabric.microsoft.com";
                                     }
+
+                                    var dataSourceFileCount = 0;
                                     foreach (var file in files)
                                     {
+                                        dataSourceFileCount++;
+
                                         //first token is the container name
                                         var containerName = file.Split("/")[0];
                                         //remove the first token from the path
@@ -172,8 +195,9 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                         var canonical = path.Substring(0, path.LastIndexOf('.'));
                                         var vectorizationRequest = new VectorizationRequest()
                                         {
-                                            Name = Guid.NewGuid().ToString(),
+                                            Name = $"{pipelineExecution.ExecutionStart:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToBase64String()}",
                                             PipelineExecutionId = pipelineExecutionId,
+                                            PipelineExecutionStart = pipelineExecution.ExecutionStart,
                                             PipelineObjectId = activePipeline.ObjectId!,
                                             PipelineName = activePipeline.Name,
                                             CostCenter = activePipeline.CostCenter,
@@ -185,8 +209,8 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                             },
                                             ProcessingType = VectorizationProcessingType.Asynchronous,
                                             ProcessingState = VectorizationProcessingState.New,
-                                            Steps = new List<VectorizationStep>()
-                                            {
+                                            Steps =
+                                            [
                                                 new VectorizationStep()
                                                 {
                                                     Id = VectorizationSteps.Extract,
@@ -216,7 +240,7 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                                         {"indexing_profile_name", indexingProfile.Name }
                                                     }
                                                 }
-                                            },
+                                            ],
                                             CompletedSteps = [],
                                             RemainingSteps = ["extract", "partition", "embed", "index"]
                                         };
@@ -225,30 +249,38 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                         // this does not result in the failure of the entire pipeline.
                                         try
                                         {
+                                            pipelineExecution.VectorizationRequestCount++;
+
                                             //create the vectorization request
                                             await vectorizationRequest.UpdateVectorizationRequestResource(
                                                 _instanceSettings.Id,
                                                 vectorizationResourceProvider,
                                                 ServiceContext.ServiceIdentity!);
-                                            pipelineState.VectorizationRequestObjectIds.Add(vectorizationRequest.ObjectId!);
+                                            pipelineExecutionDetail.VectorizationRequestObjectIds.Add(vectorizationRequest.ObjectId!);
                                             //issue process action on the created vectorization request
                                             await vectorizationRequest.ProcessVectorizationRequest(vectorizationResourceProvider);
                                         }
                                         catch (Exception ex)
                                         {
                                             var errorMessage = $"An error was encountered while creating the vectorization request for file: {string.Join('/', vectorizationRequest.ContentIdentifier.MultipartId)}, exception: {ex.Message}";
-                                            _logger.LogError(ex, errorMessage);                                            
-                                            pipelineState.ErrorMessages.Add(errorMessage);
+                                            _logger.LogError(ex, errorMessage);
+
+                                            pipelineExecution.VectorizationRequestFailuresCount++;
+                                            pipelineExecution.ErrorMessages.Add(errorMessage);
                                             
                                         }
-                                        finally
-                                        {
-                                            await stateService.SavePipelineState(pipelineState);
-                                        }
 
+                                        if (dataSourceFileCount % 100 == 0)
+                                            await stateService.SavePipelineState(pipelineExecution, pipelineExecutionDetail);
                                     }
+
+                                    if (dataSourceFileCount % 100 != 0)
+                                        await stateService.SavePipelineState(pipelineExecution, pipelineExecutionDetail);
+
                                     break;
+
                                 case DataSourceTypes.AzureSQLDatabase:
+
                                     var sqlDataSourceServiceSettings = new SQLDatabaseServiceSettings { ConnectionString = String.Empty };
                                     _configuration.Bind(
                                         $"{AppConfigurationKeySections.FoundationaLLM_DataSources}:{dataSource.Name}",
@@ -267,13 +299,17 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                         }
                                     }
 
+                                    var sqlFileCount = 0;
                                     foreach (var multipartId in multipartIds)
                                     {
+                                        sqlFileCount++;
+
                                         var canonical = $"{dataSource.Name}/{string.Join('/', multipartId)}";
                                         var vectorizationRequest = new VectorizationRequest()
                                         {
                                             Name = Guid.NewGuid().ToString(),
                                             PipelineExecutionId = pipelineExecutionId,
+                                            PipelineExecutionStart = pipelineExecution.ExecutionStart,
                                             PipelineObjectId = activePipeline.ObjectId!,
                                             PipelineName = activePipeline.Name,
                                             CostCenter = activePipeline.CostCenter,
@@ -285,8 +321,8 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                             },
                                             ProcessingType = VectorizationProcessingType.Asynchronous,
                                             ProcessingState = VectorizationProcessingState.New,
-                                            Steps = new List<VectorizationStep>()
-                                            {
+                                            Steps =
+                                            [
                                                 new VectorizationStep()
                                                 {
                                                     Id = VectorizationSteps.Extract,
@@ -316,7 +352,7 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                                         {"indexing_profile_name", indexingProfile.Name }
                                                     }
                                                 }
-                                            },
+                                            ],
                                             CompletedSteps = [],
                                             RemainingSteps = ["extract", "partition", "embed", "index"]
                                         };
@@ -325,19 +361,21 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                         // this does not result in the failure of the entire pipeline.
                                         try
                                         {
+                                            pipelineExecution.VectorizationRequestCount++;
+
                                             //create the vectorization request
                                             await vectorizationRequest.UpdateVectorizationRequestResource(
                                                 _instanceSettings.Id,
                                                 vectorizationResourceProvider,
                                                 ServiceContext.ServiceIdentity!);
-                                            pipelineState.VectorizationRequestObjectIds.Add(vectorizationRequest.ObjectId!);
+                                            pipelineExecutionDetail.VectorizationRequestObjectIds.Add(vectorizationRequest.ObjectId!);
 
                                             //issue process action on the created vectorization request
                                             var processResult = await vectorizationRequest.ProcessVectorizationRequest(vectorizationResourceProvider);
                                             if(processResult.IsSuccess==false)
                                             {
                                                 vectorizationRequest.ProcessingState = VectorizationProcessingState.Failed;
-                                                pipelineState.ErrorMessages.Add($"Error while submitting process action on vectorization request {vectorizationRequest.Name} in pipeline {pipelineName}: {processResult.ErrorMessage!}");
+                                                pipelineExecution.ErrorMessages.Add($"Error while submitting process action on vectorization request {vectorizationRequest.Name} in pipeline {pipelineName}: {processResult.ErrorMessage!}");
                                             }
                                             await vectorizationRequest.UpdateVectorizationRequestResource(
                                                 _instanceSettings.Id,
@@ -347,28 +385,37 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                         catch (Exception ex)
                                         {
                                             var errorMessage = $"An error was encountered while creating the vectorization request for file {string.Join('/', vectorizationRequest.ContentIdentifier.MultipartId)}, exception: {ex.Message}";
-                                            _logger.LogError(ex, errorMessage);                                           
-                                            pipelineState.ErrorMessages.Add(errorMessage);                                           
+                                            _logger.LogError(ex, errorMessage);
+
+                                            pipelineExecution.VectorizationRequestFailuresCount++;
+                                            pipelineExecution.ErrorMessages.Add(errorMessage);                                           
                                         }
+
+                                        if (sqlFileCount % 100 == 0)
+                                            await stateService.SavePipelineState(pipelineExecution, pipelineExecutionDetail);
                                     }
+
+                                    if (sqlFileCount % 100 != 0)
+                                        await stateService.SavePipelineState(pipelineExecution, pipelineExecutionDetail);
+
                                     break;
                             }
                         }
                         catch (Exception ex)
                         {
-                            _logger.LogError(ex, $"An error was encountered while activating or executing pipeline {activePipeline.Name}.");
-                            //get latest state of the pipeline execution.
-                            pipelineState = await stateService.ReadPipelineState(pipelineName, pipelineExecutionId);
-                            pipelineState.ErrorMessages.Add($"An error was encountered while activating or executing pipeline {activePipeline.Name}: {ex.Message}.");                           
+                            _logger.LogError(ex, "An error was encountered while activating or executing pipeline {PipelineName}.",
+                                activePipeline.Name);
+
+                            pipelineExecution.ErrorMessages.Add($"An error was encountered while activating or executing pipeline {activePipeline.Name}: {ex.Message}.");                           
                         }
                         finally
                         {
-                            if(pipelineState.VectorizationRequestObjectIds.Count == 0)
+                            if(pipelineExecutionDetail.VectorizationRequestObjectIds.Count == 0)
                             {
-                                pipelineState.ProcessingState = VectorizationProcessingState.Completed;
-                                pipelineState.ExecutionEnd = DateTime.UtcNow;
+                                pipelineExecution.ExecutionEnd = DateTimeOffset.UtcNow;
                             }                           
-                            await stateService.SavePipelineState(pipelineState);
+
+                            await stateService.SavePipelineState(pipelineExecution, pipelineExecutionDetail);
                         }
                     }
                 }
@@ -377,7 +424,7 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                     _logger.LogError(ex, "An error was encountered while running the pipeline execution cycle.");
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(60));
+                await Task.Delay(TimeSpan.FromSeconds(30), cancellationToken);
             }
         }
 
@@ -393,19 +440,6 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
         private static async Task<T> GetResource<T>(string objectId, string resourceTypeName, IResourceProviderService resourceProviderService, UnifiedUserIdentity userIdentity)
             where T : ResourceBase =>
           await resourceProviderService.GetResourceAsync<T>($"/{resourceTypeName}/{objectId.Split("/").Last()}", userIdentity);
-        
-
-        private static bool CheckNextExecution(string? cronExpression)
-        {
-            if (string.IsNullOrWhiteSpace(cronExpression))
-                return false;
-
-            var cronSchedule = new CronExpression(cronExpression);
-            cronSchedule.TimeZone = TimeZoneInfo.Utc;
-
-            var currentDate = DateTime.UtcNow;
-            return cronSchedule.IsSatisfiedBy(new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, currentDate.Hour, currentDate.Minute, 0));
-        }
 
         /// <inheritdoc/>
         public async Task StopAsync(CancellationToken cancellationToken) =>

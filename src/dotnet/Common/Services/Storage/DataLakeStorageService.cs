@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Azure.Storage;
+using Azure.Storage.Blobs;
 using Azure.Storage.Files.DataLake;
 using Azure.Storage.Files.DataLake.Models;
 using FoundationaLLM.Common.Authentication;
@@ -7,10 +8,12 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Storage;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 
 namespace FoundationaLLM.Common.Services.Storage
 {
@@ -182,6 +185,91 @@ namespace FoundationaLLM.Common.Services.Storage
                 new MemoryStream(Encoding.UTF8.GetBytes(fileContent)),
                 contentType,
                 cancellationToken).ConfigureAwait(false);
+
+        /// <inheritdoc/>
+        public async Task UpdateJSONFileAsync<T>(
+            string containerName,
+            string filePath,
+            Func<T, T> objectTransformer,
+            CancellationToken cancellationToken) where T : class
+        {
+            var fileSystemClient = _dataLakeClient.GetFileSystemClient(containerName);
+            var fileClient = fileSystemClient.GetFileClient(filePath);
+            var fileLeaseClient = fileClient.GetDataLakeLeaseClient();
+
+            // We are using pessimistic conccurency by default.
+            // For more details, see https://learn.microsoft.com/en-us/azure/storage/blobs/concurrency-manage.
+
+            DataLakeLease? fileLease = default;
+
+            try
+            {
+                fileLease = await fileLeaseClient.AcquireAsync(TimeSpan.FromSeconds(60), cancellationToken: cancellationToken);
+                if (fileLease == null)
+                {
+                    _logger.LogError("Could not get a lease for the file {FilePath} from container {ContainerName}. Reason: unkown.", filePath, containerName);
+                    throw new StorageException($"Could not get a lease for the file {filePath} from container {containerName}. Reason: unknown.");
+                }
+
+                var memoryStream = new MemoryStream();
+                var result = await fileClient.ReadToAsync(memoryStream, null, cancellationToken).ConfigureAwait(false);
+
+                if (result.IsError)
+                    throw new StorageException($"Cannot read file {filePath} from file system {containerName}.");
+
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                var fileContent = default(T);
+
+                if (JsonSerializer.Deserialize(BinaryData.FromStream(memoryStream), typeof(T)) is T content)
+                {
+                    fileContent = objectTransformer(content);
+                }
+                else
+                {
+                    _logger.LogError("Could not deserialize the content of the blob {FilePath} from container {ContainerName} to type {TypeName}.",
+                        filePath, containerName, nameof(T));
+                    throw new StorageException(
+                        $"Could not deserialize the content of the blob {filePath} from container {containerName} to type {nameof(T)}.");
+                }
+
+                DataLakeFileUploadOptions options = new()
+                {
+                    HttpHeaders = new PathHttpHeaders()
+                    {
+                        ContentType = "application/json"
+                    },
+                    Conditions = (fileLease != null)
+                    ? new DataLakeRequestConditions()
+                    {
+                        LeaseId = fileLease!.LeaseId
+                    }
+                    : default
+                };
+
+                await fileClient.UploadAsync(
+                    new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(fileContent))),
+                    options, cancellationToken).ConfigureAwait(false);
+            }
+            catch (RequestFailedException ex)
+            {
+                if (ex.Status == (int)HttpStatusCode.Conflict
+                        && ex.ErrorCode == "LeaseAlreadyPresent")
+                {
+                    _logger.LogError(ex, "Could not get a lease for the file {FilePath} from container {ContainerName}. " +
+                        "Reason: an existing lease is preventing acquiring a new lease.",
+                        filePath, containerName);
+                    throw new StorageException($"Could not get a lease for the file {filePath} from container {containerName}. " +
+                        "Reason: an existing lease is preventing acquiring a new lease.", ex);
+                }
+
+                throw new StorageException($"Could not get a lease for the file {filePath} from container {containerName}. Reason: unknown.", ex);
+            }
+            finally
+            {
+                if (fileLease != null)
+                    await fileLeaseClient.ReleaseAsync(cancellationToken: cancellationToken);
+            }
+        }
 
         /// <inheritdoc/>
         public async Task DeleteFileAsync(
