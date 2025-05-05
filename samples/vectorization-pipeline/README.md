@@ -14,13 +14,13 @@ To run the sample, you need to have the following prerequisites:
    git clone https://github.com/solliancenet/foundationallm.git
    ```
 
-   >[!NOTE]
-   >Cloning the repository is optional. As an alternative, you can just download the contents of the `samples/vectorization-pipeline` directory. In this case, all the references to the `samples/vectorization-pipeline` directory in this document should be replaced with the path to the downloaded directory.
+> [!NOTE]
+> Cloning the repository is optional. As an alternative, you can just download the contents of the `samples/vectorization-pipeline` directory. In this case, all the references to the `samples/vectorization-pipeline` directory in this document should be replaced with the path to the downloaded directory.
 
 4. Optional: [Visual Studio Code](https://code.visualstudio.com/download) installed.
 
-   >[!NOTE]
-   >The instructions in this document assume you are using Visual Studio Code as you IDE.
+> [!NOTE]
+> The instructions in this document assume you are using Visual Studio Code as you IDE.
 
 ## Running the sample
 
@@ -64,28 +64,29 @@ To run the sample, follow these steps:
 
 7. Create a `.env` file in the `samples/vectorization-pipeline` directory based on the template `.env.example`.
 
-   >[!NOTE]
-   >The values of the variables in the `.env` file should be provided by your FoundationaLLM administrator.
+> [!NOTE]
+> The values of the variables in the `.env` file should be provided by your FoundationaLLM administrator.
 
 8. Open the `create_vectorization_pipeline.py` file in Visual Studio Code.
 
 9. Modify the `create_vectorization_pipeline.py` file to specify the data source and other parameters for the vectorization pipeline.
 
-   >[!NOTE]
-   >The values for the `DATA_SOURCE_NAME` and `VECTOR_STORE_NAME` variables should be provided by your FoundationaLLM administrator. You are responsible for providing the `VECTORIZATION_PIPELINE_NAME` and `VECTORIZATION_PIPELINE_DESCRIPTION` variable values. The name of the vectorization pipeline must be unique and not already exist in the FoundationaLLM instance. It also must meet the requirements for valid FoundationaLLM resource names (must start with a letter and contain only letters, numbers, hyphens, or underscores).
+> [!NOTE]
+> The values for the `DATA_SOURCE_NAME` and `VECTOR_STORE_NAME` variables should be provided by your FoundationaLLM administrator. You are responsible for providing the `VECTORIZATION_PIPELINE_NAME` and `VECTORIZATION_PIPELINE_DESCRIPTION` variable values. The name of the vectorization pipeline must be unique and not already exist in the FoundationaLLM instance. It also must meet the requirements for valid FoundationaLLM resource names (must start with a letter and contain only letters, numbers, hyphens, or underscores).
 
 10. Select the **Run and Debug** section, select **Python: Vectorization Pipeline** to run the script. This will execute the `create_vectorization_pipeline.py` file in the integrated terminal. Once the vectorization pipeline is created, you can execute it to vectorize files from the specified data source.
 
-      >[!IMPORTANT]
-      >The vectorization pipelines are automatically executed in the background. By default, the when the pipeline is created, it will be disabled. By activating the pipeline, you are indicating that you want to run the pipeline.
+> [!IMPORTANT]
+> The vectorization pipelines are automatically executed in the background. By default, the when the pipeline is created, it will be disabled. By activating the pipeline, you are indicating that you want to run the pipeline.
 
 11. Open the `run_vectorization_pipeline.py` file in Visual Studio Code.
+    
 12. Modify the `run_vectorization_pipeline.py` file to specify the name of the vectorization pipeline to run.
 
-    >[!NOTE]
-    >The value for the `VECTORIZATION_PIPELINE_NAME` variable should be the name of the pipeline that you created in the previous step.
+>[!NOTE]
+>The value for the `VECTORIZATION_PIPELINE_NAME` variable should be the name of the pipeline that you created in the previous step.
 
 13. Select the **Run and Debug** section, select **Python: Vectorization Pipeline** to run the script. This will execute the `run_vectorization_pipeline.py` file in the integrated terminal.
 
-      >[!WARNING]
-      >Depending on the number and size of the files in the data source, the vectorization process may take some time to complete. You can always break the cycle of vectorization pipeline execution status checks and resume the process later. To do this, you need to remove the vectorization pipeline activation section from the code.
+>[!WARNING]
+>Depending on the number and size of the files in the data source, the vectorization process may take some time to complete. You can always break the cycle of vectorization pipeline execution status checks and resume the process later. To do this, you need to remove the vectorization pipeline activation section from the code.
