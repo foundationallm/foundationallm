@@ -9000,6 +9000,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecution.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecution.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecution",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecution.yml\" sourcestartlinenumber=\"1\">Provides the details of a vectorization pipeline execution.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecutionDetail.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecutionDetail.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecutionDetail",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecutionDetail.yml\" sourcestartlinenumber=\"1\">Represents the state of a vectorization pipeline execution.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType.yml",
       "output": {
         ".html": {
@@ -12612,6 +12640,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.GatewayMetrics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.GatewayMetrics.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Gateway.Services.GatewayMetrics",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.GatewayWorker.yml",
       "output": {
         ".html": {
@@ -14418,20 +14460,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Extensions.VectorizationStateServiceExtensions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Extensions.VectorizationStateServiceExtensions.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Extensions.VectorizationStateServiceExtensions",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Extensions.VectorizationStateServiceExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods for the <xref href=\"FoundationaLLM.Vectorization.Interfaces.IVectorizationStateService\" data-throw-if-not-resolved=\"false\"></xref> class.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Extensions.yml",
       "output": {
         ".html": {
@@ -14905,20 +14933,6 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Vectorization.Models.VectorizationLogEntry",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationLogEntry.yml\" sourcestartlinenumber=\"1\">Represents a log entry that contains information about vectorization operations.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationPipelineState.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationPipelineState.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.VectorizationPipelineState",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationPipelineState.yml\" sourcestartlinenumber=\"1\">Represents the state of a run of a vectorization pipeline.</p>\n"
     },
     {
       "type": "ManagedReference",
