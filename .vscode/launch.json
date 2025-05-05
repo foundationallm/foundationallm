@@ -85,6 +85,16 @@
             "python": "${workspaceFolder}/src/python/PythonCodeSessionAPI/.venv/Scripts/python.exe"
         },
         {
+            "name": "Python: Vectorization Pipeline",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd" : "${workspaceFolder}/samples/vectorization-pipeline",
+            "python": "${workspaceFolder}/samples/vectorization-pipeline/.venv/Scripts/python.exe",
+            "justMyCode": true
+        },
+        {
             "name": "Python: Current File",
             "type": "debugpy",
             "request": "launch",
