@@ -88,7 +88,13 @@ namespace FoundationaLLM.AIModel.ResourceProviders
             };
 
         /// <inheritdoc/>
-        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string? serializedResource, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<object> UpsertResourceAsync(
+            ResourcePath resourcePath,
+            string? serializedResource,
+            ResourceProviderFormFile? formFile,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity) =>
+
             resourcePath.MainResourceTypeName switch
             {
                 AIModelResourceTypeNames.AIModels => await UpdateAIModel(resourcePath, serializedResource!, userIdentity),

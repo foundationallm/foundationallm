@@ -87,7 +87,13 @@ namespace FoundationaLLM.Prompt.ResourceProviders
             };
 
         /// <inheritdoc/>
-        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string? serializedResource, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<object> UpsertResourceAsync(
+            ResourcePath resourcePath,
+            string? serializedResource,
+            ResourceProviderFormFile? formFile,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity) =>
+
             resourcePath.MainResourceTypeName switch
             {
                 PromptResourceTypeNames.Prompts => await UpdatePrompt(resourcePath, serializedResource!, userIdentity),
