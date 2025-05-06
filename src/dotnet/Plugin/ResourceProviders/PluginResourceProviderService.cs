@@ -102,7 +102,9 @@ namespace FoundationaLLM.Plugin.ResourceProviders
             ResourcePath resourcePath,
             string? serializedResource,
             ResourceProviderFormFile? formFile,
+            ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity) =>
+
             resourcePath.ResourceTypeName switch
             {
                 PluginResourceTypeNames.PluginPackages => await UpdatePluginPackage(
