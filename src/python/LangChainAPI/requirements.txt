@@ -2,6 +2,7 @@ aiohttp==3.11.11
 azure-appconfiguration-provider==1.2.0
 azure-identity==1.17.1
 azure-keyvault-secrets==4.8.0
+opentelemetry-sdk==1.31.1
 azure-monitor-opentelemetry==1.6.4
 azure-monitor-opentelemetry-exporter==1.0.0b33
 azure-search-documents==11.6.0b9
