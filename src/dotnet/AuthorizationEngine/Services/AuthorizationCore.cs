@@ -388,8 +388,8 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                             // Check if the actions of the role definition include the requested action.
                             if (resourcePath.IncludesResourcePath(roleAssignment.ScopeResourcePath!))
                             {
-                                result.HasRequiredRole =
-                                    roleAssignment.RoleDefinition!.Name == authorizationRequest.RoleName;
+                                if (roleAssignment.RoleDefinition!.Name == authorizationRequest.RoleName)
+                                    result.HasRequiredRole = true;
 
                                 if (roleAssignment.AllowedActions.Contains(authorizationRequest.Action))
                                 {
