@@ -92,7 +92,9 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             ResourcePath resourcePath,
             string? serializedResource,
             ResourceProviderFormFile? formFile,
+            ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity) =>
+
             resourcePath.ResourceTypeName switch
             {
                 DataPipelineResourceTypeNames.DataPipelines => await UpdateDataPipeline(

@@ -185,5 +185,90 @@
 		"updated_on": "2024-10-22T00:00:00.0000000Z",
 		"created_by": null,
 		"updated_by": null
+	},
+	{
+		"type": "FoundationaLLM.Authorization/roleDefinitions",
+		"name": "2da16a58-ed63-431a-b90e-9df32c2cae4a",
+		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/2da16a58-ed63-431a-b90e-9df32c2cae4a",
+		"display_name": "Data Pipelines Contributor",
+		"description": "Create new data pipelines.",
+		"assignable_scopes": [
+			"/"
+		],
+		"permissions": [
+			{
+				"actions": [
+					"FoundationaLLM.DataPipeline/dataPipelines/read",
+					"FoundationaLLM.Vectorization/vectorizationPipelines/read",
+					"FoundationaLLM.DataSource/dataSources/read",
+					"FoundationaLLM.Vectorization/textPartitioningProfiles/read",
+					"FoundationaLLM.Vectorization/textEmbeddingProfiles/read",
+					"FoundationaLLM.Vectorization/indexingProfiles/read",
+					"FoundationaLLM.Plugin/plugins/read"
+				],
+				"not_actions": [],
+				"data_actions": [],
+				"not_data_actions": []
+			}
+		],
+		"created_on": "2025-05-01T00:00:00.0000000Z",
+		"updated_on": "2025-05-01T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
+	},
+	{
+		"type": "FoundationaLLM.Authorization/roleDefinitions",
+		"name": "3f28aa77-a854-4aa7-ae11-ffda238275c9",
+		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/3f28aa77-a854-4aa7-ae11-ffda238275c9",
+		"display_name": "Agents Contributor",
+		"description": "Create new agents.",
+		"assignable_scopes": [
+			"/"
+		],
+		"permissions": [
+			{
+				"actions": [
+					"FoundationaLLM.Agent/agents/read",
+					"FoundationaLLM.Agent/workflows/read",
+					"FoundationaLLM.Agent/tools/read",
+					"FoundationaLLM.Prompt/prompts/read",
+					"FoundationaLLM.DataSource/dataSources/read",
+					"FoundationaLLM.Vectorization/textEmbeddingProfiles/read",
+					"FoundationaLLM.Vectorization/indexingProfiles/read",
+					"FoundationaLLM.Configuration/apiEndpointConfigurations/read",
+					"FoundationaLLM.AIModel/aiModels/read",
+					"FoundationaLLM.Plugin/plugins/read"
+				],
+				"not_actions": [],
+				"data_actions": [],
+				"not_data_actions": []
+			}
+		],
+		"created_on": "2025-05-01T00:00:00.0000000Z",
+		"updated_on": "2025-05-01T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
+	},
+	{
+		"type": "FoundationaLLM.Authorization/roleDefinitions",
+		"name": "8c5ea0d3-f5a1-4be5-90a7-a12921c45542",
+		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/8c5ea0d3-f5a1-4be5-90a7-a12921c45542",
+		"display_name": "Agent Access Tokens Contributor",
+		"description": "Create new agent access tokens.",
+		"assignable_scopes": [
+			"/"
+		],
+		"permissions": [
+			{
+				"actions": [],
+				"not_actions": [],
+				"data_actions": [],
+				"not_data_actions": []
+			}
+		],
+		"created_on": "2025-05-01T00:00:00.0000000Z",
+		"updated_on": "2025-05-01T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
 	}
 ]

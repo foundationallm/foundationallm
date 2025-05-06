@@ -310,10 +310,9 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                             authorizationResults[rp] = ProcessAuthorizationRequestForResourcePath(parsedResourcePath, new ActionAuthorizationRequest()
                             {
                                 Action = authorizationRequest.Action,
+                                RoleName = authorizationRequest.RoleName,
                                 ResourcePaths = [rp],
-                                ExpandResourceTypePaths = parsedResourcePath.IsResourceTypePath
-                                    ? authorizationRequest.ExpandResourceTypePaths
-                                    : false,
+                                ExpandResourceTypePaths = parsedResourcePath.IsResourceTypePath && authorizationRequest.ExpandResourceTypePaths,
                                 IncludeRoles = authorizationRequest.IncludeRoles,
                                 IncludeActions = authorizationRequest.IncludeActions,
                                 UserContext = authorizationRequest.UserContext
@@ -351,6 +350,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 ResourceName = resourcePath.MainResourceId,
                 ResourcePath = resourcePath.RawResourcePath,
                 Authorized = false,
+                HasRequiredRole = false,
                 Roles = [],
                 PolicyDefinitionIds = [],
                 SubordinateResourcePathsAuthorizationResults = []
@@ -364,11 +364,10 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             if (_policyAssignmentCaches.TryGetValue(resourcePath.InstanceId!, out var policyAssignmentCache))
             {
                 // Policies are only assigned to resource type paths.
-                result.PolicyDefinitionIds = policyAssignmentCache
+                result.PolicyDefinitionIds = [.. policyAssignmentCache
                     .GetPolicyAssignments(resourcePath.GetResourceTypeObjectId())
                     .Where(pa => securityPrincipalIds.Contains(pa.PrincipalId))
-                    .Select(pa => pa.PolicyDefinitionId)
-                    .ToList();
+                    .Select(pa => pa.PolicyDefinitionId)];
             }
 
             // Get cache associated with the instance id.
@@ -387,21 +386,26 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                         {
                             // Check if the scope of the role assignment covers the resource.
                             // Check if the actions of the role definition include the requested action.
-                            if (resourcePath.IncludesResourcePath(roleAssignment.ScopeResourcePath!)
-                                && roleAssignment.AllowedActions.Contains(authorizationRequest.Action))
+                            if (resourcePath.IncludesResourcePath(roleAssignment.ScopeResourcePath!))
                             {
-                                result.Authorized = true;
+                                if (roleAssignment.RoleDefinition!.Name == authorizationRequest.RoleName)
+                                    result.HasRequiredRole = true;
 
-                                // If we are not asked to include roles or actions and not asked to expand resource paths,
-                                // we can return immediately (this is the most common case).
-                                // Otherwise, we need to go through the entire list of security principals and their role assignments,
-                                // to include collect all the roles/actions and/or all the subordinate authorized resource paths.
-                                if (!authorizationRequest.IncludeRoles
-                                    && !authorizationRequest.IncludeActions
-                                    && !authorizationRequest.ExpandResourceTypePaths)
-                                    return result;
+                                if (roleAssignment.AllowedActions.Contains(authorizationRequest.Action))
+                                {
+                                    result.Authorized = true;
 
-                                allSecurableActions.UnionWith(roleAssignment.AllowedActions);
+                                    // If we are not asked to include roles or actions and not asked to expand resource paths,
+                                    // we can return immediately (this is the most common case).
+                                    // Otherwise, we need to go through the entire list of security principals and their role assignments,
+                                    // to include collect all the roles/actions and/or all the subordinate authorized resource paths.
+                                    if (!authorizationRequest.IncludeRoles
+                                        && !authorizationRequest.IncludeActions
+                                        && !authorizationRequest.ExpandResourceTypePaths)
+                                        return result;
+
+                                    allSecurableActions.UnionWith(roleAssignment.AllowedActions);
+                                }
                             }
                         }
                         else
@@ -424,12 +428,14 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 if (authorizationRequest.IncludeRoles
                     && allRoleAssignments.Count > 0)
                 {
-                    // Include the display names of the roles in the result that match the scope of the resource.
-                    result.Roles = allRoleAssignments
+                    var matchingRoleAssignments = allRoleAssignments
                         .Where(ra => resourcePath.IncludesResourcePath(ra.ScopeResourcePath!))
-                        .Select(ra => ra.RoleDefinition!.DisplayName!)
-                        .Distinct()
                         .ToList();
+
+                    // Include the display names of the roles in the result that match the scope of the resource.
+                    result.Roles = [.. matchingRoleAssignments
+                        .Select(ra => ra.RoleDefinition!.DisplayName!)
+                        .Distinct()];
                 }
 
                 if (authorizationRequest.IncludeActions
@@ -618,7 +624,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             {
                 var persistedSecretKeys = secretKeyCache.GetKeys(contextId);
 
-                return persistedSecretKeys.Select(x => new SecretKey()
+                return [.. persistedSecretKeys.Select(x => new SecretKey()
                 {
                     Id = x.Id,
                     ContextId = contextId,
@@ -626,7 +632,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                     Description = x.Description,
                     Active = x.Active,
                     ExpirationDate = x.ExpirationDate,
-                }).ToList();
+                })];
             }
 
             return [];
