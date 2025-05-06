@@ -197,7 +197,7 @@ public required string Action { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Authorization_ActionAuthorizationRequest_ExpandResourceTypePaths" data-uid="FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest.ExpandResourceTypePaths">
   ExpandResourceTypePaths
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/ActionAuthorizationRequest.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/ActionAuthorizationRequest.cs/#L34"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether to expand resource type paths that are not authorized.</p>
@@ -205,7 +205,8 @@ public required string Action { get; set; }</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public required bool ExpandResourceTypePaths { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;expand_resource_type_paths&quot;)]
+public required bool ExpandResourceTypePaths { get; set; }</code></pre>
   </div>
 
 
@@ -232,7 +233,7 @@ public required string Action { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Authorization_ActionAuthorizationRequest_IncludeActions" data-uid="FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest.IncludeActions">
   IncludeActions
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/ActionAuthorizationRequest.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/ActionAuthorizationRequest.cs/#L54"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether to include authorizable actions in the response.</p>
@@ -240,7 +241,8 @@ public required string Action { get; set; }</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public required bool IncludeActions { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;include_actions&quot;)]
+public required bool IncludeActions { get; set; }</code></pre>
   </div>
 
 
@@ -268,7 +270,7 @@ the response will include the authorizable actions assigned directly or indirect
 
   <h3 id="FoundationaLLM_Common_Models_Authorization_ActionAuthorizationRequest_IncludeRoles" data-uid="FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest.IncludeRoles">
   IncludeRoles
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/ActionAuthorizationRequest.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/ActionAuthorizationRequest.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether to include roles in the response.</p>
@@ -276,7 +278,8 @@ the response will include the authorizable actions assigned directly or indirect
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public required bool IncludeRoles { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;include_roles&quot;)]
+public required bool IncludeRoles { get; set; }</code></pre>
   </div>
 
 
@@ -304,7 +307,7 @@ the response will include the roles assigned directly or indirectly to the resou
 
   <h3 id="FoundationaLLM_Common_Models_Authorization_ActionAuthorizationRequest_ResourcePaths" data-uid="FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest.ResourcePaths">
   ResourcePaths
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/ActionAuthorizationRequest.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/ActionAuthorizationRequest.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The list of resources for which authorization is requested.</p>
@@ -333,11 +336,44 @@ public required List&lt;string&gt; ResourcePaths { get; set; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_Common_Models_Authorization_ActionAuthorizationRequest_RoleName_" data-uid="FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest.RoleName*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_Authorization_ActionAuthorizationRequest_RoleName" data-uid="FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest.RoleName">
+  RoleName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/ActionAuthorizationRequest.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the optional role name to check for assignment.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;role_name&quot;)]
+public string? RoleName { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Models_Authorization_ActionAuthorizationRequest_UserContext_" data-uid="FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest.UserContext*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_Authorization_ActionAuthorizationRequest_UserContext" data-uid="FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest.UserContext">
   UserContext
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/ActionAuthorizationRequest.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/ActionAuthorizationRequest.cs/#L60"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authorization.UserAuthorizationContext.html">UserAuthorizationContext</a> containing the authorization context for the user.</p>

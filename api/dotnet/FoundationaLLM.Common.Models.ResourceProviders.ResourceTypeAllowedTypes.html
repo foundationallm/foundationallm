@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeAllowedTypes" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeAllowedTypes" class="text-break">
-Class ResourceTypeAllowedTypes  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L71"><i class="bi bi-code-slash"></i></a>
+Class ResourceTypeAllowedTypes  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L74"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -170,7 +170,7 @@ Class ResourceTypeAllowedTypes  <a class="header-action link-secondary" title="V
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeAllowedTypes__ctor_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Type__System_Collections_Generic_List_System_Type__System_Collections_Generic_List_System_Type__" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeAllowedTypes.#ctor(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Type},System.Collections.Generic.List{System.Type},System.Collections.Generic.List{System.Type})">
   ResourceTypeAllowedTypes(string, string, Dictionary&lt;string, Type&gt;, List&lt;Type&gt;, List&lt;Type&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L74"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Provides details about the types that are allowed for the body and return of a specific HTTP method.</p>
@@ -178,7 +178,7 @@ Class ResourceTypeAllowedTypes  <a class="header-action link-secondary" title="V
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ResourceTypeAllowedTypes(string HttpMethod, string AuthorizableOperation, Dictionary&lt;string, Type&gt; AllowedParameterTypes, List&lt;Type&gt; AllowedBodyTypes, List&lt;Type&gt; AllowedReturnTypes)</code></pre>
+    <pre><code class="lang-csharp hljs">public ResourceTypeAllowedTypes(string HttpMethod, string AuthorizationRequirements, Dictionary&lt;string, Type&gt; AllowedParameterTypes, List&lt;Type&gt; AllowedBodyTypes, List&lt;Type&gt; AllowedReturnTypes)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -186,8 +186,11 @@ Class ResourceTypeAllowedTypes  <a class="header-action link-secondary" title="V
     <dt><code>HttpMethod</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The name of the HTTP method. Can be one of GET, POST, PUT, PATCH, or DELETE.</p>
 </dd>
-    <dt><code>AuthorizableOperation</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The name of the authorizable operation that is required to authorize the request.</p>
+    <dt><code>AuthorizationRequirements</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The requirements for authorizing the HTTP request.
+For all HTTP requests except POST, contains the name of the authorizable operation that is required to authorize the request.
+For POST requests will contain the name of the authorizable operation optionally followed by a RBAC role name (in this case,
+the two values must be separated by '|'.</p>
 </dd>
     <dt><code>AllowedParameterTypes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>&gt;</dt>
     <dd><p>The dictionary of query parameter names and types that are allowed for the method.</p>
@@ -219,7 +222,7 @@ Class ResourceTypeAllowedTypes  <a class="header-action link-secondary" title="V
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeAllowedTypes_AllowedBodyTypes" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeAllowedTypes.AllowedBodyTypes">
   AllowedBodyTypes
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L78"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The list of types that are allowed as payloads for the HTTP request.</p>
@@ -251,7 +254,7 @@ Class ResourceTypeAllowedTypes  <a class="header-action link-secondary" title="V
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeAllowedTypes_AllowedParameterTypes" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeAllowedTypes.AllowedParameterTypes">
   AllowedParameterTypes
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L77"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The dictionary of query parameter names and types that are allowed for the method.</p>
@@ -283,7 +286,7 @@ Class ResourceTypeAllowedTypes  <a class="header-action link-secondary" title="V
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeAllowedTypes_AllowedReturnTypes" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeAllowedTypes.AllowedReturnTypes">
   AllowedReturnTypes
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L79"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The list of types the are allowed as return types for the HTTP request.</p>
@@ -311,19 +314,22 @@ Class ResourceTypeAllowedTypes  <a class="header-action link-secondary" title="V
 
 
 
-  <a id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeAllowedTypes_AuthorizableOperation_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeAllowedTypes.AuthorizableOperation*"></a>
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeAllowedTypes_AuthorizationRequirements_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeAllowedTypes.AuthorizationRequirements*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeAllowedTypes_AuthorizableOperation" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeAllowedTypes.AuthorizableOperation">
-  AuthorizableOperation
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeAllowedTypes_AuthorizationRequirements" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeAllowedTypes.AuthorizationRequirements">
+  AuthorizationRequirements
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L76"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>The name of the authorizable operation that is required to authorize the request.</p>
+  <div class="markdown level1 summary"><p>The requirements for authorizing the HTTP request.
+For all HTTP requests except POST, contains the name of the authorizable operation that is required to authorize the request.
+For POST requests will contain the name of the authorizable operation optionally followed by a RBAC role name (in this case,
+the two values must be separated by '|'.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string AuthorizableOperation { get; init; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string AuthorizationRequirements { get; init; }</code></pre>
   </div>
 
 
@@ -347,7 +353,7 @@ Class ResourceTypeAllowedTypes  <a class="header-action link-secondary" title="V
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeAllowedTypes_HttpMethod" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeAllowedTypes.HttpMethod">
   HttpMethod
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L75"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The name of the HTTP method. Can be one of GET, POST, PUT, PATCH, or DELETE.</p>
@@ -379,7 +385,7 @@ Class ResourceTypeAllowedTypes  <a class="header-action link-secondary" title="V
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L71" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L74" class="edit-link">Edit this page</a>
         </div>
 
 
