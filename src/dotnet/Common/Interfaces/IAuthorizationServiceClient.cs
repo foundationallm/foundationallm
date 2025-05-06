@@ -14,6 +14,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance id.</param>
         /// <param name="action">The action identifier.</param>
+        /// <param name="roleName">An optional role name to check for assignment.</param>
         /// <param name="resourcePaths">The resource paths.</param>
         /// <param name="expandResourceTypePaths">A value indicating whether to expand resource type paths that are not authorized.</param>
         /// <param name="includeRoles">A value indicating whether to include roles in the response.</param>
@@ -37,6 +38,7 @@ namespace FoundationaLLM.Common.Interfaces
         Task<ActionAuthorizationResult> ProcessAuthorizationRequest(
             string instanceId,
             string action,
+            string? roleName,
             List<string> resourcePaths,
             bool expandResourceTypePaths,
             bool includeRoles,

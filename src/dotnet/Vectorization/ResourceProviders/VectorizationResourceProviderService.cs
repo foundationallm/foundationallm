@@ -252,17 +252,23 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         #endregion
 
         /// <inheritdoc/>
-        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string? serializedResource, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<object> UpsertResourceAsync(
+            ResourcePath resourcePath,
+            string? serializedResource,
+            ResourceProviderFormFile? formFile,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity) =>
+
             resourcePath.MainResourceTypeName switch
             {
                 VectorizationResourceTypeNames.TextPartitioningProfiles =>
-                    await UpdateResource<TextPartitioningProfile, VectorizationProfileBase>(resourcePath, serializedResource!, userIdentity, _textPartitioningProfiles, TEXT_PARTITIONING_PROFILES_FILE_PATH),
+                    await UpdateResource<TextPartitioningProfile, VectorizationProfileBase>(resourcePath, serializedResource!, authorizationResult, userIdentity, _textPartitioningProfiles, TEXT_PARTITIONING_PROFILES_FILE_PATH),
                 VectorizationResourceTypeNames.TextEmbeddingProfiles =>
-                    await UpdateResource<TextEmbeddingProfile, VectorizationProfileBase>(resourcePath, serializedResource!, userIdentity, _textEmbeddingProfiles, TEXT_EMBEDDING_PROFILES_FILE_PATH),
+                    await UpdateResource<TextEmbeddingProfile, VectorizationProfileBase>(resourcePath, serializedResource!, authorizationResult, userIdentity, _textEmbeddingProfiles, TEXT_EMBEDDING_PROFILES_FILE_PATH),
                 VectorizationResourceTypeNames.IndexingProfiles =>
-                    await UpdateResource<IndexingProfile, VectorizationProfileBase>(resourcePath, serializedResource!, userIdentity, _indexingProfiles, INDEXING_PROFILES_FILE_PATH),
+                    await UpdateResource<IndexingProfile, VectorizationProfileBase>(resourcePath, serializedResource!, authorizationResult, userIdentity, _indexingProfiles, INDEXING_PROFILES_FILE_PATH),
                 VectorizationResourceTypeNames.VectorizationPipelines =>
-                    await UpdateResource<VectorizationPipeline, VectorizationPipeline>(resourcePath, serializedResource!, userIdentity, _pipelines, PIPELINES_FILE_PATH),
+                    await UpdateResource<VectorizationPipeline, VectorizationPipeline>(resourcePath, serializedResource!, authorizationResult, userIdentity, _pipelines, PIPELINES_FILE_PATH),
                 VectorizationResourceTypeNames.VectorizationRequests =>
                     await UpdateVectorizationRequestResource(resourcePath, serializedResource!, userIdentity),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
@@ -271,7 +277,13 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
 
         #region Helpers for UpsertResourceAsync
 
-        private async Task<ResourceProviderUpsertResult> UpdateResource<T, TBase>(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity, ConcurrentDictionary<string, TBase> resourceStore, string storagePath)
+        private async Task<ResourceProviderUpsertResult> UpdateResource<T, TBase>(
+            ResourcePath resourcePath,
+            string serializedResource,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ConcurrentDictionary<string, TBase> resourceStore,
+            string storagePath)
             where T : TBase
             where TBase: ResourceBase
         {
@@ -283,6 +295,18 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                 && existingResource!.Deleted)
                 throw new ResourceProviderException($"The resource {existingResource.Name} cannot be added or updated.",
                         StatusCodes.Status400BadRequest);
+
+            if (existingResource != null
+                && !authorizationResult.Authorized)
+            {
+                // The resource already exists and the user is not authorized to update it.
+                // Irrespective of whether the user has the required role or not, we need to throw an exception in the case of existing resources.
+                // The required role only allows the user to create a new resource.
+                // This check is needed because it's only here that we can determine if the resource exists.
+                _logger.LogWarning("Access to the resource path {ResourcePath} was not authorized for user {UserName} : userId {UserId}.",
+                    resourcePath.RawResourcePath, userIdentity!.Username, userIdentity!.UserId);
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+            }
 
             resource.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
 
@@ -748,7 +772,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             ResourceProviderUpsertOptions? options = null) =>
             resource switch
             {
-                VectorizationPipeline vectorizationPipeline => (await UpdateVectorizationPipeline(resourcePath, vectorizationPipeline, userIdentity) as TResult)!,
+                VectorizationPipeline vectorizationPipeline => (await UpdateVectorizationPipeline(resourcePath, vectorizationPipeline, authorizationResult, userIdentity) as TResult)!,
                 VectorizationRequest vectorizationRequest => (await UpdateVectorizationRequest(resourcePath, vectorizationRequest, userIdentity) as TResult)!,
                 _ => throw new ResourceProviderException(
                     $"The type {nameof(T)} is not supported by the {_name} resource provider.",
@@ -757,9 +781,13 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
 
         #region Helpers for UpsertResourceAsync<T>
 
-        private async Task<ResourceProviderUpsertResult<VectorizationPipeline>> UpdateVectorizationPipeline(ResourcePath resourcePath, VectorizationPipeline pipeline, UnifiedUserIdentity userIdentity)
+        private async Task<ResourceProviderUpsertResult<VectorizationPipeline>> UpdateVectorizationPipeline(
+            ResourcePath resourcePath,
+            VectorizationPipeline pipeline,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity)
         {
-            var result = await UpdateResource<VectorizationPipeline, VectorizationPipeline>(resourcePath, JsonSerializer.Serialize(pipeline), userIdentity, _pipelines, PIPELINES_FILE_PATH);
+            var result = await UpdateResource<VectorizationPipeline, VectorizationPipeline>(resourcePath, JsonSerializer.Serialize(pipeline), authorizationResult, userIdentity, _pipelines, PIPELINES_FILE_PATH);
             return new ResourceProviderUpsertResult<VectorizationPipeline>
             {
                 Resource = pipeline,

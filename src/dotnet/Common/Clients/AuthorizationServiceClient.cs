@@ -49,6 +49,7 @@ namespace FoundationaLLM.Common.Clients
         public async Task<ActionAuthorizationResult> ProcessAuthorizationRequest(
             string instanceId,
             string action,
+            string? roleName,
             List<string> resourcePaths,
             bool expandResourceTypePaths,
             bool includeRoleAssignments,
@@ -69,6 +70,7 @@ namespace FoundationaLLM.Common.Clients
                 var authorizationRequest = new ActionAuthorizationRequest
                 {
                     Action = action,
+                    RoleName = roleName,
                     ResourcePaths = resourcePaths,
                     ExpandResourceTypePaths = expandResourceTypePaths,
                     IncludeRoles = includeRoleAssignments,

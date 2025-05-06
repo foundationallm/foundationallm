@@ -26,6 +26,12 @@ namespace FoundationaLLM.Common.Models.Authorization
         public bool Authorized { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the user has the required role specified in the authorization request.
+        /// </summary>
+        [JsonPropertyName("has_required_role")]
+        public bool HasRequiredRole { get; set; }
+
+        /// <summary>
         /// Gets or sets the list of roles that authorize the action for the resource path.
         /// </summary>
         /// <remarks>
