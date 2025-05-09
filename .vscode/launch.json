@@ -95,6 +95,16 @@
             "justMyCode": true
         },
         {
+            "name": "Python: Samples",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd" : "${workspaceFolder}/samples/python",
+            "python": "${workspaceFolder}/samples/python/.venv/Scripts/python.exe",
+            "justMyCode": true
+        },
+        {
             "name": "Python: Current File",
             "type": "debugpy",
             "request": "launch",
