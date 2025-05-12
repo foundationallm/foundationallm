@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 
 namespace FoundationaLLM.DataPipelineEngine.Interfaces
@@ -8,6 +9,18 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
     /// </summary>
     public interface IDataPipelineStateService
     {
+        /// <summary>
+        /// Initializes the state of a data pipeline run.
+        /// </summary>
+        /// <param name="dataPipelineRun">The details of the data pipeline run.</param>
+        /// <param name="contentItems">The list of content items to be processed by the data pipeline run.</param>
+        /// <param name="workItems">The list of data pipeline work items associated with the starting stages of the data pipeline.</param>
+        /// <returns><see langword="true"/> if the initialization is successful.</returns>
+        Task<bool> InitializeDataPipelineRunState(
+            DataPipelineRun dataPipelineRun,
+            List<DataPipelineContentItem> contentItems,
+            List<DataPipelineRunWorkItem> workItems);
+
         /// <summary>
         /// Gets a data pipeline run by its identifier.
         /// </summary>
@@ -19,5 +32,12 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
             string instanceId,
             string runId,
             UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Updates the status of data pipeline run work items.
+        /// </summary>
+        /// <param name="workItems">The list of data pipeline work items whose status must be updated.</param>
+        Task UpdateDataPipelineRunWorkItemsStatus(
+            List<DataPipelineRunWorkItem> workItems);
     }
 }

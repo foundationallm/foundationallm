@@ -23,31 +23,42 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         protected override string ServiceName => "Data Pipeline Runner Service";
 
         private readonly DataPipelineServiceSettings _settings;
-        private readonly IAzureCosmosDBDataPipelineService _cosmosDBService;
+        private readonly IDataPipelineStateService _stateService;
         private readonly QueueClient _frontendQueueClient;
         private readonly QueueClient _backendQueueClient;
 
         /// <summary>
         /// Initializes a new instance of the service.
         /// </summary>
-        /// <param name="cosmosDBService">The Azure Cosmos DB service providing database services.</param>
+        /// <param name="stateService">The Data Pipeline State service providing state management services.</param>
         /// <param name="serviceProvider">The service collection provided by the dependency injection container.</param>
         /// <param name="logger">The logger used for logging.</param>
         public DataPipelineRunnerService(
-            IAzureCosmosDBDataPipelineService cosmosDBService,
+            IDataPipelineStateService stateService,
             IServiceProvider serviceProvider,
             IOptions<DataPipelineServiceSettings> options,
             ILogger<DataPipelineRunnerService> logger) :
                 base(TimeSpan.FromMinutes(1), serviceProvider, logger)
         {
             _settings = options.Value;
-            _cosmosDBService = cosmosDBService;
+            _stateService = stateService;
 
             var queueServiceClient = new QueueServiceClient(
                 new Uri($"https://{_settings.Storage.AccountName}.queue.core.windows.net"),
                 ServiceContext.AzureCredential);
             _frontendQueueClient = queueServiceClient.GetQueueClient(_settings.FrontendWorkerQueue);
             _backendQueueClient = queueServiceClient.GetQueueClient(_settings.BackendWorkerQueue);
+        }
+
+        /// <inheritdoc/>
+        protected override async Task InitializeAsyncInternal(
+            CancellationToken stoppingToken)
+        {
+            _logger.LogInformation("The {ServiceName} service is initializing...", ServiceName);
+
+            await Task.CompletedTask;
+
+            _logger.LogInformation("The {ServiceName} service has been initialized.", ServiceName);
         }
 
         /// <inheritdoc/>
@@ -81,15 +92,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     GetStartingStageWorkItems(dataPipelineRun, s, contentItems, userIdentity))
             )).SelectMany(w => w).ToList();
 
-            // Combine dataPipelineRun and contentItems into a single array
-            var combinedArray = new object[] { dataPipelineRun }
-                .Concat(contentItems)
-                .Concat(workItems)
-                .ToArray();
+            var initializationSuccessful = await _stateService.InitializeDataPipelineRunState(
+                dataPipelineRun,
+                contentItems,
+                workItems);
 
-            var upsertResultSuccessfull = await _cosmosDBService.UpsertDataPipelineRunBatchAsync(combinedArray);
-
-            if (!upsertResultSuccessfull)
+            if (!initializationSuccessful)
                 throw new DataPipelineServiceException($"Failed to upsert data pipeline run {dataPipelineRun.RunId}.");
 
             #region Send the newly created workitems to the work item queue
@@ -127,7 +135,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             }
 
             if (failedWorkItems.Count > 0)
-                await _cosmosDBService.PatchDataPipelineRunWorkItemsStatusAsync(failedWorkItems);
+                await _stateService.UpdateDataPipelineRunWorkItemsStatus(failedWorkItems);
 
             _logger.LogInformation("Finished queueing data pipeline work items for {ProcessorName}.",
                 dataPipelineRun.Processor);

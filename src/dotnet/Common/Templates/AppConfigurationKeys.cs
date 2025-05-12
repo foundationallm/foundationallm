@@ -900,6 +900,45 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:DataPipeline:State
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:DataPipeline:State:CosmosDB:Endpoint setting.
+        /// <para>Value description:<br/>The URL of the Azure Cosmos DB service used by the Data Pipeline API service.</para>
+        /// </summary>
+        public const string FoundationaLLM_DataPipeline_State_CosmosDB_Endpoint =
+            "FoundationaLLM:DataPipeline:State:CosmosDB:Endpoint";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:DataPipeline:State:CosmosDB:Database setting.
+        /// <para>Value description:<br/>The name of the Azure Cosmos DB database used by the Data Pipeline API service.</para>
+        /// </summary>
+        public const string FoundationaLLM_DataPipeline_State_CosmosDB_Database =
+            "FoundationaLLM:DataPipeline:State:CosmosDB:Database";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:DataPipeline:State:CosmosDB:Containers setting.
+        /// <para>Value description:<br/>The comma-separated list of database containers used by the Data Pipeline API service.</para>
+        /// </summary>
+        public const string FoundationaLLM_DataPipeline_State_CosmosDB_Containers =
+            "FoundationaLLM:DataPipeline:State:CosmosDB:Containers";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:DataPipeline:State:Storage:AccountName setting.
+        /// <para>Value description:<br/>The Azure Storage account for the FoundationaLLM Data Pipeline API service.</para>
+        /// </summary>
+        public const string FoundationaLLM_DataPipeline_State_Storage_AccountName =
+            "FoundationaLLM:DataPipeline:State:Storage:AccountName";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:DataPipeline:State:Storage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_DataPipeline_State_Storage_AuthenticationType =
+            "FoundationaLLM:DataPipeline:State:Storage:AuthenticationType";
+
+        #endregion
+
         #region FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials
         
         /// <summary>
@@ -919,27 +958,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
         #endregion
 
         #region FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Endpoint setting.
-        /// <para>Value description:<br/>The URL of the Azure Cosmos DB service used by the Data Pipeline API service.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Configuration_CosmosDB_Endpoint =
-            "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Endpoint";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Database setting.
-        /// <para>Value description:<br/>The name of the Azure Cosmos DB database used by the Data Pipeline API service.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Configuration_CosmosDB_Database =
-            "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Database";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Containers setting.
-        /// <para>Value description:<br/>The comma-separated list of database containers used by the Data Pipeline API service.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Configuration_CosmosDB_Containers =
-            "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Containers";
         
         /// <summary>
         /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AccountName setting.
@@ -992,27 +1010,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
         #region FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration
         
         /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:CosmosDB:Endpoint setting.
-        /// <para>Value description:<br/>The URL of the Azure Cosmos DB service used by the Data Pipeline Frontend Worker service.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Configuration_CosmosDB_Endpoint =
-            "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:CosmosDB:Endpoint";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:CosmosDB:Database setting.
-        /// <para>Value description:<br/>The name of the Azure Cosmos DB database used by the Data Pipeline Frontend Worker service.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Configuration_CosmosDB_Database =
-            "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:CosmosDB:Database";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:CosmosDB:Containers setting.
-        /// <para>Value description:<br/>The comma-separated list of database containers used by the Data Pipeline Frontend Worker service.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Configuration_CosmosDB_Containers =
-            "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:CosmosDB:Containers";
-        
-        /// <summary>
         /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AccountName setting.
         /// <para>Value description:<br/>The Azure Storage account for the FoundationaLLM Data Pipeline Frontend Worker service.</para>
         /// </summary>
@@ -1054,27 +1051,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
         #endregion
 
         #region FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:CosmosDB:Endpoint setting.
-        /// <para>Value description:<br/>The URL of the Azure Cosmos DB service used by the Data Pipeline Backend Worker service.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Configuration_CosmosDB_Endpoint =
-            "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:CosmosDB:Endpoint";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:CosmosDB:Database setting.
-        /// <para>Value description:<br/>The name of the Azure Cosmos DB database used by the Data Pipeline Backend Worker service.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Configuration_CosmosDB_Database =
-            "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:CosmosDB:Database";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:CosmosDB:Containers setting.
-        /// <para>Value description:<br/>The comma-separated list of database containers used by the Data Pipeline Backend Worker service.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Configuration_CosmosDB_Containers =
-            "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:CosmosDB:Containers";
         
         /// <summary>
         /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AccountName setting.

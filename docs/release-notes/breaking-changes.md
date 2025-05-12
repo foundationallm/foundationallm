@@ -12,22 +12,18 @@ The following App Configuration value have been added:
 |Name | Default value | Description |
 |--- | --- | --- |
 | `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions` | `c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt` | The comma-separated list file extensions that are processed as sources for knowledge search. |
-| `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Containers` | `DataPipelines` | The names of the Azure Cosmos DB containers used by the Data Pipeline API. |
-| `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Database` | `database` | The Azure Cosmos DB database name used by the Data Pipeline API. |
-| `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Endpoint` | `<cosmos_db_endpoint>` | The endpoint URL of the Azure Cosmos DB used by the Data Pipeline API. |
+| `FoundationaLLM:DataPipeline:State:CosmosDB:Containers` | `DataPipelines` | The names of the Azure Cosmos DB containers used by the Data Pipeline State service. |
+| `FoundationaLLM:DataPipeline:State:CosmosDB:Database` | `database` | The Azure Cosmos DB database name used by the Data Pipeline State service. |
+| `FoundationaLLM:DataPipeline:State:CosmosDB:Endpoint` | `<cosmos_db_endpoint>` | The endpoint URL of the Azure Cosmos DB used by the Data Pipeline State service. |
+| `FoundationaLLM:DataPipeline:State:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Data Pipeline State service. |
+| `FoundationaLLM:DataPipeline:State:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Data Pipeline State service to connect to the dedicated storage account. |
 | `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Data Pipeline API. |
 | `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Data Pipeline API to connect to the dedicated storage account. |
 | `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:FrontendWorkerQueue` | `frontend-worker` | The queue used to submit data pipeline work items for the Data Pipeline Frontend Worker service. |
 | `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:BackendWorkerQueue` | `backend-worker` | The queue used to submit data pipeline work items for the Data Pipeline Backend Worker service. |
-| `FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:CosmosDB:Containers` | `DataPipelines` | The names of the Azure Cosmos DB containers used by the Data Pipeline Frontend Worker service. |
-| `FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:CosmosDB:Database` | `database` | The Azure Cosmos DB database name used by the Data Pipeline Frontend Worker service. |
-| `FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:CosmosDB:Endpoint` | `<cosmos_db_endpoint>` | The endpoint URL of the Azure Cosmos DB used by the Data Pipeline Frontend Worker service. |
 | `FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Data Pipeline Frontend Worker service. |
 | `FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Data Pipeline Frontend Worker service to connect to the dedicated storage account. |
 | `FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Queue` | `frontend-worker` | The queue used to process data pipeline work items by the Data Pipeline Frontend Worker service. |
-| `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:CosmosDB:Containers` | `DataPipelines` | The names of the Azure Cosmos DB containers used by the Data Pipeline Backend Worker service. |
-| `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:CosmosDB:Database` | `database` | The Azure Cosmos DB database name used by the Data Pipeline Backend Worker service. |
-| `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:CosmosDB:Endpoint` | `<cosmos_db_endpoint>` | The endpoint URL of the Azure Cosmos DB used by the Data Pipeline Backend Worker service. |
 | `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Data Pipeline Backend Worker service. |
 | `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Data Pipeline Backend Worker service to connect to the dedicated storage account. |
 | `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Queue` | `frontend-worker` | The queue used to process data pipeline work items by the Data Pipeline Backend Worker service. |

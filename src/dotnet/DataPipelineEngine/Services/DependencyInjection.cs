@@ -1,6 +1,8 @@
 ﻿using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
+using FoundationaLLM.Common.Models.Configuration.Storage;
+using FoundationaLLM.Common.Services.Storage;
 using FoundationaLLM.DataPipeline.Interfaces;
 using FoundationaLLM.DataPipelineEngine.Clients;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
@@ -45,31 +47,6 @@ namespace FoundationaLLM
         }
 
         /// <summary>
-        /// Registers the Azure Cosmos DB service used by the Data Pipeline API to the dependency injection container.
-        /// </summary>
-        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder.</param>
-        public static void AddAzureCosmosDBDataPipelineService(this IHostApplicationBuilder builder) =>
-            builder.Services.AddAzureCosmosDBDataPipelineService(builder.Configuration);
-
-        /// <summary>
-        /// Registers the Azure Cosmos DB service used by the DataPipeline API to the dependency injection container.
-        /// </summary>
-        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
-        public static void AddAzureCosmosDBDataPipelineService(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddOptions<DataPipelineServiceSettings>()
-                .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_DataPipelineAPI_Configuration));
-
-            services.AddSingleton<IAzureCosmosDBDataPipelineService, AzureCosmosDBDataPipelineService>(sp =>
-                new AzureCosmosDBDataPipelineService(
-                    options: Options.Create<AzureCosmosDBSettings>(
-                        sp.GetRequiredService<IOptions<DataPipelineServiceSettings>>().Value.CosmosDB),
-                    logger: sp.GetRequiredService<ILogger<AzureCosmosDBDataPipelineService>>()));
-            services.ActivateSingleton<IAzureCosmosDBDataPipelineService>();
-        }
-
-        /// <summary>
         /// Registers the Data Pipeline Trigger service used by the Data Pipeline API to the dependency injection container.
         /// </summary>
         /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder.</param>
@@ -102,15 +79,34 @@ namespace FoundationaLLM
         /// </summary>
         /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder.</param>
         public static void AddDataPipelineStateService(this IHostApplicationBuilder builder) =>
-            builder.Services.AddDataPipelineStateService();
+            builder.Services.AddDataPipelineStateService(builder.Configuration);
 
         /// <summary>
         /// Registers the Data Pipeline State service used by the Data Pipeline API to the dependency injection container.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        public static void AddDataPipelineStateService(this IServiceCollection services)
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddDataPipelineStateService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<IDataPipelineStateService, DataPipelineStateService>();
+            services.AddOptions<DataPipelineStateServiceSettings>()
+                .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_DataPipeline_State));
+
+            services.AddSingleton<IAzureCosmosDBDataPipelineService, AzureCosmosDBDataPipelineService>(sp =>
+                new AzureCosmosDBDataPipelineService(
+                    options: Options.Create<AzureCosmosDBSettings>(
+                        sp.GetRequiredService<IOptions<DataPipelineStateServiceSettings>>().Value.CosmosDB),
+                    logger: sp.GetRequiredService<ILogger<AzureCosmosDBDataPipelineService>>()));
+            services.ActivateSingleton<IAzureCosmosDBDataPipelineService>();
+
+            services.AddSingleton<IDataPipelineStateService, DataPipelineStateService>(sp =>
+                new DataPipelineStateService(
+                    cosmosDBService: sp.GetRequiredService<IAzureCosmosDBDataPipelineService>(),
+                    storageService: new BlobStorageService(
+                        storageOptions: Options.Create<BlobStorageServiceSettings>(
+                            sp.GetRequiredService<IOptions<DataPipelineStateServiceSettings>>().Value.Storage),
+                        logger: sp.GetRequiredService<ILogger<BlobStorageService>>()),
+                    logger: sp.GetRequiredService<ILogger<DataPipelineStateService>>()
+                    ));
             services.ActivateSingleton<IDataPipelineStateService>();
         }
 

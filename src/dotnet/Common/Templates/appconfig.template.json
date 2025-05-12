@@ -708,6 +708,41 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:DataPipeline:State:CosmosDB:Endpoint",
+            "value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:DataPipeline:State:CosmosDB:Database",
+            "value": "database",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:DataPipeline:State:CosmosDB:Containers",
+            "value": "Context",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:DataPipeline:State:Storage:AccountName",
+            "value": "${env:DATAPIPELINESTATE_AZURE_STORAGE_ACCOUNT_NAME}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:DataPipeline:State:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-datapipelineapi-apikey\"}",
             "label": null,
@@ -719,27 +754,6 @@
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-            "tags": {}
-        },
-        {
-            "key": "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Endpoint",
-            "value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
-            "key": "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Database",
-            "value": "database",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
-            "key": "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:CosmosDB:Containers",
-            "value": "Context",
-            "label": null,
-            "content_type": "",
             "tags": {}
         },
         {
@@ -785,27 +799,6 @@
             "tags": {}
         },
         {
-            "key": "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:CosmosDB:Endpoint",
-            "value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
-            "key": "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:CosmosDB:Database",
-            "value": "database",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
-            "key": "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:CosmosDB:Containers",
-            "value": "Context",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AccountName",
             "value": "${env:DATAPIPELINEFRONTENDWORKER_AZURE_STORAGE_ACCOUNT_NAME}",
             "label": null,
@@ -838,27 +831,6 @@
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-            "tags": {}
-        },
-        {
-            "key": "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:CosmosDB:Endpoint",
-            "value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
-            "key": "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:CosmosDB:Database",
-            "value": "database",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
-            "key": "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:CosmosDB:Containers",
-            "value": "Context",
-            "label": null,
-            "content_type": "",
             "tags": {}
         },
         {

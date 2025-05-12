@@ -1,5 +1,4 @@
-﻿using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Constants.ResourceProviders;
+﻿using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
 using FoundationaLLM.DataPipelineEngine.Models.Configuration;
@@ -12,17 +11,17 @@ namespace FoundationaLLM.DataPipelineEngine.Services
     /// <summary>
     /// Provides capabilites for background processing of data pipeline work items.
     /// </summary>
-    /// <param name="cosmosDBService">The Azure Cosmos DB service providing database services.</param>
+    /// <param name="stateService">The Data Pipeline State service providing state management services.</param>
     /// <param name="resourceProviderServices">The FoundationaLLM resource provider services.</param>
     /// <param name="options">The options with the service settings.</param>
     /// <param name="logger">The logger used for logging.</param>
     public class DataPipelineWorkerService(
-        IAzureCosmosDBDataPipelineService cosmosDBService,
+        IDataPipelineStateService stateService,
         IEnumerable<IResourceProviderService> resourceProviderServices,
         IOptions<DataPipelineWorkerServiceSettings> options,
         ILogger<DataPipelineWorkerService> logger) : BackgroundService
     {
-        private readonly IAzureCosmosDBDataPipelineService _cosmosDBService = cosmosDBService;
+        private readonly IDataPipelineStateService _stateService = stateService;
         private readonly IResourceProviderService _dataPipelineResourceProvider =
             resourceProviderServices.Single(rp => rp.Name == ResourceProviderNames.FoundationaLLM_DataPipeline);
         private readonly IResourceProviderService _pluginResourceProvider =

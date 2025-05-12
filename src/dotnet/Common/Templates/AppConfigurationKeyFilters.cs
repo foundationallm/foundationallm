@@ -235,6 +235,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:VectorizationWorker:Essentials:*";
         
         /// <summary>
+        /// Filter for the configuration section for the FoundationaLLM Data Pipeline State service.
+        /// </summary>
+        public const string FoundationaLLM_DataPipeline_State =
+            "FoundationaLLM:DataPipeline:State:*";
+        
+        /// <summary>
         /// Filter for the configuration section used to identify the essential settings for the Data Pipeline API.
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Essentials =

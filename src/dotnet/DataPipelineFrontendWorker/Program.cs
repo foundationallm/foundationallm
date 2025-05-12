@@ -38,7 +38,7 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataPipeline_Storage);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Plugin_Storage);
 
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_DataPipelineAPI_Configuration);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_DataPipeline_State);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Essentials);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Configuration);
 }));
@@ -74,7 +74,6 @@ builder.Services.AddAzureEventGridEvents(
 // Singleton services
 //---------------------------
 
-builder.AddAzureCosmosDBDataPipelineService();
 builder.AddDataPipelineStateService();
 builder.AddDataPipelineFrontendWorkerService();
 
