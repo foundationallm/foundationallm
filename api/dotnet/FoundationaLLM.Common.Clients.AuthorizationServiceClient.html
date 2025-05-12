@@ -211,8 +211,8 @@ Class AuthorizationServiceClient  <a class="header-action link-secondary" title=
 
   <a id="FoundationaLLM_Common_Clients_AuthorizationServiceClient_CreateRoleAssignment_" data-uid="FoundationaLLM.Common.Clients.AuthorizationServiceClient.CreateRoleAssignment*"></a>
 
-  <h3 id="FoundationaLLM_Common_Clients_AuthorizationServiceClient_CreateRoleAssignment_System_String_FoundationaLLM_Common_Models_Authorization_RoleAssignmentRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Clients.AuthorizationServiceClient.CreateRoleAssignment(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
-  CreateRoleAssignment(string, RoleAssignmentRequest, UnifiedUserIdentity)
+  <h3 id="FoundationaLLM_Common_Clients_AuthorizationServiceClient_CreateRoleAssignment_System_String_FoundationaLLM_Common_Models_Authorization_RoleAssignmentCreateRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Clients.AuthorizationServiceClient.CreateRoleAssignment(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  CreateRoleAssignment(string, RoleAssignmentCreateRequest, UnifiedUserIdentity)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/AuthorizationServiceClient.cs/#L123"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -221,7 +221,7 @@ Class AuthorizationServiceClient  <a class="header-action link-secondary" title=
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;RoleAssignmentOperationResult&gt; CreateRoleAssignment(string instanceId, RoleAssignmentRequest roleAssignmentRequest, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;RoleAssignmentOperationResult&gt; CreateRoleAssignment(string instanceId, RoleAssignmentCreateRequest roleAssignmentRequest, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -229,8 +229,8 @@ Class AuthorizationServiceClient  <a class="header-action link-secondary" title=
     <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The FoundationaLLM instance identifier.</p>
 </dd>
-    <dt><code>roleAssignmentRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.Authorization.RoleAssignmentRequest.html">RoleAssignmentRequest</a></dt>
-    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authorization.RoleAssignmentRequest.html">RoleAssignmentRequest</a> containing the details of the role assignment to be created.</p>
+    <dt><code>roleAssignmentRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest.html">RoleAssignmentCreateRequest</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest.html">RoleAssignmentCreateRequest</a> containing the details of the role assignment to be created.</p>
 </dd>
     <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
     <dd><p>The user identity.</p>

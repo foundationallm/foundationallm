@@ -172,8 +172,8 @@ Interface IAuthorizationCore  <a class="header-action link-secondary" title="Vie
 
   <a id="FoundationaLLM_AuthorizationEngine_Interfaces_IAuthorizationCore_CreateRoleAssignment_" data-uid="FoundationaLLM.AuthorizationEngine.Interfaces.IAuthorizationCore.CreateRoleAssignment*"></a>
 
-  <h3 id="FoundationaLLM_AuthorizationEngine_Interfaces_IAuthorizationCore_CreateRoleAssignment_System_String_FoundationaLLM_Common_Models_Authorization_RoleAssignmentRequest_" data-uid="FoundationaLLM.AuthorizationEngine.Interfaces.IAuthorizationCore.CreateRoleAssignment(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentRequest)">
-  CreateRoleAssignment(string, RoleAssignmentRequest)
+  <h3 id="FoundationaLLM_AuthorizationEngine_Interfaces_IAuthorizationCore_CreateRoleAssignment_System_String_FoundationaLLM_Common_Models_Authorization_RoleAssignmentCreateRequest_" data-uid="FoundationaLLM.AuthorizationEngine.Interfaces.IAuthorizationCore.CreateRoleAssignment(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest)">
+  CreateRoleAssignment(string, RoleAssignmentCreateRequest)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Interfaces/IAuthorizationCore.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -182,7 +182,7 @@ Interface IAuthorizationCore  <a class="header-action link-secondary" title="Vie
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;RoleAssignmentOperationResult&gt; CreateRoleAssignment(string instanceId, RoleAssignmentRequest roleAssignmentRequest)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;RoleAssignmentOperationResult&gt; CreateRoleAssignment(string instanceId, RoleAssignmentCreateRequest roleAssignmentCreateRequest)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -190,8 +190,8 @@ Interface IAuthorizationCore  <a class="header-action link-secondary" title="Vie
     <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The FoundationaLLM instance identifier.</p>
 </dd>
-    <dt><code>roleAssignmentRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.Authorization.RoleAssignmentRequest.html">RoleAssignmentRequest</a></dt>
-    <dd><p>The role assignment request.</p>
+    <dt><code>roleAssignmentCreateRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest.html">RoleAssignmentCreateRequest</a></dt>
+    <dd><p>The role assignment create request.</p>
 </dd>
   </dl>
 
@@ -224,7 +224,7 @@ Interface IAuthorizationCore  <a class="header-action link-secondary" title="Vie
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;RoleAssignmentOperationResult&gt; DeleteRoleAssignment(string instanceId, string roleAssignment)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;RoleAssignmentOperationResult&gt; DeleteRoleAssignment(string instanceId, string roleAssignmentName)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -232,8 +232,8 @@ Interface IAuthorizationCore  <a class="header-action link-secondary" title="Vie
     <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The FoundationaLLM instance identifier.</p>
 </dd>
-    <dt><code>roleAssignment</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The role assignment object identifier.</p>
+    <dt><code>roleAssignmentName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The unique name of the role assignment to delete.</p>
 </dd>
   </dl>
 

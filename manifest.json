@@ -4492,6 +4492,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to create a new role assignment.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentDeleteRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentDeleteRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Authorization.RoleAssignmentDeleteRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentDeleteRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to delete an existing role assignment.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult.yml",
       "output": {
         ".html": {
@@ -4517,20 +4545,6 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters.yml\" sourcestartlinenumber=\"1\">Parameters for querying role assignments.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentRequest.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentRequest.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Authorization.RoleAssignmentRequest",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentRequest.yml\" sourcestartlinenumber=\"1\">Represents a role assignment request.</p>\n"
     },
     {
       "type": "ManagedReference",
