@@ -435,7 +435,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     var roleAssignmentDescription = $"Reader role for the {agent.Name} agent's virtual security group";
                     var roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
                         _instanceSettings.Id,
-                        new RoleAssignmentRequest()
+                        new RoleAssignmentCreateRequest()
                         {
                             Name = roleAssignmentName,
                             Description = roleAssignmentDescription,
@@ -458,7 +458,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         roleAssignmentName = Guid.NewGuid().ToString();
                         roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
                             _instanceSettings.Id,
-                            new RoleAssignmentRequest()
+                            new RoleAssignmentCreateRequest()
                             {
                                 Name = roleAssignmentName,
                                 Description = roleAssignmentDescription,

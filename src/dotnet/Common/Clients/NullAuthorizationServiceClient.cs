@@ -38,7 +38,7 @@ namespace FoundationaLLM.Common.Clients
         /// <inheritdoc/>
         public async Task<RoleAssignmentOperationResult> CreateRoleAssignment(
             string instanceId,
-            RoleAssignmentRequest roleAssignmentRequest,
+            RoleAssignmentCreateRequest roleAssignmentRequest,
             UnifiedUserIdentity userIdentity)
         {
             await Task.CompletedTask;
