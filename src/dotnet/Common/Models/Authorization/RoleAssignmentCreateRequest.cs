@@ -3,9 +3,9 @@
 namespace FoundationaLLM.Common.Models.Authorization
 {
     /// <summary>
-    /// Represents a role assignment request.
+    /// Represents a request to create a new role assignment.
     /// </summary>
-    public class RoleAssignmentRequest
+    public class RoleAssignmentCreateRequest
     {
         /// <summary>
         /// The unique identifier of the resource.
