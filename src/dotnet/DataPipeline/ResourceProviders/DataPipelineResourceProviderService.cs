@@ -76,7 +76,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 ? [pluginResourceProvider, this]
                 : [this];
 
-            (_dataPipelineServiceClient as IDataPipelineResourceProviderClient)!.ResourceProviders = resourceProviders;
+            (_dataPipelineServiceClient as IResourceProviderClient)!.ResourceProviders = resourceProviders;
 
             await Task.CompletedTask;
         }
@@ -256,9 +256,14 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             DataPipelineRun dataPipelineRun,
             UnifiedUserIdentity userIdentity)
         {
+            var dataPipelineSnapshot = await GetResourceAsync<DataPipelineDefinitionSnapshot>(
+                $"{dataPipelineRun.DataPipelineObjectId}/{DataPipelineResourceTypeNames.DataPipelineSnapshots}/latest",
+                userIdentity);
+
             var result = await _dataPipelineServiceClient.CreateDataPipelineRunAsync(
                 resourcePath.InstanceId!,
                 dataPipelineRun,
+                dataPipelineSnapshot,
                 userIdentity)
                 ?? throw new ResourceProviderException("The object definition is invalid.",
                     StatusCodes.Status400BadRequest);
