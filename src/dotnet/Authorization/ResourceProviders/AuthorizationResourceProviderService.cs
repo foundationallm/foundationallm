@@ -128,7 +128,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
 
             var roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
                 _instanceSettings.Id,
-                new RoleAssignmentRequest()
+                new RoleAssignmentCreateRequest()
                 {
                     Name = roleAssignment.Name,
                     Description = roleAssignment.Description,

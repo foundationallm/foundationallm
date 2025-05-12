@@ -28,17 +28,17 @@ namespace FoundationaLLM.AuthorizationEngine.Interfaces
         /// Creates a role assignment for a specified security principal.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="roleAssignmentRequest">The role assignment request.</param>
+        /// <param name="roleAssignmentCreateRequest">The role assignment create request.</param>
         /// <returns>The role assignment result.</returns>
-        Task<RoleAssignmentOperationResult> CreateRoleAssignment(string instanceId, RoleAssignmentRequest roleAssignmentRequest);
+        Task<RoleAssignmentOperationResult> CreateRoleAssignment(string instanceId, RoleAssignmentCreateRequest roleAssignmentCreateRequest);
 
         /// <summary>
         /// Revokes a role from an Entra ID user or group.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="roleAssignment">The role assignment object identifier.</param>
+        /// <param name="roleAssignmentName">The unique name of the role assignment to delete.</param>
         /// <returns>The role assignment result.</returns>
-        Task<RoleAssignmentOperationResult> DeleteRoleAssignment(string instanceId, string roleAssignment);
+        Task<RoleAssignmentOperationResult> DeleteRoleAssignment(string instanceId, string roleAssignmentName);
 
         
         /// <summary>

@@ -35,21 +35,21 @@ namespace FoundationaLLM.Authorization.API.Controllers
         /// Assigns a role to an Entra ID user or group.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="roleAssignmentRequest">The role assignment request.</param>
+        /// <param name="roleAssignmentCreateRequest">The role assignment create request.</param>
         /// <returns>The role assignment result.</returns>
         [HttpPost]
-        public async Task<IActionResult> AssignRole(string instanceId, RoleAssignmentRequest roleAssignmentRequest) =>
-            new OkObjectResult(await _authorizationCore.CreateRoleAssignment(instanceId, roleAssignmentRequest));
+        public async Task<IActionResult> AssignRole(string instanceId, RoleAssignmentCreateRequest roleAssignmentCreateRequest) =>
+            new OkObjectResult(await _authorizationCore.CreateRoleAssignment(instanceId, roleAssignmentCreateRequest));
 
         /// <summary>
         /// Revokes a role from an Entra ID user or group.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="roleAssignment">The role assignment object identifier.</param>
+        /// <param name="roleAssignmentName">The role assignment object identifier.</param>
         /// <returns>The role assignment result.</returns>
-        [HttpDelete("{*roleAssignment}")]
-        public async Task<IActionResult> RevokeRoleAssignment(string instanceId, string roleAssignment) =>
-            new OkObjectResult(await _authorizationCore.DeleteRoleAssignment(instanceId, roleAssignment));
+        [HttpDelete("{*roleAssignmentName}")]
+        public async Task<IActionResult> RevokeRoleAssignment(string instanceId, string roleAssignmentName) =>
+            new OkObjectResult(await _authorizationCore.DeleteRoleAssignment(instanceId, roleAssignmentName));
 
         #endregion
     }

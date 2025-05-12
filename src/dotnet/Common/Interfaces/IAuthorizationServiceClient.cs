@@ -49,12 +49,12 @@ namespace FoundationaLLM.Common.Interfaces
         /// Creates a new role assignment.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="roleAssignmentRequest">The <see cref="RoleAssignmentRequest"/> containing the details of the role assignment to be created.</param>
+        /// <param name="roleAssignmentRequest">The <see cref="RoleAssignmentCreateRequest"/> containing the details of the role assignment to be created.</param>
         /// <param name="userIdentity">The user identity.</param>
         /// <returns>A <see cref="RoleAssignmentOperationResult"/> containing information about the result of the operation.</returns>
         Task<RoleAssignmentOperationResult> CreateRoleAssignment(
             string instanceId,
-            RoleAssignmentRequest roleAssignmentRequest,
+            RoleAssignmentCreateRequest roleAssignmentRequest,
             UnifiedUserIdentity userIdentity);
 
         /// <summary>
