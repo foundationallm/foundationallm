@@ -1903,7 +1903,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             var roleAssignmentDescription = $"Owner role for {userIdentity.Name}";
             var roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
                 _instanceSettings.Id,
-                new RoleAssignmentRequest()
+                new RoleAssignmentCreateRequest()
                 {
                     Name = roleAssignmentName,
                     Description = roleAssignmentDescription,

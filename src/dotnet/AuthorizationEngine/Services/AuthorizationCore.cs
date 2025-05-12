@@ -510,7 +510,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         #region Role assignments
 
         /// <inheritdoc/>
-        public async Task<RoleAssignmentOperationResult> CreateRoleAssignment(string instanceId, RoleAssignmentRequest roleAssignmentRequest)
+        public async Task<RoleAssignmentOperationResult> CreateRoleAssignment(string instanceId, RoleAssignmentCreateRequest roleAssignmentCreateRequest)
         {
             var roleAssignmentStoreFile = $"/{instanceId.ToLower()}.json";
 
@@ -525,22 +525,22 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                         Encoding.UTF8.GetString(fileContent.ToArray()));
                     if (roleAssignmentStore != null)
                     {
-                        var exists = roleAssignmentStore.RoleAssignments.Any(x => x.PrincipalId == roleAssignmentRequest.PrincipalId
-                                                                               && x.Scope == roleAssignmentRequest.Scope
-                                                                               && x.RoleDefinitionId == roleAssignmentRequest.RoleDefinitionId);
+                        var exists = roleAssignmentStore.RoleAssignments.Any(x => x.PrincipalId == roleAssignmentCreateRequest.PrincipalId
+                                                                               && x.Scope == roleAssignmentCreateRequest.Scope
+                                                                               && x.RoleDefinitionId == roleAssignmentCreateRequest.RoleDefinitionId);
                         if (!exists)
                         {
                             var roleAssignment = new RoleAssignment()
                             {
                                 Type = $"{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}",
-                                Name = roleAssignmentRequest.Name,
-                                Description = roleAssignmentRequest.Description,
-                                ObjectId = roleAssignmentRequest.ObjectId,
-                                PrincipalId = roleAssignmentRequest.PrincipalId,
-                                PrincipalType = roleAssignmentRequest.PrincipalType,
-                                RoleDefinitionId = roleAssignmentRequest.RoleDefinitionId,
-                                Scope = roleAssignmentRequest.Scope,
-                                CreatedBy = roleAssignmentRequest.CreatedBy
+                                Name = roleAssignmentCreateRequest.Name,
+                                Description = roleAssignmentCreateRequest.Description,
+                                ObjectId = roleAssignmentCreateRequest.ObjectId,
+                                PrincipalId = roleAssignmentCreateRequest.PrincipalId,
+                                PrincipalType = roleAssignmentCreateRequest.PrincipalType,
+                                RoleDefinitionId = roleAssignmentCreateRequest.RoleDefinitionId,
+                                Scope = roleAssignmentCreateRequest.Scope,
+                                CreatedBy = roleAssignmentCreateRequest.CreatedBy
                             };
 
                             roleAssignmentStore.RoleAssignments.Add(roleAssignment);
@@ -576,13 +576,14 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         }
 
         /// <inheritdoc/>
-        public async Task<RoleAssignmentOperationResult> DeleteRoleAssignment(string instanceId, string roleAssignment)
+        public async Task<RoleAssignmentOperationResult> DeleteRoleAssignment(string instanceId, string roleAssignmentName)
         {
             var existingRoleAssignment = _roleAssignmentStores[instanceId].RoleAssignments
-                .SingleOrDefault(x => x.Name == roleAssignment);
+                .SingleOrDefault(x => x.Name == roleAssignmentName);
             if (existingRoleAssignment != null)
             {
-                _roleAssignmentCaches[instanceId].RemoveRoleAssignment(roleAssignment);
+                _roleAssignmentCaches[instanceId].RemoveRoleAssignment(
+                    $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}/{roleAssignmentName}");
                 _roleAssignmentStores[instanceId].RoleAssignments.Remove(existingRoleAssignment);
 
                 await _storageService.WriteFileAsync(
