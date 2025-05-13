@@ -91,7 +91,7 @@
 				<Dropdown
 					:model-value="workflowMainAIModel?.object_id"
 					:options="aiModelOptions"
-					option-label="name"
+					option-label="display_name"
 					option-value="object_id"
 					class="dropdown--agent"
 					placeholder="--Select--"
@@ -376,7 +376,7 @@ export default {
 					show_message_tokens: false,
 					show_message_rating: false,
 					show_view_prompt: false,
-					show_file_upload: false,
+					show_file_upload: true,
 					tools: [],
 					sessions_enabled: true,
 					workflow: {

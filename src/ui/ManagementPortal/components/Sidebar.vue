@@ -40,6 +40,7 @@
 					<span>Agents</span>
 				</h3>
 				<ul>
+					<li><NuxtLink to="/agents/create-simplified" class="sidebar__item">Quick Create</NuxtLink></li>
 					<li><NuxtLink to="/agents/create" class="sidebar__item">Create New Agent</NuxtLink></li>
 					<li>
 						<NuxtLink
