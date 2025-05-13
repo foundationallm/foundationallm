@@ -372,7 +372,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             var updateResult = await UpdateVectorizationRequest(resourcePath, resource, userIdentity);
             return new ResourceProviderUpsertResult
             {
-                ObjectId = updateResult.Resource!.ObjectId!,
+                ObjectId = updateResult.ObjectId!,
                 ResourceExists = updateResult.ResourceExists
             };
         }
