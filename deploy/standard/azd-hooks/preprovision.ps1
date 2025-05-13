@@ -4,12 +4,57 @@ Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable)
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
+# Load utility functions
+Push-Location $($MyInvocation.InvocationName | Split-Path)
+try {
+    . ./utility/Load-Utility-Functions.ps1
+}
+finally {
+    Pop-Location
+}
+
+Push-Location $($MyInvocation.InvocationName | Split-Path)
+try {
+    Invoke-AndRequireSuccess "Download AzCopy for the FoundationaLLM solution" {
+        Push-Location ../../common/scripts
+        ./Get-AzCopy.ps1
+        Pop-Location
+    }
+}
+finally {
+    Pop-Location
+}
+
 Write-Host "Fetching FLLM Version..." -ForegroundColor Blue
 $fllmVersionConfigPath = "./config/version.json"
 $fllmVersionConfig = (Get-content $fllmVersionConfigPath | ConvertFrom-Json)
 
 Write-Host "Setting FLLM Version to $($fllmVersionConfig.version)..." -ForegroundColor Blue
 azd env set FLLM_VERSION "$($fllmVersionConfig.version)"
+
+# Check for deployment service principal credentials
+$credentials = Get-Service-Principal-Credentials ./config credentials
+
+# Authenticating with Azure
+az login --service-principal `
+    --username $credentials.clientId `
+    --password $credentials.clientSecret `
+    --tenant $credentials.tenantId
+
+az account set --subscription $credentials.subscriptionId
+
+# Authenticating with AZD
+azd auth login `
+    --client-id $credentials.clientId `
+    --client-secret $credentials.clientSecret `
+    --tenant-id $credentials.tenantId
+
+# Authenticating with AzCopy
+$env:AZCOPY_SPA_CLIENT_SECRET=$credentials.clientSecret
+../common/tools/azcopy/azcopy login `
+    --application-id $credentials.clientId `
+    --tenant-id $credentials.tenantId `
+    --login-type spn
 
 $readerClientId = $(azd env get-value ENTRA_READER_CLIENT_ID)
 if ($LastExitCode -eq 0)

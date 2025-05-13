@@ -12,7 +12,6 @@ param cidrVnet string
 param createDate string = utcNow('u')
 param deploymentOwner string
 param environmentName string
-param externalNetworkingResourceGroupName string = ''
 param existingOpenAiInstanceName string = ''
 param existingOpenAiInstanceRg string = ''
 param existingOpenAiInstanceSub string = ''
@@ -33,11 +32,10 @@ param managementApiHostname string
 param hubResourceGroup string
 param hubSubscriptionId string = subscription().subscriptionId
 param hubVnetName string
+param resourceGroups object
 
 // Locals
-var abbrs = loadJsonContent('./abbreviations.json')
 var k8sNamespace = 'fllm'
-var useExternalNetworking = !empty(externalNetworkingResourceGroupName)
 
 var existingOpenAiInstance = {
   name: existingOpenAiInstanceName
@@ -53,32 +51,6 @@ var tags = {
   'project-name': project
   'owner': deploymentOwner
 }
-
-// TODO: BYO Resource Groups
-var resourceGroups = union(defaultResourceGroups, externalResourceGroups)
-var externalResourceGroups = externalNetworkingResourceGroup
-var externalNetworkingResourceGroup = useExternalNetworking ? { net: externalNetworkingResourceGroupName } : {}
-
-var defaultResourceGroups = reduce(
-  map(
-    workloads,
-    workload => { '${workload}': namer(abbrs.resourcesResourceGroups, environmentName, location, workload, project) }
-  ),
-  {},
-  (cur, next) => union(cur, next)
-)
-
-var workloads = [
-  'app'
-  'auth'
-  'data'
-  'jbx'
-  'net'
-  'oai'
-  'ops'
-  'storage'
-  'vec'
-]
 
 // Functions
 func namer(resourceAbbr string, env string, region string, workloadName string, projectId string) string =>

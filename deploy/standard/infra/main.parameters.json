@@ -104,6 +104,19 @@
           "replicaCount": "${SERVICE_AUTHORIZATIONAPI_REPLICAS=1}"
         }
       },
+      "resourceGroups": {
+        "value": {
+          "app": "${FLLM_APP_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-app-${FOUNDATIONALLM_PROJECT}}",
+          "auth": "${FLLM_AUTH_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-auth-${FOUNDATIONALLM_PROJECT}}",
+          "data": "${FLLM_DATA_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-data-${FOUNDATIONALLM_PROJECT}}",
+          "jbx": "${FLLM_JBX_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-jbx-${FOUNDATIONALLM_PROJECT}}",
+          "net": "${FLLM_NET_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-net-${FOUNDATIONALLM_PROJECT}}",
+          "oai": "${FLLM_OAI_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-oai-${FOUNDATIONALLM_PROJECT}}",
+          "ops": "${FLLM_OPS_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-ops-${FOUNDATIONALLM_PROJECT}}",
+          "storage": "${FLLM_STORAGE_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-storage-${FOUNDATIONALLM_PROJECT}}",
+          "vec": "${FLLM_VEC_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-vec-${FOUNDATIONALLM_PROJECT}}"
+        }
+      },
       "services": {
         "value": [
           {
