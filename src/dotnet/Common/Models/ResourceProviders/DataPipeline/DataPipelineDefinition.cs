@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
 {
@@ -40,5 +39,29 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
         /// </summary>
         [JsonPropertyName("most_recent_snapshot_object_id")]
         public string MostRecentSnapshotObjectId { get; set; } = null!;
+
+        /// <summary>
+        /// Gets the names of all the data pipeline stages.
+        /// </summary>
+        [JsonIgnore]
+        public List<string> AllStageNames =>
+            [.. StartingStages.SelectMany(stage => stage.AllStageNames)];
+
+        /// <summary>
+        /// Gets all the data pipeline stages.
+        /// </summary>
+        [JsonIgnore]
+        public List<DataPipelineStage> AllStages =>
+            [.. StartingStages.SelectMany(stage => stage.AllStages)];
+
+        /// <summary>
+        /// Gets the list of data pipeline stages that follow the specified stage.
+        /// </summary>
+        /// <param name="stageName">The name of the stage to search for.</param>
+        /// <returns>The list of data pipeline stages that follow the specified stage.</returns>
+        /// <exception cref="ArgumentException"></exception>
+        public List<DataPipelineStage> GetNextStages(string stageName) =>
+            AllStages.FirstOrDefault(stage => stage.Name == stageName)?.NextStages
+            ?? throw new ArgumentException($"The stage {stageName} was not found in the pipeline definition.");
     }
 }

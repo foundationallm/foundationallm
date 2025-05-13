@@ -95,12 +95,29 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
             T item,
             CancellationToken cancellationToken = default)
         {
-            var response = await _dataPipelineContainer.UpsertItemAsync(
+            var response = await _dataPipelineContainer.UpsertItemAsync<T>(
                 item: item,
                 partitionKey: new PartitionKey(partitionKey),
                 cancellationToken: cancellationToken
             );
 
+            return response.Resource;
+        }
+
+        /// <inheritdoc/>
+        public async Task<T> PatchItemPropertiesAsync<T>(
+            string partitionKey,
+            string id,
+            Dictionary<string, object?> propertyValues,
+            CancellationToken cancellationToken = default)
+        {
+            var response = await _dataPipelineContainer.PatchItemAsync<T>(
+                id: id,
+                partitionKey: new PartitionKey(partitionKey),
+                patchOperations: propertyValues.Keys
+                    .Select(key => PatchOperation.Set(key, propertyValues[key])).ToArray(),
+                cancellationToken: cancellationToken
+            );
             return response.Resource;
         }
 
@@ -146,10 +163,10 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
             return result.IsSuccessStatusCode;
         }
 
-        public async Task PatchDataPipelineRunWorkItemsStatusAsync(
+        public async Task<bool> PatchDataPipelineRunWorkItemsStatusAsync(
             List<DataPipelineRunWorkItem> workItems)
         {
-            var concurrentTasks = new List<Task>();
+            var concurrentTasks = new List<Task<ItemResponse<DataPipelineRunWorkItem>>>();
             foreach (var workItem in workItems)
                 concurrentTasks.Add(
                     _dataPipelineContainer.PatchItemAsync<DataPipelineRunWorkItem>(
@@ -165,6 +182,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
                 );
 
             await Task.WhenAll(concurrentTasks);
+
+            return concurrentTasks.All(task =>
+                task.Result.StatusCode == System.Net.HttpStatusCode.OK);
         }
     }
 }

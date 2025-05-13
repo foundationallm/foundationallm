@@ -10,7 +10,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// <summary>
         /// Gets or sets the vectorization settings for the agent.
         /// </summary>
-        [Obsolete("Use KnowledgeSearch property instead. This property will be removed in future versions.")]
+        [Obsolete("Use knowledge search configuration at the tool level. This property will be removed in future versions.")]
         [JsonPropertyName("vectorization")]
         public AgentVectorizationSettings? Vectorization { get; set; }
 

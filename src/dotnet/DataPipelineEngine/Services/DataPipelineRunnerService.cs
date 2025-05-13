@@ -1,7 +1,6 @@
 ﻿using Azure.Storage.Queues;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.DataPipelines;
-using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
@@ -10,7 +9,6 @@ using FoundationaLLM.DataPipelineEngine.Interfaces;
 using FoundationaLLM.DataPipelineEngine.Models.Configuration;
 using FoundationaLLM.DataPipelineEngine.Services.Runners;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -29,6 +27,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         private readonly QueueClient _frontendQueueClient;
         private readonly QueueClient _backendQueueClient;
 
+        private readonly Dictionary<string, DataPipelineRunner> _currentRunners = [];
+
         /// <summary>
         /// Initializes a new instance of the service.
         /// </summary>
@@ -40,7 +40,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             IServiceProvider serviceProvider,
             IOptions<DataPipelineServiceSettings> options,
             ILogger<DataPipelineRunnerService> logger) :
-                base(TimeSpan.FromMinutes(1), serviceProvider, logger)
+                base(TimeSpan.FromSeconds(1), serviceProvider, logger)
         {
             _settings = options.Value;
             _stateService = stateService;
@@ -58,7 +58,35 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             _logger.LogInformation("The {ServiceName} service is initializing...", ServiceName);
 
-            await Task.CompletedTask;
+            var activeDataPipelineRuns =
+                await _stateService.GetActiveDataPipelineRuns();
+
+            if (activeDataPipelineRuns.Count > 0)
+                _logger.LogInformation("Initializing data pipeline runners for {ActiveRunsCount} existing active runs.",
+                    activeDataPipelineRuns.Count);
+            else
+                _logger.LogInformation("There are no active data pipeline runs.");
+
+            foreach (var activeDataPipelineRun in activeDataPipelineRuns)
+            {
+                var runner = new DataPipelineRunner(
+                    _stateService,
+                    _pluginService,
+                    activeDataPipelineRun.Processor == DataPipelineRunProcessors.Frontend
+                        ? _frontendQueueClient
+                        : _backendQueueClient,
+                    _serviceProvider);
+
+                var dataPipelineDefinitionSnapshot =
+                    await _dataPipelineResourceProvider.GetResourceAsync<DataPipelineDefinitionSnapshot>(
+                        activeDataPipelineRun.DataPipelineObjectId,
+                        ServiceContext.ServiceIdentity!);
+                await runner.InitializeExisting(
+                    dataPipelineDefinitionSnapshot.DataPipelineDefinition,
+                    activeDataPipelineRun);
+
+                _currentRunners[activeDataPipelineRun.RunId] = runner;
+            }
 
             _logger.LogInformation("The {ServiceName} service has been initialized.", ServiceName);
         }
@@ -67,8 +95,20 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         protected override async Task ExecuteAsyncInternal(
             CancellationToken stoppingToken)
         {
-            _logger.LogInformation("The {ServiceName} service is executing...", ServiceName);
-            await Task.CompletedTask;
+            var runIdsToRemove = new List<string>();
+
+            foreach (var item in _currentRunners)
+            {
+                var complete = await item.Value.Completed();
+                if (complete)
+                {
+                    runIdsToRemove.Add(item.Key);
+                    _logger.LogInformation("Data pipeline run {RunId} has completed.", item.Key);
+                }
+            }
+
+            foreach (var runId in runIdsToRemove)
+                _currentRunners.Remove(runId);
         }
 
         /// <inheritdoc/>
@@ -83,37 +123,6 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             // This is necessary to avoid any issues during the initialization of the service.
             await _initializationTask;
 
-            var dataPipelineRunner = new DataPipelineRunner(
-                _stateService,
-                _serviceProvider);
-
-            await dataPipelineRunner.Initialize(
-                dataPipelineRun,
-                contentItems,
-                dataPipelineDefinition,
-                userIdentity);
-
-            
-
-            dataPipelineRun.ActiveStages = [.. dataPipelineDefinition.StartingStages.Select(s => s.Name)];
-
-            // Fetch work items for all starting stages and consolidate them into a single list
-            var workItems = (await Task.WhenAll(
-                dataPipelineDefinition.StartingStages.Select(s =>
-                    GetStartingStageWorkItems(dataPipelineRun, s, contentItems, userIdentity))
-            )).SelectMany(w => w).ToList();
-
-            var initializationSuccessful = await _stateService.InitializeDataPipelineRunState(
-                dataPipelineRun,
-                contentItems);
-
-            await _stateService.PersistDataPipelineRunWorkItems(workItems);
-
-            if (!initializationSuccessful)
-                throw new DataPipelineServiceException($"Failed to upsert data pipeline run {dataPipelineRun.RunId}.");
-
-            #region Send the newly created workitems to the work item queue
-
             var queueClient = dataPipelineRun.Processor switch
             {
                 DataPipelineRunProcessors.Frontend => _frontendQueueClient,
@@ -123,59 +132,21 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                         StatusCodes.Status400BadRequest)
             };
 
-            _logger.LogInformation("Starting to queue data pipeline work items for {ProcessorName}...",
-                dataPipelineRun.Processor);
+            var dataPipelineRunner = new DataPipelineRunner(
+                _stateService,
+                _pluginService,
+                queueClient,
+                _serviceProvider);
 
-            var failedWorkItems = new List<DataPipelineRunWorkItem>();
-
-            foreach (var workItem in workItems)
-            {
-                try
-                {
-                    await queueClient.SendMessageAsync(workItem.Id);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to queue work item {WorkItemId} for {ProcessorName}.",
-                        workItem.Id, dataPipelineRun.Processor);
-                    workItem.Completed = true;
-                    workItem.Successful = false;
-                    workItem.Error = "The data pipeline item could not be queued.";
-                    failedWorkItems.Add(workItem);
-                }
-
-            }
-
-            if (failedWorkItems.Count > 0)
-                await _stateService.UpdateDataPipelineRunWorkItemsStatus(failedWorkItems);
-
-            _logger.LogInformation("Finished queueing data pipeline work items for {ProcessorName}.",
-                dataPipelineRun.Processor);
-
-            #endregion
-
-            return dataPipelineRun;
-        }
-
-        private async Task<List<DataPipelineRunWorkItem>> GetStartingStageWorkItems(
-            DataPipelineRun dataPipelineRun,
-            DataPipelineStage dataPipelineStage,
-            List<DataPipelineContentItem> contentItems,
-            UnifiedUserIdentity userIdentity)
-        {
-            var dataPipelineStagePlugin = await _pluginService.GetDataPipelineStagePlugin(
-                dataPipelineRun.InstanceId,
-                dataPipelineStage.PluginObjectId,
-                dataPipelineRun.TriggerParameterValues.FilterKeys(
-                    $"Stage.{dataPipelineStage.Name}."),
+            await dataPipelineRunner.InitializeNew(
+                dataPipelineRun,
+                contentItems,
+                dataPipelineDefinition,
                 userIdentity);
 
-            var workItems = await dataPipelineStagePlugin.GetStartingStageWorkItems(
-                contentItems,
-                dataPipelineRun.RunId,
-                dataPipelineStage.Name);
+            _currentRunners[dataPipelineRun.RunId] = dataPipelineRunner;
 
-            return workItems;
+            return dataPipelineRun;
         }
     }
 }

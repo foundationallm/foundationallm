@@ -1,8 +1,10 @@
-﻿using FoundationaLLM.Common.Interfaces;
+﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 
 namespace FoundationaLLM.DataPipelineEngine.Services
@@ -41,26 +43,69 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         public async Task<DataPipelineRun?> GetDataPipelineRun(
             string instanceId,
             string runId,
-            UnifiedUserIdentity userIdentity)
-        {
-            var result = await _cosmosDBService.RetrieveItem<DataPipelineRun>(
+            UnifiedUserIdentity userIdentity) =>
+            await _cosmosDBService.RetrieveItem<DataPipelineRun>(
                 runId,
                 runId);
 
-            return result;
+        public async Task<bool> UpdateDataPipelineRunStatus(
+            DataPipelineRun dataPipelineRun)
+        {
+            try
+            {
+                await _cosmosDBService.PatchItemPropertiesAsync<DataPipelineRun>(
+                    dataPipelineRun.RunId,
+                    dataPipelineRun.Id,
+                    new Dictionary<string, object?>
+                    {
+                        { "/active_stages", dataPipelineRun.ActiveStages },
+                        { "/completed_stages", dataPipelineRun.CompletedStages },
+                        { "/failed_stages", dataPipelineRun.FailedStages },
+                        { "/completed", dataPipelineRun.Completed },
+                        { "/successful", dataPipelineRun.Successful }
+                    });
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to update data pipeline run status for {RunId}.", dataPipelineRun.RunId);
+                return false;
+            }
         }
 
         /// <inheritdoc/>
         public async Task<bool> PersistDataPipelineRunWorkItems(
-            List<DataPipelineRunWorkItem> workItems)
-        {
-            var upsertResultSuccessfull = await _cosmosDBService.UpsertDataPipelineRunBatchAsync(workItems);
-            return upsertResultSuccessfull;
-        }
+            List<DataPipelineRunWorkItem> workItems)  =>
+            await _cosmosDBService.UpsertDataPipelineRunBatchAsync(workItems.ToArray());
 
         /// <inheritdoc/>
-        public async Task UpdateDataPipelineRunWorkItemsStatus(
+        public async Task<bool> UpdateDataPipelineRunWorkItemsStatus(
             List<DataPipelineRunWorkItem> workItems) =>
-            await _cosmosDBService.UpsertDataPipelineRunBatchAsync(workItems);
+            await _cosmosDBService.PatchDataPipelineRunWorkItemsStatusAsync(workItems);
+
+        public async Task<List<DataPipelineRun>> GetActiveDataPipelineRuns()
+        {
+            var query = new QueryDefinition(
+                $"SELECT DISTINCT * FROM c WHERE c.type = @type AND c.completed = false")
+                .WithParameter("@type", DataPipelineTypes.DataPipelineRun);
+
+            var dataPipelineRuns = await _cosmosDBService.RetrieveItemsAsync<DataPipelineRun>(query);
+
+            return dataPipelineRuns;
+        }
+
+        public async Task<List<DataPipelineRunWorkItem>> GetDataPipelineRunStageWorkItems(
+            string runId,
+            string stage)
+        {
+            var query = new QueryDefinition(
+                $"SELECT * FROM c WHERE c.type = @type AND c.run_id = @runId and c.stage = @stage")
+                .WithParameter("@type", DataPipelineTypes.DataPipelineRunWorkItem)
+                .WithParameter("@runId", runId)
+                .WithParameter("@stage", stage);
+            var dataPipelineRunWorkItems = await _cosmosDBService.RetrieveItemsAsync<DataPipelineRunWorkItem>(query);
+            return dataPipelineRunWorkItems;
+        }
     }
 }

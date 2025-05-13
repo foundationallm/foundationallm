@@ -18,5 +18,17 @@ namespace FoundationaLLM.Common.Interfaces.Plugins
             List<DataPipelineContentItem> contentItems,
             string dataPipelineRunId,
             string dataPipelineStageName);
+
+        /// <summary>
+        /// Gets the list of data pipeline work items based on the provided inbound artifact identifiers
+        /// </summary>
+        /// <param name="inboundArtifactIds">The list of inbound artifact identifiers.</param>
+        /// <param name="dataPipelineRunId">The unique identifier of the data pipeline run.</param>
+        /// <param name="dataPipelineStageName">The name of the data pipeline stage.</param>
+        /// <returns>A list of data pipeline work items.</returns>
+        Task<List<DataPipelineRunWorkItem>> GetStageWorkItems(
+            List<string> inboundArtifactIds,
+            string dataPipelineRunId,
+            string dataPipelineStageName);
     }
 }

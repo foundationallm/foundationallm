@@ -1,10 +1,8 @@
 ﻿using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
-using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Plugin;
 using FoundationaLLM.Common.Services.Plugins;
+using FoundationaLLM.DataPipelineEngine.Exceptions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -26,9 +24,10 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         protected readonly IServiceProvider _serviceProvider = serviceProvider;
         protected readonly ILogger _logger = logger;
 
-        protected Task _initializationTask = null!;
+        protected Task<bool> _initializationTask = null!;
 
         protected IPluginService _pluginService = null!;
+        protected IResourceProviderService _dataPipelineResourceProvider = null!;
 
         protected virtual string ServiceName => string.Empty;
 
@@ -46,8 +45,32 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     pluginResourceProvider,
                     _serviceProvider);
 
+                _dataPipelineResourceProvider = value
+                    .Single(rp => rp.Name == ResourceProviderNames.FoundationaLLM_DataPipeline);
+
                 SetResourceProviders(value);
             }
+        }
+
+        private async Task<bool> WaitForResourceProviders()
+        {
+            _logger.LogInformation("The {ServiceName} service is waiting for resource providers...", ServiceName);
+
+            // Wait up to 5 minutes in increments of 5 seconds for the resource provider to be available.
+            foreach (var _ in Enumerable.Range(1, 60))
+            {
+                if (_dataPipelineResourceProvider is not null)
+                {
+                    _logger.LogInformation("The {ServiceName} service was configured with the required resource providers.", ServiceName);
+                    return true;
+                }
+
+                await Task.Delay(TimeSpan.FromSeconds(5));
+            }
+
+            _logger.LogError("The {ServiceName} service failed to initialize because the resource providers are not available.",
+                    ServiceName);
+            return false;
         }
 
         /// <summary>
@@ -76,13 +99,25 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             _logger.LogInformation("The {ServiceName} service is starting...", ServiceName);
 
+            _initializationTask = WaitForResourceProviders();
+            if (!await _initializationTask)
+                throw new DataPipelineServiceException(
+                    $"The {ServiceName} service failed to initialize because the resource providers are not available.");
+
             // Perform additional initialization for the background service.
             await InitializeAsyncInternal(stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                await ExecuteAsyncInternal(stoppingToken);
-                await Task.Delay(_executionCycleInterval, stoppingToken);
+                try
+                {
+                    await ExecuteAsyncInternal(stoppingToken);
+                    await Task.Delay(_executionCycleInterval, stoppingToken);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "An error occurred while executing the {ServiceName} service.", ServiceName);
+                }
             }
 
             _logger.LogInformation("The {ServiceName} service is stopping.", ServiceName);

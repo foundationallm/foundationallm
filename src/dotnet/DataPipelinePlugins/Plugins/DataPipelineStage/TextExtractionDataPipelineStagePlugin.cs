@@ -24,18 +24,36 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             string dataPipelineRunId,
             string dataPipelineStageName)
         {
-            await Task.CompletedTask;
             var workItems = contentItems
                 .Select(ci => new DataPipelineRunWorkItem
                 {
                     Id = $"work-item-{Guid.NewGuid().ToBase64String()}",
                     RunId = dataPipelineRunId,
                     Stage = dataPipelineStageName,
-                    ArtifactId = ci.ContentIdentifier.CanonicalId
+                    InputArtifactId = ci.ContentIdentifier.CanonicalId
                 })
                 .ToList();
 
-            return workItems;
+            return await Task.FromResult(workItems);
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<DataPipelineRunWorkItem>> GetStageWorkItems(
+            List<string> inboundArtifactIds,
+            string dataPipelineRunId,
+            string dataPipelineStageName)
+        {
+            var workItems = inboundArtifactIds
+                .Select(artifactId => new DataPipelineRunWorkItem
+                {
+                    Id = $"work-item-{Guid.NewGuid().ToBase64String()}",
+                    RunId = dataPipelineRunId,
+                    Stage = dataPipelineStageName,
+                    InputArtifactId = artifactId
+                })
+                .ToList();
+
+            return await Task.FromResult(workItems);
         }
     }
 }

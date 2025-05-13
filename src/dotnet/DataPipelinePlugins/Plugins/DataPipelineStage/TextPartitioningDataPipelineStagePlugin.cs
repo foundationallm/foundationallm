@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
 
@@ -27,6 +28,25 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             await Task.CompletedTask;
             throw new DataPipelineException(
                 $"The {nameof(TextExtractionDataPipelineStagePlugin)} data pipeline stage plugin cannot be used for a starting stage.");
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<DataPipelineRunWorkItem>> GetStageWorkItems(
+            List<string> inboundArtifactIds,
+            string dataPipelineRunId,
+            string dataPipelineStageName)
+        {
+            var workItems = inboundArtifactIds
+                .Select(artifactId => new DataPipelineRunWorkItem
+                {
+                    Id = $"work-item-{Guid.NewGuid().ToBase64String()}",
+                    RunId = dataPipelineRunId,
+                    Stage = dataPipelineStageName,
+                    InputArtifactId = artifactId
+                })
+                .ToList();
+
+            return await Task.FromResult(workItems);
         }
     }
 }

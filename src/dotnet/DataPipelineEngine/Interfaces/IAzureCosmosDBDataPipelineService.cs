@@ -22,6 +22,21 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
             CancellationToken cancellationToken = default);
 
         /// <summary>
+        /// Patches the specified properties of an item in Azure Cosmos DB.
+        /// </summary>
+        /// <typeparam name="T">The type of the item to patch.</typeparam>
+        /// <param name="partitionKey">The partition key of the item.</param>
+        /// <param name="id">The identifier of the item.</param>
+        /// <param name="propertyValues">Dictionary of the property names and values to patch.</param>
+        /// <param name="cancellationToken">Cancellation token for async calls.</param>
+        /// <returns>The patched object of type <typeparam name="T"></typeparam>.</returns>
+        Task<T> PatchItemPropertiesAsync<T>(
+            string partitionKey,
+            string id,
+            Dictionary<string, object?> propertyValues,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
         /// Batch create or update data pipeline run items.
         /// </summary>
         /// <param name="dataPipelineRunItems">Data pipeline run items to create or replace.</param>
@@ -52,7 +67,8 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
         /// Patches the status of data pipeline run work items in Azure Cosmos DB.
         /// </summary>
         /// <param name="workItems">The list of data pipeline work items that need the status update.</param>
-        Task PatchDataPipelineRunWorkItemsStatusAsync(
+        /// <returns><see langword="true"/> if the batch is successfully processed.</returns>
+        Task<bool> PatchDataPipelineRunWorkItemsStatusAsync(
             List<DataPipelineRunWorkItem> workItems);
     }
 }

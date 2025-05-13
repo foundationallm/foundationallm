@@ -62,14 +62,35 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
         [JsonPropertyOrder(7)]
         public List<string> ActiveStages { get; set; } = [];
 
+        /// <summary>
+        /// Gets or sets the list of all stages in the data pipeline run.
+        /// </summary>
+        [JsonPropertyName("all_stages")]
+        [JsonPropertyOrder(8)]
+        public List<string> AllStages { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the list of completed stages in the data pipeline run.
+        /// </summary>
+        [JsonPropertyName("completed_stages")]
+        [JsonPropertyOrder(9)]
+        public List<string> CompletedStages { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the list of failed stages in the data pipeline run.
+        /// </summary>
+        [JsonPropertyName("failed_stages")]
+        [JsonPropertyOrder(10)]
+        public List<string> FailedStages { get; set; } = [];
+
         /// <inheritdoc/>
         [JsonPropertyName("completed")]
-        [JsonPropertyOrder(8)]
+        [JsonPropertyOrder(11)]
         public bool Completed { get; set; }
 
         /// <inheritdoc/>
         [JsonPropertyName("successful")]
-        [JsonPropertyOrder(9)]
+        [JsonPropertyOrder(12)]
         public bool Successful { get; set; }
 
         /// <summary>

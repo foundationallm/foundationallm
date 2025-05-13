@@ -32,6 +32,14 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
             UnifiedUserIdentity userIdentity);
 
         /// <summary>
+        /// Updates the status of a data pipeline run.
+        /// </summary>
+        /// <param name="dataPipelineRun">The data pipeline run whose status is to be updated.</param>
+        /// <returns><see langword="true"/> if the status update is successful.</returns>
+        Task<bool> UpdateDataPipelineRunStatus(
+            DataPipelineRun dataPipelineRun);
+
+        /// <summary>
         /// Persists a list of data pipeline run work items.
         /// </summary>
         /// <param name="workItems">The list of data pipeline work items to be persisted.</param>
@@ -43,7 +51,24 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
         /// Updates the status of data pipeline run work items.
         /// </summary>
         /// <param name="workItems">The list of data pipeline work items whose status must be updated.</param>
-        Task UpdateDataPipelineRunWorkItemsStatus(
+        /// <returns><see langword="true"/> if the items statuses are successfully updated.</returns>
+        Task<bool> UpdateDataPipelineRunWorkItemsStatus(
             List<DataPipelineRunWorkItem> workItems);
+
+        /// <summary>
+        /// Gets a list of active data pipeline runs.
+        /// </summary>
+        /// <returns>The list of active data pipeline runs.</returns>
+        Task<List<DataPipelineRun>> GetActiveDataPipelineRuns();
+
+        /// <summary>
+        /// Gets the list of data pipeline run work items associated with a specified stage of a run.
+        /// </summary>
+        /// <param name="runId">The data pipeline run identifier.</param>
+        /// <param name="stage">The stage of the data pipeline run.</param>
+        /// <returns>The list of data pipeline run work items associated with the specified stage of the run.</returns>
+        Task<List<DataPipelineRunWorkItem>> GetDataPipelineRunStageWorkItems(
+            string runId,
+            string stage);
     }
 }

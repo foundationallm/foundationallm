@@ -1,4 +1,8 @@
-﻿using FoundationaLLM.Common.Models.Authentication;
+﻿using Azure.Storage.Queues;
+using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Extensions;
+using FoundationaLLM.Common.Interfaces.Plugins;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Exceptions;
@@ -12,24 +16,45 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
     /// Provides capabilities for running data pipelines.
     /// </summary>
     /// <param name="stateService">The Data Pipeline State service.</param>
+    /// <param name="pluginService">The plugin service providing access to registered plugins.</param>
+    /// <param name="queueClient">The queue client used for interacting with Azure Storage Queues.</param>
     /// <param name="serviceProvider">The service collection provided by the dependency injection container.</param>
     public class DataPipelineRunner(
         IDataPipelineStateService stateService,
+        IPluginService pluginService,
+        QueueClient queueClient,
         IServiceProvider serviceProvider)
     {
         private readonly IDataPipelineStateService _stateService = stateService;
+        private readonly IPluginService _pluginService = pluginService;
+        private readonly QueueClient _queueClient = queueClient;
         private readonly IServiceProvider _serviceProvider = serviceProvider;
         private readonly ILogger<DataPipelineRunner> _logger =
             serviceProvider.GetRequiredService<ILogger<DataPipelineRunner>>();
 
-        public async Task Initialize(
+        private readonly Dictionary<string, DataPipelineStageRunner> _currentStageRunners = [];
+        private DataPipelineDefinition _dataPipelineDefinition = null!;
+        private DataPipelineRun _dataPipelineRun = null!;
+
+        public async Task InitializeNew(
             DataPipelineRun dataPipelineRun,
             List<DataPipelineContentItem> contentItems,
             DataPipelineDefinition dataPipelineDefinition,
             UnifiedUserIdentity userIdentity)
         {
+            _logger.LogInformation("Initializing new data pipeline run {DataPipelineRunId}...",
+                dataPipelineRun.RunId);
+
+            _dataPipelineDefinition = dataPipelineDefinition;
+            _dataPipelineRun = dataPipelineRun;
+
             foreach (var contentItem in contentItems)
                 contentItem.RunId = dataPipelineRun.RunId;
+
+            dataPipelineRun.ActiveStages =
+                [.. dataPipelineDefinition.StartingStages.Select(stage => stage.Name)];
+
+            dataPipelineRun.AllStages = dataPipelineDefinition.AllStageNames;
 
             var initializationSuccessful = await _stateService.InitializeDataPipelineRunState(
                dataPipelineRun,
@@ -37,6 +62,229 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
 
             if (!initializationSuccessful)
                 throw new DataPipelineServiceException($"Failed to initialize state for data pipeline run {dataPipelineRun.RunId}.");
+
+            foreach (var activeStage in dataPipelineDefinition.StartingStages)
+            {
+                _logger.LogInformation("Initializing stage {StageName} for new data pipeline run {DataPipelineRunId}...",
+                    activeStage.Name, dataPipelineRun.RunId);
+
+                var workItems = await GetStartingStageWorkItems(
+                    dataPipelineRun,
+                    activeStage,
+                    contentItems,
+                    userIdentity);
+
+                await CreateStageRunner(
+                    activeStage,
+                    workItems);
+
+                _logger.LogInformation("Finished initializing stage {StageName} for new data pipeline run {DataPipelineRunId}...",
+                    activeStage.Name, dataPipelineRun.RunId);
+            }
+
+            _logger.LogInformation("Finished initializing new data pipeline run {DataPipelineRunId}...",
+               dataPipelineRun.RunId);
+        }
+
+        public async Task InitializeExisting(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun)
+        {
+            _logger.LogInformation("Initializing existing data pipeline run {DataPipelineRunId}...",
+                dataPipelineRun.RunId);
+
+            _dataPipelineDefinition = dataPipelineDefinition;
+            _dataPipelineRun = dataPipelineRun;
+
+            foreach (var activeStageName in dataPipelineRun.ActiveStages)
+            {
+                _logger.LogInformation("Initializing stage {StageName} for existing data pipeline run {DataPipelineRunId}...",
+                    activeStageName, dataPipelineRun.RunId);
+
+                var dataPipelineStageRunner = new DataPipelineStageRunner(
+                    activeStageName,
+                    _stateService,
+                    _serviceProvider.GetRequiredService<ILogger<DataPipelineStageRunner>>());
+
+                var workItems = await _stateService.GetDataPipelineRunStageWorkItems(
+                    dataPipelineRun.RunId,
+                    activeStageName);
+
+                dataPipelineStageRunner.InitializeExisting(
+                    workItems);
+                _currentStageRunners[activeStageName] = dataPipelineStageRunner;
+
+                _logger.LogInformation("Finished initializing stage {StageName} for existing data pipeline run {DataPipelineRunId}...",
+                    activeStageName, dataPipelineRun.RunId);
+            }
+
+            _logger.LogInformation("Finished initializing existing data pipeline run {DataPipelineRunId}...",
+               dataPipelineRun.RunId);
+        }
+
+        public async Task<bool> Completed()
+        {
+            var completedStageRunners =
+                _currentStageRunners.Values.Where(stageRunner => stageRunner.Completed).ToList();
+
+            foreach (var stageRunner in completedStageRunners)
+                await ProcessCompletedStageRunner(stageRunner);
+
+            _dataPipelineRun.Completed =
+                _dataPipelineRun.AllStages.Intersect(_dataPipelineRun.CompletedStages).Count() == _dataPipelineRun.AllStages.Count;
+            _dataPipelineRun.Successful =
+                _dataPipelineRun.Completed
+                && _dataPipelineRun.FailedStages.Count == 0;
+
+            if (_dataPipelineRun.Completed
+                || completedStageRunners.Count > 0)
+                await _stateService.UpdateDataPipelineRunStatus(_dataPipelineRun);
+
+            return _dataPipelineRun.Completed;
+        }
+
+        private async Task CreateStageRunner(
+            DataPipelineStage dataPipelineStage,
+            List<DataPipelineRunWorkItem> workItems)
+        {
+            var dataPipelineStageRunner = new DataPipelineStageRunner(
+                dataPipelineStage.Name,
+                _stateService,
+                _serviceProvider.GetRequiredService<ILogger<DataPipelineStageRunner>>());
+
+            await dataPipelineStageRunner.InitializeNew(workItems);
+
+            var failedWorkItems = await QueueWorkItems(
+                _dataPipelineRun,
+                dataPipelineStage,
+                workItems);
+
+            if (failedWorkItems.Count > 0)
+            {
+                await dataPipelineStageRunner.SetFailedWorkItems(failedWorkItems);
+                _logger.LogWarning("Failed to queue {FailedWorkItemsCount} work items for {ProcessorName}.",
+                    failedWorkItems.Count, _dataPipelineRun.Processor);
+            }
+
+            _currentStageRunners[dataPipelineStage.Name] = dataPipelineStageRunner;
+        }
+
+        private async Task<List<DataPipelineRunWorkItem>> GetStartingStageWorkItems(
+            DataPipelineRun dataPipelineRun,
+            DataPipelineStage dataPipelineStage,
+            List<DataPipelineContentItem> contentItems,
+            UnifiedUserIdentity userIdentity)
+        {
+            var dataPipelineStagePlugin = await _pluginService.GetDataPipelineStagePlugin(
+                dataPipelineRun.InstanceId,
+                dataPipelineStage.PluginObjectId,
+                dataPipelineRun.TriggerParameterValues.FilterKeys(
+                    $"Stage.{dataPipelineStage.Name}."),
+                userIdentity);
+
+            var workItems = await dataPipelineStagePlugin.GetStartingStageWorkItems(
+                contentItems,
+                dataPipelineRun.RunId,
+                dataPipelineStage.Name);
+
+            return workItems;
+        }
+
+        private async Task<List<DataPipelineRunWorkItem>> GetStageWorkItems(
+            DataPipelineRun dataPipelineRun,
+            DataPipelineStage dataPipelineStage,
+            List<string> inboundArtifactIds,
+            UnifiedUserIdentity userIdentity)
+        {
+            var dataPipelineStagePlugin = await _pluginService.GetDataPipelineStagePlugin(
+                dataPipelineRun.InstanceId,
+                dataPipelineStage.PluginObjectId,
+                dataPipelineRun.TriggerParameterValues.FilterKeys(
+                    $"Stage.{dataPipelineStage.Name}."),
+                userIdentity);
+
+            var workItems = await dataPipelineStagePlugin.GetStageWorkItems(
+                inboundArtifactIds,
+                dataPipelineRun.RunId,
+                dataPipelineStage.Name);
+
+            return workItems;
+        }
+
+        private async Task<List<DataPipelineRunWorkItem>> QueueWorkItems(
+            DataPipelineRun dataPipelineRun,
+            DataPipelineStage dataPipelineStage,
+            List<DataPipelineRunWorkItem> workItems)
+        {
+            _logger.LogInformation("Starting to queue {WorkItemsCount} work items for {ProcessorName}, data pipeline run id {RunId}. stage {StageName}.",
+                workItems.Count, dataPipelineRun.Processor, dataPipelineRun.RunId, dataPipelineStage.Name);
+
+            var failedWorkItems = new List<DataPipelineRunWorkItem>();
+            var processedWorkItems = 0;
+
+            foreach (var workItem in workItems)
+            {
+                try
+                {
+                    await _queueClient.SendMessageAsync(workItem.Id);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to queue work item {WorkItemId} for {ProcessorName}.",
+                        workItem.Id, dataPipelineRun.Processor);
+                    workItem.Completed = true;
+                    workItem.Successful = false;
+                    workItem.Error = "The data pipeline item could not be queued.";
+                    failedWorkItems.Add(workItem);
+                }
+
+                processedWorkItems++;
+
+                if (processedWorkItems % 100 == 0)
+                {
+                    _logger.LogInformation("Queued {ProcessedWorkItemsCount} work items for {ProcessorName}, data pipeline run id {RunId}. stage {StageName}.",
+                        processedWorkItems, dataPipelineRun.Processor, dataPipelineRun.RunId, dataPipelineStage.Name);
+                }
+            }
+
+            _logger.LogInformation("Finished queueing {WorkItemsCount} work items for {ProcessorName}, data pipeline run id {RunId}. stage {StageName} ({FailedItemsCount} items failed to queue).",
+                workItems.Count, dataPipelineRun.Processor, dataPipelineRun.RunId, dataPipelineStage.Name, failedWorkItems.Count);
+
+            return failedWorkItems;
+        }
+
+        private async Task ProcessCompletedStageRunner(
+            DataPipelineStageRunner stageRunner)
+        {
+            _currentStageRunners.Remove(stageRunner.StageName);
+
+            _dataPipelineRun.CompletedStages.Add(stageRunner.StageName);
+            if (stageRunner.Successful)
+            {
+                // Attempt to kick off the next stages.
+                var nextStages = _dataPipelineDefinition.GetNextStages(stageRunner.StageName);
+
+                foreach (var nextStage in nextStages)
+                {
+                    _logger.LogInformation("Initializing stage {StageName} for new data pipeline run {DataPipelineRunId}...",
+                        nextStage.Name, _dataPipelineRun.RunId);
+
+                    var stageWorkItems = await GetStageWorkItems(
+                        _dataPipelineRun,
+                        nextStage,
+                        stageRunner.OutputArtifactIds,
+                        ServiceContext.ServiceIdentity!);
+
+                    await CreateStageRunner(
+                        nextStage,
+                        stageWorkItems);
+
+                    _logger.LogInformation("Finished initializing stage {StageName} for new data pipeline run {DataPipelineRunId}...",
+                        nextStage.Name, _dataPipelineRun.RunId);
+                }
+            }
+            else
+                _dataPipelineRun.FailedStages.Add(stageRunner.StageName);
         }
     }
 }

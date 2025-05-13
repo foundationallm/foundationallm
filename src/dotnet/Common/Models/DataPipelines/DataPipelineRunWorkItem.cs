@@ -40,31 +40,38 @@ namespace FoundationaLLM.Common.Models.DataPipelines
         public required string Stage { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the data pipeline run artifact that is referenced by the work item.
+        /// Gets or sets the identifier of the data pipeline run input artifact that is referenced by the work item.
         /// </summary>
-        [JsonPropertyName("artifact_id")]
+        [JsonPropertyName("input_artifact_id")]
         [JsonPropertyOrder(5)]
-        public required string ArtifactId { get; set; }
+        public required string InputArtifactId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the data pipeline run output artifact that is referenced by the work item.
+        /// </summary>
+        [JsonPropertyName("output_artifact_id")]
+        [JsonPropertyOrder(6)]
+        public string? OutputArtifactId { get; set; }
 
         /// <summary>
         /// Gets or sets the completion status of the work item.
         /// </summary>
         [JsonPropertyName("completed")]
-        [JsonPropertyOrder(6)]
+        [JsonPropertyOrder(7)]
         public bool Completed { get; set; }
 
         /// <summary>
         /// Gets or sets the success status of the work item.
         /// </summary>
         [JsonPropertyName("successful")]
-        [JsonPropertyOrder(7)]
+        [JsonPropertyOrder(8)]
         public bool Successful { get; set; }
 
         /// <summary>
         /// Gets or sets the error message if the work item failed.
         /// </summary>
         [JsonPropertyName("error")]
-        [JsonPropertyOrder(8)]
+        [JsonPropertyOrder(9)]
         public string? Error { get; set; }
 
         /// <summary>
