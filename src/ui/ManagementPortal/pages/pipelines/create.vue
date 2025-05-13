@@ -1009,7 +1009,9 @@ export default {
 
 				// Recursive function to handle stages and their dependencies
 				async function handleStages(stages: any[]) {
+					console.log('handleStages', stages);
 					for (const stage of stages) {
+						console.log('handleStages current stage:', stage);
 						// Stage Parameters
 						if (stage.plugin_parameters) {
 							for (const param of stage.plugin_parameters) {
@@ -1205,8 +1207,11 @@ export default {
 			if (
 				!plugin ||
 				!plugin.parameter_selection_hints ||
-				!plugin.parameter_selection_hints[paramName]
+				!plugin.parameter_selection_hints[paramName] ||
+				!plugin.parameter_selection_hints[paramName].resourcePath ||
+				!plugin.parameter_selection_hints[paramName].filterActionPayload
 			) {
+				console.warn(`Missing or invalid parameter selection hints for ${paramName} in plugin ${pluginObjectId}`);
 				return [];
 			}
 
@@ -1223,7 +1228,7 @@ export default {
 				this.resourceOptionsCache[cacheKey] = options;
 				return options;
 			} catch (error) {
-				console.error('Error fetching resources:', error);
+				console.error(`Error fetching resources for ${paramName}:`, error);
 				return [];
 			}
 		},
