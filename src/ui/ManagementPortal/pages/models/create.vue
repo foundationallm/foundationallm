@@ -21,10 +21,10 @@
 			</template>
 
 			<!-- Name -->
-			<div class="step-header col-span-2">What would you like the model display name to be?</div>
+			<div class="step-header col-span-2">What would you like the model name to be?</div>
 			<div class="col-span-2">
 				<div id="aria-source-name-desc" class="mb-2">
-					No special characters or spaces, use letters and numbers with dashes and underscores only.
+					This name will uniquely identify the model in the system. No special characters or spaces, use letters and numbers with dashes and underscores only.
 				</div>
 				<div class="input-wrapper">
 					<InputText
@@ -51,6 +51,21 @@
 						❌
 					</span>
 				</div>
+			</div>
+
+			<!-- Display Name -->
+			<div class="step-header col-span-2">What would you like the model display name to be?</div>
+			<div class="col-span-2">
+				<div id="aria-display-name-desc" class="mb-2">
+					This is the friendly name that will be displayed to users when selecting the model for an agent.
+				</div>
+				<InputText
+					v-model="aiModel.display_name"
+					type="text"
+					class="w-full"
+					placeholder="Enter model display name"
+					aria-labelledby="aria-display-name-desc"
+				/>
 			</div>
 
 			<!-- Model type -->

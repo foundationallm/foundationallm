@@ -91,7 +91,7 @@
 				<Dropdown
 					:model-value="workflowMainAIModel?.object_id"
 					:options="aiModelOptions"
-					option-label="display_name"
+					:option-label="(model) => model.display_name || model.name"
 					option-value="object_id"
 					class="dropdown--agent"
 					placeholder="--Select--"
