@@ -837,7 +837,7 @@ export default {
 				name: `Stage${this.selectedStagePlugins.length + 1}`,
 				description: '',
 				plugin_object_id: '',
-				plugin_parameters: null,
+				plugin_parameters: [],
 				plugin_dependencies: [],
 				collapsed: false,
 			});
@@ -936,24 +936,26 @@ export default {
 					name: stage.name,
 					description: stage.description,
 					plugin_object_id: stage.plugin_object_id,
-					plugin_parameters: stage.plugin_parameters,
-					plugin_dependencies: stage.plugin_dependencies,
+					plugin_parameters: stage.plugin_parameters || [],
+					plugin_dependencies: stage.plugin_dependencies || [],
 					collapsed: true,
 				});
 
 				this.selectedDependencyIdsMap[stage.name] =
 					stage.plugin_dependencies?.map((dep) => dep.plugin_object_id) ?? [];
 
-				for (const param of stage.plugin_parameters) {
-					const resourceOption = this.stagePluginResourceOptions.find(
-						(p) => p.parameter_metadata.name === param.parameter_metadata.name,
-					);
-					if (resourceOption) {
-						const options = await this.getResourceOptions(
-							param.parameter_metadata.name,
-							stage.plugin_object_id,
+				if (stage.plugin_parameters) {
+					for (const param of stage.plugin_parameters) {
+						const resourceOption = this.stagePluginResourceOptions.find(
+							(p) => p.parameter_metadata.name === param.parameter_metadata.name,
 						);
-						resourceOption.parameter_selection_hints_options = options;
+						if (resourceOption) {
+							const options = await this.getResourceOptions(
+								param.parameter_metadata.name,
+								stage.plugin_object_id,
+							);
+							resourceOption.parameter_selection_hints_options = options;
+						}
 					}
 				}
 
