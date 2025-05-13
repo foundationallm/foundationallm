@@ -63,17 +63,23 @@ export type AgentTool = {
 
 export type AgentWorkflow = {
 	type: string;
-	assistant_id: string;
-	vector_store_id: string;
+	assistant_id?: string;
+	vector_store_id?: string;
 	name: string;
 	package_name: string;
+	class_name: string;
 	workflow_host: string;
-	properties: Object;
+	properties?: Object;
 	resource_object_ids: {
-		[key: string]: {
-			object_id: string;
-			properties: Object;
-		};
+		[key: string]: WorkflowResourceObject;
+	};
+};
+
+export type WorkflowResourceObject = {
+	object_id: string;
+	properties: {
+		object_role?: string;
+		[key: string]: any;
 	};
 };
 
@@ -388,10 +394,7 @@ export type CreateAgentRequest = ResourceBase & {
 	show_view_prompt?: boolean;
 	show_file_upload?: boolean;
 
-	ai_model_object_id: string;
-	prompt_object_id: string;
-
-	vectorization: {
+	vectorization?: {
 		dedicated_pipeline: boolean;
 		indexing_profile_object_ids: string[];
 		text_embedding_profile_object_id: string;
@@ -402,35 +405,19 @@ export type CreateAgentRequest = ResourceBase & {
 		trigger_cron_schedule: string;
 	};
 
-	capabilities: string[];
 	tools: AgentTool[];
 	workflow: AgentWorkflow;
 
 	sessions_enabled: boolean;
-	orchestration_settings: {
-		orchestrator: string;
-	};
 
-	conversation_history_settings: {
+	conversation_history_settings?: {
 		enabled: boolean;
 		max_history: number;
 	};
 
-	gatekeeper_settings: {
+	gatekeeper_settings?: {
 		use_system_setting: boolean;
 		options: string[];
-	};
-
-	language_model: {
-		type: string;
-		provider: string;
-		temperature: number;
-		use_chat: boolean;
-		api_endpoint: string;
-		api_key: string;
-		api_version: string;
-		version: string;
-		deployment: string;
 	};
 
 	text_rewrite_settings?: {
