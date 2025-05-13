@@ -44,6 +44,7 @@ namespace FoundationaLLM.DataPipeline.Clients
         public async Task<DataPipelineRun?> CreateDataPipelineRunAsync(
             string instanceId,
             DataPipelineRun dataPipelineRun,
+            DataPipelineDefinitionSnapshot dataPipelineSnapshot,
             UnifiedUserIdentity userIdentity)
         {
             try

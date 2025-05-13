@@ -165,5 +165,21 @@ namespace FoundationaLLM
         public static void AddLocalDataPipelineServiceClient(
             this IServiceCollection services) =>
             services.AddSingleton<IDataPipelineServiceClient, LocalDataPipelineServiceClient>();
+
+        /// <summary>
+        /// Registers the null data pipeline service client with the Dependency Injection container.
+        /// </summary>
+        /// <param name="builder">The application builder.</param>
+        public static void AddNulllDataPipelineServiceClient(
+            this IHostApplicationBuilder builder) =>
+            builder.Services.AddNulllDataPipelineServiceClient();
+
+        /// <summary>
+        /// Registers the null data pipeline service client with the Dependency Injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        public static void AddNulllDataPipelineServiceClient(
+            this IServiceCollection services) =>
+            services.AddSingleton<IDataPipelineServiceClient, NullDataPipelineServiceClient>();
     }
 }

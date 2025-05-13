@@ -90,7 +90,7 @@ builder.AddResourceProviderCacheSettings();
 builder.AddResourceValidatorFactory();
 builder.AddConfigurationResourceProvider();
 builder.AddPluginResourceProvider();
-builder.AddLocalDataPipelineServiceClient(); // Required by the DataPipeline resource provider.
+builder.AddNulllDataPipelineServiceClient(); // Required by the DataPipeline resource provider.
 builder.AddDataPipelineResourceProvider();
 
 // Add API Key Authorization

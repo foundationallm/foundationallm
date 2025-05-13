@@ -8,7 +8,7 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
     /// <summary>
     /// Defines the interface for the data pipeline runner service.
     /// </summary>
-    public interface IDataPipelineRunnerService : IDataPipelineResourceProviderClient
+    public interface IDataPipelineRunnerService
     {
         /// <summary>
         /// Starts a data pipeline run.

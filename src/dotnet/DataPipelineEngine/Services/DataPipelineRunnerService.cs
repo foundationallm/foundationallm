@@ -163,7 +163,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             List<DataPipelineContentItem> contentItems,
             UnifiedUserIdentity userIdentity)
         {
-            var dataPipelineStagePlugin = await GetDataPipelineStagePlugin(
+            var dataPipelineStagePlugin = await _pluginService.GetDataPipelineStagePlugin(
                 dataPipelineRun.InstanceId,
                 dataPipelineStage.PluginObjectId,
                 dataPipelineRun.TriggerParameterValues.FilterKeys(

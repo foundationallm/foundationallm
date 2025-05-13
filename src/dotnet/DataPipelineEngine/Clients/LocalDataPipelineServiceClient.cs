@@ -25,7 +25,7 @@ namespace FoundationaLLM.DataPipelineEngine.Clients
             set
             {
                 if (null != _dataPipelineTriggerService)
-                    _dataPipelineTriggerService.ResourceProviders = value;
+                    (_dataPipelineTriggerService as IResourceProviderClient)!.ResourceProviders = value;
             }
         }
 
@@ -33,8 +33,13 @@ namespace FoundationaLLM.DataPipelineEngine.Clients
         public async Task<DataPipelineRun?> CreateDataPipelineRunAsync(
             string instanceId,
             DataPipelineRun dataPipelineRun,
+            DataPipelineDefinitionSnapshot dataPipelineSnapshot,
             UnifiedUserIdentity userIdentity) =>
-            await _dataPipelineTriggerService.TriggerDataPipeline(instanceId, dataPipelineRun, userIdentity);
+            await _dataPipelineTriggerService.TriggerDataPipeline(
+                instanceId,
+                dataPipelineRun,
+                dataPipelineSnapshot,
+                userIdentity);
 
         /// <inheritdoc/>
         public async Task<DataPipelineRun?> GetDataPipelineRunAsync(

@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.Authentication;
+﻿using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 
 namespace FoundationaLLM.DataPipeline.Interfaces
@@ -6,7 +7,7 @@ namespace FoundationaLLM.DataPipeline.Interfaces
     /// <summary>
     /// Defines the interface for Data Pipeline API clients.
     /// </summary>
-    public interface IDataPipelineServiceClient : IDataPipelineResourceProviderClient
+    public interface IDataPipelineServiceClient : IResourceProviderClient
     {
         /// <summary>
         /// Gets a data pipeline run by its identifier.
@@ -25,11 +26,13 @@ namespace FoundationaLLM.DataPipeline.Interfaces
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="dataPipelineRun">The data pipeline run to create.</param>
+        /// <param name="dataPipelineSnapshot">The snapshot of the definition of the data pipeline at the time the run was triggered.</param>
         /// <param name="userIdentiy">The identity of the user running the operation.</param>
         /// <returns>The newly created data pipeline run.</returns>
         Task<DataPipelineRun?> CreateDataPipelineRunAsync(
             string instanceId,
             DataPipelineRun dataPipelineRun,
+            DataPipelineDefinitionSnapshot dataPipelineSnapshot,
             UnifiedUserIdentity userIdentity);
     }
 }

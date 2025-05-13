@@ -1,5 +1,4 @@
-﻿using FoundationaLLM.Common.Constants.ResourceProviders;
-using FoundationaLLM.Common.Extensions;
+﻿using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders;
@@ -40,17 +39,14 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         #region Initialization
 
         /// <inheritdoc/>
-        protected override void EnsureDependencyInjectionResolutionInternal(
-            CancellationToken stoppingToken)
+        protected override void SetResourceProviders(
+            IEnumerable<IResourceProviderService> resourceProviders)
         {
             var hostedServices = _serviceProvider.GetRequiredService<IEnumerable<IHostedService>>();
             _dataPipelineRunnerService =
                 (hostedServices.Single(hs => hs is IDataPipelineRunnerService) as IDataPipelineRunnerService)!;
 
-            _dataPipelineRunnerService.ResourceProviders = [
-                _dataPipelineResourceProvider,
-                _pluginResourceProvider
-            ];
+            (_dataPipelineRunnerService as IResourceProviderClient)!.ResourceProviders = resourceProviders;
         }
 
         #endregion
@@ -66,6 +62,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         public async Task<DataPipelineRun?> TriggerDataPipeline(
             string instanceId,
             DataPipelineRun dataPipelineRun,
+            DataPipelineDefinitionSnapshot dataPipelineSnapshot,
             UnifiedUserIdentity userIdentity)
         {
             // Wait for the initialization task to complete before proceeding.
@@ -86,13 +83,10 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
             await _validator.ValidateAndThrowAsync<DataPipelineRun>(dataPipelineRun);
 
-            var dataPipelineSnapshot = await _dataPipelineResourceProvider.GetResourceAsync<DataPipelineDefinitionSnapshot>(
-                $"{dataPipelineRun.DataPipelineObjectId}/{DataPipelineResourceTypeNames.DataPipelineSnapshots}/latest",
-                userIdentity);
             dataPipelineRun.DataPipelineObjectId = dataPipelineSnapshot.ObjectId!;
             var dataPipeline = dataPipelineSnapshot.DataPipelineDefinition;
 
-            var dataSourcePlugin = await GetDataSourcePlugin(
+            var dataSourcePlugin = await _pluginService.GetDataSourcePlugin(
                 instanceId,
                 dataPipeline.DataSource.PluginObjectId,
                 dataPipelineRun.TriggerParameterValues.FilterKeys(
