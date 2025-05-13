@@ -15,6 +15,16 @@
             "justMyCode": false
         },
         {
+            "name": "FoundationaLLMAgentPlugins - Debug Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins/.venv/Scripts/python.exe",
+            "cwd" : "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins/test",
+            "justMyCode": false
+        },
+        {
             "command": "npm run dev",
             "name": "User Portal UI",
             "request": "launch",

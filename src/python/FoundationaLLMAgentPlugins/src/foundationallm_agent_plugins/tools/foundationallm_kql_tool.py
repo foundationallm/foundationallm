@@ -76,9 +76,13 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
         if runnable_config is None:
             original_prompt = prompt
         else:
-            original_prompt = \
-                runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE] \
-                or runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
+            user_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT] \
+                if RunnableConfigKeys.ORIGINAL_USER_PROMPT in runnable_config['configurable'] \
+                else None
+            user_prompt_rewrite = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE] \
+                if RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE in runnable_config['configurable'] \
+                else None
+            original_prompt = user_prompt_rewrite or user_prompt or prompt
 
         messages = [
             SystemMessage(content=self.main_prompt),
