@@ -8,7 +8,9 @@ using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Exceptions;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
 using FoundationaLLM.DataPipelineEngine.Models.Configuration;
+using FoundationaLLM.DataPipelineEngine.Services.Runners;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -81,8 +83,17 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             // This is necessary to avoid any issues during the initialization of the service.
             await _initializationTask;
 
-            foreach (var contentItem in contentItems)
-                contentItem.RunId = dataPipelineRun.RunId;
+            var dataPipelineRunner = new DataPipelineRunner(
+                _stateService,
+                _serviceProvider);
+
+            await dataPipelineRunner.Initialize(
+                dataPipelineRun,
+                contentItems,
+                dataPipelineDefinition,
+                userIdentity);
+
+            
 
             dataPipelineRun.ActiveStages = [.. dataPipelineDefinition.StartingStages.Select(s => s.Name)];
 
@@ -94,8 +105,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
             var initializationSuccessful = await _stateService.InitializeDataPipelineRunState(
                 dataPipelineRun,
-                contentItems,
-                workItems);
+                contentItems);
+
+            await _stateService.PersistDataPipelineRunWorkItems(workItems);
 
             if (!initializationSuccessful)
                 throw new DataPipelineServiceException($"Failed to upsert data pipeline run {dataPipelineRun.RunId}.");

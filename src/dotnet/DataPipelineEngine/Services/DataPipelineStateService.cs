@@ -25,13 +25,11 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         /// <inheritdoc/>
         public async Task<bool> InitializeDataPipelineRunState(
             DataPipelineRun dataPipelineRun,
-            List<DataPipelineContentItem> contentItems,
-            List<DataPipelineRunWorkItem> workItems)
+            List<DataPipelineContentItem> contentItems)
         {
             // Combine dataPipelineRun, contentItems, and workItems into a single array
             var combinedArray = new object[] { dataPipelineRun }
                 .Concat(contentItems)
-                .Concat(workItems)
                 .ToArray();
 
             var upsertResultSuccessfull = await _cosmosDBService.UpsertDataPipelineRunBatchAsync(combinedArray);
@@ -50,6 +48,14 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 runId);
 
             return result;
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> PersistDataPipelineRunWorkItems(
+            List<DataPipelineRunWorkItem> workItems)
+        {
+            var upsertResultSuccessfull = await _cosmosDBService.UpsertDataPipelineRunBatchAsync(workItems);
+            return upsertResultSuccessfull;
         }
 
         /// <inheritdoc/>
