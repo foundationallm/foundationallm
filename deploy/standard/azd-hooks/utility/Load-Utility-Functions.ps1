@@ -7,6 +7,7 @@ try {
     . ./utility/Get-AbsolutePath.ps1
     . ./utility/Get-Resource-Suffix.ps1
     . ./utility/Invoke-AndRequireSuccess.ps1
+    . ./utility/Credential-Helpers.ps1
 }
 finally {
     Pop-Location
