@@ -56,6 +56,17 @@ $env:AZCOPY_SPA_CLIENT_SECRET=$credentials.clientSecret
     --tenant-id $credentials.tenantId `
     --login-type spn
 
+$fllmProject = $(azd env get-value FOUNDATIONALLM_PROJECT)
+if ($LastExitCode -eq 0)
+{
+
+}
+else
+{
+    $projectId = Read-Host "Enter Project ID: "
+    azd env set FOUNDATIONALLM_PROJECT $projectId
+}
+
 $readerClientId = $(azd env get-value ENTRA_READER_CLIENT_ID)
 if ($LastExitCode -eq 0)
 {
@@ -83,5 +94,5 @@ else
 Write-Host "FoundationaLLM Instance ID: $($instanceId)"
 
 Write-Host "Getting Current User UPN..." -ForegroundColor Blue
-$upn = $(az ad signed-in-user show --query userPrincipalName --output tsv)
+$upn = $(az account show --query user.name --output tsv)
 azd env set FOUNDATIONALLM_OWNER $upn
