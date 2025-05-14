@@ -1029,6 +1029,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Configuration_Queue =
             "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Queue";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:ParallelProcessorsCount setting.
+        /// <para>Value description:<br/>The number of parallel processors of data pipeline run work items used by the Data Pipeline Frontend Worker service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Configuration_ParallelProcessorsCount =
+            "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:ParallelProcessorsCount";
 
         #endregion
 
@@ -1072,6 +1079,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Configuration_Queue =
             "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Queue";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:ParallelProcessorsCount setting.
+        /// <para>Value description:<br/>The number of parallel processors of data pipeline run work items used by the Data Pipeline Backend Worker service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Configuration_ParallelProcessorsCount =
+            "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:ParallelProcessorsCount";
 
         #endregion
 

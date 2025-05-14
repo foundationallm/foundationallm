@@ -1,4 +1,6 @@
 ﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Text;
@@ -24,6 +26,11 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
 
         protected readonly CosmosClient _cosmosClient;
         protected readonly Container _dataPipelineContainer;
+        protected readonly Container _leasesContainer;
+
+        private ChangeFeedProcessor _changeFeedProcessor = null!;
+        private bool _changeFeedProcessorStarted = false;
+        private Func<DataPipelineRunWorkItem, Task> _dataPipelineRunWorkItemProcessor = null!;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureCosmosDBDataPipelineService"/> class.
@@ -38,8 +45,20 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
             _logger = logger;
 
             _logger.LogInformation("Initializing the Azure Cosmos DB data pipeline service...");
+
             _cosmosClient = GetCosmosDBClient();
-            _dataPipelineContainer = GetCosmosDBDataPipelineContainer();
+
+            var database = _cosmosClient.GetDatabase(_settings.Database)
+                ?? throw new DataPipelineServiceException($"The Azure Cosmos DB database '{_settings.Database}' was not found.");
+
+            // The Data Pipelines container name is the first container in the list.
+            var dataPipelinesContainerName = _settings.Containers.Split(',')[0];
+            _dataPipelineContainer = database.GetContainer(dataPipelinesContainerName)
+                ?? throw new DataPipelineServiceException($"The Azure Cosmos DB container [{dataPipelinesContainerName}] was not found.");
+
+            _leasesContainer = database.GetContainer("leases")
+                ?? throw new DataPipelineServiceException($"The Azure Cosmos DB container [leases] was not found.");
+
             _logger.LogInformation("Successfully initialized the Azure Cosmos DB datra pipeline service.");
         }
 
@@ -70,19 +89,6 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
                 traceSource.Switch.Level = SourceLevels.All;
                 traceSource.Listeners.Clear();
             }
-
-            return result;
-        }
-
-        private Container GetCosmosDBDataPipelineContainer()
-        {
-            var database = _cosmosClient.GetDatabase(_settings.Database)
-                ?? throw new DataPipelineServiceException($"The Azure Cosmos DB database '{_settings.Database}' was not found.");
-
-            // The Context container name is the first container in the list.
-            var contextContainerName = _settings.Containers.Split(',')[0];
-            var result = database.GetContainer(contextContainerName)
-                ?? throw new DataPipelineServiceException($"The Azure Cosmos DB container [{contextContainerName}] was not found.");
 
             return result;
         }
@@ -121,6 +127,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
             return response.Resource;
         }
 
+        /// <inheritdoc/>
         public async Task<List<T>> RetrieveItemsAsync<T>(
             QueryDefinition query)
         {
@@ -136,6 +143,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
             return output;
         }
 
+        /// <inheritdoc/>
         public async Task<T> RetrieveItem<T>(string id, string partitionKey)
         {
             var result = await _dataPipelineContainer.ReadItemAsync<T>(id, new PartitionKey(partitionKey));
@@ -143,6 +151,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
             return result;
         }
 
+        /// <inheritdoc/>
         public async Task<bool> UpsertDataPipelineRunBatchAsync(params dynamic[] dataPipelineRunItems)
         {
             if (dataPipelineRunItems.Select(m => m.RunId).Distinct().Count() > 1)
@@ -163,6 +172,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
             return result.IsSuccessStatusCode;
         }
 
+        /// <inheritdoc/>
         public async Task<bool> PatchDataPipelineRunWorkItemsStatusAsync(
             List<DataPipelineRunWorkItem> workItems)
         {
@@ -176,7 +186,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
                         {
                             PatchOperation.Replace("/completed", workItem.Completed),
                             PatchOperation.Replace("/successful", workItem.Successful),
-                            PatchOperation.Replace("/error", workItem.Error)
+                            PatchOperation.Replace("/errors", workItem.Errors)
                         }
                     )
                 );
@@ -186,5 +196,108 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
             return concurrentTasks.All(task =>
                 task.Result.StatusCode == System.Net.HttpStatusCode.OK);
         }
+
+        #region Change Feed Processor
+
+        /// <inheritdoc/>
+        public async Task<bool> StartChangeFeedProcessorAsync(
+            Func<DataPipelineRunWorkItem, Task> dataPipelineRunWorkItemProcessor)
+        {
+            _logger.LogInformation("Starting the data pipeline run work items change feed processor...");
+
+            try
+            {
+                _changeFeedProcessor = _dataPipelineContainer
+                    .GetChangeFeedProcessorBuilder<dynamic>(
+                        "ProcessDataPipelineRunWorkItems", ChangeFeedHandler)
+                    .WithInstanceName($"ProcessDataPipelineRunWorkItems_{Guid.NewGuid().ToBase64String()}")
+                    .WithLeaseContainer(_leasesContainer)
+                    .Build();
+
+                await _changeFeedProcessor.StartAsync();
+
+                _dataPipelineRunWorkItemProcessor = dataPipelineRunWorkItemProcessor;
+
+                _changeFeedProcessorStarted = true;
+                _logger.LogInformation("The data pipeline run work items change feed processor started.");
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "There was an error starting the data pipeline run work items change feed processor.");
+                return false;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task StopChangeFeedProcessorAsync()
+        {
+            if (_changeFeedProcessor is not null
+                && _changeFeedProcessorStarted)
+            {
+                try
+                {
+                    _logger.LogInformation("Stopping the data pipeline run work items change feed processor...");
+
+                    await _changeFeedProcessor.StopAsync();
+
+                    _logger.LogInformation("The data pipeline run work items change feed processor stopped.");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "There was an error stopping the data pipeline run work items change feed processor.");
+                }
+            }
+        }
+
+        private async Task ChangeFeedHandler(
+            IReadOnlyCollection<dynamic> input,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                var completedWorkItems = input
+                    .Where(document => ((JsonElement)document).GetProperty("type").ToString() == DataPipelineTypes.DataPipelineRunWorkItem)
+                    .Select<dynamic, DataPipelineRunWorkItem>(document =>
+                        JsonSerializer.Deserialize<DataPipelineRunWorkItem>((JsonElement)document)!)
+                    .Where(workItem => workItem.Completed)
+                    .ToList();
+
+                if (completedWorkItems.Count > 0)
+                {
+                    _logger.LogInformation("Processing {WorkItemsCount} completed data pipeline run work items.",
+                        completedWorkItems.Count);
+
+                    await Parallel.ForEachAsync<DataPipelineRunWorkItem>(
+                        completedWorkItems,
+                        new ParallelOptions
+                        {
+                            CancellationToken = cancellationToken,
+                            MaxDegreeOfParallelism = 10
+                        },
+                        async (workItem, token) =>
+                        {
+                            try
+                            {
+                                await _dataPipelineRunWorkItemProcessor(workItem);
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.LogError(
+                                    ex,
+                                    "There was an error processing the data pipeline run work item with id {WorkItemId}",
+                                    workItem.Id);
+                            }
+                        });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "There was an error processing the data pipeline run work items change feed.");
+            }
+        }
+
+        #endregion
     }
 }

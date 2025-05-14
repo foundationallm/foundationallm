@@ -64,6 +64,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                 workItem => workItem.Id,
                 workItem => new DataPipelineRunWorkItemStatus
                 {
+                    OutputArtifactId = workItem.OutputArtifactId,
                     Completed = workItem.Completed,
                     Successful = workItem.Successful
                 }));
@@ -84,6 +85,23 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
             if (!updateSuccessful)
                 throw new DataPipelineServiceException(
                     $"Failed to update state of failed work items for data pipeline run {workItems.First().RunId}.");
+        }
+
+        public async Task ProcessDataPipelineRunWorkItem(
+            DataPipelineRunWorkItem dataPipelineRunWorkItem)
+        {
+            if (!_workItemsStatus.TryGetValue(dataPipelineRunWorkItem.Id, out var status))
+            {
+                _logger.LogWarning("Data pipeline stage runner does not contain status for work item {WorkItemId}.",
+                    dataPipelineRunWorkItem.Id);
+                return;
+            }
+
+            status.OutputArtifactId = dataPipelineRunWorkItem.OutputArtifactId;
+            status.Completed = dataPipelineRunWorkItem.Completed;
+            status.Successful = dataPipelineRunWorkItem.Successful;
+
+            await Task.CompletedTask;
         }
     }
 }

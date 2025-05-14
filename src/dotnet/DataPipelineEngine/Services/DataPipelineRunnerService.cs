@@ -88,7 +88,33 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 _currentRunners[activeDataPipelineRun.RunId] = runner;
             }
 
+            if (! await _stateService.StartDataPipelineRunWorkItemProcessing(
+                ProcessDataPipelineRunWorkItem))
+            {
+                _logger.LogError("Failed to start data pipeline run work item processing.");
+                throw new DataPipelineServiceException(
+                    "Failed to start data pipeline run work item processing.",
+                    StatusCodes.Status500InternalServerError);
+            }
+
             _logger.LogInformation("The {ServiceName} service has been initialized.", ServiceName);
+        }
+
+        /// <inheritdoc/>
+        public override async Task StopAsync(CancellationToken cancellationToken) =>
+            await _stateService.StopDataPipelineRunWorkItemProcessing();
+
+        private async Task ProcessDataPipelineRunWorkItem(
+            DataPipelineRunWorkItem dataPipelineRunWorkItem)
+        {
+            if (!_currentRunners.TryGetValue(dataPipelineRunWorkItem.RunId, out var runner))
+            {
+                _logger.LogError("Data pipeline run {RunId} not found when processing data pipeline run work item with id {WorkItemId}.",
+                    dataPipelineRunWorkItem.RunId, dataPipelineRunWorkItem.Id);
+                return;
+            }
+
+            await runner.ProcessDataPipelineRunWorkItem(dataPipelineRunWorkItem);
         }
 
         /// <inheritdoc/>

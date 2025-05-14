@@ -820,6 +820,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:ParallelProcessorsCount",
+            "value": "10",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-datapipelinebackendworker-apikey\"}",
             "label": null,
@@ -850,6 +857,13 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Queue",
             "value": "backend-worker",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:ParallelProcessorsCount",
+            "value": "10",
             "label": null,
             "content_type": "",
             "tags": {}

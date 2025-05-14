@@ -70,5 +70,18 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
         /// <returns><see langword="true"/> if the batch is successfully processed.</returns>
         Task<bool> PatchDataPipelineRunWorkItemsStatusAsync(
             List<DataPipelineRunWorkItem> workItems);
+
+        /// <summary>
+        /// Starts the change feed processor for the data pipeline run work items.
+        /// </summary>
+        /// <param name="dataPipelineRunWorkItemProcessor">The asynchronous delegate that is invoked for each data pipeline run work item.</param>
+        /// <returns><see langword="true"/> if the change feed processor is successfully started.</returns>
+        Task<bool> StartChangeFeedProcessorAsync(
+            Func<DataPipelineRunWorkItem, Task> dataPipelineRunWorkItemProcessor);
+
+        /// <summary>
+        /// Stops the change feed processor for the data pipeline run work items.
+        /// </summary>
+        Task StopChangeFeedProcessorAsync();
     }
 }

@@ -1387,6 +1387,14 @@
 				"value": "frontend-worker",
 				"content_type": "",
 				"first_version": "0.9.7"
+			},
+			{
+				"name": "ParallelProcessorsCount",
+				"description": "The number of parallel processors of data pipeline run work items used by the Data Pipeline Frontend Worker service.",
+				"secret": "",
+				"value": "10",
+				"content_type": "",
+				"first_version": "0.9.7"
 			}
 		]
 	},
@@ -1443,6 +1451,14 @@
 				"description": "The queue used to process data pipeline work items by the Data Pipeline Backend Worker service.",
 				"secret": "",
 				"value": "backend-worker",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "ParallelProcessorsCount",
+				"description": "The number of parallel processors of data pipeline run work items used by the Data Pipeline Backend Worker service.",
+				"secret": "",
+				"value": "10",
 				"content_type": "",
 				"first_version": "0.9.7"
 			}

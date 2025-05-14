@@ -32,6 +32,16 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
             UnifiedUserIdentity userIdentity);
 
         /// <summary>
+        /// Gets a data pipeline run work item by its identifier.
+        /// </summary>
+        /// <param name="workItemId">The data pipeline run work item identifier.</param>
+        /// <param name="runId">The data pipeline run identifier.</param>
+        /// <returns>The requests data pipeline run work item object.</returns>
+        Task<DataPipelineRunWorkItem?> GetDataPipelineRunWorkItem(
+            string workItemId,
+            string runId);
+
+        /// <summary>
         /// Updates the status of a data pipeline run.
         /// </summary>
         /// <param name="dataPipelineRun">The data pipeline run whose status is to be updated.</param>
@@ -70,5 +80,18 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
         Task<List<DataPipelineRunWorkItem>> GetDataPipelineRunStageWorkItems(
             string runId,
             string stage);
+
+        /// <summary>
+        /// Starts processing data pipeline run work items.
+        /// </summary>
+        /// <param name="processWorkItem">The asynchronous delegate that is invoked for each data pipeline run work item.</param>
+        /// <returns><see langword="true"/> if the processing is successfully started.</returns>
+        Task<bool> StartDataPipelineRunWorkItemProcessing(
+            Func<DataPipelineRunWorkItem, Task> processWorkItem);
+
+        /// <summary>
+        /// Stops processing data pipeline run work items.
+        /// </summary>
+        Task StopDataPipelineRunWorkItemProcessing();
     }
 }

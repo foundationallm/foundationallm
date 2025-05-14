@@ -48,6 +48,15 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 runId,
                 runId);
 
+        /// <inheritdoc/>
+        public async Task<DataPipelineRunWorkItem?> GetDataPipelineRunWorkItem(
+            string workItemId,
+            string runId) =>
+            await _cosmosDBService.RetrieveItem<DataPipelineRunWorkItem>(
+                workItemId,
+                runId);
+
+        /// <inheritdoc/>
         public async Task<bool> UpdateDataPipelineRunStatus(
             DataPipelineRun dataPipelineRun)
         {
@@ -76,7 +85,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
         /// <inheritdoc/>
         public async Task<bool> PersistDataPipelineRunWorkItems(
-            List<DataPipelineRunWorkItem> workItems)  =>
+            List<DataPipelineRunWorkItem> workItems) =>
             await _cosmosDBService.UpsertDataPipelineRunBatchAsync(workItems.ToArray());
 
         /// <inheritdoc/>
@@ -84,6 +93,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             List<DataPipelineRunWorkItem> workItems) =>
             await _cosmosDBService.PatchDataPipelineRunWorkItemsStatusAsync(workItems);
 
+        /// <inheritdoc/>
         public async Task<List<DataPipelineRun>> GetActiveDataPipelineRuns()
         {
             var query = new QueryDefinition(
@@ -95,6 +105,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             return dataPipelineRuns;
         }
 
+        /// <inheritdoc/>
         public async Task<List<DataPipelineRunWorkItem>> GetDataPipelineRunStageWorkItems(
             string runId,
             string stage)
@@ -107,5 +118,14 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             var dataPipelineRunWorkItems = await _cosmosDBService.RetrieveItemsAsync<DataPipelineRunWorkItem>(query);
             return dataPipelineRunWorkItems;
         }
+
+        /// <inheritdoc/>
+        public async Task<bool> StartDataPipelineRunWorkItemProcessing(
+            Func<DataPipelineRunWorkItem, Task> processWorkItem) =>
+            await _cosmosDBService.StartChangeFeedProcessorAsync(processWorkItem);
+
+        /// <inheritdoc/>
+        public async Task StopDataPipelineRunWorkItemProcessing() =>
+            await _cosmosDBService.StopChangeFeedProcessorAsync();
     }
 }

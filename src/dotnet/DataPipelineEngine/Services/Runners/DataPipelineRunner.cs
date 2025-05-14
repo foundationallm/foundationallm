@@ -7,8 +7,10 @@ using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Exceptions;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
+using FoundationaLLM.DataPipelineEngine.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace FoundationaLLM.DataPipelineEngine.Services.Runners
 {
@@ -143,6 +145,19 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
             return _dataPipelineRun.Completed;
         }
 
+        public async Task ProcessDataPipelineRunWorkItem(
+            DataPipelineRunWorkItem dataPipelineRunWorkItem)
+        {
+            if (! _currentStageRunners.TryGetValue(dataPipelineRunWorkItem.Stage, out var stageRunner))
+            {
+                _logger.LogWarning("Data pipeline stage runner not found for work item {WorkItemId}.",
+                    dataPipelineRunWorkItem.Id);
+                return;
+            }
+
+            await stageRunner.ProcessDataPipelineRunWorkItem(dataPipelineRunWorkItem);
+        }
+
         private async Task CreateStageRunner(
             DataPipelineStage dataPipelineStage,
             List<DataPipelineRunWorkItem> workItems)
@@ -153,6 +168,11 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                 _serviceProvider.GetRequiredService<ILogger<DataPipelineStageRunner>>());
 
             await dataPipelineStageRunner.InitializeNew(workItems);
+
+            // Add the runner to the list of current stage runners before queueing the work items.
+            // This prevents a racing condition where the stage runner is not found when a work item
+            // is processed and the change feed triggers the registered handler.
+            _currentStageRunners[dataPipelineStage.Name] = dataPipelineStageRunner;
 
             var failedWorkItems = await QueueWorkItems(
                 _dataPipelineRun,
@@ -165,8 +185,6 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                 _logger.LogWarning("Failed to queue {FailedWorkItemsCount} work items for {ProcessorName}.",
                     failedWorkItems.Count, _dataPipelineRun.Processor);
             }
-
-            _currentStageRunners[dataPipelineStage.Name] = dataPipelineStageRunner;
         }
 
         private async Task<List<DataPipelineRunWorkItem>> GetStartingStageWorkItems(
@@ -226,7 +244,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
             {
                 try
                 {
-                    await _queueClient.SendMessageAsync(workItem.Id);
+                    await _queueClient.SendMessageAsync(JsonSerializer.Serialize(
+                        new DataPipelineRunWorkItemMessage
+                        {
+                            WorkItemId = workItem.Id,
+                            RunId = workItem.RunId
+                        }));
                 }
                 catch (Exception ex)
                 {
@@ -234,7 +257,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                         workItem.Id, dataPipelineRun.Processor);
                     workItem.Completed = true;
                     workItem.Successful = false;
-                    workItem.Error = "The data pipeline item could not be queued.";
+                    workItem.Errors = ["The data pipeline item could not be queued."];
                     failedWorkItems.Add(workItem);
                 }
 
@@ -258,7 +281,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
         {
             _currentStageRunners.Remove(stageRunner.StageName);
 
-            _dataPipelineRun.CompletedStages.Add(stageRunner.StageName);
+            if (!_dataPipelineRun.CompletedStages.Contains(stageRunner.StageName))
+                _dataPipelineRun.CompletedStages.Add(stageRunner.StageName);
+
+            if (_dataPipelineRun.ActiveStages.Contains(stageRunner.StageName))
+                _dataPipelineRun.ActiveStages.Remove(stageRunner.StageName);
+
             if (stageRunner.Successful)
             {
                 // Attempt to kick off the next stages.
@@ -279,12 +307,18 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                         nextStage,
                         stageWorkItems);
 
+                    if (!_dataPipelineRun.ActiveStages.Contains(nextStage.Name))
+                        _dataPipelineRun.ActiveStages.Add(nextStage.Name);
+
                     _logger.LogInformation("Finished initializing stage {StageName} for new data pipeline run {DataPipelineRunId}...",
                         nextStage.Name, _dataPipelineRun.RunId);
                 }
             }
             else
-                _dataPipelineRun.FailedStages.Add(stageRunner.StageName);
+            {
+                if (!_dataPipelineRun.FailedStages.Contains(stageRunner.StageName))
+                    _dataPipelineRun.FailedStages.Add(stageRunner.StageName);
+            }
         }
     }
 }
