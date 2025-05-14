@@ -41,9 +41,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
         /// <inheritdoc/>
         public async Task<DataPipelineRun?> GetDataPipelineRun(
-            string instanceId,
-            string runId,
-            UnifiedUserIdentity userIdentity) =>
+            string runId) =>
             await _cosmosDBService.RetrieveItem<DataPipelineRun>(
                 runId,
                 runId);
@@ -92,6 +90,24 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         public async Task<bool> UpdateDataPipelineRunWorkItemsStatus(
             List<DataPipelineRunWorkItem> workItems) =>
             await _cosmosDBService.PatchDataPipelineRunWorkItemsStatusAsync(workItems);
+
+        public async Task<bool> UpdateDataPipelineRunWorkItem(
+            DataPipelineRunWorkItem workItem)
+        {
+            try
+            {
+                await _cosmosDBService.UpsertItemAsync<DataPipelineRunWorkItem>(
+                    workItem.RunId,
+                    workItem);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to update data pipeline run work item {WorkItemId}.", workItem.Id);
+                return false;
+            }
+        }
 
         /// <inheritdoc/>
         public async Task<List<DataPipelineRun>> GetActiveDataPipelineRuns()

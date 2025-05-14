@@ -1,12 +1,13 @@
 ﻿using Azure.Storage.Queues;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
+using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Services.Plugins;
 using FoundationaLLM.Common.Tasks;
-using FoundationaLLM.DataPipelineEngine.Interfaces;
 using FoundationaLLM.DataPipelineEngine.Models;
 using FoundationaLLM.DataPipelineEngine.Models.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -34,6 +35,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         private readonly TaskPool _taskPool;
 
         private const int MESSAGE_VISIBILITY_TIMEOUT_SECONDS = 600;
+        private const int MESSAGE_ERROR_VISIBILITY_TIMEOUT_SECONDS = 5;
         private const int MAX_FAILED_PROCESSING_ATTEMPTS = 10;
 
         /// <summary>
@@ -161,8 +163,34 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
             try
             {
-                dataPipelineRunWorkItem.Completed = true;
-                dataPipelineRunWorkItem.Successful = true;
+                //Process the message
+                var dataPipelineStagePlugin =
+                    await GetDataPipelineStagePlugin(dataPipelineRunWorkItem);
+
+                var result =
+                    await dataPipelineStagePlugin.ProcessWorkItem(dataPipelineRunWorkItem);
+
+                if (result.Success)
+                {
+                    dataPipelineRunWorkItem.OutputArtifactId = result.Value;
+                    dataPipelineRunWorkItem.Completed = true;
+                    dataPipelineRunWorkItem.Successful = true;
+                }
+                else
+                {
+                    dataPipelineRunWorkItem.Errors.Add(result.ErrorMessage
+                        ?? "The data pipeline stage plugin encountered an error while processing the data pipeline run work item.");
+                    dataPipelineRunWorkItem.FailedProcessingAttempts++;
+
+                    if (result.StopProcessing)
+                    {
+                        // The plugin has identified a permanent error that will not be resolved by retrying the operation.
+                        // This is considered a processing success.
+                        dataPipelineRunWorkItem.Completed = true;
+                    }
+                    else
+                        successfulProcessing = false;
+                }
             }
             catch (Exception ex)
             {
@@ -175,14 +203,34 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
             try
             {
-                await _stateService.UpdateDataPipelineRunWorkItemsStatus(
-                    [dataPipelineRunWorkItem]);
+                await _stateService.UpdateDataPipelineRunWorkItem(
+                    dataPipelineRunWorkItem);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while updating the status for the data pipeline run work item with id {WorkItemId}.",
                     dataPipelineRunWorkItem.Id);
                 successfulProcessing = false;
+            }
+
+            if (successfulProcessing)
+            {
+                // The message was processed successfully, we can delete it from the queue.
+                await DeleteWorkItemMessage(
+                    message.MessageId,
+                    message.PopReceipt);
+            }
+            else
+            {
+                // Make the request visible again in the queue to
+                // allow the it to be processed again after a short delay (in case of transient errors).
+                var success = await TryUpdateWorkItemMessage(
+                    message.MessageId,
+                    message.PopReceipt,
+                    TimeSpan.FromSeconds(MESSAGE_ERROR_VISIBILITY_TIMEOUT_SECONDS)).ConfigureAwait(false);
+                if (!success)
+                    _logger.LogWarning("Could not update the visibility timeout of the data pipeline run work item message with id {MessageId} and work item id {WorkItemId}.",
+                        message.MessageId, dataPipelineRunWorkItem.Id);
             }
         }
 
@@ -270,6 +318,35 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             {
                 _logger.LogInformation("Message with id {MessageId} deleted.", messageId);
             }
+        }
+
+        #endregion
+
+        #region Plugin management
+
+        private async Task<IDataPipelineStagePlugin> GetDataPipelineStagePlugin(
+            DataPipelineRunWorkItem dataPipelineRunWorkItem)
+        {
+            var dataPipelineRun =
+                await _stateService.GetDataPipelineRun(dataPipelineRunWorkItem.RunId);
+
+            var dataPipelineSnapshot =
+                await _dataPipelineResourceProvider.GetResourceAsync<DataPipelineDefinitionSnapshot>(
+                    dataPipelineRun!.DataPipelineObjectId,
+                    ServiceContext.ServiceIdentity!);
+
+            var dataPipeline = dataPipelineSnapshot.DataPipelineDefinition;
+
+            var dataPipelineStage = dataPipeline.GetStage(dataPipelineRunWorkItem.Stage);
+
+            var dataPipelineStagePlugin = await _pluginService.GetDataPipelineStagePlugin(
+                dataPipelineRun.InstanceId,
+                dataPipelineStage.PluginObjectId,
+                dataPipelineRun.TriggerParameterValues.FilterKeys(
+                    $"Stage.{dataPipelineRunWorkItem.Stage}."),
+                ServiceContext.ServiceIdentity!);
+
+            return dataPipelineStagePlugin;
         }
 
         #endregion

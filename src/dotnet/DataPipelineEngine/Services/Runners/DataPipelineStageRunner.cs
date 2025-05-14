@@ -1,6 +1,6 @@
-﻿using FoundationaLLM.Common.Models.DataPipelines;
+﻿using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.DataPipelineEngine.Exceptions;
-using FoundationaLLM.DataPipelineEngine.Interfaces;
 using Microsoft.Extensions.Logging;
 using NuGet.Packaging;
 

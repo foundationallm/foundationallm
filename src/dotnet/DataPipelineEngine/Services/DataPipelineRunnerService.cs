@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Queues;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.DataPipelines;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;

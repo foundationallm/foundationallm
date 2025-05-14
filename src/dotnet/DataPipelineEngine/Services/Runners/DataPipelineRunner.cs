@@ -1,12 +1,12 @@
 ﻿using Azure.Storage.Queues;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Extensions;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Exceptions;
-using FoundationaLLM.DataPipelineEngine.Interfaces;
 using FoundationaLLM.DataPipelineEngine.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -211,7 +211,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
         private async Task<List<DataPipelineRunWorkItem>> GetStageWorkItems(
             DataPipelineRun dataPipelineRun,
             DataPipelineStage dataPipelineStage,
-            List<string> inboundArtifactIds,
+            DataPipelineStageRunner previousStageRunner,
             UnifiedUserIdentity userIdentity)
         {
             var dataPipelineStagePlugin = await _pluginService.GetDataPipelineStagePlugin(
@@ -222,9 +222,10 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                 userIdentity);
 
             var workItems = await dataPipelineStagePlugin.GetStageWorkItems(
-                inboundArtifactIds,
+                previousStageRunner.OutputArtifactIds,
                 dataPipelineRun.RunId,
-                dataPipelineStage.Name);
+                dataPipelineStage.Name,
+                previousStageRunner.StageName);
 
             return workItems;
         }
@@ -300,7 +301,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                     var stageWorkItems = await GetStageWorkItems(
                         _dataPipelineRun,
                         nextStage,
-                        stageRunner.OutputArtifactIds,
+                        stageRunner,
                         ServiceContext.ServiceIdentity!);
 
                     await CreateStageRunner(

@@ -61,7 +61,17 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
         /// <returns>The list of data pipeline stages that follow the specified stage.</returns>
         /// <exception cref="ArgumentException"></exception>
         public List<DataPipelineStage> GetNextStages(string stageName) =>
-            AllStages.FirstOrDefault(stage => stage.Name == stageName)?.NextStages
+            AllStages.SingleOrDefault(stage => stage.Name == stageName)?.NextStages
+            ?? throw new ArgumentException($"The stage {stageName} was not found in the pipeline definition.");
+
+        /// <summary>
+        /// Gets the data pipeline stage with the specified name.
+        /// </summary>
+        /// <param name="stageName">The name of the stage to search for.</param>
+        /// <returns>The data pipeline stage with the specified name.</returns>
+        /// <exception cref="ArgumentException"></exception>
+        public DataPipelineStage GetStage(string stageName) =>
+            AllStages.SingleOrDefault(stage => stage.Name == stageName)
             ?? throw new ArgumentException($"The stage {stageName} was not found in the pipeline definition.");
     }
 }

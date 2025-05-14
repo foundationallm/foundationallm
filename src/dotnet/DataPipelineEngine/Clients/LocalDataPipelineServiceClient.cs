@@ -46,6 +46,6 @@ namespace FoundationaLLM.DataPipelineEngine.Clients
             string instanceId,
             string runId,
             UnifiedUserIdentity userIdentity) =>
-            await _dataPipelineStateService.GetDataPipelineRun(instanceId, runId, userIdentity);
+            await _dataPipelineStateService.GetDataPipelineRun(runId);
     }
 }
