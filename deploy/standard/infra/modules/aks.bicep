@@ -147,7 +147,7 @@ var logs = [
 ]
 
 /** Data Sources **/
-var zones = pickZones('Microsoft.Compute', 'virtualMachines', location, 3)
+var zones = pickZones('Microsoft.Compute', 'virtualMachines', location, 2)
 
 /** Resources **/
 resource main 'Microsoft.ContainerService/managedClusters@2024-10-02-preview' = {
@@ -224,7 +224,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2024-10-02-preview' = 
         osDiskSizeGB: 128
         tags: tags
         type: 'VirtualMachineScaleSets'
-        vmSize: 'Standard_D2s_v5'
+        vmSize: 'Standard_D2_v5'
         vnetSubnetID: subnetId
 
         nodeTaints: [
@@ -322,10 +322,10 @@ resource userPool 'Microsoft.ContainerService/managedClusters/agentPools@2024-04
   parent: main
   properties: {
     availabilityZones: zones
-    count: 10
+    count: 3
     enableAutoScaling: true
-    maxCount: 15
-    minCount: 6
+    maxCount: 5
+    minCount: 3
     mode: 'User'
     osDiskSizeGB: 256
     tags: tags
