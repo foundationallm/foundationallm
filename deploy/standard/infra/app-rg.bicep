@@ -7,14 +7,17 @@ param administratorObjectId string
 
 param aksServiceCidr string
 
+param availabilityZones array
 param backendAksNodeSku string
+param backendAksSystemNodeSku string
 param frontendAksNodeSku string
+param frontendAksSystemNodeSku string
 
 @description('The environment name token used in naming resources.')
 param environmentName string
 
-param hubResourceGroup string
-param hubSubscriptionId string = subscription().subscriptionId
+param dnsResourceGroup string
+param dnsSubscriptionId string = subscription().subscriptionId
 
 @description('AKS namespace')
 param k8sNamespace string
@@ -145,8 +148,9 @@ module aksBackend 'modules/aks.bicep' = {
     admnistratorObjectIds: [ administratorObjectId ]
     aksServiceCidr: aksServiceCidr
     aksNodeSku: backendAksNodeSku
-    hubResourceGroup: hubResourceGroup
-    hubSubscriptionId: hubSubscriptionId
+    aksSystemNodeSku: backendAksSystemNodeSku
+    dnsResourceGroup: dnsResourceGroup
+    dnsSubscriptionId: dnsSubscriptionId
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     logAnalyticWorkspaceResourceId: logAnalyticsWorkspaceResourceId
@@ -157,6 +161,7 @@ module aksBackend 'modules/aks.bicep' = {
     resourceSuffix: '${resourceSuffix}-backend'
     subnetId: subnets['aks-backend'].id
     subnetIdPrivateEndpoint: subnets.services.id
+    zones: availabilityZones
     tags: tags
   }
 }
@@ -168,8 +173,9 @@ module aksFrontend 'modules/aks.bicep' = {
     admnistratorObjectIds: [ administratorObjectId ]
     aksServiceCidr: aksServiceCidr
     aksNodeSku: frontendAksNodeSku
-    hubResourceGroup: hubResourceGroup
-    hubSubscriptionId: hubSubscriptionId
+    aksSystemNodeSku: frontendAksSystemNodeSku
+    dnsResourceGroup: dnsResourceGroup
+    dnsSubscriptionId: dnsSubscriptionId
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     logAnalyticWorkspaceResourceId: logAnalyticsWorkspaceResourceId
@@ -180,13 +186,14 @@ module aksFrontend 'modules/aks.bicep' = {
     resourceSuffix: '${resourceSuffix}-frontend'
     subnetId: subnets['aks-frontend'].id
     subnetIdPrivateEndpoint: subnets.services.id
+    zones: availabilityZones
     tags: tags
   }
 }
 
 module dnsZones 'modules/utility/dnsZoneData.bicep' = {
   name: 'dnsZones-${timestamp}'
-  scope: resourceGroup(hubSubscriptionId, hubResourceGroup)
+  scope: resourceGroup(dnsSubscriptionId, dnsResourceGroup)
   params: {
     location: location
   }

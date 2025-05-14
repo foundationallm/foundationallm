@@ -8,6 +8,11 @@ try {
     . ./utility/Get-Resource-Suffix.ps1
     . ./utility/Invoke-AndRequireSuccess.ps1
     . ./utility/Credential-Helpers.ps1
+    . ./utility/Dns-Helpers.ps1
+    . ./utility/Network-Helpers.ps1
+    . ./utility/Escrow-Helpers.ps1
+    . ./utility/Entra-Helpers.ps1
+    . ./utility/FoundationaLLM-Helpers.ps1
 }
 finally {
     Pop-Location

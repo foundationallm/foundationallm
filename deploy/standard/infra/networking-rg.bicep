@@ -1,6 +1,8 @@
 // Inputs
 param cidrVnet string = '10.220.128.0/20'
 param environmentName string
+param dnsResourceGroup string
+param dnsSubscriptionId string = subscription().subscriptionId
 param hubResourceGroup string
 param hubSubscriptionId string = subscription().subscriptionId
 param hubVnetName string
@@ -569,7 +571,7 @@ module nsg 'modules/nsg.bicep' = [
 @description('Use the preexisting specified private DNS zones.')
 module dns './modules/dns.bicep' = [for zone in items(privateDnsZone): {
   name: '${zone.value}-${timestamp}'
-  scope: resourceGroup(hubSubscriptionId, hubResourceGroup)
+  scope: resourceGroup(dnsSubscriptionId, dnsResourceGroup)
   params: {
     key: zone.key
     vnetId: main.id
