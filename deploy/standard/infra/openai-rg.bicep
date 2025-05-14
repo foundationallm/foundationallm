@@ -1,7 +1,7 @@
 /** Inputs **/
 param actionGroupId string
-param hubResourceGroup string
-param hubSubscriptionId string = subscription().subscriptionId
+param dnsResourceGroup string
+param dnsSubscriptionId string = subscription().subscriptionId
 param environmentName string
 param location string
 param logAnalyticsWorkspaceId string
@@ -45,7 +45,7 @@ var tags = {
 @description('Read DNS Zones')
 module dnsZones 'modules/utility/dnsZoneData.bicep' = {
   name: 'dnsZones-${timestamp}'
-  scope: resourceGroup(hubSubscriptionId, hubResourceGroup)
+  scope: resourceGroup(dnsSubscriptionId, dnsResourceGroup)
   params: {
     location: location
   }

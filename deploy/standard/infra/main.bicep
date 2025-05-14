@@ -7,7 +7,10 @@ param authAppRegistrationClientId string
 param authAppRegistrationInstance string
 param authAppRegistrationTenantId string
 param backendAksNodeSku string
+param backendAksSystemNodeSku string
 param frontendAksNodeSku string
+param frontendAksSystemNodeSku string
+param vmAvailabilityZones string
 param cidrVnet string
 param createDate string = utcNow('u')
 param deploymentOwner string
@@ -29,6 +32,9 @@ param managementPortalHostname string
 param coreApiHostname string
 param managementApiHostname string
 
+param dnsResourceGroup string
+param dnsSubscriptionId string = subscription().subscriptionId
+
 param hubResourceGroup string
 param hubSubscriptionId string = subscription().subscriptionId
 param hubVnetName string
@@ -36,6 +42,7 @@ param resourceGroups object
 
 // Locals
 var k8sNamespace = 'fllm'
+var availabilityZones = split(vmAvailabilityZones, ',')
 
 var existingOpenAiInstance = {
   name: existingOpenAiInstanceName
@@ -74,11 +81,14 @@ module app 'app-rg.bicep' = {
     actionGroupId: ops.outputs.actionGroupId
     administratorObjectId: administratorObjectId
     aksServiceCidr: aksServiceCidr
+    availabilityZones: availabilityZones
     backendAksNodeSku: backendAksNodeSku
+    backendAksSystemNodeSku: backendAksSystemNodeSku
     frontendAksNodeSku: frontendAksNodeSku
+    frontendAksSystemNodeSku: frontendAksSystemNodeSku
     environmentName: environmentName
-    hubResourceGroup: hubResourceGroup
-    hubSubscriptionId: hubSubscriptionId
+    dnsResourceGroup: dnsResourceGroup
+    dnsSubscriptionId: dnsSubscriptionId
     k8sNamespace: k8sNamespace
     location: location
     logAnalyticsWorkspaceId: ops.outputs.logAnalyticsWorkspaceId
@@ -109,8 +119,8 @@ module auth 'auth-rg.bicep' = {
     authAppRegistrationInstance: authAppRegistrationInstance
     authAppRegistrationTenantId: authAppRegistrationTenantId
     environmentName: environmentName
-    hubResourceGroup: hubResourceGroup
-    hubSubscriptionId: hubSubscriptionId
+    dnsResourceGroup: dnsResourceGroup
+    dnsSubscriptionId: dnsSubscriptionId
     instanceId: instanceId
     k8sNamespace: k8sNamespace
     location: location
@@ -130,6 +140,8 @@ module networking 'networking-rg.bicep' = {
     cidrVnet: cidrVnet
     allowedExternalCidr: allowedExternalCidr
     environmentName: environmentName
+    dnsResourceGroup: dnsResourceGroup
+    dnsSubscriptionId: dnsSubscriptionId
     hubResourceGroup: hubResourceGroup
     hubSubscriptionId: hubSubscriptionId
     hubVnetName: hubVnetName
@@ -145,8 +157,8 @@ module openai 'openai-rg.bicep' = {
   scope: resourceGroup(resourceGroups.oai)
   params: {
     actionGroupId: ops.outputs.actionGroupId
-    hubResourceGroup: hubResourceGroup
-    hubSubscriptionId: hubSubscriptionId
+    dnsResourceGroup: dnsResourceGroup
+    dnsSubscriptionId: dnsSubscriptionId
     environmentName: environmentName
     existingOpenAiInstance: existingOpenAiInstance
     location: location
@@ -164,8 +176,8 @@ module ops 'ops-rg.bicep' = {
   scope: resourceGroup(resourceGroups.ops)
   params: {
     administratorObjectId: administratorObjectId
-    hubResourceGroup: hubResourceGroup
-    hubSubscriptionId: hubSubscriptionId
+    dnsResourceGroup: dnsResourceGroup
+    dnsSubscriptionId: dnsSubscriptionId
     environmentName: environmentName
     location: location
     project: project
@@ -180,8 +192,8 @@ module storage 'storage-rg.bicep' = {
   params: {
     actionGroupId: ops.outputs.actionGroupId
     administratorObjectId: administratorObjectId
-    hubResourceGroup: hubResourceGroup
-    hubSubscriptionId: hubSubscriptionId
+    dnsResourceGroup: dnsResourceGroup
+    dnsSubscriptionId: dnsSubscriptionId
     environmentName: environmentName
     location: location
     logAnalyticsWorkspaceId: ops.outputs.logAnalyticsWorkspaceId
@@ -197,8 +209,8 @@ module vec 'vec-rg.bicep' = {
   scope: resourceGroup(resourceGroups.vec)
   params: {
     actionGroupId: ops.outputs.actionGroupId
-    hubResourceGroup: hubResourceGroup
-    hubSubscriptionId: hubSubscriptionId
+    dnsResourceGroup: dnsResourceGroup
+    dnsSubscriptionId: dnsSubscriptionId
     environmentName: environmentName
     location: location
     logAnalyticsWorkspaceId: ops.outputs.logAnalyticsWorkspaceId

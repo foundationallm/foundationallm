@@ -56,6 +56,20 @@ $env:AZCOPY_SPA_CLIENT_SECRET=$credentials.clientSecret
     --tenant-id $credentials.tenantId `
     --login-type spn
 
+Get-Entra-Config
+Get-Dns-Resource-Config
+Get-Hub-Resource-Config
+Get-Network-Config
+Get-Hostname-Config
+Get-FllmAksNodePoolSkus
+if (Get-Escrow-Config)
+{
+    Escrow-FoundationaLLM-Images -version $fllmVersionConfig.version
+    Escrow-FoundationaLLM-Helm-Charts -version $fllmVersionConfig.version
+    Escrow-FoundationaLLM-Dependencies
+}
+
+
 $fllmProject = $(azd env get-value FOUNDATIONALLM_PROJECT)
 if ($LastExitCode -eq 0)
 {

@@ -54,9 +54,10 @@ param actionGroupId string
 param admnistratorObjectIds array
 param aksServiceCidr string = '10.100.0.0/16'
 param aksNodeSku string
+param aksSystemNodeSku string
 
-param hubResourceGroup string
-param hubSubscriptionId string = subscription().subscriptionId
+param dnsResourceGroup string
+param dnsSubscriptionId string = subscription().subscriptionId
 
 @description('Location for all resources')
 param location string
@@ -89,6 +90,8 @@ param subnetId string
 
 @description('Subnet Id for private endpoint')
 param subnetIdPrivateEndpoint string
+
+param zones array
 
 @description('Tags for all resources')
 param tags object
@@ -147,7 +150,7 @@ var logs = [
 ]
 
 /** Data Sources **/
-var zones = pickZones('Microsoft.Compute', 'virtualMachines', location, 2)
+// var zones = pickZones('Microsoft.Compute', 'virtualMachines', location, 2)
 
 /** Resources **/
 resource main 'Microsoft.ContainerService/managedClusters@2024-10-02-preview' = {
@@ -224,7 +227,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2024-10-02-preview' = 
         osDiskSizeGB: 128
         tags: tags
         type: 'VirtualMachineScaleSets'
-        vmSize: 'Standard_D2_v5'
+        vmSize: aksSystemNodeSku
         vnetSubnetID: subnetId
 
         nodeTaints: [
@@ -476,7 +479,7 @@ resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
 /** Nested Modules **/
 module dnsRoleAssignment 'utility/roleAssignments.bicep' = {
   name: 'dnsra-${resourceSuffix}-${timestamp}'
-  scope: resourceGroup(hubSubscriptionId, hubResourceGroup)
+  scope: resourceGroup(dnsSubscriptionId, dnsResourceGroup)
   params: {
     principalId: uai.properties.principalId
     roleDefinitionIds: {
