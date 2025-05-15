@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
+using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Services.Plugins;
 using FoundationaLLM.Common.Tasks;
@@ -163,12 +164,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
             try
             {
-                //Process the message
-                var dataPipelineStagePlugin =
-                    await GetDataPipelineStagePlugin(dataPipelineRunWorkItem);
-
                 var result =
-                    await dataPipelineStagePlugin.ProcessWorkItem(dataPipelineRunWorkItem);
+                    await InvokeDataPipelineStagePlugin(dataPipelineRunWorkItem);
 
                 if (result.Success)
                 {
@@ -324,7 +321,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
         #region Plugin management
 
-        private async Task<IDataPipelineStagePlugin> GetDataPipelineStagePlugin(
+        private async Task<PluginResult<string>> InvokeDataPipelineStagePlugin(
             DataPipelineRunWorkItem dataPipelineRunWorkItem)
         {
             var dataPipelineRun =
@@ -346,7 +343,13 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     $"Stage.{dataPipelineRunWorkItem.Stage}."),
                 ServiceContext.ServiceIdentity!);
 
-            return dataPipelineStagePlugin;
+            var result =
+                await dataPipelineStagePlugin.ProcessWorkItem(
+                    dataPipeline,
+                    dataPipelineRun,
+                    dataPipelineRunWorkItem);
+
+            return result;
         }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Plugins;
+using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 
 namespace FoundationaLLM.Common.Interfaces.Plugins
 {
@@ -37,9 +38,13 @@ namespace FoundationaLLM.Common.Interfaces.Plugins
         /// <summary>
         /// Processes a specified data pipeline run work item.
         /// </summary>
-        /// <param name="workItem">The data pipeline run work item to process.</param>
+        /// <param name="dataPipelineDefinition">The definition of the data pipeline associated with the data pipeline run work item.</param>
+        /// <param name="dataPipelineRun">The data pipeline run associated with the data pipeline run work item.</param>
+        /// <param name="dataPipelineRunWorkItem">The data pipeline run work item to process.</param>
         /// <returns>An object that contains the processing result and an indicator of success.</returns>
         Task<PluginResult<string>> ProcessWorkItem(
-            DataPipelineRunWorkItem workItem);
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem);
     }
 }

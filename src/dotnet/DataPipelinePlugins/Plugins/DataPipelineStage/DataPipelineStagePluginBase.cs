@@ -4,6 +4,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Plugins;
+using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
@@ -66,7 +67,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
         }
 
         /// <inheritdoc/>
-        public virtual async Task<PluginResult<string>> ProcessWorkItem(DataPipelineRunWorkItem workItem) =>
+        public virtual async Task<PluginResult<string>> ProcessWorkItem(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem) =>
             await Task.FromResult(
                 new PluginResult<string>(
                     Value: string.Empty,
