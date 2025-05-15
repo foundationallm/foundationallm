@@ -37,6 +37,7 @@ function Invoke-AndRequireSuccess {
 
 Invoke-AndRequireSuccess "Retrieving credentials for AKS cluster ${aksName}" {
     az aks get-credentials --name $aksName --resource-group $resourceGroup --overwrite-existing
+    kubelogin convert-kubeconfig -l azurecli
 }
 Write-Host "Successfully retrieved credentials for AKS cluster ${aksName}" -ForegroundColor Green
 
@@ -59,13 +60,25 @@ Invoke-AndRequireSuccess "Deploying secret provider class" {
 }
 
 Invoke-AndRequireSuccess "Deploy ingress-nginx" {
-    helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-    helm repo update
-    helm upgrade `
-        --install gateway ingress-nginx/ingress-nginx `
-        --namespace ${gatewayNamespace} `
-        --values ${ingressNginxValues} `
-        --version 4.12.1
+    if ($ingressEscrowed -eq "True")
+    {
+        Write-Host "Using escrowed ingress-nginx" -ForegroundColor Green
+        helm upgrade `
+            --install gateway oci://$($registry)/helm/ingress-nginx `
+            --namespace ${gatewayNamespace} `
+            --values ${ingressNginxValues} `
+            --version 4.12.1
+    }
+    else 
+    {
+        helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+        helm repo update
+        helm upgrade `
+            --install gateway ingress-nginx/ingress-nginx `
+            --namespace ${gatewayNamespace} `
+            --values ${ingressNginxValues} `
+            --version 4.12.1        
+    }
 }
 
 # **** Service Namespace ****
