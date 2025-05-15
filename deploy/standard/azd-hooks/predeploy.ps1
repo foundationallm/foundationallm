@@ -43,7 +43,7 @@ azd auth login `
     --tenant-id $credentials.tenantId
 
 # Authenticating with AzCopy
-$env:AZCOPY_SPA_CLIENT_SECRET=$credentials.clientSecret
+$env:AZCOPY_SPA_CLIENT_SECRET="$($credentials.clientSecret)"
 ../common/tools/azcopy/azcopy login `
     --application-id $credentials.clientId `
     --tenant-id $credentials.tenantId `

@@ -121,3 +121,87 @@ function Get-FllmAksNodePoolSkus {
     Write-Host "Frontend System AKS Node SKU: $frontendSystemAksNodeSku" -ForegroundColor Green
     Write-Host "VM Availability Zones: $vmAvailabilityZones" -ForegroundColor Green
 }
+
+function Get-ProjectId {
+    param()
+
+    $projectId = $(azd env get-value FOUNDATIONALLM_PROJECT)
+    if ($LastExitCode -ne 0) {
+        $projectId = Read-Host "Enter Project ID: "
+        $projectId = $projectId.Trim()
+        if ($projectId -eq "") {
+            throw "Project ID cannot be empty."
+        }
+        azd env set FOUNDATIONALLM_PROJECT $projectId
+    } else {
+        $newProjectId = Read-Host "Enter Project ID (Enter for '$projectId'): "
+        $newProjectId = $newProjectId.Trim()
+        if ($newProjectId -ne "") {
+            $projectId = $newProjectId
+            azd env set FOUNDATIONALLM_PROJECT $projectId
+        }
+    }
+
+    Write-Host "Project ID: $projectId" -ForegroundColor Green
+}
+
+function Get-Location {
+    param()
+
+    $location = $(azd env get-value AZURE_LOCATION)
+    if ($LastExitCode -ne 0) {
+        $location = Read-Host "Enter Location (Enter for eastus2): "
+        $location = $location.Trim()
+        if ($location -eq "") {
+            $location = "eastus2"
+            Write-Host "Defaulting to $location for Location." -ForegroundColor Yellow
+        }
+        azd env set AZURE_LOCATION $location
+    } else {
+        $newLocation = Read-Host "Enter Location (Enter for '$location'): "
+        $newLocation = $newLocation.Trim()
+        if ($newLocation -ne "") {
+            $location = $newLocation
+            azd env set AZURE_LOCATION $location
+        }
+    }
+
+    Write-Host "Location: $location" -ForegroundColor Green
+}
+
+function Get-ResourceGroups {
+    param(
+    )
+
+    $workloads = Get-Content -Path "./config/workloads.json" -Raw | ConvertFrom-Json
+    $projectId = $(azd env get-value FOUNDATIONALLM_PROJECT)
+    $location = $(azd env get-value AZURE_LOCATION)
+    $environment = $(azd env get-value AZURE_ENV_NAME)
+
+    $resourceGroups = @{}
+    foreach ($workload in $workloads) {
+        $resourceGroup = azd env get-value "FLLM_$($workload.ToUpper())_RG"
+        if ($LastExitCode -ne 0) {
+            $resourceGroup = Read-Host "Enter Resource Group for $($workload) (Enter for rg-$environment-$location-$workload-$projectId): "
+            $resourceGroup = $resourceGroup.Trim()
+            if ($resourceGroup -eq "") {
+                $resourceGroup = "rg-$environment-$location-$workload-$projectId"
+                Write-Host "Defaulting to $resourceGroup for $($workload) Resource Group." -ForegroundColor Yellow
+            }
+            azd env set "FLLM_$($workload.ToUpper())_RG" $resourceGroup
+        } else {
+            $newResourceGroup = Read-Host "Enter Resource Group for $($workload) (Enter for '$resourceGroup'): "
+            $newResourceGroup = $newResourceGroup.Trim()
+            if ($newResourceGroup -ne "") {
+                $resourceGroup = $newResourceGroup
+                azd env set "FLLM_$($workload.ToUpper())_RG" $resourceGroup
+            }
+        }
+        Write-Host "$($workload.ToUpper()) Resource Group: $resourceGroup" -ForegroundColor Green
+        $resourceGroups[$workload] = $resourceGroup
+    }
+
+    foreach ($resourceGroup in $resourceGroups.GetEnumerator()) {
+        Write-Host "$($resourceGroup.Key.ToUpper()) Resource Group: $($resourceGroup.Value)" -ForegroundColor Green
+    }
+}

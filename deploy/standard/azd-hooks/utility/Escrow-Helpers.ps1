@@ -125,7 +125,7 @@ function Escrow-Helm-Chart {
         $srcChartUrl = $helmChart
     }
 
-    $destChartUrl = "oci://$($destRegistry)/helm/$service"
+    $destChartUrl = "oci://$($destRegistry)/helm"
 
     if(Test-Path ./$service) {
         Remove-Item -Path "./$service" -Recurse -Force
