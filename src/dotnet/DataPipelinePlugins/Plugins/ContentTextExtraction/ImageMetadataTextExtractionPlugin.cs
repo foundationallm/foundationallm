@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Interfaces.Plugins;
+using FoundationaLLM.Common.Models.Plugins;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
 {
@@ -14,5 +15,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
         IServiceProvider serviceProvider)
         : PluginBase(pluginParameters, packageManager, serviceProvider), IContentTextExtractionPlugin
     {
+        protected override string Name => PluginNames.IMAGE_METADATATEXTEXTRACTION;
+
+        /// <inheritdoc/>
+        public async Task<PluginResult<string>> ExtractText(BinaryData rawContent) =>
+            throw new NotImplementedException();
     }
 }

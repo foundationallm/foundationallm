@@ -73,6 +73,11 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
         public const string FoundationaLLM_Plugin = "FoundationaLLM.Plugin";
 
         /// <summary>
+        /// The name of the FoundationaLLM.ContextAPI resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ContextAPI = "FoundationaLLM.ContextAPI";
+
+        /// <summary>
         /// Contains all the resource provider names.
         /// </summary>
         public readonly static ImmutableList<string> All = [
@@ -88,7 +93,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             FoundationaLLM_AzureOpenAI,
             FoundationaLLM_Conversation,
             FoundationaLLM_DataPipeline,
-            FoundationaLLM_Plugin
+            FoundationaLLM_Plugin,
+            FoundationaLLM_ContextAPI
         ];
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
+using FoundationaLLM.Common.Models.Plugins;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
 {
@@ -20,6 +21,11 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
 
         protected override string Name => PluginNames.AZUREDATALAKE_DATASOURCE;
 
+        /// <inheritdoc/>
         public List<DataPipelineContentItem> GetContentItems() => throw new NotImplementedException();
+
+        /// <inheritdoc/>
+        public Task<PluginResult<ContentItemRawContent>> GetContentItemRawContent(
+            string contentItemCanonicalId) => throw new NotImplementedException();
     }
 }

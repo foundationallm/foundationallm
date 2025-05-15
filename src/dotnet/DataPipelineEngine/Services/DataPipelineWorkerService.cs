@@ -101,6 +101,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                         var validMessages =
                             new List<(DequeuedMessage Message, DataPipelineRunWorkItem WorkItem)>();
 
+                        #region Check for failed processing attempts
+
                         foreach (var dequeuedMessage in dequeuedMessages)
                         {
                             var dataPipelineRunWorkItem =
@@ -108,7 +110,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                                     dequeuedMessage.Message.WorkItemId,
                                     dequeuedMessage.Message.RunId);
 
-                            if (dataPipelineRunWorkItem!.FailedProcessingAttempts ==
+                            if (dataPipelineRunWorkItem!.FailedProcessingAttempts >=
                                 MAX_FAILED_PROCESSING_ATTEMPTS)
                             {
                                 // The message has been processed too many times, we will stop processing it.
@@ -127,11 +129,27 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                                     (dequeuedMessage, dataPipelineRunWorkItem));
                         }
 
+                        #endregion
+
+                        #region Check for messages that are still processing
+
+                        var ignoredMessages = validMessages
+                            .Where(m => _taskPool.HasRunningTaskForPayload(m.WorkItem.Id))
+                            .Select(m => m.WorkItem.Id)
+                            .ToList();
+
+                        if (ignoredMessages.Count > 0)
+                            _logger.LogWarning("The following messages were dequeued while still being processed based on the previous dequeuing: {IgnoredRequestIds}. The requests will be ignored.",
+                                string.Join(",", ignoredMessages));
+
+                        #endregion
+
                         // Add the request to the task pool for processing
                         // No need to use ConfigureAwait(false) since the code is going to be executed on a
                         // thread pool thread, with no user code higher on the stack (for details, see
                         // https://devblogs.microsoft.com/dotnet/configureawait-faq/).
                         _taskPool.Add(validMessages
+                            .Where(m => !_taskPool.HasRunningTaskForPayload(m.WorkItem.Id))
                             .Select(m => new TaskInfo
                             {
                                 PayloadId = m.WorkItem.Id,

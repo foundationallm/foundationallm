@@ -1,4 +1,8 @@
 ﻿using FoundationaLLM.Common.Interfaces.Plugins;
+using FoundationaLLM.Common.Models.Plugins;
+using System.Text;
+using UglyToad.PdfPig;
+using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
 {
@@ -14,5 +18,31 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
         IServiceProvider serviceProvider)
         : PluginBase(pluginParameters, packageManager, serviceProvider), IContentTextExtractionPlugin
     {
+        protected override string Name => PluginNames.PDF_CONTENTTEXTEXTRACTION;
+
+        /// <inheritdoc/>
+        public async Task<PluginResult<string>> ExtractText(BinaryData rawContent)
+        {
+            try
+            {
+                StringBuilder sb = new();
+                using var pdfDocument = PdfDocument.Open(rawContent.ToStream());
+                foreach (var page in pdfDocument.GetPages())
+                {
+                    var text = ContentOrderTextExtractor.GetText(page);
+                    sb.Append(text);
+                }
+
+                return
+                    await Task.FromResult(new PluginResult<string>(
+                        sb.ToString().Trim(), true, false));
+            }
+            catch (Exception ex)
+            {
+                return
+                    await Task.FromResult(new PluginResult<string>(
+                        null, false, false, ex.Message));
+            }
+        }
     }
 }

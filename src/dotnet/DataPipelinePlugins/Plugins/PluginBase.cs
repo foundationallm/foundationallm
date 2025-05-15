@@ -41,7 +41,9 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins
                 .Count()
                     != _pluginMetadata.Parameters.Count)
                 throw new PluginException($"The plugin is missing values for the following parameters: {(
-                    string.Join(",", _pluginMetadata.Parameters.Where(p => !_pluginParameters.ContainsKey(p.Name))))}");
+                    string.Join(",", _pluginMetadata.Parameters
+                                        .Where(p => !_pluginParameters.ContainsKey(p.Name))
+                                        .Select(p => p.Name)))}");
         }
     }
 }

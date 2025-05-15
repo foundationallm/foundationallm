@@ -13,7 +13,7 @@
     /// identified a permanent error that will not be resolved by retrying the operation.
     /// </remarks>
     public record PluginResult<T>(
-        T Value,
+        T? Value,
         bool Success,
         bool StopProcessing,
         string? ErrorMessage = null)

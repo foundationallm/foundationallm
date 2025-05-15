@@ -1,7 +1,15 @@
-﻿using FoundationaLLM.Common.Exceptions;
+﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Clients;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
+using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.Plugins;
+using FoundationaLLM.Common.Models.ResourceProviders;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
 {
@@ -39,6 +47,41 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                     CanonicalId = canonicalId
                 }
             }];
+        }
+
+        /// <inheritdoc/>
+        public async Task<PluginResult<ContentItemRawContent>> GetContentItemRawContent(
+            string contentItemCanonicalId)
+        {
+            var contextFileObjectId = _pluginParameters[PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID]?.ToString()
+                ?? throw new PluginException($"The {PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID} parameter is required by the {Name} plugin.");
+            var instanceId = contextFileObjectId.Split('/', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)[1];
+
+            using var scope = _serviceProvider.CreateScope();
+
+            var contextServiceClient = new ContextServiceClient(
+                new OrchestrationContext { CurrentUserIdentity = ServiceContext.ServiceIdentity },
+                scope.ServiceProvider.GetRequiredService<IHttpClientFactoryService>(),
+                scope.ServiceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
+
+            var response = await contextServiceClient.GetFileContent(
+                instanceId,
+                contentItemCanonicalId);
+
+            return response.Success
+                ? new PluginResult<ContentItemRawContent>(
+                    new ContentItemRawContent
+                    {
+                        Name = response.Result!.FileName,
+                        ContentType = response.Result.ContentType,
+                        RawContent = BinaryData.FromStream(response.Result.FileContent!)
+                    },
+                    true,
+                    false)
+                : new PluginResult<ContentItemRawContent>(
+                    null,
+                    false,
+                    false);
         }
     }
 }
