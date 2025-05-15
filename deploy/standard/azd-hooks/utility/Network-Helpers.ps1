@@ -124,10 +124,10 @@ function Get-Network-Config {
 
     $fllmAllowedExternalCidrs = $(azd env get-value FLLM_ALLOWED_CIDR)
     if ($LastExitCode -ne 0) {
-        $fllmAllowedExternalCidrs = Read-Host "Enter comma separated Allowed External CIDRs or IPs (Enter for 192.168.100.0/24): "
+        $fllmAllowedExternalCidrs = Read-Host "Enter comma separated Allowed External CIDRs or IPs (Enter for 192.168.100.0/24,192.168.101.0/28): "
         $fllmAllowedExternalCidrs = $fllmAllowedExternalCidrs.Trim()
         if ($fllmAllowedExternalCidrs -eq "") {
-            $fllmAllowedExternalCidrs = "192.168.100.0/24"
+            $fllmAllowedExternalCidrs = "192.168.100.0/24,192.168.101.0/28"
         } elseif ($fllmAllowedExternalCidrs -notmatch "^(,*(\d{1,3}\.){3}\d{1,3}(\/\d{1,2}){0,1})+$") {
             throw "Invalid CIDR format. Please enter a valid CIDR."
         }
