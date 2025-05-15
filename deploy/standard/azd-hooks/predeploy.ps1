@@ -25,6 +25,30 @@ finally {
     Pop-Location
 }
 
+# Check for deployment service principal credentials
+$credentials = Get-Service-Principal-Credentials ./config credentials
+
+# Authenticating with Azure
+az login --service-principal `
+    --username $credentials.clientId `
+    --password $credentials.clientSecret `
+    --tenant $credentials.tenantId
+
+az account set --subscription $credentials.subscriptionId
+
+# Authenticating with AZD
+azd auth login `
+    --client-id $credentials.clientId `
+    --client-secret $credentials.clientSecret `
+    --tenant-id $credentials.tenantId
+
+# Authenticating with AzCopy
+$env:AZCOPY_SPA_CLIENT_SECRET="$($credentials.clientSecret)"
+../common/tools/azcopy/azcopy login `
+    --application-id $credentials.clientId `
+    --tenant-id $credentials.tenantId `
+    --login-type spn
+    
 # Navigate to the script directory so that we can use relative paths.
 Push-Location $($MyInvocation.InvocationName | Split-Path)
 try {

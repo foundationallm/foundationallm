@@ -1,3 +1,4 @@
 *.transcript.txt
 chat-ui.json
 management-ui.json
+kubectl

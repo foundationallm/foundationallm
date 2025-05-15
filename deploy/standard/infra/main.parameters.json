@@ -18,10 +18,19 @@
         "value": "${ENTRA_AUTH_API_TENANT_ID}"
       },
       "backendAksNodeSku": {
-        "value": "${FLLM_BACKEND_AKS_NODE_SKU=Standard_D8s_v5}"
+        "value": "${FLLM_BACKEND_AKS_NODE_SKU=Standard_D8_v5}"
+      },
+      "backendAksSystemNodeSku": {
+        "value": "${FLLM_BACKEND_SYSTEM_AKS_NODE_SKU=Standard_D2_v5}"
       },
       "frontendAksNodeSku": {
-        "value": "${FLLM_FRONTEND_AKS_NODE_SKU=Standard_D8s_v5}"
+        "value": "${FLLM_FRONTEND_AKS_SYSTEM_NODE_SKU=Standard_D2_v5}"
+      },
+      "frontendAksSystemNodeSku": {
+        "value": "${FLLM_FRONTEND_AKS_SYSTEM_NODE_SKU=Standard_D2_v5}"
+      },
+      "vmAvailabilityZones": {
+        "value": "${FLLM_VM_AVAILABILITY_ZONES=1,2,3}"
       },
       "aksServiceCidr": {
         "value": "${FLLM_AKS_SERVICE_CIDR=10.100.0.0/16}"
@@ -49,6 +58,15 @@
       },
       "location": {
         "value": "${AZURE_LOCATION}"
+      },
+      "dnsResourceGroup": {
+        "value": "${FOUNDATIONALLM_DNS_RESOURCE_GROUP}"
+      },
+      "dnsSubscriptionId": {
+        "value": "${FOUNDATIONALLM_DNS_SUBSCRIPTION_ID}"
+      },
+      "dnsTenantId": {
+        "value": "${FOUNDATIONALLM_DNS_TENANT_ID}"
       },
       "hubResourceGroup": {
         "value": "${FOUNDATIONALLM_HUB_RESOURCE_GROUP}"
@@ -81,7 +99,7 @@
         "value": "${FOUNDATIONALLM_PROJECT}"
       },
       "registry": {
-        "value": "${FLLM_REGISTRY=cropseastus2svinternal.azurecr.io}"
+        "value": "${FOUNDATIONALLM_REGISTRY}"
       },
       "userPortalHostname": {
         "value": "${FLLM_USER_PORTAL_HOSTNAME=082-www.internal.foundationallm.ai}"
@@ -102,6 +120,19 @@
           "cpu": "${SERVICE_AUTHORIZATIONAPI_CPU=1.0}",
           "memory": "${SERVICE_AUTHORIZATIONAPI_MEMORY=2.0Gi}",
           "replicaCount": "${SERVICE_AUTHORIZATIONAPI_REPLICAS=1}"
+        }
+      },
+      "resourceGroups": {
+        "value": {
+          "app": "${FLLM_APP_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-app-${FOUNDATIONALLM_PROJECT}}",
+          "auth": "${FLLM_AUTH_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-auth-${FOUNDATIONALLM_PROJECT}}",
+          "data": "${FLLM_DATA_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-data-${FOUNDATIONALLM_PROJECT}}",
+          "jbx": "${FLLM_JBX_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-jbx-${FOUNDATIONALLM_PROJECT}}",
+          "net": "${FLLM_NET_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-net-${FOUNDATIONALLM_PROJECT}}",
+          "oai": "${FLLM_OAI_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-oai-${FOUNDATIONALLM_PROJECT}}",
+          "ops": "${FLLM_OPS_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-ops-${FOUNDATIONALLM_PROJECT}}",
+          "storage": "${FLLM_STORAGE_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-storage-${FOUNDATIONALLM_PROJECT}}",
+          "vec": "${FLLM_VEC_RG=rg-${AZURE_ENV_NAME}-${AZURE_LOCATION}-vec-${FOUNDATIONALLM_PROJECT}}"
         }
       },
       "services": {

@@ -1,0 +1,58 @@
+{
+    "sourceRegistry": "ghcr.io/solliancenet/foundationallm",
+    "services": [
+        "agent-hub-api",
+        "authorization-api",
+        "chat-ui",
+        "core-api",
+        "core-job",
+        "data-source-hub-api",
+        "gatekeeper-api",
+        "gatekeeper-integration-api",
+        "gateway-api",
+        "gateway-adapter-api",
+        "langchain-api",
+        "management-api",
+        "management-ui",
+        "orchestration-api",
+        "prompt-hub-api",
+        "semantic-kernel-api",
+        "state-api",
+        "vectorization-api",
+        "vectorization-job"    
+    ],
+    "dependencies": [
+        {
+            "name": "ingress-nginx",
+            "repository": "https://kubernetes.github.io/ingress-nginx",
+            "chart": "ingress-nginx/ingress-nginx",
+            "version": "4.10.0",
+            "dependencies": [
+                {
+                    "name": "controller",
+                    "suffix": "digest",
+                    "remove": ["digestChroot","digest"],
+                    "helmValue": "controller.image"
+                },
+                {
+                    "name": "opentelemetry",
+                    "suffix": "digest",
+                    "remove": ["digest"],
+                    "helmValue": "controller.opentelemetry.image"
+                },
+                {
+                    "name": "certgen",
+                    "suffix": "digest",
+                    "remove": ["digest"],
+                    "helmValue": "controller.admissionWebhooks.patch.image"
+                },
+                {
+                    "name": "defaultBackend",
+                    "suffix": null,
+                    "remove": [],
+                    "helmValue": "defaultBackend.image"
+                }
+            ]
+        }
+    ]
+}
