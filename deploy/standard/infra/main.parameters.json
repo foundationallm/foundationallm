@@ -99,7 +99,7 @@
         "value": "${FOUNDATIONALLM_PROJECT}"
       },
       "registry": {
-        "value": "${FLLM_REGISTRY=ghcr.io/solliancenet/foundationallm}"
+        "value": "${FOUNDATIONALLM_REGISTRY}"
       },
       "userPortalHostname": {
         "value": "${FLLM_USER_PORTAL_HOSTNAME=082-www.internal.foundationallm.ai}"

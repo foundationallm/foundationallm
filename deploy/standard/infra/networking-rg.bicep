@@ -12,6 +12,8 @@ param project string
 param timestamp string = utcNow()
 param allowedExternalCidr string
 
+var externalCidr = split(allowedExternalCidr, ',')
+
 // Locals
 @description('Private DNS Zones to link.')
 var privateDnsZone = {
@@ -63,7 +65,7 @@ var subnets = [
         priority: 512
         protocol: '*'
         sourcePortRange: '*'
-        sourceAddressPrefixes: [allowedExternalCidr]
+        sourceAddressPrefixes: externalCidr
       }
     ]
     serviceEndpoints: [
@@ -86,7 +88,7 @@ var subnets = [
         priority: 512
         protocol: '*'
         sourcePortRange: '*'
-        sourceAddressPrefixes: [allowedExternalCidr]
+        sourceAddressPrefixes: externalCidr
       }
     ]
     serviceEndpoints: [
@@ -110,7 +112,7 @@ var subnets = [
           priority: 512
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [allowedExternalCidr]
+          sourceAddressPrefixes: externalCidr
         }
         {
           access: 'Allow'
@@ -239,7 +241,7 @@ var subnets = [
           priority: 512
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [allowedExternalCidr]
+          sourceAddressPrefixes: externalCidr
         }
         {
           name: 'deny-all-inbound'
@@ -284,7 +286,7 @@ var subnets = [
           priority: 512
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [allowedExternalCidr]
+          sourceAddressPrefixes: externalCidr
         }
         {
           access: 'Allow'
@@ -352,7 +354,7 @@ var subnets = [
           priority: 512
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [allowedExternalCidr]
+          sourceAddressPrefixes: externalCidr
         }
         {
           access: 'Allow'
@@ -400,7 +402,7 @@ var subnets = [
           priority: 512
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [allowedExternalCidr]
+          sourceAddressPrefixes: externalCidr
         }
         {
           access: 'Allow'
@@ -468,7 +470,7 @@ var subnets = [
           priority: 512
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [allowedExternalCidr]
+          sourceAddressPrefixes: externalCidr
         }
         {
           access: 'Allow'

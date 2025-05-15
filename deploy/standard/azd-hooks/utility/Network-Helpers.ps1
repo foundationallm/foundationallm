@@ -102,7 +102,7 @@ function Get-Network-Config {
 
     $fllmVnetCidr = $(azd env get-value FLLM_VNET_CIDR)
     if ($LastExitCode -ne 0) {
-        $fllmVnetCidr = Read-Host "Enter VNET CIDR (Enter for 10.220.128.0/16): "
+        $fllmVnetCidr = Read-Host "Enter VNET CIDR (Enter for 10.220.128.0/20): "
         $fllmVnetCidr = $fllmVnetCidr.Trim()
         if ($fllmVnetCidr -eq "") {
             $fllmVnetCidr = "10.220.128.0/20"
@@ -122,9 +122,9 @@ function Get-Network-Config {
         }
     }
 
-    $fllmAllowedExternalCidrs = $(azd env get-value FOUNDATIONALLM_ALLOWED_CIDR)
+    $fllmAllowedExternalCidrs = $(azd env get-value FLLM_ALLOWED_CIDR)
     if ($LastExitCode -ne 0) {
-        $fllmAllowedExternalCidrs = Read-Host "Enter comma separated Allowed External CIDRs (Enter for 192.168.100.0/24): "
+        $fllmAllowedExternalCidrs = Read-Host "Enter comma separated Allowed External CIDRs or IPs (Enter for 192.168.100.0/24): "
         $fllmAllowedExternalCidrs = $fllmAllowedExternalCidrs.Trim()
         if ($fllmAllowedExternalCidrs -eq "") {
             $fllmAllowedExternalCidrs = "192.168.100.0/24"
@@ -134,7 +134,7 @@ function Get-Network-Config {
 
         azd env set FLLM_ALLOWED_CIDR $fllmAllowedExternalCidrs
     } else {
-        $newFllmAllowedExternalCidrs = Read-Host "Enter Allowed External CIDRs or IPs (Enter for '$fllmAllowedExternalCidrs'): "
+        $newFllmAllowedExternalCidrs = Read-Host "Enter comma separated Allowed External CIDRs or IPs (Enter for '$fllmAllowedExternalCidrs'): "
         $newFllmAllowedExternalCidrs = $newFllmAllowedExternalCidrs.Trim()
         if ($newFllmAllowedExternalCidrs -ne "" -and $newFllmAllowedExternalCidrs -notmatch "^(,*(\d{1,3}\.){3}\d{1,3}(\/\d{1,2}){0,1})+$") {
             throw "Invalid CIDR format. Please enter a valid CIDR."
