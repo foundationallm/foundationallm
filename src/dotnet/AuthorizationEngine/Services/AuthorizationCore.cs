@@ -356,6 +356,9 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 SubordinateResourcePathsAuthorizationResults = []
             };
 
+            var mustCheckOptionalRole = authorizationRequest.RoleName?.EndsWith('!') ?? false;
+            var optionalRole = authorizationRequest.RoleName?.TrimEnd('!') ?? string.Empty;
+
             // Combine the principal id and security group ids into one list.
             var securityPrincipalIds = new List<string> { authorizationRequest.UserContext.SecurityPrincipalId };
             if (authorizationRequest.UserContext.SecurityGroupIds != null)
@@ -388,20 +391,22 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                             // Check if the actions of the role definition include the requested action.
                             if (resourcePath.IncludesResourcePath(roleAssignment.ScopeResourcePath!))
                             {
-                                if (roleAssignment.RoleDefinition!.Name == authorizationRequest.RoleName)
+                                if (roleAssignment.RoleDefinition!.Name == optionalRole)
                                     result.HasRequiredRole = true;
 
                                 if (roleAssignment.AllowedActions.Contains(authorizationRequest.Action))
                                 {
                                     result.Authorized = true;
 
-                                    // If we are not asked to include roles or actions and not asked to expand resource paths,
+                                    // If we are not asked to include roles or actions, not asked to expand resource paths,
+                                    // and checking the assignment of the optional role is not mandatory,
                                     // we can return immediately (this is the most common case).
                                     // Otherwise, we need to go through the entire list of security principals and their role assignments,
-                                    // to include collect all the roles/actions and/or all the subordinate authorized resource paths.
+                                    // to include all the roles/actions and/or all the subordinate authorized resource paths.
                                     if (!authorizationRequest.IncludeRoles
                                         && !authorizationRequest.IncludeActions
-                                        && !authorizationRequest.ExpandResourceTypePaths)
+                                        && !authorizationRequest.ExpandResourceTypePaths
+                                        && !mustCheckOptionalRole)
                                         return result;
 
                                     allSecurableActions.UnionWith(roleAssignment.AllowedActions);
