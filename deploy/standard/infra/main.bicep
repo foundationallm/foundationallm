@@ -242,7 +242,7 @@ output FLLM_VEC_RG     string = resourceGroups.vec
 
 output FLLM_OPS_KV string = ops.outputs.keyVaultName
 
-output FLLM_USER_PORTAL_HOSTNAME string = userPortalHostname
+output FLLM_CHAT_PORTAL_HOSTNAME string = userPortalHostname
 output FLLM_MGMT_PORTAL_HOSTNAME string = managementPortalHostname
 output FLLM_CORE_API_HOSTNAME string = coreApiHostname
 output FLLM_MGMT_API_HOSTNAME string = managementApiHostname
