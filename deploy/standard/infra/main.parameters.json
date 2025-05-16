@@ -102,16 +102,16 @@
         "value": "${FOUNDATIONALLM_REGISTRY}"
       },
       "userPortalHostname": {
-        "value": "${FLLM_USER_PORTAL_HOSTNAME=082-www.internal.foundationallm.ai}"
+        "value": "${FLLM_CHAT_PORTAL_HOSTNAME}"
       },
       "managementPortalHostname": {
-        "value": "${FLLM_MGMT_PORTAL_HOSTNAME=082-management.internal.foundationallm.ai}"
+        "value": "${FLLM_MGMT_PORTAL_HOSTNAME}"
       },
       "coreApiHostname": {
-        "value": "${FLLM_CORE_API_HOSTNAME=082-api.internal.foundationallm.ai}"
+        "value": "${FLLM_CORE_API_HOSTNAME}"
       },
       "managementApiHostname": {
-        "value": "${FLLM_MGMT_API_HOSTNAME=082-management-api.internal.foundationallm.ai}"
+        "value": "${FLLM_MGMT_API_HOSTNAME}"
       },
       "authService": {
         "value": {

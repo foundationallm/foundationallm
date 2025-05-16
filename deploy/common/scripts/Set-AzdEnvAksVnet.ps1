@@ -88,7 +88,7 @@ $envValues = @{
 	"FLLM_VNET_CIDR"            = $fllmVnetCidr
 	"FLLM_MGMT_API_HOSTNAME"    = $hostnames["managementapi"]
 	"FLLM_MGMT_PORTAL_HOSTNAME" = $hostnames["managementui"]
-	"FLLM_USER_PORTAL_HOSTNAME" = $hostnames["chatui"]
+	"FLLM_CHAT_PORTAL_HOSTNAME" = $hostnames["chatui"]
 }
 
 # Show azd environments
