@@ -99,6 +99,32 @@ namespace FoundationaLLM.Common.Services.Storage
         }
 
         /// <inheritdoc/>
+        public BinaryData ReadFile(
+            string containerName,
+            string filePath)
+        {
+            var fileSystemClient = _dataLakeClient.GetFileSystemClient(containerName);
+            var fileClient = fileSystemClient.GetFileClient(filePath);
+
+            try
+            {
+                var memoryStream = new MemoryStream();
+                var result = fileClient.ReadTo(memoryStream, null);
+
+                if (result.IsError)
+                    throw new ContentException($"Cannot read file {filePath} from file system {containerName}.");
+
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return BinaryData.FromStream(memoryStream);
+            }
+            catch (RequestFailedException e) when (e.Status == 404)
+            {
+                _logger.LogWarning("File not found: {FilePath}", filePath);
+                throw new ContentException("File not found.", e);
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task WriteFileAsync(
             string containerName,
             string filePath,

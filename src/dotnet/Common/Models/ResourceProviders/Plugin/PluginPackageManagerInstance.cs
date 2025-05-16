@@ -23,5 +23,10 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Plugin
         /// Gets or sets the plugin package version.
         /// </summary>
         public SemanticVersion PackageVersion { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or sets the dependencies of the plugin package.
+        /// </summary>
+        public Dictionary<string, string> Dependencies { get; set; } = [];
     }
 }

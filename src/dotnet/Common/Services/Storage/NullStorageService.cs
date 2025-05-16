@@ -29,6 +29,9 @@ namespace FoundationaLLM.Common.Services.Storage
         public Task<List<string>> GetFilePathsAsync(string containerName, string? directoryPath = null, bool recursive = true, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
         /// <inheritdoc/>
+        public BinaryData ReadFile(string containerName, string filePath) => throw new NotImplementedException();
+
+        /// <inheritdoc/>
         public Task<BinaryData> ReadFileAsync(string containerName, string filePath, CancellationToken cancellationToken) => throw new NotImplementedException();
 
         /// <inheritdoc/>
