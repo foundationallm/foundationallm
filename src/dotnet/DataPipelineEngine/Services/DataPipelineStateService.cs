@@ -1,6 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
@@ -133,6 +132,60 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 .WithParameter("@stage", stage);
             var dataPipelineRunWorkItems = await _cosmosDBService.RetrieveItemsAsync<DataPipelineRunWorkItem>(query);
             return dataPipelineRunWorkItems;
+        }
+
+        /// <inheritdoc/>
+        public async Task<Dictionary<string, BinaryData>> LoadDataPipelineRunWorkItemArtifacts(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem)
+        {
+            var artifactsFilter = string.Join('/',
+                [
+                    $"/data-pipeline-state",
+                    dataPipelineDefinition.Name,
+                    dataPipelineRun.UPN.Replace('@', '_').Replace('.', '_'),
+                    dataPipelineRun.RunId,
+                    dataPipelineRunWorkItem.InputArtifactId,
+                    $"{dataPipelineRunWorkItem.PreviousStage!.ToLower()}-"
+                ]);
+
+            var artifactsPaths = await _storageService.GetFilePathsAsync(
+                dataPipelineRun.InstanceId,
+                artifactsFilter);
+
+            var result = await artifactsPaths
+                .ToAsyncEnumerable()
+                .SelectAwait(async path =>
+                {
+                    var fileContent = await _storageService.ReadFileAsync(
+                        dataPipelineRun.InstanceId,
+                        path,
+                        default);
+                    return new KeyValuePair<string, BinaryData>(path, fileContent);
+                })
+                .ToDictionaryAsync(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value);
+
+            return result;
+        }
+
+        /// <inheritdoc/>
+        public async Task SaveDataPipelineRunWorkItemArtifacts(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem,
+            Dictionary<string, BinaryData> artifacts)
+        {
+            var artifactsPath = string.Join('/',
+                [
+                    $"/data-pipeline-state",
+                    dataPipelineDefinition.Name,
+                    dataPipelineRun.UPN.Replace('@', '_').Replace('.', '_'),
+                    dataPipelineRun.RunId,
+                    dataPipelineRunWorkItem.InputArtifactId
+                ]);
         }
 
         /// <inheritdoc/>

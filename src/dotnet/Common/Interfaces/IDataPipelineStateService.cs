@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
+using System.ClientModel;
 
 namespace FoundationaLLM.Common.Interfaces
 {
@@ -84,6 +85,32 @@ namespace FoundationaLLM.Common.Interfaces
         Task<List<DataPipelineRunWorkItem>> GetDataPipelineRunStageWorkItems(
             string runId,
             string stage);
+
+        /// <summary>
+        /// Loads the artifacts associated with a data pipeline run work item.
+        /// </summary>
+        /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
+        /// <param name="dataPipelineRun">The data pipeline run item associated with the work item.</param>
+        /// <param name="dataPipelineRunWorkItem">The data pipeline run work item.</param>
+        /// <returns>A dictionary with the names and binary contents of the artifacts.</returns>
+        Task<Dictionary<string, BinaryData>> LoadDataPipelineRunWorkItemArtifacts(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem);
+
+        /// <summary>
+        /// Saves the artifacts associated with a data pipeline run work item.
+        /// </summary>
+        /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
+        /// <param name="dataPipelineRun">The data pipeline run item associated with the work item.</param>
+        /// <param name="dataPipelineRunWorkItem">The data pipeline run work item.</param>
+        /// <param name="artifacts">The dictionary with the names and binary contents of the artifacts.</param>
+        /// <returns></returns>
+        Task SaveDataPipelineRunWorkItemArtifacts(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem,
+            Dictionary<string, BinaryData> artifacts);
 
         /// <summary>
         /// Starts processing data pipeline run work items.

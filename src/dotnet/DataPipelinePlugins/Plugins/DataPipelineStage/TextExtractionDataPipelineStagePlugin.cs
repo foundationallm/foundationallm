@@ -120,6 +120,23 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             var textContentResult = await textExtractionPlugin.ExtractText(
                 rawContentResult.Value.RawContent);
 
+            if (!textContentResult.Success)
+                return new PluginResult<string>(null, false, false, textContentResult.ErrorMessage);
+
+            // Save the text content to the data pipeline state
+            var outputArtifactId = $"{dataPipelineRunWorkItem.InputArtifactId}.txt";
+            var outputArtifactPath = string.Join('/',
+                [
+                    $"/{dataPipelineRun.InstanceId}/data-pipeline-state",
+                    dataPipelineDefinition.Name,
+                    dataPipelineRun.UPN.Replace('@', '_').Replace('.', '_'),
+                    dataPipelineRun.RunId,
+                    dataPipelineRunWorkItem.InputArtifactId,
+                    outputArtifactId
+                ]);
+
+            _dataPipelineStateService.
+
             return textContentResult.Success
                 ? new PluginResult<string>(textContentResult.Value!, true, false)
                 : new PluginResult<string>(null, false, false, textContentResult.ErrorMessage);
