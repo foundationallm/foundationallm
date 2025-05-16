@@ -112,8 +112,76 @@ These quotas are in place to manage resource allocation and ensure fair usage ac
 <h2 id="pre-deployment-steps">Pre-Deployment steps</h2>
 <p>Follow the steps below to deploy the solution to your Azure subscription.</p>
 <ol>
-<li><p>Ensure all the prerequisites are met.</p>
+<li>Ensure all the prerequisites are met and gather the following information (you will be prompted for it during the deployment):</li>
+</ol>
+<ul>
+<li>Azure Service Principal Credentials for Deployment
+<ul>
+<li>Requires <code>Directory Reader</code> role on the Azure Tenant</li>
+<li>Requires <code>Owner</code> role on the target resource groups
+<ul>
+<li>If the target resource groups do not already exist, requires <code>Owner</code> role on the target subscription</li>
+</ul>
 </li>
+<li>Requires <code>DNS Zone Contributor</code> role on the DNS resource group (resource group containing private DNS zones necessary for private endpoint provisioning)</li>
+<li>Requires <code>Network Contributor</code> role on the HUB VNET resource (virtual network resource to which the FoundationaLLM VNET will be peered)</li>
+<li>Either <code>Owner</code> of the AD Group specified for the <code>FoundationaLLM Administrator</code> role or a member of said AD Group</li>
+</ul>
+</li>
+<li>FoundationaLLM Project ID - a 3 to 8 character identifier for a FoundationaLLM deployment</li>
+<li>Target Azure Location - default is <code>eastus2</code></li>
+<li>Target Resource Groups for the specified workloads
+<ul>
+<li>APP - defaults to <code>rg-(azd environment name)-(azure location)-app-(project id)</code></li>
+<li>AUTH - defaults to <code>rg-(azd environment name)-(azure location)-auth-(project id)</code></li>
+<li>DATA - defaults to <code>rg-(azd environment name)-(azure location)-data-(project id)</code></li>
+<li>JBX - defaults to <code>rg-(azd environment name)-(azure location)-jbx-(project id)</code></li>
+<li>NET - defaults to <code>rg-(azd environment name)-(azure location)-net-(project id)</code></li>
+<li>OAI - defaults to <code>rg-(azd environment name)-(azure location)-oai-(project id)</code></li>
+<li>OPS - defaults to <code>rg-(azd environment name)-(azure location)-ops-(project id)</code></li>
+<li>STORAGE - defaults to <code>rg-(azd environment name)-(azure location)-storage-(project id)</code></li>
+<li>VEC - defaults to <code>rg-(azd environment name)-(azure location)-vec-(project id)</code></li>
+</ul>
+</li>
+<li>Pre-created AD Group for the <code>FoundationaLLM Administrator</code> role (default name is <code>FLLM-Admins</code>)</li>
+<li>Pre-created AD Group for the <code>FoundationaLLM Users</code> role (default name is <code>FLLM-Users</code>)</li>
+<li>Pre-created and configured FoundationaLLM specific App Registrations necessary to facilitate RBAC (see <a href="authentication-authorization/authorization-setup-entra.html">here</a> and the Entra setup script in <code>deploy/common/scripts/Create-FllmEntraIdApps.ps1</code>)
+<ul>
+<li>FoundationaLLM-Core-API</li>
+<li>FoundationaLLM-Reader</li>
+<li>FoundationaLLM-Core-Portal</li>
+<li>FoundationaLLM-Management-API</li>
+<li>FoundationaLLM-Authorization-API</li>
+<li>FoundationaLLM-Management-Portal</li>
+</ul>
+</li>
+<li>Private DNS Zone resource group, subscription Id (if it is in a different subscription), and tenant Id</li>
+<li>HUB virtual network resource, resource group, subscription Id (if it is in a different subscription), and tenant Id</li>
+<li>FoundationaLLM Virtual Network and AKS configurations
+<ul>
+<li>AKS Service CIDR range (default is <code>10.100.0.0/16</code>)</li>
+<li>FoundationaLLM VNET CIDR range (default is <code>10.220.128.0/20</code> - must be a <code>/20</code> netmask)</li>
+<li>Allowed External CIDRs or IPs (default is <code>192.168.100.0/24,192.168.101.0/28</code>)</li>
+<li>Backend AKS User Node Pool VM SKU (default is <code>Standard_D8_v5</code>)</li>
+<li>Backend AKS System Node Pool VM SKU (default is <code>Standard_D2_v5</code>)</li>
+<li>Frontend AKS User Node Pool VM SKU (default is <code>Standard_D2_v5</code>)</li>
+<li>Frontend AKS System Node Pool VM SKU (default is <code>Standard_D2_v5</code>)</li>
+<li>AKS Node Pool VM Availability Zones (default is <code>1,2,3</code>)</li>
+<li><strong>Ensure you have adequate quota and availability for selected SKUs in target region and availability zones - a minimal configuration using the same family requires a quota of 64 vCPUs</strong></li>
+</ul>
+</li>
+<li>Hostnames and associated SSL certificates in PFX format for the following endpoints
+<ul>
+<li>User Portal (i.e <code>chat.example.com</code>)</li>
+<li>Management Portal (i.e. <code>management.example.com</code>)</li>
+<li>Core API (i.e. <code>api.example.com</code>)</li>
+<li>Management API (i.e. <code>management-api.example.com</code>)</li>
+<li><strong>The SSL certificates will need to be copied to the corresponding folders in <code>deploy/standard/certs</code></strong></li>
+</ul>
+</li>
+<li>Desired Azure Container Registry endpoint and credentials if you are escrowing container images and helm charts</li>
+</ul>
+<ol start="2">
 <li><p>From a PowerShell prompt, execute the following to clone the repository:</p>
 <pre><code class="lang-pwsh">  git clone https://github.com/solliancenet/foundationallm.git
   cd foundationallm
@@ -137,25 +205,25 @@ azd env new --location &lt;Supported Azure Region&gt; --subscription &lt;Azure S
 </thead>
 <tbody>
 <tr>
-<td>core-api</td>
+<td>coreapi</td>
 <td>api</td>
 <td>example.com</td>
 <td>api.example.com.pfx</td>
 </tr>
 <tr>
-<td>management-api</td>
+<td>managementapi</td>
 <td>management-api</td>
 <td>example.com</td>
 <td>management-api.example.com.pfx</td>
 </tr>
 <tr>
-<td>chat-ui</td>
+<td>chatui</td>
 <td>chat</td>
 <td>example.com</td>
 <td>chat.example.com.pfx</td>
 </tr>
 <tr>
-<td>management-ui</td>
+<td>managementui</td>
 <td>management</td>
 <td>example.com</td>
 <td>management.example.com.pfx</td>
@@ -233,9 +301,13 @@ azd deploy
 The syntax for running the script from the <code>deploy\standard</code> folder is:</p>
 </div>
 <pre><code class="lang-pwsh">    cd .\deploy\standard
-    ..\common\scripts\Set-FllmGraphRoles.ps1 -resourceGroupName rg-&lt;azd env name&gt;
+    ..\common\scripts\Set-FllmGraphRoles.ps1 -resourceGroupName &lt;APP workload resource group name&gt;
 </code></pre>
-<p>Finally, you will need to update the Authorization Callbacks in the App Registrations created in the Entra ID tenant by running the following script:</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The user running the following script will need to have the appropriate permissions to update app registration configuration for the FoundationaLLM specific app registrations used to enable RBAC.  This means either <code>Owner</code> role on the aforementioned app registrations or the <code>Application Administrator</code> role in the Azure tenant.</p>
+</div>
+<p>Update the Authorization Callbacks in the App Registrations created in the Entra ID tenant by running the following script:</p>
 <pre><code class="lang-pwsh">    cd .\deploy\standard
     ..\common\scripts\Update-OAuthCallbackUris.ps1
 </code></pre>
