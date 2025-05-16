@@ -62,7 +62,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                             {
                                 AllowedTypes = [
                                     new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AgentAccessToken>)]),
-                                    new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Write}|{RoleDefinitionNames.Agent_Access_Tokens_Contributor}", [], [typeof(AgentAccessToken)], [typeof(ResourceProviderUpsertResult)]),
+                                    // The ! in the authorization requirements string indicates that role assignment evaluation is mandatory.
+                                    new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Write}|{RoleDefinitionNames.Agent_Access_Tokens_Contributor}!", [], [typeof(AgentAccessToken)], [typeof(ResourceProviderUpsertResult)]),
                                     new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], [])
                                 ],
                                 Actions = [
