@@ -75,7 +75,11 @@ Invoke-AndRequireSuccess "Deploy ingress-nginx" {
             --install gateway ingress-nginx/ingress-nginx `
             --namespace ${gatewayNamespace} `
             --values ${ingressNginxValues} `
+<<<<<<< HEAD
             --version 4.12.1      
+=======
+            --version 4.12.1        
+>>>>>>> 68c96e750 (Clean up of standard deployment)
     }
 }
 
