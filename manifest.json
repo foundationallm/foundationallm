@@ -11754,7 +11754,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.DependencyInjection",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DependencyInjection.yml\" sourcestartlinenumber=\"1\">Data Source resource provider service implementation of resource provider dependency injection extensions.</p>\n"
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DependencyInjection.yml\" sourcestartlinenumber=\"1\">Provides extension methods used to configure dependency injection.</p>\n"
     },
     {
       "type": "ManagedReference",
