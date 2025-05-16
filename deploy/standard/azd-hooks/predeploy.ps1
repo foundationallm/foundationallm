@@ -134,10 +134,10 @@ try {
     }
 
     $frontEndHosts = @()
-    if ($env:FLLM_USER_PORTAL_HOSTNAME) {
-        $frontEndHosts += $env:FLLM_USER_PORTAL_HOSTNAME
+    if ($env:FLLM_CHAT_PORTAL_HOSTNAME) {
+        $frontEndHosts += $env:FLLM_CHAT_PORTAL_HOSTNAME
         $($ingress.frontendIngress).chatui = @{
-            host        = $env:FLLM_USER_PORTAL_HOSTNAME
+            host        = $env:FLLM_CHAT_PORTAL_HOSTNAME
             path        = "/"
             pathType    = "ImplementationSpecific"
             serviceName = "chat-ui"

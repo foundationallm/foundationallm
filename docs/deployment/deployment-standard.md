@@ -41,7 +41,55 @@ You will use the following tools during deployment:
 
 Follow the steps below to deploy the solution to your Azure subscription.
 
-1. Ensure all the prerequisites are met.
+1. Ensure all the prerequisites are met and gather the following information (you will be prompted for it during the deployment):
+
+  - Azure Service Principal Credentials for Deployment
+    - Requires `Directory Reader` role on the Azure Tenant
+    - Requires `Owner` role on the target resource groups
+      - If the target resource groups do not already exist, requires `Owner` role on the target subscription
+    - Requires `DNS Zone Contributor` role on the DNS resource group (resource group containing private DNS zones necessary for private endpoint provisioning)
+    - Requires `Network Contributor` role on the HUB VNET resource (virtual network resource to which the FoundationaLLM VNET will be peered)
+    - Either `Owner` of the AD Group specified for the `FoundationaLLM Administrator` role or a member of said AD Group
+  - FoundationaLLM Project ID - a 3 to 8 character identifier for a FoundationaLLM deployment
+  - Target Azure Location - default is `eastus2`
+  - Target Resource Groups for the specified workloads
+    - APP - defaults to `rg-(azd environment name)-(azure location)-app-(project id)`
+    - AUTH - defaults to `rg-(azd environment name)-(azure location)-auth-(project id)`
+    - DATA - defaults to `rg-(azd environment name)-(azure location)-data-(project id)`
+    - JBX - defaults to `rg-(azd environment name)-(azure location)-jbx-(project id)`
+    - NET - defaults to `rg-(azd environment name)-(azure location)-net-(project id)`
+    - OAI - defaults to `rg-(azd environment name)-(azure location)-oai-(project id)`
+    - OPS - defaults to `rg-(azd environment name)-(azure location)-ops-(project id)`
+    - STORAGE - defaults to `rg-(azd environment name)-(azure location)-storage-(project id)`
+    - VEC - defaults to `rg-(azd environment name)-(azure location)-vec-(project id)`
+  - Pre-created AD Group for the `FoundationaLLM Administrator` role (default name is `FLLM-Admins`)
+  - Pre-created AD Group for the `FoundationaLLM Users` role (default name is `FLLM-Users`)
+  - Pre-created and configured FoundationaLLM specific App Registrations necessary to facilitate RBAC (see [here](authentication-authorization/authorization-setup-entra.md) and the Entra setup script in `deploy/common/scripts/Create-FllmEntraIdApps.ps1`)
+    - FoundationaLLM-Core-API
+    - FoundationaLLM-Reader
+    - FoundationaLLM-Core-Portal
+    - FoundationaLLM-Management-API
+    - FoundationaLLM-Authorization-API
+    - FoundationaLLM-Management-Portal
+  - Private DNS Zone resource group, subscription Id (if it is in a different subscription), and tenant Id
+  - HUB virtual network resource, resource group, subscription Id (if it is in a different subscription), and tenant Id
+  - FoundationaLLM Virtual Network and AKS configurations
+    - AKS Service CIDR range (default is `10.100.0.0/16`)
+    - FoundationaLLM VNET CIDR range (default is `10.220.128.0/20` - must be a `/20` netmask)
+    - Allowed External CIDRs or IPs (default is `192.168.100.0/24,192.168.101.0/28`)
+    - Backend AKS User Node Pool VM SKU (default is `Standard_D8_v5`)
+    - Backend AKS System Node Pool VM SKU (default is `Standard_D2_v5`)
+    - Frontend AKS User Node Pool VM SKU (default is `Standard_D2_v5`)
+    - Frontend AKS System Node Pool VM SKU (default is `Standard_D2_v5`)
+    - AKS Node Pool VM Availability Zones (default is `1,2,3`)
+    - **Ensure you have adequate quota and availability for selected SKUs in target region and availability zones - a minimal configuration using the same family requires a quota of 64 vCPUs**
+  - Hostnames and associated SSL certificates in PFX format for the following endpoints
+    - User Portal (i.e `chat.example.com`)
+    - Management Portal (i.e. `management.example.com`)
+    - Core API (i.e. `api.example.com`)
+    - Management API (i.e. `management-api.example.com`)
+    - **The SSL certificates will need to be copied to the corresponding folders in `deploy/standard/certs`**
+  - Desired Azure Container Registry endpoint and credentials if you are escrowing container images and helm charts
 
 2. From a PowerShell prompt, execute the following to clone the repository:
 
@@ -62,10 +110,10 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
     | Service Name      | Host Name         | Domain Name | File Name                         |
     | ----------------- | ----------------- | ----------- | --------------------------------- |
-    | core-api          | api               | example.com | api.example.com.pfx               |
-    | management-api    | management-api    | example.com | management-api.example.com.pfx    |
-    | chat-ui           | chat              | example.com | chat.example.com.pfx              |
-    | management-ui     | management        | example.com | management.example.com.pfx        |
+    | coreapi           | api               | example.com | api.example.com.pfx               |
+    | managementapi     | management-api    | example.com | management-api.example.com.pfx    |
+    | chatui            | chat              | example.com | chat.example.com.pfx              |
+    | managementui      | management        | example.com | management.example.com.pfx        |
 
 ## Provision Infrastructure
 
@@ -123,9 +171,13 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
     ```pwsh
         cd .\deploy\standard
-        ..\common\scripts\Set-FllmGraphRoles.ps1 -resourceGroupName rg-<azd env name>
+        ..\common\scripts\Set-FllmGraphRoles.ps1 -resourceGroupName <APP workload resource group name>
     ```
-    Finally, you will need to update the Authorization Callbacks in the App Registrations created in the Entra ID tenant by running the following script:
+
+    > [!IMPORTANT]
+    > The user running the following script will need to have the appropriate permissions to update app registration configuration for the FoundationaLLM specific app registrations used to enable RBAC.  This means either `Owner` role on the aforementioned app registrations or the `Application Administrator` role in the Azure tenant.
+
+    Update the Authorization Callbacks in the App Registrations created in the Entra ID tenant by running the following script:
 
     ```pwsh
         cd .\deploy\standard
