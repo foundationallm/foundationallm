@@ -540,7 +540,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             where TResult : ResourceProviderUpsertResult<T>
         {
             EnsureServiceInitialization();
-            var (ParsedResourcePath, AuthorizableOperation) = string.IsNullOrWhiteSpace(resource.ObjectId)
+            var (ParsedResourcePath, AuthorizationRequirements) = string.IsNullOrWhiteSpace(resource.ObjectId)
                 ? CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T), resourceName: resource.Name)
                 : ParseAndValidateResourcePath(resource.ObjectId, HttpMethod.Post, false, typeof(T));
 

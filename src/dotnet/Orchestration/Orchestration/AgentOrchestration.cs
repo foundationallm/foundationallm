@@ -73,7 +73,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     {
         private readonly string _instanceId = instanceId;
         private readonly string _agentObjectId = agentObjectId;
-        private readonly KnowledgeManagementAgent? _agent = agent;
+        private KnowledgeManagementAgent? _agent = agent;
         private readonly string _conversationId = conversationId;
         private readonly string _agentWorkflowMainAIModelAPIEndpoint = agentWorkflowMainAIModelAPIEndpoint;
         private readonly Dictionary<string, object>? _explodedObjects = explodedObjects;
