@@ -49,50 +49,43 @@ namespace FoundationaLLM.Common.Models.DataPipelines
         /// <summary>
         /// Gets or sets the identifier of the data pipeline run input artifact that is referenced by the work item.
         /// </summary>
-        [JsonPropertyName("input_artifact_id")]
+        [JsonPropertyName("content_item_canonical_id")]
         [JsonPropertyOrder(6)]
-        public required string InputArtifactId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the identifier of the data pipeline run output artifact that is referenced by the work item.
-        /// </summary>
-        [JsonPropertyName("output_artifact_id")]
-        [JsonPropertyOrder(7)]
-        public string? OutputArtifactId { get; set; }
+        public required string ContentItemCanonicalId { get; set; }
 
         /// <summary>
         /// Gets or sets the completion status of the work item.
         /// </summary>
         [JsonPropertyName("completed")]
-        [JsonPropertyOrder(8)]
+        [JsonPropertyOrder(7)]
         public bool Completed { get; set; }
 
         /// <summary>
         /// Gets or sets the success status of the work item.
         /// </summary>
         [JsonPropertyName("successful")]
-        [JsonPropertyOrder(9)]
+        [JsonPropertyOrder(8)]
         public bool Successful { get; set; }
 
         /// <summary>
         /// Gets or sets the error message if the work item failed.
         /// </summary>
         [JsonPropertyName("errors")]
-        [JsonPropertyOrder(10)]
+        [JsonPropertyOrder(9)]
         public List<string> Errors { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the number of processing attempts for the work item.
         /// </summary>
         [JsonPropertyName("processing_attempts")]
-        [JsonPropertyOrder(11)]
+        [JsonPropertyOrder(10)]
         public int ProcessingAttempts { get; set; }
 
         /// <summary>
         /// Gets or sets the number of failed processing attempts for the work item.
         /// </summary>
         [JsonPropertyName("failed_processing_attempts")]
-        [JsonPropertyOrder(12)]
+        [JsonPropertyOrder(11)]
         public int FailedProcessingAttempts { get; set; }
 
         /// <summary>

@@ -75,6 +75,7 @@ The following App Configuration value have been added:
 >where `<deployed_api_endpoint>` is the endpoint of the Data Pipeline API.
 >
 >Also, a new entry must be added to the `_resource-references.json` file from the `FoundationaLLM.Configuration` resource provider folder with the following content:
+
 ```json
 {
     "Name": "DataPipelineAPI",
@@ -83,12 +84,16 @@ The following App Configuration value have been added:
     "Deleted": false
 }
 ```
+
 >[!IMPORTANT]
 > Two new storage queues must be created in the FoundationaLLM storage account:
 > - `frontend-worker` - used by the Data Pipeline Frontend Worker to process requests.
 > - `backend-worker` - used by the Data Pipeline Backend Worker to process requests.
 > 
 > The previous queues `extract`, `partition`, `embed`, and `index` are now deprecated. For each existing FoundationaLLM deployment, they should be removed as soon as it is confirmed that the previous version of vectorization process is no longer used.
+
+>[!IMPORTANT]
+>A new container with the name of the FoundationaLLM instance identifier must be created in the FoundationaLLM main storage account. The container will be used by the Data Pipeline API and the Data Pipeline Frontend/Backend Worker to store data pipeline work items.
 
 ### Role assignment changes
 

@@ -360,5 +360,23 @@ namespace FoundationaLLM.Common.Services.Storage
             }
             return new Uri($"https://{accountName}.dfs.core.windows.net");
         }
+
+        /// <inheritdoc/>
+        public async Task<List<string>> GetMatchingFilePathsAsync(
+            string containerName,
+            string filePathPattern,
+            CancellationToken cancellationToken = default)
+        {
+            var fullListing = new List<string>(); // Full listing of directory and file paths  
+            var containerClient = _dataLakeClient.GetFileSystemClient(containerName);
+
+            // Flat listing (recursive)  
+            await foreach (var blob in containerClient.GetPathsAsync(path: filePathPattern, cancellationToken: cancellationToken))
+            {
+                fullListing.Add(blob.Name);
+            }
+
+            return fullListing;
+        }
     }
 }

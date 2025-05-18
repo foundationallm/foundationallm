@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.Plugins.Metadata;
+using System.Collections.Concurrent;
 
 namespace FoundationaLLM.Common.Interfaces.Plugins
 {
@@ -13,6 +14,21 @@ namespace FoundationaLLM.Common.Interfaces.Plugins
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <returns>An object of type <see cref="PluginPackageMetadata"/>.</returns>
         PluginPackageMetadata GetMetadata(string instanceId);
+
+        /// <summary>
+        /// Tries to get a service that is registered internally in the plugin package.
+        /// </summary>
+        /// <param name="serviceName">The name of the service to be retrieved.</param>
+        /// <param name="service">When the method returns, contains the requested service if it was found; otherwise, null.</param>
+        /// <returns><see langword="true"/> if the service was successfully retrieved.</returns>
+        bool TryGetService(string serviceName, out object? service);
+
+        /// <summary>
+        /// Registers an internal service in the plugin package.
+        /// </summary>
+        /// <param name="serviceName">The name of the service.</param>
+        /// <param name="service">The service to be registered.</param>
+        void RegisterService(string serviceName, object service);
 
         /// <summary>
         /// Gets a data source plugin by its name.

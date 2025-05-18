@@ -356,6 +356,24 @@ namespace FoundationaLLM.Common.Services.Storage
             return filePaths;
         }
 
+        /// <inheritdoc/>
+        public async Task<List<string>> GetMatchingFilePathsAsync(
+            string containerName,
+            string filePathPattern,
+            CancellationToken cancellationToken = default)
+        {
+            var fullListing = new List<string>(); // Full listing of directory and file paths  
+            var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+            // Flat listing (recursive)  
+            await foreach (var blob in containerClient.GetBlobsAsync(prefix: filePathPattern, cancellationToken: cancellationToken))
+            {
+                fullListing.Add(blob.Name);
+            }
+
+            return fullListing;
+        }
+
         /// <summary>
         /// Removes subpaths (directories) from the list of paths.
         /// </summary>

@@ -187,7 +187,6 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
                 if (result.Success)
                 {
-                    dataPipelineRunWorkItem.OutputArtifactId = result.Value;
                     dataPipelineRunWorkItem.Completed = true;
                     dataPipelineRunWorkItem.Successful = true;
                 }
@@ -339,7 +338,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
         #region Plugin management
 
-        private async Task<PluginResult<string>> InvokeDataPipelineStagePlugin(
+        private async Task<PluginResult> InvokeDataPipelineStagePlugin(
             DataPipelineRunWorkItem dataPipelineRunWorkItem)
         {
             var dataPipelineRun =

@@ -29,10 +29,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
 
         public bool Successful => _workItemsStatus.Values.All(status => status.Successful);
 
-        public List<String> OutputArtifactIds =>
-            [.. _workItemsStatus.Values
-                .Where(status => status.OutputArtifactId != null)
-                .Select(status => status.OutputArtifactId!)];
+        public List<string> ContentItemsCanonicalIds =>
+            [.. _workItemsStatus.Values.Select(status => status.ContentItemCanonicalId)];
 
         public async Task InitializeNew(
             List<DataPipelineRunWorkItem> workItems)
@@ -50,7 +48,10 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
             _workItemsStatus.Clear();
             _workItemsStatus.AddRange(workItems.ToDictionary(
                 workItem => workItem.Id,
-                workItem => new DataPipelineRunWorkItemStatus()));
+                workItem => new DataPipelineRunWorkItemStatus
+                    {
+                        ContentItemCanonicalId = workItem.ContentItemCanonicalId
+                    }));
         }
 
         public void InitializeExisting(
@@ -64,7 +65,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                 workItem => workItem.Id,
                 workItem => new DataPipelineRunWorkItemStatus
                 {
-                    OutputArtifactId = workItem.OutputArtifactId,
+                    ContentItemCanonicalId = workItem.ContentItemCanonicalId,
                     Completed = workItem.Completed,
                     Successful = workItem.Successful
                 }));
@@ -97,7 +98,6 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                 return;
             }
 
-            status.OutputArtifactId = dataPipelineRunWorkItem.OutputArtifactId;
             status.Completed = dataPipelineRunWorkItem.Completed;
             status.Successful = dataPipelineRunWorkItem.Successful;
 

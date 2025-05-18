@@ -1,10 +1,12 @@
 ﻿using FoundationaLLM.Common.Constants.Plugins;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.Plugins.Metadata;
 using FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction;
 using FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning;
 using FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage;
 using FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource;
+using System.Collections.Concurrent;
 
 namespace FoundationaLLM.Plugins.DataPipeline
 {
@@ -13,6 +15,16 @@ namespace FoundationaLLM.Plugins.DataPipeline
     /// </summary>
     public class PluginPackageManager : IPluginPackageManager
     {
+        private readonly ConcurrentDictionary<string, object> _services = [];
+
+        /// <inheritdoc/>
+        public bool TryGetService(string serviceName, out object? service) =>
+            _services.TryGetValue(serviceName, out service);
+
+        /// <inheritdoc/>
+        public void RegisterService(string serviceName, object service) =>
+            _services.TryAdd(serviceName, service);
+
         /// <inheritdoc/>
         public PluginPackageMetadata GetMetadata(string instanceId) => new()
         {

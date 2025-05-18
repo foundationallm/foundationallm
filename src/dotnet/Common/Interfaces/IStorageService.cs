@@ -101,5 +101,14 @@
         /// <param name="cancellationToken">Determines if a request should be cancelled.</param>
         /// <returns>List of individual file paths located in the container.</returns>        
         Task<List<string>> GetFilePathsAsync(string containerName, string? directoryPath = null, bool recursive = true, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Retrieves a list of file paths that match a specific pattern.
+        /// </summary>
+        /// <param name="containerName">The name of the container.</param>
+        /// <param name="filePathPattern">The file name pattern to match.</param>
+        /// <param name="cancellationToken">The cancellation token that signals that operations should be cancelled.</param>
+        /// <returns></returns>
+        Task<List<string>> GetMatchingFilePathsAsync(string containerName, string filePathPattern, CancellationToken cancellationToken = default);
     }
 }

@@ -40,7 +40,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     Id = $"work-item-{Guid.NewGuid().ToBase64String()}",
                     RunId = dataPipelineRunId,
                     Stage = dataPipelineStageName,
-                    InputArtifactId = ci.ContentIdentifier.CanonicalId
+                    ContentItemCanonicalId = ci.ContentIdentifier.CanonicalId
                 })
                 .ToList();
 
@@ -48,7 +48,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
         }
 
         /// <inheritdoc/>
-        public override async Task<PluginResult<string>> ProcessWorkItem(
+        public override async Task<PluginResult> ProcessWorkItem(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             DataPipelineRunWorkItem dataPipelineRunWorkItem)
@@ -69,19 +69,16 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     _serviceProvider);
 
             var rawContentResult = await dataSourcePlugin.GetContentItemRawContent(
-                dataPipelineRunWorkItem.InputArtifactId);
+                dataPipelineRunWorkItem.ContentItemCanonicalId);
 
             if (!rawContentResult.Success)
-                return new PluginResult<string>(null, false, false, rawContentResult.ErrorMessage);
+                return new PluginResult(false, false, rawContentResult.ErrorMessage);
 
             if (!_contentTypeMappings.TryGetValue(
                 rawContentResult.Value!.ContentType,
                 out var contentType))
             {
-                return new PluginResult<string>(
-                    null,
-                    false,
-                    false,
+                return new PluginResult(false, false,
                     $"The content type {rawContentResult.Value.ContentType} is not supported by the {Name} plugin.");
             }
 
@@ -121,22 +118,25 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 rawContentResult.Value.RawContent);
 
             if (!textContentResult.Success)
-                return new PluginResult<string>(null, false, false, textContentResult.ErrorMessage);
+                return new PluginResult(false, false, textContentResult.ErrorMessage);
 
             // Save the text content to the data pipeline state
-            var outputArtifactId = $"{dataPipelineRunWorkItem.InputArtifactId}.txt";
+            var outputArtifactId = "content.txt";
 
             await _dataPipelineStateService.SaveDataPipelineRunWorkItemArtifacts(
                 dataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
-                new Dictionary<string, BinaryData>
-                {
-                    { outputArtifactId, BinaryData.FromString(textContentResult.Value!) }
-                });
+                [ new DataPipelineStateArtifact
+                    {
+                        FileName = outputArtifactId,
+                        ContentType = "text/plain",
+                        Content = BinaryData.FromString(textContentResult.Value!)
+                    }
+                ]);
 
             return
-                new PluginResult<string>(dataPipelineRunWorkItem.InputArtifactId, true, false);
+                new PluginResult(true, false);
         }
     }
 }

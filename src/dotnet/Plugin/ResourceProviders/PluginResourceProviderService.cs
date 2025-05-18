@@ -19,7 +19,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Graph.Models;
 using NuGet.Packaging;
 using NuGet.Versioning;
 using System.Reflection;

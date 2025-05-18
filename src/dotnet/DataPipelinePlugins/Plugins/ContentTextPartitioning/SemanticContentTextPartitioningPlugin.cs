@@ -1,4 +1,6 @@
 ﻿using FoundationaLLM.Common.Interfaces.Plugins;
+using FoundationaLLM.Common.Models.DataPipelines;
+using FoundationaLLM.Common.Models.Plugins;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
 {
@@ -14,5 +16,12 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
         IServiceProvider serviceProvider)
         : PluginBase(pluginParameters, packageManager, serviceProvider), IContentTextPartitioningPlugin
     {
+        protected override string Name => PluginNames.SEMANTIC_CONTENTTEXTPARTITIONING;
+
+        /// <inheritdoc/>
+        public async Task<PluginResult<List<DataPipelineContentItemPart>>> PartitionText(
+            string contentItemCanonicalId,
+            string text) =>
+            throw new NotImplementedException();
     }
 }

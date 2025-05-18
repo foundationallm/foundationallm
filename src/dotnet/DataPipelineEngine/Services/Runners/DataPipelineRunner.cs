@@ -222,7 +222,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                 userIdentity);
 
             var workItems = await dataPipelineStagePlugin.GetStageWorkItems(
-                previousStageRunner.OutputArtifactIds,
+                previousStageRunner.ContentItemsCanonicalIds,
                 dataPipelineRun.RunId,
                 dataPipelineStage.Name,
                 previousStageRunner.StageName);

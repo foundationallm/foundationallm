@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
@@ -135,7 +136,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Dictionary<string, BinaryData>> LoadDataPipelineRunWorkItemArtifacts(
+        public async Task<List<DataPipelineStateArtifact>> LoadDataPipelineRunWorkItemArtifacts(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             DataPipelineRunWorkItem dataPipelineRunWorkItem,
@@ -145,13 +146,14 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 [
                     $"/data-pipeline-state",
                     dataPipelineDefinition.Name,
-                    dataPipelineRun.UPN.Replace('@', '_').Replace('.', '_'),
+                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
                     dataPipelineRun.RunId,
-                    dataPipelineRunWorkItem.InputArtifactId,
+                    "content-items",
+                    dataPipelineRunWorkItem.ContentItemCanonicalId,
                     artifactsNameFilter
                 ]);
 
-            var artifactsPaths = await _storageService.GetFilePathsAsync(
+            var artifactsPaths = await _storageService.GetMatchingFilePathsAsync(
                 dataPipelineRun.InstanceId,
                 artifactsFilter);
 
@@ -163,11 +165,13 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                         dataPipelineRun.InstanceId,
                         path,
                         default);
-                    return new KeyValuePair<string, BinaryData>(path, fileContent);
+                    return new DataPipelineStateArtifact
+                    {
+                        FileName = Path.GetFileName(path),
+                        Content = fileContent
+                    };
                 })
-                .ToDictionaryAsync(
-                    kvp => kvp.Key,
-                    kvp => kvp.Value);
+                .ToListAsync();
 
             return result;
         }
@@ -177,20 +181,21 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             DataPipelineRunWorkItem dataPipelineRunWorkItem,
-            Dictionary<string, BinaryData> artifacts)
+            List<DataPipelineStateArtifact> artifacts)
         {
             var artifactsPath = string.Join('/',
                 [
                     $"/data-pipeline-state",
                     dataPipelineDefinition.Name,
-                    dataPipelineRun.UPN.Replace('@', '_').Replace('.', '_'),
+                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
                     dataPipelineRun.RunId,
-                    dataPipelineRunWorkItem.InputArtifactId
+                    "content-items",
+                    dataPipelineRunWorkItem.ContentItemCanonicalId
                 ]);
 
             var artifactsWithError = new List<string>();
 
-            await Parallel.ForEachAsync<KeyValuePair<string, BinaryData>>(
+            await Parallel.ForEachAsync<DataPipelineStateArtifact>(
                 artifacts,
                 new ParallelOptions
                 {
@@ -201,9 +206,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 {
                     await _storageService.WriteFileAsync(
                         dataPipelineRun.InstanceId,
-                        artifact.Key,
-                        artifact.Value.ToStream(),
-                        null,
+                        $"{artifactsPath}/{artifact.FileName}",
+                        artifact.Content.ToStream(),
+                        artifact.ContentType,
                         token);
                 });
         }

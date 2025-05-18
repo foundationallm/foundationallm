@@ -6,9 +6,9 @@
     public class DataPipelineRunWorkItemStatus
     {
         /// <summary>
-        /// Gets or sets the identifier of the work item's output artifact.
+        /// The canonical identifier of the content item referenced by the work item.
         /// </summary>
-        public string? OutputArtifactId { get; set; }
+        public required string ContentItemCanonicalId { get; set; }
 
         /// <summary>
         /// Gets or sets the indicator of whether the work item is completed.

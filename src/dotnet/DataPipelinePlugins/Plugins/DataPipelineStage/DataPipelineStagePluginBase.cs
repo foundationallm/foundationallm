@@ -47,19 +47,19 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
         /// <inheritdoc/>
         public virtual async Task<List<DataPipelineRunWorkItem>> GetStageWorkItems(
-            List<string> inboundArtifactIds,
+            List<string> contentItemsCanonicalIds,
             string dataPipelineRunId,
             string dataPipelineStageName,
             string previousDataPipelineStageName)
         {
-            var workItems = inboundArtifactIds
-                .Select(artifactId => new DataPipelineRunWorkItem
+            var workItems = contentItemsCanonicalIds
+                .Select(contentItemCanonicalId => new DataPipelineRunWorkItem
                 {
                     Id = $"work-item-{Guid.NewGuid().ToBase64String()}",
                     RunId = dataPipelineRunId,
                     Stage = dataPipelineStageName,
                     PreviousStage = previousDataPipelineStageName,
-                    InputArtifactId = artifactId
+                    ContentItemCanonicalId = contentItemCanonicalId
                 })
                 .ToList();
 
@@ -67,13 +67,12 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
         }
 
         /// <inheritdoc/>
-        public virtual async Task<PluginResult<string>> ProcessWorkItem(
+        public virtual async Task<PluginResult> ProcessWorkItem(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             DataPipelineRunWorkItem dataPipelineRunWorkItem) =>
             await Task.FromResult(
-                new PluginResult<string>(
-                    Value: string.Empty,
+                new PluginResult(
                     Success: true,
                     StopProcessing: false));
     }

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Extensions
@@ -19,7 +20,9 @@ namespace FoundationaLLM.Common.Extensions
                 .Where(x => x.Key.StartsWith(keyNamespace))
                 .Select(x => new KeyValuePair<string, object>(
                     x.Key.Replace(keyNamespace, string.Empty),
-                    x.Value))
+                    x.Value is JsonElement element
+                        ? element.ToObject()!
+                        : x.Value))
                 .ToDictionary(x => x.Key, x => x.Value);
 
         /// <summary>

@@ -43,5 +43,7 @@ namespace FoundationaLLM.Common.Services.Storage
         /// <inheritdoc/>
         public Task UpdateJSONFileAsync<T>(string containerName, string filePath, Func<T, T> objectTransformer, CancellationToken cancellationToken) where T : class => throw new NotImplementedException();
 
+        /// <inheritdoc/>
+        public Task<List<string>> GetMatchingFilePathsAsync(string containerName, string filePathPattern, CancellationToken cancellationToken = default) => throw new NotImplementedException();
     }
 }
