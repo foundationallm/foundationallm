@@ -33,11 +33,15 @@ namespace FoundationaLLM.Common.Services.Storage
 
         /// <inheritdoc/>
         public Task<BinaryData> ReadFileAsync(string containerName, string filePath, CancellationToken cancellationToken) => throw new NotImplementedException();
-
+        
         /// <inheritdoc/>
         public Task WriteFileAsync(string containerName, string filePath, Stream fileContent, string? contentType, CancellationToken cancellationToken) => throw new NotImplementedException();
 
         /// <inheritdoc/>
         public Task WriteFileAsync(string containerName, string filePath, string fileContent, string? contentType, CancellationToken cancellationToken) => throw new NotImplementedException();
+
+        /// <inheritdoc/>
+        public Task UpdateJSONFileAsync<T>(string containerName, string filePath, Func<T, T> objectTransformer, CancellationToken cancellationToken) where T : class => throw new NotImplementedException();
+
     }
 }

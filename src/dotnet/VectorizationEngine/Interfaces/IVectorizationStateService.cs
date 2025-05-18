@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
+using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Vectorization.Models;
 
 namespace FoundationaLLM.Vectorization.Interfaces
@@ -27,30 +28,28 @@ namespace FoundationaLLM.Vectorization.Interfaces
         /// </summary>
         /// <param name="state">The vectorization state in which the artifacts will be loaded.</param>
         /// <param name="artifactType">The type of artifact(s) to load.</param>
-        /// <returns></returns>
         Task LoadArtifacts(VectorizationState state, VectorizationArtifactType artifactType);
 
         /// <summary>
         /// Saves a specified vectorization state.
         /// </summary>
         /// <param name="state">The <see cref="VectorizationState"/> item to be saved.</param>
-        /// <returns></returns>
         Task SaveState(VectorizationState state);
 
         /// <summary>
-        /// Saves a specified vectorization pipeline state execution.
+        /// Saves the state of a vectorization pipeline execution.
         /// </summary>
-        /// <param name="state"></param>
-        /// <returns></returns>
-
-        Task SavePipelineState(VectorizationPipelineState state);
+        /// <param name="pipelineExecution">The main state of the pipeline execution.</param>
+        /// <param name="pipelineExecutionDetail">The details associated with the main state of the pipeline execution.</param>
+        Task SavePipelineState(
+            VectorizationPipelineExecution pipelineExecution,
+            VectorizationPipelineExecutionDetail? pipelineExecutionDetail);
 
         /// <summary>
-        /// Reads the state associated with a vectorization pipeline execution.
+        /// Updates the state of a vectorization pipeline execution based on the state of the specified vectorization request.
         /// </summary>
-        /// <param name="pipelineName">The name of the pipeline.</param>
-        /// <param name="pipelineExecutionId">The unique identifier of the pipeline execution.</param>
-        /// <returns></returns>
-        Task<VectorizationPipelineState> ReadPipelineState(string pipelineName, string pipelineExecutionId);
+        /// <param name="vectorizationRequest">The vectorization request based on which the pipeline execution state is being updated.</param>
+        Task UpdatePipelineStateFromVectorizationRequest(
+            VectorizationRequest vectorizationRequest);
     }
 }

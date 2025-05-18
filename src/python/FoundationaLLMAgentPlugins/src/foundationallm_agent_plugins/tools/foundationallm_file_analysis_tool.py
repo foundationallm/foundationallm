@@ -50,21 +50,6 @@ class FoundationaLLMFileAnalysisTool(FoundationaLLMToolBase):
 
         self.__setup_file_analysis_configuration(tool_config, objects, config)
 
-    def __build_messages(
-        self,
-        prompt: str,
-        runnable_config: RunnableConfig
-    ) -> List[BaseMessage]:
-
-        user_prompt = runnable_config['configurable']['original_user_prompt'] if 'original_user_prompt' in runnable_config['configurable'] else prompt
-
-        messages = [
-            SystemMessage(content=self.code_gen_prompt),
-            HumanMessage(content=user_prompt)
-        ] if self.code_gen_prompt else [HumanMessage(content=user_prompt)]
-
-        return messages
-
     def _run(self,
             prompt: str,
             runnable_config: RunnableConfig = None,
@@ -87,11 +72,17 @@ class FoundationaLLMFileAnalysisTool(FoundationaLLMToolBase):
         generated_code = ''
         final_response = ''
 
-        # Get the original prompt
+        # Get the original prompt            
         if runnable_config is None:
             original_prompt = prompt
         else:
-            original_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
+            user_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT] \
+                if RunnableConfigKeys.ORIGINAL_USER_PROMPT in runnable_config['configurable'] \
+                else None
+            user_prompt_rewrite = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE] \
+                if RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE in runnable_config['configurable'] \
+                else None
+            original_prompt = user_prompt_rewrite or user_prompt or prompt
 
         messages = [
             SystemMessage(content=self.main_prompt),

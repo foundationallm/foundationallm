@@ -64,8 +64,6 @@ namespace FoundationaLLM.Management.API.Controllers
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="resourceProvider">The name of the resource provider that should handle the request.</param>
         /// <param name="resourcePath">The logical path of the resource type.</param>
-        /// <param name="serializedResource">The optional serialized resource to be created or updated.</param>
-        /// <param name="formFile">The optional file attached to the request.</param>
         /// <returns>The ObjectId of the created or updated resource.</returns>
         [HttpPost("{*resourcePath}", Name = "UpsertResource")]
         public async Task<IActionResult> UpsertResource(string instanceId, string resourceProvider, string resourcePath) =>

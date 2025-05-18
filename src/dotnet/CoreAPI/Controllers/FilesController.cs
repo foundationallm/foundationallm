@@ -101,8 +101,7 @@ namespace FoundationaLLM.Core.API.Controllers
                     ContentType = contentType,
                     OriginalFileName = fileName
                 },
-                agentName,
-                _callContext.CurrentUserIdentity!);
+                agentName);
 
             if (uploadResult.Resource != null)
             {
@@ -142,7 +141,7 @@ namespace FoundationaLLM.Core.API.Controllers
                         { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
                    });
 
-            var attachment = await _coreService.DownloadAttachment(instanceId, fileProvider, fileId, _callContext.CurrentUserIdentity!);
+            var attachment = await _coreService.DownloadAttachment(instanceId, fileProvider, fileId);
 
             return attachment == null
                 ? NotFound()
@@ -157,6 +156,6 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <returns></returns>
         [HttpPost("delete")]
         public async Task<IActionResult> Delete(string instanceId, [FromBody] List<string> resourcePaths) =>
-            new OkObjectResult(await _coreService.DeleteAttachments(instanceId, resourcePaths, _callContext.CurrentUserIdentity!));
+            new OkObjectResult(await _coreService.DeleteAttachments(instanceId, resourcePaths));
     }
 }

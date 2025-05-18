@@ -18,6 +18,7 @@
 
 3. **System Maintenance:**
    - [FoundationaLLM Backups & Data Resiliency](./backups.md)
+   - [Purge user conversations](./purge-conversations.md)
 
 4. **Security Measures:**
    - [Platform Security Features & Best Practices](./security.md)

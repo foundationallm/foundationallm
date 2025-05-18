@@ -39,5 +39,10 @@
         /// Tool association.
         /// </summary>
         public const string ToolAssociation = "tool_association";
+
+        /// <summary>
+        /// AI project.
+        /// </summary>
+        public const string AIProject = "ai_project";
     }
 }

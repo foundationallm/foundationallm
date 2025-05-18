@@ -78,6 +78,55 @@ namespace FoundationaLLM.Common.Constants.Authorization
 
         #endregion
 
+        #region AzureAI
+
+        /// <summary>
+        /// Read Azure AI Agent Service conversation mappings.
+        /// </summary>
+        public const string FoundationaLLM_AzureAI_AgentConversationMappings_Read = "FoundationaLLM.AzureAI/agentConversationMappings/read";
+
+        /// <summary>
+        /// Create or update Azure AI Agent Service conversation mappings.
+        /// </summary>
+        public const string FoundationaLLM_AzureAI_AgentConversationMappings_Write = "FoundationaLLM.AzureAI/agentConversationMappings/write";
+
+        /// <summary>
+        /// Delete Azure AI Agent Service conversation mappings.
+        /// </summary>
+        public const string FoundationaLLM_AzureAI_ConversationMappings_Delete = "FoundationaLLM.AzureAI/agentConversationMappings/delete";
+
+        /// <summary>
+        /// Read Azure AI Agent Service file mappings.
+        /// </summary>
+        public const string FoundationaLLM_AzureAI_AgentFileMappings_Read = "FoundationaLLM.AzureAI/agentFileMappings/read";
+
+        /// <summary>
+        /// Create or update Azure AI Agent Service file mappings.
+        /// </summary>
+        public const string FoundationaLLM_AzureAI_AgentFileMappings_Write = "FoundationaLLM.AzureAI/agentFileMappings/write";
+
+        /// <summary>
+        /// Delete Azure AI Agent Service file mappings.
+        /// </summary>
+        public const string FoundationaLLM_AzureAI_AgentFileMappings_Delete = "FoundationaLLM.AzureAI/agentFileMappings/delete";
+
+        /// <summary>
+        /// Read Azure AI Agent Service project resources.
+        /// </summary>
+        public const string FoundationaLLM_AzureAI_Projects_Read = "FoundationaLLM.AzureAI/projects/read";
+
+        /// <summary>
+        /// Create or update Azure AI project resource.
+        /// </summary>
+        public const string FoundationaLLM_AzureAI_Projects_Write = "FoundationaLLM.AzureAI/projects/write";
+
+        /// <summary>
+        /// Delete Azure AI project resources.
+        /// </summary>
+        public const string FoundationaLLM_AzureAI_Projects_Delete = "FoundationaLLM.AzureAI/projects/delete";
+
+        #endregion
+
         #region AzureOpenAI
 
         /// <summary>

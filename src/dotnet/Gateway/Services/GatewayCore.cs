@@ -10,7 +10,6 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Azure;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Gateway.Interfaces;
@@ -36,11 +35,13 @@ namespace FoundationaLLM.Gateway.Services
     /// <param name="options">The options providing the <see cref="GatewayCoreSettings"/> object.</param>
     /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to create loggers for logging.</param>
+    /// <param name="metrics">The FoundationaLLM Gateway telemetry metrics.</param>
     public class GatewayCore(
         IAzureResourceManagerService armService,
         IOptions<GatewayCoreSettings> options,
         IEnumerable<IResourceProviderService> resourceProviderServices,
-        ILoggerFactory loggerFactory) : IGatewayCore
+        ILoggerFactory loggerFactory,
+        GatewayMetrics metrics) : IGatewayCore
     {
         private readonly IAzureResourceManagerService _armService = armService;
         private readonly GatewayCoreSettings _settings = options.Value;
@@ -50,6 +51,7 @@ namespace FoundationaLLM.Gateway.Services
         private readonly IResourceProviderService _agentResourceProvider =
             resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Agent);
         private readonly ILogger<GatewayCore> _logger = loggerFactory.CreateLogger<GatewayCore>();
+        private readonly GatewayMetrics _metrics = metrics;
 
         private bool _initialized = false;
 
@@ -82,7 +84,8 @@ namespace FoundationaLLM.Gateway.Services
                             {
                                 var embeddingModelContext = new EmbeddingModelDeploymentContext(
                                     deployment,
-                                    _loggerFactory);
+                                    _loggerFactory,
+                                    _metrics);
 
                                 if (!_embeddingModels.ContainsKey(deployment.ModelName))
                                     _embeddingModels[deployment.ModelName] = new EmbeddingModelContext(
@@ -440,7 +443,7 @@ namespace FoundationaLLM.Gateway.Services
                     if (fileAssociationResult.Value.Status == VectorStoreFileAssociationStatus.Failed)
                     {
                         _logger.LogError("The vectorization of file {FileId} in vector store {VectorStoreId} failed with error {ErrorMessage}.",
-                                                       fileId, vectorStoreId, fileAssociationResult.Value.LastError);
+                                                       fileId, vectorStoreId, fileAssociationResult.Value.LastError.Message);
                     }
                     
                     result[OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess] =
@@ -717,6 +720,8 @@ namespace FoundationaLLM.Gateway.Services
                 var startTime = DateTimeOffset.UtcNow;
                 _logger.LogInformation("Started vectorization of file {FileId} in vector store {VectorStoreId}.", fileId, vectorStoreId);
 
+                _ = await agentsClient.CreateVectorStoreFileAsync(vectorStoreId, fileId: fileId);
+
                 var vectorStoreFileResponse = await agentsClient.GetVectorStoreFileAsync(
                     vectorStoreId: vectorStoreId,
                     fileId: fileId
@@ -748,7 +753,7 @@ namespace FoundationaLLM.Gateway.Services
                     if (vectorStoreFileResponse.Value.Status == VectorStoreFileStatus.Failed)
                     {
                         _logger.LogError("The vectorization of file {FileId} in vector store {VectorStoreId} failed with error {ErrorMessage}.",
-                                                       fileId, vectorStoreId, vectorStoreFileResponse.Value.LastError);
+                                                       fileId, vectorStoreId, vectorStoreFileResponse.Value.LastError.Message);
                     }
                     result[AzureAIAgentServiceCapabilityParameterNames.FileActionOnVectorStoreSuccess] =
                         vectorStoreFileResponse.Value.Status == VectorStoreFileStatus.Completed;

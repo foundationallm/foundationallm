@@ -5,14 +5,14 @@
     "version": "0.2.0",
     "configurations": [
 			{
-					"name": "Python: Test Workflow",
+					"name": "Python: Test Function Calling Workflow",
 					"type": "debugpy",
 					"request": "launch",
 					"program": "test/foundationallm_function_calling_workflow/test_workflow.py",
 					"console": "integratedTerminal",
 					"justMyCode": false,
 					"cwd": "${workspaceFolder}"
-			},
+			},			
 			{
 					"name": "Python: Test SQL Tool",
 					"type": "debugpy",

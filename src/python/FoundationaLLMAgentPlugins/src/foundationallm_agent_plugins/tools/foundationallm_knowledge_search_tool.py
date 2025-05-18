@@ -50,9 +50,16 @@ class FoundationaLLMKnowledgeSearchTool(FoundationaLLMToolBase):
         """ Retrieves documents from an index based on the proximity to the prompt to answer the prompt."""
         # Azure AI Search retriever only supports synchronous execution.
         # Get the original prompt
-        original_prompt = prompt
-        if runnable_config is not None and RunnableConfigKeys.ORIGINAL_USER_PROMPT in runnable_config['configurable']:
-            original_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
+        if runnable_config is None:
+            original_prompt = prompt
+        else:
+            user_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT] \
+                if RunnableConfigKeys.ORIGINAL_USER_PROMPT in runnable_config['configurable'] \
+                else None
+            user_prompt_rewrite = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE] \
+                if RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE in runnable_config['configurable'] \
+                else None
+            original_prompt = user_prompt_rewrite or user_prompt or prompt
 
         docs = self.retriever.invoke(prompt)
         context = self.retriever.format_docs(docs)

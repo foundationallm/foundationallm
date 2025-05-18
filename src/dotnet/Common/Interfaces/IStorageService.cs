@@ -60,6 +60,21 @@
         Task WriteFileAsync(string containerName, string filePath, string fileContent, string? contentType, CancellationToken cancellationToken);
 
         /// <summary>
+        /// Updates a specified JSON file in the storage.
+        /// </summary>
+        /// <typeparam name="T">The type of the object persisted in the JSON file.</typeparam>
+        /// <param name="containerName">The name of the container where the file is located.</param>
+        /// <param name="filePath">The path of the file to update.</param>
+        /// <param name="objectTransformer">A function that updates the object persisted in the JSON file.</param>
+        /// <param name="cancellationToken">The cancellation token that signals that operations should be cancelled.</param>
+        /// <returns></returns>
+        Task UpdateJSONFileAsync<T>(
+            string containerName,
+            string filePath,
+            Func<T, T> objectTransformer,
+            CancellationToken cancellationToken) where T : class;
+
+        /// <summary>
         /// Deletes a file from storage.
         /// </summary>
         /// <param name="containerName">The name of the container where the file is located.</param>

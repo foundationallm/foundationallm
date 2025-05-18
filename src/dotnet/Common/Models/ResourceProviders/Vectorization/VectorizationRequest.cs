@@ -53,12 +53,19 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Vectorization
         public string? PipelineExecutionId { get; set; }
 
         /// <summary>
+        /// Gets or sets the time when the pipeline execution started.
+        /// </summary>
+        [JsonPropertyOrder(53)]
+        [JsonPropertyName("pipeline_execution_start")]
+        public DateTimeOffset? PipelineExecutionStart { get; set; }
+
+        /// <summary>
         /// The <see cref="VectorizationProcessingState"/> indicating the current state of the vectorization request.
         /// </summary>
         [JsonPropertyOrder(100)]
         [JsonPropertyName("processing_state")]
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public VectorizationProcessingState ProcessingState { get; set; }
+        public VectorizationProcessingState ProcessingState { get; set; } = VectorizationProcessingState.New;
 
         /// <summary>
         /// The time when the vectorization request started being processed.
@@ -180,9 +187,26 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Vectorization
             (DateTime.UtcNow - LastSuccessfulStepTime).TotalHours > 240;
 
         /// <summary>
+        /// Gets the date from the name of the vectorization request.
+        /// </summary>
+        /// <returns>The date parsed from the name.</returns>
+        public DateOnly GetDateFromName() => GetDate(Name);
+
+        /// <summary>
         /// Set default property values.
         /// </summary>
         public VectorizationRequest() =>
             Type = "vectorization-request";
+
+        /// <summary>
+        /// Gets the date from the name of the vectorization request.
+        /// </summary>
+        /// <param name="vectorizationRequestName">The name of the vectorization request.</param>
+        /// <remarks>
+        /// The required format of the vectorization request name is "yyyyMMdd-..." (e.g., "20250502-abc").
+        /// </remarks>
+        /// <returns>The date parsed from the name.</returns>
+        public static DateOnly GetDate(string vectorizationRequestName) =>
+            DateOnly.FromDateTime(DateTime.ParseExact(vectorizationRequestName.Split('-')[0], "yyyyMMdd", null));
     }
 }

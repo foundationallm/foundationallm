@@ -2,15 +2,16 @@ using Asp.Versioning;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Services;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Options;
@@ -66,6 +67,7 @@ namespace FoundationaLLM.Core.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Attachment_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AIModel_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AzureAI_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);                
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Quota_Storage);
@@ -272,9 +274,21 @@ namespace FoundationaLLM.Core.API
             // Register the middleware to enforce API request quotas.
             app.UseMiddleware<QuotaMiddleware>();
 
-            app.UseExceptionHandler(exceptionHandlerApp
-                    => exceptionHandlerApp.Run(async context
-                        => await Results.Problem().ExecuteAsync(context)));
+            app.UseExceptionHandler(exceptionHandlerApp =>
+                exceptionHandlerApp.Run(async context =>
+                    {
+                        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+
+                        if (exceptionHandlerPathFeature?.Error is ResourceProviderException)
+                        {
+                            var statusCode = ((ResourceProviderException)exceptionHandlerPathFeature.Error)?.StatusCode;
+
+                            if (statusCode == StatusCodes.Status403Forbidden)
+                                await Results.Problem(statusCode: StatusCodes.Status403Forbidden).ExecuteAsync(context);
+                        }
+
+                        await Results.Problem().ExecuteAsync(context);
+                    }));
 
             var forwardedHeadersOptions = new ForwardedHeadersOptions
             {

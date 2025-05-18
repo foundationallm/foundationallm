@@ -1,7 +1,6 @@
 ﻿using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Agent.Models.Resources

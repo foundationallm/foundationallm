@@ -56,6 +56,7 @@ namespace FoundationaLLM.Management.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vectorization_Storage);  
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AzureAI_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataSource_Storage);                
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Attachment_Storage);
@@ -110,6 +111,7 @@ namespace FoundationaLLM.Management.API
             builder.AddConfigurationResourceProvider();
             builder.AddVectorizationResourceProvider();
             builder.AddAgentResourceProvider();
+            builder.AddAzureAIResourceProvider();
             builder.AddPromptResourceProvider();
             builder.AddDataSourceResourceProvider();
             builder.AddAttachmentResourceProvider();

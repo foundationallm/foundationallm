@@ -84,6 +84,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private readonly LongRunningOperationContext? _longRunningOperationContext = longRunningOperationContext;
         private readonly Func<LLMCompletionRequest, Task>? _completionRequestObserver = completionRequestObserver;
 
+        private readonly IResourceProviderService _agentResourceProvider =
+            resourceProviderServices[ResourceProviderNames.FoundationaLLM_Agent];
         private readonly IResourceProviderService _attachmentResourceProvider =
             resourceProviderServices[ResourceProviderNames.FoundationaLLM_Attachment];
         private readonly IResourceProviderService _azureAIResourceProvider =
@@ -441,7 +443,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                             var vectorizationResult = await _gatewayClient!.CreateAgentCapability(
                                 _instanceId,
-                                AgentCapabilityCategoryNames.OpenAIAssistants,
+                                AgentCapabilityCategoryNames.AzureAIAgents,
                                 string.Empty,
                                 new()
                                 {
@@ -633,7 +635,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 .ToList();
             foreach (var fileMapping in azureAIAgentFileMappings)
             {
-                await _azureOpenAIResourceProvider.UpsertResourceAsync<AzureAIAgentFileMapping, ResourceProviderUpsertResult<AzureAIAgentFileMapping>>(
+                await _azureAIResourceProvider.UpsertResourceAsync<AzureAIAgentFileMapping, ResourceProviderUpsertResult<AzureAIAgentFileMapping>>(
                      _instanceId,
                     fileMapping,
                     _callContext.CurrentUserIdentity!,
@@ -783,13 +785,26 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
         #region Azure AI Agent content items
 
-        private MessageContentItemBase TransformAzureAIAgentContentItem(MessageContentItemBase contentItem, List<IFileMapping> newFileMappings) =>
-            contentItem switch
+        private MessageContentItemBase TransformAzureAIAgentContentItem(MessageContentItemBase contentItem, List<IFileMapping> newFileMappings)
+        {
+            // need to get the agent configuration in order to retrieve the project connection string to associate with generated files.
+            var agentResourcePath = ResourcePath.GetResourcePath(_agentObjectId);
+            _agent = _agent ?? (KnowledgeManagementAgent)_agentResourceProvider.GetResourceAsync<AgentBase>(
+                               _instanceId,
+                               agentResourcePath.MainResourceId!,
+                               _callContext.CurrentUserIdentity!).Result;
+
+            switch (contentItem)
             {
-                ImageFileMessageContentItem imageFile => TransformAzureAIAgentImageFile(imageFile, newFileMappings),
-                TextMessageContentItem textMessage => TransformAzureAIAgentTextMessage(textMessage, newFileMappings),
-                _ => throw new OrchestrationException($"The content item type {contentItem.GetType().Name} is not supported.")
-            };
+                case ImageFileMessageContentItem imageFile:
+                    return TransformAzureAIAgentImageFile(imageFile, newFileMappings);
+                case TextMessageContentItem textMessage:
+                    return TransformAzureAIAgentTextMessage(textMessage, newFileMappings);
+                default:
+                    throw new OrchestrationException($"The content item type {contentItem.GetType().Name} is not supported.");
+            }
+        }
+
 
         private ImageFileMessageContentItem TransformAzureAIAgentImageFile(ImageFileMessageContentItem imageFile, List<IFileMapping> newFileMappings)
         {
@@ -800,14 +815,14 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 Id = imageFile.FileId!,
                 UPN = _callContext.CurrentUserIdentity!.UPN!,
                 InstanceId = _instanceId,
-                FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileMappings}/{imageFile.FileId}",
+                FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureAI}/{AzureAIResourceTypeNames.AgentFileMappings}/{imageFile.FileId}",
                 OriginalFileName = imageFile.FileId!,
                 FileContentType = "image/png",
-                ProjectConnectionString = workflow!.ProjectConnectionString,
+                ProjectConnectionString = workflow!.ProjectConnectionString!,
                 AzureAIAgentFileId = imageFile.FileId!,
                 AzureAIAgentFileGeneratedOn = DateTimeOffset.UtcNow
             });
-            imageFile.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{imageFile.FileId}";
+            imageFile.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ResourceProviderNames.FoundationaLLM_AzureAI}/{imageFile.FileId}";
             return imageFile;
         }
 
@@ -826,14 +841,14 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     Id = filePath.FileId,
                     UPN = _callContext.CurrentUserIdentity!.UPN!,
                     InstanceId = _instanceId,
-                    FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileMappings}/{filePath.FileId}",
+                    FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureAI}/{AzureAIResourceTypeNames.AgentFileMappings}/{filePath.FileId}",
                     OriginalFileName = filePath.FileId,
                     FileContentType = "application/octet-stream",
-                    ProjectConnectionString = workflow!.ProjectConnectionString,
+                    ProjectConnectionString = workflow!.ProjectConnectionString!,
                     AzureAIAgentFileId = filePath.FileId,
                     AzureAIAgentFileGeneratedOn = DateTimeOffset.UtcNow
                 });
-                filePath.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{filePath.FileId}";
+                filePath.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ResourceProviderNames.FoundationaLLM_AzureAI}/{filePath.FileId}";
             }
             else
                 filePath.FileUrl = null;

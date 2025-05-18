@@ -60,9 +60,15 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         typeof(AzureAIProject))
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AzureAIProject>)])
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AzureAIProject>)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AzureAIProject)], [typeof(ResourceProviderUpsertResult<AzureAIProject>)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], [])
                     ],
-                    Actions = []
+                    Actions = [
+                         new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
+                        ])
+                    ]
                 }
             }
         };

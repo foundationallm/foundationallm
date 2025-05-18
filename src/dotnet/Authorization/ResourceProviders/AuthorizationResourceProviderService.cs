@@ -89,7 +89,13 @@ namespace FoundationaLLM.Authorization.ResourceProviders
         #endregion
 
         /// <inheritdoc/>
-        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string? serializedResource, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<object> UpsertResourceAsync(
+            ResourcePath resourcePath,
+            string? serializedResource,
+            ResourceProviderFormFile? formFile,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity) =>
+
             resourcePath.MainResourceTypeName switch
             {
                 AuthorizationResourceTypeNames.RoleAssignments => await UpdateRoleAssignments(resourcePath, serializedResource!, userIdentity),
@@ -122,7 +128,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
 
             var roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
                 _instanceSettings.Id,
-                new RoleAssignmentRequest()
+                new RoleAssignmentCreateRequest()
                 {
                     Name = roleAssignment.Name,
                     Description = roleAssignment.Description,

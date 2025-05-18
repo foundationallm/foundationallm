@@ -52,6 +52,6 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetCoreConfiguration(string instanceId) =>
-            new OkObjectResult(await _coreService.GetCoreConfiguration(instanceId, _callContext.CurrentUserIdentity!));
+            new OkObjectResult(await _coreService.GetCoreConfiguration(instanceId));
     }
 }

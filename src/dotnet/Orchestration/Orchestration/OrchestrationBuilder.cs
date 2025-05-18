@@ -229,6 +229,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AIModel} was not loaded.");
             if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Configuration, out var configurationResourceProvider))
                 throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Configuration} was not loaded.");
+            if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_AzureAI, out var azureAIResourceProvider))
+                throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureAI} was not loaded.");
 
             var explodedObjectsManager = new ExplodedObjectsManager();
 
@@ -292,6 +294,15 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             retrievedWorkflow.ObjectId!,
                             retrievedWorkflow);
 
+                        break;
+
+                    case AzureAIResourceTypeNames.Projects:
+                        var retrievedProject = await azureAIResourceProvider.GetResourceAsync<AzureAIProject>(
+                                resourceObjectId.ObjectId,
+                                currentUserIdentity);
+                        explodedObjectsManager.TryAdd(
+                            retrievedProject.ObjectId!,
+                            retrievedProject);
                         break;
                 }
             }
@@ -794,7 +805,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         UPN = currentUserIdentity.UPN!,
                         InstanceId = instanceId,
                         ConversationId = conversationId,
-                        ProjectConnectionString = workflow!.ProjectConnectionString,
+                        ProjectConnectionString = workflow!.ProjectConnectionString!,
                         AzureAIAgentId = azureAIAgentId!
                     };
 

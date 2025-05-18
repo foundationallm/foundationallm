@@ -23,7 +23,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<VectorizationPipeline>)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(VectorizationPipeline)], [typeof(ResourceProviderUpsertResult)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Write}|{RoleDefinitionNames.Data_Pipelines_Contributor}", [], [typeof(VectorizationPipeline)], [typeof(ResourceProviderUpsertResult)]),
                         new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], [])
                     ],
                     Actions = [
@@ -36,7 +36,22 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
                         ])
-                    ]
+                    ],
+                    SubTypes = new()
+                    {
+                        {
+                            VectorizationResourceTypeNames.VectorizationPipelineExecutions,
+                            new ResourceTypeDescriptor (
+                                VectorizationResourceTypeNames.VectorizationPipelineExecutions,
+                                typeof(VectorizationPipelineExecution))
+                            {
+                                AllowedTypes = [
+                                    new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderGetResult<VectorizationPipelineExecution>)]),
+                                ],
+                                Actions = []
+                            }
+                        }
+                    }
                 }
             },
             {

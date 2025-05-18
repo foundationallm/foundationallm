@@ -40,7 +40,7 @@ Param(
 	[parameter(Mandatory = $false, HelpMessage = "CIDR block for the VNet - e.g., 10.220.128.0/20")][string]
 	$fllmVnetCidr = "10.220.128.0/20",
 	[parameter(Mandatory = $false, HelpMessage = "CIDR block for NSGs to allow VPN or HUB VNet - e.g., 192.168.101.0/28,10.0.0.0/16 - comma separated - updates allow-vpn nsg rule")][string]
-	$fllmAllowedExternalCidrs = "192.168.101.0/28"
+	$fllmAllowedExternalCidrs = "192.168.100.0/24"
 )
 
 $TranscriptName = $($MyInvocation.MyCommand.Name) -replace ".ps1", ".transcript.txt"
@@ -88,7 +88,7 @@ $envValues = @{
 	"FLLM_VNET_CIDR"            = $fllmVnetCidr
 	"FLLM_MGMT_API_HOSTNAME"    = $hostnames["managementapi"]
 	"FLLM_MGMT_PORTAL_HOSTNAME" = $hostnames["managementui"]
-	"FLLM_USER_PORTAL_HOSTNAME" = $hostnames["chatui"]
+	"FLLM_CHAT_PORTAL_HOSTNAME" = $hostnames["chatui"]
 }
 
 # Show azd environments

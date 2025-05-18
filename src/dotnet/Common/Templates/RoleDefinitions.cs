@@ -1,5 +1,5 @@
-using System.Collections.ObjectModel;
 using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
+using System.Collections.ObjectModel;
 
 namespace FoundationaLLM.Common.Models.Authorization
 {
@@ -207,6 +207,98 @@ namespace FoundationaLLM.Common.Models.Authorization
                             },],
                         CreatedOn = DateTimeOffset.Parse("2024-10-22T00:00:00.0000000Z"),
                         UpdatedOn = DateTimeOffset.Parse("2024-10-22T00:00:00.0000000Z"),
+                        CreatedBy = null,
+                        UpdatedBy = null
+                    }
+                },
+                {
+                    "/providers/FoundationaLLM.Authorization/roleDefinitions/2da16a58-ed63-431a-b90e-9df32c2cae4a",
+                    new RoleDefinition
+                    {
+                        Name = "2da16a58-ed63-431a-b90e-9df32c2cae4a",
+                        Type = "FoundationaLLM.Authorization/roleDefinitions",
+                        ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/2da16a58-ed63-431a-b90e-9df32c2cae4a",
+                        DisplayName = "Data Pipelines Contributor",
+                        Description = "Create new data pipelines.",
+                        AssignableScopes = [
+                            "/",],
+                        Permissions = [                            
+                            new RoleDefinitionPermissions
+                            {
+                                Actions = [
+                                    "FoundationaLLM.DataPipeline/dataPipelines/read",
+                                    "FoundationaLLM.Vectorization/vectorizationPipelines/read",
+                                    "FoundationaLLM.DataSource/dataSources/read",
+                                    "FoundationaLLM.Vectorization/textPartitioningProfiles/read",
+                                    "FoundationaLLM.Vectorization/textEmbeddingProfiles/read",
+                                    "FoundationaLLM.Vectorization/indexingProfiles/read",
+                                    "FoundationaLLM.Plugin/plugins/read",],
+                                NotActions = [],
+                                DataActions = [],
+                                NotDataActions = [],
+                            },],
+                        CreatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
+                        UpdatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
+                        CreatedBy = null,
+                        UpdatedBy = null
+                    }
+                },
+                {
+                    "/providers/FoundationaLLM.Authorization/roleDefinitions/3f28aa77-a854-4aa7-ae11-ffda238275c9",
+                    new RoleDefinition
+                    {
+                        Name = "3f28aa77-a854-4aa7-ae11-ffda238275c9",
+                        Type = "FoundationaLLM.Authorization/roleDefinitions",
+                        ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/3f28aa77-a854-4aa7-ae11-ffda238275c9",
+                        DisplayName = "Agents Contributor",
+                        Description = "Create new agents.",
+                        AssignableScopes = [
+                            "/",],
+                        Permissions = [                            
+                            new RoleDefinitionPermissions
+                            {
+                                Actions = [
+                                    "FoundationaLLM.Agent/agents/read",
+                                    "FoundationaLLM.Agent/workflows/read",
+                                    "FoundationaLLM.Agent/tools/read",
+                                    "FoundationaLLM.Prompt/prompts/read",
+                                    "FoundationaLLM.DataSource/dataSources/read",
+                                    "FoundationaLLM.Vectorization/textEmbeddingProfiles/read",
+                                    "FoundationaLLM.Vectorization/indexingProfiles/read",
+                                    "FoundationaLLM.Configuration/apiEndpointConfigurations/read",
+                                    "FoundationaLLM.AIModel/aiModels/read",
+                                    "FoundationaLLM.Plugin/plugins/read",],
+                                NotActions = [],
+                                DataActions = [],
+                                NotDataActions = [],
+                            },],
+                        CreatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
+                        UpdatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
+                        CreatedBy = null,
+                        UpdatedBy = null
+                    }
+                },
+                {
+                    "/providers/FoundationaLLM.Authorization/roleDefinitions/8c5ea0d3-f5a1-4be5-90a7-a12921c45542",
+                    new RoleDefinition
+                    {
+                        Name = "8c5ea0d3-f5a1-4be5-90a7-a12921c45542",
+                        Type = "FoundationaLLM.Authorization/roleDefinitions",
+                        ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/8c5ea0d3-f5a1-4be5-90a7-a12921c45542",
+                        DisplayName = "Agent Access Tokens Contributor",
+                        Description = "Create new agent access tokens.",
+                        AssignableScopes = [
+                            "/",],
+                        Permissions = [                            
+                            new RoleDefinitionPermissions
+                            {
+                                Actions = [],
+                                NotActions = [],
+                                DataActions = [],
+                                NotDataActions = [],
+                            },],
+                        CreatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
+                        UpdatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
                         CreatedBy = null,
                         UpdatedBy = null
                     }

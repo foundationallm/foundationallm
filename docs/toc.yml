@@ -121,6 +121,8 @@ items:
     href: operations/backups.md
   - name: Logging and auditing
     href: operations/logs.md
+  - name: Purge user conversations
+    href: operations/purge-conversations.md
   - name: Guidance for creating release notes
     href: operations/release-notes.md
   - name: Platform security features & best practices

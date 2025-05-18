@@ -89,11 +89,18 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             files: Optional[List[FoundationaLLMCodeInterpreterFile]] = None,
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
             runnable_config: RunnableConfig = None) -> Tuple[str, List[ContentArtifact]]:
-        # SessionsPythonREPLTool only supports synchronous execution.
+        
         # Get the original prompt
-        original_prompt = python_code
-        if runnable_config is not None and RunnableConfigKeys.ORIGINAL_USER_PROMPT in runnable_config['configurable']:
-            original_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT]
+        if runnable_config is None:
+            original_prompt = ''
+        else:
+            user_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT] \
+                if RunnableConfigKeys.ORIGINAL_USER_PROMPT in runnable_config['configurable'] \
+                else None
+            user_prompt_rewrite = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE] \
+                if RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE in runnable_config['configurable'] \
+                else None
+            original_prompt = user_prompt_rewrite or user_prompt or ''
 
         content_artifacts = []
         operation_id = None
@@ -122,6 +129,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         beginning_files_list = beginning_files_list_response['file_records']
 
         # Execute the code
+        # SessionsPythonREPLTool only supports synchronous execution.
         result = self.repl.invoke(python_code)
 
         # Get an updated list of files from the code interpreter

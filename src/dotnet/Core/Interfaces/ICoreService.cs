@@ -1,4 +1,3 @@
-using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
@@ -94,10 +93,9 @@ public interface ICoreService
     /// <param name="sessionId">The session id from which the attachment is uploaded.</param>
     /// <param name="attachmentFile">The <see cref="AttachmentFile"/> object containing the attachment file data.</param>
     /// <param name="agentName">The name of the agent.</param>
-    /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
     /// <returns>A <see cref="ResourceProviderUpsertResult{T}"/> object with the FoundationaLLM.Attachment resource provider object id.</returns>
     Task<ResourceProviderUpsertResult<AttachmentFile>> UploadAttachment(
-        string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity);
+        string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName);
 
     /// <summary>
     /// Downloads an attachment.
@@ -105,7 +103,6 @@ public interface ICoreService
     /// <param name="instanceId">The FoundationaLLM instance id.</param>
     /// <param name="fileProvider">The name of the file provider.</param>
     /// <param name="fileId">The identifier of the file.</param>
-    /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
     /// <returns>An <see cref="AttachmentFile"/> object with the properties and the content of the attachment.</returns>
     /// <remarks>
     /// The following file providers are supported:
@@ -115,17 +112,16 @@ public interface ICoreService
     /// </list>
     /// </remarks>
     Task<AttachmentFile?> DownloadAttachment(
-        string instanceId, string fileProvider, string fileId, UnifiedUserIdentity userIdentity);
+        string instanceId, string fileProvider, string fileId);
 
     /// <summary>
     /// Deletes one or more attachments.
     /// </summary>
     /// <param name="instanceId">The FoundationaLLM instance id.</param>
     /// <param name="resourcePaths">The list of resources to be deleted.</param>
-    /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
     /// <returns>A dictionary with the delete operation result for each resource path.</returns>
     Task<Dictionary<string, ResourceProviderDeleteResult?>> DeleteAttachments(
-        string instanceId, List<string> resourcePaths, UnifiedUserIdentity userIdentity);
+        string instanceId, List<string> resourcePaths);
 
     #endregion
 
@@ -164,9 +160,8 @@ public interface ICoreService
     /// Gets the file store configuration for the given instance.
     /// </summary>
     /// <param name="instanceId">The FoundationaLLM instance id.</param>
-    /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
     /// <returns>The file store configuration.</returns>
-    Task<CoreConfiguration> GetCoreConfiguration(string instanceId, UnifiedUserIdentity userIdentity);
+    Task<CoreConfiguration> GetCoreConfiguration(string instanceId);
 
     #endregion
 }

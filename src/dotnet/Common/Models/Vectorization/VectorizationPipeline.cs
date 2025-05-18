@@ -54,6 +54,12 @@ namespace FoundationaLLM.Common.Models.Vectorization
         public string? TriggerCronSchedule { get; set; }
 
         /// <summary>
+        /// Gets or sets the identifier of the latest execution of the pipeline.
+        /// </summary>
+        [JsonPropertyName("latest_execution_id")]
+        public string? LatestExecutionId { get; set; }
+
+        /// <summary>
         /// Set default property values.
         /// </summary>
         public VectorizationPipeline() =>

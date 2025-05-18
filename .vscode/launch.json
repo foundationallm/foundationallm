@@ -15,6 +15,16 @@
             "justMyCode": false
         },
         {
+            "name": "FoundationaLLMAgentPlugins - Debug Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins/.venv/Scripts/python.exe",
+            "cwd" : "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins/test",
+            "justMyCode": false
+        },
+        {
             "command": "npm run dev",
             "name": "User Portal UI",
             "request": "launch",
@@ -83,6 +93,26 @@
             "cwd" : "${workspaceFolder}/src/python/PythonCodeSessionAPI/app",
             "args": ["main:app","--reload", "--port", "8000"],
             "python": "${workspaceFolder}/src/python/PythonCodeSessionAPI/.venv/Scripts/python.exe"
+        },
+        {
+            "name": "Python: Vectorization Pipeline",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd" : "${workspaceFolder}/samples/vectorization-pipeline",
+            "python": "${workspaceFolder}/samples/vectorization-pipeline/.venv/Scripts/python.exe",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Samples",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd" : "${workspaceFolder}/samples/python",
+            "python": "${workspaceFolder}/samples/python/.venv/Scripts/python.exe",
+            "justMyCode": true
         },
         {
             "name": "Python: Current File",

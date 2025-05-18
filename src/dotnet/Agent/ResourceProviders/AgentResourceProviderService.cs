@@ -4,6 +4,7 @@ using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Constants.AzureAI;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.OpenAI;
@@ -20,6 +21,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
+using FoundationaLLM.Common.Models.ResourceProviders.AzureAI;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.Vectorization;
@@ -28,6 +30,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Graph.Models;
 using System.Data;
 using System.Text;
 using System.Text.Json;
@@ -122,12 +125,18 @@ namespace FoundationaLLM.Agent.ResourceProviders
             };
 
         /// <inheritdoc/>
-        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string? serializedResource, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<object> UpsertResourceAsync(
+            ResourcePath resourcePath,
+            string? serializedResource,
+            ResourceProviderFormFile? formFile,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity) =>
+
             resourcePath.ResourceTypeName switch
             {
-                AgentResourceTypeNames.Agents => await UpdateAgent(resourcePath, serializedResource!, userIdentity),
+                AgentResourceTypeNames.Agents => await UpdateAgent(resourcePath, serializedResource!, authorizationResult, userIdentity),
                 AgentResourceTypeNames.AgentFiles => await UpdateAgentFile(resourcePath, formFile!, userIdentity),
-                AgentResourceTypeNames.AgentAccessTokens => await UpdateAgentAccessToken(resourcePath, serializedResource!),
+                AgentResourceTypeNames.AgentAccessTokens => await UpdateAgentAccessToken(resourcePath, serializedResource!, authorizationResult, userIdentity),
                 AgentResourceTypeNames.AgentFileToolAssociations => await UpdateFileToolAssociations(resourcePath, serializedResource!, userIdentity),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
@@ -220,13 +229,29 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
         #region Resource management
 
-        private async Task<ResourceProviderUpsertResult> UpdateAgent(ResourcePath resourcePath, string serializedAgent, UnifiedUserIdentity userIdentity)
+        private async Task<ResourceProviderUpsertResult> UpdateAgent(
+            ResourcePath resourcePath,
+            string serializedAgent,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity)
         {
             var agent = JsonSerializer.Deserialize<AgentBase>(serializedAgent)
                 ?? throw new ResourceProviderException("The object definition is invalid.",
                     StatusCodes.Status400BadRequest);
 
             var existingAgentReference = await _resourceReferenceStore!.GetResourceReference(agent.Name);
+
+            if (existingAgentReference is not null
+                && !authorizationResult.Authorized)
+            {
+                // The resource already exists and the user is not authorized to update it.
+                // Irrespective of whether the user has the required role or not, we need to throw an exception in the case of existing resources.
+                // The required role only allows the user to create a new resource.
+                // This check is needed because it's only here that we can determine if the resource exists.
+                _logger.LogWarning("Access to the resource path {ResourcePath} was not authorized for user {UserName} : userId {UserId}.",
+                    resourcePath.RawResourcePath, userIdentity!.Username, userIdentity!.UserId);
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+            }
 
             if (resourcePath.ResourceTypeInstances[0].ResourceId != agent.Name)
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
@@ -371,6 +396,106 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 }
             }
 
+            if (agent.Workflow is AzureAIAgentServiceAgentWorkflow)
+            {
+                agent.Properties ??= [];
+
+                (var agentId, var vectorStoreId, var workflowBase, var agentAIModel, var agentPrompt, var project)
+                    = await ResolveAgentServiceProperties(agent, userIdentity);
+
+                var workflow = (workflowBase as AzureAIAgentServiceAgentWorkflow)!;
+                var gatewayClient = await GetGatewayServiceClient(userIdentity);
+
+                if(string.IsNullOrWhiteSpace(workflow.ProjectConnectionString))
+                    workflow.ProjectConnectionString = project.ProjectConnectionString;
+
+                if (string.IsNullOrWhiteSpace(agentId))
+                {
+                    // The agent uses the Azure AI Agent Service workflow.
+                    // but it does not have an associated assistant.
+                    // Proceed to create the Azure AI Agent Service agent.
+
+                    _logger.LogInformation(
+                        "Starting to create the Azure AI Agent Service agent for agent {AgentName}",
+                        agent.Name);
+
+
+                    #region Create Azure AI Agent Service agent                   
+
+                    Dictionary<string, object> parameters = new()
+                        {
+                            { AzureAIAgentServiceCapabilityParameterNames.CreateAgent, true },
+                            { AzureAIAgentServiceCapabilityParameterNames.ProjectConnectionString, project.ProjectConnectionString },
+                            { AzureAIAgentServiceCapabilityParameterNames.AzureAIModelDeploymentName, agentAIModel.DeploymentName!},
+                            { AzureAIAgentServiceCapabilityParameterNames.AgentPrompt, (agentPrompt as MultipartPrompt)!.Prefix! }
+                        };
+
+                    var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
+                        _instanceSettings.Id,
+                        AgentCapabilityCategoryNames.AzureAIAgents,
+                        $"FoundationaLLM - {agent.Name}",
+                        parameters);
+
+                    var newAgentId = default(string);
+
+                    if (agentCapabilityResult.TryGetValue(AzureAIAgentServiceCapabilityParameterNames.AgentId, out var newAgentObject)
+                        && newAgentObject != null)
+                        newAgentId = ((JsonElement)newAgentObject!).Deserialize<string>();
+
+                    var newVectorStoreId = default(string);
+                    if (agentCapabilityResult.TryGetValue(AzureAIAgentServiceCapabilityParameterNames.VectorStoreId, out var newVectorStoreObject)
+                        && newVectorStoreObject != null)
+                        newVectorStoreId = ((JsonElement)newVectorStoreObject!).Deserialize<string>();
+
+                    if (string.IsNullOrWhiteSpace(newAgentId))
+                        throw new ResourceProviderException($"Could not create an Azure AI Agent Service agent for the agent {agent} which requires it.",
+                            StatusCodes.Status500InternalServerError);
+                    if (string.IsNullOrWhiteSpace(newVectorStoreId))
+                        throw new ResourceProviderException($"Could not create an Azure AI Agent Service agent vector store for the agent {agent} which requires it.",
+                            StatusCodes.Status500InternalServerError);
+
+                    _logger.LogInformation(
+                        $"The Azure AI Agent Service Agent with ID: {newAgentId} for agent {agent.Name} was created successfully with Vector Store: {newVectorStoreId}.",
+                        newAgentId, agent.Name);
+
+                    workflow.VectorStoreId = newVectorStoreId;
+                    workflow.AgentId = newAgentId;
+
+                    #endregion
+                }
+                else
+                {
+                    // Verify if the agent has a vector store id.                   
+                    if (string.IsNullOrEmpty(workflow.VectorStoreId))
+                    {
+                        // Add vector store to existing assistant
+                        Dictionary<string, object> parameters = new()
+                        {
+                            { AzureAIAgentServiceCapabilityParameterNames.CreateVectorStore, true },
+                            { AzureAIAgentServiceCapabilityParameterNames.ProjectConnectionString, project.ProjectConnectionString },
+                            { AzureAIAgentServiceCapabilityParameterNames.AgentId, agentId }
+                        };
+
+                        // Pass the existing assistant id as the capability name
+                        var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
+                            _instanceSettings.Id,
+                            AgentCapabilityCategoryNames.AzureAIAgents,
+                            string.Empty,
+                            parameters);
+
+                        var newVectorStoreId = default(string);
+                        if (agentCapabilityResult.TryGetValue(AzureAIAgentServiceCapabilityParameterNames.VectorStoreId, out var newVectorStoreObject)
+                            && newVectorStoreObject != null)
+                            newVectorStoreId = ((JsonElement)newVectorStoreObject!).Deserialize<string>();
+                        if (string.IsNullOrWhiteSpace(newVectorStoreId))
+                            throw new ResourceProviderException($"Could not create an Azure AI Agent Service vector store id for the agent {agent} which requires it.",
+                                StatusCodes.Status500InternalServerError);
+
+                        workflow.VectorStoreId = newVectorStoreId;
+                    }
+                }
+            }
+
             var validator = _resourceValidatorFactory.GetValidator(agentReference.ResourceType);
             if (validator is IValidator agentValidator)
             {
@@ -391,8 +516,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 virtualSecurityGroupGenerated = true;
             }
 
-            UpdateBaseProperties(agent, userIdentity, isNew: existingAgentReference == null);
-            if (existingAgentReference == null)
+            UpdateBaseProperties(agent, userIdentity, isNew: existingAgentReference is null);
+            if (existingAgentReference is null)
                 await CreateResource<AgentBase>(agentReference, agent);
             else
                 await SaveResource<AgentBase>(existingAgentReference, agent);
@@ -400,7 +525,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             var upsertResult = new ResourceProviderUpsertResult
             {
                 ObjectId = agent!.ObjectId,
-                ResourceExists = existingAgentReference != null
+                ResourceExists = existingAgentReference is null
             };
 
             if (virtualSecurityGroupGenerated)
@@ -412,7 +537,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     var roleAssignmentDescription = $"Reader role for the {agent.Name} agent's virtual security group";
                     var roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
                         _instanceSettings.Id,
-                        new RoleAssignmentRequest()
+                        new RoleAssignmentCreateRequest()
                         {
                             Name = roleAssignmentName,
                             Description = roleAssignmentDescription,
@@ -435,7 +560,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         roleAssignmentName = Guid.NewGuid().ToString();
                         roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
                             _instanceSettings.Id,
-                            new RoleAssignmentRequest()
+                            new RoleAssignmentCreateRequest()
                             {
                                 Name = roleAssignmentName,
                                 Description = roleAssignmentDescription,
@@ -479,7 +604,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 agentClientSecretKey.InstanceId,
                 agentClientSecretKey.ContextId);
 
-            return secretKeys.Select(k => new ResourceProviderGetResult<AgentAccessToken>()
+            return [.. secretKeys.Select(k => new ResourceProviderGetResult<AgentAccessToken>()
             {
                 Actions = [],
                 Roles = [],
@@ -491,14 +616,27 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     Active = k.Active,
                     ExpirationDate = k.ExpirationDate
                 }
-            }).ToList();
+            })];
         }
 
-        private async Task<ResourceProviderUpsertResult> UpdateAgentAccessToken(ResourcePath resourcePath, string serializedAgentAccessToken)
+        private async Task<ResourceProviderUpsertResult> UpdateAgentAccessToken(
+            ResourcePath resourcePath,
+            string serializedAgentAccessToken,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity)
         {
             var agentAccessToken = JsonSerializer.Deserialize<AgentAccessToken>(serializedAgentAccessToken)
                 ?? throw new ResourceProviderException("The object definition is invalid.",
                     StatusCodes.Status400BadRequest);
+
+            if (!authorizationResult.Authorized
+                || !authorizationResult.HasRequiredRole)
+            {
+                // Agent access keys can be created or updated only by users with the required role and authorization on the agent.
+                _logger.LogWarning("Access to the resource path {ResourcePath} was not authorized for user {UserName} : userId {UserId}.",
+                    resourcePath.RawResourcePath, userIdentity!.Username, userIdentity!.UserId);
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+            }
 
             var agentClientSecretKey = new AgentClientSecretKey
             {
@@ -1181,6 +1319,24 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     .GetResourceAsync<APIEndpointConfiguration>(agentAIModel.EndpointObjectId!, userIdentity);
 
             return (openAIAssistantId!, openAiAssistantVectorStoreId!, workflow!, agentAIModel, agentPrompt, agentAIModelAPIEndpoint);
+        }
+
+        private async Task<(string, string, AgentWorkflowBase, AIModelBase, PromptBase, AzureAIProject)> ResolveAgentServiceProperties(AgentBase agent, UnifiedUserIdentity userIdentity)
+        {
+            agent.Properties ??= [];
+
+            var workflow = (agent.Workflow as AzureAIAgentServiceAgentWorkflow)!;
+            var agentId = workflow.AgentId;
+            var vectorStoreId = workflow.VectorStoreId;
+
+            var agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
+                            .GetResourceAsync<AIModelBase>(workflow.MainAIModelObjectId!, userIdentity);
+            var agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
+                            .GetResourceAsync<PromptBase>(workflow.MainPromptObjectId!, userIdentity);
+            var project = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AzureAI)
+                    .GetResourceAsync<AzureAIProject>(workflow.AIProjectObjectId!, userIdentity);            
+
+            return (agentId!, vectorStoreId!, workflow!, agentAIModel, agentPrompt, project);
         }
 
         /// <summary>

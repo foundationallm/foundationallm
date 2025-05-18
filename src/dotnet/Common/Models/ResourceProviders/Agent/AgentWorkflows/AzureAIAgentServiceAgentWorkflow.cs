@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using FoundationaLLM.Common.Models.ResourceProviders.AzureAI;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
 {
@@ -22,11 +24,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
         /// </summary>
         [JsonPropertyName("vector_store_id")]
         public string? VectorStoreId { get; set; }
-
+      
         /// <summary>
         /// The Azure AI project connection string for the agent workflow.
         /// </summary>
         [JsonPropertyName("project_connection_string")]
-        public required string ProjectConnectionString { get; set; }
+        public string? ProjectConnectionString { get; set; }
     }
 }

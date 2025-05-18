@@ -41,104 +41,83 @@ You will use the following tools during deployment:
 
 Follow the steps below to deploy the solution to your Azure subscription.
 
-1. Ensure all the prerequisites are met.
+1. Ensure all the prerequisites are met and gather the following information (you will be prompted for it during the deployment):
+
+  - Azure Service Principal Credentials for Deployment
+    - Requires `Directory Reader` role on the Azure Tenant
+    - Requires `Owner` role on the target resource groups
+      - If the target resource groups do not already exist, requires `Owner` role on the target subscription
+    - Requires `DNS Zone Contributor` role on the DNS resource group (resource group containing private DNS zones necessary for private endpoint provisioning)
+    - Requires `Network Contributor` role on the HUB VNET resource (virtual network resource to which the FoundationaLLM VNET will be peered)
+    - Either `Owner` of the AD Group specified for the `FoundationaLLM Administrator` role or a member of said AD Group
+  - FoundationaLLM Project ID - a 3 to 8 character identifier for a FoundationaLLM deployment
+  - Target Azure Location - default is `eastus2`
+  - Target Resource Groups for the specified workloads
+    - APP - defaults to `rg-(azd environment name)-(azure location)-app-(project id)`
+    - AUTH - defaults to `rg-(azd environment name)-(azure location)-auth-(project id)`
+    - DATA - defaults to `rg-(azd environment name)-(azure location)-data-(project id)`
+    - JBX - defaults to `rg-(azd environment name)-(azure location)-jbx-(project id)`
+    - NET - defaults to `rg-(azd environment name)-(azure location)-net-(project id)`
+    - OAI - defaults to `rg-(azd environment name)-(azure location)-oai-(project id)`
+    - OPS - defaults to `rg-(azd environment name)-(azure location)-ops-(project id)`
+    - STORAGE - defaults to `rg-(azd environment name)-(azure location)-storage-(project id)`
+    - VEC - defaults to `rg-(azd environment name)-(azure location)-vec-(project id)`
+  - Pre-created AD Group for the `FoundationaLLM Administrator` role (default name is `FLLM-Admins`)
+  - Pre-created AD Group for the `FoundationaLLM Users` role (default name is `FLLM-Users`)
+  - Pre-created and configured FoundationaLLM specific App Registrations necessary to facilitate RBAC (see [here](authentication-authorization/authorization-setup-entra.md) and the Entra setup script in `deploy/common/scripts/Create-FllmEntraIdApps.ps1`)
+    - FoundationaLLM-Core-API
+    - FoundationaLLM-Reader
+    - FoundationaLLM-Core-Portal
+    - FoundationaLLM-Management-API
+    - FoundationaLLM-Authorization-API
+    - FoundationaLLM-Management-Portal
+  - Private DNS Zone resource group, subscription Id (if it is in a different subscription), and tenant Id
+  - HUB virtual network resource, resource group, subscription Id (if it is in a different subscription), and tenant Id
+  - FoundationaLLM Virtual Network and AKS configurations
+    - AKS Service CIDR range (default is `10.100.0.0/16`)
+    - FoundationaLLM VNET CIDR range (default is `10.220.128.0/20` - must be a `/20` netmask)
+    - Allowed External CIDRs or IPs (default is `192.168.100.0/24,192.168.101.0/28`)
+    - Backend AKS User Node Pool VM SKU (default is `Standard_D8_v5`)
+    - Backend AKS System Node Pool VM SKU (default is `Standard_D2_v5`)
+    - Frontend AKS User Node Pool VM SKU (default is `Standard_D2_v5`)
+    - Frontend AKS System Node Pool VM SKU (default is `Standard_D2_v5`)
+    - AKS Node Pool VM Availability Zones (default is `1,2,3`)
+    - **Ensure you have adequate quota and availability for selected SKUs in target region and availability zones - a minimal configuration using the same family requires a quota of 64 vCPUs**
+  - Hostnames and associated SSL certificates in PFX format for the following endpoints
+    - User Portal (i.e `chat.example.com`)
+    - Management Portal (i.e. `management.example.com`)
+    - Core API (i.e. `api.example.com`)
+    - Management API (i.e. `management-api.example.com`)
+    - **The SSL certificates will need to be copied to the corresponding folders in `deploy/standard/certs`**
+  - Desired Azure Container Registry endpoint and credentials if you are escrowing container images and helm charts
 
 2. From a PowerShell prompt, execute the following to clone the repository:
 
     ```pwsh
       git clone https://github.com/solliancenet/foundationallm.git
       cd foundationallm
-      git checkout release/0.9.1-rc124
+      git checkout release/0.9.6
     ```
 
-3. Install AzCopy
-
-    ```pwsh
-      cd .\deploy\common\scripts
-      .\Get-AzCopy.ps1
-    ```
-
-4. Run the following commands to log into Azure CLI, Azure Developer CLI and AzCopy:
-
-    ```pwsh
-    cd .\deploy\standard
-    az login                                   # Log into Azure CLI
-    azd auth login                             # Log into Azure Developer CLI
-    ..\common\tools\azcopy\azcopy login        # Log into AzCopy
-    ```
-
-5. Set up an `azd` environment targeting your Azure subscription and desired deployment region:
+3. Set up an `azd` environment targeting your Azure subscription and desired deployment region:
 
     ```pwsh
     # Set your target Subscription and Location
     azd env new --location <Supported Azure Region> --subscription <Azure Subscription ID>
     ```
 
-6. Set FoundationaLLM Entra Parameters
-
-    ```pwsh
-    cd .\deploy\standard
-    ..\common\scripts\Set-AzdEnvEntra.ps1
-    ```
-
-7. Set FoundationaLLM Network Parameters
-
-    ```pwsh
-    cd .\deploy\standard
-    ..\common\scripts\Set-AzdEnvAksVnet.ps1 -fllmAksServiceCidr <aksServiceCidr> -fllmVnetCidr <vnetCidr> -fllmAllowedExternalCidrs <allowedExternalCidrs>
-
-    # aksServiceCidr - CIDR block for the AKS Services - e.g., 10.100.0.0/16
-    # vnetCidr             - CIDR block for the VNet - e.g., 10.220.128.0/20
-    # allowedExternalCidrs - CIDR block for NSGs to allow VPN or HUB VNet
-    #                        e.g., 192.168.101.0/28,10.0.0.0/16
-    #                        comma separated
-    #                        updates allow-vpn nsg rule
-    ```
-
-8. Set FoundationaLLM Hub Network Parameters
-
-    ```pwsh
-    cd .\deploy\standard
-    ..\common\scripts\Set-AzdEnvHubVnet.ps1 -hubTenantId <hubTenantId> `
-                                            -hubVnetName <hubVnetName> `
-                                            -hubResourceGroupName <hubResourceGroupName> `
-                                            -hubSubscriptionId <hubSubscriptionId>
-
-    # hubTenantId          - Id of the Azure Tenant in which the hub VNET resides
-    # hubVnetName          - Name of the Hub VNET
-    # hubResourceGroupName - Name of Azure resource group in which hub VNET resides
-    # hubSubscriptionId    - Id of Azure subscription in which hub VNET resides
-    ```
-    > Note: If hub resources reside in an Azure tenant/subscription other than the target deployment tenant/subscription, you will need to make sure you are logged into that tenant and subscription via `az login` before executing this step.
-
-9.  Provision SSL certificates for the appropriate domains and package them in PFX format.  Place the PFX files in `foundationallm/deploy/standard/certs` following the naming convention below.  The values for `Host Name` and `Domain Name` should match the values you provided in your deployment manifest:
+4.  Provision SSL certificates for the appropriate domains and package them in PFX format.  Place the PFX files in `foundationallm/deploy/standard/certs` following the naming convention below.  The values for `Host Name` and `Domain Name` should match the values you provided in your deployment manifest:
 
     | Service Name      | Host Name         | Domain Name | File Name                         |
     | ----------------- | ----------------- | ----------- | --------------------------------- |
-    | core-api          | api               | example.com | api.example.com.pfx               |
-    | management-api    | management-api    | example.com | management-api.example.com.pfx    |
-    | chat-ui           | chat              | example.com | chat.example.com.pfx              |
-    | management-ui     | management        | example.com | management.example.com.pfx        |
-
-10. Set the endpoint hostnames using AZD
-
-    ```pwsh
-    azd env set FLLM_USER_PORTAL_HOSTNAME chat.example.com
-    azd env set FLLM_CORE_API_HOSTNAME api.example.com
-    azd env set FLLM_MGMT_PORTAL_HOSTNAME management.example.com
-    azd env set FLLM_MGMT_API_HOSTNAME management-api.example.com
-    ```
-
-11. If you are hosting FoundationaLLM and dependencies (like ingress-nginx) on an internally hosted container registry, be sure to set the following AZD environment settings:
-
-    ```pwsh
-    azd env set INGRESS_ESCROWED $true
-    azd env set FOUNDATIONALLM_REGISTRY mycrname.azurecr.io
-    ```
+    | coreapi           | api               | example.com | api.example.com.pfx               |
+    | managementapi     | management-api    | example.com | management-api.example.com.pfx    |
+    | chatui            | chat              | example.com | chat.example.com.pfx              |
+    | managementui      | management        | example.com | management.example.com.pfx        |
 
 ## Provision Infrastructure
 
-12. Provision platform infrastructure with `AZD`:
+5. Provision platform infrastructure with `AZD`:
 
     ```pwsh
     cd .\deploy\standard
@@ -151,9 +130,9 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
 ## Configure and Deploy
 
-13. Ensure that you have network access to the deployed resources and that DNS resolution to deployed resources is configured (this is environment specific).
+6. Ensure that you have network access to the deployed resources and that DNS resolution to deployed resources is configured (this is environment specific).
 
-14. Deploy to platform infrastructure with `AZD`:
+7. Deploy to platform infrastructure with `AZD`:
 
     ```pwsh
     cd .\deploy\standard
@@ -184,7 +163,7 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
 ### Running script to allow MS Graph access through Role Permissions
 
-15. After the deployment is complete, you will need to run the following script to allow MS Graph access through Role Permissions. (See below)
+8. After the deployment is complete, you will need to run the following script to allow MS Graph access through Role Permissions. (See below)
 
     > [!IMPORTANT]
     > The user running the script will need to have the appropriate permissions to assign roles to the managed identities. The user will need to be a `Global Administrator` or have the `Privileged Role Administrator` role in the Entra ID tenant.
@@ -192,9 +171,13 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
     ```pwsh
         cd .\deploy\standard
-        ..\common\scripts\Set-FllmGraphRoles.ps1 -resourceGroupName rg-<azd env name>
+        ..\common\scripts\Set-FllmGraphRoles.ps1 -resourceGroupName <APP workload resource group name>
     ```
-    Finally, you will need to update the Authorization Callbacks in the App Registrations created in the Entra ID tenant by running the following script:
+
+    > [!IMPORTANT]
+    > The user running the following script will need to have the appropriate permissions to update app registration configuration for the FoundationaLLM specific app registrations used to enable RBAC.  This means either `Owner` role on the aforementioned app registrations or the `Application Administrator` role in the Azure tenant.
+
+    Update the Authorization Callbacks in the App Registrations created in the Entra ID tenant by running the following script:
 
     ```pwsh
         cd .\deploy\standard
@@ -204,4 +187,4 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
 ## Connect and Test
 
-16. Visit the chat UI in your browser and send a message to verify the deployment.  The message can be very simple like "Who are you?".  The default agent should respond with a message explaining it's persona.
+9. Visit the chat UI in your browser and send a message to verify the deployment.  The message can be very simple like "Who are you?".  The default agent should respond with a message explaining it's persona.

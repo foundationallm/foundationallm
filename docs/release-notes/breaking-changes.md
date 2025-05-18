@@ -3,124 +3,49 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
-## Starting from 0.9.7-beta145
+## Starting from 0.9.7-beta147
 
-### Configuration changes
-
-The following App Configuration value have been added:
+The following App Configuration value has been added:
 
 |Name | Default value | Description |
 |--- | --- | --- |
-| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions` | `c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt` | The comma-separated list file extensions that are processed as sources for knowledge search. |
-| `FoundationaLLM:DataPipeline:State:CosmosDB:Containers` | `DataPipelines` | The names of the Azure Cosmos DB containers used by the Data Pipeline State service. |
-| `FoundationaLLM:DataPipeline:State:CosmosDB:Database` | `database` | The Azure Cosmos DB database name used by the Data Pipeline State service. |
-| `FoundationaLLM:DataPipeline:State:CosmosDB:Endpoint` | `<cosmos_db_endpoint>` | The endpoint URL of the Azure Cosmos DB used by the Data Pipeline State service. |
-| `FoundationaLLM:DataPipeline:State:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Data Pipeline State service. |
-| `FoundationaLLM:DataPipeline:State:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Data Pipeline State service to connect to the dedicated storage account. |
-| `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Data Pipeline API. |
-| `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Data Pipeline API to connect to the dedicated storage account. |
-| `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:FrontendWorkerQueue` | `frontend-worker` | The queue used to submit data pipeline work items for the Data Pipeline Frontend Worker service. |
-| `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:BackendWorkerQueue` | `backend-worker` | The queue used to submit data pipeline work items for the Data Pipeline Backend Worker service. |
-| `FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Data Pipeline Frontend Worker service. |
-| `FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Data Pipeline Frontend Worker service to connect to the dedicated storage account. |
-| `FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Queue` | `frontend-worker` | The queue used to process data pipeline work items by the Data Pipeline Frontend Worker service. |
-| `FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:ParallelProcessorsCount` | 10 | The number of parallel processors of data pipeline run work items used by the Data Pipeline Frontend Worker service. |
-| `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Data Pipeline Backend Worker service. |
-| `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Data Pipeline Backend Worker service to connect to the dedicated storage account. |
-| `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Queue` | `frontend-worker` | The queue used to process data pipeline work items by the Data Pipeline Backend Worker service. |
-| `FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:ParallelProcessorsCount` | 10 | The number of parallel processors of data pipeline run work items used by the Data Pipeline Backend Worker service. |
-| `FoundationaLLM:Events:Profiles:DataPipelineAPI` | `{"EventProcessingCycleSeconds":60,"Topics":[]}` | The event processing settings for the Data Pipeline API. |
-| `FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker` | `{"EventProcessingCycleSeconds":60,"Topics":[]}` | The event processing settings for the Data Pipeline Frontend Worker service. |
-| `FoundationaLLM:Events:Profiles:DataPipelineBackendWorker` | `{"EventProcessingCycleSeconds":60,"Topics":[]}` | The event processing settings for the Data Pipeline Backend Worker service. |
+| `FoundationaLLM:ResourceProviders:AzureAI:Storage:AccountName` | The name of the deployment storage account. | The name of the Azure Blob Storage account used by the FoundationaLLM.AzureAI resource provider. |
+| `FoundationaLLM:ResourceProviders:AzureAI:Storage:AuthenticationType` | `AzureIdentity` | The authentication type used by the FoundationaLLM.AzureAI resource provider to connect to the storage account. |
 
->[!IMPORTANT]
->A new Azure Cosmos DB container named `DataPipelines` must be created with a parition key of `/runId` and an autoscale transactional throughput of maximum 4000 RU/s.
+### Policy assignment changes
 
->[!IMPORTANT]
->A new `APIEndpointConfiguration` artifact named `DataPipelineAPI` must be created and saved to a file named `DataPipelineAPI.json`. The file must be created in the `FoundationaLLM.Configuration` resource provider folder of the FoundationaLLM storage account. The file must contain the following content:
+The `FLLM-Users` will need an entry in the `policy-assignments` file for `agentConversationMappings` and `agentFileMappings` resources in the `FoundationaLLM.AzureAI` resource provider.
 
 ```json
 {
-  "type": "api-endpoint",
-  "name": "DataPipelineAPI",
-  "object_id": "/instances/<instance_id>/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/DataPipelineAPI",
-  "display_name": null,
-  "description": null,
-  "cost_center": null,
-  "category": "General",
-  "subcategory": null,
-  "authentication_type": "APIKey",
-  "url": "<deployed_api_endpoint>",
-  "status_endpoint": "/instances/<instance_id>/status",
-  "url_exceptions": [],
-  "authentication_parameters": {
-    "api_key_configuration_name": "FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:APIKey",
-    "api_key_header_name": "X-API-KEY"
-  },
-  "timeout_seconds": 2400,
-  "retry_strategy_name": "ExponentialBackoff",
-  "provider": null,
-  "api_version": null,
-  "operation_type": null,
-  "properties": null,
-  "created_on": "0001-01-01T00:00:00-05:00",
-  "updated_on": "2025-02-25T11:10:55.3458874-05:00",
-  "created_by": null,
-  "updated_by": "ciprian@foundationaLLM.ai",
-  "deleted": false,
-  "expiration_date": null
-}
-```
-
->where `<deployed_api_endpoint>` is the endpoint of the Data Pipeline API.
->
->Also, a new entry must be added to the `_resource-references.json` file from the `FoundationaLLM.Configuration` resource provider folder with the following content:
-```json
+    "name": "87e6fd6e-ddd3-4054-b382-d7f0fa190aa9",
+    "type": "FoundationaLLM.Authorization/policyAssignments",
+    "object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/87e6fd6e-ddd3-4054-b382-d7f0fa190aa9",
+    "description": "Ownership on agent conversation mapping resources managed by the FoundationaLLM.AzureAI resource provider.",
+    "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+    "principal_id": "c54871ba-1fa1-439a-9e86-30d74dfe4a4a",
+    "principal_type": "Group",
+    "scope": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AzureAI/agentConversationMappings",
+    "created_on": "2025-01-14T17:58:19.5954014Z",
+    "updated_on": "2025-01-14T17:58:19.5954014Z",
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+},
 {
-    "Name": "DataPipelineAPI",
-    "Filename": "/FoundationaLLM.Configuration/DataPipelineAPI.json",
-    "Type": "api-endpoint",
-    "Deleted": false
+    "name": "0e7684d2-e8b9-40ba-88b4-3f358f93afa3",
+    "type": "FoundationaLLM.Authorization/policyAssignments",
+    "object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/0e7684d2-e8b9-40ba-88b4-3f358f93afa3",
+    "description": "Ownership on agent file mapping resources managed by the FoundationaLLM.AzureAI resource provider.",
+    "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+    "principal_id": "c54871ba-1fa1-439a-9e86-30d74dfe4a4a",
+    "principal_type": "Group",
+    "scope": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AzureAI/agentFileMappings",
+    "created_on": "2025-01-14T17:58:19.5954014Z",
+    "updated_on": "2025-01-14T17:58:19.5954014Z",
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
 }
 ```
->[!IMPORTANT]
-> Two new storage queues must be created in the FoundationaLLM storage account:
-> - `frontend-worker` - used by the Data Pipeline Frontend Worker to process requests.
-> - `backend-worker` - used by the Data Pipeline Backend Worker to process requests.
-> 
-> The previous queues `extract`, `partition`, `embed`, and `index` are now deprecated. For each existing FoundationaLLM deployment, they should be removed as soon as it is confirmed that the previous version of vectorization process is no longer used.
-
-### Role assignment changes
-
-The following role assignments must be added to the Data Pipeline API's Managed Identity:
-
-Name | Target
---- | ---
-`App Configuration Data Reader` | Azure App Configuration service.
-`Key Vault Secrets User` | Azure Key Vault service.
-`Storage Blob Data Contributor` | Storage account used by the FoundationaLLM Data Pipeline API.
-`Cosmos DB Built-in Data Contributor` | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline API.
-`Storage Queue Data Message Sender` | Storage account used by the FoundationaLLM Data Pipeline API.
-
-The following role assignments must be added to the Data Pipeline Frontend Worker's Managed Identity:
-
-Name | Target
---- | ---
-`App Configuration Data Reader` | Azure App Configuration service.
-`Key Vault Secrets User` | Azure Key Vault service.
-`Storage Blob Data Contributor` | Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.
-`Cosmos DB Built-in Data Contributor` | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Frontend Worker.
-`Storage Queue Data Message Processor` | Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.
-
-The following role assignments must be added to the Data Pipeline Backend Worker's Managed Identity:
-
-Name | Target
---- | ---
-`App Configuration Data Reader` | Azure App Configuration service.
-`Key Vault Secrets User` | Azure Key Vault service.
-`Storage Blob Data Contributor` | Storage account used by the FoundationaLLM Data Pipeline Backend Worker.
-`Cosmos DB Built-in Data Contributor` | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Backend Worker.
-`Storage Queue Data Message Processor` | Storage account used by the FoundationaLLM Data Pipeline Backend Worker.
 
 ## Starting from 0.9.7-beta139
 
@@ -138,7 +63,7 @@ The following App Configuration value have been removed as they are no longer ne
 1. ResourceProviders:AzureOpenAI:Storage:AuthenticationType
 2. ResourceProviders:AzureOpenAI:Storage:AccountName
 
-A new workflow resource must be added to support the AzureAIAgentServiceWorkflow.
+A new workflow resource must be added to support the AzureAIAgentServiceWorkflow. Ensure the reference is added to `_resource-references.json` as well.
 
 ```json
 {
