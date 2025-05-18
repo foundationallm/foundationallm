@@ -125,21 +125,18 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             // Save the text content to the data pipeline state
             var outputArtifactId = $"{dataPipelineRunWorkItem.InputArtifactId}.txt";
-            var outputArtifactPath = string.Join('/',
-                [
-                    $"/{dataPipelineRun.InstanceId}/data-pipeline-state",
-                    dataPipelineDefinition.Name,
-                    dataPipelineRun.UPN.Replace('@', '_').Replace('.', '_'),
-                    dataPipelineRun.RunId,
-                    dataPipelineRunWorkItem.InputArtifactId,
-                    outputArtifactId
-                ]);
 
-            _dataPipelineStateService.
+            await _dataPipelineStateService.SaveDataPipelineRunWorkItemArtifacts(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                dataPipelineRunWorkItem,
+                new Dictionary<string, BinaryData>
+                {
+                    { outputArtifactId, BinaryData.FromString(textContentResult.Value!) }
+                });
 
-            return textContentResult.Success
-                ? new PluginResult<string>(textContentResult.Value!, true, false)
-                : new PluginResult<string>(null, false, false, textContentResult.ErrorMessage);
+            return
+                new PluginResult<string>(dataPipelineRunWorkItem.InputArtifactId, true, false);
         }
     }
 }

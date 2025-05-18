@@ -92,11 +92,13 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
         /// <param name="dataPipelineRun">The data pipeline run item associated with the work item.</param>
         /// <param name="dataPipelineRunWorkItem">The data pipeline run work item.</param>
+        /// <param name="artifactsNameFilter">The name pattern used to identify a subset of the artifacts.</param>
         /// <returns>A dictionary with the names and binary contents of the artifacts.</returns>
         Task<Dictionary<string, BinaryData>> LoadDataPipelineRunWorkItemArtifacts(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
-            DataPipelineRunWorkItem dataPipelineRunWorkItem);
+            DataPipelineRunWorkItem dataPipelineRunWorkItem,
+            string artifactsNameFilter);
 
         /// <summary>
         /// Saves the artifacts associated with a data pipeline run work item.

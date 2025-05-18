@@ -138,7 +138,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         public async Task<Dictionary<string, BinaryData>> LoadDataPipelineRunWorkItemArtifacts(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
-            DataPipelineRunWorkItem dataPipelineRunWorkItem)
+            DataPipelineRunWorkItem dataPipelineRunWorkItem,
+            string artifactsNameFilter)
         {
             var artifactsFilter = string.Join('/',
                 [
@@ -147,7 +148,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     dataPipelineRun.UPN.Replace('@', '_').Replace('.', '_'),
                     dataPipelineRun.RunId,
                     dataPipelineRunWorkItem.InputArtifactId,
-                    $"{dataPipelineRunWorkItem.PreviousStage!.ToLower()}-"
+                    artifactsNameFilter
                 ]);
 
             var artifactsPaths = await _storageService.GetFilePathsAsync(
@@ -186,6 +187,25 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     dataPipelineRun.RunId,
                     dataPipelineRunWorkItem.InputArtifactId
                 ]);
+
+            var artifactsWithError = new List<string>();
+
+            await Parallel.ForEachAsync<KeyValuePair<string, BinaryData>>(
+                artifacts,
+                new ParallelOptions
+                {
+                    CancellationToken = default,
+                    MaxDegreeOfParallelism = 10
+                },
+                async (artifact, token) =>
+                {
+                    await _storageService.WriteFileAsync(
+                        dataPipelineRun.InstanceId,
+                        artifact.Key,
+                        artifact.Value.ToStream(),
+                        null,
+                        token);
+                });
         }
 
         /// <inheritdoc/>
