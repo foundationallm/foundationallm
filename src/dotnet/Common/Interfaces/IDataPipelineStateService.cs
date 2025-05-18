@@ -101,6 +101,18 @@ namespace FoundationaLLM.Common.Interfaces
             string artifactsNameFilter);
 
         /// <summary>
+        /// Loads the content item parts associated with a data pipeline run work item.
+        /// </summary>
+        /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
+        /// <param name="dataPipelineRun">The data pipeline run item associated with the work item.</param>
+        /// <param name="dataPipelineRunWorkItem">The data pipeline run work item.</param>
+        /// <returns>A list with the content item parts associated with the data pipeline run work item.</returns>
+        Task<List<DataPipelineContentItemPart>> LoadDataPipelineRunWorkItemContentParts(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem);
+
+        /// <summary>
         /// Saves the artifacts associated with a data pipeline run work item.
         /// </summary>
         /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
@@ -113,6 +125,20 @@ namespace FoundationaLLM.Common.Interfaces
             DataPipelineRun dataPipelineRun,
             DataPipelineRunWorkItem dataPipelineRunWorkItem,
             List<DataPipelineStateArtifact> artifacts);
+
+        /// <summary>
+        /// Saves the content item parts associated with a data pipeline run work item.
+        /// </summary>
+        /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
+        /// <param name="dataPipelineRun">The data pipeline run item associated with the work item.</param>
+        /// <param name="dataPipelineRunWorkItem">The data pipeline run work item.</param>
+        /// <param name="contentItemParts">The list with the content item parts.</param>
+        /// <returns></returns>
+        Task SaveDataPipelineRunWorkItemContentParts(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem,
+            List<DataPipelineContentItemPart> contentItemParts);
 
         /// <summary>
         /// Starts processing data pipeline run work items.

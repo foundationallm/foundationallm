@@ -12,7 +12,7 @@ namespace FoundationaLLM.Common.Models.DataPipelines
         /// Gets or sets the canonical identifier of the content item part.
         /// </summary>
         [JsonPropertyName("content_item_canonical_id")]
-        public required string ContentItemCanonicalId { get; set; }
+        public string? ContentItemCanonicalId { get; set; }
 
         /// <summary>
         /// Gets or sets the position of the part within the content item.
@@ -24,7 +24,7 @@ namespace FoundationaLLM.Common.Models.DataPipelines
         /// Gets or sets the text content of the content item part.
         /// </summary>
         [JsonPropertyName("content")]
-        public required string Content { get; set; }
+        public string? Content { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the content item part in tokens.

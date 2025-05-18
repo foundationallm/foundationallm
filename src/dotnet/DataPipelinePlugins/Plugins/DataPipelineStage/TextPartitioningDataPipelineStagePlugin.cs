@@ -70,7 +70,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 dataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
-                "content.");
+                "content.txt");
 
             if (inputContent == null
                 || inputContent.Count == 0)
@@ -81,18 +81,11 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 dataPipelineRunWorkItem.ContentItemCanonicalId,
                 inputContent.First().Content.ToString());
 
-            await _dataPipelineStateService.SaveDataPipelineRunWorkItemArtifacts(
+            await _dataPipelineStateService.SaveDataPipelineRunWorkItemContentParts(
                 dataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
-                [.. textPartitioningResult.Value!.Select((chunk, index) =>
-                    new DataPipelineStateArtifact
-                    {
-                        FileName = $"content-chunk-{index:D6}.txt",
-                        ContentType = "text/plain",
-                        Content = BinaryData.FromString(chunk)
-                    })
-                ]);
+                textPartitioningResult.Value ?? []);
 
             return
                 new PluginResult(true, false);

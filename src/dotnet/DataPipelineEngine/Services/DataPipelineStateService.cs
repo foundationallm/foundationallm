@@ -6,6 +6,8 @@ using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
+using Parquet;
+using Parquet.Serialization;
 
 namespace FoundationaLLM.DataPipelineEngine.Services
 {
@@ -211,6 +213,65 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                         artifact.ContentType,
                         token);
                 });
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<DataPipelineContentItemPart>> LoadDataPipelineRunWorkItemContentParts(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem)
+        {
+            var contentItemPartsPath = string.Join('/',
+                [
+                    $"/data-pipeline-state",
+                    dataPipelineDefinition.Name,
+                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
+                    dataPipelineRun.RunId,
+                    "content-items",
+                    dataPipelineRunWorkItem.ContentItemCanonicalId,
+                    "content-parts.parquet"
+                ]);
+
+            var binaryContent = await _storageService.ReadFileAsync(
+                dataPipelineRun.InstanceId,
+                contentItemPartsPath,
+                default);
+
+            var result = await ParquetSerializer.DeserializeAsync<DataPipelineContentItemPart>(
+                binaryContent.ToStream());
+
+            return result.ToList();
+        }
+
+        /// <inheritdoc/>
+        public async Task SaveDataPipelineRunWorkItemContentParts(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem,
+            List<DataPipelineContentItemPart> contentItemParts)
+        {
+            var contentItemPartsPath = string.Join('/',
+                [
+                    $"/data-pipeline-state",
+                    dataPipelineDefinition.Name,
+                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
+                    dataPipelineRun.RunId,
+                    "content-items",
+                    dataPipelineRunWorkItem.ContentItemCanonicalId,
+                    "content-parts.parquet"
+                ]);
+
+            using var parquetStream = new MemoryStream();
+            await ParquetSerializer.SerializeAsync<DataPipelineContentItemPart>(
+                contentItemParts,
+                parquetStream);
+
+            await _storageService.WriteFileAsync(
+                dataPipelineRun.InstanceId,
+                contentItemPartsPath,
+                parquetStream,
+                "application/vnd.apache.parquet",
+                default);
         }
 
         /// <inheritdoc/>
