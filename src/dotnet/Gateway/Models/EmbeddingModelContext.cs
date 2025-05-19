@@ -82,7 +82,8 @@ namespace FoundationaLLM.Gateway.Models
                                     .Where(tc => tc.Embedding == null)
                                     .Select(tc => operationContext.InputTextChunks[tc.Position - 1]))
                                 {
-                                    if (!DeploymentContexts[currentDeploymentContextIndex].TryAddInputTextChunk(inputTextChunk))
+                                    if (!DeploymentContexts[currentDeploymentContextIndex].TryAddInputTextChunk(
+                                        inputTextChunk, operationContext.EmbeddingModelDimensions))
                                     {
                                         currentDeploymentContextIndex++;
                                         if (currentDeploymentContextIndex == DeploymentContexts.Count)
