@@ -1,5 +1,4 @@
-﻿using FoundationaLLM.Common.Models.DataPipelines.Vectorization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.DataPipelines
 {
@@ -36,8 +35,7 @@ namespace FoundationaLLM.Common.Models.DataPipelines
         /// Gets or sets the embedding of the content item part.
         /// </summary>
         [JsonPropertyName("embedding")]
-        [JsonConverter(typeof(Embedding.JsonConverter))]
-        public Embedding? Embedding { get; set; }
+        public float[]? Embedding { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the index entry associated with this content item part.

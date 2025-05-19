@@ -17,13 +17,28 @@ namespace FoundationaLLM.Common.Extensions
             jsonElement.ValueKind switch
             {
                 JsonValueKind.String => jsonElement.GetString()!,
-                JsonValueKind.Number => jsonElement.TryGetInt32(out var intValue)
-                    ? intValue
-                    : jsonElement.GetDouble(),
+                JsonValueKind.Number => GetNumber(jsonElement),
                 JsonValueKind.True => true,
                 JsonValueKind.False => false,
                 JsonValueKind.Null => null,
                 _ => throw new NotSupportedException($"Unsupported JSON value kind: {jsonElement.ValueKind}")
             };
+
+        private static object GetNumber(JsonElement jsonElement)
+        {
+            if (jsonElement.TryGetInt32(out var intValue))
+            {
+                return intValue;
+            }
+            if (jsonElement.TryGetInt64(out var longValue))
+            {
+                return longValue;
+            }
+            if (jsonElement.TryGetDouble(out var doubleValue))
+            {
+                return doubleValue;
+            }
+            throw new NotSupportedException($"Unsupported JSON number kind: {jsonElement.ValueKind}");
+        }
     }
 }

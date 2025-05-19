@@ -7,7 +7,6 @@ using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Plugins;
-using FoundationaLLM.Common.Models.ResourceProviders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
