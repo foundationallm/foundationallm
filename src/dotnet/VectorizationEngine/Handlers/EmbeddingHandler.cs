@@ -99,6 +99,7 @@ namespace FoundationaLLM.Vectorization.Handlers
                         TokensCount = tpa.Size
                     }).ToList(),
                     embeddingModelName,
+                    1536,
                     prioritized);
 
                 if (embeddingResult.InProgress)
