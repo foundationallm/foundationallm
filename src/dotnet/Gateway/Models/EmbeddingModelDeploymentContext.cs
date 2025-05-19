@@ -32,7 +32,7 @@ namespace FoundationaLLM.Gateway.Models
                 deployment.AccountEndpoint,
                 loggerFactory.CreateLogger<AzureOpenAITextEmbeddingService>());
 
-        private readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
+        private readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
 
         /// <summary>
         /// The cummulated number of tokens for the current token rate window.

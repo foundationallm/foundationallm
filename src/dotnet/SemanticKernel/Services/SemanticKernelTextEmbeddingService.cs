@@ -44,11 +44,12 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
         }
 
         /// <inheritdoc/>
-        public async Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string modelName = "text-embedding-ada-002", bool Prioritized=false)
+        public async Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string modelName = "text-embedding-ada-002", int embeddingDimensions = 1536, bool Prioritized=false)
         {
             try
             {
-                var embeddings = await _textEmbeddingService.GenerateEmbeddingsAsync(textChunks.Select(tc => tc.Content!).ToList());
+                var embeddings = await _textEmbeddingService.GenerateEmbeddingsAsync(
+                    [.. textChunks.Select(tc => tc.Content!)]);
                 return new TextEmbeddingResult
                 {
                     InProgress = false,

@@ -149,24 +149,25 @@ namespace FoundationaLLM.Gateway.Services
             var operationId = Guid.NewGuid().ToString().ToLower();
             var embeddingOperationContext = new EmbeddingOperationContext
             {
-                InputTextChunks = embeddingRequest.TextChunks.Select(tc => new TextChunk
+                InputTextChunks = [.. embeddingRequest.TextChunks.Select(tc => new TextChunk
                 {
                     OperationId = operationId,
                     Position = tc.Position,
                     Content = tc.Content,
                     TokensCount = tc.TokensCount
-                }).ToList(),
+                })],
                 Result = new TextEmbeddingResult
                 {
                     InProgress = true,
                     OperationId = operationId,
-                    TextChunks = embeddingRequest.TextChunks.Select(tc => new TextChunk
+                    TextChunks = [.. embeddingRequest.TextChunks.Select(tc => new TextChunk
                     {
                         Position = tc.Position
-                    }).ToList(),
+                    })],
                     TokenCount = 0
                 },
-                Prioritized = embeddingRequest.Prioritized
+                Prioritized = embeddingRequest.Prioritized,
+                EmbeddingModelDimensions = embeddingRequest.EmbeddingModelDimensions
             };
 
             embeddingModel.AddEmbeddingOperationContext(embeddingOperationContext);
