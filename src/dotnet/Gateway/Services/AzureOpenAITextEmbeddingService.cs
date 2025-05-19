@@ -43,12 +43,12 @@ namespace FoundationaLLM.Gateway.Services
                 return new TextEmbeddingResult
                 {
                     InProgress = false,
-                    TextChunks = Enumerable.Range(0, result.Value.Count).Select(i =>
+                    TextChunks = [.. Enumerable.Range(0, result.Value.Count).Select(i =>
                     {
                         var textChunk = textChunks[i];
                         textChunk.Embedding = new Embedding(result.Value[i].ToFloats());
                         return textChunk;
-                    }).ToList()
+                    })]
                 };
             }
             catch (Exception ex)
