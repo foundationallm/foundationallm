@@ -9,37 +9,38 @@ using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
+using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Services.ResourceProviders;
-using FoundationaLLM.Prompt.Models;
+using FoundationaLLM.Plugin.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 
-namespace FoundationaLLM.Prompt.ResourceProviders
+namespace FoundationaLLM.Vector.ResourceProviders
 {
     /// <summary>
-    /// Implements the FoundationaLLM.Prompt resource provider.
+    /// Implements the FoundationaLLM.Vector resource provider.
     /// </summary>
-    /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>
+    /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>    
     /// <param name="cacheOptions">The options providing the <see cref="ResourceProviderCacheSettings"/> with settings for the resource provider cache.</param>
     /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
-    /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
-    public class PromptResourceProviderService(
+    /// <param name="loggerFactory">The factory responsible for creating loggers.</param>    
+    public class VectorResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
         IOptions<ResourceProviderCacheSettings> cacheOptions,
         IAuthorizationServiceClient authorizationService,
-        [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Prompt)] IStorageService storageService,
+        [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vector_Storage)] IStorageService storageService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
         IServiceProvider serviceProvider,
-        ILogger<PromptResourceProviderService> logger)
-        : ResourceProviderServiceBase<PromptReference>(
+        ILoggerFactory loggerFactory)
+        : ResourceProviderServiceBase<VectorReference>(
             instanceOptions.Value,
             cacheOptions.Value,
             authorizationService,
@@ -47,7 +48,7 @@ namespace FoundationaLLM.Prompt.ResourceProviders
             eventService,
             resourceValidatorFactory,
             serviceProvider,
-            logger,
+            loggerFactory.CreateLogger<VectorResourceProviderService>(),
             [
                 EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ],
@@ -55,10 +56,10 @@ namespace FoundationaLLM.Prompt.ResourceProviders
     {
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
-            PromptResourceProviderMetadata.AllowedResourceTypes;
+            VectorResourceProviderMetadata.AllowedResourceTypes;
 
         /// <inheritdoc/>
-        protected override string _name => ResourceProviderNames.FoundationaLLM_Prompt;
+        protected override string _name => ResourceProviderNames.FoundationaLLM_Vector;
 
         /// <inheritdoc/>
         protected override async Task InitializeInternal() =>
@@ -67,59 +68,41 @@ namespace FoundationaLLM.Prompt.ResourceProviders
         #region Resource provider support for Management API
 
         /// <inheritdoc/>
-        protected override async Task<object> GetResourcesAsync(
+        protected async override Task<object> GetResourcesAsync(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
             ResourceProviderGetOptions? options = null) =>
-            resourcePath.MainResourceTypeName switch
+            resourcePath.ResourceTypeName switch
             {
-                PromptResourceTypeNames.Prompts => await LoadResources<PromptBase>(
+                VectorResourceTypeNames.VectorDatabases => await LoadResources<VectorDatabase>(
                     resourcePath.ResourceTypeInstances[0],
                     authorizationResult,
                     options ?? new ResourceProviderGetOptions
                     {
                         IncludeRoles = resourcePath.IsResourceTypePath
                     }),
-                _ => throw new ResourceProviderException(
-                    $"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
-                    StatusCodes.Status400BadRequest)
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
             };
 
         /// <inheritdoc/>
-        protected override async Task<object> UpsertResourceAsync(
+        protected async override Task<object> UpsertResourceAsync(
             ResourcePath resourcePath,
             string? serializedResource,
             ResourceProviderFormFile? formFile,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity) =>
 
-            resourcePath.MainResourceTypeName switch
-            {
-                PromptResourceTypeNames.Prompts => await UpdatePrompt(resourcePath, serializedResource!, userIdentity),
-                _ => throw new ResourceProviderException(
-                        $"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
-                        StatusCodes.Status400BadRequest),
-            };
-
-        /// <inheritdoc/>
-        protected override async Task<object> ExecuteActionAsync(
-            ResourcePath resourcePath,
-            ResourcePathAuthorizationResult authorizationResult,
-            string serializedAction,
-            UnifiedUserIdentity userIdentity) =>
             resourcePath.ResourceTypeName switch
             {
-                PromptResourceTypeNames.Prompts => resourcePath.Action switch
-                {
-                    ResourceProviderActions.CheckName => await CheckResourceName<PromptBase>(
-                        JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
-                    ResourceProviderActions.Purge => await PurgeResource<PromptBase>(resourcePath),
-                    _ => throw new ResourceProviderException(
-                            $"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
-                            StatusCodes.Status400BadRequest)
-                },
-                _ => throw new ResourceProviderException()
+                VectorResourceTypeNames.VectorDatabases => await UpdateVectorDatabase(
+                    resourcePath,
+                    serializedResource!,
+                    userIdentity),
+                _ => throw new ResourceProviderException(
+                    $"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
+                    StatusCodes.Status400BadRequest)
             };
 
         /// <inheritdoc/>
@@ -127,13 +110,14 @@ namespace FoundationaLLM.Prompt.ResourceProviders
         {
             switch (resourcePath.ResourceTypeName)
             {
-                case PromptResourceTypeNames.Prompts:
-                    await DeleteResource<PromptBase>(resourcePath);
+                case VectorResourceTypeNames.VectorDatabases:
+                    await DeleteResource<VectorDatabase>(resourcePath);
                     break;
                 default:
                     throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest);
-            };
+            }
+            ;
             await SendResourceProviderEvent(EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
 
@@ -142,47 +126,56 @@ namespace FoundationaLLM.Prompt.ResourceProviders
         #region Resource provider strongly typed operations
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) =>
+        protected override async Task<T> GetResourceAsyncInternal<T>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null) =>
             (await LoadResource<T>(resourcePath.ResourceId!))!;
 
         #endregion
 
         #region Resource management
 
-        private async Task<ResourceProviderUpsertResult> UpdatePrompt(ResourcePath resourcePath, string serializedPrompt, UnifiedUserIdentity userIdentity)
+        private async Task<ResourceProviderUpsertResult> UpdateVectorDatabase(
+            ResourcePath resourcePath,
+            string serializedVectorDatabase,
+            UnifiedUserIdentity userIdentity)
         {
-            var prompt = JsonSerializer.Deserialize<PromptBase>(serializedPrompt)
+            var vectorDatabase = JsonSerializer.Deserialize<VectorDatabase>(serializedVectorDatabase)
                 ?? throw new ResourceProviderException("The object definition is invalid.",
                     StatusCodes.Status400BadRequest);
 
-            var existingPromptReference = await _resourceReferenceStore!.GetResourceReference(prompt.Name);
+            var existingVectorDatabaseReference = await _resourceReferenceStore!.GetResourceReference(vectorDatabase.Name);
 
-            if (resourcePath.ResourceTypeInstances[0].ResourceId != prompt.Name)
+            if (resourcePath.ResourceTypeInstances[0].ResourceId != vectorDatabase.Name)
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
                     StatusCodes.Status400BadRequest);
 
-            var promptReference = new PromptReference
+            var vectorDatabaseReference = new VectorReference
             {
-                Name = prompt.Name!,
-                Type = prompt.Type!,
-                Filename = $"/{_name}/{prompt.Name}.json",
+                Name = vectorDatabase.Name!,
+                Type = vectorDatabase.Type!,
+                Filename = $"/{_name}/{vectorDatabase.Name}.json",
                 Deleted = false
             };
 
-            // TODO: Add validation for the prompt object.
+            if (string.IsNullOrWhiteSpace(vectorDatabase.ObjectId))
+                vectorDatabase.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
 
-            prompt.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
+            await _validator.ValidateAndThrowAsync<VectorDatabase>(vectorDatabase);
 
-            UpdateBaseProperties(prompt, userIdentity, isNew: existingPromptReference is null);
-            if (existingPromptReference is null)
-                await CreateResource<PromptBase>(promptReference, prompt);
+            UpdateBaseProperties(vectorDatabase, userIdentity, isNew: (existingVectorDatabaseReference is null));
+
+            if (existingVectorDatabaseReference is null)
+                await CreateResource<VectorDatabase>(vectorDatabaseReference, vectorDatabase);
             else
-                await SaveResource<PromptBase>(existingPromptReference, prompt);
+                await SaveResource<VectorDatabase>(existingVectorDatabaseReference, vectorDatabase);
 
             return new ResourceProviderUpsertResult
             {
-                ObjectId = prompt!.ObjectId,
-                ResourceExists = existingPromptReference is not null
+                ObjectId = vectorDatabase!.ObjectId,
+                ResourceExists = existingVectorDatabaseReference is not null
             };
         }
 

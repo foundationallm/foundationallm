@@ -15,6 +15,7 @@ using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Services.Cache;
 using FoundationaLLM.Common.Services.Events;
+using FoundationaLLM.Common.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -76,6 +77,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// The <see cref="IResourceValidatorFactory"/> providing services to instantiate resource validators.
         /// </summary>
         protected readonly IResourceValidatorFactory _resourceValidatorFactory;
+
+        /// <summary>
+        /// The standard validator used to validate resources.
+        /// </summary>
+        protected readonly StandardValidator _validator = null!;
 
         /// <summary>
         /// The logger used for logging.
@@ -169,6 +175,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             _allowedResourceProviders = [_name];
             _allowedResourceTypes = GetResourceTypes();
+
+            _validator = new(
+                resourceValidatorFactory,
+                error => new ResourceProviderException(error, StatusCodes.Status400BadRequest));
 
             // Kicks off the initialization on a separate thread and does not wait for it to complete.
             // The completion of the initialization process will be signaled by setting the _isInitialized property.

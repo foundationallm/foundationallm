@@ -379,6 +379,28 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:ResourceProviders:Vector
+
+        #endregion
+
+        #region FoundationaLLM:ResourceProviders:Vector:Storage
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:ResourceProviders:Vector:Storage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.Vector resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Vector_Storage_AuthenticationType =
+            "FoundationaLLM:ResourceProviders:Vector:Storage:AuthenticationType";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:ResourceProviders:Vector:Storage:AccountName setting.
+        /// <para>Value description:<br/>The name of the Azure Blob Storage account used by the FoundationaLLM.Vector resource provider.</para>
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Vector_Storage_AccountName =
+            "FoundationaLLM:ResourceProviders:Vector:Storage:AccountName";
+
+        #endregion
+
         #region FoundationaLLM:APIEndpoints
 
         #endregion

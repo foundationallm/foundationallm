@@ -73,6 +73,11 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
         public const string FoundationaLLM_Plugin = "FoundationaLLM.Plugin";
 
         /// <summary>
+        /// The name of the FoundationaLLM.Vector resource provider.
+        /// </summary>
+        public const string FoundationaLLM_Vector = "FoundationaLLM.Vector";
+
+        /// <summary>
         /// The name of the FoundationaLLM.ContextAPI resource provider.
         /// </summary>
         public const string FoundationaLLM_ContextAPI = "FoundationaLLM.ContextAPI";
@@ -94,6 +99,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             FoundationaLLM_Conversation,
             FoundationaLLM_DataPipeline,
             FoundationaLLM_Plugin,
+            FoundationaLLM_Vector,
             FoundationaLLM_ContextAPI
         ];
     }

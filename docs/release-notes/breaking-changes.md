@@ -32,6 +32,8 @@ The following App Configuration value have been added:
 | `FoundationaLLM:Events:Profiles:DataPipelineAPI` | `{"EventProcessingCycleSeconds":60,"Topics":[]}` | The event processing settings for the Data Pipeline API. |
 | `FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker` | `{"EventProcessingCycleSeconds":60,"Topics":[]}` | The event processing settings for the Data Pipeline Frontend Worker service. |
 | `FoundationaLLM:Events:Profiles:DataPipelineBackendWorker` | `{"EventProcessingCycleSeconds":60,"Topics":[]}` | The event processing settings for the Data Pipeline Backend Worker service. |
+| `FoundationaLLM:ResourceProviders:Vector:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Vector resource provider. |
+| `FoundationaLLM:ResourceProviders:Vector:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Vector resource provider to connect to the dedicated storage account. |
 
 >[!IMPORTANT]
 >A new Azure Cosmos DB container named `DataPipelines` must be created with a parition key of `/runId` and an autoscale transactional throughput of maximum 4000 RU/s.
@@ -127,6 +129,56 @@ Name | Target
 `Cosmos DB Built-in Data Contributor` | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Backend Worker.
 `Storage Queue Data Message Processor` | Storage account used by the FoundationaLLM Data Pipeline Backend Worker.
 
+### New resource provider
+
+The `FoundationaLLM.Vector` resource provider has been added.
+A new folder named `FoundationaLLM.Vector` must be created in the FoundationaLLM storage account under the `resource-provider` container.
+The folder must contain the following files:
+- `_resource-references.json` - the resource references file.
+- `ConversationFiles.json` - the resource file for the `ConversationFiles` vector database resource.
+
+The content of the `resource-references.json` file is as follows:
+
+```json
+{
+	"ResourceReferences": [
+		{
+			"Name": "ConversationFiles",
+			"Filename": "/FoundationaLLM.Vector/ConversationFiles.json",
+			"Type": "vector-database",
+			"Deleted": false
+		}
+	],
+	"DefaultResourceName": null
+}
+```
+
+The content of the `ConversationFiles.json` file is as follows:
+
+```json
+{
+  "type": "vector-database",
+  "name": "ConversationFiles",
+  "object_id": "/instances/{instanceId}/providers/FoundationaLLM.Vector/vectorDatabases/ConversationFiles",
+  "display_name": "Conversation files vectorization",
+  "description": "The vector database that used by default when processing files that are uploaded in conversations.",
+  "cost_center": null,
+  "database_type": "AzureAISearch",
+  "database_name": "ConversationFiles",
+  "embedding_property_name": "Embedding",
+  "content_property_name": "Text",
+  "vector_store_id_property_name": "VectorStoreId",
+  "api_endpoint_configuration_object_id": "/instances/{instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch",
+  "properties": null,
+  "created_on": "2025-05-20T13:57:58.9770592+00:00",
+  "updated_on": "0001-01-01T00:00:00+00:00",
+  "created_by": "SYSTEM",
+  "updated_by": null,
+  "deleted": false,
+  "expiration_date": null
+}
+```
+
 ## Starting from 0.9.7-beta147
 
 The following App Configuration value has been added:
@@ -149,7 +201,7 @@ The `FLLM-Users` will need an entry in the `policy-assignments` file for `agentC
     "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
     "principal_id": "c54871ba-1fa1-439a-9e86-30d74dfe4a4a",
     "principal_type": "Group",
-    "scope": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AzureAI/agentConversationMappings",
+    "scope": "/instances/{instanceId}/providers/FoundationaLLM.AzureAI/agentConversationMappings",
     "created_on": "2025-01-14T17:58:19.5954014Z",
     "updated_on": "2025-01-14T17:58:19.5954014Z",
     "created_by": "SYSTEM",
@@ -163,7 +215,7 @@ The `FLLM-Users` will need an entry in the `policy-assignments` file for `agentC
     "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
     "principal_id": "c54871ba-1fa1-439a-9e86-30d74dfe4a4a",
     "principal_type": "Group",
-    "scope": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AzureAI/agentFileMappings",
+    "scope": "/instances/{instanceId}/providers/FoundationaLLM.AzureAI/agentFileMappings",
     "created_on": "2025-01-14T17:58:19.5954014Z",
     "updated_on": "2025-01-14T17:58:19.5954014Z",
     "created_by": "SYSTEM",

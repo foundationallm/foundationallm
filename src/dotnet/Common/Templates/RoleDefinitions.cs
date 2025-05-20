@@ -303,6 +303,33 @@ namespace FoundationaLLM.Common.Models.Authorization
                         UpdatedBy = null
                     }
                 },
+                {
+                    "/providers/FoundationaLLM.Authorization/roleDefinitions/c026f070-abc2-4419-aed9-ec0676f81519",
+                    new RoleDefinition
+                    {
+                        Name = "c026f070-abc2-4419-aed9-ec0676f81519",
+                        Type = "FoundationaLLM.Authorization/roleDefinitions",
+                        ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/c026f070-abc2-4419-aed9-ec0676f81519",
+                        DisplayName = "Vector Databases Contributor",
+                        Description = "Create new vector databases.",
+                        AssignableScopes = [
+                            "/",],
+                        Permissions = [                            
+                            new RoleDefinitionPermissions
+                            {
+                                Actions = [
+                                    "FoundationaLLM.Vector/vectorDatabases/read",
+                                    "FoundationaLLM.Configuration/apiEndpointConfigurations/read",],
+                                NotActions = [],
+                                DataActions = [],
+                                NotDataActions = [],
+                            },],
+                        CreatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
+                        UpdatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
+                        CreatedBy = null,
+                        UpdatedBy = null
+                    }
+                },
             });
     }
 }

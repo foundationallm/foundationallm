@@ -54,7 +54,7 @@ namespace FoundationaLLM.Management.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_VectorizationAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vectorization_Storage);  
+                 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AzureAI_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
@@ -64,6 +64,8 @@ namespace FoundationaLLM.Management.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataPipeline_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Plugin_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vector_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vectorization_Storage);
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
@@ -119,6 +121,7 @@ namespace FoundationaLLM.Management.API
             builder.AddRemoteDataPipelineServiceClient(); // Required by the DataPipeline resource provider.
             builder.AddDataPipelineResourceProvider();
             builder.AddPluginResourceProvider();
+            builder.AddVectorResourceProvider();
 
             builder.AddAzureCosmosDBService();
 

@@ -23,7 +23,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             DataPipelineResourceProviderMetadata.AllowedResourceTypes,
             DataSourceResourceProviderMetadata.AllowedResourceTypes,
             PluginResourceProviderMetadata.AllowedResourceTypes,
-            PromptResourceProviderMetadata.AllowedResourceTypes
+            PromptResourceProviderMetadata.AllowedResourceTypes,
+            VectorResourceProviderMetadata.AllowedResourceTypes
         ];
 
         /// <summary>

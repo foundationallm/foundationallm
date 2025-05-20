@@ -62,6 +62,7 @@
     <ProjectReference Include="..\Plugin\Plugin.csproj" />
     <ProjectReference Include="..\Prompt\Prompt.csproj" />
     <ProjectReference Include="..\Vectorization\Vectorization.csproj" />
+    <ProjectReference Include="..\Vector\Vector.csproj" />
   </ItemGroup>
 
 </Project>

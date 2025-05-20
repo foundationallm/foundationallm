@@ -523,6 +523,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                 ResourceProviderNames.FoundationaLLM_Conversation => ConversationResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_DataPipeline => DataPipelineResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_Plugin => PluginResourceProviderMetadata.AllowedResourceTypes,
+                ResourceProviderNames.FoundationaLLM_Vector => VectorResourceProviderMetadata.AllowedResourceTypes,
                 _ => []
             };
 
