@@ -143,6 +143,11 @@ namespace FoundationaLLM.Plugins.DataPipeline
                             Name = PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREOBJECTID,
                             Type = PluginParameterTypes.ResourceObjectId,
                             Description = "The FoundationaLLM resource identifier of the Vector Store resource that identifies the logical partition of the Azure AI Search index."
+                        },
+                        new() {
+                            Name = PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS,
+                            Type = PluginParameterTypes.Int,
+                            Description = "The number of dimensions used for embedding."
                         }
                     ],
                     ParameterSelectionHints = new() {

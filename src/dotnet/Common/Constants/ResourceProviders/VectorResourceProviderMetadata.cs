@@ -19,7 +19,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                 VectorResourceTypeNames.VectorDatabases,
                 new ResourceTypeDescriptor(
                     VectorResourceTypeNames.VectorDatabases,
-                    typeof(VectorizationPipeline))
+                    typeof(VectorDatabase))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<VectorDatabase>)]),
@@ -37,7 +37,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                             VectorResourceTypeNames.VectorStores,
                             new ResourceTypeDescriptor (
                                 VectorResourceTypeNames.VectorStores,
-                                typeof(VectorizationPipelineExecution))
+                                typeof(VectorStore))
                             {
                                 AllowedTypes = [],
                                 Actions = []

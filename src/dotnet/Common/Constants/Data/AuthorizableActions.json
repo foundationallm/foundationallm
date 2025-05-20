@@ -464,17 +464,17 @@
 		"actions": [
 			{
 				"name": "FoundationaLLM.Vector/vectorDatabases//read",
-				"description": "Read plugins.",
+				"description": "Read vector databases.",
 				"field_name": "FoundationaLLM_Vector_VectorDatabases_Read"
 			},
 			{
 				"name": "FoundationaLLM.Vector/vectorDatabases/write",
-				"description": "Create or update plugins.",
+				"description": "Create or update vector databases.",
 				"field_name": "FoundationaLLM_Vector_VectorDatabases_Write"
 			},
 			{
 				"name": "FoundationaLLM.Vector/vectorDatabases/delete",
-				"description": "Delete plugins.",
+				"description": "Delete vector databases.",
 				"field_name": "FoundationaLLM_Vector_VectorDatabases_Delete"
 			}
 		]

@@ -455,17 +455,17 @@ namespace FoundationaLLM.Common.Constants.Authorization
         #region Vector
 
         /// <summary>
-        /// Read plugins.
+        /// Read vector databases.
         /// </summary>
         public const string FoundationaLLM_Vector_VectorDatabases_Read = "FoundationaLLM.Vector/vectorDatabases//read";
 
         /// <summary>
-        /// Create or update plugins.
+        /// Create or update vector databases.
         /// </summary>
         public const string FoundationaLLM_Vector_VectorDatabases_Write = "FoundationaLLM.Vector/vectorDatabases/write";
 
         /// <summary>
-        /// Delete plugins.
+        /// Delete vector databases.
         /// </summary>
         public const string FoundationaLLM_Vector_VectorDatabases_Delete = "FoundationaLLM.Vector/vectorDatabases/delete";
 

@@ -89,13 +89,13 @@ builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderSer
 //----------------------------
 // Resource providers
 //----------------------------
+builder.AddVectorResourceProvider();
 builder.AddResourceProviderCacheSettings();
 builder.AddResourceValidatorFactory();
 builder.AddConfigurationResourceProvider();
 builder.AddPluginResourceProvider();
 builder.AddNulllDataPipelineServiceClient(); // Required by the DataPipeline resource provider.
 builder.AddDataPipelineResourceProvider();
-builder.AddVectorResourceProvider();
 
 // Add API Key Authorization
 builder.Services.AddHttpContextAccessor();
