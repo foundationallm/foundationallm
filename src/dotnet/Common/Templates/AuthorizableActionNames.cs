@@ -457,7 +457,7 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// <summary>
         /// Read vector databases.
         /// </summary>
-        public const string FoundationaLLM_Vector_VectorDatabases_Read = "FoundationaLLM.Vector/vectorDatabases//read";
+        public const string FoundationaLLM_Vector_VectorDatabases_Read = "FoundationaLLM.Vector/vectorDatabases/read";
 
         /// <summary>
         /// Create or update vector databases.

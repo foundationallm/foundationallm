@@ -73,5 +73,13 @@ namespace FoundationaLLM.Common.Services.Azure
                 await _searchIndexClient.CreateIndexAsync(indexDefinition);
             }
         }
+
+        public async Task UploadDocuments(
+            string indexName)
+        {
+            var searchClient = _searchIndexClient.GetSearchClient(indexName);
+
+            //searchClient.
+        }
     }
 }

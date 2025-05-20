@@ -463,7 +463,7 @@
 		"category": "Vector",
 		"actions": [
 			{
-				"name": "FoundationaLLM.Vector/vectorDatabases//read",
+				"name": "FoundationaLLM.Vector/vectorDatabases/read",
 				"description": "Read vector databases.",
 				"field_name": "FoundationaLLM_Vector_VectorDatabases_Read"
 			},
