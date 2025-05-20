@@ -112,8 +112,6 @@ namespace FoundationaLLM.Gateway.Models
             }
             finally
             {
-                _requestRateWindowRequestCount += _embeddingRequests.Count;
-
                 _embeddingRequests.Clear();
             }
         }
