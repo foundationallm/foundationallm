@@ -26,6 +26,11 @@ namespace FoundationaLLM.Gateway.Models
         public bool Prioritized { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets the number of dimensions to be used for embedding.
+        /// </summary>
+        public int EmbeddingModelDimensions { get; set; } = 1536;
+
+        /// <summary>
         /// Sets a specified error message on the context of the embedding operation.
         /// </summary>
         /// <param name="errorMessage">The error message to be set.</param>

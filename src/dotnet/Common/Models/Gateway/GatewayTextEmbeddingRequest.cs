@@ -1,11 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using FoundationaLLM.Common.Models.Vectorization;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Gateway
 {
     /// <summary>
     /// Provides metrics related to text embedding requests submitted by the FoundationaLLM Gateway.
     /// </summary>
-    public class GatewayTextEmbeddingRequestMetrics
+    public class GatewayTextEmbeddingRequest
     {
         /// <summary>
         /// The unique identifier of the request.
@@ -30,6 +31,12 @@ namespace FoundationaLLM.Common.Models.Gateway
         /// </summary>
         [JsonPropertyName("model_version")]
         public required string ModelVersion { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of dimensions of the embedding.
+        /// </summary>
+        [JsonPropertyName("embedding_dimensions")]
+        public int EmbeddingDimensions { get; set; }
 
         /// <summary>
         /// The start timestamp of the current token rate window.
@@ -58,22 +65,35 @@ namespace FoundationaLLM.Common.Models.Gateway
         public int RequestRateWindowRequestCount { get; set; }
 
         /// <summary>
-        /// The toal number of tokens used in the current request.
+        /// Gets the total number of tokens used in the request.
         /// </summary>
-        [JsonPropertyName("current_request_token_count")]
-        public int CurrentRequestTokenCount { get; set; }
+        [JsonPropertyName("tokens_count")]
+        public int TokensCount =>
+            TextChunks.Sum(tc => tc.TokensCount);
 
         /// <summary>
-        /// The number of text chunks in the current request.
+        /// Gets the total number of text chunks in the request.
         /// </summary>
-        [JsonPropertyName("current_text_chunk_count")]
-        public int CurrentTextChunkCount { get; set; }
+        [JsonPropertyName("text_chunks_count")]
+        public int TextChunksCount =>
+            TextChunks.Count;
 
         /// <summary>
         /// The details of the embedding operations from the text chunks.
         /// For each embedding operation id, holds the list of the positions of the text chunks from the current request.
         /// </summary>
         [JsonPropertyName("operations_details")]
-        public Dictionary<string, List<int>> OperationsDetails { get; set; } = [];
+        public Dictionary<string, List<int>> OperationsDetails =>
+            TextChunks
+                .GroupBy(tc => tc.OperationId!)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(tc => tc.Position).ToList());
+
+        /// <summary>
+        /// Gets or sets the list of text chunks from the current request.
+        /// </summary>
+        [JsonIgnore]
+        public List<TextChunk> TextChunks { get; set; } = [];
     }
 }

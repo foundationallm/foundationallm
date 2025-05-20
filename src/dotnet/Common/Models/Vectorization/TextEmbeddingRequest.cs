@@ -21,6 +21,12 @@ namespace FoundationaLLM.Common.Models.Vectorization
         public string EmbeddingModelName { get; set; } = string.Empty;
 
         /// <summary>
+        /// Gets or set the number of dimensions for the embedding model.
+        /// </summary>
+        [JsonPropertyName("embedding_model_dimensions")]
+        public int EmbeddingModelDimensions { get; set; } = 1536;
+
+        /// <summary>
         /// Indicates whether the request should be prioritized.
         /// Example: Synchronous vectorization and user prompt embedding for completions.
         /// </summary>

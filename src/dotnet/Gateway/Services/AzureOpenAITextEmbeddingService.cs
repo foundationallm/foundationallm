@@ -30,23 +30,25 @@ namespace FoundationaLLM.Gateway.Services
         }
 
         /// <inheritdoc/>
-        public async Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string deploymentName, bool prioritized)
+        public async Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string deploymentName, int embeddingDimensions, bool prioritized)
         {
             // Priority not relevant as the text embedding context has already been queued at a higher level.
             try
             {
                 var embeddingClient = _azureOpenAIClient.GetEmbeddingClient(deploymentName);
-                var result = await embeddingClient.GenerateEmbeddingsAsync(textChunks.Select(tc => tc.Content!).ToList());
+                var result = await embeddingClient.GenerateEmbeddingsAsync(
+                    textChunks.Select(tc => tc.Content!).ToList(),
+                    new OpenAI.Embeddings.EmbeddingGenerationOptions { Dimensions = embeddingDimensions });
 
                 return new TextEmbeddingResult
                 {
                     InProgress = false,
-                    TextChunks = Enumerable.Range(0, result.Value.Count).Select(i =>
+                    TextChunks = [.. Enumerable.Range(0, result.Value.Count).Select(i =>
                     {
                         var textChunk = textChunks[i];
                         textChunk.Embedding = new Embedding(result.Value[i].ToFloats());
                         return textChunk;
-                    }).ToList()
+                    })]
                 };
             }
             catch (Exception ex)
