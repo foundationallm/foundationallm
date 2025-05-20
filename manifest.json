@@ -5962,17 +5962,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Gateway.GatewayTextEmbeddingRequestMetrics.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Gateway.GatewayTextEmbeddingRequest.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Gateway.GatewayTextEmbeddingRequestMetrics.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Gateway.GatewayTextEmbeddingRequest.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Gateway.GatewayTextEmbeddingRequestMetrics",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Gateway.GatewayTextEmbeddingRequestMetrics.yml\" sourcestartlinenumber=\"1\">Provides metrics related to text embedding requests submitted by the FoundationaLLM Gateway.</p>\n"
+      "Title": "FoundationaLLM.Common.Models.Gateway.GatewayTextEmbeddingRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Gateway.GatewayTextEmbeddingRequest.yml\" sourcestartlinenumber=\"1\">Provides metrics related to text embedding requests submitted by the FoundationaLLM Gateway.</p>\n"
     },
     {
       "type": "ManagedReference",
