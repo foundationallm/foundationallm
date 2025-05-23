@@ -19,6 +19,7 @@ namespace FoundationaLLM.DataPipeline.Models
             Type switch
             {
                 DataPipelineTypes.DataPipeline => typeof(DataPipelineDefinition),
+                DataPipelineTypes.DataPipelineSnapshot => typeof(DataPipelineDefinitionSnapshot),
                 _ => throw new ResourceProviderException($"The data pipeline type {Type} is not supported.")
             };
     }

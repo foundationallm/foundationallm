@@ -565,6 +565,27 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Delete plugin packages.",
                         "Plugin")
                 },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Read,
+                        "Read vector databases.",
+                        "Vector")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Write,
+                        "Create or update vector databases.",
+                        "Vector")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Delete,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Delete,
+                        "Delete vector databases.",
+                        "Vector")
+                },
             });
 
         /// <summary>

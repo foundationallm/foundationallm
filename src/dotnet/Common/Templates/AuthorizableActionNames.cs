@@ -451,5 +451,24 @@ namespace FoundationaLLM.Common.Constants.Authorization
         public const string FoundationaLLM_Plugin_PluginPackages_Delete = "FoundationaLLM.Plugin/pluginPackages/delete";
 
         #endregion
+
+        #region Vector
+
+        /// <summary>
+        /// Read vector databases.
+        /// </summary>
+        public const string FoundationaLLM_Vector_VectorDatabases_Read = "FoundationaLLM.Vector/vectorDatabases/read";
+
+        /// <summary>
+        /// Create or update vector databases.
+        /// </summary>
+        public const string FoundationaLLM_Vector_VectorDatabases_Write = "FoundationaLLM.Vector/vectorDatabases/write";
+
+        /// <summary>
+        /// Delete vector databases.
+        /// </summary>
+        public const string FoundationaLLM_Vector_VectorDatabases_Delete = "FoundationaLLM.Vector/vectorDatabases/delete";
+
+        #endregion
     }
 }

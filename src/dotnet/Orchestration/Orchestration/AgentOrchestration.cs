@@ -1,8 +1,10 @@
-﻿using FoundationaLLM.Common.Clients;
+﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.AzureAI;
 using FoundationaLLM.Common.Constants.Context;
+using FoundationaLLM.Common.Constants.DataPipelines;
 using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -16,6 +18,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureAI;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
+using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
@@ -32,6 +35,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
     /// <param name="agentObjectId">The FoundationaLLM object identifier of the agent.</param>
     /// <param name="agent">The <see cref="KnowledgeManagementAgent"/> agent.</param>
+    /// <param name="conversationId">The conversation identifier.</param>
     /// <param name="agentWorkflowMainAIModelAPIEndpoint">The URL of the API endpoint of the main AI model used by the agent workflow.</param>
     /// <param name="explodedObjects">A dictionary of objects retrieved from various object ids related to the agent. For more details see <see cref="LLMCompletionRequest.Objects"/> .</param>
     /// <param name="callContext">The call context of the request being handled.</param>
@@ -50,6 +54,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         string instanceId,
         string agentObjectId,
         KnowledgeManagementAgent? agent,
+        string conversationId,
         string agentWorkflowMainAIModelAPIEndpoint,
         Dictionary<string, object>? explodedObjects,
         IOrchestrationContext callContext,
@@ -69,6 +74,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private readonly string _instanceId = instanceId;
         private readonly string _agentObjectId = agentObjectId;
         private KnowledgeManagementAgent? _agent = agent;
+        private readonly string _conversationId = conversationId;
         private readonly string _agentWorkflowMainAIModelAPIEndpoint = agentWorkflowMainAIModelAPIEndpoint;
         private readonly Dictionary<string, object>? _explodedObjects = explodedObjects;
         private readonly IOrchestrationContext _callContext = callContext;
@@ -86,6 +92,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             resourceProviderServices[ResourceProviderNames.FoundationaLLM_AzureAI];
         private readonly IResourceProviderService _azureOpenAIResourceProvider =
             resourceProviderServices[ResourceProviderNames.FoundationaLLM_AzureOpenAI];
+        private readonly IResourceProviderService _dataPipelineResourceProvider =
+            resourceProviderServices[ResourceProviderNames.FoundationaLLM_DataPipeline];
         private readonly string? _vectorStoreId = vectorStoreId;
         private GatewayServiceClient? _gatewayClient;
 
@@ -324,12 +332,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 UserPromptRewrite = completionRequest.UserPromptRewrite,
                 MessageHistory = completionRequest.MessageHistory,
                 FileHistory = completionRequest.FileHistory,
-                Attachments = await GetAttachmentPaths(completionRequest.Attachments),
+                Attachments = await PrepareAttachments(completionRequest.Attachments),
                 Agent = _agent!,
                 Objects = _explodedObjects!
             };
 
-        private async Task<List<AttachmentProperties>> GetAttachmentPaths(List<string> attachmentObjectIds)
+        private async Task<List<AttachmentProperties>> PrepareAttachments(List<string> attachmentObjectIds)
         {
             if (attachmentObjectIds.Count == 0)
                 return [];
@@ -349,11 +357,14 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 }                    
             }
 
+            List<AttachmentProperties> result = [];
+
+            #region Prepare legacy attachments
+
             var legacyAttachments = legacyAttachmentObjectIds
                 .ToAsyncEnumerable()
                 .SelectAwait(async x => await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(x, _callContext.CurrentUserIdentity!));
-
-            List<AttachmentProperties> result = [];            
+            
             await foreach (var attachment in legacyAttachments)
             {
                 if (string.IsNullOrWhiteSpace(attachment.SecondaryProvider))
@@ -468,20 +479,89 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 }
             }
 
+            #endregion
+
+            var knowledgeSearchSettings = _agent!.Tools
+                .Select(t => t.GetKnowledgeSearchSettings())
+                .Where(s => s != null)
+                .SingleOrDefault();
+
+            var fileProcessingTasks = new Dictionary<string, Task<bool>>();
+            var candidateResult = new Dictionary<string, AttachmentProperties>();
+
             var contextAttachmentResponses = contextAttachmentObjectIds
                 .ToAsyncEnumerable()
                 .SelectAwait(async x => await _contextServiceClient.GetFileRecord(_instanceId, x));
             await foreach(var contextFileResponse in contextAttachmentResponses)
             {
-                result.Add(new AttachmentProperties
+                if (contextFileResponse.Success)
                 {
-                    OriginalFileName = contextFileResponse.Result!.FileName,
-                    ContentType = contextFileResponse.Result.ContentType!,
-                    Provider = ContextProviderNames.FoundationaLLM_ContextAPI,
-                    ProviderFileName = contextFileResponse.Result.FilePath                    
-                });
+                    candidateResult[contextFileResponse.Result!.FileObjectId] = new AttachmentProperties
+                    {
+                        OriginalFileName = contextFileResponse.Result!.FileName,
+                        ContentType = contextFileResponse.Result.ContentType!,
+                        Provider = ContextProviderNames.FoundationaLLM_ContextAPI,
+                        ProviderFileName = contextFileResponse.Result.FilePath
+                    };
+
+                    if (contextFileResponse.Result.FileProcessingType == FileProcessingTypes.ConversationDataPipeline)
+                    {
+                        // The file must be processed by the conversation data pipeline.
+
+                        if (knowledgeSearchSettings == null)
+                            throw new OrchestrationException($"The agent {_agent.Name} does not have the required knowledge search settings set.");
+
+                        if (string.IsNullOrWhiteSpace(_vectorStoreId))
+                            throw new OrchestrationException($"The agent {_agent.Name} does not have a valid vector store identifier for conversation {_conversationId}.");
+
+                        var newDataPipelineRun = DataPipelineRun.Create(
+                            knowledgeSearchSettings.FileUploadDataPipelineObjectId,
+                            DataPipelineTriggerNames.DefaultManualTrigger,
+                            new()
+                            {
+                            { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId,  contextFileResponse.Result.FileObjectId},
+                            { DataPipelineTriggerParameterNames.StageIndexVectorDatabaseObjectId, knowledgeSearchSettings.FileUploadVectorDatabaseObjectId },
+                            { DataPipelineTriggerParameterNames.StageIndexVectorStoreObjectId,
+                                ResourcePath.Join(
+                                    knowledgeSearchSettings.FileUploadVectorDatabaseObjectId,
+                                    $"vectorStores/{_vectorStoreId}") }
+                            },
+                            _callContext.CurrentUserIdentity!.UPN!,
+                            DataPipelineRunProcessors.Frontend);
+
+                        fileProcessingTasks[contextFileResponse.Result.FileObjectId] =
+                            PollingResourceRunner<DataPipelineRun>.Start(
+                                _instanceId,
+                                _dataPipelineResourceProvider,
+                                newDataPipelineRun,
+                                TimeSpan.FromSeconds(1),
+                                TimeSpan.FromSeconds(300),
+                                _logger,
+                                ServiceContext.ServiceIdentity!);
+                    }
+                }
+                else
+                    _logger.LogError(contextFileResponse.ErrorMessage);
             }
-            return result;
+
+            await Task.WhenAll(fileProcessingTasks.Values);
+
+            var failedFiles = fileProcessingTasks
+                .Where(kvp => !kvp.Value.Result)
+                .Select(kvp => kvp.Key)
+                .ToList();
+
+            if (failedFiles.Count > 0)
+            {
+                var failedFileObjectIds = string.Join(Environment.NewLine, failedFiles);
+                _logger.LogError("The processing failed for the following files: {FileObjectIds}", failedFileObjectIds);
+
+
+                foreach (var failedFile in failedFiles)
+                    candidateResult.Remove(failedFile);
+            }
+
+            return [.. result, .. candidateResult.Values];
         }
 
         private async Task<CompletionResponse> GetCompletionResponse(string operationId, LLMCompletionResponse llmCompletionResponse)
@@ -597,7 +677,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 OpenAIEndpoint = _agentWorkflowMainAIModelAPIEndpoint,
                 OpenAIFileId = imageFile.FileId!,
                 OpenAIAssistantsFileGeneratedOn = DateTimeOffset.UtcNow
-            });
+            } as IFileMapping);
             imageFile.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{imageFile.FileId}";
             return imageFile;
         }

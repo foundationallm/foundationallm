@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Constants.Plugins;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
@@ -18,9 +19,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Graph.Models;
 using NuGet.Packaging;
 using NuGet.Versioning;
+using System.Reflection;
 using System.Runtime.Loader;
 using System.Text.Json;
 
@@ -60,12 +61,16 @@ namespace FoundationaLLM.Plugin.ResourceProviders
             ],
             useInternalReferencesStore: true)
     {
+        private readonly Dictionary<string, PluginPackageManagerInstance> _pluginPackageManagerInstances = [];
+
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
             PluginResourceProviderMetadata.AllowedResourceTypes;
 
+        /// <inheritdoc/>
         protected override string _name => ResourceProviderNames.FoundationaLLM_Plugin;
 
+        /// <inheritdoc/>
         protected override async Task InitializeInternal() =>
             await Task.CompletedTask;
 
@@ -228,39 +233,11 @@ namespace FoundationaLLM.Plugin.ResourceProviders
 
                 if (packagePlatform == PluginPackagePlatform.Dotnet)
                 {
-                    using var packageReader = new PackageArchiveReader(new MemoryStream(formFile.BinaryContent.ToArray()));
-                    var nuspecReader = await packageReader.GetNuspecReaderAsync(default);
-                    packageVersion = nuspecReader.GetVersion();
+                    var packageManagerInstance = await LoadPackage(new MemoryStream(formFile.BinaryContent.ToArray()));
+                    packageVersion = packageManagerInstance.PackageVersion;
+                    packageMetadata = packageManagerInstance.Instance.GetMetadata(resourcePath.InstanceId!);
 
-                    foreach (var packagePath in await packageReader.GetFilesAsync("lib", default))
-                    {
-                        var assemblyStream = await packageReader.GetStreamAsync(packagePath, default);
-                        var assemblyMemoryStream = new MemoryStream();
-                        await assemblyStream.CopyToAsync(assemblyMemoryStream);
-                        assemblyMemoryStream.Seek(0, SeekOrigin.Begin);
-
-                        var assemblyLoadContext = new AssemblyLoadContext(packagePath, isCollectible: true);
-                        var assembly = assemblyLoadContext.LoadFromStream(assemblyMemoryStream);
-
-                        var pluginPackageManagerType = assembly.GetTypes()
-                            .FirstOrDefault(t => (typeof(IPluginPackageManager)).IsAssignableFrom(t));
-
-                        if (pluginPackageManagerType is not null)
-                        {
-                            var pluginPackageManager = assembly.CreateInstance(pluginPackageManagerType.FullName!) as IPluginPackageManager;
-
-                            if (pluginPackageManager is not null)
-                            {
-                                packageMetadata = pluginPackageManager.GetMetadata(
-                                    resourcePath.InstanceId!);
-
-                                assemblyLoadContext.Unload();
-                                break;
-                            }
-                        }
-
-                        assemblyLoadContext.Unload();
-                    }
+                    packageManagerInstance.AssemblyLoadContext.Unload();
                 }
 
                 if (packageMetadata is null)
@@ -296,6 +273,7 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                         Name = pluginMetadata.Name,
                         DisplayName = pluginMetadata.DisplayName,
                         Description = pluginMetadata.Description,
+                        PluginPackageObjectId = resourcePath.ObjectId!,
                         Category = pluginMetadata.Category,
                         Parameters = pluginMetadata.Parameters,
                         ParameterSelectionHints = pluginMetadata.ParameterSelectionHints,
@@ -318,7 +296,10 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                     PackagePlatform = packagePlatform,
                     PackageVersion = packageVersion,
                     PackageFilePath = $"/{_name}/{resourcePath.InstanceId!}/{pluginPackageBase.Name}/{formFile.FileName}",
-                    PackageFileSize = formFile.BinaryContent.Length
+                    PackageFileSize = formFile.BinaryContent.Length,
+                    Dependencies = await GetPackageDependencies(
+                        new MemoryStream(formFile.BinaryContent.ToArray()),
+                        $"/{_name}/{resourcePath.InstanceId!}/{pluginPackageBase.Name}")
                 };
             }
             catch (Exception ex)
@@ -344,10 +325,216 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                 resourcePath.ResourceTypeInstances.First(),
                 authorizationResult);
 
-            return allPlugins
+            return [.. allPlugins
                 .Select(p => p.Resource)
-                .Where(p => pluginFilter.Categories.Contains(p.Category, StringComparer.Ordinal))
-                .ToList();
+                .Where(p => pluginFilter.Categories.Contains(p.Category, StringComparer.Ordinal))];
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Resource provider strongly typed operations
+
+        /// <inheritdoc/>
+        protected override async Task<T> GetResourceAsyncInternal<T>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null) =>
+            typeof(T) switch
+            {
+                Type t when t == typeof(PluginDefinition) =>
+                    ((await LoadResource<PluginDefinition>(resourcePath.MainResourceId!)) as T)!,
+                _ => throw new ResourceProviderException(
+                        $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",
+                            StatusCodes.Status400BadRequest)
+            };
+
+        /// <inheritdoc/>
+        protected override async Task<TResult> ExecuteResourceActionAsyncInternal<T, TAction, TResult>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            TAction actionPayload,
+            UnifiedUserIdentity userIdentity) =>
+            typeof(T) switch
+            {
+                Type t when t == typeof(PluginPackageDefinition) =>
+                    resourcePath.Action! switch
+                    {
+                        ResourceProviderActions.LoadPluginPackage => (
+                            (await CreatePluginPackageManagerInstanceResult(resourcePath)) as TResult)!,
+                        _ => throw new ResourceProviderException(
+                                $"The resource type {typeof(T).Name} and action {resourcePath.Action!} are not supported by the {_name} resource provider.",
+                                    StatusCodes.Status400BadRequest)
+                    },
+                _ => throw new ResourceProviderException(
+                        $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",
+                            StatusCodes.Status400BadRequest)
+            };
+
+        #region Helpers for strongly typed operations
+
+        private async Task<ResourceProviderActionResult<PluginPackageManagerInstance>> CreatePluginPackageManagerInstanceResult(
+            ResourcePath resourcePath)
+        {
+            var resource = await CreatePluginPackageManagerInstance(resourcePath.MainResourceId!);
+
+            return new ResourceProviderActionResult<PluginPackageManagerInstance>(
+                resourcePath.ObjectIdWithoutAction!,
+                true)
+            {
+                Resource = resource
+            };
+        }
+
+        private async Task<PluginPackageManagerInstance> CreatePluginPackageManagerInstance(
+            string pluginPackageName)
+        {
+            // Check if the package manager instance is already cached and return it if so.
+            if (_pluginPackageManagerInstances.TryGetValue(pluginPackageName, out var cachedPackageManagerInstance))
+                return cachedPackageManagerInstance;
+
+            var existingPluginPackageReference =
+                await _resourceReferenceStore!.GetResourceReference(pluginPackageName);
+
+            var pluginPackageDefinition =
+                await LoadResource<PluginPackageDefinition>(existingPluginPackageReference!);
+
+            if (pluginPackageDefinition!.PackagePlatform != PluginPackagePlatform.Dotnet)
+                throw new ResourceProviderException("The plugin package platform is not supported.",
+                    StatusCodes.Status400BadRequest);
+
+            var pluginPackageBinaryContent = await _storageService.ReadFileAsync(
+                _storageContainerName,
+                pluginPackageDefinition!.PackageFilePath,
+                default);
+
+            var packageManagerInstance = await LoadPackage(
+                new MemoryStream(pluginPackageBinaryContent.ToArray()),
+                dependencies: pluginPackageDefinition.Dependencies);
+
+            // Add the newly created package manager instance to the cache.
+            _pluginPackageManagerInstances[pluginPackageName] = packageManagerInstance;
+
+            return packageManagerInstance;
+        }
+
+        private async Task<PluginPackageManagerInstance> LoadPackage(
+            MemoryStream packageBinaryContent,
+            Dictionary<string, string>? dependencies = null)
+        {
+            using var packageReader = new PackageArchiveReader(packageBinaryContent);
+            var nuspecReader = await packageReader.GetNuspecReaderAsync(default);
+            var packageVersion = nuspecReader.GetVersion();
+            var packageId = nuspecReader.GetId();
+
+            foreach (var packagePath in await packageReader.GetFilesAsync("lib", default))
+            {
+                var assemblyStream = await packageReader.GetStreamAsync(packagePath, default);
+                var assemblyMemoryStream = new MemoryStream();
+                await assemblyStream.CopyToAsync(assemblyMemoryStream);
+                assemblyMemoryStream.Seek(0, SeekOrigin.Begin);
+
+                var assemblyLoadContext = new AssemblyLoadContext(packageId, isCollectible: true);
+                assemblyLoadContext.Resolving += LoadDependencyAssembly;
+                var assembly = assemblyLoadContext.LoadFromStream(assemblyMemoryStream);
+
+                var pluginPackageManagerType = assembly.GetTypes()
+                    .FirstOrDefault(t => (typeof(IPluginPackageManager)).IsAssignableFrom(t));
+
+                if (pluginPackageManagerType is not null)
+                {
+                    var pluginPackageManager = assembly.CreateInstance(pluginPackageManagerType.FullName!) as IPluginPackageManager;
+
+                    if (pluginPackageManager is not null)
+                    {
+                        return new PluginPackageManagerInstance
+                        {
+                            PackageVersion = packageVersion,
+                            Instance = pluginPackageManager,
+                            AssemblyLoadContext = assemblyLoadContext,
+                            Name = string.Empty,
+                            Dependencies = dependencies ?? []
+                        };
+                    }
+                }
+
+                assemblyLoadContext.Unload();
+            }
+
+            throw new ResourceProviderException("The plugin package does not have a valid package manager that can be instantiated.",
+                StatusCodes.Status400BadRequest);
+        }
+
+        private async Task<Dictionary<string, string>> GetPackageDependencies(
+            MemoryStream packageBinaryContent,
+            string packagePath)
+        {
+            Dictionary<string, string> dependencies = [];
+
+            using var packageReader = new PackageArchiveReader(packageBinaryContent);
+            var nuspecReader = await packageReader.GetNuspecReaderAsync(default);
+
+            foreach (var dependencyGroup in nuspecReader.GetDependencyGroups())
+            {
+                foreach (var dependency in dependencyGroup.Packages
+                    .Where(pkg => !pkg.Id.StartsWith("FoundationaLLM")))
+                {
+                    var dependencyPackageId = dependency.Id;
+                    var dependencyPackageVersion = dependency.VersionRange.OriginalString;
+                    var dependencyPackageFullPath = $"{packagePath}/{dependencyPackageId.ToLower()}.{dependencyPackageVersion}.nupkg";
+
+                    var dependencyPackageBinaryContent = await _storageService.ReadFileAsync(
+                        _storageContainerName,
+                        dependencyPackageFullPath,
+                        default);
+
+                    using var dependencyPackageReader = new PackageArchiveReader(
+                        new MemoryStream(dependencyPackageBinaryContent.ToArray()));
+
+                    var newDependencies = (await dependencyPackageReader.GetFilesAsync("lib/net8.0", default))
+                        .Where(libPath => libPath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+                        .ToDictionary(
+                            libPath => Path.GetFileNameWithoutExtension(libPath),
+                            libPath => $"{dependencyPackageFullPath}|{libPath}");
+
+                    dependencies.AddRange(newDependencies);
+                }
+            }
+
+            return dependencies;
+        }
+
+        private Assembly? LoadDependencyAssembly(
+            AssemblyLoadContext assemblyLoadContext,
+            AssemblyName assemblyName)
+        {
+            var packageManagerInstance = _pluginPackageManagerInstances
+                .Values.FirstOrDefault(pm => pm.AssemblyLoadContext.Name == assemblyLoadContext.Name);
+
+            if (packageManagerInstance == null
+                || !packageManagerInstance.Dependencies.TryGetValue(assemblyName.Name!, out var dependency))
+                return null;
+
+            var dependencyTokens = dependency.Split('|');
+            var dependencyPackagePath = dependencyTokens[0];
+            var dependencyFilePath = dependencyTokens[1];
+
+            var dependencyBinaryContent = _storageService.ReadFile(
+                _storageContainerName,
+                dependencyPackagePath);
+
+            using var packageReader = new PackageArchiveReader(
+                new MemoryStream(dependencyBinaryContent.ToArray()));
+
+            var assemblyStream = packageReader.GetStream(dependencyFilePath);
+            var assemblyMemoryStream = new MemoryStream();
+            assemblyStream.CopyTo(assemblyMemoryStream);
+            assemblyMemoryStream.Seek(0, SeekOrigin.Begin);
+
+            var assembly = assemblyLoadContext.LoadFromStream(assemblyMemoryStream);
+            return assembly;
         }
 
         #endregion

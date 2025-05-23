@@ -55,5 +55,10 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string Agent_Access_Tokens_Contributor = "8c5ea0d3-f5a1-4be5-90a7-a12921c45542";
 
+        /// <summary>
+        /// Create new vector databases.
+        /// </summary>
+        public const string Vector_Databases_Contributor = "c026f070-abc2-4419-aed9-ec0676f81519";
+
     }
 }

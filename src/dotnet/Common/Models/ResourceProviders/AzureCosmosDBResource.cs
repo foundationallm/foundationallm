@@ -1,6 +1,4 @@
-﻿using FoundationaLLM.Common.Constants.ResourceProviders;
-using FoundationaLLM.Common.Extensions;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.ResourceProviders
 {
@@ -10,18 +8,24 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
     public class AzureCosmosDBResource : ResourceBase
     {
         /// <summary>
-        /// The unique identifier of the conversation mapping.
+        /// The unique identifier of the resource.
         /// </summary>
+        [JsonPropertyName("id")]
+        [JsonPropertyOrder(-200)]
         public required string Id { get; set; }
 
         /// <summary>
-        /// The user principal name (UPN) of the user who created the conversation mapping.
+        /// The user principal name (UPN) of the user who created the resource.
         /// </summary>
+        [JsonPropertyName("upn")]
+        [JsonPropertyOrder(-9)]
         public required string UPN { get; set; }
 
         /// <summary>
-        /// The FoundationaLLM instance identifier
+        /// The FoundationaLLM instance identifier.
         /// </summary>
+        [JsonPropertyName("instance_id")]
+        [JsonPropertyOrder(-8)]
         public required string InstanceId { get; set; }
     }
 }

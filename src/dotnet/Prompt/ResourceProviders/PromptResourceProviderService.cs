@@ -122,7 +122,7 @@ namespace FoundationaLLM.Prompt.ResourceProviders
                 _ => throw new ResourceProviderException()
             };
 
-            /// <inheritdoc/>
+        /// <inheritdoc/>
         protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
             switch (resourcePath.ResourceTypeName)
@@ -173,8 +173,8 @@ namespace FoundationaLLM.Prompt.ResourceProviders
 
             prompt.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
 
-            UpdateBaseProperties(prompt, userIdentity, isNew: existingPromptReference == null);
-            if (existingPromptReference == null)
+            UpdateBaseProperties(prompt, userIdentity, isNew: existingPromptReference is null);
+            if (existingPromptReference is null)
                 await CreateResource<PromptBase>(promptReference, prompt);
             else
                 await SaveResource<PromptBase>(existingPromptReference, prompt);
@@ -182,7 +182,7 @@ namespace FoundationaLLM.Prompt.ResourceProviders
             return new ResourceProviderUpsertResult
             {
                 ObjectId = prompt!.ObjectId,
-                ResourceExists = existingPromptReference != null
+                ResourceExists = existingPromptReference is not null
             };
         }
 

@@ -29,6 +29,9 @@ namespace FoundationaLLM.Common.Services.Storage
         public Task<List<string>> GetFilePathsAsync(string containerName, string? directoryPath = null, bool recursive = true, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
         /// <inheritdoc/>
+        public BinaryData ReadFile(string containerName, string filePath) => throw new NotImplementedException();
+
+        /// <inheritdoc/>
         public Task<BinaryData> ReadFileAsync(string containerName, string filePath, CancellationToken cancellationToken) => throw new NotImplementedException();
         
         /// <inheritdoc/>
@@ -40,5 +43,7 @@ namespace FoundationaLLM.Common.Services.Storage
         /// <inheritdoc/>
         public Task UpdateJSONFileAsync<T>(string containerName, string filePath, Func<T, T> objectTransformer, CancellationToken cancellationToken) where T : class => throw new NotImplementedException();
 
+        /// <inheritdoc/>
+        public Task<List<string>> GetMatchingFilePathsAsync(string containerName, string filePathPattern, CancellationToken cancellationToken = default) => throw new NotImplementedException();
     }
 }

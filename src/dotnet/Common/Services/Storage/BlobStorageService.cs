@@ -30,7 +30,7 @@ namespace FoundationaLLM.Common.Services.Storage
         IOptions<BlobStorageServiceSettings> storageOptions,
         ILogger<BlobStorageService> logger) : StorageServiceBase(storageOptions, logger), IStorageService
     {
-        private BlobServiceClient _blobServiceClient;
+        private BlobServiceClient _blobServiceClient = null!;
 
         /// <inheritdoc/>
         public async Task<BinaryData> ReadFileAsync(
@@ -44,6 +44,32 @@ namespace FoundationaLLM.Common.Services.Storage
             try
             {
                 Response<BlobDownloadResult>? content = await blobClient.DownloadContentAsync(cancellationToken).ConfigureAwait(false);
+
+                if (content != null && content.HasValue)
+                {
+                    return content.Value.Content;
+                }
+
+                throw new ContentException($"Cannot read file {filePath} from container {containerName}.");
+            }
+            catch (RequestFailedException e) when (e.Status == 404)
+            {
+                _logger.LogWarning("File not found: {FilePath}", filePath);
+                throw new ContentException("File not found.", e);
+            }
+        }
+
+        /// <inheritdoc/>
+        public BinaryData ReadFile(
+            string containerName,
+            string filePath)
+        {
+            var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+            var blobClient = containerClient.GetBlobClient(filePath);
+
+            try
+            {
+                Response<BlobDownloadResult>? content = blobClient.DownloadContent();
 
                 if (content != null && content.HasValue)
                 {
@@ -328,6 +354,24 @@ namespace FoundationaLLM.Common.Services.Storage
             }
 
             return filePaths;
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<string>> GetMatchingFilePathsAsync(
+            string containerName,
+            string filePathPattern,
+            CancellationToken cancellationToken = default)
+        {
+            var fullListing = new List<string>(); // Full listing of directory and file paths  
+            var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+            // Flat listing (recursive)  
+            await foreach (var blob in containerClient.GetBlobsAsync(prefix: filePathPattern, cancellationToken: cancellationToken))
+            {
+                fullListing.Add(blob.Name);
+            }
+
+            return fullListing;
         }
 
         /// <summary>

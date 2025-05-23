@@ -38,5 +38,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Plugin
         /// </summary>
         [JsonPropertyName("package_file_size")]
         public required int PackageFileSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the dependency mappings for the package.
+        /// </summary>
+        [JsonPropertyName("dependencies")]
+        public required Dictionary<string, string> Dependencies { get; set; } = [];
     }
 }

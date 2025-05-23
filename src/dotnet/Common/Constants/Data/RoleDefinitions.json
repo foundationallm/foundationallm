@@ -270,5 +270,30 @@
 		"updated_on": "2025-05-01T00:00:00.0000000Z",
 		"created_by": null,
 		"updated_by": null
+	},
+	{
+		"type": "FoundationaLLM.Authorization/roleDefinitions",
+		"name": "c026f070-abc2-4419-aed9-ec0676f81519",
+		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/c026f070-abc2-4419-aed9-ec0676f81519",
+		"display_name": "Vector Databases Contributor",
+		"description": "Create new vector databases.",
+		"assignable_scopes": [
+			"/"
+		],
+		"permissions": [
+			{
+				"actions": [
+					"FoundationaLLM.Vector/vectorDatabases/read",
+					"FoundationaLLM.Configuration/apiEndpointConfigurations/read"
+				],
+				"not_actions": [],
+				"data_actions": [],
+				"not_data_actions": []
+			}
+		],
+		"created_on": "2025-05-01T00:00:00.0000000Z",
+		"updated_on": "2025-05-01T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
 	}
 ]

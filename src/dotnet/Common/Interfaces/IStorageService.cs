@@ -30,6 +30,14 @@
         Task<BinaryData> ReadFileAsync(string containerName, string filePath, CancellationToken cancellationToken);
 
         /// <summary>
+        /// Reads the binary content of a specified file from the storage.
+        /// </summary>
+        /// <param name="containerName">The name of the container where the file is located.</param>
+        /// <param name="filePath">The path of the file to read.</param>
+        /// <returns>The binary content of the file.</returns>
+        BinaryData ReadFile(string containerName, string filePath);
+
+        /// <summary>
         /// Writes the binary content to a specified file from the storage.
         /// </summary>
         /// <param name="containerName">The name of the container where the file is located.</param>
@@ -93,5 +101,14 @@
         /// <param name="cancellationToken">Determines if a request should be cancelled.</param>
         /// <returns>List of individual file paths located in the container.</returns>        
         Task<List<string>> GetFilePathsAsync(string containerName, string? directoryPath = null, bool recursive = true, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Retrieves a list of file paths that match a specific pattern.
+        /// </summary>
+        /// <param name="containerName">The name of the container.</param>
+        /// <param name="filePathPattern">The file name pattern to match.</param>
+        /// <param name="cancellationToken">The cancellation token that signals that operations should be cancelled.</param>
+        /// <returns></returns>
+        Task<List<string>> GetMatchingFilePathsAsync(string containerName, string filePathPattern, CancellationToken cancellationToken = default);
     }
 }

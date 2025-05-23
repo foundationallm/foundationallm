@@ -6,7 +6,6 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Security;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
@@ -33,7 +32,18 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
 
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Essentials);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials);
+
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataPipeline_Storage);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Plugin_Storage);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vector_Storage);
+
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_DataPipeline_State);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Essentials);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Configuration);
 }));
 
 if (builder.Environment.IsDevelopment())
@@ -53,22 +63,39 @@ builder.AddCorsPolicies();
 // Add configurations to the container
 builder.AddInstanceProperties();
 
-builder.Services.AddScoped<IOrchestrationContext, OrchestrationContext>();
-builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
 builder.AddHttpClientFactoryService();
+
+// Add Azure ARM services.
+builder.AddAzureResourceManager();
+
+// Add event services.
+builder.Services.AddAzureEventGridEvents(
+    builder.Configuration,
+    AppConfigurationKeySections.FoundationaLLM_Events_Profiles_DataPipelineBackendWorker);
+
+//---------------------------
+// Singleton services
+//---------------------------
+
+builder.AddDataPipelineStateService();
+builder.AddDataPipelineBackendWorkerService();
+
+//---------------------------
+// Scoped services
+//---------------------------
+builder.AddOrchestrationContext();
+builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
 
 //----------------------------
 // Resource providers
 //----------------------------
 builder.AddResourceProviderCacheSettings();
 builder.AddResourceValidatorFactory();
-
-//builder.AddAgentResourceProvider();
-//builder.AddAttachmentResourceProvider();
-//builder.AddConfigurationResourceProvider();
-//builder.AddAzureOpenAIResourceProvider();
-//builder.AddAIModelResourceProvider();
-//builder.AddConversationResourceProvider();
+builder.AddConfigurationResourceProvider();
+builder.AddPluginResourceProvider();
+builder.AddNulllDataPipelineServiceClient(); // Required by the DataPipeline resource provider.
+builder.AddDataPipelineResourceProvider();
+builder.AddVectorResourceProvider();
 
 // Add API Key Authorization
 builder.Services.AddHttpContextAccessor();

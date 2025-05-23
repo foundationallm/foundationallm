@@ -15,6 +15,7 @@ using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Services.Cache;
 using FoundationaLLM.Common.Services.Events;
+using FoundationaLLM.Common.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -32,6 +33,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         where TResourceReference : ResourceReference
     {
         private bool _isInitialized = false;
+        private Task _initializationTask = Task.CompletedTask;
 
         private LocalEventService? _localEventService;
         private readonly List<string>? _eventTypesToSubscribe;
@@ -77,6 +79,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         protected readonly IResourceValidatorFactory _resourceValidatorFactory;
 
         /// <summary>
+        /// The standard validator used to validate resources.
+        /// </summary>
+        protected readonly StandardValidator _validator = null!;
+
+        /// <summary>
         /// The logger used for logging.
         /// </summary>
         protected readonly ILogger _logger;
@@ -109,6 +116,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
         /// <inheritdoc/>
         public bool IsInitialized  => _isInitialized;
+
+        /// <inheritdoc/>
+        public Task InitializationTask => _initializationTask;
 
         /// <inheritdoc/>
         public Dictionary<string, ResourceTypeDescriptor> AllowedResourceTypes => _allowedResourceTypes;
@@ -166,9 +176,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             _allowedResourceProviders = [_name];
             _allowedResourceTypes = GetResourceTypes();
 
+            _validator = new(
+                resourceValidatorFactory,
+                error => new ResourceProviderException(error, StatusCodes.Status400BadRequest));
+
             // Kicks off the initialization on a separate thread and does not wait for it to complete.
             // The completion of the initialization process will be signaled by setting the _isInitialized property.
-            _ = Task.Run(Initialize);
+            _initializationTask = Task.Run(Initialize);
         }
 
         #region Initialization
@@ -536,7 +550,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             where TResult : ResourceProviderUpsertResult<T>
         {
             EnsureServiceInitialization();
-            var (ParsedResourcePath, AuthorizationRequirements) = CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T), resourceName: resource.Name);
+            var (ParsedResourcePath, AuthorizationRequirements) = string.IsNullOrWhiteSpace(resource.ObjectId)
+                ? CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T), resourceName: resource.Name)
+                : ParseAndValidateResourcePath(resource.ObjectId, HttpMethod.Post, false, typeof(T));
 
             // Authorize access to the resource path.
             var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, false, false, false);

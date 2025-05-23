@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
@@ -11,6 +12,7 @@ using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Services.ResourceProviders;
+using FoundationaLLM.DataPipeline.Interfaces;
 using FoundationaLLM.DataPipeline.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +31,6 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
-    /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> providing Cosmos DB services.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="loggerFactory">The factory responsible for creating loggers.</param>    
     public class DataPipelineResourceProviderService(
@@ -39,7 +40,6 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
         [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_DataPipeline_Storage)] IStorageService storageService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
-        IAzureCosmosDBService cosmosDBService,
         IServiceProvider serviceProvider,
         ILoggerFactory loggerFactory)
         : ResourceProviderServiceBase<DataPipelineReference>(
@@ -56,7 +56,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             ],
             useInternalReferencesStore: true)
     {
-        private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
+        private IDataPipelineServiceClient _dataPipelineServiceClient = null!;
 
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
@@ -64,8 +64,22 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
 
         protected override string _name => ResourceProviderNames.FoundationaLLM_DataPipeline;
 
-        protected override async Task InitializeInternal() =>
+        protected override async Task InitializeInternal()
+        {
+            // Defer resolving to this point to avoid circular dependency issues.
+            _dataPipelineServiceClient = _serviceProvider.GetRequiredService<IDataPipelineServiceClient>();
+
+            var pluginResourceProvider = _serviceProvider.GetRequiredService<IEnumerable<IResourceProviderService>>()
+                .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Plugin);
+
+            List<IResourceProviderService> resourceProviders = pluginResourceProvider != null
+                ? [pluginResourceProvider, this]
+                : [this];
+
+            (_dataPipelineServiceClient as IResourceProviderClient)!.ResourceProviders = resourceProviders;
+
             await Task.CompletedTask;
+        }
 
         #region Resource provider support for Management API
 
@@ -143,20 +157,160 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                         StatusCodes.Status400BadRequest);
             }
 
-            UpdateBaseProperties(dataPipeline, userIdentity, isNew: existingDataPipelineReference == null);
-            if (existingDataPipelineReference == null)
+            UpdateBaseProperties(dataPipeline, userIdentity, isNew: existingDataPipelineReference is null);
+
+            var snapshotName =
+                $"{dataPipeline.Name}-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToBase64String()}";
+            var snapshotObjectId =
+                ResourcePath.Join(dataPipeline.ObjectId, $"{DataPipelineResourceTypeNames.DataPipelineSnapshots}/{snapshotName}");
+            dataPipeline.MostRecentSnapshotObjectId = snapshotObjectId;
+
+            if (existingDataPipelineReference is null)
                 await CreateResource<DataPipelineDefinition>(dataPipelineReference, dataPipeline);
             else
                 await SaveResource<DataPipelineDefinition>(dataPipelineReference, dataPipeline);
 
+            #region Create a snapshot of the data pipeline every time it is updated
+
+            var dataPipelineSnapshotReference = new DataPipelineReference
+            {
+                Name = snapshotName,
+                Type = DataPipelineTypes.DataPipelineSnapshot,
+                Filename = $"/{_name}/{dataPipeline.Name}/{snapshotName}.json"
+            };
+
+            // Using SaveResourcr to avoid polluting the resource reference store with snapshots.
+            await SaveResource<DataPipelineDefinitionSnapshot>(
+                dataPipelineSnapshotReference,
+                new DataPipelineDefinitionSnapshot
+                {
+                    Name = snapshotName,
+                    DataPipelineDefinition = dataPipeline,
+                    ObjectId = snapshotObjectId,
+                    CreatedOn = DateTimeOffset.UtcNow,
+                    CreatedBy = userIdentity.UPN!
+                });
+
+            #endregion
+
             return new ResourceProviderUpsertResult
             {
                 ObjectId = dataPipeline!.ObjectId,
-                ResourceExists = existingDataPipelineReference != null
+                ResourceExists = existingDataPipelineReference is not null
             };
         }
 
         #endregion
+
+        #endregion
+
+        #region Resource provider strongly typed operations
+
+        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            T resource,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderUpsertOptions? options = null) =>
+            typeof(T) switch
+            {
+                Type t when t == typeof(DataPipelineRun) => (await CreateDataPipelineRun(
+                    resourcePath,
+                    (resource as DataPipelineRun)!,
+                    userIdentity) as TResult)!,
+                _ => throw new ResourceProviderException(
+                        $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",
+                            StatusCodes.Status400BadRequest)
+            };
+
+        protected override async Task<T> GetResourceAsyncInternal<T>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null) =>
+            typeof(T) switch
+            {
+                Type t when t == typeof(DataPipelineDefinition) =>
+                    await LoadResource<DataPipelineDefinition>(resourcePath.MainResourceId!) as T
+                        ?? throw new ResourceProviderException("The object definition is invalid.",
+                            StatusCodes.Status400BadRequest),
+                Type t when t == typeof(DataPipelineDefinitionSnapshot) =>
+                    await LoadDataPipelineSnapshot(
+                        resourcePath,
+                        authorizationResult,
+                        userIdentity) as T
+                        ?? throw new ResourceProviderException("The object definition is invalid.",
+                            StatusCodes.Status400BadRequest),
+                Type t when t == typeof(DataPipelineRun) =>
+                    await _dataPipelineServiceClient.GetDataPipelineRunAsync(
+                        resourcePath.InstanceId!,
+                        resourcePath.MainResourceId!,
+                        userIdentity) as T
+                        ?? throw new ResourceProviderException("The object definition is invalid.",
+                            StatusCodes.Status400BadRequest),
+                _ => throw new ResourceProviderException(
+                        $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",
+                            StatusCodes.Status400BadRequest)
+            };
+
+        private async Task<ResourceProviderUpsertResult<DataPipelineRun>> CreateDataPipelineRun(
+            ResourcePath resourcePath,
+            DataPipelineRun dataPipelineRun,
+            UnifiedUserIdentity userIdentity)
+        {
+            var dataPipelineSnapshot = await GetResourceAsync<DataPipelineDefinitionSnapshot>(
+                $"{dataPipelineRun.DataPipelineObjectId}/{DataPipelineResourceTypeNames.DataPipelineSnapshots}/latest",
+                userIdentity);
+
+            var result = await _dataPipelineServiceClient.CreateDataPipelineRunAsync(
+                resourcePath.InstanceId!,
+                dataPipelineRun,
+                dataPipelineSnapshot,
+                userIdentity)
+                ?? throw new ResourceProviderException("The object definition is invalid.",
+                    StatusCodes.Status400BadRequest);
+
+            return new ResourceProviderUpsertResult<DataPipelineRun>
+            {
+                ObjectId = result.ObjectId!,
+                Resource = result,
+                ResourceExists = false
+            };
+        }
+
+        private async Task<DataPipelineDefinitionSnapshot> LoadDataPipelineSnapshot(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity)
+        {
+            var finalResourcePath = resourcePath;
+
+            if (resourcePath.ResourceId! == "latest")
+            {
+                var dataPipeline = await LoadResource<DataPipelineDefinition>(resourcePath.ParentResourceId!);
+                if (dataPipeline!.MostRecentSnapshotObjectId is null)
+                    throw new ResourceProviderException("The object identifier is invalid.",
+                        StatusCodes.Status400BadRequest);
+                if (!ResourcePath.TryParse(
+                    dataPipeline.MostRecentSnapshotObjectId,
+                    [_name],
+                    DataPipelineResourceProviderMetadata.AllowedResourceTypes,
+                    false,
+                    out finalResourcePath))
+                    throw new ResourceProviderException($"The {dataPipeline.Name} has an invalid snapshot object identifier.",
+                        StatusCodes.Status400BadRequest);
+            }
+
+            var dataPipelineSnapshotReference = new DataPipelineReference
+            {
+                Name = finalResourcePath!.MainResourceId!,
+                Type = DataPipelineTypes.DataPipelineSnapshot,
+                Filename = $"/{_name}/{resourcePath.ParentResourceId}/{finalResourcePath.ResourceId!}.json"
+            };
+
+            return (await LoadResource<DataPipelineDefinitionSnapshot>(
+                dataPipelineSnapshotReference))!;
+        }
 
         #endregion
     }

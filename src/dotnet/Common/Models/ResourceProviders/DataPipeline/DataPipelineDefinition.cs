@@ -33,5 +33,45 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
         /// </summary>
         [JsonPropertyName("triggers")]
         public List<DataPipelineTrigger> Triggers { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the object identifier of the most recent snapshot of the data pipeline.
+        /// </summary>
+        [JsonPropertyName("most_recent_snapshot_object_id")]
+        public string MostRecentSnapshotObjectId { get; set; } = null!;
+
+        /// <summary>
+        /// Gets the names of all the data pipeline stages.
+        /// </summary>
+        [JsonIgnore]
+        public List<string> AllStageNames =>
+            [.. StartingStages.SelectMany(stage => stage.AllStageNames)];
+
+        /// <summary>
+        /// Gets all the data pipeline stages.
+        /// </summary>
+        [JsonIgnore]
+        public List<DataPipelineStage> AllStages =>
+            [.. StartingStages.SelectMany(stage => stage.AllStages)];
+
+        /// <summary>
+        /// Gets the list of data pipeline stages that follow the specified stage.
+        /// </summary>
+        /// <param name="stageName">The name of the stage to search for.</param>
+        /// <returns>The list of data pipeline stages that follow the specified stage.</returns>
+        /// <exception cref="ArgumentException"></exception>
+        public List<DataPipelineStage> GetNextStages(string stageName) =>
+            AllStages.SingleOrDefault(stage => stage.Name == stageName)?.NextStages
+            ?? throw new ArgumentException($"The stage {stageName} was not found in the pipeline definition.");
+
+        /// <summary>
+        /// Gets the data pipeline stage with the specified name.
+        /// </summary>
+        /// <param name="stageName">The name of the stage to search for.</param>
+        /// <returns>The data pipeline stage with the specified name.</returns>
+        /// <exception cref="ArgumentException"></exception>
+        public DataPipelineStage GetStage(string stageName) =>
+            AllStages.SingleOrDefault(stage => stage.Name == stageName)
+            ?? throw new ArgumentException($"The stage {stageName} was not found in the pipeline definition.");
     }
 }

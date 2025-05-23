@@ -379,6 +379,28 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:ResourceProviders:Vector
+
+        #endregion
+
+        #region FoundationaLLM:ResourceProviders:Vector:Storage
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:ResourceProviders:Vector:Storage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.Vector resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Vector_Storage_AuthenticationType =
+            "FoundationaLLM:ResourceProviders:Vector:Storage:AuthenticationType";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:ResourceProviders:Vector:Storage:AccountName setting.
+        /// <para>Value description:<br/>The name of the Azure Blob Storage account used by the FoundationaLLM.Vector resource provider.</para>
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Vector_Storage_AccountName =
+            "FoundationaLLM:ResourceProviders:Vector:Storage:AccountName";
+
+        #endregion
+
         #region FoundationaLLM:APIEndpoints
 
         #endregion
@@ -922,6 +944,45 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:DataPipeline:State
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:DataPipeline:State:CosmosDB:Endpoint setting.
+        /// <para>Value description:<br/>The URL of the Azure Cosmos DB service used by the Data Pipeline API service.</para>
+        /// </summary>
+        public const string FoundationaLLM_DataPipeline_State_CosmosDB_Endpoint =
+            "FoundationaLLM:DataPipeline:State:CosmosDB:Endpoint";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:DataPipeline:State:CosmosDB:Database setting.
+        /// <para>Value description:<br/>The name of the Azure Cosmos DB database used by the Data Pipeline API service.</para>
+        /// </summary>
+        public const string FoundationaLLM_DataPipeline_State_CosmosDB_Database =
+            "FoundationaLLM:DataPipeline:State:CosmosDB:Database";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:DataPipeline:State:CosmosDB:Containers setting.
+        /// <para>Value description:<br/>The comma-separated list of database containers used by the Data Pipeline API service.</para>
+        /// </summary>
+        public const string FoundationaLLM_DataPipeline_State_CosmosDB_Containers =
+            "FoundationaLLM:DataPipeline:State:CosmosDB:Containers";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:DataPipeline:State:Storage:AccountName setting.
+        /// <para>Value description:<br/>The Azure Storage account for the FoundationaLLM Data Pipeline API service.</para>
+        /// </summary>
+        public const string FoundationaLLM_DataPipeline_State_Storage_AccountName =
+            "FoundationaLLM:DataPipeline:State:Storage:AccountName";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:DataPipeline:State:Storage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_DataPipeline_State_Storage_AuthenticationType =
+            "FoundationaLLM:DataPipeline:State:Storage:AuthenticationType";
+
+        #endregion
+
         #region FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials
         
         /// <summary>
@@ -937,6 +998,38 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Essentials_AppInsightsConnectionString =
             "FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:AppInsightsConnectionString";
+
+        #endregion
+
+        #region FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AccountName setting.
+        /// <para>Value description:<br/>The Azure Storage account for the FoundationaLLM Data Pipeline API service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Configuration_Storage_AccountName =
+            "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AccountName";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Configuration_Storage_AuthenticationType =
+            "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AuthenticationType";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:FrontendWorkerQueue setting.
+        /// <para>Value description:<br/>The queue used to submit data pipeline work items for the Data Pipeline Frontend Worker service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Configuration_FrontendWorkerQueue =
+            "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:FrontendWorkerQueue";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:BackendWorkerQueue setting.
+        /// <para>Value description:<br/>The queue used to submit data pipeline work items for the Data Pipeline Backend Worker service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Configuration_BackendWorkerQueue =
+            "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:BackendWorkerQueue";
 
         #endregion
 
@@ -958,6 +1051,38 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AccountName setting.
+        /// <para>Value description:<br/>The Azure Storage account for the FoundationaLLM Data Pipeline Frontend Worker service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Configuration_Storage_AccountName =
+            "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AccountName";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Configuration_Storage_AuthenticationType =
+            "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AuthenticationType";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Queue setting.
+        /// <para>Value description:<br/>The queue used to process data pipeline work items by the Data Pipeline Frontend Worker service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Configuration_Queue =
+            "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Queue";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:ParallelProcessorsCount setting.
+        /// <para>Value description:<br/>The number of parallel processors of data pipeline run work items used by the Data Pipeline Frontend Worker service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Configuration_ParallelProcessorsCount =
+            "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:ParallelProcessorsCount";
+
+        #endregion
+
         #region FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials
         
         /// <summary>
@@ -973,6 +1098,38 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Essentials_AppInsightsConnectionString =
             "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:AppInsightsConnectionString";
+
+        #endregion
+
+        #region FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AccountName setting.
+        /// <para>Value description:<br/>The Azure Storage account for the FoundationaLLM Data Pipeline Backend Worker service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Configuration_Storage_AccountName =
+            "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AccountName";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Configuration_Storage_AuthenticationType =
+            "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AuthenticationType";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Queue setting.
+        /// <para>Value description:<br/>The queue used to process data pipeline work items by the Data Pipeline Backend Worker service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Configuration_Queue =
+            "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Queue";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:ParallelProcessorsCount setting.
+        /// <para>Value description:<br/>The number of parallel processors of data pipeline run work items used by the Data Pipeline Backend Worker service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Configuration_ParallelProcessorsCount =
+            "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:ParallelProcessorsCount";
 
         #endregion
 
@@ -1030,6 +1187,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_CosmosDB_Containers =
             "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Containers";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions setting.
+        /// <para>Value description:<br/>The comma-separated list of file extensions that are subject to knowledge search.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_KnowledgeSearchFileExtensions =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions";
 
         #endregion
 

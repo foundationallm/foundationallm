@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Extensions
@@ -8,6 +9,22 @@ namespace FoundationaLLM.Common.Extensions
     /// </summary>
     public static class DictionaryExtensions
     {
+        /// <summary>
+        /// Filters the keys of a dictionary based on a specified namespace.
+        /// </summary>
+        /// <param name="source">The dictionary to be filtered.</param>
+        /// <param name="keyNamespace">The namespace of the keys to be returned in the resulting dictionary.</param>
+        /// <returns>A new dictionary that contains the keys (and their values) which start with the provided namespace string.</returns>
+        public static Dictionary<string, object> FilterKeys(this Dictionary<string, object> source, string keyNamespace) =>
+            source
+                .Where(x => x.Key.StartsWith(keyNamespace))
+                .Select(x => new KeyValuePair<string, object>(
+                    x.Key.Replace(keyNamespace, string.Empty),
+                    x.Value is JsonElement element
+                        ? element.ToObject()!
+                        : x.Value))
+                .ToDictionary(x => x.Key, x => x.Value);
+
         /// <summary>
         /// Converts a dictionary to an object of type <typeparamref name="T"/> with optional overrides.
         /// </summary>
