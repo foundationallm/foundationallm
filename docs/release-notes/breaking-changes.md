@@ -101,33 +101,36 @@ The following App Configuration value have been added:
 
 The following role assignments must be added to the Data Pipeline API's Managed Identity:
 
-Name | Target
---- | ---
-`App Configuration Data Reader` | Azure App Configuration service.
-`Key Vault Secrets User` | Azure Key Vault service.
-`Storage Blob Data Contributor` | Storage account used by the FoundationaLLM Data Pipeline API.
-`Cosmos DB Built-in Data Contributor` | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline API.
-`Storage Queue Data Message Sender` | Storage account used by the FoundationaLLM Data Pipeline API.
+| Name | Target |
+| --- | --- |
+|`App Configuration Data Reader` | Azure App Configuration service.|
+|`Key Vault Secrets User` | Azure Key Vault service.|
+|`Storage Blob Data Contributor` | Storage account used by the FoundationaLLM Data Pipeline API.|
+|`Cosmos DB Built-in Data Contributor` | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline API.|
+|`Storage Queue Data Message Sender` | Storage account used by the FoundationaLLM Data Pipeline API.|
+|`EventGrid Contributor` | Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline API.|
 
 The following role assignments must be added to the Data Pipeline Frontend Worker's Managed Identity:
 
-Name | Target
---- | ---
-`App Configuration Data Reader` | Azure App Configuration service.
-`Key Vault Secrets User` | Azure Key Vault service.
-`Storage Blob Data Contributor` | Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.
-`Cosmos DB Built-in Data Contributor` | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Frontend Worker.
-`Storage Queue Data Message Processor` | Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.
+|Name | Target|
+|--- | --- |
+|`App Configuration Data Reader` | Azure App Configuration service.|
+|`Key Vault Secrets User` | Azure Key Vault service.|
+|`Storage Blob Data Contributor` | Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.|
+|`Cosmos DB Built-in Data Contributor` | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Frontend Worker.|
+|`Storage Queue Data Message Processor` | Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.|
+|`EventGrid Contributor` | Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline Frontend Worker.|
 
 The following role assignments must be added to the Data Pipeline Backend Worker's Managed Identity:
 
-Name | Target
---- | ---
-`App Configuration Data Reader` | Azure App Configuration service.
-`Key Vault Secrets User` | Azure Key Vault service.
-`Storage Blob Data Contributor` | Storage account used by the FoundationaLLM Data Pipeline Backend Worker.
-`Cosmos DB Built-in Data Contributor` | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Backend Worker.
-`Storage Queue Data Message Processor` | Storage account used by the FoundationaLLM Data Pipeline Backend Worker.
+|Name | Target|
+|--- | ---|
+|`App Configuration Data Reader` | Azure App Configuration service.|
+|`Key Vault Secrets User` | Azure Key Vault service.|
+|`Storage Blob Data Contributor` | Storage account used by the FoundationaLLM Data Pipeline Backend Worker.|
+|`Cosmos DB Built-in Data Contributor` | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Backend Worker.|
+|`Storage Queue Data Message Processor` | Storage account used by the FoundationaLLM Data Pipeline Backend Worker.|
+|`EventGrid Contributor` | Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline Backend Worker.|
 
 ### New resource provider
 
