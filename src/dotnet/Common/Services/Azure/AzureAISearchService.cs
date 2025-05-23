@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Azure.Core;
 using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Indexes.Models;
 using FoundationaLLM.Common.Authentication;
@@ -7,6 +8,8 @@ using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using Microsoft.Extensions.Logging;
+using System.Text;
+using System.Text.Json;
 
 namespace FoundationaLLM.Common.Services.Azure
 {
@@ -74,12 +77,40 @@ namespace FoundationaLLM.Common.Services.Azure
             }
         }
 
+        /// <inheritdoc/>
         public async Task UploadDocuments(
-            string indexName)
+            string indexName,
+            List<string> fieldNames,
+            List<object[]> fieldValues)
         {
-            var searchClient = _searchIndexClient.GetSearchClient(indexName);
+            // Build the endpoint URI for the documents action
+            var endpoint = new Uri($"{_searchIndexClient.Endpoint}/indexes/{indexName}/docs/index?api-version=2024-07-01");
 
-            //searchClient.
+            var request = _searchIndexClient.Pipeline.CreateRequest();
+            request.Uri.Reset(endpoint);
+
+            fieldNames = [.. fieldNames.Prepend("@search.action")];
+            var payload = new
+            {
+                value = fieldValues.Select(
+                x => fieldNames
+                    .Zip(
+                        x.Prepend("mergeOrUpload"),
+                        (name, value) => new KeyValuePair<string, object>(name, value))
+                    .ToDictionary(kvp => kvp.Key, kvp => kvp.Value))
+            };
+
+            var json = JsonSerializer.Serialize(payload);
+            var jsonBytes = Encoding.UTF8.GetBytes(json);
+
+            request.Headers.Add("Content-Type", "application/json");
+            request.Method = RequestMethod.Post;
+            request.Content = RequestContent.Create(jsonBytes);
+            var message = new HttpMessage(request, _searchIndexClient.Pipeline.ResponseClassifier);
+            await _searchIndexClient.Pipeline.SendAsync(message, default);
+
+            if (message.Response.IsError)
+                throw new RequestFailedException(message.Response);
         }
     }
 }

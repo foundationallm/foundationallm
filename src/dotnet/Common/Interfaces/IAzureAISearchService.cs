@@ -18,5 +18,16 @@ namespace FoundationaLLM.Common.Interfaces
             string indexName,
             IEnumerable<SearchField> indexFields,
             VectorSearch? indexConfiguration = null);
+
+        /// <summary>
+        /// Uploads documents to the specified index in the Azure AI Search service.
+        /// </summary>
+        /// <param name="indexName">The name of the index in which the documents should be uploaded.</param>
+        /// <param name="fieldNames">The names of the fields of the documents.</param>
+        /// <param name="fieldValues">The values of the fields of the documents.</param>
+        Task UploadDocuments(
+            string indexName,
+            List<string> fieldNames,
+            List<object[]> fieldValues);
     }
 }

@@ -13,6 +13,8 @@ using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Services.Azure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 {
@@ -71,6 +73,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 vectorDatabaseObjectId.ToString()!,
                 ServiceContext.ServiceIdentity!);
 
+            var vectorStoreResourcePath =
+                ResourcePath.GetResourcePath(vectorStoreObjectId.ToString()!);
+            var vectorStoreId = vectorStoreResourcePath.ResourceId;
+
             var endpointResourcePath =
                 ResourcePath.GetResourcePath(vectorDatabase.APIEndpointConfigurationObjectId);
 
@@ -84,14 +90,17 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 searchIndexClient,
                 _serviceProvider.GetRequiredService<ILogger<AzureAISearchService>>()) as IAzureAISearchService;
 
-            await azureAISearchService.CreateIndexIfNotExists(
-                vectorDatabase.DatabaseName,
+            IEnumerable<SearchField> indexFields =
                 [
                     new SimpleField("Id", SearchFieldDataType.String) { IsKey = true, IsFilterable = true },
                     new SimpleField(vectorDatabase.VectorStoreIdPropertyName, SearchFieldDataType.String) { IsFilterable = true },
                     new SearchableField(vectorDatabase.ContentPropertyName),
                     new VectorSearchField(vectorDatabase.EmbeddingPropertyName, (int)embeddingDimensions, "vector-profile")
-                ],
+                ];
+
+            await azureAISearchService.CreateIndexIfNotExists(
+                vectorDatabase.DatabaseName,
+                indexFields,
                 new VectorSearch()
                 {
                     Profiles =
@@ -109,7 +118,40 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 dataPipelineRun,
                 dataPipelineRunWorkItem);
 
+            foreach (var contentItemPart in contentItemParts)
+                contentItemPart.IndexEntryId = GetIndexEntryId(
+                    vectorStoreId!,
+                    contentItemPart.ContentItemCanonicalId!,
+                    contentItemPart.Position);
+
+            await azureAISearchService.UploadDocuments(
+                vectorDatabase.DatabaseName,
+                [.. indexFields.Select(f => f.Name)],
+                [.. contentItemParts.Select(cip => new object[]
+                {
+                    cip.IndexEntryId!, vectorStoreId!, cip.Content!, cip.Embedding!
+                })]);
+
+            await _dataPipelineStateService.SaveDataPipelineRunWorkItemContentParts(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                dataPipelineRunWorkItem,
+                contentItemParts);
+
             return new PluginResult(true, false);
+        }
+
+        private string GetIndexEntryId(
+            string vectorStoreId,
+            string contentItemCanonicalId,
+            int contentItemPartPosition)
+        {
+            var id = $"{vectorStoreId}-{contentItemCanonicalId}-{contentItemPartPosition:D6}";
+
+            return
+                Convert.ToBase64String(
+                    MD5.HashData(Encoding.UTF8.GetBytes(id)))
+                .Replace('+', '-');
         }
     }
 }
