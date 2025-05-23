@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Tasks_TaskPool" data-uid="FoundationaLLM.Common.Tasks.TaskPool" class="text-break">
-Class TaskPool  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Tasks/TaskPool.cs/#L11"><i class="bi bi-code-slash"></i></a>
+Class TaskPool  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Tasks/TaskPool.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -167,10 +167,10 @@ Class TaskPool  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="FoundationaLLM_Common_Tasks_TaskPool__ctor_System_Int32_Microsoft_Extensions_Logging_ILogger_" data-uid="FoundationaLLM.Common.Tasks.TaskPool.#ctor(System.Int32,Microsoft.Extensions.Logging.ILogger)">
   TaskPool(int, ILogger)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Tasks/TaskPool.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Tasks/TaskPool.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Constructs a task pool with a specified capacity.</p>
+  <div class="markdown level1 summary"><p>Represents a pool of active tasks with a predefined capacity.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -195,6 +195,9 @@ Class TaskPool  <a class="header-action link-secondary" title="View source" href
 
 
 
+  <h4 class="section" id="FoundationaLLM_Common_Tasks_TaskPool__ctor_System_Int32_Microsoft_Extensions_Logging_ILogger__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This class is not thread safe, it assumes the taks pool is managed from a single thread.</p>
+</div>
 
 
 
@@ -207,7 +210,7 @@ Class TaskPool  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="FoundationaLLM_Common_Tasks_TaskPool_AvailableCapacity" data-uid="FoundationaLLM.Common.Tasks.TaskPool.AvailableCapacity">
   AvailableCapacity
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Tasks/TaskPool.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Tasks/TaskPool.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Indicates whether the task pool is at capacity or not.</p>
@@ -243,7 +246,7 @@ Class TaskPool  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="FoundationaLLM_Common_Tasks_TaskPool_Add_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Tasks_TaskInfo__" data-uid="FoundationaLLM.Common.Tasks.TaskPool.Add(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Tasks.TaskInfo})">
   Add(IEnumerable&lt;TaskInfo&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Tasks/TaskPool.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Tasks/TaskPool.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds a new batch of tasks to the task pool.</p>
@@ -282,7 +285,7 @@ Class TaskPool  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="FoundationaLLM_Common_Tasks_TaskPool_HasRunningTaskForPayload_System_String_" data-uid="FoundationaLLM.Common.Tasks.TaskPool.HasRunningTaskForPayload(System.String)">
   HasRunningTaskForPayload(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Tasks/TaskPool.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Tasks/TaskPool.cs/#L62"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Determines whether the task pool already has a running task for a specified payload id.</p>
@@ -321,7 +324,7 @@ Class TaskPool  <a class="header-action link-secondary" title="View source" href
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Tasks/TaskPool.cs/#L11" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Tasks/TaskPool.cs/#L13" class="edit-link">Edit this page</a>
         </div>
 
 

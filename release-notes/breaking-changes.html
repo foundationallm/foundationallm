@@ -77,6 +77,336 @@
 <h5>Note</h5>
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
+<h2 id="starting-from-097">Starting from 0.9.7</h2>
+<h3 id="configuration-changes">Configuration changes</h3>
+<p>The following App Configuration value have been added:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions</code></td>
+<td><code>c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt</code></td>
+<td>The comma-separated list file extensions that are processed as sources for knowledge search.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:DataPipeline:State:CosmosDB:Containers</code></td>
+<td><code>DataPipelines</code></td>
+<td>The names of the Azure Cosmos DB containers used by the Data Pipeline State service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:DataPipeline:State:CosmosDB:Database</code></td>
+<td><code>database</code></td>
+<td>The Azure Cosmos DB database name used by the Data Pipeline State service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:DataPipeline:State:CosmosDB:Endpoint</code></td>
+<td><code>&lt;cosmos_db_endpoint&gt;</code></td>
+<td>The endpoint URL of the Azure Cosmos DB used by the Data Pipeline State service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:DataPipeline:State:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the dedicated storage account used by the FoundationaLLM Data Pipeline State service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:DataPipeline:State:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Data Pipeline State service to connect to the dedicated storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the dedicated storage account used by the FoundationaLLM Data Pipeline API.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Data Pipeline API to connect to the dedicated storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:FrontendWorkerQueue</code></td>
+<td><code>frontend-worker</code></td>
+<td>The queue used to submit data pipeline work items for the Data Pipeline Frontend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:BackendWorkerQueue</code></td>
+<td><code>backend-worker</code></td>
+<td>The queue used to submit data pipeline work items for the Data Pipeline Backend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the dedicated storage account used by the FoundationaLLM Data Pipeline Frontend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Data Pipeline Frontend Worker service to connect to the dedicated storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Queue</code></td>
+<td><code>frontend-worker</code></td>
+<td>The queue used to process data pipeline work items by the Data Pipeline Frontend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:ParallelProcessorsCount</code></td>
+<td>10</td>
+<td>The number of parallel processors of data pipeline run work items used by the Data Pipeline Frontend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the dedicated storage account used by the FoundationaLLM Data Pipeline Backend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Data Pipeline Backend Worker service to connect to the dedicated storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Queue</code></td>
+<td><code>frontend-worker</code></td>
+<td>The queue used to process data pipeline work items by the Data Pipeline Backend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:ParallelProcessorsCount</code></td>
+<td>10</td>
+<td>The number of parallel processors of data pipeline run work items used by the Data Pipeline Backend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Events:Profiles:DataPipelineAPI</code></td>
+<td><code>{&quot;EventProcessingCycleSeconds&quot;:60,&quot;Topics&quot;:[]}</code></td>
+<td>The event processing settings for the Data Pipeline API.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker</code></td>
+<td><code>{&quot;EventProcessingCycleSeconds&quot;:60,&quot;Topics&quot;:[]}</code></td>
+<td>The event processing settings for the Data Pipeline Frontend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Events:Profiles:DataPipelineBackendWorker</code></td>
+<td><code>{&quot;EventProcessingCycleSeconds&quot;:60,&quot;Topics&quot;:[]}</code></td>
+<td>The event processing settings for the Data Pipeline Backend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:Vector:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the dedicated storage account used by the FoundationaLLM Vector resource provider.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:Vector:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Vector resource provider to connect to the dedicated storage account.</td>
+</tr>
+</tbody>
+</table>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>A new Azure Cosmos DB container named <code>DataPipelines</code> must be created with a parition key of <code>/runId</code> and an autoscale transactional throughput of maximum 4000 RU/s.</p>
+</div>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>A new <code>APIEndpointConfiguration</code> artifact named <code>DataPipelineAPI</code> must be created and saved to a file named <code>DataPipelineAPI.json</code>. The file must be created in the <code>FoundationaLLM.Configuration</code> resource provider folder of the FoundationaLLM storage account. The file must contain the following content:</p>
+</div>
+<pre><code class="lang-json">{
+  &quot;type&quot;: &quot;api-endpoint&quot;,
+  &quot;name&quot;: &quot;DataPipelineAPI&quot;,
+  &quot;object_id&quot;: &quot;/instances/&lt;instance_id&gt;/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/DataPipelineAPI&quot;,
+  &quot;display_name&quot;: null,
+  &quot;description&quot;: null,
+  &quot;cost_center&quot;: null,
+  &quot;category&quot;: &quot;General&quot;,
+  &quot;subcategory&quot;: null,
+  &quot;authentication_type&quot;: &quot;APIKey&quot;,
+  &quot;url&quot;: &quot;&lt;deployed_api_endpoint&gt;&quot;,
+  &quot;status_endpoint&quot;: &quot;/instances/&lt;instance_id&gt;/status&quot;,
+  &quot;url_exceptions&quot;: [],
+  &quot;authentication_parameters&quot;: {
+    &quot;api_key_configuration_name&quot;: &quot;FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:APIKey&quot;,
+    &quot;api_key_header_name&quot;: &quot;X-API-KEY&quot;
+  },
+  &quot;timeout_seconds&quot;: 2400,
+  &quot;retry_strategy_name&quot;: &quot;ExponentialBackoff&quot;,
+  &quot;provider&quot;: null,
+  &quot;api_version&quot;: null,
+  &quot;operation_type&quot;: null,
+  &quot;properties&quot;: null,
+  &quot;created_on&quot;: &quot;0001-01-01T00:00:00-05:00&quot;,
+  &quot;updated_on&quot;: &quot;2025-02-25T11:10:55.3458874-05:00&quot;,
+  &quot;created_by&quot;: null,
+  &quot;updated_by&quot;: &quot;ciprian@foundationaLLM.ai&quot;,
+  &quot;deleted&quot;: false,
+  &quot;expiration_date&quot;: null
+}
+</code></pre>
+<blockquote>
+<p>where <code>&lt;deployed_api_endpoint&gt;</code> is the endpoint of the Data Pipeline API.</p>
+<p>Also, a new entry must be added to the <code>_resource-references.json</code> file from the <code>FoundationaLLM.Configuration</code> resource provider folder with the following content:</p>
+</blockquote>
+<pre><code class="lang-json">{
+    &quot;Name&quot;: &quot;DataPipelineAPI&quot;,
+    &quot;Filename&quot;: &quot;/FoundationaLLM.Configuration/DataPipelineAPI.json&quot;,
+    &quot;Type&quot;: &quot;api-endpoint&quot;,
+    &quot;Deleted&quot;: false
+}
+</code></pre>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Two new storage queues must be created in the FoundationaLLM storage account:</p>
+<ul>
+<li><code>frontend-worker</code> - used by the Data Pipeline Frontend Worker to process requests.</li>
+<li><code>backend-worker</code> - used by the Data Pipeline Backend Worker to process requests.</li>
+</ul>
+<p>The previous queues <code>extract</code>, <code>partition</code>, <code>embed</code>, and <code>index</code> are now deprecated. For each existing FoundationaLLM deployment, they should be removed as soon as it is confirmed that the previous version of vectorization process is no longer used.</p>
+</div>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>A new container with the name of the FoundationaLLM instance identifier must be created in the FoundationaLLM main storage account. The container will be used by the Data Pipeline API and the Data Pipeline Frontend/Backend Worker to store data pipeline work items.</p>
+</div>
+<h3 id="role-assignment-changes">Role assignment changes</h3>
+<p>The following role assignments must be added to the Data Pipeline API's Managed Identity:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>App Configuration Data Reader</code></td>
+<td>Azure App Configuration service.</td>
+</tr>
+<tr>
+<td><code>Key Vault Secrets User</code></td>
+<td>Azure Key Vault service.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Storage account used by the FoundationaLLM Data Pipeline API.</td>
+</tr>
+<tr>
+<td><code>Cosmos DB Built-in Data Contributor</code></td>
+<td>Azure Cosmos DB account used by the FoundationaLLM Data Pipeline API.</td>
+</tr>
+<tr>
+<td><code>Storage Queue Data Message Sender</code></td>
+<td>Storage account used by the FoundationaLLM Data Pipeline API.</td>
+</tr>
+</tbody>
+</table>
+<p>The following role assignments must be added to the Data Pipeline Frontend Worker's Managed Identity:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>App Configuration Data Reader</code></td>
+<td>Azure App Configuration service.</td>
+</tr>
+<tr>
+<td><code>Key Vault Secrets User</code></td>
+<td>Azure Key Vault service.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.</td>
+</tr>
+<tr>
+<td><code>Cosmos DB Built-in Data Contributor</code></td>
+<td>Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Frontend Worker.</td>
+</tr>
+<tr>
+<td><code>Storage Queue Data Message Processor</code></td>
+<td>Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.</td>
+</tr>
+</tbody>
+</table>
+<p>The following role assignments must be added to the Data Pipeline Backend Worker's Managed Identity:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>App Configuration Data Reader</code></td>
+<td>Azure App Configuration service.</td>
+</tr>
+<tr>
+<td><code>Key Vault Secrets User</code></td>
+<td>Azure Key Vault service.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Storage account used by the FoundationaLLM Data Pipeline Backend Worker.</td>
+</tr>
+<tr>
+<td><code>Cosmos DB Built-in Data Contributor</code></td>
+<td>Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Backend Worker.</td>
+</tr>
+<tr>
+<td><code>Storage Queue Data Message Processor</code></td>
+<td>Storage account used by the FoundationaLLM Data Pipeline Backend Worker.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="new-resource-provider">New resource provider</h3>
+<p>The <code>FoundationaLLM.Vector</code> resource provider has been added.
+A new folder named <code>FoundationaLLM.Vector</code> must be created in the FoundationaLLM storage account under the <code>resource-provider</code> container.
+The folder must contain the following files:</p>
+<ul>
+<li><code>_resource-references.json</code> - the resource references file.</li>
+<li><code>ConversationFiles.json</code> - the resource file for the <code>ConversationFiles</code> vector database resource.</li>
+</ul>
+<p>The content of the <code>resource-references.json</code> file is as follows:</p>
+<pre><code class="lang-json">{
+	&quot;ResourceReferences&quot;: [
+		{
+			&quot;Name&quot;: &quot;ConversationFiles&quot;,
+			&quot;Filename&quot;: &quot;/FoundationaLLM.Vector/ConversationFiles.json&quot;,
+			&quot;Type&quot;: &quot;vector-database&quot;,
+			&quot;Deleted&quot;: false
+		}
+	],
+	&quot;DefaultResourceName&quot;: null
+}
+</code></pre>
+<p>The content of the <code>ConversationFiles.json</code> file is as follows:</p>
+<pre><code class="lang-json">{
+  &quot;type&quot;: &quot;vector-database&quot;,
+  &quot;name&quot;: &quot;ConversationFiles&quot;,
+  &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Vector/vectorDatabases/ConversationFiles&quot;,
+  &quot;display_name&quot;: &quot;Conversation files vectorization&quot;,
+  &quot;description&quot;: &quot;The vector database that used by default when processing files that are uploaded in conversations.&quot;,
+  &quot;cost_center&quot;: null,
+  &quot;database_type&quot;: &quot;AzureAISearch&quot;,
+  &quot;database_name&quot;: &quot;ConversationFiles&quot;,
+  &quot;embedding_property_name&quot;: &quot;Embedding&quot;,
+  &quot;content_property_name&quot;: &quot;Text&quot;,
+  &quot;vector_store_id_property_name&quot;: &quot;VectorStoreId&quot;,
+  &quot;api_endpoint_configuration_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch&quot;,
+  &quot;properties&quot;: null,
+  &quot;created_on&quot;: &quot;2025-05-20T13:57:58.9770592+00:00&quot;,
+  &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+  &quot;created_by&quot;: &quot;SYSTEM&quot;,
+  &quot;updated_by&quot;: null,
+  &quot;deleted&quot;: false,
+  &quot;expiration_date&quot;: null
+}
+</code></pre>
 <h2 id="starting-from-097-beta147">Starting from 0.9.7-beta147</h2>
 <p>The following App Configuration value has been added:</p>
 <table>
@@ -110,7 +440,7 @@
     &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
     &quot;principal_id&quot;: &quot;c54871ba-1fa1-439a-9e86-30d74dfe4a4a&quot;,
     &quot;principal_type&quot;: &quot;Group&quot;,
-    &quot;scope&quot;: &quot;/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AzureAI/agentConversationMappings&quot;,
+    &quot;scope&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.AzureAI/agentConversationMappings&quot;,
     &quot;created_on&quot;: &quot;2025-01-14T17:58:19.5954014Z&quot;,
     &quot;updated_on&quot;: &quot;2025-01-14T17:58:19.5954014Z&quot;,
     &quot;created_by&quot;: &quot;SYSTEM&quot;,
@@ -124,7 +454,7 @@
     &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
     &quot;principal_id&quot;: &quot;c54871ba-1fa1-439a-9e86-30d74dfe4a4a&quot;,
     &quot;principal_type&quot;: &quot;Group&quot;,
-    &quot;scope&quot;: &quot;/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AzureAI/agentFileMappings&quot;,
+    &quot;scope&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.AzureAI/agentFileMappings&quot;,
     &quot;created_on&quot;: &quot;2025-01-14T17:58:19.5954014Z&quot;,
     &quot;updated_on&quot;: &quot;2025-01-14T17:58:19.5954014Z&quot;,
     &quot;created_by&quot;: &quot;SYSTEM&quot;,
@@ -132,8 +462,8 @@
 }
 </code></pre>
 <h2 id="starting-from-097-beta139">Starting from 0.9.7-beta139</h2>
-<h2 id="configuration-changes">Configuration changes</h2>
-<p>The following App Configuration value has been added:</p>
+<h3 id="configuration-changes-1">Configuration changes</h3>
+<p>The following App Configuration value have been added:</p>
 <table>
 <thead>
 <tr>
@@ -155,7 +485,7 @@
 </tr>
 </tbody>
 </table>
-<p>The following App Configuration value has been removed as they are no longer needed:</p>
+<p>The following App Configuration value have been removed as they are no longer needed:</p>
 <ol>
 <li>ResourceProviders:AzureOpenAI:Storage:AuthenticationType</li>
 <li>ResourceProviders:AzureOpenAI:Storage:AccountName</li>
@@ -178,7 +508,7 @@
 }
 </code></pre>
 <h2 id="starting-from-097-beta138">Starting from 0.9.7-beta138</h2>
-<h2 id="configuration-changes-1">Configuration changes</h2>
+<h3 id="configuration-changes-2">Configuration changes</h3>
 <p>The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</code> configuration setting has been replaced by the following configuration settings:</p>
 <table>
 <thead>
@@ -205,7 +535,7 @@
 </tbody>
 </table>
 <p>FoundationaLLM now supports Azure AI Inference APIs accessible to the agent using the LangChain workflow host. This functionality expects an Azure AI Service resource. Authentication is accomplished support is via Azure Identity (Entra) or API Key. If using Azure Identity, ensure the LangChain managed identity has <code>Cognitive Services User</code> role on the Azure AI Service resource (may be inherited). Within the project defined in AI Foundry, ensure the LangChain managed identity has the <code>Azure AI Developer</code> role. If using API Key, ensure the API Key is securely stored in the key vault and exposed via an Application Configuration value. When defining the API Endpoint Configuration, add the authentication parameter <code>api_key_configuration_name</code> with the name of the Application Configuration key.</p>
-<h2 id="code-sessions">Code sessions</h2>
+<h3 id="code-sessions">Code sessions</h3>
 <p>The tool property <code>foundationallm_aca_code_execution_enabled</code> has been renamed to <code>code_session_required</code>. The property indicates whether the tool requires a code session during its execution. If the property is set to <code>true</code>, the following additional properties must be set:</p>
 <ul>
 <li><code>code_session_endpoint_provider</code>: Supported values are <code>AzureContainerAppsCodeInterpreter</code> (indicates that the code session is provided by the Azure Container Apps Dynamic Sessions code interpreter) and <code>AzureContainerAppsCustomContainer</code> (indicates that the code session is provided by the Azure Container Apps Dynamic Sessions custom container).</li>
@@ -217,10 +547,10 @@
 <li><code>code_session_id</code> (instead of the previous <code>foundationallm_aca_code_execution_session_id</code>)</li>
 </ul>
 <h2 id="starting-from-097-beta128">Starting from 0.9.7-beta128</h2>
-<h2 id="configuration-changes-2">Configuration changes</h2>
+<h3 id="configuration-changes-3">Configuration changes</h3>
 <p>Agent Workflow configuration now has a <code>class_name</code> field. This is the underlying implementation class of the workflow. This is not a breaking change, as in previous versions the <code>name</code> field contained the class name and if the <code>class_name</code> field is empty, it will default to the <code>name</code> field. However, it is recommended to set the <code>class_name</code> field to the implementation class name.</p>
 <h2 id="starting-from-097-beta112">Starting from 0.9.7-beta112</h2>
-<h3 id="configuration-changes-3">Configuration changes</h3>
+<h3 id="configuration-changes-4">Configuration changes</h3>
 <p>Added the following App Configuration value:</p>
 <table>
 <thead>
@@ -317,7 +647,7 @@ The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</c
 </code></pre>
 <p>where <code>&lt;session_pool_endpoint&gt;</code> is the endpoint of the Azure Container Apps Session Pool.</p>
 </div>
-<h3 id="role-assignment-changes">Role assignment changes</h3>
+<h3 id="role-assignment-changes-1">Role assignment changes</h3>
 <p>The following role assignments must be added to the Context API's Managed Identity:</p>
 <table>
 <thead>
@@ -392,7 +722,7 @@ The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</c
 <h2 id="starting-from-097-beta106">Starting from 0.9.7-beta106</h2>
 <p>For External Agent Workflows, the invocation of the workflow now sends the completion request MessageHistoryItem list vs the translated LangChain BaseMessage construct. This way workflows have more control on how to handle the message history of a conversation.</p>
 <h2 id="starting-from-097-beta105">Starting from 0.9.7-beta105</h2>
-<h3 id="configuration-changes-4">Configuration changes</h3>
+<h3 id="configuration-changes-5">Configuration changes</h3>
 <p>The <code>FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool</code> definition now contains a <code>ClassName</code> property. This should be set to the implementation class name of the tool. The <code>Name</code> property of the tool is what will be used for uniqueness in the case multipe tools of the same type/class are used in the same agent.</p>
 <blockquote>
 <p><strong>Note</strong>: This is not a breaking change as if the <code>ClassName</code> property is not set, the <code>Name</code> property will be used as the class name which is the existing pattern. However, it is recommended to set the <code>ClassName</code> property to adhere to the new pattern.</p>
@@ -434,7 +764,7 @@ The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</c
     }
 </code></pre>
 <h2 id="starting-from-097-beta103">Starting from 0.9.7-beta103</h2>
-<h3 id="configuration-changes-5">Configuration changes</h3>
+<h3 id="configuration-changes-6">Configuration changes</h3>
 <p>Added the following App Configuration value:</p>
 <table>
 <thead>
@@ -529,7 +859,7 @@ The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</c
 </tbody>
 </table>
 <h2 id="starting-from-097-beta101">Starting from 0.9.7-beta101</h2>
-<h3 id="configuration-changes-6">Configuration changes</h3>
+<h3 id="configuration-changes-7">Configuration changes</h3>
 <p>Added the following App Configuration value:</p>
 <table>
 <thead>
@@ -570,7 +900,7 @@ The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</c
 <li><code>resource</code> (of type text) - the serialized plugin package FoundationaLLM resource.</li>
 </ul>
 <h2 id="starting-with-097-beta100">Starting with 0.9.7-beta100</h2>
-<h3 id="configuration-changes-7">Configuration changes</h3>
+<h3 id="configuration-changes-8">Configuration changes</h3>
 <h2 id="app-configuration-settings">App configuration settings</h2>
 <p>The value of the <code>FoundationaLLM:Events:Profiles:CoreAPI</code> must be updated to include the <code>api-statistics</code> topic. The updated value is as follows:</p>
 <pre><code class="lang-json">{
@@ -588,7 +918,7 @@ The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</c
 }
 </code></pre>
 <h2 id="starting-with-094-rc100">Starting with 0.9.4-rc100</h2>
-<h3 id="configuration-changes-8">Configuration changes</h3>
+<h3 id="configuration-changes-9">Configuration changes</h3>
 <h2 id="app-configuration-settings-1">App configuration settings</h2>
 <div class="IMPORTANT">
 <h5>Important</h5>
@@ -1229,7 +1559,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 <p>Note: The event grid system topics need to be removed.</p>
 </blockquote>
 <p>The following topic needs to be created in the event grid namespace, must have a <code>resource-providers</code> topic with a publisher type of <code>Custom</code> and an input schema of <code>Cloud Events v1.0</code>.</p>
-<h3 id="configuration-changes-9">Configuration changes</h3>
+<h3 id="configuration-changes-10">Configuration changes</h3>
 <p>Added the following App Configuration value:</p>
 <table>
 <thead>
@@ -1291,7 +1621,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 </ul>
 <p>After the container is created, set the <code>Time to Live</code> property on the container to 300 seconds.</p>
 <h2 id="starting-with-091-rc105">Starting with 0.9.1-rc105</h2>
-<h3 id="configuration-changes-10">Configuration changes</h3>
+<h3 id="configuration-changes-11">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -1340,7 +1670,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 }
 </code></pre>
 <h2 id="starting-with-091-rc102">Starting with 0.9.1-rc102</h2>
-<h3 id="configuration-changes-11">Configuration changes</h3>
+<h3 id="configuration-changes-12">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -1377,7 +1707,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
     },
 </code></pre>
 <h2 id="starting-with-091-rc101">Starting with 0.9.1-rc101</h2>
-<h3 id="configuration-changes-12">Configuration changes</h3>
+<h3 id="configuration-changes-13">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -1421,7 +1751,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 </tbody>
 </table>
 <h2 id="starting-with-090">Starting with 0.9.0</h2>
-<h3 id="configuration-changes-13">Configuration changes</h3>
+<h3 id="configuration-changes-14">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -1543,7 +1873,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 <p>Please note that both properties are nullable. Set them to null to clear out the rating and comments.</p>
 </div>
 <h2 id="starting-with-084">Starting with 0.8.4</h2>
-<h3 id="configuration-changes-14">Configuration changes</h3>
+<h3 id="configuration-changes-15">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -1734,7 +2064,7 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 <li><code>FoundationaLLM.AzureOpenAI/assistantUserContexts</code></li>
 <li><code>FoundationaLLM.Conversation/conversations</code></li>
 </ul>
-<h3 id="configuration-changes-15">Configuration changes</h3>
+<h3 id="configuration-changes-16">Configuration changes</h3>
 <h4 id="resource-provider-templates">Resource provider templates</h4>
 <p>The <code>AzureOpenAI.template.json</code> files within <code>deploy/quick-start/data/resource-provider/FoundationaLLM.Configuration</code> and <code>deploy/standard/data/resource-provider/FoundationaLLM.Configuration</code> have been updated to set the <code>category</code> field to the value <code>LLM</code>. This discriminator allows the Management Portal to filter the list of API endpoints by category and provide options to add AI Models to endpoints with the <code>LLM</code> category.</p>
 <p>The existing <code>category</code> property needs to be set to <code>LLM</code> on existing API endpoint configurations in the <code>FoundationaLLM.Configuration</code> resource provider that fit this description, including the <code>AzureOpenAI</code> endpoint configuration.</p>
@@ -1786,7 +2116,7 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 }
 </code></pre>
 <h2 id="starting-with-082">Starting with 0.8.2</h2>
-<h3 id="configuration-changes-16">Configuration changes</h3>
+<h3 id="configuration-changes-17">Configuration changes</h3>
 <p>The following settings are required:</p>
 <table>
 <thead>

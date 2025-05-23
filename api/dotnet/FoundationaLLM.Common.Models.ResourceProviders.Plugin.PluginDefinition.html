@@ -205,7 +205,7 @@ Class PluginDefinition  <a class="header-action link-secondary" title="View sour
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Plugin_PluginDefinition_Category" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition.Category">
   Category
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Plugin/PluginDefinition.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Plugin/PluginDefinition.cs/#L21"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the category of the plugin.</p>
@@ -238,7 +238,7 @@ public required string Category { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Plugin_PluginDefinition_Dependencies" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition.Dependencies">
   Dependencies
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Plugin/PluginDefinition.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Plugin/PluginDefinition.cs/#L43"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the list of <a class="xref" href="FoundationaLLM.Common.Models.Plugins.Metadata.PluginDependencyMetadata.html">PluginDependencyMetadata</a> objects that represent the dependencies of the plugin.</p>
@@ -271,7 +271,7 @@ public List&lt;PluginDependencyMetadata&gt; Dependencies { get; set; }</code></p
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Plugin_PluginDefinition_ParameterSelectionHints" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition.ParameterSelectionHints">
   ParameterSelectionHints
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Plugin/PluginDefinition.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Plugin/PluginDefinition.cs/#L37"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the metadata associated with the plugin parameter selection hints.</p>
@@ -308,7 +308,7 @@ public Dictionary&lt;string, PluginParameterSelectionHint&gt; ParameterSelection
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Plugin_PluginDefinition_Parameters" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition.Parameters">
   Parameters
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Plugin/PluginDefinition.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Plugin/PluginDefinition.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the metadata associated with the plugin parameters.</p>
@@ -327,6 +327,39 @@ public List&lt;PluginParameterMetadata&gt; Parameters { get; set; }</code></pre>
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Plugins.PluginParameterMetadata.html">PluginParameterMetadata</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_Plugin_PluginDefinition_PluginPackageObjectId_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition.PluginPackageObjectId*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Plugin_PluginDefinition_PluginPackageObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition.PluginPackageObjectId">
+  PluginPackageObjectId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Plugin/PluginDefinition.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the FoundationaLLM object identifier of the plugin package that provides the plugin.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;plugin_package_object_id&quot;)]
+public required string PluginPackageObjectId { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd></dd>
   </dl>
 

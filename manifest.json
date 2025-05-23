@@ -1594,6 +1594,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Clients.PollingResourceRunner-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Clients.PollingResourceRunner-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Clients.PollingResourceRunner<TResource>",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Clients.PollingResourceRunner-1.yml\" sourcestartlinenumber=\"1\">Runs a resource using a polling mechanism to check for completion.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Clients.yml",
       "output": {
         ".html": {
@@ -1647,6 +1661,34 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Constants.Agents.AgentPropertyNames",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Agents.AgentPropertyNames.yml\" sourcestartlinenumber=\"1\">Provides the names of the properties allowed in the agent resource property bag.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Agents.AgentToolCategories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Agents.AgentToolCategories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Agents.AgentToolCategories",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Agents.AgentToolCategories.yml\" sourcestartlinenumber=\"1\">Provides the agent tool categories.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Agents.AgentToolNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Agents.AgentToolNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Agents.AgentToolNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Agents.AgentToolNames.yml\" sourcestartlinenumber=\"1\">Registry of built-in tool names.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2210,6 +2252,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.FileProcessingTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.FileProcessingTypes.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Context.FileProcessingTypes",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Context.FileProcessingTypes.yml\" sourcestartlinenumber=\"1\">Provides constants for the types of file processing.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.yml",
       "output": {
         ".html": {
@@ -2235,6 +2291,62 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Constants.CorsPolicyNames",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.CorsPolicyNames.yml\" sourcestartlinenumber=\"1\">Names for CORS policies.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.DataPipelineRunProcessors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.DataPipelineRunProcessors.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.DataPipelines.DataPipelineRunProcessors",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.DataPipelineRunProcessors.yml\" sourcestartlinenumber=\"1\">Constants for data pipeline run processors.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.DataPipelineTriggerNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.DataPipelineTriggerNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.DataPipelines.DataPipelineTriggerNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.DataPipelineTriggerNames.yml\" sourcestartlinenumber=\"1\">Constants for well-known data pipeline trigger names.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.DataPipelineTriggerParameterNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.DataPipelineTriggerParameterNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.DataPipelines.DataPipelineTriggerParameterNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.DataPipelineTriggerParameterNames.yml\" sourcestartlinenumber=\"1\">Constants for well-known data pipeline trigger parameter names.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.DataPipelines",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -3204,6 +3316,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderMetadata.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderMetadata",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderMetadata.yml\" sourcestartlinenumber=\"1\">Provides metadata that applies to all resource providers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.yml",
       "output": {
         ".html": {
@@ -3215,6 +3341,48 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.yml\" sourcestartlinenumber=\"1\">Contains constants of the resource provider names.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.VectorResourceProviderMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.VectorResourceProviderMetadata.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.ResourceProviders.VectorResourceProviderMetadata",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.VectorResourceProviderMetadata.yml\" sourcestartlinenumber=\"1\">Provides metadata for the FoundationaLLM.Vectorization resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.VectorResourceTypeNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.VectorResourceTypeNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.ResourceProviders.VectorResourceTypeNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.VectorResourceTypeNames.yml\" sourcestartlinenumber=\"1\">Contains constants of the names of the resource types managed by the FoundationaLLM.Vector resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.VectorTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.VectorTypes.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.ResourceProviders.VectorTypes",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.VectorTypes.yml\" sourcestartlinenumber=\"1\">Vector type constants.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3540,6 +3708,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.DataPipelineException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.DataPipelineException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Exceptions.DataPipelineException",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Exceptions.DataPipelineException.yml\" sourcestartlinenumber=\"1\">Represents an error generated by the eventing system.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.EventException.yml",
       "output": {
         ".html": {
@@ -3593,6 +3775,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Exceptions.OrchestrationException",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Exceptions.OrchestrationException.yml\" sourcestartlinenumber=\"1\">Represents an error with accessing content.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.PluginException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.PluginException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Exceptions.PluginException",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Exceptions.PluginException.yml\" sourcestartlinenumber=\"1\">Represents an error originating in a plugin.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3764,6 +3960,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Extensions.JsonElementExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Extensions.JsonElementExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Extensions.JsonElementExtensions",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Extensions.JsonElementExtensions.yml\" sourcestartlinenumber=\"1\">Provides extension methods for <xref href=\"System.Text.Json.JsonElement\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Extensions.StringExtensions.yml",
       "output": {
         ".html": {
@@ -3862,6 +4072,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IAzureAISearchService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IAzureAISearchService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.IAzureAISearchService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IAzureAISearchService.yml\" sourcestartlinenumber=\"1\">Interface for Azure AI Search Service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IAzureAIService.yml",
       "output": {
         ".html": {
@@ -3943,6 +4167,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Interfaces.IContextServiceClient",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IContextServiceClient.yml\" sourcestartlinenumber=\"1\">Provides methods to call the FoundationaLLM Context API service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IDataPipelineStateService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IDataPipelineStateService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.IDataPipelineStateService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IDataPipelineStateService.yml\" sourcestartlinenumber=\"1\">Defines the interface for the Data Pipeline State Service.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4058,20 +4296,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IPluginPackageManager.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IPluginPackageManager.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Interfaces.IPluginPackageManager",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IPluginPackageManager.yml\" sourcestartlinenumber=\"1\">Provides methods to manage plugins in FoundationaLLM plugin packages.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IQuotaService.yml",
       "output": {
         ".html": {
@@ -4083,6 +4307,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Interfaces.IQuotaService",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IQuotaService.yml\" sourcestartlinenumber=\"1\">Defines methods exposed by the FoundationaLLM Quota service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IResourceProviderClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IResourceProviderClient.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.IResourceProviderClient",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IResourceProviderClient.yml\" sourcestartlinenumber=\"1\">Defines the interface for a data pipeline resource provider client.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4125,6 +4363,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Interfaces.IResourceValidatorFactory",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IResourceValidatorFactory.yml\" sourcestartlinenumber=\"1\">Provides methods for getting validators.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IRunnableResource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IRunnableResource.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.IRunnableResource",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IRunnableResource.yml\" sourcestartlinenumber=\"1\">Defines the properties and methods for a runnable FoundationaLLM resource.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4223,6 +4475,104 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Interfaces.IUserProfileService",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IUserProfileService.yml\" sourcestartlinenumber=\"1\">Provides methods for working with user profiles.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin.yml\" sourcestartlinenumber=\"1\">Defines the interface for a content text extraction plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IContentTextPartitioningPlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IContentTextPartitioningPlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.Plugins.IContentTextPartitioningPlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IContentTextPartitioningPlugin.yml\" sourcestartlinenumber=\"1\">Defines the interface for a content text partitioning plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Defines the interface for a data pipeline stage plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.yml\" sourcestartlinenumber=\"1\">Defines the interface for a data source plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.yml\" sourcestartlinenumber=\"1\">Provides methods to manage plugins in FoundationaLLM plugin packages.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IPluginService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IPluginService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.Plugins.IPluginService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IPluginService.yml\" sourcestartlinenumber=\"1\">Defines the contract for a plugin service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.Plugins",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -5906,6 +6256,90 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier.yml\" sourcestartlinenumber=\"1\">Represents the identifier of a content item processed by data pipelines.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem.yml\" sourcestartlinenumber=\"1\">Represents a content item in a data pipeline.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPart.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPart.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPart",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPart.yml\" sourcestartlinenumber=\"1\">Represents a part of a content item.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.yml\" sourcestartlinenumber=\"1\">Represents a work item in a data pipeline run.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifact.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifact.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifact",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifact.yml\" sourcestartlinenumber=\"1\">Represents the state of a data pipeline artifact.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.DataPipelines",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Events.EventTypeEventArgs.yml",
       "output": {
         ".html": {
@@ -6774,6 +7208,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.ContentItemRawContent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.ContentItemRawContent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Plugins.ContentItemRawContent",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Plugins.ContentItemRawContent.yml\" sourcestartlinenumber=\"1\">Provides the raw binary content of a content item.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.Metadata.PluginDependencyMetadata.yml",
       "output": {
         ".html": {
@@ -6897,6 +7345,34 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.Plugins.PluginParameterMetadata",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Plugins.PluginParameterMetadata.yml\" sourcestartlinenumber=\"1\">Provides the metadata for a plugin parameter definition.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.PluginResult-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.PluginResult-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Plugins.PluginResult<T>",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Plugins.PluginResult-1.yml\" sourcestartlinenumber=\"1\">The result of an operation executed by a plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.PluginResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Plugins.PluginResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Plugins.PluginResult",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Plugins.PluginResult.yml\" sourcestartlinenumber=\"1\">The result of an operation executed by a plugin.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7502,6 +7978,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeSearchSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeSearchSettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeSearchSettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeSearchSettings.yml\" sourcestartlinenumber=\"1\">Provides the settings for knowledge search.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.Tool.yml",
       "output": {
         ".html": {
@@ -7513,20 +8003,6 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.ResourceProviders.Agent.Tool",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.Tool.yml\" sourcestartlinenumber=\"1\">Tool resource.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.ToolNames.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.ToolNames.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Agent.ToolNames",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.ToolNames.yml\" sourcestartlinenumber=\"1\">Registry of built-in tool names.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -8034,6 +8510,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinitionSnapshot.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinitionSnapshot.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinitionSnapshot",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinitionSnapshot.yml\" sourcestartlinenumber=\"1\">Represents a snapshot of a data pipeline definition.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.yml\" sourcestartlinenumber=\"1\">Provider the model for a data pipeline run.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStage.yml",
       "output": {
         ".html": {
@@ -8283,6 +8787,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginPackageDefinition",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginPackageDefinition.yml\" sourcestartlinenumber=\"1\">Provides the model for a plugin package.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginPackageManagerInstance.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginPackageManagerInstance.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginPackageManagerInstance",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginPackageManagerInstance.yml\" sourcestartlinenumber=\"1\">Represents a plugin package manager instance resource.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -8675,6 +9193,62 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeInstance",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeInstance.yml\" sourcestartlinenumber=\"1\">Identifies a specific resource type instance.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.yml\" sourcestartlinenumber=\"1\">Represents a vector database resource.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabaseType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabaseType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabaseType",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabaseType.yml\" sourcestartlinenumber=\"1\">Defines the types of vector databases available to store embeddings.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorStore.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorStore",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorStore.yml\" sourcestartlinenumber=\"1\">Represents a vector store resource.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Vector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Vector.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Vector",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -9168,6 +9742,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Azure.AzureAISearchService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.Azure.AzureAISearchService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Services.Azure.AzureAISearchService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Services.Azure.AzureAISearchService.yml\" sourcestartlinenumber=\"1\">Implements the Azure AI Search Service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Azure.AzureAIService.yml",
       "output": {
         ".html": {
@@ -9389,6 +9977,34 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Services.IAzureKeyVaultService",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Services.IAzureKeyVaultService.yml\" sourcestartlinenumber=\"1\">Provides access to and management of Azure Key Vault.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Plugins.PluginService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.Plugins.PluginService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Services.Plugins.PluginService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Services.Plugins.PluginService.yml\" sourcestartlinenumber=\"1\">Provides capabilities for managing plugins.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Plugins.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.Plugins.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Services.Plugins",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -10134,6 +10750,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Validation.ResourceProvider.AzureCosmosDBResourceValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Validation.ResourceProvider.AzureCosmosDBResourceValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Validation.ResourceProvider.AzureCosmosDBResourceValidator",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Validation.ResourceProvider.AzureCosmosDBResourceValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Validation.ResourceProvider.ResourceBaseValidator.yml",
       "output": {
         ".html": {
@@ -10187,6 +10817,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Validation.StandardValidator",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Validation.StandardValidator.yml\" sourcestartlinenumber=\"1\">Provides the standard validation implementation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Validation.ValidationUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Validation.ValidationUtils.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Validation.ValidationUtils",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Validation.ValidationUtils.yml\" sourcestartlinenumber=\"1\">Provides general purpose validation utilities.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -11366,17 +12010,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.API.Controllers.DataPipelinesController.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.API.Controllers.DataPipelineRunsController.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.API.Controllers.DataPipelinesController.html"
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.API.Controllers.DataPipelineRunsController.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.DataPipeline.API.Controllers.DataPipelinesController",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipeline.API.Controllers.DataPipelinesController.yml\" sourcestartlinenumber=\"1\">Provides the routes for the Data Pipelines API data pipelines controller.</p>\n"
+      "Title": "FoundationaLLM.DataPipeline.API.Controllers.DataPipelineRunsController",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipeline.API.Controllers.DataPipelineRunsController.yml\" sourcestartlinenumber=\"1\">Provides the routes for the Data Pipelines API data pipelines controller.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -11436,6 +12080,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.Clients.RemoteDataPipelineServiceClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.Clients.RemoteDataPipelineServiceClient.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipeline.Clients.RemoteDataPipelineServiceClient",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipeline.Clients.RemoteDataPipelineServiceClient.yml\" sourcestartlinenumber=\"1\">Remote client for the Data Pipeline API.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.Clients.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.Clients.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipeline.Clients",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.FrontendWorker.Controllers.StatusController.yml",
       "output": {
         ".html": {
@@ -11460,6 +12132,34 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.DataPipeline.FrontendWorker.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.Interfaces.IDataPipelineServiceClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.Interfaces.IDataPipelineServiceClient.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipeline.Interfaces.IDataPipelineServiceClient",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipeline.Interfaces.IDataPipelineServiceClient.yml\" sourcestartlinenumber=\"1\">Defines the interface for Data Pipeline API clients.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.Interfaces.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipeline.Interfaces",
       "Summary": null
     },
     {
@@ -11534,6 +12234,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.Validation.DataPipelineRunValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.Validation.DataPipelineRunValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipeline.Validation.DataPipelineRunValidator",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipeline.Validation.DataPipelineRunValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.DataPipeline.Validation.DataPipelineTriggerValidator.yml",
       "output": {
         ".html": {
@@ -11566,6 +12280,454 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.DataPipeline.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": null,
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Clients.LocalDataPipelineServiceClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Clients.LocalDataPipelineServiceClient.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Clients.LocalDataPipelineServiceClient",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Clients.LocalDataPipelineServiceClient.yml\" sourcestartlinenumber=\"1\">Local client for the Data Pipeline API.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Clients.NullDataPipelineServiceClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Clients.NullDataPipelineServiceClient.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Clients.NullDataPipelineServiceClient",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Clients.NullDataPipelineServiceClient.yml\" sourcestartlinenumber=\"1\">Implements a no-operation client.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Clients.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Clients.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Clients",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Exceptions.DataPipelineServiceException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Exceptions.DataPipelineServiceException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Exceptions.DataPipelineServiceException",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Exceptions.DataPipelineServiceException.yml\" sourcestartlinenumber=\"1\">Represents an exception that occurs when a service error occurs in the Context API.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Exceptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Exceptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Exceptions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.yml\" sourcestartlinenumber=\"1\">Defines the interface for the Azure Cosmos DB data pipeline service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineRunnerService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineRunnerService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineRunnerService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineRunnerService.yml\" sourcestartlinenumber=\"1\">Defines the interface for the data pipeline runner service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.yml\" sourcestartlinenumber=\"1\">Interface for the Data Pipeline Service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineTriggerService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineTriggerService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineTriggerService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineTriggerService.yml\" sourcestartlinenumber=\"1\">Defines the interface for the Data Pipeline Trigger service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Interfaces",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides the settings for the Data Pipeline service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettingsBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettingsBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettingsBase",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettingsBase.yml\" sourcestartlinenumber=\"1\">Provides the base settings for Data Pipeline services.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineStateServiceSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineStateServiceSettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineStateServiceSettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineStateServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides the settings for the Data Pipeline State service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineWorkerServiceSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineWorkerServiceSettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineWorkerServiceSettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineWorkerServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides the settings for the Data Pipeline Worker service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.Configuration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.Configuration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Models.Configuration",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineRunWorkItemMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineRunWorkItemMessage.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Models.DataPipelineRunWorkItemMessage",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineRunWorkItemMessage.yml\" sourcestartlinenumber=\"1\">Represents a queue message for a data pipeline run work item.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage.yml\" sourcestartlinenumber=\"1\">Represents a dequeued message from a data pipeline worker queue.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Models",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.yml\" sourcestartlinenumber=\"1\">Provides the implementation for the Azure Cosmos DB data pipeline service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.CosmosDB.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.CosmosDB.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services.CosmosDB",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.yml\" sourcestartlinenumber=\"1\">Provides capabilities for data pipeline services that run in the background.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineRunnerService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineRunnerService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services.DataPipelineRunnerService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineRunnerService.yml\" sourcestartlinenumber=\"1\">Provides capabilities for running data pipelines.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services.DataPipelineService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineService.yml\" sourcestartlinenumber=\"1\">Provides services for managing data pipelines.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineStateService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineStateService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services.DataPipelineStateService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineStateService.yml\" sourcestartlinenumber=\"1\">Provides capabilities for data pipeline state management.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineTriggerService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineTriggerService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services.DataPipelineTriggerService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineTriggerService.yml\" sourcestartlinenumber=\"1\">Provides capabilities for triggering data pipeline runs.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineWorkerService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineWorkerService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services.DataPipelineWorkerService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineWorkerService.yml\" sourcestartlinenumber=\"1\">Provides capabilites for background processing of data pipeline work items.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineRunWorkItemStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineRunWorkItemStatus.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineRunWorkItemStatus",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineRunWorkItemStatus.yml\" sourcestartlinenumber=\"1\">Represents the status of a work item in a data pipeline run.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineRunner.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineRunner.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineRunner",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineRunner.yml\" sourcestartlinenumber=\"1\">Provides capabilities for running data pipelines.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineStageRunner.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineStageRunner.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineStageRunner",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineStageRunner.yml\" sourcestartlinenumber=\"1\">Provides capabilities for running data pipelines.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Runners.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Runners.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services.Runners",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.html"
         }
       },
       "version": "",
@@ -13396,6 +14558,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugin.Models.VectorReference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugin.Models.VectorReference.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugin.Models.VectorReference",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugin.Models.VectorReference.yml\" sourcestartlinenumber=\"1\">Provides a reference to a resource managed by the FoundationaLLM.Plugin resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Plugin.Models.yml",
       "output": {
         ".html": {
@@ -13466,6 +14642,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugin.Validation.VectorDatabaseValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugin.Validation.VectorDatabaseValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugin.Validation.VectorDatabaseValidator",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugin.Validation.VectorDatabaseValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Plugin.Validation.yml",
       "output": {
         ".html": {
@@ -13494,6 +14684,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.PluginNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.PluginNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.PluginNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.PluginNames.yml\" sourcestartlinenumber=\"1\">Provides the names of the plugins provided by the package.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.PluginPackageManager.yml",
       "output": {
         ".html": {
@@ -13505,6 +14709,314 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Plugins.DataPipeline.PluginPackageManager",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.PluginPackageManager.yml\" sourcestartlinenumber=\"1\">The plugin package manager.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.PluginParameterNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.PluginParameterNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.PluginParameterNames",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.DOCXContentTextExtractionPlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.DOCXContentTextExtractionPlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.DOCXContentTextExtractionPlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.DOCXContentTextExtractionPlugin.yml\" sourcestartlinenumber=\"1\">Implements the DOCX Content Text Extraction Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageContentTextExtractionPlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageContentTextExtractionPlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageContentTextExtractionPlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageContentTextExtractionPlugin.yml\" sourcestartlinenumber=\"1\">Implements the Image Content Text Extraction Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageMetadataTextExtractionPlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageMetadataTextExtractionPlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageMetadataTextExtractionPlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageMetadataTextExtractionPlugin.yml\" sourcestartlinenumber=\"1\">Implements the Image Metadata Text Extraction Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PDFContentTextExtractionPlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PDFContentTextExtractionPlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PDFContentTextExtractionPlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PDFContentTextExtractionPlugin.yml\" sourcestartlinenumber=\"1\">Implements the PDF Content Text Extraction Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.yml\" sourcestartlinenumber=\"1\">Implements the PPTX Content Text Extraction Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.XLSXContentTextExtractionPlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.XLSXContentTextExtractionPlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.XLSXContentTextExtractionPlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.XLSXContentTextExtractionPlugin.yml\" sourcestartlinenumber=\"1\">Implements the XLSX Content Text Extraction Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning.SemanticContentTextPartitioningPlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning.SemanticContentTextPartitioningPlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning.SemanticContentTextPartitioningPlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning.SemanticContentTextPartitioningPlugin.yml\" sourcestartlinenumber=\"1\">Implements the Semantic Content Text Partitioning plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning.TokenContentTextPartitioningPlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning.TokenContentTextPartitioningPlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning.TokenContentTextPartitioningPlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning.TokenContentTextPartitioningPlugin.yml\" sourcestartlinenumber=\"1\">Implements the Token Content Text Partitioning plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIIndexingDataPipelineStagePlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIIndexingDataPipelineStagePlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIIndexingDataPipelineStagePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIIndexingDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Azure AI Indexing Data Pipeline Stage Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.DataPipelineStagePluginBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.DataPipelineStagePluginBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.DataPipelineStagePluginBase",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.DataPipelineStagePluginBase.yml\" sourcestartlinenumber=\"1\">Implements a basic Data Pipeline Stage Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.GatewayTextEmbeddingDataPipelineStagePlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.GatewayTextEmbeddingDataPipelineStagePlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.GatewayTextEmbeddingDataPipelineStagePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.GatewayTextEmbeddingDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Gateway Text Embedding Data Pipeline Stage Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextExtractionDataPipelineStagePlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextExtractionDataPipelineStagePlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextExtractionDataPipelineStagePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextExtractionDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Text Extraction Data Pipeline Stage Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextPartitioningDataPipelineStagePlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextPartitioningDataPipelineStagePlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextPartitioningDataPipelineStagePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextPartitioningDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Text Partitioning Data Pipeline Stage Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.AzureDataLakeDataSourcePlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.AzureDataLakeDataSourcePlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.AzureDataLakeDataSourcePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.AzureDataLakeDataSourcePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Azure Data Lake data source plugin.</p>\n<param name=\"pluginParameters\">The dictionary containing the plugin parameters.\n<param name=\"packageManager\">The package manager for the plugin.\n<param name=\"serviceProvider\">The service provider of the dependency injection container.\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.ContextFileDataSourcePlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.ContextFileDataSourcePlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.ContextFileDataSourcePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.ContextFileDataSourcePlugin.yml\" sourcestartlinenumber=\"1\">Implements the FoundationaLLM Context File data source plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.PluginBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.PluginBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.PluginBase",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.PluginBase.yml\" sourcestartlinenumber=\"1\">Implements the basic functionality of a plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -14275,6 +15787,34 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.ValidatedEnvironment",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.ValidatedEnvironment.yml\" sourcestartlinenumber=\"1\">Provides methods for working with the environment.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Vector.ResourceProviders.VectorResourceProviderService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Vector.ResourceProviders.VectorResourceProviderService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Vector.ResourceProviders.VectorResourceProviderService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vector.ResourceProviders.VectorResourceProviderService.yml\" sourcestartlinenumber=\"1\">Implements the FoundationaLLM.Vector resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Vector.ResourceProviders.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Vector.ResourceProviders.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Vector.ResourceProviders",
+      "Summary": null
     },
     {
       "type": "ManagedReference",

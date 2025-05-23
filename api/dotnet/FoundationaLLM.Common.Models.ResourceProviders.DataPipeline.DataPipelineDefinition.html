@@ -237,6 +237,72 @@ public bool Active { get; set; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_AllStageNames_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition.AllStageNames*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_AllStageNames" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition.AllStageNames">
+  AllStageNames
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineDefinition.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the names of all the data pipeline stages.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public List&lt;string&gt; AllStageNames { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_AllStages_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition.AllStages*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_AllStages" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition.AllStages">
+  AllStages
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineDefinition.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets all the data pipeline stages.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public List&lt;DataPipelineStage&gt; AllStages { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStage.html">DataPipelineStage</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_DataSource_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition.DataSource*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_DataSource" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition.DataSource">
@@ -260,6 +326,39 @@ public required DataPipelineDataSource DataSource { get; set; }</code></pre>
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDataSource.html">DataPipelineDataSource</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_MostRecentSnapshotObjectId_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition.MostRecentSnapshotObjectId*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_MostRecentSnapshotObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition.MostRecentSnapshotObjectId">
+  MostRecentSnapshotObjectId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineDefinition.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the object identifier of the most recent snapshot of the data pipeline.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;most_recent_snapshot_object_id&quot;)]
+public string MostRecentSnapshotObjectId { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd></dd>
   </dl>
 
@@ -333,6 +432,98 @@ public List&lt;DataPipelineTrigger&gt; Triggers { get; set; }</code></pre>
 
 
 
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_GetNextStages_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition.GetNextStages*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_GetNextStages_System_String_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition.GetNextStages(System.String)">
+  GetNextStages(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineDefinition.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the list of data pipeline stages that follow the specified stage.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;DataPipelineStage&gt; GetNextStages(string stageName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stageName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the stage to search for.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStage.html">DataPipelineStage</a>&gt;</dt>
+    <dd><p>The list of data pipeline stages that follow the specified stage.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_GetStage_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition.GetStage*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_GetStage_System_String_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition.GetStage(System.String)">
+  GetStage(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineDefinition.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the data pipeline stage with the specified name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DataPipelineStage GetStage(string stageName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stageName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the stage to search for.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStage.html">DataPipelineStage</a></dt>
+    <dd><p>The data pipeline stage with the specified name.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd></dd>
+  </dl>
 
 
 

@@ -232,7 +232,7 @@ Interface IStorageService  <a class="header-action link-secondary" title="View s
 
   <h3 id="FoundationaLLM_Common_Interfaces_IStorageService_DeleteFileAsync_System_String_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IStorageService.DeleteFileAsync(System.String,System.String,System.Threading.CancellationToken)">
   DeleteFileAsync(string, string, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IStorageService.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IStorageService.cs/#L84"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes a file from storage.</p>
@@ -276,7 +276,7 @@ Interface IStorageService  <a class="header-action link-secondary" title="View s
 
   <h3 id="FoundationaLLM_Common_Interfaces_IStorageService_FileExistsAsync_System_String_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IStorageService.FileExistsAsync(System.String,System.String,System.Threading.CancellationToken)">
   FileExistsAsync(string, string, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IStorageService.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IStorageService.cs/#L93"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Checks if a file exists on the storage.</p>
@@ -320,7 +320,7 @@ Interface IStorageService  <a class="header-action link-secondary" title="View s
 
   <h3 id="FoundationaLLM_Common_Interfaces_IStorageService_GetFilePathsAsync_System_String_System_String_System_Boolean_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IStorageService.GetFilePathsAsync(System.String,System.String,System.Boolean,System.Threading.CancellationToken)">
   GetFilePathsAsync(string, string?, bool, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IStorageService.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IStorageService.cs/#L103"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a list file paths in the specific directory.</p>
@@ -351,6 +351,92 @@ Interface IStorageService  <a class="header-action link-secondary" title="View s
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;&gt;</dt>
     <dd><p>List of individual file paths located in the container.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Interfaces_IStorageService_GetMatchingFilePathsAsync_" data-uid="FoundationaLLM.Common.Interfaces.IStorageService.GetMatchingFilePathsAsync*"></a>
+
+  <h3 id="FoundationaLLM_Common_Interfaces_IStorageService_GetMatchingFilePathsAsync_System_String_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IStorageService.GetMatchingFilePathsAsync(System.String,System.String,System.Threading.CancellationToken)">
+  GetMatchingFilePathsAsync(string, string, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IStorageService.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves a list of file paths that match a specific pattern.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;List&lt;string&gt;&gt; GetMatchingFilePathsAsync(string containerName, string filePathPattern, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>containerName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the container.</p>
+</dd>
+    <dt><code>filePathPattern</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The file name pattern to match.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The cancellation token that signals that operations should be cancelled.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Interfaces_IStorageService_ReadFile_" data-uid="FoundationaLLM.Common.Interfaces.IStorageService.ReadFile*"></a>
+
+  <h3 id="FoundationaLLM_Common_Interfaces_IStorageService_ReadFile_System_String_System_String_" data-uid="FoundationaLLM.Common.Interfaces.IStorageService.ReadFile(System.String,System.String)">
+  ReadFile(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IStorageService.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Reads the binary content of a specified file from the storage.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">BinaryData ReadFile(string containerName, string filePath)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>containerName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the container where the file is located.</p>
+</dd>
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The path of the file to read.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.binarydata">BinaryData</a></dt>
+    <dd><p>The binary content of the file.</p>
 </dd>
   </dl>
 
@@ -413,7 +499,7 @@ Interface IStorageService  <a class="header-action link-secondary" title="View s
 
   <h3 id="FoundationaLLM_Common_Interfaces_IStorageService_UpdateJSONFileAsync__1_System_String_System_String_System_Func___0___0__System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IStorageService.UpdateJSONFileAsync``1(System.String,System.String,System.Func{``0,``0},System.Threading.CancellationToken)">
   UpdateJSONFileAsync&lt;T&gt;(string, string, Func&lt;T, T&gt;, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IStorageService.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IStorageService.cs/#L71"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates a specified JSON file in the storage.</p>
@@ -466,7 +552,7 @@ Interface IStorageService  <a class="header-action link-secondary" title="View s
 
   <h3 id="FoundationaLLM_Common_Interfaces_IStorageService_WriteFileAsync_System_String_System_String_System_IO_Stream_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(System.String,System.String,System.IO.Stream,System.String,System.Threading.CancellationToken)">
   WriteFileAsync(string, string, Stream, string?, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IStorageService.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IStorageService.cs/#L49"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Writes the binary content to a specified file from the storage.</p>
@@ -516,7 +602,7 @@ Interface IStorageService  <a class="header-action link-secondary" title="View s
 
   <h3 id="FoundationaLLM_Common_Interfaces_IStorageService_WriteFileAsync_System_String_System_String_System_String_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)">
   WriteFileAsync(string, string, string, string?, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IStorageService.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IStorageService.cs/#L60"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Writes the string content to a specified file from the storage.</p>
