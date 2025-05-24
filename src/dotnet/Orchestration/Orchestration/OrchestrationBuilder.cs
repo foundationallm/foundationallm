@@ -16,6 +16,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
+using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -230,6 +231,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Configuration, out var configurationResourceProvider))
                 throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Configuration} was not loaded.");
             if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_AzureAI, out var azureAIResourceProvider))
+                throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureAI} was not loaded.");
+            if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_DataPipeline, out var dataPipelineResourceProvider))
+                throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureAI} was not loaded.");
+            if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Vector, out var vectorResourceProvider))
                 throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureAI} was not loaded.");
 
             var explodedObjectsManager = new ExplodedObjectsManager();
@@ -450,14 +455,32 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                         case ConfigurationResourceTypeNames.APIEndpointConfigurations:
                             var apiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                            resourceObjectId.ObjectId,
-                            currentUserIdentity);
+                                resourceObjectId.ObjectId,
+                                currentUserIdentity);
 
                             explodedObjectsManager.TryAdd(
                                 resourceObjectId.ObjectId,
                                 apiEndpoint);
 
                             break;
+
+                        case DataPipelineResourceTypeNames.DataPipelines:
+                            
+                            // No need to send in the details of the data pipeline.
+                            break;
+
+                        case VectorResourceTypeNames.VectorDatabases:
+
+                            var vectorDatabase = await vectorResourceProvider.GetResourceAsync<VectorDatabase>(
+                                resourceObjectId.ObjectId,
+                                currentUserIdentity);
+
+                            explodedObjectsManager.TryAdd(
+                                resourceObjectId.ObjectId,
+                                vectorDatabase);
+
+                            break;
+
                         case VectorizationResourceTypeNames.IndexingProfiles:
                             var indexingProfile = await vectorizationResourceProvider.GetResourceAsync<IndexingProfile>(
                                 resourceObjectId.ObjectId,

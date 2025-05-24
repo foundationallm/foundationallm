@@ -237,7 +237,7 @@ export default {
 			selectPrincipalDialogOpen: false,
 			roleOptions: [] as Role[],
 			principalSearchType: 'User' as null | string,
-			principalTypeOptions: ['User', 'Group'],
+			principalTypeOptions: ['User', 'Group', 'Service'],
 
 			// scope: this.$route.query.scope ?? null,
 			roleAssignment: {
@@ -322,7 +322,16 @@ export default {
 		},
 
 		async loadMorePrincipals() {
-			const apiMethod = this.principalSearchType === 'Group' ? api.getGroups : api.getUsers;
+			const apiMethod = (function () {
+				switch (this.principalSearchType) {
+					case 'User':
+						return api.getUsers;
+					case 'Group':
+						return api.getGroups;
+					case 'Service':
+						return api.getServicePrincipals;
+				}
+			})();
 
 			this.loadingPrincipals = true;
 

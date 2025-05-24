@@ -46,6 +46,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         public const string Data_Pipelines_Contributor = "2da16a58-ed63-431a-b90e-9df32c2cae4a";
 
         /// <summary>
+        /// Manage all aspects related to data pipeline runs.
+        /// </summary>
+        public const string Data_Pipelines_Execution_Manager = "e959eecb-8edf-4442-b532-4990f9a1df2b";
+
+        /// <summary>
         /// Create new agents.
         /// </summary>
         public const string Agents_Contributor = "3f28aa77-a854-4aa7-ae11-ffda238275c9";

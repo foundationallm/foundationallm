@@ -870,7 +870,36 @@ export default {
 	},
 
 	/*
-		Combined User+Groups
+		Service Principals
+	 */
+	async getServicePrincipals(params) {
+		const defaults = {
+			name: '',
+			ids: [],
+			page_number: 1,
+			page_size: null,
+		};
+
+		return await this.fetch(
+			`/instances/${this.instanceId}/identity/serviceprincipals/retrieve?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: JSON.stringify({
+					...defaults,
+					...params,
+				}),
+			},
+		);
+	},
+
+	async getServicePrincipal(servicePrincipalId) {
+		return await this.fetch(
+			`/instances/${this.instanceId}/identity/serviceprincipals/${servicePrincipalId}?api-version=${this.apiVersion}`,
+		);
+	},
+
+	/*
+		Combined User + Groups + Service Principals
 	 */
 	async getObjects(params = { ids: [] }) {
 		return await this.fetch(

@@ -77,6 +77,30 @@ namespace FoundationaLLM.Management.API.Controllers
         }
 
         /// <summary>
+        /// Retrieves a list of user accounts with filtering and paging options.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [HttpPost("serviceprincipals/retrieve", Name = "RetrieveServicePrincipals")]
+        public async Task<IActionResult> RetrieveServicePrincipals(ObjectQueryParameters parameters)
+        {
+            var servicePrincipals = await identityManagementService.GetServicePrincipals(parameters);
+            return new OkObjectResult(servicePrincipals);
+        }
+
+        /// <summary>
+        /// Retrieves a specific user account by its identifier.
+        /// </summary>
+        /// <param name="servicePrincipalId"></param>
+        /// <returns></returns>
+        [HttpGet("serviceprincipals/{servicePrincipalId}", Name = "GetServicePrincipals")]
+        public async Task<IActionResult> GetServicePrincipal(string servicePrincipalId)
+        {
+            var servicePrincipal = await identityManagementService.GetUserById(servicePrincipalId);
+            return new OkObjectResult(servicePrincipal);
+        }
+
+        /// <summary>
         /// Retrieves user and group objects by the passed in list of IDs.
         /// </summary>
         /// <param name="parameters"></param>
