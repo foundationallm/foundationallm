@@ -32,11 +32,22 @@
             "cwd" : "${workspaceFolder}/src/ui/UserPortal",
         },
         {
+            "name": "Management Portal UI - Frontend",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:3001",
+            "webRoot": "${workspaceFolder}/src/ui/ManagementPortal"
+        },
+        {
             "command": "npm run dev",
-            "name": "Mgmt Portal UI",
+            "name": "Management Portal UI - Backend",
             "request": "launch",
             "type": "node-terminal",
+            "sourceMaps": true,
             "cwd" : "${workspaceFolder}/src/ui/ManagementPortal",
+            "env" : {
+                "NODE_ENV": "development"
+            }
         },
         {
             "name": "Python: AgentHubAPI",

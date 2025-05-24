@@ -156,7 +156,7 @@
 						<template #option="{ option }">
 							<div class="flex items-center">
 								<div>{{ option.display_name }}</div>
-								<div style="font-size: 0.8rem">{{ option.email }}</div>
+								<div v-if="option.email" style="font-size: 0.8rem">&nbsp;({{ option.email }})</div>
 							</div>
 						</template>
 					</AutoComplete>
@@ -237,7 +237,7 @@ export default {
 			selectPrincipalDialogOpen: false,
 			roleOptions: [] as Role[],
 			principalSearchType: 'User' as null | string,
-			principalTypeOptions: ['User', 'Group', 'Service'],
+			principalTypeOptions: ['User', 'Group', 'ServicePrincipal'],
 
 			// scope: this.$route.query.scope ?? null,
 			roleAssignment: {
@@ -282,6 +282,7 @@ export default {
 
 		this.loadingStatusText = `Retrieving roles...`;
 		this.roleOptions = await api.getRoleDefinitions();
+		this.roleOptions.sort((r1, r2) => r1.display_name.localeCompare(r2.display_name));
 
 		if (this.editId) {
 			this.loadingStatusText = `Retrieving role assignment "${this.editId}"...`;
@@ -322,16 +323,16 @@ export default {
 		},
 
 		async loadMorePrincipals() {
-			const apiMethod = (function () {
-				switch (this.principalSearchType) {
+			const apiMethod = (function (searchType) {
+				switch (searchType) {
 					case 'User':
 						return api.getUsers;
 					case 'Group':
 						return api.getGroups;
-					case 'Service':
+					case 'ServicePrincipal':
 						return api.getServicePrincipals;
 				}
-			})();
+			})(this.principalSearchType);
 
 			this.loadingPrincipals = true;
 
