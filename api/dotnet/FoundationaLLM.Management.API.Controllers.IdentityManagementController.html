@@ -842,6 +842,44 @@ public Task&lt;IActionResult&gt; GetGroup(string groupId)</code></pre>
 
 
 
+  <a id="FoundationaLLM_Management_API_Controllers_IdentityManagementController_GetServicePrincipal_" data-uid="FoundationaLLM.Management.API.Controllers.IdentityManagementController.GetServicePrincipal*"></a>
+
+  <h3 id="FoundationaLLM_Management_API_Controllers_IdentityManagementController_GetServicePrincipal_System_String_" data-uid="FoundationaLLM.Management.API.Controllers.IdentityManagementController.GetServicePrincipal(System.String)">
+  GetServicePrincipal(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves a specific user account by its identifier.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[HttpGet(&quot;serviceprincipals/{servicePrincipalId}&quot;, Name = &quot;GetServicePrincipals&quot;)]
+public Task&lt;IActionResult&gt; GetServicePrincipal(string servicePrincipalId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>servicePrincipalId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.iactionresult">IActionResult</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Management_API_Controllers_IdentityManagementController_GetUser_" data-uid="FoundationaLLM.Management.API.Controllers.IdentityManagementController.GetUser*"></a>
 
   <h3 id="FoundationaLLM_Management_API_Controllers_IdentityManagementController_GetUser_System_String_" data-uid="FoundationaLLM.Management.API.Controllers.IdentityManagementController.GetUser(System.String)">
@@ -922,7 +960,7 @@ public Task&lt;IActionResult&gt; RetrieveGroups(ObjectQueryParameters parameters
 
   <h3 id="FoundationaLLM_Management_API_Controllers_IdentityManagementController_RetrieveObjectsByIds_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_" data-uid="FoundationaLLM.Management.API.Controllers.IdentityManagementController.RetrieveObjectsByIds(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)">
   RetrieveObjectsByIds(ObjectQueryParameters)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L108"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves user and group objects by the passed in list of IDs.</p>
@@ -932,6 +970,44 @@ public Task&lt;IActionResult&gt; RetrieveGroups(ObjectQueryParameters parameters
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[HttpPost(&quot;objects/retrievebyids&quot;, Name = &quot;RetrieveObjectsByIds&quot;)]
 public Task&lt;IActionResult&gt; RetrieveObjectsByIds(ObjectQueryParameters parameters)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>parameters</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters.html">ObjectQueryParameters</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.iactionresult">IActionResult</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Management_API_Controllers_IdentityManagementController_RetrieveServicePrincipals_" data-uid="FoundationaLLM.Management.API.Controllers.IdentityManagementController.RetrieveServicePrincipals*"></a>
+
+  <h3 id="FoundationaLLM_Management_API_Controllers_IdentityManagementController_RetrieveServicePrincipals_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_" data-uid="FoundationaLLM.Management.API.Controllers.IdentityManagementController.RetrieveServicePrincipals(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)">
+  RetrieveServicePrincipals(ObjectQueryParameters)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves a list of user accounts with filtering and paging options.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[HttpPost(&quot;serviceprincipals/retrieve&quot;, Name = &quot;RetrieveServicePrincipals&quot;)]
+public Task&lt;IActionResult&gt; RetrieveServicePrincipals(ObjectQueryParameters parameters)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>

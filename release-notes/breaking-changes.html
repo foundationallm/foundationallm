@@ -299,6 +299,10 @@
 <td><code>Storage Queue Data Message Sender</code></td>
 <td>Storage account used by the FoundationaLLM Data Pipeline API.</td>
 </tr>
+<tr>
+<td><code>EventGrid Contributor</code></td>
+<td>Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline API.</td>
+</tr>
 </tbody>
 </table>
 <p>The following role assignments must be added to the Data Pipeline Frontend Worker's Managed Identity:</p>
@@ -330,6 +334,10 @@
 <td><code>Storage Queue Data Message Processor</code></td>
 <td>Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.</td>
 </tr>
+<tr>
+<td><code>EventGrid Contributor</code></td>
+<td>Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline Frontend Worker.</td>
+</tr>
 </tbody>
 </table>
 <p>The following role assignments must be added to the Data Pipeline Backend Worker's Managed Identity:</p>
@@ -360,6 +368,10 @@
 <tr>
 <td><code>Storage Queue Data Message Processor</code></td>
 <td>Storage account used by the FoundationaLLM Data Pipeline Backend Worker.</td>
+</tr>
+<tr>
+<td><code>EventGrid Contributor</code></td>
+<td>Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline Backend Worker.</td>
 </tr>
 </tbody>
 </table>

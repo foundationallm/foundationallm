@@ -203,6 +203,82 @@ Interface IIdentityManagementService  <a class="header-action link-secondary" ti
 
 
 
+  <a id="FoundationaLLM_Common_Interfaces_IIdentityManagementService_GetServicePrincipalById_" data-uid="FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipalById*"></a>
+
+  <h3 id="FoundationaLLM_Common_Interfaces_IIdentityManagementService_GetServicePrincipalById_System_String_" data-uid="FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipalById(System.String)">
+  GetServicePrincipalById(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IIdentityManagementService.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves a security principal by its identifier.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;ObjectQueryResult&gt; GetServicePrincipalById(string servicePrincipalId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>servicePrincipalId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The service principal identifier used to retrieve a single service principal.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Authentication.ObjectQueryResult.html">ObjectQueryResult</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Interfaces_IIdentityManagementService_GetServicePrincipals_" data-uid="FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipals*"></a>
+
+  <h3 id="FoundationaLLM_Common_Interfaces_IIdentityManagementService_GetServicePrincipals_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_" data-uid="FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipals(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)">
+  GetServicePrincipals(ObjectQueryParameters)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IIdentityManagementService.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves a list of service principals with filtering and paging options.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;PagedResponse&lt;ObjectQueryResult&gt;&gt; GetServicePrincipals(ObjectQueryParameters queryParams)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>queryParams</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters.html">ObjectQueryParameters</a></dt>
+    <dd><p>The filtering and paging options used when retrieving service principals.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Collections.PagedResponse-1.html">PagedResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Authentication.ObjectQueryResult.html">ObjectQueryResult</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Interfaces_IIdentityManagementService_GetUserById_" data-uid="FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserById*"></a>
 
   <h3 id="FoundationaLLM_Common_Interfaces_IIdentityManagementService_GetUserById_System_String_" data-uid="FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserById(System.String)">
