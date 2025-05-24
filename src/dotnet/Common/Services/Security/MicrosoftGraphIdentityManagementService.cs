@@ -121,7 +121,7 @@ namespace FoundationaLLM.Common.Services.Security
                 else if (directoryObject is ServicePrincipal servicePrincipal)
                 {
                     displayName = servicePrincipal.DisplayName;
-                    objectType = ObjectTypes.Other;
+                    objectType = ObjectTypes.ServicePrincipal;
                 }
 
                 results.Add(new ObjectQueryResult
