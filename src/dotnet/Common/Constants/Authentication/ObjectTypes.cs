@@ -14,6 +14,10 @@
         /// </summary>
         public const string Group = "Group";
         /// <summary>
+        /// A service principal account.
+        /// </summary>
+        public const string ServicePrincipal = "ServicePrincipal";
+        /// <summary>
         /// Other object type.
         /// </summary>
         public const string Other = "Other";

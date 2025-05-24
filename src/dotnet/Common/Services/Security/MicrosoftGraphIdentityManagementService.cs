@@ -284,6 +284,73 @@ namespace FoundationaLLM.Common.Services.Security
             };
         }
 
+        /// <inheritdoc/>
+        public async Task<ObjectQueryResult> GetServicePrincipalById(string servicePrincipalId)
+        {
+            var servicePrincipal = await graphServiceClient.ServicePrincipals[servicePrincipalId].GetAsync();
+
+            return new ObjectQueryResult
+            {
+                Id = servicePrincipal?.Id,
+                Email = null,
+                DisplayName = servicePrincipal?.DisplayName,
+                ObjectType = ObjectTypes.ServicePrincipal,
+            };
+        }
+
+        /// <inheritdoc/>
+        public async Task<PagedResponse<ObjectQueryResult>> GetServicePrincipals(ObjectQueryParameters queryParams)
+        {
+            var pageSize = queryParams.PageSize ?? 100;
+            var servicePrincipals = new List<ObjectQueryResult>();
+
+            var currentPage = 1;
+
+            // Retrieve users with filtering and paging options.
+            var servicePrincipalsPage = await graphServiceClient.ServicePrincipals
+                .GetAsync(requestConfiguration =>
+                {
+                    requestConfiguration.QueryParameters.Select = ["id", "displayName"];
+                    requestConfiguration.QueryParameters.Filter = "accountEnabled eq true";
+                    if (!string.IsNullOrEmpty(queryParams.Name))
+                    {
+                        requestConfiguration.QueryParameters.Search = $"\"displayName:{queryParams.Name}\"";
+                    }
+                    requestConfiguration.QueryParameters.Orderby = ["displayName"];
+                    requestConfiguration.QueryParameters.Top = pageSize;
+                    requestConfiguration.QueryParameters.Count = true;
+                    requestConfiguration.Headers.Add("ConsistencyLevel", "eventual");
+                });
+
+            // Skip pages until we reach the desired page.
+            while (servicePrincipalsPage?.OdataNextLink != null && currentPage < queryParams.PageNumber)
+            {
+                servicePrincipalsPage = await graphServiceClient.ServicePrincipals
+                    .WithUrl(servicePrincipalsPage.OdataNextLink)
+                    .GetAsync();
+                currentPage++;
+            }
+
+            // Process the desired page.
+            if (servicePrincipalsPage?.Value != null)
+            {
+                servicePrincipals.AddRange(servicePrincipalsPage.Value.Select(x => new ObjectQueryResult
+                {
+                    Id = x?.Id,
+                    Email = null,
+                    DisplayName = x?.DisplayName,
+                    ObjectType = ObjectTypes.ServicePrincipal,
+                }));
+            }
+
+            return new PagedResponse<ObjectQueryResult>
+            {
+                Items = servicePrincipals,
+                TotalItems = servicePrincipalsPage?.OdataCount,
+                HasNextPage = servicePrincipalsPage?.OdataNextLink != null
+            };
+        }
+
         private async Task<List<string>> GetGroupMembershipFromGraph(string userIdentifier)
         {
             try

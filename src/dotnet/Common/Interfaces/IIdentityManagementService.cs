@@ -49,5 +49,19 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="userId">The user identifier used to retrieve a single user account.</param>
         /// <returns></returns>
         Task<ObjectQueryResult> GetUserById(string userId);
+
+        /// <summary>
+        /// Retrieves a list of service principals with filtering and paging options.
+        /// </summary>
+        /// <param name="queryParams">The filtering and paging options used when retrieving service principals.</param>
+        /// <returns></returns>
+        Task<PagedResponse<ObjectQueryResult>> GetServicePrincipals(ObjectQueryParameters queryParams);
+
+        /// <summary>
+        /// Retrieves a security principal by its identifier.
+        /// </summary>
+        /// <param name="servicePrincipalId">The service principal identifier used to retrieve a single service principal.</param>
+        /// <returns></returns>
+        Task<ObjectQueryResult> GetServicePrincipalById(string servicePrincipalId);
     }
 }

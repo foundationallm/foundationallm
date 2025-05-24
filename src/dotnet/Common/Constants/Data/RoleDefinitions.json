@@ -218,6 +218,36 @@
 	},
 	{
 		"type": "FoundationaLLM.Authorization/roleDefinitions",
+		"name": "e959eecb-8edf-4442-b532-4990f9a1df2b",
+		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/e959eecb-8edf-4442-b532-4990f9a1df2b",
+		"display_name": "Data Pipelines Execution Manager",
+		"description": "Manage all aspects related to data pipeline runs.",
+		"assignable_scopes": [
+			"/"
+		],
+		"permissions": [
+			{
+				"actions": [
+					"FoundationaLLM.DataSource/dataSources/read",
+					"FoundationaLLM.Configuration/apiEndpointConfigurations/read",
+					"FoundationaLLM.AIModel/aiModels/read",
+					"FoundationaLLM.Plugin/plugins/read",
+					"FoundationaLLM.Vector/vectorDatabases/read",
+					"FoundationaLLM.DataPipeline/dataPipelines/read",
+					"FoundationaLLM.DataPipeline/dataPipelines/write"
+				],
+				"not_actions": [],
+				"data_actions": [],
+				"not_data_actions": []
+			}
+		],
+		"created_on": "2025-05-01T00:00:00.0000000Z",
+		"updated_on": "2025-05-01T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
+	},
+	{
+		"type": "FoundationaLLM.Authorization/roleDefinitions",
 		"name": "3f28aa77-a854-4aa7-ae11-ffda238275c9",
 		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/3f28aa77-a854-4aa7-ae11-ffda238275c9",
 		"display_name": "Agents Contributor",
