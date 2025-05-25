@@ -1852,7 +1852,7 @@ export default {
 			this.selectedWorkflow = clone(
 				this.workflowOptions.find((workflow) => workflow.type === agent.workflow?.type),
 			);
-			this.hasAgentPrivateStorage = agent.workflow?.type === 'azure-openai-assistants-workflow';
+			this.hasAgentPrivateStorage = agent.workflow?.type === 'azure-openai-assistants-workflow' || agent.workflow?.class_name === 'FoundationaLLMFunctionCallingWorkflow';
 			this.showMessageTokens = agent.show_message_tokens ?? false;
 			this.showMessageRating = agent.show_message_rating ?? false;
 			this.showViewPrompt = agent.show_view_prompt ?? false;
