@@ -71,7 +71,7 @@
 
 			<!-- System Prompt -->
 			<div class="mb-6">
-				<div id="aria-persona" class="step-header !mb-3">What is the main workflow prompt?</div>
+				<div id="aria-persona" class="step-header !mb-3">What is the agent prompt?</div>
 				<div class="col-span-2">
 					<Textarea
 						v-model="systemPrompt"
@@ -87,7 +87,7 @@
 
 			<!-- Workflow main model -->
 			<div class="mb-6">
-				<div id="aria-workflow-model" class="step-header !mb-3">Workflow main model:</div>
+				<div id="aria-workflow-model" class="step-header !mb-3">Which AI model should be used?</div>
 				<Dropdown
 					:model-value="workflowMainAIModel?.object_id"
 					:options="aiModelOptions"
@@ -230,7 +230,7 @@ export default {
 			this.$toast.add({
 				severity: 'error',
 				detail: error?.response?._data || error,
-				life: 5000,
+				life: 120000,
 			});
 		}
 
@@ -297,7 +297,7 @@ export default {
 				this.$toast.add({
 					severity: 'error',
 					detail: error?.response?._data || error,
-					life: 5000,
+					life: 120000,
 				});
 			}
 		},
@@ -337,7 +337,7 @@ export default {
 				this.$toast.add({
 					severity: 'error',
 					detail: errors.join('\n'),
-					life: 5000,
+					life: 120000,
 				});
 				return;
 			}
@@ -415,14 +415,14 @@ export default {
 				this.$toast.add({
 					severity: 'success',
 					detail: `Agent "${this.agentName}" ${this.editAgent ? 'updated' : 'created'} successfully.`,
-					life: 5000,
+					life: 30000,
 				});
 				this.$router.push('/agents/public');
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',
 					detail: error?.response?._data || error,
-					life: 5000,
+					life: 120000,
 				});
 			} finally {
 				this.loading = false;

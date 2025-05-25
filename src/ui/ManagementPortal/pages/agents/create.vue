@@ -1677,7 +1677,7 @@ export default {
 			this.$toast.add({
 				severity: 'error',
 				detail: error?.response?._data || error,
-				life: 5000,
+				life: 120000,
 			});
 		}
 
@@ -1973,7 +1973,7 @@ export default {
 				this.$toast.add({
 					severity: 'success',
 					detail: 'Virtual Security Group ID copied to clipboard!',
-					life: 5000,
+					life: 120000,
 				});
 			}
 		},
@@ -2088,7 +2088,7 @@ export default {
 				this.$toast.add({
 					severity: 'error',
 					detail: errors.join('\n'),
-					life: 5000,
+					life: 120000,
 				});
 
 				return;
@@ -2307,14 +2307,14 @@ export default {
 				return this.$toast.add({
 					severity: 'error',
 					detail: error?.response?._data || error,
-					life: 5000,
+					life: 120000,
 				});
 			}
 
 			this.$toast.add({
 				severity: 'success',
 				detail: successMessage,
-				life: 5000,
+				life: 120000,
 			});
 
 			this.loading = false;
