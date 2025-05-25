@@ -100,6 +100,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                     }),
                 DataPipelineResourceTypeNames.DataPipelineRuns => await _dataPipelineServiceClient.GetDataPipelineRunAsync(
                         resourcePath.InstanceId!,
+                        resourcePath.MainResourceId!,
                         resourcePath.ResourceId!,
                         userIdentity)
                         ?? throw new ResourceProviderException("The requested data pipeline run could not be loaded.",
@@ -250,6 +251,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 Type t when t == typeof(DataPipelineRun) =>
                     await _dataPipelineServiceClient.GetDataPipelineRunAsync(
                         resourcePath.InstanceId!,
+                        resourcePath.MainResourceId!,
                         resourcePath.ResourceId!,
                         userIdentity) as T
                         ?? throw new ResourceProviderException("The data pipeline run resource could not be loaded.",
