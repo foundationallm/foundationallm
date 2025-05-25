@@ -28,15 +28,18 @@ namespace FoundationaLLM.DataPipeline.API.Controllers
         /// Retrieves a data pipeline run by its name.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="dataPipelineName">The name of the data pipeline.</param>
         /// <param name="runId">The identifier of the data pipeline run.</param>
         /// <returns>The data pipeline run identified by the provided identifier.</returns>
-        [HttpGet("datapipelineruns/{runId}")]
+        [HttpGet("datapipelines/{dataPipelineName}/datapipelineruns/{runId}")]
         public async Task<IActionResult> GetDataPipelineRun(
             string instanceId,
+            string dataPipelineName,
             string runId)
         {
             var dataPipelineRun = await _dataPipelineService.GetDataPipelineRun(
                 instanceId,
+                dataPipelineName,
                 runId,
                 _orchestrationContext.CurrentUserIdentity!);
 

@@ -40,9 +40,17 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         /// <inheritdoc/>
         public async Task<DataPipelineRun> GetDataPipelineRun(
             string instanceId,
+            string dataPipelineName,
             string runId,
             UnifiedUserIdentity userIdentity) =>
             await _dataPipelineResourceProvider.GetResourceAsync<DataPipelineRun>(
-                instanceId, runId, userIdentity);
+                ResourcePath.GetObjectId(
+                    instanceId,
+                    ResourceProviderNames.FoundationaLLM_DataPipeline,
+                    DataPipelineResourceTypeNames.DataPipelines,
+                    dataPipelineName,
+                    DataPipelineResourceTypeNames.DataPipelineRuns,
+                    runId),
+                userIdentity);
     }
 }
