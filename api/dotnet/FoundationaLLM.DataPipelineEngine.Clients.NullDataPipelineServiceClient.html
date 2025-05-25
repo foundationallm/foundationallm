@@ -256,8 +256,8 @@ These are background services that both provide and consume services to and from
 
   <a id="FoundationaLLM_DataPipelineEngine_Clients_NullDataPipelineServiceClient_GetDataPipelineRunAsync_" data-uid="FoundationaLLM.DataPipelineEngine.Clients.NullDataPipelineServiceClient.GetDataPipelineRunAsync*"></a>
 
-  <h3 id="FoundationaLLM_DataPipelineEngine_Clients_NullDataPipelineServiceClient_GetDataPipelineRunAsync_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.DataPipelineEngine.Clients.NullDataPipelineServiceClient.GetDataPipelineRunAsync(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
-  GetDataPipelineRunAsync(string, string, UnifiedUserIdentity)
+  <h3 id="FoundationaLLM_DataPipelineEngine_Clients_NullDataPipelineServiceClient_GetDataPipelineRunAsync_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.DataPipelineEngine.Clients.NullDataPipelineServiceClient.GetDataPipelineRunAsync(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  GetDataPipelineRunAsync(string, string, string, UnifiedUserIdentity)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Clients/NullDataPipelineServiceClient.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -266,13 +266,16 @@ These are background services that both provide and consume services to and from
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;DataPipelineRun?&gt; GetDataPipelineRunAsync(string instanceId, string runId, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;DataPipelineRun?&gt; GetDataPipelineRunAsync(string instanceId, string dataPipelineName, string runId, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>dataPipelineName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the data pipeline.</p>
 </dd>
     <dt><code>runId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The data pipeline run identifier.</p>

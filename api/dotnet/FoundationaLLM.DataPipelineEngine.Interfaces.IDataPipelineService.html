@@ -132,7 +132,7 @@ Interface IDataPipelineService  <a class="header-action link-secondary" title="V
 
   <h3 id="FoundationaLLM_DataPipelineEngine_Interfaces_IDataPipelineService_CreateDataPipelineRun_System_String_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.CreateDataPipelineRun(System.String,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   CreateDataPipelineRun(string, DataPipelineRun, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new data pipeline run.</p>
@@ -174,9 +174,9 @@ Interface IDataPipelineService  <a class="header-action link-secondary" title="V
 
   <a id="FoundationaLLM_DataPipelineEngine_Interfaces_IDataPipelineService_GetDataPipelineRun_" data-uid="FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRun*"></a>
 
-  <h3 id="FoundationaLLM_DataPipelineEngine_Interfaces_IDataPipelineService_GetDataPipelineRun_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRun(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
-  GetDataPipelineRun(string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_DataPipelineEngine_Interfaces_IDataPipelineService_GetDataPipelineRun_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRun(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  GetDataPipelineRun(string, string, string, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs/#L19"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a data pipeline run by its name.</p>
@@ -184,13 +184,16 @@ Interface IDataPipelineService  <a class="header-action link-secondary" title="V
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;DataPipelineRun&gt; GetDataPipelineRun(string instanceId, string runId, UnifiedUserIdentity userIdentiy)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;DataPipelineRun&gt; GetDataPipelineRun(string instanceId, string dataPipelineName, string runId, UnifiedUserIdentity userIdentiy)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>dataPipelineName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the data pipeline.</p>
 </dd>
     <dt><code>runId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The identifier of the data pipeline run.</p>
