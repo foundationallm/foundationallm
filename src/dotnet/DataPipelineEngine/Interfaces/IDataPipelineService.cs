@@ -12,11 +12,13 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
         /// Retrieves a data pipeline run by its name.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="dataPipelineName"> The name of the data pipeline.</param>
         /// <param name="runId">The identifier of the data pipeline run.</param>
         /// <param name="userIdentiy">The identity of the user running the operation.</param>
         /// <returns>The data pipeline run identified by the provided identifier.</returns>
         Task<DataPipelineRun> GetDataPipelineRun(
             string instanceId,
+            string dataPipelineName,
             string runId,
             UnifiedUserIdentity userIdentiy);
 

@@ -78,6 +78,7 @@ namespace FoundationaLLM.DataPipeline.Clients
         /// <inheritdoc/>
         public async Task<DataPipelineRun?> GetDataPipelineRunAsync(
             string instanceId,
+            string dataPipelineName,
             string runId,
             UnifiedUserIdentity userIdentity)
         {
@@ -86,7 +87,7 @@ namespace FoundationaLLM.DataPipeline.Clients
                 var httpClient = await _httpClientTask;
 
                 var responseMessage = await httpClient.GetAsync(
-                    $"instances/{instanceId}/datapipelineruns/{runId}");
+                    $"instances/{instanceId}/datapipelines/{dataPipelineName}/datapipelineruns/{runId}");
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
