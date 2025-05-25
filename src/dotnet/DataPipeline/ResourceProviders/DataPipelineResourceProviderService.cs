@@ -98,6 +98,12 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                     {
                         IncludeRoles = resourcePath.IsResourceTypePath
                     }),
+                DataPipelineResourceTypeNames.DataPipelineRuns => await _dataPipelineServiceClient.GetDataPipelineRunAsync(
+                        resourcePath.InstanceId!,
+                        resourcePath.ResourceId!,
+                        userIdentity)
+                        ?? throw new ResourceProviderException("The requested data pipeline run could not be loaded.",
+                            StatusCodes.Status404NotFound),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
             };
@@ -244,10 +250,10 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 Type t when t == typeof(DataPipelineRun) =>
                     await _dataPipelineServiceClient.GetDataPipelineRunAsync(
                         resourcePath.InstanceId!,
-                        resourcePath.MainResourceId!,
+                        resourcePath.ResourceId!,
                         userIdentity) as T
-                        ?? throw new ResourceProviderException("The object definition is invalid.",
-                            StatusCodes.Status400BadRequest),
+                        ?? throw new ResourceProviderException("The data pipeline run resource could not be loaded.",
+                            StatusCodes.Status404NotFound),
                 _ => throw new ResourceProviderException(
                         $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",
                             StatusCodes.Status400BadRequest)

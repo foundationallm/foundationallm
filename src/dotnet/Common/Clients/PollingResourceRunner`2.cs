@@ -67,8 +67,7 @@ namespace FoundationaLLM.Common.Clients
                         totalPollingTime.TotalSeconds);
 
                     var existingResource = await resourceProviderService.GetResourceAsync<TResource>(
-                    instanceId,
-                    upsertResult.Resource!.Name,
+                    upsertResult.Resource!.ObjectId!,
                     userIdentity);
                     runnableResource = existingResource as IRunnableResource;
 
