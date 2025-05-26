@@ -270,38 +270,72 @@
 <p>A new container with the name of the FoundationaLLM instance identifier must be created in the FoundationaLLM main storage account. The container will be used by the Data Pipeline API and the Data Pipeline Frontend/Backend Worker to store data pipeline work items.</p>
 </div>
 <h3 id="role-assignment-changes">Role assignment changes</h3>
+<p>The following role assignments must be added to the Orchestrations API's Managed Identity:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Data Pipelines Execution Manager</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
+</tr>
+</tbody>
+</table>
 <p>The following role assignments must be added to the Data Pipeline API's Managed Identity:</p>
 <table>
 <thead>
 <tr>
 <th>Name</th>
+<th>Type</th>
 <th>Target</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>App Configuration Data Reader</code></td>
+<td>Azure</td>
 <td>Azure App Configuration service.</td>
 </tr>
 <tr>
 <td><code>Key Vault Secrets User</code></td>
+<td>Azure</td>
 <td>Azure Key Vault service.</td>
 </tr>
 <tr>
 <td><code>Storage Blob Data Contributor</code></td>
+<td>Azure</td>
 <td>Storage account used by the FoundationaLLM Data Pipeline API.</td>
 </tr>
 <tr>
 <td><code>Cosmos DB Built-in Data Contributor</code></td>
+<td>Azure</td>
 <td>Azure Cosmos DB account used by the FoundationaLLM Data Pipeline API.</td>
 </tr>
 <tr>
 <td><code>Storage Queue Data Message Sender</code></td>
+<td>Azure</td>
 <td>Storage account used by the FoundationaLLM Data Pipeline API.</td>
 </tr>
 <tr>
 <td><code>EventGrid Contributor</code></td>
+<td>Azure</td>
 <td>Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline API.</td>
+</tr>
+<tr>
+<td><code>Data Pipelines Execution Manager</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
+</tr>
+<tr>
+<td><code>Reader</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
 </tr>
 </tbody>
 </table>
@@ -310,33 +344,50 @@
 <thead>
 <tr>
 <th>Name</th>
+<th>Type</th>
 <th>Target</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>App Configuration Data Reader</code></td>
+<td>Azure</td>
 <td>Azure App Configuration service.</td>
 </tr>
 <tr>
 <td><code>Key Vault Secrets User</code></td>
+<td>Azure</td>
 <td>Azure Key Vault service.</td>
 </tr>
 <tr>
 <td><code>Storage Blob Data Contributor</code></td>
+<td>Azure</td>
 <td>Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.</td>
 </tr>
 <tr>
 <td><code>Cosmos DB Built-in Data Contributor</code></td>
+<td>Azure</td>
 <td>Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Frontend Worker.</td>
 </tr>
 <tr>
-<td><code>Storage Queue Data Message Processor</code></td>
+<td><code>Storage Queue Data Contributor</code></td>
+<td>Azure</td>
 <td>Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.</td>
 </tr>
 <tr>
 <td><code>EventGrid Contributor</code></td>
+<td>Azure</td>
 <td>Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline Frontend Worker.</td>
+</tr>
+<tr>
+<td><code>Data Pipelines Execution Manager</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
+</tr>
+<tr>
+<td><code>Reader</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
 </tr>
 </tbody>
 </table>
@@ -345,33 +396,50 @@
 <thead>
 <tr>
 <th>Name</th>
+<th>Type</th>
 <th>Target</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>App Configuration Data Reader</code></td>
+<td>Azure</td>
 <td>Azure App Configuration service.</td>
 </tr>
 <tr>
 <td><code>Key Vault Secrets User</code></td>
+<td>Azure</td>
 <td>Azure Key Vault service.</td>
 </tr>
 <tr>
 <td><code>Storage Blob Data Contributor</code></td>
+<td>Azure</td>
 <td>Storage account used by the FoundationaLLM Data Pipeline Backend Worker.</td>
 </tr>
 <tr>
 <td><code>Cosmos DB Built-in Data Contributor</code></td>
+<td>Azure</td>
 <td>Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Backend Worker.</td>
 </tr>
 <tr>
-<td><code>Storage Queue Data Message Processor</code></td>
+<td><code>Storage Queue Data Contributor</code></td>
+<td>Azure</td>
 <td>Storage account used by the FoundationaLLM Data Pipeline Backend Worker.</td>
 </tr>
 <tr>
 <td><code>EventGrid Contributor</code></td>
+<td>Azure</td>
 <td>Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline Backend Worker.</td>
+</tr>
+<tr>
+<td><code>Data Pipelines Execution Manager</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
+</tr>
+<tr>
+<td><code>Reader</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
 </tr>
 </tbody>
 </table>
