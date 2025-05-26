@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.CodeExecution;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Storage;
@@ -40,6 +41,7 @@ namespace FoundationaLLM
 
             services.AddScoped<IFileService, FileService>(sp =>
                 new FileService(
+                    authorizationServiceClient: sp.GetRequiredService<IAuthorizationServiceClient>(),
                     cosmosDBService: sp.GetRequiredService<IAzureCosmosDBFileService>(),
                     storageService: new BlobStorageService(
                         Options.Create<BlobStorageServiceSettings>(
