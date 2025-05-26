@@ -86,24 +86,24 @@ export default {
 			resourceType: null,
 			resourceTypeOptions: [
 				{
-					label: 'Model',
-					value: 'model',
+					label: 'API Endpoint',
+					value: 'apiEndpoint',
 				},
 				{
 					label: 'Embedding profile',
 					value: 'textEmbeddingProfile',
 				},
 				{
-					label: 'Vector store',
-					value: 'indexingProfile',
+					label: 'Model',
+					value: 'model',
 				},
 				{
 					label: 'Prompt',
 					value: 'prompt',
 				},
 				{
-					label: 'API Endpoint',
-					value: 'apiEndpoint',
+					label: 'Vector store',
+					value: 'indexingProfile',
 				},
 			],
 
@@ -166,7 +166,9 @@ export default {
 
 			this.loading = true;
 			try {
-				this.resourceOptions = (await apiMethod.call(api)).map((resource) => resource.resource);
+				this.resourceOptions = (await apiMethod.call(api))
+					.map((resource) => resource.resource)
+					.sort((a, b) => a.name.localeCompare(b.name));
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',
