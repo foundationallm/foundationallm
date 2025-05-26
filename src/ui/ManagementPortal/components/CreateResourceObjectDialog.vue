@@ -90,6 +90,10 @@ export default {
 					value: 'apiEndpoint',
 				},
 				{
+					label: 'Data Pipeline',
+					value: 'datapipeline',
+				},
+				{
 					label: 'Embedding profile',
 					value: 'textEmbeddingProfile',
 				},
@@ -162,6 +166,9 @@ export default {
 			} else if (resourceType === 'apiEndpoint') {
 				this.loadingStatusText = 'Loading api endpoints...';
 				apiMethod = api.getOrchestrationServices;
+			} else if (resourceType === 'datapipeline') {
+				this.loadingStatusText = 'Loading data pipelines...';
+				apiMethod = api.getPipelines;
 			}
 
 			this.loading = true;
