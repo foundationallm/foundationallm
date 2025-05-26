@@ -86,24 +86,32 @@ export default {
 			resourceType: null,
 			resourceTypeOptions: [
 				{
-					label: 'Model',
-					value: 'model',
+					label: 'API Endpoint',
+					value: 'apiEndpoint',
+				},
+				{
+					label: 'Data Pipeline',
+					value: 'datapipeline',
 				},
 				{
 					label: 'Embedding profile',
 					value: 'textEmbeddingProfile',
 				},
 				{
-					label: 'Vector store',
-					value: 'indexingProfile',
+					label: 'Model',
+					value: 'model',
 				},
 				{
 					label: 'Prompt',
 					value: 'prompt',
 				},
 				{
-					label: 'API Endpoint',
-					value: 'apiEndpoint',
+					label: 'Vector Database',
+					value: 'vectordatabase',
+				},
+				{
+					label: 'Vector store',
+					value: 'indexingProfile',
 				},
 			],
 
@@ -162,11 +170,19 @@ export default {
 			} else if (resourceType === 'apiEndpoint') {
 				this.loadingStatusText = 'Loading api endpoints...';
 				apiMethod = api.getOrchestrationServices;
+			} else if (resourceType === 'datapipeline') {
+				this.loadingStatusText = 'Loading data pipelines...';
+				apiMethod = api.getPipelines;
+			} else if (resourceType === 'vectordatabase') {
+				this.loadingStatusText = 'Loading vector databases...';
+				apiMethod = api.getVectorDatabases;
 			}
 
 			this.loading = true;
 			try {
-				this.resourceOptions = (await apiMethod.call(api)).map((resource) => resource.resource);
+				this.resourceOptions = (await apiMethod.call(api))
+					.map((resource) => resource.resource)
+					.sort((a, b) => a.name.localeCompare(b.name));
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',

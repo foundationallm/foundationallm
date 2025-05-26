@@ -263,12 +263,19 @@ export default {
 			pipelineToView: null,
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
-			filters: {},
+			filters: {
+				global: { value: null, matchMode: 'contains' }
+			},
 		};
 	},
 
 	async created() {
 		await this.getPipelines();
+	},
+
+	beforeUnmount() {
+		// Clear filters when leaving the component
+		this.filters.global.value = null;
 	},
 
 	methods: {

@@ -170,13 +170,20 @@ export default {
 			aiModels: [] as AIModel,
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
-			filters: {},
+			filters: {
+				global: { value: null, matchMode: 'contains' }
+			},
 			itemToDelete: null as AIModel | null,
 		};
 	},
 
 	async created() {
 		await this.getModels();
+	},
+
+	beforeUnmount() {
+		// Clear filters when leaving the component
+		this.filters.global.value = null;
 	},
 
 	methods: {
