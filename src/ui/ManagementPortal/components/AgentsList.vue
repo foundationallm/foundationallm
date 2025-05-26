@@ -267,8 +267,15 @@ export default {
 		return {
 			agentToDelete: null as Agent | null,
 			agentToSetAsDefault: null as Agent | null,
-			filters: {},
+			filters: {
+				global: { value: null, matchMode: 'contains' }
+			},
 		};
+	},
+
+	beforeUnmount() {
+		// Clear filters when leaving the component
+		this.filters.global.value = null;
 	},
 
 	computed: {

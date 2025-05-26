@@ -28,15 +28,26 @@ namespace FoundationaLLM.Context.Services.CosmosDB
         public async Task<ContextFileRecord> GetFileRecord(
             string instanceId,
             string fileId,
-            string userPrincipalName)
+            string userPrincipalName,
+            bool bypassOwnerCheck)
         {
-            var select =
-                $"SELECT * FROM c WHERE c.instance_id = @instanceId AND c.type = @type AND c.upn = @upn AND c.id = @fileId  AND {SOFT_DELETE_RESTRICTION}";
+            var select = string.Join(' ',
+                [
+                    "SELECT * FROM c WHERE c.instance_id = @instanceId",
+                    "AND c.type = @type",
+                    "AND c.id = @fileId",
+                    $"AND {SOFT_DELETE_RESTRICTION}"
+                ]);
+            if (!bypassOwnerCheck)
+                select += " AND c.upn = @upn";
+
             var query = new QueryDefinition(select)
                     .WithParameter("@instanceId", instanceId)
                     .WithParameter("@type", ContextRecordTypeNames.FileRecord)
-                    .WithParameter("@upn", userPrincipalName)
                     .WithParameter("@fileId", fileId);
+
+            if (!bypassOwnerCheck)
+                query = query.WithParameter("@upn", userPrincipalName);
 
             var results = await _cosmosDB.RetrieveItems<ContextFileRecord>(query);
 
@@ -51,16 +62,31 @@ namespace FoundationaLLM.Context.Services.CosmosDB
             string instanceId,
             string conversationId,
             string fileName,
-            string userPrincipalName)
+            string userPrincipalName,
+            bool bypassOwnerCheck)
         {
-            var select =
-                $"SELECT * FROM c WHERE c.instance_id = @instanceId AND c.type = @type AND c.upn = @upn AND c.conversation_id = @conversationId AND c.file_name = @fileName  AND {SOFT_DELETE_RESTRICTION} ORDER BY c.created_at DESC";
+            var select = string.Join(' ',
+                [
+                    "SELECT * FROM c WHERE c.instance_id = @instanceId",
+                    "AND c.type = @type",
+                    "AND c.conversation_id = @conversationId",
+                    "AND c.file_name = @fileName",
+                    $"AND {SOFT_DELETE_RESTRICTION}"
+                ]);
+
+            if (!bypassOwnerCheck)
+                select += " AND c.upn = @upn";
+
+            select += " ORDER BY c.created_at DESC";
+
             var query = new QueryDefinition(select)
                     .WithParameter("@instanceId", instanceId)
                     .WithParameter("@type", ContextRecordTypeNames.FileRecord)
-                    .WithParameter("@upn", userPrincipalName)
                     .WithParameter("@conversationId", conversationId)
                     .WithParameter("@fileName", fileName);
+
+            if (!bypassOwnerCheck)
+                query = query.WithParameter("@upn", userPrincipalName);
 
             var results = await _cosmosDB.RetrieveItems<ContextFileRecord>(query);
 

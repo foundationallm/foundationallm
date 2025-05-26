@@ -1,7 +1,11 @@
-﻿using FoundationaLLM.Common.Constants.Context;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Constants.Context;
+using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Context.Interfaces;
 using FoundationaLLM.Context.Models.Configuration;
 using Microsoft.Extensions.Logging;
@@ -13,15 +17,18 @@ namespace FoundationaLLM.Context.Services
     /// </summary>
     /// <param name="cosmosDBService">The Azure Cosmos DB service providing database services.</param>
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
+    /// <param name="authorizationServiceClient">The client for the FoundationaLLM Authorization API.</param>
     /// <param name="logger">The logger used for logging.</param>
     public class FileService(
         IAzureCosmosDBFileService cosmosDBService,
         IStorageService storageService,
+        IAuthorizationServiceClient authorizationServiceClient,
         FileServiceSettings settings,
         ILogger<FileService> logger) : IFileService
     {
         private readonly IAzureCosmosDBFileService _cosmosDBService = cosmosDBService;
         private readonly IStorageService _storageService = storageService;
+        private readonly IAuthorizationServiceClient _authorizationServiceClient = authorizationServiceClient;
         private readonly FileServiceSettings _settings = settings;
         private readonly HashSet<string> _knowledgeSearchFileTypes = [.. settings
             .KnowledgeSearchFileExtensions
@@ -78,11 +85,15 @@ namespace FoundationaLLM.Context.Services
             string fileName,
             UnifiedUserIdentity userIdentity)
         {
+            var bypassOwnerCheck = await ShouldBypassOwnerCheck(
+                instanceId, userIdentity);
+
             var fileRecords = await _cosmosDBService.GetFileRecords(
                 instanceId,
                 conversationId,
                 fileName,
-                userIdentity.UPN!);
+                userIdentity.UPN!,
+                bypassOwnerCheck);
 
             if (fileRecords.Count == 0)
                 return null;
@@ -108,10 +119,14 @@ namespace FoundationaLLM.Context.Services
             string fileId,
             UnifiedUserIdentity userIdentity)
         {
+            var bypassOwnerCheck = await ShouldBypassOwnerCheck(
+                instanceId, userIdentity);
+
             var fileRecord = await _cosmosDBService.GetFileRecord(
                 instanceId,
                 fileId,
-                userIdentity.UPN!);
+                userIdentity.UPN!,
+                bypassOwnerCheck);
 
             var fileContent = await _storageService.ReadFileAsync(
                 instanceId,
@@ -132,12 +147,54 @@ namespace FoundationaLLM.Context.Services
             string fileId,
             UnifiedUserIdentity userIdentity)
         {
+            var bypassOwnerCheck = await ShouldBypassOwnerCheck(
+                instanceId, userIdentity);
+
             var fileRecord = await _cosmosDBService.GetFileRecord(
                 instanceId,
                 fileId,
-                userIdentity.UPN!);
+                userIdentity.UPN!,
+                bypassOwnerCheck);
 
             return fileRecord;
+        }
+
+        public async Task<bool> ShouldBypassOwnerCheck(
+            string instanceId,
+            UnifiedUserIdentity userIdentity)
+        {
+            try
+            {
+                // We are interested to check if the user has the Data Pipelines Execution Manager role.
+                // The authorizable action is only provided for compliance with the validation requirements for the
+                // action authorization request (setting it to null or an empty string will not work).
+                // Same applies to the resource path, the one we provide does not exist.
+
+                var resourcePath = ResourcePath.GetObjectId(
+                    instanceId,
+                    ResourceProviderNames.FoundationaLLM_DataPipeline,
+                    DataPipelineResourceTypeNames.DataPipelines,
+                    "new");
+
+                var authorizationResult = await _authorizationServiceClient
+                    .ProcessAuthorizationRequest(
+                        instanceId,
+                        AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Read,
+                        RoleDefinitionNames.Data_Pipelines_Execution_Manager + "!", // ! indicates the optional role assignment must be checked.
+                        [resourcePath],
+                        false, false, false,
+                        userIdentity);
+
+                return authorizationResult
+                    .AuthorizationResults[resourcePath]
+                    .HasRequiredRole;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "There was an error checking if ownership check should be bypassed for user {UserPrincipalName}.",
+                    userIdentity.UPN!);
+                return false;
+            }
         }
     }
 }

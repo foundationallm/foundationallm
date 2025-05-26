@@ -81,10 +81,18 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             dataPipelineRun.CreatedOn = DateTimeOffset.UtcNow;
             dataPipelineRun.CreatedBy = userIdentity.UPN!;
 
-            await _validator.ValidateAndThrowAsync<DataPipelineRun>(dataPipelineRun);
-
             dataPipelineRun.DataPipelineObjectId = dataPipelineSnapshot.ObjectId!;
             var dataPipeline = dataPipelineSnapshot.DataPipelineDefinition;
+
+            // Add the default parameter values if they are not already set.
+            var dataPipelineTrigger = dataPipeline.Triggers
+                .SingleOrDefault(t => t.Name == dataPipelineRun.TriggerName);
+            if (dataPipelineTrigger != null)
+                foreach(var item in dataPipelineTrigger.ParameterValues)
+                    if (!dataPipelineRun.TriggerParameterValues.ContainsKey(item.Key))
+                        dataPipelineRun.TriggerParameterValues.Add(item.Key, item.Value);
+
+            await _validator.ValidateAndThrowAsync<DataPipelineRun>(dataPipelineRun);
 
             var dataSourcePlugin = await _pluginService.GetDataSourcePlugin(
                 instanceId,

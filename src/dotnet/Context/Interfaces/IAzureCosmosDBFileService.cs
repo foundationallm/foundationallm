@@ -20,11 +20,13 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="fileId">The idenfier of the file.</param>
         /// <param name="userPrincipalName">The user principal name of the user associated with the code session.</param>
+        /// <param name="bypassOwnerCheck">Indicates whether to bypass the owner check for the file record.</param>
         /// <returns></returns>
         Task<ContextFileRecord> GetFileRecord(
             string instanceId,
             string fileId,
-            string userPrincipalName);
+            string userPrincipalName,
+            bool bypassOwnerCheck);
 
         /// <summary>
         /// Gets the file records matching the specified criteria.
@@ -33,11 +35,13 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="conversationId">The idenfier of the conversation to which the file is associated.</param>
         /// <param name="fileName">The name of the file.</param>
         /// <param name="userPrincipalName">The user principal name of the user associated with the code session.</param>
+        /// <param name="bypassOwnerCheck">Indicates whether to bypass the owner check for the file records.</param>
         /// <returns></returns>
         Task<List<ContextFileRecord>> GetFileRecords(
             string instanceId,
             string conversationId,
             string fileName,
-            string userPrincipalName);
+            string userPrincipalName,
+            bool bypassOwnerCheck);
     }
 }

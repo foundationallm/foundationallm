@@ -133,7 +133,14 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                 await ProcessCompletedStageRunner(stageRunner);
 
             _dataPipelineRun.Completed =
-                _dataPipelineRun.AllStages.Intersect(_dataPipelineRun.CompletedStages).Count() == _dataPipelineRun.AllStages.Count;
+                // No stages in progress.
+                _dataPipelineRun.ActiveStages.Count == 0
+                && (
+                    // Either at least one stage failed or all stages are completed.
+                    _dataPipelineRun.FailedStages.Count > 0
+                    || _dataPipelineRun.AllStages.Intersect(
+                        _dataPipelineRun.CompletedStages).Count() == _dataPipelineRun.AllStages.Count
+                );
             _dataPipelineRun.Successful =
                 _dataPipelineRun.Completed
                 && _dataPipelineRun.FailedStages.Count == 0;
