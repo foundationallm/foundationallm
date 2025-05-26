@@ -1179,4 +1179,13 @@ export default {
 		);
 		return data;
 	},
+
+	/*
+		Vector Databases
+	*/
+	async getVectorDatabases(): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases?api-version=${this.apiVersion}`,
+		);
+	},
 };

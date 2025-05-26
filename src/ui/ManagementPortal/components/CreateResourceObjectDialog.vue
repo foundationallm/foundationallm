@@ -106,6 +106,10 @@ export default {
 					value: 'prompt',
 				},
 				{
+					label: 'Vector Database',
+					value: 'vectordatabase',
+				},
+				{
 					label: 'Vector store',
 					value: 'indexingProfile',
 				},
@@ -169,6 +173,9 @@ export default {
 			} else if (resourceType === 'datapipeline') {
 				this.loadingStatusText = 'Loading data pipelines...';
 				apiMethod = api.getPipelines;
+			} else if (resourceType === 'vectordatabase') {
+				this.loadingStatusText = 'Loading vector databases...';
+				apiMethod = api.getVectorDatabases;
 			}
 
 			this.loading = true;
