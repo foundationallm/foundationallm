@@ -519,12 +519,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             DataPipelineTriggerNames.DefaultManualTrigger,
                             new()
                             {
-                            { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId,  contextFileResponse.Result.FileObjectId},
-                            { DataPipelineTriggerParameterNames.StageIndexVectorDatabaseObjectId, knowledgeSearchSettings.FileUploadVectorDatabaseObjectId },
-                            { DataPipelineTriggerParameterNames.StageIndexVectorStoreObjectId,
-                                ResourcePath.Join(
-                                    knowledgeSearchSettings.FileUploadVectorDatabaseObjectId,
-                                    $"vectorStores/{_vectorStoreId}") }
+                                { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId,  contextFileResponse.Result.FileObjectId},
+                                { DataPipelineTriggerParameterNames.StageIndexVectorDatabaseObjectId, knowledgeSearchSettings.FileUploadVectorDatabaseObjectId },
+                                { DataPipelineTriggerParameterNames.StageIndexVectorStoreObjectId,
+                                    ResourcePath.Join(
+                                        knowledgeSearchSettings.FileUploadVectorDatabaseObjectId,
+                                        $"vectorStores/{_vectorStoreId}") }
                             },
                             _callContext.CurrentUserIdentity!.UPN!,
                             DataPipelineRunProcessors.Frontend);
