@@ -163,7 +163,9 @@ export default {
 			prompts: [] as ResourceProviderGetResult<Prompt>[],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
-			filters: {},
+			filters: {
+				global: { value: null, matchMode: 'contains' }
+			},
 			sortingFields: [
 				// { field: 'resource.category', order: 2 },
 				{ field: 'resource.name', order: 1 },
@@ -174,6 +176,11 @@ export default {
 
 	async created() {
 		await this.getPrompts();
+	},
+
+	beforeUnmount() {
+		// Clear filters when leaving the component
+		this.filters.global.value = null;
 	},
 
 	methods: {

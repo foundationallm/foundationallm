@@ -187,13 +187,20 @@ export default {
 			dataSources: [] as ResourceProviderGetResult<DataSource>[],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
-			filters: {},
+			filters: {
+				global: { value: null, matchMode: 'contains' }
+			},
 			dataSourceToDelete: null as DataSource | null,
 		};
 	},
 
 	async created() {
 		await this.getAgentDataSources();
+	},
+
+	beforeUnmount() {
+		// Clear filters when leaving the component
+		this.filters.global.value = null;
 	},
 
 	methods: {

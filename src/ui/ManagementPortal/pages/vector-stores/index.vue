@@ -177,7 +177,9 @@ export default {
 			vectorStores: [] as [],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
-			filters: {},
+			filters: {
+				global: { value: null, matchMode: 'contains' }
+			},
 			dataSourceToDelete: null as DataSource | null,
 			vectorStoreToDelete: null,
 		};
@@ -186,6 +188,11 @@ export default {
 	async created() {
 		await this.getAgentDataSources();
 		await this.getVectorStores();
+	},
+
+	beforeUnmount() {
+		// Clear filters when leaving the component
+		this.filters.global.value = null;
 	},
 
 	methods: {
