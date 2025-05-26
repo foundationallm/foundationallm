@@ -15,7 +15,8 @@
 
 			<div style="display: flex; align-items: center">
 				<!-- Private storage -->
-				<PrivateStorage v-if="hasAgentPrivateStorage" :agent-name="agentName" />
+				<PrivateStorage v-if="isOpenAIAssistantWorkflow" :agent-name="agentName" />
+				<PrivateStorage v-if="isFoundationaLLMFunctionCallingWorkflow" :agent-name="agentName" :tools="agentTools.map(tool => tool.name)" />
 
 				<!-- Edit access control -->
 				<AccessControl
@@ -1467,6 +1468,8 @@ export default {
 
 			editable: false as boolean,
 			hasAgentPrivateStorage: false as boolean,
+			isOpenAIAssistantWorkflow: false as boolean,
+			isFoundationaLLMFunctionCallingWorkflow: false as boolean,
 
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			validationMessage: '' as string,
@@ -1853,6 +1856,8 @@ export default {
 				this.workflowOptions.find((workflow) => workflow.type === agent.workflow?.type),
 			);
 			this.hasAgentPrivateStorage = agent.workflow?.type === 'azure-openai-assistants-workflow' || agent.workflow?.class_name === 'FoundationaLLMFunctionCallingWorkflow';
+			this.isOpenAIAssistantWorkflow = agent.workflow?.type === 'azure-openai-assistants-workflow';
+			this.isFoundationaLLMFunctionCallingWorkflow = agent.workflow?.class_name === 'FoundationaLLMFunctionCallingWorkflow';
 			this.showMessageTokens = agent.show_message_tokens ?? false;
 			this.showMessageRating = agent.show_message_rating ?? false;
 			this.showViewPrompt = agent.show_view_prompt ?? false;

@@ -444,7 +444,7 @@ export default {
 				agent_file_tool_associations: { ...this.fileToolAccess },
 			};
 
-			this.loadingModalStatusText = 'Saving tool file access permisisons...';
+			this.loadingModalStatusText = 'Saving tool file access permissions...';
 			this.modalLoading = true;
 			try {
 				const response = await api.updateFileToolAssociations(this.agentName, payload);
