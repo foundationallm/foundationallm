@@ -151,7 +151,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             return
                 Convert.ToBase64String(
                     MD5.HashData(Encoding.UTF8.GetBytes(id)))
-                .Replace('+', '-');
+                .Replace("+", "--")
+                .Replace("/", "--");
         }
     }
 }

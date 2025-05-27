@@ -71,7 +71,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                         { "/completed_stages", dataPipelineRun.CompletedStages },
                         { "/failed_stages", dataPipelineRun.FailedStages },
                         { "/completed", dataPipelineRun.Completed },
-                        { "/successful", dataPipelineRun.Successful }
+                        { "/successful", dataPipelineRun.Successful },
+                        { "/updated_on", DateTimeOffset.UtcNow }
                     });
 
                 return true;
