@@ -89,7 +89,7 @@ class AzureAISearchServiceRetrieverV2(BaseRetriever, ContentArtifactRetrievalBas
 
         results = search_client.search(
             search_text=query,
-            filter="VectorStoreId eq '{id}'".format(id = index_config.vector_database["vector_store_id"]),
+            filter="VectorStoreId eq 'vector-{id}'".format(id = index_config.vector_database["vector_store_id"]),
             vector_queries=[vector_query],
             query_type=self.query_type,
             semantic_configuration_name = self.semantic_configuration_name,

@@ -43,7 +43,7 @@ knowledge_tool = foundationallmagent_tool_plugin_manager.create_tool(agent_tool,
 
 #-------------------------------------------------------------------------------
 # Direct tool invocation
-response, content_artifacts = asyncio.run(knowledge_tool._arun('Who is Paul?'))
+response, content_artifacts = asyncio.run(knowledge_tool._arun('What is this about?'))
 print("**** RESPONSE ****")
 print(response)
 print("**** CONTENT ARTIFACTS ****")
