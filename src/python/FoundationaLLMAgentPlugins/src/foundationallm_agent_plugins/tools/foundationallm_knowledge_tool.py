@@ -4,8 +4,8 @@ from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import ToolException
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMToolBase
-from foundationallm.langchain.retrievers.retriever_factory import RetrieverFactory
-from foundationallm.models.agents import AgentTool, KnowledgeManagementIndexConfiguration
+from foundationallm.langchain.retrievers import AzureAISearchServiceRetrieverV2
+from foundationallm.models.agents import AgentTool, VectorDatabaseConfiguration
 from foundationallm.models.constants import (
     ContentArtifactTypeNames,
     ResourceObjectIdPropertyNames,
@@ -34,12 +34,14 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         super().__init__(tool_config, objects, user_identity, config)
         self.main_llm = self.get_main_language_model()
         self.main_prompt = self.get_main_prompt()
+        self.retriever = self._get_document_retriever()
         self.vector_database = self._get_vector_database()
         self.vector_database_api_endpoint_configuration = ObjectUtils.get_object_by_id(
                 self.vector_database['api_endpoint_configuration_object_id'],
                 self.objects,
                 APIEndpointConfiguration)
         self.embedding_service = self._get_embedding_service()
+        self.conversation_id = self.objects['FoundationaLLM.ConversationId']
         # When configuring the tool on an agent, the description will be set providing context to the document source.
         self.description = self.tool_config.description or "Answers questions by searching through documents."
 
@@ -67,8 +69,8 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                 else None
             original_prompt = user_prompt_rewrite or user_prompt or prompt
 
-        docs = '' #self.retriever.invoke(prompt)
-        context = '' #self.retriever.format_docs(docs)
+        docs = self.retriever._get_relevant_documents(prompt)
+        context = self.retriever.format_docs(docs)
         completion_prompt = self.main_prompt.replace('{{context}}', context).replace('{{prompt}}', prompt)
 
         completion = await self.main_llm.ainvoke(completion_prompt)
@@ -112,6 +114,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             vector_database_properties = self.objects[vector_database_object_id.object_id]
 
             return {
+                "vector_store_id": self.conversation_id,
                 "database_type": vector_database_properties["database_type"],
                 "database_name": vector_database_properties["database_name"],
                 "embedding_property_name": vector_database_properties["embedding_property_name"],
@@ -186,30 +189,15 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             model_name = text_embedding_model_name,
             config=self.config)
 
-        # array of objects containing the indexing profile(s) and associated endpoint configuration
-        index_configurations = []
-        for profile in indexing_profile_definitions:
-            indexing_profile = ObjectUtils.get_object_by_id(
-                profile.object_id,
-                self.objects,
-                AzureAISearchIndexingProfile)
+        vector_database_configuration = VectorDatabaseConfiguration(
+            vector_database=self.vector_database,
+            vector_database_api_endpoint_configuration=self.vector_database_api_endpoint_configuration
+        )
 
-            # indexing profile has indexing_api_endpoint_configuration_object_id in Settings.
-            indexing_api_endpoint_configuration = ObjectUtils.get_object_by_id(
-                indexing_profile.settings.api_endpoint_configuration_object_id,
-                self.objects,
-                APIEndpointConfiguration)
-
-            index_configurations.append(
-                KnowledgeManagementIndexConfiguration(
-                    indexing_profile = indexing_profile,
-                    api_endpoint_configuration = indexing_api_endpoint_configuration
-                ))
-
-        retriever_factory = RetrieverFactory(
-                        index_configurations=index_configurations,
-                        gateway_text_embedding_service=gateway_embedding_service,
-                        config=self.config)
-
-        retriever = retriever_factory.get_retriever()
+        retriever = AzureAISearchServiceRetrieverV2(
+            config=self.config,
+            vector_database_configuration = vector_database_configuration,
+            gateway_text_embedding_service=gateway_embedding_service
+        )
+        
         return retriever
