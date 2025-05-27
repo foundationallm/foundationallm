@@ -86,4 +86,4 @@ class GatewayTextEmbeddingService():
 
     def _create_text_embedding_request(self, text: str) -> TextEmbeddingRequest:
         text_chunk = TextChunk(content=text)
-        return TextEmbeddingRequest(text_chunks=[text_chunk], embedding_model_name=self.model_name, prioritized=True)
+        return TextEmbeddingRequest(text_chunks=[text_chunk], embedding_model_name=self.model_name, embedding_model_dimensions=self.model_dimensions, prioritized=True)
