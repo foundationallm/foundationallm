@@ -54,6 +54,11 @@ namespace FoundationaLLM.Common.Constants.Agents
         public const string InstanceId = "FoundationaLLM.InstanceId";
 
         /// <summary>
+        /// The key mame for the FoundationaLLM conversation identifier value.
+        /// </summary>
+        public const string ConversationId = "FoundationaLLM.ConversationId";
+
+        /// <summary>
         /// All completion request objects dictionary keys.
         /// </summary>
         public readonly static string[] All = [
