@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.DataPipelines;
@@ -71,7 +72,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                         { "/completed_stages", dataPipelineRun.CompletedStages },
                         { "/failed_stages", dataPipelineRun.FailedStages },
                         { "/completed", dataPipelineRun.Completed },
-                        { "/successful", dataPipelineRun.Successful }
+                        { "/successful", dataPipelineRun.Successful },
+                        { "/updated_on", DateTimeOffset.UtcNow },
+                        { "/updated_by", ServiceContext.ServiceIdentity!.UPN }
                     });
 
                 return true;
