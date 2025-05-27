@@ -479,6 +479,19 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 resourceObjectId.ObjectId,
                                 vectorDatabase);
 
+                            if (!explodedObjectsManager.HasKey(vectorDatabase.APIEndpointConfigurationObjectId))
+                            {
+                                // Explode the object only if it hasn't been exploded yet.
+
+                                var vectorDatabaseApiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                                    vectorDatabase.APIEndpointConfigurationObjectId,
+                                    currentUserIdentity);
+
+                                explodedObjectsManager.TryAdd(
+                                    vectorDatabase.APIEndpointConfigurationObjectId,
+                                    vectorDatabaseApiEndpoint);
+                            }
+
                             break;
 
                         case VectorizationResourceTypeNames.IndexingProfiles:
