@@ -54,7 +54,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             var pluginDependency = dataPipelineStage.PluginDependencies
                 .FirstOrDefault(pd => textPartitioningPluginsMetadata.Select(p => p.ObjectId).Contains(pd.PluginObjectId))
                 ?? throw new PluginException(
-                    $"The {dataPipelineRunWorkItem.Stage} does not have a dependency content text partitioning plugin to handle the {partitioningStrategy} partitioning strategy.");
+                    $"The {dataPipelineRunWorkItem.Stage} stage does not have a dependency content text partitioning plugin to handle the {partitioningStrategy} partitioning strategy.");
 
             var textPartitioningPluginMetadata = textPartitioningPluginsMetadata
                 .Single(p => p.ObjectId == pluginDependency.PluginObjectId);

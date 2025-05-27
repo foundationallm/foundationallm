@@ -102,7 +102,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             var pluginDependency = dataPipelineStage.PluginDependencies
                 .FirstOrDefault(pd => textExtractionPluginsMetadata.Select(p => p.ObjectId).Contains(pd.PluginObjectId))
                 ?? throw new PluginException(
-                    $"The {dataPipelineRunWorkItem.Stage} does not have a dependency context text extraction plugin to handle the {contentType} content type.");
+                    $"The {dataPipelineRunWorkItem.Stage} stage does not have a dependency content text extraction plugin to handle the {contentType} content type.");
 
             var textExtractionPluginMetadata = textExtractionPluginsMetadata
                 .Single(p => p.ObjectId == pluginDependency.PluginObjectId);

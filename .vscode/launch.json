@@ -21,7 +21,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "python": "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins/.venv/Scripts/python.exe",
-            "cwd" : "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins/test",
+            "cwd" : "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins",
             "justMyCode": false
         },
         {

@@ -99,6 +99,12 @@ The following App Configuration value have been added:
 
 ### Role assignment changes
 
+The following role assignments must be added to the Context API's Managed Identity:
+
+| Name | Type | Target |
+| --- | --- | --- |
+| `Reader` | FoundationaLLM | FoundationaLLM instance.|
+
 The following role assignments must be added to the Orchestrations API's Managed Identity:
 
 | Name | Type | Target |
@@ -128,6 +134,8 @@ The following role assignments must be added to the Data Pipeline Frontend Worke
 |`Cosmos DB Built-in Data Contributor` | Azure | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Frontend Worker.|
 |`Storage Queue Data Contributor` | Azure | Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.|
 |`EventGrid Contributor` | Azure | Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline Frontend Worker.|
+| `Search Service Contributor` | Azure | Azure AI Search service used by the FoundationaLLM instance.|
+| `Search Index Data Contributor` | Azure | Azure AI Search service used by the FoundationaLLM instance.|
 | `Data Pipelines Execution Manager` | FoundationaLLM | FoundationaLLM instance.|
 | `Reader` | FoundationaLLM | FoundationaLLM instance. |
 
@@ -141,6 +149,8 @@ The following role assignments must be added to the Data Pipeline Backend Worker
 |`Cosmos DB Built-in Data Contributor` | Azure | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Backend Worker.|
 |`Storage Queue Data Contributor` | Azure | Storage account used by the FoundationaLLM Data Pipeline Backend Worker.|
 |`EventGrid Contributor` | Azure | Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline Backend Worker.|
+| `Search Service Contributor` | Azure | Azure AI Search service used by the FoundationaLLM instance.|
+| `Search Index Data Contributor` | Azure | Azure AI Search service used by the FoundationaLLM instance.|
 | `Data Pipelines Execution Manager` | FoundationaLLM | FoundationaLLM instance.|
 | `Reader` | FoundationaLLM | FoundationaLLM instance. |
 
