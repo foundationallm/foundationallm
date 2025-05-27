@@ -21,11 +21,13 @@ class GatewayTextEmbeddingService():
                  user_identity:UserIdentity,
                  gateway_api_endpoint_configuration: APIEndpointConfiguration,
                  model_name:str,
-                 config: Configuration):
+                 config: Configuration,
+                 model_dimensions:int = 2048):
         self.http_client = HttpClientService(gateway_api_endpoint_configuration, user_identity, config)
         self.model_name = model_name
         self.config = config
         self.url =  f'/instances/{instance_id}/embeddings'
+        self.model_dimensions = model_dimensions
 
     def get_embedding(self, text: str) -> GatewayTextEmbeddingResponse:
         """

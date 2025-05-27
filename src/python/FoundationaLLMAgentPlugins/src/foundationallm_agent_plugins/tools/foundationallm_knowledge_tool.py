@@ -34,12 +34,12 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         super().__init__(tool_config, objects, user_identity, config)
         self.main_llm = self.get_main_language_model()
         self.main_prompt = self.get_main_prompt()
-        self.retriever = self._get_document_retriever()
         self.vector_database = self._get_vector_database()
         self.vector_database_api_endpoint_configuration = ObjectUtils.get_object_by_id(
                 self.vector_database['api_endpoint_configuration_object_id'],
                 self.objects,
                 APIEndpointConfiguration)
+        self.retriever = self._get_document_retriever()
         self.embedding_service = self._get_embedding_service()
         self.conversation_id = self.objects['FoundationaLLM.ConversationId']
         # When configuring the tool on an agent, the description will be set providing context to the document source.
@@ -69,7 +69,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                 else None
             original_prompt = user_prompt_rewrite or user_prompt or prompt
 
-        docs = self.retriever._get_relevant_documents(prompt)
+        docs = self.retriever._get_relevant_documents(prompt, run_manager=run_manager)
         context = self.retriever.format_docs(docs)
         completion_prompt = self.main_prompt.replace('{{context}}', context).replace('{{prompt}}', prompt)
 
@@ -114,7 +114,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             vector_database_properties = self.objects[vector_database_object_id.object_id]
 
             return {
-                "vector_store_id": self.conversation_id,
+                "vector_store_id": self.objects["FoundationaLLM.ConversationId"],
                 "database_type": vector_database_properties["database_type"],
                 "database_name": vector_database_properties["database_name"],
                 "embedding_property_name": vector_database_properties["embedding_property_name"],
@@ -152,29 +152,6 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         """
         retriever = None
 
-        text_embedding_profile_definition = self.tool_config.get_resource_object_id_properties(
-            ResourceProviderNames.FOUNDATIONALLM_VECTORIZATION,
-            "textEmbeddingProfiles",
-            ResourceObjectIdPropertyNames.OBJECT_ROLE,
-            ResourceObjectIdPropertyValues.EMBEDDING_PROFILE)
-
-        text_embedding_profile = ObjectUtils.get_object_by_id(
-            text_embedding_profile_definition.object_id,
-            self.objects,
-            AzureOpenAIEmbeddingProfile)
-
-        # text_embedding_profile has the embedding model name in settings.
-        text_embedding_model_name = text_embedding_profile.settings[EmbeddingProfileSettingsKeys.MODEL_NAME]
-
-        # There can be multiple indexing_profile role objects in the resource object ids.
-        indexing_profile_definitions = [
-            v for v in self.tool_config.resource_object_ids.values() \
-                if v.resource_path.resource_provider == ResourceProviderNames.FOUNDATIONALLM_VECTORIZATION \
-                    and v.resource_path.main_resource_type == "indexingProfiles" \
-                        and ResourceObjectIdPropertyNames.OBJECT_ROLE in v.properties \
-                            and v.properties[ResourceObjectIdPropertyNames.OBJECT_ROLE] == ResourceObjectIdPropertyValues.INDEXING_PROFILE
-        ]
-
         # Only supporting GatewayTextEmbedding
         # Objects dictionary has the gateway API endpoint configuration by default.
         gateway_endpoint_configuration = ObjectUtils.get_object_by_id(
@@ -182,11 +159,13 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             self.objects,
             APIEndpointConfiguration)
 
+        model_name = self.tool_config.properties.get('embedding_model', 'text-embedding-3-large')
+
         gateway_embedding_service = GatewayTextEmbeddingService(
             instance_id= ResourcePath.parse(gateway_endpoint_configuration.object_id).instance_id,
             user_identity=self.user_identity,
             gateway_api_endpoint_configuration=gateway_endpoint_configuration,
-            model_name = text_embedding_model_name,
+            model_name = model_name,
             config=self.config)
 
         vector_database_configuration = VectorDatabaseConfiguration(

@@ -80,7 +80,7 @@ class AzureAISearchServiceRetrieverV2(BaseRetriever, ContentArtifactRetrievalBas
         if self.top_n_override:
             top_n = self.top_n_override
         else:
-            top_n = int(index_config.vector_database["top_n"] if index_config.vector_database["top_n"] else 50)
+            top_n = 50
 
         search_client = SearchClient(endpoint, index_config.vector_database["database_name"], credential)
         vector_query = VectorizedQuery(vector=self.__get_embeddings(query),
