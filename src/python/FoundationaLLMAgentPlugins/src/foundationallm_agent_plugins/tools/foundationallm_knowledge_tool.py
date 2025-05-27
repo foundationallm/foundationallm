@@ -112,6 +112,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             vector_database_properties = self.objects[vector_database_object_id.object_id]
 
             return {
+                "database_type": vector_database_properties["database_type"],
                 "database_name": vector_database_properties["database_name"],
                 "embedding_property_name": vector_database_properties["embedding_property_name"],
                 "content_property_name": vector_database_properties["content_property_name"],
