@@ -16,7 +16,7 @@ from azure.identity import DefaultAzureCredential
 from foundationallm.models.orchestration import ContentArtifact
 from foundationallm.models.vectors import VectorDocument
 from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
-from .....PythonSDK.foundationallm.langchain.retrievers.content_artifact_retrieval_base import ContentArtifactRetrievalBase
+from foundationallm.langchain.retrievers.content_artifact_retrieval_base import ContentArtifactRetrievalBase
 from foundationallm.models.agents import VectorDatabaseConfiguration
 
 class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase):
@@ -74,20 +74,23 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
             credential = DefaultAzureCredential()
 
         endpoint = index_config.vector_database_api_endpoint_configuration.url
+        top_n = index_config.vector_database.get("top_n", 10)
+        similarity_threshold = index_config.vector_database.get("similarity_threshold", 0.85)
 
         search_client = SearchClient(endpoint, index_config.vector_database["database_name"], credential)
         vector_query = VectorizedQuery(vector=self.__get_embeddings(query),
                                         k_nearest_neighbors=3,
                                         fields=index_config.vector_database["embedding_property_name"],
-                                        threshold=VectorSimilarityThreshold(value=index_config.vector_database.get("similarity_threshold", 0.85)))
+                                        threshold=VectorSimilarityThreshold(value=similarity_threshold))
 
+        
         results = search_client.search(
             search_text=query,
             filter=f"VectorStoreId eq '{(index_config.vector_database['vector_store_id'])}'",
             vector_queries=[vector_query],
             query_type=self.query_type,
             semantic_configuration_name = self.semantic_configuration_name,
-            top=index_config.vector_database.get("top_n", 10)
+            top=top_n
         )
 
         rerank_available = False
