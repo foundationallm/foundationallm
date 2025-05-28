@@ -102,17 +102,6 @@ export const useAppStore = defineStore('app', {
 				return;
 			}
 
-			// If the portal is configured to create a temporary session on startup, and
-			// there is no requested session, then create a temporary one.
-			if (!appConfigStore.showLastConversionOnStartup && !sessionId) {
-				await this.ensureAgentsLoaded(); // Ensure agents are loaded
-				this.addTemporarySession();
-				this.changeSession(this.sessions[0]);
-				this.sessions.push(...(await api.getSessions()));
-				await this.getUserProfiles();
-				return;
-			}
-
 			await this.getSessions();
 
 			const requestedSession = sessionId
@@ -121,20 +110,15 @@ export const useAppStore = defineStore('app', {
 
 			// If there is an existing session matching the one requested in the url, select it.
 			// otherwise, if the portal is configured to show the previous session and it exists, select it.
-			// otherwise, (if there are no sessions) create a temporary session.
+			// otherwise, create a new chat conversation.
 			if (requestedSession) {
 				this.changeSession(requestedSession);
 			} else if (appConfigStore.showLastConversionOnStartup && this.sessions.length > 0) {
 				this.changeSession(this.sessions[0]);
 			} else {
-				this.addToast({
-					severity: 'error',
-					detail: 'The requested session was not found.',
-				});
-
-				await this.ensureAgentsLoaded(); // Ensure agents are loaded
-				this.addTemporarySession();
-				this.changeSession(this.sessions[0]);
+				// Create a new chat conversation instead of a temporary session
+				const newSession = await this.addSession(this.getDefaultChatSessionProperties());
+				this.changeSession(newSession);
 			}
 
 			await this.getUserProfiles();
