@@ -714,7 +714,7 @@
 				"first_version": "0.8.2"
 			},
 			{
-				"name": "CompletionResponsePollingIntervalSeconds",
+				"name": "CompletionResponsePollingIntervalMilliseconds",
 				"description": "The size in seconds of the polling interval used to check for completion responses.",
 				"secret": "",
 				"value": "{ \\\"value\\\": 10, \\\"value_exceptions\\\": []}",
