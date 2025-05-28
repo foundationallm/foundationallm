@@ -6,7 +6,7 @@ import json
 import sys
 import uuid
 
-sys.path.append('../src')
+sys.path.append('src')
 from foundationallm_agent_plugins import (
     FoundationaLLMAgentToolPluginManager,
     FoundationaLLMAgentWorkflowPluginManager
@@ -26,7 +26,7 @@ user_prompt = "how do I beat the market"
 operation_id = str(uuid.uuid4())
 
 user_identity_json = {"name": "Experimental Test", "user_name":"carey@foundationaLLM.ai","upn":"carey@foundationaLLM.ai"}
-full_request_json_file_name = 'full_request.json' # full original langchain request, contains agent, tools, exploded objects
+full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
 
 user_identity = UserIdentity.from_json(user_identity_json)
 config = Configuration()
