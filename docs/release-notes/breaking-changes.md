@@ -7,6 +7,8 @@
 
 ### Configuration changes
 
+The `FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds` is replaced by the `FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalMilliseconds` value. The default value is now `100` milliseconds instead of `1` second. This change is made to improve the responsiveness of the completion response polling mechanism.
+
 The following App Configuration value have been added:
 
 |Name | Default value | Description |

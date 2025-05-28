@@ -514,11 +514,11 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage";
         
         /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds setting.
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalMilliseconds setting.
         /// <para>Value description:<br/>The size in seconds of the polling interval used to check for completion responses.</para>
         /// </summary>
-        public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalSeconds =
-            "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds";
+        public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalMilliseconds =
+            "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalMilliseconds";
 
         #endregion
 

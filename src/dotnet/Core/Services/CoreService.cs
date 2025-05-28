@@ -1036,9 +1036,9 @@ public partial class CoreService(
                 instanceId,
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage,
                 _userIdentity),
-            CompletionResponsePollingIntervalSeconds = await GetCoreConfigurationValue<int>(
+            CompletionResponsePollingIntervalMilliseconds = await GetCoreConfigurationValue<int>(
                 instanceId,
-                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalSeconds,
+                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalMilliseconds,
                 _userIdentity),
         };
 

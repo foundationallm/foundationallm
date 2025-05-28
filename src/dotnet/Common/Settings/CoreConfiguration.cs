@@ -18,8 +18,8 @@ namespace FoundationaLLM.Common.Settings
         public IEnumerable<APIEndpointConfiguration>? FileStoreConnectors { get; set; }
 
         /// <summary>
-        /// Gets or sets the polling interval in seconds for checking the completion of a response.
+        /// Gets or sets the polling interval in milliseconds for checking the completion of a response.
         /// </summary>
-        public int CompletionResponsePollingIntervalSeconds { get; set; } = 5;
+        public int CompletionResponsePollingIntervalMilliseconds { get; set; } = 5;
     }
 }
