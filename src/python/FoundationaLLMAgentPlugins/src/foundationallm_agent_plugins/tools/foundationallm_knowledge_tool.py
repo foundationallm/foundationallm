@@ -4,8 +4,7 @@ from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import ToolException
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMToolBase
-from foundationallm.langchain.retrievers.retriever_factory import RetrieverFactory
-from foundationallm.models.agents import AgentTool, KnowledgeManagementIndexConfiguration
+from foundationallm.models.agents import AgentTool, VectorDatabaseConfiguration
 from foundationallm.models.constants import (
     ContentArtifactTypeNames,
     ResourceObjectIdPropertyNames,
@@ -23,6 +22,7 @@ from foundationallm.models.resource_providers.vectorization import (
 from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
 from foundationallm.utils import ObjectUtils
 
+from foundationallm_agent_plugins.utils import AzureAISearchServiceRetriever
 class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
     """
     FoundationaLLM knowledge tool.
@@ -40,6 +40,8 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                 self.objects,
                 APIEndpointConfiguration)
         self.embedding_service = self._get_embedding_service()
+        self.retriever = self._get_document_retriever()
+        self.conversation_id = self.objects['FoundationaLLM.ConversationId']
         # When configuring the tool on an agent, the description will be set providing context to the document source.
         self.description = self.tool_config.description or "Answers questions by searching through documents."
 
@@ -67,8 +69,8 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                 else None
             original_prompt = user_prompt_rewrite or user_prompt or prompt
 
-        docs = '' #self.retriever.invoke(prompt)
-        context = '' #self.retriever.format_docs(docs)
+        docs = self.retriever._get_relevant_documents(prompt, run_manager=run_manager)
+        context = self.retriever.format_docs(docs)
         completion_prompt = self.main_prompt.replace('{{context}}', context).replace('{{prompt}}', prompt)
 
         completion = await self.main_llm.ainvoke(completion_prompt)
@@ -112,12 +114,15 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             vector_database_properties = self.objects[vector_database_object_id.object_id]
 
             return {
+                "vector_store_id": self.objects["FoundationaLLM.ConversationVectorStoreId"],
                 "database_type": vector_database_properties["database_type"],
                 "database_name": vector_database_properties["database_name"],
                 "embedding_property_name": vector_database_properties["embedding_property_name"],
                 "content_property_name": vector_database_properties["content_property_name"],
                 "vector_store_id_property_name": vector_database_properties["vector_store_id_property_name"],
-                "api_endpoint_configuration_object_id": vector_database_properties["api_endpoint_configuration_object_id"]
+                "api_endpoint_configuration_object_id": vector_database_properties["api_endpoint_configuration_object_id"],
+                "similarity_threshold": self.tool_config.properties.get('similarity_threshold', 0.85),
+                "top_n": self.tool_config.properties.get('top_n', 10)
             }
 
         else:
@@ -149,67 +154,15 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         """
         retriever = None
 
-        text_embedding_profile_definition = self.tool_config.get_resource_object_id_properties(
-            ResourceProviderNames.FOUNDATIONALLM_VECTORIZATION,
-            "textEmbeddingProfiles",
-            ResourceObjectIdPropertyNames.OBJECT_ROLE,
-            ResourceObjectIdPropertyValues.EMBEDDING_PROFILE)
+        vector_database_configuration = VectorDatabaseConfiguration(
+            vector_database=self.vector_database,
+            vector_database_api_endpoint_configuration=self.vector_database_api_endpoint_configuration
+        )
 
-        text_embedding_profile = ObjectUtils.get_object_by_id(
-            text_embedding_profile_definition.object_id,
-            self.objects,
-            AzureOpenAIEmbeddingProfile)
+        retriever = AzureAISearchServiceRetriever(
+            config=self.config,
+            vector_database_configuration = vector_database_configuration,
+            gateway_text_embedding_service=self.embedding_service
+        )
 
-        # text_embedding_profile has the embedding model name in settings.
-        text_embedding_model_name = text_embedding_profile.settings[EmbeddingProfileSettingsKeys.MODEL_NAME]
-
-        # There can be multiple indexing_profile role objects in the resource object ids.
-        indexing_profile_definitions = [
-            v for v in self.tool_config.resource_object_ids.values() \
-                if v.resource_path.resource_provider == ResourceProviderNames.FOUNDATIONALLM_VECTORIZATION \
-                    and v.resource_path.main_resource_type == "indexingProfiles" \
-                        and ResourceObjectIdPropertyNames.OBJECT_ROLE in v.properties \
-                            and v.properties[ResourceObjectIdPropertyNames.OBJECT_ROLE] == ResourceObjectIdPropertyValues.INDEXING_PROFILE
-        ]
-
-        # Only supporting GatewayTextEmbedding
-        # Objects dictionary has the gateway API endpoint configuration by default.
-        gateway_endpoint_configuration = ObjectUtils.get_object_by_id(
-            CompletionRequestObjectKeys.GATEWAY_API_ENDPOINT_CONFIGURATION,
-            self.objects,
-            APIEndpointConfiguration)
-
-        gateway_embedding_service = GatewayTextEmbeddingService(
-            instance_id= ResourcePath.parse(gateway_endpoint_configuration.object_id).instance_id,
-            user_identity=self.user_identity,
-            gateway_api_endpoint_configuration=gateway_endpoint_configuration,
-            model_name = text_embedding_model_name,
-            config=self.config)
-
-        # array of objects containing the indexing profile(s) and associated endpoint configuration
-        index_configurations = []
-        for profile in indexing_profile_definitions:
-            indexing_profile = ObjectUtils.get_object_by_id(
-                profile.object_id,
-                self.objects,
-                AzureAISearchIndexingProfile)
-
-            # indexing profile has indexing_api_endpoint_configuration_object_id in Settings.
-            indexing_api_endpoint_configuration = ObjectUtils.get_object_by_id(
-                indexing_profile.settings.api_endpoint_configuration_object_id,
-                self.objects,
-                APIEndpointConfiguration)
-
-            index_configurations.append(
-                KnowledgeManagementIndexConfiguration(
-                    indexing_profile = indexing_profile,
-                    api_endpoint_configuration = indexing_api_endpoint_configuration
-                ))
-
-        retriever_factory = RetrieverFactory(
-                        index_configurations=index_configurations,
-                        gateway_text_embedding_service=gateway_embedding_service,
-                        config=self.config)
-
-        retriever = retriever_factory.get_retriever()
         return retriever

@@ -13,3 +13,4 @@ class TextEmbeddingRequest(BaseModel):
     text_chunks: List[TextChunk]
     embedding_model_name: str
     prioritized: bool = False
+    embedding_model_dimensions: int = 1536

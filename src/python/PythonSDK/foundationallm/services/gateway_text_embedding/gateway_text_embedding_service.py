@@ -21,11 +21,13 @@ class GatewayTextEmbeddingService():
                  user_identity:UserIdentity,
                  gateway_api_endpoint_configuration: APIEndpointConfiguration,
                  model_name:str,
-                 config: Configuration):
+                 config: Configuration,
+                 model_dimensions:int = 1536):
         self.http_client = HttpClientService(gateway_api_endpoint_configuration, user_identity, config)
         self.model_name = model_name
         self.config = config
         self.url =  f'/instances/{instance_id}/embeddings'
+        self.model_dimensions = model_dimensions
 
     def get_embedding(self, text: str) -> GatewayTextEmbeddingResponse:
         """
@@ -84,4 +86,4 @@ class GatewayTextEmbeddingService():
 
     def _create_text_embedding_request(self, text: str) -> TextEmbeddingRequest:
         text_chunk = TextChunk(content=text)
-        return TextEmbeddingRequest(text_chunks=[text_chunk], embedding_model_name=self.model_name, prioritized=True)
+        return TextEmbeddingRequest(text_chunks=[text_chunk], embedding_model_name=self.model_name, embedding_model_dimensions=self.model_dimensions, prioritized=True)
