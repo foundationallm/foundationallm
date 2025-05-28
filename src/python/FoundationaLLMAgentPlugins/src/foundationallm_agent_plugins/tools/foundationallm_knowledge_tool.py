@@ -4,7 +4,6 @@ from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import ToolException
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMToolBase
-from foundationallm.langchain.retrievers import AzureAISearchServiceRetrieverV2
 from foundationallm.models.agents import AgentTool, VectorDatabaseConfiguration
 from foundationallm.models.constants import (
     ContentArtifactTypeNames,
@@ -23,6 +22,7 @@ from foundationallm.models.resource_providers.vectorization import (
 from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
 from foundationallm.utils import ObjectUtils
 
+from foundationallm_agent_plugins.utils import AzureAISearchServiceRetriever
 class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
     """
     FoundationaLLM knowledge tool.
@@ -39,8 +39,8 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                 self.vector_database['api_endpoint_configuration_object_id'],
                 self.objects,
                 APIEndpointConfiguration)
-        self.retriever = self._get_document_retriever()
         self.embedding_service = self._get_embedding_service()
+        self.retriever = self._get_document_retriever()
         self.conversation_id = self.objects['FoundationaLLM.ConversationId']
         # When configuring the tool on an agent, the description will be set providing context to the document source.
         self.description = self.tool_config.description or "Answers questions by searching through documents."
@@ -114,13 +114,15 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             vector_database_properties = self.objects[vector_database_object_id.object_id]
 
             return {
-                "vector_store_id": self.objects["FoundationaLLM.ConversationId"],
+                "vector_store_id": self.objects["FoundationaLLM.ConversationVectorStoreId"],
                 "database_type": vector_database_properties["database_type"],
                 "database_name": vector_database_properties["database_name"],
                 "embedding_property_name": vector_database_properties["embedding_property_name"],
                 "content_property_name": vector_database_properties["content_property_name"],
                 "vector_store_id_property_name": vector_database_properties["vector_store_id_property_name"],
-                "api_endpoint_configuration_object_id": vector_database_properties["api_endpoint_configuration_object_id"]
+                "api_endpoint_configuration_object_id": vector_database_properties["api_endpoint_configuration_object_id"],
+                "similarity_threshold": self.tool_config.properties.get('similarity_threshold', 0.85),
+                "top_n": self.tool_config.properties.get('top_n', 10)
             }
 
         else:
@@ -152,31 +154,15 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         """
         retriever = None
 
-        # Only supporting GatewayTextEmbedding
-        # Objects dictionary has the gateway API endpoint configuration by default.
-        gateway_endpoint_configuration = ObjectUtils.get_object_by_id(
-            CompletionRequestObjectKeys.GATEWAY_API_ENDPOINT_CONFIGURATION,
-            self.objects,
-            APIEndpointConfiguration)
-
-        model_name = self.tool_config.properties.get('embedding_model', 'text-embedding-3-large')
-
-        gateway_embedding_service = GatewayTextEmbeddingService(
-            instance_id= ResourcePath.parse(gateway_endpoint_configuration.object_id).instance_id,
-            user_identity=self.user_identity,
-            gateway_api_endpoint_configuration=gateway_endpoint_configuration,
-            model_name = model_name,
-            config=self.config)
-
         vector_database_configuration = VectorDatabaseConfiguration(
             vector_database=self.vector_database,
             vector_database_api_endpoint_configuration=self.vector_database_api_endpoint_configuration
         )
 
-        retriever = AzureAISearchServiceRetrieverV2(
+        retriever = AzureAISearchServiceRetriever(
             config=self.config,
             vector_database_configuration = vector_database_configuration,
-            gateway_text_embedding_service=gateway_embedding_service
+            gateway_text_embedding_service=self.embedding_service
         )
-        
+
         return retriever

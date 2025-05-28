@@ -22,7 +22,7 @@ class GatewayTextEmbeddingService():
                  gateway_api_endpoint_configuration: APIEndpointConfiguration,
                  model_name:str,
                  config: Configuration,
-                 model_dimensions:int = 2048):
+                 model_dimensions:int = 1536):
         self.http_client = HttpClientService(gateway_api_endpoint_configuration, user_identity, config)
         self.model_name = model_name
         self.config = config

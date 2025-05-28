@@ -2,7 +2,6 @@
 Class: AzureAISearchServiceRetriever
 Description: LangChain retriever for Azure AI Search.
 """
-import json
 from typing import List, Optional, Any
 from langchain_openai import OpenAIEmbeddings
 from langchain_core.callbacks import (
@@ -17,10 +16,10 @@ from azure.identity import DefaultAzureCredential
 from foundationallm.models.orchestration import ContentArtifact
 from foundationallm.models.vectors import VectorDocument
 from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
-from .content_artifact_retrieval_base import ContentArtifactRetrievalBase
+from .....PythonSDK.foundationallm.langchain.retrievers.content_artifact_retrieval_base import ContentArtifactRetrievalBase
 from foundationallm.models.agents import VectorDatabaseConfiguration
 
-class AzureAISearchServiceRetrieverV2(BaseRetriever, ContentArtifactRetrievalBase):
+class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase):
     """
     LangChain retriever for Azure AI Search.
     Properties:
@@ -49,8 +48,7 @@ class AzureAISearchServiceRetrieverV2(BaseRetriever, ContentArtifactRetrievalBas
     search_results: Optional[VectorDocument] = [] # Tuple of document id and document
     query_type: Optional[str] = "simple"
     semantic_configuration_name: Optional[str] = None
-    top_n_override: Optional[int] = None
-    
+
     def __get_embeddings(self, text: str) -> List[float]:
         """
         Returns embeddings vector for a given text.
@@ -66,7 +64,7 @@ class AzureAISearchServiceRetrieverV2(BaseRetriever, ContentArtifactRetrievalBas
         """
 
         self.search_results.clear()
-        
+
         # Search
         index_config = self.vector_database_configuration
         credential_type = index_config.vector_database_api_endpoint_configuration.authentication_type
@@ -77,32 +75,27 @@ class AzureAISearchServiceRetrieverV2(BaseRetriever, ContentArtifactRetrievalBas
 
         endpoint = index_config.vector_database_api_endpoint_configuration.url
 
-        if self.top_n_override:
-            top_n = self.top_n_override
-        else:
-            top_n = 50
-
         search_client = SearchClient(endpoint, index_config.vector_database["database_name"], credential)
         vector_query = VectorizedQuery(vector=self.__get_embeddings(query),
                                         k_nearest_neighbors=3,
                                         fields=index_config.vector_database["embedding_property_name"],
-                                        threshold=VectorSimilarityThreshold(value=index_config.vector_database.get("vector_threshold", 0.85)))
+                                        threshold=VectorSimilarityThreshold(value=index_config.vector_database.get("similarity_threshold", 0.85)))
 
         results = search_client.search(
             search_text=query,
-            filter="VectorStoreId eq 'vector-{id}'".format(id = index_config.vector_database["vector_store_id"]),
+            filter=f"VectorStoreId eq '{(index_config.vector_database['vector_store_id'])}'",
             vector_queries=[vector_query],
             query_type=self.query_type,
             semantic_configuration_name = self.semantic_configuration_name,
-            top=top_n                
+            top=index_config.vector_database.get("top_n", 10)
         )
 
         rerank_available = False
 
         #load search results into VectorDocument objects for score processing
         for result in results:
-            metadata = {}              
-            
+            metadata = {}
+
             document = VectorDocument(
                     id=result["Id"],
                     page_content=result[index_config.vector_database["content_property_name"]],
@@ -110,9 +103,9 @@ class AzureAISearchServiceRetrieverV2(BaseRetriever, ContentArtifactRetrievalBas
                     score=result["@search.score"],
                     rerank_score=result.get("@search.reranker_score", 0.0)
             )
-            if('@search.reranker_score' in result):                    
+            if('@search.reranker_score' in result):
                 rerank_available = True
-                
+
             document.score = result["@search.score"]
             self.search_results.append(document)
 
@@ -122,7 +115,7 @@ class AzureAISearchServiceRetrieverV2(BaseRetriever, ContentArtifactRetrievalBas
         else:
             self.search_results.sort(key=lambda x: x.score, reverse=True)
 
-        #take top n of search_results          
+        #take top n of search_results
         self.search_results = self.search_results[:top_n]
 
         return self.search_results
@@ -145,7 +138,7 @@ class AzureAISearchServiceRetrieverV2(BaseRetriever, ContentArtifactRetrievalBas
         """
         content_artifacts = []
         added_ids = set()  # Avoid duplicates
-        
+
         for result in self.search_results:  # Unpack the tuple
             result_id = result.id
             metadata = result.metadata

@@ -1,5 +1,4 @@
 from .content_artifact_retrieval_base import ContentArtifactRetrievalBase
 from .azure_ai_search_service_retriever import AzureAISearchServiceRetriever
-from .azure_ai_search_service_retriever_v2 import AzureAISearchServiceRetrieverV2
 from .search_service_filter_retriever import SearchServiceFilterRetriever
 from .retriever_factory import RetrieverFactory
