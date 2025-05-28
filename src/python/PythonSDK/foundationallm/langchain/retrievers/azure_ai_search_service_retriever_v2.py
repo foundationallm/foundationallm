@@ -12,7 +12,7 @@ from langchain_core.callbacks import (
 from langchain_core.documents import Document
 from langchain_core.retrievers import BaseRetriever
 from azure.search.documents import SearchClient
-from azure.search.documents.models import VectorizedQuery
+from azure.search.documents.models import VectorizedQuery, VectorSimilarityThreshold
 from azure.identity import DefaultAzureCredential
 from foundationallm.models.orchestration import ContentArtifact
 from foundationallm.models.vectors import VectorDocument
@@ -85,7 +85,8 @@ class AzureAISearchServiceRetrieverV2(BaseRetriever, ContentArtifactRetrievalBas
         search_client = SearchClient(endpoint, index_config.vector_database["database_name"], credential)
         vector_query = VectorizedQuery(vector=self.__get_embeddings(query),
                                         k_nearest_neighbors=3,
-                                        fields=index_config.vector_database["embedding_property_name"])
+                                        fields=index_config.vector_database["embedding_property_name"],
+                                        threshold=VectorSimilarityThreshold(value=index_config.vector_database.get("vector_threshold", 0.85)))
 
         results = search_client.search(
             search_text=query,
