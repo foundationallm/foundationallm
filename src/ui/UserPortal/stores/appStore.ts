@@ -21,7 +21,7 @@ import api from '@/js/api';
 import { isAgentExpired } from '@/js/helpers';
 // import eventBus from '@/js/eventBus';
 
-const DEFAULT_POLLING_INTERVAL_MS = 5000;
+const DEFAULT_POLLING_INTERVAL_MS = 250;
 
 export const useAppStore = defineStore('app', {
 	state: () => ({
@@ -575,7 +575,7 @@ export const useAppStore = defineStore('app', {
 
 		getPollingRateMS() {
 			return (
-				this.coreConfiguration?.completionResponsePollingIntervalSeconds * 1000 ||
+				this.coreConfiguration?.completionResponsePollingIntervalMilliseconds ||
 				DEFAULT_POLLING_INTERVAL_MS
 			);
 		},
