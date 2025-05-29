@@ -263,9 +263,10 @@ public class OrchestrationService : IOrchestrationService
             if (persistCompletionRequest)
             {
                 _logger.LogInformation("Persisting completion request for operation {OperationId}.", completionRequest.OperationId);
+                var refTime = DateTimeOffset.UtcNow;
                 await _completionRequestsStorage.WriteFileAsync(
                     _completionRequestsStorage.StorageContainerName!,
-                    $"{_callContext.CurrentUserIdentity.UPN}/{DateTimeOffset.UtcNow:yyyy-MM-dd-HHmmss}-completion-request.json",
+                    $"{_callContext.CurrentUserIdentity.UPN}/{refTime:yyyy-MM}/{refTime:yyyy-MM-dd-HHmmss}-completion-request.json",
                     JsonSerializer.Serialize(completionRequest),
                     "application/json",
                     default);
