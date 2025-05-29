@@ -109,9 +109,10 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         runnable_config = RunnableConfig(
             {
                 RunnableConfigKeys.ORIGINAL_USER_PROMPT: user_prompt,
-                RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE: user_prompt_rewrite
+                RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE: user_prompt_rewrite,
+                RunnableConfigKeys.CONVERSATION_ID: conversation_id
             }
-        )       
+        )     
 
         # Convert message history to LangChain message types
         langchain_messages = []

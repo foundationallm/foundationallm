@@ -31,6 +31,7 @@ from foundationallm.models.constants import (
 # user_prompt = "how do I beat the market"
 user_prompt = "Who is the hero of the story?"
 operation_id = str(uuid.uuid4())
+conversation_id = "20250529-145742-ORB5FlBf6Eu5ozJqkn7IYw"
 
 user_identity_json = {"name": "Experimental Test", "user_name":"carey@foundationaLLM.ai","upn":"carey@foundationaLLM.ai"}
 full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
@@ -91,7 +92,8 @@ response = asyncio.run(
         user_prompt=parsed_user_prompt,
         user_prompt_rewrite=user_prompt_rewrite,
         message_history=message_history,
-        file_history=file_history
+        file_history=file_history,
+        conversation_id=conversation_id
     )
 )
 print("++++++++++++++++++++++++++++++++++++++")
