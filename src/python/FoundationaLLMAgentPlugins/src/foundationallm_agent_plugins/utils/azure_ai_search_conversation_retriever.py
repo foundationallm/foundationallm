@@ -19,7 +19,7 @@ from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingS
 from foundationallm.langchain.retrievers.content_artifact_retrieval_base import ContentArtifactRetrievalBase
 from foundationallm.models.agents import VectorDatabaseConfiguration
 
-class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase):
+class AzureAISearchConversationRetriever(BaseRetriever, ContentArtifactRetrievalBase):
     """
     LangChain retriever for Azure AI Search.
     Properties:
@@ -42,10 +42,9 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
             "IsReference": "true/false if the document is a reference document"
         }
     """
-    config : Any
+    conversation_id: str
     vector_database_configuration: VectorDatabaseConfiguration
     gateway_text_embedding_service: GatewayTextEmbeddingService
-    search_results: Optional[VectorDocument] = [] # Tuple of document id and document
     query_type: Optional[str] = "simple"
     semantic_configuration_name: Optional[str] = None
 
@@ -56,18 +55,16 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
         embedding_response = self.gateway_text_embedding_service.get_embedding(text)
         return embedding_response.embedding_vector
 
-    def get_relevant_documents(
+    def _get_relevant_documents(
         self,
         query: str,
-        conversation_id: str,
         *,
         run_manager: CallbackManagerForRetrieverRun
     ) -> List[Document]:
         """
         Performs a synchronous hybrid search on Azure AI Search index
         """
-
-        self.search_results.clear()
+        search_results: List[VectorDocument] = [] 
 
         # Search
         index_config = self.vector_database_configuration
@@ -90,7 +87,7 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
         
         results = search_client.search(
             search_text=query,
-            filter=f"{(index_config.vector_database['vector_store_id_property_name'])} eq '{conversation_id}'",
+            filter=f"{(index_config.vector_database['vector_store_id_property_name'])} eq '{self.conversation_id}'",
             vector_queries=[vector_query],
             query_type=self.query_type,
             semantic_configuration_name = self.semantic_configuration_name,
@@ -114,18 +111,18 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
                 rerank_available = True
 
             document.score = result["@search.score"]
-            self.search_results.append(document)
+            search_results.append(document)
 
         #sort search results by score
         if(rerank_available):
-            self.search_results.sort(key=lambda x: (x.rerank_score, x.score), reverse=True)
+            search_results.sort(key=lambda x: (x.rerank_score, x.score), reverse=True)
         else:
-            self.search_results.sort(key=lambda x: x.score, reverse=True)
+            search_results.sort(key=lambda x: x.score, reverse=True)
 
         #take top n of search_results
-        self.search_results = self.search_results[:top_n]
+        search_results = search_results[:top_n]
 
-        return self.search_results
+        return search_results
 
     async def _aget_relevant_documents(
         self, query: str, *, run_manager: AsyncCallbackManagerForRetrieverRun
@@ -136,7 +133,9 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
         """
         raise Exception(f"Asynchronous search not supported.")
 
-    def get_document_content_artifacts(self) -> List[ContentArtifact]:
+    def get_document_content_artifacts(
+            self,
+            documents: List[Document]) -> List[ContentArtifact]:
         """
         Gets the content artifacts (sources) from the documents retrieved from the retriever.
 
@@ -146,7 +145,7 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
         content_artifacts = []
         added_ids = set()  # Avoid duplicates
 
-        for result in self.search_results:  # Unpack the tuple
+        for result in documents:  # Unpack the tuple
             result_id = result.id
             metadata = result.metadata
             if metadata is not None and 'multipart_id' in metadata and metadata['multipart_id']:
@@ -157,9 +156,11 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
                     added_ids.add(result_id)
         return content_artifacts
 
-    def format_docs(self, docs:List[Document]) -> str:
+    def format_documents(
+        self,
+        documents:List[Document]) -> str:
         """
         Generates a formatted string from a list of documents for use
         as the context for the completion request.
         """
-        return "\n\n".join(doc.page_content for doc in docs)
+        return "\n\n".join(doc.page_content for doc in documents)

@@ -1,1 +1,1 @@
-from .azure_ai_search_service_retriever import AzureAISearchServiceRetriever
+from .azure_ai_search_conversation_retriever import AzureAISearchConversationRetriever
