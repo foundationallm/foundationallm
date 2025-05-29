@@ -95,7 +95,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     new SimpleField("Id", SearchFieldDataType.String) { IsKey = true, IsFilterable = true },
                     new SimpleField(vectorDatabase.VectorStoreIdPropertyName, SearchFieldDataType.String) { IsFilterable = true },
                     new SearchableField(vectorDatabase.ContentPropertyName),
-                    new VectorSearchField(vectorDatabase.EmbeddingPropertyName, (int)embeddingDimensions, "vector-profile")
+                    new VectorSearchField(vectorDatabase.EmbeddingPropertyName, (int)embeddingDimensions, "vector-profile"),
+                    new SearchableField(vectorDatabase.MetadataPropertyName)
                 ];
 
             await azureAISearchService.CreateIndexIfNotExists(

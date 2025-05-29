@@ -3,6 +3,7 @@ Test for FoundationaLLM Azure OpenAI Router Workflow.
 """
 import asyncio
 import json
+import os
 import sys
 import uuid
 
@@ -13,7 +14,12 @@ from foundationallm_agent_plugins import (
 )
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import KnowledgeManagementCompletionRequest
-from foundationallm.models.constants import ContentArtifactTypeNames
+from foundationallm.models.constants import (
+    ResourceObjectIdPropertyNames,
+    ResourceObjectIdPropertyValues,
+    ResourceProviderNames,   
+    PromptResourceTypeNames    
+)
 #user_prompt = "What does this file do?"
 #user_prompt = "Generate a graph of y=mx+b where m=2 and b=3 and create a PDF with the graph along with text explaining the graph"
 #user_prompt = "Generate a PDF document with the title 'Test' and the content 'This is a test'"
@@ -22,7 +28,8 @@ from foundationallm.models.constants import ContentArtifactTypeNames
 #user_prompt = "Generate a PDF with the text 'Hello World'"
 #user_prompt = "What is the average of 42 plus 84 plus 168. Do your calculations in Python and show your work. Also Create a bar chart of the aforementioned numbers showing the average line on that bar chart."
 #user_prompt = "Generate a graph based on this data."
-user_prompt = "how do I beat the market"
+# user_prompt = "how do I beat the market"
+user_prompt = "Who is the hero of the story?"
 operation_id = str(uuid.uuid4())
 
 user_identity_json = {"name": "Experimental Test", "user_name":"carey@foundationaLLM.ai","upn":"carey@foundationaLLM.ai"}
@@ -41,6 +48,17 @@ workflow = request.agent.workflow
 message_history = request.message_history
 file_history = request.file_history
 user_prompt_rewrite = request.user_prompt_rewrite
+
+main_prompt_file_path = 'test/main_prompt.txt'
+if os.path.exists(main_prompt_file_path):
+    prompt_object_id = request.agent.workflow.get_resource_object_id_properties(
+                ResourceProviderNames.FOUNDATIONALLM_PROMPT,
+                PromptResourceTypeNames.PROMPTS,
+                ResourceObjectIdPropertyNames.OBJECT_ROLE,
+                ResourceObjectIdPropertyValues.MAIN_PROMPT
+            )
+    with open(main_prompt_file_path, 'r') as f:
+        request.objects[prompt_object_id.object_id]['prefix'] = f.read()
 
 workflow_plugin_manager = FoundationaLLMAgentWorkflowPluginManager()
 tool_plugin_manager = FoundationaLLMAgentToolPluginManager()

@@ -72,6 +72,13 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 dataPipelineRunWorkItem,
                 "content.txt");
 
+            var originalFileName = (await _dataPipelineStateService.LoadDataPipelineRunWorkItemArtifacts(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                dataPipelineRunWorkItem,
+                "original-file-name.txt"))
+                .First().Content.ToString();
+
             if (inputContent == null
                 || inputContent.Count == 0)
                 throw new PluginException(
@@ -80,6 +87,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             var textPartitioningResult = await textPartitioningPlugin.PartitionText(
                 dataPipelineRunWorkItem.ContentItemCanonicalId,
                 inputContent.First().Content.ToString());
+
+            if (textPartitioningResult.Value is not null)
+                foreach (var itemPart in textPartitioningResult.Value)
+                    itemPart.Metadata = new Dictionary<string, string> { { "FileName", originalFileName } };
 
             await _dataPipelineStateService.SaveDataPipelineRunWorkItemContentParts(
                 dataPipelineDefinition,

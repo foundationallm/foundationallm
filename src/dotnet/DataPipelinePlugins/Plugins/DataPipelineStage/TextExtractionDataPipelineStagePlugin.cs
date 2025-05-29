@@ -120,18 +120,21 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             if (!textContentResult.Success)
                 return new PluginResult(false, false, textContentResult.ErrorMessage);
 
-            // Save the text content to the data pipeline state
-            var outputArtifactId = "content.txt";
-
             await _dataPipelineStateService.SaveDataPipelineRunWorkItemArtifacts(
                 dataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
                 [ new DataPipelineStateArtifact
                     {
-                        FileName = outputArtifactId,
+                        FileName = "content.txt",
                         ContentType = "text/plain",
                         Content = BinaryData.FromString(textContentResult.Value!)
+                    },
+                    new DataPipelineStateArtifact
+                    {
+                        FileName = "original-file-name.txt",
+                        ContentType = "text/plain",
+                        Content = BinaryData.FromString(rawContentResult.Value.Name)
                     }
                 ]);
 

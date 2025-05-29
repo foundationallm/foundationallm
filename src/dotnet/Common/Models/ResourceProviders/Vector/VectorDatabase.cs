@@ -39,6 +39,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Vector
         public required string VectorStoreIdPropertyName { get; set; }
 
         /// <summary>
+        /// Gets or sets the name of the metadata property that stores additional information about each item.
+        /// </summary>
+        [JsonPropertyName("metadata_property_name")]
+        public required string MetadataPropertyName { get; set; }
+
+        /// <summary>
         /// Gets or sets the API Endpoint Configuration object identifier.
         /// </summary>
         [JsonPropertyName("api_endpoint_configuration_object_id")]
