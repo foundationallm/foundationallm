@@ -90,13 +90,17 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 searchIndexClient,
                 _serviceProvider.GetRequiredService<ILogger<AzureAISearchService>>()) as IAzureAISearchService;
 
+            var metadataField = new ComplexField(vectorDatabase.MetadataPropertyName);
+            metadataField.Fields.Add(
+                new SearchableField("FileName") { IsFilterable = true });
+
             IEnumerable<SearchField> indexFields =
                 [
                     new SimpleField("Id", SearchFieldDataType.String) { IsKey = true, IsFilterable = true },
                     new SimpleField(vectorDatabase.VectorStoreIdPropertyName, SearchFieldDataType.String) { IsFilterable = true },
                     new SearchableField(vectorDatabase.ContentPropertyName),
                     new VectorSearchField(vectorDatabase.EmbeddingPropertyName, (int)embeddingDimensions, "vector-profile"),
-                    new SearchableField(vectorDatabase.MetadataPropertyName)
+                    metadataField
                 ];
 
             await azureAISearchService.CreateIndexIfNotExists(
@@ -130,7 +134,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 [.. indexFields.Select(f => f.Name)],
                 [.. contentItemParts.Select(cip => new object[]
                 {
-                    cip.IndexEntryId!, vectorStoreId!, cip.Content!, cip.Embedding!
+                    cip.IndexEntryId!, vectorStoreId!, cip.Content!, cip.Embedding!, cip.Metadata!
                 })]);
 
             await _dataPipelineStateService.SaveDataPipelineRunWorkItemContentParts(
