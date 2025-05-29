@@ -195,6 +195,7 @@ The content of the `ConversationFiles.json` file is as follows:
   "embedding_property_name": "Embedding",
   "content_property_name": "Text",
   "vector_store_id_property_name": "VectorStoreId",
+  "metadata_property_name": "Metadata",
   "api_endpoint_configuration_object_id": "/instances/{instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch",
   "properties": null,
   "created_on": "2025-05-20T13:57:58.9770592+00:00",

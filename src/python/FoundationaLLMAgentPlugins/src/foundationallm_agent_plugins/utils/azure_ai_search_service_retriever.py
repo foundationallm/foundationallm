@@ -56,8 +56,12 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
         embedding_response = self.gateway_text_embedding_service.get_embedding(text)
         return embedding_response.embedding_vector
 
-    def _get_relevant_documents(
-        self, query: str, *, run_manager: CallbackManagerForRetrieverRun
+    def get_relevant_documents(
+        self,
+        query: str,
+        conversation_id: str,
+        *,
+        run_manager: CallbackManagerForRetrieverRun
     ) -> List[Document]:
         """
         Performs a synchronous hybrid search on Azure AI Search index
@@ -86,7 +90,7 @@ class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase)
         
         results = search_client.search(
             search_text=query,
-            filter=f"VectorStoreId eq '{(index_config.vector_database['vector_store_id'])}'",
+            filter=f"{(index_config.vector_database['vector_store_id_property_name'])} eq '{conversation_id}'",
             vector_queries=[vector_query],
             query_type=self.query_type,
             semantic_configuration_name = self.semantic_configuration_name,

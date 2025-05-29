@@ -87,7 +87,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                            user_prompt:str,
                            user_prompt_rewrite: Optional[str],
                            message_history: List[MessageHistoryItem],
-                           file_history: List[FileHistoryItem])-> CompletionResponse:
+                           file_history: List[FileHistoryItem],
+                           conversation_id: Optional[str] = None)-> CompletionResponse:
         """
         Invokes the workflow asynchronously.
 
@@ -141,52 +142,47 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         completion_tokens = 0
         prompt_tokens = 0
         final_response = None
-        max_loops = 5
-        loop_count = 0
 
         with self.tracer.start_as_current_span(f'{self.name}_workflow', kind=SpanKind.INTERNAL):
-            while loop_count < max_loops:
-                # reset the content artifacts for each loop, so we only keep the artifacts from the last loop.
-                content_artifacts = []
-                loop_count += 1
-                with self.tracer.start_as_current_span(f'{self.name}_workflow_llm_call', kind=SpanKind.INTERNAL):
-                    router_start_time = time.time()
-                    llm_bound_tools = self.workflow_llm.bind_tools(self.tools)
-                    response = await llm_bound_tools.ainvoke(messages_with_toolchain)
-                    router_end_time = time.time()
+            
+            with self.tracer.start_as_current_span(f'{self.name}_workflow_llm_call', kind=SpanKind.INTERNAL):
+                router_start_time = time.time()
+                llm_bound_tools = self.workflow_llm.bind_tools(self.tools)
+                response = await llm_bound_tools.ainvoke(messages_with_toolchain, tool_choice='required')
+                router_end_time = time.time()
 
-                if response.tool_calls:
-                    # create a deep copy of the messages for tool calling.
-                    messages_with_toolchain.append(AIMessage(content=response.content))
-                    for tool_call in response.tool_calls:
-                        with self.tracer.start_as_current_span(f'{self.name}_tool_call', kind=SpanKind.INTERNAL) as tool_call_span:
-                            tool_call_span.set_attribute('tool_call_id', tool_call['id'])
-                            tool_call_span.set_attribute('tool_call_function', tool_call['name'])
-                            # Add tool call as AIMessage
-                            messages_with_toolchain.append(AIMessage(
-                                content=f'Calling tool {tool_call["name"]} with args: {tool_call["args"]}'
-                            ))
-                            # Get the tool from the tools list
-                            tool = next((t for t in self.tools if t.name == tool_call['name']), None)
-                            if tool:
-                                tool_message = await tool.ainvoke(tool_call, runnable_config)
-                                content_artifacts.extend(tool_message.artifact)
-                                # Add tool response as AIMessage
-                                messages_with_toolchain.append(AIMessage(content=str(tool_message)))
-                            else:
-                                tool_response = 'Tool not found'
-                                messages_with_toolchain.append(AIMessage(content=tool_response))
+            if response.tool_calls:
+                # create a deep copy of the messages for tool calling.
+                messages_with_toolchain.append(AIMessage(content=response.content))
+                for tool_call in response.tool_calls:
+                    with self.tracer.start_as_current_span(f'{self.name}_tool_call', kind=SpanKind.INTERNAL) as tool_call_span:
+                        tool_call_span.set_attribute('tool_call_id', tool_call['id'])
+                        tool_call_span.set_attribute('tool_call_function', tool_call['name'])
+                        # Add tool call as AIMessage
+                        messages_with_toolchain.append(AIMessage(
+                            content=f'Calling tool {tool_call["name"]} with args: {tool_call["args"]}'
+                        ))
+                        # Get the tool from the tools list
+                        tool = next((t for t in self.tools if t.name == tool_call['name']), None)
+                        if tool:
+                            tool_message = await tool.ainvoke(tool_call, runnable_config)
+                            content_artifacts.extend(tool_message.artifact)
+                            # Add tool response as AIMessage
+                            messages_with_toolchain.append(AIMessage(content=str(tool_message)))
+                        else:
+                            tool_response = 'Tool not found'
+                            messages_with_toolchain.append(AIMessage(content=tool_response))
 
-                    # Ask the LLM to verify if the answer is correct if not, loop again with the current messages.
-                    verification_messages = messages_with_toolchain.copy()
-                    verification_messages.append(HumanMessage(content=f'Verify the requirements are met for this request: "{llm_prompt}", use the other messages only for context. If yes, answer with the single word "DONE". If not, generate more detailed instructions to satisfy the request.'))
-                    verification_llm_response = await self.workflow_llm.ainvoke(verification_messages, tools=None)
-                    verification_response = verification_llm_response.content
-                    if verification_response.strip().upper() == 'DONE':
-                        break # exit the loop if the requirements are met.
-                    else:
-                        messages_with_toolchain.append(AIMessage(content=verification_response))
-                        continue # loop again if the requirements are not met.
+                # Ask the LLM to verify if the answer is correct if not, loop again with the current messages.
+                # verification_messages = messages_with_toolchain.copy()
+                # verification_messages.append(HumanMessage(content=f'Verify the requirements are met for this request: "{llm_prompt}", use the other messages only for context. If yes, answer with the single word "DONE". If not, generate more detailed instructions to satisfy the request.'))
+                # verification_llm_response = await self.workflow_llm.ainvoke(verification_messages, tools=None)
+                # verification_response = verification_llm_response.content
+                # if verification_response.strip().upper() == 'DONE':
+                #     break # exit the loop if the requirements are met.
+                # else:
+                #     messages_with_toolchain.append(AIMessage(content=verification_response))
+                #     continue # loop again if the requirements are not met.
 
             with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
                 final_llm_response = await self.workflow_llm.ainvoke(messages_with_toolchain, tools=None)

@@ -42,5 +42,11 @@ namespace FoundationaLLM.Common.Models.DataPipelines
         /// </summary>
         [JsonPropertyName("index_entry_id")]
         public string? IndexEntryId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the metadata associated with the content item part.
+        /// </summary>
+        [JsonPropertyName("metadata")]
+        public Dictionary<string, string>? Metadata { get; set; }
     }
 }

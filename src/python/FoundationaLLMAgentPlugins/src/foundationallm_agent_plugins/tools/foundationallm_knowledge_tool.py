@@ -53,8 +53,10 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
 
     async def _arun(self,
             prompt: str,
+            conversation_id: str = None,
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
-            runnable_config: RunnableConfig = None) -> Tuple[str, List[ContentArtifact]]:
+            runnable_config: RunnableConfig = None,
+    ) -> Tuple[str, List[ContentArtifact]]:
         """ Retrieves documents from an index based on the proximity to the prompt to answer the prompt."""
         # Azure AI Search retriever only supports synchronous execution.
         # Get the original prompt
@@ -69,7 +71,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                 else None
             original_prompt = user_prompt_rewrite or user_prompt or prompt
 
-        docs = self.retriever._get_relevant_documents(prompt, run_manager=run_manager)
+        docs = self.retriever.get_relevant_documents(prompt, conversation_id, run_manager=run_manager)
         context = self.retriever.format_docs(docs)
         completion_prompt = self.main_prompt.replace('{{context}}', context).replace('{{prompt}}', prompt)
 
@@ -114,7 +116,6 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             vector_database_properties = self.objects[vector_database_object_id.object_id]
 
             return {
-                "vector_store_id": self.objects["FoundationaLLM.ConversationVectorStoreId"],
                 "database_type": vector_database_properties["database_type"],
                 "database_name": vector_database_properties["database_name"],
                 "embedding_property_name": vector_database_properties["embedding_property_name"],
@@ -125,9 +126,8 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                 "top_n": self.tool_config.properties.get('top_n', 10)
             }
 
-        else:
-            self.logger.warning("No vector database object identifier found for the specified role.")
-            return None
+        self.logger.warning("No vector database object identifier found for the specified role.")
+        return None
 
     def _get_embedding_service(self) -> GatewayTextEmbeddingService:
 
