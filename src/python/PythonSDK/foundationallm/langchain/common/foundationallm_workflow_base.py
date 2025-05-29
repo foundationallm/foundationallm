@@ -56,7 +56,8 @@ class FoundationaLLMWorkflowBase(ABC):
                            user_prompt: str,
                            user_prompt_rewrite: Optional[str],
                            message_history: List[MessageHistoryItem],
-                           file_history: List[FileHistoryItem])-> CompletionResponse:
+                           file_history: List[FileHistoryItem],
+                           conversation_id: Optional[str] = None)-> CompletionResponse:
         """
         Invokes the workflow asynchronously.
 
