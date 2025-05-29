@@ -41,7 +41,6 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                 APIEndpointConfiguration)
         self.embedding_service = self._get_embedding_service()
         self.retriever = self._get_document_retriever()
-        self.conversation_id = self.objects['FoundationaLLM.ConversationId']
         # When configuring the tool on an agent, the description will be set providing context to the document source.
         self.description = self.tool_config.description or "Answers questions by searching through documents."
 
@@ -53,7 +52,6 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
 
     async def _arun(self,
             prompt: str,
-            conversation_id: str = None,
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
             runnable_config: RunnableConfig = None,
     ) -> Tuple[str, List[ContentArtifact]]:
@@ -61,15 +59,20 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         # Azure AI Search retriever only supports synchronous execution.
         # Get the original prompt
         if runnable_config is None:
-            original_prompt = prompt
-        else:
-            user_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT] \
-                if RunnableConfigKeys.ORIGINAL_USER_PROMPT in runnable_config['configurable'] \
-                else None
-            user_prompt_rewrite = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE] \
-                if RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE in runnable_config['configurable'] \
-                else None
-            original_prompt = user_prompt_rewrite or user_prompt or prompt
+            raise ToolException("RunnableConfig is required for the execution of the tool.")
+        
+        if RunnableConfigKeys.CONVERSATION_ID not in runnable_config['configurable']:
+            raise ToolException("RunnableConfig must contain a conversation_id for the execution of the tool.")
+        
+        conversation_id = runnable_config['configurable'][RunnableConfigKeys.CONVERSATION_ID]
+
+        user_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT] \
+            if RunnableConfigKeys.ORIGINAL_USER_PROMPT in runnable_config['configurable'] \
+            else None
+        user_prompt_rewrite = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE] \
+            if RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE in runnable_config['configurable'] \
+            else None
+        original_prompt = user_prompt_rewrite or user_prompt or prompt
 
         docs = self.retriever.get_relevant_documents(prompt, conversation_id, run_manager=run_manager)
         context = self.retriever.format_docs(docs)
