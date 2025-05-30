@@ -1,4 +1,7 @@
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Type
+
+from pydantic import BaseModel
+
 from langchain_core.callbacks import CallbackManagerForToolRun, AsyncCallbackManagerForToolRun
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import ToolException
@@ -16,12 +19,15 @@ from foundationallm.models.resource_providers.configuration import APIEndpointCo
 from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
 from foundationallm.utils import ObjectUtils
 
+from .foundationallm_knowledge_tool_input import FoundationaLLMKnowledgeToolInput
+
 from foundationallm_agent_plugins.utils import AzureAISearchConversationRetriever
 
 class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
     """
     FoundationaLLM knowledge tool.
     """
+    args_schema: Type[BaseModel] = FoundationaLLMKnowledgeToolInput
 
     def __init__(self, tool_config: AgentTool, objects: dict, user_identity:UserIdentity, config: Configuration):
         """ Initializes the FoundationaLLMKnowledgeTool class with the tool configuration,
@@ -35,7 +41,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                 self.objects,
                 APIEndpointConfiguration)
         self.embedding_service = self._get_embedding_service()
-        
+
         self.vector_database_configuration = VectorDatabaseConfiguration(
             vector_database=self.vector_database,
             vector_database_api_endpoint_configuration=self.vector_database_api_endpoint_configuration
@@ -46,12 +52,14 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
 
     def _run(self,
             prompt: str,
+            file_name: Optional[str] = None,
             run_manager: Optional[CallbackManagerForToolRun] = None
             ) -> str:
         raise ToolException("This tool does not support synchronous execution. Please use the async version of the tool.")
 
     async def _arun(self,
             prompt: str,
+            file_name: Optional[str] = None,
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
             runnable_config: RunnableConfig = None,
     ) -> Tuple[str, List[ContentArtifact]]:
@@ -60,10 +68,10 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         # Get the original prompt
         if runnable_config is None:
             raise ToolException("RunnableConfig is required for the execution of the tool.")
-        
+
         if RunnableConfigKeys.CONVERSATION_ID not in runnable_config['configurable']:
             raise ToolException("RunnableConfig must contain a conversation_id for the execution of the tool.")
-        
+
         conversation_id = runnable_config['configurable'][RunnableConfigKeys.CONVERSATION_ID]
 
         user_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT] \
@@ -74,7 +82,9 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             else None
         original_prompt = user_prompt_rewrite or user_prompt or prompt
 
-        retriever = self._get_document_retriever(conversation_id=conversation_id)
+        retriever = self._get_document_retriever(
+            conversation_id=conversation_id,
+            file_name=file_name)
         docs = retriever.invoke(prompt)
         context = retriever.format_documents(docs)
         completion_prompt = self.main_prompt.replace('{{context}}', context).replace('{{prompt}}', prompt)
@@ -124,6 +134,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                 "database_name": vector_database_properties["database_name"],
                 "embedding_property_name": vector_database_properties["embedding_property_name"],
                 "content_property_name": vector_database_properties["content_property_name"],
+                "metadata_property_name": vector_database_properties["metadata_property_name"],
                 "vector_store_id_property_name": vector_database_properties["vector_store_id_property_name"],
                 "api_endpoint_configuration_object_id": vector_database_properties["api_endpoint_configuration_object_id"],
                 "similarity_threshold": self.tool_config.properties.get('similarity_threshold', 0.85),
@@ -152,12 +163,16 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
 
         return gateway_embedding_service
 
-    def _get_document_retriever(self, conversation_id: str) -> AzureAISearchConversationRetriever:
+    def _get_document_retriever(
+            self,
+            conversation_id: str,
+            file_name:Optional[str] = None) -> AzureAISearchConversationRetriever:
         """
         Gets the document retriever
         """
         retriever = AzureAISearchConversationRetriever(
             conversation_id=conversation_id,
+            file_name=file_name,
             vector_database_configuration = self.vector_database_configuration,
             gateway_text_embedding_service=self.embedding_service
         )

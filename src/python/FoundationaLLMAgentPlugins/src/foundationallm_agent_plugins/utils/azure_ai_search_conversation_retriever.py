@@ -43,6 +43,7 @@ class AzureAISearchConversationRetriever(BaseRetriever, ContentArtifactRetrieval
         }
     """
     conversation_id: str
+    file_name: Optional[str] = None
     vector_database_configuration: VectorDatabaseConfiguration
     gateway_text_embedding_service: GatewayTextEmbeddingService
     query_type: Optional[str] = "simple"
@@ -64,7 +65,7 @@ class AzureAISearchConversationRetriever(BaseRetriever, ContentArtifactRetrieval
         """
         Performs a synchronous hybrid search on Azure AI Search index
         """
-        search_results: List[VectorDocument] = [] 
+        search_results: List[VectorDocument] = []
 
         # Search
         index_config = self.vector_database_configuration
@@ -84,10 +85,12 @@ class AzureAISearchConversationRetriever(BaseRetriever, ContentArtifactRetrieval
                                         fields=index_config.vector_database["embedding_property_name"],
                                         threshold=VectorSimilarityThreshold(value=similarity_threshold))
 
-        
+        filter=f"{(index_config.vector_database['vector_store_id_property_name'])} eq '{self.conversation_id}'"
+        if self.file_name:
+            filter += f" and {index_config.vector_database['metadata_property_name']}/FileName eq '{self.file_name}'"
         results = search_client.search(
             search_text=query,
-            filter=f"{(index_config.vector_database['vector_store_id_property_name'])} eq '{self.conversation_id}'",
+            filter=filter,
             vector_queries=[vector_query],
             query_type=self.query_type,
             semantic_configuration_name = self.semantic_configuration_name,
