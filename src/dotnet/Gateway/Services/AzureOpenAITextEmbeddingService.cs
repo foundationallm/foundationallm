@@ -36,9 +36,13 @@ namespace FoundationaLLM.Gateway.Services
             try
             {
                 var embeddingClient = _azureOpenAIClient.GetEmbeddingClient(deploymentName);
+                OpenAI.Embeddings.EmbeddingGenerationOptions? embeddingOptions =
+                    embeddingDimensions == -1
+                    ? null
+                    : new OpenAI.Embeddings.EmbeddingGenerationOptions { Dimensions = embeddingDimensions };
                 var result = await embeddingClient.GenerateEmbeddingsAsync(
                     textChunks.Select(tc => tc.Content!).ToList(),
-                    new OpenAI.Embeddings.EmbeddingGenerationOptions { Dimensions = embeddingDimensions });
+                    embeddingOptions);
 
                 return new TextEmbeddingResult
                 {
