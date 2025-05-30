@@ -131,7 +131,12 @@ namespace FoundationaLLM.Gateway.Models
             // Priority is false since the embedding operation context is already added to the queue.
             var embeddingResult =
                 await _textEmbeddingService.GetEmbeddingsAsync(
-                    embeddingRequest.TextChunks, _deployment.Name, embeddingRequest.EmbeddingDimensions, false);
+                    embeddingRequest.TextChunks,
+                    _deployment.Name,
+                    _deployment.ModelName == "text-embedding-ada-002"
+                        ? -1
+                        : embeddingRequest.EmbeddingDimensions,
+                    false);
 
             if (embeddingResult.Failed)
                 _logger.LogWarning("The text embedding request with id {RequestId} failed with the following error: {ErrorMessage}",

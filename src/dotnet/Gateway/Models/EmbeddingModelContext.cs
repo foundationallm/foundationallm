@@ -101,7 +101,7 @@ namespace FoundationaLLM.Gateway.Models
                     // Use all available deployments to get embeddings for the input text chunks.
                     var results = await Task.WhenAll(DeploymentContexts
                         .Where(dc => dc.HasInput)
-                        .Select(dc => dc.GetEmbeddingsForInputTextChunks()));
+                        .Select(async dc => await dc.GetEmbeddingsForInputTextChunks()));
 
                     // Record all failed operations
                     foreach (var failedOperation in results
