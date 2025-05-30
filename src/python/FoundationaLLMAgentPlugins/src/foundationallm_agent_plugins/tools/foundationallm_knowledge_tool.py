@@ -8,21 +8,16 @@ from foundationallm.models.agents import AgentTool, VectorDatabaseConfiguration
 from foundationallm.models.constants import (
     ContentArtifactTypeNames,
     ResourceObjectIdPropertyNames,
-    ResourceObjectIdPropertyValues,
-    ResourceProviderNames,
     RunnableConfigKeys
 )
 from foundationallm.models.orchestration import CompletionRequestObjectKeys, ContentArtifact
 from foundationallm.models.resource_providers import ResourcePath
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
-from foundationallm.models.resource_providers.vectorization import (
-    AzureOpenAIEmbeddingProfile,
-    EmbeddingProfileSettingsKeys,
-    AzureAISearchIndexingProfile)
 from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
 from foundationallm.utils import ObjectUtils
 
-from foundationallm_agent_plugins.utils import AzureAISearchServiceRetriever
+from foundationallm_agent_plugins.utils import AzureAISearchConversationRetriever
+
 class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
     """
     FoundationaLLM knowledge tool.
@@ -40,7 +35,12 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                 self.objects,
                 APIEndpointConfiguration)
         self.embedding_service = self._get_embedding_service()
-        self.retriever = self._get_document_retriever()
+        
+        self.vector_database_configuration = VectorDatabaseConfiguration(
+            vector_database=self.vector_database,
+            vector_database_api_endpoint_configuration=self.vector_database_api_endpoint_configuration
+        )
+
         # When configuring the tool on an agent, the description will be set providing context to the document source.
         self.description = self.tool_config.description or "Answers questions by searching through documents."
 
@@ -74,8 +74,9 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             else None
         original_prompt = user_prompt_rewrite or user_prompt or prompt
 
-        docs = self.retriever.get_relevant_documents(prompt, conversation_id, run_manager=run_manager)
-        context = self.retriever.format_docs(docs)
+        retriever = self._get_document_retriever(conversation_id=conversation_id)
+        docs = retriever.invoke(prompt)
+        context = retriever.format_documents(docs)
         completion_prompt = self.main_prompt.replace('{{context}}', context).replace('{{prompt}}', prompt)
 
         completion = await self.main_llm.ainvoke(completion_prompt)
@@ -151,20 +152,13 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
 
         return gateway_embedding_service
 
-    def _get_document_retriever(self):
+    def _get_document_retriever(self, conversation_id: str) -> AzureAISearchConversationRetriever:
         """
         Gets the document retriever
         """
-        retriever = None
-
-        vector_database_configuration = VectorDatabaseConfiguration(
-            vector_database=self.vector_database,
-            vector_database_api_endpoint_configuration=self.vector_database_api_endpoint_configuration
-        )
-
-        retriever = AzureAISearchServiceRetriever(
-            config=self.config,
-            vector_database_configuration = vector_database_configuration,
+        retriever = AzureAISearchConversationRetriever(
+            conversation_id=conversation_id,
+            vector_database_configuration = self.vector_database_configuration,
             gateway_text_embedding_service=self.embedding_service
         )
 
