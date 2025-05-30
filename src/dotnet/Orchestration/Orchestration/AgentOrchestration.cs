@@ -328,6 +328,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             new LLMCompletionRequest
             {
                 OperationId = completionRequest.OperationId,
+                SessionId = completionRequest.SessionId,
                 UserPrompt = completionRequest.UserPrompt!,
                 UserPromptRewrite = completionRequest.UserPromptRewrite,
                 MessageHistory = completionRequest.MessageHistory,

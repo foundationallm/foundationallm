@@ -25,10 +25,10 @@ from foundationallm.models.constants import (
     ContentArtifactTypeNames,
     ResourceObjectIdPropertyNames,
     ResourceObjectIdPropertyValues,
-    ResourceProviderNames,   
+    ResourceProviderNames,
     RunnableConfigKeys,
     AIModelResourceTypeNames,
-    PromptResourceTypeNames    
+    PromptResourceTypeNames
 )
 from foundationallm.models.messages import MessageHistoryItem
 from foundationallm.models.orchestration import (
@@ -112,7 +112,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE: user_prompt_rewrite,
                 RunnableConfigKeys.CONVERSATION_ID: conversation_id
             }
-        )     
+        )
 
         # Convert message history to LangChain message types
         langchain_messages = []
@@ -145,7 +145,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         final_response = None
 
         with self.tracer.start_as_current_span(f'{self.name}_workflow', kind=SpanKind.INTERNAL):
-            
+
             with self.tracer.start_as_current_span(f'{self.name}_workflow_llm_call', kind=SpanKind.INTERNAL):
                 router_start_time = time.time()
                 llm_bound_tools = self.workflow_llm.bind_tools(self.tools)
