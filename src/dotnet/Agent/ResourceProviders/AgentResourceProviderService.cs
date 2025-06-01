@@ -240,6 +240,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     StatusCodes.Status400BadRequest);
 
             var existingAgentReference = await _resourceReferenceStore!.GetResourceReference(agent.Name);
+            var existingAgent = existingAgentReference is not null
+                ? await LoadResource<AgentBase>(existingAgentReference)
+                : null;
 
             if (existingAgentReference is not null
                 && !authorizationResult.Authorized)
@@ -512,8 +515,18 @@ namespace FoundationaLLM.Agent.ResourceProviders
             var virtualSecurityGroupGenerated = false;
             if (string.IsNullOrWhiteSpace(agent.VirtualSecurityGroupId))
             {
-                agent.VirtualSecurityGroupId = Guid.NewGuid().ToString().ToLower();
-                virtualSecurityGroupGenerated = true;
+                if (existingAgent is not null
+                    && !string.IsNullOrWhiteSpace(existingAgent.VirtualSecurityGroupId))
+                {
+                    // Use the existing virtual security group identifier.
+                    agent.VirtualSecurityGroupId = existingAgent.VirtualSecurityGroupId;
+                }
+                else
+                {
+                    // Generate a new virtual security group identifier.
+                    agent.VirtualSecurityGroupId = Guid.NewGuid().ToString().ToLower();
+                    virtualSecurityGroupGenerated = true;
+                }
             }
 
             UpdateBaseProperties(agent, userIdentity, isNew: existingAgentReference is null);
