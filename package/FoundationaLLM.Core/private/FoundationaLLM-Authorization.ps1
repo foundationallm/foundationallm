@@ -1,4 +1,3 @@
-Import-Module "./package/common/FoundationaLLM-Core.psm1" -Force -NoClobber
 
 $global:RoleDefinitionIds = @{}
 

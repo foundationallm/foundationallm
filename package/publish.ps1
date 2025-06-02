@@ -1,0 +1,1 @@
+Publish-Module -Path ./package/common -NuGetApiKey <your_key>

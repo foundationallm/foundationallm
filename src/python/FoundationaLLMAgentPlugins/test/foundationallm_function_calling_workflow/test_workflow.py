@@ -29,14 +29,15 @@ from foundationallm.models.constants import (
 #user_prompt = "What is the average of 42 plus 84 plus 168. Do your calculations in Python and show your work. Also Create a bar chart of the aforementioned numbers showing the average line on that bar chart."
 #user_prompt = "Generate a graph based on this data."
 # user_prompt = "how do I beat the market"
-user_prompt = "Who is the hero of the story?"
+# user_prompt = "Who is the hero of the story?"
 # user_prompt = "Who are you?"
 # user_prompt = "Summarize the uploaded document"
+user_prompt = "Create a chart based on the uploaded file"
 operation_id = str(uuid.uuid4())
-conversation_id = "20250530-004815-ncZK3SMRq0Cbw3HQJ0uWiQ"
+conversation_id = "20250602-055942-FmCx13wMB0W0HCUPt5y-zg"
 
 user_identity_json = {"name": "Experimental Test", "user_name":"carey@foundationaLLM.ai","upn":"carey@foundationaLLM.ai"}
-full_request_json_file_name = 'test/full_request_2.json' # full original langchain request, contains agent, tools, exploded objects
+full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
 
 user_identity = UserIdentity.from_json(user_identity_json)
 config = Configuration()
