@@ -24,5 +24,15 @@
         /// Token for the tool list.
         /// </summary>
         public const string ToolList = "tool_list";
+
+        /// <summary>
+        /// Token for the list of conversation files.
+        /// </summary>
+        public const string ConversationFiles = "conversation_files";
+
+        /// <summary>
+        /// Token for the list of attached files.
+        /// </summary>
+        public const string AttachedFiles = "attached_files";
     }
 }

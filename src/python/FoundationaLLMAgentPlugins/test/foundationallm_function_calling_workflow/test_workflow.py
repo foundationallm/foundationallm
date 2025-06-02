@@ -30,9 +30,11 @@ from foundationallm.models.constants import (
 #user_prompt = "Generate a graph based on this data."
 # user_prompt = "how do I beat the market"
 # user_prompt = "Who is the hero of the story?"
-user_prompt = "Who is the author of the first file?"
+# user_prompt = "Who are you?"
+# user_prompt = "Summarize the uploaded document"
+user_prompt = "Create a chart based on the uploaded file"
 operation_id = str(uuid.uuid4())
-conversation_id = "20250530-004815-ncZK3SMRq0Cbw3HQJ0uWiQ"
+conversation_id = "20250602-055942-FmCx13wMB0W0HCUPt5y-zg"
 
 user_identity_json = {"name": "Experimental Test", "user_name":"carey@foundationaLLM.ai","upn":"carey@foundationaLLM.ai"}
 full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects

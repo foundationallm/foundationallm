@@ -1,7 +1,4 @@
-Import-Module "./package/common/FoundationaLLM-Core.psm1" -Force -NoClobber
-Import-Module "./package/common/FoundationaLLM-Authorization.psm1" -Force -NoClobber
-Import-Module "./package/common/FoundationaLLM-Agent.psm1" -Force -NoClobber
-Import-Module "./package/common/FoundationaLLM-Prompt.psm1" -Force -NoClobber
+
 
 function Resolve-Placeholders {
     param (
@@ -77,7 +74,7 @@ function Merge-RoleAssignments {
     }
 }
 
-function Deploy-Package {
+function Deploy-FoundationaLLMPackage {
     param (
         [string]$PackageRoot,
         [hashtable]$Parameters = @{}

@@ -12,6 +12,9 @@ function Test-JWTExpired {
         [string]$jwt
     )
     try {
+
+        return $true
+
         if ($jwt -eq "") {
             return $true
         }

@@ -149,7 +149,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             with self.tracer.start_as_current_span(f'{self.name}_workflow_llm_call', kind=SpanKind.INTERNAL):
                 router_start_time = time.time()
                 llm_bound_tools = self.workflow_llm.bind_tools(self.tools)
-                response = await llm_bound_tools.ainvoke(messages_with_toolchain, tool_choice='required')
+                response = await llm_bound_tools.ainvoke(messages_with_toolchain, tool_choice='auto')
                 router_end_time = time.time()
 
             if response.tool_calls:
@@ -169,10 +169,10 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                             tool_message = await tool.ainvoke(tool_call, runnable_config)
                             content_artifacts.extend(tool_message.artifact)
                             # Add tool response as AIMessage
-                            messages_with_toolchain.append(AIMessage(content=str(tool_message)))
+                            messages.append(AIMessage(content=str(tool_message.content)))
                         else:
                             tool_response = 'Tool not found'
-                            messages_with_toolchain.append(AIMessage(content=tool_response))
+                            messages.append(AIMessage(content=tool_response))
 
                 # Ask the LLM to verify if the answer is correct if not, loop again with the current messages.
                 # verification_messages = messages_with_toolchain.copy()
@@ -186,7 +186,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 #     continue # loop again if the requirements are not met.
 
             with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
-                final_llm_response = await self.workflow_llm.ainvoke(messages_with_toolchain, tools=None)
+                final_llm_response = await self.workflow_llm.ainvoke(messages, tools=None)
                 completion_tokens += final_llm_response.usage_metadata['input_tokens']
                 prompt_tokens += final_llm_response.usage_metadata['output_tokens']
                 final_response = final_llm_response.content

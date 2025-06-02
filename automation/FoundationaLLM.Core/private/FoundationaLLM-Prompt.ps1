@@ -1,4 +1,4 @@
-Import-Module "./package/common/FoundationaLLM-Core.psm1" -Force -NoClobber
+
 
 function Get-AllPrompts {
     return Invoke-ManagementAPI `
