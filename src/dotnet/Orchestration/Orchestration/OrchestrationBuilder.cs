@@ -75,8 +75,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             var result = await LoadAgent(
                 instanceId,
                 agentName,
-                originalRequest.SessionId,
-                originalRequest.Settings?.ModelParameters,
+                originalRequest,
                 resourceProviderServices,
                 templatingService,
                 contextServiceClient,
@@ -207,8 +206,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             LoadAgent(
                 string instanceId,
                 string agentName,
-                string? conversationId,
-                Dictionary<string, object>? modelParameterOverrides,
+                CompletionRequest originalRequest,
                 Dictionary<string, IResourceProviderService> resourceProviderServices,
                 ITemplatingService templatingService,
                 IContextServiceClient contextServiceClient,
@@ -366,8 +364,29 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             #region Tools
 
             List<string> toolNames = [];
-            StringBuilder toolList = new StringBuilder();
-            StringBuilder toolRouterPrompts = new StringBuilder();
+            StringBuilder toolList = new();
+            StringBuilder toolRouterPrompts = new();
+
+            var promptTokenReplacements = new Dictionary<string, string>()
+            {
+                {
+                    TemplateVariables.ConversationFiles,
+                    string.Join(
+                        Environment.NewLine,
+                        originalRequest.FileHistory?
+                            .Select(f => $"{f.Order}. {f.OriginalFileName}")
+                            .ToArray() ?? [])
+                },
+                {
+                    TemplateVariables.AttachedFiles,
+                    string.Join(
+                        Environment.NewLine,
+                        originalRequest.FileHistory?
+                            .Where(f => f.CurrentMessageAttachment)
+                            .Select(f => $"{f.OriginalFileName}")
+                            .ToArray() ?? [])
+                }
+            };
 
             foreach (var tool in agentBase.Tools)
             {
@@ -396,7 +415,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     var contextServiceResponse = await contextServiceClient.CreateCodeSession(
                         instanceId,
                         agentName,
-                        conversationId!,
+                        originalRequest.SessionId!,
                         tool.Name,
                         codeSessionProvider,
                         codeSessionLanguage);
@@ -550,8 +569,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                     else
                                     {
                                         // prompt template token replacement                                        
-                                        multipartPrompt.Prefix = templatingService.Transform(multipartPrompt.Prefix!);
-                                        multipartPrompt.Suffix = templatingService.Transform(multipartPrompt.Suffix!);
+                                        multipartPrompt.Prefix = templatingService.Transform(multipartPrompt.Prefix!, promptTokenReplacements);
+                                        multipartPrompt.Suffix = templatingService.Transform(multipartPrompt.Suffix!, promptTokenReplacements);
                                         explodedObjectsManager.TryAdd(
                                             resourceObjectId.ObjectId,
                                                 prompt);                                        

@@ -29,10 +29,7 @@ namespace FoundationaLLM.Common.Services.Templates
             {
                 return string.Empty;
             }
-            if (tokenAndValues is null)
-            {
-                tokenAndValues = new Dictionary<string, string>();
-            }
+            tokenAndValues ??= [];
 
             try
             {
@@ -44,7 +41,7 @@ namespace FoundationaLLM.Common.Services.Templates
                 {
                     hasMoreTokens = false;
                     var matches = VariableRegex().Matches(transformedString);
-                    Dictionary<string, string> replacements = new Dictionary<string, string>();
+                    Dictionary<string, string> replacements = [];
 
                     foreach (Match match in matches)
                     {
@@ -78,6 +75,18 @@ namespace FoundationaLLM.Common.Services.Templates
                             case TemplateVariables.ToolList:
                                 if (tokenAndValues.TryGetValue(TemplateVariables.ToolList, out string? tools_list_value))
                                     replacements.Add(matchedVariable, tools_list_value);
+                                else
+                                    replacements.Add(matchedVariable, string.Empty);
+                                break;
+                            case TemplateVariables.ConversationFiles:
+                                if (tokenAndValues.TryGetValue(TemplateVariables.ConversationFiles, out string? conversation_files))
+                                    replacements.Add(matchedVariable, conversation_files);
+                                else
+                                    replacements.Add(matchedVariable, string.Empty);
+                                break;
+                            case TemplateVariables.AttachedFiles:
+                                if (tokenAndValues.TryGetValue(TemplateVariables.AttachedFiles, out string? attached_files))
+                                    replacements.Add(matchedVariable, attached_files);
                                 else
                                     replacements.Add(matchedVariable, string.Empty);
                                 break;
