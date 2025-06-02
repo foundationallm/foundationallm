@@ -88,7 +88,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                            user_prompt_rewrite: Optional[str],
                            message_history: List[MessageHistoryItem],
                            file_history: List[FileHistoryItem],
-                           conversation_id: Optional[str] = None)-> CompletionResponse:
+                           conversation_id: Optional[str] = None,
+                           objects: dict = {})-> CompletionResponse:
         """
         Invokes the workflow asynchronously.
 
@@ -123,15 +124,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             else:
                 langchain_messages.append(AIMessage(content=msg.text))
 
-        # If there are files attached to the request, add them to the system prompt
-        if file_history:
-            files_prompt = "\nYou have access to the following files:\n"
-            for file in file_history:
-                files_prompt += f'{file.order}. {file.original_file_name}\n'
-            files_prompt += "\nIf the question is requesting information about a file and no file is specified, assume the question is about the last file in the list.\n"
-            self.workflow_prompt += files_prompt
-
-        self.logger.debug(f'Workflow prompt: {self.workflow_prompt}')
+        self.logger.debug('Workflow prompt: %s', self.workflow_prompt)
         print(f'Workflow prompt console: {self.workflow_prompt}')
         messages = [
             SystemMessage(content=self.workflow_prompt),

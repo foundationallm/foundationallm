@@ -577,7 +577,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     user_prompt_rewrite=request.user_prompt_rewrite,
                     message_history=request.message_history,
                     file_history=request.file_history,
-                    conversation_id=request.session_id
+                    conversation_id=request.session_id,
+                    objects=request.objects
                 )
                 # Ensure the user prompt rewrite is returned in the response
                 response.user_prompt_rewrite = request.user_prompt_rewrite
