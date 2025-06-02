@@ -571,9 +571,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             #endregion
 
-            #region Build system prompt
+            #region Build workflow prompts
 
-            // Build final prompt via agent resources.
+            // Build workflow prompts via agent resources.
             // Get main prompt and router prompt if available.
             var mainPromptObjectId = agentWorkflow!.MainPromptObjectId;
             
@@ -631,22 +631,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                                             ? string.Empty : routerPrompt.Suffix));
                         }
                     }
-
-                    var filesPromptObjectId = agentWorkflow!.FilesPromptObjectId;
-                    if (filesPromptObjectId is not null)
-                    {
-                        var retrievedFilesPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
-                            filesPromptObjectId, currentUserIdentity);
-
-                        if (retrievedFilesPrompt is MultipartPrompt filesPrompt
-                            && filesPrompt is not null)
-                        {
-                            tokenReplacements.Add(TemplateVariables.FilesPrompt,
-                                                    filesPrompt.Prefix +
-                                                    (string.IsNullOrEmpty(filesPrompt.Suffix)
-                                                        ? string.Empty : filesPrompt.Suffix));
-                        }
-                    }
                    
                     mainPrompt.Prefix = templatingService.Transform(mainPrompt.Prefix!, tokenReplacements);
                     mainPrompt.Suffix = templatingService.Transform(mainPrompt.Suffix!, tokenReplacements);
@@ -655,7 +639,26 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             mainPromptObjectId!,
                             mainPrompt);
                 }
-            }            
+            }
+
+            var filesPromptObjectId = agentWorkflow!.FilesPromptObjectId;
+            if (filesPromptObjectId is not null)
+            {
+                var retrievedFilesPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
+                    filesPromptObjectId, currentUserIdentity);
+
+                if (retrievedFilesPrompt is MultipartPrompt filesPrompt
+                    && filesPrompt is not null)
+                {
+                    filesPrompt.Prefix = templatingService.Transform(filesPrompt.Prefix!, tokenReplacements);
+                    filesPrompt.Suffix = templatingService.Transform(filesPrompt.Suffix!, tokenReplacements);
+
+                    explodedObjectsManager.TryAdd(
+                            filesPromptObjectId!,
+                            filesPrompt);
+                }
+            }
+
             #endregion
 
             #region Knowledge management processing
