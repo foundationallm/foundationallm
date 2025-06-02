@@ -111,9 +111,14 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             {
                 RunnableConfigKeys.ORIGINAL_USER_PROMPT: user_prompt,
                 RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE: user_prompt_rewrite,
-                RunnableConfigKeys.CONVERSATION_ID: conversation_id
+                RunnableConfigKeys.CONVERSATION_ID: conversation_id,
+                "file_history": file_history
             }
         )
+        for tool in self.tools:
+            if tool.name in objects:
+                # Add the tool properties to the runnable config if it exists in the objects.
+                runnable_config[tool.name] = objects[tool.name]
 
         # Convert message history to LangChain message types
         langchain_messages = []
@@ -123,6 +128,13 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 langchain_messages.append(HumanMessage(content=msg.text))
             else:
                 langchain_messages.append(AIMessage(content=msg.text))
+
+        # Replace the file history placeholder with the files prompt if it exists.
+        files_prompt = self.__get_workflow_files_prompt(objects)
+        if files_prompt:
+            self.workflow_prompt = self.workflow_prompt.replace(
+                '{{files_prompt}}', files_prompt
+            )
 
         self.logger.debug('Workflow prompt: %s', self.workflow_prompt)
         print(f'Workflow prompt console: {self.workflow_prompt}')
@@ -263,6 +275,22 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             error_msg = 'No main prompt found in workflow configuration'
             self.logger.error(error_msg)
             raise ValueError(error_msg)
+
+    def __get_workflow_files_prompt(self, objects: dict) -> str:
+        """ Gets the workflow files prompt if it exists. """
+        files_prompt_properties = self.workflow_config.get_resource_object_id_properties(
+            ResourceProviderNames.FOUNDATIONALLM_PROMPT,
+            PromptResourceTypeNames.PROMPTS,
+            ResourceObjectIdPropertyNames.OBJECT_ROLE,
+            "files_prompt"
+        )
+        if files_prompt_properties:
+            files_prompt_object_id = files_prompt_properties.object_id
+            return objects[files_prompt_object_id]['prefix'] if files_prompt_object_id in objects else None
+        else:
+            error_msg = 'No files prompt found in workflow configuration'
+            self.logger.error(error_msg)
+            return None
 
     def __create_workflow_execution_content_artifact(
             self,
