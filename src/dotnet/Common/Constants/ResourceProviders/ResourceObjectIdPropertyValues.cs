@@ -21,6 +21,11 @@
         public const string RouterPrompt = "router_prompt";
 
         /// <summary>
+        /// Files prompt.
+        /// </summary>
+        public const string FilesPrompt = "files_prompt";
+
+        /// <summary>
         /// The data pipeline used to upload files.
         /// </summary>
         public const string FileUploadDataPipeline = "file_upload_data_pipeline";

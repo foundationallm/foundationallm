@@ -36,6 +36,7 @@ namespace FoundationaLLM.Common.Services.Templates
                 // Expects the format {{foundationallm:variable_name[:format]}}
                 var transformedString = s;
                 bool hasMoreTokens;
+                var iterationsCount = 0;
 
                 do
                 {
@@ -63,6 +64,12 @@ namespace FoundationaLLM.Common.Services.Templates
                             case TemplateVariables.RouterPrompt:
                                 if (tokenAndValues.TryGetValue(TemplateVariables.RouterPrompt, out string? router_prompt_value))
                                     replacements.Add(matchedVariable, router_prompt_value);
+                                else
+                                    replacements.Add(matchedVariable, string.Empty);
+                                break;
+                            case TemplateVariables.FilesPrompt:
+                                if (tokenAndValues.TryGetValue(TemplateVariables.FilesPrompt, out string? files_prompt_value))
+                                    replacements.Add(matchedVariable, files_prompt_value);
                                 else
                                     replacements.Add(matchedVariable, string.Empty);
                                 break;
@@ -101,8 +108,12 @@ namespace FoundationaLLM.Common.Services.Templates
                     }
 
                     hasMoreTokens = VariableRegex().IsMatch(transformedString);
+                    iterationsCount++;
 
-                } while (hasMoreTokens);
+                } while (hasMoreTokens || iterationsCount > 10);
+
+                if (hasMoreTokens && iterationsCount > 10)
+                    _logger.LogWarning("Exceeded maximum iterations while transforming the string. Some tokens may not have been replaced.");
 
                 return transformedString;
             }
