@@ -367,27 +367,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             StringBuilder toolList = new();
             StringBuilder toolRouterPrompts = new();
 
-            var promptTokenReplacements = new Dictionary<string, string>()
-            {
-                {
-                    TemplateVariables.ConversationFiles,
-                    string.Join(
-                        Environment.NewLine,
-                        originalRequest.FileHistory?
-                            .Select(f => $"{f.Order}. {f.OriginalFileName}")
-                            .ToArray() ?? [])
-                },
-                {
-                    TemplateVariables.AttachedFiles,
-                    string.Join(
-                        Environment.NewLine,
-                        originalRequest.FileHistory?
-                            .Where(f => f.CurrentMessageAttachment)
-                            .Select(f => $"{f.OriginalFileName}")
-                            .ToArray() ?? [])
-                }
-            };
-
             foreach (var tool in agentBase.Tools)
             {
                 toolNames.Add(tool.Name);
@@ -569,8 +548,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                     else
                                     {
                                         // prompt template token replacement                                        
-                                        multipartPrompt.Prefix = templatingService.Transform(multipartPrompt.Prefix!, promptTokenReplacements);
-                                        multipartPrompt.Suffix = templatingService.Transform(multipartPrompt.Suffix!, promptTokenReplacements);
+                                        multipartPrompt.Prefix = templatingService.Transform(multipartPrompt.Prefix!);
+                                        multipartPrompt.Suffix = templatingService.Transform(multipartPrompt.Suffix!);
                                         explodedObjectsManager.TryAdd(
                                             resourceObjectId.ObjectId,
                                                 prompt);                                        
@@ -593,6 +572,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             #endregion
 
             #region Build system prompt
+
             // Build final prompt via agent resources.
             // Get main prompt and router prompt if available.
             var mainPromptObjectId = agentWorkflow!.MainPromptObjectId;
@@ -602,15 +582,33 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                         currentUserIdentity);        
             
             var tokenReplacements = new Dictionary<string, string>();
+
             // If tools exist on the agent, prepare for the potential of tools list token replacements in the prompt.
+
             if(toolList.Length > 0)
-            {
                 tokenReplacements.Add(TemplateVariables.ToolList, toolList.ToString());
-            }
+
             if(toolRouterPrompts.Length > 0)
-            {
                 tokenReplacements.Add(TemplateVariables.ToolRouterPrompts, toolRouterPrompts.ToString());
-            }
+
+            var fileHistory = originalRequest.FileHistory?
+                                .Select(f => $"{f.Order}. {f.OriginalFileName}")
+                                .ToArray() ?? [];
+
+            var attachedFiles = originalRequest.FileHistory?
+                                .Where(f => f.CurrentMessageAttachment)
+                                .Select(f => $"{f.OriginalFileName}")
+                                .ToArray() ?? [];
+
+            if (fileHistory.Length > 0)
+                tokenReplacements.Add(
+                    TemplateVariables.ConversationFiles,
+                    string.Join(Environment.NewLine, fileHistory));
+
+            if (attachedFiles.Length > 0)
+                tokenReplacements.Add(
+                    TemplateVariables.AttachedFiles,
+                    string.Join(Environment.NewLine, attachedFiles));
 
             if (retrievedMainPrompt is MultipartPrompt mainPrompt)
             {
@@ -621,18 +619,32 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     if (routerPromptObjectId is not null)
                     {
                         var retrievedRouterPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
-                                        routerPromptObjectId!,
-                                        currentUserIdentity);
-                        if (retrievedRouterPrompt is MultipartPrompt routerPrompt)
+                            routerPromptObjectId!, currentUserIdentity);
+
+                        if (retrievedRouterPrompt is MultipartPrompt routerPrompt
+                            && routerPrompt is not null)
                         {
-                            if (retrievedRouterPrompt is not null)
-                            {
-                                // If the router prompt is present, prepare to replace the router prompt token in the main prompt.
-                                tokenReplacements.Add(TemplateVariables.RouterPrompt,
-                                                        routerPrompt.Prefix +
-                                                        (string.IsNullOrEmpty(routerPrompt.Suffix)
-                                                              ? string.Empty : routerPrompt.Suffix));
-                            }                           
+                            // If the router prompt is present, prepare to replace the router prompt token in the main prompt.
+                            tokenReplacements.Add(TemplateVariables.RouterPrompt,
+                                                    routerPrompt.Prefix +
+                                                    (string.IsNullOrEmpty(routerPrompt.Suffix)
+                                                            ? string.Empty : routerPrompt.Suffix));
+                        }
+                    }
+
+                    var filesPromptObjectId = agentWorkflow!.FilesPromptObjectId;
+                    if (filesPromptObjectId is not null)
+                    {
+                        var retrievedFilesPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
+                            filesPromptObjectId, currentUserIdentity);
+
+                        if (retrievedFilesPrompt is MultipartPrompt filesPrompt
+                            && filesPrompt is not null)
+                        {
+                            tokenReplacements.Add(TemplateVariables.FilesPrompt,
+                                                    filesPrompt.Prefix +
+                                                    (string.IsNullOrEmpty(filesPrompt.Suffix)
+                                                        ? string.Empty : filesPrompt.Suffix));
                         }
                     }
                    

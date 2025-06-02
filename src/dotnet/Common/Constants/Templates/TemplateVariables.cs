@@ -16,6 +16,11 @@
         public const string RouterPrompt = "router_prompt";
 
         /// <summary>
+        /// Token for a workflow files prompt.
+        /// </summary>
+        public const string FilesPrompt = "files_prompt";
+
+        /// <summary>
         /// Token for the tool router prompt.
         /// </summary>
         public const string ToolRouterPrompts = "tool_router_prompts";

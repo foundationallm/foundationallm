@@ -96,6 +96,16 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
                 ?.ObjectId;
 
         /// <summary>
+        /// Gets the files prompt object identifier.
+        /// </summary>
+        [JsonIgnore]
+        public string? FilesPromptObjectId =>
+            ResourceObjectIds.Values
+                .FirstOrDefault(
+                    roid => roid.HasObjectRole(ResourceObjectIdPropertyValues.FilesPrompt))
+                ?.ObjectId;
+
+        /// <summary>
         /// Gets the AI object identifier.
         /// </summary>
         [JsonIgnore]
