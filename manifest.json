@@ -3162,6 +3162,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.GlobalResourceTypeNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.GlobalResourceTypeNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.ResourceProviders.GlobalResourceTypeNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.GlobalResourceTypeNames.yml\" sourcestartlinenumber=\"1\">Contains constants of the names of the resource types that can be managed by any resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.PluginResourceProviderMetadata.yml",
       "output": {
         ".html": {
@@ -6368,6 +6382,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Events.ResourceProviderEventData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Events.ResourceProviderEventData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Events.ResourceProviderEventData",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Events.ResourceProviderEventData.yml\" sourcestartlinenumber=\"1\">Represents the data for a resource provider event.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Events.yml",
       "output": {
         ".html": {
@@ -8717,6 +8745,62 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.ResourceProviders.FileReference",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.FileReference.yml\" sourcestartlinenumber=\"1\">Contains a reference to a file.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Global.ResourceProviderManagementAction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Global.ResourceProviderManagementAction.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Global.ResourceProviderManagementAction",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Global.ResourceProviderManagementAction.yml\" sourcestartlinenumber=\"1\">Represents a management action for a resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Global.ResourceProviderManagementActionTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Global.ResourceProviderManagementActionTypes.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Global.ResourceProviderManagementActionTypes",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Global.ResourceProviderManagementActionTypes.yml\" sourcestartlinenumber=\"1\">Defines the types of management actions that can be performed on resource providers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Global.ResourceProviderSendEventAction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Global.ResourceProviderSendEventAction.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Global.ResourceProviderSendEventAction",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Global.ResourceProviderSendEventAction.yml\" sourcestartlinenumber=\"1\">Represents a management action to send an event to a resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Global.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Global.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Global",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
