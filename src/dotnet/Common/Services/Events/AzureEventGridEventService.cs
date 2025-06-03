@@ -337,8 +337,13 @@ namespace FoundationaLLM.Common.Services.Events
 
             foreach (var receiveDetails in eventDetails)
             {
-                if (String.CompareOrdinal(receiveDetails.Event.Source, _serviceInstanceName) == 0)
-                    // Ignore events that were sent by this service instance.
+                if (String.CompareOrdinal(receiveDetails.Event.Source, _serviceInstanceName) == 0
+                    && (
+                        !receiveDetails.Event.ExtensionAttributes.TryGetValue("forcelocalprocessing", out var forceProcessing)
+                        || !((bool)forceProcessing)
+                    ))
+                    // Ignore events that were sent by this service instance, except when
+                    // the event has the "forcelocalprocessing" extension attribute set to true.
                     continue;
 
                 eventsToProcess[receiveDetails.Event.Type].Add(receiveDetails.Event);

@@ -881,6 +881,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="eventType">The type of the event to send.</param>
         /// <param name="targetServiceName">Optional name of the target service to which the event is sent. If null, the event is sent to all services.</param>
         /// <param name="data">The optional data to send with the event.</param>
+        /// <param name="forceLocalProcessing">Indicates whether the event should be processed on the service instance that created it as well.</param>
         /// <returns></returns>
         /// <remarks>
         /// See <see cref="EventTypes"/> for a list of event types.
@@ -888,29 +889,33 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         protected async Task SendResourceProviderEvent(
             string eventType,
             string? targetServiceName = null,
-            object? data = null)
+            object? data = null,
+            bool forceLocalProcessing = false)
         {
             if (_eventService == null)
             {
                 _logger.LogWarning("The resource provider {ResourceProviderName} does not have an event service configured and cannot send events.", _name);
                 return;
             }
-                
+
             // The CloudEvent source is automatically filled in by the event service.
-            await _eventService.SendEvent(
-                EventGridTopics.FoundationaLLM_Resource_Providers,
-                new CloudEvent(
-                    string.Empty,
-                    eventType,
-                    new ResourceProviderEventData
-                    {
-                        Timestamp = DateTimeOffset.UtcNow,
-                        TargetServiceName = targetServiceName,
-                        Data = data
-                    })
+            var cloudEvent = new CloudEvent(
+                string.Empty,
+                eventType,
+                new ResourceProviderEventData
+                {
+                    Timestamp = DateTimeOffset.UtcNow,
+                    TargetServiceName = targetServiceName,
+                    Data = data
+                })
                 {
                     Subject = _name
-                });
+                };
+            cloudEvent.ExtensionAttributes.Add("forcelocalprocessing", forceLocalProcessing);
+
+            await _eventService.SendEvent(
+                EventGridTopics.FoundationaLLM_Resource_Providers,
+                cloudEvent);
         }
             
 
@@ -1785,7 +1790,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                         var sendEventAction = (ResourceProviderSendEventAction)managementAction;
                         await SendResourceProviderEvent(
                             EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand,
-                            targetServiceName: sendEventAction.TargetServiceName);
+                            targetServiceName: sendEventAction.TargetServiceName,
+                            forceLocalProcessing: true);
                         break;
                     default:
                         throw new ResourceProviderException(
