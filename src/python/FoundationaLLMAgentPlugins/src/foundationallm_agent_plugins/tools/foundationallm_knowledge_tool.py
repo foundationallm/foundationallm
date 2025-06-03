@@ -67,7 +67,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             file_name: Optional[str] = None,
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
             runnable_config: RunnableConfig = None,
-    ) -> FoundationaLLMToolResult:
+    ) -> Tuple[str, FoundationaLLMToolResult]:
         """ Retrieves documents from an index based on the proximity to the prompt to answer the prompt."""
 
         input_tokens = 0
@@ -123,7 +123,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         #    content = rag_prompt,
         #    source = "tool",
         #    type = "full_prompt"))
-        return FoundationaLLMToolResult(
+        return completion.content, FoundationaLLMToolResult(
             content=completion.content,
             content_artifacts=content_artifacts,
             input_tokens=input_tokens,

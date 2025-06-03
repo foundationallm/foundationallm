@@ -72,7 +72,7 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
         message_history: List[BaseMessage] = [],
         runnable_config: RunnableConfig = None,
         **kwargs,
-        ) -> FoundationaLLMToolResult:
+        ) -> Tuple[str, FoundationaLLMToolResult]:
 
         input_tokens = 0
         output_tokens = 0
@@ -136,7 +136,7 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
                         output_tokens += final_llm_response.usage_metadata['output_tokens']
                         final_response = final_llm_response.content
                 
-                return FoundationaLLMToolResult(
+                return final_response, FoundationaLLMToolResult(
                     content=final_response,
                     content_artifacts=[
                         self.create_content_artifact(
@@ -152,7 +152,7 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
 
             except Exception as e:
                 self.logger.error('An error occured in tool %s: %s', self.name, e)
-                return FoundationaLLMToolResult(
+                return self.default_error_message, FoundationaLLMToolResult(
                     content=self.default_error_message,
                     content_artifacts=[
                         self.create_content_artifact(

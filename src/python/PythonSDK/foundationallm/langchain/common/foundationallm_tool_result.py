@@ -1,7 +1,9 @@
 from typing import List
+from dataclasses import dataclass
 
 from foundationallm.models.orchestration import ContentArtifact
 
+@dataclass
 class FoundationaLLMToolResult:
     """A class to represent the result of a FoundationaLLM tool call."""
 

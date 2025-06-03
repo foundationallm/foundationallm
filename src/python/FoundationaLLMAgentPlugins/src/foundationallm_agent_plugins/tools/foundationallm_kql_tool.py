@@ -3,7 +3,7 @@ Implements the FoundationaLLM KQL (Kusto Query Language) tool.
 """
 
 # Platform imports
-from typing import List, Dict
+from typing import List, Dict, Tuple
 import json
 import pandas as pd
 import requests
@@ -68,7 +68,7 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
         message_history: List[BaseMessage] = [],
         runnable_config: RunnableConfig = None,
         **kwargs,
-        ) -> str:
+        ) -> Tuple[str, FoundationaLLMToolResult]:
 
         output_tokens = 0
         input_tokens = 0
@@ -134,7 +134,7 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
                         output_tokens += final_llm_response.usage_metadata['output_tokens']
                         final_response = final_llm_response.content
 
-                return FoundationaLLMToolResult(
+                return final_response, FoundationaLLMToolResult(
                     content=final_response,
                     content_artifacts=[
                         self.create_content_artifact(
@@ -150,7 +150,7 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
 
             except Exception as e:
                 self.logger.error('An error occured in tool %s: %s', self.name, e)
-                return FoundationaLLMToolResult(
+                return self.default_error_message, FoundationaLLMToolResult(
                     content=self.default_error_message,
                     content_artifacts=[
                         self.create_content_artifact(
