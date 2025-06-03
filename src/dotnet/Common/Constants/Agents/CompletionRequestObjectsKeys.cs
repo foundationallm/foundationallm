@@ -54,10 +54,30 @@ namespace FoundationaLLM.Common.Constants.Agents
         public const string InstanceId = "FoundationaLLM.InstanceId";
 
         /// <summary>
+        /// The key name for the workflow invocation conversation files.
+        /// </summary>
+        public const string WorkflowInvocationConversationFiles = "Workflow.Invocation.ConversationFiles";
+
+        /// <summary>
+        /// The key name for the workflow invocation attached files.
+        /// </summary>
+        public const string WorkflowInvocationAttachedFiles = "Workflow.Invocation.AttachedFiles";
+
+        /// <summary>
         /// All completion request objects dictionary keys.
         /// </summary>
         public readonly static string[] All = [
-            AllAgents
+            AllAgents,
+            OpenAIAssistantsAssistantId,
+            OpenAIAssistantsThreadId,
+            AzureAIAgentServiceAgentId,
+            AzureAIAgentServiceThreadId,
+            GatewayAPIEndpointConfiguration,
+            ContextAPIEndpointConfiguration,
+            ToolNames,
+            InstanceId,
+            WorkflowInvocationConversationFiles,
+            WorkflowInvocationAttachedFiles
         ];
     }
 }

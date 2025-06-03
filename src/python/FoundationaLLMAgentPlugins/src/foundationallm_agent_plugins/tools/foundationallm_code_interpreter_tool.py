@@ -1,16 +1,25 @@
-from typing import Optional, Tuple, Type, List, ClassVar
+# pylint: disable=W0221
+
+from typing import Optional, Tuple, Type, List, ClassVar, Any
 from uuid import uuid4
 import json
 
 from langchain_azure_dynamic_sessions import SessionsPythonREPLTool
 from langchain_core.callbacks import CallbackManagerForToolRun, AsyncCallbackManagerForToolRun
+from langchain_core.messages import (
+    SystemMessage
+)
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import ToolException
 
-from pydantic import BaseModel, Field
+from opentelemetry.trace import SpanKind
+from pydantic import BaseModel
 
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.langchain.common import FoundationaLLMToolBase
+from foundationallm.langchain.common import (
+    FoundationaLLMToolBase,
+    FoundationaLLMToolResult
+)
 from foundationallm.models.agents import AgentTool
 from foundationallm.models.constants import (
     ContentArtifactTypeNames,
@@ -19,37 +28,8 @@ from foundationallm.models.constants import (
 from foundationallm.models.orchestration import CompletionRequestObjectKeys, ContentArtifact
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.services import HttpClientService
-class FoundationaLLMCodeInterpreterFile(BaseModel):
-    """ A file to upload to the code interpreter. """
-    file_name: str = Field(
-        description="The name of the file as it should appear in the code interpreter. Example: 'test.py'"
-    )
-    local_file_path: str = Field(
-        description="The local path once the file is uploaded to the code interpreter. This path is in the format '/mnt/data/original_file_name'. Example: '/mnt/data/test.py'"
-    )
 
-class FoundationaLLMCodeInterpreterToolInput(BaseModel):
-    """ Input data model for the Code Intepreter tool. """
-    python_code: str = Field(
-        description="The Python code to execute. This should be the complete code including any file operations and required pip installations."
-    )
-    files: Optional[List[FoundationaLLMCodeInterpreterFile]] = Field(
-        default=None,
-        description="""List of files to upload to the code interpreter. Each file should have:
-        - file_name: The name the file should have in the code interpreter
-        - local_file_path: The local path once the file is uploaded to the code interpreter. This path is in the format '/mnt/data/original_file_name'. Example: '/mnt/data/test.py'
-        Example:
-        {
-            "python_code": "import pandas as pd\n\ndf = pd.read_csv('/mnt/data/data.csv')",
-            "files": [
-                {
-                    "file_name": "data.csv",
-                    "local_file_path": "/mnt/data/data.csv"
-                }
-            ]
-        }
-        """
-    )
+from .foundationallm_code_interpreter_tool_input import FoundationaLLMCodeInterpreterToolInput
 
 class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
     """ A tool for executing Python code in a code interpreter. """
@@ -57,14 +37,16 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
     DYNAMIC_SESSION_ENDPOINT: ClassVar[str] = "code_session_endpoint"
     DYNAMIC_SESSION_ID: ClassVar[str] = "code_session_id"
 
-    def __init__(self, tool_config: AgentTool, objects: dict, user_identity:UserIdentity, config: Configuration):
+    def __init__(
+        self,
+        tool_config: AgentTool,
+        objects: dict,
+        user_identity:UserIdentity,
+        config: Configuration):
         """ Initializes the FoundationaLLMCodeInterpreterTool class with the tool configuration,
             exploded objects collection, user_identity, and platform configuration. """
         super().__init__(tool_config, objects, user_identity, config)
-        self.repl = SessionsPythonREPLTool(
-            session_id=objects[tool_config.name][self.DYNAMIC_SESSION_ID],
-            pool_management_endpoint=objects[tool_config.name][self.DYNAMIC_SESSION_ENDPOINT]
-        )
+
         self.description = tool_config.description or self.repl.description
         context_api_endpoint_configuration = APIEndpointConfiguration(**objects.get(CompletionRequestObjectKeys.CONTEXT_API_ENDPOINT_CONFIGURATION, None))
         if context_api_endpoint_configuration:
@@ -76,23 +58,28 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         else:
             raise ToolException("The Context API endpoint configuration is required to use the Code Interpreter tool.")
         self.instance_id = objects.get(CompletionRequestObjectKeys.INSTANCE_ID, None)
+        self.main_llm = self.get_main_language_model()
+        self.main_prompt = self.get_main_prompt()
 
-    def _run(self,
-            python_code: str,
-            files: Optional[List[FoundationaLLMCodeInterpreterFile]],
-            run_manager: Optional[CallbackManagerForToolRun] = None
-            ) -> str:
+    def _run(
+        self,
+        prompt: str,
+        file_names: Optional[List[str]] = None,
+        run_manager: Optional[CallbackManagerForToolRun] = None,
+        **kwargs: Any) -> Any:
         raise ToolException("This tool does not support synchronous execution. Please use the async version of the tool.")
 
     async def _arun(self,
-            python_code: str,
-            files: Optional[List[FoundationaLLMCodeInterpreterFile]] = None,
+            prompt: str,
+            file_names: Optional[List[str]] = None,
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
-            runnable_config: RunnableConfig = None) -> Tuple[str, List[ContentArtifact]]:
-        
+            runnable_config: RunnableConfig = None,
+            **kwargs: Any) -> FoundationaLLMToolResult:
+
         # Get the original prompt
         if runnable_config is None:
-            original_prompt = ''
+            user_prompt = None
+            user_prompt_rewrite = None
         else:
             user_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT] \
                 if RunnableConfigKeys.ORIGINAL_USER_PROMPT in runnable_config['configurable'] \
@@ -100,18 +87,47 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             user_prompt_rewrite = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE] \
                 if RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE in runnable_config['configurable'] \
                 else None
-            original_prompt = user_prompt_rewrite or user_prompt or ''
 
+        if 'file_history' in runnable_config['configurable']:
+            file_history = runnable_config['configurable']['file_history']
+        else:
+            file_history = []
+
+        if file_names:
+            file_object_ids = [f.object_id for f in file_history if f.original_file_name in file_names]
+            if len(file_object_ids) != len(file_names):
+                raise ToolException(f"Some of the requested files [{file_names}] are not available in the file history.")
+        else:
+            file_object_ids = []
+
+        session_id = runnable_config['configurable'][self.tool_config.name][self.DYNAMIC_SESSION_ID],
+        pool_management_endpoint=runnable_config['configurable'][self.tool_config.name][self.DYNAMIC_SESSION_ENDPOINT]
+
+        llm_prompt = prompt or user_prompt_rewrite or user_prompt
         content_artifacts = []
         operation_id = None
+        input_tokens = 0
+        output_tokens = 0
+        generated_code = ''
+        final_response = ''
 
-        # Upload any files required by this execution to the code interpreter
-        file_names = [f.file_name for f in files] if files else []
+        with self.tracer.start_as_current_span(f'{self.name}_initial_llm_call', kind=SpanKind.INTERNAL):
+
+            messages = [
+                SystemMessage(content=self.main_prompt.replace('{{code_generation_prompt}}', llm_prompt))
+            ]
+
+            response = await self.main_llm.ainvoke(messages)
+
+            input_tokens += response.usage_metadata['input_tokens']
+            output_tokens += response.usage_metadata['output_tokens']
+
+            generated_code = response.content
 
         # returns the operation_id
         self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
         operation_response = await self.context_api_client.post_async(
-            endpoint = f"/instances/{self.instance_id}/codeSessions/{self.repl.session_id}/uploadFiles",
+            endpoint = f"/instances/{self.instance_id}/codeSessions/{session_id}/uploadFiles",
             data = json.dumps({
                 "file_names": file_names
             })
@@ -121,7 +137,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         # Obtain beginning file list from the context API
         beginning_files_list = []
         beginning_files_list_response = await self.context_api_client.post_async(
-                endpoint = f"/instances/{self.instance_id}/codeSessions/{self.repl.session_id}/downloadFiles",
+                endpoint = f"/instances/{self.instance_id}/codeSessions/{session_id}/downloadFiles",
                 data = json.dumps({
                     "operation_id": operation_id
                 })
@@ -130,13 +146,17 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
 
         # Execute the code
         # SessionsPythonREPLTool only supports synchronous execution.
-        result = self.repl.invoke(python_code)
+        repl = SessionsPythonREPLTool(
+            session_id=session_id,
+            pool_management_endpoint=pool_management_endpoint
+        )
+        result = repl.invoke(generated_code)
 
         # Get an updated list of files from the code interpreter
         files_list = []
         if operation_id:
             files_list_response = await self.context_api_client.post_async(
-                endpoint = f"/instances/{self.instance_id}/codeSessions/{self.repl.session_id}/downloadFiles",
+                endpoint = f"/instances/{self.instance_id}/codeSessions/{session_id}/downloadFiles",
                 data = json.dumps({
                     "operation_id": operation_id
                 })
@@ -171,12 +191,18 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             type = ContentArtifactTypeNames.TOOL_EXECUTION,
             filepath = str(uuid4()), # needs to have a unique filepath to not be filtered out upstream.
             metadata = {
-                'original_user_prompt': original_prompt,
-                'tool_input_python_code': python_code,
-                'tool_input_files': ', '.join([f.file_name for f in files]) if files else '',
+                'original_user_prompt': user_prompt_rewrite or user_prompt,
+                'tool_input_prompt': prompt,
+                'tool_input_files': ', '.join(file_names) if file_names else '',
                 'tool_output': str(response.get('stdout', '')),
                 'tool_error': str(response.get('stderr', '')),
                 'tool_result': str(response.get('result', ''))
             }
         ))
-        return content, content_artifacts
+
+        return FoundationaLLMToolResult(
+            content=content,
+            content_artifacts=content_artifacts,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens
+        )

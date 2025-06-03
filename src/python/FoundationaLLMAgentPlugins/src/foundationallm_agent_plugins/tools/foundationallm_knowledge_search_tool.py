@@ -3,7 +3,10 @@ from langchain_core.callbacks import CallbackManagerForToolRun, AsyncCallbackMan
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import ToolException
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.langchain.common import FoundationaLLMToolBase
+from foundationallm.langchain.common import (
+    FoundationaLLMToolBase,
+    FoundationaLLMToolResult
+)
 from foundationallm.langchain.retrievers.retriever_factory import RetrieverFactory
 from foundationallm.models.agents import AgentTool, KnowledgeManagementIndexConfiguration
 from foundationallm.models.constants import (
@@ -46,8 +49,12 @@ class FoundationaLLMKnowledgeSearchTool(FoundationaLLMToolBase):
     async def _arun(self,
             prompt: str,
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
-            runnable_config: RunnableConfig = None) -> Tuple[str, List[ContentArtifact]]:
+            runnable_config: RunnableConfig = None) -> FoundationaLLMToolResult:
         """ Retrieves documents from an index based on the proximity to the prompt to answer the prompt."""
+
+        input_tokens = 0
+        output_tokens = 0
+
         # Azure AI Search retriever only supports synchronous execution.
         # Get the original prompt
         if runnable_config is None:
@@ -66,12 +73,14 @@ class FoundationaLLMKnowledgeSearchTool(FoundationaLLMToolBase):
         rag_prompt = f"Answer the question using only the context provided.\n\nContext:\n{context}\n\nQuestion:{prompt}"
 
         completion = await self.client.ainvoke(rag_prompt)
+        input_tokens += completion.usage_metadata['input_tokens']
+        output_tokens += completion.usage_metadata['output_tokens']
         content_artifacts = self.retriever.get_document_content_artifacts() or []
         # Token usage content artifact
         # Transform all completion.usage_metadata property values to string
         metadata = {
-            'prompt_tokens': str(completion.usage_metadata['input_tokens']),
-            'completion_tokens': str(completion.usage_metadata['output_tokens']),
+            'prompt_tokens': str(input_tokens),
+            'completion_tokens': str(output_tokens),
             'tool_input': prompt
         }
         content_artifacts.append(ContentArtifact(
@@ -88,7 +97,12 @@ class FoundationaLLMKnowledgeSearchTool(FoundationaLLMToolBase):
         #    content = rag_prompt,
         #    source = "tool",
         #    type = "full_prompt"))
-        return completion.content, content_artifacts
+        return FoundationaLLMToolResult(
+            content=completion.content,
+            content_artifacts=content_artifacts,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens
+        )
 
     def _get_document_retriever(self):
         """

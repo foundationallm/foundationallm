@@ -34,9 +34,9 @@ from foundationallm.models.constants import (
 # user_prompt = "Summarize the uploaded document"
 user_prompt = "Create a chart based on the uploaded file"
 operation_id = str(uuid.uuid4())
-conversation_id = "20250602-055942-FmCx13wMB0W0HCUPt5y-zg"
+conversation_id = "20250602-213414-rioCAISdZ0q1aSyQi74cgg"
 
-user_identity_json = {"name": "Experimental Test", "user_name":"carey@foundationaLLM.ai","upn":"carey@foundationaLLM.ai"}
+user_identity_json = {"name": "Experimental Test", "user_name":"cciprian@foundationaLLM.ai","upn":"ciprian@foundationaLLM.ai"}
 full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
 
 user_identity = UserIdentity.from_json(user_identity_json)
@@ -96,7 +96,8 @@ response = asyncio.run(
         user_prompt_rewrite=user_prompt_rewrite,
         message_history=message_history,
         file_history=file_history,
-        conversation_id=conversation_id
+        conversation_id=conversation_id,
+        objects=objects
     )
 )
 print("++++++++++++++++++++++++++++++++++++++")

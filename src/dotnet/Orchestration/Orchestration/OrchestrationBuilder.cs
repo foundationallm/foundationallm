@@ -573,7 +573,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             #region Build workflow prompts
 
-            // Build workflow prompts via agent resources.
+            #region Main prompt and router prompt processing
+
             // Get main prompt and router prompt if available.
             var mainPromptObjectId = agentWorkflow!.MainPromptObjectId;
             
@@ -590,25 +591,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             if(toolRouterPrompts.Length > 0)
                 tokenReplacements.Add(TemplateVariables.ToolRouterPrompts, toolRouterPrompts.ToString());
-
-            var fileHistory = originalRequest.FileHistory?
-                                .Select(f => $"{f.Order}. {f.OriginalFileName}")
-                                .ToArray() ?? [];
-
-            var attachedFiles = originalRequest.FileHistory?
-                                .Where(f => f.CurrentMessageAttachment)
-                                .Select(f => $"{f.OriginalFileName}")
-                                .ToArray() ?? [];
-
-            if (fileHistory.Length > 0)
-                tokenReplacements.Add(
-                    TemplateVariables.ConversationFiles,
-                    string.Join(Environment.NewLine, fileHistory));
-
-            if (attachedFiles.Length > 0)
-                tokenReplacements.Add(
-                    TemplateVariables.AttachedFiles,
-                    string.Join(Environment.NewLine, attachedFiles));
 
             if (retrievedMainPrompt is MultipartPrompt mainPrompt)
             {
@@ -641,6 +623,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 }
             }
 
+            #endregion
+
+            #region Files prompt processing
+
             var filesPromptObjectId = agentWorkflow!.FilesPromptObjectId;
             if (filesPromptObjectId is not null)
             {
@@ -658,6 +644,25 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             filesPrompt);
                 }
             }
+
+            var fileHistory = originalRequest.FileHistory?
+                                .Select(f => $"{f.Order}. {f.OriginalFileName}")
+                                .ToArray() ?? [];
+
+            explodedObjectsManager.TryAdd(
+                CompletionRequestObjectsKeys.WorkflowInvocationConversationFiles,
+                fileHistory);
+
+            var attachedFiles = originalRequest.FileHistory?
+                                .Where(f => f.CurrentMessageAttachment)
+                                .Select(f => $"{f.OriginalFileName}")
+                                .ToArray() ?? [];
+
+            explodedObjectsManager.TryAdd(
+                CompletionRequestObjectsKeys.WorkflowInvocationAttachedFiles,
+                attachedFiles);
+
+            #endregion
 
             #endregion
 
