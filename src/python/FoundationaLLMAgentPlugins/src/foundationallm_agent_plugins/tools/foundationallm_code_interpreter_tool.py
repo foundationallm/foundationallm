@@ -1,21 +1,25 @@
-from typing import Optional, Tuple, Type, List, ClassVar
+# pylint: disable=W0221
+
+from typing import Optional, Tuple, Type, List, ClassVar, Any
 from uuid import uuid4
 import json
 
 from langchain_azure_dynamic_sessions import SessionsPythonREPLTool
 from langchain_core.callbacks import CallbackManagerForToolRun, AsyncCallbackManagerForToolRun
 from langchain_core.messages import (
-    SystemMessage,
-    HumanMessage
+    SystemMessage
 )
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import ToolException
 
 from opentelemetry.trace import SpanKind
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.langchain.common import FoundationaLLMToolBase
+from foundationallm.langchain.common import (
+    FoundationaLLMToolBase,
+    FoundationaLLMToolResult
+)
 from foundationallm.models.agents import AgentTool
 from foundationallm.models.constants import (
     ContentArtifactTypeNames,
@@ -33,7 +37,12 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
     DYNAMIC_SESSION_ENDPOINT: ClassVar[str] = "code_session_endpoint"
     DYNAMIC_SESSION_ID: ClassVar[str] = "code_session_id"
 
-    def __init__(self, tool_config: AgentTool, objects: dict, user_identity:UserIdentity, config: Configuration):
+    def __init__(
+        self,
+        tool_config: AgentTool,
+        objects: dict,
+        user_identity:UserIdentity,
+        config: Configuration):
         """ Initializes the FoundationaLLMCodeInterpreterTool class with the tool configuration,
             exploded objects collection, user_identity, and platform configuration. """
         super().__init__(tool_config, objects, user_identity, config)
@@ -52,18 +61,20 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         self.main_llm = self.get_main_language_model()
         self.main_prompt = self.get_main_prompt()
 
-    def _run(self,
-            prompt: str,
-            file_names: Optional[List[str]],
-            run_manager: Optional[CallbackManagerForToolRun] = None
-            ) -> str:
+    def _run(
+        self,
+        prompt: str,
+        file_names: Optional[List[str]] = None,
+        run_manager: Optional[CallbackManagerForToolRun] = None,
+        **kwargs: Any) -> Any:
         raise ToolException("This tool does not support synchronous execution. Please use the async version of the tool.")
 
     async def _arun(self,
             prompt: str,
             file_names: Optional[List[str]] = None,
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
-            runnable_config: RunnableConfig = None) -> Tuple[str, List[ContentArtifact]]:
+            runnable_config: RunnableConfig = None,
+            **kwargs: Any) -> FoundationaLLMToolResult:
 
         # Get the original prompt
         if runnable_config is None:
@@ -95,8 +106,8 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         llm_prompt = prompt or user_prompt_rewrite or user_prompt
         content_artifacts = []
         operation_id = None
-        prompt_tokens = 0
-        completion_tokens = 0
+        input_tokens = 0
+        output_tokens = 0
         generated_code = ''
         final_response = ''
 
@@ -108,8 +119,8 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
 
             response = await self.main_llm.ainvoke(messages)
 
-            completion_tokens += response.usage_metadata['input_tokens']
-            prompt_tokens += response.usage_metadata['output_tokens']
+            input_tokens += response.usage_metadata['input_tokens']
+            output_tokens += response.usage_metadata['output_tokens']
 
             generated_code = response.content
 
@@ -188,4 +199,10 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                 'tool_result': str(response.get('result', ''))
             }
         ))
-        return content, content_artifacts
+
+        return FoundationaLLMToolResult(
+            content=content,
+            content_artifacts=content_artifacts,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens
+        )

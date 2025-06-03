@@ -9,3 +9,5 @@ from .azure_ai_resource_type_names import AzureAIResourceTypeNames
 from .content_artifact_type_names import ContentArtifactTypeNames
 from .prompt_resource_type_names import PromptResourceTypeNames
 from .vectorization_resource_type_names import VectorizationResourceTypeNames
+
+from .template_variables import TemplateVariables

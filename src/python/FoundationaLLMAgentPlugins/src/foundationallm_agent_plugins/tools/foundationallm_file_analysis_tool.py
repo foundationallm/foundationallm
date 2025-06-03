@@ -27,12 +27,15 @@ from langchain_core.tools import ToolException
 
 # FoundationaLLM imports
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.langchain.common import FoundationaLLMToolBase
+from foundationallm.langchain.common import (
+    FoundationaLLMToolBase,
+    FoundationaLLMToolResult
+)
 from foundationallm.models.agents import AgentTool
 from foundationallm.models.constants import RunnableConfigKeys
-from foundationallm.models.orchestration import ContentArtifact
 
 class FoundationaLLMFileAnalysisTool(FoundationaLLMToolBase):
+    """ A tool for analyzing files using a large language model. """
 
     DYNAMIC_SESSION_ENDPOINT: ClassVar[str] = "code_session_endpoint"
     DYNAMIC_SESSION_ID: ClassVar[str] = "code_session_id"
@@ -65,10 +68,10 @@ class FoundationaLLMFileAnalysisTool(FoundationaLLMToolBase):
         message_history: List[BaseMessage] = [],
         runnable_config: RunnableConfig = None,
         **kwargs,
-        ) -> Tuple[str, List[ContentArtifact]]:
+        ) -> FoundationaLLMToolResult:
 
-        prompt_tokens = 0
-        completion_tokens = 0
+        input_tokens = 0
+        output_tokens = 0
         generated_code = ''
         final_response = ''
 
@@ -97,8 +100,8 @@ class FoundationaLLMFileAnalysisTool(FoundationaLLMToolBase):
 
                     response = await self.main_llm.ainvoke(messages)
 
-                    completion_tokens += response.usage_metadata['input_tokens']
-                    prompt_tokens += response.usage_metadata['output_tokens']
+                    input_tokens += response.usage_metadata['input_tokens']
+                    output_tokens += response.usage_metadata['output_tokens']
 
                     generated_code = response.content
 
@@ -117,35 +120,43 @@ class FoundationaLLMFileAnalysisTool(FoundationaLLMToolBase):
 
                 with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
                     final_llm_response = await self.main_llm.ainvoke(final_messages, tools=None)
-                    completion_tokens += final_llm_response.usage_metadata['input_tokens']
-                    prompt_tokens += final_llm_response.usage_metadata['output_tokens']
+                    input_tokens += final_llm_response.usage_metadata['input_tokens']
+                    output_tokens += final_llm_response.usage_metadata['output_tokens']
                     final_response = final_llm_response.content
 
-                return final_response, \
-                    [
-                       self.create_content_artifact(
+                return FoundationaLLMToolResult(
+                    content=final_response,
+                    content_artifacts=[
+                        self.create_content_artifact(
                             original_prompt,
-                            tool_input = generated_code,
-                            prompt_tokens = prompt_tokens,
-                            completion_tokens = completion_tokens
+                            tool_input=generated_code,
+                            prompt_tokens=input_tokens,
+                            completion_tokens=output_tokens
                         )
-                    ]
+                    ],
+                    input_tokens=input_tokens,
+                    output_tokens=output_tokens
+                )
 
             except Exception as e:
                 self.logger.error('An error occured in tool %s: %s', self.name, e)
-                return self.default_error_message, \
-                    [
-                         self.create_content_artifact(
+                return FoundationaLLMToolResult(
+                    content=self.default_error_message,
+                    content_artifacts=[
+                        self.create_content_artifact(
                             original_prompt,
-                            tool_input = generated_code,
-                            prompt_tokens = prompt_tokens,
-                            completion_tokens = completion_tokens
+                            tool_input=generated_code,
+                            prompt_tokens=input_tokens,
+                            completion_tokens=output_tokens
                         ),
                         self.create_error_content_artifact(
                             original_prompt,
                             e
                         )
-                    ]
+                    ],
+                    input_tokens=input_tokens,
+                    output_tokens=output_tokens
+                )
 
     def __setup_file_analysis_configuration(
             self,

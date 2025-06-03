@@ -23,7 +23,10 @@ from langchain_core.runnables import RunnableConfig
 from opentelemetry.trace import SpanKind
 
 # FoundationaLLM imports
-from foundationallm.langchain.common import FoundationaLLMToolBase
+from foundationallm.langchain.common import (
+    FoundationaLLMToolBase,
+    FoundationaLLMToolResult
+)
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import AgentTool
 from foundationallm.models.constants import RunnableConfigKeys
@@ -67,8 +70,8 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
         **kwargs,
         ) -> str:
 
-        prompt_tokens = 0
-        completion_tokens = 0
+        output_tokens = 0
+        input_tokens = 0
         generated_query = ''
         final_response = ''
 
@@ -97,8 +100,8 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
 
                     response = await self.main_llm.ainvoke(messages, tools=self.tools)
 
-                    completion_tokens += response.usage_metadata['input_tokens']
-                    prompt_tokens += response.usage_metadata['output_tokens']
+                    input_tokens += response.usage_metadata['input_tokens']
+                    output_tokens += response.usage_metadata['output_tokens']
 
                 if response.tool_calls \
                     and response.tool_calls[0]['name'] == 'query_kql':
@@ -127,35 +130,43 @@ class FoundationaLLMKQLTool(FoundationaLLMToolBase):
 
                         final_llm_response = await self.main_llm.ainvoke(final_messages, tools=None)
 
-                        completion_tokens += final_llm_response.usage_metadata['input_tokens']
-                        prompt_tokens += final_llm_response.usage_metadata['output_tokens']
+                        input_tokens += final_llm_response.usage_metadata['input_tokens']
+                        output_tokens += final_llm_response.usage_metadata['output_tokens']
                         final_response = final_llm_response.content
 
-                return final_response, \
-                    [
+                return FoundationaLLMToolResult(
+                    content=final_response,
+                    content_artifacts=[
                         self.create_content_artifact(
                             original_prompt,
                             tool_input=generated_query,
-                            prompt_tokens=prompt_tokens,
-                            completion_tokens=completion_tokens
+                            prompt_tokens=input_tokens,
+                            completion_tokens=output_tokens
                         )
-                    ]
+                    ],
+                    input_tokens=input_tokens,
+                    output_tokens=output_tokens
+                )
 
             except Exception as e:
                 self.logger.error('An error occured in tool %s: %s', self.name, e)
-                return self.default_error_message, \
-                    [
+                return FoundationaLLMToolResult(
+                    content=self.default_error_message,
+                    content_artifacts=[
                         self.create_content_artifact(
                             original_prompt,
-                            tool_input=prompt,
-                            prompt_tokens=prompt_tokens,
-                            completion_tokens=completion_tokens
+                            tool_input=generated_query,
+                            prompt_tokens=input_tokens,
+                            completion_tokens=output_tokens
                         ),
                         self.create_error_content_artifact(
                             original_prompt,
                             e
                         )
-                    ]
+                    ],
+                    input_tokens=input_tokens,
+                    output_tokens=output_tokens
+                )
 
     def __setup_kql_configuration(
             self,

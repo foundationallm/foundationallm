@@ -9,3 +9,5 @@ class CompletionRequestObjectKeys(str, Enum):
    GATEWAY_API_ENDPOINT_CONFIGURATION = "GatewayAPIEndpointConfiguration"
    INSTANCE_ID = "FoundationaLLM.InstanceId"
    CONTEXT_API_ENDPOINT_CONFIGURATION = "ContextAPIEndpointConfiguration"
+   WORKFLOW_INVOCATION_CONVERSATION_FILES = "Workflow.Invocation.ConversationFiles"
+   WORKFLOW_INVOCATION_ATTACHED_FILES = "Workflow.Invocation.AttachedFiles"

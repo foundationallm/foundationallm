@@ -26,7 +26,10 @@ from langchain_core.runnables import RunnableConfig
 from opentelemetry.trace import SpanKind
 
 # FoundationaLLM imports
-from foundationallm.langchain.common import FoundationaLLMToolBase
+from foundationallm.langchain.common import (
+    FoundationaLLMToolBase,
+    FoundationaLLMToolResult
+)
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import AgentTool
 from foundationallm.models.constants import RunnableConfigKeys, ContentArtifactTypeNames
@@ -69,10 +72,10 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
         message_history: List[BaseMessage] = [],
         runnable_config: RunnableConfig = None,
         **kwargs,
-        ) -> Tuple[str, List[ContentArtifact]]:
+        ) -> FoundationaLLMToolResult:
 
-        prompt_tokens = 0
-        completion_tokens = 0
+        input_tokens = 0
+        output_tokens = 0
         generated_sql_query = ''
         final_response = ''
         
@@ -101,8 +104,8 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
 
                     response = await self.main_llm.ainvoke(messages, tools=self.tools)
 
-                    completion_tokens += response.usage_metadata['input_tokens']
-                    prompt_tokens += response.usage_metadata['output_tokens']
+                    input_tokens += response.usage_metadata['input_tokens']
+                    output_tokens += response.usage_metadata['output_tokens']
 
                 if response.tool_calls \
                     and response.tool_calls[0]['name'] == 'query_azure_sql':
@@ -129,34 +132,43 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
 
                     with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
                         final_llm_response = await self.main_llm.ainvoke(final_messages, tools=None)
-                        completion_tokens += final_llm_response.usage_metadata['input_tokens']
-                        prompt_tokens += final_llm_response.usage_metadata['output_tokens']
+                        input_tokens += final_llm_response.usage_metadata['input_tokens']
+                        output_tokens += final_llm_response.usage_metadata['output_tokens']
                         final_response = final_llm_response.content
                 
-                return final_response, \
-                    [
-                       self.create_content_artifact(
-                            original_prompt,                            
-                            tool_input = generated_sql_query,
-                            prompt_tokens = prompt_tokens,
-                            completion_tokens = completion_tokens
+                return FoundationaLLMToolResult(
+                    content=final_response,
+                    content_artifacts=[
+                        self.create_content_artifact(
+                            original_prompt,
+                            tool_input=generated_sql_query,
+                            prompt_tokens=input_tokens,
+                            completion_tokens=output_tokens
                         )
-                    ]
+                    ],
+                    input_tokens=input_tokens,
+                    output_tokens=output_tokens
+                )
+
             except Exception as e:
                 self.logger.error('An error occured in tool %s: %s', self.name, e)
-                return self.default_error_message, \
-                    [
-                         self.create_content_artifact(
-                            original_prompt,                            
-                            tool_input = generated_sql_query,
-                            prompt_tokens = prompt_tokens,
-                            completion_tokens = completion_tokens
+                return FoundationaLLMToolResult(
+                    content=self.default_error_message,
+                    content_artifacts=[
+                        self.create_content_artifact(
+                            original_prompt,
+                            tool_input=generated_sql_query,
+                            prompt_tokens=input_tokens,
+                            completion_tokens=output_tokens
                         ),
                         self.create_error_content_artifact(
                             original_prompt,
                             e
                         )
-                    ]
+                    ],
+                    input_tokens=input_tokens,
+                    output_tokens=output_tokens
+                )
 
     def __setup_sql_configuration(
             self,
