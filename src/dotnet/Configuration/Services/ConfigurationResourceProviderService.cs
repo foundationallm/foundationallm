@@ -8,11 +8,11 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.AppConfiguration;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
+using FoundationaLLM.Common.Models.ResourceProviders.Global;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.Configuration.Models;
@@ -21,10 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Collections.Concurrent;
-using System.Text;
 using System.Text.Json;
-using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 
 namespace FoundationaLLM.Configuration.Services
 {
@@ -152,6 +149,15 @@ namespace FoundationaLLM.Configuration.Services
             UnifiedUserIdentity userIdentity) =>
             resourcePath.ResourceTypeName switch
             {
+                GlobalResourceTypeNames.ManagementActions => resourcePath.Action switch
+                {
+                    ResourceProviderActions.Trigger => await ExecuteManagementAction(
+                        resourcePath,
+                        authorizationResult,
+                        serializedAction),
+                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+                },
                 ConfigurationResourceTypeNames.APIEndpointConfigurations => resourcePath.Action switch
                 {
                     ResourceProviderActions.CheckName => await CheckResourceName<APIEndpointConfiguration>(
@@ -339,7 +345,7 @@ namespace FoundationaLLM.Configuration.Services
 
             await SendResourceProviderEvent(
                 EventTypes.FoundationaLLM_ResourceProvider_AppConfig_UpdateKeyCommand,
-                new AppConfigurationEventData { Key = appConfig.Key });
+                data: new AppConfigurationEventData { Key = appConfig.Key });
 
             return new ResourceProviderUpsertResult
             {

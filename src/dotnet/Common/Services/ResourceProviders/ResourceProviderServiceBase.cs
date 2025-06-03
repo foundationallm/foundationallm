@@ -13,6 +13,8 @@ using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
+using FoundationaLLM.Common.Models.ResourceProviders.Global;
 using FoundationaLLM.Common.Services.Cache;
 using FoundationaLLM.Common.Services.Events;
 using FoundationaLLM.Common.Validation;
@@ -877,12 +879,16 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// Sends a resource provider event to the event service.
         /// </summary>
         /// <param name="eventType">The type of the event to send.</param>
+        /// <param name="targetServiceName">Optional name of the target service to which the event is sent. If null, the event is sent to all services.</param>
         /// <param name="data">The optional data to send with the event.</param>
         /// <returns></returns>
         /// <remarks>
         /// See <see cref="EventTypes"/> for a list of event types.
         /// </remarks>
-        protected async Task SendResourceProviderEvent(string eventType, object? data = null)
+        protected async Task SendResourceProviderEvent(
+            string eventType,
+            string? targetServiceName = null,
+            object? data = null)
         {
             if (_eventService == null)
             {
@@ -893,7 +899,15 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             // The CloudEvent source is automatically filled in by the event service.
             await _eventService.SendEvent(
                 EventGridTopics.FoundationaLLM_Resource_Providers,
-                new CloudEvent(string.Empty, eventType, data ?? new { })
+                new CloudEvent(
+                    string.Empty,
+                    eventType,
+                    new ResourceProviderEventData
+                    {
+                        Timestamp = DateTimeOffset.UtcNow,
+                        TargetServiceName = targetServiceName,
+                        Data = data
+                    })
                 {
                     Subject = _name
                 });
@@ -929,7 +943,24 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     // No need to handle each event separately.
                     // If more than one event is received, this indicates that multiple cache resets were requested.
                     // However, the cache will be reset only once.
-                    await HandleCacheResetCommand();
+
+                    var refTime = DateTimeOffset.UtcNow;
+                    var resourceProviderEventsData = eventsToProcess
+                        .Select(e => JsonSerializer.Deserialize<ResourceProviderEventData>(e.Data)!)
+                        // Ignore events older than 30 seconds.
+                        .Where(data => (refTime - data.Timestamp).TotalSeconds < 30)
+                        .ToList();
+
+                    // If at least one event is targeted to all services (has TargetService name null)
+                    // or if at least one event is targeted to the service hosting this resource provider,
+                    // then we handle the cache reset command.
+                    if (resourceProviderEventsData.Any(data => data.TargetServiceName is null)
+                        || resourceProviderEventsData.Any(data => data.TargetServiceName == ServiceContext.ServiceName))
+                    {
+                        _logger.LogInformation("Handling cache reset command for the {ResourceProviderName} resource provider.", _name);
+                        await HandleCacheResetCommand();
+                    }
+
                     break;
                 default:
                     await HandleEventsInternal(e);
@@ -1718,6 +1749,64 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 ? result.Select(r => r.Resource)
                 : result.Select(r => r.Resource)
                     .Where(customResourceFilter);
+        }
+
+        /// <summary>
+        /// Executes a management action on the resource provider.
+        /// </summary>
+        /// <param name="resourcePath">A <see cref="ResourcePath"/> containing information about the resource path.</param>
+        /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result
+        /// of the resource path authorization request.</param>
+        /// <param name="serializedAction">The serialized details of the action being executed.</param>
+        /// <returns></returns>
+        protected async Task<ResourceProviderActionResult> ExecuteManagementAction(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction)
+        {
+            ResourceProviderManagementAction managementAction = null!;
+
+            try
+            {
+                if (!authorizationResult.HasRequiredRole)
+                    throw new ResourceProviderException(
+                        "The resource path is not authorized for the management action.",
+                        StatusCodes.Status403Forbidden);
+
+                managementAction = JsonSerializer.Deserialize<ResourceProviderManagementAction>(
+                    serializedAction)
+                    ?? throw new ResourceProviderException(
+                        "The management action could not be deserialized.",
+                        StatusCodes.Status400BadRequest);
+
+                switch (managementAction.GetType())
+                {
+                    case Type t when t == typeof(ResourceProviderSendEventAction):
+                        var sendEventAction = (ResourceProviderSendEventAction)managementAction;
+                        await SendResourceProviderEvent(
+                            EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand,
+                            targetServiceName: sendEventAction.TargetServiceName);
+                        break;
+                    default:
+                        throw new ResourceProviderException(
+                            $"The management action {managementAction.GetType().Name} is not supported by the {_name} resource provider.",
+                            StatusCodes.Status400BadRequest);
+                }
+
+                return new ResourceProviderActionResult(string.Empty, true);
+            }
+            catch (ResourceProviderException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while executing the management action.");
+                return new ResourceProviderActionResult(
+                    string.Empty,
+                    false,
+                    $"An error occurred while executing the management action: {ex.Message}");
+            }
         }
 
         #region Helpers

@@ -98,9 +98,10 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             if len(file_object_ids) != len(file_names):
                 raise ToolException(f"Some of the requested files [{file_names}] are not available in the file history.")
         else:
+            file_names = []
             file_object_ids = []
 
-        session_id = runnable_config['configurable'][self.tool_config.name][self.DYNAMIC_SESSION_ID],
+        session_id = runnable_config['configurable'][self.tool_config.name][self.DYNAMIC_SESSION_ID]
         pool_management_endpoint=runnable_config['configurable'][self.tool_config.name][self.DYNAMIC_SESSION_ENDPOINT]
 
         llm_prompt = prompt or user_prompt_rewrite or user_prompt
@@ -170,7 +171,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             for file_name, file_data in files_list.items():
                 content_artifacts.append(ContentArtifact(
                     id = self.name,
-                    title = self.name,
+                    title = f'{self.name} (file)',
                     type = ContentArtifactTypeNames.FILE,
                     filepath = file_name,
                     metadata = {

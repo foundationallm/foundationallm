@@ -65,5 +65,10 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string Vector_Databases_Contributor = "c026f070-abc2-4419-aed9-ec0676f81519";
 
+        /// <summary>
+        /// Execute management actions on resource providers.
+        /// </summary>
+        public const string Resource_Providers_Administrator = "63b6cc4d-9e1c-4891-8201-cf58286ebfe6";
+
     }
 }

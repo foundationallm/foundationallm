@@ -325,5 +325,29 @@
 		"updated_on": "2025-05-01T00:00:00.0000000Z",
 		"created_by": null,
 		"updated_by": null
+	},
+	{
+		"type": "FoundationaLLM.Authorization/roleDefinitions",
+		"name": "63b6cc4d-9e1c-4891-8201-cf58286ebfe6",
+		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/63b6cc4d-9e1c-4891-8201-cf58286ebfe6",
+		"display_name": "Resource Providers Administrator",
+		"description": "Execute management actions on resource providers.",
+		"assignable_scopes": [
+			"/"
+		],
+		"permissions": [
+			{
+				"actions": [
+					"*/managementActions/write"
+				],
+				"not_actions": [],
+				"data_actions": [],
+				"not_data_actions": []
+			}
+		],
+		"created_on": "2025-05-01T00:00:00.0000000Z",
+		"updated_on": "2025-05-01T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
 	}
 ]

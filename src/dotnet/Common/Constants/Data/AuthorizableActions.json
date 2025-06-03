@@ -206,6 +206,11 @@
 				"name": "FoundationaLLM.Configuration/apiEndpointConfigurations/delete",
 				"description": "Delete API endpoint configurations.",
 				"field_name": "FoundationaLLM_Configuration_APIEndpoinConfigurations_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Configuration/managementActions/write",
+				"description": "Execute management actions.",
+				"field_name": "FoundationaLLM_Configuration_ManagementActions_Write"
 			}
 		]
 	},
