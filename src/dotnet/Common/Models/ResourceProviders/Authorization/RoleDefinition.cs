@@ -27,6 +27,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Authorization
         public List<RoleDefinitionPermissions> Permissions { get; set; } = [];
 
         public List<string> GetAllowedActions() =>
-            Permissions.SelectMany(p => p.GetAllowedActions()).Distinct().ToList();
+            [.. Permissions.SelectMany(p => p.GetAllowedActions()).Distinct()];
     }
 }

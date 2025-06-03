@@ -42,8 +42,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Authorization
                 allowedInstanceIds);
 
             RoleDefinition = RoleDefinitions.All[RoleDefinitionId];
-            AllowedActions = new HashSet<string>(
-                RoleDefinition.GetAllowedActions());
+            AllowedActions = [.. RoleDefinition.GetAllowedActions()];
         }
     }
 }
