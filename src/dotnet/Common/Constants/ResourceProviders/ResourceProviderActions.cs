@@ -39,5 +39,10 @@
         /// Load a plugin package.
         /// </summary>
         public const string LoadPluginPackage = "load-plugin-package";
+
+        /// <summary>
+        /// Reset the cache for a resource provider.
+        /// </summary>
+        public const string Trigger = "trigger";
     }
 }

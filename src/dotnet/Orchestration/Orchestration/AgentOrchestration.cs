@@ -68,7 +68,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         string? vectorStoreId,
         LongRunningOperationContext? longRunningOperationContext,
         IContextServiceClient contextServiceClient,
-        Func<LLMCompletionRequest, Task>? completionRequestObserver = null
+        Func<LLMCompletionRequest, CompletionRequest, Task>? completionRequestObserver = null
         ) : OrchestrationBase(orchestrationService)
     {
         private readonly string _instanceId = instanceId;
@@ -82,7 +82,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
         private readonly bool? _dataSourceAccessDenied = dataSourceAccessDenied;
         private readonly LongRunningOperationContext? _longRunningOperationContext = longRunningOperationContext;
-        private readonly Func<LLMCompletionRequest, Task>? _completionRequestObserver = completionRequestObserver;
+        private readonly Func<LLMCompletionRequest, CompletionRequest, Task>? _completionRequestObserver = completionRequestObserver;
 
         private readonly IResourceProviderService _agentResourceProvider =
             resourceProviderServices[ResourceProviderNames.FoundationaLLM_Agent];
@@ -135,7 +135,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             var llmCompletionRequest = await GetLLMCompletionRequest(completionRequest);
             if (_completionRequestObserver != null)
-                await _completionRequestObserver(llmCompletionRequest);
+                await _completionRequestObserver(llmCompletionRequest, completionRequest);
 
             var result = await _orchestrationService.StartCompletionOperation(
                 _instanceId,
@@ -200,7 +200,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             var llmCompletionRequest = await GetLLMCompletionRequest(completionRequest);
             if (_completionRequestObserver != null)
-                await _completionRequestObserver(llmCompletionRequest);
+                await _completionRequestObserver(llmCompletionRequest, completionRequest);
 
             var llmCompletionResponse = await _orchestrationService.GetCompletion(
                 _instanceId,

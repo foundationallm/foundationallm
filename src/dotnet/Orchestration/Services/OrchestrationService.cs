@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Models.Infrastructure;
@@ -251,7 +252,9 @@ public class OrchestrationService : IOrchestrationService
         }
     }
 
-    private async Task ObserveCompletionRequest(LLMCompletionRequest completionRequest)
+    private async Task ObserveCompletionRequest(
+        LLMCompletionRequest outboundCompletionRequest,
+        CompletionRequest inboundCompletionRequest)
     {
         try
         {
@@ -262,20 +265,29 @@ public class OrchestrationService : IOrchestrationService
 
             if (persistCompletionRequest)
             {
-                _logger.LogInformation("Persisting completion request for operation {OperationId}.", completionRequest.OperationId);
                 var refTime = DateTimeOffset.UtcNow;
+
+                _logger.LogInformation("Persisting inbound completion request for operation {OperationId}.", inboundCompletionRequest.OperationId);
                 await _completionRequestsStorage.WriteFileAsync(
                     _completionRequestsStorage.StorageContainerName!,
-                    $"{_callContext.CurrentUserIdentity.UPN}/{refTime:yyyy-MM}/{refTime:yyyy-MM-dd-HHmmss}-completion-request.json",
-                    JsonSerializer.Serialize(completionRequest),
+                    $"{_callContext.CurrentUserIdentity.UPN!.NormalizeUserPrincipalName()}/{refTime:yyyy-MM-dd}/{refTime:yyyy-MM-dd-HHmmss}-completion-request-IN.json",
+                    JsonSerializer.Serialize(inboundCompletionRequest),
+                    "application/json",
+                    default);
+
+                _logger.LogInformation("Persisting outbound completion request for operation {OperationId}.", outboundCompletionRequest.OperationId);
+                await _completionRequestsStorage.WriteFileAsync(
+                    _completionRequestsStorage.StorageContainerName!,
+                    $"{_callContext.CurrentUserIdentity.UPN!.NormalizeUserPrincipalName()}/{refTime:yyyy-MM-dd}/{refTime:yyyy-MM-dd-HHmmss}-completion-request-OUT.json",
+                    JsonSerializer.Serialize(outboundCompletionRequest),
                     "application/json",
                     default);
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error observing the completion request for operation {OperationId}.",
-                completionRequest.OperationId);
+            _logger.LogError(ex, "Error observing the completion requests for operation {OperationId}.",
+                outboundCompletionRequest.OperationId);
         }
     }
 

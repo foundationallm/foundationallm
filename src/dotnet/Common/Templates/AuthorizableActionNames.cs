@@ -208,6 +208,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string FoundationaLLM_Configuration_APIEndpoinConfigurations_Delete = "FoundationaLLM.Configuration/apiEndpointConfigurations/delete";
 
+        /// <summary>
+        /// Execute management actions.
+        /// </summary>
+        public const string FoundationaLLM_Configuration_ManagementActions_Write = "FoundationaLLM.Configuration/managementActions/write";
+
         #endregion
 
         #region DataSource

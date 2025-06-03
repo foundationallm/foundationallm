@@ -362,6 +362,32 @@ namespace FoundationaLLM.Common.Models.Authorization
                         UpdatedBy = null
                     }
                 },
+                {
+                    "/providers/FoundationaLLM.Authorization/roleDefinitions/63b6cc4d-9e1c-4891-8201-cf58286ebfe6",
+                    new RoleDefinition
+                    {
+                        Name = "63b6cc4d-9e1c-4891-8201-cf58286ebfe6",
+                        Type = "FoundationaLLM.Authorization/roleDefinitions",
+                        ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/63b6cc4d-9e1c-4891-8201-cf58286ebfe6",
+                        DisplayName = "Resource Providers Administrator",
+                        Description = "Execute management actions on resource providers.",
+                        AssignableScopes = [
+                            "/",],
+                        Permissions = [                            
+                            new RoleDefinitionPermissions
+                            {
+                                Actions = [
+                                    "*/managementActions/write",],
+                                NotActions = [],
+                                DataActions = [],
+                                NotDataActions = [],
+                            },],
+                        CreatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
+                        UpdatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
+                        CreatedBy = null,
+                        UpdatedBy = null
+                    }
+                },
             });
     }
 }

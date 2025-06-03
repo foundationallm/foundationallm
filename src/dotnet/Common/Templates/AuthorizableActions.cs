@@ -272,6 +272,13 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Configuration")
                 },
                 {
+                    AuthorizableActionNames.FoundationaLLM_Configuration_ManagementActions_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Configuration_ManagementActions_Write,
+                        "Execute management actions.",
+                        "Configuration")
+                },
+                {
                     AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Read,
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Read,

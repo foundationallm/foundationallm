@@ -68,7 +68,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             ISemanticCacheService semanticCacheService,
             IServiceProvider serviceProvider,
             ILoggerFactory loggerFactory,
-            Func<LLMCompletionRequest, Task>? completionRequestObserver = null)
+            Func<LLMCompletionRequest, CompletionRequest, Task>? completionRequestObserver = null)
         {
             var logger = loggerFactory.CreateLogger<OrchestrationBuilder>();
 
