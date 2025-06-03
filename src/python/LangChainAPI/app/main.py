@@ -4,7 +4,7 @@ Main entry-point for the FoundationaLLM LangChainAPI.
 from fastapi import FastAPI
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from app.lifespan_manager import lifespan
-from app.routers import completions, status
+from app.routers import completions, status, management
 
 app = FastAPI(
     lifespan=lifespan,
@@ -29,6 +29,7 @@ app = FastAPI(
 
 app.include_router(completions.router)
 app.include_router(status.router)
+app.include_router(management.router)
 
 FastAPIInstrumentor.instrument_app(app)
 

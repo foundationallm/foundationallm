@@ -1,4 +1,4 @@
-from importlib import import_module
+from importlib import import_module, reload
 from logging import Logger
 import os
 import sys
@@ -97,7 +97,7 @@ class PluginManager():
             except Exception as e:
                 self.logger.exception('An error occurred while initializing the plugin manager storage manager. No plugins will be loaded.')
 
-    def load_external_modules(self):
+    def load_external_modules(self, reload_modules:bool=False):
         """
         Loads the external modules into the system.
         """
@@ -127,9 +127,14 @@ class PluginManager():
                             f.write(module_file_binary_content)
 
                     sys.path.insert(0, local_module_file_name)
-                    external_module.module = import_module(external_module.module_name)
 
-                    self.logger.info(f'Module {module_name} loaded successfully.')
+                    if reload_modules:
+                        external_module.module = reload(external_module.module)
+                        self.logger.info(f'Module {module_name} reloaded successfully.')
+                    else:
+                        external_module.module = import_module(external_module.module_name)
+                        self.logger.info(f'Module {module_name} loaded successfully.')
+
                     external_module.module_loaded = True
                     loaded_modules.add(module_name)
 
@@ -139,4 +144,11 @@ class PluginManager():
 
             except Exception as e:
                 self.logger.exception(f'An error occurred while loading module: {module_name}')
+
+    def clear_cache(self):
+        """
+        Clears the object cache.
+        """
+        self.object_cache.clear()
+        self.logger.info('Object cache cleared.')
 
