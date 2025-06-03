@@ -74,7 +74,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             file_names: Optional[List[str]] = None,
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
             runnable_config: RunnableConfig = None,
-            **kwargs: Any) -> FoundationaLLMToolResult:
+            **kwargs: Any) -> Tuple[str, FoundationaLLMToolResult]:
 
         # Get the original prompt
         if runnable_config is None:
@@ -200,7 +200,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             }
         ))
 
-        return FoundationaLLMToolResult(
+        return content, FoundationaLLMToolResult(
             content=content,
             content_artifacts=content_artifacts,
             input_tokens=input_tokens,

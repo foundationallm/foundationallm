@@ -164,10 +164,10 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                         tool = next((t for t in self.tools if t.name == tool_call['name']), None)
                         if tool:
                             tool_result = await tool.ainvoke(tool_call, runnable_config)
-                            content_artifacts.extend(tool_result.content_artifacts)
-                            intermediate_responses.append(str(tool_result.content))
-                            input_tokens += tool_result.input_tokens
-                            output_tokens += tool_result.output_tokens
+                            content_artifacts.extend(tool_result.artifact.content_artifacts)
+                            intermediate_responses.append(str(tool_result.artifact.content))
+                            input_tokens += tool_result.artifact.input_tokens
+                            output_tokens += tool_result.artifact.output_tokens
                         else:
                             self.logger.error(
                                 'Tool %s not found in the tools list. Skipping tool call.', tool_call["name"])
@@ -408,8 +408,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             CompletionRequestObjectKeys.WORKFLOW_INVOCATION_ATTACHED_FILES, '')
 
         files_prompt = self.workflow_files_prompt \
-            .replace(f'{{{{{TemplateVariables.CONVERSATION_FILES}}}}}', conversation_files) \
-            .replace(f'{{{{{TemplateVariables.ATTACHED_FILES}}}}}', attached_files) \
+            .replace(f'{{{{{TemplateVariables.CONVERSATION_FILES}}}}}', '\n'.join(conversation_files)) \
+            .replace(f'{{{{{TemplateVariables.ATTACHED_FILES}}}}}', '\n'.join(attached_files)) \
             if self.workflow_files_prompt else ''
         
         main_prompt = self.workflow_main_prompt \

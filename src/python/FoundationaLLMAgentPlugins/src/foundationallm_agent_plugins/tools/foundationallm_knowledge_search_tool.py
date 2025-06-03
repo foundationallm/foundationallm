@@ -49,7 +49,7 @@ class FoundationaLLMKnowledgeSearchTool(FoundationaLLMToolBase):
     async def _arun(self,
             prompt: str,
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
-            runnable_config: RunnableConfig = None) -> FoundationaLLMToolResult:
+            runnable_config: RunnableConfig = None) -> Tuple[str, FoundationaLLMToolResult]:
         """ Retrieves documents from an index based on the proximity to the prompt to answer the prompt."""
 
         input_tokens = 0
@@ -97,7 +97,7 @@ class FoundationaLLMKnowledgeSearchTool(FoundationaLLMToolBase):
         #    content = rag_prompt,
         #    source = "tool",
         #    type = "full_prompt"))
-        return FoundationaLLMToolResult(
+        return completion.content, FoundationaLLMToolResult(
             content=completion.content,
             content_artifacts=content_artifacts,
             input_tokens=input_tokens,
