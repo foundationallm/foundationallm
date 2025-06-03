@@ -1,5 +1,6 @@
 {
     "python.analysis.extraPaths": [
-        "./src/python/FoundationaLLMAgentPlugins/src"
+        "./src/python/FoundationaLLMAgentPlugins/src",
+        "./src/python/PythonSDK"
     ]
 }

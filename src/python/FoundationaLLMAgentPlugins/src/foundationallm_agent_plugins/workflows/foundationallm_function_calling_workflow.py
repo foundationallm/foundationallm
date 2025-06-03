@@ -199,7 +199,6 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
             workflow_content_artifact = self.__create_workflow_execution_content_artifact(
                 llm_prompt,
-                llm_response.content,
                 input_tokens,
                 output_tokens,
                 router_end_time - router_start_time)
@@ -314,7 +313,6 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
     def __create_workflow_execution_content_artifact(
             self,
             original_prompt: str,
-            intent: str,
             input_tokens: int = 0,
             output_tokens: int = 0,
             completion_time_seconds: float = 0) -> ContentArtifact:
@@ -326,7 +324,6 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         content_artifact.title = self.workflow_config.name
         content_artifact.filepath = None
         content_artifact.metadata = {
-            'intent': intent,
             'prompt_tokens': str(input_tokens),
             'completion_tokens': str(output_tokens),
             'completion_time_seconds': str(completion_time_seconds)

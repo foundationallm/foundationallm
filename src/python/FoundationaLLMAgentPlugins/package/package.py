@@ -27,7 +27,8 @@ print('Configuration:', args.config)
 
 if args.config == 'Debug':
     with zipfile.ZipFile(f'{package_name}_debug-{args.version}.zip', mode='w') as zip_pkg:
-        for f in Path(f'src/f{package_name}').rglob('*.py'):
+        for f in Path(f'src/{package_name}').rglob('*.py'):
+            print(f'Adding {f} to the package...')
             zip_pkg.write(f, f.relative_to('src'))
 else:
     with zipfile.PyZipFile(f'{package_name}-{args.version}.zip', mode='w') as zip_pkg:
