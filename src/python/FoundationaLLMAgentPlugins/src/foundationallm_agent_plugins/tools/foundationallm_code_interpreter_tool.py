@@ -7,7 +7,8 @@ import json
 from langchain_azure_dynamic_sessions import SessionsPythonREPLTool
 from langchain_core.callbacks import CallbackManagerForToolRun, AsyncCallbackManagerForToolRun
 from langchain_core.messages import (
-    SystemMessage
+    SystemMessage,
+    HumanMessage
 )
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import ToolException
@@ -115,7 +116,8 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         with self.tracer.start_as_current_span(f'{self.name}_initial_llm_call', kind=SpanKind.INTERNAL):
 
             messages = [
-                SystemMessage(content=self.main_prompt.replace('{{code_generation_prompt}}', llm_prompt))
+                SystemMessage(content=self.main_prompt),
+                HumanMessage(content=llm_prompt)
             ]
 
             response = await self.main_llm.ainvoke(messages)
