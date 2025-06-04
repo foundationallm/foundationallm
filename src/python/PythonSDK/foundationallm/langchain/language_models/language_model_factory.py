@@ -1,4 +1,5 @@
 import boto3
+import botocore
 import json
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from google.oauth2 import service_account
@@ -17,11 +18,11 @@ from foundationallm.models.resource_providers.configuration import APIEndpointCo
 from foundationallm.utils import ObjectUtils
 
 class LanguageModelFactory:
-   
+
     def __init__(self, objects:dict, config: Configuration):
         self.objects = objects
         self.config = config
-    
+
     def get_language_model(self,
                            ai_model_object_id:str,
                            override_operation_type: OperationTypes = None
@@ -43,16 +44,16 @@ class LanguageModelFactory:
         if ai_model is None:
             raise LangChainException("AI model configuration settings are missing.", 400)
 
-        api_endpoint = ObjectUtils.get_object_by_id(ai_model.endpoint_object_id, self.objects, APIEndpointConfiguration)        
+        api_endpoint = ObjectUtils.get_object_by_id(ai_model.endpoint_object_id, self.objects, APIEndpointConfiguration)
         if api_endpoint is None:
             raise LangChainException("API endpoint configuration settings are missing.", 400)
-        
+
         match api_endpoint.provider:
             case LanguageModelProvider.MICROSOFT:
                 op_type = api_endpoint.operation_type
                 if override_operation_type is not None:
                     op_type = override_operation_type
-                if api_endpoint.authentication_type == AuthenticationTypes.AZURE_IDENTITY:                    
+                if api_endpoint.authentication_type == AuthenticationTypes.AZURE_IDENTITY:
                     try:
                         scope = api_endpoint.authentication_parameters.get('scope', 'https://cognitiveservices.azure.com/.default')
                         # Set up a Azure AD token provider.
@@ -60,7 +61,7 @@ class LanguageModelFactory:
                             DefaultAzureCredential(exclude_environment_credential=True),
                             scope
                         )
-                        
+
                         if op_type == OperationTypes.CHAT:
                             language_model = AzureChatOpenAI(
                                 azure_endpoint=api_endpoint.url,
@@ -69,11 +70,11 @@ class LanguageModelFactory:
                                 azure_ad_token_provider=token_provider,
                                 azure_deployment=ai_model.deployment_name
                             )
-                        elif op_type == OperationTypes.ASSISTANTS_API or op_type == OperationTypes.IMAGE_SERVICES:                            
+                        elif op_type == OperationTypes.ASSISTANTS_API or op_type == OperationTypes.IMAGE_SERVICES:
                             # Assistants API clients can't have deployment as that is assigned at the assistant level.
                             language_model = async_aoi(
                                 azure_endpoint=api_endpoint.url,
-                                api_version=api_endpoint.api_version,                                
+                                api_version=api_endpoint.api_version,
                                 azure_ad_token_provider=token_provider
                             )
                         else:
@@ -81,15 +82,15 @@ class LanguageModelFactory:
 
                     except Exception as e:
                         raise LangChainException(f"Failed to create Azure OpenAI API connector: {str(e)}", 500)
-                else: # Key-based authentication                    
-                    try:                        
-                        api_key = self.config.get_value(api_endpoint.authentication_parameters.get('api_key_configuration_name'))                        
+                else: # Key-based authentication
+                    try:
+                        api_key = self.config.get_value(api_endpoint.authentication_parameters.get('api_key_configuration_name'))
                     except Exception as e:
                         raise LangChainException(f"Failed to retrieve API key: {str(e)}", 500)
 
                     if api_key is None:
                         raise LangChainException("API key is missing from the configuration settings.", 400)
-                    
+
                     if op_type == OperationTypes.CHAT:
                         language_model = AzureChatOpenAI(
                             azure_endpoint=api_endpoint.url,
@@ -121,6 +122,8 @@ class LanguageModelFactory:
                     else OpenAI(base_url=api_endpoint.url, api_key=api_key)
                 )
             case LanguageModelProvider.BEDROCK:
+                boto3_config = botocore.config.Config(connect_timeout=60, read_timeout=api_endpoint.timeout_seconds)
+
                 if api_endpoint.authentication_type == AuthenticationTypes.AZURE_IDENTITY:
                     # Get Azure scope for federated authentication as well as the AWS role ARN (Amazon Resource Name).
                     try:
@@ -159,7 +162,8 @@ class LanguageModelFactory:
                         region_name = region,
                         aws_access_key_id = creds["AccessKeyId"],
                         aws_secret_access_key = creds["SecretAccessKey"],
-                        aws_session_token= creds["SessionToken"]
+                        aws_session_token= creds["SessionToken"],
+                        config=boto3_config
                     )
                 else: # Key-based authentication
                     try:
@@ -184,10 +188,11 @@ class LanguageModelFactory:
                         model= ai_model.deployment_name,
                         region_name = region,
                         aws_access_key_id = access_key,
-                        aws_secret_access_key = secret_key
+                        aws_secret_access_key = secret_key,
+                        config=boto3_config
                     )
             case LanguageModelProvider.VERTEXAI:
-                # Only supports service account authentication via JSON credentials stored in key vault. 
+                # Only supports service account authentication via JSON credentials stored in key vault.
                 # Uses the authentication parameter: service_account_credentials to get the application configuration key for this value.
                 try:
                     service_account_credentials_definition = json.loads(self.config.get_value(api_endpoint.authentication_parameters.get('service_account_credentials')))
@@ -197,8 +202,8 @@ class LanguageModelFactory:
                 if not service_account_credentials_definition:
                     raise LangChainException("Service account credentials are missing from the configuration settings.", 400)
 
-                service_account_credentials = service_account.Credentials.from_service_account_info(service_account_credentials_definition)                
-                language_model = ChatVertexAI(                   
+                service_account_credentials = service_account.Credentials.from_service_account_info(service_account_credentials_definition)
+                language_model = ChatVertexAI(
                     model=ai_model.deployment_name,
                     temperature=0,
                     max_tokens=None,
@@ -211,5 +216,5 @@ class LanguageModelFactory:
         for key, value in ai_model.model_parameters.items():
             if hasattr(language_model, key):
                 setattr(language_model, key, value)
-        
+
         return language_model
