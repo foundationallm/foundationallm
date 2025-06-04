@@ -33,7 +33,9 @@ namespace FoundationaLLM.Context.Services
             ContextServiceException.ThrowIfNullOrWhiteSpace(context, nameof(context));
             ContextServiceException.ThrowIfNullOrWhiteSpace(userIdentity?.UPN, nameof(userIdentity));
 
-            var newSessionId = $"code-{conversationId}-{context}";
+            var newSessionId = GetNewSessionId(
+                conversationId,
+                context);
 
             // Ensure the session identifier is no longer than 128 characters.
             if (newSessionId.Length > 128)
@@ -63,5 +65,17 @@ namespace FoundationaLLM.Context.Services
 
             return httpClient;
         }
+
+        /// <summary>
+        /// Generates a new session identifier based on the conversation identifier and context.
+        /// </summary>
+        /// <param name="conversationId">The conversation identifier.</param>
+        /// <param name="context">Additional context for the code session.</param>
+        /// <returns></returns>
+        /// <remarks>The context is usually the name of the agent tool that requests the code session.</remarks>
+        protected virtual string GetNewSessionId(
+            string conversationId,
+            string context) =>
+            $"code-{conversationId}-{context}";
     }
 }

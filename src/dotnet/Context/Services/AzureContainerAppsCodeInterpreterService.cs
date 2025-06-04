@@ -53,6 +53,10 @@ namespace FoundationaLLM.Context.Services
                     StatusCodes.Status400BadRequest);
 
         /// <inheritdoc />
+        protected override string GetNewSessionId(string conversationId, string context) =>
+            $"{conversationId}-{context}-{DateTimeOffset.UtcNow:HHmmssfff}";
+
+        /// <inheritdoc />
         public async Task<bool> UploadFileToCodeSession(
             string codeSessionId,
             string endpoint,
