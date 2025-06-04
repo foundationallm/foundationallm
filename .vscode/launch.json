@@ -25,6 +25,16 @@
             "justMyCode": false
         },
         {
+            "name": "FoundationaLLMAgentPlugins - Debug Workflow",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins/test/foundationallm_function_calling_workflow/test_workflow.py",
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins/.venv/Scripts/python.exe",
+            "cwd" : "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins",
+            "justMyCode": false
+        },
+        {
             "command": "npm run dev",
             "name": "User Portal UI",
             "request": "launch",

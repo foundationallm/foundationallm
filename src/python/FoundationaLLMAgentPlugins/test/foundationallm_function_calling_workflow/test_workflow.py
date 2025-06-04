@@ -24,14 +24,14 @@ from foundationallm.models.constants import (
 #user_prompt = "Generate a graph of y=mx+b where m=2 and b=3 and create a PDF with the graph along with text explaining the graph"
 #user_prompt = "Generate a PDF document with the title 'Test' and the content 'This is a test'"
 #user_prompt = "Generate an interactive graph of y=mx+b where m=2 and b=3"
-#user_prompt = "Generate a graph of y=mx+b where m=2 and b=3"
+user_prompt = "Generate a graph of y=mx+b where m=2 and b=3"
 #user_prompt = "Generate a PDF with the text 'Hello World'"
 #user_prompt = "What is the average of 42 plus 84 plus 168. Do your calculations in Python and show your work. Also Create a bar chart of the aforementioned numbers showing the average line on that bar chart."
 #user_prompt = "Generate a graph based on this data."
 # user_prompt = "how do I beat the market"
 # user_prompt = "Who is the hero of the story?"
 # user_prompt = "Who are you?"
-user_prompt = "Summarize the document"
+# user_prompt = "Summarize the document"
 # user_prompt = "Calculate the first 20 terms of the Fibonacci series"
 # user_prompt = "Calculate the first 20 terms of the Fibonacci series and save the result as a text file."
 # user_prompt = "Generate a graph of a complex Fourier transformation"
@@ -39,7 +39,7 @@ user_prompt = "Summarize the document"
 # user_prompt = "Who are you?"
 
 operation_id = str(uuid.uuid4())
-conversation_id = "20250603-145257-VS5oX2H0eE2Up0eF1hTcNQ"
+conversation_id = "20250604-093201-RgbXFoxtakCBGJPmoMkQ-Q"
 
 user_identity_json = {"name": "Experimental Test", "user_name":"ciprian@foundationaLLM.ai","upn":"ciprian@foundationaLLM.ai"}
 full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects

@@ -2,6 +2,8 @@
 Class: ToolFactory
 Description: Factory class for creating tools based on the AgentTool configuration.
 """
+import re
+
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.langchain.exceptions import LangChainException
@@ -41,7 +43,7 @@ class ToolFactory:
         """
 
         # Use a cache key based on agent name, package name, and tool name to store the tool instance in the object cache.
-        cache_key = f"{agent_name}|{tool_config.package_name}|{tool_config.name}"
+        cache_key = f"{(self.__normalize_upn(user_identity.upn))}|{agent_name}|{tool_config.package_name}|{tool_config.name}"
 
         if cache_key in self.plugin_manager.object_cache:
             return self.plugin_manager.object_cache[cache_key]
@@ -74,3 +76,15 @@ class ToolFactory:
 
         raise LangChainException(f"Tool {tool_config.name} not found in package {tool_config.package_name}")
 
+    def __normalize_upn(self, upn: str) -> str:
+        """
+        Normalize a UPN string by:
+        - Trimming whitespace
+        - Lowercasing
+        - Replacing special characters with '-'
+        """
+
+        upn = upn.strip().lower()
+        # Replace any character that is not a-z, 0-9 with '-'
+        upn = re.sub(r'[^a-z0-9]', '-', upn)
+        return upn
