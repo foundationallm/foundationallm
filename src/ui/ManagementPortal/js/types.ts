@@ -64,6 +64,7 @@ export type AgentTool = {
 export type AgentWorkflow = {
 	type: string;
 	assistant_id: string;
+	vector_store_id: string;
 	name: string;
 	package_name: string;
 	workflow_host: string;
