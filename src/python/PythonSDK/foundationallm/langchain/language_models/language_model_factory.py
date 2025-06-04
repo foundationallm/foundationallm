@@ -208,9 +208,7 @@ class LanguageModelFactory:
                         aws_access_key_id = creds["AccessKeyId"],
                         aws_secret_access_key = creds["SecretAccessKey"],
                         aws_session_token= creds["SessionToken"],
-                        boto3_client_kwargs={
-                            'config': boto3_config
-                        }
+                        config=boto3_config
                     )
                 else: # Key-based authentication
                     try:
@@ -236,9 +234,7 @@ class LanguageModelFactory:
                         region_name = region,
                         aws_access_key_id = access_key,
                         aws_secret_access_key = secret_key,
-                        boto3_client_kwargs={
-                            'config': boto3_config
-                        }
+                        config=boto3_config
                     )
             case LanguageModelProvider.VERTEXAI:
                 # Only supports service account authentication via JSON credentials stored in key vault.
