@@ -227,7 +227,7 @@ def process_question(question, answer, filename):
     
     # Time the completion request
     completion_start_time = time.time()
-    if (filename):
+    if (not pd.isna(filename)):
         # Upload the file
         file_path = os.path.join(os.getcwd(), 'uploads', filename)
         fllm_endpoint = os.getenv("FLLM_ENDPOINT")
