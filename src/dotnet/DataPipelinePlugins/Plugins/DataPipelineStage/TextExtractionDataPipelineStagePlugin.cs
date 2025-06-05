@@ -25,7 +25,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
         private readonly Dictionary<string, string> _contentTypeMappings = new()
         {
-            { "application/pdf", "PDF" }
+            { "application/pdf", "PDF" },
+            { "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "DOCX" },
+            { "application/vnd.openxmlformats-officedocument.presentationml.presentation", "PPTX" },
+            { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "XLSX" }
         };
 
         /// <inheritdoc/>
