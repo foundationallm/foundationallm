@@ -51,5 +51,19 @@ namespace FoundationaLLM.Context.Interfaces
             string sessionId,
             string operationId,
             UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Executes code in a code session and returns the result of the execution.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="sessionId">The identifier of the code session where the code must be executed.</param>
+        /// <param name="codeToExecute">The code to execute.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing the user identity information.</param>
+        /// <returns>The result of the code execution including standard and error outputs.</returns>
+        Task<CodeSessionCodeExecuteResponse> ExecuteCodeInCodeSession(
+            string instanceId,
+            string sessionId,
+            string codeToExecute,
+            UnifiedUserIdentity userIdentity);
     }
 }

@@ -95,8 +95,8 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             file_history = []
 
         if file_names:
-            file_object_ids = [f.object_id for f in file_history if f.original_file_name in file_names]
-            if len(file_object_ids) != len(file_names):
+            file_object_ids = [next((f.object_id for f in file_history if f.original_file_name == file_name), None) for file_name in file_names]
+            if None in file_object_ids:
                 raise ToolException(f"Some of the requested files [{file_names}] are not available in the file history.")
         else:
             file_names = []
@@ -197,6 +197,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                 'original_user_prompt': user_prompt_rewrite or user_prompt,
                 'tool_input_prompt': prompt,
                 'tool_input_files': ', '.join(file_names) if file_names else '',
+                'tool_generated_code': generated_code,
                 'tool_output': str(response.get('stdout', '')),
                 'tool_error': str(response.get('stderr', '')),
                 'tool_result': str(response.get('result', ''))

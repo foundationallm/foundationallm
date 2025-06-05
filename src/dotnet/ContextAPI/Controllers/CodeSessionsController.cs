@@ -18,7 +18,7 @@ namespace FoundationaLLM.Context.API.Controllers
     public class CodeSessionsController(
         ICodeSessionService codeSessionService,
         IOrchestrationContext callContext,
-        ILogger<CodeSessionsController> logger): ControllerBase
+        ILogger<CodeSessionsController> logger) : ControllerBase
     {
         private readonly ICodeSessionService _codeSessionService = codeSessionService;
         private readonly IOrchestrationContext _callContext = callContext;
@@ -84,6 +84,27 @@ namespace FoundationaLLM.Context.API.Controllers
                 request.OperationId,
                 _callContext.CurrentUserIdentity!);
 
+            return new OkObjectResult(response);
+        }
+
+        /// <summary>
+        /// Executes code in a code session and returns the result of the execution.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="sessionId">The identifier of the code session where the code must be executed.</param>
+        /// <param name="codeExecutionRequest">The code execution request.</param>
+        /// <returns>The result of the code execution including standard and error outputs.</returns>
+        [HttpPost("{sessionId}/executeCode")]
+        public async Task<IActionResult> ExecuteCodeInCodeSession(
+            string instanceId,
+            string sessionId,
+            [FromBody] CodeSessionCodeExecuteRequest codeExecutionRequest)
+        {
+            var response = await _codeSessionService.ExecuteCodeInCodeSession(
+                instanceId,
+                sessionId,
+                codeExecutionRequest.CodeToExecute,
+                _callContext.CurrentUserIdentity!);
             return new OkObjectResult(response);
         }
     }

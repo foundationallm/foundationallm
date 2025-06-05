@@ -133,6 +133,19 @@ namespace FoundationaLLM.Context.Services
                 return null;
         }
 
+        /// <inheritdoc />
+        public async Task<CodeSessionCodeExecuteResponse> ExecuteCodeInCodeSession(
+            string codeSessionId,
+            string endpoint,
+            string codeToExecute) =>
+            await Task.FromResult(new CodeSessionCodeExecuteResponse
+            {
+                Status = "",
+                StandardOutput = "",
+                StandardError = "",
+                ExecutionResult = "This provider does not support code execution.",
+            });
+
         private async Task<List<CodeSessionFileStoreItem>> GetCodeSessionFileStoreItems(
             string codeSessionId,
             string endpoint,

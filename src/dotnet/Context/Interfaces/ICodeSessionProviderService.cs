@@ -79,5 +79,17 @@ namespace FoundationaLLM.Context.Interfaces
         Task DeleteCodeSessionFileStoreItems(
             string codeSessionId,
             string endpoint);
+
+        /// <summary>
+        /// Executes code in a code session.
+        /// </summary>
+        /// <param name="codeSessionId">The identifier of the code session.</param>
+        /// <param name="endpoint">The endpoint of the code session service.</param>
+        /// <param name="codeToExecute">The code to execute.</param>
+        /// <returns>The result of the code execution including standard and error outputs.</returns>
+        Task<CodeSessionCodeExecuteResponse> ExecuteCodeInCodeSession(
+            string codeSessionId,
+            string endpoint,
+            string codeToExecute);
     }
 }

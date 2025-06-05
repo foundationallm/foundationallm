@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 
 namespace FoundationaLLM.Context.Services
 {
@@ -135,6 +136,40 @@ namespace FoundationaLLM.Context.Services
                 return responseMessage.Content.ReadAsStream();
             else
                 return null;
+        }
+
+        /// <inheritdoc />
+        public async Task<CodeSessionCodeExecuteResponse> ExecuteCodeInCodeSession(
+            string codeSessionId,
+            string endpoint,
+            string codeToExecute)
+        {
+            var httpClient = await CreateHttpClient();
+
+            var url = $"{endpoint}/executions?api-version=2024-10-02-preview&identifier={codeSessionId}";
+            var payload = new { codeInputType = "Inline", executionType = "Synchronous", code = codeToExecute };
+            var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
+
+            var response = await httpClient.PostAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new ContextServiceException(
+                    $"Code execution failed: {error}",
+                    (int)response.StatusCode);
+            }
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var responseJson = (JsonElement)JsonSerializer.Deserialize<dynamic>(responseContent);
+
+            return new CodeSessionCodeExecuteResponse
+            {
+                Status = responseJson.GetProperty("status").GetString() ?? string.Empty,
+                ExecutionResult = responseJson.GetProperty("result").GetProperty("executionResult").GetString() ?? string.Empty,
+                StandardOutput = responseJson.GetProperty("result").GetProperty("stdout").GetString() ?? string.Empty,
+                StandardError = responseJson.GetProperty("result").GetProperty("stderr").GetString() ?? string.Empty,
+            };
         }
 
         private async Task<List<CodeSessionFileStoreItem>> GetCodeSessionFileStoreItems(
