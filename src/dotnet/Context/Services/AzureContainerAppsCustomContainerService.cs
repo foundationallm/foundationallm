@@ -137,14 +137,41 @@ namespace FoundationaLLM.Context.Services
         public async Task<CodeSessionCodeExecuteResponse> ExecuteCodeInCodeSession(
             string codeSessionId,
             string endpoint,
-            string codeToExecute) =>
-            await Task.FromResult(new CodeSessionCodeExecuteResponse
+            string codeToExecute)
+        {
+            var httpClient = await CreateHttpClient();
+
+            var payload = new { code = codeToExecute };
+            var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
+
+            var response = await httpClient.PostAsync(
+                $"{endpoint}/code/execute?api-version=2024-10-02-preview&identifier={codeSessionId}",
+                content);
+
+            if (!response.IsSuccessStatusCode)
             {
-                Status = "",
-                StandardOutput = "",
+                var error = await response.Content.ReadAsStringAsync();
+
+                return new CodeSessionCodeExecuteResponse
+                {
+                    Status = "Failed",
+                    StandardOutput = "",
+                    StandardError = "",
+                    ExecutionResult = $"Code execution failed: {error}"
+                };
+            }
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var responseJson = (JsonElement)JsonSerializer.Deserialize<dynamic>(responseContent);
+
+            return new CodeSessionCodeExecuteResponse
+            {
+                Status = "Succeeded",
+                StandardOutput = responseJson.GetProperty("output").ToString(),
                 StandardError = "",
-                ExecutionResult = "This provider does not support code execution.",
-            });
+                ExecutionResult = responseJson.GetProperty("results").ToString(),
+            };
+        }
 
         private async Task<List<CodeSessionFileStoreItem>> GetCodeSessionFileStoreItems(
             string codeSessionId,
