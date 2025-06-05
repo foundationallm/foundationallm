@@ -312,6 +312,54 @@ The <code class="paramref">operationId</code> is the identifier of the file uplo
 
 
 
+  <a id="FoundationaLLM_Context_Services_CodeSessionService_ExecuteCodeInCodeSession_" data-uid="FoundationaLLM.Context.Services.CodeSessionService.ExecuteCodeInCodeSession*"></a>
+
+  <h3 id="FoundationaLLM_Context_Services_CodeSessionService_ExecuteCodeInCodeSession_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Services.CodeSessionService.ExecuteCodeInCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  ExecuteCodeInCodeSession(string, string, string, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Services/CodeSessionService.cs/#L238"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Executes code in a code session and returns the result of the execution.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;CodeSessionCodeExecuteResponse&gt; ExecuteCodeInCodeSession(string instanceId, string sessionId, string codeToExecute, UnifiedUserIdentity userIdentity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>sessionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The identifier of the code session where the code must be executed.</p>
+</dd>
+    <dt><code>codeToExecute</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The code to execute.</p>
+</dd>
+    <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> providing the user identity information.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse.html">CodeSessionCodeExecuteResponse</a>&gt;</dt>
+    <dd><p>The result of the code execution including standard and error outputs.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Context_Services_CodeSessionService_UploadFilesToCodeSession_" data-uid="FoundationaLLM.Context.Services.CodeSessionService.UploadFilesToCodeSession*"></a>
 
   <h3 id="FoundationaLLM_Context_Services_CodeSessionService_UploadFilesToCodeSession_System_String_System_String_FoundationaLLM_Common_Models_CodeExecution_CodeSessionFileUploadRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Services.CodeSessionService.UploadFilesToCodeSession(System.String,System.String,FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">

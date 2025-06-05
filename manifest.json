@@ -5332,6 +5332,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteRequest.yml\" sourcestartlinenumber=\"1\">Provides the request to execute code in a code session.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse.yml\" sourcestartlinenumber=\"1\">Provides the result of executing code in a code session.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequest.yml",
       "output": {
         ".html": {
