@@ -162,11 +162,22 @@ namespace FoundationaLLM.Context.Services
 
             var responseContent = await response.Content.ReadAsStringAsync();
             var responseJson = (JsonElement)JsonSerializer.Deserialize<dynamic>(responseContent);
+            var executionResult = string.Empty;
+
+            try
+            {
+                executionResult =
+                    responseJson.GetProperty("result").GetProperty("executionResult").ToString();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deserializing the execution result field from the code execution response.");
+            }
 
             return new CodeSessionCodeExecuteResponse
             {
                 Status = responseJson.GetProperty("status").GetString() ?? string.Empty,
-                ExecutionResult = responseJson.GetProperty("result").GetProperty("executionResult").GetString() ?? string.Empty,
+                ExecutionResult = executionResult,
                 StandardOutput = responseJson.GetProperty("result").GetProperty("stdout").GetString() ?? string.Empty,
                 StandardError = responseJson.GetProperty("result").GetProperty("stderr").GetString() ?? string.Empty,
             };
