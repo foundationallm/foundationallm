@@ -65,14 +65,14 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
     def _run(
         self,
         prompt: str,
-        file_names: Optional[List[str]] = None,
+        file_names: Optional[List[str]] = [],
         run_manager: Optional[CallbackManagerForToolRun] = None,
         **kwargs: Any) -> Any:
         raise ToolException("This tool does not support synchronous execution. Please use the async version of the tool.")
 
     async def _arun(self,
             prompt: str,
-            file_names: Optional[List[str]] = None,
+            file_names: Optional[List[str]] = [],
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
             runnable_config: RunnableConfig = None,
             **kwargs: Any) -> Tuple[str, FoundationaLLMToolResult]:
@@ -94,13 +94,9 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         else:
             file_history = []
 
-        if file_names:
-            file_object_ids = [next((f.object_id for f in file_history if f.original_file_name == file_name), None) for file_name in file_names]
-            if None in file_object_ids:
-                raise ToolException(f"Some of the requested files [{file_names}] are not available in the file history.")
-        else:
-            file_names = []
-            file_object_ids = []
+        file_object_ids = [next((f.object_id for f in file_history if f.original_file_name == file_name), None) for file_name in file_names]
+        if None in file_object_ids:
+            raise ToolException(f"Some of the requested files [{file_names}] are not available in the file history.")
 
         session_id = runnable_config['configurable'][self.tool_config.name][self.DYNAMIC_SESSION_ID]
 
@@ -113,8 +109,11 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
 
         with self.tracer.start_as_current_span(f'{self.name}_initial_llm_call', kind=SpanKind.INTERNAL):
 
+            available_file_names = '\n'.join(file_names)
+            code_generation_prompt = self.main_prompt.replace('{{file_names}}', available_file_names)
+
             messages = [
-                SystemMessage(content=self.main_prompt),
+                SystemMessage(content=code_generation_prompt),
                 HumanMessage(content=llm_prompt)
             ]
 

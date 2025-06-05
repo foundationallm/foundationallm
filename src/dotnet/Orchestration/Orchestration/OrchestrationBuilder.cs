@@ -664,6 +664,26 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             #endregion
 
+            #region Final prompt processing
+
+            var finalPromptObjectId = agentWorkflow!.FinalPromptObjectId;
+            if (finalPromptObjectId is not null)
+            {
+                var retrievedFinalPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
+                    finalPromptObjectId, currentUserIdentity);
+                if (retrievedFinalPrompt is MultipartPrompt finalPrompt
+                    && finalPrompt is not null)
+                {
+                    finalPrompt.Prefix = templatingService.Transform(finalPrompt.Prefix!, tokenReplacements);
+                    finalPrompt.Suffix = templatingService.Transform(finalPrompt.Suffix!, tokenReplacements);
+                    explodedObjectsManager.TryAdd(
+                        finalPromptObjectId!,
+                        finalPrompt);
+                }
+            }
+
+            #endregion
+
             #endregion
 
             #region Knowledge management processing
