@@ -223,7 +223,17 @@ def process_question(question, answer, filename):
     
     if not session_id:
         print(f"Failed to create session for question: {question}")
-        return None
+        return {
+            'Question': question,
+            'Answer': answer,
+            'AgentAnswer': '',
+            'OtherAgentContent': [],
+            'Tokens': 0,
+            'SessionRequestDuration': session_duration,
+            'CompletionRequestDuration': 0,
+            'ErrorOccured': 1,
+            'ErrorDetails': 'Failed to create session'
+        }
     
     # Time the completion request
     completion_start_time = time.time()
@@ -329,7 +339,38 @@ def execute_tests(max_workers=2):
                 result = future.result()
                 if result:
                     results.append(result)
+                else:
+                    # Get the original question from the DataFrame
+                    original_question = df.iloc[index]['Question']
+                    original_answer = df.iloc[index]['Answer']
+                    # Add a row with error details
+                    results.append({
+                        'Question': original_question,
+                        'Answer': original_answer,
+                        'AgentAnswer': '',
+                        'OtherAgentContent': [],
+                        'Tokens': 0,
+                        'SessionRequestDuration': 0,
+                        'CompletionRequestDuration': 0,
+                        'ErrorOccured': 1,
+                        'ErrorDetails': 'Result was None'
+                    })
             except Exception as e:
+                # Get the original question from the DataFrame
+                original_question = df.iloc[index]['Question']
+                original_answer = df.iloc[index]['Answer']
+                # Add a row with exception details
+                results.append({
+                    'Question': original_question,
+                    'Answer': original_answer,
+                    'AgentAnswer': '',
+                    'OtherAgentContent': [],
+                    'Tokens': 0,
+                    'SessionRequestDuration': 0,
+                    'CompletionRequestDuration': 0,
+                    'ErrorOccured': 1,
+                    'ErrorDetails': str(e)
+                })
                 print(f"Error processing question at index {index}: {str(e)}")
     
     # Create DataFrame from results
