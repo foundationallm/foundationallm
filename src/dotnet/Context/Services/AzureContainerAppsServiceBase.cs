@@ -46,7 +46,7 @@ namespace FoundationaLLM.Context.Services
 
             return Task.FromResult(new CreateCodeSessionResponse
             {
-                SessionId = newSessionId,
+                SessionId = newSessionId.ToLower(),
                 Endpoint = sessionEndpoint
             });
         }
