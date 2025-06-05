@@ -103,7 +103,6 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             file_object_ids = []
 
         session_id = runnable_config['configurable'][self.tool_config.name][self.DYNAMIC_SESSION_ID]
-        pool_management_endpoint=runnable_config['configurable'][self.tool_config.name][self.DYNAMIC_SESSION_ENDPOINT]
 
         llm_prompt = prompt or user_prompt_rewrite or user_prompt
         content_artifacts = []
@@ -111,7 +110,6 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         input_tokens = 0
         output_tokens = 0
         generated_code = ''
-        final_response = ''
 
         with self.tracer.start_as_current_span(f'{self.name}_initial_llm_call', kind=SpanKind.INTERNAL):
 
@@ -125,7 +123,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             input_tokens += response.usage_metadata['input_tokens']
             output_tokens += response.usage_metadata['output_tokens']
 
-            generated_code = response.content
+            generated_code = self.__prepare_code(response.content)
 
         # returns the operation_id
         self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
@@ -148,12 +146,12 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         beginning_files_list = beginning_files_list_response['file_records']
 
         # Execute the code
-        # SessionsPythonREPLTool only supports synchronous execution.
-        repl = SessionsPythonREPLTool(
-            session_id=session_id,
-            pool_management_endpoint=pool_management_endpoint
+        code_execution_response = await self.context_api_client.post_async(
+            endpoint = f"/instances/{self.instance_id}/codeSessions/{session_id}/executeCode",
+            data = json.dumps({
+                "code_to_execute": generated_code
+            })
         )
-        result = repl.invoke(generated_code)
 
         # Get an updated list of files from the code interpreter
         files_list = []
@@ -186,8 +184,11 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                     }
                 ))
 
-        response = json.loads(result)
-        content = str(response.get('result', '')) or str(response.get('stdout', '')) or str(response.get('stderr', ''))
+        final_response = \
+            code_execution_response['execution_result'] if (code_execution_response['status'] == 'Succeeded' and code_execution_response['execution_result'] != '') \
+            else code_execution_response['standard_output'] if code_execution_response['status'] == 'Succeeded' \
+            else 'The generated code could not be executed successfully. '
+
         content_artifacts.append(ContentArtifact(
             id = self.name,
             title = self.name,
@@ -198,15 +199,32 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                 'tool_input_prompt': prompt,
                 'tool_input_files': ', '.join(file_names) if file_names else '',
                 'tool_generated_code': generated_code,
-                'tool_output': str(response.get('stdout', '')),
-                'tool_error': str(response.get('stderr', '')),
-                'tool_result': str(response.get('result', ''))
+                'tool_output': code_execution_response.get('standard_output', ''),
+                'tool_error': code_execution_response.get('error_output', ''),
+                'tool_result': code_execution_response.get('execution_result', '')
             }
         ))
 
-        return content, FoundationaLLMToolResult(
-            content=content,
+        return final_response, FoundationaLLMToolResult(
+            content=final_response,
             content_artifacts=content_artifacts,
             input_tokens=input_tokens,
             output_tokens=output_tokens
         )
+
+    def __prepare_code(self, code: str) -> str:
+        """ Prepares the code for execution by removing any leading/trailing whitespace and ensuring it is valid code. """
+        # Remove leading/trailing whitespace
+        code = code.strip()
+        # Ensure the code is valid Python code
+
+        if code.startswith('```python'):
+            code = code[9:].strip()
+        if code.startswith('```'):
+            code = code[3:].strip()
+        if code.endswith('```'):
+            code = code[:-3].strip()
+
+        if not code.endswith('\n'):
+            code += '\n'
+        return code
