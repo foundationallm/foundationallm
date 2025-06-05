@@ -234,6 +234,32 @@ namespace FoundationaLLM.Context.Services
             return result;
         }
 
+        /// <inheritdoc/>
+        public async Task<CodeSessionCodeExecuteResponse> ExecuteCodeInCodeSession(
+            string instanceId,
+            string sessionId,
+            string codeToExecute,
+            UnifiedUserIdentity userIdentity)
+        {
+            var codeSessionRecord = await _cosmosDBService.GetCodeSessionRecord(
+                instanceId,
+                sessionId,
+                userIdentity.UPN!)
+                ?? throw new ContextServiceException(
+                    $"The code session record with id {sessionId} was not found.",
+                    StatusCodes.Status404NotFound);
+
+            var codeSessionProviderService = GetCodeSessionProviderService(
+                codeSessionRecord.EndpointProvider);
+
+            var result = await codeSessionProviderService.ExecuteCodeInCodeSession(
+                codeSessionRecord.Id,
+                codeSessionRecord.Endpoint,
+                codeToExecute);
+
+            return result;
+        }
+
         private ICodeSessionProviderService GetCodeSessionProviderService(
             string codeSessionProviderName) =>
             codeSessionProviderName switch
