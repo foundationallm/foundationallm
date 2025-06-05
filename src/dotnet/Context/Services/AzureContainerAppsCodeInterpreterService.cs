@@ -166,8 +166,10 @@ namespace FoundationaLLM.Context.Services
 
             try
             {
-                executionResult =
-                    responseJson.GetProperty("result").GetProperty("executionResult").ToString();
+                var resultJson = responseJson.GetProperty("result");
+                if (resultJson.ValueKind == JsonValueKind.String)
+                    executionResult =
+                        responseJson.GetProperty("result").GetProperty("executionResult").ToString();
             }
             catch (Exception ex)
             {
