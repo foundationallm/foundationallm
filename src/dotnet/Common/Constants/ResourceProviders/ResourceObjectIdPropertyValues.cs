@@ -26,6 +26,11 @@
         public const string FilesPrompt = "files_prompt";
 
         /// <summary>
+        /// Final prompt.
+        /// </summary>
+        public const string FinalPrompt = "final_prompt";
+
+        /// <summary>
         /// The data pipeline used to upload files.
         /// </summary>
         public const string FileUploadDataPipeline = "file_upload_data_pipeline";

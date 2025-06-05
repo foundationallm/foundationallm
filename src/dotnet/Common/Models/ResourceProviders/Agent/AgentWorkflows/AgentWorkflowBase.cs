@@ -106,6 +106,16 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
                 ?.ObjectId;
 
         /// <summary>
+        /// Gets the final prompt object identifier.
+        /// </summary>
+        [JsonIgnore]
+        public string? FinalPromptObjectId =>
+            ResourceObjectIds.Values
+                .FirstOrDefault(
+                    roid => roid.HasObjectRole(ResourceObjectIdPropertyValues.FinalPrompt))
+                ?.ObjectId;
+
+        /// <summary>
         /// Gets the AI object identifier.
         /// </summary>
         [JsonIgnore]
