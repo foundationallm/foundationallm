@@ -37,10 +37,11 @@ from foundationallm.models.constants import (
 # user_prompt = "Generate a graph of a complex Fourier transformation"
 # user_prompt = "Create a chart based on the uploaded file"
 # user_prompt = "Who are you?"
-user_prompt = "What files are in the uploaded zip?"
+# user_prompt = "What files are in the uploaded zip?"
+user_prompt = "Use a code tool to list the files in the uploaded zip file"
 
 operation_id = str(uuid.uuid4())
-conversation_id = "20250605-061542-hIdw4DhGbEiyRchrCgK2rw"
+conversation_id = "20250605-210812-aEHiVAcfv0eMa7i3JKjklw"
 
 user_identity_json = {"name": "Experimental Test", "user_name":"ciprian@foundationaLLM.ai","upn":"ciprian@foundationaLLM.ai"}
 full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
