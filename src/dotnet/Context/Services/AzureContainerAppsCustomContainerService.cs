@@ -71,8 +71,15 @@ namespace FoundationaLLM.Context.Services
             multipartFormDataContent.Add(streamContent);
 
             var responseMessage = await httpClient.PostAsync(
-                $"{endpoint}/files?api-version=2024-10-02-preview&identifier={codeSessionId}",
+                $"{endpoint}/files/upload?api-version=2024-10-02-preview&identifier={codeSessionId}",
                 multipartFormDataContent);
+
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                var errorContent = await responseMessage.Content.ReadAsStringAsync();
+                _logger.LogError("Failed to upload file {FileName} to code session {CodeSession}. Error: {Error}",
+                    fileName, codeSessionId, errorContent);
+            }
 
             return responseMessage.IsSuccessStatusCode;
         }
