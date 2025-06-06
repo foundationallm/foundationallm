@@ -71,8 +71,52 @@ namespace FoundationaLLM.Plugin.ResourceProviders
         protected override string _name => ResourceProviderNames.FoundationaLLM_Plugin;
 
         /// <inheritdoc/>
-        protected override async Task InitializeInternal() =>
+        protected override async Task InitializeInternal()
+        {
+            _logger.LogInformation("Initializing the {ResourceProviderName} resource provider.", _name);
+
+            //var allPackagePaths = await _storageService.GetFilePathsAsync(
+            //   _storageContainerName,
+            //   $"{_name}/{_instanceSettings.Id}",
+            //   recursive: true);
+
+            //var rootPackagePaths = allPackagePaths.Where(x => !x.Contains(".dependencies/")).ToList();
+
+            //foreach (var packagePath in rootPackagePaths)
+            //{
+            //    //var folderName = packagePath.Split("/").Last().Replace(".nupkg", "/");
+            //    //var dependencyPaths = packagePaths.Where(x => x.Contains(folderName)).ToList();
+
+            //    var packageBinaryContent = _storageService.ReadFile(
+            //        _storageContainerName,
+            //        packagePath);
+
+            //    var dependencyPaths = allPackagePaths.Where(x => x.StartsWith(packagePath.Replace(".nupkg", "")) && x != packagePath).ToList();
+            //    if (dependencyPaths.Count > 0)
+            //    {
+            //        foreach (var dependencyPath in dependencyPaths)
+            //        {
+            //            var dependencyBinaryContent = _storageService.ReadFile(
+            //                _storageContainerName,
+            //                dependencyPath);
+
+            //            var dependencyManagerInstance = await LoadPackage(
+            //                new MemoryStream(dependencyBinaryContent.ToArray()),
+            //                dependencies: null);
+
+            //            _pluginPackageManagerInstances[dependencyPath.Split("/").Last()] = dependencyManagerInstance;
+            //        }
+
+            //        var packageManagerInstance = await LoadPackage(
+            //                new MemoryStream(packageBinaryContent.ToArray()),
+            //                dependencies: null);
+
+            //        _pluginPackageManagerInstances[packagePath.Split("/").Last()] = packageManagerInstance;
+            //    }
+            //}
+
             await Task.CompletedTask;
+        }
 
         #region Resource provider support for Management API
 
@@ -431,36 +475,39 @@ namespace FoundationaLLM.Plugin.ResourceProviders
 
             foreach (var packagePath in await packageReader.GetFilesAsync("lib", default))
             {
-                var assemblyStream = await packageReader.GetStreamAsync(packagePath, default);
-                var assemblyMemoryStream = new MemoryStream();
-                await assemblyStream.CopyToAsync(assemblyMemoryStream);
-                assemblyMemoryStream.Seek(0, SeekOrigin.Begin);
-
-                var assemblyLoadContext = new AssemblyLoadContext(packageId, isCollectible: true);
-                assemblyLoadContext.Resolving += LoadDependencyAssembly;
-                var assembly = assemblyLoadContext.LoadFromStream(assemblyMemoryStream);
-
-                var pluginPackageManagerType = assembly.GetTypes()
-                    .FirstOrDefault(t => (typeof(IPluginPackageManager)).IsAssignableFrom(t));
-
-                if (pluginPackageManagerType is not null)
+                if (packagePath.EndsWith(".dll"))
                 {
-                    var pluginPackageManager = assembly.CreateInstance(pluginPackageManagerType.FullName!) as IPluginPackageManager;
+                    var assemblyStream = await packageReader.GetStreamAsync(packagePath, default);
+                    var assemblyMemoryStream = new MemoryStream();
+                    await assemblyStream.CopyToAsync(assemblyMemoryStream);
+                    assemblyMemoryStream.Seek(0, SeekOrigin.Begin);
 
-                    if (pluginPackageManager is not null)
+                    var assemblyLoadContext = new AssemblyLoadContext(packageId, isCollectible: true);
+                    assemblyLoadContext.Resolving += LoadDependencyAssembly;
+                    var assembly = assemblyLoadContext.LoadFromStream(assemblyMemoryStream);
+
+                    var pluginPackageManagerType = assembly.GetTypes()
+                        .FirstOrDefault(t => (typeof(IPluginPackageManager)).IsAssignableFrom(t));
+
+                    if (pluginPackageManagerType is not null)
                     {
-                        return new PluginPackageManagerInstance
-                        {
-                            PackageVersion = packageVersion,
-                            Instance = pluginPackageManager,
-                            AssemblyLoadContext = assemblyLoadContext,
-                            Name = string.Empty,
-                            Dependencies = dependencies ?? []
-                        };
-                    }
-                }
+                        var pluginPackageManager = assembly.CreateInstance(pluginPackageManagerType.FullName!) as IPluginPackageManager;
 
-                assemblyLoadContext.Unload();
+                        if (pluginPackageManager is not null)
+                        {
+                            return new PluginPackageManagerInstance
+                            {
+                                PackageVersion = packageVersion,
+                                Instance = pluginPackageManager,
+                                AssemblyLoadContext = assemblyLoadContext,
+                                Name = string.Empty,
+                                Dependencies = dependencies ?? []
+                            };
+                        }
+                    }
+
+                    assemblyLoadContext.Unload();
+                }
             }
 
             throw new ResourceProviderException("The plugin package does not have a valid package manager that can be instantiated.",
@@ -510,16 +557,21 @@ namespace FoundationaLLM.Plugin.ResourceProviders
             AssemblyLoadContext assemblyLoadContext,
             AssemblyName assemblyName)
         {
-            var packageManagerInstance = _pluginPackageManagerInstances
-                .Values.FirstOrDefault(pm => pm.AssemblyLoadContext.Name == assemblyLoadContext.Name);
+            //var packageManagerInstance = _pluginPackageManagerInstances
+            //    .Values.FirstOrDefault(pm => pm.AssemblyLoadContext.Name == assemblyLoadContext.Name);
 
-            if (packageManagerInstance == null
-                || !packageManagerInstance.Dependencies.TryGetValue(assemblyName.Name!, out var dependency))
-                return null;
+            //if (packageManagerInstance == null
+            //    || !packageManagerInstance.Dependencies.TryGetValue(assemblyName.Name!, out var dependency))
+            //    return null;
 
-            var dependencyTokens = dependency.Split('|');
+            //var dependencyTokens = dependency.Split('|');
+            //var dependencyPackagePath = dependencyTokens[0];
+            //var dependencyFilePath = dependencyTokens[1];
+
+            var dependencyTokens = assemblyName.FullName.Split(',');
             var dependencyPackagePath = dependencyTokens[0];
-            var dependencyFilePath = dependencyTokens[1];
+            var version = Version.Parse(dependencyTokens[1].Split('=')[1]);
+            var dependencyFilePath = new FileInfo(Path.GetFullPath("/" + dependencyPackagePath + ".dll")).FullName;
 
             var dependencyBinaryContent = _storageService.ReadFile(
                 _storageContainerName,
