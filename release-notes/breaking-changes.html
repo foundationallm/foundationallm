@@ -198,12 +198,22 @@
 <tr>
 <td><code>FoundationaLLM:ResourceProviders:Vector:Storage:AccountName</code></td>
 <td><code>&lt;storage_account_name&gt;</code></td>
-<td>The name of the dedicated storage account used by the FoundationaLLM Vector resource provider.</td>
+<td>The name of the storage account used by the FoundationaLLM Vector resource provider.</td>
 </tr>
 <tr>
 <td><code>FoundationaLLM:ResourceProviders:Vector:Storage:AuthenticationType</code></td>
 <td><code>AzureIdentity</code></td>
-<td>The type of authentication used by the FoundationaLLM Vector resource provider to connect to the dedicated storage account.</td>
+<td>The type of authentication used by the FoundationaLLM Vector resource provider to connect to the storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:Plugin:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the storage account used by the FoundationaLLM Plugin resource provider.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:Plugin:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Plugin resource provider to connect to the storage account.</td>
 </tr>
 </tbody>
 </table>
@@ -285,6 +295,31 @@
 <td><code>Reader</code></td>
 <td>FoundationaLLM</td>
 <td>FoundationaLLM instance.</td>
+</tr>
+<tr>
+<td><code>App Configuration Data Reader</code></td>
+<td>Azure</td>
+<td>Azure App Configuration service.</td>
+</tr>
+<tr>
+<td><code>Key Vault Secrets User</code></td>
+<td>Azure</td>
+<td>Azure Key Vault service.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Azure</td>
+<td>Storage account used by the FoundationaLLM Context API.</td>
+</tr>
+<tr>
+<td><code>Azure ContainerApps Session Executor</code></td>
+<td>Azure</td>
+<td>Azure Container Apps Dynamic Sessions used by the FoundationaLLM Context API.</td>
+</tr>
+<tr>
+<td><code>Azure ContainerApps Session Executor</code></td>
+<td>Azure</td>
+<td>Azure Container Apps Custom Container used by the FoundationaLLM Context API.</td>
 </tr>
 </tbody>
 </table>
@@ -481,7 +516,8 @@
 </tr>
 </tbody>
 </table>
-<h3 id="new-resource-provider">New resource provider</h3>
+<h3 id="new-resource-providers">New resource providers</h3>
+<p><strong>FoundationaLLM.Vector</strong></p>
 <p>The <code>FoundationaLLM.Vector</code> resource provider has been added.
 A new folder named <code>FoundationaLLM.Vector</code> must be created in the FoundationaLLM storage account under the <code>resource-provider</code> container.
 The folder must contain the following files:</p>
@@ -526,6 +562,17 @@ The folder must contain the following files:</p>
   &quot;expiration_date&quot;: null
 }
 </code></pre>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The configuration entries for the <code>FoundationaLLM.Vector</code> resource provider are specified above, in the <code>Configuration changes</code> section.</p>
+</div>
+<p><strong>FoundationaLLM.Plugin</strong></p>
+<p>The <code>FoundationaLLM.Plugin</code> resource provider has been added.
+A new folder named <code>FoundationaLLM.Plugin</code> must be created in the FoundationaLLM storage account under the <code>resource-provider</code> container.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The configuration entries for the <code>FoundationaLLM.Plugin</code> resource provider are specified above, in the <code>Configuration changes</code> section.</p>
+</div>
 <h2 id="starting-from-097-beta147">Starting from 0.9.7-beta147</h2>
 <p>The following App Configuration value has been added:</p>
 <table>
