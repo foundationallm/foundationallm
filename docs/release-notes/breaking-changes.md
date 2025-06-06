@@ -34,8 +34,10 @@ The following App Configuration value have been added:
 | `FoundationaLLM:Events:Profiles:DataPipelineAPI` | `{"EventProcessingCycleSeconds":60,"Topics":[]}` | The event processing settings for the Data Pipeline API. |
 | `FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker` | `{"EventProcessingCycleSeconds":60,"Topics":[]}` | The event processing settings for the Data Pipeline Frontend Worker service. |
 | `FoundationaLLM:Events:Profiles:DataPipelineBackendWorker` | `{"EventProcessingCycleSeconds":60,"Topics":[]}` | The event processing settings for the Data Pipeline Backend Worker service. |
-| `FoundationaLLM:ResourceProviders:Vector:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Vector resource provider. |
-| `FoundationaLLM:ResourceProviders:Vector:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Vector resource provider to connect to the dedicated storage account. |
+| `FoundationaLLM:ResourceProviders:Vector:Storage:AccountName` | `<storage_account_name>` | The name of the storage account used by the FoundationaLLM Vector resource provider. |
+| `FoundationaLLM:ResourceProviders:Vector:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Vector resource provider to connect to the storage account. |
+| `FoundationaLLM:ResourceProviders:Plugin:Storage:AccountName` | `<storage_account_name>` | The name of the storage account used by the FoundationaLLM Plugin resource provider. |
+| `FoundationaLLM:ResourceProviders:Plugin:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Plugin resource provider to connect to the storage account. |
 
 >[!IMPORTANT]
 >A new Azure Cosmos DB container named `DataPipelines` must be created with a parition key of `/runId` and an autoscale transactional throughput of maximum 4000 RU/s.
@@ -106,6 +108,11 @@ The following role assignments must be added to the Context API's Managed Identi
 | Name | Type | Target |
 | --- | --- | --- |
 | `Reader` | FoundationaLLM | FoundationaLLM instance.|
+|`App Configuration Data Reader` | Azure | Azure App Configuration service.|
+|`Key Vault Secrets User` | Azure | Azure Key Vault service.|
+|`Storage Blob Data Contributor` | Azure | Storage account used by the FoundationaLLM Context API.|
+|`Azure ContainerApps Session Executor` | Azure | Azure Container Apps Dynamic Sessions used by the FoundationaLLM Context API.|
+|`Azure ContainerApps Session Executor` | Azure | Azure Container Apps Custom Container used by the FoundationaLLM Context API.|
 
 The following role assignments must be added to the Orchestrations API's Managed Identity:
 
@@ -156,7 +163,9 @@ The following role assignments must be added to the Data Pipeline Backend Worker
 | `Data Pipelines Execution Manager` | FoundationaLLM | FoundationaLLM instance.|
 | `Reader` | FoundationaLLM | FoundationaLLM instance. |
 
-### New resource provider
+### New resource providers
+
+**FoundationaLLM.Vector**
 
 The `FoundationaLLM.Vector` resource provider has been added.
 A new folder named `FoundationaLLM.Vector` must be created in the FoundationaLLM storage account under the `resource-provider` container.
@@ -206,6 +215,17 @@ The content of the `ConversationFiles.json` file is as follows:
   "expiration_date": null
 }
 ```
+
+>[!IMPORTANT]
+>The configuration entries for the `FoundationaLLM.Vector` resource provider are specified above, in the `Configuration changes` section.
+
+**FoundationaLLM.Plugin**
+
+The `FoundationaLLM.Plugin` resource provider has been added.
+A new folder named `FoundationaLLM.Plugin` must be created in the FoundationaLLM storage account under the `resource-provider` container.
+
+>[!IMPORTANT]
+>The configuration entries for the `FoundationaLLM.Plugin` resource provider are specified above, in the `Configuration changes` section.
 
 ## Starting from 0.9.7-beta147
 
