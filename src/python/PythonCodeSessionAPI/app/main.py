@@ -126,7 +126,7 @@ async def list_files():
                 rel_dir = os.path.relpath(root, file_store_root)
                 file_paths.append(os.path.join(rel_dir, file))
 
-        return { 'files': file_paths }
+        return { 'value': file_paths }
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error listing files.") from e
 
