@@ -110,6 +110,15 @@ namespace FoundationaLLM.Prompt.ResourceProviders
             UnifiedUserIdentity userIdentity) =>
             resourcePath.ResourceTypeName switch
             {
+                GlobalResourceTypeNames.ManagementActions => resourcePath.Action switch
+                {
+                    ResourceProviderActions.Trigger => await ExecuteManagementAction(
+                        resourcePath,
+                        authorizationResult,
+                        serializedAction),
+                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+                },
                 PromptResourceTypeNames.Prompts => resourcePath.Action switch
                 {
                     ResourceProviderActions.CheckName => await CheckResourceName<PromptBase>(
