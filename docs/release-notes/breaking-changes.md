@@ -106,6 +106,11 @@ The following role assignments must be added to the Context API's Managed Identi
 | Name | Type | Target |
 | --- | --- | --- |
 | `Reader` | FoundationaLLM | FoundationaLLM instance.|
+|`App Configuration Data Reader` | Azure | Azure App Configuration service.|
+|`Key Vault Secrets User` | Azure | Azure Key Vault service.|
+|`Storage Blob Data Contributor` | Azure | Storage account used by the FoundationaLLM Context API.|
+|`Azure ContainerApps Session Executor` | Azure | Azure Container Apps Session Pool used by the FoundationaLLM Context API.|
+|`Azure ContainerApps Session Executor` | Azure | Azure Container Apps Custom Container used by the FoundationaLLM Context API.|
 
 The following role assignments must be added to the Orchestrations API's Managed Identity:
 
