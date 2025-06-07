@@ -1188,4 +1188,13 @@ export default {
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases?api-version=${this.apiVersion}`,
 		);
 	},
+
+	/*
+		Projects
+	*/
+	async getProjects(): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.AzureAI/projects?api-version=${this.apiVersion}`,
+		);
+	}
 };

@@ -90,6 +90,10 @@ export default {
 					value: 'apiEndpoint',
 				},
 				{
+					label: 'Azure AI Project',
+					value: 'project',
+				},
+				{
 					label: 'Data Pipeline',
 					value: 'datapipeline',
 				},
@@ -176,6 +180,9 @@ export default {
 			} else if (resourceType === 'vectordatabase') {
 				this.loadingStatusText = 'Loading vector databases...';
 				apiMethod = api.getVectorDatabases;
+			} else if (resourceType === 'project') {
+				this.loadingStatusText = 'Loading projects...';
+				apiMethod = api.getProjects;
 			}
 
 			this.loading = true;
