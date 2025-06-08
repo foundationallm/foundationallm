@@ -73,52 +73,8 @@ namespace FoundationaLLM.Plugin.ResourceProviders
         protected override string _name => ResourceProviderNames.FoundationaLLM_Plugin;
 
         /// <inheritdoc/>
-        protected override async Task InitializeInternal()
-        {
-            _logger.LogInformation("Initializing the {ResourceProviderName} resource provider.", _name);
-
-            //var allPackagePaths = await _storageService.GetFilePathsAsync(
-            //   _storageContainerName,
-            //   $"{_name}/{_instanceSettings.Id}",
-            //   recursive: true);
-
-            //var rootPackagePaths = allPackagePaths.Where(x => !x.Contains(".dependencies/")).ToList();
-
-            //foreach (var packagePath in rootPackagePaths)
-            //{
-            //    //var folderName = packagePath.Split("/").Last().Replace(".nupkg", "/");
-            //    //var dependencyPaths = packagePaths.Where(x => x.Contains(folderName)).ToList();
-
-            //    var packageBinaryContent = _storageService.ReadFile(
-            //        _storageContainerName,
-            //        packagePath);
-
-            //    var dependencyPaths = allPackagePaths.Where(x => x.StartsWith(packagePath.Replace(".nupkg", "")) && x != packagePath).ToList();
-            //    if (dependencyPaths.Count > 0)
-            //    {
-            //        foreach (var dependencyPath in dependencyPaths)
-            //        {
-            //            var dependencyBinaryContent = _storageService.ReadFile(
-            //                _storageContainerName,
-            //                dependencyPath);
-
-            //            var dependencyManagerInstance = await LoadPackage(
-            //                new MemoryStream(dependencyBinaryContent.ToArray()),
-            //                dependencies: null);
-
-            //            _pluginPackageManagerInstances[dependencyPath.Split("/").Last()] = dependencyManagerInstance;
-            //        }
-
-            //        var packageManagerInstance = await LoadPackage(
-            //                new MemoryStream(packageBinaryContent.ToArray()),
-            //                dependencies: null);
-
-            //        _pluginPackageManagerInstances[packagePath.Split("/").Last()] = packageManagerInstance;
-            //    }
-            //}
-
+        protected override async Task InitializeInternal() =>
             await Task.CompletedTask;
-        }
 
         #region Resource provider support for Management API
 
