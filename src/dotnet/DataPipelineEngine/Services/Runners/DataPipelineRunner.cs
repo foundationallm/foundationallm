@@ -126,30 +126,39 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
 
         public async Task<bool> Completed()
         {
-            var completedStageRunners =
-                _currentStageRunners.Values.Where(stageRunner => stageRunner.Completed).ToList();
+            try
+            {
+                var completedStageRunners =
+                    _currentStageRunners.Values.Where(stageRunner => stageRunner.Completed).ToList();
 
-            foreach (var stageRunner in completedStageRunners)
-                await ProcessCompletedStageRunner(stageRunner);
+                foreach (var stageRunner in completedStageRunners)
+                    await ProcessCompletedStageRunner(stageRunner);
 
-            _dataPipelineRun.Completed =
-                // No stages in progress.
-                _dataPipelineRun.ActiveStages.Count == 0
-                && (
-                    // Either at least one stage failed or all stages are completed.
-                    _dataPipelineRun.FailedStages.Count > 0
-                    || _dataPipelineRun.AllStages.Intersect(
-                        _dataPipelineRun.CompletedStages).Count() == _dataPipelineRun.AllStages.Count
-                );
-            _dataPipelineRun.Successful =
-                _dataPipelineRun.Completed
-                && _dataPipelineRun.FailedStages.Count == 0;
+                _dataPipelineRun.Completed =
+                    // No stages in progress.
+                    _dataPipelineRun.ActiveStages.Count == 0
+                    && (
+                        // Either at least one stage failed or all stages are completed.
+                        _dataPipelineRun.FailedStages.Count > 0
+                        || _dataPipelineRun.AllStages.Intersect(
+                            _dataPipelineRun.CompletedStages).Count() == _dataPipelineRun.AllStages.Count
+                    );
+                _dataPipelineRun.Successful =
+                    _dataPipelineRun.Completed
+                    && _dataPipelineRun.FailedStages.Count == 0;
 
-            if (_dataPipelineRun.Completed
-                || completedStageRunners.Count > 0)
-                await _stateService.UpdateDataPipelineRunStatus(_dataPipelineRun);
+                if (_dataPipelineRun.Completed
+                    || completedStageRunners.Count > 0)
+                    await _stateService.UpdateDataPipelineRunStatus(_dataPipelineRun);
 
-            return _dataPipelineRun.Completed;
+                return _dataPipelineRun.Completed;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while checking if the data pipeline run {RunId} has completed.",
+                    _dataPipelineRun.RunId);
+                return false;
+            }
         }
 
         public async Task ProcessDataPipelineRunWorkItem(

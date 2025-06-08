@@ -234,6 +234,8 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
             Dictionary<string, ResourceTypeDescriptor> allowedResourceTypes,
             bool allowAction = true)
         {
+            if (!resourcePath.StartsWith('/'))
+                resourcePath = "/" + resourcePath;
             _rawResourcePath = resourcePath;
 
             ParseResourcePath(

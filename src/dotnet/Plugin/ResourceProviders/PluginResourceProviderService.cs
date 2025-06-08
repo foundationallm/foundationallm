@@ -63,6 +63,8 @@ namespace FoundationaLLM.Plugin.ResourceProviders
     {
         private readonly Dictionary<string, PluginPackageManagerInstance> _pluginPackageManagerInstances = [];
 
+        private readonly Dictionary<string, Dictionary<string, string>> _pluginDependencies = [];
+
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
             PluginResourceProviderMetadata.AllowedResourceTypes;
@@ -162,7 +164,7 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
                     StatusCodes.Status400BadRequest);
 
-            var pluginPackage = await GetPluginPackage(
+            var pluginPackage = await GetPluginPackageDefinition(
                 resourcePath,
                 pluginPackageBase,
                 formFile,
@@ -210,7 +212,7 @@ namespace FoundationaLLM.Plugin.ResourceProviders
             };
         }
 
-        private async Task<PluginPackageDefinition> GetPluginPackage(
+        private async Task<PluginPackageDefinition> GetPluginPackageDefinition(
             ResourcePath resourcePath,
             ResourceBase pluginPackageBase,
             ResourceProviderFormFile? formFile,
@@ -233,7 +235,9 @@ namespace FoundationaLLM.Plugin.ResourceProviders
 
                 if (packagePlatform == PluginPackagePlatform.Dotnet)
                 {
-                    var packageManagerInstance = await LoadPackage(new MemoryStream(formFile.BinaryContent.ToArray()));
+                    var packageManagerInstance = await LoadPackage(
+                        resourcePath.ResourceId!,
+                        new MemoryStream(formFile.BinaryContent.ToArray()));
                     packageVersion = packageManagerInstance.PackageVersion;
                     packageMetadata = packageManagerInstance.Instance.GetMetadata(resourcePath.InstanceId!);
 
@@ -296,10 +300,7 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                     PackagePlatform = packagePlatform,
                     PackageVersion = packageVersion,
                     PackageFilePath = $"/{_name}/{resourcePath.InstanceId!}/{pluginPackageBase.Name}/{formFile.FileName}",
-                    PackageFileSize = formFile.BinaryContent.Length,
-                    Dependencies = await GetPackageDependencies(
-                        new MemoryStream(formFile.BinaryContent.ToArray()),
-                        $"/{_name}/{resourcePath.InstanceId!}/{pluginPackageBase.Name}")
+                    PackageFileSize = formFile.BinaryContent.Length
                 };
             }
             catch (Exception ex)
@@ -410,9 +411,19 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                 pluginPackageDefinition!.PackageFilePath,
                 default);
 
+            var pluginPackageBinaryDependencies = await _storageService.ReadFileAsync(
+                _storageContainerName,
+                $"{pluginPackageDefinition.PackageFilePath}.json",
+                default);
+
+            var pluginPackageDependencies = JsonSerializer.Deserialize<Dictionary<string, string>>(
+                pluginPackageBinaryDependencies.ToArray());
+
+            _pluginDependencies[pluginPackageName] = pluginPackageDependencies ?? [];
+
             var packageManagerInstance = await LoadPackage(
-                new MemoryStream(pluginPackageBinaryContent.ToArray()),
-                dependencies: pluginPackageDefinition.Dependencies);
+                pluginPackageName,
+                new MemoryStream(pluginPackageBinaryContent.ToArray()));
 
             // Add the newly created package manager instance to the cache.
             _pluginPackageManagerInstances[pluginPackageName] = packageManagerInstance;
@@ -421,120 +432,135 @@ namespace FoundationaLLM.Plugin.ResourceProviders
         }
 
         private async Task<PluginPackageManagerInstance> LoadPackage(
-            MemoryStream packageBinaryContent,
-            Dictionary<string, string>? dependencies = null)
+            string packageName,
+            MemoryStream packageBinaryContent)
         {
             using var packageReader = new PackageArchiveReader(packageBinaryContent);
             var nuspecReader = await packageReader.GetNuspecReaderAsync(default);
             var packageVersion = nuspecReader.GetVersion();
-            var packageId = nuspecReader.GetId();
+            //var packageId = nuspecReader.GetId();
 
             foreach (var packagePath in await packageReader.GetFilesAsync("lib", default))
             {
-                var assemblyStream = await packageReader.GetStreamAsync(packagePath, default);
-                var assemblyMemoryStream = new MemoryStream();
-                await assemblyStream.CopyToAsync(assemblyMemoryStream);
-                assemblyMemoryStream.Seek(0, SeekOrigin.Begin);
-
-                var assemblyLoadContext = new AssemblyLoadContext(packageId, isCollectible: true);
-                assemblyLoadContext.Resolving += LoadDependencyAssembly;
-                var assembly = assemblyLoadContext.LoadFromStream(assemblyMemoryStream);
-
-                var pluginPackageManagerType = assembly.GetTypes()
-                    .FirstOrDefault(t => (typeof(IPluginPackageManager)).IsAssignableFrom(t));
-
-                if (pluginPackageManagerType is not null)
+                if (packagePath.EndsWith(".dll"))
                 {
-                    var pluginPackageManager = assembly.CreateInstance(pluginPackageManagerType.FullName!) as IPluginPackageManager;
+                    var assemblyStream = await packageReader.GetStreamAsync(packagePath, default);
+                    var assemblyMemoryStream = new MemoryStream();
+                    await assemblyStream.CopyToAsync(assemblyMemoryStream);
+                    assemblyMemoryStream.Seek(0, SeekOrigin.Begin);
 
-                    if (pluginPackageManager is not null)
+                    var assemblyLoadContext = new AssemblyLoadContext(packageName, isCollectible: true);
+                    assemblyLoadContext.Resolving += LoadDependencyAssembly;
+                    var assembly = assemblyLoadContext.LoadFromStream(assemblyMemoryStream);
+
+                    var pluginPackageManagerType = assembly.GetTypes()
+                        .FirstOrDefault(t => (typeof(IPluginPackageManager)).IsAssignableFrom(t));
+
+                    if (pluginPackageManagerType is not null)
                     {
-                        return new PluginPackageManagerInstance
+                        var pluginPackageManager = assembly.CreateInstance(pluginPackageManagerType.FullName!) as IPluginPackageManager;
+
+                        if (pluginPackageManager is not null)
                         {
-                            PackageVersion = packageVersion,
-                            Instance = pluginPackageManager,
-                            AssemblyLoadContext = assemblyLoadContext,
-                            Name = string.Empty,
-                            Dependencies = dependencies ?? []
-                        };
+                            return new PluginPackageManagerInstance
+                            {
+                                PackageVersion = packageVersion,
+                                Instance = pluginPackageManager,
+                                AssemblyLoadContext = assemblyLoadContext,
+                                Name = packageName
+                            };
+                        }
                     }
                 }
-
-                assemblyLoadContext.Unload();
             }
 
             throw new ResourceProviderException("The plugin package does not have a valid package manager that can be instantiated.",
                 StatusCodes.Status400BadRequest);
         }
 
-        private async Task<Dictionary<string, string>> GetPackageDependencies(
-            MemoryStream packageBinaryContent,
-            string packagePath)
-        {
-            Dictionary<string, string> dependencies = [];
+        //private async Task<Dictionary<string, string>> GetPackageDependencies(
+        //    MemoryStream packageBinaryContent,
+        //    string packagePath)
+        //{
+        //    Dictionary<string, string> dependencies = [];
 
-            using var packageReader = new PackageArchiveReader(packageBinaryContent);
-            var nuspecReader = await packageReader.GetNuspecReaderAsync(default);
+        //    using var packageReader = new PackageArchiveReader(packageBinaryContent);
+        //    var nuspecReader = await packageReader.GetNuspecReaderAsync(default);
 
-            foreach (var dependencyGroup in nuspecReader.GetDependencyGroups())
-            {
-                foreach (var dependency in dependencyGroup.Packages
-                    .Where(pkg => !pkg.Id.StartsWith("FoundationaLLM")))
-                {
-                    var dependencyPackageId = dependency.Id;
-                    var dependencyPackageVersion = dependency.VersionRange.OriginalString;
-                    var dependencyPackageFullPath = $"{packagePath}/{dependencyPackageId.ToLower()}.{dependencyPackageVersion}.nupkg";
+        //    foreach (var dependencyGroup in nuspecReader.GetDependencyGroups())
+        //    {
+        //        foreach (var dependency in dependencyGroup.Packages
+        //            .Where(pkg => !pkg.Id.StartsWith("FoundationaLLM")))
+        //        {
+        //            var dependencyPackageId = dependency.Id;
+        //            var dependencyPackageVersion = dependency.VersionRange.OriginalString;
+        //            var dependencyPackageFullPath = $"{packagePath}/{dependencyPackageId.ToLower()}.{dependencyPackageVersion}.nupkg";
 
-                    var dependencyPackageBinaryContent = await _storageService.ReadFileAsync(
-                        _storageContainerName,
-                        dependencyPackageFullPath,
-                        default);
+        //            var dependencyPackageBinaryContent = await _storageService.ReadFileAsync(
+        //                _storageContainerName,
+        //                dependencyPackageFullPath,
+        //                default);
 
-                    using var dependencyPackageReader = new PackageArchiveReader(
-                        new MemoryStream(dependencyPackageBinaryContent.ToArray()));
+        //            using var dependencyPackageReader = new PackageArchiveReader(
+        //                new MemoryStream(dependencyPackageBinaryContent.ToArray()));
 
-                    var newDependencies = (await dependencyPackageReader.GetFilesAsync("lib/net8.0", default))
-                        .Where(libPath => libPath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
-                        .ToDictionary(
-                            libPath => Path.GetFileNameWithoutExtension(libPath),
-                            libPath => $"{dependencyPackageFullPath}|{libPath}");
+        //            var newDependencies = (await dependencyPackageReader.GetFilesAsync("lib/net8.0", default))
+        //                .Where(libPath => libPath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+        //                .ToDictionary(
+        //                    libPath => Path.GetFileNameWithoutExtension(libPath),
+        //                    libPath => $"{dependencyPackageFullPath}|{libPath}");
 
-                    dependencies.AddRange(newDependencies);
-                }
-            }
+        //            dependencies.AddRange(newDependencies);
+        //        }
+        //    }
 
-            return dependencies;
-        }
+        //    return dependencies;
+        //}
 
         private Assembly? LoadDependencyAssembly(
             AssemblyLoadContext assemblyLoadContext,
             AssemblyName assemblyName)
         {
-            var packageManagerInstance = _pluginPackageManagerInstances
-                .Values.FirstOrDefault(pm => pm.AssemblyLoadContext.Name == assemblyLoadContext.Name);
+            try
+            {
+                if (!_pluginDependencies.TryGetValue(assemblyLoadContext.Name!, out var dependencies))
+                {
+                    _logger.LogError("No dependencies found for assembly load context: {AssemblyLoadContextName} when trying to load {AssemblyName}",
+                        assemblyLoadContext.Name, assemblyName.FullName);
+                    return null;
+                }
 
-            if (packageManagerInstance == null
-                || !packageManagerInstance.Dependencies.TryGetValue(assemblyName.Name!, out var dependency))
+                if (!dependencies.TryGetValue(assemblyName.Name!, out var dependency))
+                {
+                    _logger.LogError("No dependency found for assembly: {AssemblyName} in load context: {AssemblyLoadContextName}",
+                        assemblyName.Name, assemblyLoadContext.Name);
+                    return null;
+                }
+
+                var dependencyTokens = dependency.Split('|');
+                var dependencyPackagePath = $"/{_name}/{_instanceSettings.Id}/{dependencyTokens[0]}";
+                var dependencyFilePath = $"{dependencyTokens[1]}/{assemblyName.Name!}.dll";
+
+                var dependencyBinaryContent = _storageService.ReadFile(
+                    _storageContainerName,
+                    dependencyPackagePath);
+
+                using var packageReader = new PackageArchiveReader(
+                    new MemoryStream(dependencyBinaryContent.ToArray()));
+
+                var assemblyStream = packageReader.GetStream(dependencyFilePath);
+                var assemblyMemoryStream = new MemoryStream();
+                assemblyStream.CopyTo(assemblyMemoryStream);
+                assemblyMemoryStream.Seek(0, SeekOrigin.Begin);
+
+                var assembly = assemblyLoadContext.LoadFromStream(assemblyMemoryStream);
+                return assembly;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to load dependency assembly: {AssemblyName}", assemblyName.Name);
                 return null;
-
-            var dependencyTokens = dependency.Split('|');
-            var dependencyPackagePath = dependencyTokens[0];
-            var dependencyFilePath = dependencyTokens[1];
-
-            var dependencyBinaryContent = _storageService.ReadFile(
-                _storageContainerName,
-                dependencyPackagePath);
-
-            using var packageReader = new PackageArchiveReader(
-                new MemoryStream(dependencyBinaryContent.ToArray()));
-
-            var assemblyStream = packageReader.GetStream(dependencyFilePath);
-            var assemblyMemoryStream = new MemoryStream();
-            assemblyStream.CopyTo(assemblyMemoryStream);
-            assemblyMemoryStream.Seek(0, SeekOrigin.Begin);
-
-            var assembly = assemblyLoadContext.LoadFromStream(assemblyMemoryStream);
-            return assembly;
+            }
         }
 
         #endregion

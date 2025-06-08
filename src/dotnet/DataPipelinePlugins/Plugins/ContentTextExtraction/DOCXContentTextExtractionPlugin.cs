@@ -1,5 +1,9 @@
-﻿using FoundationaLLM.Common.Interfaces.Plugins;
+﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.Plugins;
+using System.Text;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
 {
@@ -18,7 +22,33 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
         protected override string Name => PluginNames.DOCX_CONTENTTEXTEXTRACTION;
 
         /// <inheritdoc/>
-        public async Task<PluginResult<string>> ExtractText(BinaryData rawContent) =>
-            throw new NotImplementedException();
+        public async Task<PluginResult<string>> ExtractText(BinaryData rawContent)
+        {
+            try
+            {
+                StringBuilder sb = new();
+
+                using var stream = rawContent.ToStream();
+                var wordprocessingDocument = WordprocessingDocument.Open(stream, false);
+
+                var mainPart = wordprocessingDocument.MainDocumentPart ?? throw new VectorizationException("The main document part is missing.");
+                var body = mainPart.Document.Body ?? throw new VectorizationException("The document body is missing.");
+
+                var paragraphs = body.Descendants<Paragraph>();
+                if (paragraphs != null)
+                    foreach (Paragraph p in paragraphs)
+                        sb.AppendLine(p.InnerText);
+
+                return
+                    await Task.FromResult(new PluginResult<string>(
+                        sb.ToString().Trim(), true, false));
+            }
+            catch (Exception ex)
+            {
+                return
+                    await Task.FromResult(new PluginResult<string>(
+                        null, false, false, ex.Message));
+            }
+        }
     }
 }

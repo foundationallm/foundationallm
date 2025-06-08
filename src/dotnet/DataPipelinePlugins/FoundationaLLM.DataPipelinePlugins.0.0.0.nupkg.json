@@ -1,0 +1,17 @@
+{
+	"DocumentFormat.OpenXml": "/Dotnet-FoundationaLLMDataPipelinePlugins/FoundationaLLM.DataPipelinePlugins.0.0.0.dependencies/documentformat.openxml.3.1.1.nupkg|lib/net8.0",
+	"DocumentFormat.OpenXml.Framework": "/Dotnet-FoundationaLLMDataPipelinePlugins/FoundationaLLM.DataPipelinePlugins.0.0.0.dependencies/documentformat.openxml.framework.3.1.1.nupkg|lib/net8.0",
+	"System.IO.Packaging": "/Dotnet-FoundationaLLMDataPipelinePlugins/FoundationaLLM.DataPipelinePlugins.0.0.0.dependencies/system.io.packaging.8.0.1.nupkg|lib/net8.0",
+	"ClosedXML": "/Dotnet-FoundationaLLMDataPipelinePlugins/FoundationaLLM.DataPipelinePlugins.0.0.0.dependencies/closedxml.0.104.2.nupkg|lib/netstandard2.1",
+	"ClosedXML.Parser": "/Dotnet-FoundationaLLMDataPipelinePlugins/FoundationaLLM.DataPipelinePlugins.0.0.0.dependencies/closedxml.parser.1.2.0.nupkg|lib/netstandard2.1",
+	"UglyToad.PdfPig": "/Dotnet-FoundationaLLMDataPipelinePlugins/FoundationaLLM.DataPipelinePlugins.0.0.0.dependencies/pdfpig.0.1.10.nupkg|lib/net8.0",
+	"UglyToad.PdfPig.Core": "/Dotnet-FoundationaLLMDataPipelinePlugins/FoundationaLLM.DataPipelinePlugins.0.0.0.dependencies/pdfpig.0.1.10.nupkg|lib/net8.0",
+	"UglyToad.PdfPig.DocumentLayoutAnalysis": "/Dotnet-FoundationaLLMDataPipelinePlugins/FoundationaLLM.DataPipelinePlugins.0.0.0.dependencies/pdfpig.0.1.10.nupkg|lib/net8.0",
+	"UglyToad.PdfPig.Fonts": "/Dotnet-FoundationaLLMDataPipelinePlugins/FoundationaLLM.DataPipelinePlugins.0.0.0.dependencies/pdfpig.0.1.10.nupkg|lib/net8.0",
+	"UglyToad.PdfPig.Package": "/Dotnet-FoundationaLLMDataPipelinePlugins/FoundationaLLM.DataPipelinePlugins.0.0.0.dependencies/pdfpig.0.1.10.nupkg|lib/net8.0",
+	"UglyToad.PdfPig.Tokenization": "/Dotnet-FoundationaLLMDataPipelinePlugins/FoundationaLLM.DataPipelinePlugins.0.0.0.dependencies/pdfpig.0.1.10.nupkg|lib/net8.0",
+	"UglyToad.PdfPig.Tokens": "/Dotnet-FoundationaLLMDataPipelinePlugins/FoundationaLLM.DataPipelinePlugins.0.0.0.dependencies/pdfpig.0.1.10.nupkg|lib/net8.0",
+	"SixLabors.Fonts": "/Dotnet-FoundationaLLMDataPipelinePlugins/FoundationaLLM.DataPipelinePlugins.0.0.0.dependencies/sixlabors.fonts.2.1.3.nupkg|lib/net6.0",
+	"ExcelNumberFormat": "/Dotnet-FoundationaLLMDataPipelinePlugins/FoundationaLLM.DataPipelinePlugins.0.0.0.dependencies/excelnumberformat.1.1.0.nupkg|lib/netstandard2.0",
+	"Rbush": "/Dotnet-FoundationaLLMDataPipelinePlugins/FoundationaLLM.DataPipelinePlugins.0.0.0.dependencies/rbush4.0.0.nupkg|lib/net8.0"
+}
