@@ -322,6 +322,7 @@
 </template>
 
 <script lang="ts">
+import mime from 'mime';
 import { Mentionable } from 'vue-mention';
 import 'floating-vue/dist/style.css';
 import { hideAllPoppers } from 'floating-vue';
@@ -595,8 +596,16 @@ export default {
 			combinedFiles.forEach(async (file, index) => {
 				try {
 					if (file.source === 'local') {
+						let uploadFile = file;
+						// Attempt to determine the MIME type from the file name
+						if (file.name) {
+							const mimeType = mime.getType(file.name);
+							uploadFile = new File([file], file.name, { type: mimeType });
+							uploadFile.source = file.source; // preserve custom property if needed
+						}
+
 						const formData = new FormData();
-						formData.append('file', file);
+						formData.append('file', uploadFile);
 
 						const onProgress = (event) => {
 							if (event.lengthComputable) {
