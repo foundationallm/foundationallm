@@ -595,8 +595,19 @@ export default {
 			combinedFiles.forEach(async (file, index) => {
 				try {
 					if (file.source === 'local') {
+						let uploadFile = file;
+						// Check if it's a markdown file and set the correct MIME type
+						if (
+							file.name &&
+							file.name.toLowerCase().endsWith('.md') &&
+							file.type !== 'text/markdown'
+						) {
+							uploadFile = new File([file], file.name, { type: 'text/markdown' });
+							uploadFile.source = file.source; // preserve custom property if needed
+						}
+
 						const formData = new FormData();
-						formData.append('file', file);
+						formData.append('file', uploadFile);
 
 						const onProgress = (event) => {
 							if (event.lengthComputable) {

@@ -35,11 +35,21 @@
             "justMyCode": false
         },
         {
+            "name": "User Portal UI - Frontend",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/src/ui/UserPortal"
+        },
+        {
             "command": "npm run dev",
-            "name": "User Portal UI",
+            "name": "User Portal UI - Backend",
             "request": "launch",
             "type": "node-terminal",
             "cwd" : "${workspaceFolder}/src/ui/UserPortal",
+            "env" : {
+                "NODE_ENV": "development"
+            }
         },
         {
             "name": "Management Portal UI - Frontend",
