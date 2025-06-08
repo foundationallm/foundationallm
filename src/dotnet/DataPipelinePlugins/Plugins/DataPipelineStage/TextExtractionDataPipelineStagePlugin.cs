@@ -28,7 +28,21 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             { "application/pdf", "PDF" },
             { "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "DOCX" },
             { "application/vnd.openxmlformats-officedocument.presentationml.presentation", "PPTX" },
-            { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "XLSX" }
+            { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "XLSX" },
+            { "text/plain", "TXT" },
+            { "text/markdown", "MD" },
+            { "text/html", "HTML" },
+            { "application/json", "JSON" },
+            { "application/x-ndjson", "JSONL" },
+            { "application/jsonlines", "JSONL" },
+            { "application/xml", "XML" },
+            { "text/csv", "CSV" },
+            { "application/zip", "ZIP" },
+            { "image/jpeg", "JPEG" },
+            { "image/png", "PNG" },
+            { "image/gif", "GIF" },
+            { "image/bmp", "BMP" },
+            { "image/tiff", "TIFF" }
         };
 
         /// <inheritdoc/>
@@ -85,43 +99,69 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     $"The content type {rawContentResult.Value.ContentType} is not supported by the {Name} plugin.");
             }
 
-            // Find all text extraction plugins that support the content type
-            var textExtractionPluginsMetadata = _packageManager
-                .GetMetadata(dataPipelineRun.InstanceId)
-                .Plugins
-                .Where(p =>
-                    p.Category == PluginCategoryNames.ContentTextExtraction
-                    && (p.Subcategory?.Split(',').Contains(contentType) ?? false))
-                .ToList();
+            var textContent = string.Empty;
 
-            if (textExtractionPluginsMetadata.Count == 0)
-                throw new PluginException(
-                    $"The {Name} plugin cannot map the content type {contentType} to a content text extraction plugin.");
+            switch (contentType)
+            {
+                case "PDF":
+                case "DOCX":
+                case "PPTX":
+                case "XLSX":
 
-            var dataPipelineStage = dataPipelineDefinition.GetStage(
-                dataPipelineRunWorkItem.Stage);
+                    // Find all text extraction plugins that support the content type
+                    var textExtractionPluginsMetadata = _packageManager
+                        .GetMetadata(dataPipelineRun.InstanceId)
+                        .Plugins
+                        .Where(p =>
+                            p.Category == PluginCategoryNames.ContentTextExtraction
+                            && (p.Subcategory?.Split(',').Contains(contentType) ?? false))
+                        .ToList();
 
-            // Find the first plugin dependency that supports the content type
-            var pluginDependency = dataPipelineStage.PluginDependencies
-                .FirstOrDefault(pd => textExtractionPluginsMetadata.Select(p => p.ObjectId).Contains(pd.PluginObjectId))
-                ?? throw new PluginException(
-                    $"The {dataPipelineRunWorkItem.Stage} stage does not have a dependency content text extraction plugin to handle the {contentType} content type.");
+                    if (textExtractionPluginsMetadata.Count == 0)
+                        throw new PluginException(
+                            $"The {Name} plugin cannot map the content type {contentType} to a content text extraction plugin.");
 
-            var textExtractionPluginMetadata = textExtractionPluginsMetadata
-                .Single(p => p.ObjectId == pluginDependency.PluginObjectId);
+                    var dataPipelineStage = dataPipelineDefinition.GetStage(
+                        dataPipelineRunWorkItem.Stage);
 
-            var textExtractionPlugin = _packageManager
-                .GetContentTextExtractionPlugin(
-                    textExtractionPluginMetadata.Name,
-                    dataPipelineRun.TriggerParameterValues.FilterKeys(
-                        $"Stage.{dataPipelineRunWorkItem.Stage}.Dependency.{textExtractionPluginMetadata.Name.Split('-').Last()}."),
-                    _serviceProvider);
+                    // Find the first plugin dependency that supports the content type
+                    var pluginDependency = dataPipelineStage.PluginDependencies
+                        .FirstOrDefault(pd => textExtractionPluginsMetadata.Select(p => p.ObjectId).Contains(pd.PluginObjectId))
+                        ?? throw new PluginException(
+                            $"The {dataPipelineRunWorkItem.Stage} stage does not have a dependency content text extraction plugin to handle the {contentType} content type.");
 
-            var textContentResult = await textExtractionPlugin.ExtractText(
-                rawContentResult.Value.RawContent);
+                    var textExtractionPluginMetadata = textExtractionPluginsMetadata
+                        .Single(p => p.ObjectId == pluginDependency.PluginObjectId);
 
-            if (!textContentResult.Success)
-                return new PluginResult(false, false, textContentResult.ErrorMessage);
+                    var textExtractionPlugin = _packageManager
+                        .GetContentTextExtractionPlugin(
+                            textExtractionPluginMetadata.Name,
+                            dataPipelineRun.TriggerParameterValues.FilterKeys(
+                                $"Stage.{dataPipelineRunWorkItem.Stage}.Dependency.{textExtractionPluginMetadata.Name.Split('-').Last()}."),
+                            _serviceProvider);
+
+                    var textContentResult = await textExtractionPlugin.ExtractText(
+                        rawContentResult.Value.RawContent);
+
+                    if (!textContentResult.Success)
+                        return new PluginResult(false, false, textContentResult.ErrorMessage);
+
+                    textContent = textContentResult.Value!;
+
+                    break;
+
+                case "TXT":
+                case "MD":
+                case "HTML":
+
+                    textContent = rawContentResult.Value.RawContent.ToString();
+
+                    break;
+
+                default:
+                    return new PluginResult(false, false,
+                        $"The content type {contentType} is not supported by the {Name} plugin.");
+            }
 
             await _dataPipelineStateService.SaveDataPipelineRunWorkItemArtifacts(
                 dataPipelineDefinition,
@@ -131,7 +171,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     {
                         FileName = "content.txt",
                         ContentType = "text/plain",
-                        Content = BinaryData.FromString(textContentResult.Value!)
+                        Content = BinaryData.FromString(textContent)
                     },
                     new DataPipelineStateArtifact
                     {

@@ -73,8 +73,32 @@ namespace FoundationaLLM.Plugin.ResourceProviders
         protected override string _name => ResourceProviderNames.FoundationaLLM_Plugin;
 
         /// <inheritdoc/>
-        protected override async Task InitializeInternal() =>
-            await Task.CompletedTask;
+        protected override async Task InitializeInternal()
+        {
+            var files = await _storageService.GetFilePathsAsync(
+                _storageContainerName,
+                $"/{_name}/{_instanceSettings.Id}",
+                recursive: true,
+                default);
+
+            var dependencyFiles = files
+                .Where(f => f.EndsWith(".nupkg.json", StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+
+            foreach (var dependencyFile in dependencyFiles)
+            {
+                var pluginPackageBinaryDependencies = await _storageService.ReadFileAsync(
+                    _storageContainerName,
+                    dependencyFile,
+                    default);
+
+                var pluginPackageDependencies = JsonSerializer.Deserialize<Dictionary<string, string>>(
+                    pluginPackageBinaryDependencies.ToArray());
+
+                var dependencyFileTokens = dependencyFile.Split('/');
+                _pluginDependencies[dependencyFileTokens[2]] = pluginPackageDependencies ?? [];
+            }
+        }
 
         #region Resource provider support for Management API
 
@@ -410,16 +434,6 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                 _storageContainerName,
                 pluginPackageDefinition!.PackageFilePath,
                 default);
-
-            var pluginPackageBinaryDependencies = await _storageService.ReadFileAsync(
-                _storageContainerName,
-                $"{pluginPackageDefinition.PackageFilePath}.json",
-                default);
-
-            var pluginPackageDependencies = JsonSerializer.Deserialize<Dictionary<string, string>>(
-                pluginPackageBinaryDependencies.ToArray());
-
-            _pluginDependencies[pluginPackageName] = pluginPackageDependencies ?? [];
 
             var packageManagerInstance = await LoadPackage(
                 pluginPackageName,
