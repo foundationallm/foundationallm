@@ -18,6 +18,11 @@ namespace FoundationaLLM.Common.Constants.Context
         public const string ConversationDataPipeline = "conversation_data_pipeline";
 
         /// <summary>
+        /// The file's content must be used in the completion request context (it's content should be directly embedded into the completion request).
+        /// </summary>
+        public const string CompletionRequestContext = "completion_request_context";
+
+        /// <summary>
         /// All file processing types.
         /// </summary>
         public static readonly ImmutableArray<string> All = [

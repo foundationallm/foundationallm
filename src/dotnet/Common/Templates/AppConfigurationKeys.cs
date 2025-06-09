@@ -1194,6 +1194,20 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_KnowledgeSearchFileExtensions =
             "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileExtensions setting.
+        /// <para>Value description:<br/>The comma-separated list of file extensions that indicate files that can be directly used in the context of a completion request.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_KnowledgeSearchContextFileExtensions =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileExtensions";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes setting.
+        /// <para>Value description:<br/>The comma-separated list of file extensions that are subject to knowledge search.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_KnowledgeSearchContextFileMaxSizeBytes =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes";
 
         #endregion
 

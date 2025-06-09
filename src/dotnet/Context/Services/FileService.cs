@@ -33,6 +33,10 @@ namespace FoundationaLLM.Context.Services
             .KnowledgeSearchFileExtensions
             .Split(",")
             .Select(s => s.Trim().ToLower())];
+        private readonly HashSet<string> _knowledgeSearchContextFileTypes = [.. settings
+            .KnowledgeSearchContextFileExtensions?
+            .Split(",")
+            .Select(s => s.Trim().ToLower()) ?? []];
         private readonly ILogger<FileService> _logger = logger;
 
         /// <inheritdoc/>
@@ -53,15 +57,10 @@ namespace FoundationaLLM.Context.Services
                 fileName,
                 contentType,
                 content.Length,
-                origin switch
-                {
-                    ContextRecordOrigins.CodeSession => FileProcessingTypes.None,
-                    ContextRecordOrigins.UserUpload => _knowledgeSearchFileTypes
-                        .Contains(Path.GetExtension(fileName).Replace(".", string.Empty).ToLower())
-                            ? FileProcessingTypes.ConversationDataPipeline
-                            : FileProcessingTypes.None,
-                    _ => FileProcessingTypes.None
-                },
+                GetFileProcessingType(
+                    origin,
+                    Path.GetExtension(fileName).Replace(".", string.Empty).ToLower(),
+                    content.Length),
                 userIdentity,
                 metadata);
 
@@ -195,5 +194,24 @@ namespace FoundationaLLM.Context.Services
                 return false;
             }
         }
+
+        private string GetFileProcessingType(
+            string fileOrigin,
+            string fileExtension,
+            long fileSizeBytes) =>
+            fileOrigin switch
+            {
+                ContextRecordOrigins.CodeSession => FileProcessingTypes.None,
+                ContextRecordOrigins.UserUpload =>
+                    _knowledgeSearchFileTypes.Contains(fileExtension)
+                        ? (
+                            _knowledgeSearchContextFileTypes.Contains(fileExtension)
+                            && fileSizeBytes <= _settings.KnowledgeSearchContextFileMaxSizeBytes
+                                ? FileProcessingTypes.CompletionRequestContext
+                                : FileProcessingTypes.ConversationDataPipeline
+                        )
+                        : FileProcessingTypes.None,
+                _ => FileProcessingTypes.None
+            };
     }
 }

@@ -1611,6 +1611,22 @@
 				"value": "Context",
 				"content_type": "",
 				"first_version": "0.9.7"
+			},
+			{
+				"name": "FileService:KnowledgeSearchContextFileExtensions",
+				"description": "The comma-separated list of file extensions that indicate files that can be directly used in the context of a completion request.",
+				"secret": "",
+				"value": "c, cs, cpp, css, html, java, js, json, jsonl, md, php, py, rb, sh, ts, tex, txt",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "FileService:KnowledgeSearchContextFileMaxSizeBytes",
+				"description": "The comma-separated list of file extensions that are subject to knowledge search.",
+				"secret": "",
+				"value": "5000",
+				"content_type": "",
+				"first_version": "0.9.7"
 			}
 		]
 	},
