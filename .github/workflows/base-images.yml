@@ -1,4 +1,4 @@
-name: Pre-release Build
+name: Base Docker Images Build
 
 on:
   push:
