@@ -5,6 +5,6 @@ class TemplateVariables:
     PROMPT = 'prompt'
     CONVERSATION_FILES = 'conversation_files'
     ATTACHED_FILES = 'attached_files'
+    CONTEXT_FILES = 'context_files'
     TOOL_RESULTS = 'tool_results'
     FILES_PROMPT = 'files_prompt'
-    

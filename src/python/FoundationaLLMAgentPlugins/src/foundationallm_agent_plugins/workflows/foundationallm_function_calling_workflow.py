@@ -43,6 +43,8 @@ from foundationallm.models.orchestration import (
     OpenAIImageFileMessageContentItem,
     OpenAIFilePathMessageContentItem
 )
+from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
+from foundationallm.services import HttpClientService
 from foundationallm.telemetry import Telemetry
 
 class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
@@ -86,6 +88,9 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         self.__create_workflow_files_prompt()
         self.__create_workflow_final_prompt()
         self.__create_workflow_llm()
+        self.__create_context_client()
+
+        self.instance_id = objects.get(CompletionRequestObjectKeys.INSTANCE_ID, None)
 
     async def invoke_async(self,
                            operation_id: str,
@@ -118,7 +123,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         if objects is None:
             objects = {}
         llm_prompt = user_prompt_rewrite or user_prompt
-        
+
         runnable_config = self.__get_tools_runnable_config(
             user_prompt,
             user_prompt_rewrite,
@@ -127,9 +132,10 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             objects=objects
         )
 
-        messages = self.__get_message_list(
+        messages = await self.__get_message_list(
             message_history,
-            objects
+            objects,
+            file_history
         )
 
         content_artifacts: List[ContentArtifact] = []
@@ -153,7 +159,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             if llm_response.tool_calls:
 
                 intermediate_responses.append(str(llm_response.content))
-                
+
                 for tool_call in llm_response.tool_calls:
 
                     with self.tracer.start_as_current_span(f'{self.name}_tool_call', kind=SpanKind.INTERNAL) as tool_call_span:
@@ -189,7 +195,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 )
 
                 with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
-                    
+
                     final_llm_response = await self.workflow_llm.ainvoke(
                         messages + [final_message],
                         tools=None)
@@ -310,6 +316,22 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             self.logger.warning(warning_message)
             self.workflow_final_prompt = None
 
+    def __create_context_client(self):
+        """
+        Creates the context client for the workflow.
+        This is used to access the Context API.
+        """
+        context_api_endpoint_configuration = APIEndpointConfiguration(
+            **self.objects.get(CompletionRequestObjectKeys.CONTEXT_API_ENDPOINT_CONFIGURATION, None))
+        if context_api_endpoint_configuration:
+            self.context_api_client = HttpClientService(
+                context_api_endpoint_configuration,
+                self.user_identity,
+                self.config
+            )
+        else:
+            raise Exception("The Context API endpoint configuration is required to use the workflow.")
+
     def __create_workflow_execution_content_artifact(
             self,
             original_prompt: str,
@@ -371,10 +393,11 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
         return runnable_config
 
-    def __get_message_list(
+    async def __get_message_list(
         self,
         message_history: List[MessageHistoryItem],
-        objects: dict
+        objects: dict,
+        file_history: List[FileHistoryItem]
     ) -> List[BaseMessage]:
         """
         Returns the message history in the format required by the workflow.
@@ -390,6 +413,9 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         if objects is None:
             objects = {}
 
+        if file_history is None:
+            file_history = []
+
         # Convert message history to LangChain message types
         messages = []
         for message in message_history:
@@ -404,11 +430,26 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         attached_files = objects.get(
             CompletionRequestObjectKeys.WORKFLOW_INVOCATION_ATTACHED_FILES, '')
 
+        context_files = []
+        for context_file in [f for f in file_history if f.embed_content_in_request]:
+
+            self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
+            context_file_id = context_file.object_id.split('/')[-1]
+            context_file_content = await self.context_api_client.get_async(
+                endpoint = f"/instances/{self.instance_id}/files/{context_file_id}",
+                content_type = None)
+            context_files.append(
+                f'\nFILE_CONTENT for {context_file.original_file_name}:\n{context_file_content}\nEND_FILE_CONTENT\n')
+
+        if (len(context_files) > 0):
+            context_files.insert(0, 'The following attached files are provided with their content:\n\n')
+
         files_prompt = self.workflow_files_prompt \
             .replace(f'{{{{{TemplateVariables.CONVERSATION_FILES}}}}}', '\n'.join(conversation_files)) \
             .replace(f'{{{{{TemplateVariables.ATTACHED_FILES}}}}}', '\n'.join(attached_files)) \
+            .replace(f'{{{{{TemplateVariables.CONTEXT_FILES}}}}}', ''.join(context_files)) \
             if self.workflow_files_prompt else ''
-        
+
         main_prompt = self.workflow_main_prompt \
             .replace(f'{{{{{TemplateVariables.FILES_PROMPT}}}}}', files_prompt)
 
