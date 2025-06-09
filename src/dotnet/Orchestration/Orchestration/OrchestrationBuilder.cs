@@ -645,7 +645,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 }
             }
 
+            // Leave out files that are supposed to be embedded in the request.
             var fileHistory = originalRequest.FileHistory?
+                                .Where(f => !f.EmbedContentInRequest)
                                 .Select(f => $"{f.Order}. {f.OriginalFileName}")
                                 .ToArray() ?? [];
 
@@ -653,8 +655,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 CompletionRequestObjectsKeys.WorkflowInvocationConversationFiles,
                 fileHistory);
 
+            // Leave out files that are supposed to be embedded in the request.
             var attachedFiles = originalRequest.FileHistory?
-                                .Where(f => f.CurrentMessageAttachment)
+                                .Where(f => f.CurrentMessageAttachment && !f.EmbedContentInRequest)
                                 .Select(f => $"{f.OriginalFileName}")
                                 .ToArray() ?? [];
 

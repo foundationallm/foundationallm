@@ -52,5 +52,10 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
         [JsonPropertyName("provider_storage_account_name")]
         public string? ProviderStorageAccountName { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the content of the attachment should be embedded in the request.
+        /// </summary>
+        [JsonPropertyName("embed_content_in_request")]
+        public required bool EmbedContentInRequest { get; set; }
     }
 }
