@@ -85,6 +85,10 @@ namespace FoundationaLLM.Core.API.Controllers
             var name = $"a-{Guid.NewGuid()}-{DateTime.UtcNow.Ticks}";
             var contentType = file.ContentType;
 
+            if (string.IsNullOrWhiteSpace(contentType)
+                || contentType == "null")
+                contentType = FileMethods.GetMimeType(fileName);
+
             await using var stream = file.OpenReadStream();
             using var memoryStream = new MemoryStream();
             await stream.CopyToAsync(memoryStream);
