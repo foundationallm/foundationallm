@@ -22,5 +22,16 @@ namespace FoundationaLLM.Context.Models.Configuration
         /// Gets or sets the comma-separated list of file extensions that are subject to knowledge search.
         /// </summary>
         public required string KnowledgeSearchFileExtensions { get; set; }
+
+        /// <summary>
+        /// Gets or sets the comma-separated list of file extensions that indicate files that can be directly used in
+        /// the context of a completion request.
+        /// </summary>
+        public string? KnowledgeSearchContextFileExtensions { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum size in bytes for files that can be directly used in the context of a completion request.
+        /// </summary>
+        public int KnowledgeSearchContextFileMaxSizeBytes { get; set; }
     }
 }

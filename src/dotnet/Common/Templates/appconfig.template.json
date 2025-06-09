@@ -953,6 +953,20 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileExtensions",
+            "value": "c, cs, cpp, css, html, java, js, json, jsonl, md, php, py, rb, sh, ts, tex, txt",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes",
+            "value": "5000",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-gatewayapi-apikey\"}",
             "label": null,

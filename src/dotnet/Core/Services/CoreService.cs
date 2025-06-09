@@ -1281,7 +1281,11 @@ public partial class CoreService(
                             var fileResponse = await _contextServiceClient.GetFileRecord(instanceId, attachmentObjectId);
                             if (fileResponse.Success)
                             {
-                                fileHistory.Add(FileHistoryItem.FromContextFileRecord(fileResponse.Result!, ++attachmentOrder, false));
+                                fileHistory.Add(FileHistoryItem.FromContextFileRecord(
+                                    fileResponse.Result!,
+                                    ++attachmentOrder,
+                                    false,
+                                    false));
                             }
                             else
                             {
@@ -1311,7 +1315,11 @@ public partial class CoreService(
                     var fileResponse = await _contextServiceClient.GetFileRecord(instanceId, attachmentObjectId);
                     if (fileResponse.Success)
                     {
-                        fileHistory.Add(FileHistoryItem.FromContextFileRecord(fileResponse.Result!, ++attachmentOrder, true));
+                        fileHistory.Add(FileHistoryItem.FromContextFileRecord(
+                            fileResponse.Result!,
+                            ++attachmentOrder,
+                            true,
+                            true));
                     }
                     else
                     {
