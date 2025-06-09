@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.Orchestration;
+using Microsoft.AspNetCore.StaticFiles;
 using MimeDetective;
 
 namespace FoundationaLLM.Common.Utils
@@ -8,6 +9,21 @@ namespace FoundationaLLM.Common.Utils
     /// </summary>
     public class FileMethods
     {
+        private static readonly FileExtensionContentTypeProvider ContentTypeProvider = new();
+
+        static FileMethods()
+        {
+            // Initialize any static resources or configurations if needed.
+
+            ContentTypeProvider.Mappings.Add(".py", "text/x-python");
+            ContentTypeProvider.Mappings.Add(".jsonl", "application/x-ndjson");
+            ContentTypeProvider.Mappings.Add(".php", "application/x-httpd-php");
+            ContentTypeProvider.Mappings.Add(".rb", "text/x-ruby");
+
+            // Not really interested in the default mapping for this extension.
+            ContentTypeProvider.Mappings[".ts"] = "application/typescript";
+        }
+
         private static readonly Dictionary<string, string> FileTypeMappings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             { ".jpg", MessageContentItemTypes.ImageFile },
@@ -57,6 +73,21 @@ namespace FoundationaLLM.Common.Utils
             var mimeType = results.FirstOrDefault()?.Definition.File.MimeType;
 
             return mimeType ?? "application/octet-stream";
+        }
+
+        /// <summary>
+        /// Returns the mime type of the file based on its name.
+        /// </summary>
+        /// <param name="fileName">The name of the file.</param>
+        /// <returns>The mime type.</returns>
+        public static string GetMimeType(string fileName)
+        {
+            if (ContentTypeProvider.TryGetContentType(fileName, out var contentType))
+            {
+                return contentType;
+            }
+
+            return "application/octet-stream";
         }
     }
 }
