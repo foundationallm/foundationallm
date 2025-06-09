@@ -376,7 +376,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         ContentType = attachment.ContentType!,
                         Provider = ResourceProviderNames.FoundationaLLM_Attachment,
                         ProviderFileName = attachment.Path,
-                        ProviderStorageAccountName = _attachmentResourceProvider.StorageAccountName
+                        ProviderStorageAccountName = _attachmentResourceProvider.StorageAccountName,
+                        EmbedContentInRequest = false
                     });
                 }
                 else
@@ -427,7 +428,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 : fileMapping.OpenAIFileId,
                             ProviderStorageAccountName = useAttachmentPath
                                 ? _attachmentResourceProvider.StorageAccountName
-                                : null
+                                : null,
+                            EmbedContentInRequest = false
                         });
                     }
                     if (attachment.SecondaryProvider == ResourceProviderNames.FoundationaLLM_AzureAI)                    
@@ -474,7 +476,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 : fileMapping.AzureAIAgentFileId,
                             ProviderStorageAccountName = useAttachmentPath
                                 ? _attachmentResourceProvider.StorageAccountName
-                                : null
+                                : null,
+                            EmbedContentInRequest = false
                         });
                     }
                 }
@@ -502,7 +505,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         OriginalFileName = contextFileResponse.Result!.FileName,
                         ContentType = contextFileResponse.Result.ContentType!,
                         Provider = ContextProviderNames.FoundationaLLM_ContextAPI,
-                        ProviderFileName = contextFileResponse.Result.FilePath
+                        ProviderFileName = contextFileResponse.Result.FilePath,
+                        EmbedContentInRequest = contextFileResponse.Result!.FileProcessingType == FileProcessingTypes.CompletionRequestContext
                     };
 
                     if (contextFileResponse.Result.FileProcessingType == FileProcessingTypes.ConversationDataPipeline)

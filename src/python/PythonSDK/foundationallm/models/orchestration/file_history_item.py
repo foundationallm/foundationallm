@@ -13,3 +13,4 @@ class FileHistoryItem(BaseModel):
     content_type: Optional[str] = Field(None, description="The content type of the attachment.")
     secondary_provider: Optional[str] = Field(None, description="The secondary provider of the attachment.")
     secondary_provider_object_id: Optional[str] = Field(None, description="The identifier of the attachment in the secondary provider.")
+    embed_content_in_request: Optional[bool] = Field(False, description="Indicates if the content of the file should be embedded in the request.")
