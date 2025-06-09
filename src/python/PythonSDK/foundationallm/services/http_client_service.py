@@ -9,7 +9,11 @@ class HttpClientService:
     """
     Class for creating an HTTP client session based on an API endpoint configuration.
     """
-    def __init__(self, api_endpoint_configuration: APIEndpointConfiguration, user_identity: UserIdentity, config: Configuration):
+    def __init__(
+            self,
+            api_endpoint_configuration: APIEndpointConfiguration,
+            user_identity: UserIdentity,
+            config: Configuration):
         self.config = config
         self.user_identity = user_identity
         self.api_endpoint_configuration = api_endpoint_configuration
@@ -20,7 +24,6 @@ class HttpClientService:
 
         # build headers
         headers = {}
-        headers["Content-Type"] = "application/json"
         headers["charset"] = "utf-8"
         if self.api_endpoint_configuration.authentication_type == AuthenticationTypes.API_KEY:
             api_key_value_prefix = self.api_endpoint_configuration.authentication_parameters.get(AuthenticationParametersKeys.API_KEY_PREFIX, "")
@@ -33,7 +36,7 @@ class HttpClientService:
         # If the user identity is provided, add the user principal name to the headers.
         if self.user_identity is not None:
             headers["X-USER-IDENTITY"] = self.user_identity.model_dump_json(by_alias=True)
-            
+
         # Check for base URL exceptions.
         for url_exception in self.api_endpoint_configuration.url_exceptions:
             if url_exception.user_principal_name == self.user_identity.upn and url_exception.enabled:
@@ -42,44 +45,60 @@ class HttpClientService:
 
         self.headers = headers
 
-    def get(self, endpoint: str):
+    def get(self, endpoint: str, content_type: str = "application/json"):
         """
         Execute a synchronous GET request.
         """
         with requests.Session() as session:
             session.headers.update(self.headers)
+            if content_type:
+                session.headers.update({"Content-Type": content_type})
             url = self.base_url + endpoint
             response = session.get(url, timeout=self.time_out, verify=self.verify_certs)
             response.raise_for_status()
-            return response.json()
+            return \
+                response.json() if "Content-Type" in response.headers and response.headers["Content-Type"] == "application/json" \
+                else response.text()
 
-    def post(self, endpoint: str, data = None):
+    def post(self, endpoint: str, content_type: str = "application/json", data = None):
         """
         Execute a synchronous POST request.
-        """        
+        """
         with requests.Session() as session:
             session.headers.update(self.headers)
-            url = self.base_url + endpoint            
-            response = session.post(url, data=data, timeout=self.time_out, verify=self.verify_certs)            
+            if content_type:
+                session.headers.update({"Content-Type": content_type})
+            url = self.base_url + endpoint
+            response = session.post(url, data=data, timeout=self.time_out, verify=self.verify_certs)
             response.raise_for_status()
-            return response.json()
+            return \
+                response.json() if "Content-Type" in response.headers and response.headers["Content-Type"] == "application/json" \
+                else response.text()
 
-    async def get_async(self, endpoint: str):
+    async def get_async(self, endpoint: str, content_type: str = "application/json"):
         """
         Execute an asynchronous GET request.
         """
         async with aiohttp.ClientSession(headers=self.headers) as session:
+            if content_type:
+                session.headers.update({"Content-Type": content_type})
             url = self.base_url + endpoint
             async with session.get(url, timeout=self.time_out, ssl=self.verify_certs) as response:
                 response.raise_for_status()
-                return await response.json()
+                return \
+                    await response.json() if "Content-Type" in response.headers and response.headers["Content-Type"] == "application/json" \
+                    else await response.text()
 
-    async def post_async(self, endpoint: str, data = None):
+    async def post_async(self, endpoint: str, content_type: str = "application/json", data = None):
         """
         Execute an asynchronous POST request.
         """
         async with aiohttp.ClientSession(headers=self.headers) as session:
+            if content_type:
+                session.headers.update({"Content-Type": content_type})
             url = self.base_url + endpoint
             async with session.post(url, data=data, timeout=self.time_out, ssl=self.verify_certs) as response:
                 response.raise_for_status()
-                return await response.json()
+                return \
+                    await response.json() if "Content-Type" in response.headers and response.headers["Content-Type"] == "application/json" \
+                    else await response.text()
