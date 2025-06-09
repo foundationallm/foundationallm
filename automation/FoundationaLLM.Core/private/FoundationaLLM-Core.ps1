@@ -79,11 +79,11 @@ function Test-ACADynamicSessionsAccessToken {
 }
 
 function Get-ManagementAPIBaseUri {
-    return [System.Uri]::new([System.Uri]::new($ManagementAPIBaseUrl), "/instances/$($InstanceId)")
+    return [System.Uri]::new([System.Uri]::new($ManagementAPIBaseUrl), $global:ManagementAPIInstanceRelativeUri)
 }
 
 function Get-CoreAPIBaseUri {
-    return [System.Uri]::new([System.Uri]::new($CoreAPIBaseUrl), "/instances/$($InstanceId)")
+    return [System.Uri]::new([System.Uri]::new($CoreAPIBaseUrl), $global:CoreAPIInstanceRelativeUri)
 }
 
 function Get-ObjectId {

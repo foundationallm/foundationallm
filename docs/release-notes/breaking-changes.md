@@ -200,7 +200,7 @@ The content of the `ConversationFiles.json` file is as follows:
   "description": "The vector database that used by default when processing files that are uploaded in conversations.",
   "cost_center": null,
   "database_type": "AzureAISearch",
-  "database_name": "ConversationFiles",
+  "database_name": "conversation-files",
   "embedding_property_name": "Embedding",
   "content_property_name": "Text",
   "vector_store_id_property_name": "VectorStoreId",

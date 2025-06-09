@@ -447,7 +447,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         files_prompt = self.workflow_files_prompt \
             .replace(f'{{{{{TemplateVariables.CONVERSATION_FILES}}}}}', '\n'.join(conversation_files)) \
             .replace(f'{{{{{TemplateVariables.ATTACHED_FILES}}}}}', '\n'.join(attached_files)) \
-            .replace(f'{{{{{TemplateVariables.CONTEXT_FILES}}}}}', ''.join(context_files)) \
+            .replace(f'{{{{{TemplateVariables.CONTEXT_FILES}}}}}', '\n'.join(context_files)) \
             if self.workflow_files_prompt else ''
 
         main_prompt = self.workflow_main_prompt \

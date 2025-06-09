@@ -57,7 +57,7 @@ class HttpClientService:
             response = session.get(url, timeout=self.time_out, verify=self.verify_certs)
             response.raise_for_status()
             return \
-                response.json() if "Content-Type" in response.headers and response.headers["Content-Type"] == "application/json" \
+                response.json() if "Content-Type" in session.headers and session.headers["Content-Type"] == "application/json" \
                 else response.text()
 
     def post(self, endpoint: str, content_type: str = "application/json", data = None):
@@ -72,7 +72,7 @@ class HttpClientService:
             response = session.post(url, data=data, timeout=self.time_out, verify=self.verify_certs)
             response.raise_for_status()
             return \
-                response.json() if "Content-Type" in response.headers and response.headers["Content-Type"] == "application/json" \
+                response.json() if "Content-Type" in session.headers and session.headers["Content-Type"] == "application/json" \
                 else response.text()
 
     async def get_async(self, endpoint: str, content_type: str = "application/json"):
@@ -86,7 +86,7 @@ class HttpClientService:
             async with session.get(url, timeout=self.time_out, ssl=self.verify_certs) as response:
                 response.raise_for_status()
                 return \
-                    await response.json() if "Content-Type" in response.headers and response.headers["Content-Type"] == "application/json" \
+                    await response.json() if "Content-Type" in session.headers and session.headers["Content-Type"] == "application/json" \
                     else await response.text()
 
     async def post_async(self, endpoint: str, content_type: str = "application/json", data = None):
@@ -100,5 +100,5 @@ class HttpClientService:
             async with session.post(url, data=data, timeout=self.time_out, ssl=self.verify_certs) as response:
                 response.raise_for_status()
                 return \
-                    await response.json() if "Content-Type" in response.headers and response.headers["Content-Type"] == "application/json" \
+                    await response.json() if "Content-Type" in session.headers and session.headers["Content-Type"] == "application/json" \
                     else await response.text()
