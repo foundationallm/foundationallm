@@ -29,7 +29,7 @@ RUN apk add --no-cache libpq gcc git cmake && \
 WORKDIR /code
 
 RUN python3 -m pip install --no-cache-dir --upgrade pip
-RUN python3 -m pip install --no-cache-dir --upgrade setuptools==70.3.0
+RUN python3 -m pip install --no-cache-dir --upgrade setuptools==78.1.1
 
 RUN git clone --no-checkout https://github.com/apache/arrow.git /arrow \
     && cd /arrow \
