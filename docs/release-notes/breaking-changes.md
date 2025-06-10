@@ -13,7 +13,9 @@ The following App Configuration value have been added:
 
 |Name | Default value | Description |
 |--- | --- | --- |
-| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions` | `c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt` | The comma-separated list file extensions that are processed as sources for knowledge search. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions` | `c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt, gif, jpeg, jpg, png` | The comma-separated list file extensions that are processed as sources for knowledge search. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileExtensions` | `c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt, gif, jpeg, jpg, png` |The comma-separated list of file extensions that indicate files that can be directly used in the context of a completion request. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes` | `c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt, gif, jpeg, jpg, png` | The dictionary of lists of extensions of files that can be directly used in the context of a completion request and their associated maximum file sizes. |
 | `FoundationaLLM:DataPipeline:State:CosmosDB:Containers` | `DataPipelines` | The names of the Azure Cosmos DB containers used by the Data Pipeline State service. |
 | `FoundationaLLM:DataPipeline:State:CosmosDB:Database` | `database` | The Azure Cosmos DB database name used by the Data Pipeline State service. |
 | `FoundationaLLM:DataPipeline:State:CosmosDB:Endpoint` | `<cosmos_db_endpoint>` | The endpoint URL of the Azure Cosmos DB used by the Data Pipeline State service. |
