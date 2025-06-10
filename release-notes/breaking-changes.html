@@ -92,8 +92,18 @@
 <tbody>
 <tr>
 <td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions</code></td>
-<td><code>c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt</code></td>
+<td><code>c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt, gif, jpeg, jpg, png</code></td>
 <td>The comma-separated list file extensions that are processed as sources for knowledge search.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileExtensions</code></td>
+<td><code>c, cs, cpp, css, html, java, js, json, jsonl, md, php, py, rb, sh, ts, tex, txt, gif, jpeg, jpg, png</code></td>
+<td>The comma-separated list of file extensions that indicate files that can be directly used in the context of a completion request.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes</code></td>
+<td><code>{&quot;c,cs,cpp,html,java,js,json,jsonl,md,php,py,rb,sh,ts,tex,txt&quot;: 25000, &quot;gif,jpeg,jpg,png&quot;:500000}</code></td>
+<td>The dictionary of lists of extensions of files that can be directly used in the context of a completion request and their associated maximum file sizes.</td>
 </tr>
 <tr>
 <td><code>FoundationaLLM:DataPipeline:State:CosmosDB:Containers</code></td>
