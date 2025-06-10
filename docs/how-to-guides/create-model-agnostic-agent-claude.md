@@ -23,14 +23,7 @@ In this step-by-step guide, you will create a model agnostic agent using Claude,
 - Property Type: `number`
 - Property Value: `0.5` 
 9. Select Save to create the property.
-10. Under what is the main workflow prompt, copy and paste the following:
-``` 
-You are a helpful assistant that answers questions in a polite way.
-
-{{foundationallm:router_prompt}}
-
-{{files_prompt}}
-```
+10. Under what is the main workflow prompt, copy and paste the prompt from https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Workflow-Main.txt. 
 
 ## Create the Workflow Prompts
 Open a new browser window to the Management Portal. Select **Prompts**.
@@ -41,32 +34,7 @@ First you will create the main workflow prompts.
 - Prompt Name: `Your-Agent-Name-Workflow-Files`. Replace Your-Agent-Name with the name of your agent.
 - Description: `Provides instructions that are specific for the identification of the files that are relevant to the question.`
 - Category: `Workflow`
-- Prompt Prefix: Copy and paste the following:
-```
-You should determine the files relevant to the question and use them to answer the question. If the question does not refer to any files, you can answer directly without using any files.
-Always attempt to identify the relevant files and pass their names as parameters to the selected tools.
-
-You have access to the files listed below in the CONVERSATION_FILES and ATTACHED_FILES sections.
-If a section is empty, it means there are no files in that section.
-The CONVERSATION_FILES section contains files that are part of the conversation.
-The ATTACHED_FILES section contains files that are attached to the question.
-
-CONVERSATION_FILES:
-{{conversation_files}}
-END_CONVERSATION_FILES
-
-ATTACHED_FILES:
-{{attached_files}}
-END_ATTACHED_FILES
-
-If the question refers to one or more files and no file names are specified, follow these steps:
-
-1. If there are files in the ATTACHED_FILES section, use them to answer the question.
-2. If there are no files in the ATTACHED_FILES section, attempt to use the files in the CONVERSATION_FILES section to answer the question.
-3. If there are no files in either section, answer the question directly without using any files.
-
-{{context_files}}
-```
+- Prompt Prefix: Copy and paste the prompt from: https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Workflow-Files.txt 
 3. Select **Create Prompt**
 
 Next, create the Workflow Final prompt.
@@ -75,27 +43,7 @@ Next, create the Workflow Final prompt.
 - Prompt Name: `Your-Agent-Name-Workflow-Final`. Replace Your-Agent-Name with the name of your agent.
 - Description: `Provides instructions to build the final response based on the results provided by tools.`
 - Category: `Workflow`
-- Prompt Prefix: Copy and paste the following:
-```
-Respond to the question specified in the QUESTION section.
-Always assume that you have already completed all the tasks resulting from the question.
-You have access to the additional information specified in the TOOL_RESULTS section.
-
-QUESTION:
-{{prompt}}
-END_QUESTION
-
-TOOL_RESULTS:
-{{tool_results}}
-END_TOOL_RESULTS
-
-When producing your response, follow these rules:
-
-- Do not repeat the instructions from the question.
-- Use the information provided in the TOOL_RESULTS section.
-- If the TOOL_RESULTS section is empty, attempt to respond directly.
-
-```
+- Prompt Prefix: Copy and paste the prompt from https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Workflow-Final.txt.
 3. Select **Create Prompt**
 
 Next, create the Workflow Router prompt.
@@ -104,20 +52,7 @@ Next, create the Workflow Router prompt.
 - Prompt Name: `Your-Agent-Name-Workflow-Router`. Replace Your-Agent-Name with the name of your agent.
 - Description: `Provides instructions that are specific for the selection of tools.`
 - Category: `Workflow`
-- Prompt Prefix: Copy and paste the following:
-```
-You must always answer based on the information you have, using the available tools.
-Do not ask the user for more information or clarification.
-If you do not know the answer, say "I don't know" or "I don't have that information."
-
-You can use one of the following tools or respond directly:
-{{foundationallm:tool_list}}
-
-Additional instructions for the usage of the tools:
-
-{{foundationallm:tool_router_prompts}}
-
-```
+- Prompt Prefix: Copy and paste the prompt from https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Workflow-Router.txt.
 3. Select **Create Prompt**
 
 ## Create the Tool Prompts
@@ -127,21 +62,7 @@ First, create the Tool Code Main prompt.
 - Prompt Name: `Your-Agent-Name-Tool-Code-Main`. Replace Your-Agent-Name with the name of your agent.
 - Description: `Provides the main instructions for the tool.`
 - Category: `Tool`
-- Prompt Prefix: Copy and paste the following:
-```
-You are an expert Python programmer. Write clear, correct, and efficient Python code.
-
-- Use idiomatic Python style (PEP 8).
-- Do not add comments or anything else than the Python source code.
-- Ensure the code is ready to run as-is, without any extra characters or details.
-- Never use the **show()** function when generating code that uses the **matplotlib** library. Always use use **savefig()** instead of **show()**.
-- Always assume files are loaded and saved from the '/mnt/data/' directory.
-- When referring to existing files, always ensure the names match the names from the AVAILABLE_FILE_NAMES section
-
-AVAILABLE_FILE_NAMES:
-{{file_names}}
-END_AVAILABLE_FILE_NAMES
-```
+- Prompt Prefix: Copy and paste the prompt from https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Tool-Code-Main.txt.
 3. Select **Create Prompt**
 
 
@@ -151,10 +72,7 @@ Next, create the Tool Code Router prompt.
 - Prompt Name: `Your-Agent-Name-Tool-Code-Router`. Replace Your-Agent-Name with the name of your agent.
 - Description: `Provides additional instructions for the selection of this tool.`
 - Category: `Tool`
-- Prompt Prefix: Copy and paste the following:
-```
-**Code-01**: Answers questions that require dynamic generation of code. Always use the original question to invoke this tool. Do not generate code when calling this tool.  Use this tool to process .zip files. Use this tool to analyze .xlsx, .csv, .json, and .XML files. Use this tool when asked to generate a file of any kind.
-```
+- Prompt Prefix: Copy and paste the prompt from https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Tool-Code-Router.txt.
 3. Select **Create Prompt**
 
 Next, create the Tool Knowledge Main prompt.
@@ -163,16 +81,7 @@ Next, create the Tool Knowledge Main prompt.
 - Prompt Name: `Your-Agent-Name-Tool-Knowledge-Main`. Replace Your-Agent-Name with the name of your agent.
 - Description: `Provides the main instructions for the tool.`
 - Category: `Tool`
-- Prompt Prefix: Copy and paste the following:
-```
-Answer the question using only the context provided.
-
-Context:
-{{context}}
-
-Question:
-{{prompt}}
-```
+- Prompt Prefix: Copy and paste the prompt from https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Tool-Knowledge-Main.txt.
 3. Select **Create Prompt**
 
 Next, create the Tool Knowledge Router prompt.
@@ -181,11 +90,7 @@ Next, create the Tool Knowledge Router prompt.
 - Prompt Name: `Your-Agent-Name-Tool-Knowledge-Router`. Replace Your-Agent-Name with the name of your agent.
 - Description: `Provides the main instructions for the tool.`
 - Category: `Tool`
-- Prompt Prefix: Copy and paste the following:
-```
-
-**Knowledge-Conversation-Files**: This tool retrieves knowledge from document files. Use this tool to search content from .txt, .pdf, .doc, .docx, .ppt, and .pptx files.
-```
+- Prompt Prefix: Copy and paste the prompt from https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Tool-Knowledge-Router.txt.
 3. Select **Create Prompt**
 
 ## Configure the Prompt Resources
