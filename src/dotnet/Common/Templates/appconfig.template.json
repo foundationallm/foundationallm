@@ -65,14 +65,14 @@
         },
         {
             "key": "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CodeInterpreter",
-            "value": "{"Endpoints": []",
+            "value": "{\"Endpoints\": {\"Python\":[], \"CSharp\":[]}",
             "label": null,
             "content_type": "application/json",
             "tags": {}
         },
         {
             "key": "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CustomContainer",
-            "value": "{"Endpoints": []",
+            "value": "{\"Endpoints\": {\"Python\":[], \"CSharp\":[]}",
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -947,21 +947,21 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions",
-            "value": "Context",
+            "value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt, gif, jpeg, jpg, png",
             "label": null,
             "content_type": "",
             "tags": {}
         },
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileExtensions",
-            "value": "c, cs, cpp, css, html, java, js, json, jsonl, md, php, py, rb, sh, ts, tex, txt",
+            "value": "c, cs, cpp, css, html, java, js, json, jsonl, md, php, py, rb, sh, ts, tex, txt, gif, jpeg, jpg, png",
             "label": null,
             "content_type": "",
             "tags": {}
         },
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes",
-            "value": "5000",
+            "value": "{\"c,cs,cpp,html,java,js,json,jsonl,md,php,py,rb,sh,ts,tex,txt\": 25000, \"gif,jpeg,jpg,png\":500000}",
             "label": null,
             "content_type": "",
             "tags": {}

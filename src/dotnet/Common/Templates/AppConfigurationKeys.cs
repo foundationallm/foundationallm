@@ -1204,7 +1204,7 @@ namespace FoundationaLLM.Common.Constants.Configuration
         
         /// <summary>
         /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes setting.
-        /// <para>Value description:<br/>The comma-separated list of file extensions that are subject to knowledge search.</para>
+        /// <para>Value description:<br/>The dictionary of lists of extensions of files that can be directly used in the context of a completion request and their associated maximum file sizes.</para>
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_KnowledgeSearchContextFileMaxSizeBytes =
             "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes";

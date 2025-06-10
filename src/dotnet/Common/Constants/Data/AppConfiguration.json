@@ -101,7 +101,7 @@
 				"name": "CodeInterpreter",
 				"description": "The settings for the Azure Container Apps Dynamic Sessions code interpreter code execution service.",
 				"secret": "",
-				"value": "{\"Endpoints\": []",
+				"value": "{\\\"Endpoints\\\": {\\\"Python\\\":[], \\\"CSharp\\\":[]}",
 				"content_type": "application/json",
 				"first_version": "0.9.7"
 			},
@@ -109,7 +109,7 @@
 				"name": "CustomContainer",
 				"description": "The settings for the Azure Container Apps Dynamic Sessions custom container code execution service.",
 				"secret": "",
-				"value": "{\"Endpoints\": []",
+				"value": "{\\\"Endpoints\\\": {\\\"Python\\\":[], \\\"CSharp\\\":[]}",
 				"content_type": "application/json",
 				"first_version": "0.9.7"
 			}
@@ -1608,7 +1608,7 @@
 				"name": "FileService:KnowledgeSearchFileExtensions",
 				"description": "The comma-separated list of file extensions that are subject to knowledge search.",
 				"secret": "",
-				"value": "Context",
+				"value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt, gif, jpeg, jpg, png",
 				"content_type": "",
 				"first_version": "0.9.7"
 			},
@@ -1616,15 +1616,15 @@
 				"name": "FileService:KnowledgeSearchContextFileExtensions",
 				"description": "The comma-separated list of file extensions that indicate files that can be directly used in the context of a completion request.",
 				"secret": "",
-				"value": "c, cs, cpp, css, html, java, js, json, jsonl, md, php, py, rb, sh, ts, tex, txt",
+				"value": "c, cs, cpp, css, html, java, js, json, jsonl, md, php, py, rb, sh, ts, tex, txt, gif, jpeg, jpg, png",
 				"content_type": "",
 				"first_version": "0.9.7"
 			},
 			{
 				"name": "FileService:KnowledgeSearchContextFileMaxSizeBytes",
-				"description": "The comma-separated list of file extensions that are subject to knowledge search.",
+				"description": "The dictionary of lists of extensions of files that can be directly used in the context of a completion request and their associated maximum file sizes.",
 				"secret": "",
-				"value": "5000",
+				"value": "{\\\"c,cs,cpp,html,java,js,json,jsonl,md,php,py,rb,sh,ts,tex,txt\\\": 25000, \\\"gif,jpeg,jpg,png\\\":500000}",
 				"content_type": "",
 				"first_version": "0.9.7"
 			}

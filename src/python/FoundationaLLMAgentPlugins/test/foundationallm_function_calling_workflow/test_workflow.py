@@ -39,10 +39,11 @@ from foundationallm.models.constants import (
 # user_prompt = "Who are you?"
 # user_prompt = "What files are in the uploaded zip?"
 # user_prompt = "List the files in the uploaded zip file. Use a code tool to provide the answer."
-user_prompt = "Plot the equation y=mx^2+b"
+# user_prompt = "Plot the equation y=mx^2+b"
+user_prompt = "Describe the file"
 
 operation_id = str(uuid.uuid4())
-conversation_id = "20250610-090956-7YQTmcJC9USZs9r9qTTLtA"
+conversation_id = "20250610-183904-2OeI49X0uk-DNCL53i3u-g"
 
 user_identity_json = {"name": "Experimental Test", "user_name":"ciprian@foundationaLLM.ai","upn":"ciprian@foundationaLLM.ai"}
 full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
