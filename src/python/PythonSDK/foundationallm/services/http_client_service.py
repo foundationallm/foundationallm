@@ -58,6 +58,7 @@ class HttpClientService:
             response.raise_for_status()
             return \
                 response.json() if "Content-Type" in session.headers and session.headers["Content-Type"] == "application/json" \
+                else response.read() if "Content-Type" in session.headers and session.headers["Content-Type"] == "application/octet-stream" \
                 else response.text()
 
     def post(self, endpoint: str, content_type: str = "application/json", data = None):
@@ -73,6 +74,7 @@ class HttpClientService:
             response.raise_for_status()
             return \
                 response.json() if "Content-Type" in session.headers and session.headers["Content-Type"] == "application/json" \
+                else response.read() if "Content-Type" in session.headers and session.headers["Content-Type"] == "application/octet-stream" \
                 else response.text()
 
     async def get_async(self, endpoint: str, content_type: str = "application/json"):
@@ -87,6 +89,7 @@ class HttpClientService:
                 response.raise_for_status()
                 return \
                     await response.json() if "Content-Type" in session.headers and session.headers["Content-Type"] == "application/json" \
+                    else await response.read() if "Content-Type" in session.headers and session.headers["Content-Type"] == "application/octet-stream" \
                     else await response.text()
 
     async def post_async(self, endpoint: str, content_type: str = "application/json", data = None):
@@ -101,4 +104,5 @@ class HttpClientService:
                 response.raise_for_status()
                 return \
                     await response.json() if "Content-Type" in session.headers and session.headers["Content-Type"] == "application/json" \
+                    else await response.read() if "Content-Type" in session.headers and session.headers["Content-Type"] == "application/octet-stream" \
                     else await response.text()
