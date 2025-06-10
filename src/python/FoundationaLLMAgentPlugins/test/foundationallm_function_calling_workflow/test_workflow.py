@@ -31,7 +31,7 @@ from foundationallm.models.constants import (
 # user_prompt = "how do I beat the market"
 # user_prompt = "Who is the hero of the story?"
 # user_prompt = "Who are you?"
-user_prompt = "Summarize the file"
+# user_prompt = "Summarize the file"
 # user_prompt = "Calculate the first 20 terms of the Fibonacci series"
 # user_prompt = "Calculate the first 20 terms of the Fibonacci series and save the result as a text file."
 # user_prompt = "Generate a graph of a complex Fourier transformation"
@@ -39,9 +39,10 @@ user_prompt = "Summarize the file"
 # user_prompt = "Who are you?"
 # user_prompt = "What files are in the uploaded zip?"
 # user_prompt = "List the files in the uploaded zip file. Use a code tool to provide the answer."
+user_prompt = "Plot the equation y=mx^2+b"
 
 operation_id = str(uuid.uuid4())
-conversation_id = "20250609-225522-GLhSALpJDkOJjL1FS-eN8A"
+conversation_id = "20250610-090956-7YQTmcJC9USZs9r9qTTLtA"
 
 user_identity_json = {"name": "Experimental Test", "user_name":"ciprian@foundationaLLM.ai","upn":"ciprian@foundationaLLM.ai"}
 full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
