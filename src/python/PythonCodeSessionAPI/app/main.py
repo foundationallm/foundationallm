@@ -2,8 +2,10 @@
 Main entry-point for the FoundationaLLM LangChainAPI.
 """
 
+import datetime
 import io
 import json
+import mimetypes
 import os
 import shutil
 import sys
@@ -119,14 +121,24 @@ async def list_files():
     """
 
     try:
-        file_paths = []
+        file_details = []
         file_store_root = os.path.normpath(ROOT_DATA_PATH)
         for root, _, files in os.walk(file_store_root):
             for file in files:
                 rel_dir = os.path.relpath(root, file_store_root)
-                file_paths.append(os.path.join(rel_dir, file))
+                full_path = os.path.join(file_store_root, file)
+                mime_type, _ = mimetypes.guess_type(full_path)
+                last_modified_ts = os.path.getmtime(full_path)
+                last_modified_iso = datetime.datetime.fromtimestamp(last_modified_ts, tz=datetime.timezone.utc).isoformat().replace("+00:00", "Z")
+                file_details.append({
+                    'name': file,
+                    'type': 'file',
+                    'contentType': mime_type or 'application/octet-stream',
+                    'sizeInBytes': os.path.getsize(full_path),
+                    'lastModifiedAt': last_modified_iso,
+                    'parentPath': rel_dir if rel_dir != '.' else ''})
 
-        return { 'value': file_paths }
+        return { 'value': file_details }
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error listing files.") from e
 
