@@ -9,6 +9,7 @@ using FoundationaLLM.Context.Exceptions;
 using FoundationaLLM.Context.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace FoundationaLLM.Context.Services
 {
@@ -187,11 +188,18 @@ namespace FoundationaLLM.Context.Services
                 codeSessionRecord.Id,
                 codeSessionRecord.Endpoint);
 
+            _logger.LogInformation("GetCodeSessionFileStoreItems result from {CodeSessionProviderName}: {CodeSessionProviderResult}",
+                codeSessionProviderService.ProviderName,
+                JsonSerializer.Serialize(fileStoreItems));
+
             var newFileStoreItems = fileStoreItems
                 .Where(x =>
                     x.ParentPath != "/"
                     || !codeSessionFileUploadRecord.FileUploadSuccess.ContainsKey(x.Name)
                     || !codeSessionFileUploadRecord.FileUploadSuccess[x.Name]);
+
+            _logger.LogInformation("New file store items to download: {NewFileStoreItems}",
+                JsonSerializer.Serialize(newFileStoreItems));
 
             var result = new CodeSessionFileDownloadResponse();
 
@@ -204,9 +212,20 @@ namespace FoundationaLLM.Context.Services
                     newFileStoreItem.ParentPath);
 
                 if (fileContentStream == null)
+                {
+                    _logger.LogError("DownloadFileFromCodeSession result from {CodeSessionProviderName} for {FileStoreItemName} in {FileStoreItemPath}: error.",
+                        codeSessionProviderService.ProviderName,
+                        newFileStoreItem.Name,
+                        newFileStoreItem.ParentPath);
                     result.Errors.Add($"{newFileStoreItem.ParentPath}/{newFileStoreItem.Name}");
+                }
                 else
                 {
+                    _logger.LogInformation("DownloadFileFromCodeSession result from {CodeSessionProviderName} for {FileStoreItemName} in {FileStoreItemPath}: success.",
+                        codeSessionProviderService.ProviderName,
+                        newFileStoreItem.Name,
+                        newFileStoreItem.ParentPath);
+
                     var fileRecord = await _fileService.CreateFile(
                     codeSessionRecord.InstanceId,
                     ContextRecordOrigins.CodeSession,
