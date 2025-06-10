@@ -19039,6 +19039,36 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "how-to-guides/create-model-agnostic-agent-claude.md",
+      "output": {
+        ".html": {
+          "relative_path": "how-to-guides/create-model-agnostic-agent-claude.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "how-to-guides/create-model-agnostic-agent-gpt4o.md",
+      "output": {
+        ".html": {
+          "relative_path": "how-to-guides/create-model-agnostic-agent-gpt4o.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "how-to-guides/create-model-agnostic-agent-via-automation.md",
+      "output": {
+        ".html": {
+          "relative_path": "how-to-guides/create-model-agnostic-agent-via-automation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
         ".html": {

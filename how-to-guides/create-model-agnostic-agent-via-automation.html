@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Overview | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Overview | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../media/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/blob/main/docs/how-to-guides/create-model-agnostic-agent-via-automation.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../media/fllm-icon.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="overview">Overview</h1>
+
+<p>In this step-by-step guide, you will create a model agnostic agent via automation. These agents can use Claude or GPT models, a code interpreter tool that uses Python dynamic sessions or custom containers and a knowledge search tool that uses the uploaded files as a data source.</p>
+<h1 id="pre-requisites">Pre-requisites</h1>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.5">PowerShell 7 or higher</a> installed on your machine.</li>
+<li>Install the FoundationaLLM.Core module by running the following command in PowerShell: <code>Install-Module FoundationaLLM.Core</code></li>
+<li>Within PowerShell, login in with your credentials to the Azure Subscription containing FoundationaLLM by running: <code>az login</code>, selecting your user, and then the subscription.</li>
+</ul>
+<h1 id="clone-the-foundationallm-packages-repo">Clone the FoundationaLLM-Packages repo</h1>
+<ol>
+<li>Clone the rep <a href="https://github.com/foundationallm/foundationallm-packages">https://github.com/foundationallm/foundationallm-packages</a> to your local machine.</li>
+<li>Open the FoundationaLLM-Packages folder in Visual Studio Code.</li>
+<li>Navigate to the ModelAgnosticAgent subfolder and open deploy.ps1. This script file has several example Model Agnostic Agents you can deploy. Before you deploy any of them, however, you should update their settings as the following section shows.</li>
+</ol>
+<h1 id="configuring-a-model-agnostic-agent">Configuring a model agnostic agent</h1>
+<ol>
+<li>Update the InstanceId, CoreAPIBaseUrl and ManagementAPIBaseURL with the values from your FoundationaLLM instance. You can get all of these values from the Management Portal, by selecting Deployment Information. These values should appear like this for Standard Deployments (which use AKS):</li>
+</ol>
+<pre><code>$global:InstanceId = &quot;8ac6174c-bede-43cb-a140-ec0002d96d2b&quot;
+$global:CoreAPIBaseUrl = &quot;[YOUR COREAPI BASE URL]&quot; 
+$global:CoreAPIInstanceRelativeUri = &quot;/core/instances/$($global:InstanceId)&quot;
+$global:ManagementAPIBaseUrl = &quot;[YOUR MANAGEMENT API BASE URL]&quot;
+$global:ManagementAPIInstanceRelativeUri = &quot;/management/instances/$($global:InstanceId)&quot;
+</code></pre>
+<p>or this for Quick Start deployments:</p>
+<pre><code>$global:InstanceId = &quot;8ac6174c-bede-43cb-a140-ec0002d96d2b&quot;
+$global:CoreAPIBaseUrl = &quot;https://cacoreapil45jljq2i5ox6.lemonrock-a0804c39.eastus2.azurecontainerapps.io&quot;
+$global:CoreAPIInstanceRelativeUri = &quot;/instances/$($global:InstanceId)&quot;
+$global:ManagementAPIBaseUrl = &quot;https://camanagementapil43jljq2i5ox6.lemonrock-a0804c39.eastus2.azurecontainerapps.io&quot;
+$global:ManagementAPIInstanceRelativeUri = &quot;/instances/$($global:InstanceId)&quot;
+</code></pre>
+<ol start="2">
+<li>In the deploy1.ps, take a look at the first code block that invokes the <code>Deploy-FoundationaLLMPackage</code> command. It should look similar to the following:</li>
+</ol>
+<pre><code>Deploy-FoundationaLLMPackage `
+    -PackageRoot &quot;./ModelAgnosticAgent&quot; `
+    -Parameters @{
+        &quot;AGENT_NAME&quot; = &quot;MAA-01&quot;
+        &quot;AGENT_DISPLAY_NAME&quot; = &quot;Model Agnostic Agent 01&quot;
+        &quot;AGENT_DESCRIPTION&quot; = &quot;Model agnostic agent using GPT-4o and Python dynamic sessions.&quot;
+        &quot;AGENT_TOOLS&quot; = @(&quot;Code-01&quot;, &quot;Knowledge-Conversation-Files&quot;)
+        &quot;MAIN_LLM&quot; = &quot;GPT4oCompletionAIModel&quot;
+        &quot;VIRTUAL_SECURITY_GROUP_ID&quot; = &quot;8637cb25-0fff-4717-8e1c-4a44ff3c3514&quot;
+        &quot;CODE_SESSION_ENDPOINT_PROVIDER&quot; = &quot;AzureContainerAppsCodeInterpreter&quot;
+    }
+</code></pre>
+<ol start="3">
+<li>You need to update several of the parameters as follows:</li>
+</ol>
+<ul>
+<li>AGENT_NAME: Set this to a unique name for the agent. Remember this name cannot have any spaces or special characters except the dash (-).</li>
+<li>AGENT_DISPLAY_NAME: Set this to the user friendly name of the agent.</li>
+<li>AGENT_DESCRIPTION: Provide a description for the agent.</li>
+<li>AGENT_TOOLS: Leave unchanged to enable both Code Interpreter and Knowledge Search over uploaded files.</li>
+<li>MAIN_LLM: Set this to the name of one of the GPT or Claude models registered with FoundationaLLM.</li>
+<li>VIRTUAL_SECURITY_GROUP_ID: Using your PowerShell terminal, run the command <code>new-guid</code> and replace the existing GUID with your newly generated value.</li>
+<li>CODE_SESSION_ENDPOINT_PROVIDER: Set the value to &quot;AzureContainerAppsCodeInterpreter&quot; to use Dynamic sessions, or &quot;AzureContainerAppsCustomContainer&quot; to use the configured custom container in your FoundationaLLM environment.</li>
+</ul>
+<h1 id="deploying-an-agent">Deploying an agent</h1>
+<ol>
+<li>Delete all of the other Deploy-FoundatinaLLMPackage commands from the script except those you have customized and want to deploy.</li>
+<li>Select all of the contents of deploy.ps1. Right click in the window and select Run Selection.</li>
+<li>The script should complete without error in a few moments.</li>
+<li>Navigate to the FoundationaLLM User Portal and refresh the page to see the updated list of agents. You should see your new agent listed. At this point you can try it out by prompting it like any other agent.</li>
+</ol>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/docs/how-to-guides/create-model-agnostic-agent-via-automation.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
