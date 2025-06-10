@@ -133,6 +133,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         )
 
         messages = await self.__get_message_list(
+            llm_prompt,
             message_history,
             objects,
             file_history
@@ -150,7 +151,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 router_start_time = time.time()
                 llm_bound_tools = self.workflow_llm.bind_tools(self.tools)
                 llm_response = await llm_bound_tools.ainvoke(
-                    messages + [HumanMessage(content=llm_prompt)],
+                    messages,
                     tool_choice='auto')
                 input_tokens += llm_response.usage_metadata['input_tokens']
                 output_tokens += llm_response.usage_metadata['output_tokens']
@@ -197,7 +198,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
 
                     final_llm_response = await self.workflow_llm.ainvoke(
-                        messages + [final_message],
+                        messages[:-1] + [final_message], # Exclude the last message which is replaced by final_message.
                         tools=None)
                     input_tokens += final_llm_response.usage_metadata['input_tokens']
                     output_tokens += final_llm_response.usage_metadata['output_tokens']
@@ -395,6 +396,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
     async def __get_message_list(
         self,
+        llm_prompt: str,
         message_history: List[MessageHistoryItem],
         objects: dict,
         file_history: List[FileHistoryItem]
@@ -441,13 +443,14 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             context_files.append(
                 f'\nFILE_CONTENT for {context_file.original_file_name}:\n{context_file_content}\nEND_FILE_CONTENT\n')
 
-        if (len(context_files) > 0):
-            context_files.insert(0, 'The following attached files are provided with their content:\n\n')
+        context_message = HumanMessage(
+            content= [{"type": "text", "text": llm_prompt}] + \
+                [{"type": "text", "text": context_file} for context_file in context_files])
 
         files_prompt = self.workflow_files_prompt \
             .replace(f'{{{{{TemplateVariables.CONVERSATION_FILES}}}}}', '\n'.join(conversation_files)) \
             .replace(f'{{{{{TemplateVariables.ATTACHED_FILES}}}}}', '\n'.join(attached_files)) \
-            .replace(f'{{{{{TemplateVariables.CONTEXT_FILES}}}}}', '\n'.join(context_files)) \
+            .replace(f'{{{{{TemplateVariables.CONTEXT_FILES}}}}}', '') \
             if self.workflow_files_prompt else ''
 
         main_prompt = self.workflow_main_prompt \
@@ -458,7 +461,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
         return [
             SystemMessage(content=main_prompt),
-            *messages
+            *messages,
+            context_message
         ]
 
     def __get_message_for_final_response(

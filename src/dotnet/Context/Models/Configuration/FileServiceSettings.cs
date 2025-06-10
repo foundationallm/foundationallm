@@ -32,6 +32,6 @@ namespace FoundationaLLM.Context.Models.Configuration
         /// <summary>
         /// Gets or sets the maximum size in bytes for files that can be directly used in the context of a completion request.
         /// </summary>
-        public int KnowledgeSearchContextFileMaxSizeBytes { get; set; }
+        public string? KnowledgeSearchContextFileMaxSizeBytes { get; set; }
     }
 }

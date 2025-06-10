@@ -8,6 +8,7 @@ using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Context.Interfaces;
 using FoundationaLLM.Context.Models.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace FoundationaLLM.Context.Services
 {
@@ -37,6 +38,16 @@ namespace FoundationaLLM.Context.Services
             .KnowledgeSearchContextFileExtensions?
             .Split(",")
             .Select(s => s.Trim().ToLower()) ?? []];
+        private readonly Dictionary<string, int> _maxFileSizes =
+            JsonSerializer.Deserialize<Dictionary<string, int>>(
+                settings.KnowledgeSearchContextFileMaxSizeBytes ?? "{}")!
+            .Select(x => x.Key
+                .Split(",")
+                .Select(y => new KeyValuePair<string, int>(
+                    y.Trim().ToLower(),
+                    x.Value)))
+            .SelectMany(x => x)
+            .ToDictionary();
         private readonly ILogger<FileService> _logger = logger;
 
         /// <inheritdoc/>
@@ -206,7 +217,8 @@ namespace FoundationaLLM.Context.Services
                     _knowledgeSearchFileTypes.Contains(fileExtension)
                         ? (
                             _knowledgeSearchContextFileTypes.Contains(fileExtension)
-                            && fileSizeBytes <= _settings.KnowledgeSearchContextFileMaxSizeBytes
+                            && _maxFileSizes.TryGetValue(fileExtension, out var maxSize)
+                            && fileSizeBytes <= maxSize
                                 ? FileProcessingTypes.CompletionRequestContext
                                 : FileProcessingTypes.ConversationDataPipeline
                         )
