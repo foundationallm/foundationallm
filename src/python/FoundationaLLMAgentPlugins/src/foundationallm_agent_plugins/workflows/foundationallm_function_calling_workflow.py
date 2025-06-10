@@ -2,6 +2,8 @@
 Class: FoundationaLLMFunctionCallingWorkflow
 Description: FoundationaLLM Function Calling workflow to invoke tools at a low level.
 """
+
+import base64
 import time
 from typing import Dict, List, Optional
 from logging import Logger
@@ -432,20 +434,33 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         attached_files = objects.get(
             CompletionRequestObjectKeys.WORKFLOW_INVOCATION_ATTACHED_FILES, '')
 
-        context_files = []
+        context_file_messages = []
         for context_file in [f for f in file_history if f.embed_content_in_request]:
 
             self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
             context_file_id = context_file.object_id.split('/')[-1]
+            content_type = "application/octet-stream" if context_file.content_type.startswith("image/") else None
             context_file_content = await self.context_api_client.get_async(
                 endpoint = f"/instances/{self.instance_id}/files/{context_file_id}",
-                content_type = None)
-            context_files.append(
-                f'\nFILE_CONTENT for {context_file.original_file_name}:\n{context_file_content}\nEND_FILE_CONTENT\n')
+                content_type = content_type)
+            
+            context_file_message = \
+                {
+                    'type': 'image_url',
+                    'image_url': {
+                        'url': f'data:{context_file.content_type};base64,{base64.b64encode(context_file_content).decode("utf-8")}'
+                    }
+                } if context_file.content_type.startswith("image/") \
+                else {
+                    'type': 'text',
+                    'text': f'\nFILE_CONTENT for {context_file.original_file_name}:\n{context_file_content}\nEND_FILE_CONTENT\n'
+                }
+            
+            context_file_messages.append(
+                context_file_message)
 
         context_message = HumanMessage(
-            content= [{"type": "text", "text": llm_prompt}] + \
-                [{"type": "text", "text": context_file} for context_file in context_files])
+            content= [{"type": "text", "text": llm_prompt}] + context_file_messages)
 
         files_prompt = self.workflow_files_prompt \
             .replace(f'{{{{{TemplateVariables.CONVERSATION_FILES}}}}}', '\n'.join(conversation_files)) \
