@@ -131,8 +131,12 @@ namespace FoundationaLLM.Context.Services
         {
             var httpClient = await CreateHttpClient();
 
-            var responseMessage = await httpClient.GetAsync(
-                $"{endpoint}/files/{fileName}/content?api-version=2024-10-02-preview&identifier={codeSessionId}&path={filePath}");
+            var payload = new { file_name = fileName };
+            var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
+
+            var responseMessage = await httpClient.PostAsync(
+                $"{endpoint}/files/download?api-version=2024-10-02-preview&identifier={codeSessionId}",
+                content);
 
             if (responseMessage.IsSuccessStatusCode)
                 return responseMessage.Content.ReadAsStream();
