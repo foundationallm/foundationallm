@@ -106,20 +106,11 @@ namespace FoundationaLLM.Context.Services
         {
             var httpClient = await CreateHttpClient();
 
-            var itemsToDelete = await GetCodeSessionFileStoreItems(
-                codeSessionId,
-                endpoint,
-                httpClient,
-                includeFolders: true);
-
-            foreach (var item in itemsToDelete)
-            {
-                var url = $"{endpoint}/files/{item.Name}?api-version=2024-10-02-preview&identifier={codeSessionId}&path={item.ParentPath}";
-                var responseMessage = await httpClient.DeleteAsync(url);
-                if (!responseMessage.IsSuccessStatusCode)
-                    _logger.LogError("Unable to delete file {FileName} from code session {CodeSession}.",
-                        item.Name, codeSessionId);
-            }
+            var url = $"{endpoint}/files/delete?api-version=2024-10-02-preview&identifier={codeSessionId}";
+            var responseMessage = await httpClient.PostAsync(url, null);
+            if (!responseMessage.IsSuccessStatusCode)
+                _logger.LogError("Unable to delete the existing files from code session {CodeSession}.",
+                    codeSessionId);
         }
 
         /// <inheritdoc />
