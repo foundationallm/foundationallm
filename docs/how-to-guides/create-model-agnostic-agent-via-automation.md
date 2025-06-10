@@ -13,11 +13,21 @@ In this step-by-step guide, you will create a model agnostic agent via automatio
 3. Navigate to the ModelAgnosticAgent subfolder and open deploy.ps1. This script file has several example Model Agnostic Agents you can deploy. Before you deploy any of them, however, you should update their settings as the following section shows.
 
 # Configuring a model agnostic agent
-1. Update the InstanceId, CoreAPIBaseUrl and ManagementAPIBaseURL with the values from your FoundationaLLM instance. You can get all of these values from the Management Portal, by selecting Deployment Information. These values should appear like:
+1. Update the InstanceId, CoreAPIBaseUrl and ManagementAPIBaseURL with the values from your FoundationaLLM instance. You can get all of these values from the Management Portal, by selecting Deployment Information. These values should appear like this for Standard Deployments (which use AKS):
+```
+$global:InstanceId = "8ac6174c-bede-43cb-a140-ec0002d96d2b"
+$global:CoreAPIBaseUrl = "[YOUR COREAPI BASE URL]" 
+$global:CoreAPIInstanceRelativeUri = "/core/instances/$($global:InstanceId)"
+$global:ManagementAPIBaseUrl = "[YOUR MANAGEMENT API BASE URL]"
+$global:ManagementAPIInstanceRelativeUri = "/management/instances/$($global:InstanceId)"
+```
+or this for Quick Start deployments:
 ```
 $global:InstanceId = "8ac6174c-bede-43cb-a140-ec0002d96d2b"
 $global:CoreAPIBaseUrl = "https://cacoreapil45jljq2i5ox6.lemonrock-a0804c39.eastus2.azurecontainerapps.io"
+$global:CoreAPIInstanceRelativeUri = "/instances/$($global:InstanceId)"
 $global:ManagementAPIBaseUrl = "https://camanagementapil43jljq2i5ox6.lemonrock-a0804c39.eastus2.azurecontainerapps.io"
+$global:ManagementAPIInstanceRelativeUri = "/instances/$($global:InstanceId)"
 ```
 2. In the deploy1.ps, take a look at the first code block that invokes the `Deploy-FoundationaLLMPackage` command. It should look similar to the following:
 ```

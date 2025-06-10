@@ -64,6 +64,8 @@ If the question refers to one or more files and no file names are specified, fol
 1. If there are files in the ATTACHED_FILES section, use them to answer the question.
 2. If there are no files in the ATTACHED_FILES section, attempt to use the files in the CONVERSATION_FILES section to answer the question.
 3. If there are no files in either section, answer the question directly without using any files.
+
+{{context_files}}
 ```
 3. Select **Create Prompt**
 
