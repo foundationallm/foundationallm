@@ -65,14 +65,14 @@
         },
         {
             "key": "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CodeInterpreter",
-            "value": "{"Endpoints": []",
+            "value": "{\"Endpoints\": {\"Python\":[], \"CSharp\":[]}",
             "label": null,
             "content_type": "application/json",
             "tags": {}
         },
         {
             "key": "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CustomContainer",
-            "value": "{"Endpoints": []",
+            "value": "{\"Endpoints\": {\"Python\":[], \"CSharp\":[]}",
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -961,7 +961,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes",
-            "value": "{"c,cs,cpp,html,java,js,json,jsonl,md,php,py,rb,sh,ts,tex,txt": 25000, "gif,jpeg,jpg,png":500000}",
+            "value": "{\"c,cs,cpp,html,java,js,json,jsonl,md,php,py,rb,sh,ts,tex,txt\": 25000, \"gif,jpeg,jpg,png\":500000}",
             "label": null,
             "content_type": "",
             "tags": {}
