@@ -105,6 +105,12 @@ The following App Configuration value have been added:
 
 ### Role assignment changes
 
+The following role assignments must be added to the Management API's Managed Identity:
+
+| Name | Type | Target |
+| --- | --- | --- |
+| `Data Pipelines Execution Manager` | FoundationaLLM | FoundationaLLM instance.|
+
 The following role assignments must be added to the Context API's Managed Identity:
 
 | Name | Type | Target |
