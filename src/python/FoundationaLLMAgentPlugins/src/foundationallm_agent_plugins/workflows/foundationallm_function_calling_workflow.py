@@ -439,7 +439,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
             self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
             context_file_id = context_file.object_id.split('/')[-1]
-            content_type = "application/octet-stream" if context_file.content_type.startswith("image/") else None
+            content_type = "application/octet-stream" if context_file.content_type.startswith(("image/", "audio/")) else None
             context_file_content = await self.context_api_client.get_async(
                 endpoint = f"/instances/{self.instance_id}/files/{context_file_id}",
                 content_type = content_type)
@@ -452,6 +452,11 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                     }
                 } if context_file.content_type.startswith("image/") \
                 else {
+                    'type': 'media',
+                    'data': base64.b64encode(context_file_content).decode("utf-8"),
+                    'mime_type': context_file.content_type  
+                } if context_file.content_type.startswith("audio/") \
+                else {
                     'type': 'text',
                     'text': f'\nFILE_CONTENT for {context_file.original_file_name}:\n{context_file_content}\nEND_FILE_CONTENT\n'
                 }
@@ -460,7 +465,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 context_file_message)
 
         context_message = HumanMessage(
-            content= [{"type": "text", "text": llm_prompt}] + context_file_messages)
+            content=context_file_messages+[{"type": "text", "text": llm_prompt}])
 
         files_prompt = self.workflow_files_prompt \
             .replace(f'{{{{{TemplateVariables.CONVERSATION_FILES}}}}}', '\n'.join(conversation_files)) \
