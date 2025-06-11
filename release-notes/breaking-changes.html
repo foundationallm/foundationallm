@@ -291,6 +291,23 @@
 <p>A new container with the name of the FoundationaLLM instance identifier must be created in the FoundationaLLM main storage account. The container will be used by the Data Pipeline API and the Data Pipeline Frontend/Backend Worker to store data pipeline work items.</p>
 </div>
 <h3 id="role-assignment-changes">Role assignment changes</h3>
+<p>The following role assignments must be added to the Management API's Managed Identity:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Data Pipelines Execution Manager</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
+</tr>
+</tbody>
+</table>
 <p>The following role assignments must be added to the Context API's Managed Identity:</p>
 <table>
 <thead>
