@@ -221,7 +221,7 @@ Class DataPipelineRun  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun__ctor" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.#ctor">
   DataPipelineRun()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L106"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Set default property values.</p>
@@ -523,6 +523,40 @@ public string RunId { get; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_StagesMetrics_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.StagesMetrics*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_StagesMetrics" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.StagesMetrics">
+  StagesMetrics
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the metrics for each stage in the data pipeline run.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;stages_metrics&quot;)]
+[JsonPropertyOrder(13)]
+public Dictionary&lt;string, DataPipelineStageMetrics&gt; StagesMetrics { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.html">DataPipelineStageMetrics</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_Successful_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.Successful*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_Successful" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.Successful">
@@ -667,7 +701,7 @@ public required string TriggeringUPN { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_Create_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__System_String_System_String_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.Create(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.String)">
   Create(string, string, Dictionary&lt;string, object&gt;, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L119"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.html">DataPipelineRun</a> instance.</p>

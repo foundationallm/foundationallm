@@ -8608,6 +8608,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.yml\" sourcestartlinenumber=\"1\">Represents the metrics for a data pipeline stage.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineTrigger.yml",
       "output": {
         ".html": {
