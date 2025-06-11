@@ -131,6 +131,15 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                 var completedStageRunners =
                     _currentStageRunners.Values.Where(stageRunner => stageRunner.Completed).ToList();
 
+                foreach (var stageRunner in _currentStageRunners.Values)
+                    _dataPipelineRun.StagesMetrics[stageRunner.StageName] =
+                        new DataPipelineStageMetrics
+                        {
+                            WorkItemsCount = stageRunner.WorkItemsCount,
+                            CompletedWorkItemsCount = stageRunner.CompletedWorkItemsCount,
+                            SuccessfulWorkItemsCount = stageRunner.SuccessfulWorkItemsCount
+                        };
+
                 foreach (var stageRunner in completedStageRunners)
                     await ProcessCompletedStageRunner(stageRunner);
 

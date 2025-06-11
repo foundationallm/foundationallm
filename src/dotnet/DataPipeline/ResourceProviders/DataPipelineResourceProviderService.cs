@@ -122,6 +122,12 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                     resourcePath,
                     serializedResource!,
                     userIdentity),
+                DataPipelineResourceTypeNames.DataPipelineRuns => await CreateDataPipelineRun(
+                    resourcePath,
+                    JsonSerializer.Deserialize<DataPipelineRun>(serializedResource!)
+                        ?? throw new ResourceProviderException("The object definition is invalid.",
+                            StatusCodes.Status400BadRequest),
+                    userIdentity),
                 _ => throw new ResourceProviderException(
                     $"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
