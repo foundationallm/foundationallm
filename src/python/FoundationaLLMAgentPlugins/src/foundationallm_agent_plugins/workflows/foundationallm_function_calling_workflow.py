@@ -452,11 +452,9 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                     }
                 } if context_file.content_type.startswith("image/") \
                 else {
-                    'type': 'input_audio',
-                    'input_audio': {
-                        'data': base64.b64encode(context_file_content).decode("utf-8"),
-                        'format': context_file.content_type.split('/')[1]
-                    }                    
+                    'type': 'media',
+                    'data': base64.b64encode(context_file_content).decode("utf-8"),
+                    'mime_type': context_file.content_type  
                 } if context_file.content_type.startswith("audio/") \
                 else {
                     'type': 'text',
@@ -467,7 +465,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 context_file_message)
 
         context_message = HumanMessage(
-            content= [{"type": "text", "text": llm_prompt}] + context_file_messages)
+            content=context_file_messages+[{"type": "text", "text": llm_prompt}])
 
         files_prompt = self.workflow_files_prompt \
             .replace(f'{{{{{TemplateVariables.CONVERSATION_FILES}}}}}', '\n'.join(conversation_files)) \
