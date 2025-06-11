@@ -94,6 +94,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
         public bool Successful { get; set; }
 
         /// <summary>
+        /// Gets or sets the metrics for each stage in the data pipeline run.
+        /// </summary>
+        [JsonPropertyName("stages_metrics")]
+        [JsonPropertyOrder(13)]
+        public Dictionary<string, DataPipelineStageMetrics> StagesMetrics { get; set; } = [];
+
+        /// <summary>
         /// Set default property values.
         /// </summary>
         public DataPipelineRun() =>

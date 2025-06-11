@@ -29,6 +29,14 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
 
         public bool Successful => _workItemsStatus.Values.All(status => status.Successful);
 
+        public int WorkItemsCount => _workItemsStatus.Count;
+
+        public int CompletedWorkItemsCount =>
+            _workItemsStatus.Values.Count(status => status.Completed);
+
+        public int SuccessfulWorkItemsCount =>
+            _workItemsStatus.Values.Count(status => status.Successful);
+
         public List<string> ContentItemsCanonicalIds =>
             [.. _workItemsStatus.Values.Select(status => status.ContentItemCanonicalId)];
 
