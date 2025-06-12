@@ -59,11 +59,13 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             string instanceId,
             DataPipelineRunFilter dataPipelineRunFilter,
             UnifiedUserIdentity userIdentity) =>
-            (await _dataPipelineResourceProvider.ExecuteResourceActionAsync<DataPipelineRun, DataPipelineRunFilter, List<ResourceProviderActionResult<DataPipelineRun>>>(
-                //TODO: Implement a version of ExecuteResourceActionAsync that supports sub-resources
-                instanceId,
-                ResourceProviderActionNames.GetDataPipelineRuns,
-                dataPipelineRunFilter,
-                userIdentity)).Select(r => r.Resource!).ToList();
+            (await _dataPipelineResourceProvider.ExecuteResourceActionAsync<
+                DataPipelineDefinition, DataPipelineRun, DataPipelineRunFilter, ResourceProviderActionResult<ResourceCollection<DataPipelineRun>>>(
+                    instanceId,
+                    dataPipelineRunFilter.DataPipelineName!,
+                    null!,
+                    ResourceProviderActions.Filter,
+                    dataPipelineRunFilter,
+                    userIdentity)).Resource?.Resources.ToList() ?? [];
     }
 }

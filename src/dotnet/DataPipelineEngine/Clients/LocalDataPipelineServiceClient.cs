@@ -50,10 +50,10 @@ namespace FoundationaLLM.DataPipelineEngine.Clients
             await _dataPipelineStateService.GetDataPipelineRun(runId);
 
         /// <inheritdoc/>
-        public Task<List<DataPipelineRun>> GetDataPipelineRunsAsync(
+        public async Task<List<DataPipelineRun>> GetDataPipelineRunsAsync(
             string instanceId,
             DataPipelineRunFilter dataPipelineRunFilter,
             UnifiedUserIdentity userIdentity) =>
-            throw new NotImplementedException();
+            await _dataPipelineStateService.GetDataPipelineRuns(dataPipelineRunFilter);
     }
 }

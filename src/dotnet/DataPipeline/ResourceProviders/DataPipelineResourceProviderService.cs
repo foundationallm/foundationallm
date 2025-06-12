@@ -143,7 +143,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 DataPipelineResourceTypeNames.DataPipelineRuns =>
                     resourcePath.Action switch
                     {
-                        ResourceProviderActions.Trigger =>
+                        ResourceProviderActions.Filter =>
                             await GetDataPipelineRuns(
                                 resourcePath,
                                 authorizationResult,

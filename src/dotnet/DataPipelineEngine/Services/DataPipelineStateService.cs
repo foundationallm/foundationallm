@@ -286,5 +286,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         /// <inheritdoc/>
         public async Task StopDataPipelineRunWorkItemProcessing() =>
             await _cosmosDBService.StopChangeFeedProcessorAsync();
+
+        /// <inheritdoc/>
+        public async Task<List<DataPipelineRun>> GetDataPipelineRuns(DataPipelineRunFilter dataPipelineRunFilter) =>
+            await Task.FromResult<List<DataPipelineRun>>([]);
     }
 }

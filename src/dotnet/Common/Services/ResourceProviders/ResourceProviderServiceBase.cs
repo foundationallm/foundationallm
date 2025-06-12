@@ -586,7 +586,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         public async Task<TResult> ExecuteResourceActionAsync<T, TAction, TResult>(string instanceId, string resourceName, string actionName, TAction actionPayload, UnifiedUserIdentity userIdentity)
             where T : ResourceBase
             where TAction : class?
-            where TResult : ResourceProviderActionResult, IEnumerable<ResourceProviderActionResult>
+            where TResult : ResourceProviderActionResult
         {
             EnsureServiceInitialization();
             var (ParsedResourcePath, AuthorizationRequirements) = CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T), resourceName: resourceName, actionName: actionName);
@@ -596,6 +596,32 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             var actionResult =
                 await ExecuteResourceActionAsyncInternal<T, TAction, TResult>(ParsedResourcePath, authorizationResult, actionPayload, userIdentity);
+
+            return actionResult;
+        }
+
+        /// <inheritdoc/>
+        public async Task<TResult> ExecuteResourceActionAsync<TMain, TSubordinate, TAction, TResult>(
+            string instanceId,
+            string mainResourceName,
+            string resourceName,
+            string actionName,
+            TAction actionPayload,
+            UnifiedUserIdentity userIdentity)
+            where TMain : ResourceBase
+            where TSubordinate : ResourceBase
+            where TAction : class?
+            where TResult : ResourceProviderActionResult
+        {
+            EnsureServiceInitialization();
+            var (ParsedResourcePath, AuthorizationRequirements) =
+                CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(TMain), mainResourceName, typeof(TSubordinate), resourceName, actionName);
+
+            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements,
+               actionName == ResourceProviderActions.Filter, false, false);
+
+            var actionResult =
+                await ExecuteResourceActionAsyncInternal<TSubordinate, TAction, TResult>(ParsedResourcePath, authorizationResult, actionPayload, userIdentity);
 
             return actionResult;
         }
@@ -1009,6 +1035,52 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         {
             var hasAction = !string.IsNullOrWhiteSpace(actionName);
             var result = GetResourcePath(instanceId, resourceType, resourceName, actionName);
+            var parsedResourcePath = new ResourcePath(
+                result.ResourcePath,
+                _allowedResourceProviders,
+                _allowedResourceTypes,
+                allowAction: hasAction);
+
+            if (hasAction)
+            {
+                var allowedTypes = result.ResourceTypeDescriptor.Actions?
+                    .SingleOrDefault(a => a.Name == actionName)?
+                    .AllowedTypes?
+                    .SingleOrDefault(at => at.HttpMethod == operationType.Method)
+                    ?? throw new ResourceProviderException(
+                        $"The resource path {result.ResourcePath} does not support operation {operationType.Method}.",
+                        StatusCodes.Status400BadRequest);
+                return
+                    (
+                        parsedResourcePath,
+                        allowedTypes.AuthorizationRequirements
+                    );
+            }
+
+            var resourceAllowedTypes =
+                result.ResourceTypeDescriptor.AllowedTypes.SingleOrDefault(at => at.HttpMethod == operationType.Method)
+                ?? throw new ResourceProviderException(
+                    $"The HTTP method {operationType.Method} is not supported for resources of type {resourceType.Name} by the {_name} resource provider.",
+                    StatusCodes.Status400BadRequest);
+
+            return
+                (
+                    parsedResourcePath,
+                    resourceAllowedTypes.AuthorizationRequirements
+                );
+        }
+
+        private (ResourcePath ParsedResourcePath, string AuthorizationRequirements) CreateAndValidateResourcePath(
+            string instanceId,
+            HttpMethod operationType,
+            Type mainResourceType,
+            string mainResourceName,
+            Type resourceType,
+            string? resourceName = null,
+            string? actionName = null)
+        {
+            var hasAction = !string.IsNullOrWhiteSpace(actionName);
+            var result = GetResourcePath(instanceId, mainResourceType, mainResourceName, resourceType, resourceName, actionName);
             var parsedResourcePath = new ResourcePath(
                 result.ResourcePath,
                 _allowedResourceProviders,
@@ -1936,7 +2008,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="resourceName">The name of the resource.</param>
         /// <param name="actionName">The name of the action.</param>
         /// <returns></returns>
-        protected (string ResourcePath, ResourceTypeDescriptor ResourceTypeDescriptor) GetResourcePath(string instanceId, Type resourceType, string? resourceName = null, string? actionName = null)
+        protected (string ResourcePath, ResourceTypeDescriptor ResourceTypeDescriptor) GetResourcePath(
+            string instanceId,
+            Type resourceType,
+            string? resourceName = null,
+            string? actionName = null)
         {
             if (string.IsNullOrWhiteSpace(instanceId))
                 throw new ResourceProviderException(
@@ -1958,6 +2034,54 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                         : (string.IsNullOrWhiteSpace(actionName)
                             ? $"/instances/{instanceId}/providers/{this.Name}/{resourceTypeDescriptor.ResourceTypeName}/{resourceName}"
                             : $"/instances/{instanceId}/providers/{this.Name}/{resourceTypeDescriptor.ResourceTypeName}/{resourceName}/{actionName}"),
+                    resourceTypeDescriptor
+                );
+        }
+
+        /// <summary>
+        /// Get the fully qualified resource path for a specified resource and subordinate resource.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="mainResourceType"> The type of the main resource.</param>
+        /// <param name="mainResourceName"> The name of the main resource.</param>
+        /// <param name="resourceType">The type of the resource.</param>
+        /// <param name="resourceName">The name of the resource.</param>
+        /// <param name="actionName">The name of the action.</param>
+        /// <returns></returns>
+        protected (string ResourcePath, ResourceTypeDescriptor ResourceTypeDescriptor) GetResourcePath(
+            string instanceId,
+            Type mainResourceType,
+            string mainResourceName,
+            Type resourceType,
+            string? resourceName = null,
+            string? actionName = null)
+        {
+            if (string.IsNullOrWhiteSpace(instanceId))
+                throw new ResourceProviderException(
+                    $"The FoundationaLLM instance identifier is invalid.",
+                    StatusCodes.Status400BadRequest);
+
+            var mainResourceTypeDescriptor =
+                AllowedResourceTypes.Values.SingleOrDefault(art => art.ResourceType == mainResourceType)
+                ?? throw new ResourceProviderException(
+                    $"The resource type {mainResourceType.Name} is not supported by the {Name} resource provider.",
+                    StatusCodes.Status400BadRequest);
+
+            var resourceTypeDescriptor =
+                mainResourceTypeDescriptor.SubTypes.Values.SingleOrDefault(srt => srt.ResourceType == resourceType)
+                    ?? throw new ResourceProviderException(
+                        $"The resource type {resourceType.Name} is not supported by the {Name} resource provider.",
+                        StatusCodes.Status400BadRequest);
+
+            return
+                (
+                    string.IsNullOrWhiteSpace(resourceName)
+                        ? (string.IsNullOrWhiteSpace(actionName)
+                            ? $"/instances/{instanceId}/providers/{Name}/{mainResourceTypeDescriptor.ResourceTypeName}/{mainResourceName}/{resourceTypeDescriptor.ResourceTypeName}"
+                            : $"/instances/{instanceId}/providers/{Name}/{mainResourceTypeDescriptor.ResourceTypeName}/{mainResourceName}/{resourceTypeDescriptor.ResourceTypeName}/{actionName}")
+                        : (string.IsNullOrWhiteSpace(actionName)
+                            ? $"/instances/{instanceId}/providers/{this.Name}/{mainResourceTypeDescriptor.ResourceTypeName}/{mainResourceName}/{resourceTypeDescriptor.ResourceTypeName}/{resourceName}"
+                            : $"/instances/{instanceId}/providers/{this.Name}/{mainResourceTypeDescriptor.ResourceTypeName}/{mainResourceName}/{resourceTypeDescriptor.ResourceTypeName}/{resourceName}/{actionName}"),
                     resourceTypeDescriptor
                 );
         }
