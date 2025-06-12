@@ -25,10 +25,11 @@ mindmap
         (Plugin)
             Plugin Package
             Plugin
+        (Prompt)
         (Quota)
             Quota Definition
-              API Completion Call Rate
-              Agent Completion Call Rate
+              API Raw Request Rate
+              Agent Request Rate
         (Resource Provider)
         (Tool)
         (Workflow)
@@ -55,10 +56,11 @@ mindmap
   - [Plugin](#plugin)
     - [Plugin Package](#plugin-package)
     - [Plugin](#plugin-1)
+  - [Prompt](#prompt)
   - [Quota](#quota)
     - [Quota Definition](#quota-definition)
-    - [API Completion Call Rate](#api-completion-call-rate)
-    - [Agent Completion Call Rate](#agent-completion-call-rate)
+    - [API Raw Request Rate](#api-raw-request-rate)
+    - [Agent Request Rate](#agent-request-rate)
   - [Resource Provider](#resource-provider)
   - [Tool](#tool)
   - [Workflow](#workflow)
@@ -125,6 +127,7 @@ Chargeback is a mechanism for tracking and billing the usage of resources by age
 A FoundationaLLM data pipeline defines a process that aims to extract data from a data source, transform it to make it suitable for LLM-based workloads (e.g., extracting text, partitioning text, extracting entities and relationships, embedding text, creating knowledge graphs, etc.), and load it into a target system (e.g., vector store, knowledge store, etc.). Data pipelines can be managed using the FoundationaLLM Management Portal (interactively) or the FoundationaLLM Management API (programmatically).
 
 FoundationaLLM data pipelines are built from the ground up to address the following key requirements for enterprise-grade Generative AI workloads:
+
 - **Scalability** - handle large volumes of data and scale horizontally to meet the demands of enterprise workloads. FoundationaLLM data pipelines are designed to handle anything from a few documents or records to millions of documents or records.
 - **Flexibility** - have a flexible and modular structure that is suitable from complex processing, parallelization of work, scalability, and reusability of components.
 - **Local and Global Processing** - support local processing of data (e.g., text extraction, text partitioning, entity extraction, relationship extraction, etc.) and global processing of data (e.g., assembly of knowledge graphs).
@@ -163,15 +166,26 @@ Python | `Agent Tool` | A Python agent tool plugin implement an agent tool that 
 
 For more details, see [Plugins](./plugin/plugin.md).
 
+## Prompt
+
+A FoundationaLLM prompt is a text template that is used to create completion requests for agents. FoundationaLLM agents use prompts in two main contexts:
+
+- **Agent Workflow** - Prompts are used to create completion requests that identify which tools should be invoked and how the responses from the tools should be processed.
+- **Agent Tool** - Prompts are used to contribute with additional context to the agent workflow (e.g., helping the workflow to understand the capabilities of the tool), or to provide instructions on the tools internal logic (e.g., to generate code that will be executed by the tool or to finalize the response of the tool).
+
+Prompts have support for variables, which allows them to be dynamically generated based on the context of the completion request. This makes prompts flexible and adaptable to different scenarios. For more details, see [Prompt variable](./prompt/prompt-variable.md).
+
 ## Quota
 
 A FoundationaLLM quota is a set of rules that define the limits on the usage of resources by a client. Quota definitions are used to enforce limits on the usage of resources by clients and to prevent abuse of the FoundationaLLM platform.
 
 Each quota is enforced on a specific metric, such as the number of API completion calls or the number of agent completion calls. The following quota metrics are supported by the FoundationaLLM platform:
+
 - API requests (quota enforces an API request rate limit).
 - Agent completion requests (quota enforces an agent completion request rate limit).
 
 Quota metric limits can be enforced globally or using specific partitioning mechanisms. The following quota metric partitioning mechanisms are supported by the FoundationaLLM platform:
+
 - None (no partitioning, limit is enforced globally).
 - User identifier (limit is enforced per user unique identifier).
 - User principal name (limit is enforced per user principal name).
@@ -188,17 +202,17 @@ FoundationaLLM quotas are specified using quota definitions. A quota definition 
 
 For more details, see [Quota Definition](./quota/quota-definition.md).
 
-### API Completion Call Rate
+### API Raw Request Rate
 
-The API call rate is the maximum number of Core API completion calls that a client can make to the Core API within a specified time period. The API call rate is used to limit the rate at which a client can perform completions.
+The API raw request rate is the maximum number of API requests that a client can make to a FoundationaLLM API within a specified time period.
 
-For more details, see [API Completion Call Rate](./quota/api-completion-call-rate.md).
+For more details, see [API Raw Request Rate](./quota/api-raw-request-rate.md).
 
-### Agent Completion Call Rate
+### Agent Request Rate
 
 The API call rate is the maximum number of Core API completion calls that a client can make to the Core API targeting a specific agent within a specified time period. The API call rate is used to limit the rate at which a client can perform completions targeting a specific agent.
 
-For more details, see [Agent Completion Call Rate](./quota/agent-completion-call-rate.md).
+For more details, see [Agent Request Rate](./quota/agent-request-rate.md).
 
 ## Resource Provider
 
