@@ -17637,6 +17637,16 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "concepts/prompt/prompt-variable.md",
+      "output": {
+        ".html": {
+          "relative_path": "concepts/prompt/prompt-variable.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "concepts/quota/agent-request-rate.md",
       "output": {
         ".html": {

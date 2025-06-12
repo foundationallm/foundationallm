@@ -96,10 +96,11 @@
         (Plugin)
             Plugin Package
             Plugin
+        (Prompt)
         (Quota)
             Quota Definition
-              API Completion Call Rate
-              Agent Completion Call Rate
+              API Raw Request Rate
+              Agent Request Rate
         (Resource Provider)
         (Tool)
         (Workflow)
@@ -145,11 +146,12 @@
 <li><a href="#plugin-1">Plugin</a></li>
 </ul>
 </li>
+<li><a href="#prompt">Prompt</a></li>
 <li><a href="#quota">Quota</a>
 <ul>
 <li><a href="#quota-definition">Quota Definition</a></li>
-<li><a href="#api-completion-call-rate">API Completion Call Rate</a></li>
-<li><a href="#agent-completion-call-rate">Agent Completion Call Rate</a></li>
+<li><a href="#api-raw-request-rate">API Raw Request Rate</a></li>
+<li><a href="#agent-request-rate">Agent Request Rate</a></li>
 </ul>
 </li>
 <li><a href="#resource-provider">Resource Provider</a></li>
@@ -271,6 +273,13 @@
 </tbody>
 </table>
 <p>For more details, see <a href="plugin/plugin.html">Plugins</a>.</p>
+<h2 id="prompt">Prompt</h2>
+<p>A FoundationaLLM prompt is a text template that is used to create completion requests for agents. FoundationaLLM agents use prompts in two main contexts:</p>
+<ul>
+<li><strong>Agent Workflow</strong> - Prompts are used to create completion requests that identify which tools should be invoked and how the responses from the tools should be processed.</li>
+<li><strong>Agent Tool</strong> - Prompts are used to contribute with additional context to the agent workflow (e.g., helping the workflow to understand the capabilities of the tool), or to provide instructions on the tools internal logic (e.g., to generate code that will be executed by the tool or to finalize the response of the tool).</li>
+</ul>
+<p>Prompts have support for variables, which allows them to be dynamically generated based on the context of the completion request. This makes prompts flexible and adaptable to different scenarios. For more details, see <a href="prompt/prompt-variable.html">Prompt variable</a>.</p>
 <h2 id="quota">Quota</h2>
 <p>A FoundationaLLM quota is a set of rules that define the limits on the usage of resources by a client. Quota definitions are used to enforce limits on the usage of resources by clients and to prevent abuse of the FoundationaLLM platform.</p>
 <p>Each quota is enforced on a specific metric, such as the number of API completion calls or the number of agent completion calls. The following quota metrics are supported by the FoundationaLLM platform:</p>
@@ -293,12 +302,12 @@
 <h3 id="quota-definition">Quota Definition</h3>
 <p>FoundationaLLM quotas are specified using quota definitions. A quota definition is a JSON object that defines the limits on the usage of resources by a client. Quota definitions are stored in the main FoundationaLLM storage account, in the <code>quota</code> container in a file named <code>quota-store.json</code>.</p>
 <p>For more details, see <a href="quota/quota-definition.html">Quota Definition</a>.</p>
-<h3 id="api-completion-call-rate">API Completion Call Rate</h3>
-<p>The API call rate is the maximum number of Core API completion calls that a client can make to the Core API within a specified time period. The API call rate is used to limit the rate at which a client can perform completions.</p>
-<p>For more details, see <a href="./quota/api-completion-call-rate.md">API Completion Call Rate</a>.</p>
-<h3 id="agent-completion-call-rate">Agent Completion Call Rate</h3>
+<h3 id="api-raw-request-rate">API Raw Request Rate</h3>
+<p>The API raw request rate is the maximum number of API requests that a client can make to a FoundationaLLM API within a specified time period.</p>
+<p>For more details, see <a href="quota/api-raw-request-rate.html">API Raw Request Rate</a>.</p>
+<h3 id="agent-request-rate">Agent Request Rate</h3>
 <p>The API call rate is the maximum number of Core API completion calls that a client can make to the Core API targeting a specific agent within a specified time period. The API call rate is used to limit the rate at which a client can perform completions targeting a specific agent.</p>
-<p>For more details, see <a href="./quota/agent-completion-call-rate.md">Agent Completion Call Rate</a>.</p>
+<p>For more details, see <a href="quota/agent-request-rate.html">Agent Request Rate</a>.</p>
 <h2 id="resource-provider">Resource Provider</h2>
 <p>A resource provider is a platform component that is responsible for managing resources in the FoundationaLLM platform. Resource providers are used to create, update, delete, and retrieve resources such as agents, prompts, data sources, data pipelines, plugins and many more. All resource types available in the FoundationaLLM platform are managed by resource providers. The following resource providers are supported by the FoundationaLLM platform:</p>
 <table>
