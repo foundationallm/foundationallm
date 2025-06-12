@@ -26,7 +26,7 @@ namespace FoundationaLLM.Core.API.Controllers
         /// The controller for OneDrive integration.
         /// </summary>
         /// <param name="callContext">The <see cref="IOrchestrationContext"/> call context of the request being handled.</param>
-        /// <param name="oneDriveService">The <see cref="IOneDriveWorkSchoolService"/> OneDrive service.</param>
+        /// <param name="oneDriveWorkSchoolService">The <see cref="IOneDriveWorkSchoolService"/> OneDrive service.</param>
         /// <exception cref="ResourceProviderException"></exception>
         public OneDriveWorkSchoolController(
             IOrchestrationContext callContext,
