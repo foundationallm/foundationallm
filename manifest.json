@@ -11730,6 +11730,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Core.API.Controllers.CompletionsStatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Core.API.Controllers.CompletionsStatusController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Core.API.Controllers.CompletionsStatusController",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Core.API.Controllers.CompletionsStatusController.yml\" sourcestartlinenumber=\"1\">Provides methods for retrieving and managing completions.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Core.API.Controllers.ConfigurationController.yml",
       "output": {
         ".html": {
@@ -17623,20 +17637,20 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "concepts/quota/agent-completion-call-rate.md",
+      "source_relative_path": "concepts/quota/agent-request-rate.md",
       "output": {
         ".html": {
-          "relative_path": "concepts/quota/agent-completion-call-rate.html"
+          "relative_path": "concepts/quota/agent-request-rate.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "concepts/quota/api-completion-call-rate.md",
+      "source_relative_path": "concepts/quota/api-raw-request-rate.md",
       "output": {
         ".html": {
-          "relative_path": "concepts/quota/api-completion-call-rate.html"
+          "relative_path": "concepts/quota/api-raw-request-rate.html"
         }
       },
       "version": ""

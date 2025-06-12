@@ -745,7 +745,7 @@ completions from the orchestrator.</p>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_CompletionsController_GetAgents_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.CompletionsController.GetAgents(System.String)">
   GetAgents(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L174"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L164"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a list of global and private agents.</p>
@@ -811,49 +811,6 @@ public Task&lt;IActionResult&gt; GetCompletion(string instanceId, CompletionRequ
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.iactionresult">IActionResult</a>&gt;</dt>
     <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Core_API_Controllers_CompletionsController_GetCompletionOperationStatus_" data-uid="FoundationaLLM.Core.API.Controllers.CompletionsController.GetCompletionOperationStatus*"></a>
-
-  <h3 id="FoundationaLLM_Core_API_Controllers_CompletionsController_GetCompletionOperationStatus_System_String_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.CompletionsController.GetCompletionOperationStatus(System.String,System.String)">
-  GetCompletionOperationStatus(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L165"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets the status of a completion operation.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[HttpGet(&quot;async-completions/{operationId}/status&quot;)]
-public Task&lt;LongRunningOperation&gt; GetCompletionOperationStatus(string instanceId, string operationId)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The FoundationaLLM instance id.</p>
-</dd>
-    <dt><code>operationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The OperationId for which to retrieve the status.</p>
-</dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html">LongRunningOperation</a>&gt;</dt>
-    <dd><p>Returns a <a class="xref" href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html">LongRunningOperation</a> object containing the OperationId, Status, and result.</p>
-</dd>
   </dl>
 
 
