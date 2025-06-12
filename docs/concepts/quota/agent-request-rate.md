@@ -1,0 +1,5 @@
+# Agent Request Rate
+
+The agent request rate is a quota that limits the number of completion requests made to specific agents. These calls are made to the Core API `Completions` controller and the `context` of the quota definition must be set to `CoreAPI:Completions:<agent_name>`, where `<agent_name>` is the name of the agent.
+
+This quota can be enforced per agent for all users or per specific user principal name (UPN) or user identifier. In most cases, the relationship between user principal name and user identifier is one-to-one, so the quota would be effectively the same if `metric_partition` were set to `UserPrincipalName` or `UserIdentitifer`. In these cases, the recommended value for `metric_partition` is `UserPrincipalName`. However, in some more advanced scenarios (e.g., when calls are made by another service that authenticates against the Core API using a managed identity), the user principal name may not be available, and the quota should be enforced by user identifier. In these cases, the recommended value for `metric_partition` is `UserIdentifier`.
