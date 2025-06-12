@@ -28,6 +28,9 @@ namespace FoundationaLLM.Common.Interfaces
         Task<DataPipelineRun?> GetDataPipelineRun(
             string runId);
 
+        Task<List<DataPipelineRun>> GetDataPipelineRuns(
+            DataPipelineRunFilter dataPipelineRunFilter);
+
         /// <summary>
         /// Gets a data pipeline run work item by its identifier.
         /// </summary>

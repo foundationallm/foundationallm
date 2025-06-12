@@ -44,5 +44,15 @@
         /// Reset the cache for a resource provider.
         /// </summary>
         public const string Trigger = "trigger";
+
+        /// <summary>
+        /// Activate a resource.
+        /// </summary>
+        public const string Activate = "activate";
+
+        /// <summary>
+        /// Deactivate a resource.
+        /// </summary>
+        public const string Deactivate = "deactivate";
     }
 }

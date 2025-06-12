@@ -133,7 +133,75 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                     StatusCodes.Status400BadRequest)
             };
 
+        protected override async Task<object> ExecuteActionAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity) =>
+            resourcePath.ResourceTypeName switch
+            {
+                DataPipelineResourceTypeNames.DataPipelineRuns =>
+                    resourcePath.Action switch
+                    {
+                        ResourceProviderActions.Trigger =>
+                            await GetDataPipelineRuns(
+                                resourcePath,
+                                authorizationResult,
+                                () =>
+                                {
+                                    var dataPipelineRunFilter = JsonSerializer.Deserialize<DataPipelineRunFilter>(serializedAction)
+                                        ?? throw new ResourceProviderException("The data pipeline run filter definition is invalid.",
+                                            StatusCodes.Status400BadRequest);
+
+                                    if (dataPipelineRunFilter.InstanceId != null
+                                        || dataPipelineRunFilter.DataPipelineName != null)
+                                        throw new ResourceProviderException("The data pipeline run filter definition is invalid.",
+                                            StatusCodes.Status400BadRequest);
+
+                                    dataPipelineRunFilter.InstanceId = resourcePath.InstanceId;
+                                    dataPipelineRunFilter.DataPipelineName = resourcePath.MainResourceId;
+                                    return dataPipelineRunFilter;
+                                },
+                                userIdentity),
+                        _ => throw new ResourceProviderException(
+                            $"The action {resourcePath.Action} on resource type {DataPipelineResourceTypeNames.DataPipelineRuns} is not supported by the {_name} resource provider.",
+                                StatusCodes.Status400BadRequest)
+                    },
+                _ => throw new ResourceProviderException($"Action on resource type {resourcePath.ResourceTypeName} are not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+            };
+
         #region Helpers for UpsertResourceAsync
+
+        private async Task<List<DataPipelineRun>> GetDataPipelineRuns(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            Func<DataPipelineRunFilter> getDataPipelineRunFilter,
+            UnifiedUserIdentity userIdentity)
+        {
+            // Using this approach as the validation of the incoming filter depends on the inbound route of the call.
+            // If the request is coming via the Management API, then the filter must not have and instance identifier and a
+            // data pipeline name set.
+            // If the request is coming via a strongly typed operation, then the filter must have the instance identifier
+            // and a data pipeline name set.
+            var dataPipelineRunFilter = getDataPipelineRunFilter();
+
+            if (resourcePath.InstanceId != dataPipelineRunFilter.InstanceId
+                || resourcePath.MainResourceId != dataPipelineRunFilter.DataPipelineName
+                || (
+                    resourcePath.MainResourceId != "all"
+                    && dataPipelineRunFilter.DataPipelineNameFilter != resourcePath.MainResourceId
+                ))
+                throw new ResourceProviderException("The data pipeline run filter definition is invalid.",
+                    StatusCodes.Status400BadRequest);
+
+            var result = await _dataPipelineServiceClient.GetDataPipelineRunsAsync(
+                resourcePath.InstanceId!,
+                dataPipelineRunFilter,
+                userIdentity);
+
+            return result;
+        }
 
         private async Task<ResourceProviderUpsertResult> UpdateDataPipeline(
             ResourcePath resourcePath,
@@ -265,6 +333,31 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 _ => throw new ResourceProviderException(
                         $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",
                             StatusCodes.Status400BadRequest)
+            };
+
+        protected override async Task<TResult> ExecuteResourceActionAsyncInternal<T, TAction, TResult>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            TAction actionPayload, UnifiedUserIdentity userIdentity) =>
+            typeof(T) switch
+            {
+                Type t when t == typeof(DataPipelineRun) =>
+                    resourcePath.Action! switch
+                    {
+                        ResourceProviderActions.Filter =>
+                            (await GetDataPipelineRuns(
+                                resourcePath,
+                                authorizationResult,
+                                () => actionPayload as DataPipelineRunFilter
+                                    ?? throw new ResourceProviderException("The data pipeline run filter definition is invalid.",
+                                        StatusCodes.Status400BadRequest),
+                                userIdentity) as TResult)!,
+                        _ => throw new ResourceProviderException(
+                            $"The action {resourcePath.Action} on resource type {DataPipelineResourceTypeNames.DataPipelineRuns} is not supported by the {_name} resource provider.",
+                                StatusCodes.Status400BadRequest)
+                    },
+                _ => throw new ResourceProviderException($"Action on resource type {resourcePath.ResourceTypeName} are not supported by the {_name} resource provider.",
+                    StatusCodes.Status400BadRequest)
             };
 
         private async Task<ResourceProviderUpsertResult<DataPipelineRun>> CreateDataPipelineRun(

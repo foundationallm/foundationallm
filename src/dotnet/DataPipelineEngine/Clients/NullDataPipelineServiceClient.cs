@@ -28,5 +28,12 @@ namespace FoundationaLLM.DataPipelineEngine.Clients
             string runId,
             UnifiedUserIdentity userIdentity) =>
             await Task.FromResult<DataPipelineRun?>(null);
+
+        /// <inheritdoc/>
+        public async Task<List<DataPipelineRun>> GetDataPipelineRunsAsync(
+            string instanceId,
+            DataPipelineRunFilter dataPipelineRunFilter,
+            UnifiedUserIdentity userIdentity) =>
+            await Task.FromResult<List<DataPipelineRun>>([]);
     }
 }

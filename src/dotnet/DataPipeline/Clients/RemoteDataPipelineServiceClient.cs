@@ -108,5 +108,38 @@ namespace FoundationaLLM.DataPipeline.Clients
                 return null;
             }
         }
+
+        /// <inheritdoc/>
+        public async Task<List<DataPipelineRun>> GetDataPipelineRunsAsync(
+            string instanceId,
+            DataPipelineRunFilter dataPipelineRunFilter,
+            UnifiedUserIdentity userIdentity)
+        {
+            try
+            {
+                var httpClient = await _httpClientTask;
+
+                var responseMessage = await httpClient.GetAsync(
+                    $"instances/{instanceId}/datapipelineruns/filter");
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                    var response = JsonSerializer.Deserialize<List<DataPipelineRun>>(responseContent);
+                    return response!;
+                }
+
+                _logger.LogError(
+                    "An error occurred while retrieving the data pipeline runs. Status code: {StatusCode}.",
+                    responseMessage.StatusCode);
+
+                return [];
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving the data pipeline runs.");
+                return [];
+            }
+        }
     }
 }
