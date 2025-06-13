@@ -8594,6 +8594,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter.yml\" sourcestartlinenumber=\"1\">Represents a filter for querying <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun\" data-throw-if-not-resolved=\"false\"></xref> resources in the FoundationaLLM.DataPipeline resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStage.yml",
       "output": {
         ".html": {
@@ -9011,6 +9025,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.ResourceProviders.ResourceBase",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.yml\" sourcestartlinenumber=\"1\">Basic properties for all resources.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceCollection-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceCollection-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.ResourceCollection<T>",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceCollection-1.yml\" sourcestartlinenumber=\"1\">Represents a collection of resources of type <code class=\"typeparamref\">T</code>.</p>\n"
     },
     {
       "type": "ManagedReference",

@@ -132,7 +132,7 @@ Interface IDataPipelineService  <a class="header-action link-secondary" title="V
 
   <h3 id="FoundationaLLM_DataPipelineEngine_Interfaces_IDataPipelineService_CreateDataPipelineRun_System_String_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.CreateDataPipelineRun(System.String,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   CreateDataPipelineRun(string, DataPipelineRun, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new data pipeline run.</p>
@@ -176,7 +176,7 @@ Interface IDataPipelineService  <a class="header-action link-secondary" title="V
 
   <h3 id="FoundationaLLM_DataPipelineEngine_Interfaces_IDataPipelineService_GetDataPipelineRun_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRun(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetDataPipelineRun(string, string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a data pipeline run by its name.</p>
@@ -207,6 +207,51 @@ Interface IDataPipelineService  <a class="header-action link-secondary" title="V
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.html">DataPipelineRun</a>&gt;</dt>
     <dd><p>The data pipeline run identified by the provided identifier.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_DataPipelineEngine_Interfaces_IDataPipelineService_GetDataPipelineRuns_" data-uid="FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRuns*"></a>
+
+  <h3 id="FoundationaLLM_DataPipelineEngine_Interfaces_IDataPipelineService_GetDataPipelineRuns_System_String_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRunFilter_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRuns(System.String,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  GetDataPipelineRuns(string, DataPipelineRunFilter, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves a list of data pipeline runs filtered by the provided filter criteria.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;List&lt;DataPipelineRun&gt;&gt; GetDataPipelineRuns(string instanceId, DataPipelineRunFilter dataPipelineRunFilter, UnifiedUserIdentity userIdentity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>dataPipelineRunFilter</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter.html">DataPipelineRunFilter</a></dt>
+    <dd><p>The definition of the filter criteria.</p>
+</dd>
+    <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dd><p>The identity of the user running the operation.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.html">DataPipelineRun</a>&gt;&gt;</dt>
+    <dd><p>The requested list of data pipeline run objects.</p>
 </dd>
   </dl>
 

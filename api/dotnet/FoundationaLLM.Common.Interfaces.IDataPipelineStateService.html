@@ -132,7 +132,7 @@ Interface IDataPipelineStateService  <a class="header-action link-secondary" tit
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_GetActiveDataPipelineRuns" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.GetActiveDataPipelineRuns">
   GetActiveDataPipelineRuns()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L85"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a list of active data pipeline runs.</p>
@@ -204,7 +204,7 @@ Interface IDataPipelineStateService  <a class="header-action link-secondary" tit
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_GetDataPipelineRunStageWorkItems_System_String_System_String_" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.GetDataPipelineRunStageWorkItems(System.String,System.String)">
   GetDataPipelineRunStageWorkItems(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L93"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the list of data pipeline run work items associated with a specified stage of a run.</p>
@@ -246,7 +246,7 @@ Interface IDataPipelineStateService  <a class="header-action link-secondary" tit
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_GetDataPipelineRunWorkItem_System_String_System_String_" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.GetDataPipelineRunWorkItem(System.String,System.String)">
   GetDataPipelineRunWorkItem(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L45"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a data pipeline run work item by its identifier.</p>
@@ -271,6 +271,45 @@ Interface IDataPipelineStateService  <a class="header-action link-secondary" tit
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.html">DataPipelineRunWorkItem</a>&gt;</dt>
     <dd><p>The requests data pipeline run work item object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_GetDataPipelineRuns_" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.GetDataPipelineRuns*"></a>
+
+  <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_GetDataPipelineRuns_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRunFilter_" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.GetDataPipelineRuns(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter)">
+  GetDataPipelineRuns(DataPipelineRunFilter)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a list of data pipeline runs filtered by the provided filter criteria.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;List&lt;DataPipelineRun&gt;&gt; GetDataPipelineRuns(DataPipelineRunFilter dataPipelineRunFilter)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dataPipelineRunFilter</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter.html">DataPipelineRunFilter</a></dt>
+    <dd><p>The filter criteria used to filter data pipeline runs.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.html">DataPipelineRun</a>&gt;&gt;</dt>
+    <dd><p>The list of requests data pipeline runs.</p>
 </dd>
   </dl>
 
@@ -330,7 +369,7 @@ Interface IDataPipelineStateService  <a class="header-action link-secondary" tit
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_LoadDataPipelineRunWorkItemArtifacts_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_System_String_" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.LoadDataPipelineRunWorkItemArtifacts(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun,FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.String)">
   LoadDataPipelineRunWorkItemArtifacts(DataPipelineDefinition, DataPipelineRun, DataPipelineRunWorkItem, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L97"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L105"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Loads the artifacts associated with a data pipeline run work item.</p>
@@ -378,7 +417,7 @@ Interface IDataPipelineStateService  <a class="header-action link-secondary" tit
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_LoadDataPipelineRunWorkItemContentParts_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.LoadDataPipelineRunWorkItemContentParts(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun,FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem)">
   LoadDataPipelineRunWorkItemContentParts(DataPipelineDefinition, DataPipelineRun, DataPipelineRunWorkItem)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L118"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Loads the content item parts associated with a data pipeline run work item.</p>
@@ -423,7 +462,7 @@ Interface IDataPipelineStateService  <a class="header-action link-secondary" tit
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_PersistDataPipelineRunWorkItems_System_Collections_Generic_List_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem__" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.PersistDataPipelineRunWorkItems(System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem})">
   PersistDataPipelineRunWorkItems(List&lt;DataPipelineRunWorkItem&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L62"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Persists a list of data pipeline run work items.</p>
@@ -462,7 +501,7 @@ Interface IDataPipelineStateService  <a class="header-action link-secondary" tit
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_SaveDataPipelineRunWorkItemArtifacts_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_System_Collections_Generic_List_FoundationaLLM_Common_Models_DataPipelines_DataPipelineStateArtifact__" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.SaveDataPipelineRunWorkItemArtifacts(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun,FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifact})">
   SaveDataPipelineRunWorkItemArtifacts(DataPipelineDefinition, DataPipelineRun, DataPipelineRunWorkItem, List&lt;DataPipelineStateArtifact&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L123"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L131"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Saves the artifacts associated with a data pipeline run work item.</p>
@@ -509,7 +548,7 @@ Interface IDataPipelineStateService  <a class="header-action link-secondary" tit
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_SaveDataPipelineRunWorkItemContentParts_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_System_Collections_Generic_List_FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemPart__" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.SaveDataPipelineRunWorkItemContentParts(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun,FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPart})">
   SaveDataPipelineRunWorkItemContentParts(DataPipelineDefinition, DataPipelineRun, DataPipelineRunWorkItem, List&lt;DataPipelineContentItemPart&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L137"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L145"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Saves the content item parts associated with a data pipeline run work item.</p>
@@ -556,7 +595,7 @@ Interface IDataPipelineStateService  <a class="header-action link-secondary" tit
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_StartDataPipelineRunWorkItemProcessing_System_Func_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_System_Threading_Tasks_Task__" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.StartDataPipelineRunWorkItemProcessing(System.Func{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Threading.Tasks.Task})">
   StartDataPipelineRunWorkItemProcessing(Func&lt;DataPipelineRunWorkItem, Task&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L156"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Starts processing data pipeline run work items.</p>
@@ -595,7 +634,7 @@ Interface IDataPipelineStateService  <a class="header-action link-secondary" tit
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_StopDataPipelineRunWorkItemProcessing" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.StopDataPipelineRunWorkItemProcessing">
   StopDataPipelineRunWorkItemProcessing()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L162"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Stops processing data pipeline run work items.</p>
@@ -627,7 +666,7 @@ Interface IDataPipelineStateService  <a class="header-action link-secondary" tit
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_UpdateDataPipelineRunStatus_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.UpdateDataPipelineRunStatus(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun)">
   UpdateDataPipelineRunStatus(DataPipelineRun)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L54"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates the status of a data pipeline run.</p>
@@ -666,7 +705,7 @@ Interface IDataPipelineStateService  <a class="header-action link-secondary" tit
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_UpdateDataPipelineRunWorkItem_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.UpdateDataPipelineRunWorkItem(FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem)">
   UpdateDataPipelineRunWorkItem(DataPipelineRunWorkItem)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L78"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates a data pipeline run work item.</p>
@@ -705,7 +744,7 @@ Interface IDataPipelineStateService  <a class="header-action link-secondary" tit
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_UpdateDataPipelineRunWorkItemsStatus_System_Collections_Generic_List_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem__" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.UpdateDataPipelineRunWorkItemsStatus(System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem})">
   UpdateDataPipelineRunWorkItemsStatus(List&lt;DataPipelineRunWorkItem&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L70"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates the status of data pipeline run work items.</p>
