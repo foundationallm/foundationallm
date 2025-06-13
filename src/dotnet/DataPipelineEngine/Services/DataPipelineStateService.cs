@@ -63,6 +63,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             try
             {
+                // There is a Cosmos DB limit of up to 10 properties that can be patched at once.
+                // We will patch the properties in two separate calls to avoid this limit.
+
                 await _cosmosDBService.PatchItemPropertiesAsync<DataPipelineRun>(
                     dataPipelineRun.RunId,
                     dataPipelineRun.Id,
@@ -74,6 +77,16 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                         { "/stages_metrics", dataPipelineRun.StagesMetrics },
                         { "/completed", dataPipelineRun.Completed },
                         { "/successful", dataPipelineRun.Successful },
+                        { "/errors", dataPipelineRun.Errors }
+                    });
+
+                await _cosmosDBService.PatchItemPropertiesAsync<DataPipelineRun>(
+                    dataPipelineRun.RunId,
+                    dataPipelineRun.Id,
+                    new Dictionary<string, object?>
+                    {
+                        { "/completed_on", DateTimeOffset.UtcNow },
+                        { "/completed_by", ServiceContext.ServiceIdentity!.UPN },
                         { "/updated_on", DateTimeOffset.UtcNow },
                         { "/updated_by", ServiceContext.ServiceIdentity!.UPN }
                     });

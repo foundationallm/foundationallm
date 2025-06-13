@@ -1,6 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 
 namespace FoundationaLLM.Common.Constants.ResourceProviders
@@ -32,6 +31,9 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         ]),
                         new ResourceTypeAction(ResourceProviderActions.Deactivate, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderActionResult)])
+                        ]),
+                        new ResourceTypeAction(ResourceProviderActions.Trigger, true, false, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(DataPipelineTriggerRequest)], [typeof(ResourceProviderActionResult)])
                         ]),
                         new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])

@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Constants.DataPipelines;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Authentication;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
@@ -101,6 +102,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
         public Dictionary<string, DataPipelineStageMetrics> StagesMetrics { get; set; } = [];
 
         /// <summary>
+        /// Gets or sets the list of errors encountered during the data pipeline run.
+        /// </summary>
+        [JsonPropertyName("errors")]
+        [JsonPropertyOrder(14)]
+        public List<string>? Errors { get; set; }
+
+        /// <summary>
         /// Set default property values.
         /// </summary>
         public DataPipelineRun() =>
@@ -131,6 +139,30 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
                 Processor = processor,
 
                 ObjectId = ResourcePath.Join(dataPipelineObjectId, "dataPipelineRuns/new"),
+                Name = string.Empty,
+                Id = string.Empty,
+                InstanceId = string.Empty,
+                TriggeringUPN = string.Empty
+            };
+
+        /// <summary>
+        /// Creates a new <see cref="DataPipelineRun"/> instance from a data pipeline trigger request.
+        /// </summary>
+        /// <param name="request">The data pipeline trigger request used to create the run.</param>
+        /// <param name="ownerUserIdentity">The identity of the user that owns the newly created data pipeline run.</param>
+        /// <returns>The newly created data pipeline run object.</returns>
+        public static DataPipelineRun FromTriggerRequest(
+            DataPipelineTriggerRequest request,
+            UnifiedUserIdentity ownerUserIdentity) =>
+            new()
+            {
+                DataPipelineObjectId = request.DataPipelineObjectId,
+                TriggerName = request.TriggerName,
+                TriggerParameterValues = request.TriggerParameterValues,
+                UPN = ownerUserIdentity.UPN!,
+                Processor = request.Processor,
+
+                ObjectId = ResourcePath.Join(request.DataPipelineObjectId, "dataPipelineRuns/new"),
                 Name = string.Empty,
                 Id = string.Empty,
                 InstanceId = string.Empty,

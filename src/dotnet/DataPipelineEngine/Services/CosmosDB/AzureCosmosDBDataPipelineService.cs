@@ -119,11 +119,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
             Dictionary<string, object?> propertyValues,
             CancellationToken cancellationToken = default)
         {
+            var patchOperations = propertyValues.Keys
+                .Select(key => PatchOperation.Set(key, propertyValues[key])).ToArray();
             var response = await _dataPipelineContainer.PatchItemAsync<T>(
                 id: id,
                 partitionKey: new PartitionKey(partitionKey),
-                patchOperations: propertyValues.Keys
-                    .Select(key => PatchOperation.Set(key, propertyValues[key])).ToArray(),
+                patchOperations: patchOperations,
                 cancellationToken: cancellationToken
             );
             return response.Resource;

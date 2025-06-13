@@ -140,6 +140,21 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             UnifiedUserIdentity userIdentity) =>
             resourcePath.ResourceTypeName switch
             {
+                DataPipelineResourceTypeNames.DataPipelines =>
+                    resourcePath.Action switch
+                    {
+                        ResourceProviderActions.Trigger => (await CreateDataPipelineRun(
+                            resourcePath,
+                            DataPipelineRun.FromTriggerRequest(
+                                JsonSerializer.Deserialize<DataPipelineTriggerRequest>(serializedAction)
+                                    ?? throw new ResourceProviderException("The data pipeline trigger request is invalid.",
+                                        StatusCodes.Status400BadRequest),
+                                userIdentity),
+                            userIdentity)).ToActionResult(), 
+                        _ => throw new ResourceProviderException(
+                            $"The action {resourcePath.Action} on resource type {DataPipelineResourceTypeNames.DataPipelines} is not supported by the {_name} resource provider.",
+                                StatusCodes.Status400BadRequest)
+                    },
                 DataPipelineResourceTypeNames.DataPipelineRuns =>
                     resourcePath.Action switch
                     {
