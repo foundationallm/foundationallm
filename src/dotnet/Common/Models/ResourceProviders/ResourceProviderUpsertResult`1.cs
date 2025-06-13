@@ -16,5 +16,15 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// </remarks>
         [JsonPropertyName("resource")]
         public new T? Resource { get; set; }
+
+        /// <summary>
+        /// Converts the upsert result to an action result.
+        /// </summary>
+        /// <returns>The action result created from the upsert result.</returns>
+        public ResourceProviderActionResult<T> ToActionResult() =>
+            new(ObjectId, true)
+            {
+                Resource = Resource
+            };
     }
 }

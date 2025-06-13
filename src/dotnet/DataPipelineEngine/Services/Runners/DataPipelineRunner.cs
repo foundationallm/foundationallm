@@ -8,6 +8,7 @@ using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Exceptions;
 using FoundationaLLM.DataPipelineEngine.Models;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
@@ -140,21 +141,51 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                             SuccessfulWorkItemsCount = stageRunner.SuccessfulWorkItemsCount
                         };
 
+                // Process completed stage runners and advance to the next stages if there are no global errors.
+                // A data pipeline global error is an error that occurs outside of a specific stage,
+                // usually when attempting to advance to the next stages.
+                List<string> errors = [];
+                bool newErrors = false;
                 foreach (var stageRunner in completedStageRunners)
-                    await ProcessCompletedStageRunner(stageRunner);
+                    try
+                    {
+                        await ProcessCompletedStageRunner(
+                            stageRunner,
+                            // If at least one global error has occurred, do not start the next stages.
+                            ((_dataPipelineRun.Errors?.Count ?? 0) == 0) || newErrors);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "An error occurred while processing completed stage runner {StageName} for data pipeline run {RunId}.",
+                            stageRunner.StageName, _dataPipelineRun.RunId);
+                        errors.Add($"[Process completed stage {stageRunner.StageName}] {ex.Message}");
+                        newErrors = true;
+                    }
+                if (errors.Count > 0)
+                    if (_dataPipelineRun.Errors == null)
+                        _dataPipelineRun.Errors = errors;
+                    else
+                        _dataPipelineRun.Errors.AddRange(errors);
 
                 _dataPipelineRun.Completed =
                     // No stages in progress.
                     _dataPipelineRun.ActiveStages.Count == 0
                     && (
-                        // Either at least one stage failed or all stages are completed.
+                        // Either at least one stage failed
+                        // or all stages are completed
+                        // or at least one global error occurred.
                         _dataPipelineRun.FailedStages.Count > 0
                         || _dataPipelineRun.AllStages.Intersect(
                             _dataPipelineRun.CompletedStages).Count() == _dataPipelineRun.AllStages.Count
+                        || (_dataPipelineRun.Errors ?? []).Count > 0
                     );
                 _dataPipelineRun.Successful =
+                    // The run is completed
+                    // and there are no failed stages
+                    // and there are no global errors.
                     _dataPipelineRun.Completed
-                    && _dataPipelineRun.FailedStages.Count == 0;
+                    && _dataPipelineRun.FailedStages.Count == 0
+                    && (_dataPipelineRun.Errors?.Count ?? 0) == 0;
 
                 if (_dataPipelineRun.Completed
                     || completedStageRunners.Count > 0)
@@ -166,7 +197,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
             {
                 _logger.LogError(ex, "An error occurred while checking if the data pipeline run {RunId} has completed.",
                     _dataPipelineRun.RunId);
-                return false;
+                return true;
             }
         }
 
@@ -303,7 +334,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
         }
 
         private async Task ProcessCompletedStageRunner(
-            DataPipelineStageRunner stageRunner)
+            DataPipelineStageRunner stageRunner,
+            bool startNextStage)
         {
             _currentStageRunners.Remove(stageRunner.StageName);
 
@@ -315,6 +347,10 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
 
             if (stageRunner.Successful)
             {
+                if (!startNextStage)
+                    // A global error occurred, so we do not start the next stages.
+                    return;
+
                 // Attempt to kick off the next stages.
                 var nextStages = _dataPipelineDefinition.GetNextStages(stageRunner.StageName);
 
