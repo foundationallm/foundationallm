@@ -116,8 +116,39 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="actionPayload">The payload of the action providing details about it.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
         /// <returns></returns>
-        Task<TResult> ExecuteResourceActionAsync<T, TAction, TResult>(string instanceId, string resourceName, string actionName, TAction actionPayload, UnifiedUserIdentity userIdentity)
+        Task<TResult> ExecuteResourceActionAsync<T, TAction, TResult>(
+            string instanceId,
+            string resourceName,
+            string actionName,
+            TAction actionPayload,
+            UnifiedUserIdentity userIdentity)
             where T : ResourceBase
+            where TAction : class?
+            where TResult : ResourceProviderActionResult;
+
+        /// <summary>
+        /// Executes an action on a main resource and it subordinate resource.
+        /// </summary>
+        /// <typeparam name="TMain">The type of the main resource.</typeparam>
+        /// <typeparam name="TSubordinate">The type of the subordinate resource.</typeparam>
+        /// <typeparam name="TAction">The type of the action payload providing details about the action to be executed.</typeparam>
+        /// <typeparam name="TResult">The type of the result returned.</typeparam>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="mainResourceName">The name of the main resource on which the action is executed.</param>
+        /// <param name="resourceName">The name of the subordinate resource on which the action is executed.</param>
+        /// <param name="actionName">The name of the action being executed.</param>
+        /// <param name="actionPayload">The payload of the action providing details about it.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
+        /// <returns></returns>
+        Task<TResult> ExecuteResourceActionAsync<TMain, TSubordinate, TAction, TResult>(
+            string instanceId,
+            string mainResourceName,
+            string resourceName,
+            string actionName,
+            TAction actionPayload,
+            UnifiedUserIdentity userIdentity)
+            where TMain : ResourceBase
+            where TSubordinate : ResourceBase
             where TAction : class?
             where TResult : ResourceProviderActionResult;
 

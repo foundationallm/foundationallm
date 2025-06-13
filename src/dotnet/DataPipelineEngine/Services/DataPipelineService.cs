@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
 using FoundationaLLM.DataPipelineEngine.Models.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace FoundationaLLM.DataPipelineEngine.Services
 {
@@ -52,5 +53,19 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     DataPipelineResourceTypeNames.DataPipelineRuns,
                     runId),
                 userIdentity);
+
+        /// <inheritdoc/>
+        public async Task<List<DataPipelineRun>> GetDataPipelineRuns(
+            string instanceId,
+            DataPipelineRunFilter dataPipelineRunFilter,
+            UnifiedUserIdentity userIdentity) =>
+            (await _dataPipelineResourceProvider.ExecuteResourceActionAsync<
+                DataPipelineDefinition, DataPipelineRun, DataPipelineRunFilter, ResourceProviderActionResult<ResourceCollection<DataPipelineRun>>>(
+                    instanceId,
+                    dataPipelineRunFilter.DataPipelineName!,
+                    null!,
+                    ResourceProviderActions.Filter,
+                    dataPipelineRunFilter,
+                    userIdentity)).Resource?.Resources.ToList() ?? [];
     }
 }

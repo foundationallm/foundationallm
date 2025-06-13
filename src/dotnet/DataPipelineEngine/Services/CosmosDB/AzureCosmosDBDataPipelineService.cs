@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.DataPipelines;
+using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Text;
 using FoundationaLLM.DataPipelineEngine.Exceptions;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
@@ -10,6 +11,7 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Graph.Models;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -195,6 +197,56 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
 
             return concurrentTasks.All(task =>
                 task.Result.StatusCode == System.Net.HttpStatusCode.OK);
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<DataPipelineRun>> GetDataPipelineRuns(
+            DataPipelineRunFilter dataPipelineRunFilter)
+        {
+            var queryString = "SELECT * FROM c WHERE c.type = @type AND c.instance_id = @instanceId";
+            var query = new QueryDefinition(queryString)
+                .WithParameter("@type", DataPipelineTypes.DataPipelineRun)
+                .WithParameter("@instanceId", dataPipelineRunFilter.InstanceId);
+
+            if (!string.IsNullOrEmpty(dataPipelineRunFilter.DataPipelineName)
+                && dataPipelineRunFilter.DataPipelineName != "all")
+            {
+                queryString += " AND STARTSWITH(c.object_id, @objectIdPrefix)";
+                query.WithParameter("@objectIdPrefix",
+                    string.Join('/', [
+                        $"/instances/{dataPipelineRunFilter.InstanceId}",
+                        $"providers/{ResourceProviderNames.FoundationaLLM_DataPipeline}",
+                        $"{DataPipelineResourceTypeNames.DataPipelines}/{dataPipelineRunFilter.DataPipelineName}"]));
+            }
+            if (dataPipelineRunFilter.Completed.HasValue)
+            {
+                queryString += " AND c.completed = @completed";
+                query.WithParameter("@completed", dataPipelineRunFilter.Completed.Value);
+            }
+            if (dataPipelineRunFilter.Successful.HasValue)
+            {
+                queryString += " AND c.successful = @successful";
+                query.WithParameter("@successful", dataPipelineRunFilter.Successful.Value);
+            }
+            if (dataPipelineRunFilter.StartTime.HasValue)
+            {
+                queryString += " AND c._ts >= @startTime";
+                query.WithParameter("@startTime", dataPipelineRunFilter.StartTime.Value.ToUnixTimeSeconds());
+            }
+            if (dataPipelineRunFilter.EndTime.HasValue)
+            {
+                queryString += " AND c._ts <= @endTime";
+                query.WithParameter("@endTime", dataPipelineRunFilter.EndTime.Value.ToUnixTimeSeconds());
+            }
+
+            // Re-create QueryDefinition with the final query string and parameters
+            var finalQuery = new QueryDefinition(queryString);
+            foreach (var param in query.GetQueryParameters())
+            {
+                finalQuery.WithParameter(param.Name, param.Value);
+            }
+
+            return await RetrieveItemsAsync<DataPipelineRun>(finalQuery);
         }
 
         #region Change Feed Processor

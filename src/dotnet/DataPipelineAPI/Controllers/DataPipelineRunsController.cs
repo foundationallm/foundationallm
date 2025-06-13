@@ -25,6 +25,25 @@ namespace FoundationaLLM.DataPipeline.API.Controllers
         private readonly ILogger<DataPipelineRunsController> _logger = logger;
 
         /// <summary>
+        /// Retrieves a list of data pipeline runs filtered by the provided filter criteria.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="dataPipelineRunFilter">The definition of the filter criteria.</param>
+        /// <returns>The requested list of data pipeline run objects.</returns>
+        [HttpPost("datapipelineruns/filter")]
+        public async Task<IActionResult> GetDataPipelineRuns(
+            string instanceId,
+            DataPipelineRunFilter dataPipelineRunFilter)
+        {
+            var dataPipelineRuns = await _dataPipelineService.GetDataPipelineRuns(
+                instanceId,
+                dataPipelineRunFilter,
+                _orchestrationContext.CurrentUserIdentity!);
+
+            return Ok(dataPipelineRuns);
+        }
+
+        /// <summary>
         /// Retrieves a data pipeline run by its name.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

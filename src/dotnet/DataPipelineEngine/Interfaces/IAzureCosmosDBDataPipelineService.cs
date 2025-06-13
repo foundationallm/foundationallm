@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.DataPipelines;
+using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using Microsoft.Azure.Cosmos;
 
 namespace FoundationaLLM.DataPipelineEngine.Interfaces
@@ -70,6 +71,14 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
         /// <returns><see langword="true"/> if the batch is successfully processed.</returns>
         Task<bool> PatchDataPipelineRunWorkItemsStatusAsync(
             List<DataPipelineRunWorkItem> workItems);
+
+        /// <summary>
+        /// Gets a list of data pipeline runs filtered by the provided filter criteria.
+        /// </summary>
+        /// <param name="dataPipelineRunFilter">The filter criteria used to filter data pipeline runs.</param>
+        /// <returns>The list of requests data pipeline runs.</returns>
+        Task<List<DataPipelineRun>> GetDataPipelineRuns(
+            DataPipelineRunFilter dataPipelineRunFilter);
 
         /// <summary>
         /// Starts the change feed processor for the data pipeline run work items.

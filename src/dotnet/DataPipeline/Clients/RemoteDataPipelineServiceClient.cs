@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipeline.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 
 namespace FoundationaLLM.DataPipeline.Clients
@@ -106,6 +107,40 @@ namespace FoundationaLLM.DataPipeline.Clients
             {
                 _logger.LogError(ex, "An error occurred while retrieving the data pipeline run.");
                 return null;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<DataPipelineRun>> GetDataPipelineRunsAsync(
+            string instanceId,
+            DataPipelineRunFilter dataPipelineRunFilter,
+            UnifiedUserIdentity userIdentity)
+        {
+            try
+            {
+                var httpClient = await _httpClientTask;
+
+                var responseMessage = await httpClient.PostAsync(
+                    $"instances/{instanceId}/datapipelineruns/filter",
+                    new StringContent(JsonSerializer.Serialize(dataPipelineRunFilter), Encoding.UTF8, "application/json"));
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                    var response = JsonSerializer.Deserialize<List<DataPipelineRun>>(responseContent);
+                    return response!;
+                }
+
+                _logger.LogError(
+                    "An error occurred while retrieving the data pipeline runs. Status code: {StatusCode}.",
+                    responseMessage.StatusCode);
+
+                return [];
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving the data pipeline runs.");
+                return [];
             }
         }
     }

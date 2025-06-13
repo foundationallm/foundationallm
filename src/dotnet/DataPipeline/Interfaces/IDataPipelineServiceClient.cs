@@ -24,6 +24,18 @@ namespace FoundationaLLM.DataPipeline.Interfaces
             UnifiedUserIdentity userIdentity);
 
         /// <summary>
+        /// Retrieves a list of data pipeline runs filtered by the provided filter criteria.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="dataPipelineRunFilter">The definition of the filter criteria.</param>
+        /// <param name="userIdentity">The identity of the user running the operation.</param>
+        /// <returns>The requested list of data pipeline run objects.</returns>
+        Task<List<DataPipelineRun>> GetDataPipelineRunsAsync(
+            string instanceId,
+            DataPipelineRunFilter dataPipelineRunFilter,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
         /// Creates a new data pipeline run.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

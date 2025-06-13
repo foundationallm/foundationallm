@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 
 namespace FoundationaLLM.Common.Constants.ResourceProviders
@@ -26,10 +27,10 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], [])
                     ],
                     Actions = [
-                        new ResourceTypeAction(VectorizationResourceProviderActions.Activate, true, false, [
+                        new ResourceTypeAction(ResourceProviderActions.Activate, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderActionResult)])
                         ]),
-                        new ResourceTypeAction(VectorizationResourceProviderActions.Deactivate, true, false, [
+                        new ResourceTypeAction(ResourceProviderActions.Deactivate, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderActionResult)])
                         ]),
                         new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
@@ -60,7 +61,11 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                                     new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderGetResult<DataPipelineRun>)]),
                                     new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(DataPipelineRun)], [typeof(ResourceProviderUpsertResult<DataPipelineRun>)])
                                 ],
-                                Actions = []
+                                Actions = [
+                                    new ResourceTypeAction(ResourceProviderActions.Filter, false, true, [
+                                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(DataPipelineRunFilter)], [typeof(DataPipelineRun)]),
+                                    ])
+                                ]
                             }
                         }
                     }
