@@ -289,6 +289,6 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
         /// <inheritdoc/>
         public async Task<List<DataPipelineRun>> GetDataPipelineRuns(DataPipelineRunFilter dataPipelineRunFilter) =>
-            await Task.FromResult<List<DataPipelineRun>>([]);
+            await _cosmosDBService.GetDataPipelineRuns(dataPipelineRunFilter);
     }
 }

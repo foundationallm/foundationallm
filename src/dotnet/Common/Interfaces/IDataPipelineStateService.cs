@@ -28,6 +28,11 @@ namespace FoundationaLLM.Common.Interfaces
         Task<DataPipelineRun?> GetDataPipelineRun(
             string runId);
 
+        /// <summary>
+        /// Gets a list of data pipeline runs filtered by the provided filter criteria.
+        /// </summary>
+        /// <param name="dataPipelineRunFilter">The filter criteria used to filter data pipeline runs.</param>
+        /// <returns>The list of requests data pipeline runs.</returns>
         Task<List<DataPipelineRun>> GetDataPipelineRuns(
             DataPipelineRunFilter dataPipelineRunFilter);
 

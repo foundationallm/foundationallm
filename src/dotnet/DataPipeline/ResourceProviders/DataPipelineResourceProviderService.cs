@@ -173,7 +173,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
 
         #region Helpers for UpsertResourceAsync
 
-        private async Task<List<DataPipelineRun>> GetDataPipelineRuns(
+        private async Task<ResourceProviderActionResult<ResourceCollection<DataPipelineRun>>> GetDataPipelineRuns(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             Func<DataPipelineRunFilter> getDataPipelineRunFilter,
@@ -200,7 +200,14 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 dataPipelineRunFilter,
                 userIdentity);
 
-            return result;
+            return new ResourceProviderActionResult<ResourceCollection<DataPipelineRun>>(string.Empty, true)
+            {
+                Resource = new ResourceCollection<DataPipelineRun>
+                {
+                    Name = string.Empty,
+                    Resources = result,
+                }
+            };
         }
 
         private async Task<ResourceProviderUpsertResult> UpdateDataPipeline(

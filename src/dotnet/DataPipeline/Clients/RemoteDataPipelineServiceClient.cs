@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipeline.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 
 namespace FoundationaLLM.DataPipeline.Clients
@@ -119,8 +120,9 @@ namespace FoundationaLLM.DataPipeline.Clients
             {
                 var httpClient = await _httpClientTask;
 
-                var responseMessage = await httpClient.GetAsync(
-                    $"instances/{instanceId}/datapipelineruns/filter");
+                var responseMessage = await httpClient.PostAsync(
+                    $"instances/{instanceId}/datapipelineruns/filter",
+                    new StringContent(JsonSerializer.Serialize(dataPipelineRunFilter), Encoding.UTF8, "application/json"));
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
