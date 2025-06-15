@@ -23,6 +23,9 @@ namespace FoundationaLLM.Common.Authentication
         {
             Production = production;
             ServiceName = serviceName;
+            ServiceInstanceName = Environment.GetEnvironmentVariable(EnvironmentVariables.AKS_Pod_Name)
+                ?? Environment.GetEnvironmentVariable(EnvironmentVariables.ACA_Container_App_Replica_Name)
+                ?? Guid.NewGuid().ToString().ToLower();
 
             AzureCredential = Production
                 ? new ManagedIdentityCredential(Environment.GetEnvironmentVariable(EnvironmentVariables.AzureClientId))
@@ -58,6 +61,11 @@ namespace FoundationaLLM.Common.Authentication
         /// Gets or sets the name of the service.
         /// </summary>
         public static string ServiceName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the name of the instance service.
+        /// </summary>
+        public static string ServiceInstanceName { get; set; } = null!;
 
         /// <summary>
         /// Indicates whether the environment we run in is production or not.

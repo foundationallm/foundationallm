@@ -39,6 +39,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
         private DataPipelineDefinition _dataPipelineDefinition = null!;
         private DataPipelineRun _dataPipelineRun = null!;
 
+        public Dictionary<string, DataPipelineStageRunner> CurrentStageRunners => _currentStageRunners;
+
         public async Task InitializeNew(
             DataPipelineRun dataPipelineRun,
             List<DataPipelineContentItem> contentItems,

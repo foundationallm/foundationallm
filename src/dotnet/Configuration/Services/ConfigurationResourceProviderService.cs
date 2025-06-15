@@ -148,9 +148,9 @@ namespace FoundationaLLM.Configuration.Services
             UnifiedUserIdentity userIdentity) =>
             resourcePath.ResourceTypeName switch
             {
-                GlobalResourceTypeNames.ManagementActions => resourcePath.Action switch
+                SharedResourceTypeNames.Management => resourcePath.Action switch
                 {
-                    ResourceProviderActions.Trigger => await ExecuteManagementAction(
+                    ResourceProviderActions.TriggerCommand => await ExecuteManagementAction(
                         resourcePath,
                         authorizationResult,
                         serializedAction),

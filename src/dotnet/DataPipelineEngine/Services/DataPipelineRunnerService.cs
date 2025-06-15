@@ -31,6 +31,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         private readonly Dictionary<string, DataPipelineRunner> _currentRunners = [];
 
         /// <summary>
+        public Dictionary<string, DataPipelineRunner> CurrentRunners => _currentRunners;
+
+        /// <summary>
         /// Initializes a new instance of the service.
         /// </summary>
         /// <param name="stateService">The Data Pipeline State service providing state management services.</param>

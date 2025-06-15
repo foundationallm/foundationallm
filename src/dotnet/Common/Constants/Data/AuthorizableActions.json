@@ -21,6 +21,11 @@
 				"name": "FoundationaLLM.Authorization/roleDefinitions/read",
 				"description": "Read role definitions.",
 				"field_name": "FoundationaLLM_Authorization_RoleDefinitions_Read"
+			},
+			{
+				"name": "FoundationaLLM.Authorization/management/write",
+				"description": "Execute management actions.",
+				"field_name": "FoundationaLLM_Authorization_Management_Write"
 			}
 		]
 	},
@@ -71,6 +76,11 @@
 				"name": "FoundationaLLM.Agent/tools/delete",
 				"description": "Delete tools.",
 				"field_name": "FoundationaLLM_Agent_Tools_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Agent/management/write",
+				"description": "Execute management actions.",
+				"field_name": "FoundationaLLM_Agent_Management_Write"
 			}
 		]
 	},
@@ -121,6 +131,11 @@
 				"name": "FoundationaLLM.AzureAI/projects/delete",
 				"description": "Delete Azure AI project resources.",
 				"field_name": "FoundationaLLM_AzureAI_Projects_Delete"
+			},
+			{
+				"name": "FoundationaLLM.AzureAI/management/write",
+				"description": "Execute management actions.",
+				"field_name": "FoundationaLLM_AzureAI_Management_Write"
 			}
 		]
 	},
@@ -156,6 +171,11 @@
 				"name": "FoundationaLLM.AzureOpenAI/fileMappings/delete",
 				"description": "Delete Azure OpenAI file mappings.",
 				"field_name": "FoundationaLLM_AzureOpenAI_FileMappings_Delete"
+			},
+			{
+				"name": "FoundationaLLM.AzureOpenAI/management/write",
+				"description": "Execute management actions.",
+				"field_name": "FoundationaLLM_AzureOpenAI_Management_Write"
 			}
 		]
 	},
@@ -208,9 +228,9 @@
 				"field_name": "FoundationaLLM_Configuration_APIEndpoinConfigurations_Delete"
 			},
 			{
-				"name": "FoundationaLLM.Configuration/managementActions/write",
+				"name": "FoundationaLLM.Configuration/management/write",
 				"description": "Execute management actions.",
-				"field_name": "FoundationaLLM_Configuration_ManagementActions_Write"
+				"field_name": "FoundationaLLM_Configuration_Management_Write"
 			}
 		]
 	},
@@ -231,6 +251,11 @@
 				"name": "FoundationaLLM.DataSource/dataSources/delete",
 				"description": "Delete data sources.",
 				"field_name": "FoundationaLLM_DataSource_DataSources_Delete"
+			},
+			{
+				"name": "FoundationaLLM.DataSource/management/write",
+				"description": "Execute management actions.",
+				"field_name": "FoundationaLLM_DataSource_Management_Write"
 			}
 		]
 	},
@@ -251,6 +276,11 @@
 				"name": "FoundationaLLM.Prompt/prompts/delete",
 				"description": "Delete prompts.",
 				"field_name": "FoundationaLLM_Prompt_Prompts_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Prompt/management/write",
+				"description": "Execute management actions.",
+				"field_name": "FoundationaLLM_Prompt_Management_Write"
 			}
 		]
 	},
@@ -386,6 +416,11 @@
 				"name": "FoundationaLLM.AIModel/aiModels/delete",
 				"description": "Delete AI models.",
 				"field_name": "FoundationaLLM_AIModel_AIModels_Delete"
+			},
+			{
+				"name": "FoundationaLLM.AIModel/management/write",
+				"description": "Execute management actions.",
+				"field_name": "FoundationaLLM_AIModel_Management_Write"
 			}
 		]
 	},
@@ -406,6 +441,11 @@
 				"name": "FoundationaLLM.Conversation/conversations/delete",
 				"description": "Delete conversations.",
 				"field_name": "FoundationaLLM_Conversation_Conversations_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Conversation/management/write",
+				"description": "Execute management actions.",
+				"field_name": "FoundationaLLM_Conversation_Management_Write"
 			}
 		]
 	},
@@ -426,6 +466,11 @@
 				"name": "FoundationaLLM.DataPipeline/dataPipelines/delete",
 				"description": "Delete data pipelines.",
 				"field_name": "FoundationaLLM_DataPipeline_DataPipelines_Delete"
+			},
+			{
+				"name": "FoundationaLLM.DataPipeline/management/write",
+				"description": "Execute management actions.",
+				"field_name": "FoundationaLLM_DataPipeline_Management_Write"
 			}
 		]
 	},
@@ -461,6 +506,11 @@
 				"name": "FoundationaLLM.Plugin/pluginPackages/delete",
 				"description": "Delete plugin packages.",
 				"field_name": "FoundationaLLM_Plugin_PluginPackages_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Plugin/management/write",
+				"description": "Execute management actions.",
+				"field_name": "FoundationaLLM_Plugin_Management_Write"
 			}
 		]
 	},
@@ -481,6 +531,11 @@
 				"name": "FoundationaLLM.Vector/vectorDatabases/delete",
 				"description": "Delete vector databases.",
 				"field_name": "FoundationaLLM_Vector_VectorDatabases_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Vector/management/write",
+				"description": "Execute management actions.",
+				"field_name": "FoundationaLLM_Vector_Management_Write"
 			}
 		]
 	}

@@ -48,5 +48,11 @@ namespace FoundationaLLM.DataPipeline.Interfaces
             DataPipelineRun dataPipelineRun,
             DataPipelineDefinitionSnapshot dataPipelineSnapshot,
             UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Retrieves the current state of the Data Pipeline service.
+        /// </summary>
+        /// <returns>The state of the service in binary format.</returns>
+        Task<BinaryData> GetServiceStateAsync();
     }
 }

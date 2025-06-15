@@ -41,6 +41,13 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Authorization")
                 },
                 {
+                    AuthorizableActionNames.FoundationaLLM_Authorization_Management_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Authorization_Management_Write,
+                        "Execute management actions.",
+                        "Authorization")
+                },
+                {
                     AuthorizableActionNames.FoundationaLLM_Agent_Agents_Read,
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_Agent_Agents_Read,
@@ -101,6 +108,13 @@ namespace FoundationaLLM.Common.Models.Authorization
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_Agent_Tools_Delete,
                         "Delete tools.",
+                        "Agent")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Agent_Management_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Agent_Management_Write,
+                        "Execute management actions.",
                         "Agent")
                 },
                 {
@@ -167,6 +181,13 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "AzureAI")
                 },
                 {
+                    AuthorizableActionNames.FoundationaLLM_AzureAI_Management_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_AzureAI_Management_Write,
+                        "Execute management actions.",
+                        "AzureAI")
+                },
+                {
                     AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Read,
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Read,
@@ -206,6 +227,13 @@ namespace FoundationaLLM.Common.Models.Authorization
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Delete,
                         "Delete Azure OpenAI file mappings.",
+                        "AzureOpenAI")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_AzureOpenAI_Management_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_AzureOpenAI_Management_Write,
+                        "Execute management actions.",
                         "AzureOpenAI")
                 },
                 {
@@ -272,9 +300,9 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Configuration")
                 },
                 {
-                    AuthorizableActionNames.FoundationaLLM_Configuration_ManagementActions_Write,
+                    AuthorizableActionNames.FoundationaLLM_Configuration_Management_Write,
                     new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_Configuration_ManagementActions_Write,
+                        AuthorizableActionNames.FoundationaLLM_Configuration_Management_Write,
                         "Execute management actions.",
                         "Configuration")
                 },
@@ -300,6 +328,13 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "DataSource")
                 },
                 {
+                    AuthorizableActionNames.FoundationaLLM_DataSource_Management_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_DataSource_Management_Write,
+                        "Execute management actions.",
+                        "DataSource")
+                },
+                {
                     AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Read,
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Read,
@@ -318,6 +353,13 @@ namespace FoundationaLLM.Common.Models.Authorization
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Delete,
                         "Delete prompts.",
+                        "Prompt")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Prompt_Management_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Prompt_Management_Write,
+                        "Execute management actions.",
                         "Prompt")
                 },
                 {
@@ -489,6 +531,13 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "AIModel")
                 },
                 {
+                    AuthorizableActionNames.FoundationaLLM_AIModel_Management_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_AIModel_Management_Write,
+                        "Execute management actions.",
+                        "AIModel")
+                },
+                {
                     AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Read,
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Read,
@@ -510,6 +559,13 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Conversation")
                 },
                 {
+                    AuthorizableActionNames.FoundationaLLM_Conversation_Management_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Conversation_Management_Write,
+                        "Execute management actions.",
+                        "Conversation")
+                },
+                {
                     AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Read,
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Read,
@@ -528,6 +584,13 @@ namespace FoundationaLLM.Common.Models.Authorization
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Delete,
                         "Delete data pipelines.",
+                        "DataPipeline")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_DataPipeline_Management_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_DataPipeline_Management_Write,
+                        "Execute management actions.",
                         "DataPipeline")
                 },
                 {
@@ -573,6 +636,13 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Plugin")
                 },
                 {
+                    AuthorizableActionNames.FoundationaLLM_Plugin_Management_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Plugin_Management_Write,
+                        "Execute management actions.",
+                        "Plugin")
+                },
+                {
                     AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Read,
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Read,
@@ -591,6 +661,13 @@ namespace FoundationaLLM.Common.Models.Authorization
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Delete,
                         "Delete vector databases.",
+                        "Vector")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Vector_Management_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Vector_Management_Write,
+                        "Execute management actions.",
                         "Vector")
                 },
             });
