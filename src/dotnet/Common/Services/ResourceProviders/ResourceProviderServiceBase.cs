@@ -1045,7 +1045,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// </summary>
         /// <returns>The resource provider state in binary format.</returns>
         protected virtual async Task<BinaryData> GetResourceProviderState() =>
-            await Task.FromResult(BinaryData.FromString(string.Empty));
+            await Task.FromResult(BinaryData.FromString($"{_name} internal state"));
 
         #endregion
 

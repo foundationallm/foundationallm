@@ -52,7 +52,8 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             serviceProvider,
             loggerFactory.CreateLogger<DataPipelineResourceProviderService>(),
             [
-                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
+                EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand,
+                EventTypes.FoundationaLLM_ResourceProvider_State_ExportCommand
             ],
             useInternalReferencesStore: true)
     {

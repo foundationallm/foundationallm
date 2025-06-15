@@ -31,6 +31,7 @@
         public static List<string> All =>
             [
                 FoundationaLLM_ResourceProvider_Cache_ResetCommand,
+                FoundationaLLM_ResourceProvider_State_ExportCommand,
                 FoundationaLLM_ResourceProvider_AppConfig_UpdateKeyCommand,
                 FoundationaLLM_Quota_MetricUpdate
             ];
