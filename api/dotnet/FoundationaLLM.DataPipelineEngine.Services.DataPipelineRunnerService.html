@@ -208,7 +208,7 @@ Class DataPipelineRunnerService  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_DataPipelineEngine_Services_DataPipelineRunnerService__ctor_FoundationaLLM_Common_Interfaces_IDataPipelineStateService_System_IServiceProvider_Microsoft_Extensions_Options_IOptions_FoundationaLLM_DataPipelineEngine_Models_Configuration_DataPipelineServiceSettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_DataPipelineEngine_Services_DataPipelineRunnerService__" data-uid="FoundationaLLM.DataPipelineEngine.Services.DataPipelineRunnerService.#ctor(FoundationaLLM.Common.Interfaces.IDataPipelineStateService,System.IServiceProvider,Microsoft.Extensions.Options.IOptions{FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.DataPipelineEngine.Services.DataPipelineRunnerService})">
   DataPipelineRunnerService(IDataPipelineStateService, IServiceProvider, IOptions&lt;DataPipelineServiceSettings&gt;, ILogger&lt;DataPipelineRunnerService&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/DataPipelineRunnerService.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/DataPipelineRunnerService.cs/#L42"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the service.</p>
@@ -247,6 +247,37 @@ Class DataPipelineRunnerService  <a class="header-action link-secondary" title="
 
   <h2 class="section" id="properties">Properties
 </h2>
+
+
+  <a id="FoundationaLLM_DataPipelineEngine_Services_DataPipelineRunnerService_CurrentRunners_" data-uid="FoundationaLLM.DataPipelineEngine.Services.DataPipelineRunnerService.CurrentRunners*"></a>
+
+  <h3 id="FoundationaLLM_DataPipelineEngine_Services_DataPipelineRunnerService_CurrentRunners" data-uid="FoundationaLLM.DataPipelineEngine.Services.DataPipelineRunnerService.CurrentRunners">
+  CurrentRunners
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/DataPipelineRunnerService.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, DataPipelineRunner&gt; CurrentRunners { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineRunner.html">DataPipelineRunner</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
 
 
   <a id="FoundationaLLM_DataPipelineEngine_Services_DataPipelineRunnerService_ServiceName_" data-uid="FoundationaLLM.DataPipelineEngine.Services.DataPipelineRunnerService.ServiceName*"></a>
@@ -288,7 +319,7 @@ Class DataPipelineRunnerService  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_DataPipelineEngine_Services_DataPipelineRunnerService_ExecuteAsyncInternal_System_Threading_CancellationToken_" data-uid="FoundationaLLM.DataPipelineEngine.Services.DataPipelineRunnerService.ExecuteAsyncInternal(System.Threading.CancellationToken)">
   ExecuteAsyncInternal(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/DataPipelineRunnerService.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/DataPipelineRunnerService.cs/#L125"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Executes the background service's main logic.</p>
@@ -326,7 +357,7 @@ Class DataPipelineRunnerService  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_DataPipelineEngine_Services_DataPipelineRunnerService_InitializeAsyncInternal_System_Threading_CancellationToken_" data-uid="FoundationaLLM.DataPipelineEngine.Services.DataPipelineRunnerService.InitializeAsyncInternal(System.Threading.CancellationToken)">
   InitializeAsyncInternal(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/DataPipelineRunnerService.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/DataPipelineRunnerService.cs/#L60"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Performs additional initialization for the background service.</p>
@@ -364,7 +395,7 @@ Class DataPipelineRunnerService  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_DataPipelineEngine_Services_DataPipelineRunnerService_StartRun_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_System_Collections_Generic_List_FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItem__FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.DataPipelineEngine.Services.DataPipelineRunnerService.StartRun(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun,System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem},FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   StartRun(DataPipelineRun, List&lt;DataPipelineContentItem&gt;, DataPipelineDefinition, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/DataPipelineRunnerService.cs/#L142"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/DataPipelineRunnerService.cs/#L145"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Starts a data pipeline run.</p>
@@ -412,7 +443,7 @@ Class DataPipelineRunnerService  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_DataPipelineEngine_Services_DataPipelineRunnerService_StopAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.DataPipelineEngine.Services.DataPipelineRunnerService.StopAsync(System.Threading.CancellationToken)">
   StopAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/DataPipelineRunnerService.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/DataPipelineRunnerService.cs/#L108"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Triggered when the application host is performing a graceful shutdown.</p>

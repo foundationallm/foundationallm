@@ -79,7 +79,18 @@
 </div>
 <h2 id="starting-from-097">Starting from 0.9.7</h2>
 <h3 id="configuration-changes">Configuration changes</h3>
-<p>The <code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds</code> is replaced by the <code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalMilliseconds</code> value. The default value is now <code>100</code> milliseconds instead of <code>1</code> second. This change is made to improve the responsiveness of the completion response polling mechanism.</p>
+<p>The value of the <code>FoundationaLLM:Events:Profiles:DataPipelineAPI</code> configuration entry is changed to:</p>
+<pre><code class="lang-json">{
+	&quot;EventProcessingCycleSeconds&quot;: 5,
+	&quot;Topics&quot;: [
+		{
+			&quot;Name&quot;: &quot;resource-providers&quot;,
+			&quot;SubscriptionPrefix&quot;: &quot;rp-dp&quot;
+		}
+	]
+}
+</code></pre>
+<p>The <code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds</code> configuration entry is replaced by the <code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalMilliseconds</code> configuration entry. The default value is now <code>100</code> milliseconds instead of <code>1</code> second. This change is made to improve the responsiveness of the completion response polling mechanism.</p>
 <p>The following App Configuration value have been added:</p>
 <table>
 <thead>

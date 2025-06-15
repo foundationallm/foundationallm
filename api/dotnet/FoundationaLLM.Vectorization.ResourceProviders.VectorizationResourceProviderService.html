@@ -238,6 +238,9 @@ Class VectorizationResourceProviderService  <a class="header-action link-seconda
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_SendResourceProviderEvent_System_String_System_String_System_Object_System_Boolean_">ResourceProviderServiceBase&lt;ResourceReference&gt;.SendResourceProviderEvent(string, string, object, bool)</a>
     </div>
     <div>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourceProviderState">ResourceProviderServiceBase&lt;ResourceReference&gt;.GetResourceProviderState()</a>
+    </div>
+    <div>
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_LoadResources__1_FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeInstance_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_System_Func__0_System_Boolean_System_Threading_Tasks_Task___0___">ResourceProviderServiceBase&lt;ResourceReference&gt;.LoadResources&lt;T&gt;(ResourceTypeInstance, ResourcePathAuthorizationResult, ResourceProviderGetOptions, Func&lt;ResourceReference, bool, Task&lt;T&gt;&gt;)</a>
     </div>
     <div>
@@ -756,7 +759,7 @@ In this case, only the resources specified in the subordinate authorized resourc
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override Task HandleCacheResetCommand()</code></pre>
+    <pre><code class="lang-csharp hljs">protected override Task HandleCacheResetCommand()</code></pre>
   </div>
 
 

@@ -3162,20 +3162,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.GlobalResourceTypeNames.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.GlobalResourceTypeNames.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Constants.ResourceProviders.GlobalResourceTypeNames",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.GlobalResourceTypeNames.yml\" sourcestartlinenumber=\"1\">Contains constants of the names of the resource types that can be managed by any resource provider.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.PluginResourceProviderMetadata.yml",
       "output": {
         ".html": {
@@ -3355,6 +3341,34 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.yml\" sourcestartlinenumber=\"1\">Contains constants of the resource provider names.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.SharedResourceProviderMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.SharedResourceProviderMetadata.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.ResourceProviders.SharedResourceProviderMetadata",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.SharedResourceProviderMetadata.yml\" sourcestartlinenumber=\"1\">Provides metadata shared by all resource providers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.SharedResourceTypeNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.SharedResourceTypeNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.ResourceProviders.SharedResourceTypeNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.SharedResourceTypeNames.yml\" sourcestartlinenumber=\"1\">Contains constants of the names of the resource types that can be managed by any resource provider.</p>\n"
     },
     {
       "type": "ManagedReference",
