@@ -140,6 +140,15 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             UnifiedUserIdentity userIdentity) =>
             resourcePath.ResourceTypeName switch
             {
+                SharedResourceTypeNames.Management => resourcePath.Action switch
+                {
+                    ResourceProviderActions.TriggerCommand => await ExecuteManagementAction(
+                        resourcePath,
+                        authorizationResult,
+                        serializedAction),
+                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+                },
                 DataPipelineResourceTypeNames.DataPipelines =>
                     resourcePath.Action switch
                     {
@@ -182,7 +191,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                             $"The action {resourcePath.Action} on resource type {DataPipelineResourceTypeNames.DataPipelineRuns} is not supported by the {_name} resource provider.",
                                 StatusCodes.Status400BadRequest)
                     },
-                _ => throw new ResourceProviderException($"Action on resource type {resourcePath.ResourceTypeName} are not supported by the {_name} resource provider.",
+                _ => throw new ResourceProviderException($"Actions on resource type {resourcePath.ResourceTypeName} are not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
             };
 

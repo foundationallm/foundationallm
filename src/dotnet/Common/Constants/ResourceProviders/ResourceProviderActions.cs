@@ -41,7 +41,7 @@
         public const string LoadPluginPackage = "load-plugin-package";
 
         /// <summary>
-        /// Reset the cache for a resource provider.
+        /// Trigger the execution of a resource.
         /// </summary>
         public const string Trigger = "trigger";
 
@@ -54,5 +54,10 @@
         /// Deactivate a resource.
         /// </summary>
         public const string Deactivate = "deactivate";
+
+        /// <summary>
+        /// Trigger a resource command.
+        /// </summary>
+        public const string TriggerCommand = "trigger-command";
     }
 }

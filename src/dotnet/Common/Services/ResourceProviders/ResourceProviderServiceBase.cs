@@ -970,9 +970,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             switch (e.EventType)
             {
                 case EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand:
+                case EventTypes.FoundationaLLM_ResourceProvider_State_ExportCommand:
+
                     // No need to handle each event separately.
-                    // If more than one event is received, this indicates that multiple cache resets were requested.
-                    // However, the cache will be reset only once.
+                    // If more than one event is received, this indicates that multiple execution were requested.
+                    // However, these commands should be executed only once, even if they are requested from multiple places.
 
                     var refTime = DateTimeOffset.UtcNow;
                     var resourceProviderEventsData = eventsToProcess
@@ -987,8 +989,18 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     if (resourceProviderEventsData.Any(data => data.TargetServiceName is null)
                         || resourceProviderEventsData.Any(data => data.TargetServiceName == ServiceContext.ServiceName))
                     {
-                        _logger.LogInformation("Handling cache reset command for the {ResourceProviderName} resource provider.", _name);
-                        await HandleCacheResetCommand();
+                        _logger.LogInformation("{ServiceName}[{ServiceInstanceName}]: Handling {ResourceProviderCommand} command for the {ResourceProviderName} resource provider.",
+                            ServiceContext.ServiceName, ServiceContext.ServiceInstanceName, e.EventType, _name);
+
+                        switch (e.EventType)
+                        {
+                            case EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand:
+                                await HandleCacheResetCommand();
+                                break;
+                            case EventTypes.FoundationaLLM_ResourceProvider_State_ExportCommand:
+                                await HandleStateExportCommand();
+                                break;
+                        }
                     }
 
                     break;
@@ -1002,7 +1014,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// Handles the cache reset command.
         /// </summary>
         /// <returns></returns>
-        public virtual async Task HandleCacheResetCommand()
+        protected virtual async Task HandleCacheResetCommand()
         {
             _resourceCache?.Reset();
             await (_resourceReferenceStore?.LoadResourceReferences() ?? Task.CompletedTask);
@@ -1015,6 +1027,25 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <returns></returns>
         protected virtual async Task HandleEventsInternal(EventTypeEventArgs e) =>
             await Task.CompletedTask;
+
+        private async Task HandleStateExportCommand()
+        {
+            var state = await GetResourceProviderState();
+            var refTime = DateTimeOffset.UtcNow;
+            await _storageService.WriteFileAsync(
+                _instanceSettings.Id,
+                $"management/internal-state/{refTime:yyyy-MM-dd}/{refTime:yyyyMMdd-HHmmss}-{ServiceContext.ServiceName}-{ServiceContext.ServiceInstanceName}-{_name.Replace('.', '-')}-state.txt",
+                state.ToString(),
+                "application/octet-stream",
+                default);
+        }
+
+        /// <summary>
+        /// Gets the resource provider state.
+        /// </summary>
+        /// <returns>The resource provider state in binary format.</returns>
+        protected virtual async Task<BinaryData> GetResourceProviderState() =>
+            await Task.FromResult(BinaryData.FromString(string.Empty));
 
         #endregion
 
@@ -1139,8 +1170,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             foreach (var resourceTypeInstance in parsedResourcePath.ResourceTypeInstances)
             {
-                if (currentAllowedResourceTypes == null
-                    || !currentAllowedResourceTypes.TryGetValue(resourceTypeInstance.ResourceTypeName, out currentResourceTypeDescriptor))
+                if (currentAllowedResourceTypes == null)
+                    throw new ResourceProviderException(
+                        $"The resource type {resourceTypeInstance.ResourceTypeName} cannot be handled by the {_name} resource provider",
+                        StatusCodes.Status400BadRequest);
+
+                if(!currentAllowedResourceTypes.TryGetValue(resourceTypeInstance.ResourceTypeName, out currentResourceTypeDescriptor)
+                    && !SharedResourceProviderMetadata.AllowedResourceTypes.TryGetValue(resourceTypeInstance.ResourceTypeName, out currentResourceTypeDescriptor))
                     throw new ResourceProviderException(
                         $"The resource type {resourceTypeInstance.ResourceTypeName} cannot be handled by the {_name} resource provider",
                         StatusCodes.Status400BadRequest);
@@ -1860,7 +1896,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     case Type t when t == typeof(ResourceProviderSendEventAction):
                         var sendEventAction = (ResourceProviderSendEventAction)managementAction;
                         await SendResourceProviderEvent(
-                            EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand,
+                            sendEventAction.EventType,
                             targetServiceName: sendEventAction.TargetServiceName,
                             forceLocalProcessing: true);
                         break;
@@ -2021,6 +2057,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                        
             var resourceTypeDescriptor =
                 AllowedResourceTypes.Values.SingleOrDefault(art => art.ResourceType == resourceType)
+                ?? SharedResourceProviderMetadata.AllowedResourceTypes.Values.SingleOrDefault(art => art.ResourceType == resourceType)
                 ?? throw new ResourceProviderException(
                     $"The resource type {resourceType.Name} is not supported by the {Name} resource provider.",
                     StatusCodes.Status400BadRequest);
@@ -2063,6 +2100,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             var mainResourceTypeDescriptor =
                 AllowedResourceTypes.Values.SingleOrDefault(art => art.ResourceType == mainResourceType)
+                ?? SharedResourceProviderMetadata.AllowedResourceTypes.Values.SingleOrDefault(art => art.ResourceType == resourceType)
                 ?? throw new ResourceProviderException(
                     $"The resource type {mainResourceType.Name} is not supported by the {Name} resource provider.",
                     StatusCodes.Status400BadRequest);

@@ -11,6 +11,11 @@
         public const string FoundationaLLM_ResourceProvider_Cache_ResetCommand = "FoundationaLLM.ResourceProvider.Cache.ResetCommand";
 
         /// <summary>
+        /// The resource provider state export command event type.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProvider_State_ExportCommand = "FoundationaLLM.ResourceProvider.State.ExportCommand";
+
+        /// <summary>
         /// The FoundationaLLM.Configuration update key command event type.
         /// </summary>
         public const string FoundationaLLM_ResourceProvider_AppConfig_UpdateKeyCommand = "FoundationaLLM.ResourceProvider.AppConfig.UpdateKeyCommand";

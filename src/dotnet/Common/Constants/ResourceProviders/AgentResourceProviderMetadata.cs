@@ -3,7 +3,6 @@ using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
-using FoundationaLLM.Common.Models.ResourceProviders.Global;
 
 namespace FoundationaLLM.Common.Constants.ResourceProviders
 {
@@ -17,20 +16,6 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
         /// </summary>
         public static Dictionary<string, ResourceTypeDescriptor> AllowedResourceTypes => new()
         {
-            //{
-            //    GlobalResourceTypeNames.ManagementActions,
-            //    new ResourceTypeDescriptor(
-            //            GlobalResourceTypeNames.ManagementActions,
-            //            typeof(ResourceBase))
-            //    {
-            //        AllowedTypes = [],
-            //        Actions = [
-            //            new ResourceTypeAction(ResourceProviderActions.Trigger, false, true, [
-            //                new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Write}|{RoleDefinitionNames.Resource_Providers_Administrator}!", [], [typeof(ResourceProviderManagementAction)], [typeof(ResourceProviderActionResult)]),
-            //            ])
-            //        ]
-            //    }
-            //},
             {
                 AgentResourceTypeNames.Agents,
                 new ResourceTypeDescriptor(

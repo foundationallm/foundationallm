@@ -17,20 +17,6 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
         public static Dictionary<string, ResourceTypeDescriptor> AllowedResourceTypes => new()
         {
             {
-                GlobalResourceTypeNames.ManagementActions,
-                new ResourceTypeDescriptor(
-                        GlobalResourceTypeNames.ManagementActions,
-                        typeof(ResourceBase))
-                {
-                    AllowedTypes = [],
-                    Actions = [
-                        new ResourceTypeAction(ResourceProviderActions.Trigger, false, true, [
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Write}|{RoleDefinitionNames.Resource_Providers_Administrator}!", [], [typeof(ResourceProviderManagementAction)], [typeof(ResourceProviderActionResult)]),
-                        ])
-                    ]
-                }
-            },
-            {
                 ConfigurationResourceTypeNames.AppConfigurations,
                 new ResourceTypeDescriptor(
                         ConfigurationResourceTypeNames.AppConfigurations,

@@ -595,13 +595,20 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
 
                 while (currentIndex < tokens.Length)
                 {
-                    if (currentResourceTypes == null
-                        || !currentResourceTypes.TryGetValue(tokens[currentIndex], out ResourceTypeDescriptor? currentResourceType))
+                    if (currentResourceTypes == null)
                         throw new Exception();
-                                        
+
+                    var sharedResourceType = default(ResourceTypeDescriptor);
+
+                    if (!currentResourceTypes.TryGetValue(tokens[currentIndex], out ResourceTypeDescriptor? currentResourceType)
+                        && !SharedResourceProviderMetadata.AllowedResourceTypes.TryGetValue(tokens[currentIndex], out sharedResourceType))
+                        throw new Exception();
+
+                    currentResourceType ??= sharedResourceType;
+
                     var resourceTypeInstance = new ResourceTypeInstance(
                         tokens[currentIndex],
-                        currentResourceTypes[tokens[currentIndex]].ResourceType);
+                        currentResourceType!.ResourceType);
                     resourceTypeInstances.Add(resourceTypeInstance);
 
                     if (currentIndex + 1 == tokens.Length)

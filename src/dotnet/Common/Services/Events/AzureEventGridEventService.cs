@@ -67,9 +67,7 @@ namespace FoundationaLLM.Common.Services.Events
         {
             _dependencyInjectionContainerSettings = dependencyInjectionContainerSettings;
             _serviceIdentifier = $"{_dependencyInjectionContainerSettings.Id:D3}";
-            _serviceInstanceName = $"https://foundationallm.ai/events/serviceinstances/{Environment.GetEnvironmentVariable(EnvironmentVariables.AKS_Pod_Name)
-                ?? Environment.GetEnvironmentVariable(EnvironmentVariables.ACA_Container_App_Replica_Name)
-                ?? Guid.NewGuid().ToString().ToLower()}";
+            _serviceInstanceName = $"https://foundationallm.ai/events/serviceinstances/{ServiceContext.ServiceInstanceName}";
 
             _settings = settingsOptions.Value;
             _profile = profileOptions.Value;

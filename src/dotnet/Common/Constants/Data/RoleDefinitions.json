@@ -338,7 +338,7 @@
 		"permissions": [
 			{
 				"actions": [
-					"*/managementActions/write"
+					"*/management/write"
 				],
 				"not_actions": [],
 				"data_actions": [],

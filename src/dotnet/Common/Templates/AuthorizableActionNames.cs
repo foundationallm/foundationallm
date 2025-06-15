@@ -27,6 +27,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string FoundationaLLM_Authorization_RoleDefinitions_Read = "FoundationaLLM.Authorization/roleDefinitions/read";
 
+        /// <summary>
+        /// Execute management actions.
+        /// </summary>
+        public const string FoundationaLLM_Authorization_Management_Write = "FoundationaLLM.Authorization/management/write";
+
         #endregion
 
         #region Agent
@@ -75,6 +80,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// Delete tools.
         /// </summary>
         public const string FoundationaLLM_Agent_Tools_Delete = "FoundationaLLM.Agent/tools/delete";
+
+        /// <summary>
+        /// Execute management actions.
+        /// </summary>
+        public const string FoundationaLLM_Agent_Management_Write = "FoundationaLLM.Agent/management/write";
 
         #endregion
 
@@ -125,6 +135,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string FoundationaLLM_AzureAI_Projects_Delete = "FoundationaLLM.AzureAI/projects/delete";
 
+        /// <summary>
+        /// Execute management actions.
+        /// </summary>
+        public const string FoundationaLLM_AzureAI_Management_Write = "FoundationaLLM.AzureAI/management/write";
+
         #endregion
 
         #region AzureOpenAI
@@ -158,6 +173,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// Delete Azure OpenAI file mappings.
         /// </summary>
         public const string FoundationaLLM_AzureOpenAI_FileMappings_Delete = "FoundationaLLM.AzureOpenAI/fileMappings/delete";
+
+        /// <summary>
+        /// Execute management actions.
+        /// </summary>
+        public const string FoundationaLLM_AzureOpenAI_Management_Write = "FoundationaLLM.AzureOpenAI/management/write";
 
         #endregion
 
@@ -211,7 +231,7 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// <summary>
         /// Execute management actions.
         /// </summary>
-        public const string FoundationaLLM_Configuration_ManagementActions_Write = "FoundationaLLM.Configuration/managementActions/write";
+        public const string FoundationaLLM_Configuration_Management_Write = "FoundationaLLM.Configuration/management/write";
 
         #endregion
 
@@ -232,6 +252,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string FoundationaLLM_DataSource_DataSources_Delete = "FoundationaLLM.DataSource/dataSources/delete";
 
+        /// <summary>
+        /// Execute management actions.
+        /// </summary>
+        public const string FoundationaLLM_DataSource_Management_Write = "FoundationaLLM.DataSource/management/write";
+
         #endregion
 
         #region Prompt
@@ -250,6 +275,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// Delete prompts.
         /// </summary>
         public const string FoundationaLLM_Prompt_Prompts_Delete = "FoundationaLLM.Prompt/prompts/delete";
+
+        /// <summary>
+        /// Execute management actions.
+        /// </summary>
+        public const string FoundationaLLM_Prompt_Management_Write = "FoundationaLLM.Prompt/management/write";
 
         #endregion
 
@@ -383,6 +413,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string FoundationaLLM_AIModel_AIModels_Delete = "FoundationaLLM.AIModel/aiModels/delete";
 
+        /// <summary>
+        /// Execute management actions.
+        /// </summary>
+        public const string FoundationaLLM_AIModel_Management_Write = "FoundationaLLM.AIModel/management/write";
+
         #endregion
 
         #region Conversation
@@ -402,6 +437,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string FoundationaLLM_Conversation_Conversations_Delete = "FoundationaLLM.Conversation/conversations/delete";
 
+        /// <summary>
+        /// Execute management actions.
+        /// </summary>
+        public const string FoundationaLLM_Conversation_Management_Write = "FoundationaLLM.Conversation/management/write";
+
         #endregion
 
         #region DataPipeline
@@ -420,6 +460,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// Delete data pipelines.
         /// </summary>
         public const string FoundationaLLM_DataPipeline_DataPipelines_Delete = "FoundationaLLM.DataPipeline/dataPipelines/delete";
+
+        /// <summary>
+        /// Execute management actions.
+        /// </summary>
+        public const string FoundationaLLM_DataPipeline_Management_Write = "FoundationaLLM.DataPipeline/management/write";
 
         #endregion
 
@@ -455,6 +500,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string FoundationaLLM_Plugin_PluginPackages_Delete = "FoundationaLLM.Plugin/pluginPackages/delete";
 
+        /// <summary>
+        /// Execute management actions.
+        /// </summary>
+        public const string FoundationaLLM_Plugin_Management_Write = "FoundationaLLM.Plugin/management/write";
+
         #endregion
 
         #region Vector
@@ -473,6 +523,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// Delete vector databases.
         /// </summary>
         public const string FoundationaLLM_Vector_VectorDatabases_Delete = "FoundationaLLM.Vector/vectorDatabases/delete";
+
+        /// <summary>
+        /// Execute management actions.
+        /// </summary>
+        public const string FoundationaLLM_Vector_Management_Write = "FoundationaLLM.Vector/management/write";
 
         #endregion
     }

@@ -377,7 +377,7 @@ namespace FoundationaLLM.Common.Models.Authorization
                             new RoleDefinitionPermissions
                             {
                                 Actions = [
-                                    "*/managementActions/write",],
+                                    "*/management/write",],
                                 NotActions = [],
                                 DataActions = [],
                                 NotDataActions = [],

@@ -947,7 +947,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         }
 
         /// <inheritdoc/>
-        public override async Task HandleCacheResetCommand()
+        protected override async Task HandleCacheResetCommand()
         {
             _defaultTextPartitioningProfileName = await LoadResourceStore<TextPartitioningProfile, VectorizationProfileBase>(TEXT_PARTITIONING_PROFILES_FILE_PATH, _textPartitioningProfiles);
             _defaultTextEmbeddingProfileName = await LoadResourceStore<TextEmbeddingProfile, VectorizationProfileBase>(TEXT_EMBEDDING_PROFILES_FILE_PATH, _textEmbeddingProfiles);
