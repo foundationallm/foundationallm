@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
@@ -143,5 +144,9 @@ namespace FoundationaLLM.DataPipeline.Clients
                 return [];
             }
         }
+
+        /// <inheritdoc/>
+        public async Task<BinaryData> GetServiceStateAsync() =>
+            await Task.FromResult<BinaryData>(BinaryData.FromString(ResourceProviderNames.FoundationaLLM_DataPipeline));
     }
 }

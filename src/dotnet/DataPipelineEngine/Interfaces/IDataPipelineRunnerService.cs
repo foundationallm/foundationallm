@@ -1,7 +1,7 @@
 ﻿using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
-using FoundationaLLM.DataPipeline.Interfaces;
+using FoundationaLLM.DataPipelineEngine.Services.Runners;
 
 namespace FoundationaLLM.DataPipelineEngine.Interfaces
 {
@@ -10,6 +10,11 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
     /// </summary>
     public interface IDataPipelineRunnerService
     {
+        /// <summary>
+        /// Gets the current data pipeline runners that are processing runs.
+        /// </summary>
+        Dictionary<string, DataPipelineRunner> CurrentRunners { get; }
+
         /// <summary>
         /// Starts a data pipeline run.
         /// </summary>

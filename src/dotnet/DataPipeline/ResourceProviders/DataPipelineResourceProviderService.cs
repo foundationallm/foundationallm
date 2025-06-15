@@ -452,5 +452,13 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
         }
 
         #endregion
+
+        #region Event handling
+
+        /// <inheritdoc/>
+        protected override async Task<BinaryData> GetResourceProviderState() =>
+            await _dataPipelineServiceClient.GetServiceStateAsync();
+
+        #endregion
     }
 }

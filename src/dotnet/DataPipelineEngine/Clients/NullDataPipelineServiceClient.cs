@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Interfaces;
+﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipeline.Interfaces;
@@ -35,5 +36,9 @@ namespace FoundationaLLM.DataPipelineEngine.Clients
             DataPipelineRunFilter dataPipelineRunFilter,
             UnifiedUserIdentity userIdentity) =>
             await Task.FromResult<List<DataPipelineRun>>([]);
+
+        /// <inheritdoc/>
+        public async Task<BinaryData> GetServiceStateAsync() =>
+            await Task.FromResult<BinaryData>(BinaryData.FromString(ResourceProviderNames.FoundationaLLM_DataPipeline));
     }
 }
