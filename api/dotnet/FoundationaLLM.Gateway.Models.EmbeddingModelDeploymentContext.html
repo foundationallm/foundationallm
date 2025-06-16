@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Gateway_Models_EmbeddingModelDeploymentContext" data-uid="FoundationaLLM.Gateway.Models.EmbeddingModelDeploymentContext" class="text-break">
-Class EmbeddingModelDeploymentContext  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingModelDeploymentContext.cs/#L17"><i class="bi bi-code-slash"></i></a>
+Class EmbeddingModelDeploymentContext  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingModelDeploymentContext.cs/#L19"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -162,9 +162,9 @@ Class EmbeddingModelDeploymentContext  <a class="header-action link-secondary" t
 
   <a id="FoundationaLLM_Gateway_Models_EmbeddingModelDeploymentContext__ctor_" data-uid="FoundationaLLM.Gateway.Models.EmbeddingModelDeploymentContext.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Gateway_Models_EmbeddingModelDeploymentContext__ctor_FoundationaLLM_Common_Models_Azure_AzureOpenAIAccountDeployment_Microsoft_Extensions_Logging_ILoggerFactory_FoundationaLLM_Gateway_Services_GatewayMetrics_" data-uid="FoundationaLLM.Gateway.Models.EmbeddingModelDeploymentContext.#ctor(FoundationaLLM.Common.Models.Azure.AzureOpenAIAccountDeployment,Microsoft.Extensions.Logging.ILoggerFactory,FoundationaLLM.Gateway.Services.GatewayMetrics)">
-  EmbeddingModelDeploymentContext(AzureOpenAIAccountDeployment, ILoggerFactory, GatewayMetrics)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingModelDeploymentContext.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Gateway_Models_EmbeddingModelDeploymentContext__ctor_FoundationaLLM_Common_Models_Azure_AzureOpenAIAccountDeployment_System_Double_Microsoft_Extensions_Logging_ILoggerFactory_FoundationaLLM_Gateway_Services_GatewayMetrics_" data-uid="FoundationaLLM.Gateway.Models.EmbeddingModelDeploymentContext.#ctor(FoundationaLLM.Common.Models.Azure.AzureOpenAIAccountDeployment,System.Double,Microsoft.Extensions.Logging.ILoggerFactory,FoundationaLLM.Gateway.Services.GatewayMetrics)">
+  EmbeddingModelDeploymentContext(AzureOpenAIAccountDeployment, double, ILoggerFactory, GatewayMetrics)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingModelDeploymentContext.cs/#L19"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Provides context associated with an embedding model deployment.</p>
@@ -172,13 +172,17 @@ Class EmbeddingModelDeploymentContext  <a class="header-action link-secondary" t
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public EmbeddingModelDeploymentContext(AzureOpenAIAccountDeployment deployment, ILoggerFactory loggerFactory, GatewayMetrics metrics)</code></pre>
+    <pre><code class="lang-csharp hljs">public EmbeddingModelDeploymentContext(AzureOpenAIAccountDeployment deployment, double tokenRateLimitMultiplier, ILoggerFactory loggerFactory, GatewayMetrics metrics)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>deployment</code> <a class="xref" href="FoundationaLLM.Common.Models.Azure.AzureOpenAIAccountDeployment.html">AzureOpenAIAccountDeployment</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Azure.AzureOpenAIAccountDeployment.html">AzureOpenAIAccountDeployment</a> object with the details of the model deployment.</p>
+</dd>
+    <dt><code>tokenRateLimitMultiplier</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The token rate limit multiplier used to account for the tokenization differences
+between the Gateway API and the deployed model.</p>
 </dd>
     <dt><code>loggerFactory</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory">ILoggerFactory</a></dt>
     <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory">ILoggerFactory</a> used to create loggers for logging.</p>
@@ -207,7 +211,7 @@ Class EmbeddingModelDeploymentContext  <a class="header-action link-secondary" t
 
   <h3 id="FoundationaLLM_Gateway_Models_EmbeddingModelDeploymentContext_HasInput" data-uid="FoundationaLLM.Gateway.Models.EmbeddingModelDeploymentContext.HasInput">
   HasInput
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingModelDeploymentContext.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingModelDeploymentContext.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -242,20 +246,20 @@ Class EmbeddingModelDeploymentContext  <a class="header-action link-secondary" t
 
   <h3 id="FoundationaLLM_Gateway_Models_EmbeddingModelDeploymentContext_GetEmbeddingsForInputTextChunks" data-uid="FoundationaLLM.Gateway.Models.EmbeddingModelDeploymentContext.GetEmbeddingsForInputTextChunks">
   GetEmbeddingsForInputTextChunks()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingModelDeploymentContext.cs/#L97"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingModelDeploymentContext.cs/#L102"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;TextEmbeddingResult&gt; GetEmbeddingsForInputTextChunks()</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;List&lt;EmbeddingRequestResult&gt;&gt; GetEmbeddingsForInputTextChunks()</code></pre>
   </div>
 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html">TextEmbeddingResult</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Gateway.Models.EmbeddingRequestResult.html">EmbeddingRequestResult</a>&gt;&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -273,7 +277,7 @@ Class EmbeddingModelDeploymentContext  <a class="header-action link-secondary" t
 
   <h3 id="FoundationaLLM_Gateway_Models_EmbeddingModelDeploymentContext_TryAddInputTextChunk_FoundationaLLM_Common_Models_Vectorization_TextChunk_System_Int32_" data-uid="FoundationaLLM.Gateway.Models.EmbeddingModelDeploymentContext.TryAddInputTextChunk(FoundationaLLM.Common.Models.Vectorization.TextChunk,System.Int32)">
   TryAddInputTextChunk(TextChunk, int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingModelDeploymentContext.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingModelDeploymentContext.cs/#L59"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -311,7 +315,7 @@ Class EmbeddingModelDeploymentContext  <a class="header-action link-secondary" t
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingModelDeploymentContext.cs/#L17" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingModelDeploymentContext.cs/#L19" class="edit-link">Edit this page</a>
         </div>
 
 
