@@ -31,16 +31,30 @@ namespace FoundationaLLM.Gateway.Models
         public int EmbeddingModelDimensions { get; set; } = 1536;
 
         /// <summary>
+        /// Gets or sets the list of intermediate error messages encountered during the embedding operation.
+        /// </summary>
+        public List<string> IntermediateErrors { get; set; } = [];
+
+        /// <summary>
         /// Sets a specified error message on the context of the embedding operation.
         /// </summary>
         /// <param name="errorMessage">The error message to be set.</param>
-        public void SetError(string errorMessage)
+        public void SetIntermediateError(string errorMessage)
         {
             lock (_syncRoot)
             {
-                Result.ErrorMessage = errorMessage;
-                Result.Failed = true;
-                Result.InProgress = false;
+                IntermediateErrors.Add(errorMessage);
+
+                if (IntermediateErrors.Count >= 3)
+                {
+                    Result.ErrorMessage = string.Join(string.Empty,
+                        [
+                            $"The embedding operation {Result.OperationId} encountered {IntermediateErrors.Count} errors and failed.",
+                            $"The most recent error message was: {errorMessage}"
+                        ]);
+                    Result.Failed = true;
+                    Result.InProgress = false;
+                }
             }
         }
 

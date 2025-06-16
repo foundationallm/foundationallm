@@ -12,14 +12,18 @@ namespace FoundationaLLM.Gateway.Models
     /// Provides context associated with an embedding model deployment.
     /// </summary>
     /// <param name="deployment">The <see cref="AzureOpenAIAccountDeployment"/> object with the details of the model deployment.</param>
+    /// <param name="tokenRateLimitMultiplier">The token rate limit multiplier used to account for the tokenization differences
+    /// between the Gateway API and the deployed model.</param>
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to create loggers for logging.</param>
     /// <param name="metrics">The FoundationaLLM Gateway telemetry metrics.</param>
     public class EmbeddingModelDeploymentContext(
         AzureOpenAIAccountDeployment deployment,
+        double tokenRateLimitMultiplier,
         ILoggerFactory loggerFactory,
         GatewayMetrics metrics)
     {
         private readonly AzureOpenAIAccountDeployment _deployment = deployment;
+        private readonly double _tokenRateLimitMultiplier = tokenRateLimitMultiplier;
         private readonly ILoggerFactory _loggerFactory = loggerFactory;
         private readonly ILogger<EmbeddingModelDeploymentContext> _logger = loggerFactory.CreateLogger<EmbeddingModelDeploymentContext>();
         private readonly GatewayMetrics _metrics = metrics;
@@ -56,7 +60,7 @@ namespace FoundationaLLM.Gateway.Models
         {
             UpdateRateWindows();
 
-            if (_tokenRateWindowTokenCount + textChunk.TokensCount > (_deployment.TokenRateLimit * 0.95))
+            if (_tokenRateWindowTokenCount + textChunk.TokensCount > (_deployment.TokenRateLimit * _tokenRateLimitMultiplier))
                 // Adding a new text chunk would push us over the token rate limit, so we need to refuse.
                 // // We use 95% of the limit to allow for some leeway in case the token count is not exact.
                 return false;
@@ -95,7 +99,7 @@ namespace FoundationaLLM.Gateway.Models
             return true;
         }
 
-        public async Task<TextEmbeddingResult> GetEmbeddingsForInputTextChunks()
+        public async Task<List<EmbeddingRequestResult>> GetEmbeddingsForInputTextChunks()
         {
             try
             {
@@ -105,11 +109,7 @@ namespace FoundationaLLM.Gateway.Models
 
                 await Task.WhenAll(embeddingRequestsTasks);
 
-                return new TextEmbeddingResult
-                {
-                    InProgress = false,
-                    TextChunks = [.. embeddingRequestsTasks.SelectMany(task => task.Result.TextChunks)]
-                };
+                return [.. embeddingRequestsTasks.Select(t => t.Result)];
             }
             finally
             {

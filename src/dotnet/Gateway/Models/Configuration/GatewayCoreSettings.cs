@@ -20,5 +20,10 @@
         /// </summary>
         public required int AzureAIAgentServiceMaxVectorizationTimeSeconds { get; set; }
 
+        /// <summary>
+        /// Gets or sets the multiplier applied to the token rate limit used to account for differences
+        /// in tokenization between the Gateway API and the embedding model.
+        /// </summary>
+        public double TokenRateLimitMultiplier { get; set; } = 0.95;
     }
 }
