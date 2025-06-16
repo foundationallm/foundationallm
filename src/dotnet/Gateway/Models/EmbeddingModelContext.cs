@@ -63,14 +63,28 @@ namespace FoundationaLLM.Gateway.Models
         {
             _logger.LogInformation("Embedding operations processing started for the {ModelName} model.", ModelName);
 
+            long cycleCount = 0;
+
             while (true)
             {
                 if (cancellationToken.IsCancellationRequested) return;
+                await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+
+                cycleCount++;
+                var cycleStartTime = DateTimeOffset.UtcNow;
+                if (cycleCount % 60 == 0)
+                    _logger.LogInformation("[{ModelName}]: Processing cycle {CycleCount} started at {CycleStartTime}.",
+                        ModelName,
+                        cycleCount,
+                        cycleStartTime);
 
                 try
                 {
                     lock (_syncRoot)
                     {
+                        if(_embeddingOperationIds.Count == 0)
+                            continue; // Nothing to process.
+
                         var currentDeploymentContextIndex = 0;
                         var capacityReached = false;
 
@@ -170,7 +184,10 @@ namespace FoundationaLLM.Gateway.Models
                     _logger.LogError(ex, "An error occurred while attempting to execute a processing cycle.");
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+                _logger.LogInformation("[{ModelName}]: Completed cycle {CycleCount} in {CycleDurationSeconds} seconds.",
+                    ModelName,
+                    cycleCount,
+                    $"{(DateTimeOffset.UtcNow - cycleStartTime).TotalSeconds:F2}");
             }
         }
     }
