@@ -27,6 +27,7 @@ The following App Configuration value have been added:
 
 |Name | Default value | Description |
 |--- | --- | --- |
+| `FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:TokenRateLimitMultiplier` | `0.95` | The multiplier used to calculate the token rate limit for the Gateway API. This value is used to ensure that the rate limit is not exceeded and accounts for the possible differences in tokenization between the Gateway API and the deployed model(s). |
 | `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions` | `c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt, gif, jpeg, jpg, png` | The comma-separated list file extensions that are processed as sources for knowledge search. |
 | `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileExtensions` | `c, cs, cpp, css, html, java, js, json, jsonl, md, php, py, rb, sh, ts, tex, txt, gif, jpeg, jpg, png` |The comma-separated list of file extensions that indicate files that can be directly used in the context of a completion request. |
 | `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes` | `{"c,cs,cpp,html,java,js,json,jsonl,md,php,py,rb,sh,ts,tex,txt": 25000, "gif,jpeg,jpg,png":500000}` | The dictionary of lists of extensions of files that can be directly used in the context of a completion request and their associated maximum file sizes. |

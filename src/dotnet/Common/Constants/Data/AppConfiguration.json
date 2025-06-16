@@ -1685,6 +1685,14 @@
 				"value": "120",
 				"content_type": "",
 				"first_version": "0.9.7"
+			},
+			{
+				"name": "TokenRateLimitMultiplier",
+				"description": "The multiplier applied to the token rate limit used to account for differences in tokenization between the Gateway API and the embedding model.",
+				"secret": "",
+				"value": "0.95",
+				"content_type": "",
+				"first_version": "0.9.7"
 			}
 		]
 	},

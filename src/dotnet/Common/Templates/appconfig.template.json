@@ -1002,6 +1002,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:TokenRateLimitMultiplier",
+            "value": "0.95",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:GatewayAdapterAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-gatewayadapterapi-apikey\"}",
             "label": null,

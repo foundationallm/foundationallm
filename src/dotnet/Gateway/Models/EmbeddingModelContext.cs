@@ -99,28 +99,55 @@ namespace FoundationaLLM.Gateway.Models
                     }
 
                     // Use all available deployments to get embeddings for the input text chunks.
-                    var results = await Task.WhenAll(DeploymentContexts
+                    var results = (await Task.WhenAll(DeploymentContexts
                         .Where(dc => dc.HasInput)
-                        .Select(async dc => await dc.GetEmbeddingsForInputTextChunks()));
+                        .Select(async dc => await dc.GetEmbeddingsForInputTextChunks())))
+                            .SelectMany(r => r);
 
                     // Record all failed operations
-                    foreach (var failedOperation in results
+                    var failedResults = results
                         .Where(r => r.Failed)
-                        .SelectMany(r => r.TextChunks)
-                        .GroupBy(x => x.OperationId)
-                        .Select(g => new
-                        {
-                            OperationId = g.Key,
-                            Positions = g.Select(tc => tc.Position).ToList()
-                        }))
+                        .ToList();
+                    if (failedResults.Count > 0)
                     {
-                        _logger.LogError($"An error occured in text embedding operation {failedOperation.OperationId}. "
-                            + $"The following text chunk positions were not embeded: {string.Join(", ", failedOperation.Positions)}.");
+                        var failedOperations = failedResults
+                            .Select(fr => fr.FailedOperationIds.Select(frid => new
+                            {
+                                OperationId = frid,
+                                fr.ErrorMessage
+                            }))
+                            .SelectMany(x => x)
+                            .GroupBy(x => x.OperationId)
+                            .Select(g => new
+                            {
+                                OperationId = g.Key,
+                                ErrorMessages = string.Join(
+                                    Environment.NewLine,
+                                    [.. g.ToList().Select(x => x.ErrorMessage)
+                                        .Prepend($"Operation id {g.Key}:")
+                                        .Append(String.Empty)])
+                            });
+
+                        _logger.LogError("The following text embedding operations had failures: {NewLine}{FailedOperations}",
+                            Environment.NewLine,
+                            string.Join(
+                                Environment.NewLine,
+                                [.. failedOperations.Select(fo => fo.ErrorMessages)]));
+
+                        lock (_syncRoot)
+                        {
+                            foreach (var failedOperation in failedOperations)
+                            {
+                                _embeddingOperations[failedOperation.OperationId].SetIntermediateError(failedOperation.ErrorMessages);
+                                if (!_embeddingOperations[failedOperation.OperationId].Result.InProgress)
+                                    _embeddingOperationIds.Remove(failedOperation.OperationId);
+                            }
+                        }
                     }
 
                     // Set the embeddings for all successful operations.
                     foreach (var successfulOperation in results
-                        .Where(r => !r.InProgress)
+                        .Where(r => !r.Failed)
                         .SelectMany(r => r.TextChunks)
                         .GroupBy(x => x.OperationId)
                         .Select(g => new
@@ -134,7 +161,7 @@ namespace FoundationaLLM.Gateway.Models
                         lock (_syncRoot)
                         {
                             if (!_embeddingOperations[successfulOperation.OperationId!].Result.InProgress)
-                            _embeddingOperationIds.Remove(successfulOperation.OperationId!);
+                                _embeddingOperationIds.Remove(successfulOperation.OperationId!);
                         }
                     }
                 }

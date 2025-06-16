@@ -1251,6 +1251,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureAIAgentServiceMaxVectorizationTimeSeconds =
             "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureAIAgentServiceMaxVectorizationTimeSeconds";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:TokenRateLimitMultiplier setting.
+        /// <para>Value description:<br/>The multiplier applied to the token rate limit used to account for differences in tokenization between the Gateway API and the embedding model.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_TokenRateLimitMultiplier =
+            "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:TokenRateLimitMultiplier";
 
         #endregion
 

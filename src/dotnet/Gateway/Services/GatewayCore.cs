@@ -84,6 +84,7 @@ namespace FoundationaLLM.Gateway.Services
                             {
                                 var embeddingModelContext = new EmbeddingModelDeploymentContext(
                                     deployment,
+                                    _settings.TokenRateLimitMultiplier,
                                     _loggerFactory,
                                     _metrics);
 
