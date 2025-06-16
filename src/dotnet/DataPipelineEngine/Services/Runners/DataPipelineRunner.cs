@@ -190,7 +190,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                     && (_dataPipelineRun.Errors?.Count ?? 0) == 0;
 
                 if (_dataPipelineRun.Completed
-                    || completedStageRunners.Count > 0)
+                    || completedStageRunners.Count > 0
+                    || newErrors)
                     await _stateService.UpdateDataPipelineRunStatus(_dataPipelineRun);
 
                 return _dataPipelineRun.Completed;

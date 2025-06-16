@@ -56,8 +56,9 @@ namespace FoundationaLLM.Gateway.Models
         {
             UpdateRateWindows();
 
-            if (_tokenRateWindowTokenCount + textChunk.TokensCount > _deployment.TokenRateLimit)
+            if (_tokenRateWindowTokenCount + textChunk.TokensCount > (_deployment.TokenRateLimit * 0.95))
                 // Adding a new text chunk would push us over the token rate limit, so we need to refuse.
+                // // We use 95% of the limit to allow for some leeway in case the token count is not exact.
                 return false;
 
             if (_requestRateWindowRequestCount == _deployment.RequestRateLimit)
@@ -116,7 +117,7 @@ namespace FoundationaLLM.Gateway.Models
             }
         }
 
-        private async Task<TextEmbeddingResult> ProcessEmbeddingRequest(
+        private async Task<EmbeddingRequestResult> ProcessEmbeddingRequest(
             GatewayTextEmbeddingRequest embeddingRequest)
         {
             Interlocked.Increment(ref _requestRateWindowRequestCount);
@@ -138,17 +139,29 @@ namespace FoundationaLLM.Gateway.Models
                         : embeddingRequest.EmbeddingDimensions,
                     false);
 
+            var result = new EmbeddingRequestResult
+            {
+                TextChunks = embeddingResult.TextChunks,
+                Failed = embeddingResult.Failed,
+                ErrorMessage = embeddingResult.ErrorMessage
+            };
+
             if (embeddingResult.Failed)
+            {
                 _logger.LogWarning("The text embedding request with id {RequestId} failed with the following error: {ErrorMessage}",
                     embeddingRequest.Id,
                     embeddingResult.ErrorMessage!);
+                result.FailedOperationIds = [.. embeddingRequest.TextChunks
+                    .Select(tc => tc.OperationId!)
+                    .Distinct()];
+            }
             else
             {
                 _metrics.IncrementTextChunksEmbedded(embeddingRequest.TextChunksCount);
                 _metrics.IncrementTextChunksSizeTokens(embeddingRequest.TokensCount);
             }
 
-            return embeddingResult;
+            return result;
         }
 
         private void UpdateRateWindows()
