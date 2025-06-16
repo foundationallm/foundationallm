@@ -1,8 +1,10 @@
 ﻿using Azure.AI.OpenAI;
+using Azure.Core;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Vectorization;
 using Microsoft.Extensions.Logging;
+using System.ClientModel.Primitives;
 
 namespace FoundationaLLM.Gateway.Services
 {
@@ -25,7 +27,14 @@ namespace FoundationaLLM.Gateway.Services
             ILogger<AzureOpenAITextEmbeddingService> logger)
         {
             _accountEndpoint = accountEndpoint;
-            _azureOpenAIClient = new AzureOpenAIClient(new Uri(_accountEndpoint), ServiceContext.AzureCredential);
+            _azureOpenAIClient = new AzureOpenAIClient(
+                new Uri(_accountEndpoint),
+                ServiceContext.AzureCredential,
+                new AzureOpenAIClientOptions()
+                {
+                    NetworkTimeout = TimeSpan.FromSeconds(30),
+                    RetryPolicy = new ClientRetryPolicy(1)
+                });
             _logger = logger;
         }
 
