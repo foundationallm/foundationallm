@@ -24,6 +24,11 @@ namespace FoundationaLLM.Gateway.Models
     {
         private readonly AzureOpenAIAccountDeployment _deployment = deployment;
         private readonly double _tokenRateLimitMultiplier = tokenRateLimitMultiplier;
+        private readonly int _actualTokenRateLimit =
+            (int)(deployment.TokenRateLimit * tokenRateLimitMultiplier) / (60 / deployment.TokenRateRenewalPeriod);
+        private readonly int _actualRequestRateLimit =
+            (int)(deployment.RequestRateLimit) / (60 / deployment.RequestRateRenewalPeriod);
+
         private readonly ILoggerFactory _loggerFactory = loggerFactory;
         private readonly ILogger<EmbeddingModelDeploymentContext> _logger = loggerFactory.CreateLogger<EmbeddingModelDeploymentContext>();
         private readonly GatewayMetrics _metrics = metrics;
@@ -60,19 +65,18 @@ namespace FoundationaLLM.Gateway.Models
         {
             UpdateRateWindows();
 
-            if (_tokenRateWindowTokenCount + textChunk.TokensCount > (_deployment.TokenRateLimit * _tokenRateLimitMultiplier))
+            if (_tokenRateWindowTokenCount + textChunk.TokensCount > _actualTokenRateLimit)
                 // Adding a new text chunk would push us over the token rate limit, so we need to refuse.
-                // // We use 95% of the limit to allow for some leeway in case the token count is not exact.
                 return false;
 
-            if (_requestRateWindowRequestCount == _deployment.RequestRateLimit)
+            if (_requestRateWindowRequestCount == _actualRequestRateLimit)
                 // We have already reached the allowed number of requests, so we need to refuse.
                 return false;
 
             if (!_embeddingRequests.ContainsKey(embeddingDimensions))
             {
-                if (_requestRateWindowRequestCount + 1 == _deployment.RequestRateLimit)
-                    // Adding a new embedding dimension would result in at least one additional reques
+                if (_requestRateWindowRequestCount + 1 == _actualRequestRateLimit)
+                    // Adding a new embedding dimension would result in at least one additional request
                     // which would push us over the request rate limit, so we need to refuse.
                     return false;
 
