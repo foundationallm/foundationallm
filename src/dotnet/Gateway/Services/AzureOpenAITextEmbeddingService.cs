@@ -32,7 +32,7 @@ namespace FoundationaLLM.Gateway.Services
                 ServiceContext.AzureCredential,
                 new AzureOpenAIClientOptions()
                 {
-                    NetworkTimeout = TimeSpan.FromSeconds(60),
+                    NetworkTimeout = TimeSpan.FromSeconds(120),
                     RetryPolicy = new ClientRetryPolicy(1)
                 });
             _logger = logger;
