@@ -45,6 +45,9 @@ namespace FoundationaLLM.Core.Examples.Concepts.Gateway
             var instanceSettings = GetService<IOptions<InstanceSettings>>().Value;
             var storageService = GetService<IStorageService>();
 
+            var microsoftMLTokenizer = GetKeyedService<ITokenizerService>("MicrosoftML");
+            var tryAGITokenizer = GetKeyedService<ITokenizerService>("TryAGI");
+
             var binaryContent = await storageService.ReadFileAsync(
                 instanceSettings.Id,
                 filePath,
@@ -103,7 +106,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Gateway
             //}
             {
                 "data-pipeline-state/DefaultFileUpload/ciprian-foundationallm-ai/run-20250616-114757-dUHfyUn2f0C-8zznlMvXXg-TAfGit69y0OhQOwAAtltKw/content-items/file-20250613-171735-iUxkmekq70a9pAN3sQHqRA/content-parts.parquet",
-                570,
+                100,
                 0,
                 false
             }
