@@ -45,6 +45,9 @@ namespace FoundationaLLM.Core.Examples.Concepts.Gateway
             var instanceSettings = GetService<IOptions<InstanceSettings>>().Value;
             var storageService = GetService<IStorageService>();
 
+            var microsoftMLTokenizer = GetKeyedService<ITokenizerService>("MicrosoftML");
+            var tryAGITokenizer = GetKeyedService<ITokenizerService>("TryAGI");
+
             var binaryContent = await storageService.ReadFileAsync(
                 instanceSettings.Id,
                 filePath,

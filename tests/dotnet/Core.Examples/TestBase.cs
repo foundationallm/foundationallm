@@ -60,11 +60,16 @@ namespace FoundationaLLM.Core.Examples
 			return MainServiceContainer.ServiceProvider.GetRequiredService<T>();
 		}
 
-		/// <summary>
-		/// This method can be substituted by Console.WriteLine when used in a Console apps.
-		/// </summary>
-		/// <param name="target">Target object to write</param>
-		protected void WriteLine(object? target = null)
+		protected T GetKeyedService<T>(object? key) where T : notnull
+        {
+            return MainServiceContainer.ServiceProvider.GetRequiredKeyedService<T>(key);
+        }
+
+        /// <summary>
+        /// This method can be substituted by Console.WriteLine when used in a Console apps.
+        /// </summary>
+        /// <param name="target">Target object to write</param>
+        protected void WriteLine(object? target = null)
 		{
 			this.Output.WriteLine((string)(target ?? string.Empty));
 		}

@@ -50,12 +50,12 @@ namespace FoundationaLLM.Common.Services.Tokenizers
         }
 
         /// <inheritdoc/>
-        public List<int> Encode(string text, string encoderName)
+        public List<int> Encode(string text, string? encoderName)
         {
             _initializationComplete.Wait();
 
-            ValidateEncoder(encoderName);
-            var tokenizer = GetTokenizer(encoderName)
+            ValidateEncoder(encoderName!);
+            var tokenizer = GetTokenizer(encoderName!)
                 ?? throw new TextProcessingException($"Could not retrieve a valid tokenizer for the {encoderName} encoder.");
             try
             {
@@ -68,16 +68,33 @@ namespace FoundationaLLM.Common.Services.Tokenizers
         }
 
         /// <inheritdoc/>
-        public string Decode(int[] tokens, string encoderName)
+        public string Decode(int[] tokens, string? encoderName)
         {
             _initializationComplete.Wait();
 
-            ValidateEncoder(encoderName);
-            var tokenizer = GetTokenizer(encoderName)
+            ValidateEncoder(encoderName!);
+            var tokenizer = GetTokenizer(encoderName!)
                 ?? throw new TextProcessingException($"Could not retrieve a valid tokenizer for the {encoderName} encoder.");
             try
             {
                 return tokenizer.Decode(tokens);
+            }
+            finally
+            {
+                ReleaseTokenizer(tokenizer);
+            }
+        }
+
+        /// <inheritdoc/>
+        public long CountTokens(string text, string? encoderName = null)
+        {
+            _initializationComplete.Wait();
+            ValidateEncoder(encoderName!);
+            var tokenizer = GetTokenizer(encoderName!)
+                ?? throw new TextProcessingException($"Could not retrieve a valid tokenizer for the {encoderName} encoder.");
+            try
+            {
+                return tokenizer.Encode(text).Count;
             }
             finally
             {

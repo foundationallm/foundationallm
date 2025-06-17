@@ -65,6 +65,7 @@ namespace FoundationaLLM.Core.Examples.Setup
             RegisterAzureAIService(services, configuration);
 			RegisterServiceManagers(services);
             RegisterResourceProviders(services, configuration);
+            RegisterOtherServices(services, configuration);
 
             services.AddAzureResourceManager();
             services.AddAzureEventGridEvents(
@@ -212,6 +213,11 @@ namespace FoundationaLLM.Core.Examples.Setup
             services.AddResourceValidatorFactory();
 
             services.AddConfigurationResourceProvider(configuration);
+        }
+
+        private static void RegisterOtherServices(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddTokenizers();
         }
     }
 }

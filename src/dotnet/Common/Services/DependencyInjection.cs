@@ -10,6 +10,7 @@ using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Security;
+using FoundationaLLM.Common.Services.Tokenizers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
@@ -315,6 +316,26 @@ namespace FoundationaLLM
             });
 
             services.AddSingleton<IAzureCosmosDBService, AzureCosmosDBService>();
+        }
+
+        /// <summary>
+        /// Registers text tokenizers with the dependency injection container.
+        /// </summary>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
+        public static void AddTokenizers(this IHostApplicationBuilder builder) =>
+            builder.Services.AddTokenizers();
+
+        /// <summary>
+        /// Registers text tokenizers with the dependency injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        public static void AddTokenizers(this IServiceCollection services)
+        {
+            services.AddKeyedSingleton<ITokenizerService, MicrosoftMLTokenizer>("MicrosoftML");
+            services.ActivateKeyedSingleton<ITokenizerService>("MicrosoftML");
+
+            services.AddKeyedSingleton<ITokenizerService, TryAGITokenizer>("TryAGI");
+            services.ActivateKeyedSingleton<ITokenizerService>("TryAGI");
         }
     }
 }
