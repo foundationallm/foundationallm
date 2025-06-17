@@ -166,6 +166,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     $"/data-pipeline-state",
                     dataPipelineDefinition.Name,
                     dataPipelineRun.UPN.NormalizeUserPrincipalName(),
+                    $"{DateTimeOffset.UtcNow:yyyy-MM-dd}",
                     dataPipelineRun.RunId,
                     "content-items",
                     dataPipelineRunWorkItem.ContentItemCanonicalId,
@@ -207,6 +208,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     $"/data-pipeline-state",
                     dataPipelineDefinition.Name,
                     dataPipelineRun.UPN.NormalizeUserPrincipalName(),
+                    $"{DateTimeOffset.UtcNow:yyyy-MM-dd}",
                     dataPipelineRun.RunId,
                     "content-items",
                     dataPipelineRunWorkItem.ContentItemCanonicalId
@@ -243,6 +245,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     $"/data-pipeline-state",
                     dataPipelineDefinition.Name,
                     dataPipelineRun.UPN.NormalizeUserPrincipalName(),
+                    $"{DateTimeOffset.UtcNow:yyyy-MM-dd}",
                     dataPipelineRun.RunId,
                     "content-items",
                     dataPipelineRunWorkItem.ContentItemCanonicalId,
@@ -257,7 +260,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             var result = await ParquetSerializer.DeserializeAsync<DataPipelineContentItemPart>(
                 binaryContent.ToStream());
 
-            return result.ToList();
+            return [.. result];
         }
 
         /// <inheritdoc/>
@@ -272,6 +275,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     $"/data-pipeline-state",
                     dataPipelineDefinition.Name,
                     dataPipelineRun.UPN.NormalizeUserPrincipalName(),
+                    $"{DateTimeOffset.UtcNow:yyyy-MM-dd}",
                     dataPipelineRun.RunId,
                     "content-items",
                     dataPipelineRunWorkItem.ContentItemCanonicalId,

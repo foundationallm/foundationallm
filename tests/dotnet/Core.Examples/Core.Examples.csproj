@@ -28,6 +28,7 @@
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	    <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+	  <PackageReference Include="Parquet.Net" Version="5.1.1" />
   </ItemGroup>
 
   <ItemGroup>
