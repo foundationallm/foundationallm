@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Parquet.Serialization;
 using Xunit.Abstractions;
+using static System.Net.WebRequestMethods;
 
 namespace FoundationaLLM.Core.Examples.Concepts.Gateway
 {
@@ -42,9 +43,13 @@ namespace FoundationaLLM.Core.Examples.Concepts.Gateway
             WriteLine("============ FoundationaLLM Gateway - Embedding Tests ============");
 
             var instanceSettings = GetService<IOptions<InstanceSettings>>().Value;
+            var storageService = GetService<IStorageService>();
 
-            var binaryContent = BinaryData.FromBytes(
-                await File.ReadAllBytesAsync(filePath));
+            var binaryContent = await storageService.ReadFileAsync(
+                instanceSettings.Id,
+                filePath,
+                default);
+
             var contentItemParts = await ParquetSerializer.DeserializeAsync<DataPipelineContentItemPart>(
                 binaryContent.ToStream());
 
@@ -88,14 +93,20 @@ namespace FoundationaLLM.Core.Examples.Concepts.Gateway
         }
 
         public static TheoryData<string, int, int, bool> TestData =>
-            new()
+        new()
+        {
+            //{
+            //    "data-pipeline-state/DefaultFileUpload/ciprian-foundationallm-ai/run-20250616-114757-dUHfyUn2f0C-8zznlMvXXg-TAfGit69y0OhQOwAAtltKw/content-items/file-20250613-171735-iUxkmekq70a9pAN3sQHqRA/content-parts.parquet",
+            //    831,
+            //    0,
+            //    false 
+            //}
             {
-                {
-                    "E:\\Personal\\Dropbox (Personal)\\Work\\FoundationaLLM\\Gateway\\content-parts.parquet",
-                    831,
-                    0,
-                    false 
-                }
-            };
+                "data-pipeline-state/DefaultFileUpload/ciprian-foundationallm-ai/run-20250616-114757-dUHfyUn2f0C-8zznlMvXXg-TAfGit69y0OhQOwAAtltKw/content-items/file-20250613-171735-iUxkmekq70a9pAN3sQHqRA/content-parts.parquet",
+                570,
+                0,
+                false
+            }
+        };
     }
 }

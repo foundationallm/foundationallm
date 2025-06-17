@@ -1,4 +1,5 @@
-﻿using Azure.AI.OpenAI;
+﻿using Azure;
+using Azure.AI.OpenAI;
 using Azure.Core;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Interfaces;
@@ -53,6 +54,13 @@ namespace FoundationaLLM.Gateway.Services
                     textChunks.Select(tc => tc.Content!).ToList(),
                     embeddingOptions);
 
+                var rawResponse = result.GetRawResponse();
+                rawResponse.Headers.TryGetValue("x-ratelimit-limit-tokens", out var limitTokens);
+                rawResponse.Headers.TryGetValue("x-ratelimit-remaining-tokens", out var remainingTokens);
+                _logger.LogInformation("Rate limit tokens: {LimitTokens} - Remaining tokens: {RemainingTokens}",
+                    string.IsNullOrWhiteSpace(limitTokens) ? "N/A" : limitTokens,
+                    string.IsNullOrWhiteSpace(remainingTokens) ? "N/A" : remainingTokens);
+
                 return new TextEmbeddingResult
                 {
                     InProgress = false,
@@ -62,6 +70,29 @@ namespace FoundationaLLM.Gateway.Services
                         textChunk.Embedding = new Embedding(result.Value[i].ToFloats());
                         return textChunk;
                     })]
+                };
+            }
+            catch (RequestFailedException ex) when (ex.Status == 429)
+            {
+                _logger.LogWarning(ex, "Rate limit exceeded while generating embeddings.");
+
+                var rawResponse = ex.GetRawResponse();
+                if (rawResponse != null)
+                {
+                    rawResponse.Headers.TryGetValue("x-ratelimit-limit-tokens", out var limitTokens);
+                    rawResponse.Headers.TryGetValue("x-ratelimit-remaining-tokens", out var remainingTokens);
+                    _logger.LogInformation("Rate limit tokens: {LimitTokens} - Remaining tokens: {RemainingTokens}",
+                        string.IsNullOrWhiteSpace(limitTokens) ? "N/A" : limitTokens,
+                        string.IsNullOrWhiteSpace(remainingTokens) ? "N/A" : remainingTokens);
+                }
+                else
+                    _logger.LogWarning("Response headers were not available.");
+
+                return new TextEmbeddingResult
+                {
+                    InProgress = false,
+                    Failed = true,
+                    ErrorMessage = ex.Message
                 };
             }
             catch (Exception ex)
