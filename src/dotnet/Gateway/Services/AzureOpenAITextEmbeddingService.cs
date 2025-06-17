@@ -1,10 +1,9 @@
-﻿using Azure;
-using Azure.AI.OpenAI;
-using Azure.Core;
+﻿using Azure.AI.OpenAI;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Vectorization;
 using Microsoft.Extensions.Logging;
+using System.ClientModel;
 using System.ClientModel.Primitives;
 
 namespace FoundationaLLM.Gateway.Services
@@ -33,7 +32,7 @@ namespace FoundationaLLM.Gateway.Services
                 ServiceContext.AzureCredential,
                 new AzureOpenAIClientOptions()
                 {
-                    NetworkTimeout = TimeSpan.FromSeconds(30),
+                    NetworkTimeout = TimeSpan.FromSeconds(120),
                     RetryPolicy = new ClientRetryPolicy(1)
                 });
             _logger = logger;
@@ -72,7 +71,7 @@ namespace FoundationaLLM.Gateway.Services
                     })]
                 };
             }
-            catch (RequestFailedException ex) when (ex.Status == 429)
+            catch (ClientResultException ex) when (ex.Status == 429)
             {
                 _logger.LogWarning(ex, "Rate limit exceeded while generating embeddings.");
 
