@@ -264,7 +264,7 @@ Class ContextFileDataSourcePlugin  <a class="header-action link-secondary" title
 
   <h3 id="FoundationaLLM_Plugins_DataPipeline_Plugins_DataSource_ContextFileDataSourcePlugin_GetContentItemRawContent_System_String_" data-uid="FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.ContextFileDataSourcePlugin.GetContentItemRawContent(System.String)">
   GetContentItemRawContent(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelinePlugins/Plugins/DataSource/ContextFileDataSourcePlugin.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelinePlugins/Plugins/DataSource/ContextFileDataSourcePlugin.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the raw content of a content item.</p>
@@ -311,13 +311,13 @@ Class ContextFileDataSourcePlugin  <a class="header-action link-secondary" title
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;DataPipelineContentItem&gt; GetContentItems()</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;List&lt;DataPipelineContentItem&gt;&gt; GetContentItems()</code></pre>
   </div>
 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem.html">DataPipelineContentItem</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem.html">DataPipelineContentItem</a>&gt;&gt;</dt>
     <dd></dd>
   </dl>
 
