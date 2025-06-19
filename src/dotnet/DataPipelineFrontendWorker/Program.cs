@@ -92,7 +92,6 @@ builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderSer
 //----------------------------
 // Resource providers
 //----------------------------
-builder.AddVectorResourceProvider();
 builder.AddResourceProviderCacheSettings();
 builder.AddResourceValidatorFactory();
 builder.AddConfigurationResourceProvider();
