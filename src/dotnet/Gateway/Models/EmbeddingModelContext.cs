@@ -82,7 +82,8 @@ namespace FoundationaLLM.Gateway.Models
                 {
                     lock (_syncRoot)
                     {
-                        if(_embeddingOperationIds.Count == 0)
+                        if(_embeddingOperationIds.Count == 0
+                            || !_embeddingOperations.Values.Any(eoc => eoc.Result.InProgress))
                             continue; // Nothing to process.
 
                         var currentDeploymentContextIndex = 0;
