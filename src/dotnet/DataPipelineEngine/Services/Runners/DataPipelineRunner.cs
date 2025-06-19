@@ -133,6 +133,10 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
             {
                 var completedStageRunners =
                     _currentStageRunners.Values.Where(stageRunner => stageRunner.Completed).ToList();
+                var changesInStageRunners =
+                    _currentStageRunners.Values.Any(stageRunner => stageRunner.Changed);
+                foreach (var stageRunner in _currentStageRunners.Values)
+                    stageRunner.ResetChanged();
 
                 foreach (var stageRunner in _currentStageRunners.Values)
                     _dataPipelineRun.StagesMetrics[stageRunner.StageName] =
@@ -190,7 +194,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                     && (_dataPipelineRun.Errors?.Count ?? 0) == 0;
 
                 if (_dataPipelineRun.Completed
-                    || completedStageRunners.Count > 0
+                    || changesInStageRunners
                     || newErrors)
                     await _stateService.UpdateDataPipelineRunStatus(_dataPipelineRun);
 
