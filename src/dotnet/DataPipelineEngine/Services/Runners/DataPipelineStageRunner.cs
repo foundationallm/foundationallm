@@ -22,6 +22,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
         private readonly ILogger<DataPipelineStageRunner> _logger = logger;
 
         private readonly Dictionary<string, DataPipelineRunWorkItemStatus> _workItemsStatus = [];
+        private readonly object _syncRoot = new();
 
         public string StageName => _stageName;
 
@@ -40,6 +41,17 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
         public List<string> ContentItemsCanonicalIds =>
             [.. _workItemsStatus.Values.Select(status => status.ContentItemCanonicalId)];
 
+        public bool Changed
+        {
+            get
+            {
+                lock (_syncRoot)
+                {
+                    return _workItemsStatus.Values.Any(status => status.Changed);
+                }
+            }
+        }
+
         public async Task InitializeNew(
             List<DataPipelineRunWorkItem> workItems)
         {
@@ -57,9 +69,10 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
             _workItemsStatus.AddRange(workItems.ToDictionary(
                 workItem => workItem.Id,
                 workItem => new DataPipelineRunWorkItemStatus
-                    {
-                        ContentItemCanonicalId = workItem.ContentItemCanonicalId
-                    }));
+                {
+                    ContentItemCanonicalId = workItem.ContentItemCanonicalId,
+                    Changed = false
+                }));
         }
 
         public void InitializeExisting(
@@ -68,15 +81,19 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
             if (workItems.Count == 0)
                 return;
 
-            _workItemsStatus.Clear();
-            _workItemsStatus.AddRange(workItems.ToDictionary(
-                workItem => workItem.Id,
-                workItem => new DataPipelineRunWorkItemStatus
-                {
-                    ContentItemCanonicalId = workItem.ContentItemCanonicalId,
-                    Completed = workItem.Completed,
-                    Successful = workItem.Successful
-                }));
+            lock (_syncRoot)
+            {
+                _workItemsStatus.Clear();
+                _workItemsStatus.AddRange(workItems.ToDictionary(
+                    workItem => workItem.Id,
+                    workItem => new DataPipelineRunWorkItemStatus
+                    {
+                        ContentItemCanonicalId = workItem.ContentItemCanonicalId,
+                        Completed = workItem.Completed,
+                        Successful = workItem.Successful,
+                        Changed = false
+                    }));
+            }
         }
 
         public async Task SetFailedWorkItems(
@@ -99,17 +116,31 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
         public async Task ProcessDataPipelineRunWorkItem(
             DataPipelineRunWorkItem dataPipelineRunWorkItem)
         {
-            if (!_workItemsStatus.TryGetValue(dataPipelineRunWorkItem.Id, out var status))
+            lock (_syncRoot)
             {
-                _logger.LogWarning("Data pipeline stage runner does not contain status for work item {WorkItemId}.",
-                    dataPipelineRunWorkItem.Id);
-                return;
+                if (!_workItemsStatus.TryGetValue(dataPipelineRunWorkItem.Id, out var status))
+                {
+                    _logger.LogWarning("Data pipeline stage runner does not contain status for work item {WorkItemId}.",
+                        dataPipelineRunWorkItem.Id);
+                    return;
+                }
+
+                status.Completed = dataPipelineRunWorkItem.Completed;
+                status.Successful = dataPipelineRunWorkItem.Successful;
             }
 
-            status.Completed = dataPipelineRunWorkItem.Completed;
-            status.Successful = dataPipelineRunWorkItem.Successful;
-
             await Task.CompletedTask;
+        }
+
+        public void ResetChanged()
+        {
+            lock (_syncRoot)
+            {
+                foreach (var status in _workItemsStatus.Values)
+                {
+                    status.Changed = false;
+                }
+            }
         }
     }
 }
