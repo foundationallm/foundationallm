@@ -149,6 +149,7 @@ The following role assignments must be added to the Data Pipeline API's Managed 
 | --- | --- | --- |
 |`App Configuration Data Reader` | Azure | Azure App Configuration service.|
 |`Key Vault Secrets User` | Azure | Azure Key Vault service.|
+|`Key Vault Certificate User` | Azure | Azure Key Vault service.|
 |`Storage Blob Data Contributor` | Azure | Storage account used by the FoundationaLLM Data Pipeline API.|
 |`Cosmos DB Built-in Data Contributor` | Azure | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline API.|
 |`Storage Queue Data Message Sender` | Azure | Storage account used by the FoundationaLLM Data Pipeline API.|
@@ -162,6 +163,7 @@ The following role assignments must be added to the Data Pipeline Frontend Worke
 | --- | --- | --- |
 |`App Configuration Data Reader` | Azure | Azure App Configuration service.|
 |`Key Vault Secrets User` | Azure | Azure Key Vault service.|
+|`Key Vault Certificate User` | Azure | Azure Key Vault service.|
 |`Storage Blob Data Contributor` | Azure | Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.|
 |`Cosmos DB Built-in Data Contributor` | Azure | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Frontend Worker.|
 |`Storage Queue Data Contributor` | Azure | Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.|
@@ -177,6 +179,7 @@ The following role assignments must be added to the Data Pipeline Backend Worker
 | --- | --- | --- |
 |`App Configuration Data Reader` | Azure | Azure App Configuration service.|
 |`Key Vault Secrets User` | Azure | Azure Key Vault service.|
+|`Key Vault Certificate User` | Azure | Azure Key Vault service.|
 |`Storage Blob Data Contributor` | Azure | Storage account used by the FoundationaLLM Data Pipeline Backend Worker.|
 |`Cosmos DB Built-in Data Contributor` | Azure | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Backend Worker.|
 |`Storage Queue Data Contributor` | Azure | Storage account used by the FoundationaLLM Data Pipeline Backend Worker.|
