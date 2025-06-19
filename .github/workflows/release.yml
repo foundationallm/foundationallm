@@ -18,6 +18,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Run versioning script
+      run: bash ./versioning.sh
+      id: versioning
     
     - name: Set Service Matrix
       uses: actions/github-script@v7
