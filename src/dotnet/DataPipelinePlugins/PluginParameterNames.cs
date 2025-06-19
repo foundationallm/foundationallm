@@ -6,6 +6,8 @@
 
         public const string CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID = "ContextFileObjectId";
 
+        public const string SHAREPOINTONLINE_DATASOURCE_DOCUMENTLIBRARIES = "DocumentLibraries";
+
         public const string TEXTPARTITIONING_DATAPIPELINESTAGE_PARITTIONINGSTRATETGY = "PartitioningStrategy";
 
         public const string GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_EMBEDDINGMODEL = "EmbeddingModel";

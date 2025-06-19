@@ -9,6 +9,7 @@
 
         public const string AZUREDATALAKE_DATASOURCE = $"{PACKAGE_NAME}-AzureDataLakeDataSource";
         public const string CONTEXTFILE_DATASOURCE = $"{PACKAGE_NAME}-ContextFileDataSource";
+        public const string SHAREPOINTONLINE_DATASOURCE = $"{PACKAGE_NAME}-SharePointOnlineDataSource";
         public const string TEXTEXTRACTION_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-TextExtractionDataPipelineStage";
         public const string TEXTPARTITIONING_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-TextPartitioningDataPipelineStage";
         public const string GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-GatewayTextEmbeddingDataPipelineStage";

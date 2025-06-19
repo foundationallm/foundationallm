@@ -213,6 +213,7 @@ namespace FoundationaLLM.Core.Examples.Setup
             services.AddResourceValidatorFactory();
 
             services.AddConfigurationResourceProvider(configuration);
+            services.AddDataSourceResourceProvider(configuration);
         }
 
         private static void RegisterOtherServices(IServiceCollection services, IConfiguration configuration)

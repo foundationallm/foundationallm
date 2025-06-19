@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 using FoundationaLLM.DataSource.ResourceProviders;
 using FoundationaLLM.DataSource.Validation;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -22,18 +23,26 @@ namespace FoundationaLLM
         /// Add the Data Source Rrsource provider and its related services the the dependency injection container.
         /// </summary>
         /// <param name="builder">The application builder.</param>
-        public static void AddDataSourceResourceProvider(this IHostApplicationBuilder builder)
+        public static void AddDataSourceResourceProvider(this IHostApplicationBuilder builder) =>
+            builder.Services.AddDataSourceResourceProvider(builder.Configuration);
+
+        /// <summary>
+        /// Registers the FoundationaLLM.DataSource resource provider with the dependency injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfiguration"/> configuration provider.</param>
+        public static void AddDataSourceResourceProvider(this IServiceCollection services, IConfiguration configuration)
         {
-            builder.AddDataSourceResourceProviderStorage();
+            services.AddDataSourceResourceProviderStorage(configuration);
 
             // Register validators.
-            builder.Services.AddSingleton<IValidator<DataSourceBase>, DataSourceBaseValidator>();
-            builder.Services.AddSingleton<IValidator<OneLakeDataSource>, OneLakeDataSourceValidator>();
-            builder.Services.AddSingleton<IValidator<AzureDataLakeDataSource>, AzureDataLakeDataSourceValidator>();
-            builder.Services.AddSingleton<IValidator<AzureSQLDatabaseDataSource>, AzureSQLDatabaseDataSourceValidator>();
-            builder.Services.AddSingleton<IValidator<SharePointOnlineSiteDataSource>, SharePointOnlineSiteDataSourceValidator>();
+            services.AddSingleton<IValidator<DataSourceBase>, DataSourceBaseValidator>();
+            services.AddSingleton<IValidator<OneLakeDataSource>, OneLakeDataSourceValidator>();
+            services.AddSingleton<IValidator<AzureDataLakeDataSource>, AzureDataLakeDataSourceValidator>();
+            services.AddSingleton<IValidator<AzureSQLDatabaseDataSource>, AzureSQLDatabaseDataSourceValidator>();
+            services.AddSingleton<IValidator<SharePointOnlineSiteDataSource>, SharePointOnlineSiteDataSourceValidator>();
 
-            builder.Services.AddSingleton<IResourceProviderService, DataSourceResourceProviderService>(sp =>
+            services.AddSingleton<IResourceProviderService, DataSourceResourceProviderService>(sp =>
                 new DataSourceResourceProviderService(
                     sp.GetRequiredService<IOptions<InstanceSettings>>(),
                     sp.GetRequiredService<IOptions<ResourceProviderCacheSettings>>(),
@@ -44,7 +53,7 @@ namespace FoundationaLLM
                     sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp,
                     sp.GetRequiredService<ILoggerFactory>()));
-            builder.Services.ActivateSingleton<IResourceProviderService>();
+            services.ActivateSingleton<IResourceProviderService>();
         }
     }
 }

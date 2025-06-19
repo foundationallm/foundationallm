@@ -102,7 +102,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 dataPipeline.DataSource.DataSourceObjectId,
                 userIdentity);
 
-            var contentItems = dataSourcePlugin.GetContentItems();
+            var contentItems = await dataSourcePlugin.GetContentItems();
 
             var updatedDataPipelineRun = await _dataPipelineRunnerService.StartRun(
                 dataPipelineRun,

@@ -12,7 +12,7 @@ namespace FoundationaLLM.Common.Interfaces.Plugins
         /// Gets the list of content items from the data source.
         /// </summary>
         /// <returns></returns>
-        List<DataPipelineContentItem> GetContentItems();
+        Task<List<DataPipelineContentItem>> GetContentItems();
 
         /// <summary>
         /// Gets the raw content of a content item.

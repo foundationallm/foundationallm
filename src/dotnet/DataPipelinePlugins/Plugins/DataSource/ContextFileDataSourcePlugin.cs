@@ -30,22 +30,26 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
 
         protected override string Name => PluginNames.CONTEXTFILE_DATASOURCE;
 
-        public List<DataPipelineContentItem> GetContentItems()
+        public async Task<List<DataPipelineContentItem>> GetContentItems()
         {
             var contextFileObjectId = _pluginParameters[PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID]?.ToString()
                 ?? throw new PluginException($"The {PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID} parameter is required by the {Name} plugin.");
 
             var canonicalId = contextFileObjectId[(contextFileObjectId.LastIndexOf('/') + 1)..];
 
-            return [new DataPipelineContentItem {
-                Id = $"content-item-{canonicalId}-{Guid.NewGuid().ToBase64String()}",
-                DataSourceObjectId = _dataSourceObjectId,
-                ContentIdentifier = new ContentIdentifier
-                {
-                    MultipartId = [contextFileObjectId],
-                    CanonicalId = canonicalId
-                }
-            }];
+            return await Task.FromResult<List<DataPipelineContentItem>>(
+                    [
+                        new DataPipelineContentItem
+                        {
+                            Id = $"content-item-{canonicalId}-{Guid.NewGuid().ToBase64String()}",
+                            DataSourceObjectId = _dataSourceObjectId,
+                            ContentIdentifier = new ContentIdentifier
+                            {
+                                MultipartId = [contextFileObjectId],
+                                CanonicalId = canonicalId
+                            }
+                        }
+                    ]);
         }
 
         /// <inheritdoc/>

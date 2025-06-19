@@ -1,5 +1,4 @@
 ﻿using FoundationaLLM.Common.Constants.Plugins;
-using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.Plugins.Metadata;
 using FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction;
@@ -34,7 +33,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
             Platform = PluginPackagePlatform.Dotnet,
             Plugins = [
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PACKAGE_NAME}-AzureDataLakeDataSource",
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.AZUREDATALAKE_DATASOURCE}",
                     Name = PluginNames.AZUREDATALAKE_DATASOURCE,
                     DisplayName = "Azure Data Lake Data Source (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for Azure Data Lake data sources.",
@@ -49,7 +48,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Dependencies = []
                 },
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PACKAGE_NAME}-ContextFileDataSource",
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.CONTEXTFILE_DATASOURCE}",
                     Name = PluginNames.CONTEXTFILE_DATASOURCE,
                     DisplayName = "Context File Data Source (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for Context File data sources.",
@@ -64,7 +63,22 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Dependencies = []
                 },
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PACKAGE_NAME}-TextExtractionDataPipelineStage",
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.SHAREPOINTONLINE_DATASOURCE}",
+                    Name = PluginNames.SHAREPOINTONLINE_DATASOURCE,
+                    DisplayName = "SharePoint Online Data Source (FoundationaLLM)",
+                    Description = "Provides the FoundationaLLM standard implementation for SharePoint Online data sources.",
+                    Category = PluginCategoryNames.DataSource,
+                    Parameters = [
+                        new() {
+                            Name = PluginParameterNames.SHAREPOINTONLINE_DATASOURCE_DOCUMENTLIBRARIES,
+                            Type = PluginParameterTypes.Array,
+                            Description = "List of strings defining SharePoint Online document libraries."
+                        }
+                    ],
+                    Dependencies = []
+                },
+                new() {
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.TEXTEXTRACTION_DATAPIPELINESTAGE}",
                     Name = PluginNames.TEXTEXTRACTION_DATAPIPELINESTAGE,
                     DisplayName = "Text Extraction Data Pipeline Stage (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for text extraction data pipeline stages.",
@@ -85,7 +99,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     ]
                 },
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PACKAGE_NAME}-TextPartitioningDataPipelineStage",
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.TEXTPARTITIONING_DATAPIPELINESTAGE}",
                     Name = PluginNames.TEXTPARTITIONING_DATAPIPELINESTAGE,
                     DisplayName = "Text Partitioning Data Pipeline Stage (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for text partitioning data pipeline stages.",
@@ -108,7 +122,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     ]
                 },
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PACKAGE_NAME}-GatewayTextEmbeddingDataPipelineStage",
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE}",
                     Name = PluginNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE,
                     DisplayName = "Gateway Text Embedding Data Pipeline Stage (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for text emebdding data pipeline stages that perform text embedding using the FoundationaLLM Gateway API.",
@@ -128,7 +142,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Dependencies = []
                 },
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PACKAGE_NAME}-AzureAISearchIndexingDataPipelineStage",
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE}",
                     Name = PluginNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE,
                     DisplayName = "Azure AI Search Indexing Data Pipeline Stage (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for indexing data pipeline stages that use Azure AI Search.",
@@ -164,7 +178,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Dependencies = []
                 },
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PACKAGE_NAME}-PDFContentTextExtraction",
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PDF_CONTENTTEXTEXTRACTION}",
                     Name = PluginNames.PDF_CONTENTTEXTEXTRACTION,
                     DisplayName = "PDF Content Text Extraction (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for content text extraction from PDF files.",
@@ -174,7 +188,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Dependencies = []
                 },
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PACKAGE_NAME}-DOCXContentTextExtraction",
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.DOCX_CONTENTTEXTEXTRACTION}",
                     Name = PluginNames.DOCX_CONTENTTEXTEXTRACTION,
                     DisplayName = "DOCX Content Text Extraction (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for content text extraction from DOCX files.",
@@ -184,7 +198,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Dependencies = []
                 },
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PACKAGE_NAME}-PPTXContentTextExtraction",
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PPTX_CONTENTTEXTEXTRACTION}",
                     Name = PluginNames.PPTX_CONTENTTEXTEXTRACTION,
                     DisplayName = "PPTX Content Text Extraction (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for content text extraction from PPTX files.",
@@ -194,7 +208,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Dependencies = []
                 },
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PACKAGE_NAME}-XLSXContentTextExtraction",
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.XLSX_CONTENTTEXTEXTRACTION}",
                     Name = PluginNames.XLSX_CONTENTTEXTEXTRACTION,
                     DisplayName = "XLSX Content Text Extraction (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for content text extraction from XLSX files.",
@@ -204,7 +218,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Dependencies = []
                 },
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PACKAGE_NAME}-ImageContentTextExtraction",
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.IMAGE_CONTENTTEXTEXTRACTION}",
                     Name = PluginNames.IMAGE_CONTENTTEXTEXTRACTION,
                     DisplayName = "Image Content Text Extraction (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for text extraction from image files.",
@@ -229,7 +243,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Dependencies = []
                 },
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PACKAGE_NAME}-ImageMetadataTextExtraction",
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.IMAGE_METADATATEXTEXTRACTION}",
                     Name = PluginNames.IMAGE_METADATATEXTEXTRACTION,
                     DisplayName = "Image Metadata Text Extraction (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for metadata (description) extraction from image files.",
@@ -254,7 +268,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Dependencies = []
                 },
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PACKAGE_NAME}-TokenContentTextPartitioning",
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.TOKEN_CONTENTTEXTPARTITIONING}",
                     Name = PluginNames.TOKEN_CONTENTTEXTPARTITIONING,
                     DisplayName = "Token Content Text Partitioning (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for content text partitioning using a token-based strategy.",
@@ -275,7 +289,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Dependencies = []
                 },
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PACKAGE_NAME}-SemanticContentTextPartitioning",
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.SEMANTIC_CONTENTTEXTPARTITIONING}",
                     Name = PluginNames.SEMANTIC_CONTENTTEXTPARTITIONING,
                     DisplayName = "Semantic Content Text Partitioning (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for content text partitioning using a semantic strategy.",
@@ -296,6 +310,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
         {
             PluginNames.AZUREDATALAKE_DATASOURCE => new AzureDataLakeDataSourcePlugin(dataSourceObjectId, pluginParameters, this, serviceProvider),
             PluginNames.CONTEXTFILE_DATASOURCE => new ContextFileDataSourcePlugin(dataSourceObjectId, pluginParameters, this, serviceProvider),
+            PluginNames.SHAREPOINTONLINE_DATASOURCE => new SharePointOnlineDataSourcePlugin(dataSourceObjectId, pluginParameters, this, serviceProvider),
             _ => throw new NotImplementedException($"The data source plugin '{pluginName}' is not implemented.")
         };
 
