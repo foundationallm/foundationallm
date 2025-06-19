@@ -57,6 +57,10 @@ jobs:
       working-directory: ./src/dotnet/ManagementClient
       run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
 
+    - name: Build DataPipelinePlugins
+      working-directory: ./src/dotnet/DataPipelinePlugins
+      run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
+
     - name: Pack Common
       working-directory: ./src/dotnet/Common
       run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
@@ -71,6 +75,10 @@ jobs:
 
     - name: Pack ManagementClient
       working-directory: ./src/dotnet/ManagementClient
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+
+    - name: Pack DataPipelinePlugins
+      working-directory: ./src/dotnet/DataPipelinePlugins
       run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     # .NET Publish Steps
@@ -89,6 +97,10 @@ jobs:
     - name: Publish ManagementClient to NuGet
       working-directory: ./src/dotnet/ManagementClient
       run: dotnet nuget push ./nupkg/*.Client.Management.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+
+    - name: Publish DataPipelinePlugins to NuGet
+      working-directory: ./src/dotnet/DataPipelinePlugins
+      run: dotnet nuget push ./nupkg/*.DataPipelinePlugins.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
     # Python Build and Publish Steps
     - name: Build Python Package
