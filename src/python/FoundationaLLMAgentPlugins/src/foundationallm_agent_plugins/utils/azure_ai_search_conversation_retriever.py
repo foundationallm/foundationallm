@@ -42,7 +42,7 @@ class AzureAISearchConversationRetriever(BaseRetriever, ContentArtifactRetrieval
             "IsReference": "true/false if the document is a reference document"
         }
     """
-    conversation_id: str
+    vector_store_name: str
     file_name: Optional[str] = None
     vector_database_configuration: VectorDatabaseConfiguration
     gateway_text_embedding_service: GatewayTextEmbeddingService
@@ -85,7 +85,7 @@ class AzureAISearchConversationRetriever(BaseRetriever, ContentArtifactRetrieval
                                         fields=index_config.vector_database["embedding_property_name"],
                                         threshold=VectorSimilarityThreshold(value=similarity_threshold))
 
-        filter=f"{(index_config.vector_database['vector_store_id_property_name'])} eq '{self.conversation_id}'"
+        filter=f"{(index_config.vector_database['vector_store_id_property_name'])} eq '{self.vector_store_name}'"
         if self.file_name:
             filter += f" and {index_config.vector_database['metadata_property_name']}/FileName eq '{self.file_name}'"
         results = search_client.search(
