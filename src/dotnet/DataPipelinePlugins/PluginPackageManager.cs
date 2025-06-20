@@ -178,15 +178,6 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Dependencies = []
                 },
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE}",
-                    Name = PluginNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE,
-                    DisplayName = "Knowledge Extraction Data Pipeline Stage (FoundationaLLM)",
-                    Description = "Provides the FoundationaLLM standard implementation for knowledge extraction data pipeline stages.",
-                    Category = PluginCategoryNames.DataPipelineStage,
-                    Parameters = [],
-                    Dependencies = []
-                },
-                new() {
                     ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PDF_CONTENTTEXTEXTRACTION}",
                     Name = PluginNames.PDF_CONTENTTEXTEXTRACTION,
                     DisplayName = "PDF Content Text Extraction (FoundationaLLM)",
@@ -333,6 +324,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
             PluginNames.TEXTPARTITIONING_DATAPIPELINESTAGE => new TextPartitioningDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
             PluginNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE => new GatewayTextEmbeddingDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
             PluginNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE => new AzureAIIndexingDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
+            PluginNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE => new KnowledgeExtractionDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
             _ => throw new NotImplementedException($"The data pipeline stage plugin '{pluginName}' is not implemented.")
         };
 
