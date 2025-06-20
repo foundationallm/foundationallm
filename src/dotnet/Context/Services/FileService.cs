@@ -111,7 +111,9 @@ namespace FoundationaLLM.Context.Services
 
             var fileContent = await _storageService.ReadFileAsync(
                 instanceId,
-                fileRecord.FilePath,
+                fileRecord.FilePath.StartsWith("file/")
+                    ? fileRecord.FilePath
+                    : $"file/{fileRecord.FilePath}",
                 default);
 
             return new ContextFileContent
@@ -139,7 +141,9 @@ namespace FoundationaLLM.Context.Services
 
             var fileContent = await _storageService.ReadFileAsync(
                 instanceId,
-                fileRecord.FilePath,
+                fileRecord.FilePath.StartsWith("file/")
+                    ? fileRecord.FilePath
+                    : $"file/{fileRecord.FilePath}",
                 default);
 
             return new ContextFileContent

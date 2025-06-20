@@ -107,7 +107,7 @@ namespace FoundationaLLM.Common.Models.Context
         {
             var fileId = $"file-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToBase64String()}";
             var fileObjectId = $"/instances/{instanceId}/providers/{ContextProviderNames.FoundationaLLM_ContextAPI}/files/{fileId}";
-            var filePath = $"{userIdentity.UPN!.NormalizeUserPrincipalName()}/{conversationId}/{fileId}{Path.GetExtension(fileName)}";
+            var filePath = $"file/{userIdentity.UPN!.NormalizeUserPrincipalName()}/{conversationId}/{fileId}{Path.GetExtension(fileName)}";
 
             Id = fileId;
             ConversationId = conversationId;
