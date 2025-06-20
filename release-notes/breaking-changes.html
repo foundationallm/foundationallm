@@ -139,7 +139,7 @@
 <tr>
 <td><code>FoundationaLLM:DataPipeline:State:Storage:AccountName</code></td>
 <td><code>&lt;storage_account_name&gt;</code></td>
-<td>The name of the dedicated storage account used by the FoundationaLLM Data Pipeline State service.</td>
+<td>The name of the dedicated storage account used by the FoundationaLLM Data Pipeline State service. This must be the same storage account as the one used by the FoundationaLLM Context API.</td>
 </tr>
 <tr>
 <td><code>FoundationaLLM:DataPipeline:State:Storage:AuthenticationType</code></td>
@@ -411,7 +411,12 @@
 <tr>
 <td><code>Storage Blob Data Contributor</code></td>
 <td>Azure</td>
-<td>Storage account used by the FoundationaLLM Data Pipeline API.</td>
+<td>Main FoundationaLLM storage account.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Azure</td>
+<td>Storage account used by the FoundationaLLM Context API.</td>
 </tr>
 <tr>
 <td><code>Cosmos DB Built-in Data Contributor</code></td>
@@ -468,7 +473,12 @@
 <tr>
 <td><code>Storage Blob Data Contributor</code></td>
 <td>Azure</td>
-<td>Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.</td>
+<td>Main FoundationaLLM storage account.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Azure</td>
+<td>Storage account used by the FoundationaLLM Context API.</td>
 </tr>
 <tr>
 <td><code>Cosmos DB Built-in Data Contributor</code></td>
@@ -535,7 +545,12 @@
 <tr>
 <td><code>Storage Blob Data Contributor</code></td>
 <td>Azure</td>
-<td>Storage account used by the FoundationaLLM Data Pipeline Backend Worker.</td>
+<td>Main FoundationaLLM storage account.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Azure</td>
+<td>Storage account used by the FoundationaLLM Context API.</td>
 </tr>
 <tr>
 <td><code>Cosmos DB Built-in Data Contributor</code></td>
