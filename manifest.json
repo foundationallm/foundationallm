@@ -6368,17 +6368,45 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPart.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemContentPart.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPart.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemContentPart.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPart",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPart.yml\" sourcestartlinenumber=\"1\">Represents a part of a content item.</p>\n"
+      "Title": "FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemContentPart",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemContentPart.yml\" sourcestartlinenumber=\"1\">Represents a content part of a content item.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemKnowledgePart.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemKnowledgePart.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemKnowledgePart",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemKnowledgePart.yml\" sourcestartlinenumber=\"1\">Represents a knowledge part of a data pipeline content item.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.yml\" sourcestartlinenumber=\"1\">Represents the common properties of a content item part.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -15171,6 +15199,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.GatewayTextEmbeddingDataPipelineStagePlugin",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.GatewayTextEmbeddingDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Gateway Text Embedding Data Pipeline Stage Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeExtractionDataPipelineStagePlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeExtractionDataPipelineStagePlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeExtractionDataPipelineStagePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeExtractionDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Knowledge Extraction Data Pipeline Stage Plugin.</p>\n"
     },
     {
       "type": "ManagedReference",

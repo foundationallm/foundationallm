@@ -140,7 +140,7 @@ Interface IContentTextPartitioningPlugin  <a class="header-action link-secondary
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;PluginResult&lt;List&lt;DataPipelineContentItemPart&gt;&gt;&gt; PartitionText(string contentItemCanonicalId, string text)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;PluginResult&lt;List&lt;DataPipelineContentItemContentPart&gt;&gt;&gt; PartitionText(string contentItemCanonicalId, string text)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -155,7 +155,7 @@ Interface IContentTextPartitioningPlugin  <a class="header-action link-secondary
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Plugins.PluginResult-1.html">PluginResult</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPart.html">DataPipelineContentItemPart</a>&gt;&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Plugins.PluginResult-1.html">PluginResult</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemContentPart.html">DataPipelineContentItemContentPart</a>&gt;&gt;&gt;</dt>
     <dd><p>A list of text chunks.</p>
 </dd>
   </dl>
