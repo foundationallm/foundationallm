@@ -14,7 +14,7 @@ namespace FoundationaLLM.Common.Interfaces.Plugins
         /// <param name="text">The text to be partitioned.</param>
         /// <param name="contentItemCanonicalId"> The canonical identifier of the content item.</param>
         /// <returns>A list of text chunks.</returns>
-        Task<PluginResult<List<DataPipelineContentItemPart>>> PartitionText(
+        Task<PluginResult<List<DataPipelineContentItemContentPart>>> PartitionText(
             string contentItemCanonicalId,
             string text);
     }

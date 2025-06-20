@@ -27,7 +27,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
             serviceProvider.GetRequiredService<ILogger<TokenContentTextPartitioningPlugin>>();
 
         /// <inheritdoc/>
-        public async Task<PluginResult<List<DataPipelineContentItemPart>>> PartitionText(
+        public async Task<PluginResult<List<DataPipelineContentItemContentPart>>> PartitionText(
             string contentItemCanonicalId,
             string text)
         {
@@ -64,11 +64,11 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
                 (int)partitionSizeTokens,
                 (int)partitionOverlapTokens);
 
-            return new PluginResult<List<DataPipelineContentItemPart>>(
+            return new PluginResult<List<DataPipelineContentItemContentPart>>(
                 contentItemParts, true, false);
         }
 
-        private List<DataPipelineContentItemPart> SplitPlainText(
+        private List<DataPipelineContentItemContentPart> SplitPlainText(
             string contentItemCanonicalId,
             string text,
             ITokenizerService tokenizerService,
@@ -85,13 +85,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
                 var chunksCount = (int)Math.Ceiling((1f * tokens!.Count - partitionOverlapTokens) / (partitionSizeTokens - partitionOverlapTokens));
 
                 if (chunksCount <= 1)
-                    return [ new()
-                    {
-                        ContentItemCanonicalId = contentItemCanonicalId,
-                        Position = 1,
-                        Content = text,
-                        ContentSizeTokens = tokens.Count
-                    } ];
+                    return [ DataPipelineContentItemContentPart.Create
+                        (contentItemCanonicalId, 1, text, tokens.Count) ];
 
                 var chunks = Enumerable.Range(0, chunksCount - 1)
                     .Select(i => new
@@ -99,13 +94,11 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
                         Position = i + 1,
                         Tokens = tokens.Skip(i * (partitionSizeTokens - partitionOverlapTokens)).Take(partitionSizeTokens).ToArray()
                     })
-                    .Select(x => new DataPipelineContentItemPart
-                    {
-                        ContentItemCanonicalId = contentItemCanonicalId,
-                        Position = x.Position,
-                        Content = tokenizerService.Decode(x.Tokens, encoderName),
-                        ContentSizeTokens = x.Tokens.Length
-                    })
+                    .Select(x => DataPipelineContentItemContentPart.Create(
+                        contentItemCanonicalId,
+                        x.Position,
+                        tokenizerService.Decode(x.Tokens, encoderName),
+                        x.Tokens.Length))
                     .ToList();
 
                 var lastChunkStart = (chunksCount - 1) * (partitionSizeTokens - partitionOverlapTokens);
@@ -117,35 +110,29 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
                     var secondToLastChunkStart = (chunksCount - 2) * (partitionSizeTokens - partitionOverlapTokens);
                     var newLastChunkSize = tokens.Count - secondToLastChunkStart + 1;
                     var newLastChunk = tokenizerService.Decode(
-                        tokens
+                        [.. tokens
                             .Skip(secondToLastChunkStart)
-                            .Take(newLastChunkSize)
-                            .ToArray(),
+                            .Take(newLastChunkSize)],
                         encoderName);
                     chunks.RemoveAt(chunks.Count - 1);
-                    chunks.Add(new DataPipelineContentItemPart
-                    {
-                        ContentItemCanonicalId = contentItemCanonicalId,
-                        Position = chunks.Count + 1,
-                        Content = newLastChunk,
-                        ContentSizeTokens = newLastChunkSize
-                    });
+                    chunks.Add(DataPipelineContentItemContentPart.Create(
+                        contentItemCanonicalId,
+                        chunks.Count + 1,
+                        newLastChunk,
+                        newLastChunkSize));
                 }
                 else
                 {
                     var lastChunk = tokenizerService.Decode(
-                        tokens
+                        [.. tokens
                             .Skip(lastChunkStart)
-                            .Take(lastChunkSize)
-                            .ToArray(),
+                            .Take(lastChunkSize)],
                         encoderName);
-                    chunks.Add(new DataPipelineContentItemPart
-                    {
-                        ContentItemCanonicalId = contentItemCanonicalId,
-                        Position = chunks.Count + 1,
-                        Content = lastChunk,
-                        ContentSizeTokens = lastChunkSize
-                    });
+                    chunks.Add(DataPipelineContentItemContentPart.Create(
+                        contentItemCanonicalId,
+                        chunks.Count + 1,
+                        lastChunk,
+                        lastChunkSize));
                 }
 
                 return chunks;

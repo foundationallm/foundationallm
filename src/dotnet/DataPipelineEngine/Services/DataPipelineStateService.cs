@@ -235,10 +235,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         }
 
         /// <inheritdoc/>
-        public async Task<List<DataPipelineContentItemPart>> LoadDataPipelineRunWorkItemContentParts(
+        public async Task<IEnumerable<T>> LoadDataPipelineRunWorkItemParts<T>(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
-            DataPipelineRunWorkItem dataPipelineRunWorkItem)
+            DataPipelineRunWorkItem dataPipelineRunWorkItem,
+            string fileName)
+            where T : class, new()
         {
             var contentItemPartsPath = string.Join('/',
                 [
@@ -249,7 +251,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     dataPipelineRun.RunId,
                     "content-items",
                     dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-'),
-                    "content-parts.parquet"
+                    fileName
                 ]);
 
             var binaryContent = await _storageService.ReadFileAsync(
@@ -257,18 +259,20 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 contentItemPartsPath,
                 default);
 
-            var result = await ParquetSerializer.DeserializeAsync<DataPipelineContentItemPart>(
+            var result = await ParquetSerializer.DeserializeAsync<T>(
                 binaryContent.ToStream());
 
             return [.. result];
         }
 
         /// <inheritdoc/>
-        public async Task SaveDataPipelineRunWorkItemContentParts(
+        public async Task SaveDataPipelineRunWorkItemParts<T>(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             DataPipelineRunWorkItem dataPipelineRunWorkItem,
-            List<DataPipelineContentItemPart> contentItemParts)
+            IEnumerable<T> contentItemParts,
+            string fileName)
+            where T : class, new()
         {
             var contentItemPartsPath = string.Join('/',
                 [
@@ -279,11 +283,11 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     dataPipelineRun.RunId,
                     "content-items",
                     dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-'),
-                    "content-parts.parquet"
+                    fileName
                 ]);
 
             using var parquetStream = new MemoryStream();
-            await ParquetSerializer.SerializeAsync<DataPipelineContentItemPart>(
+            await ParquetSerializer.SerializeAsync<T>(
                 contentItemParts,
                 parquetStream);
 

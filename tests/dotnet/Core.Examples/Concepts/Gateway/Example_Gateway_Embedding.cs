@@ -53,7 +53,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Gateway
                 filePath,
                 default);
 
-            var contentItemParts = await ParquetSerializer.DeserializeAsync<DataPipelineContentItemPart>(
+            var contentItemParts = await ParquetSerializer.DeserializeAsync<DataPipelineContentItemContentPart>(
                 binaryContent.ToStream());
 
             //Ensure we're moving into a new rate limit window.

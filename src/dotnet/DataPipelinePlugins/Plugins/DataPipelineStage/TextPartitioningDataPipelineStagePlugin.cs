@@ -22,6 +22,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
     {
         protected override string Name => PluginNames.TEXTPARTITIONING_DATAPIPELINESTAGE;
 
+        private const string CONTENT_PARTS_FILE_NAME = "content-parts.parquet";
+
         /// <inheritdoc/>
         public override async Task<PluginResult> ProcessWorkItem(
             DataPipelineDefinition dataPipelineDefinition,
@@ -92,11 +94,12 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 foreach (var itemPart in textPartitioningResult.Value)
                     itemPart.Metadata = new Dictionary<string, string> { { "FileName", originalFileName } };
 
-            await _dataPipelineStateService.SaveDataPipelineRunWorkItemContentParts(
+            await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
                 dataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
-                textPartitioningResult.Value ?? []);
+                textPartitioningResult.Value ?? [],
+                CONTENT_PARTS_FILE_NAME);
 
             return
                 new PluginResult(true, false);
