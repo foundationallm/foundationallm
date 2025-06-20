@@ -34,7 +34,7 @@ The following App Configuration value have been added:
 | `FoundationaLLM:DataPipeline:State:CosmosDB:Containers` | `DataPipelines` | The names of the Azure Cosmos DB containers used by the Data Pipeline State service. |
 | `FoundationaLLM:DataPipeline:State:CosmosDB:Database` | `database` | The Azure Cosmos DB database name used by the Data Pipeline State service. |
 | `FoundationaLLM:DataPipeline:State:CosmosDB:Endpoint` | `<cosmos_db_endpoint>` | The endpoint URL of the Azure Cosmos DB used by the Data Pipeline State service. |
-| `FoundationaLLM:DataPipeline:State:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Data Pipeline State service. |
+| `FoundationaLLM:DataPipeline:State:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Data Pipeline State service. This must be the same storage account as the one used by the FoundationaLLM Context API. |
 | `FoundationaLLM:DataPipeline:State:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Data Pipeline State service to connect to the dedicated storage account. |
 | `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Data Pipeline API. |
 | `FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Data Pipeline API to connect to the dedicated storage account. |
@@ -150,7 +150,8 @@ The following role assignments must be added to the Data Pipeline API's Managed 
 |`App Configuration Data Reader` | Azure | Azure App Configuration service.|
 |`Key Vault Secrets User` | Azure | Azure Key Vault service.|
 |`Key Vault Certificate User` | Azure | Azure Key Vault service.|
-|`Storage Blob Data Contributor` | Azure | Storage account used by the FoundationaLLM Data Pipeline API.|
+|`Storage Blob Data Contributor` | Azure | Main FoundationaLLM storage account.|
+|`Storage Blob Data Contributor` | Azure | Storage account used by the FoundationaLLM Context API.|
 |`Cosmos DB Built-in Data Contributor` | Azure | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline API.|
 |`Storage Queue Data Message Sender` | Azure | Storage account used by the FoundationaLLM Data Pipeline API.|
 |`EventGrid Contributor` | Azure | Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline API.|
@@ -164,7 +165,8 @@ The following role assignments must be added to the Data Pipeline Frontend Worke
 |`App Configuration Data Reader` | Azure | Azure App Configuration service.|
 |`Key Vault Secrets User` | Azure | Azure Key Vault service.|
 |`Key Vault Certificate User` | Azure | Azure Key Vault service.|
-|`Storage Blob Data Contributor` | Azure | Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.|
+|`Storage Blob Data Contributor` | Azure | Main FoundationaLLM storage account.|
+|`Storage Blob Data Contributor` | Azure | Storage account used by the FoundationaLLM Context API.|
 |`Cosmos DB Built-in Data Contributor` | Azure | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Frontend Worker.|
 |`Storage Queue Data Contributor` | Azure | Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.|
 |`EventGrid Contributor` | Azure | Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline Frontend Worker.|
@@ -180,7 +182,8 @@ The following role assignments must be added to the Data Pipeline Backend Worker
 |`App Configuration Data Reader` | Azure | Azure App Configuration service.|
 |`Key Vault Secrets User` | Azure | Azure Key Vault service.|
 |`Key Vault Certificate User` | Azure | Azure Key Vault service.|
-|`Storage Blob Data Contributor` | Azure | Storage account used by the FoundationaLLM Data Pipeline Backend Worker.|
+|`Storage Blob Data Contributor` | Azure | Main FoundationaLLM storage account.|
+|`Storage Blob Data Contributor` | Azure | Storage account used by the FoundationaLLM Context API.|
 |`Cosmos DB Built-in Data Contributor` | Azure | Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Backend Worker.|
 |`Storage Queue Data Contributor` | Azure | Storage account used by the FoundationaLLM Data Pipeline Backend Worker.|
 |`EventGrid Contributor` | Azure | Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline Backend Worker.|
