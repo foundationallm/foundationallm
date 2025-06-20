@@ -178,6 +178,15 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Dependencies = []
                 },
                 new() {
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE}",
+                    Name = PluginNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE,
+                    DisplayName = "Knowledge Extraction Data Pipeline Stage (FoundationaLLM)",
+                    Description = "Provides the FoundationaLLM standard implementation for knowledge extraction data pipeline stages.",
+                    Category = PluginCategoryNames.DataPipelineStage,
+                    Parameters = [],
+                    Dependencies = []
+                },
+                new() {
                     ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.PDF_CONTENTTEXTEXTRACTION}",
                     Name = PluginNames.PDF_CONTENTTEXTEXTRACTION,
                     DisplayName = "PDF Content Text Extraction (FoundationaLLM)",
