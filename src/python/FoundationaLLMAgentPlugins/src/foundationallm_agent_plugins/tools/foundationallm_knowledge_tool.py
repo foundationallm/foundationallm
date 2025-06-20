@@ -55,6 +55,8 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         # When configuring the tool on an agent, the description will be set providing context to the document source.
         self.description = self.tool_config.description or "Answers questions by searching through documents."
 
+        self.vector_store_names = self.tool_config.properties.get('vector_stores', [])
+
     def _run(self,
             prompt: str,
             file_name: Optional[str] = None,
@@ -78,10 +80,15 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         if runnable_config is None:
             raise ToolException("RunnableConfig is required for the execution of the tool.")
 
-        if RunnableConfigKeys.CONVERSATION_ID not in runnable_config['configurable']:
-            raise ToolException("RunnableConfig must contain a conversation_id for the execution of the tool.")
+        # Finalize the list of vector store names to be used.
+        if RunnableConfigKeys.CONVERSATION_ID in runnable_config['configurable']:
+            conversation_id = runnable_config['configurable'][RunnableConfigKeys.CONVERSATION_ID]
+            current_vector_store_names = [conversation_id if x == '__CONVERSATION__' else x for x in self.vector_store_names]
+        else:
+            current_vector_store_names = [x for x in self.vector_store_names if x != '__CONVERSATION__']
 
-        conversation_id = runnable_config['configurable'][RunnableConfigKeys.CONVERSATION_ID]
+        if len(current_vector_store_names) == 0:
+            raise ToolException("No vector store names provided in the tool configuration.")
 
         user_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT] \
             if RunnableConfigKeys.ORIGINAL_USER_PROMPT in runnable_config['configurable'] \
@@ -92,7 +99,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         original_prompt = user_prompt_rewrite or user_prompt or prompt
 
         retriever = self._get_document_retriever(
-            conversation_id=conversation_id,
+            vector_store_name=current_vector_store_names[0],
             file_name=file_name)
         docs = retriever.invoke(prompt)
         context = retriever.format_documents(docs)
@@ -107,7 +114,9 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         metadata = {
             'prompt_tokens': str(input_tokens),
             'completion_tokens': str(output_tokens),
-            'tool_input': prompt
+            'input_prompt': prompt,
+            'input_file_name': file_name,
+            'vector_store_names': ', '.join(current_vector_store_names)
         }
         content_artifacts.append(ContentArtifact(
             id = self.name,
@@ -116,13 +125,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             source = self.name,
             type = ContentArtifactTypeNames.TOOL_EXECUTION,
             metadata=metadata))
-        # Full prompt recording content artifact
-        #content_artifacts.append(ContentArtifact(
-        #    id = "full_prompt",
-        #    title="Full prompt context",
-        #    content = rag_prompt,
-        #    source = "tool",
-        #    type = "full_prompt"))
+
         return completion.content, FoundationaLLMToolResult(
             content=completion.content,
             content_artifacts=content_artifacts,
@@ -181,16 +184,17 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
 
     def _get_document_retriever(
             self,
-            conversation_id: str,
+            vector_store_name: str,
             file_name:Optional[str] = None) -> AzureAISearchConversationRetriever:
         """
         Gets the document retriever
         """
         retriever = AzureAISearchConversationRetriever(
-            conversation_id=conversation_id,
+            vector_store_name=vector_store_name,
             file_name=file_name,
             vector_database_configuration = self.vector_database_configuration,
             gateway_text_embedding_service=self.embedding_service
         )
 
         return retriever
+
