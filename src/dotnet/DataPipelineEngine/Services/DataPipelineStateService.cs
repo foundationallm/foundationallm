@@ -169,7 +169,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     $"{DateTimeOffset.UtcNow:yyyy-MM-dd}",
                     dataPipelineRun.RunId,
                     "content-items",
-                    dataPipelineRunWorkItem.ContentItemCanonicalId,
+                    dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-'),
                     artifactsNameFilter
                 ]);
 
@@ -211,7 +211,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     $"{DateTimeOffset.UtcNow:yyyy-MM-dd}",
                     dataPipelineRun.RunId,
                     "content-items",
-                    dataPipelineRunWorkItem.ContentItemCanonicalId
+                    dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-')
                 ]);
 
             var artifactsWithError = new List<string>();
@@ -248,7 +248,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     $"{DateTimeOffset.UtcNow:yyyy-MM-dd}",
                     dataPipelineRun.RunId,
                     "content-items",
-                    dataPipelineRunWorkItem.ContentItemCanonicalId,
+                    dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-'),
                     "content-parts.parquet"
                 ]);
 
@@ -278,7 +278,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     $"{DateTimeOffset.UtcNow:yyyy-MM-dd}",
                     dataPipelineRun.RunId,
                     "content-items",
-                    dataPipelineRunWorkItem.ContentItemCanonicalId,
+                    dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-'),
                     "content-parts.parquet"
                 ]);
 
