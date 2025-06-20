@@ -111,14 +111,18 @@ namespace FoundationaLLM.Common.Interfaces
         /// <summary>
         /// Loads the content item parts associated with a data pipeline run work item.
         /// </summary>
+        /// <typeparam name="T">The type of the content item parts to be loaded.</typeparam>
         /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
         /// <param name="dataPipelineRun">The data pipeline run item associated with the work item.</param>
         /// <param name="dataPipelineRunWorkItem">The data pipeline run work item.</param>
+        /// <param name="fileName"> The name of the file that contains the content item parts.</param>
         /// <returns>A list with the content item parts associated with the data pipeline run work item.</returns>
-        Task<List<DataPipelineContentItemPart>> LoadDataPipelineRunWorkItemContentParts(
+        Task<IEnumerable<T>> LoadDataPipelineRunWorkItemParts<T>(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
-            DataPipelineRunWorkItem dataPipelineRunWorkItem);
+            DataPipelineRunWorkItem dataPipelineRunWorkItem,
+            string fileName)
+            where T : class, new();
 
         /// <summary>
         /// Saves the artifacts associated with a data pipeline run work item.
@@ -137,16 +141,19 @@ namespace FoundationaLLM.Common.Interfaces
         /// <summary>
         /// Saves the content item parts associated with a data pipeline run work item.
         /// </summary>
+        /// <typeparam name="T">The type of the content item parts to be loaded.</typeparam>
         /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
         /// <param name="dataPipelineRun">The data pipeline run item associated with the work item.</param>
         /// <param name="dataPipelineRunWorkItem">The data pipeline run work item.</param>
         /// <param name="contentItemParts">The list with the content item parts.</param>
-        /// <returns></returns>
-        Task SaveDataPipelineRunWorkItemContentParts(
+        /// <param name="fileName"> The name of the file that contains the content item parts.</param>
+        Task SaveDataPipelineRunWorkItemParts<T>(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             DataPipelineRunWorkItem dataPipelineRunWorkItem,
-            List<DataPipelineContentItemPart> contentItemParts);
+            IEnumerable<T> contentItemParts,
+            string fileName)
+            where T : class, new();
 
         /// <summary>
         /// Starts processing data pipeline run work items.

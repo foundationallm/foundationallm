@@ -36,6 +36,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             .GetServices<IResourceProviderService>()
             .SingleOrDefault(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Vector);
 
+        private const string CONTENT_PARTS_FILE_NAME = "content-parts.parquet";
+
         // <inheritdoc/>
         public override async Task<PluginResult> ProcessWorkItem(
             DataPipelineDefinition dataPipelineDefinition,
@@ -118,16 +120,11 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     }
                 });
 
-            var contentItemParts = await _dataPipelineStateService.LoadDataPipelineRunWorkItemContentParts(
+            var contentItemParts = await _dataPipelineStateService.LoadDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
                 dataPipelineDefinition,
                 dataPipelineRun,
-                dataPipelineRunWorkItem);
-
-            foreach (var contentItemPart in contentItemParts)
-                contentItemPart.IndexEntryId = GetIndexEntryId(
-                    vectorStoreId!,
-                    contentItemPart.ContentItemCanonicalId!,
-                    contentItemPart.Position);
+                dataPipelineRunWorkItem,
+                CONTENT_PARTS_FILE_NAME);
 
             await azureAISearchService.UploadDocuments(
                 vectorDatabase.DatabaseName,
@@ -137,27 +134,14 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     cip.IndexEntryId!, vectorStoreId!, cip.Content!, cip.Embedding!, cip.Metadata!
                 })]);
 
-            await _dataPipelineStateService.SaveDataPipelineRunWorkItemContentParts(
+            await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
                 dataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
-                contentItemParts);
+                contentItemParts,
+                CONTENT_PARTS_FILE_NAME);
 
             return new PluginResult(true, false);
-        }
-
-        private string GetIndexEntryId(
-            string vectorStoreId,
-            string contentItemCanonicalId,
-            int contentItemPartPosition)
-        {
-            var id = $"{vectorStoreId}-{contentItemCanonicalId}-{contentItemPartPosition:D6}";
-
-            return
-                Convert.ToBase64String(
-                    MD5.HashData(Encoding.UTF8.GetBytes(id)))
-                .Replace("+", "--")
-                .Replace("/", "--");
         }
     }
 }

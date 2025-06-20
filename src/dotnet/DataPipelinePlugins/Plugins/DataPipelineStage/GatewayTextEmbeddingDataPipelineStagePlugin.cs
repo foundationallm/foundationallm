@@ -27,6 +27,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
     {
         protected override string Name => PluginNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE;
 
+        private const string CONTENT_PARTS_FILE_NAME = "content-parts.parquet";
+
         /// <inheritdoc/>
         public override async Task<PluginResult> ProcessWorkItem(
             DataPipelineDefinition dataPipelineDefinition,
@@ -45,10 +47,11 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 throw new PluginException(
                     $"The plugin {Name} requires the {PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS} parameter.");
 
-            var contentItemParts = await _dataPipelineStateService.LoadDataPipelineRunWorkItemContentParts(
+            var contentItemParts = await _dataPipelineStateService.LoadDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
                 dataPipelineDefinition,
                 dataPipelineRun,
-                dataPipelineRunWorkItem);
+                dataPipelineRunWorkItem,
+                CONTENT_PARTS_FILE_NAME);
 
             using var scope = _serviceProvider.CreateScope();
 
@@ -103,11 +106,12 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     throw new PluginException($"The Gateway API did not return an embedding for the content item part at position {contentItemPart.Position}");
             }
 
-            await _dataPipelineStateService.SaveDataPipelineRunWorkItemContentParts(
+            await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
                 dataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
-                contentItemParts);
+                contentItemParts,
+                CONTENT_PARTS_FILE_NAME);
 
             return new PluginResult(true, false);
         }

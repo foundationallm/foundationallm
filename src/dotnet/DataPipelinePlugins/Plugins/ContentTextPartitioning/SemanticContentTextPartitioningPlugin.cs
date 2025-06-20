@@ -19,7 +19,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
         protected override string Name => PluginNames.SEMANTIC_CONTENTTEXTPARTITIONING;
 
         /// <inheritdoc/>
-        public async Task<PluginResult<List<DataPipelineContentItemPart>>> PartitionText(
+        public async Task<PluginResult<List<DataPipelineContentItemContentPart>>> PartitionText(
             string contentItemCanonicalId,
             string text) =>
             throw new NotImplementedException();

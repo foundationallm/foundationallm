@@ -3,12 +3,12 @@
 namespace FoundationaLLM.Common.Models.DataPipelines
 {
     /// <summary>
-    /// Represents a part of a content item.
+    /// Represents the common properties of a content item part.
     /// </summary>
-    public class DataPipelineContentItemPart
+    public class DataPipelineContentItemPartBase
     {
         /// <summary>
-        /// Gets or sets the canonical identifier of the content item part.
+        /// Gets or sets the canonical identifier of the content item.
         /// </summary>
         [JsonPropertyName("content_item_canonical_id")]
         public string? ContentItemCanonicalId { get; set; }
@@ -18,24 +18,6 @@ namespace FoundationaLLM.Common.Models.DataPipelines
         /// </summary>
         [JsonPropertyName("position")]
         public int Position { get; set; }
-
-        /// <summary>
-        /// Gets or sets the text content of the content item part.
-        /// </summary>
-        [JsonPropertyName("content")]
-        public string? Content { get; set; }
-
-        /// <summary>
-        /// Gets or sets the size of the content item part in tokens.
-        /// </summary>
-        [JsonPropertyName("content_size_tokens")]
-        public int ContentSizeTokens { get; set; }
-
-        /// <summary>
-        /// Gets or sets the embedding of the content item part.
-        /// </summary>
-        [JsonPropertyName("embedding")]
-        public float[]? Embedding { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the index entry associated with this content item part.
