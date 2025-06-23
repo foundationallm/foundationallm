@@ -161,13 +161,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 },
                 AgentResourceTypeNames.Agents => resourcePath.Action switch
                 {
-                    ResourceProviderActions.CheckName => await CheckResourceName<AgentBase>(
-                        JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
-
+                    ResourceProviderActions.CheckName => await CheckAgentName(authorizationResult, serializedAction),
                     ResourceProviderActions.Purge => await PurgeResource<AgentBase>(resourcePath),
-
                     ResourceProviderActions.SetDefault => await SetDefaultResource<AgentBase>(resourcePath),
-
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
@@ -237,6 +233,18 @@ namespace FoundationaLLM.Agent.ResourceProviders
         #endregion
 
         #region Resource management
+
+        private async Task<ResourceNameCheckResult> CheckAgentName(
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction)
+        {
+            if (!authorizationResult.Authorized
+                && !authorizationResult.HasRequiredRole)
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+
+            return await CheckResourceName<AgentBase>(
+                JsonSerializer.Deserialize<ResourceName>(serializedAction)!);
+        }
 
         private async Task<ResourceProviderUpsertResult> UpdateAgent(
             ResourcePath resourcePath,

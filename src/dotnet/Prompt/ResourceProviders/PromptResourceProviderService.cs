@@ -8,6 +8,7 @@ using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.Prompt.Models;
@@ -121,8 +122,7 @@ namespace FoundationaLLM.Prompt.ResourceProviders
                 },
                 PromptResourceTypeNames.Prompts => resourcePath.Action switch
                 {
-                    ResourceProviderActions.CheckName => await CheckResourceName<PromptBase>(
-                        JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
+                    ResourceProviderActions.CheckName => await CheckPromptName(authorizationResult, serializedAction),
                     ResourceProviderActions.Purge => await PurgeResource<PromptBase>(resourcePath),
                     _ => throw new ResourceProviderException(
                             $"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
@@ -157,6 +157,18 @@ namespace FoundationaLLM.Prompt.ResourceProviders
         #endregion
 
         #region Resource management
+
+        private async Task<ResourceNameCheckResult> CheckPromptName(
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction)
+        {
+            if (!authorizationResult.Authorized
+                && !authorizationResult.HasRequiredRole)
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+
+            return await CheckResourceName<PromptBase>(
+                JsonSerializer.Deserialize<ResourceName>(serializedAction)!);
+        }
 
         private async Task<ResourceProviderUpsertResult> UpdatePrompt(ResourcePath resourcePath, string serializedPrompt, UnifiedUserIdentity userIdentity)
         {
