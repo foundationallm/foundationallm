@@ -30,7 +30,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Graph.Models;
 using System.Data;
 using System.Text;
 using System.Text.Json;
@@ -965,13 +964,26 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 }
             }
 
-            return existingAssociations.Select(fileToolAssociation =>
+            // Ensure file associations are always consistent.
+            // Remove any file associations that do not have a corresponding agent file.
+            if (existingAssociations.Any(x => !agentFiles.Any(f => f.ObjectId == x.FileObjectId)))
+            {
+                existingAssociations.RemoveAll(x => !agentFiles.Any(f => f.ObjectId == x.FileObjectId));
+                await _storageService.WriteFileAsync(
+                    _storageContainerName,
+                    filePath,
+                    JsonSerializer.Serialize(existingAssociations),
+                    default,
+                    default);
+            }
+
+            return [.. existingAssociations.Select(fileToolAssociation =>
             new ResourceProviderGetResult<AgentFileToolAssociation>()
             {
                 Resource = fileToolAssociation,
                 Actions = [],
                 Roles = []
-            }).ToList();
+            })];
         }
 
         private async Task<ResourceProviderUpsertResult> UpdateFileToolAssociations(
