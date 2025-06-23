@@ -258,16 +258,7 @@
 		"permissions": [
 			{
 				"actions": [
-					"FoundationaLLM.Agent/agents/read",
-					"FoundationaLLM.Agent/workflows/read",
-					"FoundationaLLM.Agent/tools/read",
-					"FoundationaLLM.Prompt/prompts/read",
-					"FoundationaLLM.DataSource/dataSources/read",
-					"FoundationaLLM.Vectorization/textEmbeddingProfiles/read",
-					"FoundationaLLM.Vectorization/indexingProfiles/read",
-					"FoundationaLLM.Configuration/apiEndpointConfigurations/read",
-					"FoundationaLLM.AIModel/aiModels/read",
-					"FoundationaLLM.Plugin/plugins/read"
+					"FoundationaLLM.AIModel/aiModels/read"
 				],
 				"not_actions": [],
 				"data_actions": [],
@@ -285,6 +276,28 @@
 		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/8c5ea0d3-f5a1-4be5-90a7-a12921c45542",
 		"display_name": "Agent Access Tokens Contributor",
 		"description": "Create new agent access tokens.",
+		"assignable_scopes": [
+			"/"
+		],
+		"permissions": [
+			{
+				"actions": [],
+				"not_actions": [],
+				"data_actions": [],
+				"not_data_actions": []
+			}
+		],
+		"created_on": "2025-05-01T00:00:00.0000000Z",
+		"updated_on": "2025-05-01T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
+	},
+	{
+		"type": "FoundationaLLM.Authorization/roleDefinitions",
+		"name": "479e7b36-5965-4a7f-baf7-84e57be854aa",
+		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/479e7b36-5965-4a7f-baf7-84e57be854aa",
+		"display_name": "Prompts Contributor",
+		"description": "Create new prompts.",
 		"assignable_scopes": [
 			"/"
 		],

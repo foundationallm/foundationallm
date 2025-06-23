@@ -161,13 +161,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 },
                 AgentResourceTypeNames.Agents => resourcePath.Action switch
                 {
-                    ResourceProviderActions.CheckName => await CheckResourceName<AgentBase>(
-                        JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
-
+                    ResourceProviderActions.CheckName => await CheckAgentName(authorizationResult, serializedAction),
                     ResourceProviderActions.Purge => await PurgeResource<AgentBase>(resourcePath),
-
                     ResourceProviderActions.SetDefault => await SetDefaultResource<AgentBase>(resourcePath),
-
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
@@ -237,6 +233,18 @@ namespace FoundationaLLM.Agent.ResourceProviders
         #endregion
 
         #region Resource management
+
+        private async Task<ResourceNameCheckResult> CheckAgentName(
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction)
+        {
+            if (!authorizationResult.Authorized
+                && !authorizationResult.HasRequiredRole)
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+
+            return await CheckResourceName<AgentBase>(
+                JsonSerializer.Deserialize<ResourceName>(serializedAction)!);
+        }
 
         private async Task<ResourceProviderUpsertResult> UpdateAgent(
             ResourcePath resourcePath,
@@ -965,13 +973,26 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 }
             }
 
-            return existingAssociations.Select(fileToolAssociation =>
+            // Ensure file associations are always consistent.
+            // Remove any file associations that do not have a corresponding agent file.
+            if (existingAssociations.Any(x => !agentFiles.Any(f => f.ObjectId == x.FileObjectId)))
+            {
+                existingAssociations.RemoveAll(x => !agentFiles.Any(f => f.ObjectId == x.FileObjectId));
+                await _storageService.WriteFileAsync(
+                    _storageContainerName,
+                    filePath,
+                    JsonSerializer.Serialize(existingAssociations),
+                    default,
+                    default);
+            }
+
+            return [.. existingAssociations.Select(fileToolAssociation =>
             new ResourceProviderGetResult<AgentFileToolAssociation>()
             {
                 Resource = fileToolAssociation,
                 Actions = [],
                 Roles = []
-            }).ToList();
+            })];
         }
 
         private async Task<ResourceProviderUpsertResult> UpdateFileToolAssociations(
@@ -1088,6 +1109,42 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     }
                 }
             }
+
+            // Ensure file associations that are no longer present in the request are removed.
+            var associationNamesToRemove = new List<string>();
+            foreach (var existingAssociation in existingAssociations.Where(ea =>
+                !agentFileToolAssociationRequest.AgentFileToolAssociations.ContainsKey(ea.FileObjectId)))
+            {
+                foreach (var toolObjectId in existingAssociation.AssociatedResourceObjectIds!.Keys)
+                {
+                    try
+                    {
+                        await RemoveFileToolAssociation(
+                            existingAssociation.FileObjectId,
+                            toolObjectId,
+                            existingAssociation,
+                            resourcePath,
+                            userIdentity);
+                        // Only remove associations that were successfully processed for deletion.
+                        // If an error occurs, the association will not be removed and will be retried next time.
+                        associationNamesToRemove.Add(existingAssociation.Name);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex,
+                            "Error when removing the association between the {File} file and the {Tool} tool.",
+                            existingAssociation.FileObjectId, toolObjectId);
+
+                        errors.Add(new AgentFileToolAssociationError()
+                        {
+                            FileObjectId = existingAssociation.FileObjectId,
+                            ToolObjectId = toolObjectId,
+                            ErrorMessage = $"Error when removing the association between the {existingAssociation.FileObjectId} file and the {toolObjectId} tool."
+                        });
+                    }
+                }
+            }
+            existingAssociations.RemoveAll(x => associationNamesToRemove.Contains(x.Name));
 
             await _storageService.WriteFileAsync(
                 _storageContainerName,
