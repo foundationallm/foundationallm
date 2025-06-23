@@ -555,7 +555,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             var upsertResult = new ResourceProviderUpsertResult
             {
                 ObjectId = agent!.ObjectId,
-                ResourceExists = existingAgentReference is null
+                ResourceExists = existingAgentReference is not null
             };
 
             if (virtualSecurityGroupGenerated)
