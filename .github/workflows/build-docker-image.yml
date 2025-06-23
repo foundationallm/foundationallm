@@ -35,6 +35,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Run versioning script
+      run: bash ./versioning.sh
+      id: versioning
+
     - name: Get Container Registry Password
       uses: actions/github-script@v7
       id: set-registry-password
