@@ -29,7 +29,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     ],
                     Actions = [
                         new ResourceTypeAction(ResourceProviderActions.CheckName, false, true, [
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Read}|{RoleDefinitionNames.Agents_Contributor}", [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
                         ]),
                         new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])

@@ -290,16 +290,7 @@ namespace FoundationaLLM.Common.Models.Authorization
                             new RoleDefinitionPermissions
                             {
                                 Actions = [
-                                    "FoundationaLLM.Agent/agents/read",
-                                    "FoundationaLLM.Agent/workflows/read",
-                                    "FoundationaLLM.Agent/tools/read",
-                                    "FoundationaLLM.Prompt/prompts/read",
-                                    "FoundationaLLM.DataSource/dataSources/read",
-                                    "FoundationaLLM.Vectorization/textEmbeddingProfiles/read",
-                                    "FoundationaLLM.Vectorization/indexingProfiles/read",
-                                    "FoundationaLLM.Configuration/apiEndpointConfigurations/read",
-                                    "FoundationaLLM.AIModel/aiModels/read",
-                                    "FoundationaLLM.Plugin/plugins/read",],
+                                    "FoundationaLLM.AIModel/aiModels/read",],
                                 NotActions = [],
                                 DataActions = [],
                                 NotDataActions = [],
@@ -319,6 +310,31 @@ namespace FoundationaLLM.Common.Models.Authorization
                         ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/8c5ea0d3-f5a1-4be5-90a7-a12921c45542",
                         DisplayName = "Agent Access Tokens Contributor",
                         Description = "Create new agent access tokens.",
+                        AssignableScopes = [
+                            "/",],
+                        Permissions = [                            
+                            new RoleDefinitionPermissions
+                            {
+                                Actions = [],
+                                NotActions = [],
+                                DataActions = [],
+                                NotDataActions = [],
+                            },],
+                        CreatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
+                        UpdatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
+                        CreatedBy = null,
+                        UpdatedBy = null
+                    }
+                },
+                {
+                    "/providers/FoundationaLLM.Authorization/roleDefinitions/479e7b36-5965-4a7f-baf7-84e57be854aa",
+                    new RoleDefinition
+                    {
+                        Name = "479e7b36-5965-4a7f-baf7-84e57be854aa",
+                        Type = "FoundationaLLM.Authorization/roleDefinitions",
+                        ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/479e7b36-5965-4a7f-baf7-84e57be854aa",
+                        DisplayName = "Prompts Contributor",
+                        Description = "Create new prompts.",
                         AssignableScopes = [
                             "/",],
                         Permissions = [                            
