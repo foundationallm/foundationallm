@@ -30,6 +30,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Graph.Models;
 using System.Data;
 using System.Text;
 using System.Text.Json;
@@ -1100,6 +1101,42 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     }
                 }
             }
+
+            // Ensure file associations that are no longer present in the request are removed.
+            var associationNamesToRemove = new List<string>();
+            foreach (var existingAssociation in existingAssociations.Where(ea =>
+                !agentFileToolAssociationRequest.AgentFileToolAssociations.ContainsKey(ea.FileObjectId)))
+            {
+                foreach (var toolObjectId in existingAssociation.AssociatedResourceObjectIds!.Keys)
+                {
+                    try
+                    {
+                        await RemoveFileToolAssociation(
+                            existingAssociation.FileObjectId,
+                            toolObjectId,
+                            existingAssociation,
+                            resourcePath,
+                            userIdentity);
+                        // Only remove associations that were successfully processed for deletion.
+                        // If an error occurs, the association will not be removed and will be retried next time.
+                        associationNamesToRemove.Add(existingAssociation.Name);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex,
+                            "Error when removing the association between the {File} file and the {Tool} tool.",
+                            existingAssociation.FileObjectId, toolObjectId);
+
+                        errors.Add(new AgentFileToolAssociationError()
+                        {
+                            FileObjectId = existingAssociation.FileObjectId,
+                            ToolObjectId = toolObjectId,
+                            ErrorMessage = $"Error when removing the association between the {existingAssociation.FileObjectId} file and the {toolObjectId} tool."
+                        });
+                    }
+                }
+            }
+            existingAssociations.RemoveAll(x => associationNamesToRemove.Contains(x.Name));
 
             await _storageService.WriteFileAsync(
                 _storageContainerName,
