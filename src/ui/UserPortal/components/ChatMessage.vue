@@ -729,15 +729,26 @@ export default {
 			this.markedRenderer = new marked.Renderer();
 
 			// Code blocks
-			this.markedRenderer.code = (code) => {
-				const language = code.lang;
-				const sourceCode = code.text || code;
+			this.markedRenderer.code = (code, infostring = '', escaped = true) => {
+				let language = '';
+				let sourceCode = '';
+
+				// Handle both string and object input for code
+				if (typeof code === 'object' && code !== null) {
+					language = code.lang || '';
+					sourceCode = code.text || '';
+				} else {
+					sourceCode = code;
+					language = infostring || '';
+				}
+
 				const validLanguage = !!(language && hljs.getLanguage(language));
 				const highlighted = validLanguage
 					? hljs.highlight(sourceCode, { language })
 					: hljs.highlightAuto(sourceCode);
 				const languageClass = validLanguage ? `hljs language-${language}` : 'hljs';
 				const encodedCode = encodeURIComponent(sourceCode);
+
 				return `<pre><code class="${languageClass}" data-code="${encodedCode}" data-language="${highlighted.language}">${highlighted.value}</code></pre>`;
 			};
 

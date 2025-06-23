@@ -586,7 +586,7 @@ export const useAppStore = defineStore('app', {
 			// Indicate that a message in this session is being polled for completion.
 			this.pollingSession = sessionId;
 
-			this.pollingInterval = setInterval(async () => {
+			const poll = async () => {
 				try {
 					const statusResponse = await api.checkProcessStatus(message.operation_id);
 					const updatedMessage = statusResponse.result ?? {};
@@ -609,16 +609,23 @@ export const useAppStore = defineStore('app', {
 
 					if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
 						this.stopPolling(sessionId);
+						return;
 					}
 				} catch (error) {
 					console.error(error);
 					this.stopPolling(sessionId);
+					return;
 				}
-			}, this.getPollingRateMS());
+				
+				// Wait for the polling interval before the next call
+        		this.pollingInterval = setTimeout(poll, this.getPollingRateMS());
+			};
+
+			poll();
 		},
 
 		stopPolling(/* sessionId: string */) {
-			clearInterval(this.pollingInterval);
+			clearTimeout(this.pollingInterval);
 			this.pollingInterval = null;
 			this.pollingSession = null;
 			this.sessionMessagePending = false;
