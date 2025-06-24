@@ -4,24 +4,45 @@ namespace FoundationaLLM.Gateway.Services
 {
     public class GatewayMetrics
     {
-        private readonly Counter<long> _textChunksEmbeddedCount;
-        private readonly Counter<long> _textChunksEmbeddedSizeTokens;
+        private readonly Counter<long> _textChunksEmbeddingsCount;
+        private readonly Counter<long> _textChunksEmbeddingsSizeTokens;
+
+        private readonly Counter<long> _textChunksCompletionsCount;
+        private readonly Counter<long> _textChunksCompletionsSizeTokens;
 
         public GatewayMetrics(IMeterFactory meterFactory)
         {
             var meter = meterFactory.Create("FoundationaLLM.Gateway");
-            _textChunksEmbeddedCount = meter.CreateCounter<long>(
+            _textChunksEmbeddingsCount = meter.CreateCounter<long>(
                 "foundationallm.gateway.embedding.text_chunks_count",
-                description: "The number of text chunks embedded in the FoundationaLLM Gateway API.");
-            _textChunksEmbeddedSizeTokens = meter.CreateCounter<long>(
+                description: "The number of text chunks submitted to embedding operations in the FoundationaLLM Gateway API.");
+            _textChunksEmbeddingsSizeTokens = meter.CreateCounter<long>(
                 "foundationallm.gateway.embedding.text_chunks_size_tokens",
-                description: "The number of tokens in the text chunks embedded in the FoundationaLLM Gateway API.");
+                description: "The number of tokens in the text chunks submitted to embedding operations in the FoundationaLLM Gateway API.");
+            _textChunksCompletionsCount = meter.CreateCounter<long>(
+                "foundationallm.gateway.completion.text_chunks_count",
+                description: "The number of text chunks submitted to completion operations in the FoundationaLLM Gateway API.");
+            _textChunksCompletionsSizeTokens = meter.CreateCounter<long>(
+                "foundationallm.gateway.completion.text_chunks_size_tokens",
+                description: "The number of tokens in the text chunks submitted to completion operations in the FoundationaLLM Gateway API.");
         }
 
-        public void IncrementTextChunksEmbedded(long count) =>
-            _textChunksEmbeddedCount.Add(count);
+        public void IncrementTextChunkMeters(long embeddingsCount, long completionsCount)
+        {
+            if (embeddingsCount > 0)
+                _textChunksEmbeddingsCount.Add(embeddingsCount);
 
-        public void IncrementTextChunksSizeTokens(long size) =>
-            _textChunksEmbeddedSizeTokens.Add(size);
+            if (completionsCount > 0)
+                _textChunksCompletionsCount.Add(completionsCount);
+        }
+
+        public void IncrementTextChunksSizeTokens(long embeddingsSize, long completionsSize)
+        {
+            if (embeddingsSize > 0)
+                _textChunksEmbeddingsSizeTokens.Add(embeddingsSize);
+
+            if (completionsSize > 0)
+                _textChunksCompletionsSizeTokens.Add(completionsSize);
+        }
     }
 }

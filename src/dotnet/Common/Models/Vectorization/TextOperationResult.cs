@@ -5,7 +5,7 @@ namespace FoundationaLLM.Common.Models.Vectorization
     /// <summary>
     /// The result of a text embedding request.
     /// </summary>
-    public class TextEmbeddingResult
+    public class TextOperationResult
     {
         /// <summary>
         /// Indicates whether the text embedding operation is still in progress.

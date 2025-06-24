@@ -58,6 +58,13 @@
             && (Capabilities["embeddings"] == "true");
 
         /// <summary>
+        /// Indicates whether the model in the deployment can perform completions.
+        /// </summary>
+        public bool CanDoCompletions =>
+            (Capabilities?.ContainsKey("chatCompletion") ?? false)
+            && (Capabilities["chatCompletion"] == "true");
+
+        /// <summary>
         /// The maximum number of inputs that can be sent to the model for embeddings.
         /// </summary>
         public int EmbeddingsMaxInputs =>

@@ -15,14 +15,14 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="deploymentName"> The name of the model deployment to use for embedding.</param>
         /// <param name="embeddingDimensions"> The number of dimensions for the embedding model.</param>
         /// <param name="prioritized">Indicates whether the request should be prioritized.</param>
-        /// <returns>A <see cref="TextEmbeddingResult"/> object containing the result of the text embedding operation.</returns>
-        Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string deploymentName, int embeddingDimensions, bool prioritized);
+        /// <returns>A <see cref="TextOperationResult"/> object containing the result of the text embedding operation.</returns>
+        Task<TextOperationResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string deploymentName, int embeddingDimensions, bool prioritized);
 
         /// <summary>
         /// Retrieves the result of a long-running text embedding operation.
         /// </summary>
         /// <param name="operationId">The unique identifier of the long-running operation.</param>
-        /// <returns>A <see cref="TextEmbeddingResult"/> object containing the result of the text embedding operation.</returns>
-        Task<TextEmbeddingResult> GetEmbeddingsAsync(string operationId);
+        /// <returns>A <see cref="TextOperationResult"/> object containing the result of the text embedding operation.</returns>
+        Task<TextOperationResult> GetEmbeddingsAsync(string operationId);
     }
 }

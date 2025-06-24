@@ -51,7 +51,7 @@ namespace FoundationaLLM.Vectorization.Handlers
             var textEmbeddingProfile = textEmbeddingProfileResourceBase as TextEmbeddingProfile;
             var embeddingModelName = textEmbeddingProfile!.Settings?.TryGetValue("model_name", out var modelName) == true ? modelName : null;
 
-            var embeddingResult = default(TextEmbeddingResult);
+            var embeddingResult = default(TextOperationResult);
 
             if (request.RunningOperations.TryGetValue(_stepId, out var runningOperation))
             {

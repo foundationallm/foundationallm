@@ -40,6 +40,7 @@
     <ProjectReference Include="..\..\..\src\dotnet\DataPipeline\DataPipeline.csproj" />
     <ProjectReference Include="..\..\..\src\dotnet\DataSource\DataSource.csproj" />
     <ProjectReference Include="..\..\..\src\dotnet\ManagementClient\ManagementClient.csproj" />
+    <ProjectReference Include="..\..\..\src\dotnet\Prompt\Prompt.csproj" />
     <ProjectReference Include="..\..\..\src\dotnet\SemanticKernel\SemanticKernel.csproj" />
     <ProjectReference Include="..\TestUtils\TestUtils.csproj" />
   </ItemGroup>

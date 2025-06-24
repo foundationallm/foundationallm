@@ -1,12 +1,12 @@
 ﻿using FoundationaLLM.Common.Models.Vectorization;
 using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models.Gateway
+namespace FoundationaLLM.Gateway.Models
 {
     /// <summary>
     /// Provides metrics related to text embedding requests submitted by the FoundationaLLM Gateway.
     /// </summary>
-    public class GatewayTextEmbeddingRequest
+    public class GatewayTextOperationRequest
     {
         /// <summary>
         /// The unique identifier of the request.

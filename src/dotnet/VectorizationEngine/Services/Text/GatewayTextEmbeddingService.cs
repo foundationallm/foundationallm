@@ -25,7 +25,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
         private readonly ILoggerFactory _loggerFactory = loggerFactory;
 
         /// <inheritdoc/>
-        public async Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string modelName, int embeddingDimensions, bool Prioritized)
+        public async Task<TextOperationResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string modelName, int embeddingDimensions, bool Prioritized)
         {
             var gatewayClient = await GetGatewayServiceClientAsync();
             return await gatewayClient.StartEmbeddingOperation(_instanceSettings.Id, new TextEmbeddingRequest
@@ -38,7 +38,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
         }          
 
         /// <inheritdoc/>
-        public async Task<TextEmbeddingResult> GetEmbeddingsAsync(string operationId)
+        public async Task<TextOperationResult> GetEmbeddingsAsync(string operationId)
         {
             var gatewayClient = await GetGatewayServiceClientAsync();
             return await gatewayClient.GetEmbeddingOperationResult(_instanceSettings.Id, operationId);
