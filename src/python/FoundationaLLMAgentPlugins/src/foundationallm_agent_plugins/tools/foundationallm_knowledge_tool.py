@@ -125,6 +125,22 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             source = self.name,
             type = ContentArtifactTypeNames.TOOL_EXECUTION,
             metadata=metadata))
+        
+        reference_file_names = list(set([d.metadata['FileName'] for d in docs]))
+        reference_content_artifacts = [
+            ContentArtifact(
+                id = file_name,
+                title = file_name,
+                content = None,
+                source = None,
+                type = ContentArtifactTypeNames.FILE,
+                metadata = {
+                    'original_file_name': file_name,
+                }
+            ) for file_name in reference_file_names
+        ]
+
+        content_artifacts.extend(reference_content_artifacts)
 
         return completion.content, FoundationaLLMToolResult(
             content=completion.content,

@@ -94,19 +94,23 @@ class AzureAISearchConversationRetriever(BaseRetriever, ContentArtifactRetrieval
             vector_queries=[vector_query],
             query_type=self.query_type,
             semantic_configuration_name = self.semantic_configuration_name,
-            top=top_n
+            top=top_n,
+            select=[
+                "Id",
+                index_config.vector_database['content_property_name'],
+                index_config.vector_database['metadata_property_name']
+            ]
         )
 
         rerank_available = False
 
         #load search results into VectorDocument objects for score processing
         for result in results:
-            metadata = {}
 
             document = VectorDocument(
                     id=result["Id"],
                     page_content=result[index_config.vector_database["content_property_name"]],
-                    metadata=metadata,
+                    metadata=result[index_config.vector_database["metadata_property_name"]],
                     score=result["@search.score"],
                     rerank_score=result.get("@search.reranker_score", 0.0)
             )
