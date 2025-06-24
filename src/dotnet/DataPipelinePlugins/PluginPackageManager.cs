@@ -183,7 +183,29 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     DisplayName = "Knowledge Extraction Data Pipeline Stage (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for knowledge extraction data pipeline stages.",
                     Category = PluginCategoryNames.DataPipelineStage,
-                    Parameters = [],
+                    Parameters = [
+                        new() {
+                            Name = PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONPROMPTOBJECTID,
+                            Type = PluginParameterTypes.ResourceObjectId,
+                            Description = "The FoundationaLLM resource identifier of the Prompt resource that is used for entity extraction."
+                        },
+                        new() {
+                            Name = PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONCOMPLETIONMODEL,
+                            Type = PluginParameterTypes.String,
+                            Description = "The completion model used for entity extraction."
+                        }
+                    ],
+                    ParameterSelectionHints = new() {
+                        {
+                            PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONPROMPTOBJECTID,
+                            new() {
+                                ResourcePath = "providers/FoundationaLLM.Prompt/prompts",
+                                FilterActionPayload = new {
+                                    category = "DataPipeline"
+                                }
+                            }
+                        }
+                    },
                     Dependencies = []
                 },
                 new() {
