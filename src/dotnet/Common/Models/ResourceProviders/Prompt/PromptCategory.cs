@@ -18,6 +18,11 @@
         /// <summary>
         /// Tool prompt.
         /// </summary>
-        Tool
+        Tool,
+
+        /// <summary>
+        /// Data Pipeline prompt.
+        /// </summary>
+        DataPipeline
     }
 }

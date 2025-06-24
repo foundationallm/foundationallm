@@ -41,6 +41,7 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Plugin_Storage);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vector_Storage);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataSource_Storage);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
 
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_DataSources);
 
@@ -100,6 +101,7 @@ builder.AddNulllDataPipelineServiceClient(); // Required by the DataPipeline res
 builder.AddDataPipelineResourceProvider();
 builder.AddVectorResourceProvider();
 builder.AddDataSourceResourceProvider();
+builder.AddPromptResourceProvider();
 
 // Add API Key Authorization
 builder.Services.AddHttpContextAccessor();

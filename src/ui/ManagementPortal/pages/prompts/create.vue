@@ -164,13 +164,17 @@ export default {
 
 			categoryOptions: [
 				{
-					label: 'Workflow',
+					label: 'Agent Workflow',
 					value: 'Workflow',
 				},
 				{
-					label: 'Tool',
+					label: 'Agent Tool',
 					value: 'Tool',
 				},
+				{
+					label: 'Data Pipeline',
+					value: 'DataPipeline',
+				}
 			],
 		};
 	},
