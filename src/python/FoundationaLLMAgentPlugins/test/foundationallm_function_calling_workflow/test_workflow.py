@@ -42,6 +42,7 @@ user_prompt = "Summarize the file"
 # user_prompt = "Plot the equation y=mx^2+b"
 # user_prompt = "Which are the most important ideas from the document named Selling-Guide_02-05-25_highlighted.pdf?"
 # user_prompt = "Do you recognize the band?"
+user_prompt = "Best practices for trading."
 
 operation_id = str(uuid.uuid4())
 conversation_id = "20250624-155812--TbeGNA99UGWJ-pzgeiEKg"
