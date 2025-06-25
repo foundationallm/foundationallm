@@ -1,11 +1,12 @@
-﻿using Azure.AI.Inference;
-using Azure.AI.OpenAI;
-using Azure.Core.Pipeline;
+﻿using Azure.AI.OpenAI;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Gateway.Interfaces;
+using FoundationaLLM.Gateway.Models;
 using Microsoft.Extensions.Logging;
+using OpenAI.Chat;
 using System.ClientModel;
 using System.ClientModel.Primitives;
 
@@ -18,7 +19,7 @@ namespace FoundationaLLM.Gateway.Services
     {
         private readonly string _accountEndpoint;
         private readonly AzureOpenAIClient _azureOpenAIClient;
-        private readonly ChatCompletionsClient _azureAIInferenceClient;
+        //private readonly ChatCompletionsClient _azureAIInferenceClient;
         private readonly ILogger<AzureOpenAITextCompletionService> _logger;
 
         /// <summary>
@@ -31,13 +32,13 @@ namespace FoundationaLLM.Gateway.Services
             ILogger<AzureOpenAITextCompletionService> logger)
         {
             _accountEndpoint = accountEndpoint;
-            _azureAIInferenceClient = new ChatCompletionsClient(
-                new Uri(_accountEndpoint),
-                ServiceContext.AzureCredential,
-                new AzureAIInferenceClientOptions()
-                {
-                    RetryPolicy = new RetryPolicy(1)
-                });
+            //_azureAIInferenceClient = new ChatCompletionsClient(
+            //    new Uri(_accountEndpoint),
+            //    ServiceContext.AzureCredential,
+            //    new AzureAIInferenceClientOptions()
+            //    {
+            //        RetryPolicy = new RetryPolicy(1)
+            //    });
             _azureOpenAIClient = new AzureOpenAIClient(
                 new Uri(_accountEndpoint),
                 ServiceContext.AzureCredential,
@@ -50,68 +51,42 @@ namespace FoundationaLLM.Gateway.Services
         }
 
         /// <inheritdoc/>
-        public async Task<TextOperationResult> ExecuteTextOperation(
-            IList<TextChunk> textChunks,
-            string deploymentName,
-            bool prioritized,
-            params object[] additionalParameters)
+        public async Task<InternalTextOperationResult> ExecuteTextOperation(
+            InternalTextOperationRequest textOperationRequest)
         {
-            additionalParameters ??= [];
+            if (textOperationRequest.TextChunks.Count != 1)
+                throw new GatewayException("The AzureOpenAITextCompletionService only supports a single text chunk for completion operations.");
 
-            if (additionalParameters.Length > 0)
-                throw new GatewayException("The AzureOpenAITextCompletionService does not support additional parameters in the ExecuteTextOperation method.");
-
-            return await GetCompletionsAsync(textChunks, deploymentName);
-        }
-
-        /// <inheritdoc/>
-        private async Task<TextOperationResult> GetCompletionsAsync(IList<TextChunk> textChunks, string deploymentName)
-        {
-            // Priority not relevant as the text embedding context has already been queued at a higher level.
             try
             {
-                var chatClient = _azureOpenAIClient.GetChatClient(deploymentName);
-                var result = await chatClient.CompleteChatAsync.CompleteChat().GenerateEmbeddingsAsync(
-                    textChunks.Select(tc => tc.Content!).ToList(),
-                    embeddingOptions);
+                var chatClient = _azureOpenAIClient.GetChatClient(
+                    textOperationRequest.DeploymentName);
+                var result = await chatClient.CompleteChatAsync(
+                    new UserChatMessage(textOperationRequest.TextChunks[0].Content));
 
                 var rawResponse = result.GetRawResponse();
-                rawResponse.Headers.TryGetValue("x-ratelimit-limit-tokens", out var limitTokens);
-                rawResponse.Headers.TryGetValue("x-ratelimit-remaining-tokens", out var remainingTokens);
-                _logger.LogInformation("Rate limit tokens: {LimitTokens} - Remaining tokens: {RemainingTokens}",
-                    string.IsNullOrWhiteSpace(limitTokens) ? "N/A" : limitTokens,
-                    string.IsNullOrWhiteSpace(remainingTokens) ? "N/A" : remainingTokens);
+                rawResponse.LogRateLimitHeaders(textOperationRequest.Id, _logger, LogLevel.Debug);
 
-                return new TextOperationResult
+                textOperationRequest.TextChunks[0].Completion = result.Value.Content[0].Text;
+                return new InternalTextOperationResult
                 {
-                    InProgress = false,
-                    TextChunks = [.. Enumerable.Range(0, result.Value.Count).Select(i =>
-                    {
-                        var textChunk = textChunks[i];
-                        textChunk.Embedding = new Embedding(result.Value[i].ToFloats());
-                        return textChunk;
-                    })]
+                    TextChunks = [textOperationRequest.TextChunks[0]]
                 };
             }
             catch (ClientResultException ex) when (ex.Status == 429)
             {
-                _logger.LogWarning(ex, "Rate limit exceeded while generating embeddings.");
+                _logger.LogWarning(ex, "Rate limit exceeded while generating completions.");
 
                 var rawResponse = ex.GetRawResponse();
                 if (rawResponse != null)
                 {
-                    rawResponse.Headers.TryGetValue("x-ratelimit-limit-tokens", out var limitTokens);
-                    rawResponse.Headers.TryGetValue("x-ratelimit-remaining-tokens", out var remainingTokens);
-                    _logger.LogInformation("Rate limit tokens: {LimitTokens} - Remaining tokens: {RemainingTokens}",
-                        string.IsNullOrWhiteSpace(limitTokens) ? "N/A" : limitTokens,
-                        string.IsNullOrWhiteSpace(remainingTokens) ? "N/A" : remainingTokens);
+                    rawResponse.LogRateLimitHeaders(textOperationRequest.Id, _logger, LogLevel.Warning);
                 }
                 else
                     _logger.LogWarning("Response headers were not available.");
 
-                return new TextOperationResult
+                return new InternalTextOperationResult
                 {
-                    InProgress = false,
                     Failed = true,
                     ErrorMessage = ex.Message
                 };
@@ -119,9 +94,8 @@ namespace FoundationaLLM.Gateway.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while generating embeddings.");
-                return new TextOperationResult
+                return new InternalTextOperationResult
                 {
-                    InProgress = false,
                     Failed = true,
                     ErrorMessage = ex.Message
                 };

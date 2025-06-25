@@ -25,9 +25,9 @@ namespace FoundationaLLM.Gateway.Services
     {
         protected readonly AzureOpenAIAccountDeployment _deployment = deployment;
         protected readonly double _tokenRateLimitMultiplier = tokenRateLimitMultiplier;
-        protected readonly int _actualTokenRateLimit =
+        protected readonly int _effectiveTokenRateLimit =
             (int)(deployment.TokenRateLimit * tokenRateLimitMultiplier) / (60 / deployment.TokenRateRenewalPeriod);
-        protected readonly int _actualRequestRateLimit =
+        protected readonly int _effectiveRequestRateLimit =
             deployment.RequestRateLimit / (60 / deployment.RequestRateRenewalPeriod);
 
         protected readonly ITextOperationService _textOperationService = textOperationService;
@@ -35,18 +35,33 @@ namespace FoundationaLLM.Gateway.Services
         protected readonly ILogger<ModelDeploymentContext> _logger = loggerFactory.CreateLogger<ModelDeploymentContext>();
         protected readonly GatewayMetrics _metrics = metrics;
 
-        protected readonly Dictionary<int, GatewayTextOperationRequest> _textOperationRequests = [];
+        protected readonly List<InternalTextOperationRequest> _textOperationRequests = [];
+        /// <summary>
+        /// Embedding operations are grouped by the number of dimensions they require.
+        /// For each embedding dimension, we send a single request to the model.
+        /// This dictionary maps the number of dimensions to the index in the <see cref="_textOperationRequests"/> list.
+        /// </summary>
+        protected readonly Dictionary<int, int> _embeddingDimensionsIndexMapping = [];
 
         protected readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
+        private readonly SemaphoreSlim _operationsSemaphore = new(1, 1);
 
         /// <summary>
-        /// The cummulated number of tokens for the current token rate window.
+        /// The actual cummulated number of tokens for the current token rate window.
         /// </summary>
-        protected int _tokenRateWindowTokenCount = 0;
+        protected int _tokenRateWindowActualTokenCount = 0;
         /// <summary>
-        /// The cummulated number of requests for the current request rate window.
+        /// The projects cummulated number of tokens for the current token rate window.
         /// </summary>
-        protected int _requestRateWindowRequestCount = 0;
+        protected int _tokenRateWindowProjectedTokenCount = 0;
+        /// <summary>
+        /// The actual cummulated number of requests for the current request rate window.
+        /// </summary>
+        protected int _requestRateWindowActualRequestCount = 0;
+        /// <summary>
+        /// The projected cummulated number of requests for the current request rate window.
+        /// </summary>
+        protected int _requestRateWindowProjectedRequestCount = 0;
         /// <summary>
         /// The start timestamp of the current token rate window.
         /// </summary>
@@ -75,60 +90,105 @@ namespace FoundationaLLM.Gateway.Services
         /// Attempts to add a new text chunk to the input for the text operation request.
         /// </summary>
         /// <param name="textChunk">The text chunk to be added.</param>
-        /// <param name="textChunkContext">The context associated with the text chunk.</param>
+        /// <param name="embeddingDimensions">The number of embedding dimensions.</param>
         /// <remarks>
-        /// <para>For embedding operations, the text chunk context must always be the number of dimensions required for embedding.</para>
-        /// <para>For completion operations, the text chunk context must always be -1.</para>
+        /// <para>For embedding operations, <paramref name="embeddingDimensions"/> must always be the number of dimensions required for embedding.</para>
+        /// <para>For completion operations, <paramref name="embeddingDimensions"/> must always be -1.</para>
         /// </remarks>
         /// <returns><see langword="true"/> if the text chunk can be added without breaching the token and reques rate limits.</returns>
-        public bool TryAddInputTextChunk(TextChunk textChunk, int textChunkContext)
+        public bool TryAddInputTextChunk(TextChunk textChunk, int embeddingDimensions)
         {
             UpdateRateWindows();
 
-            if (_tokenRateWindowTokenCount + textChunk.TokensCount > _actualTokenRateLimit)
+            if (_tokenRateWindowProjectedTokenCount + textChunk.TokensCount > _effectiveTokenRateLimit)
                 // Adding a new text chunk would push us over the token rate limit, so we need to refuse.
                 return false;
 
-            if (_requestRateWindowRequestCount == _actualRequestRateLimit)
-                // We have already reached the allowed number of requests, so we need to refuse.
-                return false;
-
-            if (!_textOperationRequests.TryGetValue(textChunkContext, out GatewayTextOperationRequest? textOperationRequest))
+            if (_deployment.CanDoCompletions)
             {
-                if (_requestRateWindowRequestCount + 1 == _actualRequestRateLimit)
-                    // Adding a new text chunk context would result in at least one additional request
-                    // which would push us over the request rate limit, so we need to refuse.
+                // For completion operations, every new text chunk is a new request,
+                // so we need to automatically check the request rate limit.
+                // Each entry in the list of text operation requests represents a single request to the model,
+                // processing a single text chunk.
+
+                if (_requestRateWindowProjectedRequestCount == _effectiveRequestRateLimit)
+                    // We have already reached the allowed number of requests, so we need to refuse.
                     return false;
 
-                _textOperationRequests[textChunkContext] =
-                    new GatewayTextOperationRequest
+                _textOperationRequests.Add(new InternalTextOperationRequest
                     {
-                        Id = Guid.NewGuid().ToString().ToLower(),
+                        Id = _textOperationRequests.Count + 1,
                         AccountName = _deployment.AccountEndpoint,
+                        DeploymentName = _deployment.Name,
                         ModelName = _deployment.ModelName,
                         ModelVersion = _deployment.ModelVersion,
-                        EmbeddingDimensions = textChunkContext,
-                        TokenRateWindowStart = _tokenRateWindowStart,
-                        RequestRateWindowStart = _requestRateWindowStart,
+                        EmbeddingDimensions =
+                            _deployment.ModelName == "text-embedding-ada-002"
+                                ? -1 // text-embedding-ada-002 does not support embedding dimensions.
+                                : embeddingDimensions,
                         TextChunks = [textChunk]
-                    };
+                    });
+
+                _requestRateWindowProjectedRequestCount += 1;
             }
             else
             {
-                textOperationRequest.TextChunks.Add(textChunk);
+                // For embedding operations, we group text chunks by the number of embedding dimensions.
+                // Each entry in the list of text operation requests represents a single request to the model,
+                // processing a list of text chunks with the same number of embedding dimensions.
+                // Each entry corresponds to a single embedding dimensions value and the _embeddingDimensionsIndexMapping dictionary
+                // maps the embedding dimensions to the index in the _textOperationRequests list.
+
+                if (!_embeddingDimensionsIndexMapping.TryGetValue(embeddingDimensions, out int index))
+                {
+                    // We are about to add a new request, so we need to first check the request rate limit.
+                    if (_requestRateWindowProjectedRequestCount == _effectiveRequestRateLimit)
+                        // We have already reached the allowed number of requests, so we need to refuse.
+                        return false;
+
+                    // We are adding a new request for the given embedding dimensions,
+                    // so we need to create a new entry in the _embeddingDimensionsIndexMapping dictionary.
+                    index = _textOperationRequests.Count;
+                    _embeddingDimensionsIndexMapping[embeddingDimensions] = index;
+
+                    _textOperationRequests.Add(new InternalTextOperationRequest
+                        {
+                            Id = _textOperationRequests.Count + 1,
+                            AccountName = _deployment.AccountEndpoint,
+                            DeploymentName = _deployment.Name,
+                            ModelName = _deployment.ModelName,
+                            ModelVersion = _deployment.ModelVersion,
+                            EmbeddingDimensions =
+                                _deployment.ModelName == "text-embedding-ada-002"
+                                    ? -1 // text-embedding-ada-002 does not support embedding dimensions.
+                                    : embeddingDimensions,
+                        TextChunks = [textChunk]
+                        });
+
+                    // Update the request rate window projected request count.
+                    _requestRateWindowProjectedRequestCount += 1;
+                }
+                else
+                {
+                    // We already have a request for the same embedding dimensions,
+                    // so we can reuse the existing request.
+                    // No need to check the request rate limit here, as we are not adding a new request.
+                    _textOperationRequests[index].TextChunks.Add(textChunk);
+                }
             }
 
-            _tokenRateWindowTokenCount += textChunk.TokensCount;
+            // Regardless of the cases above, we need to update the token rate window projected tokens count.
+            _tokenRateWindowProjectedTokenCount += textChunk.TokensCount;
 
             return true;
         }
 
-        public async Task<List<OperationRequestResult>> ProcessTextOperationRequests()
+        public async Task<List<InternalTextOperationResult>> ProcessTextOperationRequests()
         {
             try
             {
                 var textOperationRequestsTasks = _textOperationRequests
-                    .Select(async x => await ProcessTextOperationRequest(x.Value))
+                    .Select(async x => await ProcessTextOperationRequest(x))
                     .ToArray();
 
                 await Task.WhenAll(textOperationRequestsTasks);
@@ -137,47 +197,43 @@ namespace FoundationaLLM.Gateway.Services
             }
             finally
             {
+                // Clear the text operation requests and the embedding dimensions index mapping
                 _textOperationRequests.Clear();
+                _embeddingDimensionsIndexMapping.Clear();
+
+                if (_tokenRateWindowActualTokenCount != _tokenRateWindowProjectedTokenCount)
+                    _logger.LogWarning("The actual token rate window count ({ActualCount}) does not match the projected count ({ProjectedCount}). " +
+                        "This may indicate that some text operation requests were not processed.",
+                        _tokenRateWindowActualTokenCount, _tokenRateWindowProjectedTokenCount);
+
+                if (_requestRateWindowActualRequestCount != _requestRateWindowProjectedRequestCount)
+                    _logger.LogWarning("The actual request rate window count ({ActualCount}) does not match the projected count ({ProjectedCount}). " +
+                        "This may indicate that some text operation requests were not processed.",
+                        _requestRateWindowActualRequestCount, _requestRateWindowProjectedRequestCount);
             }
         }
 
-        private async Task<OperationRequestResult> ProcessTextOperationRequest(
-            GatewayTextOperationRequest textOperationRequest)
+        private async Task<InternalTextOperationResult> ProcessTextOperationRequest(
+            InternalTextOperationRequest textOperationRequest)
         {
-            Interlocked.Increment(ref _requestRateWindowRequestCount);
+            var (RequestsCount, TokensCount) = await UpdateRateWindowsActuals(
+                1,
+                textOperationRequest.TokensCount);
 
-            textOperationRequest.TokenRateWindowTokenCount = _tokenRateWindowTokenCount;
-            textOperationRequest.RequestRateWindowRequestCount = _requestRateWindowRequestCount;
-
-            _logger.LogInformation("Submitting text operation request with id {RequestId} and the following metrics: {RequestMetrics}",
-                textOperationRequest.Id,
+            _logger.LogInformation("Text operation request id: {RequestId}, actual requests count: {RequestsCount}, actual tokens count: {TokensCount}.",
+                textOperationRequest.Id, RequestsCount, TokensCount);
+            _logger.LogDebug("Text operation details: {TextOperationRequest}",
                 JsonSerializer.Serialize(textOperationRequest, _jsonSerializerOptions));
 
-            // Priority is false since the text operation context is already added to the queue.
             var textOperationResult =
-                await _textOperationService.ExecuteTextOperation(
-                    textOperationRequest.TextChunks,
-                    _deployment.Name,
-                    false,
-                    _deployment.CanDoCompletions
-                        ? -1 // For completion operations, we do not care about the embedding dimensions.
-                        : _deployment.ModelName == "text-embedding-ada-002"
-                            ? -1 // text-embedding-ada-002 does not support embedding dimensions.
-                            : textOperationRequest.EmbeddingDimensions);
-
-            var result = new OperationRequestResult
-            {
-                TextChunks = textOperationResult.TextChunks,
-                Failed = textOperationResult.Failed,
-                ErrorMessage = textOperationResult.ErrorMessage
-            };
+                await _textOperationService.ExecuteTextOperation(textOperationRequest);
 
             if (textOperationResult.Failed)
             {
                 _logger.LogWarning("The text operation request with id {RequestId} failed with the following error: {ErrorMessage}",
                     textOperationRequest.Id,
                     textOperationResult.ErrorMessage!);
-                result.FailedOperationIds = [.. textOperationRequest.TextChunks
+                textOperationResult.FailedOperationIds = [.. textOperationRequest.TextChunks
                     .Select(tc => tc.OperationId!)
                     .Distinct()];
             }
@@ -195,7 +251,25 @@ namespace FoundationaLLM.Gateway.Services
                 }
             }
 
-            return result;
+            return textOperationResult;
+        }
+
+        private async Task<(int RequestsCount, int TokensCount)> UpdateRateWindowsActuals(
+            int requestsCount,
+            int tokensCount)
+        {
+            await _operationsSemaphore.WaitAsync();
+            try
+            {
+                _requestRateWindowActualRequestCount += requestsCount;
+                _tokenRateWindowActualTokenCount += tokensCount;
+
+                return (_requestRateWindowActualRequestCount, _tokenRateWindowActualTokenCount);
+            }
+            finally
+            {
+                _operationsSemaphore.Release();
+            }
         }
 
         private void UpdateRateWindows()
@@ -206,15 +280,18 @@ namespace FoundationaLLM.Gateway.Services
             {
                 _tokenRateWindowStart = refTime;
 
-                // Reset the rate window token count to the sum of token counts of all current embedding requests.
-                _tokenRateWindowTokenCount = _textOperationRequests
-                    .Sum(or => or.Value.TokensCount);
+                _tokenRateWindowProjectedTokenCount =
+                    _textOperationRequests.Sum(or => or.TokensCount);
+                _tokenRateWindowActualTokenCount = 0;
             }
 
             if ((refTime - _requestRateWindowStart).TotalSeconds >= _deployment.RequestRateRenewalPeriod)
             {
                 _requestRateWindowStart = refTime;
-                _requestRateWindowRequestCount = 0;
+
+                _requestRateWindowProjectedRequestCount =
+                    _textOperationRequests.Count;
+                _requestRateWindowActualRequestCount = 0;
             }
         }
     }

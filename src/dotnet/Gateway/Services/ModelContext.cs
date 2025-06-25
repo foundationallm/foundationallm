@@ -119,7 +119,7 @@ namespace FoundationaLLM.Gateway.Services
                         }
                     }
 
-                    // Use all available deployments to get embeddings for the input text chunks.
+                    // Use all available deployments to process the text operations for the input text chunks.
                     var results = (await Task.WhenAll(DeploymentContexts
                         .Where(dc => dc.HasInput)
                         .Select(async dc => await dc.ProcessTextOperationRequests())))
@@ -166,7 +166,7 @@ namespace FoundationaLLM.Gateway.Services
                         }
                     }
 
-                    // Set the embeddings for all successful operations.
+                    // Update the text chunks for all successful operations.
                     foreach (var successfulOperation in results
                         .Where(r => !r.Failed)
                         .SelectMany(r => r.TextChunks)

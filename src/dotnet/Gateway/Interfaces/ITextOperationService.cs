@@ -1,5 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Vectorization;
-using Microsoft.Extensions.ObjectPool;
+﻿using FoundationaLLM.Gateway.Models;
 
 namespace FoundationaLLM.Gateway.Interfaces
 {
@@ -11,15 +10,9 @@ namespace FoundationaLLM.Gateway.Interfaces
         /// <summary>
         /// Executes a text operation (e.g., embedding or completion) on the provided text chunks.
         /// </summary>
-        /// <param name="textChunks">The list of text chunks used as input for the operation.</param>
-        /// <param name="deploymentName">The model deployment name to use.</param>
-        /// <param name="prioritized">Indicates whether this operation execution must pe prioritized.</param>
-        /// <param name="additionalParameters">Additional parameters that are specific to the individual operation.</param>
+        /// <param name="textOperationRequest">The text operation request to execute.</param>
         /// <returns>The result of the operation.</returns>
-        Task<TextOperationResult> ExecuteTextOperation(
-            IList<TextChunk> textChunks,
-            string deploymentName,
-            bool prioritized,
-            params object[] additionalParameters);
+        Task<InternalTextOperationResult> ExecuteTextOperation(
+            InternalTextOperationRequest textOperationRequest);
     }
 }

@@ -5,7 +5,7 @@ namespace FoundationaLLM.Gateway.Models
     /// <summary>
     /// Represents the result of a text operation request.
     /// </summary>
-    public class OperationRequestResult
+    public class InternalTextOperationResult
     {
         /// <summary>
         /// Gets or sets the list of text chunks that were successfully processed.

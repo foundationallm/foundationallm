@@ -4,30 +4,36 @@ using System.Text.Json.Serialization;
 namespace FoundationaLLM.Gateway.Models
 {
     /// <summary>
-    /// Provides metrics related to text embedding requests submitted by the FoundationaLLM Gateway.
+    /// Represents internal text operation requests processed by the FoundationaLLM Gateway.
     /// </summary>
-    public class GatewayTextOperationRequest
+    public class InternalTextOperationRequest
     {
         /// <summary>
-        /// The unique identifier of the request.
+        /// The unique identifier of the internal request.
         /// </summary>
         [JsonPropertyName("id")]
-        public required string Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
-        /// The name of the account used for text embedding.
+        /// The name of the account used for the text operation.
         /// </summary>
         [JsonPropertyName("account_name")]
         public required string AccountName { get; set; }
 
         /// <summary>
-        /// The name of the embedding model used for text embedding.
+        /// Gets or sets the name of the deployment used for the text operation.
+        /// </summary>
+        [JsonPropertyName("deployment_name")]
+        public required string DeploymentName { get; set; }
+
+        /// <summary>
+        /// The name of the model used for the text operation.
         /// </summary>
         [JsonPropertyName("model_name")]
         public required string ModelName { get; set; }
 
         /// <summary>
-        /// The version of the embedding model used for text embedding.
+        /// The version of the model used for the text operation.
         /// </summary>
         [JsonPropertyName("model_version")]
         public required string ModelVersion { get; set; }
@@ -35,34 +41,11 @@ namespace FoundationaLLM.Gateway.Models
         /// <summary>
         /// Gets or sets the number of dimensions of the embedding.
         /// </summary>
+        /// <remarks>
+        /// The value is only relevant for embedding operations (expected to be -1 for completion operations).
+        /// </remarks>
         [JsonPropertyName("embedding_dimensions")]
         public int EmbeddingDimensions { get; set; }
-
-        /// <summary>
-        /// The start timestamp of the current token rate window.
-        /// </summary>
-        [JsonPropertyName("token_rate_window_start")]
-        public DateTime TokenRateWindowStart { get; set; }
-
-        /// <summary>
-        /// The start timestamp of the current request rate window.
-        /// </summary>
-        [JsonPropertyName("request_rate_window_start")]
-        public DateTime RequestRateWindowStart { get; set; }
-
-        /// <summary>
-        /// The cummulated number of tokens for the current token rate window.
-        /// Includes all tokens used so far in the current token rate window.
-        /// </summary>
-        [JsonPropertyName("token_rate_window_token_count")]
-        public int TokenRateWindowTokenCount { get; set; }
-
-        /// <summary>
-        /// The cummulated number of requests for the current request rate window.
-        /// Includes all calls performed so far in the current call rate window.
-        /// </summary>
-        [JsonPropertyName("request_rate_window_request_count")]
-        public int RequestRateWindowRequestCount { get; set; }
 
         /// <summary>
         /// Gets the total number of tokens used in the request.
@@ -79,8 +62,8 @@ namespace FoundationaLLM.Gateway.Models
             TextChunks.Count;
 
         /// <summary>
-        /// The details of the embedding operations from the text chunks.
-        /// For each embedding operation id, holds the list of the positions of the text chunks from the current request.
+        /// The details of the text operations from the text chunks.
+        /// For each text operation id, holds the list of the positions of the text chunks from the current request.
         /// </summary>
         [JsonPropertyName("operations_details")]
         public Dictionary<string, List<int>> OperationsDetails =>

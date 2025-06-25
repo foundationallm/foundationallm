@@ -1,9 +1,10 @@
 ﻿using Azure.AI.OpenAI;
 using FoundationaLLM.Common.Authentication;
-using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Gateway.Interfaces;
+using FoundationaLLM.Gateway.Models;
 using Microsoft.Extensions.Logging;
 using System.ClientModel;
 using System.ClientModel.Primitives;
@@ -13,7 +14,7 @@ namespace FoundationaLLM.Gateway.Services
     /// <summary>
     /// Implementation of <see cref="ITextEmbeddingService"/> using Azure OpenAI.
     /// </summary>
-    public class AzureOpenAITextEmbeddingService : ITextEmbeddingService, ITextOperationService
+    public class AzureOpenAITextEmbeddingService : ITextOperationService
     {
         private readonly string _accountEndpoint;
         private readonly AzureOpenAIClient _azureOpenAIClient;
@@ -41,49 +42,32 @@ namespace FoundationaLLM.Gateway.Services
         }
 
         /// <inheritdoc/>
-        public async Task<TextOperationResult> ExecuteTextOperation(
-            IList<TextChunk> textChunks,
-            string deploymentName,
-            bool prioritized,
-            params object[] additionalParameters)
+        public async Task<InternalTextOperationResult> ExecuteTextOperation(
+            InternalTextOperationRequest textOperationRequest)
         {
-            additionalParameters ??= [];
-
-            if (additionalParameters.Length == 1
-                && (additionalParameters[0] is int embeddingDimensions))
-                return await GetEmbeddingsAsync(textChunks, deploymentName, embeddingDimensions, prioritized);
-
-            throw new GatewayException("The AzureOpenAITextEmbeddingService requires the emnedding dimensions additional parameter in the ExecuteTextOperation method.");
-        }
-
-        /// <inheritdoc/>
-        public async Task<TextOperationResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string deploymentName, int embeddingDimensions, bool prioritized)
-        {
-            // Priority not relevant as the text embedding context has already been queued at a higher level.
             try
             {
-                var embeddingClient = _azureOpenAIClient.GetEmbeddingClient(deploymentName);
+                var embeddingClient = _azureOpenAIClient.GetEmbeddingClient(
+                    textOperationRequest.DeploymentName);
                 OpenAI.Embeddings.EmbeddingGenerationOptions? embeddingOptions =
-                    embeddingDimensions == -1
-                    ? null
-                    : new OpenAI.Embeddings.EmbeddingGenerationOptions { Dimensions = embeddingDimensions };
+                    textOperationRequest.EmbeddingDimensions == -1
+                        ? null
+                        : new OpenAI.Embeddings.EmbeddingGenerationOptions
+                            {
+                                Dimensions = textOperationRequest.EmbeddingDimensions
+                            };
                 var result = await embeddingClient.GenerateEmbeddingsAsync(
-                    textChunks.Select(tc => tc.Content!).ToList(),
+                    textOperationRequest.TextChunks.Select(tc => tc.Content!).ToList(),
                     embeddingOptions);
 
                 var rawResponse = result.GetRawResponse();
-                rawResponse.Headers.TryGetValue("x-ratelimit-limit-tokens", out var limitTokens);
-                rawResponse.Headers.TryGetValue("x-ratelimit-remaining-tokens", out var remainingTokens);
-                _logger.LogInformation("Rate limit tokens: {LimitTokens} - Remaining tokens: {RemainingTokens}",
-                    string.IsNullOrWhiteSpace(limitTokens) ? "N/A" : limitTokens,
-                    string.IsNullOrWhiteSpace(remainingTokens) ? "N/A" : remainingTokens);
+                rawResponse.LogRateLimitHeaders(textOperationRequest.Id, _logger, LogLevel.Debug);
 
-                return new TextOperationResult
+                return new InternalTextOperationResult
                 {
-                    InProgress = false,
                     TextChunks = [.. Enumerable.Range(0, result.Value.Count).Select(i =>
                     {
-                        var textChunk = textChunks[i];
+                        var textChunk = textOperationRequest.TextChunks[i];
                         textChunk.Embedding = new Embedding(result.Value[i].ToFloats());
                         return textChunk;
                     })]
@@ -95,19 +79,12 @@ namespace FoundationaLLM.Gateway.Services
 
                 var rawResponse = ex.GetRawResponse();
                 if (rawResponse != null)
-                {
-                    rawResponse.Headers.TryGetValue("x-ratelimit-limit-tokens", out var limitTokens);
-                    rawResponse.Headers.TryGetValue("x-ratelimit-remaining-tokens", out var remainingTokens);
-                    _logger.LogInformation("Rate limit tokens: {LimitTokens} - Remaining tokens: {RemainingTokens}",
-                        string.IsNullOrWhiteSpace(limitTokens) ? "N/A" : limitTokens,
-                        string.IsNullOrWhiteSpace(remainingTokens) ? "N/A" : remainingTokens);
-                }
+                    rawResponse.LogRateLimitHeaders(textOperationRequest.Id, _logger, LogLevel.Warning);
                 else
                     _logger.LogWarning("Response headers were not available.");
 
-                return new TextOperationResult
+                return new InternalTextOperationResult
                 {
-                    InProgress = false,
                     Failed = true,
                     ErrorMessage = ex.Message
                 };
@@ -115,16 +92,12 @@ namespace FoundationaLLM.Gateway.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while generating embeddings.");
-                return new TextOperationResult
+                return new InternalTextOperationResult
                 {
-                    InProgress = false,
                     Failed = true,
                     ErrorMessage = ex.Message
                 };
             }
         }
-
-        /// <inheritdoc/>
-        public Task<TextOperationResult> GetEmbeddingsAsync(string operationId) => throw new NotImplementedException();
     }
 }
