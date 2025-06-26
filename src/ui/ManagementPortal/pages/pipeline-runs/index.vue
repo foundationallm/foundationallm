@@ -216,21 +216,20 @@
 			</DataTable>
 		</div>
 
-        		<!-- Trigger Pipeline Modal -->
+        <!-- Trigger Pipeline Modal -->
 		<Dialog 
-		:visible="showParametersDialog" 
-		modal
-		closable
-		:header="`Data Pipeline run parameters`"
-		@update:visible="closeParametersDialog"
-		>
-			
+            :visible="showParametersDialog" 
+            modal
+            closable
+            :header="`Data Pipeline run parameters`"
+            @update:visible="closeParametersDialog"
+            >
 				<div>
 					<label>Data Pipeline run</label>
 				</div>
 				<div style="margin-bottom: 1rem">
 					<InputText
-                        :disabled="true"
+                        :readonly="true"
                         type="text"
 						v-model="selectedRun.name"
 						class="w-full"
@@ -242,7 +241,7 @@
 				</div>
 				<div style="margin-bottom: 1rem">
 					<InputText
-                        :disabled="true"
+                        :readonly="true"
                         type="text"
 						v-model="selectedRun.processor"
 						class="w-full"
@@ -253,7 +252,7 @@
 					<div style="margin-bottom: 1rem">
 						<label :for="key">{{ key }}</label>
 						<InputText
-                            :disabled="true"
+                            :readonly="true"
 							type="text"
 							:id="key"
 							v-model="selectedRun.trigger_parameter_values[key]"
