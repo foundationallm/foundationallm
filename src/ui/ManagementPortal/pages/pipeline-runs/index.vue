@@ -187,7 +187,7 @@
 						sortIcon: { style: { color: 'var(--primary-text)' } },
 					}">
                 <template #body="slotProps">
-                    {{ slotProps.data.completed_stages.join(', ') }}
+                    {{ slotProps.data.failed_stages.join(', ') }}
                 </template>
 				</Column>
 
