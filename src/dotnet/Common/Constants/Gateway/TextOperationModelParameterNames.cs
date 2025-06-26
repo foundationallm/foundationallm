@@ -1,9 +1,9 @@
-﻿namespace FoundationaLLM.Gateway.Constants
+﻿namespace FoundationaLLM.Common.Constants.Gateway
 {
     /// <summary>
-    /// Defines the names of properties used in <see cref="OperationContext"/> objects.
+    /// Defines the model parameter names used in text operations executed by the FoundationaLLM Gateway API.
     /// </summary>
-    public static class TextOperationContextPropertyNames
+    public static class TextOperationModelParameterNames
     {
         /// <summary>
         /// The name of the property that holds the embedding dimensions.

@@ -1,27 +1,25 @@
-﻿using FoundationaLLM.Common.Authentication;
+﻿using Azure.Security.KeyVault.Certificates;
+using Azure.Security.KeyVault.Secrets;
+using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.DataSource;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
+using FoundationaLLM.Common.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PnP.Core.Auth;
-using PnP.Core.Services.Builder.Configuration;
-using PnP.Core.Services;
-using Azure.Security.KeyVault.Certificates;
-using Azure.Security.KeyVault.Secrets;
-using System.Security.Cryptography.X509Certificates;
-using FoundationaLLM.Common.Constants.DataSource;
-using System.Linq;
 using PnP.Core.Model;
-using PnP.Core.QueryModel;
-using FoundationaLLM.Common.Extensions;
 using PnP.Core.Model.SharePoint;
-using System.Threading;
-using FoundationaLLM.Common.Utils;
+using PnP.Core.QueryModel;
+using PnP.Core.Services;
+using PnP.Core.Services.Builder.Configuration;
+using System.Security.Cryptography.X509Certificates;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
 {

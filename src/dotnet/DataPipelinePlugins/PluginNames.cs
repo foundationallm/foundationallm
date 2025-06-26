@@ -23,5 +23,6 @@
         public const string TOKEN_CONTENTTEXTPARTITIONING = $"{PACKAGE_NAME}-TokenContentTextPartitioning";
         public const string SEMANTIC_CONTENTTEXTPARTITIONING = $"{PACKAGE_NAME}-SemanticContentTextPartitioning";
         public const string KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-KnowledgeExtractionDataPipelineStage";
+        public const string KNOWLEDGEGRAPH_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-KnowledgeGraphDataPipelineStage";
     }
 }

@@ -61,8 +61,10 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
         new()
         {
             {
-                "work-item-EDlOhB3wm0i7xXtIxXC2Eg",
-                "run-20250620-222912-vUZie8Bc0kiNbpQaqSrp9A-TAfGit69y0OhQOwAAtltKw",
+                //"work-item-AtzJMo4iV06EdZ9348DuRg", // Fannie Mae
+                //"work-item-v9Z2ktVYC0aRjqs2VGbxQA", // Curious cat
+                "work-item-OeT7azA-Jk2VkUxk3taERw", // web-rule
+                "run-20250626-120304-m3sUVTY41E6vJY0SK2BQFQ-TAfGit69y0OhQOwAAtltKw",
                 new Dictionary<string, object>
                 {
                     {
@@ -72,6 +74,18 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                     {
                         PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONCOMPLETIONMODEL,
                         "gpt-4o-mini"
+                    },
+                    {
+                        PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONENTITYTYPES,
+                        "PERSON,ORGANIZATION,LOCATION,DATE,TIME,MONEY,PERCENT,PRODUCT,EVENT,CONCEPT"
+                    },
+                    {
+                        PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONMAXOUTPUTTOKENCOUNT,
+                        1000
+                    },
+                    {
+                        PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONMODELTEMPERATURE,
+                        0.0
                     }
                 }
             }

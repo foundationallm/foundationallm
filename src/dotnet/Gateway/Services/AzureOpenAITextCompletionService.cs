@@ -1,9 +1,8 @@
 ﻿using Azure.AI.OpenAI;
 using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.Gateway;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
-using FoundationaLLM.Common.Models.Vectorization;
-using FoundationaLLM.Gateway.Constants;
 using FoundationaLLM.Gateway.Interfaces;
 using FoundationaLLM.Gateway.Models;
 using Microsoft.Extensions.Logging;
@@ -67,19 +66,19 @@ namespace FoundationaLLM.Gateway.Services
                 var chatCompletionOptions = new ChatCompletionOptions();
 
                 if (textOperationRequest.ModelParameters.TryGetValue(
-                        TextOperationContextPropertyNames.MaxOutputTokenCount,
+                        TextOperationModelParameterNames.MaxOutputTokenCount,
                         out object? maxOutputTokenCountObject)
                     && maxOutputTokenCountObject is JsonElement maxOutputTokenCount)
                     chatCompletionOptions.MaxOutputTokenCount = maxOutputTokenCount.GetInt32();
 
                 if (textOperationRequest.ModelParameters.TryGetValue(
-                        TextOperationContextPropertyNames.Temperature,
+                        TextOperationModelParameterNames.Temperature,
                         out object? temperatureObject)
                     && temperatureObject is JsonElement temperature)
                     chatCompletionOptions.Temperature = (float)temperature.GetDouble();
 
                 if (textOperationRequest.ModelParameters.TryGetValue(
-                        TextOperationContextPropertyNames.TopP,
+                        TextOperationModelParameterNames.TopP,
                         out object? topPObject)
                     && topPObject is JsonElement topP)
                     chatCompletionOptions.TopP = (float)topP.GetDouble();
