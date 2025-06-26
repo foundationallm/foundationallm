@@ -204,7 +204,7 @@ Class GatewayServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_GatewayServiceClient_CreateAgentCapability_System_String_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__" data-uid="FoundationaLLM.Common.Clients.GatewayServiceClient.CreateAgentCapability(System.String,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
   CreateAgentCapability(string, string, string, Dictionary&lt;string, object&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/GatewayServiceClient.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/GatewayServiceClient.cs/#L130"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -242,18 +242,18 @@ Class GatewayServiceClient  <a class="header-action link-secondary" title="View 
 
 
 
-  <a id="FoundationaLLM_Common_Clients_GatewayServiceClient_GetEmbeddingOperationResult_" data-uid="FoundationaLLM.Common.Clients.GatewayServiceClient.GetEmbeddingOperationResult*"></a>
+  <a id="FoundationaLLM_Common_Clients_GatewayServiceClient_GetCompletionOperationResult_" data-uid="FoundationaLLM.Common.Clients.GatewayServiceClient.GetCompletionOperationResult*"></a>
 
-  <h3 id="FoundationaLLM_Common_Clients_GatewayServiceClient_GetEmbeddingOperationResult_System_String_System_String_" data-uid="FoundationaLLM.Common.Clients.GatewayServiceClient.GetEmbeddingOperationResult(System.String,System.String)">
-  GetEmbeddingOperationResult(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/GatewayServiceClient.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Clients_GatewayServiceClient_GetCompletionOperationResult_System_String_System_String_" data-uid="FoundationaLLM.Common.Clients.GatewayServiceClient.GetCompletionOperationResult(System.String,System.String)">
+  GetCompletionOperationResult(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/GatewayServiceClient.cs/#L54"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;TextEmbeddingResult&gt; GetEmbeddingOperationResult(string instanceId, string operationId)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;TextOperationResult&gt; GetCompletionOperationResult(string instanceId, string operationId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -266,7 +266,83 @@ Class GatewayServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html">TextEmbeddingResult</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Clients_GatewayServiceClient_GetEmbeddingOperationResult_" data-uid="FoundationaLLM.Common.Clients.GatewayServiceClient.GetEmbeddingOperationResult*"></a>
+
+  <h3 id="FoundationaLLM_Common_Clients_GatewayServiceClient_GetEmbeddingOperationResult_System_String_System_String_" data-uid="FoundationaLLM.Common.Clients.GatewayServiceClient.GetEmbeddingOperationResult(System.String,System.String)">
+  GetEmbeddingOperationResult(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/GatewayServiceClient.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;TextOperationResult&gt; GetEmbeddingOperationResult(string instanceId, string operationId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>operationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Clients_GatewayServiceClient_StartCompletionOperation_" data-uid="FoundationaLLM.Common.Clients.GatewayServiceClient.StartCompletionOperation*"></a>
+
+  <h3 id="FoundationaLLM_Common_Clients_GatewayServiceClient_StartCompletionOperation_System_String_FoundationaLLM_Common_Models_Vectorization_TextCompletionRequest_" data-uid="FoundationaLLM.Common.Clients.GatewayServiceClient.StartCompletionOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest)">
+  StartCompletionOperation(string, TextCompletionRequest)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/GatewayServiceClient.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;TextOperationResult&gt; StartCompletionOperation(string instanceId, TextCompletionRequest completionRequest)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>completionRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest.html">TextCompletionRequest</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -284,14 +360,14 @@ Class GatewayServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_GatewayServiceClient_StartEmbeddingOperation_System_String_FoundationaLLM_Common_Models_Vectorization_TextEmbeddingRequest_" data-uid="FoundationaLLM.Common.Clients.GatewayServiceClient.StartEmbeddingOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest)">
   StartEmbeddingOperation(string, TextEmbeddingRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/GatewayServiceClient.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/GatewayServiceClient.cs/#L76"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;TextEmbeddingResult&gt; StartEmbeddingOperation(string instanceId, TextEmbeddingRequest embeddingRequest)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;TextOperationResult&gt; StartEmbeddingOperation(string instanceId, TextEmbeddingRequest embeddingRequest)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -304,7 +380,7 @@ Class GatewayServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html">TextEmbeddingResult</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a>&gt;</dt>
     <dd></dd>
   </dl>
 

@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Gateway_Services_GatewayCore" data-uid="FoundationaLLM.Gateway.Services.GatewayCore" class="text-break">
-Class GatewayCore  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L39"><i class="bi bi-code-slash"></i></a>
+Class GatewayCore  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -170,7 +170,7 @@ Class GatewayCore  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="FoundationaLLM_Gateway_Services_GatewayCore__ctor_FoundationaLLM_Common_Interfaces_IAzureResourceManagerService_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Gateway_Models_Configuration_GatewayCoreSettings__System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__Microsoft_Extensions_Logging_ILoggerFactory_FoundationaLLM_Gateway_Services_GatewayMetrics_" data-uid="FoundationaLLM.Gateway.Services.GatewayCore.#ctor(FoundationaLLM.Common.Interfaces.IAzureResourceManagerService,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings},System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},Microsoft.Extensions.Logging.ILoggerFactory,FoundationaLLM.Gateway.Services.GatewayMetrics)">
   GatewayCore(IAzureResourceManagerService, IOptions&lt;GatewayCoreSettings&gt;, IEnumerable&lt;IResourceProviderService&gt;, ILoggerFactory, GatewayMetrics)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Implements the FoundationaLLM Gateway service.</p>
@@ -219,7 +219,7 @@ Class GatewayCore  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="FoundationaLLM_Gateway_Services_GatewayCore_CreateAgentCapability_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Collections_Generic_Dictionary_System_String_System_Object__" data-uid="FoundationaLLM.Gateway.Services.GatewayCore.CreateAgentCapability(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.Object})">
   CreateAgentCapability(string, string, string, UnifiedUserIdentity, Dictionary&lt;string, object&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L212"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L320"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new LLM-based agent capability.</p>
@@ -276,7 +276,7 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
 
   <h3 id="FoundationaLLM_Gateway_Services_GatewayCore_ExecuteAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Gateway.Services.GatewayCore.ExecuteAsync(System.Threading.CancellationToken)">
   ExecuteAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L154"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Executes the Gateway service until cancellation is signaled.</p>
@@ -310,11 +310,56 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
 
 
 
+  <a id="FoundationaLLM_Gateway_Services_GatewayCore_GetCompletionOperationResult_" data-uid="FoundationaLLM.Gateway.Services.GatewayCore.GetCompletionOperationResult*"></a>
+
+  <h3 id="FoundationaLLM_Gateway_Services_GatewayCore_GetCompletionOperationResult_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Gateway.Services.GatewayCore.GetCompletionOperationResult(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  GetCompletionOperationResult(string, string, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L293"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves the outcome of a completion operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;TextOperationResult&gt; GetCompletionOperationResult(string instanceId, string operationId, UnifiedUserIdentity userIdentity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance id.</p>
+</dd>
+    <dt><code>operationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The unique identifier of the text completion operation.</p>
+</dd>
+    <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> providing information about the calling user identity.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a> object with the outcome of the operation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Gateway_Services_GatewayCore_GetEmbeddingOperationResult_" data-uid="FoundationaLLM.Gateway.Services.GatewayCore.GetEmbeddingOperationResult*"></a>
 
   <h3 id="FoundationaLLM_Gateway_Services_GatewayCore_GetEmbeddingOperationResult_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Gateway.Services.GatewayCore.GetEmbeddingOperationResult(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetEmbeddingOperationResult(string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L185"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L226"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves the outcome of an embedding operation.</p>
@@ -322,7 +367,7 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;TextEmbeddingResult&gt; GetEmbeddingOperationResult(string instanceId, string operationId, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;TextOperationResult&gt; GetEmbeddingOperationResult(string instanceId, string operationId, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -340,8 +385,8 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html">TextEmbeddingResult</a>&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html">TextEmbeddingResult</a> object with the outcome of the operation.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a> object with the outcome of the operation.</p>
 </dd>
   </dl>
 
@@ -359,7 +404,7 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
 
   <h3 id="FoundationaLLM_Gateway_Services_GatewayCore_StartAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Gateway.Services.GatewayCore.StartAsync(System.Threading.CancellationToken)">
   StartAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L67"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Starts the Gateway service, allowing it to initialize.</p>
@@ -393,11 +438,56 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
 
 
 
+  <a id="FoundationaLLM_Gateway_Services_GatewayCore_StartCompletionOperation_" data-uid="FoundationaLLM.Gateway.Services.GatewayCore.StartCompletionOperation*"></a>
+
+  <h3 id="FoundationaLLM_Gateway_Services_GatewayCore_StartCompletionOperation_System_String_FoundationaLLM_Common_Models_Vectorization_TextCompletionRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Gateway.Services.GatewayCore.StartCompletionOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  StartCompletionOperation(string, TextCompletionRequest, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L252"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Starts a completion operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;TextOperationResult&gt; StartCompletionOperation(string instanceId, TextCompletionRequest completionRequest, UnifiedUserIdentity userIdentity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance id.</p>
+</dd>
+    <dt><code>completionRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest.html">TextCompletionRequest</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest.html">TextCompletionRequest</a> object containing the details of the completion operation.</p>
+</dd>
+    <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> providing information about the calling user identity.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a> object with the outcome of the operation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Gateway_Services_GatewayCore_StartEmbeddingOperation_" data-uid="FoundationaLLM.Gateway.Services.GatewayCore.StartEmbeddingOperation*"></a>
 
   <h3 id="FoundationaLLM_Gateway_Services_GatewayCore_StartEmbeddingOperation_System_String_FoundationaLLM_Common_Models_Vectorization_TextEmbeddingRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Gateway.Services.GatewayCore.StartEmbeddingOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   StartEmbeddingOperation(string, TextEmbeddingRequest, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L142"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L175"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Starts an embedding operation.</p>
@@ -405,7 +495,7 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;TextEmbeddingResult&gt; StartEmbeddingOperation(string instanceId, TextEmbeddingRequest embeddingRequest, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;TextOperationResult&gt; StartEmbeddingOperation(string instanceId, TextEmbeddingRequest embeddingRequest, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -423,8 +513,8 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html">TextEmbeddingResult</a>&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html">TextEmbeddingResult</a> object with the outcome of the operation.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a> object with the outcome of the operation.</p>
 </dd>
   </dl>
 
@@ -442,7 +532,7 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
 
   <h3 id="FoundationaLLM_Gateway_Services_GatewayCore_StopAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Gateway.Services.GatewayCore.StopAsync(System.Threading.CancellationToken)">
   StopAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L147"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Stops the Gateway service, allowing it to cleanup.</p>
@@ -480,7 +570,7 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L39" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayCore.cs/#L40" class="edit-link">Edit this page</a>
         </div>
 
 

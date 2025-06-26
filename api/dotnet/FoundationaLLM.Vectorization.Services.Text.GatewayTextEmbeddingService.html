@@ -222,7 +222,7 @@ Depending on the implementation, this can be an atomic operation or a long-runni
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;TextEmbeddingResult&gt; GetEmbeddingsAsync(IList&lt;TextChunk&gt; textChunks, string modelName, int embeddingDimensions, bool Prioritized)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;TextOperationResult&gt; GetEmbeddingsAsync(IList&lt;TextChunk&gt; textChunks, string modelName, int embeddingDimensions, bool Prioritized)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -241,8 +241,8 @@ Depending on the implementation, this can be an atomic operation or a long-runni
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html">TextEmbeddingResult</a>&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html">TextEmbeddingResult</a> object containing the result of the text embedding operation.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a> object containing the result of the text embedding operation.</p>
 </dd>
   </dl>
 
@@ -268,7 +268,7 @@ Depending on the implementation, this can be an atomic operation or a long-runni
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;TextEmbeddingResult&gt; GetEmbeddingsAsync(string operationId)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;TextOperationResult&gt; GetEmbeddingsAsync(string operationId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -280,8 +280,8 @@ Depending on the implementation, this can be an atomic operation or a long-runni
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html">TextEmbeddingResult</a>&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html">TextEmbeddingResult</a> object containing the result of the text embedding operation.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a> object containing the result of the text embedding operation.</p>
 </dd>
   </dl>
 

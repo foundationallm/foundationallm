@@ -163,7 +163,7 @@ Class GatewayMetrics  <a class="header-action link-secondary" title="View source
 
   <h3 id="FoundationaLLM_Gateway_Services_GatewayMetrics__ctor_System_Diagnostics_Metrics_IMeterFactory_" data-uid="FoundationaLLM.Gateway.Services.GatewayMetrics.#ctor(System.Diagnostics.Metrics.IMeterFactory)">
   GatewayMetrics(IMeterFactory)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayMetrics.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayMetrics.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -194,23 +194,25 @@ Class GatewayMetrics  <a class="header-action link-secondary" title="View source
 </h2>
 
 
-  <a id="FoundationaLLM_Gateway_Services_GatewayMetrics_IncrementTextChunksEmbedded_" data-uid="FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunksEmbedded*"></a>
+  <a id="FoundationaLLM_Gateway_Services_GatewayMetrics_IncrementTextChunkMeters_" data-uid="FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunkMeters*"></a>
 
-  <h3 id="FoundationaLLM_Gateway_Services_GatewayMetrics_IncrementTextChunksEmbedded_System_Int64_" data-uid="FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunksEmbedded(System.Int64)">
-  IncrementTextChunksEmbedded(long)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayMetrics.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Gateway_Services_GatewayMetrics_IncrementTextChunkMeters_System_Int64_System_Int64_" data-uid="FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunkMeters(System.Int64,System.Int64)">
+  IncrementTextChunkMeters(long, long)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayMetrics.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void IncrementTextChunksEmbedded(long count)</code></pre>
+    <pre><code class="lang-csharp hljs">public void IncrementTextChunkMeters(long embeddingsCount, long completionsCount)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>count</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dt><code>embeddingsCount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd></dd>
+    <dt><code>completionsCount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
     <dd></dd>
   </dl>
 
@@ -227,21 +229,23 @@ Class GatewayMetrics  <a class="header-action link-secondary" title="View source
 
   <a id="FoundationaLLM_Gateway_Services_GatewayMetrics_IncrementTextChunksSizeTokens_" data-uid="FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunksSizeTokens*"></a>
 
-  <h3 id="FoundationaLLM_Gateway_Services_GatewayMetrics_IncrementTextChunksSizeTokens_System_Int64_" data-uid="FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunksSizeTokens(System.Int64)">
-  IncrementTextChunksSizeTokens(long)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayMetrics.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Gateway_Services_GatewayMetrics_IncrementTextChunksSizeTokens_System_Int64_System_Int64_" data-uid="FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunksSizeTokens(System.Int64,System.Int64)">
+  IncrementTextChunksSizeTokens(long, long)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/GatewayMetrics.cs/#L39"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void IncrementTextChunksSizeTokens(long size)</code></pre>
+    <pre><code class="lang-csharp hljs">public void IncrementTextChunksSizeTokens(long embeddingsSize, long completionsSize)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>size</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dt><code>embeddingsSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd></dd>
+    <dt><code>completionsSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
     <dd></dd>
   </dl>
 

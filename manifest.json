@@ -4030,6 +4030,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Extensions.PipelineResponseExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Extensions.PipelineResponseExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Extensions.PipelineResponseExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Extensions.StringExtensions.yml",
       "output": {
         ".html": {
@@ -6519,20 +6533,6 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.yml\" sourcestartlinenumber=\"1\">Provides the details required to create an agent capability.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Gateway.GatewayTextEmbeddingRequest.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Gateway.GatewayTextEmbeddingRequest.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Gateway.GatewayTextEmbeddingRequest",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Gateway.GatewayTextEmbeddingRequest.yml\" sourcestartlinenumber=\"1\">Provides metrics related to text embedding requests submitted by the FoundationaLLM Gateway.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -9784,6 +9784,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest.yml\" sourcestartlinenumber=\"1\">Models a request to run a list of completions.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest.yml",
       "output": {
         ".html": {
@@ -9798,17 +9812,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Vectorization.TextOperationResult.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.yml\" sourcestartlinenumber=\"1\">The result of a text embedding request.</p>\n"
+      "Title": "FoundationaLLM.Common.Models.Vectorization.TextOperationResult",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Vectorization.TextOperationResult.yml\" sourcestartlinenumber=\"1\">The result of a text operation request.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -13196,7 +13210,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.DependencyInjection",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DependencyInjection.yml\" sourcestartlinenumber=\"1\">Data Source resource provider service implementation of resource provider dependency injection extensions.</p>\n"
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DependencyInjection.yml\" sourcestartlinenumber=\"1\">Core Client service dependency injection extensions.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -13858,6 +13872,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.API.Controllers.CompletionsController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Gateway.API.Controllers.CompletionsController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Gateway.API.Controllers.CompletionsController",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.API.Controllers.CompletionsController.yml\" sourcestartlinenumber=\"1\">Methods for managing embedding requests.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.API.Controllers.EmbeddingsController.yml",
       "output": {
         ".html": {
@@ -13928,6 +13956,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Constants.OperationContextPropertyNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Constants.OperationContextPropertyNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Gateway.Constants.OperationContextPropertyNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Constants.OperationContextPropertyNames.yml\" sourcestartlinenumber=\"1\">Defines the names of properties used in OperationContext objects.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Constants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Constants.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Gateway.Constants",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Exceptions.GatewayExceptionHandler.yml",
       "output": {
         ".html": {
@@ -13967,6 +14023,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Gateway.Interfaces.IGatewayCore",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Interfaces.IGatewayCore.yml\" sourcestartlinenumber=\"1\">Defines the interface of the FoundationaLLM Gateway core.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Interfaces.ITextOperationService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Interfaces.ITextOperationService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Gateway.Interfaces.ITextOperationService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Interfaces.ITextOperationService.yml\" sourcestartlinenumber=\"1\">Defines the interface for text operation services, such as text embedding or completion services.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -14012,59 +14082,45 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingModelContext.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.InternalTextOperationRequest.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingModelContext.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.InternalTextOperationRequest.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Gateway.Models.EmbeddingModelContext",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingModelContext.yml\" sourcestartlinenumber=\"1\">Provides context associated with an embedding model.</p>\n"
+      "Title": "FoundationaLLM.Gateway.Models.InternalTextOperationRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Models.InternalTextOperationRequest.yml\" sourcestartlinenumber=\"1\">Represents internal text operation requests processed by the FoundationaLLM Gateway.</p>\n"
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingModelDeploymentContext.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.InternalTextOperationResult.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingModelDeploymentContext.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.InternalTextOperationResult.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Gateway.Models.EmbeddingModelDeploymentContext",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingModelDeploymentContext.yml\" sourcestartlinenumber=\"1\">Provides context associated with an embedding model deployment.</p>\n"
+      "Title": "FoundationaLLM.Gateway.Models.InternalTextOperationResult",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Models.InternalTextOperationResult.yml\" sourcestartlinenumber=\"1\">Represents the result of a text operation request.</p>\n"
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingOperationContext.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.OperationContext.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingOperationContext.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.OperationContext.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Gateway.Models.EmbeddingOperationContext",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingOperationContext.yml\" sourcestartlinenumber=\"1\">Maintains the context for an embedding operation.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingRequestResult.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingRequestResult.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Gateway.Models.EmbeddingRequestResult",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingRequestResult.yml\" sourcestartlinenumber=\"1\">Represents the result of procedding an embedding request.</p>\n"
+      "Title": "FoundationaLLM.Gateway.Models.OperationContext",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Models.OperationContext.yml\" sourcestartlinenumber=\"1\">Provides the context for a text operation.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -14079,6 +14135,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Gateway.Models",
       "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.AzureOpenAITextCompletionService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.AzureOpenAITextCompletionService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Gateway.Services.AzureOpenAITextCompletionService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Services.AzureOpenAITextCompletionService.yml\" sourcestartlinenumber=\"1\">Implementation of <xref href=\"FoundationaLLM.Gateway.Interfaces.ITextOperationService\" data-throw-if-not-resolved=\"false\"></xref> using Azure OpenAI.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -14135,6 +14205,34 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Gateway.Services.GatewayWorker",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Services.GatewayWorker.yml\" sourcestartlinenumber=\"1\">Background worker used to execute the Gateway core.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.ModelContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.ModelContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Gateway.Services.ModelContext",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Services.ModelContext.yml\" sourcestartlinenumber=\"1\">Provides context associated with an embedding model.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.ModelDeploymentContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.ModelDeploymentContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Gateway.Services.ModelDeploymentContext",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Services.ModelDeploymentContext.yml\" sourcestartlinenumber=\"1\">Provides context associated with model deployment used in text operations (embeddings or completions).</p>\n"
     },
     {
       "type": "ManagedReference",

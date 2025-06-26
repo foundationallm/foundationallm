@@ -132,7 +132,7 @@ Interface IGatewayCore  <a class="header-action link-secondary" title="View sour
 
   <h3 id="FoundationaLLM_Gateway_Interfaces_IGatewayCore_CreateAgentCapability_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Collections_Generic_Dictionary_System_String_System_Object__" data-uid="FoundationaLLM.Gateway.Interfaces.IGatewayCore.CreateAgentCapability(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.Object})">
   CreateAgentCapability(string, string, string, UnifiedUserIdentity, Dictionary&lt;string, object&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Interfaces/IGatewayCore.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Interfaces/IGatewayCore.cs/#L85"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new LLM-based agent capability.</p>
@@ -223,6 +223,51 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
 
 
 
+  <a id="FoundationaLLM_Gateway_Interfaces_IGatewayCore_GetCompletionOperationResult_" data-uid="FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetCompletionOperationResult*"></a>
+
+  <h3 id="FoundationaLLM_Gateway_Interfaces_IGatewayCore_GetCompletionOperationResult_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetCompletionOperationResult(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  GetCompletionOperationResult(string, string, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Interfaces/IGatewayCore.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves the outcome of a completion operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;TextOperationResult&gt; GetCompletionOperationResult(string instanceId, string operationId, UnifiedUserIdentity userIdentity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance id.</p>
+</dd>
+    <dt><code>operationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The unique identifier of the text completion operation.</p>
+</dd>
+    <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> providing information about the calling user identity.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a> object with the outcome of the operation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Gateway_Interfaces_IGatewayCore_GetEmbeddingOperationResult_" data-uid="FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetEmbeddingOperationResult*"></a>
 
   <h3 id="FoundationaLLM_Gateway_Interfaces_IGatewayCore_GetEmbeddingOperationResult_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetEmbeddingOperationResult(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
@@ -235,7 +280,7 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;TextEmbeddingResult&gt; GetEmbeddingOperationResult(string instanceId, string operationId, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;TextOperationResult&gt; GetEmbeddingOperationResult(string instanceId, string operationId, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -253,8 +298,8 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html">TextEmbeddingResult</a>&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html">TextEmbeddingResult</a> object with the outcome of the operation.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a> object with the outcome of the operation.</p>
 </dd>
   </dl>
 
@@ -306,6 +351,51 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
 
 
 
+  <a id="FoundationaLLM_Gateway_Interfaces_IGatewayCore_StartCompletionOperation_" data-uid="FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartCompletionOperation*"></a>
+
+  <h3 id="FoundationaLLM_Gateway_Interfaces_IGatewayCore_StartCompletionOperation_System_String_FoundationaLLM_Common_Models_Vectorization_TextCompletionRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartCompletionOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  StartCompletionOperation(string, TextCompletionRequest, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Interfaces/IGatewayCore.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Starts a completion operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;TextOperationResult&gt; StartCompletionOperation(string instanceId, TextCompletionRequest completionRequest, UnifiedUserIdentity userIdentity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance id.</p>
+</dd>
+    <dt><code>completionRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest.html">TextCompletionRequest</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest.html">TextCompletionRequest</a> object containing the details of the completion operation.</p>
+</dd>
+    <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> providing information about the calling user identity.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a> object with the outcome of the operation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Gateway_Interfaces_IGatewayCore_StartEmbeddingOperation_" data-uid="FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartEmbeddingOperation*"></a>
 
   <h3 id="FoundationaLLM_Gateway_Interfaces_IGatewayCore_StartEmbeddingOperation_System_String_FoundationaLLM_Common_Models_Vectorization_TextEmbeddingRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartEmbeddingOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
@@ -318,7 +408,7 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;TextEmbeddingResult&gt; StartEmbeddingOperation(string instanceId, TextEmbeddingRequest embeddingRequest, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;TextOperationResult&gt; StartEmbeddingOperation(string instanceId, TextEmbeddingRequest embeddingRequest, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -336,8 +426,8 @@ OpenAI.Assistants (the names of the keys for the parameters and output dictionar
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html">TextEmbeddingResult</a>&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingResult.html">TextEmbeddingResult</a> object with the outcome of the operation.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html">TextOperationResult</a> object with the outcome of the operation.</p>
 </dd>
   </dl>
 
