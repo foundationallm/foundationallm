@@ -48,7 +48,7 @@
 						<Button
 							type="button"
 							icon="pi pi-refresh"
-							@click="$emit('refresh-agents')"
+							@click="$emit('refresh-pipelines')"
 						/>
 					</div>
 				</template>
@@ -276,9 +276,10 @@
 		<!-- Trigger Pipeline Modal -->
 		<Dialog 
 		:visible="selectedPipelineResource !== null" 
-		modal 
+		modal
+		closable
 		:header="'Trigger pipeline — ' + selectedPipelineResource?.name"
-		@hide="closeTriggerPipeline"
+		@update:visible="closeTriggerPipeline"
 		>
 			<form @submit.prevent="triggerPipeline">
 
@@ -291,7 +292,7 @@
 						:options="processorOptions"
 						option-label="value"
 						option-value="value"
-						placeholder="--Select--"
+						placeholder="--Select Data Pipeline Processor--"
 					/>
 				</div>
 
@@ -446,7 +447,7 @@ export default {
 				.then(() => {
 					this.$toast.add({
 						severity: 'success',
-						detail: `Pipeline ${this.selectedPipelineResource.name} triggered successfully.`,
+						detail: 'Pipeline ${this.selectedPipelineResource.name} triggered successfully.',
 						life: 3000,
 					});
 					this.closeTriggerPipeline();
@@ -534,7 +535,7 @@ export default {
 			}
 
 			recurse(obj, context)
-			return results.sort((a, b) => a.path.localeCompare(b.path))
+			return results //.sort((a, b) => a.path.localeCompare(b.path))
 		},
 
 		extractPluginName(obj) {
