@@ -13210,7 +13210,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.DependencyInjection",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DependencyInjection.yml\" sourcestartlinenumber=\"1\">Data Source resource provider service implementation of resource provider dependency injection extensions.</p>\n"
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DependencyInjection.yml\" sourcestartlinenumber=\"1\">Core Client service dependency injection extensions.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -13956,17 +13956,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Constants.OperationContextPropertyNames.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Constants.TextOperationContextPropertyNames.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Constants.OperationContextPropertyNames.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Constants.TextOperationContextPropertyNames.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Gateway.Constants.OperationContextPropertyNames",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Constants.OperationContextPropertyNames.yml\" sourcestartlinenumber=\"1\">Defines the names of properties used in OperationContext objects.</p>\n"
+      "Title": "FoundationaLLM.Gateway.Constants.TextOperationContextPropertyNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Constants.TextOperationContextPropertyNames.yml\" sourcestartlinenumber=\"1\">Defines the names of properties used in OperationContext objects.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -14110,17 +14110,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.OperationContext.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.TextOperationContext.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.OperationContext.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.TextOperationContext.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Gateway.Models.OperationContext",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Models.OperationContext.yml\" sourcestartlinenumber=\"1\">Provides the context for a text operation.</p>\n"
+      "Title": "FoundationaLLM.Gateway.Models.TextOperationContext",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gateway.Models.TextOperationContext.yml\" sourcestartlinenumber=\"1\">Provides the context for a text operation.</p>\n"
     },
     {
       "type": "ManagedReference",

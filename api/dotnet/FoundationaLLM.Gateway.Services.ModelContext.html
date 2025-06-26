@@ -162,8 +162,8 @@ Class ModelContext  <a class="header-action link-secondary" title="View source" 
 
   <a id="FoundationaLLM_Gateway_Services_ModelContext__ctor_" data-uid="FoundationaLLM.Gateway.Services.ModelContext.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Gateway_Services_ModelContext__ctor_System_Collections_Concurrent_ConcurrentDictionary_System_String_FoundationaLLM_Gateway_Models_OperationContext__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Gateway_Services_ModelContext__" data-uid="FoundationaLLM.Gateway.Services.ModelContext.#ctor(System.Collections.Concurrent.ConcurrentDictionary{System.String,FoundationaLLM.Gateway.Models.OperationContext},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Gateway.Services.ModelContext})">
-  ModelContext(ConcurrentDictionary&lt;string, OperationContext&gt;, ILogger&lt;ModelContext&gt;)
+  <h3 id="FoundationaLLM_Gateway_Services_ModelContext__ctor_System_Collections_Concurrent_ConcurrentDictionary_System_String_FoundationaLLM_Gateway_Models_TextOperationContext__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Gateway_Services_ModelContext__" data-uid="FoundationaLLM.Gateway.Services.ModelContext.#ctor(System.Collections.Concurrent.ConcurrentDictionary{System.String,FoundationaLLM.Gateway.Models.TextOperationContext},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Gateway.Services.ModelContext})">
+  ModelContext(ConcurrentDictionary&lt;string, TextOperationContext&gt;, ILogger&lt;ModelContext&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/ModelContext.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -172,13 +172,13 @@ Class ModelContext  <a class="header-action link-secondary" title="View source" 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ModelContext(ConcurrentDictionary&lt;string, OperationContext&gt; textOperationContexts, ILogger&lt;ModelContext&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public ModelContext(ConcurrentDictionary&lt;string, TextOperationContext&gt; textOperationContexts, ILogger&lt;ModelContext&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>textOperationContexts</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2">ConcurrentDictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="FoundationaLLM.Gateway.Models.OperationContext.html">OperationContext</a>&gt;</dt>
-    <dd><p>The global dictionary of <a class="xref" href="FoundationaLLM.Gateway.Models.OperationContext.html">OperationContext</a> objects indexed by operation identifier.</p>
+    <dt><code>textOperationContexts</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2">ConcurrentDictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="FoundationaLLM.Gateway.Models.TextOperationContext.html">TextOperationContext</a>&gt;</dt>
+    <dd><p>The global dictionary of <a class="xref" href="FoundationaLLM.Gateway.Models.TextOperationContext.html">TextOperationContext</a> objects indexed by operation identifier.</p>
 </dd>
     <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="FoundationaLLM.Gateway.Services.ModelContext.html">ModelContext</a>&gt;</dt>
     <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a> used for logging.</p>
@@ -270,8 +270,8 @@ Class ModelContext  <a class="header-action link-secondary" title="View source" 
 
   <a id="FoundationaLLM_Gateway_Services_ModelContext_AddTextOperationContext_" data-uid="FoundationaLLM.Gateway.Services.ModelContext.AddTextOperationContext*"></a>
 
-  <h3 id="FoundationaLLM_Gateway_Services_ModelContext_AddTextOperationContext_FoundationaLLM_Gateway_Models_OperationContext_" data-uid="FoundationaLLM.Gateway.Services.ModelContext.AddTextOperationContext(FoundationaLLM.Gateway.Models.OperationContext)">
-  AddTextOperationContext(OperationContext)
+  <h3 id="FoundationaLLM_Gateway_Services_ModelContext_AddTextOperationContext_FoundationaLLM_Gateway_Models_TextOperationContext_" data-uid="FoundationaLLM.Gateway.Services.ModelContext.AddTextOperationContext(FoundationaLLM.Gateway.Models.TextOperationContext)">
+  AddTextOperationContext(TextOperationContext)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Services/ModelContext.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -279,12 +279,12 @@ Class ModelContext  <a class="header-action link-secondary" title="View source" 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void AddTextOperationContext(OperationContext textOperationContext)</code></pre>
+    <pre><code class="lang-csharp hljs">public void AddTextOperationContext(TextOperationContext textOperationContext)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>textOperationContext</code> <a class="xref" href="FoundationaLLM.Gateway.Models.OperationContext.html">OperationContext</a></dt>
+    <dt><code>textOperationContext</code> <a class="xref" href="FoundationaLLM.Gateway.Models.TextOperationContext.html">TextOperationContext</a></dt>
     <dd></dd>
   </dl>
 

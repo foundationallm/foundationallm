@@ -226,42 +226,6 @@ public required string DeploymentName { get; set; }</code></pre>
 
 
 
-  <a id="FoundationaLLM_Gateway_Models_InternalTextOperationRequest_EmbeddingDimensions_" data-uid="FoundationaLLM.Gateway.Models.InternalTextOperationRequest.EmbeddingDimensions*"></a>
-
-  <h3 id="FoundationaLLM_Gateway_Models_InternalTextOperationRequest_EmbeddingDimensions" data-uid="FoundationaLLM.Gateway.Models.InternalTextOperationRequest.EmbeddingDimensions">
-  EmbeddingDimensions
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/InternalTextOperationRequest.cs/#L47"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the number of dimensions of the embedding.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;embedding_dimensions&quot;)]
-public int EmbeddingDimensions { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-  <h4 class="section" id="FoundationaLLM_Gateway_Models_InternalTextOperationRequest_EmbeddingDimensions_remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>The value is only relevant for embedding operations (expected to be -1 for completion operations).</p>
-</div>
-
-
-
-
   <a id="FoundationaLLM_Gateway_Models_InternalTextOperationRequest_Id_" data-uid="FoundationaLLM.Gateway.Models.InternalTextOperationRequest.Id*"></a>
 
   <h3 id="FoundationaLLM_Gateway_Models_InternalTextOperationRequest_Id" data-uid="FoundationaLLM.Gateway.Models.InternalTextOperationRequest.Id">
@@ -328,6 +292,39 @@ public required string ModelName { get; set; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_Gateway_Models_InternalTextOperationRequest_ModelParameters_" data-uid="FoundationaLLM.Gateway.Models.InternalTextOperationRequest.ModelParameters*"></a>
+
+  <h3 id="FoundationaLLM_Gateway_Models_InternalTextOperationRequest_ModelParameters" data-uid="FoundationaLLM.Gateway.Models.InternalTextOperationRequest.ModelParameters">
+  ModelParameters
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/InternalTextOperationRequest.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the model parameters used for the text operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;model_properties&quot;)]
+public Dictionary&lt;string, object&gt; ModelParameters { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Gateway_Models_InternalTextOperationRequest_ModelVersion_" data-uid="FoundationaLLM.Gateway.Models.InternalTextOperationRequest.ModelVersion*"></a>
 
   <h3 id="FoundationaLLM_Gateway_Models_InternalTextOperationRequest_ModelVersion" data-uid="FoundationaLLM.Gateway.Models.InternalTextOperationRequest.ModelVersion">
@@ -365,7 +362,7 @@ public required string ModelVersion { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Gateway_Models_InternalTextOperationRequest_OperationsDetails" data-uid="FoundationaLLM.Gateway.Models.InternalTextOperationRequest.OperationsDetails">
   OperationsDetails
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/InternalTextOperationRequest.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/InternalTextOperationRequest.cs/#L65"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The details of the text operations from the text chunks.
@@ -399,7 +396,7 @@ public Dictionary&lt;string, List&lt;int&gt;&gt; OperationsDetails { get; }</cod
 
   <h3 id="FoundationaLLM_Gateway_Models_InternalTextOperationRequest_TextChunks" data-uid="FoundationaLLM.Gateway.Models.InternalTextOperationRequest.TextChunks">
   TextChunks
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/InternalTextOperationRequest.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/InternalTextOperationRequest.cs/#L76"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the list of text chunks from the current request.</p>
@@ -432,7 +429,7 @@ public List&lt;TextChunk&gt; TextChunks { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Gateway_Models_InternalTextOperationRequest_TextChunksCount" data-uid="FoundationaLLM.Gateway.Models.InternalTextOperationRequest.TextChunksCount">
   TextChunksCount
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/InternalTextOperationRequest.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/InternalTextOperationRequest.cs/#L57"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the total number of text chunks in the request.</p>
@@ -465,7 +462,7 @@ public int TextChunksCount { get; }</code></pre>
 
   <h3 id="FoundationaLLM_Gateway_Models_InternalTextOperationRequest_TokensCount" data-uid="FoundationaLLM.Gateway.Models.InternalTextOperationRequest.TokensCount">
   TokensCount
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/InternalTextOperationRequest.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/InternalTextOperationRequest.cs/#L50"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the total number of tokens used in the request.</p>
