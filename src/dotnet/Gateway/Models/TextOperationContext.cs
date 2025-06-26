@@ -6,7 +6,7 @@ namespace FoundationaLLM.Gateway.Models
     /// <summary>
     /// Provides the context for a text operation.
     /// </summary>
-    public class OperationContext
+    public class TextOperationContext
     {
         protected readonly object _syncRoot = new();
 
@@ -42,9 +42,9 @@ namespace FoundationaLLM.Gateway.Models
         public List<string> IntermediateErrors { get; set; } = [];
 
         /// <summary>
-        /// Gets or sets the properties associated with the text operation context.
+        /// Gets or sets the model parameters.
         /// </summary>
-        public Dictionary<string, object> Properties { get; set; } = [];
+        public Dictionary<string, object> ModelParameters { get; set; } = [];
 
         /// <summary>
         /// Sets a specified error message on the context of the text operation.
