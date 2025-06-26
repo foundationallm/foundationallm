@@ -1,6 +1,8 @@
 ﻿using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.Plugins.Metadata;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins
 {
@@ -14,6 +16,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins
         protected readonly IPluginPackageManager _packageManager;
         protected readonly PluginMetadata _pluginMetadata;
         protected readonly IServiceProvider _serviceProvider;
+
+        protected readonly ILogger<PluginBase> _logger;
 
         /// <summary>
         /// Initializes the plugin with the specified parameters and package manager.
@@ -44,6 +48,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins
                     string.Join(",", _pluginMetadata.Parameters
                                         .Where(p => !_pluginParameters.ContainsKey(p.Name))
                                         .Select(p => p.Name)))}");
+
+            _logger = serviceProvider.GetRequiredService<ILogger<PluginBase>>();
         }
     }
 }

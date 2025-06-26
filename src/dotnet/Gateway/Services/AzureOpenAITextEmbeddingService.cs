@@ -1,10 +1,10 @@
 ﻿using Azure.AI.OpenAI;
 using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.Gateway;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Vectorization;
-using FoundationaLLM.Gateway.Constants;
 using FoundationaLLM.Gateway.Interfaces;
 using FoundationaLLM.Gateway.Models;
 using Microsoft.Extensions.Logging;
@@ -48,7 +48,7 @@ namespace FoundationaLLM.Gateway.Services
             InternalTextOperationRequest textOperationRequest)
         {
             if (!textOperationRequest.ModelParameters.TryGetValue(
-                        TextOperationContextPropertyNames.EmbeddingDimensions,
+                        TextOperationModelParameterNames.EmbeddingDimensions,
                         out object? embeddingDimensionsObject)
                     || embeddingDimensionsObject is not int embeddingDimensions)
                 throw new GatewayException("The EmbeddingDimensions model parameter is missing.");

@@ -3,6 +3,7 @@ using Azure.AI.Projects;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.AzureAI;
+using FoundationaLLM.Common.Constants.Gateway;
 using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -12,7 +13,6 @@ using FoundationaLLM.Common.Models.Azure;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.Vectorization;
-using FoundationaLLM.Gateway.Constants;
 using FoundationaLLM.Gateway.Interfaces;
 using FoundationaLLM.Gateway.Models;
 using FoundationaLLM.Gateway.Models.Configuration;
@@ -208,7 +208,7 @@ namespace FoundationaLLM.Gateway.Services
                 ModelParameters = new Dictionary<string, object>()
                 {
                     {
-                        TextOperationContextPropertyNames.EmbeddingDimensions,
+                        TextOperationModelParameterNames.EmbeddingDimensions,
                         embeddingRequest.EmbeddingModelDimensions
                     }
                 },

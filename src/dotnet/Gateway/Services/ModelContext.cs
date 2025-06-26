@@ -1,5 +1,4 @@
-﻿using FoundationaLLM.Gateway.Constants;
-using FoundationaLLM.Gateway.Models;
+﻿using FoundationaLLM.Gateway.Models;
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 

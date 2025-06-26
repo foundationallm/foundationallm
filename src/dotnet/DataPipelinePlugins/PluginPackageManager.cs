@@ -193,11 +193,77 @@ namespace FoundationaLLM.Plugins.DataPipeline
                             Name = PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONCOMPLETIONMODEL,
                             Type = PluginParameterTypes.String,
                             Description = "The completion model used for entity extraction."
+                        },
+                        new() {
+                            Name = PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONENTITYTYPES,
+                            Type = PluginParameterTypes.String,
+                            Description = "List of comma-separated entity types to extract (e.g., PERSON, ORGANIZATION, LOCATION)."
+                        },
+                        new() {
+                            Name = PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONMODELTEMPERATURE,
+                            Type = PluginParameterTypes.Float,
+                            Description = "The temperature used for the entity extraction model (0.0 for deterministic output, 1.0 for more creative output)."
+                        },
+                        new() {
+                            Name = PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONMAXOUTPUTTOKENCOUNT,
+                            Type = PluginParameterTypes.Int,
+                            Description = "The maximum number of output tokens for the entity extraction model."
                         }
                     ],
                     ParameterSelectionHints = new() {
                         {
                             PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONPROMPTOBJECTID,
+                            new() {
+                                ResourcePath = "providers/FoundationaLLM.Prompt/prompts",
+                                FilterActionPayload = new {
+                                    category = "DataPipeline"
+                                }
+                            }
+                        }
+                    },
+                    Dependencies = []
+                },
+                new() {
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE}",
+                    Name = PluginNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE,
+                    DisplayName = "Knowledge Graph Data Pipeline Stage (FoundationaLLM)",
+                    Description = "Provides the FoundationaLLM standard implementation for knowledge graph data pipeline stages.",
+                    Category = PluginCategoryNames.DataPipelineStage,
+                    Parameters = [
+                        new() {
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONPROMPTOBJECTID,
+                            Type = PluginParameterTypes.ResourceObjectId,
+                            Description = "The FoundationaLLM resource identifier of the Prompt resource that is used for entity summarization."
+                        },
+                        new() {
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONCOMPLETIONMODEL,
+                            Type = PluginParameterTypes.String,
+                            Description = "The completion model used for entity summarization."
+                        },
+                        new() {
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONCOMPLETIONMODELTEMPERATURE,
+                            Type = PluginParameterTypes.Float,
+                            Description = "The temperature used for the entity summarization model (recommended value is 0.7)."
+                        },
+                        new() {
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONCOMPLETIONMAXOUTPUTTOKENCOUNT,
+                            Type = PluginParameterTypes.Int,
+                            Description = "The maximum number of output tokens for the entity summarization model."
+                        },
+                        new() {
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONEMBEDDINGMODEL,
+                            Type = PluginParameterTypes.String,
+                            Description = "The embedding model used for entity summary embedding (the recommended model is text-embedding-3-large)."
+                        },
+                        new() {
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONEMBEDDINGDIMENSIONS,
+                            Type = PluginParameterTypes.Int,
+                            Description = "The number of dimensions used for embedding entity summarizations (the recommended number is 2048)."
+                        }
+                    ],
+                    ParameterSelectionHints = new() {
+                        {
+                            PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONPROMPTOBJECTID,
                             new() {
                                 ResourcePath = "providers/FoundationaLLM.Prompt/prompts",
                                 FilterActionPayload = new {

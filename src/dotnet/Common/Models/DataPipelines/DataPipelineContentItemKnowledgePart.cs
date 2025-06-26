@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using FoundationaLLM.Common.Models.Knowledge;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.DataPipelines
 {
@@ -8,10 +9,10 @@ namespace FoundationaLLM.Common.Models.DataPipelines
     public class DataPipelineContentItemKnowledgePart : DataPipelineContentItemPartBase
     {
         /// <summary>
-        /// Gets or sets the definition of entities extracted from the content item part.
+        /// Gets or sets the entities and relationships extracted from the content item part.
         /// </summary>
         [JsonPropertyName("entities")]
-        public string? Entities { get; set; }
+        public KnowledgeEntityRelationship<ExtractedKnowledgeEntity, ExtractedKnowledgeRelationship>? EntitiesAndRelationships { get; set; }
 
         /// <summary>
         /// Converts a content item part to a knowledge part.

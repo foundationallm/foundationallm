@@ -1,7 +1,7 @@
-﻿using FoundationaLLM.Common.Exceptions;
+﻿using FoundationaLLM.Common.Constants.Gateway;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Models.Azure;
 using FoundationaLLM.Common.Models.Vectorization;
-using FoundationaLLM.Gateway.Constants;
 using FoundationaLLM.Gateway.Interfaces;
 using FoundationaLLM.Gateway.Models;
 using Microsoft.Extensions.Logging;
@@ -142,7 +142,7 @@ namespace FoundationaLLM.Gateway.Services
             else
             {
                 if (!modelParameters.TryGetValue(
-                        TextOperationContextPropertyNames.EmbeddingDimensions,
+                        TextOperationModelParameterNames.EmbeddingDimensions,
                         out object? embeddingDimensionsObject)
                     || embeddingDimensionsObject is not int embeddingDimensions)
                     throw new GatewayException("The EmbeddingDimensions model parameter is missing.");
