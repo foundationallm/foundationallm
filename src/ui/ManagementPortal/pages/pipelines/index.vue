@@ -172,6 +172,31 @@
 				</Column>
 
 				<!-- Run -->
+				<Column
+					header="Run"
+					header-style="width:6rem"
+					style="text-align: center"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						headerContent: { style: { justifyContent: 'center' } },
+					}"
+				>
+					<template #body="{ data }">
+						<Button
+							:disabled="
+								!data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write')
+							"
+							:aria-label="`Run ${data.resource.name}`"
+							@click="openTriggerPipeline(data.resource)"
+						>
+							<i class="pi pi-play-circle" style="font-size: 1.2rem" aria-hidden="true"></i>
+						</Button>
+					</template>
+				</Column>
+
+				<!-- Run -->
 				<!-- <Column
 					header-style="width:6rem"
 					style="text-align: center"
@@ -247,6 +272,58 @@
 				</table>
 			</div>
 		</Dialog>
+
+		<!-- Trigger Pipeline Modal -->
+		<Dialog 
+		:visible="selectedPipelineResource !== null" 
+		modal 
+		:header="'Trigger pipeline — ' + selectedPipelineResource?.name"
+		@hide="closeTriggerPipeline"
+		>
+			<form @submit.prevent="triggerPipeline">
+
+				<div>
+					<label>Data Pipeline processor</label>
+				</div>
+				<div style="margin-bottom: 1rem">
+					<Dropdown
+						v-model="selectedProcessor"
+						:options="processorOptions"
+						option-label="value"
+						option-value="value"
+						placeholder="--Select--"
+					/>
+				</div>
+
+				<div v-for="(value, key) in selectedPipelineParameters" :key="key" class="form-group">
+					<div style="margin-bottom: 1rem">
+						<label :for="key">{{ value.path }}</label>
+						<InputText
+							type="text"
+							:id="key"
+							v-model="selectedPipelineParameters[key].default_value"
+							class="w-full"
+						/>
+					</div>
+				</div>
+
+				<div>
+					<Button
+						class="sidebar-dialog__button"
+						label="Trigger"
+						text
+						@click="triggerPipeline"
+					/>
+					<Button
+						class="sidebar-dialog__button"
+						label="Close"
+						text
+						@click="closeTriggerPipeline"
+					/>
+				</div>
+			</form>
+		</Dialog>
+
 	</main>
 </template>
 
@@ -261,11 +338,18 @@ export default {
 		return {
 			pipelines: [] as ResourceProviderGetResult<Pipeline>[],
 			pipelineToView: null,
+			selectedProcessor: null,
+			selectedPipelineResource: null,
+			selectedPipelineParameters: [],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 			filters: {
 				global: { value: null, matchMode: 'contains' }
 			},
+			processorOptions: [
+				{ value: 'DataPipelineFrontendWorker' },
+				{ value: 'DataPipelineBackendWorker' },
+			] as { value: string }[],
 		};
 	},
 
@@ -291,6 +375,172 @@ export default {
 				});
 			}
 			this.loading = false;
+		},
+
+		openTriggerPipeline(resource) {
+			this.selectedPipelineResource = resource;
+
+			this.selectedPipelineParameters = this.extractPluginParameters(resource);
+			//console.log('extractPluginParameters result', JSON.parse(JSON.stringify(this.selectedPipelineParameters)));
+		},
+
+		closeTriggerPipeline() {
+			this.selectedPipelineResource = null;
+			this.selectedPipelineParameters = [];
+		},
+
+		triggerPipeline() {
+			let errorCount = 0;
+			if (!this.selectedPipelineResource) { 
+				this.$toast.add({
+						severity: 'error',
+						detail: 'Invalid pipeline selected.',
+						life: 3000,
+					});
+				errorCount++;
+			}
+
+			if (this.selectedPipelineParameters.length === 0) { 
+				this.$toast.add({
+						severity: 'error',
+						detail: 'Invalid pipeline parameter values.',
+						life: 3000,
+					});
+				errorCount++;
+			}
+
+			this.selectedPipelineParameters.forEach(param => {
+				if (param.default_value === undefined || param.default_value === null) {
+					this.$toast.add({
+						severity: 'error',
+						detail: `Parameter ${param.path} has no value.`,
+						life: 3000,
+					});
+					errorCount++;;
+				}
+			});
+
+			if (!this.selectedProcessor) { 
+				this.$toast.add({
+						severity: 'error',
+						detail: 'Invalid data pipeline processor.',
+						life: 3000,
+					});
+				errorCount++;;
+			}
+
+			if (errorCount > 0) {
+				return;
+			}
+
+			const payload = {
+				data_pipeline_object_id: this.selectedPipelineResource.object_id,
+				trigger_name: this.selectedPipelineResource.triggers[0].name,
+				trigger_parameter_values: Object.fromEntries(this.selectedPipelineParameters.map(x => [x.path, x.default_value])),
+				processor: this.selectedProcessor,
+			};
+
+			//console.log('Triggering pipeline with payload:', JSON.stringify(payload));
+
+			api.triggerPipeline(this.selectedPipelineResource.name, payload)
+				.then(() => {
+					this.$toast.add({
+						severity: 'success',
+						detail: `Pipeline ${this.selectedPipelineResource.name} triggered successfully.`,
+						life: 3000,
+					});
+					this.closeTriggerPipeline();
+				})
+				.catch(error => {
+					this.$toast.add({
+						severity: 'error',
+						detail: error?.response?._data || error,
+						life: 5000,
+					});
+				});
+		},
+
+		// extractPluginParameters(obj, results = []) {
+		// 	if (obj && typeof obj === 'object') {
+		// 		for (const key in obj) {
+		// 			if (key === 'plugin_parameters') {
+		// 				const params = obj[key]
+		// 				if (Array.isArray(params) && params.length > 0) {
+		// 					results.push(...params)
+		// 				}
+		// 			} else {
+		// 				this.extractPluginParameters(obj[key], results)
+		// 			}
+		// 		}
+		// 	} else if (Array.isArray(obj)) {
+		// 		for (const item of obj) {
+		// 			this.extractPluginParameters(item, results)
+		// 		}
+		// 	}
+		// 	return results
+		// },
+
+		extractPluginParameters(obj, context = []) {
+  			const results = []
+
+			const that = this;
+			function recurse(current, ctx) {
+				if (Array.isArray(current)) {
+				current.forEach(item => recurse(item, ctx))
+				} else if (current && typeof current === 'object') {
+					if (Array.isArray(current.plugin_parameters) && current.plugin_parameters.length > 0) {
+						current.plugin_parameters.forEach(param => {
+							const paramName = param.parameter_metadata?.name
+							results.push({
+								...param,
+								path: [...ctx, paramName].join('.')
+							})
+						})
+					}
+
+					for (const key in current) {
+						//console.log('ctx', ctx);
+						const value = current[key]
+
+						if (key === 'data_source') {
+							recurse(value, [...ctx, 'DataSource', value.name])
+						} else if (key === 'plugin_dependencies') {
+							const deps = Array.isArray(value) ? value : []
+							deps.forEach(dep => {
+								const name = that.extractPluginName(dep)
+								recurse(dep, [...ctx, 'Dependency', name])
+							})
+						} else if (key === 'starting_stages' || key === 'next_stages') {
+							const stages = Array.isArray(value) ? value : []
+							// var exists = stages.filter(s => s.name.startsWith('Stage'));
+							// if (exists.length !== 0){
+							// 	ctx = []
+							// }
+							stages.forEach(stage => {
+								const name = stage.name
+								//const newCtx = ctx.filter((v, i, arr) => !(arr[i - 1] === 'Stage'))
+								let newCtx = [...ctx]
+								const stageIndex = newCtx.lastIndexOf('Stage')
+								if (stageIndex !== -1 && newCtx.length > stageIndex + 1) {
+									newCtx.splice(stageIndex, 2)
+								}
+								recurse(stage, [...newCtx, 'Stage', name])
+							})
+						} else if (typeof value === 'object' && value !== null) {
+							recurse(value, ctx)
+						}
+					}
+				}
+			}
+
+			recurse(obj, context)
+			return results.sort((a, b) => a.path.localeCompare(b.path))
+		},
+
+		extractPluginName(obj) {
+			if (obj.name) return obj.name
+			if (obj.plugin_object_id) return obj.plugin_object_id.split('/').pop()?.split('-').pop()
+			return 'Undefined'
 		},
 
 		// async getPipeline(pipelineName: string) {
