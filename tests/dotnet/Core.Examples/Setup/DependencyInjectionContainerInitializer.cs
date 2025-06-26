@@ -217,6 +217,7 @@ namespace FoundationaLLM.Core.Examples.Setup
             services.AddDataPipelineResourceProvider(configuration);
             services.AddRemoteDataPipelineServiceClient(configuration);
             services.AddDataPipelineStateService(configuration);
+            services.AddPromptResourceProvider(configuration);
         }
 
         private static void RegisterOtherServices(IServiceCollection services, IConfiguration configuration)

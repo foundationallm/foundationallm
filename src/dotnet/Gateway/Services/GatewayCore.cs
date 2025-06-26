@@ -12,6 +12,7 @@ using FoundationaLLM.Common.Models.Azure;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.Vectorization;
+using FoundationaLLM.Gateway.Constants;
 using FoundationaLLM.Gateway.Interfaces;
 using FoundationaLLM.Gateway.Models;
 using FoundationaLLM.Gateway.Models.Configuration;
@@ -56,9 +57,11 @@ namespace FoundationaLLM.Gateway.Services
         private bool _initialized = false;
 
         private Dictionary<string, AzureOpenAIAccount> _azureOpenAIAccounts = [];
-        private Dictionary<string, EmbeddingModelContext> _embeddingModels = [];
+        private Dictionary<string, ModelContext> _embeddingModels = [];
+        private Dictionary<string, ModelContext> _completionModels = [];
 
-        private ConcurrentDictionary<string, EmbeddingOperationContext> _embeddingOperations = [];
+        private ConcurrentDictionary<string, OperationContext> _embeddingOperations = [];
+        private ConcurrentDictionary<string, OperationContext> _completionOperations = [];
 
         /// <inheritdoc/>
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -82,22 +85,46 @@ namespace FoundationaLLM.Gateway.Services
                         {
                             if (deployment.CanDoEmbeddings)
                             {
-                                var embeddingModelContext = new EmbeddingModelDeploymentContext(
+                                var embeddingModelDeploymentContext = new ModelDeploymentContext(
                                     deployment,
                                     _settings.TokenRateLimitMultiplier,
+                                    new AzureOpenAITextEmbeddingService(
+                                        deployment.AccountEndpoint,
+                                        _loggerFactory.CreateLogger<AzureOpenAITextEmbeddingService>()),
                                     _loggerFactory,
                                     _metrics);
 
                                 if (!_embeddingModels.ContainsKey(deployment.ModelName))
-                                    _embeddingModels[deployment.ModelName] = new EmbeddingModelContext(
+                                    _embeddingModels[deployment.ModelName] = new ModelContext(
                                         _embeddingOperations,
-                                        _loggerFactory.CreateLogger<EmbeddingModelContext>())
+                                        _loggerFactory.CreateLogger<ModelContext>())
                                     {
                                         ModelName = deployment.ModelName,
-                                        DeploymentContexts = [embeddingModelContext]
+                                        DeploymentContexts = [embeddingModelDeploymentContext]
                                     };
                                 else
-                                    _embeddingModels[deployment.ModelName].DeploymentContexts.Add(embeddingModelContext);
+                                    _embeddingModels[deployment.ModelName].DeploymentContexts.Add(embeddingModelDeploymentContext);
+                            }
+                            else if (deployment.CanDoCompletions)
+                            {
+                                var completionModelDeploymentContext = new ModelDeploymentContext(
+                                    deployment,
+                                    _settings.TokenRateLimitMultiplier,
+                                    new AzureOpenAITextCompletionService(
+                                        deployment.AccountEndpoint,
+                                        _loggerFactory.CreateLogger<AzureOpenAITextCompletionService>()),
+                                    _loggerFactory,
+                                    _metrics);
+                                if (!_completionModels.ContainsKey(deployment.ModelName))
+                                    _completionModels[deployment.ModelName] = new ModelContext(
+                                        _completionOperations,
+                                        _loggerFactory.CreateLogger<ModelContext>())
+                                    {
+                                        ModelName = deployment.ModelName,
+                                        DeploymentContexts = [completionModelDeploymentContext]
+                                    };
+                                else
+                                    _completionModels[deployment.ModelName].DeploymentContexts.Add(completionModelDeploymentContext);
                             }
                         }
                     }
@@ -131,15 +158,21 @@ namespace FoundationaLLM.Gateway.Services
 
             _logger.LogInformation("The Gateway core service is executing.");
 
-            var modelTasks = _embeddingModels.Values
-                .Select(em => Task.Run(() => em.ProcessOperations(cancellationToken)))
-                .ToArray();
+            var embeddingModelTasks = _embeddingModels.Values
+                .Select(em => Task.Run(() => em.ProcessTextOperations(cancellationToken)));
 
-            await Task.WhenAll(modelTasks);
+            var completionModelTasks = _completionModels.Values
+                .Select(em => Task.Run(() => em.ProcessTextOperations(cancellationToken)));
+
+            await Task.WhenAll(
+            [
+                .. embeddingModelTasks,
+                .. completionModelTasks
+            ]);
         }
 
         /// <inheritdoc/>
-        public async Task<TextEmbeddingResult> StartEmbeddingOperation(string instanceId, TextEmbeddingRequest embeddingRequest, UnifiedUserIdentity userIdentity)
+        public async Task<TextOperationResult> StartEmbeddingOperation(string instanceId, TextEmbeddingRequest embeddingRequest, UnifiedUserIdentity userIdentity)
         {
             if (!_initialized)
                 throw new GatewayException("The Gateway service is not initialized.");
@@ -148,7 +181,7 @@ namespace FoundationaLLM.Gateway.Services
                 throw new GatewayException("The requested embedding model is not available.", StatusCodes.Status404NotFound);
 
             var operationId = Guid.NewGuid().ToString().ToLower();
-            var embeddingOperationContext = new EmbeddingOperationContext
+            var embeddingOperationContext = new OperationContext
             {
                 InputTextChunks = [.. embeddingRequest.TextChunks.Select(tc => new TextChunk
                 {
@@ -157,7 +190,7 @@ namespace FoundationaLLM.Gateway.Services
                     Content = tc.Content,
                     TokensCount = tc.TokensCount
                 })],
-                Result = new TextEmbeddingResult
+                Result = new TextOperationResult
                 {
                     InProgress = true,
                     OperationId = operationId,
@@ -168,13 +201,21 @@ namespace FoundationaLLM.Gateway.Services
                     TokenCount = 0
                 },
                 Prioritized = embeddingRequest.Prioritized,
-                EmbeddingModelDimensions = embeddingRequest.EmbeddingModelDimensions
+                Properties = new Dictionary<string, object>()
+                {
+                    {
+                        OperationContextPropertyNames.EmbeddingDimensions,
+                        embeddingRequest.EmbeddingModelDimensions
+                    }
+                },
+                TextChunkUpdater = (tc1, tc2) => tc1.Embedding = tc2.Embedding,
+                TextChunkCompletenessChecker = tc => tc.Embedding != null
             };
 
-            embeddingModel.AddEmbeddingOperationContext(embeddingOperationContext);
+            embeddingModel.AddTextOperationContext(embeddingOperationContext);
 
             return await Task.FromResult(
-                new TextEmbeddingResult
+                new TextOperationResult
                 {
                     InProgress = true,
                     OperationId = embeddingOperationContext.Result.OperationId
@@ -182,7 +223,7 @@ namespace FoundationaLLM.Gateway.Services
         }
 
         /// <inheritdoc/>
-        public async Task<TextEmbeddingResult> GetEmbeddingOperationResult(string instanceId, string operationId, UnifiedUserIdentity userIdentity)
+        public async Task<TextOperationResult> GetEmbeddingOperationResult(string instanceId, string operationId, UnifiedUserIdentity userIdentity)
         {
             if (!_initialized)
                 throw new GatewayException("The Gateway service is not initialized.");
@@ -191,7 +232,7 @@ namespace FoundationaLLM.Gateway.Services
                 throw new GatewayException("The operation identifier was not found.", StatusCodes.Status404NotFound);
 
             if (operationContext.Result.Failed)
-                return await Task.FromResult(new TextEmbeddingResult
+                return await Task.FromResult(new TextOperationResult
                 {
                     InProgress = false,
                     Failed = true,
@@ -199,13 +240,80 @@ namespace FoundationaLLM.Gateway.Services
                     OperationId = operationId
                 });
             else if (operationContext.Result.InProgress)
-                return await Task.FromResult(new TextEmbeddingResult
+                return await Task.FromResult(new TextOperationResult
                 {
                     InProgress = true,
                     OperationId = operationId
                 });
             else
                 return await Task.FromResult(operationContext.Result);
+        }
+
+        public Task<TextOperationResult> StartCompletionOperation(string instanceId, TextCompletionRequest completionRequest, UnifiedUserIdentity userIdentity)
+        {
+            if (!_initialized)
+                throw new GatewayException("The Gateway service is not initialized.");
+
+            if (!_completionModels.TryGetValue(completionRequest.CompletionModelName, out var completionModel))
+                throw new GatewayException("The requested completion model is not available.", StatusCodes.Status404NotFound);
+
+            var operationId = Guid.NewGuid().ToString().ToLower();
+            var completionOperationContext = new OperationContext
+            {
+                InputTextChunks = [.. completionRequest.TextChunks.Select(tc => new TextChunk
+                {
+                    OperationId = operationId,
+                    Position = tc.Position,
+                    Content = tc.Content,
+                    TokensCount = tc.TokensCount
+                })],
+                Result = new TextOperationResult
+                {
+                    InProgress = true,
+                    OperationId = operationId,
+                    TextChunks = [.. completionRequest.TextChunks.Select(tc => new TextChunk
+                    {
+                        Position = tc.Position
+                    })],
+                    TokenCount = 0
+                },
+                Prioritized = false,
+                TextChunkUpdater = (tc1, tc2) => tc1.Completion = tc2.Completion,
+                TextChunkCompletenessChecker = tc => tc.Completion != null
+            };
+            completionModel.AddTextOperationContext(completionOperationContext);
+            return Task.FromResult(
+                new TextOperationResult
+                {
+                    InProgress = true,
+                    OperationId = completionOperationContext.Result.OperationId
+                });
+        }
+
+        public Task<TextOperationResult> GetCompletionOperationResult(string instanceId, string operationId, UnifiedUserIdentity userIdentity)
+        {
+            if (!_initialized)
+                throw new GatewayException("The Gateway service is not initialized.");
+
+            if (!_completionOperations.TryGetValue(operationId, out var operationContext))
+                throw new GatewayException("The operation identifier was not found.", StatusCodes.Status404NotFound);
+
+            if (operationContext.Result.Failed)
+                return Task.FromResult(new TextOperationResult
+                {
+                    InProgress = false,
+                    Failed = true,
+                    ErrorMessage = operationContext.Result.ErrorMessage,
+                    OperationId = operationId
+                });
+            else if (operationContext.Result.InProgress)
+                return Task.FromResult(new TextOperationResult
+                {
+                    InProgress = true,
+                    OperationId = operationId
+                });
+            else
+                return Task.FromResult(operationContext.Result);
         }
 
         /// <inheritdoc/>
@@ -859,6 +967,5 @@ namespace FoundationaLLM.Gateway.Services
                 ? ((JsonElement)parameterValueObject!).Deserialize<T>()
                     ?? throw new GatewayException($"Could not load required parameter {parameterName}.", StatusCodes.Status400BadRequest)
                 : throw new GatewayException($"The required parameter {parameterName} was not found.");
-
     }
 }

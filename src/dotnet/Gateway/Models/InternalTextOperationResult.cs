@@ -3,9 +3,9 @@
 namespace FoundationaLLM.Gateway.Models
 {
     /// <summary>
-    /// Represents the result of procedding an embedding request.
+    /// Represents the result of a text operation request.
     /// </summary>
-    public class EmbeddingRequestResult
+    public class InternalTextOperationResult
     {
         /// <summary>
         /// Gets or sets the list of text chunks that were successfully processed.
@@ -13,17 +13,17 @@ namespace FoundationaLLM.Gateway.Models
         public IList<TextChunk> TextChunks { get; set; } = [];
 
         /// <summary>
-        /// Gets or sets the flag that indicates whether the embedding request procesing has failed or not.
+        /// Gets or sets the flag that indicates whether the request procesing has failed or not.
         /// </summary>
         public bool Failed { get; set; } = false;
 
         /// <summary>
-        /// Gets or sets the error message if the embedding request processing has failed.
+        /// Gets or sets the error message when the request processing has failed.
         /// </summary>
         public string? ErrorMessage { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of operation IDs that failed during the embedding request processing.
+        /// Gets or sets the list of operation IDs that failed during the request processing.
         /// </summary>
         public List<string> FailedOperationIds { get; set; } = [];
     }

@@ -35,8 +35,8 @@ namespace FoundationaLLM.Gateway.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance id.</param>
         /// <param name="embeddingRequest">The <see cref="TextEmbeddingRequest"/> object containing the details of the embedding operation.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
-        /// <returns>A <see cref="TextEmbeddingResult"/> object with the outcome of the operation.</returns>
-        Task<TextEmbeddingResult> StartEmbeddingOperation(string instanceId, TextEmbeddingRequest embeddingRequest, UnifiedUserIdentity userIdentity);
+        /// <returns>A <see cref="TextOperationResult"/> object with the outcome of the operation.</returns>
+        Task<TextOperationResult> StartEmbeddingOperation(string instanceId, TextEmbeddingRequest embeddingRequest, UnifiedUserIdentity userIdentity);
 
         /// <summary>
         /// Retrieves the outcome of an embedding operation.
@@ -44,8 +44,26 @@ namespace FoundationaLLM.Gateway.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance id.</param>
         /// <param name="operationId">The unique identifier of the text embedding operation.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
-        /// <returns>A <see cref="TextEmbeddingResult"/> object with the outcome of the operation.</returns>
-        Task<TextEmbeddingResult> GetEmbeddingOperationResult(string instanceId, string operationId, UnifiedUserIdentity userIdentity);
+        /// <returns>A <see cref="TextOperationResult"/> object with the outcome of the operation.</returns>
+        Task<TextOperationResult> GetEmbeddingOperationResult(string instanceId, string operationId, UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Starts a completion operation.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance id.</param>
+        /// <param name="completionRequest">The <see cref="TextCompletionRequest"/> object containing the details of the completion operation.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
+        /// <returns>A <see cref="TextOperationResult"/> object with the outcome of the operation.</returns>
+        Task<TextOperationResult> StartCompletionOperation(string instanceId, TextCompletionRequest completionRequest, UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Retrieves the outcome of a completion operation.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance id.</param>
+        /// <param name="operationId">The unique identifier of the text completion operation.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
+        /// <returns>A <see cref="TextOperationResult"/> object with the outcome of the operation.</returns>
+        Task<TextOperationResult> GetCompletionOperationResult(string instanceId, string operationId, UnifiedUserIdentity userIdentity);
 
         /// <summary>
         /// Creates a new LLM-based agent capability.

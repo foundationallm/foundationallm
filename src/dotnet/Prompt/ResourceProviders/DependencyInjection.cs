@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Prompt.ResourceProviders;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -19,11 +20,21 @@ namespace FoundationaLLM
         /// Register the handler as a hosted service, passing the step name to the handler ctor
         /// </summary>
         /// <param name="builder">The application builder.</param>
-        public static void AddPromptResourceProvider(this IHostApplicationBuilder builder)
-        {
-            builder.AddPromptResourceProviderStorage();
+        public static void AddPromptResourceProvider(this IHostApplicationBuilder builder) =>
+            builder.Services.AddPromptResourceProvider(builder.Configuration);
 
-            builder.Services.AddSingleton<IResourceProviderService, PromptResourceProviderService>(sp =>
+        /// <summary>
+        /// Registers the FoundationaLLM.Prompt resource provider with the dependency injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfiguration"/> configuration provider.</param>
+        public static void AddPromptResourceProvider(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddPromptResourceProviderStorage(configuration);
+
+            services.AddSingleton<IResourceProviderService, PromptResourceProviderService>(sp =>
                 new PromptResourceProviderService(
                     sp.GetRequiredService<IOptions<InstanceSettings>>(),
                     sp.GetRequiredService<IOptions<ResourceProviderCacheSettings>>(),
@@ -35,7 +46,7 @@ namespace FoundationaLLM
                     sp,
                     sp.GetRequiredService<ILogger<PromptResourceProviderService>>()));
 
-            builder.Services.ActivateSingleton<IResourceProviderService>();
+            services.ActivateSingleton<IResourceProviderService>();
         }
     }
 }

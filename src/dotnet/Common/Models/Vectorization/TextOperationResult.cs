@@ -3,19 +3,19 @@
 namespace FoundationaLLM.Common.Models.Vectorization
 {
     /// <summary>
-    /// The result of a text embedding request.
+    /// The result of a text operation request.
     /// </summary>
-    public class TextEmbeddingResult
+    public class TextOperationResult
     {
         /// <summary>
-        /// Indicates whether the text embedding operation is still in progress.
+        /// Indicates whether the text operation is still in progress.
         /// When true, the <see cref="OperationId"/> property contains an operation identifier.
         /// </summary>
         [JsonPropertyName("in_progress")]
         public bool InProgress { get; set; }
 
         /// <summary>
-        /// Indicates whether the text embedding operation failed due to an error.
+        /// Indicates whether the text operation failed due to an error.
         /// When true, the <see cref="ErrorMessage"/> property contains a message describing the error.
         /// </summary>
         [JsonPropertyName("cancelled")]
@@ -34,13 +34,13 @@ namespace FoundationaLLM.Common.Models.Vectorization
         public string? OperationId { get; set; }
 
         /// <summary>
-        /// The list of <see cref="TextChunk"/> objects containing the embeddings.
+        /// The list of <see cref="TextChunk"/> objects containing the results.
         /// </summary>
         [JsonPropertyName("text_chunks")]
         public IList<TextChunk> TextChunks { get; set; } = [];
 
         /// <summary>
-        /// The number of tokens used during the embedding operation.
+        /// The number of tokens used during the text operation.
         /// </summary>
         [JsonPropertyName("token_count")]
         public int TokenCount { get; set; }

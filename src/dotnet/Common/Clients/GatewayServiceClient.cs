@@ -29,9 +29,9 @@ namespace FoundationaLLM.Common.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<TextEmbeddingResult> GetEmbeddingOperationResult(string instanceId, string operationId)
+        public async Task<TextOperationResult> GetEmbeddingOperationResult(string instanceId, string operationId)
         {
-            var fallback = new TextEmbeddingResult
+            var fallback = new TextOperationResult
             {
                 InProgress = false,
                 OperationId = null
@@ -42,7 +42,7 @@ namespace FoundationaLLM.Common.Clients
             if (response.IsSuccessStatusCode)
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
-                var embeddingResult = JsonSerializer.Deserialize<TextEmbeddingResult>(responseContent);
+                var embeddingResult = JsonSerializer.Deserialize<TextOperationResult>(responseContent);
 
                 return embeddingResult ?? fallback;
             }
@@ -51,9 +51,31 @@ namespace FoundationaLLM.Common.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<TextEmbeddingResult> StartEmbeddingOperation(string instanceId, TextEmbeddingRequest embeddingRequest)
+        public async Task<TextOperationResult> GetCompletionOperationResult(string instanceId, string operationId)
         {
-            var fallback = new TextEmbeddingResult
+            var fallback = new TextOperationResult
+            {
+                InProgress = false,
+                OperationId = null
+            };
+
+            var response = await _gatewayAPIHttpClient.GetAsync($"instances/{instanceId}/completions?operationId={operationId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var completionResult = JsonSerializer.Deserialize<TextOperationResult>(responseContent);
+
+                return completionResult ?? fallback;
+            }
+
+            return fallback;
+        }
+
+        /// <inheritdoc/>
+        public async Task<TextOperationResult> StartEmbeddingOperation(string instanceId, TextEmbeddingRequest embeddingRequest)
+        {
+            var fallback = new TextOperationResult
             {
                 InProgress = false,
                 OperationId = null
@@ -69,9 +91,36 @@ namespace FoundationaLLM.Common.Clients
             if (response.IsSuccessStatusCode)
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
-                var embeddingResult = JsonSerializer.Deserialize<TextEmbeddingResult>(responseContent);
+                var embeddingResult = JsonSerializer.Deserialize<TextOperationResult>(responseContent);
 
                 return embeddingResult ?? fallback;
+            }
+
+            return fallback;
+        }
+
+        /// <inheritdoc/>
+        public async Task<TextOperationResult> StartCompletionOperation(string instanceId, TextCompletionRequest completionRequest)
+        {
+            var fallback = new TextOperationResult
+            {
+                InProgress = false,
+                OperationId = null
+            };
+
+            var serializedRequest = JsonSerializer.Serialize(completionRequest);
+            var response = await _gatewayAPIHttpClient.PostAsync($"instances/{instanceId}/completions",
+                new StringContent(
+                    serializedRequest,
+                    Encoding.UTF8,
+                    "application/json"));
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var completionResult = JsonSerializer.Deserialize<TextOperationResult>(responseContent);
+
+                return completionResult ?? fallback;
             }
 
             return fallback;

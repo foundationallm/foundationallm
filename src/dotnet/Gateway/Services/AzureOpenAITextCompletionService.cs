@@ -1,35 +1,44 @@
 ﻿using Azure.AI.OpenAI;
 using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
-using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Gateway.Interfaces;
 using FoundationaLLM.Gateway.Models;
 using Microsoft.Extensions.Logging;
+using OpenAI.Chat;
 using System.ClientModel;
 using System.ClientModel.Primitives;
 
 namespace FoundationaLLM.Gateway.Services
 {
     /// <summary>
-    /// Implementation of <see cref="ITextEmbeddingService"/> using Azure OpenAI.
+    /// Implementation of <see cref="ITextOperationService"/> using Azure OpenAI.
     /// </summary>
-    public class AzureOpenAITextEmbeddingService : ITextOperationService
+    public class AzureOpenAITextCompletionService : ITextOperationService
     {
         private readonly string _accountEndpoint;
         private readonly AzureOpenAIClient _azureOpenAIClient;
-        private readonly ILogger<AzureOpenAITextEmbeddingService> _logger;
+        //private readonly ChatCompletionsClient _azureAIInferenceClient;
+        private readonly ILogger<AzureOpenAITextCompletionService> _logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AzureOpenAITextEmbeddingService"/> class.
+        /// Initializes a new instance of the <see cref="AzureOpenAITextCompletionService"/> class.
         /// </summary>
         /// <param name="accountEndpoint">The endpoint of the Azure OpenAI service.</param>
         /// <param name="logger"></param>
-        public AzureOpenAITextEmbeddingService(
+        public AzureOpenAITextCompletionService(
             string accountEndpoint,
-            ILogger<AzureOpenAITextEmbeddingService> logger)
+            ILogger<AzureOpenAITextCompletionService> logger)
         {
             _accountEndpoint = accountEndpoint;
+            //_azureAIInferenceClient = new ChatCompletionsClient(
+            //    new Uri(_accountEndpoint),
+            //    ServiceContext.AzureCredential,
+            //    new AzureAIInferenceClientOptions()
+            //    {
+            //        RetryPolicy = new RetryPolicy(1)
+            //    });
             _azureOpenAIClient = new AzureOpenAIClient(
                 new Uri(_accountEndpoint),
                 ServiceContext.AzureCredential,
@@ -45,41 +54,34 @@ namespace FoundationaLLM.Gateway.Services
         public async Task<InternalTextOperationResult> ExecuteTextOperation(
             InternalTextOperationRequest textOperationRequest)
         {
+            if (textOperationRequest.TextChunks.Count != 1)
+                throw new GatewayException("The AzureOpenAITextCompletionService only supports a single text chunk for completion operations.");
+
             try
             {
-                var embeddingClient = _azureOpenAIClient.GetEmbeddingClient(
+                var chatClient = _azureOpenAIClient.GetChatClient(
                     textOperationRequest.DeploymentName);
-                OpenAI.Embeddings.EmbeddingGenerationOptions? embeddingOptions =
-                    textOperationRequest.EmbeddingDimensions == -1
-                        ? null
-                        : new OpenAI.Embeddings.EmbeddingGenerationOptions
-                            {
-                                Dimensions = textOperationRequest.EmbeddingDimensions
-                            };
-                var result = await embeddingClient.GenerateEmbeddingsAsync(
-                    textOperationRequest.TextChunks.Select(tc => tc.Content!).ToList(),
-                    embeddingOptions);
+                var result = await chatClient.CompleteChatAsync(
+                    new UserChatMessage(textOperationRequest.TextChunks[0].Content));
 
                 var rawResponse = result.GetRawResponse();
                 rawResponse.LogRateLimitHeaders(textOperationRequest.Id, _logger, LogLevel.Debug);
 
+                textOperationRequest.TextChunks[0].Completion = result.Value.Content[0].Text;
                 return new InternalTextOperationResult
                 {
-                    TextChunks = [.. Enumerable.Range(0, result.Value.Count).Select(i =>
-                    {
-                        var textChunk = textOperationRequest.TextChunks[i];
-                        textChunk.Embedding = new Embedding(result.Value[i].ToFloats());
-                        return textChunk;
-                    })]
+                    TextChunks = [textOperationRequest.TextChunks[0]]
                 };
             }
             catch (ClientResultException ex) when (ex.Status == 429)
             {
-                _logger.LogWarning(ex, "Rate limit exceeded while generating embeddings.");
+                _logger.LogWarning(ex, "Rate limit exceeded while generating completions.");
 
                 var rawResponse = ex.GetRawResponse();
                 if (rawResponse != null)
+                {
                     rawResponse.LogRateLimitHeaders(textOperationRequest.Id, _logger, LogLevel.Warning);
+                }
                 else
                     _logger.LogWarning("Response headers were not available.");
 

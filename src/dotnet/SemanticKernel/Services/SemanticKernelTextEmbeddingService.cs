@@ -44,13 +44,13 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
         }
 
         /// <inheritdoc/>
-        public async Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string modelName = "text-embedding-ada-002", int embeddingDimensions = 1536, bool Prioritized=false)
+        public async Task<TextOperationResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string modelName = "text-embedding-ada-002", int embeddingDimensions = 1536, bool Prioritized=false)
         {
             try
             {
                 var embeddings = await _textEmbeddingService.GenerateEmbeddingsAsync(
                     [.. textChunks.Select(tc => tc.Content!)]);
-                return new TextEmbeddingResult
+                return new TextOperationResult
                 {
                     InProgress = false,
                     TextChunks = Enumerable.Range(0, embeddings.Count).Select(i =>
@@ -64,7 +64,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while generating embeddings.");
-                return new TextEmbeddingResult
+                return new TextOperationResult
                 {
                     InProgress = false,
                     Failed = true,
@@ -74,7 +74,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
         }
 
         /// <inheritdoc/>
-        public Task<TextEmbeddingResult> GetEmbeddingsAsync(string operationId) => throw new NotImplementedException();
+        public Task<TextOperationResult> GetEmbeddingsAsync(string operationId) => throw new NotImplementedException();
 
         private Kernel CreateKernel()
         {

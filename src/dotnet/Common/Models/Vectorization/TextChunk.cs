@@ -26,11 +26,17 @@ namespace FoundationaLLM.Common.Models.Vectorization
         public string? Content { get; set; }
 
         /// <summary>
-        /// The embedding of the text content.
+        /// Gets or sets the embedding generated for the chunk, if applicable.
         /// </summary>
         [JsonPropertyName("embedding")]
         [JsonConverter(typeof(Embedding.JsonConverter))]
         public Embedding? Embedding { get; set; }
+
+        /// <summary>
+        /// Gets or sets the completion text generated for the chunk, if applicable.
+        /// </summary>
+        [JsonPropertyName("completion")]
+        public string? Completion { get; set; }
 
         /// <summary>
         /// The size of the chunk in tokens.

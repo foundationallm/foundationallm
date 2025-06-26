@@ -55,7 +55,6 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONCOMPLETIONMODEL} parameter.");
 
             var entityExtractionPrompt = await _promptResourceProvider.GetResourceAsync<PromptBase>(
-                dataPipelineRun.InstanceId,
                 entityExtractionPromptId.ToString()!,
                 ServiceContext.ServiceIdentity!);
 

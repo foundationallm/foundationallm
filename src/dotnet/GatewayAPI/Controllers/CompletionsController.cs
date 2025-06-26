@@ -14,7 +14,7 @@ namespace FoundationaLLM.Gateway.API.Controllers
     [ApiController]
     [APIKeyAuthentication]
     [Route("instances/{instanceId}/[controller]")]
-    public class EmbeddingsController(
+    public class CompletionsController(
         IGatewayCore gatewayCore,
         IOrchestrationContext callContext)
     {
@@ -22,27 +22,27 @@ namespace FoundationaLLM.Gateway.API.Controllers
         private readonly IOrchestrationContext _callContext = callContext;
 
         /// <summary>
-        /// Handles an incoming text embedding request by starting a new embedding operation.
+        /// Handles an incoming text completion request by starting a new completion operation.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance id.</param>
-        /// <param name="embeddingRequest">The <see cref="TextEmbeddingRequest"/> object with the details of the embedding request.</param>
+        /// <param name="completionRequest">The <see cref="TextCompletionRequest"/> object with the details of the completion request.</param>
         /// <returns>A <see cref="TextOperationResult"/> object with the outcome of the operation.</returns>
         [HttpPost]
-        public async Task<IActionResult> StartEmbeddingOperation(
+        public async Task<IActionResult> StartCompletionOperation(
             string instanceId,
-            [FromBody] TextEmbeddingRequest embeddingRequest) =>
-            new OkObjectResult(await _gatewayCore.StartEmbeddingOperation(instanceId, embeddingRequest, _callContext.CurrentUserIdentity!));
+            [FromBody] TextCompletionRequest completionRequest) =>
+            new OkObjectResult(await _gatewayCore.StartCompletionOperation(instanceId, completionRequest, _callContext.CurrentUserIdentity!));
 
         /// <summary>
         /// Retrieves the outcome of a text embedding operation.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance id.</param>
-        /// <param name="operationId">The unique identifier of the text embedding operation.</param>
+        /// <param name="operationId">The unique identifier of the text completion operation.</param>
         /// <returns>A <see cref="TextOperationResult"/> object with the outcome of the operation.</returns>
         [HttpGet]
-        public async Task<IActionResult> GetEmbeddingOperationResult(
+        public async Task<IActionResult> GetCompletionOperationResult(
             string instanceId,
             string operationId) =>
-            new OkObjectResult(await _gatewayCore.GetEmbeddingOperationResult(instanceId, operationId, _callContext.CurrentUserIdentity!));
+            new OkObjectResult(await _gatewayCore.GetCompletionOperationResult(instanceId, operationId, _callContext.CurrentUserIdentity!));
     }
 }

@@ -66,8 +66,12 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                 new Dictionary<string, object>
                 {
                     {
-                        PluginParameterNames.SHAREPOINTONLINE_DATASOURCE_DOCUMENTLIBRARIES,
-                        "/sites/foundationallm-test-01/documents01"
+                        PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONPROMPTOBJECTID,
+                        "instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/ProcessSPOFiles-EntityExtraction"
+                    },
+                    {
+                        PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONCOMPLETIONMODEL,
+                        "gpt-4o-mini"
                     }
                 }
             }
