@@ -1139,6 +1139,16 @@ export default {
 		);
 	},
 
+	async triggerPipeline(name: string, request: any): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/${name}/trigger?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: request,
+			},
+		);
+	},
+
 	/*
 		Plugins
 	*/
