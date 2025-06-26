@@ -221,12 +221,10 @@
             :visible="showParametersDialog" 
             modal
             closable
-            :header="`Data Pipeline run parameters`"
+            :header="`Data Pipeline Run`"
             @update:visible="closeParametersDialog"
             >
-				<div>
-					<label>Data Pipeline run</label>
-				</div>
+                <label style="font-weight: bold;">Identifier</label>
 				<div style="margin-bottom: 1rem">
 					<InputText
                         :readonly="true"
@@ -236,9 +234,7 @@
 					/>
 				</div>
 
-				<div>
-					<label>Data Pipeline processor</label>
-				</div>
+                <label style="font-weight: bold;">Processor</label>
 				<div style="margin-bottom: 1rem">
 					<InputText
                         :readonly="true"
@@ -248,6 +244,7 @@
 					/>
 				</div>
 
+                <h4>Parameters</h4>
 				<div v-for="(value, key) in selectedRun.trigger_parameter_values" :key="key" class="form-group">
 					<div style="margin-bottom: 1rem">
 						<label :for="key">{{ key }}</label>
@@ -258,6 +255,17 @@
 							v-model="selectedRun.trigger_parameter_values[key]"
 							class="w-full"
 						/>
+					</div>
+				</div>
+
+                <h4>Stage Metrics</h4>
+
+                <div v-for="(value, key) in selectedRun.stages_metrics" :key="key" class="form-group">
+					<div class="flex align-items-center justify-content-center gap-2" style="margin-bottom: 1rem">
+						<label :for="key" style="font-weight: bold; min-width: 90px;">{{ key }} </label>
+                        <label style="min-width: 120px;">work items: {{ selectedRun.stages_metrics[key].work_items_count }},</label>
+                        <label style="min-width: 120px;">completed: {{ selectedRun.stages_metrics[key].completed_work_items_count }},</label>
+                        <label style="min-width: 120px;">successful: {{ selectedRun.stages_metrics[key].successful_work_items_count }}</label>
 					</div>
 				</div>
 
