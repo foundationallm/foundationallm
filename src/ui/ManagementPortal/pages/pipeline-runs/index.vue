@@ -18,7 +18,7 @@
 
 			<!-- Table -->
 			<DataTable
-				:globalFilterFields="['name']"
+				:globalFilterFields="['created_on']"
 				v-model:filters="filters"
 				filterDisplay="menu"
 				paginator
@@ -28,14 +28,14 @@
 				:value="pipelineRuns"
 				striped-rows
 				scrollable
-				:sort-field="'name'"
-				:sort-order="1"
+				:sort-field="'created_on'"
+				:sort-order="-1"
 				table-style="max-width: 100%"
 				size="small"
 			>
 				<template #header>
 					<div class="w-full flex gap-4">
-						<TableSearch v-model="filters" placeholder="Search by name" />
+						<!-- <TableSearch v-model="filters" placeholder="Search by name" /> -->
                         <Dropdown
                             v-model="selectedPipelineName"
                             :options="pipelineNames"
@@ -87,7 +87,7 @@
 				<template #loading>Loading data pipeline runs. Please wait.</template>
 
 				<!-- Name -->
-				<Column
+				<!-- <Column
 					field="name"
 					header="Name"
 					sortable
@@ -98,7 +98,24 @@
 						},
 						sortIcon: { style: { color: 'var(--primary-text)' } },
 					}"
-				></Column>
+				></Column> -->
+
+                <!-- Start Time -->
+				<Column
+					field="created_on"
+					header="Start Time"
+					sortable
+					style="min-width: 50px"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						sortIcon: { style: { color: 'var(--primary-text)' } },
+					}">
+                <template #body="slotProps">
+                    {{ getFormattedDate(slotProps.data.created_on) }}
+                </template>
+				</Column>
 
                 <!-- Completed -->
 				<Column
@@ -173,8 +190,87 @@
                     {{ slotProps.data.completed_stages.join(', ') }}
                 </template>
 				</Column>
+
+                <!-- Parameters -->
+				<Column
+					header="Parameters"
+					header-style="width:6rem"
+					style="text-align: center"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						headerContent: { style: { justifyContent: 'center' } },
+					}"
+				>
+					<template #body="{ data }">
+						<Button
+							:aria-label="`Parameters`"
+							@click="openParameters(data)"
+						>
+							<i class="pi pi-info-circle" style="font-size: 1.2rem" aria-hidden="true"></i>
+						</Button>
+					</template>
+				</Column>
+
 			</DataTable>
 		</div>
+
+        		<!-- Trigger Pipeline Modal -->
+		<Dialog 
+		:visible="showParametersDialog" 
+		modal
+		closable
+		:header="`Pipeline Parameters`"
+		@update:visible="closeParametersDialog"
+		>
+			
+				<div>
+					<label>Data Pipeline run</label>
+				</div>
+				<div style="margin-bottom: 1rem">
+					<InputText
+                        :disabled="true"
+                        type="text"
+						v-model="selectedRun.name"
+						class="w-full"
+					/>
+				</div>
+
+				<div>
+					<label>Data Pipeline processor</label>
+				</div>
+				<div style="margin-bottom: 1rem">
+					<InputText
+                        :disabled="true"
+                        type="text"
+						v-model="selectedRun.processor"
+						class="w-full"
+					/>
+				</div>
+
+				<div v-for="(value, key) in selectedRun.trigger_parameter_values" :key="key" class="form-group">
+					<div style="margin-bottom: 1rem">
+						<label :for="key">{{ key }}</label>
+						<InputText
+                            :disabled="true"
+							type="text"
+							:id="key"
+							v-model="selectedRun.trigger_parameter_values[key]"
+							class="w-full"
+						/>
+					</div>
+				</div>
+
+				<div>
+					<Button
+						class="sidebar-dialog__button"
+						label="Close"
+						text
+						@click="closeParametersDialog"
+					/>
+				</div>
+		</Dialog>
 
 	</main>
 </template>
@@ -190,7 +286,9 @@ export default {
 		return {
 			pipelineRuns: [],
             pipelineNames: [],
+            selectedRun: null,
             selectedPipelineName: null as string | null,
+            showParametersDialog: false as boolean,
             showAll: true as boolean,
             completed: true as boolean,
             successful: true as boolean,
@@ -253,6 +351,19 @@ export default {
 			this.loading = false;
 		},
 
+        getFormattedDate(date) {
+            return date.toString().replace('T', ' ').replace('Z', '').slice(0, 19);
+        },
+
+        openParameters(pipelineRun) {
+            this.showParametersDialog = true;
+            this.selectedRun = pipelineRun;
+        },
+
+        closeParametersDialog() {
+            this.showParametersDialog = false;
+            this.selectedRun = null;
+        },
 	},
 };
 </script>
