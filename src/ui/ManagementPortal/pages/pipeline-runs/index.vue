@@ -221,7 +221,7 @@
 		:visible="showParametersDialog" 
 		modal
 		closable
-		:header="`Pipeline Parameters`"
+		:header="`Data Pipeline run parameters`"
 		@update:visible="closeParametersDialog"
 		>
 			
