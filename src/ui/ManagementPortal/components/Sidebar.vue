@@ -91,6 +91,14 @@
 							>Data Pipelines</NuxtLink
 						>
 					</li>
+					<li>
+						<NuxtLink
+							to="/pipeline-runs"
+							:class="{ 'router-link-active': isRouteActive('/pipeline-runs') }"
+							class="sidebar__item"
+							>Data Pipeline Runs</NuxtLink
+						>
+					</li>
 				</ul>
 
 				<!-- Models and Endpoints -->

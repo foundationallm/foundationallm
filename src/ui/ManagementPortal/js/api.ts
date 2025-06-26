@@ -1139,12 +1139,22 @@ export default {
 		);
 	},
 
-	async triggerPipeline(name: string, request: any): Promise<any> {
+	async triggerPipeline(name: string, payload: any): Promise<any> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/${name}/trigger?api-version=${this.apiVersion}`,
 			{
 				method: 'POST',
-				body: request,
+				body: payload,
+			},
+		);
+	},
+
+	async getPipelineRuns(name: string, payload: any): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/${name}/dataPipelineRuns/filter?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
 			},
 		);
 	},
