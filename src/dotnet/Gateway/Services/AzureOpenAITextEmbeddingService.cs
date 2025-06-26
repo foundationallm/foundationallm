@@ -1,8 +1,10 @@
 ﻿using Azure.AI.OpenAI;
 using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Vectorization;
+using FoundationaLLM.Gateway.Constants;
 using FoundationaLLM.Gateway.Interfaces;
 using FoundationaLLM.Gateway.Models;
 using Microsoft.Extensions.Logging;
@@ -45,16 +47,22 @@ namespace FoundationaLLM.Gateway.Services
         public async Task<InternalTextOperationResult> ExecuteTextOperation(
             InternalTextOperationRequest textOperationRequest)
         {
+            if (!textOperationRequest.ModelParameters.TryGetValue(
+                        TextOperationContextPropertyNames.EmbeddingDimensions,
+                        out object? embeddingDimensionsObject)
+                    || embeddingDimensionsObject is not int embeddingDimensions)
+                throw new GatewayException("The EmbeddingDimensions model parameter is missing.");
+
             try
             {
                 var embeddingClient = _azureOpenAIClient.GetEmbeddingClient(
                     textOperationRequest.DeploymentName);
                 OpenAI.Embeddings.EmbeddingGenerationOptions? embeddingOptions =
-                    textOperationRequest.EmbeddingDimensions == -1
+                    embeddingDimensions == -1
                         ? null
                         : new OpenAI.Embeddings.EmbeddingGenerationOptions
                             {
-                                Dimensions = textOperationRequest.EmbeddingDimensions
+                                Dimensions = embeddingDimensions
                             };
                 var result = await embeddingClient.GenerateEmbeddingsAsync(
                     textOperationRequest.TextChunks.Select(tc => tc.Content!).ToList(),

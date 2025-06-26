@@ -8,13 +8,13 @@ namespace FoundationaLLM.Gateway.Services
     /// <summary>
     /// Provides context associated with an embedding model.
     /// </summary>
-    /// <param name="textOperationContexts">The global dictionary of <see cref="OperationContext"/> objects indexed by operation identifier.</param>
+    /// <param name="textOperationContexts">The global dictionary of <see cref="TextOperationContext"/> objects indexed by operation identifier.</param>
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     public class ModelContext(
-        ConcurrentDictionary<string, OperationContext> textOperationContexts,
+        ConcurrentDictionary<string, TextOperationContext> textOperationContexts,
         ILogger<ModelContext> logger)
     {
-        private readonly ConcurrentDictionary<string, OperationContext> _textOperationContexts = textOperationContexts;
+        private readonly ConcurrentDictionary<string, TextOperationContext> _textOperationContexts = textOperationContexts;
         private readonly ILogger<ModelContext> _logger = logger;
         private readonly object _syncRoot = new();
 
@@ -33,7 +33,7 @@ namespace FoundationaLLM.Gateway.Services
         /// </summary>
         private readonly List<string> _textOperationIds = [];
 
-        public void AddTextOperationContext(OperationContext textOperationContext)
+        public void AddTextOperationContext(TextOperationContext textOperationContext)
         {
             _textOperationContexts.AddOrUpdate(
                 textOperationContext.Result.OperationId!,
@@ -92,19 +92,16 @@ namespace FoundationaLLM.Gateway.Services
 
                         foreach (var operationId in _textOperationIds)
                         {
-                            if (_textOperationContexts.TryGetValue(operationId, out var operationContext)
-                                && operationContext.Result.InProgress)
-                                foreach (var inputTextChunk in operationContext.Result.TextChunks
-                                    .Where(tc => !operationContext.TextChunkCompletenessChecker(tc))
-                                    .Select(tc => operationContext.InputTextChunks[tc.Position - 1]))
+                            if (_textOperationContexts.TryGetValue(operationId, out var textOperationContext)
+                                && textOperationContext.Result.InProgress)
+                                foreach (var inputTextChunk in textOperationContext.Result.TextChunks
+                                    .Where(tc => !textOperationContext.TextChunkCompletenessChecker(tc))
+                                    .Select(tc => textOperationContext.InputTextChunks[tc.Position - 1]))
                                 {
                                     var modelDeploymentContext = DeploymentContexts[currentDeploymentContextIndex];
                                     if (!modelDeploymentContext.TryAddInputTextChunk(
                                         inputTextChunk,
-                                        modelDeploymentContext.ModelCanDoEmbeddings
-                                            ? (int)operationContext.Properties.GetValueOrDefault(
-                                                OperationContextPropertyNames.EmbeddingDimensions, -1)
-                                            : -1))
+                                        textOperationContext.ModelParameters))
                                     {
                                         currentDeploymentContextIndex++;
                                         if (currentDeploymentContextIndex == DeploymentContexts.Count)

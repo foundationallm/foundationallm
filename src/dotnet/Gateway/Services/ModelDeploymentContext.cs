@@ -1,5 +1,7 @@
-﻿using FoundationaLLM.Common.Models.Azure;
+﻿using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Models.Azure;
 using FoundationaLLM.Common.Models.Vectorization;
+using FoundationaLLM.Gateway.Constants;
 using FoundationaLLM.Gateway.Interfaces;
 using FoundationaLLM.Gateway.Models;
 using Microsoft.Extensions.Logging;
@@ -90,13 +92,22 @@ namespace FoundationaLLM.Gateway.Services
         /// Attempts to add a new text chunk to the input for the text operation request.
         /// </summary>
         /// <param name="textChunk">The text chunk to be added.</param>
-        /// <param name="embeddingDimensions">The number of embedding dimensions.</param>
+        /// <param name="modelParameters">The model parameters for the text operation.</param>
         /// <remarks>
-        /// <para>For embedding operations, <paramref name="embeddingDimensions"/> must always be the number of dimensions required for embedding.</para>
-        /// <para>For completion operations, <paramref name="embeddingDimensions"/> must always be -1.</para>
+        /// <para>For embedding operations, <paramref name="modelParameters"/> must always contain a single property named
+        /// <see cref="TextOperationContextPropertyNames.EmbeddingDimensions"/> which specifies the number of dimensions required for embedding.</para>
+        /// <para>For completion operations, <paramref name="modelParameters"/> can contain the following parameters:
+        /// <list type="number">
+        /// <item><see cref="TextOperationContextPropertyNames.Temperature"/> - the completion model temperature.</item>
+        /// <item><see cref="TextOperationContextPropertyNames.TopP"/> - the completion model top-p value.</item>
+        /// <item><see cref="TextOperationContextPropertyNames.MaxOutputTokenCount"/> - the completion model max output token count.</item>
+        /// </list>
+        /// </para>
         /// </remarks>
         /// <returns><see langword="true"/> if the text chunk can be added without breaching the token and reques rate limits.</returns>
-        public bool TryAddInputTextChunk(TextChunk textChunk, int embeddingDimensions)
+        public bool TryAddInputTextChunk(
+            TextChunk textChunk,
+            Dictionary<string, object> modelParameters)
         {
             UpdateRateWindows();
 
@@ -122,10 +133,7 @@ namespace FoundationaLLM.Gateway.Services
                         DeploymentName = _deployment.Name,
                         ModelName = _deployment.ModelName,
                         ModelVersion = _deployment.ModelVersion,
-                        EmbeddingDimensions =
-                            _deployment.ModelName == "text-embedding-ada-002"
-                                ? -1 // text-embedding-ada-002 does not support embedding dimensions.
-                                : embeddingDimensions,
+                        ModelParameters = modelParameters,
                         TextChunks = [textChunk]
                     });
 
@@ -133,13 +141,19 @@ namespace FoundationaLLM.Gateway.Services
             }
             else
             {
+                if (!modelParameters.TryGetValue(
+                        TextOperationContextPropertyNames.EmbeddingDimensions,
+                        out object? embeddingDimensionsObject)
+                    || embeddingDimensionsObject is not int embeddingDimensions)
+                    throw new GatewayException("The EmbeddingDimensions model parameter is missing.");
+
                 // For embedding operations, we group text chunks by the number of embedding dimensions.
                 // Each entry in the list of text operation requests represents a single request to the model,
                 // processing a list of text chunks with the same number of embedding dimensions.
                 // Each entry corresponds to a single embedding dimensions value and the _embeddingDimensionsIndexMapping dictionary
                 // maps the embedding dimensions to the index in the _textOperationRequests list.
 
-                if (!_embeddingDimensionsIndexMapping.TryGetValue(embeddingDimensions, out int index))
+                    if (!_embeddingDimensionsIndexMapping.TryGetValue(embeddingDimensions, out int index))
                 {
                     // We are about to add a new request, so we need to first check the request rate limit.
                     if (_requestRateWindowProjectedRequestCount == _effectiveRequestRateLimit)
@@ -158,10 +172,7 @@ namespace FoundationaLLM.Gateway.Services
                             DeploymentName = _deployment.Name,
                             ModelName = _deployment.ModelName,
                             ModelVersion = _deployment.ModelVersion,
-                            EmbeddingDimensions =
-                                _deployment.ModelName == "text-embedding-ada-002"
-                                    ? -1 // text-embedding-ada-002 does not support embedding dimensions.
-                                    : embeddingDimensions,
+                            ModelParameters = modelParameters,
                         TextChunks = [textChunk]
                         });
 

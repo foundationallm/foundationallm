@@ -3,12 +3,14 @@ using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Models.Vectorization;
+using FoundationaLLM.Gateway.Constants;
 using FoundationaLLM.Gateway.Interfaces;
 using FoundationaLLM.Gateway.Models;
 using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
 using System.ClientModel;
 using System.ClientModel.Primitives;
+using System.Text.Json;
 
 namespace FoundationaLLM.Gateway.Services
 {
@@ -61,8 +63,30 @@ namespace FoundationaLLM.Gateway.Services
             {
                 var chatClient = _azureOpenAIClient.GetChatClient(
                     textOperationRequest.DeploymentName);
+
+                var chatCompletionOptions = new ChatCompletionOptions();
+
+                if (textOperationRequest.ModelParameters.TryGetValue(
+                        TextOperationContextPropertyNames.MaxOutputTokenCount,
+                        out object? maxOutputTokenCountObject)
+                    && maxOutputTokenCountObject is JsonElement maxOutputTokenCount)
+                    chatCompletionOptions.MaxOutputTokenCount = maxOutputTokenCount.GetInt32();
+
+                if (textOperationRequest.ModelParameters.TryGetValue(
+                        TextOperationContextPropertyNames.Temperature,
+                        out object? temperatureObject)
+                    && temperatureObject is JsonElement temperature)
+                    chatCompletionOptions.Temperature = (float)temperature.GetDouble();
+
+                if (textOperationRequest.ModelParameters.TryGetValue(
+                        TextOperationContextPropertyNames.TopP,
+                        out object? topPObject)
+                    && topPObject is JsonElement topP)
+                    chatCompletionOptions.TopP = (float)topP.GetDouble();
+
                 var result = await chatClient.CompleteChatAsync(
-                    new UserChatMessage(textOperationRequest.TextChunks[0].Content));
+                    [new UserChatMessage(textOperationRequest.TextChunks[0].Content)],
+                    chatCompletionOptions);
 
                 var rawResponse = result.GetRawResponse();
                 rawResponse.LogRateLimitHeaders(textOperationRequest.Id, _logger, LogLevel.Debug);

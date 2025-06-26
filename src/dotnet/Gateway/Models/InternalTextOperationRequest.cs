@@ -39,13 +39,10 @@ namespace FoundationaLLM.Gateway.Models
         public required string ModelVersion { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of dimensions of the embedding.
+        /// Gets or sets the model parameters used for the text operation.
         /// </summary>
-        /// <remarks>
-        /// The value is only relevant for embedding operations (expected to be -1 for completion operations).
-        /// </remarks>
-        [JsonPropertyName("embedding_dimensions")]
-        public int EmbeddingDimensions { get; set; }
+        [JsonPropertyName("model_properties")]
+        public Dictionary<string, object> ModelParameters { get; set; } = [];
 
         /// <summary>
         /// Gets the total number of tokens used in the request.

@@ -60,8 +60,8 @@ namespace FoundationaLLM.Gateway.Services
         private Dictionary<string, ModelContext> _embeddingModels = [];
         private Dictionary<string, ModelContext> _completionModels = [];
 
-        private ConcurrentDictionary<string, OperationContext> _embeddingOperations = [];
-        private ConcurrentDictionary<string, OperationContext> _completionOperations = [];
+        private ConcurrentDictionary<string, TextOperationContext> _embeddingOperations = [];
+        private ConcurrentDictionary<string, TextOperationContext> _completionOperations = [];
 
         /// <inheritdoc/>
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -180,8 +180,12 @@ namespace FoundationaLLM.Gateway.Services
             if (!_embeddingModels.TryGetValue(embeddingRequest.EmbeddingModelName, out var embeddingModel))
                 throw new GatewayException("The requested embedding model is not available.", StatusCodes.Status404NotFound);
 
+            if (embeddingRequest.EmbeddingModelName == "text-embedding-ada-002" &&
+                embeddingRequest.EmbeddingModelDimensions != -1)
+                throw new GatewayException("The text-embedding-ada-002 model does not suport dimensions. The EmbeddingModelDimension value must be -1.", StatusCodes.Status400BadRequest);
+
             var operationId = Guid.NewGuid().ToString().ToLower();
-            var embeddingOperationContext = new OperationContext
+            var embeddingOperationContext = new TextOperationContext
             {
                 InputTextChunks = [.. embeddingRequest.TextChunks.Select(tc => new TextChunk
                 {
@@ -201,10 +205,10 @@ namespace FoundationaLLM.Gateway.Services
                     TokenCount = 0
                 },
                 Prioritized = embeddingRequest.Prioritized,
-                Properties = new Dictionary<string, object>()
+                ModelParameters = new Dictionary<string, object>()
                 {
                     {
-                        OperationContextPropertyNames.EmbeddingDimensions,
+                        TextOperationContextPropertyNames.EmbeddingDimensions,
                         embeddingRequest.EmbeddingModelDimensions
                     }
                 },
@@ -258,7 +262,7 @@ namespace FoundationaLLM.Gateway.Services
                 throw new GatewayException("The requested completion model is not available.", StatusCodes.Status404NotFound);
 
             var operationId = Guid.NewGuid().ToString().ToLower();
-            var completionOperationContext = new OperationContext
+            var completionOperationContext = new TextOperationContext
             {
                 InputTextChunks = [.. completionRequest.TextChunks.Select(tc => new TextChunk
                 {
@@ -278,6 +282,7 @@ namespace FoundationaLLM.Gateway.Services
                     TokenCount = 0
                 },
                 Prioritized = false,
+                ModelParameters = completionRequest.CompletionModelParameters,
                 TextChunkUpdater = (tc1, tc2) => tc1.Completion = tc2.Completion,
                 TextChunkCompletenessChecker = tc => tc.Completion != null
             };

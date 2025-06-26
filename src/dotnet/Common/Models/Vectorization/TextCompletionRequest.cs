@@ -19,5 +19,11 @@ namespace FoundationaLLM.Common.Models.Vectorization
         /// </summary>
         [JsonPropertyName("completion_model_name")]
         public string CompletionModelName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the parameters for the completion model.
+        /// </summary>
+        [JsonPropertyName("completion_model_parameters")]
+        public Dictionary<string, object> CompletionModelParameters { get; set; } = [];
     }
 }
