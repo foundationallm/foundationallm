@@ -12,42 +12,42 @@ namespace FoundationaLLM.Common.Models.Knowledge
         /// </summary>
         [JsonPropertyName("source")]
         [JsonPropertyOrder(1)]
-        public required string Source { get; set; }
+        public string Source { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the source entity.
         /// </summary>
         [JsonPropertyName("source_type")]
         [JsonPropertyOrder(2)]
-        public required string SourceType { get; set; }
+        public string SourceType { get; set; }
 
         /// <summary>
         /// Gets or sets the target entity of the relationship.
         /// </summary>
         [JsonPropertyName("target")]
         [JsonPropertyOrder(3)]
-        public required string Target { get; set; }
+        public string Target { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the target entity.
         /// </summary>
         [JsonPropertyName("target_type")]
         [JsonPropertyOrder(4)]
-        public required string TargetType { get; set; }
+        public string TargetType { get; set; }
 
         /// <summary>
         /// Gets or sets the list of short descriptions associated with the relationship.
         /// </summary>
         [JsonPropertyName("short_descriptions")]
         [JsonPropertyOrder(5)]
-        public required List<string> ShortDescriptions { get; set; } = [];
+        public List<string> ShortDescriptions { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the list of detailed descriptions associated with the relationship.
         /// </summary>
         [JsonPropertyName("descriptions")]
         [JsonPropertyOrder(6)]
-        public required List<string> Descriptions { get; set; } = [];
+        public List<string> Descriptions { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the list of strengths associated with the relationship.
@@ -69,5 +69,18 @@ namespace FoundationaLLM.Common.Models.Knowledge
         [JsonPropertyName("summary_description")]
         [JsonPropertyOrder(8)]
         public string? SummaryDescription { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KnowledgeRelationship"/> class.
+        /// </summary>
+        public KnowledgeRelationship()
+        {
+            Source = null!;
+            SourceType = null!;
+            Target = null!;
+            TargetType = null!;
+            ShortDescriptions = [];
+            Descriptions = [];
+        }
     }
 }

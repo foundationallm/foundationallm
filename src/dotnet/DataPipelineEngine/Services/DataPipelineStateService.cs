@@ -396,6 +396,65 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         }
 
         /// <inheritdoc/>
+        public async Task<IEnumerable<T>> LoadDataPipelineRunParts<T>(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            string filePath)
+            where T : class, new()
+        {
+            var dataPipelineRunPartsPath = string.Join('/',
+                [
+                    $"/data-pipeline-state",
+                    dataPipelineDefinition.Name,
+                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
+                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
+                    dataPipelineRun.RunId,
+                    filePath
+                ]);
+
+            var binaryContent = await _storageService.ReadFileAsync(
+                dataPipelineRun.InstanceId,
+                dataPipelineRunPartsPath,
+                default);
+
+            var result = await ParquetSerializer.DeserializeAsync<T>(
+                binaryContent.ToStream());
+
+            return [.. result];
+        }
+
+        /// <inheritdoc/>
+        public async Task SaveDataPipelineRunParts<T>(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            IEnumerable<T> dataPipelineRunParts,
+            string filePath)
+            where T : class, new()
+        {
+            var dataPipelineRunPartsPath = string.Join('/',
+                [
+                    $"/data-pipeline-state",
+                    dataPipelineDefinition.Name,
+                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
+                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
+                    dataPipelineRun.RunId,
+                    filePath
+                ]);
+
+            using var parquetStream = new MemoryStream();
+            await ParquetSerializer.SerializeAsync<T>(
+                dataPipelineRunParts,
+                parquetStream);
+
+            await _storageService.WriteFileAsync(
+                dataPipelineRun.InstanceId,
+                dataPipelineRunPartsPath,
+                parquetStream,
+                "application/vnd.apache.parquet",
+                default);
+        }
+
+        /// <inheritdoc/>
         public async Task<bool> StartDataPipelineRunWorkItemProcessing(
             Func<DataPipelineRunWorkItem, Task> processWorkItem) =>
             await _cosmosDBService.StartChangeFeedProcessorAsync(processWorkItem);

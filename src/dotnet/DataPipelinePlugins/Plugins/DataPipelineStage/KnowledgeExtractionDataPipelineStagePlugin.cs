@@ -152,7 +152,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                         try
                         {
                             knowledgePart.EntitiesAndRelationships =
-                                JsonSerializer.Deserialize<KnowledgeEntityRelationship<ExtractedKnowledgeEntity, ExtractedKnowledgeRelationship>>(
+                                JsonSerializer.Deserialize<KnowledgeEntityRelationshipCollection<ExtractedKnowledgeEntity, ExtractedKnowledgeRelationship>>(
                                     finalCompletionResult);
                         }
                         catch (Exception ex)

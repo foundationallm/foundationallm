@@ -32,18 +32,15 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
         protected override string Name => PluginNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE;
 
         private const string KNOWLEDGE_PARTS_FILE_NAME = "knowledge-parts.parquet";
+        private const string KNOWLEDGE_ENTITIES_FILE_PATH = "knowledge-graph/knowledge-entities.parquet";
+        private const string KNOWLEDGE_RELATIONSHIPS_FILE_PATH = "knowledge-graph/knowledge-relationships.parquet";
 
         private readonly IResourceProviderService _promptResourceProvider =
             serviceProvider.GetRequiredService<IEnumerable<IResourceProviderService>>()
                 .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Prompt)
             ?? throw new PluginException($"The resource provider {ResourceProviderNames.FoundationaLLM_Prompt} is not available in the dependency injection container.");
 
-        private readonly KnowledgeEntityRelationship<KnowledgeEntity, KnowledgeRelationship> _entityRelationships =
-            new()
-            {
-                Entities = [],
-                Relationships = []
-            };
+        private readonly KnowledgeEntityRelationshipCollection<KnowledgeEntity, KnowledgeRelationship> _entityRelationships = new();
 
         /// <inheritdoc/>
         public override async Task<List<DataPipelineRunWorkItem>> GetStageWorkItems(
@@ -135,6 +132,18 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             foreach (var knowledgePart in knowledgeParts)
                 AddExtractedKnowledgePart(knowledgePart);
+
+            await _dataPipelineStateService.SaveDataPipelineRunParts<KnowledgeEntity>(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                _entityRelationships.Entities,
+                KNOWLEDGE_ENTITIES_FILE_PATH);
+
+            await _dataPipelineStateService.SaveDataPipelineRunParts<KnowledgeRelationship>(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                _entityRelationships.Relationships,
+                KNOWLEDGE_RELATIONSHIPS_FILE_PATH);
 
             using var scope = _serviceProvider.CreateScope();
 
