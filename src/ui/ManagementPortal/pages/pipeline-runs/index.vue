@@ -75,7 +75,7 @@
 						<Button
 							type="button"
 							icon="pi pi-refresh"
-							@click="$emit('refresh-pipeline-runs')"
+							@click="getPipelineRuns"
 						/>
 					</div>
 				</template>
