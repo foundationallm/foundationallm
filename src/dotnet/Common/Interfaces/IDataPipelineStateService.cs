@@ -13,10 +13,12 @@ namespace FoundationaLLM.Common.Interfaces
         /// <summary>
         /// Initializes the state of a data pipeline run.
         /// </summary>
+        /// <param name="dataPipelineDefinition"> The data pipeline definition used to initialize the run state.</param>
         /// <param name="dataPipelineRun">The details of the data pipeline run.</param>
         /// <param name="contentItems">The list of content items to be processed by the data pipeline run.</param>
         /// <returns><see langword="true"/> if the initialization is successful.</returns>
         Task<bool> InitializeDataPipelineRunState(
+            DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             List<DataPipelineContentItem> contentItems);
 
