@@ -22,5 +22,14 @@ namespace FoundationaLLM.Common.Models.Knowledge
         /// </summary>
         [JsonPropertyName("relationships")]
         public required List<TRelationship> Relationships { get; set; } = [];
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KnowledgeEntityRelationship{TEntity, TRelationship}"/> class.
+        /// </summary>
+        public KnowledgeEntityRelationship()
+        {
+            Entities = [];
+            Relationships = [];
+        }
     }
 }
