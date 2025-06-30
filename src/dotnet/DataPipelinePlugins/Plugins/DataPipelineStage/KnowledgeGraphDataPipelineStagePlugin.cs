@@ -1,21 +1,17 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Constants.Gateway;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
-using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
-using FoundationaLLM.Common.Models.Vectorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 {
