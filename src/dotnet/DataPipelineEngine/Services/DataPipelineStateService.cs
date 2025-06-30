@@ -7,8 +7,11 @@ using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph.Models.Security;
+using NuGet.Common;
 using Parquet;
 using Parquet.Serialization;
+using System.Text.Json;
 
 namespace FoundationaLLM.DataPipelineEngine.Services
 {
@@ -29,9 +32,32 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
         /// <inheritdoc/>
         public async Task<bool> InitializeDataPipelineRunState(
+            DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             List<DataPipelineContentItem> contentItems)
         {
+            var contentItemsRegistryPath = string.Join('/',
+                [
+                    $"/data-pipeline-state",
+                    dataPipelineDefinition.Name,
+                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
+                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
+                    dataPipelineRun.RunId,
+                    "content-items",
+                    "content-items.json"
+                ]);
+
+            var contentItemsRegistryPathContent = JsonSerializer.Serialize(
+                contentItems.Select(ci => ci.ContentIdentifier.CanonicalId)
+                .ToList());
+
+            await _storageService.WriteFileAsync(
+                dataPipelineRun.InstanceId,
+                contentItemsRegistryPath,
+                contentItemsRegistryPathContent,
+                "application/json",
+                default);
+
             // Combine dataPipelineRun, contentItems, and workItems into a single array
             var combinedArray = new object[] { dataPipelineRun }
                 .Concat(contentItems)

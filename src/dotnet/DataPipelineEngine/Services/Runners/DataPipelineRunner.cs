@@ -62,8 +62,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
             dataPipelineRun.AllStages = dataPipelineDefinition.AllStageNames;
 
             var initializationSuccessful = await _stateService.InitializeDataPipelineRunState(
-               dataPipelineRun,
-               contentItems);
+                dataPipelineDefinition,
+                dataPipelineRun,
+                contentItems);
 
             if (!initializationSuccessful)
                 throw new DataPipelineServiceException($"Failed to initialize state for data pipeline run {dataPipelineRun.RunId}.");
