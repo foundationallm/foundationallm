@@ -48,6 +48,8 @@ namespace FoundationaLLM.Gateway.Services
         protected readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
         private readonly SemaphoreSlim _operationsSemaphore = new(1, 1);
 
+        private const int TEXT_EMBEDDING_MAX_INPUTS_COUNT = 2048;
+
         /// <summary>
         /// The actual cummulated number of tokens for the current token rate window.
         /// </summary>
@@ -153,7 +155,7 @@ namespace FoundationaLLM.Gateway.Services
                 // Each entry corresponds to a single embedding dimensions value and the _embeddingDimensionsIndexMapping dictionary
                 // maps the embedding dimensions to the index in the _textOperationRequests list.
 
-                    if (!_embeddingDimensionsIndexMapping.TryGetValue(embeddingDimensions, out int index))
+                if (!_embeddingDimensionsIndexMapping.TryGetValue(embeddingDimensions, out int index))
                 {
                     // We are about to add a new request, so we need to first check the request rate limit.
                     if (_requestRateWindowProjectedRequestCount == _effectiveRequestRateLimit)
@@ -173,7 +175,7 @@ namespace FoundationaLLM.Gateway.Services
                             ModelName = _deployment.ModelName,
                             ModelVersion = _deployment.ModelVersion,
                             ModelParameters = modelParameters,
-                        TextChunks = [textChunk]
+                            TextChunks = [textChunk]
                         });
 
                     // Update the request rate window projected request count.
@@ -183,8 +185,39 @@ namespace FoundationaLLM.Gateway.Services
                 {
                     // We already have a request for the same embedding dimensions,
                     // so we can reuse the existing request.
-                    // No need to check the request rate limit here, as we are not adding a new request.
-                    _textOperationRequests[index].TextChunks.Add(textChunk);
+
+                    if (_textOperationRequests[index].TextChunks.Count >= TEXT_EMBEDDING_MAX_INPUTS_COUNT)
+                    {
+                        // We have already reached the maximum number of text chunks for the current request,
+                        // so we need to add a new request.
+
+                        // We are about to add a new request, so we need to first check the request rate limit.
+                        if (_requestRateWindowProjectedRequestCount == _effectiveRequestRateLimit)
+                            // We have already reached the allowed number of requests, so we need to refuse.
+                            return false;
+
+                        // We are adding a new request for the given embedding dimensions,
+                        // so we need to create a new entry in the _embeddingDimensionsIndexMapping dictionary.
+                        index = _textOperationRequests.Count;
+                        _embeddingDimensionsIndexMapping[embeddingDimensions] = index;
+
+                        _textOperationRequests.Add(new InternalTextOperationRequest
+                        {
+                            Id = _textOperationRequests.Count + 1,
+                            AccountName = _deployment.AccountEndpoint,
+                            DeploymentName = _deployment.Name,
+                            ModelName = _deployment.ModelName,
+                            ModelVersion = _deployment.ModelVersion,
+                            ModelParameters = modelParameters,
+                            TextChunks = [textChunk]
+                        });
+
+                        // Update the request rate window projected request count.
+                        _requestRateWindowProjectedRequestCount += 1;
+                    }
+                    else
+                        // No need to check the request rate limit here, as we are not adding a new request.
+                        _textOperationRequests[index].TextChunks.Add(textChunk);
                 }
             }
 
