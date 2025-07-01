@@ -131,8 +131,7 @@ namespace FoundationaLLM.Common.Services.Azure
             var options = new SearchOptions
             {
                 Filter = filter,
-                Select = { keyFieldName },
-                Size = 1000 // Adjust as needed for batch size
+                Select = { keyFieldName }
             };
 
             var keysToDelete = new List<string>();
