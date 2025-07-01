@@ -31,7 +31,7 @@ from foundationallm.models.constants import (
 # user_prompt = "how do I beat the market"
 # user_prompt = "Who is the hero of the story?"
 # user_prompt = "Who are you?"
-user_prompt = "Summarize the file"
+# user_prompt = "Summarize the file"
 # user_prompt = "Calculate the first 20 terms of the Fibonacci series"
 # user_prompt = "Calculate the first 20 terms of the Fibonacci series and save the result as a text file."
 # user_prompt = "Generate a graph of a complex Fourier transformation"
@@ -42,10 +42,11 @@ user_prompt = "Summarize the file"
 # user_prompt = "Plot the equation y=mx^2+b"
 # user_prompt = "Which are the most important ideas from the document named Selling-Guide_02-05-25_highlighted.pdf?"
 # user_prompt = "Do you recognize the band?"
-user_prompt = "Best practices for trading."
+# user_prompt = "Best practices for trading."
+user_prompt = "Based on the most important recommendations for borrowers from the document named Selling-Guide_02-05-25_highlighted.pdf, determine whether the document is compliant or not."
 
 operation_id = str(uuid.uuid4())
-conversation_id = "20250624-155812--TbeGNA99UGWJ-pzgeiEKg"
+conversation_id = "20250701-110413-899KGz0kd0CnZyxhrs1cdQ"
 
 user_identity_json = {"name": "Experimental Test", "user_name":"ciprian@foundationaLLM.ai","upn":"ciprian@foundationaLLM.ai"}
 full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects

@@ -181,42 +181,51 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         }
 
         /// <inheritdoc/>
-        public async Task<List<DataPipelineStateArtifact>> LoadDataPipelineRunArtifacts(
+        public async Task<(bool Success, List<DataPipelineStateArtifact> Artifacts)> TryLoadDataPipelineRunArtifacts(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             string artifactsNameFilter)
         {
-            var artifactsFilter = string.Join('/',
-                [
-                    $"/data-pipeline-state",
+            try
+            {
+                var artifactsFilter = string.Join('/',
+                    [
+                        $"/data-pipeline-state",
                     dataPipelineDefinition.Name,
                     dataPipelineRun.UPN.NormalizeUserPrincipalName(),
                     $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
                     dataPipelineRun.RunId,
                     artifactsNameFilter
-                ]);
+                    ]);
 
-            var artifactsPaths = await _storageService.GetMatchingFilePathsAsync(
-                dataPipelineRun.InstanceId,
-                artifactsFilter);
+                var artifactsPaths = await _storageService.GetMatchingFilePathsAsync(
+                    dataPipelineRun.InstanceId,
+                    artifactsFilter);
 
-            var result = await artifactsPaths
-                .ToAsyncEnumerable()
-                .SelectAwait(async path =>
-                {
-                    var fileContent = await _storageService.ReadFileAsync(
-                        dataPipelineRun.InstanceId,
-                        path,
-                        default);
-                    return new DataPipelineStateArtifact
+                var result = await artifactsPaths
+                    .ToAsyncEnumerable()
+                    .SelectAwait(async path =>
                     {
-                        FileName = Path.GetFileName(path),
-                        Content = fileContent
-                    };
-                })
-                .ToListAsync();
+                        var fileContent = await _storageService.ReadFileAsync(
+                            dataPipelineRun.InstanceId,
+                            path,
+                            default);
+                        return new DataPipelineStateArtifact
+                        {
+                            FileName = Path.GetFileName(path),
+                            Content = fileContent
+                        };
+                    })
+                    .ToListAsync();
 
-            return result;
+                return (true, result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Could not load data pipeline run artifacts for {RunId} and filter {ArtifactsNameFilter}.",
+                    dataPipelineRun.RunId, artifactsNameFilter);
+                return (false, []);
+            }
         }
 
         /// <inheritdoc/>
@@ -277,6 +286,41 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     dataPipelineRun.RunId,
                     "content-items",
                     dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-')
+                ]);
+
+            var artifactsWithError = new List<string>();
+
+            await Parallel.ForEachAsync<DataPipelineStateArtifact>(
+                artifacts,
+                new ParallelOptions
+                {
+                    CancellationToken = default,
+                    MaxDegreeOfParallelism = 10
+                },
+                async (artifact, token) =>
+                {
+                    await _storageService.WriteFileAsync(
+                        dataPipelineRun.InstanceId,
+                        $"{artifactsPath}/{artifact.FileName}",
+                        artifact.Content.ToStream(),
+                        artifact.ContentType,
+                        token);
+                });
+        }
+
+        /// <inheritdoc/>
+        public async Task SaveDataPipelineRunArtifacts(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            List<DataPipelineStateArtifact> artifacts)
+        {
+            var artifactsPath = string.Join('/',
+                [
+                    $"/data-pipeline-state",
+                    dataPipelineDefinition.Name,
+                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
+                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
+                    dataPipelineRun.RunId
                 ]);
 
             var artifactsWithError = new List<string>();
