@@ -13,8 +13,6 @@ using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Services.Azure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 {
@@ -24,7 +22,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
     /// <param name="pluginParameters">The dictionary containing the plugin parameters.</param>
     /// <param name="packageManager">The package manager for the plugin.</param>
     /// <param name="serviceProvider">The service provider of the dependency injection container.</param>
-    public class AzureAIIndexingDataPipelineStagePlugin(
+    public class AzureAISearchIndexingDataPipelineStagePlugin(
         Dictionary<string, object> pluginParameters,
         IPluginPackageManager packageManager,
         IServiceProvider serviceProvider)
@@ -154,12 +152,12 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     cip.IndexEntryId!, vectorStoreId!, cip.Content!, cip.Embedding!, cip.Metadata!
                 })]);
 
-            await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
-                dataPipelineDefinition,
-                dataPipelineRun,
-                dataPipelineRunWorkItem,
-                contentItemParts,
-                CONTENT_PARTS_FILE_NAME);
+            //await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
+            //    dataPipelineDefinition,
+            //    dataPipelineRun,
+            //    dataPipelineRunWorkItem,
+            //    contentItemParts,
+            //    CONTENT_PARTS_FILE_NAME);
 
             return new PluginResult(true, false);
         }

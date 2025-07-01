@@ -420,7 +420,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
             PluginNames.TEXTEXTRACTION_DATAPIPELINESTAGE => new TextExtractionDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
             PluginNames.TEXTPARTITIONING_DATAPIPELINESTAGE => new TextPartitioningDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
             PluginNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE => new GatewayTextEmbeddingDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
-            PluginNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE => new AzureAIIndexingDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
+            PluginNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE => new AzureAISearchIndexingDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
             PluginNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE => new KnowledgeExtractionDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
             PluginNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE => new KnowledgeGraphDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
             _ => throw new NotImplementedException($"The data pipeline stage plugin '{pluginName}' is not implemented.")

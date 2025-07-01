@@ -42,6 +42,7 @@
     <ProjectReference Include="..\..\..\src\dotnet\ManagementClient\ManagementClient.csproj" />
     <ProjectReference Include="..\..\..\src\dotnet\Prompt\Prompt.csproj" />
     <ProjectReference Include="..\..\..\src\dotnet\SemanticKernel\SemanticKernel.csproj" />
+    <ProjectReference Include="..\..\..\src\dotnet\Vector\Vector.csproj" />
     <ProjectReference Include="..\TestUtils\TestUtils.csproj" />
   </ItemGroup>
 
