@@ -247,7 +247,8 @@ namespace FoundationaLLM.Gateway.Services
                 return await Task.FromResult(new TextOperationResult
                 {
                     InProgress = true,
-                    OperationId = operationId
+                    OperationId = operationId,
+                    ProcessedTextChunksCount = operationContext.ProcessedTextChunksCount
                 });
             else
                 return await Task.FromResult(operationContext.Result);
@@ -315,7 +316,8 @@ namespace FoundationaLLM.Gateway.Services
                 return Task.FromResult(new TextOperationResult
                 {
                     InProgress = true,
-                    OperationId = operationId
+                    OperationId = operationId,
+                    ProcessedTextChunksCount = operationContext.ProcessedTextChunksCount
                 });
             else
                 return Task.FromResult(operationContext.Result);

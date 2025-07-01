@@ -8,6 +8,13 @@ namespace FoundationaLLM.Common.Models.Knowledge
     public class KnowledgeRelationship
     {
         /// <summary>
+        /// Gets or sets the position of the relationship in the list of relationships.
+        /// </summary>
+        [JsonPropertyName("position")]
+        [JsonPropertyOrder(0)]
+        public int Position { get; set; }
+
+        /// <summary>
         /// Gets or sets the source entity of the relationship.
         /// </summary>
         [JsonPropertyName("source")]

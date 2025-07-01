@@ -37,6 +37,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
         private const string ENTITY_TYPES_PLACEHOLDER = "{entity_types}";
         private const string INPUT_TEXT_PLACEHOLDER = "{input_text}";
 
+        private const int GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS = 5;
+
         private readonly IResourceProviderService _promptResourceProvider =
             serviceProvider.GetRequiredService<IEnumerable<IResourceProviderService>>()
                 .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Prompt)
@@ -130,10 +132,16 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             while (completionsResult.InProgress)
             {
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
                 completionsResult = await gatewayServiceClient.GetCompletionOperationResult(
                     dataPipelineRun.InstanceId,
                     completionsResult.OperationId!);
+
+                _logger.LogInformation("Data pipeline run {DataPipelineRunId} entity extraction for {ContentItemCanonicalId}: {ProcessedEntityCount} of {TotalEntityCount} entities processed.",
+                    dataPipelineRun.Id,
+                    dataPipelineRunWorkItem.ContentItemCanonicalId,
+                    completionsResult.ProcessedTextChunksCount,
+                    textCompletionRequest.TextChunks.Count);
             }
 
             if (completionsResult.Failed)
