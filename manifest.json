@@ -15398,17 +15398,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIIndexingDataPipelineStagePlugin.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchIndexingDataPipelineStagePlugin.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIIndexingDataPipelineStagePlugin.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchIndexingDataPipelineStagePlugin.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIIndexingDataPipelineStagePlugin",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIIndexingDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Azure AI Indexing Data Pipeline Stage Plugin.</p>\n"
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchIndexingDataPipelineStagePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchIndexingDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Azure AI Indexing Data Pipeline Stage Plugin.</p>\n"
     },
     {
       "type": "ManagedReference",

@@ -4103,12 +4103,48 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
   <a id="FoundationaLLM_DependencyInjection_AddVectorResourceProvider_" data-uid="FoundationaLLM.DependencyInjection.AddVectorResourceProvider*"></a>
 
-  <h3 id="FoundationaLLM_DependencyInjection_AddVectorResourceProvider_Microsoft_Extensions_Hosting_IHostApplicationBuilder_" data-uid="FoundationaLLM.DependencyInjection.AddVectorResourceProvider(Microsoft.Extensions.Hosting.IHostApplicationBuilder)">
-  AddVectorResourceProvider(IHostApplicationBuilder)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vector/ResourceProviders/DependencyInjection.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_DependencyInjection_AddVectorResourceProvider_Microsoft_Extensions_DependencyInjection_IServiceCollection_Microsoft_Extensions_Configuration_IConfiguration_" data-uid="FoundationaLLM.DependencyInjection.AddVectorResourceProvider(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+  AddVectorResourceProvider(IServiceCollection, IConfiguration)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vector/ResourceProviders/DependencyInjection.cs/#L34"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Register the FoundationaLLM Vector resource provider with the Dependency Injection container.</p>
+  <div class="markdown level1 summary"><p>Registers the FoundationaLLM.Vector resource provider with the dependency injection container.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddVectorResourceProvider(this IServiceCollection services, IConfiguration configuration)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>services</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a> dependency injection container service collection.</p>
+</dd>
+    <dt><code>configuration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a> configuration provider.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_DependencyInjection_AddVectorResourceProvider_" data-uid="FoundationaLLM.DependencyInjection.AddVectorResourceProvider*"></a>
+
+  <h3 id="FoundationaLLM_DependencyInjection_AddVectorResourceProvider_Microsoft_Extensions_Hosting_IHostApplicationBuilder_" data-uid="FoundationaLLM.DependencyInjection.AddVectorResourceProvider(Microsoft.Extensions.Hosting.IHostApplicationBuilder)">
+  AddVectorResourceProvider(IHostApplicationBuilder)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vector/ResourceProviders/DependencyInjection.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Register the FoundationaLLM.Vector resource provider with the Dependency Injection container.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
