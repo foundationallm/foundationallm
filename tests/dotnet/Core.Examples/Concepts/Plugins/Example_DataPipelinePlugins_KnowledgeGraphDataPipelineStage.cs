@@ -20,7 +20,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
 
         [Theory]
         [MemberData(nameof(TestData))]
-        public async Task DataPipelinePlugins_SharePointOnlineDataSource_GetContentItems(
+        public async Task DataPipelinePlugins_KnowledgeGraphDataPipelineStage_ProcessWorkItem(
             string dataPipelineRunWorkItemId,
             string dataPipelineRunId,
             Dictionary<string, object> pluginParameters)
