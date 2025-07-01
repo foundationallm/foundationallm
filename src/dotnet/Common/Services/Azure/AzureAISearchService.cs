@@ -1,13 +1,17 @@
 ﻿using Azure;
 using Azure.Core;
+using Azure.Search.Documents;
 using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Indexes.Models;
+using Azure.Search.Documents.Models;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 
@@ -56,6 +60,7 @@ namespace FoundationaLLM.Common.Services.Azure
             try
             {
                 var index = await _searchIndexClient.GetIndexAsync(indexName).ConfigureAwait(false);
+                
             }
             catch (RequestFailedException ex) when (ex.Status == 404)
             {
@@ -111,6 +116,48 @@ namespace FoundationaLLM.Common.Services.Azure
 
             if (message.Response.IsError)
                 throw new RequestFailedException(message.Response);
+        }
+
+        /// <inheritdoc/>
+        public async Task<int> DeleteDocuments(
+            string indexName,
+            string keyFieldName,
+            string filter)
+        {
+            // Create a SearchClient for the index
+            var searchClient = _searchIndexClient.GetSearchClient(indexName);
+
+            // Search for documents matching the filter
+            var options = new SearchOptions
+            {
+                Filter = filter,
+                Select = { keyFieldName },
+                Size = 1000 // Adjust as needed for batch size
+            };
+
+            var keysToDelete = new List<string>();
+            var searchResponse = await searchClient.SearchAsync<SearchDocument>(options);
+            await foreach (var result in searchResponse.Value.GetResultsAsync())
+            {
+                if (result.Document.TryGetValue(keyFieldName, out var keyValue) && keyValue is string key)
+                    keysToDelete.Add(key);
+            }
+
+            if (keysToDelete.Count == 0)
+                return 0;
+
+            var deleteResponse = await searchClient.DeleteDocumentsAsync(
+                keyFieldName,
+                keysToDelete);
+
+            var deletedKeysCount = deleteResponse.Value.Results
+                .Count(r => r.Status == StatusCodes.Status200OK);
+
+            if (deletedKeysCount != keysToDelete.Count)
+                throw new RequestFailedException(
+                    $"Failed to delete {keysToDelete.Count - deletedKeysCount} of {keysToDelete.Count} index entries.");
+
+            return deletedKeysCount;
         }
     }
 }

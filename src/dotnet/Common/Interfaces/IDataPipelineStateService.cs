@@ -95,13 +95,14 @@ namespace FoundationaLLM.Common.Interfaces
             string stage);
 
         /// <summary>
-        /// Loads the artifacts associated with a data pipeline run.
+        /// Tries to load the artifacts associated with a data pipeline run.
         /// </summary>
         /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
         /// <param name="dataPipelineRun">The data pipeline run item associated with the work item.</param>
-        /// <param name="artifactsNameFilter">The name pattern used to identify a subset of the artifacts.</param>
-        /// <returns>A list with the binary contents of the artifacts.</returns>
-        Task<List<DataPipelineStateArtifact>> LoadDataPipelineRunArtifacts(
+        /// <param name="artifactsNameFilter">The name pattern used to identify the artifacts to load.</param>
+        /// <returns>A boolean indicating whether the operation was successful or not and
+        /// the list with the details of the artifacts if the operation is successful.</returns>
+        Task<(bool Success, List<DataPipelineStateArtifact> Artifacts)> TryLoadDataPipelineRunArtifacts(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             string artifactsNameFilter);
@@ -182,6 +183,18 @@ namespace FoundationaLLM.Common.Interfaces
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             DataPipelineRunWorkItem dataPipelineRunWorkItem,
+            List<DataPipelineStateArtifact> artifacts);
+
+        /// <summary>
+        /// Saves the artifacts associated with a data pipeline run.
+        /// </summary>
+        /// <param name="dataPipelineDefinition">The data pipeline definition associated with the run.</param>
+        /// <param name="dataPipelineRun">The data pipeline run.</param>
+        /// <param name="artifacts">The list of artifacts to be saved.</param>
+        /// <returns></returns>
+        Task SaveDataPipelineRunArtifacts(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
             List<DataPipelineStateArtifact> artifacts);
 
         /// <summary>

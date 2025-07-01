@@ -48,7 +48,7 @@ namespace FoundationaLLM.Common.Models.Vectorization
         /// <summary>
         /// Gets or sets the number of text chunks that were successfully processed.
         /// </summary>
-        [JsonPropertyName("completed_text_chunks_count")]
+        [JsonPropertyName("processed_text_chunks_count")]
         public int ProcessedTextChunksCount { get; set; }
     }
 }

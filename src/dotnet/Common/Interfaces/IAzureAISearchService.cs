@@ -29,5 +29,17 @@ namespace FoundationaLLM.Common.Interfaces
             string indexName,
             List<string> fieldNames,
             List<object[]> fieldValues);
+
+        /// <summary>
+        /// Deletes documents from the specified index in the Azure AI Search service based on a filter.
+        /// </summary>
+        /// <param name="indexName">The name of the index from which the documents should be deleted.</param>
+        /// <param name="keyFieldName">The name of the key field for the index.</param>
+        /// <param name="filter">The filter used to identify the documents to be deleted.</param>
+        /// <returns>The number of documents that were deleted.</returns>
+        Task<int> DeleteDocuments(
+            string indexName,
+            string keyFieldName,
+            string filter);
     }
 }

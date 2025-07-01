@@ -69,7 +69,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             {
                 EmbeddingModelName = embeddingModel.ToString()!,
                 EmbeddingModelDimensions = (int)embeddingDimensions,
-                Prioritized = true,
+                Prioritized = false,
                 TextChunks = [.. contentItemParts
                     .Select(part => new TextChunk
                     {

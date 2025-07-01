@@ -37,6 +37,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             .SingleOrDefault(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Vector);
 
         private const string CONTENT_PARTS_FILE_NAME = "content-parts.parquet";
+        private const string KEY_FIELD_NAME = "Id";
+        private const string FILE_NAME_METADATA_PROPERTY_NAME = "FileName";
 
         // <inheritdoc/>
         public override async Task<PluginResult> ProcessWorkItem(
@@ -94,11 +96,11 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             var metadataField = new ComplexField(vectorDatabase.MetadataPropertyName);
             metadataField.Fields.Add(
-                new SearchableField("FileName") { IsFilterable = true });
+                new SearchableField(FILE_NAME_METADATA_PROPERTY_NAME) { IsFilterable = true });
 
             IEnumerable<SearchField> indexFields =
                 [
-                    new SimpleField("Id", SearchFieldDataType.String) { IsKey = true, IsFilterable = true },
+                    new SimpleField(KEY_FIELD_NAME, SearchFieldDataType.String) { IsKey = true, IsFilterable = true },
                     new SimpleField(vectorDatabase.VectorStoreIdPropertyName, SearchFieldDataType.String) { IsFilterable = true },
                     new SearchableField(vectorDatabase.ContentPropertyName),
                     new VectorSearchField(vectorDatabase.EmbeddingPropertyName, (int)embeddingDimensions, "vector-profile"),
@@ -125,6 +127,24 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
                 CONTENT_PARTS_FILE_NAME);
+
+            if (!contentItemParts.Any())
+                return new PluginResult(true, false);
+
+            var fileName = contentItemParts.First().Metadata?.GetValueOrDefault(FILE_NAME_METADATA_PROPERTY_NAME, string.Empty);
+            if (string.IsNullOrWhiteSpace(fileName))
+                throw new PluginException(
+                    $"The {FILE_NAME_METADATA_PROPERTY_NAME} metadata property is not set in the content item parts.");
+
+            var deletedKeysCount = await azureAISearchService.DeleteDocuments(
+                vectorDatabase.DatabaseName,
+                KEY_FIELD_NAME,
+                $"{vectorDatabase.VectorStoreIdPropertyName} eq '{vectorStoreId}' and {vectorDatabase.MetadataPropertyName}/{FILE_NAME_METADATA_PROPERTY_NAME} eq '{fileName}'");
+
+            _logger.LogInformation("Data pipeline run {DataPipelineRunId}, content item {ContentItemCanonicalId}: removed {DeletedKeysCount} existing entries from the index.",
+                dataPipelineRun.Id,
+                dataPipelineRunWorkItem.ContentItemCanonicalId,
+                deletedKeysCount);
 
             await azureAISearchService.UploadDocuments(
                 vectorDatabase.DatabaseName,

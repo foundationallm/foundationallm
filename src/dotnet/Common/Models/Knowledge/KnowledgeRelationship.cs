@@ -78,6 +78,13 @@ namespace FoundationaLLM.Common.Models.Knowledge
         public string? SummaryDescription { get; set; }
 
         /// <summary>
+        /// Gets or sets the embedding of the summary description.
+        /// </summary>
+        [JsonPropertyName("summary_description_embedding")]
+        [JsonPropertyOrder(9)]
+        public float[]? SummaryDescriptionEmbedding { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="KnowledgeRelationship"/> class.
         /// </summary>
         public KnowledgeRelationship()
