@@ -164,7 +164,7 @@ Class DataPipelineRunWorkItem  <a class="header-action link-secondary" title="Vi
 
   <h3 id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem__ctor" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.#ctor">
   DataPipelineRunWorkItem()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineRunWorkItem.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineRunWorkItem.cs/#L101"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.html">DataPipelineRunWorkItem</a> class.</p>
@@ -297,7 +297,7 @@ public List&lt;string&gt; Errors { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_FailedProcessingAttempts" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.FailedProcessingAttempts">
   FailedProcessingAttempts
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineRunWorkItem.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineRunWorkItem.cs/#L94"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the number of failed processing attempts for the work item.</p>
@@ -306,7 +306,7 @@ public List&lt;string&gt; Errors { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;failed_processing_attempts&quot;)]
-[JsonPropertyOrder(11)]
+[JsonPropertyOrder(12)]
 public int FailedProcessingAttempts { get; set; }</code></pre>
   </div>
 
@@ -399,7 +399,7 @@ public string? PreviousStage { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_ProcessingAttempts" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.ProcessingAttempts">
   ProcessingAttempts
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineRunWorkItem.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineRunWorkItem.cs/#L87"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the number of processing attempts for the work item.</p>
@@ -408,7 +408,7 @@ public string? PreviousStage { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;processing_attempts&quot;)]
-[JsonPropertyOrder(10)]
+[JsonPropertyOrder(11)]
 public int ProcessingAttempts { get; set; }</code></pre>
   </div>
 
@@ -564,6 +564,40 @@ public string Type { get; set; }</code></pre>
   <h4 class="section" id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_Type_remarks">Remarks</h4>
   <div class="markdown level1 remarks"><p>Must always be set to <a class="xref" href="FoundationaLLM.Common.Constants.ResourceProviders.DataPipelineTypes.html#FoundationaLLM_Common_Constants_ResourceProviders_DataPipelineTypes_DataPipelineRunWorkItem">DataPipelineRunWorkItem</a>.</p>
 </div>
+
+
+
+
+  <a id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_Warnings_" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.Warnings*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_Warnings" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.Warnings">
+  Warnings
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineRunWorkItem.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the error message if the work item failed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;warnings&quot;)]
+[JsonPropertyOrder(10)]
+public List&lt;string&gt; Warnings { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
 
 
 

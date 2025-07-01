@@ -6634,17 +6634,45 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationship-2.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntity.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationship-2.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntity.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationship<TEntity, TRelationship>",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationship-2.yml\" sourcestartlinenumber=\"1\">Represents a subset of entities and relationship in a knowledge graph.</p>\n"
+      "Title": "FoundationaLLM.Common.Models.Knowledge.KnowledgeEntity",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntity.yml\" sourcestartlinenumber=\"1\">Represents a knowledge entity used in a knowledge graph.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationshipCollection-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationshipCollection-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationshipCollection<TEntity, TRelationship>",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationshipCollection-2.yml\" sourcestartlinenumber=\"1\">Represents a subset of entities and relationship in a knowledge graph.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship.yml\" sourcestartlinenumber=\"1\">Represents a relationship between two knowledge entities in a knowledge graph.</p>\n"
     },
     {
       "type": "ManagedReference",
