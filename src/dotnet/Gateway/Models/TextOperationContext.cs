@@ -101,5 +101,19 @@ namespace FoundationaLLM.Gateway.Models
                     Result.InProgress = false;
             }
         }
+
+        /// <summary>
+        /// Gets the count of processed text chunks based on the completeness checker function.
+        /// </summary>
+        public int ProcessedTextChunksCount
+        {
+            get
+            {
+                lock (_syncRoot)
+                {
+                    return Result.TextChunks.Count(tc => TextChunkCompletenessChecker(tc));
+                }
+            }
+        }
     }
 }

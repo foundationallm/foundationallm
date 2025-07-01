@@ -1,17 +1,21 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Gateway;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
+using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
+using FoundationaLLM.Common.Models.Vectorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 {
@@ -30,11 +34,22 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
         protected override string Name => PluginNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE;
 
         private const string KNOWLEDGE_PARTS_FILE_NAME = "knowledge-parts.parquet";
+        private const string KNOWLEDGE_ENTITIES_FILE_PATH = "knowledge-graph/knowledge-entities.parquet";
+        private const string KNOWLEDGE_RELATIONSHIPS_FILE_PATH = "knowledge-graph/knowledge-relationships.parquet";
+        private const string ENTITY_NAMES_PLACEHOLDER = "{entity_names}";
+        private const string DESCRIPTIONS_LIST_PLACEHOLDER = "{descriptions_list}";
+
+        private const int GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS = 5;
 
         private readonly IResourceProviderService _promptResourceProvider =
             serviceProvider.GetRequiredService<IEnumerable<IResourceProviderService>>()
                 .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Prompt)
             ?? throw new PluginException($"The resource provider {ResourceProviderNames.FoundationaLLM_Prompt} is not available in the dependency injection container.");
+        private readonly ITokenizerService _tokenizer =
+            serviceProvider.GetRequiredKeyedService<ITokenizerService>("MicrosoftML")
+            ?? throw new PluginException("The MicrosoftML tokenizer service is not available in the dependency injection container.");
+
+        private readonly KnowledgeEntityRelationshipCollection<KnowledgeEntity, KnowledgeRelationship> _entityRelationships = new();
 
         /// <inheritdoc/>
         public override async Task<List<DataPipelineRunWorkItem>> GetStageWorkItems(
@@ -102,6 +117,41 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             #endregion
 
+            #region Deduplicate entities and relationships
+
+            var contentItemsArtifact = await _dataPipelineStateService.LoadDataPipelineRunArtifacts(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                "content-items/content-items.json");
+
+            var contentItemCanonicalIds = JsonSerializer.Deserialize<List<string>>(
+                contentItemsArtifact.FirstOrDefault()?.Content
+                    ?? throw new PluginException("The content items artifact is missing."))
+                ?? throw new PluginException("The content items artifact is not valid.");
+
+            var knowledgeParts = await LoadExtractedKnowledge(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                dataPipelineRunWorkItem,
+                contentItemCanonicalIds);
+
+            foreach (var knowledgePart in knowledgeParts)
+                AddExtractedKnowledgePart(knowledgePart);
+
+            await _dataPipelineStateService.SaveDataPipelineRunParts<KnowledgeEntity>(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                _entityRelationships.Entities,
+                KNOWLEDGE_ENTITIES_FILE_PATH);
+
+            await _dataPipelineStateService.SaveDataPipelineRunParts<KnowledgeRelationship>(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                _entityRelationships.Relationships,
+                KNOWLEDGE_RELATIONSHIPS_FILE_PATH);
+
+            #endregion
+
             var entitySummarizationPrompt = await _promptResourceProvider.GetResourceAsync<PromptBase>(
                 entitySummarizationPromptId.ToString()!,
                 ServiceContext.ServiceIdentity!);
@@ -119,83 +169,319 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     HttpClientNames.GatewayAPI, ServiceContext.ServiceIdentity!),
                 _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
 
-            //var contentItemContentParts = await _dataPipelineStateService.LoadDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
-            //    dataPipelineDefinition,
-            //    dataPipelineRun,
-            //    dataPipelineRunWorkItem,
-            //    CONTENT_PARTS_FILE_NAME);
+            var entitiesSummarizationResult = await SummarizeEntities(
+                dataPipelineRun,
+                entitySummarizationPromptText,
+                entitySummarizationCompletionModel.ToString()!,
+                (float)(double)entitySummarizationCompletionModelTemperature,
+                (int)entitySummarizationCompletionMaxOutputTokenCount,
+                gatewayServiceClient);
 
-            //var textCompletionRequest = new TextCompletionRequest
-            //{
-            //    CompletionModelName = entityExtractionCompletionModel.ToString()!,
-            //    CompletionModelParameters = new Dictionary<string, object>
-            //    {
-            //        { TextOperationModelParameterNames.Temperature, (float)(double)entityExtractionModelTemperature },
-            //        { TextOperationModelParameterNames.MaxOutputTokenCount, (int)entityExtractionMaxOutputTokenCount }
-            //    },
-            //    TextChunks = [.. contentItemContentParts
-            //        .Select(cip => new TextChunk
-            //        {
-            //            Position = cip.Position,
-            //            Content = entityExtractionPromptText.Replace(
-            //                INPUT_TEXT_PLACEHOLDER, cip.Content),
-            //            TokensCount = cip.ContentSizeTokens + (int)entityExtractionMaxOutputTokenCount
-            //        })],
-            //};
+            if (!entitiesSummarizationResult.Success)
+                return entitiesSummarizationResult;
 
-            //var completionsResult = await gatewayServiceClient.StartCompletionOperation(
-            //    dataPipelineRun.InstanceId,
-            //    textCompletionRequest);
+            var relationshipsSummarizationResult = await SummarizeRelationships(
+                dataPipelineRun,
+                entitySummarizationPromptText,
+                entitySummarizationCompletionModel.ToString()!,
+                (float)(double)entitySummarizationCompletionModelTemperature,
+                (int)entitySummarizationCompletionMaxOutputTokenCount,
+                gatewayServiceClient);
 
-            //while (completionsResult.InProgress)
-            //{
-            //    await Task.Delay(TimeSpan.FromSeconds(1));
-            //    completionsResult = await gatewayServiceClient.GetCompletionOperationResult(
-            //        dataPipelineRun.InstanceId,
-            //        completionsResult.OperationId!);
-            //}
-
-            //if (completionsResult.Failed)
-            //    return new PluginResult(false, false,
-            //        $"The {Name} plugin failed to process the work item {dataPipelineRunWorkItem.Id} due to a failure in the Gateway API.");
-
-            //var contentItemKnowledgeParts = contentItemContentParts
-            //    .Select(p =>
-            //    {
-            //        var knowledgePart = DataPipelineContentItemKnowledgePart.FromContentItemPart(p);
-            //        var completionResult = completionsResult.TextChunks[knowledgePart.Position - 1];
-
-            //        var finalCompletionResult = completionResult.Completion?.Replace("```json", "").Replace("```", "").Trim(); //unwanted extra annotations
-            //        if (!string.IsNullOrWhiteSpace(finalCompletionResult))
-            //        {
-            //            try
-            //            {
-            //                knowledgePart.EntitiesAndRelationships =
-            //                    JsonSerializer.Deserialize<KnowledgeEntityRelationship<ExtractedKnowledgeEntity, ExtractedKnowledgeRelationship>>(
-            //                        finalCompletionResult);
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                _logger.LogWarning(ex, "Invalid entity extraction result for content item {ContentItemCanonicalId} content part {Position}: {EntityExtractionResult}",
-            //                    dataPipelineRunWorkItem.ContentItemCanonicalId,
-            //                    knowledgePart.Position,
-            //                    finalCompletionResult);
-            //            }
-            //        }
-
-            //        return knowledgePart;
-            //    })
-            //    .ToList();
-
-            //await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemKnowledgePart>(
-            //    dataPipelineDefinition,
-            //    dataPipelineRun,
-            //    dataPipelineRunWorkItem,
-            //    contentItemKnowledgeParts,
-            //    KNOWLEDGE_PARTS_FILE_NAME);
+            if (!relationshipsSummarizationResult.Success)
+                return relationshipsSummarizationResult;
 
             return
                 new PluginResult(true, false);
+        }
+
+        private async Task<List<DataPipelineContentItemKnowledgePart>> LoadExtractedKnowledge(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem,
+            List<string> contentItemCanonicalIds)
+        {
+            using var semaphore = new SemaphoreSlim(10);
+
+            var loadTasks = contentItemCanonicalIds
+                .Select(async contentItemCanonicalId =>
+                {
+                    await semaphore.WaitAsync();
+                    try
+                    {
+                        return await LoadExtractedKnowledge(
+                            dataPipelineDefinition,
+                            dataPipelineRun,
+                            dataPipelineRunWorkItem,
+                            contentItemCanonicalId);
+                    }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                })
+                .ToList();
+
+            var knowledgePartsLists = await Task.WhenAll(loadTasks);
+
+            if (knowledgePartsLists.Length < contentItemCanonicalIds.Count)
+            {
+                _logger.LogWarning("Not all content items have extracted knowledge parts in data pipeline run work item {DataPipelineRunWorkItemId}. Expected {ExpectedCount}, but got {ActualCount}.",
+                    dataPipelineRunWorkItem.Id, contentItemCanonicalIds.Count, knowledgePartsLists.Length);
+                dataPipelineRunWorkItem.Warnings.Add(
+                    $"Not all content items have extracted knowledge parts. Expected {contentItemCanonicalIds.Count}, but got {knowledgePartsLists.Length}.");
+            }
+
+            return [.. knowledgePartsLists.SelectMany(x => x)];
+        }
+
+        private async Task<List<DataPipelineContentItemKnowledgePart>> LoadExtractedKnowledge(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem,
+            string contentItemCanonicalId)
+        {
+            try
+            {
+                var contentItemKnowledgeParts = await _dataPipelineStateService.LoadDataPipelineRunWorkItemParts<DataPipelineContentItemKnowledgePart>(
+                    dataPipelineDefinition,
+                    dataPipelineRun,
+                    contentItemCanonicalId,
+                    KNOWLEDGE_PARTS_FILE_NAME);
+
+                var knowledgeParts = contentItemKnowledgeParts?
+                    .Where(p => p.EntitiesAndRelationships is not null)
+                    .Select(p => p)
+                    .ToList();
+
+                return knowledgeParts ?? [];
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to load extracted knowledge for content item {ContentItemCanonicalId} in data pipeline run work item {DataPipelineRunWorkItemId}.",
+                    contentItemCanonicalId, dataPipelineRunWorkItem.Id);
+                return [];
+            }
+        }
+
+        private void AddExtractedKnowledgePart(
+            DataPipelineContentItemKnowledgePart knowledgePart)
+        {
+            foreach (var entity in knowledgePart.EntitiesAndRelationships!.Entities)
+            {
+                var existingEntity = _entityRelationships.Entities
+                    .FirstOrDefault(
+                        x => x.Type.Equals(entity.Type, StringComparison.OrdinalIgnoreCase)
+                        && x.Name.Equals(entity.Name, StringComparison.OrdinalIgnoreCase));
+                if (existingEntity != null)
+                {
+                    existingEntity.Descriptions ??= [];
+                    existingEntity.ChunkIds ??= [];
+
+                    existingEntity.Descriptions.Add(entity.Description);
+                    existingEntity.ChunkIds.Add(knowledgePart.IndexEntryId!);
+                }
+                else
+                {
+                    _entityRelationships.Entities.Add(new KnowledgeEntity
+                    {
+                        Position = _entityRelationships.Entities.Count + 1,
+                        Type = entity.Type,
+                        Name = entity.Name,
+                        Descriptions = [entity.Description],
+                        ChunkIds = [knowledgePart.IndexEntryId]
+                    });
+                }
+            }
+
+            foreach (var relationship in knowledgePart.EntitiesAndRelationships.Relationships)
+            {
+                var existingRelationship = _entityRelationships.Relationships
+                    .FirstOrDefault(
+                        x => x.Source.Equals(relationship.Source, StringComparison.OrdinalIgnoreCase)
+                        && x.Target.Equals(relationship.Target, StringComparison.OrdinalIgnoreCase));
+                if (existingRelationship != null)
+                {
+                    existingRelationship.ShortDescriptions ??= [];
+                    existingRelationship.Descriptions ??= [];
+                    existingRelationship.ChunkIds ??= [];
+                    existingRelationship.Strengths ??= [];
+
+                    existingRelationship.ShortDescriptions.Add(relationship.ShortDescription);
+                    existingRelationship.Descriptions.Add(relationship.Description);
+                    existingRelationship.ChunkIds.Add(knowledgePart.IndexEntryId!);
+                    existingRelationship.Strengths.Add(relationship.Strength);
+                }
+                else
+                {
+                    _entityRelationships.Relationships.Add(new KnowledgeRelationship
+                    {
+                        Position = _entityRelationships.Relationships.Count + 1,
+                        Source = relationship.Source,
+                        SourceType = knowledgePart
+                            .EntitiesAndRelationships
+                            .Entities
+                            .FirstOrDefault(e => e.Name == relationship.Source)?
+                            .Type
+                            ?? "N/A",
+                        Target = relationship.Target,
+                        TargetType = knowledgePart
+                            .EntitiesAndRelationships
+                            .Entities
+                            .FirstOrDefault(e => e.Name == relationship.Target)?
+                            .Type
+                            ?? "N/A",
+                        Strengths = [relationship.Strength],
+                        ShortDescriptions = [relationship.ShortDescription],
+                        Descriptions = [relationship.Description],
+                        ChunkIds = [knowledgePart.IndexEntryId!]
+                    });
+                }
+            }
+        }
+
+        private async Task<PluginResult> SummarizeEntities(
+            DataPipelineRun dataPipelineRun,
+            string summarizationPrompt,
+            string summarizationModel,
+            float summarizationModelTemperature,
+            int summarizationMaxOutputTokenCount,
+            GatewayServiceClient gatewayServiceClient)
+        {
+            var textCompletionRequest = new TextCompletionRequest
+            {
+                CompletionModelName = summarizationModel,
+                CompletionModelParameters = new Dictionary<string, object>
+                {
+                    { TextOperationModelParameterNames.Temperature, summarizationModelTemperature },
+                    { TextOperationModelParameterNames.MaxOutputTokenCount, summarizationMaxOutputTokenCount }
+                },
+                TextChunks = [.. _entityRelationships.Entities
+                    .Select(e =>
+                    {
+                        var content = summarizationPrompt
+                            .Replace(ENTITY_NAMES_PLACEHOLDER, e.Name)
+                            .Replace(DESCRIPTIONS_LIST_PLACEHOLDER, string.Join(Environment.NewLine, e.Descriptions));
+                        var textChunk = new TextChunk
+                        {
+                            Position = e.Position,
+                            Content = content,
+                            TokensCount =
+                                (int)_tokenizer.CountTokens(content)
+                                + summarizationMaxOutputTokenCount
+                        };
+                        return textChunk;
+                    })],
+            };
+
+            var completionsResult = await gatewayServiceClient.StartCompletionOperation(
+                dataPipelineRun.InstanceId,
+                textCompletionRequest);
+
+            while (completionsResult.InProgress)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
+                completionsResult = await gatewayServiceClient.GetCompletionOperationResult(
+                    dataPipelineRun.InstanceId,
+                    completionsResult.OperationId!);
+
+                _logger.LogInformation("Data pipeline run {DataPipelineRunId} entity summarization: {ProcessedEntityCount} of {TotalEntityCount} entities processed.",
+                    dataPipelineRun.Id,
+                    completionsResult.ProcessedTextChunksCount,
+                    _entityRelationships.Entities.Count);
+            }
+
+            if (completionsResult.Failed)
+                return new PluginResult(false, false,
+                    $"The {Name} plugin failed to summarize knowledge graph entities for data pipeline run {dataPipelineRun.Id} due to a failure in the Gateway API.");
+
+            var completionsDictionary = completionsResult.TextChunks.ToDictionary(
+                chunk => chunk.Position,
+                chunk => chunk.Completion);
+
+            foreach (var entity in _entityRelationships.Entities)
+            {
+                if (completionsDictionary.TryGetValue(entity.Position, out var completion))
+                    entity.SummaryDescription = completion;
+                else
+                    _logger.LogWarning("Data pipeline run {DataPipelineRunId}: The Gateway API did not return a summary for the entity at position {EntityPosition}.",
+                        dataPipelineRun.Id,
+                        entity.Position);
+            }
+
+            return new PluginResult(true, false);
+        }
+
+        private async Task<PluginResult> SummarizeRelationships(
+            DataPipelineRun dataPipelineRun,
+            string summarizationPrompt,
+            string summarizationModel,
+            float summarizationModelTemperature,
+            int summarizationMaxOutputTokenCount,
+            GatewayServiceClient gatewayServiceClient)
+        {
+            var textCompletionRequest = new TextCompletionRequest
+            {
+                CompletionModelName = summarizationModel,
+                CompletionModelParameters = new Dictionary<string, object>
+                {
+                    { TextOperationModelParameterNames.Temperature, summarizationModelTemperature },
+                    { TextOperationModelParameterNames.MaxOutputTokenCount, summarizationMaxOutputTokenCount }
+                },
+                TextChunks = [.. _entityRelationships.Relationships
+                    .Select(r =>
+                    {
+                        var content = summarizationPrompt
+                            .Replace(ENTITY_NAMES_PLACEHOLDER, $"{r.Source},{r.Target}")
+                            .Replace(DESCRIPTIONS_LIST_PLACEHOLDER, string.Join(Environment.NewLine, r.Descriptions));
+                        var textChunk = new TextChunk
+                        {
+                            Position = r.Position,
+                            Content = content,
+                            TokensCount =
+                                (int)_tokenizer.CountTokens(content)
+                                + summarizationMaxOutputTokenCount
+                        };
+                        return textChunk;
+                    })],
+            };
+
+            var completionsResult = await gatewayServiceClient.StartCompletionOperation(
+                dataPipelineRun.InstanceId,
+                textCompletionRequest);
+
+            while (completionsResult.InProgress)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
+                completionsResult = await gatewayServiceClient.GetCompletionOperationResult(
+                    dataPipelineRun.InstanceId,
+                    completionsResult.OperationId!);
+
+                _logger.LogInformation("Data pipeline run {DataPipelineRunId} relationship summarization: {ProcessedEntityCount} of {TotalEntityCount} entities processed.",
+                    dataPipelineRun.Id,
+                    completionsResult.ProcessedTextChunksCount,
+                    _entityRelationships.Entities.Count);
+            }
+
+            if (completionsResult.Failed)
+                return new PluginResult(false, false,
+                    $"The {Name} plugin failed to summarize knowledge graph relationships for data pipeline run {dataPipelineRun.Id} due to a failure in the Gateway API.");
+
+            var completionsDictionary = completionsResult.TextChunks.ToDictionary(
+                chunk => chunk.Position,
+                chunk => chunk.Completion);
+
+            foreach (var relationship in _entityRelationships.Relationships)
+            {
+                if (completionsDictionary.TryGetValue(relationship.Position, out var completion))
+                    relationship.SummaryDescription = completion;
+                else
+                    _logger.LogWarning("Data pipeline run {DataPipelineRunId}: The Gateway API did not return a summary for the relationship at position {EntityPosition}.",
+                        dataPipelineRun.Id,
+                        relationship.Position);
+            }
+
+            return new PluginResult(true, false);
         }
     }
 }

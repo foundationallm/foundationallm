@@ -181,6 +181,45 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         }
 
         /// <inheritdoc/>
+        public async Task<List<DataPipelineStateArtifact>> LoadDataPipelineRunArtifacts(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            string artifactsNameFilter)
+        {
+            var artifactsFilter = string.Join('/',
+                [
+                    $"/data-pipeline-state",
+                    dataPipelineDefinition.Name,
+                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
+                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
+                    dataPipelineRun.RunId,
+                    artifactsNameFilter
+                ]);
+
+            var artifactsPaths = await _storageService.GetMatchingFilePathsAsync(
+                dataPipelineRun.InstanceId,
+                artifactsFilter);
+
+            var result = await artifactsPaths
+                .ToAsyncEnumerable()
+                .SelectAwait(async path =>
+                {
+                    var fileContent = await _storageService.ReadFileAsync(
+                        dataPipelineRun.InstanceId,
+                        path,
+                        default);
+                    return new DataPipelineStateArtifact
+                    {
+                        FileName = Path.GetFileName(path),
+                        Content = fileContent
+                    };
+                })
+                .ToListAsync();
+
+            return result;
+        }
+
+        /// <inheritdoc/>
         public async Task<List<DataPipelineStateArtifact>> LoadDataPipelineRunWorkItemArtifacts(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
@@ -292,6 +331,37 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         }
 
         /// <inheritdoc/>
+        public async Task<IEnumerable<T>> LoadDataPipelineRunWorkItemParts<T>(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            string contentItemCanonicalId,
+            string fileName)
+            where T : class, new()
+        {
+            var contentItemPartsPath = string.Join('/',
+                [
+                    $"/data-pipeline-state",
+                    dataPipelineDefinition.Name,
+                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
+                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
+                    dataPipelineRun.RunId,
+                    "content-items",
+                    contentItemCanonicalId.Trim('/').Replace('/', '-'),
+                    fileName
+                ]);
+
+            var binaryContent = await _storageService.ReadFileAsync(
+                dataPipelineRun.InstanceId,
+                contentItemPartsPath,
+                default);
+
+            var result = await ParquetSerializer.DeserializeAsync<T>(
+                binaryContent.ToStream());
+
+            return [.. result];
+        }
+
+        /// <inheritdoc/>
         public async Task SaveDataPipelineRunWorkItemParts<T>(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
@@ -320,6 +390,65 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             await _storageService.WriteFileAsync(
                 dataPipelineRun.InstanceId,
                 contentItemPartsPath,
+                parquetStream,
+                "application/vnd.apache.parquet",
+                default);
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<T>> LoadDataPipelineRunParts<T>(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            string filePath)
+            where T : class, new()
+        {
+            var dataPipelineRunPartsPath = string.Join('/',
+                [
+                    $"/data-pipeline-state",
+                    dataPipelineDefinition.Name,
+                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
+                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
+                    dataPipelineRun.RunId,
+                    filePath
+                ]);
+
+            var binaryContent = await _storageService.ReadFileAsync(
+                dataPipelineRun.InstanceId,
+                dataPipelineRunPartsPath,
+                default);
+
+            var result = await ParquetSerializer.DeserializeAsync<T>(
+                binaryContent.ToStream());
+
+            return [.. result];
+        }
+
+        /// <inheritdoc/>
+        public async Task SaveDataPipelineRunParts<T>(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            IEnumerable<T> dataPipelineRunParts,
+            string filePath)
+            where T : class, new()
+        {
+            var dataPipelineRunPartsPath = string.Join('/',
+                [
+                    $"/data-pipeline-state",
+                    dataPipelineDefinition.Name,
+                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
+                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
+                    dataPipelineRun.RunId,
+                    filePath
+                ]);
+
+            using var parquetStream = new MemoryStream();
+            await ParquetSerializer.SerializeAsync<T>(
+                dataPipelineRunParts,
+                parquetStream);
+
+            await _storageService.WriteFileAsync(
+                dataPipelineRun.InstanceId,
+                dataPipelineRunPartsPath,
                 parquetStream,
                 "application/vnd.apache.parquet",
                 default);

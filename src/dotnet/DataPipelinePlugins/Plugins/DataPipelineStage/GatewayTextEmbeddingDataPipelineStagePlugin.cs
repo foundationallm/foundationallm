@@ -28,6 +28,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
         protected override string Name => PluginNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE;
 
         private const string CONTENT_PARTS_FILE_NAME = "content-parts.parquet";
+        private const int GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS = 5;
 
         /// <inheritdoc/>
         public override async Task<PluginResult> ProcessWorkItem(
@@ -64,28 +65,36 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     HttpClientNames.GatewayAPI, ServiceContext.ServiceIdentity!),
                 _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
 
+            var textEmbeddingRequest = new TextEmbeddingRequest
+            {
+                EmbeddingModelName = embeddingModel.ToString()!,
+                EmbeddingModelDimensions = (int)embeddingDimensions,
+                Prioritized = true,
+                TextChunks = [.. contentItemParts
+                    .Select(part => new TextChunk
+                    {
+                        Position = part.Position,
+                        Content = part.Content,
+                        TokensCount = part.ContentSizeTokens
+                    })]
+            };
+
             var embeddingResult = await embeddingServiceClient.StartEmbeddingOperation(
                 dataPipelineRun.InstanceId,
-                new TextEmbeddingRequest
-                {
-                    EmbeddingModelName = embeddingModel.ToString()!,
-                    EmbeddingModelDimensions = (int)embeddingDimensions,
-                    Prioritized = true,
-                    TextChunks = [.. contentItemParts
-                        .Select(part => new TextChunk
-                        {
-                            Position = part.Position,
-                            Content = part.Content,
-                            TokensCount = part.ContentSizeTokens
-                        })]
-                });
+                textEmbeddingRequest);
 
             while (embeddingResult.InProgress)
             {
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
                 embeddingResult = await embeddingServiceClient.GetEmbeddingOperationResult(
                     dataPipelineRun.InstanceId,
                     embeddingResult.OperationId!);
+
+                _logger.LogInformation("Data pipeline run {DataPipelineRunId} text parts embedding for {ContentItemCanonicalId}: {ProcessedEntityCount} of {TotalEntityCount} entities processed.",
+                    dataPipelineRun.Id,
+                    dataPipelineRunWorkItem.ContentItemCanonicalId,
+                    embeddingResult.ProcessedTextChunksCount,
+                    textEmbeddingRequest.TextChunks.Count);
             }
 
             if (embeddingResult.Failed)

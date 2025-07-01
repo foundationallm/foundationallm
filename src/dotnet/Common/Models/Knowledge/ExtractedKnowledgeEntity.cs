@@ -11,24 +11,34 @@ namespace FoundationaLLM.Common.Models.Knowledge
         /// Gets or sets the type of the entity.
         /// </summary>
         [JsonPropertyName("type")]
-        public required string Type { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the entity.
         /// </summary>
         [JsonPropertyName("name")]
-        public required string Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the description of the entity.
         /// </summary>
         [JsonPropertyName("description")]
-        public required string Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the list of chunk ids associated with the entity.
         /// </summary>
         [JsonPropertyName("chunk_ids")]
         public List<string>? ChunkIds { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExtractedKnowledgeEntity"/> class.
+        /// </summary>
+        public ExtractedKnowledgeEntity()
+        {
+            Type = null!;
+            Name = null!;
+            Description = null!;
+        }   
     }
 }

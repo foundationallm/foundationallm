@@ -7,20 +7,29 @@ namespace FoundationaLLM.Common.Models.Knowledge
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <typeparam name="TRelationship"></typeparam>
-    public class KnowledgeEntityRelationship<TEntity, TRelationship>
-        where TEntity: class
-        where TRelationship : class
+    public class KnowledgeEntityRelationshipCollection<TEntity, TRelationship>
+        where TEntity: class, new()
+        where TRelationship : class, new()
     {
         /// <summary>
         /// Gets or sets the list of entities.
         /// </summary>
         [JsonPropertyName("entities")]
-        public required List<TEntity> Entities { get; set; } = [];
+        public List<TEntity> Entities { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the list of relationships.
         /// </summary>
         [JsonPropertyName("relationships")]
-        public required List<TRelationship> Relationships { get; set; } = [];
+        public List<TRelationship> Relationships { get; set; } = [];
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KnowledgeEntityRelationshipCollection{TEntity, TRelationship}"/> class.
+        /// </summary>
+        public KnowledgeEntityRelationshipCollection()
+        {
+            Entities = [];
+            Relationships = [];
+        }
     }
 }

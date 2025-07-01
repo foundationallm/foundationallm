@@ -1,7 +1,5 @@
-﻿using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.DataPipelines;
+﻿using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
-using System.ClientModel;
 
 namespace FoundationaLLM.Common.Interfaces
 {
@@ -97,6 +95,18 @@ namespace FoundationaLLM.Common.Interfaces
             string stage);
 
         /// <summary>
+        /// Loads the artifacts associated with a data pipeline run.
+        /// </summary>
+        /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
+        /// <param name="dataPipelineRun">The data pipeline run item associated with the work item.</param>
+        /// <param name="artifactsNameFilter">The name pattern used to identify a subset of the artifacts.</param>
+        /// <returns>A list with the binary contents of the artifacts.</returns>
+        Task<List<DataPipelineStateArtifact>> LoadDataPipelineRunArtifacts(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            string artifactsNameFilter);
+
+        /// <summary>
         /// Loads the artifacts associated with a data pipeline run work item.
         /// </summary>
         /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
@@ -127,6 +137,40 @@ namespace FoundationaLLM.Common.Interfaces
             where T : class, new();
 
         /// <summary>
+        /// Loads the content item parts associated with a data pipeline run work item.
+        /// </summary>
+        /// <typeparam name="T">The type of the content item parts to be loaded.</typeparam>
+        /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
+        /// <param name="dataPipelineRun">The data pipeline run item associated with the work item.</param>
+        /// <param name="contentItemCanonicalId">The content item canonical identifier.</param>
+        /// <param name="fileName"> The name of the file that contains the content item parts.</param>
+        /// <returns>A list with the content item parts associated with the data pipeline run work item.</returns>
+        Task<IEnumerable<T>> LoadDataPipelineRunWorkItemParts<T>(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            string contentItemCanonicalId,
+            string fileName)
+            where T : class, new();
+
+        /// <summary>
+        /// Loads the parts associated with a data pipeline run.
+        /// </summary>
+        /// <typeparam name="T">The type of the data pipeline run part to be loaded.</typeparam>
+        /// <param name="dataPipelineDefinition">The data pipeline definition associated with the run.</param>
+        /// <param name="dataPipelineRun">The data pipeline run .</param>
+        /// <param name="filePath"> The name of the file that contains the data pipeline run parts.</param>
+        /// <returns>A list with the parts associated with the data pipeline run.</returns>
+        /// <remarks>
+        /// The <paramref name="filePath"/> parameter must contain a path that is relative to the path
+        /// of the data pipeline run artifacts directory.
+        /// </remarks>
+        Task<IEnumerable<T>> LoadDataPipelineRunParts<T>(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            string filePath)
+            where T : class, new();
+
+        /// <summary>
         /// Saves the artifacts associated with a data pipeline run work item.
         /// </summary>
         /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
@@ -143,7 +187,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <summary>
         /// Saves the content item parts associated with a data pipeline run work item.
         /// </summary>
-        /// <typeparam name="T">The type of the content item parts to be loaded.</typeparam>
+        /// <typeparam name="T">The type of the content item parts to be saved.</typeparam>
         /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
         /// <param name="dataPipelineRun">The data pipeline run item associated with the work item.</param>
         /// <param name="dataPipelineRunWorkItem">The data pipeline run work item.</param>
@@ -155,6 +199,25 @@ namespace FoundationaLLM.Common.Interfaces
             DataPipelineRunWorkItem dataPipelineRunWorkItem,
             IEnumerable<T> contentItemParts,
             string fileName)
+            where T : class, new();
+
+        /// <summary>
+        /// Saves the parts associated with a data pipeline run.
+        /// </summary>
+        /// <typeparam name="T">The type of the data pipeline part to be saved.</typeparam>
+        /// <param name="dataPipelineDefinition">The data pipeline definition associated with the run.</param>
+        /// <param name="dataPipelineRun">The data pipeline run.</param>
+        /// <param name="dataPipelineRunParts">The list of data pipeline run parts.</param>
+        /// <param name="filePath"> The path of the file that contains the data pipeline run parts.</param>
+        /// /// <remarks>
+        /// The <paramref name="filePath"/> parameter must contain a path that is relative to the path
+        /// of the data pipeline run artifacts directory.
+        /// </remarks>
+        Task SaveDataPipelineRunParts<T>(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            IEnumerable<T> dataPipelineRunParts,
+            string filePath)
             where T : class, new();
 
         /// <summary>

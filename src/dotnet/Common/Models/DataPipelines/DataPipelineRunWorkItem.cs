@@ -75,17 +75,24 @@ namespace FoundationaLLM.Common.Models.DataPipelines
         public List<string> Errors { get; set; } = [];
 
         /// <summary>
+        /// Gets or sets the error message if the work item failed.
+        /// </summary>
+        [JsonPropertyName("warnings")]
+        [JsonPropertyOrder(10)]
+        public List<string> Warnings { get; set; } = [];
+
+        /// <summary>
         /// Gets or sets the number of processing attempts for the work item.
         /// </summary>
         [JsonPropertyName("processing_attempts")]
-        [JsonPropertyOrder(10)]
+        [JsonPropertyOrder(11)]
         public int ProcessingAttempts { get; set; }
 
         /// <summary>
         /// Gets or sets the number of failed processing attempts for the work item.
         /// </summary>
         [JsonPropertyName("failed_processing_attempts")]
-        [JsonPropertyOrder(11)]
+        [JsonPropertyOrder(12)]
         public int FailedProcessingAttempts { get; set; }
 
         /// <summary>
