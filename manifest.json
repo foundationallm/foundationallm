@@ -15160,6 +15160,62 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Constants.KnowledgeGraphBuildingSteps.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Constants.KnowledgeGraphBuildingSteps.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Constants.KnowledgeGraphBuildingSteps",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Constants.KnowledgeGraphBuildingSteps.yml\" sourcestartlinenumber=\"1\">Constants for the steps involved in building a knowledge graph within a data pipeline.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Constants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Constants.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Constants",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Models.KnowledgeGraphBuildingState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Models.KnowledgeGraphBuildingState.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Models.KnowledgeGraphBuildingState",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Models.KnowledgeGraphBuildingState.yml\" sourcestartlinenumber=\"1\">Represents the state of the knowledge graph building process.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Models.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Models",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.PluginNames.yml",
       "output": {
         ".html": {
