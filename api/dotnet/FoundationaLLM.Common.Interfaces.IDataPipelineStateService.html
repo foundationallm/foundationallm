@@ -200,6 +200,48 @@ Interface IDataPipelineStateService  <a class="header-action link-secondary" tit
 
 
 
+  <a id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_GetDataPipelineRunArtifactsPath_" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.GetDataPipelineRunArtifactsPath*"></a>
+
+  <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_GetDataPipelineRunArtifactsPath_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinition_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.GetDataPipelineRunArtifactsPath(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun)">
+  GetDataPipelineRunArtifactsPath(DataPipelineDefinition, DataPipelineRun)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L242"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the path to the artifacts directory for a data pipeline run.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string GetDataPipelineRunArtifactsPath(DataPipelineDefinition dataPipelineDefinition, DataPipelineRun dataPipelineRun)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dataPipelineDefinition</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition.html">DataPipelineDefinition</a></dt>
+    <dd><p>The data pipeline definition associated with the run.</p>
+</dd>
+    <dt><code>dataPipelineRun</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.html">DataPipelineRun</a></dt>
+    <dd><p>The data pipeline run.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The path of the artifacts directory.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_GetDataPipelineRunStageWorkItems_" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.GetDataPipelineRunStageWorkItems*"></a>
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_GetDataPipelineRunStageWorkItems_System_String_System_String_" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.GetDataPipelineRunStageWorkItems(System.String,System.String)">
@@ -826,7 +868,7 @@ of the data pipeline run artifacts directory.</p>
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_StartDataPipelineRunWorkItemProcessing_System_Func_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_System_Threading_Tasks_Task__" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.StartDataPipelineRunWorkItemProcessing(System.Func{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Threading.Tasks.Task})">
   StartDataPipelineRunWorkItemProcessing(Func&lt;DataPipelineRunWorkItem, Task&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L241"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L251"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Starts processing data pipeline run work items.</p>
@@ -865,7 +907,7 @@ of the data pipeline run artifacts directory.</p>
 
   <h3 id="FoundationaLLM_Common_Interfaces_IDataPipelineStateService_StopDataPipelineRunWorkItemProcessing" data-uid="FoundationaLLM.Common.Interfaces.IDataPipelineStateService.StopDataPipelineRunWorkItemProcessing">
   StopDataPipelineRunWorkItemProcessing()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L247"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IDataPipelineStateService.cs/#L257"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Stops processing data pipeline run work items.</p>

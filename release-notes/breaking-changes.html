@@ -102,6 +102,16 @@
 </thead>
 <tbody>
 <tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the dedicated storage account used by the FoundationaLLM Context API Knowledge Graph service. This must be the same storage account as the one used by the FoundationaLLM Context API.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Context API Knowledge Graph service to connect to the dedicated storage account.</td>
+</tr>
+<tr>
 <td><code>FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:TokenRateLimitMultiplier</code></td>
 <td><code>0.8</code></td>
 <td>The multiplier used to calculate the token rate limit for the Gateway API. This value is used to ensure that the rate limit is not exceeded and accounts for the possible differences in tokenization between the Gateway API and the deployed model(s).</td>
