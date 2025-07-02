@@ -40,8 +40,8 @@ namespace FoundationaLLM.Context.API.Controllers
             await _knowledgeGraphService.UpdateKnowledgeGraph(
                 instanceId,
                 knowledgeGraphId,
-                updateRequest.EntitiesSourceFilePath,
-                updateRequest.RelationshipsSourceFilePath);
+                updateRequest,
+                _callContext.CurrentUserIdentity!);
 
             return Ok();
         }

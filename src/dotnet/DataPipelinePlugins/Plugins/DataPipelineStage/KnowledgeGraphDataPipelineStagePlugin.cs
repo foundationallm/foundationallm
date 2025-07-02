@@ -362,6 +362,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     {
                         EntitiesSourceFilePath = $"{artifactsRootPath}/{KNOWLEDGE_ENTITIES_FILE_PATH}",
                         RelationshipsSourceFilePath = $"{artifactsRootPath}/{KNOWLEDGE_RELATIONSHIPS_FILE_PATH}",
+                        EmbeddingModel = entitySummarizationEmbeddingModel.ToString()!,
+                        EmbeddingDimensions = (int)entitySummarizationEmbeddingDimensions
                     });
 
                 if (!response.Success)
