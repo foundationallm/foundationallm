@@ -45,5 +45,8 @@ namespace FoundationaLLM.Common.Services.Storage
 
         /// <inheritdoc/>
         public Task<List<string>> GetMatchingFilePathsAsync(string containerName, string filePathPattern, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+
+        /// <inheritdoc/>
+        public Task CopyFileAsync(string containerName, string sourceFilePath, string destinationFilePath, CancellationToken cancellationToken = default) => throw new NotImplementedException();
     }
 }

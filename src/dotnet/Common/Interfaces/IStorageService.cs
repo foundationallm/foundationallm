@@ -110,5 +110,15 @@
         /// <param name="cancellationToken">The cancellation token that signals that operations should be cancelled.</param>
         /// <returns></returns>
         Task<List<string>> GetMatchingFilePathsAsync(string containerName, string filePathPattern, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Copies a file from one location to another within the specified storage container.
+        /// </summary>
+        /// <param name="containerName">The name of the container.</param>
+        /// <param name="sourceFilePath">The path of the file to copy.</param>
+        /// <param name="destinationFilePath">The path of the destination.</param>
+        /// <param name="cancellationToken">The cancellation token that signals that operations should be cancelled.</param>
+        /// <returns></returns>
+        Task CopyFileAsync(string containerName, string sourceFilePath, string destinationFilePath, CancellationToken cancellationToken = default);
     }
 }

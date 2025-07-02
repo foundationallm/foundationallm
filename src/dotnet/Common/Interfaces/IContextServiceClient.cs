@@ -61,5 +61,17 @@ namespace FoundationaLLM.Common.Interfaces
             string context,
             string endpointProvider,
             string language);
+
+        /// <summary>
+        /// Calls the Context API service to update a knowledge graph with the specified entities and relationships source files.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeGraphId">The knowledge graph identifier.</param>
+        /// <param name="updateRequest">The update request containing the entities and relationships source files.</param>
+        /// <returns>A response indicating the success of the operation and an optional error message.</returns>
+        Task<ContextServiceResponse> UpdateKnowledgeGraph(
+            string instanceId,
+            string knowledgeGraphId,
+            ContextKnowledgeGraphUpdateRequest updateRequest);
     }
 }

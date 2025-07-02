@@ -66,9 +66,9 @@ namespace FoundationaLLM.Common.Services.Storage
             var filePaths = fileSystemClient.GetPathsAsync(path: directoryPath, recursive: recursive, cancellationToken: cancellationToken);
             await foreach (PathItem pathItem in filePaths)
             {
-                if(pathItem.IsDirectory!.Value)
+                if (pathItem.IsDirectory!.Value)
                     continue;
-                
+
                 retValue.Add(pathItem.Name);
             }
             return retValue;
@@ -377,6 +377,26 @@ namespace FoundationaLLM.Common.Services.Storage
             }
 
             return fullListing;
+        }
+
+        /// <inheritdoc/>
+        public async Task CopyFileAsync(
+            string containerName,
+            string sourceFilePath,
+            string destinationFilePath,
+            CancellationToken cancellationToken = default)
+        {
+            var fileSystemClient = _dataLakeClient.GetFileSystemClient(containerName);
+            var sourceFileClient = fileSystemClient.GetFileClient(sourceFilePath);
+            var destinationFileClient = fileSystemClient.GetFileClient(destinationFilePath);
+
+            using Stream sourceStream = await sourceFileClient.OpenReadAsync(
+                cancellationToken: cancellationToken).ConfigureAwait(false);
+            using Stream destinationStream = await destinationFileClient.OpenWriteAsync(
+                overwrite: true,
+                cancellationToken: cancellationToken).ConfigureAwait(false);
+
+            await sourceStream.CopyToAsync(destinationStream, cancellationToken).ConfigureAwait(false);
         }
     }
 }

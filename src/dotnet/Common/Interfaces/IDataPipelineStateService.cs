@@ -234,6 +234,16 @@ namespace FoundationaLLM.Common.Interfaces
             where T : class, new();
 
         /// <summary>
+        /// Gets the path to the artifacts directory for a data pipeline run.
+        /// </summary>
+        /// <param name="dataPipelineDefinition">The data pipeline definition associated with the run.</param>
+        /// <param name="dataPipelineRun">The data pipeline run.</param>
+        /// <returns>The path of the artifacts directory.</returns>
+        string GetDataPipelineRunArtifactsPath(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun);
+
+        /// <summary>
         /// Starts processing data pipeline run work items.
         /// </summary>
         /// <param name="processWorkItem">The asynchronous delegate that is invoked for each data pipeline run work item.</param>
