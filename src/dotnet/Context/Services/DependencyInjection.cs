@@ -39,7 +39,7 @@ namespace FoundationaLLM
             services.AddOptions<ContextServiceSettings>()
                 .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_ContextAPI_Configuration));
 
-            services.AddScoped<IKnowledgeGraphService, KnowledgeGraphService>(sp =>
+            services.AddSingleton<IKnowledgeGraphService, KnowledgeGraphService>(sp =>
                 new KnowledgeGraphService(
                     authorizationServiceClient: sp.GetRequiredService<IAuthorizationServiceClient>(),
                     storageService: new BlobStorageService(
@@ -48,6 +48,7 @@ namespace FoundationaLLM
                         sp.GetRequiredService<ILogger<BlobStorageService>>()),
                     settings: sp.GetRequiredService<IOptions<ContextServiceSettings>>().Value.KnowledgeGraphService,
                     logger: sp.GetRequiredService<ILogger<KnowledgeGraphService>>()));
+            services.ActivateSingleton<IKnowledgeGraphService>();
         }
 
         /// <summary>

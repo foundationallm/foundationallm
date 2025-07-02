@@ -6,10 +6,10 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Security;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -68,6 +68,7 @@ builder.AddHttpClientFactoryService();
 
 builder.AddAzureCosmosDBContextServices();
 builder.AddAzureContainerAppsCodeSessionProviderServices();
+builder.AddKnowledgeGraphService();
 
 //---------------------------
 // Scoped services
@@ -77,7 +78,6 @@ builder.AddOrchestrationContext();
 builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
 builder.AddFileService();
 builder.AddCodeSessionService();
-builder.AddKnowledgeGraphService();
 
 //---------------------------
 // Resource providers
