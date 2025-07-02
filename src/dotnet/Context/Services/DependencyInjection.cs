@@ -23,6 +23,34 @@ namespace FoundationaLLM
     public static partial class DependencyInjection
     {
         /// <summary>
+        /// Registers the <see cref="IKnowledgeGraphService>"/> to the dependency injection container.
+        /// </summary>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder.</param>
+        public static void AddKnowledgeGraphService(this IHostApplicationBuilder builder) =>
+            builder.Services.AddKnowledgeGraphService(builder.Configuration);
+
+        /// <summary>
+        /// Registers the <see cref="IKnowledgeGraphService>"/> to the dependency injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddKnowledgeGraphService(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddOptions<ContextServiceSettings>()
+                .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_ContextAPI_Configuration));
+
+            services.AddScoped<IKnowledgeGraphService, KnowledgeGraphService>(sp =>
+                new KnowledgeGraphService(
+                    authorizationServiceClient: sp.GetRequiredService<IAuthorizationServiceClient>(),
+                    storageService: new BlobStorageService(
+                        Options.Create<BlobStorageServiceSettings>(
+                            sp.GetRequiredService<IOptions<ContextServiceSettings>>().Value.KnowledgeGraphService.Storage),
+                        sp.GetRequiredService<ILogger<BlobStorageService>>()),
+                    settings: sp.GetRequiredService<IOptions<ContextServiceSettings>>().Value.KnowledgeGraphService,
+                    logger: sp.GetRequiredService<ILogger<KnowledgeGraphService>>()));
+        }
+
+        /// <summary>
         /// Registers the <see cref="IFileService>"/> to the dependency injection container.
         /// </summary>
         /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder.</param>

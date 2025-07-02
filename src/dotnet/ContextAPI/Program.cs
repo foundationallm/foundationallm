@@ -77,6 +77,7 @@ builder.AddOrchestrationContext();
 builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
 builder.AddFileService();
 builder.AddCodeSessionService();
+builder.AddKnowledgeGraphService();
 
 //---------------------------
 // Resource providers

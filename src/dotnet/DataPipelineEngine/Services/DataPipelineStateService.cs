@@ -190,12 +190,10 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             {
                 var artifactsFilter = string.Join('/',
                     [
-                        $"/data-pipeline-state",
-                    dataPipelineDefinition.Name,
-                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
-                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
-                    dataPipelineRun.RunId,
-                    artifactsNameFilter
+                        GetDataPipelineRunArtifactsPath(
+                            dataPipelineDefinition,
+                            dataPipelineRun),
+                        artifactsNameFilter
                     ]);
 
                 var artifactsPaths = await _storageService.GetMatchingFilePathsAsync(
@@ -237,11 +235,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             var artifactsFilter = string.Join('/',
                 [
-                    $"/data-pipeline-state",
-                    dataPipelineDefinition.Name,
-                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
-                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
-                    dataPipelineRun.RunId,
+                    GetDataPipelineRunArtifactsPath(
+                        dataPipelineDefinition,
+                        dataPipelineRun),
                     "content-items",
                     dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-'),
                     artifactsNameFilter
@@ -279,11 +275,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             var artifactsPath = string.Join('/',
                 [
-                    $"/data-pipeline-state",
-                    dataPipelineDefinition.Name,
-                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
-                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
-                    dataPipelineRun.RunId,
+                    GetDataPipelineRunArtifactsPath(
+                        dataPipelineDefinition,
+                        dataPipelineRun),
                     "content-items",
                     dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-')
                 ]);
@@ -314,14 +308,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             DataPipelineRun dataPipelineRun,
             List<DataPipelineStateArtifact> artifacts)
         {
-            var artifactsPath = string.Join('/',
-                [
-                    $"/data-pipeline-state",
-                    dataPipelineDefinition.Name,
-                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
-                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
-                    dataPipelineRun.RunId
-                ]);
+            var artifactsPath = GetDataPipelineRunArtifactsPath(
+                dataPipelineDefinition,
+                dataPipelineRun);
 
             var artifactsWithError = new List<string>();
 
@@ -353,11 +342,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             var contentItemPartsPath = string.Join('/',
                 [
-                    $"/data-pipeline-state",
-                    dataPipelineDefinition.Name,
-                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
-                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
-                    dataPipelineRun.RunId,
+                    GetDataPipelineRunArtifactsPath(
+                        dataPipelineDefinition,
+                        dataPipelineRun),
                     "content-items",
                     dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-'),
                     fileName
@@ -384,11 +371,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             var contentItemPartsPath = string.Join('/',
                 [
-                    $"/data-pipeline-state",
-                    dataPipelineDefinition.Name,
-                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
-                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
-                    dataPipelineRun.RunId,
+                    GetDataPipelineRunArtifactsPath(
+                        dataPipelineDefinition,
+                        dataPipelineRun),
                     "content-items",
                     contentItemCanonicalId.Trim('/').Replace('/', '-'),
                     fileName
@@ -416,11 +401,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             var contentItemPartsPath = string.Join('/',
                 [
-                    $"/data-pipeline-state",
-                    dataPipelineDefinition.Name,
-                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
-                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
-                    dataPipelineRun.RunId,
+                    GetDataPipelineRunArtifactsPath(
+                        dataPipelineDefinition,
+                        dataPipelineRun),
                     "content-items",
                     dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-'),
                     fileName
@@ -448,11 +431,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             var dataPipelineRunPartsPath = string.Join('/',
                 [
-                    $"/data-pipeline-state",
-                    dataPipelineDefinition.Name,
-                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
-                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
-                    dataPipelineRun.RunId,
+                    GetDataPipelineRunArtifactsPath(
+                        dataPipelineDefinition,
+                        dataPipelineRun),
                     filePath
                 ]);
 
@@ -477,11 +458,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             var dataPipelineRunPartsPath = string.Join('/',
                 [
-                    $"/data-pipeline-state",
-                    dataPipelineDefinition.Name,
-                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
-                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
-                    dataPipelineRun.RunId,
+                    GetDataPipelineRunArtifactsPath(
+                        dataPipelineDefinition,
+                        dataPipelineRun),
                     filePath
                 ]);
 
@@ -497,6 +476,19 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 "application/vnd.apache.parquet",
                 default);
         }
+
+        /// <inheritdoc/>
+        public string GetDataPipelineRunArtifactsPath(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun) =>
+            string.Join('/',
+                [
+                    $"/data-pipeline-state",
+                    dataPipelineDefinition.Name,
+                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
+                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
+                    dataPipelineRun.RunId
+                ]);
 
         /// <inheritdoc/>
         public async Task<bool> StartDataPipelineRunWorkItemProcessing(

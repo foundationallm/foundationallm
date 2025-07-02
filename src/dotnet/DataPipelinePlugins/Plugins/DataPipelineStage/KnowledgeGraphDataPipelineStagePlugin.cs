@@ -7,8 +7,10 @@ using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
+using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Knowledge;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
@@ -98,7 +100,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     KnowledgeGraphBuildingSteps.EntitiesSummarization => KnowledgeGraphBuildingSteps.RelationshipsSummarization,
                     KnowledgeGraphBuildingSteps.RelationshipsSummarization => KnowledgeGraphBuildingSteps.EntitiesEmbedding,
                     KnowledgeGraphBuildingSteps.EntitiesEmbedding => KnowledgeGraphBuildingSteps.RelationshipsEmbedding,
-                    KnowledgeGraphBuildingSteps.RelationshipsEmbedding => null, // No more steps to process
+                    KnowledgeGraphBuildingSteps.RelationshipsEmbedding => KnowledgeGraphBuildingSteps.Publish,
+                    KnowledgeGraphBuildingSteps.Publish => null, // No more steps to process
                     _ => throw new PluginException($"Unknown knowledge graph building step: {lastSuccessfullStep}.")
                 };
 
@@ -152,6 +155,12 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 out var entitySummarizationEmbeddingDimensions))
                 throw new PluginException(
                     $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONEMBEDDINGDIMENSIONS} parameter.");
+
+            if (!_pluginParameters.TryGetValue(
+                PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEGRAPHID,
+                out var knowledgeGraphId))
+                throw new PluginException(
+                    $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEGRAPHID} parameter.");
 
             #endregion
 
@@ -328,6 +337,41 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
                 _knowledgeGraphBuildingState.LastSuccessfullStep =
                     KnowledgeGraphBuildingSteps.RelationshipsEmbedding;
+                await SaveKnowledgeGrapState(dataPipelineDefinition, dataPipelineRun);
+            }
+
+            if (knowledgeGrapBuildingStep ==
+                KnowledgeGraphBuildingSteps.Publish)
+            {
+                #region Publish knowledge graph to the Context API
+
+                using var scope = _serviceProvider.CreateScope();
+
+                var contextServiceClient = new ContextServiceClient(
+                    new OrchestrationContext { CurrentUserIdentity = ServiceContext.ServiceIdentity },
+                    scope.ServiceProvider.GetRequiredService<IHttpClientFactoryService>(),
+                    scope.ServiceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
+
+                var artifactsRootPath = _dataPipelineStateService.GetDataPipelineRunArtifactsPath(
+                        dataPipelineDefinition,
+                        dataPipelineRun);
+                var response = await contextServiceClient.UpdateKnowledgeGraph(
+                    dataPipelineRun.InstanceId,
+                    knowledgeGraphId.ToString()!,
+                    new ContextKnowledgeGraphUpdateRequest
+                    {
+                        EntitiesSourceFilePath = $"{artifactsRootPath}/{KNOWLEDGE_ENTITIES_FILE_PATH}",
+                        RelationshipsSourceFilePath = $"{artifactsRootPath}/{KNOWLEDGE_RELATIONSHIPS_FILE_PATH}",
+                    });
+
+                if (!response.Success)
+                    return new PluginResult(false, false,
+                        $"The {Name} plugin failed to publish the knowledge graph for data pipeline run {dataPipelineRun.Id} due to a failure in the Context API: {response.ErrorMessage}");
+
+                #endregion
+
+                _knowledgeGraphBuildingState.LastSuccessfullStep =
+                    KnowledgeGraphBuildingSteps.Publish;
                 await SaveKnowledgeGrapState(dataPipelineDefinition, dataPipelineRun);
             }
 

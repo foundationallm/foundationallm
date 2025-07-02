@@ -88,6 +88,10 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                     {
                         PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONEMBEDDINGDIMENSIONS,
                         2048
+                    },
+                    {
+                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEGRAPHID,
+                        "ProcessSPOFiles-KnowledgeGraph"
                     }
                 }
             }

@@ -374,6 +374,41 @@ namespace FoundationaLLM.Common.Services.Storage
             return fullListing;
         }
 
+        /// <inheritdoc/>
+        public async Task CopyFileAsync(
+            string containerName,
+            string sourceFilePath,
+            string destinationFilePath,
+            CancellationToken cancellationToken = default)
+        {
+            var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+            var sourceBlobClient = containerClient.GetBlobClient(sourceFilePath);
+            var destinationBlobClient = containerClient.GetBlobClient(destinationFilePath);
+
+            // Start the copy operation
+            var copyOperation = await destinationBlobClient.StartCopyFromUriAsync(
+                sourceBlobClient.Uri,
+                cancellationToken: cancellationToken
+            ).ConfigureAwait(false);
+
+            // Wait for the copy to complete
+            BlobProperties destProperties;
+            do
+            {
+                await Task.Delay(500, cancellationToken).ConfigureAwait(false);
+                destProperties = await destinationBlobClient.GetPropertiesAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+            }
+            while (destProperties.CopyStatus == CopyStatus.Pending);
+
+            if (destProperties.CopyStatus != CopyStatus.Success)
+            {
+                _logger.LogError("Failed to copy blob from {Source} to {Destination}. Status: {Status}, Description: {Description}",
+                    sourceFilePath, destinationFilePath, destProperties.CopyStatus, destProperties.CopyStatusDescription);
+                throw new StorageException($"Failed to copy blob from {sourceFilePath} to {destinationFilePath}. Status: {destProperties.CopyStatus}, Description: {destProperties.CopyStatusDescription}");
+            }
+
+        }
+
         /// <summary>
         /// Removes subpaths (directories) from the list of paths.
         /// </summary>

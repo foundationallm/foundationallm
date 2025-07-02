@@ -29,5 +29,10 @@
         /// The step for embedding relationships within the knowledge graph.
         /// </summary>
         public const string RelationshipsEmbedding = "RelationshipsEmbedding";
+
+        /// <summary>
+        /// The step for publishing the knowledge graph to the Context API.
+        /// </summary>
+        public const string Publish = "Publish";
     }
 }

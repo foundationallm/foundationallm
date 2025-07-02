@@ -253,5 +253,46 @@ namespace FoundationaLLM.Common.Clients
                 };
             }
         }
+
+        /// <inheritdoc/>
+        public async Task<ContextServiceResponse> UpdateKnowledgeGraph(
+            string instanceId,
+            string knowledgeGraphId,
+            ContextKnowledgeGraphUpdateRequest updateRequest)
+        {
+            try
+            {
+                var client = await _httpClientFactoryService.CreateClient(
+                    HttpClientNames.ContextAPI,
+                    _callContext.CurrentUserIdentity!);
+
+                var responseMessage = await client.PostAsJsonAsync(
+                    $"instances/{instanceId}/knowledgegraphs/{knowledgeGraphId}",
+                    updateRequest);
+
+                if (responseMessage.IsSuccessStatusCode)
+                    return new ContextServiceResponse { Success = true };
+
+                _logger.LogError(
+                    "An error occurred while updating the knowledge graph. Status code: {StatusCode}.",
+                    responseMessage.StatusCode);
+
+                return new ContextServiceResponse
+                {
+                    Success = false,
+                    ErrorMessage = "The service responded with an error status code."
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating the knowledge graph.");
+
+                return new ContextServiceResponse
+                {
+                    Success = false,
+                    ErrorMessage = "An error occurred while updating the knowledge graph."
+                };
+            }
+        }
     }
 }
