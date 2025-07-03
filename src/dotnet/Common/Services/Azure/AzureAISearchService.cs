@@ -11,7 +11,6 @@ using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System.Net;
 using System.Text;
 using System.Text.Json;
 

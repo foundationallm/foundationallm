@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.CodeExecution;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
@@ -42,12 +43,17 @@ namespace FoundationaLLM
             services.AddSingleton<IKnowledgeGraphService, KnowledgeGraphService>(sp =>
                 new KnowledgeGraphService(
                     authorizationServiceClient: sp.GetRequiredService<IAuthorizationServiceClient>(),
+                    configurationResourceProvider: sp.GetRequiredService<IEnumerable<IResourceProviderService>>()
+                        .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Configuration)!,
+                    vectorResourceProvider: sp.GetRequiredService<IEnumerable<IResourceProviderService>>()
+                        .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Vector)!,
+                    httpClientFactory: sp.GetRequiredService<IHttpClientFactoryService>(),
                     storageService: new BlobStorageService(
                         Options.Create<BlobStorageServiceSettings>(
                             sp.GetRequiredService<IOptions<ContextServiceSettings>>().Value.KnowledgeGraphService.Storage),
                         sp.GetRequiredService<ILogger<BlobStorageService>>()),
                     settings: sp.GetRequiredService<IOptions<ContextServiceSettings>>().Value.KnowledgeGraphService,
-                    logger: sp.GetRequiredService<ILogger<KnowledgeGraphService>>()));
+                    loggerFactory: sp.GetRequiredService<ILoggerFactory>()));
             services.ActivateSingleton<IKnowledgeGraphService>();
         }
 

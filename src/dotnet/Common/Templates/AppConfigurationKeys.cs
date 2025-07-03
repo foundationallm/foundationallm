@@ -1222,6 +1222,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_KnowledgeGraphService_Storage_AuthenticationType =
             "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AuthenticationType";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Embedding setting.
+        /// <para>Value description:<br/>The settings used for embedding operations.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_KnowledgeGraphService_Embedding =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Embedding";
 
         #endregion
 

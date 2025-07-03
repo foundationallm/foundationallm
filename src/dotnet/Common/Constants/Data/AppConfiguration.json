@@ -1643,6 +1643,14 @@
 				"value": "AzureIdentity",
 				"content_type": "",
 				"first_version": "0.9.7"
+			},
+			{
+				"name": "KnowledgeGraphService:Embedding",
+				"description": "The settings used for embedding operations.",
+				"secret": "",
+				"value": "{\\\"EmbeddingAPIEndpointConfigurationObjectId\\\": null, \\\"ModelDeployments\\\": {}",
+				"content_type": "application/json",
+				"first_version": "0.9.7"
 			}
 		]
 	},
@@ -2460,7 +2468,6 @@
 				"content_type": "application/json",
 				"first_version": "0.8.0"
 			},
-
 			{
 				"name": "ContextAPI",
 				"description": "The settings used by the Context API to process Azure Event Grid events.",

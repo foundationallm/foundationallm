@@ -33,6 +33,7 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints);
 
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Essentials);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Configuration);
@@ -40,6 +41,9 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
 
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Code_CodeExecution_AzureContainerAppsDynamicSessions);
+
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vector_Storage);
 }));
 
 if (builder.Environment.IsDevelopment())
@@ -61,6 +65,15 @@ builder.AddInstanceProperties();
 
 // HTTP services
 builder.AddHttpClientFactoryService();
+
+// Add Azure ARM services.
+builder.AddAzureResourceManager();
+
+// Add event services.
+builder.Services.AddAzureEventGridEvents(
+    builder.Configuration,
+    AppConfigurationKeySections.FoundationaLLM_Events_Profiles_ContextAPI);
+
 
 //---------------------------
 // Singleton services
@@ -87,10 +100,11 @@ builder.AddResourceValidatorFactory();
 
 //builder.AddAgentResourceProvider();
 //builder.AddAttachmentResourceProvider();
-//builder.AddConfigurationResourceProvider();
+builder.AddConfigurationResourceProvider();
 //builder.AddAzureOpenAIResourceProvider();
 //builder.AddAIModelResourceProvider();
 //builder.AddConversationResourceProvider();
+builder.AddVectorResourceProvider();
 
 // Add API Key Authorization
 builder.Services.AddHttpContextAccessor();

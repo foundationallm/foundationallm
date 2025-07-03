@@ -1,5 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Configuration.CosmosDB;
-using FoundationaLLM.Common.Models.Configuration.Storage;
+﻿using FoundationaLLM.Common.Models.Configuration.Storage;
 
 namespace FoundationaLLM.Context.Models.Configuration
 {
@@ -12,5 +11,10 @@ namespace FoundationaLLM.Context.Models.Configuration
         /// Gets or sets the storage settings.
         /// </summary>
         public required BlobStorageServiceSettings Storage { get; set; }
+
+        /// <summary>
+        /// Gets or sets the settings used for embedding operations.
+        /// </summary>
+        public required EmbeddingSettings Embedding { get; set; }
     }
 }
