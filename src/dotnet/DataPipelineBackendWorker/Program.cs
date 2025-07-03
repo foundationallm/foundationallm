@@ -83,6 +83,7 @@ builder.Services.AddAzureEventGridEvents(
 
 builder.AddDataPipelineStateService();
 builder.AddDataPipelineBackendWorkerService();
+builder.AddTokenizers();
 
 //---------------------------
 // Scoped services
