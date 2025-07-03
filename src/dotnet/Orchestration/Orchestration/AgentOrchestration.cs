@@ -526,10 +526,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             {
                                 { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId,  contextFileResponse.Result.FileObjectId},
                                 { DataPipelineTriggerParameterNames.StageIndexVectorDatabaseObjectId, knowledgeSearchSettings.FileUploadVectorDatabaseObjectId },
-                                { DataPipelineTriggerParameterNames.StageIndexVectorStoreObjectId,
-                                    ResourcePath.Join(
-                                        knowledgeSearchSettings.FileUploadVectorDatabaseObjectId,
-                                        $"vectorStores/{_vectorStoreId}") }
+                                { DataPipelineTriggerParameterNames.StageIndexVectorStoreId, _vectorStoreId }
                             },
                             _callContext.CurrentUserIdentity!.UPN!,
                             DataPipelineRunProcessors.Frontend);
