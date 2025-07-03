@@ -8,6 +8,18 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Context
     public class KnowledgeGraph : ResourceBase
     {
         /// <summary>
+        /// Gets or sets the object identifier of the vector database associated with the knowledge graph.
+        /// </summary>
+        [JsonPropertyName("vector_database_object_id")]
+        public required string VectorDatabaseObjectId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the object identifier of the vector store associated with the knowledge graph.
+        /// </summary>
+        [JsonPropertyName("vector_store_id")]
+        public required string VectorStoreId { get; set; }
+
+        /// <summary>
         /// Gets or sets the embedding model used for the knowledge graph.
         /// </summary>
         [JsonPropertyName("embedding_model")]

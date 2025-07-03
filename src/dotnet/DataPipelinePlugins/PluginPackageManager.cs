@@ -154,9 +154,9 @@ namespace FoundationaLLM.Plugins.DataPipeline
                             Description = "The FoundationaLLM resource identifier of the Vector Database resource that identifies the Azure AI Search instance and the index."
                         },
                         new() {
-                            Name = PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREOBJECTID,
-                            Type = PluginParameterTypes.ResourceObjectId,
-                            Description = "The FoundationaLLM resource identifier of the Vector Store resource that identifies the logical partition of the Azure AI Search index."
+                            Name = PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREID,
+                            Type = PluginParameterTypes.String,
+                            Description = "The name of the Vector Store resource that identifies the logical partition of the Azure AI Search index."
                         },
                         new() {
                             Name = PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS,
@@ -168,7 +168,7 @@ namespace FoundationaLLM.Plugins.DataPipeline
                         {
                             PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
                             new() {
-                                ResourcePath = "providers/FoundationaLLM.Vectorization/vectorDatabases",
+                                ResourcePath = "providers/FoundationaLLM.Vector/vectorDatabases",
                                 FilterActionPayload = new {
                                     category = "AzureAISearch"
                                 }
@@ -264,6 +264,16 @@ namespace FoundationaLLM.Plugins.DataPipeline
                             Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEGRAPHID,
                             Type = PluginParameterTypes.String,
                             Description = "The FoundationaLLM resource identifier of the Knowledge Graph resource that identifies the knowledge graph to be built."
+                        },
+                        new() {
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
+                            Type = PluginParameterTypes.ResourceObjectId,
+                            Description = "The FoundationaLLM resource identifier of the Vector Database resource that identifies the Azure AI Search instance and the index."
+                        },
+                        new() {
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORSTOREID,
+                            Type = PluginParameterTypes.String,
+                            Description = "The name of the Vector Store resource that identifies the logical partition of the Azure AI Search index."
                         }
                     ],
                     ParameterSelectionHints = new() {
@@ -273,6 +283,15 @@ namespace FoundationaLLM.Plugins.DataPipeline
                                 ResourcePath = "providers/FoundationaLLM.Prompt/prompts",
                                 FilterActionPayload = new {
                                     category = "DataPipeline"
+                                }
+                            }
+                        },
+                        {
+                            PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
+                            new() {
+                                ResourcePath = "providers/FoundationaLLM.Vector/vectorDatabases",
+                                FilterActionPayload = new {
+                                    category = "AzureAISearch"
                                 }
                             }
                         }

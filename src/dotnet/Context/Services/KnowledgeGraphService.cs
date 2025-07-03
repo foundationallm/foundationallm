@@ -71,6 +71,11 @@ namespace FoundationaLLM.Context.Services
                 knowledgeGraphId,
                 updateRequest,
                 userIdentity);
+
+            // If the knowledge graph is cached, remove it from the cache.
+            var cacheKey = GetCacheKey(instanceId, knowledgeGraphId);
+            if (_cache.TryGetValue(cacheKey, out _))
+                _cache.Remove(cacheKey);
         }
 
         /// <inheritdoc/>
@@ -107,6 +112,8 @@ namespace FoundationaLLM.Context.Services
                     ObjectId = $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_ContextAPI}/knowledgeGraphs/{knowledgeGraphId}",
                     EmbeddingModel = updateRequest.EmbeddingModel,
                     EmbeddingDimensions = updateRequest.EmbeddingDimensions,
+                    VectorDatabaseObjectId = updateRequest.VectorDatabaseObjectId,
+                    VectorStoreId = updateRequest.VectorStoreId,
                     CreatedBy = userIdentity.UPN,
                     CreatedOn = DateTimeOffset.UtcNow
                 };
@@ -121,6 +128,8 @@ namespace FoundationaLLM.Context.Services
 
                 knowledgeGraph!.EmbeddingModel = updateRequest.EmbeddingModel;
                 knowledgeGraph.EmbeddingDimensions = updateRequest.EmbeddingDimensions;
+                knowledgeGraph.VectorDatabaseObjectId = updateRequest.VectorDatabaseObjectId;
+                knowledgeGraph.VectorStoreId = updateRequest.VectorStoreId;
                 knowledgeGraph.UpdatedBy = userIdentity.UPN;
                 knowledgeGraph.UpdatedOn = DateTimeOffset.UtcNow;
             }
@@ -133,9 +142,19 @@ namespace FoundationaLLM.Context.Services
                     default);
         }
 
+        private async Task GetKnowledgeGraphFromCache(
+            string instanceId,
+            string knowledgeGraphId)
+        {
+            var cacheKey = GetCacheKey(instanceId, knowledgeGraphId);
+        }
+
         private MemoryCacheEntryOptions GetMemoryCacheEntryOptions() => new MemoryCacheEntryOptions()
            .SetAbsoluteExpiration(TimeSpan.FromSeconds(3600)) // Cache entries are valid for 60 minutes.
            .SetSlidingExpiration(TimeSpan.FromSeconds(1800)) // Reset expiration time if accessed within 30 minutes.
            .SetSize(1); // Each cache entry is a single knowledge graph instance.
+
+        private string GetCacheKey(string instanceId, string knowledgeGraphId) =>
+            $"{instanceId}:{knowledgeGraphId}";
     }
 }

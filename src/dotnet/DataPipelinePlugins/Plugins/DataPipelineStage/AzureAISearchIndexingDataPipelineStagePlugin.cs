@@ -54,10 +54,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     $"The plugin {Name} requires the {PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID} parameter.");
 
             if (!_pluginParameters.TryGetValue(
-                PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREOBJECTID,
-                out var vectorStoreObjectId))
+                PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREID,
+                out var vectorStoreId))
                 throw new PluginException(
-                    $"The plugin {Name} requires the {PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREOBJECTID} parameter.");
+                    $"The plugin {Name} requires the {PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREID} parameter.");
 
             if (!_pluginParameters.TryGetValue(
                 PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS,
@@ -74,10 +74,6 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             var vectorDatabase = await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
                 vectorDatabaseObjectId.ToString()!,
                 ServiceContext.ServiceIdentity!);
-
-            var vectorStoreResourcePath =
-                ResourcePath.GetResourcePath(vectorStoreObjectId.ToString()!);
-            var vectorStoreId = vectorStoreResourcePath.ResourceId;
 
             var endpointResourcePath =
                 ResourcePath.GetResourcePath(vectorDatabase.APIEndpointConfigurationObjectId);

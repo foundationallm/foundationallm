@@ -162,6 +162,18 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 throw new PluginException(
                     $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEGRAPHID} parameter.");
 
+            if (!_pluginParameters.TryGetValue(
+                PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
+                out var vectorDatabaseObjectId))
+                throw new PluginException(
+                    $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID} parameter.");
+
+            if (!_pluginParameters.TryGetValue(
+                PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORSTOREID,
+                out var vectorStoreId))
+                throw new PluginException(
+                    $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORSTOREID} parameter.");
+
             #endregion
 
             if (knowledgeGrapBuildingStep == KnowledgeGraphBuildingSteps.CoreStructure)
@@ -363,7 +375,9 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                         EntitiesSourceFilePath = $"{artifactsRootPath}/{KNOWLEDGE_ENTITIES_FILE_PATH}",
                         RelationshipsSourceFilePath = $"{artifactsRootPath}/{KNOWLEDGE_RELATIONSHIPS_FILE_PATH}",
                         EmbeddingModel = entitySummarizationEmbeddingModel.ToString()!,
-                        EmbeddingDimensions = (int)entitySummarizationEmbeddingDimensions
+                        EmbeddingDimensions = (int)entitySummarizationEmbeddingDimensions,
+                        VectorDatabaseObjectId = vectorDatabaseObjectId.ToString()!,
+                        VectorStoreId = vectorStoreId.ToString()!
                     });
 
                 if (!response.Success)
