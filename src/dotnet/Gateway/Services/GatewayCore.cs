@@ -174,6 +174,9 @@ namespace FoundationaLLM.Gateway.Services
         /// <inheritdoc/>
         public async Task<TextOperationResult> StartEmbeddingOperation(string instanceId, TextEmbeddingRequest embeddingRequest, UnifiedUserIdentity userIdentity)
         {
+            if (embeddingRequest.TextChunks.Count == 0)
+                throw new GatewayException("The request does not contain any text chunks.", StatusCodes.Status400BadRequest);
+
             if (!_initialized)
                 throw new GatewayException("The Gateway service is not initialized.");
 
@@ -256,6 +259,9 @@ namespace FoundationaLLM.Gateway.Services
 
         public Task<TextOperationResult> StartCompletionOperation(string instanceId, TextCompletionRequest completionRequest, UnifiedUserIdentity userIdentity)
         {
+            if (completionRequest.TextChunks.Count == 0)
+                throw new GatewayException("The request does not contain any text chunks.", StatusCodes.Status400BadRequest);
+
             if (!_initialized)
                 throw new GatewayException("The Gateway service is not initialized.");
 

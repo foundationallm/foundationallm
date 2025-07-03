@@ -706,31 +706,36 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     })],
             };
 
-            var completionsResult = await _gatewayServiceClient.StartCompletionOperation(
-                dataPipelineRun.InstanceId,
-                textCompletionRequest);
+            Dictionary<int, string> completionsDictionary = [];
 
-            while (completionsResult.InProgress)
+            if (textCompletionRequest.TextChunks.Count > 0)
             {
-                await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
-                completionsResult = await _gatewayServiceClient.GetCompletionOperationResult(
+                var completionsResult = await _gatewayServiceClient.StartCompletionOperation(
                     dataPipelineRun.InstanceId,
-                    completionsResult.OperationId!);
+                    textCompletionRequest);
 
-                _logger.LogInformation("Data pipeline run {DataPipelineRunId} entity summarization: {ProcessedEntityCount} of {TotalEntityCount} entities, {TotalSeconds} seconds.",
-                    dataPipelineRun.Id,
-                    completionsResult.ProcessedTextChunksCount,
-                    textCompletionRequest.TextChunks.Count,
-                    (DateTimeOffset.UtcNow - startTime).TotalSeconds);
+                while (completionsResult.InProgress)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
+                    completionsResult = await _gatewayServiceClient.GetCompletionOperationResult(
+                        dataPipelineRun.InstanceId,
+                        completionsResult.OperationId!);
+
+                    _logger.LogInformation("Data pipeline run {DataPipelineRunId} entity summarization: {ProcessedEntityCount} of {TotalEntityCount} entities, {TotalSeconds} seconds.",
+                        dataPipelineRun.Id,
+                        completionsResult.ProcessedTextChunksCount,
+                        textCompletionRequest.TextChunks.Count,
+                        (DateTimeOffset.UtcNow - startTime).TotalSeconds);
+                }
+
+                if (completionsResult.Failed)
+                    return new PluginResult(false, false,
+                        $"The {Name} plugin failed to summarize knowledge graph entities for data pipeline run {dataPipelineRun.Id} due to a failure in the Gateway API.");
+
+                completionsDictionary = completionsResult.TextChunks.ToDictionary(
+                    chunk => chunk.Position,
+                    chunk => chunk.Completion!);
             }
-
-            if (completionsResult.Failed)
-                return new PluginResult(false, false,
-                    $"The {Name} plugin failed to summarize knowledge graph entities for data pipeline run {dataPipelineRun.Id} due to a failure in the Gateway API.");
-
-            var completionsDictionary = completionsResult.TextChunks.ToDictionary(
-                chunk => chunk.Position,
-                chunk => chunk.Completion);
 
             foreach (var entity in _entityRelationships.Entities)
             {
@@ -790,31 +795,36 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     })],
             };
 
-            var completionsResult = await _gatewayServiceClient.StartCompletionOperation(
+            Dictionary<int, string> completionsDictionary = [];
+
+            if (textCompletionRequest.TextChunks.Count > 0)
+            {
+                var completionsResult = await _gatewayServiceClient.StartCompletionOperation(
                 dataPipelineRun.InstanceId,
                 textCompletionRequest);
 
-            while (completionsResult.InProgress)
-            {
-                await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
-                completionsResult = await _gatewayServiceClient.GetCompletionOperationResult(
-                    dataPipelineRun.InstanceId,
-                    completionsResult.OperationId!);
+                while (completionsResult.InProgress)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
+                    completionsResult = await _gatewayServiceClient.GetCompletionOperationResult(
+                        dataPipelineRun.InstanceId,
+                        completionsResult.OperationId!);
 
-                _logger.LogInformation("Data pipeline run {DataPipelineRunId} relationship summarization: {ProcessedEntityCount} of {TotalEntityCount} entities, {TotalSeconds} seconds.",
-                    dataPipelineRun.Id,
-                    completionsResult.ProcessedTextChunksCount,
-                    textCompletionRequest.TextChunks.Count,
-                    (DateTimeOffset.UtcNow - startTime).TotalSeconds);
+                    _logger.LogInformation("Data pipeline run {DataPipelineRunId} relationship summarization: {ProcessedEntityCount} of {TotalEntityCount} entities, {TotalSeconds} seconds.",
+                        dataPipelineRun.Id,
+                        completionsResult.ProcessedTextChunksCount,
+                        textCompletionRequest.TextChunks.Count,
+                        (DateTimeOffset.UtcNow - startTime).TotalSeconds);
+                }
+
+                if (completionsResult.Failed)
+                    return new PluginResult(false, false,
+                        $"The {Name} plugin failed to summarize knowledge graph relationships for data pipeline run {dataPipelineRun.Id} due to a failure in the Gateway API.");
+
+                completionsDictionary = completionsResult.TextChunks.ToDictionary(
+                    chunk => chunk.Position,
+                    chunk => chunk.Completion!);
             }
-
-            if (completionsResult.Failed)
-                return new PluginResult(false, false,
-                    $"The {Name} plugin failed to summarize knowledge graph relationships for data pipeline run {dataPipelineRun.Id} due to a failure in the Gateway API.");
-
-            var completionsDictionary = completionsResult.TextChunks.ToDictionary(
-                chunk => chunk.Position,
-                chunk => chunk.Completion);
 
             foreach (var relationship in _entityRelationships.Relationships)
             {
@@ -853,30 +863,35 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     })]
             };
 
-            var embeddingResult = await _gatewayServiceClient.StartEmbeddingOperation(
+            Dictionary<int, Embedding?> embeddingsDictionary = [];
+
+            if (textEmbeddingRequest.TextChunks.Count > 0)
+            {
+                var embeddingResult = await _gatewayServiceClient.StartEmbeddingOperation(
                 dataPipelineRun.InstanceId,
                 textEmbeddingRequest);
 
-            while (embeddingResult.InProgress)
-            {
-                await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
-                embeddingResult = await _gatewayServiceClient.GetEmbeddingOperationResult(
-                    dataPipelineRun.InstanceId,
-                    embeddingResult.OperationId!);
+                while (embeddingResult.InProgress)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
+                    embeddingResult = await _gatewayServiceClient.GetEmbeddingOperationResult(
+                        dataPipelineRun.InstanceId,
+                        embeddingResult.OperationId!);
 
-                _logger.LogInformation("Data pipeline run {DataPipelineRunId} knowledge graph entities embedding: {ProcessedEntityCount} of {TotalEntityCount} entities processed.",
-                    dataPipelineRun.Id,
-                    embeddingResult.ProcessedTextChunksCount,
-                    textEmbeddingRequest.TextChunks.Count);
+                    _logger.LogInformation("Data pipeline run {DataPipelineRunId} knowledge graph entities embedding: {ProcessedEntityCount} of {TotalEntityCount} entities processed.",
+                        dataPipelineRun.Id,
+                        embeddingResult.ProcessedTextChunksCount,
+                        textEmbeddingRequest.TextChunks.Count);
+                }
+
+                if (embeddingResult.Failed)
+                    return new PluginResult(false, false,
+                        $"The {Name} plugin failed to embed knowledge graph entities for data pipeline run {dataPipelineRun.Id} due to a failure in the Gateway API.");
+
+                embeddingsDictionary = embeddingResult.TextChunks.ToDictionary(
+                    chunk => chunk.Position,
+                    chunk => chunk.Embedding);
             }
-
-            if (embeddingResult.Failed)
-                return new PluginResult(false, false,
-                    $"The {Name} plugin failed to embed knowledge graph entities for data pipeline run {dataPipelineRun.Id} due to a failure in the Gateway API.");
-
-            var embeddingsDictionary = embeddingResult.TextChunks.ToDictionary(
-                chunk => chunk.Position,
-                chunk => chunk.Embedding);
 
             foreach (var entity in _entityRelationships.Entities)
             {
@@ -910,30 +925,36 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     })]
             };
 
-            var embeddingResult = await _gatewayServiceClient.StartEmbeddingOperation(
+            Dictionary<int, Embedding?> embeddingsDictionary = [];
+
+            if (textEmbeddingRequest.TextChunks.Count > 0)
+            {
+
+                var embeddingResult = await _gatewayServiceClient.StartEmbeddingOperation(
                 dataPipelineRun.InstanceId,
                 textEmbeddingRequest);
 
-            while (embeddingResult.InProgress)
-            {
-                await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
-                embeddingResult = await _gatewayServiceClient.GetEmbeddingOperationResult(
-                    dataPipelineRun.InstanceId,
-                    embeddingResult.OperationId!);
+                while (embeddingResult.InProgress)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
+                    embeddingResult = await _gatewayServiceClient.GetEmbeddingOperationResult(
+                        dataPipelineRun.InstanceId,
+                        embeddingResult.OperationId!);
 
-                _logger.LogInformation("Data pipeline run {DataPipelineRunId} knowledge graph relationships embedding: {ProcessedEntityCount} of {TotalEntityCount} entities processed.",
-                    dataPipelineRun.Id,
-                    embeddingResult.ProcessedTextChunksCount,
-                    textEmbeddingRequest.TextChunks.Count);
+                    _logger.LogInformation("Data pipeline run {DataPipelineRunId} knowledge graph relationships embedding: {ProcessedEntityCount} of {TotalEntityCount} entities processed.",
+                        dataPipelineRun.Id,
+                        embeddingResult.ProcessedTextChunksCount,
+                        textEmbeddingRequest.TextChunks.Count);
+                }
+
+                if (embeddingResult.Failed)
+                    return new PluginResult(false, false,
+                        $"The {Name} plugin failed to embed knowledge graph relationships for data pipeline run {dataPipelineRun.Id} due to a failure in the Gateway API.");
+
+                embeddingsDictionary = embeddingResult.TextChunks.ToDictionary(
+                    chunk => chunk.Position,
+                    chunk => chunk.Embedding);
             }
-
-            if (embeddingResult.Failed)
-                return new PluginResult(false, false,
-                    $"The {Name} plugin failed to embed knowledge graph relationships for data pipeline run {dataPipelineRun.Id} due to a failure in the Gateway API.");
-
-            var embeddingsDictionary = embeddingResult.TextChunks.ToDictionary(
-                chunk => chunk.Position,
-                chunk => chunk.Embedding);
 
             foreach (var relationship in _entityRelationships.Relationships)
             {
