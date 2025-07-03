@@ -1,24 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models.Context
+namespace FoundationaLLM.Common.Models.ResourceProviders.Context
 {
     /// <summary>
-    /// Represents a request to update a knowledge graph in the FoundationaLLM Context API.
+    /// Represents a FoundationaLLM knowledge graph.
     /// </summary>
-    public class ContextKnowledgeGraphUpdateRequest
+    public class KnowledgeGraph : ResourceBase
     {
-        /// <summary>
-        /// Gets or sets the path of the source file containing the entities for the knowledge graph.
-        /// </summary>
-        [JsonPropertyName("entities_source_file_path")]
-        public required string EntitiesSourceFilePath { get; set; }
-
-        /// <summary>
-        /// Gets or sets the path of the source file containing the relationships for the knowledge graph.
-        /// </summary>
-        [JsonPropertyName("relationships_source_file_path")]
-        public required string RelationshipsSourceFilePath { get; set; }
-
         /// <summary>
         /// Gets or sets the object identifier of the vector database associated with the knowledge graph.
         /// </summary>

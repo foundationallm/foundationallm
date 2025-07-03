@@ -18,7 +18,7 @@ namespace FoundationaLLM.Context.API.Controllers
     public class KnowledgeGraphsController(
         IKnowledgeGraphService knowledgeGraphService,
         IOrchestrationContext callContext,
-        ILogger<KnowledgeGraphsController> logger): ControllerBase
+        ILogger<KnowledgeGraphsController> logger) : ControllerBase
     {
         private readonly IKnowledgeGraphService _knowledgeGraphService = knowledgeGraphService;
         private readonly IOrchestrationContext _callContext = callContext;
@@ -40,10 +40,31 @@ namespace FoundationaLLM.Context.API.Controllers
             await _knowledgeGraphService.UpdateKnowledgeGraph(
                 instanceId,
                 knowledgeGraphId,
-                updateRequest.EntitiesSourceFilePath,
-                updateRequest.RelationshipsSourceFilePath);
+                updateRequest,
+                _callContext.CurrentUserIdentity!);
 
             return Ok();
+        }
+
+        /// <summary>
+        /// Queries a knowledge graph.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeGraphId"></param>
+        /// <param name="queryRequest"></param>
+        /// <returns></returns>
+        [HttpPost("knowledgegraphs/{knowledgeGraphId}/query")]
+        public async Task<IActionResult> QueryKnowledgeGraph(
+            string instanceId,
+            string knowledgeGraphId,
+            [FromBody] ContextKnowledgeGraphQueryRequest queryRequest)
+        {
+            var response = await _knowledgeGraphService.QueryKnowledgeGraph(
+                instanceId,
+                knowledgeGraphId,
+                queryRequest,
+                _callContext.CurrentUserIdentity!);
+            return Ok(response);
         }
     }
 }

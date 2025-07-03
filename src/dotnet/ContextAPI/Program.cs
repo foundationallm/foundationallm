@@ -6,10 +6,10 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Security;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -33,6 +33,7 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints);
 
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Essentials);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Configuration);
@@ -40,6 +41,9 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
 
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Code_CodeExecution_AzureContainerAppsDynamicSessions);
+
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vector_Storage);
 }));
 
 if (builder.Environment.IsDevelopment())
@@ -62,12 +66,22 @@ builder.AddInstanceProperties();
 // HTTP services
 builder.AddHttpClientFactoryService();
 
+// Add Azure ARM services.
+builder.AddAzureResourceManager();
+
+// Add event services.
+builder.Services.AddAzureEventGridEvents(
+    builder.Configuration,
+    AppConfigurationKeySections.FoundationaLLM_Events_Profiles_ContextAPI);
+
+
 //---------------------------
 // Singleton services
 //---------------------------
 
 builder.AddAzureCosmosDBContextServices();
 builder.AddAzureContainerAppsCodeSessionProviderServices();
+builder.AddKnowledgeGraphService();
 
 //---------------------------
 // Scoped services
@@ -77,7 +91,6 @@ builder.AddOrchestrationContext();
 builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
 builder.AddFileService();
 builder.AddCodeSessionService();
-builder.AddKnowledgeGraphService();
 
 //---------------------------
 // Resource providers
@@ -87,10 +100,11 @@ builder.AddResourceValidatorFactory();
 
 //builder.AddAgentResourceProvider();
 //builder.AddAttachmentResourceProvider();
-//builder.AddConfigurationResourceProvider();
+builder.AddConfigurationResourceProvider();
 //builder.AddAzureOpenAIResourceProvider();
 //builder.AddAIModelResourceProvider();
 //builder.AddConversationResourceProvider();
+builder.AddVectorResourceProvider();
 
 // Add API Key Authorization
 builder.Services.AddHttpContextAccessor();

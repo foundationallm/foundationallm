@@ -981,6 +981,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Embedding",
+            "value": "{\"EmbeddingAPIEndpointConfigurationObjectId\": null, \"ModelDeployments\": {}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-gatewayapi-apikey\"}",
             "label": null,

@@ -23,10 +23,26 @@ The value of the `FoundationaLLM:Events:Profiles:DataPipelineAPI` configuration 
 
 The `FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds` configuration entry is replaced by the `FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalMilliseconds` configuration entry. The default value is now `100` milliseconds instead of `1` second. This change is made to improve the responsiveness of the completion response polling mechanism.
 
+The values of the `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Embedding` configuration value (listed below as a newly added value) must be configured with a content type of `application/json` and must have the following structure:
+
+```json
+{
+    "EmbeddingAPIEndpointConfigurationObjectId": "/instances/<instance_id>/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI",
+    "ModelDeployments": {
+        "text-embedding-3-large": "embeddings-3-large"
+    }
+}
+```
+where:
+-  `<instance_id>` is the identifier of the FoundationaLLM instance.
+-  It is assumed that the `AzureOpenAI` API endpoint configuration is already created. If not, `AzureOpenAI` must be replaced with the name of the API endpoint configuration that is used for embeddings.
+-  It is assumed that a model deployment named `embeddings-3-large` is already created in the Azure OpenAI service for the `text-embedding-3-large` embedding model. If not, it must be replaced with the name of the model deployment that is used for embeddings with the `text-embedding-3-large` embedding model.
+
 The following App Configuration value have been added:
 
 |Name | Default value | Description |
 |--- | --- | --- |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Embedding` | `{"EmbeddingAPIEndpointConfigurationObjectId": null, "ModelDeployments": {}}` | The embedding configuration used by the FoundationaLLM Context API Knowledge Graph service. This configuration value must have a content type of `application/json`. |
 | `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Context API Knowledge Graph service. This must be the same storage account as the one used by the FoundationaLLM Context API.|
 | `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Context API Knowledge Graph service to connect to the dedicated storage account. |
 | `FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:TokenRateLimitMultiplier` | `0.8` | The multiplier used to calculate the token rate limit for the Gateway API. This value is used to ensure that the rate limit is not exceeded and accounts for the possible differences in tokenization between the Gateway API and the deployed model(s). |
