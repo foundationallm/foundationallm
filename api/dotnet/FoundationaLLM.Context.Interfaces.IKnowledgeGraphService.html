@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Context_Interfaces_IKnowledgeGraphService" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeGraphService" class="text-break">
-Interface IKnowledgeGraphService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/IKnowledgeGraphService.cs/#L6"><i class="bi bi-code-slash"></i></a>
+Interface IKnowledgeGraphService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/IKnowledgeGraphService.cs/#L9"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -128,19 +128,19 @@ Interface IKnowledgeGraphService  <a class="header-action link-secondary" title=
 </h2>
 
 
-  <a id="FoundationaLLM_Context_Interfaces_IKnowledgeGraphService_UpdateKnowledgeGraph_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeGraphService.UpdateKnowledgeGraph*"></a>
+  <a id="FoundationaLLM_Context_Interfaces_IKnowledgeGraphService_QueryKnowledgeGraph_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeGraphService.QueryKnowledgeGraph*"></a>
 
-  <h3 id="FoundationaLLM_Context_Interfaces_IKnowledgeGraphService_UpdateKnowledgeGraph_System_String_System_String_System_String_System_String_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeGraphService.UpdateKnowledgeGraph(System.String,System.String,System.String,System.String)">
-  UpdateKnowledgeGraph(string, string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/IKnowledgeGraphService.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Context_Interfaces_IKnowledgeGraphService_QueryKnowledgeGraph_System_String_System_String_FoundationaLLM_Common_Models_Context_ContextKnowledgeGraphQueryRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeGraphService.QueryKnowledgeGraph(System.String,System.String,FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  QueryKnowledgeGraph(string, string, ContextKnowledgeGraphQueryRequest, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/IKnowledgeGraphService.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Updates the knowledge graph with the specified entities and relationships source files.</p>
+  <div class="markdown level1 summary"><p>Queries a knowledge graph.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task UpdateKnowledgeGraph(string instanceId, string knowledgeGraphId, string entitiesSourceFilePath, string relationshipsSourceFilePath)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;ContextKnowledgeGraphQueryResponse&gt; QueryKnowledgeGraph(string instanceId, string knowledgeGraphId, ContextKnowledgeGraphQueryRequest queryRequest, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -151,11 +151,58 @@ Interface IKnowledgeGraphService  <a class="header-action link-secondary" title=
     <dt><code>knowledgeGraphId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The knowledge graph identifier.</p>
 </dd>
-    <dt><code>entitiesSourceFilePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The file path of the source entities file.</p>
+    <dt><code>queryRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryRequest.html">ContextKnowledgeGraphQueryRequest</a></dt>
+    <dd><p>The request containing the details of the query.</p>
 </dd>
-    <dt><code>relationshipsSourceFilePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The file path of the source relationships file.</p>
+    <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dd><p>The identity of the security principal submitting the request.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryResponse.html">ContextKnowledgeGraphQueryResponse</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Context_Interfaces_IKnowledgeGraphService_UpdateKnowledgeGraph_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeGraphService.UpdateKnowledgeGraph*"></a>
+
+  <h3 id="FoundationaLLM_Context_Interfaces_IKnowledgeGraphService_UpdateKnowledgeGraph_System_String_System_String_FoundationaLLM_Common_Models_Context_ContextKnowledgeGraphUpdateRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeGraphService.UpdateKnowledgeGraph(System.String,System.String,FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphUpdateRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  UpdateKnowledgeGraph(string, string, ContextKnowledgeGraphUpdateRequest, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/IKnowledgeGraphService.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates a knowledge graph with the specified entities and relationships source files.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task UpdateKnowledgeGraph(string instanceId, string knowledgeGraphId, ContextKnowledgeGraphUpdateRequest updateRequest, UnifiedUserIdentity userIdentity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>knowledgeGraphId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The knowledge graph identifier.</p>
+</dd>
+    <dt><code>updateRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphUpdateRequest.html">ContextKnowledgeGraphUpdateRequest</a></dt>
+    <dd><p>The request containing the information to update the knowledge graph.</p>
+</dd>
+    <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dd><p>The identity of the security principal submitting the request.</p>
 </dd>
   </dl>
 
@@ -179,7 +226,7 @@ Interface IKnowledgeGraphService  <a class="header-action link-secondary" title=
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/IKnowledgeGraphService.cs/#L6" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Context/Interfaces/IKnowledgeGraphService.cs/#L9" class="edit-link">Edit this page</a>
         </div>
 
 

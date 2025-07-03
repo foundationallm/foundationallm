@@ -91,6 +91,20 @@
 }
 </code></pre>
 <p>The <code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds</code> configuration entry is replaced by the <code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalMilliseconds</code> configuration entry. The default value is now <code>100</code> milliseconds instead of <code>1</code> second. This change is made to improve the responsiveness of the completion response polling mechanism.</p>
+<p>The values of the <code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Embedding</code> configuration value (listed below as a newly added value) must be configured with a content type of <code>application/json</code> and must have the following structure:</p>
+<pre><code class="lang-json">{
+    &quot;EmbeddingAPIEndpointConfigurationObjectId&quot;: &quot;/instances/&lt;instance_id&gt;/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI&quot;,
+    &quot;ModelDeployments&quot;: {
+        &quot;text-embedding-3-large&quot;: &quot;embeddings-3-large&quot;
+    }
+}
+</code></pre>
+<p>where:</p>
+<ul>
+<li><code>&lt;instance_id&gt;</code> is the identifier of the FoundationaLLM instance.</li>
+<li>It is assumed that the <code>AzureOpenAI</code> API endpoint configuration is already created. If not, <code>AzureOpenAI</code> must be replaced with the name of the API endpoint configuration that is used for embeddings.</li>
+<li>It is assumed that a model deployment named <code>embeddings-3-large</code> is already created in the Azure OpenAI service for the <code>text-embedding-3-large</code> embedding model. If not, it must be replaced with the name of the model deployment that is used for embeddings with the <code>text-embedding-3-large</code> embedding model.</li>
+</ul>
 <p>The following App Configuration value have been added:</p>
 <table>
 <thead>
@@ -101,6 +115,11 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Embedding</code></td>
+<td><code>{&quot;EmbeddingAPIEndpointConfigurationObjectId&quot;: null, &quot;ModelDeployments&quot;: {}}</code></td>
+<td>The embedding configuration used by the FoundationaLLM Context API Knowledge Graph service. This configuration value must have a content type of <code>application/json</code>.</td>
+</tr>
 <tr>
 <td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AccountName</code></td>
 <td><code>&lt;storage_account_name&gt;</code></td>
