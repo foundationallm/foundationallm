@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
+using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using OpenAI.Embeddings;
 
 namespace FoundationaLLM.Context.Models
@@ -35,5 +36,15 @@ namespace FoundationaLLM.Context.Models
         /// Gets or sets the object with the knowledge graph configuration.
         /// </summary>
         public KnowledgeGraph KnowledgeGraph { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or sets the vector database associated with the knowledge graph.
+        /// </summary>
+        public VectorDatabase VectorDatabase { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or sets the knowledge graph index used for organizing and retrieving information.
+        /// </summary>
+        public KnowledgeGraphIndex Index { get; set; } = null!;
     }
 }

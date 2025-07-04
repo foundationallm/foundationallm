@@ -85,6 +85,18 @@ namespace FoundationaLLM.Common.Models.Knowledge
         public float[]? SummaryDescriptionEmbedding { get; set; }
 
         /// <summary>
+        /// Gets the unique identifier for the source, combining the source type and source value.
+        /// </summary>
+        [JsonIgnore]
+        public string SourceUniqueId => $"{SourceType}:{Source}";
+
+        /// <summary>
+        /// Gets the unique identifier for the target, combining the target type and target value.
+        /// </summary>
+        [JsonIgnore]
+        public string TargetUniqueId => $"{TargetType}:{Target}";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="KnowledgeRelationship"/> class.
         /// </summary>
         public KnowledgeRelationship()

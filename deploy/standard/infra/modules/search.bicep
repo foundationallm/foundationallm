@@ -83,7 +83,7 @@ resource main 'Microsoft.Search/searchServices@2023-11-01' = {
     partitionCount: 1
     publicNetworkAccess: 'disabled'
     replicaCount: 1
-    semanticSearch: 'disabled'
+    semanticSearch: 'standard'
 
     encryptionWithCmk: {
       enforcement: 'Disabled'

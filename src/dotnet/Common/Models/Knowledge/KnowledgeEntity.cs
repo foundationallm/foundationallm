@@ -57,6 +57,12 @@ namespace FoundationaLLM.Common.Models.Knowledge
         public float[]? SummaryDescriptionEmbedding { get; set; }
 
         /// <summary>
+        /// Gets the unique identifier for the object, composed of its type and name.
+        /// </summary>
+        [JsonIgnore]
+        public string UniqueId => $"{Type}:{Name}";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="KnowledgeEntity"/> class.
         /// </summary>
         public KnowledgeEntity()
