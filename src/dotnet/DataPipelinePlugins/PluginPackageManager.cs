@@ -261,9 +261,9 @@ namespace FoundationaLLM.Plugins.DataPipeline
                             Description = "The number of dimensions used for embedding entity summarizations (the recommended number is 2048)."
                         },
                         new() {
-                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEGRAPHID,
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGESOURCEID,
                             Type = PluginParameterTypes.String,
-                            Description = "The FoundationaLLM resource identifier of the Knowledge Graph resource that identifies the knowledge graph to be built."
+                            Description = "The identifier of the Knowledge source resource that identifies the knowledge graph to be built."
                         },
                         new() {
                             Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
