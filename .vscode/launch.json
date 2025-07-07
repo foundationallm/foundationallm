@@ -32,7 +32,10 @@
             "console": "integratedTerminal",
             "python": "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins/.venv/Scripts/python.exe",
             "cwd" : "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins",
-            "justMyCode": false
+            "justMyCode": false,
+            "env": {
+                "FOUNDATIONALLM_APP_CONFIGURATION_URI": "https://appcs-l43jljq2i5ox6.azconfig.io"
+            }
         },
         {
             "name": "User Portal UI - Frontend",

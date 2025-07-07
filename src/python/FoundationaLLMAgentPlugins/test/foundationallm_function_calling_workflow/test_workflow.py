@@ -24,6 +24,7 @@ from foundationallm.models.constants import (
 #user_prompt = "Generate a graph of y=mx+b where m=2 and b=3 and create a PDF with the graph along with text explaining the graph"
 #user_prompt = "Generate a PDF document with the title 'Test' and the content 'This is a test'"
 #user_prompt = "Generate an interactive graph of y=mx+b where m=2 and b=3"
+user_prompt = "Write code to calculate the square root of 16 plus 38 and then answer what does that number usually refer to in pop culture?"
 # user_prompt = "Generate a graph of y=mx+b where m=2 and b=3"
 #user_prompt = "Generate a PDF with the text 'Hello World'"
 #user_prompt = "What is the average of 42 plus 84 plus 168. Do your calculations in Python and show your work. Also Create a bar chart of the aforementioned numbers showing the average line on that bar chart."
@@ -38,12 +39,12 @@ from foundationallm.models.constants import (
 # user_prompt = "Create a chart based on the uploaded file"
 # user_prompt = "Who are you?"
 # user_prompt = "What files are in the uploaded zip?"
-user_prompt = "List the files in the uploaded zip file. Use a code tool to provide the answer."
+#user_prompt = "List the files in the uploaded zip file. Use a code tool to provide the answer."
 
 operation_id = str(uuid.uuid4())
-conversation_id = "20250606-112112-n0zSVZ34MEGwZfedjZ0c3Q"
+conversation_id = "20250704-122632-LMojwbsA0kGOb7xDRsshMA"
 
-user_identity_json = {"name": "Experimental Test", "user_name":"ciprian@foundationaLLM.ai","upn":"ciprian@foundationaLLM.ai"}
+user_identity_json = {"name": "Experimental Test", "user_name":"zoinertejada@foundationaLLM.ai","upn":"zoinertejada@foundationaLLM.ai"}
 full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
 
 user_identity = UserIdentity.from_json(user_identity_json)
