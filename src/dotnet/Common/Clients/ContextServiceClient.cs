@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.CodeExecution;
 using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.Context.Knowledge;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -255,10 +256,10 @@ namespace FoundationaLLM.Common.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<ContextServiceResponse> UpdateKnowledgeGraph(
+        public async Task<ContextServiceResponse> UpdateKnowledgeSource(
             string instanceId,
-            string knowledgeGraphId,
-            ContextKnowledgeGraphUpdateRequest updateRequest)
+            string knowledgeSourceId,
+            ContextKnowledgeSourceUpdateRequest updateRequest)
         {
             try
             {
@@ -267,14 +268,14 @@ namespace FoundationaLLM.Common.Clients
                     _callContext.CurrentUserIdentity!);
 
                 var responseMessage = await client.PostAsJsonAsync(
-                    $"instances/{instanceId}/knowledgegraphs/{knowledgeGraphId}",
+                    $"instances/{instanceId}/knowledgsources/{knowledgeSourceId}",
                     updateRequest);
 
                 if (responseMessage.IsSuccessStatusCode)
                     return new ContextServiceResponse { Success = true };
 
                 _logger.LogError(
-                    "An error occurred while updating the knowledge graph. Status code: {StatusCode}.",
+                    "An error occurred while updating the knowledge source. Status code: {StatusCode}.",
                     responseMessage.StatusCode);
 
                 return new ContextServiceResponse
@@ -285,12 +286,12 @@ namespace FoundationaLLM.Common.Clients
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while updating the knowledge graph.");
+                _logger.LogError(ex, "An error occurred while updating the knowledge source.");
 
                 return new ContextServiceResponse
                 {
                     Success = false,
-                    ErrorMessage = "An error occurred while updating the knowledge graph."
+                    ErrorMessage = "An error occurred while updating the knowledge source."
                 };
             }
         }

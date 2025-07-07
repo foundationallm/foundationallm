@@ -24,14 +24,14 @@ namespace FoundationaLLM
     public static partial class DependencyInjection
     {
         /// <summary>
-        /// Registers the <see cref="IKnowledgeGraphService>"/> to the dependency injection container.
+        /// Registers the <see cref="IKnowledgeService>"/> to the dependency injection container.
         /// </summary>
         /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder.</param>
         public static void AddKnowledgeGraphService(this IHostApplicationBuilder builder) =>
             builder.Services.AddKnowledgeGraphService(builder.Configuration);
 
         /// <summary>
-        /// Registers the <see cref="IKnowledgeGraphService>"/> to the dependency injection container.
+        /// Registers the <see cref="IKnowledgeService>"/> to the dependency injection container.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
         /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
@@ -40,8 +40,8 @@ namespace FoundationaLLM
             services.AddOptions<ContextServiceSettings>()
                 .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_ContextAPI_Configuration));
 
-            services.AddSingleton<IKnowledgeGraphService, KnowledgeGraphService>(sp =>
-                new KnowledgeGraphService(
+            services.AddSingleton<IKnowledgeService, KnowledgeService>(sp =>
+                new KnowledgeService(
                     authorizationServiceClient: sp.GetRequiredService<IAuthorizationServiceClient>(),
                     configurationResourceProvider: sp.GetRequiredService<IEnumerable<IResourceProviderService>>()
                         .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Configuration)!,
@@ -50,11 +50,11 @@ namespace FoundationaLLM
                     httpClientFactory: sp.GetRequiredService<IHttpClientFactoryService>(),
                     storageService: new BlobStorageService(
                         Options.Create<BlobStorageServiceSettings>(
-                            sp.GetRequiredService<IOptions<ContextServiceSettings>>().Value.KnowledgeGraphService.Storage),
+                            sp.GetRequiredService<IOptions<ContextServiceSettings>>().Value.KnowledgeService.Storage),
                         sp.GetRequiredService<ILogger<BlobStorageService>>()),
-                    settings: sp.GetRequiredService<IOptions<ContextServiceSettings>>().Value.KnowledgeGraphService,
+                    settings: sp.GetRequiredService<IOptions<ContextServiceSettings>>().Value.KnowledgeService,
                     loggerFactory: sp.GetRequiredService<ILoggerFactory>()));
-            services.ActivateSingleton<IKnowledgeGraphService>();
+            services.ActivateSingleton<IKnowledgeService>();
         }
 
         /// <summary>

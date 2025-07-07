@@ -42,9 +42,9 @@ The following App Configuration value have been added:
 
 |Name | Default value | Description |
 |--- | --- | --- |
-| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Embedding` | `{"EmbeddingAPIEndpointConfigurationObjectId": null, "ModelDeployments": {}}` | The embedding configuration used by the FoundationaLLM Context API Knowledge Graph service. This configuration value must have a content type of `application/json`. |
-| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Context API Knowledge Graph service. This must be the same storage account as the one used by the FoundationaLLM Context API.|
-| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Context API Knowledge Graph service to connect to the dedicated storage account. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Embedding` | `{"EmbeddingAPIEndpointConfigurationObjectId": null, "ModelDeployments": {}}` | The embedding configuration used by the FoundationaLLM Context API Knowledge service. This configuration value must have a content type of `application/json`. |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Storage:AccountName` | `<storage_account_name>` | The name of the dedicated storage account used by the FoundationaLLM Context API Knowledge service. This must be the same storage account as the one used by the FoundationaLLM Context API.|
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Context API Knowledge service to connect to the dedicated storage account. |
 | `FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:TokenRateLimitMultiplier` | `0.8` | The multiplier used to calculate the token rate limit for the Gateway API. This value is used to ensure that the rate limit is not exceeded and accounts for the possible differences in tokenization between the Gateway API and the deployed model(s). |
 | `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions` | `c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt, gif, jpeg, jpg, png` | The comma-separated list file extensions that are processed as sources for knowledge search. |
 | `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileExtensions` | `c, cs, cpp, css, html, java, js, json, jsonl, md, php, py, rb, sh, ts, tex, txt, gif, jpeg, jpg, png` |The comma-separated list of file extensions that indicate files that can be directly used in the context of a completion request. |
@@ -155,6 +155,7 @@ The following role assignments must be added to the Context API's Managed Identi
 |`Storage Blob Data Contributor` | Azure | Main FoundationaLLM storage account.|
 |`Azure ContainerApps Session Executor` | Azure | Azure Container Apps Dynamic Sessions used by the FoundationaLLM Context API.|
 |`Azure ContainerApps Session Executor` | Azure | Azure Container Apps Custom Container used by the FoundationaLLM Context API.|
+|`Search Index Data Reader` | Azure | Azure AI Search service used by the FoundationaLLM instance.|
 
 The following role assignments must be added to the Orchestrations API's Managed Identity:
 

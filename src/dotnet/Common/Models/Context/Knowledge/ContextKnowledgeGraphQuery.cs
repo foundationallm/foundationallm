@@ -1,11 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models.Context
+namespace FoundationaLLM.Common.Models.Context.Knowledge
 {
     /// <summary>
     /// Represents a request to query a knowledge graph.
     /// </summary>
-    public class ContextKnowledgeGraphQueryRequest : ContextTextChunkQueryRequest
+    public class ContextKnowledgeGraphQuery
     {
         /// <summary>
         /// Gets or sets the maximum number of mapped entities included in the query result.
