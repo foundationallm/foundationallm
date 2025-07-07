@@ -1,11 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models.Context
+namespace FoundationaLLM.Common.Models.Context.Knowledge
 {
     /// <summary>
     /// Represents a request to query a collection of text chunks.
     /// </summary>
-    public class ContextTextChunkQueryRequest
+    public class ContextKnowledgeSourceQueryRequest
     {
         /// <summary>
         /// Gets or sets the user prompt used to query the knowledge graph.
@@ -30,5 +30,11 @@ namespace FoundationaLLM.Common.Models.Context
         /// </summary>
         [JsonPropertyName("use_semantic_ranking")]
         public bool UseSemanticRanking { get; set; }
+
+        /// <summary>
+        /// Gets or sets the knowledge graph query parameters.
+        /// </summary>
+        [JsonPropertyName("knowledge_graph_query")]
+        public ContextKnowledgeGraphQuery? KnowledgeGraphQuery { get; set; }
     }
 }

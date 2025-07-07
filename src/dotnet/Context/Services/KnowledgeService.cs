@@ -9,6 +9,7 @@ using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
@@ -20,11 +21,9 @@ using FoundationaLLM.Context.Models.Configuration;
 using MathNet.Numerics;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Microsoft.Graph.Models;
 using OpenAI.Embeddings;
 using Parquet.Serialization;
 using System.ClientModel.Primitives;
-using System.IO;
 using System.Text.Json;
 
 namespace FoundationaLLM.Context.Services
@@ -39,23 +38,23 @@ namespace FoundationaLLM.Context.Services
     /// <param name="httpClientFactory"> The factory for creating HTTP clients.</param>
     /// <param name="settings">The settings for the Knowledge Graph service.</param>
     /// <param name="loggerFactory">The logger factory used to create loggers.</param>
-    public class KnowledgeGraphService(
+    public class KnowledgeService(
         IStorageService storageService,
         IAuthorizationServiceClient authorizationServiceClient,
         IResourceProviderService configurationResourceProvider,
         IResourceProviderService vectorResourceProvider,
         IHttpClientFactoryService httpClientFactory,
-        KnowledgeGraphServiceSettings settings,
-        ILoggerFactory loggerFactory) : IKnowledgeGraphService
+        KnowledgeServiceSettings settings,
+        ILoggerFactory loggerFactory) : IKnowledgeService
     {
         private readonly IStorageService _storageService = storageService;
         private readonly IAuthorizationServiceClient _authorizationServiceClient = authorizationServiceClient;
         private readonly IResourceProviderService _configurationResourceProvider = configurationResourceProvider;
         private readonly IResourceProviderService _vectorResourceProvider = vectorResourceProvider;
         private readonly IHttpClientFactoryService _httpClientFactory = httpClientFactory;
-        private readonly KnowledgeGraphServiceSettings _settings = settings;
+        private readonly KnowledgeServiceSettings _settings = settings;
         private readonly ILoggerFactory _loggerFactory = loggerFactory;
-        private readonly ILogger<KnowledgeGraphService> _logger = loggerFactory.CreateLogger<KnowledgeGraphService>();
+        private readonly ILogger<KnowledgeService> _logger = loggerFactory.CreateLogger<KnowledgeService>();
 
         private AzureOpenAIClient _azureOpenAIClient = null!;
         private readonly Dictionary<string, IAzureAISearchService> _azureAISearchServices = [];
@@ -66,279 +65,318 @@ namespace FoundationaLLM.Context.Services
             ExpirationScanFrequency = TimeSpan.FromSeconds(60) // How often to scan for expired items.
         });
 
-        private const string KNOWLEDGE_GRAPH_ROOT_PATH = "knowledge-graph";
+        private const string KNOWLEDGE_SOURCE_ROOT_PATH = "knowledge-source";
         private const string KNOWLEDGE_GRAPH_ENTITIES_FILE_NAME = "entities.parquet";
         private const string KNOWLEDGE_GRAPH_RELATIONSHIPS_FILE_NAME = "relationships.parquet";
         private const string KEY_FIELD_NAME = "Id";
 
         /// <inheritdoc />
-        public async Task UpdateKnowledgeGraph(
+        public async Task UpdateKnowledgeSource(
             string instanceId,
-            string knowledgeGraphId,
-            ContextKnowledgeGraphUpdateRequest updateRequest,
+            string knowledgeSourceId,
+            ContextKnowledgeSourceUpdateRequest updateRequest,
             UnifiedUserIdentity userIdentity)
         {
-            await _storageService.CopyFileAsync(
-                instanceId,
-                updateRequest.EntitiesSourceFilePath,
-                string.Join('/',
-                    [
-                        KNOWLEDGE_GRAPH_ROOT_PATH,
-                        knowledgeGraphId,
+            if (!string.IsNullOrWhiteSpace(updateRequest.EntitiesSourceFilePath))
+            {
+                // The knowledge source also contains a graph of entities and relationships.
+
+                await _storageService.CopyFileAsync(
+                    instanceId,
+                    updateRequest.EntitiesSourceFilePath,
+                    string.Join('/',
+                        [
+                            KNOWLEDGE_SOURCE_ROOT_PATH,
+                        knowledgeSourceId,
                         KNOWLEDGE_GRAPH_ENTITIES_FILE_NAME
-                    ]));
+                        ]));
 
-            await _storageService.CopyFileAsync(
-                instanceId,
-                updateRequest.RelationshipsSourceFilePath,
-                string.Join('/',
-                    [
-                        KNOWLEDGE_GRAPH_ROOT_PATH,
-                        knowledgeGraphId,
+                await _storageService.CopyFileAsync(
+                    instanceId,
+                    updateRequest.RelationshipsSourceFilePath!,
+                    string.Join('/',
+                        [
+                            KNOWLEDGE_SOURCE_ROOT_PATH,
+                        knowledgeSourceId,
                         KNOWLEDGE_GRAPH_RELATIONSHIPS_FILE_NAME
-                    ]));
+                        ]));
+            }
 
-            await UpdateKnowledgeGraphProperties(
+            await UpdateKnowledgeSourceProperties(
                 instanceId,
-                knowledgeGraphId,
+                knowledgeSourceId,
                 updateRequest,
                 userIdentity);
 
             // If the knowledge graph is cached, remove it from the cache.
-            var cacheKey = GetCacheKey(instanceId, knowledgeGraphId);
+            var cacheKey = GetCacheKey(instanceId, knowledgeSourceId);
             if (_cache.TryGetValue(cacheKey, out _))
                 _cache.Remove(cacheKey);
         }
 
         /// <inheritdoc/>
-        public async Task<ContextKnowledgeGraphQueryResponse> QueryKnowledgeGraph(
+        public async Task<ContextKnowledgeSourceQueryResponse> QueryKnowledgeSource(
             string instanceId,
-            string knowledgeGraphId,
-            ContextKnowledgeGraphQueryRequest queryRequest,
+            string knowledgeSourceId,
+            ContextKnowledgeSourceQueryRequest queryRequest,
             UnifiedUserIdentity userIdentity)
         {
             try
             {
-                var graph = await GetKnowledgeGraphFromCache(
-                    instanceId,
-                    knowledgeGraphId);
+                var knowledgeSourcePropertiesFilePath = string.Join('/',
+                [
+                    KNOWLEDGE_SOURCE_ROOT_PATH,
+                    $"{knowledgeSourceId}.json"
+                ]);
 
-                var userPromptEmbedding = await graph.EmbeddingClient.GenerateEmbeddingAsync(
+                var knowledgeSourceBinaryContent = await _storageService.ReadFileAsync(
+                    instanceId,
+                    knowledgeSourcePropertiesFilePath,
+                    default);
+                var knowledgeSource =
+                    JsonSerializer.Deserialize<KnowledgeSource>(knowledgeSourceBinaryContent)
+                    ?? throw new ResourceProviderException(
+                        $"The knowledge source properties for {knowledgeSourceId} could not be deserialized.");
+
+                if (!knowledgeSource.HasKnowledgeGraph
+                    && queryRequest.KnowledgeGraphQuery is not null)
+                    return new ContextKnowledgeSourceQueryResponse
+                    {
+                        Success = false,
+                        ErrorMessage = $"The knowledge source '{knowledgeSourceId}' for instance '{instanceId}' does not contain a knowledge graph."
+                    };
+
+                var vectorDatabase = await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
+                    knowledgeSource!.VectorDatabaseObjectId,
+                    ServiceContext.ServiceIdentity!);
+
+                var cachedKnowledgeSource = await GetKnowledgeSourceFromCache(
+                    instanceId,
+                    knowledgeSource,
+                    vectorDatabase);
+
+                var userPromptEmbedding = await cachedKnowledgeSource.EmbeddingClient.GenerateEmbeddingAsync(
                     queryRequest.UserPrompt,
                     new EmbeddingGenerationOptions
                     {
-                        Dimensions = graph.KnowledgeGraph.EmbeddingDimensions
+                        Dimensions = knowledgeSource.EmbeddingDimensions
                     });
 
-                var matchingEntities = GetMatchingKnowledgeGraphEntities(
-                    graph,
-                    userPromptEmbedding.Value.ToFloats(),
-                    queryRequest.MappedEntitiesSimilarityThreshold,
-                    queryRequest.MappedEntitiesMaxCount,
-                    queryRequest.RelationshipsMaxDepth,
-                    queryRequest.AllEntitiesMaxCount);
+                var queryResponse = new ContextKnowledgeSourceQueryResponse
+                {
+                    Success = true
+                };
+                var matchingDocumentsFilter = string.Empty;
 
-                var matchingDocumentsFilter = string.Join(" and ",
+                if (queryRequest.KnowledgeGraphQuery is not null)
+                {
+                    var matchingEntities = GetMatchingKnowledgeGraphEntities(
+                        cachedKnowledgeSource.KnowledgeGraph!,
+                        userPromptEmbedding.Value.ToFloats(),
+                        queryRequest.KnowledgeGraphQuery.MappedEntitiesSimilarityThreshold,
+                        queryRequest.KnowledgeGraphQuery.MappedEntitiesMaxCount,
+                        queryRequest.KnowledgeGraphQuery.RelationshipsMaxDepth,
+                        queryRequest.KnowledgeGraphQuery.AllEntitiesMaxCount);
+
+                    queryResponse.KnowledgeGraphResponse = new ContextKnowledgeGraphResponse
+                    {
+                        Entities = [.. matchingEntities.Entities
+                            .Select(e => new KnowledgeEntity
+                            {
+                                Type = e.Type,
+                                Name = e.Name,
+                                SummaryDescription = e.SummaryDescription
+                            })
+                        ],
+                        RelatedEntities = [.. matchingEntities.RelatedEntities
+                            .Select(re => new KnowledgeEntity
+                            {
+                                Type = re.Type,
+                                Name = re.Name,
+                                SummaryDescription = re.SummaryDescription
+                            })
+                        ],
+                        Relationships = [.. matchingEntities.Relationships
+                            .Select(r => new KnowledgeRelationship
+                            {
+                                SourceType = r.SourceType,
+                                Source = r.Source,
+                                TargetType = r.TargetType,
+                                Target = r.Target,
+                                SummaryDescription = r.SummaryDescription
+                            })
+                        ]
+                    };
+
+                    matchingDocumentsFilter = string.Join(" and ",
                     [
-                        $"{graph.VectorDatabase.VectorStoreIdPropertyName} eq '{graph.KnowledgeGraph.VectorStoreId}'",
+                        $"{vectorDatabase.VectorStoreIdPropertyName} eq '{knowledgeSource.VectorStoreId}'",
                         $"search.in({KEY_FIELD_NAME}, '{string.Join(',', matchingEntities.Entities.SelectMany(e => e.ChunkIds))}')"
                     ]);
+                }
+                else
+                {
+                    matchingDocumentsFilter = $"{vectorDatabase.VectorStoreIdPropertyName} eq '{knowledgeSource.VectorStoreId}'";
+                }    
 
-                var matchingDocuments = await graph.SearchService.SearchDocuments(
-                    graph.VectorDatabase.DatabaseName,
+                var matchingDocuments = await cachedKnowledgeSource.SearchService.SearchDocuments(
+                    vectorDatabase.DatabaseName,
                     [
                         KEY_FIELD_NAME,
-                        graph.VectorDatabase.ContentPropertyName,
-                        graph.VectorDatabase.MetadataPropertyName
+                        vectorDatabase.ContentPropertyName,
+                        vectorDatabase.MetadataPropertyName
                     ],
                     matchingDocumentsFilter,
                     queryRequest.UserPrompt!,
                     userPromptEmbedding.Value.ToFloats(),
-                    graph.VectorDatabase.EmbeddingPropertyName,
+                    vectorDatabase.EmbeddingPropertyName,
                     queryRequest.TextChunksSimilarityThreshold,
                     queryRequest.TextChunksMaxCount,
                     queryRequest.UseSemanticRanking);
 
-                return new ContextKnowledgeGraphQueryResponse
-                {
-                    Success = true,
-                    Entities = [.. matchingEntities.Entities
-                        .Select(e => new KnowledgeEntity
-                        {
-                            Type = e.Type,
-                            Name = e.Name,
-                            SummaryDescription = e.SummaryDescription
-                        })
-                    ],
-                    RelatedEntities = [.. matchingEntities.RelatedEntities
-                        .Select(re => new KnowledgeEntity
-                        {
-                            Type = re.Type,
-                            Name = re.Name,
-                            SummaryDescription = re.SummaryDescription
-                        })
-                    ],
-                    Relationships = [.. matchingEntities.Relationships
-                        .Select(r => new KnowledgeRelationship
-                        {
-                            SourceType = r.SourceType,
-                            Source = r.Source,
-                            TargetType = r.TargetType,
-                            Target = r.Target,
-                            SummaryDescription = r.SummaryDescription
-                        })
-                    ],
-                    TextChunks = [.. matchingDocuments
+                queryResponse.TextChunks = [.. matchingDocuments
                         .Select(md => new ContextTextChunk
                         {
-                            Content = md.GetString(graph.VectorDatabase.ContentPropertyName),
-                            Metadata = md.GetObject(graph.VectorDatabase.MetadataPropertyName).ToDictionary()
+                            Content = md.GetString(vectorDatabase.ContentPropertyName),
+                            Metadata = md.GetObject(vectorDatabase.MetadataPropertyName).ToDictionary()
                         })
-                    ]
-                };
+                    ];
+
+                return queryResponse;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while querying the knowledge graph {KnowledgeGraphId} for instance {InstanceId}.",
-                    knowledgeGraphId, instanceId);
-                return new ContextKnowledgeGraphQueryResponse
+                    knowledgeSourceId, instanceId);
+                return new ContextKnowledgeSourceQueryResponse
                 {
                     Success = false,
-                    ErrorMessage = $"An error occurred while querying the knowledge graph '{knowledgeGraphId}' for instance '{instanceId}'."
+                    ErrorMessage = $"An error occurred while querying the knowledge graph '{knowledgeSourceId}' for instance '{instanceId}'."
                 };
             }
         }
 
-        private async Task UpdateKnowledgeGraphProperties(
+        private async Task UpdateKnowledgeSourceProperties(
             string instanceId,
-            string knowledgeGraphId,
-            ContextKnowledgeGraphUpdateRequest updateRequest,
+            string knowledgeSourceId,
+            ContextKnowledgeSourceUpdateRequest updateRequest,
             UnifiedUserIdentity userIdentity)
         {
-            var knowledgeGraph = default(KnowledgeGraph);
-            var knowledgeGraphFilePath = string.Join('/',
+            var knowledgeSource = default(KnowledgeSource);
+            var knowledgeSourceFilePath = string.Join('/',
                 [
-                    KNOWLEDGE_GRAPH_ROOT_PATH,
-                    $"{knowledgeGraphId}.json"
+                    KNOWLEDGE_SOURCE_ROOT_PATH,
+                    $"{knowledgeSourceId}.json"
                 ]);
 
             if (!await _storageService.FileExistsAsync(
                 instanceId,
-                knowledgeGraphFilePath,
+                knowledgeSourceFilePath,
                 default))
             {
-                // If the knowledge graph properties file does not exist, create it with default values.
-                knowledgeGraph = new KnowledgeGraph
+                // If the knowledge source properties file does not exist, create it with default values.
+                knowledgeSource = new KnowledgeSource
                 {
-                    Type = "knowledge-graph",
-                    Name = knowledgeGraphId,
-                    ObjectId = $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_ContextAPI}/knowledgeGraphs/{knowledgeGraphId}",
+                    Type = "knowledge-source",
+                    Name = knowledgeSourceId,
+                    ObjectId = $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_ContextAPI}/knowledgeSources/{knowledgeSourceId}",
                     EmbeddingModel = updateRequest.EmbeddingModel,
                     EmbeddingDimensions = updateRequest.EmbeddingDimensions,
                     VectorDatabaseObjectId = updateRequest.VectorDatabaseObjectId,
                     VectorStoreId = updateRequest.VectorStoreId,
+                    HasKnowledgeGraph = !string.IsNullOrWhiteSpace(updateRequest.EntitiesSourceFilePath),
                     CreatedBy = userIdentity.UPN,
                     CreatedOn = DateTimeOffset.UtcNow
                 };
             }
             else
             {
-                var knowledgeGraphContent = await _storageService.ReadFileAsync(
+                var knowledgeSourceContent = await _storageService.ReadFileAsync(
                     instanceId,
-                    knowledgeGraphFilePath,
+                    knowledgeSourceFilePath,
                     default);
-                knowledgeGraph = JsonSerializer.Deserialize<KnowledgeGraph>(knowledgeGraphContent);
+                knowledgeSource = JsonSerializer.Deserialize<KnowledgeSource>(knowledgeSourceContent);
 
-                knowledgeGraph!.EmbeddingModel = updateRequest.EmbeddingModel;
-                knowledgeGraph.EmbeddingDimensions = updateRequest.EmbeddingDimensions;
-                knowledgeGraph.VectorDatabaseObjectId = updateRequest.VectorDatabaseObjectId;
-                knowledgeGraph.VectorStoreId = updateRequest.VectorStoreId;
-                knowledgeGraph.UpdatedBy = userIdentity.UPN;
-                knowledgeGraph.UpdatedOn = DateTimeOffset.UtcNow;
+                knowledgeSource!.EmbeddingModel = updateRequest.EmbeddingModel;
+                knowledgeSource.EmbeddingDimensions = updateRequest.EmbeddingDimensions;
+                knowledgeSource.VectorDatabaseObjectId = updateRequest.VectorDatabaseObjectId;
+                knowledgeSource.VectorStoreId = updateRequest.VectorStoreId;
+                knowledgeSource.HasKnowledgeGraph = !string.IsNullOrWhiteSpace(updateRequest.EntitiesSourceFilePath);
+                knowledgeSource.UpdatedBy = userIdentity.UPN;
+                knowledgeSource.UpdatedOn = DateTimeOffset.UtcNow;
             }
 
             await _storageService.WriteFileAsync(
                     instanceId,
-                    knowledgeGraphFilePath,
-                    JsonSerializer.Serialize(knowledgeGraph),
+                    knowledgeSourceFilePath,
+                    JsonSerializer.Serialize(knowledgeSource),
                     "application/json",
                     default);
         }
 
-        private async Task<CachedKnowledgeGraph> GetKnowledgeGraphFromCache(
+        private async Task<CachedKnowledgeSource> GetKnowledgeSourceFromCache(
             string instanceId,
-            string knowledgeGraphId)
+            KnowledgeSource knowledgeSource,
+            VectorDatabase vectorDatabase)
         {
-            var cacheKey = GetCacheKey(instanceId, knowledgeGraphId);
+            var cacheKey = GetCacheKey(instanceId, knowledgeSource.Name);
 
-            if (!_cache.TryGetValue(cacheKey, out CachedKnowledgeGraph? knowledgeGraph))
+            if (!_cache.TryGetValue(cacheKey, out CachedKnowledgeSource? cachedKnowledgeSource))
             {
-                var knowledgeGraphPropertiesFilePath = string.Join('/',
-                [
-                    KNOWLEDGE_GRAPH_ROOT_PATH,
-                    $"{knowledgeGraphId}.json"
-                ]);
-
-                var knowledgeGraphBinaryContent = await _storageService.ReadFileAsync(
-                    instanceId,
-                    knowledgeGraphPropertiesFilePath,
-                    default);
-                var knowledgeGraphProperties =
-                    JsonSerializer.Deserialize<KnowledgeGraph>(knowledgeGraphBinaryContent);
-
-                var entitiesBinaryContent = await _storageService.ReadFileAsync(
-                    instanceId,
-                    string.Join('/',
-                        [
-                            KNOWLEDGE_GRAPH_ROOT_PATH,
-                            knowledgeGraphId,
-                            KNOWLEDGE_GRAPH_ENTITIES_FILE_NAME
-                        ]),
-                    default);
-
-                var entities = await ParquetSerializer.DeserializeAsync<KnowledgeEntity>(
-                    entitiesBinaryContent.ToStream());
-
-                var relationshipsBinaryContent = await _storageService.ReadFileAsync(
-                    instanceId,
-                    string.Join('/',
-                        [
-                            KNOWLEDGE_GRAPH_ROOT_PATH,
-                        knowledgeGraphId,
-                        KNOWLEDGE_GRAPH_RELATIONSHIPS_FILE_NAME
-                        ]),
-                    default);
-
-                var relationships = await ParquetSerializer.DeserializeAsync<KnowledgeRelationship>(
-                    relationshipsBinaryContent.ToStream());
-
-                var vectorDatabase = await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
-                    knowledgeGraphProperties!.VectorDatabaseObjectId,
-                    ServiceContext.ServiceIdentity!);
-
-                knowledgeGraph = new CachedKnowledgeGraph
+                cachedKnowledgeSource = new CachedKnowledgeSource
                 {
-                    Entities = [.. entities],
-                    Relationships = [.. relationships],
-                    KnowledgeGraph = knowledgeGraphProperties!,
-                    VectorDatabase = vectorDatabase,
                     SearchService = await GetAzureAISearchService(
                         vectorDatabase),
                     EmbeddingClient = await GetEmbeddingClient(
-                        _settings.Embedding.ModelDeployments[knowledgeGraphProperties.EmbeddingModel]),
-                    Index = KnowledgeGraphIndex.Create(
-                        entities,
-                        relationships)
+                        _settings.Embedding.ModelDeployments[knowledgeSource.EmbeddingModel]),
                 };
 
-                // Store the knowledge graph in the cache.
+                if (knowledgeSource.HasKnowledgeGraph)
+                {
+                    var entitiesBinaryContent = await _storageService.ReadFileAsync(
+                        instanceId,
+                        string.Join('/',
+                            [
+                                KNOWLEDGE_SOURCE_ROOT_PATH,
+                            knowledgeSource.Name,
+                            KNOWLEDGE_GRAPH_ENTITIES_FILE_NAME
+                            ]),
+                        default);
+
+                    var entities = await ParquetSerializer.DeserializeAsync<KnowledgeEntity>(
+                        entitiesBinaryContent.ToStream());
+
+                    var relationshipsBinaryContent = await _storageService.ReadFileAsync(
+                        instanceId,
+                        string.Join('/',
+                            [
+                                KNOWLEDGE_SOURCE_ROOT_PATH,
+                            knowledgeSource.Name,
+                            KNOWLEDGE_GRAPH_RELATIONSHIPS_FILE_NAME
+                            ]),
+                        default);
+
+                    var relationships = await ParquetSerializer.DeserializeAsync<KnowledgeRelationship>(
+                        relationshipsBinaryContent.ToStream());
+
+                    cachedKnowledgeSource.KnowledgeGraph = new CachedKnowledgeGraph
+                    {
+                        Entities = [.. entities],
+                        Relationships = [.. relationships],
+                        Index = KnowledgeGraphIndex.Create(
+                            entities,
+                            relationships)
+                    };
+                }
+                
+                // Store the knowledge source in the cache.
                 _cache.Set(
                     cacheKey,
-                    knowledgeGraph,
+                    cachedKnowledgeSource,
                     GetMemoryCacheEntryOptions());
             }
 
-            return knowledgeGraph!;
+            return cachedKnowledgeSource!;
         }
 
 
@@ -470,8 +508,8 @@ namespace FoundationaLLM.Context.Services
            .SetSlidingExpiration(TimeSpan.FromSeconds(1800)) // Reset expiration time if accessed within 30 minutes.
            .SetSize(1); // Each cache entry is a single knowledge graph instance.
 
-        private string GetCacheKey(string instanceId, string knowledgeGraphId) =>
-            $"{instanceId}:{knowledgeGraphId}";
+        private string GetCacheKey(string instanceId, string knowledgeSourceId) =>
+            $"{instanceId}:{knowledgeSourceId}";
 
         private async Task<EmbeddingClient> GetEmbeddingClient(
             string modelDeploymentName)

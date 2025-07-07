@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Models.CodeExecution;
 using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.Context.Knowledge;
 
 namespace FoundationaLLM.Common.Interfaces
 {
@@ -63,15 +64,15 @@ namespace FoundationaLLM.Common.Interfaces
             string language);
 
         /// <summary>
-        /// Calls the Context API service to update a knowledge graph with the specified entities and relationships source files.
+        /// Calls the Context API service to update a knowledge source with the specified knowledge graph and vector database/store details.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="knowledgeGraphId">The knowledge graph identifier.</param>
-        /// <param name="updateRequest">The update request containing the entities and relationships source files.</param>
+        /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
+        /// <param name="updateRequest">The update request containing the knowledge graph and vector database/store details.</param>
         /// <returns>A response indicating the success of the operation and an optional error message.</returns>
-        Task<ContextServiceResponse> UpdateKnowledgeGraph(
+        Task<ContextServiceResponse> UpdateKnowledgeSource(
             string instanceId,
-            string knowledgeGraphId,
-            ContextKnowledgeGraphUpdateRequest updateRequest);
+            string knowledgeSourceId,
+            ContextKnowledgeSourceUpdateRequest updateRequest);
     }
 }

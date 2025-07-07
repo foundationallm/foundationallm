@@ -5,7 +5,7 @@ namespace FoundationaLLM.Context.Models.Configuration
     /// <summary>
     /// Provides settings for the FoundationaLLM Context API knowledge graph service.
     /// </summary>
-    public class KnowledgeGraphServiceSettings
+    public class KnowledgeServiceSettings
     {
         /// <summary>
         /// Gets or sets the storage settings.

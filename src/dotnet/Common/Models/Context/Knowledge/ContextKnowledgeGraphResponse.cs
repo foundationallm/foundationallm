@@ -1,12 +1,12 @@
 ﻿using FoundationaLLM.Common.Models.Knowledge;
 using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models.Context
+namespace FoundationaLLM.Common.Models.Context.Knowledge
 {
     /// <summary>
     /// Represents the result of a knowledge graph query.
     /// </summary>
-    public class ContextKnowledgeGraphQueryResponse : ContextTextChunkQueryResponse
+    public class ContextKnowledgeGraphResponse
     {
         /// <summary>
         /// Gets or sets the list of knowledge entities that most similar to the user prompt in the query.

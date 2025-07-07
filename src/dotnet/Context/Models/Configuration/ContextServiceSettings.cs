@@ -13,6 +13,6 @@
         /// <summary>
         /// Gets or sets the knowledge graph service settings.
         /// </summary>
-        public required KnowledgeGraphServiceSettings KnowledgeGraphService { get; set; }
+        public required KnowledgeServiceSettings KnowledgeService { get; set; }
     }
 }

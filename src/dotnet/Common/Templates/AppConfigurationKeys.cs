@@ -1210,25 +1210,25 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes";
         
         /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AccountName setting.
-        /// <para>Value description:<br/>The Azure Storage account for the FoundationaLLM Context API knowledge graph service.</para>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Storage:AccountName setting.
+        /// <para>Value description:<br/>The Azure Storage account for the FoundationaLLM Context API knowledge service.</para>
         /// </summary>
-        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_KnowledgeGraphService_Storage_AccountName =
-            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AccountName";
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_KnowledgeService_Storage_AccountName =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Storage:AccountName";
         
         /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AuthenticationType setting.
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Storage:AuthenticationType setting.
         /// <para>Value description:<br/>The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
         /// </summary>
-        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_KnowledgeGraphService_Storage_AuthenticationType =
-            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AuthenticationType";
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_KnowledgeService_Storage_AuthenticationType =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Storage:AuthenticationType";
         
         /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Embedding setting.
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Embedding setting.
         /// <para>Value description:<br/>The settings used for embedding operations.</para>
         /// </summary>
-        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_KnowledgeGraphService_Embedding =
-            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Embedding";
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_KnowledgeService_Embedding =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Embedding";
 
         #endregion
 

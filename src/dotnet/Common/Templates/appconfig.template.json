@@ -967,21 +967,21 @@
             "tags": {}
         },
         {
-            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AccountName",
-            "value": "${env:CONTEXTAPI_FILESERVICE_AZURE_STORAGE_ACCOUNT_NAME}",
+            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Storage:AccountName",
+            "value": "${env:CONTEXTAPI_KNOWLEDGESERVICE_AZURE_STORAGE_ACCOUNT_NAME}",
             "label": null,
             "content_type": "",
             "tags": {}
         },
         {
-            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AuthenticationType",
+            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Storage:AuthenticationType",
             "value": "AzureIdentity",
             "label": null,
             "content_type": "",
             "tags": {}
         },
         {
-            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Embedding",
+            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Embedding",
             "value": "{\"EmbeddingAPIEndpointConfigurationObjectId\": null, \"ModelDeployments\": {}",
             "label": null,
             "content_type": "application/json",

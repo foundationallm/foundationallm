@@ -1629,15 +1629,15 @@
 				"first_version": "0.9.7"
 			},
 			{
-				"name": "KnowledgeGraphService:Storage:AccountName",
-				"description": "The Azure Storage account for the FoundationaLLM Context API knowledge graph service.",
+				"name": "KnowledgeService:Storage:AccountName",
+				"description": "The Azure Storage account for the FoundationaLLM Context API knowledge service.",
 				"secret": "",
-				"value": "${env:CONTEXTAPI_FILESERVICE_AZURE_STORAGE_ACCOUNT_NAME}",
+				"value": "${env:CONTEXTAPI_KNOWLEDGESERVICE_AZURE_STORAGE_ACCOUNT_NAME}",
 				"content_type": "",
 				"first_version": "0.9.7"
 			},
 			{
-				"name": "KnowledgeGraphService:Storage:AuthenticationType",
+				"name": "KnowledgeService:Storage:AuthenticationType",
 				"description": "The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
 				"secret": "",
 				"value": "AzureIdentity",
@@ -1645,7 +1645,7 @@
 				"first_version": "0.9.7"
 			},
 			{
-				"name": "KnowledgeGraphService:Embedding",
+				"name": "KnowledgeService:Embedding",
 				"description": "The settings used for embedding operations.",
 				"secret": "",
 				"value": "{\\\"EmbeddingAPIEndpointConfigurationObjectId\\\": null, \\\"ModelDeployments\\\": {}",

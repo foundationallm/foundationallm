@@ -8,6 +8,7 @@ using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.Context;
+using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.Orchestration;
@@ -367,10 +368,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 var artifactsRootPath = _dataPipelineStateService.GetDataPipelineRunArtifactsPath(
                         dataPipelineDefinition,
                         dataPipelineRun);
-                var response = await contextServiceClient.UpdateKnowledgeGraph(
+                var response = await contextServiceClient.UpdateKnowledgeSource(
                     dataPipelineRun.InstanceId,
                     knowledgeGraphId.ToString()!,
-                    new ContextKnowledgeGraphUpdateRequest
+                    new ContextKnowledgeSourceUpdateRequest
                     {
                         EntitiesSourceFilePath = $"{artifactsRootPath}/{KNOWLEDGE_ENTITIES_FILE_PATH}",
                         RelationshipsSourceFilePath = $"{artifactsRootPath}/{KNOWLEDGE_RELATIONSHIPS_FILE_PATH}",

@@ -1,12 +1,11 @@
-﻿using FoundationaLLM.Common.Models.Knowledge;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models.Context
+namespace FoundationaLLM.Common.Models.Context.Knowledge
 {
     /// <summary>
-    /// Represents the result of a text chunk collection query.
+    /// Represents the result of a knowledge source query.
     /// </summary>
-    public class ContextTextChunkQueryResponse
+    public class ContextKnowledgeSourceQueryResponse
     {
         /// <summary>
         /// Gets or sets a flag that indicates if the query was processed successfully.
@@ -25,5 +24,11 @@ namespace FoundationaLLM.Common.Models.Context
         /// </summary>
         [JsonPropertyName("text_chunks")]
         public List<ContextTextChunk> TextChunks { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the response from the knowledge graph query.
+        /// </summary>
+        [JsonPropertyName("knowledge_graph_response")]
+        public ContextKnowledgeGraphResponse? KnowledgeGraphResponse { get; set; }
     }
 }
