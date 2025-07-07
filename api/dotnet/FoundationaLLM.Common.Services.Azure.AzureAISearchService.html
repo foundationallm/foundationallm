@@ -298,7 +298,7 @@ Class AzureAISearchService  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Services_Azure_AzureAISearchService_DeleteDocuments_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Services.Azure.AzureAISearchService.DeleteDocuments(System.String,System.String,System.String)">
   DeleteDocuments(string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureAISearchService.cs/#L121"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureAISearchService.cs/#L181"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes documents from the specified index in the Azure AI Search service based on a filter.</p>
@@ -326,6 +326,72 @@ Class AzureAISearchService  <a class="header-action link-secondary" title="View 
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</dt>
     <dd><p>The number of documents that were deleted.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Services_Azure_AzureAISearchService_SearchDocuments_" data-uid="FoundationaLLM.Common.Services.Azure.AzureAISearchService.SearchDocuments*"></a>
+
+  <h3 id="FoundationaLLM_Common_Services_Azure_AzureAISearchService_SearchDocuments_System_String_System_Collections_Generic_IEnumerable_System_String__System_String_System_String_System_ReadOnlyMemory_System_Single__System_String_System_Single_System_Int32_System_Boolean_" data-uid="FoundationaLLM.Common.Services.Azure.AzureAISearchService.SearchDocuments(System.String,System.Collections.Generic.IEnumerable{System.String},System.String,System.String,System.ReadOnlyMemory{System.Single},System.String,System.Single,System.Int32,System.Boolean)">
+  SearchDocuments(string, IEnumerable&lt;string&gt;, string, string, ReadOnlyMemory&lt;float&gt;, string, float, int, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureAISearchService.cs/#L121"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Searches for documents in the specified index that match the given filter and are similar to the provided
+user prompt embedding.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;SearchDocument&gt;&gt; SearchDocuments(string indexName, IEnumerable&lt;string&gt; select, string filter, string userPrompt, ReadOnlyMemory&lt;float&gt; userPromptEmbedding, string embeddingPropertyName, float similarityThreshold, int topN, bool useSemanticRanking)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>indexName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the index to search within.</p>
+</dd>
+    <dt><code>select</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>A list of fields to select in the search results. If null or empty, all fields will be selected.</p>
+</dd>
+    <dt><code>filter</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A filter expression to narrow down the search results.</p>
+</dd>
+    <dt><code>userPrompt</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The original user prompt.</p>
+</dd>
+    <dt><code>userPromptEmbedding</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlymemory-1">ReadOnlyMemory</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a>&gt;</dt>
+    <dd><p>A read-only memory segment representing the embedding of the user prompt.</p>
+</dd>
+    <dt><code>embeddingPropertyName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the index property that contains embeddings.</p>
+</dd>
+    <dt><code>similarityThreshold</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The minimum similarity score required for a document to be included in the results. Must be a value between
+0 and 1.</p>
+</dd>
+    <dt><code>topN</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The maximum number of documents to return. Must be a positive integer.</p>
+</dd>
+    <dt><code>useSemanticRanking</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>A flag that indicates whether semantic ranking should be used or not.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/azure.search.documents.models.searchdocument">SearchDocument</a>&gt;&gt;</dt>
+    <dd><p>An enumerable collection of <a class="xref" href="https://learn.microsoft.com/dotnet/api/azure.search.documents.models.searchdocument">SearchDocument</a> objects that match the filter and meet the similarity threshold, ordered by
+relevance. The collection will be empty if no matching documents are found.</p>
 </dd>
   </dl>
 

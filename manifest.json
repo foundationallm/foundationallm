@@ -11968,6 +11968,62 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.KnowledgeGraphIndex.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.KnowledgeGraphIndex.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Models.KnowledgeGraphIndex",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.KnowledgeGraphIndex.yml\" sourcestartlinenumber=\"1\">Represents an index for organizing and retrieving information in a knowledge graph.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.KnowledgeGraphIndexNode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.KnowledgeGraphIndexNode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Models.KnowledgeGraphIndexNode",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.KnowledgeGraphIndexNode.yml\" sourcestartlinenumber=\"1\">Represents a node within a knowledge graph index.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNode",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNode.yml\" sourcestartlinenumber=\"1\">Represents a node related to another node within a knowledge graph index.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNodeComparer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNodeComparer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNodeComparer",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNodeComparer.yml\" sourcestartlinenumber=\"1\">Equality comparer for KnowledgeGraphIndexRelatedNode based on the UniqueId of RelatedEntity.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.yml",
       "output": {
         ".html": {

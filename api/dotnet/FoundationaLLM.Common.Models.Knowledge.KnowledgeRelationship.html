@@ -164,7 +164,7 @@ Class KnowledgeRelationship  <a class="header-action link-secondary" title="View
 
   <h3 id="FoundationaLLM_Common_Models_Knowledge_KnowledgeRelationship__ctor" data-uid="FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship.#ctor">
   KnowledgeRelationship()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Knowledge/KnowledgeRelationship.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Knowledge/KnowledgeRelationship.cs/#L102"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship.html">KnowledgeRelationship</a> class.</p>
@@ -395,6 +395,39 @@ public string SourceType { get; set; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_Common_Models_Knowledge_KnowledgeRelationship_SourceUniqueId_" data-uid="FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship.SourceUniqueId*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_Knowledge_KnowledgeRelationship_SourceUniqueId" data-uid="FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship.SourceUniqueId">
+  SourceUniqueId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Knowledge/KnowledgeRelationship.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the unique identifier for the source, combining the source type and source value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public string SourceUniqueId { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Models_Knowledge_KnowledgeRelationship_Strengths_" data-uid="FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship.Strengths*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_Knowledge_KnowledgeRelationship_Strengths" data-uid="FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship.Strengths">
@@ -546,6 +579,39 @@ public string Target { get; set; }</code></pre>
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;target_type&quot;)]
 [JsonPropertyOrder(4)]
 public string TargetType { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Models_Knowledge_KnowledgeRelationship_TargetUniqueId_" data-uid="FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship.TargetUniqueId*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_Knowledge_KnowledgeRelationship_TargetUniqueId" data-uid="FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship.TargetUniqueId">
+  TargetUniqueId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Knowledge/KnowledgeRelationship.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the unique identifier for the target, combining the target type and target value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public string TargetUniqueId { get; }</code></pre>
   </div>
 
 

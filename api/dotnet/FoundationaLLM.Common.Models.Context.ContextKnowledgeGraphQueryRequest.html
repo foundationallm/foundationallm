@@ -132,6 +132,9 @@ Class ContextKnowledgeGraphQueryRequest  <a class="header-action link-secondary"
       <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextTextChunkQueryRequest.html#FoundationaLLM_Common_Models_Context_ContextTextChunkQueryRequest_TextChunksSimilarityThreshold">ContextTextChunkQueryRequest.TextChunksSimilarityThreshold</a>
     </div>
     <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextTextChunkQueryRequest.html#FoundationaLLM_Common_Models_Context_ContextTextChunkQueryRequest_UseSemanticRanking">ContextTextChunkQueryRequest.UseSemanticRanking</a>
+    </div>
+    <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
     <div>
@@ -170,11 +173,48 @@ Class ContextKnowledgeGraphQueryRequest  <a class="header-action link-secondary"
 </h2>
 
 
+  <a id="FoundationaLLM_Common_Models_Context_ContextKnowledgeGraphQueryRequest_AllEntitiesMaxCount_" data-uid="FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryRequest.AllEntitiesMaxCount*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_Context_ContextKnowledgeGraphQueryRequest_AllEntitiesMaxCount" data-uid="FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryRequest.AllEntitiesMaxCount">
+  AllEntitiesMaxCount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextKnowledgeGraphQueryRequest.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the maximum number of entities returned in the response.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;all_entities_max_count&quot;)]
+public int AllEntitiesMaxCount { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_Common_Models_Context_ContextKnowledgeGraphQueryRequest_AllEntitiesMaxCount_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This includes both entities that were mapped directly and entities that were
+retrieved by navigating relationships.</p>
+</div>
+
+
+
+
   <a id="FoundationaLLM_Common_Models_Context_ContextKnowledgeGraphQueryRequest_MappedEntitiesMaxCount_" data-uid="FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryRequest.MappedEntitiesMaxCount*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_Context_ContextKnowledgeGraphQueryRequest_MappedEntitiesMaxCount" data-uid="FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryRequest.MappedEntitiesMaxCount">
   MappedEntitiesMaxCount
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextKnowledgeGraphQueryRequest.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextKnowledgeGraphQueryRequest.cs/#L17"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the maximum number of mapped entities included in the query result.</p>
@@ -199,6 +239,10 @@ public int MappedEntitiesMaxCount { get; set; }</code></pre>
 
 
 
+  <h4 class="section" id="FoundationaLLM_Common_Models_Context_ContextKnowledgeGraphQueryRequest_MappedEntitiesMaxCount_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>These are entities directly mapped based on the similarity between their summary description
+an the user prompt.</p>
+</div>
 
 
 
@@ -207,10 +251,11 @@ public int MappedEntitiesMaxCount { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Context_ContextKnowledgeGraphQueryRequest_MappedEntitiesSimilarityThreshold" data-uid="FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryRequest.MappedEntitiesSimilarityThreshold">
   MappedEntitiesSimilarityThreshold
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextKnowledgeGraphQueryRequest.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextKnowledgeGraphQueryRequest.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets or sets the minimum similarity measure threshold used to identify relevant entities.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the minimum threshold used to match entities based on the similarity between
+their summary description and the user prompt.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -240,7 +285,7 @@ public float MappedEntitiesSimilarityThreshold { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Context_ContextKnowledgeGraphQueryRequest_RelationshipsMaxDepth" data-uid="FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryRequest.RelationshipsMaxDepth">
   RelationshipsMaxDepth
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextKnowledgeGraphQueryRequest.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/ContextKnowledgeGraphQueryRequest.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the maximum depth allowed when navigating relationships.</p>

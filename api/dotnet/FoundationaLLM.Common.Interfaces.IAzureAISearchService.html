@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Interfaces_IAzureAISearchService" data-uid="FoundationaLLM.Common.Interfaces.IAzureAISearchService" class="text-break">
-Interface IAzureAISearchService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L8"><i class="bi bi-code-slash"></i></a>
+Interface IAzureAISearchService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L9"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -132,7 +132,7 @@ Interface IAzureAISearchService  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_Common_Interfaces_IAzureAISearchService_CreateIndexIfNotExists_System_String_System_Collections_Generic_IEnumerable_Azure_Search_Documents_Indexes_Models_SearchField__Azure_Search_Documents_Indexes_Models_VectorSearch_" data-uid="FoundationaLLM.Common.Interfaces.IAzureAISearchService.CreateIndexIfNotExists(System.String,System.Collections.Generic.IEnumerable{Azure.Search.Documents.Indexes.Models.SearchField},Azure.Search.Documents.Indexes.Models.VectorSearch)">
   CreateIndexIfNotExists(string, IEnumerable&lt;SearchField&gt;, VectorSearch?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates an index in the Azure AI Search service if it does not already exist.</p>
@@ -176,7 +176,7 @@ Interface IAzureAISearchService  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_Common_Interfaces_IAzureAISearchService_DeleteDocuments_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Interfaces.IAzureAISearchService.DeleteDocuments(System.String,System.String,System.String)">
   DeleteDocuments(string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L68"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes documents from the specified index in the Azure AI Search service based on a filter.</p>
@@ -217,11 +217,77 @@ Interface IAzureAISearchService  <a class="header-action link-secondary" title="
 
 
 
+  <a id="FoundationaLLM_Common_Interfaces_IAzureAISearchService_SearchDocuments_" data-uid="FoundationaLLM.Common.Interfaces.IAzureAISearchService.SearchDocuments*"></a>
+
+  <h3 id="FoundationaLLM_Common_Interfaces_IAzureAISearchService_SearchDocuments_System_String_System_Collections_Generic_IEnumerable_System_String__System_String_System_String_System_ReadOnlyMemory_System_Single__System_String_System_Single_System_Int32_System_Boolean_" data-uid="FoundationaLLM.Common.Interfaces.IAzureAISearchService.SearchDocuments(System.String,System.Collections.Generic.IEnumerable{System.String},System.String,System.String,System.ReadOnlyMemory{System.Single},System.String,System.Single,System.Int32,System.Boolean)">
+  SearchDocuments(string, IEnumerable&lt;string&gt;, string, string, ReadOnlyMemory&lt;float&gt;, string, float, int, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Searches for documents in the specified index that match the given filter and are similar to the provided
+user prompt embedding.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;IEnumerable&lt;SearchDocument&gt;&gt; SearchDocuments(string indexName, IEnumerable&lt;string&gt; select, string filter, string userPrompt, ReadOnlyMemory&lt;float&gt; userPromptEmbedding, string embeddingPropertyName, float similarityThreshold, int topN, bool useSemanticRanking)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>indexName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the index to search within.</p>
+</dd>
+    <dt><code>select</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>A list of fields to select in the search results. If null or empty, all fields will be selected.</p>
+</dd>
+    <dt><code>filter</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A filter expression to narrow down the search results.</p>
+</dd>
+    <dt><code>userPrompt</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The original user prompt.</p>
+</dd>
+    <dt><code>userPromptEmbedding</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlymemory-1">ReadOnlyMemory</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a>&gt;</dt>
+    <dd><p>A read-only memory segment representing the embedding of the user prompt.</p>
+</dd>
+    <dt><code>embeddingPropertyName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the index property that contains embeddings.</p>
+</dd>
+    <dt><code>similarityThreshold</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The minimum similarity score required for a document to be included in the results. Must be a value between
+0 and 1.</p>
+</dd>
+    <dt><code>topN</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The maximum number of documents to return. Must be a positive integer.</p>
+</dd>
+    <dt><code>useSemanticRanking</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>A flag that indicates whether semantic ranking should be used or not.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/azure.search.documents.models.searchdocument">SearchDocument</a>&gt;&gt;</dt>
+    <dd><p>An enumerable collection of <a class="xref" href="https://learn.microsoft.com/dotnet/api/azure.search.documents.models.searchdocument">SearchDocument</a> objects that match the filter and meet the similarity threshold, ordered by
+relevance. The collection will be empty if no matching documents are found.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Interfaces_IAzureAISearchService_UploadDocuments_" data-uid="FoundationaLLM.Common.Interfaces.IAzureAISearchService.UploadDocuments*"></a>
 
   <h3 id="FoundationaLLM_Common_Interfaces_IAzureAISearchService_UploadDocuments_System_String_System_Collections_Generic_List_System_String__System_Collections_Generic_List_System_Object____" data-uid="FoundationaLLM.Common.Interfaces.IAzureAISearchService.UploadDocuments(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Object[]})">
   UploadDocuments(string, List&lt;string&gt;, List&lt;object[]&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L29"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Uploads documents to the specified index in the Azure AI Search service.</p>
@@ -265,7 +331,7 @@ Interface IAzureAISearchService  <a class="header-action link-secondary" title="
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L8" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L9" class="edit-link">Edit this page</a>
         </div>
 
 
