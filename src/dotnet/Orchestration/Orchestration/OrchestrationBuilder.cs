@@ -559,6 +559,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             }                            
                             break;
 
+                        case KnowledgeResourceTypeNames.KnowledgeSources:
+                            // No need to send in the details of the knowledge source.
+                            break;
+
                         default:
                             throw new OrchestrationException($"Unknown resource type '{resourcePath.MainResourceTypeName}'.");
                     }
