@@ -44,7 +44,7 @@ user_prompt = "Write code to calculate the square root of 16 plus 38 and then an
 operation_id = str(uuid.uuid4())
 conversation_id = "20250704-122632-LMojwbsA0kGOb7xDRsshMA"
 
-user_identity_json = {"name": "Experimental Test", "user_name":"zoinertejada@foundationaLLM.ai","upn":"zoinertejada@foundationaLLM.ai"}
+user_identity_json = {"name": "Experimental Test", "user_name":"zoinertejada@foundationaLLM.ai","upn":"ZoinerTejada@foundationaLLM.ai"}
 full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
 
 user_identity = UserIdentity.from_json(user_identity_json)
