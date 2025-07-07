@@ -268,7 +268,7 @@ namespace FoundationaLLM.Common.Clients
                     _callContext.CurrentUserIdentity!);
 
                 var responseMessage = await client.PostAsJsonAsync(
-                    $"instances/{instanceId}/knowledgsources/{knowledgeSourceId}",
+                    $"instances/{instanceId}/knowledgeSources/{knowledgeSourceId}",
                     updateRequest);
 
                 if (responseMessage.IsSuccessStatusCode)

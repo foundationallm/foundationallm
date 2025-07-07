@@ -158,10 +158,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONEMBEDDINGDIMENSIONS} parameter.");
 
             if (!_pluginParameters.TryGetValue(
-                PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEGRAPHID,
-                out var knowledgeGraphId))
+                PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGESOURCEID,
+                out var knowledgeSourceId))
                 throw new PluginException(
-                    $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEGRAPHID} parameter.");
+                    $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGESOURCEID} parameter.");
 
             if (!_pluginParameters.TryGetValue(
                 PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
@@ -353,7 +353,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 await SaveKnowledgeGrapState(dataPipelineDefinition, dataPipelineRun);
             }
 
-            if (knowledgeGrapBuildingStep ==
+        if (knowledgeGrapBuildingStep ==
                 KnowledgeGraphBuildingSteps.Publish)
             {
                 #region Publish knowledge graph to the Context API
@@ -370,7 +370,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                         dataPipelineRun);
                 var response = await contextServiceClient.UpdateKnowledgeSource(
                     dataPipelineRun.InstanceId,
-                    knowledgeGraphId.ToString()!,
+                    knowledgeSourceId.ToString()!,
                     new ContextKnowledgeSourceUpdateRequest
                     {
                         EntitiesSourceFilePath = $"{artifactsRootPath}/{KNOWLEDGE_ENTITIES_FILE_PATH}",

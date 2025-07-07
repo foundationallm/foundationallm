@@ -61,8 +61,8 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
         new()
         {
             {
-                "work-item-yDBgPyiz-kOLGocc0kmFTw",
-                "run-20250703-162319-MPA64FY470-Sq1g9j9qdPQ-TAfGit69y0OhQOwAAtltKw",
+                "work-item-FwB5zJHt3k6PmGF5rofb7g",
+                "run-20250630-165745-JmaV2TETeU2G4S6EwUDjDQ-TAfGit69y0OhQOwAAtltKw",
                 new Dictionary<string, object>
                 {
                     {
@@ -90,8 +90,8 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                         2048
                     },
                     {
-                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEGRAPHID,
-                        "ProcessSPOFiles-Light-KnowledgeGraph"
+                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGESOURCEID,
+                        "ProcessSPOFiles"
                     },
                     {
                         PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
@@ -99,7 +99,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                     },
                     {
                         PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORSTOREID,
-                        "Test-Store-01-Light"
+                        "Test-Store-01"
                     }
                 }
             }
