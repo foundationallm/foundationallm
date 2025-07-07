@@ -24,5 +24,11 @@ namespace FoundationaLLM.Common.Models.Context
         /// </summary>
         [JsonPropertyName("text_chunks_similarity_threshold")]
         public float TextChunksSimilarityThreshold { get; set; }
+
+        /// <summary>
+        /// Gets or sets a flag that indicates whether semantic ranking should be used or not.
+        /// </summary>
+        [JsonPropertyName("use_semantic_ranking")]
+        public bool UseSemanticRanking { get; set; }
     }
 }

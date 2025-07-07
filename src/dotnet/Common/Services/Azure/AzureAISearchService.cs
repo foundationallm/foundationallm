@@ -118,6 +118,66 @@ namespace FoundationaLLM.Common.Services.Azure
         }
 
         /// <inheritdoc/>
+        public async Task<IEnumerable<SearchDocument>> SearchDocuments(
+            string indexName,
+            IEnumerable<string> select,
+            string filter,
+            string userPrompt,
+            ReadOnlyMemory<float> userPromptEmbedding,
+            string embeddingPropertyName,
+            float similarityThreshold,
+            int topN,
+            bool useSemanticRanking)
+        {
+            // Create a SearchClient for the index
+            var searchClient = _searchIndexClient.GetSearchClient(indexName);
+
+            var vectorQuery = new VectorizedQuery(userPromptEmbedding);
+            vectorQuery.Fields.Add(embeddingPropertyName);
+            vectorQuery.KNearestNeighborsCount = 5;
+            vectorQuery.Threshold = new VectorSimilarityThreshold(similarityThreshold);
+
+            var searchOptions = new SearchOptions
+            {
+                QueryType = SearchQueryType.Semantic,
+                Filter = filter,
+                Size = topN,
+                VectorSearch = new VectorSearchOptions
+                {
+                    FilterMode = VectorFilterMode.PreFilter
+                },
+            };
+            foreach (var field in select)
+                searchOptions.Select.Add(field);
+            // Always include the search score in the results
+            searchOptions.VectorSearch.Queries.Add(vectorQuery);
+
+            if (useSemanticRanking)
+            {
+                searchOptions.SemanticSearch = new SemanticSearchOptions();
+                searchOptions.SemanticSearch.SemanticFields.Add("Text");
+            }
+
+            // Execute the search
+            var results = new List<SearchDocument>();
+            var response = await searchClient.SearchAsync<SearchDocument>(
+                userPrompt,
+                searchOptions);
+
+            await foreach (var result in response.Value.GetResultsAsync())
+            {
+                // Add the score to the document for easy access
+                result.Document["Score"] = result.Score;
+                result.Document["SemanticRankingScore"] = useSemanticRanking
+                    ? result.SemanticSearch.RerankerScore
+                    : null;
+                results.Add(result.Document);
+            }
+
+            return results;
+        }
+
+        /// <inheritdoc/>
         public async Task<int> DeleteDocuments(
             string indexName,
             string keyFieldName,
