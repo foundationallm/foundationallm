@@ -10,11 +10,16 @@ namespace FoundationaLLM.Context.Models
         /// <summary>
         /// Gets or sets the knowledge entity associated with the node.
         /// </summary>
-        public required KnowledgeEntity Entity { get; set; }
+        public required KnowledgeEntity RelatedEntity { get; set; }
 
         /// <summary>
         /// Gets or sets the relationship between this node and the related node.
         /// </summary>
         public required KnowledgeRelationship Relationship { get; set; }
+
+        /// <summary>
+        /// Gets or sets the strength of the relationship with the related entity.
+        /// </summary>
+        public int RelationshipStrength { get; set; }
     }
 }

@@ -20,9 +20,11 @@ using FoundationaLLM.Context.Models.Configuration;
 using MathNet.Numerics;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph.Models;
 using OpenAI.Embeddings;
 using Parquet.Serialization;
 using System.ClientModel.Primitives;
+using System.IO;
 using System.Text.Json;
 
 namespace FoundationaLLM.Context.Services
@@ -139,7 +141,7 @@ namespace FoundationaLLM.Context.Services
                 var matchingDocumentsFilter = string.Join(" and ",
                     [
                         $"{graph.VectorDatabase.VectorStoreIdPropertyName} eq '{graph.KnowledgeGraph.VectorStoreId}'",
-                        $"search.in({KEY_FIELD_NAME}, '{string.Join(',', matchingEntities.SelectMany(me => me.Entity.ChunkIds))}')"
+                        $"search.in({KEY_FIELD_NAME}, '{string.Join(',', matchingEntities.Entities.SelectMany(e => e.ChunkIds))}')"
                     ]);
 
                 var matchingDocuments = await graph.SearchService.SearchDocuments(
@@ -160,12 +162,30 @@ namespace FoundationaLLM.Context.Services
                 return new ContextKnowledgeGraphQueryResponse
                 {
                     Success = true,
-                    Entities = [.. matchingEntities
-                        .Select(me => new KnowledgeEntity
+                    Entities = [.. matchingEntities.Entities
+                        .Select(e => new KnowledgeEntity
                         {
-                            Type = me.Entity.Type,
-                            Name = me.Entity.Name,
-                            SummaryDescription = me.Entity.SummaryDescription
+                            Type = e.Type,
+                            Name = e.Name,
+                            SummaryDescription = e.SummaryDescription
+                        })
+                    ],
+                    RelatedEntities = [.. matchingEntities.RelatedEntities
+                        .Select(re => new KnowledgeEntity
+                        {
+                            Type = re.Type,
+                            Name = re.Name,
+                            SummaryDescription = re.SummaryDescription
+                        })
+                    ],
+                    Relationships = [.. matchingEntities.Relationships
+                        .Select(r => new KnowledgeRelationship
+                        {
+                            SourceType = r.SourceType,
+                            Source = r.Source,
+                            TargetType = r.TargetType,
+                            Target = r.Target,
+                            SummaryDescription = r.SummaryDescription
                         })
                     ],
                     TextChunks = [.. matchingDocuments
@@ -321,15 +341,17 @@ namespace FoundationaLLM.Context.Services
             return knowledgeGraph!;
         }
 
-        private List<(KnowledgeEntity Entity, float SimilarityScore)> GetMatchingKnowledgeGraphEntities(
-            CachedKnowledgeGraph knowledgeGraph,
-            ReadOnlyMemory<float> userPromptEmbedding,
-            float similarityThreshold,
-            int matchedEntitiesMaxCount,
-            int relationshipsMaxDepth,
-            int allEntitiesMaxCount)
+
+        private (List<KnowledgeEntity> Entities, List<KnowledgeEntity> RelatedEntities, List<KnowledgeRelationship> Relationships)
+            GetMatchingKnowledgeGraphEntities(
+                CachedKnowledgeGraph knowledgeGraph,
+                ReadOnlyMemory<float> userPromptEmbedding,
+                float similarityThreshold,
+                int matchedEntitiesMaxCount,
+                int relationshipsMaxDepth,
+                int allEntitiesMaxCount)
         {
-            var matchingEntities = new List<(KnowledgeEntity Entity, float SimilarityScore)>();
+            var similarEntities = new List<(KnowledgeEntity Entity, float SimilarityScore)>();
             var maxSimilarity = 0f;
             var minSimilarity = 1f;
             foreach (var entity in knowledgeGraph.Entities)
@@ -339,7 +361,7 @@ namespace FoundationaLLM.Context.Services
                     entity.SummaryDescriptionEmbedding);
                 if (similarity >= similarityThreshold)
                 {
-                    matchingEntities.Add((entity, similarity));
+                    similarEntities.Add((entity, similarity));
                 }
 
                 if (similarity > maxSimilarity)
@@ -350,21 +372,97 @@ namespace FoundationaLLM.Context.Services
 
             _logger.LogInformation("The minimum and maximum similarity values are {MinSimilarity} and {MaxSimilarity}", minSimilarity, maxSimilarity);
 
-            matchingEntities = [.. matchingEntities
-                .OrderByDescending(e => e.SimilarityScore)
-                .Take(matchedEntitiesMaxCount)];
+            List<KnowledgeEntity> entities = [.. similarEntities
+                .OrderByDescending(se => se.SimilarityScore)
+                .Take(matchedEntitiesMaxCount)
+                .Select(se => se.Entity)];
 
             var remainingEntitiesCount = allEntitiesMaxCount >= matchedEntitiesMaxCount
                 ? allEntitiesMaxCount - matchedEntitiesMaxCount
                 : 0;
+
+            if (remainingEntitiesCount == 0
+                || relationshipsMaxDepth == 0)
+                return (entities, [], []);
+
+            var entitiesIds = entities
+                .Select(e => e.UniqueId)
+                .ToHashSet();
+
+            var relationshipEntities = new List<KnowledgeEntity>();
             var relationships = new List<KnowledgeRelationship>();
-            var relationShipEntities = new List<KnowledgeEntity>();
 
+            // Get the first layer of related entities for the most similar entities.
+            // This is required to kick off the search for the most relevant relationships.
+            var currentIndexRelatedNodes = entities
+                .Select(e => knowledgeGraph.Index.Nodes[e.UniqueId])
+                .SelectMany(n => n.RelatedNodes)
+                .Where(rn => !entitiesIds.Contains(rn.RelatedEntity.UniqueId))
+                .Distinct(new KnowledgeGraphIndexRelatedNodeComparer())
+                .ToList();
+            var currentSimilarityScores = currentIndexRelatedNodes
+                .Select(rn => 1.0f - Distance.Cosine(
+                    userPromptEmbedding.ToArray(),
+                    rn.RelatedEntity.SummaryDescriptionEmbedding))
+                .ToList();
+            var currentDepthLevels = currentIndexRelatedNodes
+                .Select(n => 1)
+                .ToList();
 
+            // Repeat the process until the specified number of entities is reached or there are no more
+            // related nodes to process.
+            while (remainingEntitiesCount > 0
+                && currentIndexRelatedNodes.Count > 0)
+            {
+                // Identify the most similar node.
+                var currentMaxSimilarity = currentSimilarityScores.Max();
+                var mostSimilarIndex = currentSimilarityScores
+                    .FindIndex(s => s == currentMaxSimilarity);
+                var mostSimilarRelatedNode = currentIndexRelatedNodes[mostSimilarIndex];
+                var mostSimilarRelatedNodeDepth = currentDepthLevels[mostSimilarIndex];
 
-            return [.. matchingEntities
-                .OrderByDescending(e => e.SimilarityScore)
-                .Take(matchedEntitiesMaxCount)];
+                // Add the node at the index to the results.
+                entitiesIds.Add(mostSimilarRelatedNode.RelatedEntity.UniqueId);
+                relationshipEntities.Add(mostSimilarRelatedNode.RelatedEntity);
+                relationships.Add(mostSimilarRelatedNode.Relationship);
+
+                //Remove the node from the current state.
+                currentIndexRelatedNodes.RemoveAt(mostSimilarIndex);
+                currentSimilarityScores.RemoveAt(mostSimilarIndex);
+                currentDepthLevels.RemoveAt(mostSimilarIndex);
+
+                // From the nodes directly related to the most similar node (if any),
+                // determine the ones that are neither in the current results nor in the current state
+                // and add them to the current state.
+                // If the most similar node is not at the maximum allowed depth, do not continue.
+                var mostSimilarIndexNode = knowledgeGraph.Index.Nodes[mostSimilarRelatedNode.RelatedEntity.UniqueId];
+                if (mostSimilarIndexNode.RelatedNodes.Count > 0
+                    && mostSimilarRelatedNodeDepth < relationshipsMaxDepth)
+                {
+                    var indexRelatedNodesToAdd = mostSimilarIndexNode
+                        .RelatedNodes
+                        .Where(rn =>
+                            !entitiesIds.Contains(rn.RelatedEntity.UniqueId)
+                            && !currentIndexRelatedNodes.Contains(rn, new KnowledgeGraphIndexRelatedNodeComparer()))
+                        .ToList();
+                    var similarityScoresToAdd = indexRelatedNodesToAdd
+                        .Select(rn => 1.0f - Distance.Cosine(
+                            userPromptEmbedding.ToArray(),
+                            rn.RelatedEntity.SummaryDescriptionEmbedding))
+                        .ToList();
+                    var depthLevelsToAdd = indexRelatedNodesToAdd
+                        .Select(rn => mostSimilarRelatedNodeDepth + 1)
+                        .ToList();
+
+                    currentIndexRelatedNodes.AddRange(indexRelatedNodesToAdd);
+                    currentSimilarityScores.AddRange(similarityScoresToAdd);
+                    currentDepthLevels.AddRange(depthLevelsToAdd);
+                }
+
+                remainingEntitiesCount--;
+            }
+
+            return (entities, relationshipEntities, relationships);
         }
 
         private MemoryCacheEntryOptions GetMemoryCacheEntryOptions() => new MemoryCacheEntryOptions()

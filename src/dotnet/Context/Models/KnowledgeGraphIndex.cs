@@ -35,8 +35,9 @@ namespace FoundationaLLM.Context.Models
                 {
                     sourceNode.RelatedNodes.Add(new KnowledgeGraphIndexRelatedNode
                     {
-                        Entity = targetNode.Entity,
-                        Relationship = relationship
+                        RelatedEntity = targetNode.Entity,
+                        Relationship = relationship,
+                        RelationshipStrength = relationship.Strengths.Max()
                     });
                 }
             }
@@ -44,8 +45,8 @@ namespace FoundationaLLM.Context.Models
             foreach (var node in graphIndex.Nodes.Values)
             {
                 node.RelatedNodes.Sort((a, b) =>
-                    b.Relationship.Strengths.Max()
-                    .CompareTo(a.Relationship.Strengths.Max()));
+                    b.RelationshipStrength
+                    .CompareTo(a.RelationshipStrength));
             }
 
             return graphIndex;
