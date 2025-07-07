@@ -43,19 +43,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
                 throw new PluginException(
                     $"The plugin {Name} requires the {PluginParameterNames.TOKEN_CONTENTTEXTPARTITIONING_PARTITIONOVERLAPTOKENS} parameter.");
 
-            ITokenizerService tokenizerService = null!;
-            if (!_packageManager.TryGetService(
-                nameof(MicrosoftBPETokenizerService), out var tokenizerServiceObject))
-            {
-                tokenizerService = new MicrosoftBPETokenizerService(
-                    _serviceProvider.GetRequiredService<ILogger<MicrosoftBPETokenizerService>>());
-                _packageManager.RegisterService(
-                    nameof(MicrosoftBPETokenizerService), tokenizerService);
-            }
-            else
-            {
-                tokenizerService = (ITokenizerService)tokenizerServiceObject!;
-            }
+            var tokenizerService =
+                _serviceProvider.GetRequiredKeyedService<ITokenizerService>("MicrosoftML");
 
             var contentItemParts = SplitPlainText(
                 contentItemCanonicalId,
