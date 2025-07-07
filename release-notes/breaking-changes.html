@@ -116,19 +116,19 @@
 </thead>
 <tbody>
 <tr>
-<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Embedding</code></td>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Embedding</code></td>
 <td><code>{&quot;EmbeddingAPIEndpointConfigurationObjectId&quot;: null, &quot;ModelDeployments&quot;: {}}</code></td>
-<td>The embedding configuration used by the FoundationaLLM Context API Knowledge Graph service. This configuration value must have a content type of <code>application/json</code>.</td>
+<td>The embedding configuration used by the FoundationaLLM Context API Knowledge service. This configuration value must have a content type of <code>application/json</code>.</td>
 </tr>
 <tr>
-<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AccountName</code></td>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Storage:AccountName</code></td>
 <td><code>&lt;storage_account_name&gt;</code></td>
-<td>The name of the dedicated storage account used by the FoundationaLLM Context API Knowledge Graph service. This must be the same storage account as the one used by the FoundationaLLM Context API.</td>
+<td>The name of the dedicated storage account used by the FoundationaLLM Context API Knowledge service. This must be the same storage account as the one used by the FoundationaLLM Context API.</td>
 </tr>
 <tr>
-<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Storage:AuthenticationType</code></td>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Storage:AuthenticationType</code></td>
 <td><code>AzureIdentity</code></td>
-<td>The type of authentication used by the FoundationaLLM Context API Knowledge Graph service to connect to the dedicated storage account.</td>
+<td>The type of authentication used by the FoundationaLLM Context API Knowledge service to connect to the dedicated storage account.</td>
 </tr>
 <tr>
 <td><code>FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:TokenRateLimitMultiplier</code></td>
@@ -397,6 +397,11 @@
 <td><code>Azure ContainerApps Session Executor</code></td>
 <td>Azure</td>
 <td>Azure Container Apps Custom Container used by the FoundationaLLM Context API.</td>
+</tr>
+<tr>
+<td><code>Search Index Data Reader</code></td>
+<td>Azure</td>
+<td>Azure AI Search service used by the FoundationaLLM instance.</td>
 </tr>
 </tbody>
 </table>

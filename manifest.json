@@ -6200,48 +6200,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryRequest.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryRequest.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryRequest",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to query a knowledge graph.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryResponse.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryResponse.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryResponse",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphQueryResponse.yml\" sourcestartlinenumber=\"1\">Represents the result of a knowledge graph query.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphUpdateRequest.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphUpdateRequest.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphUpdateRequest",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.ContextKnowledgeGraphUpdateRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to update a knowledge graph in the FoundationaLLM Context API.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextRecord.yml",
       "output": {
         ".html": {
@@ -6298,31 +6256,87 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextTextChunkQueryRequest.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphQuery.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextTextChunkQueryRequest.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphQuery.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Context.ContextTextChunkQueryRequest",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.ContextTextChunkQueryRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to query a collection of text chunks.</p>\n"
+      "Title": "FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphQuery",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphQuery.yml\" sourcestartlinenumber=\"1\">Represents a request to query a knowledge graph.</p>\n"
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextTextChunkQueryResponse.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphResponse.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextTextChunkQueryResponse.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphResponse.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Context.ContextTextChunkQueryResponse",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.ContextTextChunkQueryResponse.yml\" sourcestartlinenumber=\"1\">Represents the result of a text chunk collection query.</p>\n"
+      "Title": "FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphResponse",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphResponse.yml\" sourcestartlinenumber=\"1\">Represents the result of a knowledge graph query.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to query a collection of text chunks.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse.yml\" sourcestartlinenumber=\"1\">Represents the result of a knowledge source query.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceUpdateRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceUpdateRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceUpdateRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceUpdateRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to update a knowledge source in the FoundationaLLM Context API.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Context.Knowledge",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -8818,17 +8832,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeGraph.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeGraph.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeGraph",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeGraph.yml\" sourcestartlinenumber=\"1\">Represents a FoundationaLLM knowledge graph.</p>\n"
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource.yml\" sourcestartlinenumber=\"1\">Represents a FoundationaLLM knowledge source.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -11604,17 +11618,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Context.API.Controllers.KnowledgeGraphsController.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.API.Controllers.KnowledgeController.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Context.API.Controllers.KnowledgeGraphsController.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Context.API.Controllers.KnowledgeController.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Context.API.Controllers.KnowledgeGraphsController",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.API.Controllers.KnowledgeGraphsController.yml\" sourcestartlinenumber=\"1\">Provdes methods for managing files.</p>\n"
+      "Title": "FoundationaLLM.Context.API.Controllers.KnowledgeController",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.API.Controllers.KnowledgeController.yml\" sourcestartlinenumber=\"1\">Provdes methods for managing files.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -11786,17 +11800,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.IKnowledgeGraphService.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.IKnowledgeService.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.IKnowledgeGraphService.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Interfaces.IKnowledgeService.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Context.Interfaces.IKnowledgeGraphService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Interfaces.IKnowledgeGraphService.yml\" sourcestartlinenumber=\"1\">Defines the service interface for the FoundationaLLM Knowledge Graph service.</p>\n"
+      "Title": "FoundationaLLM.Context.Interfaces.IKnowledgeService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Interfaces.IKnowledgeService.yml\" sourcestartlinenumber=\"1\">Defines the service interface for the FoundationaLLM Knowledge Graph service.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -11825,6 +11839,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Context.Models.CachedKnowledgeGraph",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.CachedKnowledgeGraph.yml\" sourcestartlinenumber=\"1\">Represents a knowledge graph with caching capabilities to optimize data retrieval and reduce redundant\ncomputations.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.CachedKnowledgeSource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.CachedKnowledgeSource.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Models.CachedKnowledgeSource",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.CachedKnowledgeSource.yml\" sourcestartlinenumber=\"1\">Represents a knowledge source that caches data to improve retrieval performance.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -11940,17 +11968,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.KnowledgeGraphServiceSettings.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.KnowledgeServiceSettings.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.KnowledgeGraphServiceSettings.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Models.Configuration.KnowledgeServiceSettings.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Context.Models.Configuration.KnowledgeGraphServiceSettings",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.Configuration.KnowledgeGraphServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides settings for the FoundationaLLM Context API knowledge graph service.</p>\n"
+      "Title": "FoundationaLLM.Context.Models.Configuration.KnowledgeServiceSettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Models.Configuration.KnowledgeServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides settings for the FoundationaLLM Context API knowledge graph service.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -12164,17 +12192,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.KnowledgeGraphService.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.KnowledgeService.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.KnowledgeGraphService.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.KnowledgeService.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Context.Services.KnowledgeGraphService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.KnowledgeGraphService.yml\" sourcestartlinenumber=\"1\">Provides the implementation for the FoundationaLLM Knowledge Graph service.</p>\n"
+      "Title": "FoundationaLLM.Context.Services.KnowledgeService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.KnowledgeService.yml\" sourcestartlinenumber=\"1\">Provides the implementation for the FoundationaLLM Knowledge Graph service.</p>\n"
     },
     {
       "type": "ManagedReference",
