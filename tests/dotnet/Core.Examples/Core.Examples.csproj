@@ -75,10 +75,6 @@
       <PackagePath>\</PackagePath>
       <Pack>True</Pack>
     </None>
-    <None Update="readme.md">
-      <PackagePath>\</PackagePath>
-      <Pack>True</Pack>
-    </None>
     <None Update="testsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
