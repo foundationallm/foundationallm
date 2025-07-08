@@ -45,5 +45,11 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
         /// </remarks>
         [JsonPropertyName("vector_store_id")]
         public string? VectorStoreId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the metadata filter used to filter the text chunks.
+        /// </summary>
+        [JsonPropertyName("metadata_filter")]
+        public Dictionary<string, string>? MetadataFilter { get; set; }
     }
 }
