@@ -29,7 +29,7 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
         /// Gets or sets the object identifier of the vector store associated with the knowledge source.
         /// </summary>
         [JsonPropertyName("vector_store_id")]
-        public required string VectorStoreId { get; set; }
+        public string? VectorStoreId { get; set; }
 
         /// <summary>
         /// Gets or sets the embedding model used for the knowledge source.

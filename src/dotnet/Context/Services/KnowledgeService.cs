@@ -21,6 +21,7 @@ using FoundationaLLM.Context.Models.Configuration;
 using MathNet.Numerics;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph.Education.Classes.Item.Assignments.Item.Submissions.Item.Return;
 using OpenAI.Embeddings;
 using Parquet.Serialization;
 using System.ClientModel.Primitives;
@@ -146,6 +147,16 @@ namespace FoundationaLLM.Context.Services
                         ErrorMessage = $"The knowledge source '{knowledgeSourceId}' for instance '{instanceId}' does not contain a knowledge graph."
                     };
 
+                var vectorStoreId = string.IsNullOrWhiteSpace(knowledgeSource.VectorStoreId)
+                    ? queryRequest.VectorStoreId
+                    : knowledgeSource.VectorStoreId;
+                if (string.IsNullOrWhiteSpace(vectorStoreId))
+                    return new ContextKnowledgeSourceQueryResponse
+                    {
+                        Success = false,
+                        ErrorMessage = $"The knowledge source '{knowledgeSourceId}' for instance '{instanceId}' does not have a vector store identifier specified and none was provided in the query request."
+                    };
+
                 var vectorDatabase = await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
                     knowledgeSource!.VectorDatabaseObjectId,
                     ServiceContext.ServiceIdentity!);
@@ -210,13 +221,13 @@ namespace FoundationaLLM.Context.Services
 
                     matchingDocumentsFilter = string.Join(" and ",
                     [
-                        $"{vectorDatabase.VectorStoreIdPropertyName} eq '{knowledgeSource.VectorStoreId}'",
+                        $"{vectorDatabase.VectorStoreIdPropertyName} eq '{vectorStoreId}'",
                         $"search.in({KEY_FIELD_NAME}, '{string.Join(',', matchingEntities.Entities.SelectMany(e => e.ChunkIds))}')"
                     ]);
                 }
                 else
                 {
-                    matchingDocumentsFilter = $"{vectorDatabase.VectorStoreIdPropertyName} eq '{knowledgeSource.VectorStoreId}'";
+                    matchingDocumentsFilter = $"{vectorDatabase.VectorStoreIdPropertyName} eq '{vectorStoreId}'";
                 }    
 
                 var matchingDocuments = await cachedKnowledgeSource.SearchService.SearchDocuments(

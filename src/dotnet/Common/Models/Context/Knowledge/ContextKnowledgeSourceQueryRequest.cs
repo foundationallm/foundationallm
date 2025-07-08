@@ -36,5 +36,14 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
         /// </summary>
         [JsonPropertyName("knowledge_graph_query")]
         public ContextKnowledgeGraphQuery? KnowledgeGraphQuery { get; set; }
+
+        /// <summary>
+        /// Gets or sets the vector store identifier used to query the knowledge source.
+        /// </summary>
+        /// <remarks>
+        /// This value is used only when the knowledge source does not have static vector store identier set.
+        /// </remarks>
+        [JsonPropertyName("vector_store_id")]
+        public string? VectorStoreId { get; set; }
     }
 }
