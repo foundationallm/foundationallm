@@ -31,7 +31,7 @@ from foundationallm.models.constants import (
 # user_prompt = "how do I beat the market"
 # user_prompt = "Who is the hero of the story?"
 # user_prompt = "Who are you?"
-# user_prompt = "Summarize the file"
+user_prompt = "Summarize the file"
 # user_prompt = "Calculate the first 20 terms of the Fibonacci series"
 # user_prompt = "Calculate the first 20 terms of the Fibonacci series and save the result as a text file."
 # user_prompt = "Generate a graph of a complex Fourier transformation"
@@ -44,10 +44,10 @@ from foundationallm.models.constants import (
 # user_prompt = "Do you recognize the band?"
 # user_prompt = "Best practices for trading."
 # user_prompt = "Based on the most important recommendations for borrowers from the document named Selling-Guide_02-05-25_highlighted.pdf, determine whether the document is compliant or not."
-user_prompt = "What is considered acceptable income?"
+# user_prompt = "What is considered acceptable income?"
 
 operation_id = str(uuid.uuid4())
-conversation_id = "20250707-161603-A1I0w-DKFkWc6RwP-0LB8g"
+conversation_id = "20250708-082302-5HR-fmC2gE6JYZXCOkTXKQ"
 
 user_identity_json = {"name": "Experimental Test", "user_name":"ciprian@foundationaLLM.ai","upn":"ciprian@foundationaLLM.ai"}
 full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects

@@ -75,7 +75,8 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         if runnable_config is None:
             raise ToolException("RunnableConfig is required for the execution of the tool.")
 
-        # Finalize the list of vector store names to be used.
+        # Retrieve the conversation id from the runnable config if available
+        conversation_id = None
         if RunnableConfigKeys.CONVERSATION_ID in runnable_config['configurable']:
             conversation_id = runnable_config['configurable'][RunnableConfigKeys.CONVERSATION_ID]
 
@@ -90,7 +91,10 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         query_request = {
                 **self.knowledge_source_query,
                 "user_prompt": original_prompt,
-                "vector_store_id": conversation_id if self.use_conversation_as_vectore_store else None
+                "vector_store_id": conversation_id if self.use_conversation_as_vectore_store else None,
+                "metadata_filter": {
+                    "FileName": file_name
+                } if file_name else None
             }
         query_response = await self.context_api_client.post_async(
             endpoint = f"/instances/{self.instance_id}/knowledgeSources/{self.knowledge_source_id}/query",

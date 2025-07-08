@@ -21,7 +21,6 @@ using FoundationaLLM.Context.Models.Configuration;
 using MathNet.Numerics;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Microsoft.Graph.Education.Classes.Item.Assignments.Item.Submissions.Item.Return;
 using OpenAI.Embeddings;
 using Parquet.Serialization;
 using System.ClientModel.Primitives;
@@ -228,7 +227,15 @@ namespace FoundationaLLM.Context.Services
                 else
                 {
                     matchingDocumentsFilter = $"{vectorDatabase.VectorStoreIdPropertyName} eq '{vectorStoreId}'";
-                }    
+                }
+
+                if (queryRequest.MetadataFilter is not null
+                    && queryRequest.MetadataFilter.Count > 0)
+                {
+                    matchingDocumentsFilter += " and " + string.Join(" and ",
+                        queryRequest.MetadataFilter
+                            .Select(kvp => $"{vectorDatabase.MetadataPropertyName}/{kvp.Key} eq '{kvp.Value}'"));
+                }
 
                 var matchingDocuments = await cachedKnowledgeSource.SearchService.SearchDocuments(
                     vectorDatabase.DatabaseName,
