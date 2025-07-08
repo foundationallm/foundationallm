@@ -205,7 +205,7 @@ Class KnowledgeSource  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeSource_EmbeddingDimensions" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource.EmbeddingDimensions">
   EmbeddingDimensions
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Context/KnowledgeSource.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Context/KnowledgeSource.cs/#L34"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the number of dimensions for the embeddings used in the knowledge source.</p>
@@ -238,7 +238,7 @@ public required int EmbeddingDimensions { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeSource_EmbeddingModel" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource.EmbeddingModel">
   EmbeddingModel
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Context/KnowledgeSource.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Context/KnowledgeSource.cs/#L28"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the embedding model used for the knowledge source.</p>
@@ -271,7 +271,7 @@ public required string EmbeddingModel { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeSource_HasKnowledgeGraph" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource.HasKnowledgeGraph">
   HasKnowledgeGraph
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Context/KnowledgeSource.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Context/KnowledgeSource.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a flag that indicates whether the knowledge source has a knowledge graph.</p>
@@ -337,7 +337,7 @@ public required string VectorDatabaseObjectId { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeSource_VectorStoreId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource.VectorStoreId">
   VectorStoreId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Context/KnowledgeSource.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Context/KnowledgeSource.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the object identifier of the vector store associated with the knowledge source.</p>
@@ -346,7 +346,7 @@ public required string VectorDatabaseObjectId { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;vector_store_id&quot;)]
-public required string VectorStoreId { get; set; }</code></pre>
+public string? VectorStoreId { get; set; }</code></pre>
   </div>
 
 
@@ -362,6 +362,9 @@ public required string VectorStoreId { get; set; }</code></pre>
 
 
 
+  <h4 class="section" id="FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeSource_VectorStoreId_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>If this value is null, the knowledge source queries must specify the vector store identifier explicitly.</p>
+</div>
 
 
 
