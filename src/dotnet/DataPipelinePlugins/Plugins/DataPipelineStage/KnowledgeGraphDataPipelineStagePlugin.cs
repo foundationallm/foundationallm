@@ -351,10 +351,12 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 _knowledgeGraphBuildingState.LastSuccessfullStep =
                     KnowledgeGraphBuildingSteps.RelationshipsEmbedding;
                 await SaveKnowledgeGrapState(dataPipelineDefinition, dataPipelineRun);
+                knowledgeGrapBuildingStep =
+                    KnowledgeGraphBuildingSteps.Publish; // Move to the next step.
             }
 
-        if (knowledgeGrapBuildingStep ==
-                KnowledgeGraphBuildingSteps.Publish)
+            if (knowledgeGrapBuildingStep ==
+                    KnowledgeGraphBuildingSteps.Publish)
             {
                 #region Publish knowledge graph to the Context API
 
