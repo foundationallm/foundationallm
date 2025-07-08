@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Plugins;
+using FoundationaLLM.Common.Services.Plugins;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
 {

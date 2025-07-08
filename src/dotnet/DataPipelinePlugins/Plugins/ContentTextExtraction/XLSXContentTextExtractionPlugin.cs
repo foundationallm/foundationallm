@@ -1,6 +1,7 @@
 ﻿using ClosedXML.Excel;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.Plugins;
+using FoundationaLLM.Common.Services.Plugins;
 using System.Text;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction

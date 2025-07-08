@@ -8,6 +8,7 @@ using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.Vectorization;
+using FoundationaLLM.Common.Services.Plugins;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 

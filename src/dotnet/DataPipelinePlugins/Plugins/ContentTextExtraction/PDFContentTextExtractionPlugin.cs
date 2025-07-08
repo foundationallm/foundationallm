@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.Plugins;
+using FoundationaLLM.Common.Services.Plugins;
 using System.Text;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;

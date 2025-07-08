@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Plugins;
+using FoundationaLLM.Common.Services.Plugins;
 using FoundationaLLM.Common.Services.Tokenizers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

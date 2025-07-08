@@ -7,14 +7,11 @@ using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+namespace FoundationaLLM.Common.Services.Plugins
 {
     /// <summary>
     /// Implements a basic Data Pipeline Stage Plugin.
     /// </summary>
-    /// <param name="pluginParameters">The dictionary containing the plugin parameters.</param>
-    /// <param name="packageManager">The package manager for the plugin.</param>
-    /// <param name="serviceProvider">The service provider of the dependency injection container.</param>
     public class DataPipelineStagePluginBase: PluginBase, IDataPipelineStagePlugin
     {
         protected readonly IDataPipelineStateService _dataPipelineStateService;

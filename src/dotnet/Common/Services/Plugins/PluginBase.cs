@@ -4,7 +4,7 @@ using FoundationaLLM.Common.Models.Plugins.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace FoundationaLLM.Plugins.DataPipeline.Plugins
+namespace FoundationaLLM.Common.Services.Plugins
 {
     /// <summary>
     /// Implements the basic functionality of a plugin.
