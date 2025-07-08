@@ -10512,6 +10512,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Plugins.DataPipelineStagePluginBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.Plugins.DataPipelineStagePluginBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Services.Plugins.DataPipelineStagePluginBase",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Services.Plugins.DataPipelineStagePluginBase.yml\" sourcestartlinenumber=\"1\">Implements a basic Data Pipeline Stage Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Plugins.PluginBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.Plugins.PluginBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Services.Plugins.PluginBase",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Services.Plugins.PluginBase.yml\" sourcestartlinenumber=\"1\">Implements the basic functionality of a plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Plugins.PluginService.yml",
       "output": {
         ".html": {
@@ -15734,20 +15762,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.DataPipelineStagePluginBase.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.DataPipelineStagePluginBase.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.DataPipelineStagePluginBase",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.DataPipelineStagePluginBase.yml\" sourcestartlinenumber=\"1\">Implements a basic Data Pipeline Stage Plugin.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.GatewayTextEmbeddingDataPipelineStagePlugin.yml",
       "output": {
         ".html": {
@@ -15888,20 +15902,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.PluginBase.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.PluginBase.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.PluginBase",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.PluginBase.yml\" sourcestartlinenumber=\"1\">Implements the basic functionality of a plugin.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.yml",
       "output": {
         ".html": {
@@ -15911,7 +15911,7 @@
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins",
+      "Title": null,
       "Summary": null
     },
     {
