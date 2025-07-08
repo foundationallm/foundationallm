@@ -10,6 +10,7 @@ using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
+using FoundationaLLM.Common.Services.Plugins;
 using FoundationaLLM.Common.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -80,43 +81,41 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
             {
                 var pnpContextFactory = scope.ServiceProvider.GetRequiredService<IPnPContextFactory>();
 
-                using (var context = await pnpContextFactory.CreateAsync("Default"))
+                using var context = await pnpContextFactory.CreateAsync("Default");
+                foreach (var documentLibraryPath in documentLibraryPaths)
                 {
-                    foreach (var documentLibraryPath in documentLibraryPaths)
+                    var documentLibrary = await context.Web.Lists.GetByServerRelativeUrlAsync(
+                        documentLibraryPath);
+
+                    var siteUri = new Uri(dataSource.SiteUrl!);
+                    foreach (var item in documentLibrary.Items.QueryProperties(
+                            p => p.Title,
+                            p => p.FileSystemObjectType,
+                            p => p.File.QueryProperties(f => f.Name, f => f.ServerRelativeUrl)))
                     {
-                        var documentLibrary = await context.Web.Lists.GetByServerRelativeUrlAsync(
-                            documentLibraryPath);
+                        if (item.FileSystemObjectType == FileSystemObjectType.Folder)
+                            continue; // Skip folders, only process files
 
-                        var siteUri = new Uri(dataSource.SiteUrl!);
-                        foreach(var item in documentLibrary.Items.QueryProperties(
-                                p => p.Title,
-                                p => p.FileSystemObjectType,
-                                p => p.File.QueryProperties(f => f.Name, f => f.ServerRelativeUrl)))
+                        var canonicalId = item.File.ServerRelativeUrl;
+                        contentItems.Add(new DataPipelineContentItem
                         {
-                            if (item.FileSystemObjectType == FileSystemObjectType.Folder)
-                                continue; // Skip folders, only process files
-
-                            var canonicalId = item.File.ServerRelativeUrl;
-                            contentItems.Add(new DataPipelineContentItem
+                            Id = $"content-item-{Path.GetFileNameWithoutExtension(item.File.Name)}-{Guid.NewGuid().ToBase64String()}",
+                            DataSourceObjectId = _dataSourceObjectId,
+                            ContentIdentifier = new ContentIdentifier
                             {
-                                Id = $"content-item-{Path.GetFileNameWithoutExtension(item.File.Name)}-{Guid.NewGuid().ToBase64String()}",
-                                DataSourceObjectId = _dataSourceObjectId,
-                                ContentIdentifier = new ContentIdentifier
-                                {
-                                    MultipartId =
-                                        [
-                                            siteUri.Host,
+                                MultipartId =
+                                    [
+                                        siteUri.Host,
                                             siteUri.PathAndQuery.Trim('/'),
                                             item.File.ServerRelativeUrl
                                                 [..^item.File.Name.Length]
                                                 [siteUri.PathAndQuery.Length..]
                                                 .Trim('/'),
                                             item.File.Name
-                                        ],
-                                    CanonicalId = canonicalId
-                                }
-                            });
-                        }
+                                    ],
+                                CanonicalId = canonicalId
+                            }
+                        });
                     }
                 }
             }

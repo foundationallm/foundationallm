@@ -16,6 +16,7 @@ using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.Vectorization;
+using FoundationaLLM.Common.Services.Plugins;
 using FoundationaLLM.Plugins.DataPipeline.Constants;
 using FoundationaLLM.Plugins.DataPipeline.Models;
 using Microsoft.Extensions.DependencyInjection;

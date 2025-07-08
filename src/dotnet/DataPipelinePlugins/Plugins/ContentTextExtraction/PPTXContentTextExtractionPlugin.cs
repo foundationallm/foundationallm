@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Presentation;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.Plugins;
+using FoundationaLLM.Common.Services.Plugins;
 using System.Text;
 using OpenXml = DocumentFormat.OpenXml.Drawing;
 
