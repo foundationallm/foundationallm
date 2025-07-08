@@ -156,8 +156,8 @@ def upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name):
         
         # Get the MIME type of the file
         mime_type, _ = mimetypes.guess_type(file_path)
-        if not mime_type:
-            mime_type = 'application/octet-stream'  # Default MIME type if none is detected
+        # If the mime type is not recognized, we will leave it as None
+        # as the Core API will make its own attempt to determine it.
         
         # Prepare the multipart form data with MIME type
         files = {
