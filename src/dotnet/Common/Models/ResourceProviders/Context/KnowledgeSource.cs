@@ -16,8 +16,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Context
         /// <summary>
         /// Gets or sets the object identifier of the vector store associated with the knowledge source.
         /// </summary>
+        /// <remarks>
+        /// If this value is null, the knowledge source queries must specify the vector store identifier explicitly.
+        /// </remarks>
         [JsonPropertyName("vector_store_id")]
-        public required string VectorStoreId { get; set; }
+        public string? VectorStoreId { get; set; }
 
         /// <summary>
         /// Gets or sets the embedding model used for the knowledge source.

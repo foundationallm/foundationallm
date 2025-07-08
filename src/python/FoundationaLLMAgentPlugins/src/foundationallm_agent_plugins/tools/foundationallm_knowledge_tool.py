@@ -46,6 +46,10 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         self.context_api_client = self.get_context_api_client(user_identity, config)
         self.instance_id = objects.get(CompletionRequestObjectKeys.INSTANCE_ID, None)
 
+        self.use_conversation_as_vectore_store = \
+            'vector_store_provider' in self.tool_config.properties and \
+            self.tool_config.properties['vector_store_provider'] == 'conversation'
+
         # When configuring the tool on an agent, the description will be set providing context to the document source.
         self.description = self.tool_config.description or "Answers questions by searching through documents."
 
@@ -83,19 +87,27 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             else None
         original_prompt = user_prompt_rewrite or user_prompt or prompt
 
+        query_request = {
+                **self.knowledge_source_query,
+                "user_prompt": original_prompt,
+                "vector_store_id": conversation_id if self.use_conversation_as_vectore_store else None
+            }
         query_response = await self.context_api_client.post_async(
             endpoint = f"/instances/{self.instance_id}/knowledgeSources/{self.knowledge_source_id}/query",
-            data = json.dumps({
-                **self.knowledge_source_query,
-                "user_prompt": original_prompt})
+            data = json.dumps(query_request)
         )
 
-        context = self.format_query_response(query_response)
-        completion_prompt = self.main_prompt.replace('{{context}}', context).replace('{{prompt}}', prompt)
+        if query_response.get('success', False):
 
-        completion = await self.main_llm.ainvoke(completion_prompt)
-        input_tokens += completion.usage_metadata['input_tokens']
-        output_tokens += completion.usage_metadata['output_tokens']
+            context = self.format_query_response(query_response)
+            completion_prompt = self.main_prompt.replace('{{context}}', context).replace('{{prompt}}', prompt)
+
+            completion = await self.main_llm.ainvoke(completion_prompt)
+            input_tokens += completion.usage_metadata['input_tokens']
+            output_tokens += completion.usage_metadata['output_tokens']
+        else:
+            raise ToolException(f"Failed to query knowledge source: {query_response.get('error_message', 'Unknown error')}")
+
         content_artifacts = [] # self.retriever.get_document_content_artifacts() or []
         # Token usage content artifact
         # Transform all completion.usage_metadata property values to string
