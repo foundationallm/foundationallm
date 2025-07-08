@@ -5,10 +5,26 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-    <IsPackable>false</IsPackable>
+    <IsPackable>true</IsPackable>
     <IsTestProject>true</IsTestProject>
 	<AssemblyName>FoundationaLLM.Core.Examples</AssemblyName>
 	<RootNamespace>FoundationaLLM.Core.Examples</RootNamespace>
+
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<PackageId>FoundationaLLM.Core.Examples</PackageId>
+	<Title>FoundationaLLM Core Examples</Title>
+	<Version>0.0.0</Version>
+	<Authors>FoundationaLLM</Authors>
+	<Description>FoundationaLLM.Core.Examples contains custom development examples packaged as tests.</Description>
+	<Copyright>Copyright © FoundationaLLM. All rights reserved.</Copyright>
+	<PackageProjectUrl>https://foundationallm.ai</PackageProjectUrl>
+	<PackageIcon>fllm-icon-128.png</PackageIcon>
+	<PackageReadmeFile>readme.md</PackageReadmeFile>
+	<RepositoryUrl>https://github.com/solliancenet/foundationallm</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
+	<PackageTags>FoundationaLLM;LLM;GPT;AI;Data;Core;Example</PackageTags>
+	<AssemblyVersion>0.0.0</AssemblyVersion>
+	<FileVersion>0.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -55,6 +71,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="fllm-icon-128.png">
+      <PackagePath>\</PackagePath>
+      <Pack>True</Pack>
+    </None>
+    <None Update="readme.md">
+      <PackagePath>\</PackagePath>
+      <Pack>True</Pack>
+    </None>
     <None Update="testsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
