@@ -61,6 +61,10 @@ jobs:
       working-directory: ./src/dotnet/DataPipelinePlugins
       run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
 
+    - name: Build Core.Examples
+      working-directory: ./tests/dotnet/Core.Examples
+      run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
+
     - name: Pack Common
       working-directory: ./src/dotnet/Common
       run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
@@ -79,6 +83,10 @@ jobs:
 
     - name: Pack DataPipelinePlugins
       working-directory: ./src/dotnet/DataPipelinePlugins
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+
+    - name: Pack Core.Examples
+      working-directory: ./tests/dotnet/Core.Examples
       run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     # .NET Publish Steps
@@ -101,6 +109,10 @@ jobs:
     - name: Publish DataPipelinePlugins to NuGet
       working-directory: ./src/dotnet/DataPipelinePlugins
       run: dotnet nuget push ./nupkg/*.DataPipelinePlugins.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+
+    - name: Publish Core.Examples to NuGet
+      working-directory: ./tests/dotnet/Core.Examples
+      run: dotnet nuget push ./nupkg/*.Core.Examples.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
     # Python Build and Publish Steps
     - name: Build Python Package
