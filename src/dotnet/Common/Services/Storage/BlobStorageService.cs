@@ -365,11 +365,15 @@ namespace FoundationaLLM.Common.Services.Storage
             var fullListing = new List<string>(); // Full listing of directory and file paths  
             var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
+            _logger.LogDebug("Getting matching file paths in container {ContainerName} with pattern {FilePathPattern}.", containerName, filePathPattern);
+
             // Flat listing (recursive)  
             await foreach (var blob in containerClient.GetBlobsAsync(prefix: filePathPattern, cancellationToken: cancellationToken))
             {
                 fullListing.Add(blob.Name);
             }
+
+            _logger.LogDebug("Found {Count} matching file paths in container {ContainerName} with pattern {FilePathPattern}.", fullListing.Count, containerName, filePathPattern);
 
             return fullListing;
         }

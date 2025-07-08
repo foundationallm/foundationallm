@@ -233,6 +233,11 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             DataPipelineRunWorkItem dataPipelineRunWorkItem,
             string artifactsNameFilter)
         {
+            _logger.LogDebug("Loading data pipeline run work item artifacts for {RunId} and content item {ContentItemCanonicalId} with the following name filter: {ArtifactsNameFilter}.",
+                dataPipelineRun.RunId,
+                dataPipelineRunWorkItem.ContentItemCanonicalId,
+                artifactsNameFilter);
+
             var artifactsFilter = string.Join('/',
                 [
                     GetDataPipelineRunArtifactsPath(
@@ -243,9 +248,13 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     artifactsNameFilter
                 ]);
 
+            _logger.LogDebug("Artifacts filter path: {ArtifactsFilter}", artifactsFilter);
+
             var artifactsPaths = await _storageService.GetMatchingFilePathsAsync(
                 dataPipelineRun.InstanceId,
                 artifactsFilter);
+
+            _logger.LogDebug("Found {ArtifactsCount} artifacts for the filter {ArtifactsFilter}.", artifactsPaths.Count, artifactsFilter);
 
             var result = await artifactsPaths
                 .ToAsyncEnumerable()
@@ -255,6 +264,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                         dataPipelineRun.InstanceId,
                         path,
                         default);
+
+                    _logger.LogDebug("Loaded artifact {ArtifactFileName}for run {RunId} and content item {ContentItemCanonicalId}.",
+                        path,
+                        dataPipelineRun.RunId,
+                        dataPipelineRunWorkItem.ContentItemCanonicalId);
+
                     return new DataPipelineStateArtifact
                     {
                         FileName = Path.GetFileName(path),
@@ -262,6 +277,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     };
                 })
                 .ToListAsync();
+
+            _logger.LogDebug("Returning {ArtifactsCount} artifacts.", result.Count);
 
             return result;
         }
@@ -273,6 +290,11 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             DataPipelineRunWorkItem dataPipelineRunWorkItem,
             List<DataPipelineStateArtifact> artifacts)
         {
+            _logger.LogDebug("Saving {ArtifactsCount} data pipeline run work item artifacts for {RunId} and content item {ContentItemCanonicalId}.",
+                artifacts.Count,
+                dataPipelineRun.RunId,
+                dataPipelineRunWorkItem.ContentItemCanonicalId);
+
             var artifactsPath = string.Join('/',
                 [
                     GetDataPipelineRunArtifactsPath(
@@ -281,6 +303,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     "content-items",
                     dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-')
                 ]);
+
+            _logger.LogDebug("Artifacts path: {ArtifactsPath}", artifactsPath);
 
             var artifactsWithError = new List<string>();
 
@@ -293,13 +317,27 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 },
                 async (artifact, token) =>
                 {
+                    _logger.LogDebug("Saving artifact {ArtifactFileName} for run {RunId} and content item {ContentItemCanonicalId}.",
+                        artifact.FileName,
+                        dataPipelineRun.RunId,
+                        dataPipelineRunWorkItem.ContentItemCanonicalId);
+
                     await _storageService.WriteFileAsync(
                         dataPipelineRun.InstanceId,
                         $"{artifactsPath}/{artifact.FileName}",
                         artifact.Content.ToStream(),
                         artifact.ContentType,
                         token);
+
+                    _logger.LogDebug("Successfully saved artifact {ArtifactFileName} for run {RunId} and content item {ContentItemCanonicalId}.",
+                        artifact.FileName,
+                        dataPipelineRun.RunId,
+                        dataPipelineRunWorkItem.ContentItemCanonicalId);
                 });
+
+            _logger.LogDebug("Successfully saved data pipeline run work item artifacts for {RunId} and content item {ContentItemCanonicalId}.",
+                dataPipelineRun.RunId,
+                dataPipelineRunWorkItem.ContentItemCanonicalId);
         }
 
         /// <inheritdoc/>
