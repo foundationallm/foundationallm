@@ -82,7 +82,7 @@ function Deploy-FoundationaLLMPackage {
 
     Write-Host "Deploying package from $($PackageRoot)" -ForegroundColor Blue
 
-    if (Test-Path -Path "$($PackageRoot)/artifacts/agent.json") {
+    if (Test-Path -Path "$($PackageRoot)/artifacts/prompts.json") {
 
         Write-Host "Creating prompts..."
 
@@ -146,9 +146,12 @@ function Deploy-FoundationaLLMPackage {
         Write-Host "Agent updated: $($agentResult)" -ForegroundColor Green
     }
 
-    Write-Host "Updating role assignments..."
+    if (Test-Path -Path "$($PackageRoot)/artifacts/roleAssignments.json") {
+    
+        Write-Host "Updating role assignments..."
 
-    Merge-RoleAssignments -PackageRoot $PackageRoot -Parameters $Parameters
+        Merge-RoleAssignments -PackageRoot $PackageRoot -Parameters $Parameters
+    }
 
     if (Test-Path -Path "$($PackageRoot)/artifacts/plugins.json") {
 
@@ -166,6 +169,23 @@ function Deploy-FoundationaLLMPackage {
                 -NuGetPackageName $plugin[1] `
                 -NuGetPackageVersion $plugin[2]
             Write-Host "Plugin updated: $($pluginResult)" -ForegroundColor Green
+        }
+    }
+
+    if (Test-Path -Path "$($PackageRoot)/artifacts/vectorDatabases.json") {
+
+        Write-Host "Updating vector databases..."
+
+        $vectorDatabases = Get-Content "$($PackageRoot)/artifacts/vectorDatabases.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        foreach ($vectorDatabase in $vectorDatabases) {
+
+            Write-Host "Updating vector database: $($vectorDatabase.name)"
+            $vectorDatabaseResult = Update-VectorDatabase `
+                -VectorDatabase $vectorDatabase
+            Write-Host "Vector database updated: $($vectorDatabaseResult)" -ForegroundColor Green
         }
     }
 }
