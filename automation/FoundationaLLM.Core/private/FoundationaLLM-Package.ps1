@@ -110,7 +110,7 @@ function Deploy-FoundationaLLMPackage {
 
     if (Test-Path -Path "$($PackageRoot)/artifacts/agent.json") {
     
-        Write-Host "Creating agent..."
+        Write-Host "Updating agent..."
 
         $agent = Get-Content "$($PackageRoot)/artifacts/agent.json" `
             | Resolve-Placeholders -Parameters $Parameters `
@@ -141,12 +141,31 @@ function Deploy-FoundationaLLMPackage {
             }
         }
 
-        Write-Host "Creating agent: $($agent.name)"
+        Write-Host "Updating agent: $($agent.name)"
         $agentResult = (Merge-Agent -Agent $agent)
-        Write-Host "Agent created: $($agentResult)" -ForegroundColor Green
+        Write-Host "Agent updated: $($agentResult)" -ForegroundColor Green
     }
 
-    Write-Host "Creating role assignments..."
+    Write-Host "Updating role assignments..."
 
     Merge-RoleAssignments -PackageRoot $PackageRoot -Parameters $Parameters
+
+    if (Test-Path -Path "$($PackageRoot)/artifacts/plugins.json") {
+
+        Write-Host "Updating plugin packages..."
+
+        $plugins = Get-Content "$($PackageRoot)/artifacts/plugins.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        foreach ($plugin in $plugins.dotnet) {
+
+            Write-Host "Updating plugin package: $($plugin[0])"
+            $pluginResult = Update-PluginPackage `
+                -PackageName $plugin[0] `
+                -NuGetPackageName $plugin[1] `
+                -NuGetPackageVersion $plugin[2]
+            Write-Host "Plugin updated: $($pluginResult)" -ForegroundColor Green
+        }
+    }
 }

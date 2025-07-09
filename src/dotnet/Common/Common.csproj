@@ -16,7 +16,6 @@
     <RepositoryUrl>https://github.com/solliancenet/foundationallm</RepositoryUrl>
     <PackageId>FoundationaLLM.Common</PackageId>
     <Version>0.0.0</Version> <!-- Placeholder version -->
-    <AssemblyVersion>0.0.0</AssemblyVersion> <!-- Placeholder version -->
     <FileVersion>0.0.0</FileVersion> <!-- Placeholder version -->
     <PackageIcon>fllm-icon-128.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
@@ -30,6 +29,14 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <AssemblyVersion>0.9.7</AssemblyVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' != 'Debug'">
+    <AssemblyVersion>0.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
