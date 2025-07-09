@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 
@@ -25,7 +26,11 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(KnowledgeSource)], [typeof(ResourceProviderUpsertResult)]),
                         new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], [])
                     ],
-                    Actions = []
+                    Actions = [
+                        new ResourceTypeAction(ResourceProviderActions.Query, true, false, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ContextKnowledgeSourceQueryRequest)], [typeof(ContextKnowledgeSourceQueryResponse)])
+                        ]),
+                    ]
                 }
             }
         };

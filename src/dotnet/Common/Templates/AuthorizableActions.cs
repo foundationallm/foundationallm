@@ -713,9 +713,10 @@ namespace FoundationaLLM.Common.Models.Authorization
                 .Replace("*", "[a-zA-Z\\/.]*");
             regexPattern = $"^{regexPattern}$";
 
-            return [.. Actions.Values
+            return Actions.Values
                 .Select(v => v.Name)
-                .Where(name => Regex.IsMatch(name, regexPattern))];
+                .Where(name => Regex.IsMatch(name, regexPattern))
+                .ToList();
         }
     }
 }

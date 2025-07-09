@@ -295,5 +295,50 @@ namespace FoundationaLLM.Common.Clients
                 };
             }
         }
+
+        /// <inheritdoc/>
+        public async Task<ContextKnowledgeSourceQueryResponse> QueryKnowledgeSource(
+            string instanceId,
+            string knowledgeSourceId,
+            ContextKnowledgeSourceQueryRequest queryRequest)
+        {
+            try
+            {
+                var client = await _httpClientFactoryService.CreateClient(
+                    HttpClientNames.ContextAPI,
+                    _callContext.CurrentUserIdentity!);
+
+                var responseMessage = await client.PostAsJsonAsync(
+                    $"instances/{instanceId}/knowledgeSources/{knowledgeSourceId}/query",
+                    queryRequest);
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                    var response = JsonSerializer.Deserialize<ContextKnowledgeSourceQueryResponse>(responseContent);
+                    return response!;
+                }
+
+                _logger.LogError(
+                    "An error occurred while updating the knowledge source. Status code: {StatusCode}.",
+                    responseMessage.StatusCode);
+
+                return new ContextKnowledgeSourceQueryResponse
+                {
+                    Success = false,
+                    ErrorMessage = "The service responded with an error status code."
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while querying the knowledge source.");
+
+                return new ContextKnowledgeSourceQueryResponse
+                {
+                    Success = false,
+                    ErrorMessage = "An error occurred while querying the knowledge source."
+                };
+            }
+        }
     }
 }

@@ -154,6 +154,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vector", "dotnet\Vector\Vec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContextEngine", "dotnet\ContextEngine\ContextEngine.csproj", "{980C5B34-1E8C-FC13-A78C-BC69D5567E0D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Context", "dotnet\Context\Context.csproj", "{7684E824-6E01-D908-112B-FF35240070DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -399,6 +401,10 @@ Global
 		{980C5B34-1E8C-FC13-A78C-BC69D5567E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{980C5B34-1E8C-FC13-A78C-BC69D5567E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{980C5B34-1E8C-FC13-A78C-BC69D5567E0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7684E824-6E01-D908-112B-FF35240070DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7684E824-6E01-D908-112B-FF35240070DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7684E824-6E01-D908-112B-FF35240070DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7684E824-6E01-D908-112B-FF35240070DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -475,6 +481,7 @@ Global
 		{708436F3-6D5A-4884-B34D-2EA7F2054C4B} = {A5985DC7-94FA-4DD7-A277-0D29577A77CB}
 		{77F686F6-0C92-4155-948E-3CE33AE28036} = {2C948535-3001-4852-9686-492A23E9E356}
 		{980C5B34-1E8C-FC13-A78C-BC69D5567E0D} = {A5985DC7-94FA-4DD7-A277-0D29577A77CB}
+		{7684E824-6E01-D908-112B-FF35240070DA} = {2C948535-3001-4852-9686-492A23E9E356}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF5DE858-4B85-4EE8-8A6D-46E8E4FBA078}

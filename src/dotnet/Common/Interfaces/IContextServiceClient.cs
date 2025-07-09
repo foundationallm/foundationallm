@@ -74,5 +74,17 @@ namespace FoundationaLLM.Common.Interfaces
             string instanceId,
             string knowledgeSourceId,
             ContextKnowledgeSourceUpdateRequest updateRequest);
+
+        /// <summary>
+        /// Calls the Context API to query a knowledge source.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
+        /// <param name="queryRequest">The request object containing query parameters and options.</param>
+        /// <returns>A response containing the result of the query execution.</returns>
+        Task<ContextKnowledgeSourceQueryResponse> QueryKnowledgeSource(
+            string instanceId,
+            string knowledgeSourceId,
+            ContextKnowledgeSourceQueryRequest queryRequest);
     }
 }
