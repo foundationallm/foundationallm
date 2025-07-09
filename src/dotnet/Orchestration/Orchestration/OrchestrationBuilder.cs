@@ -559,7 +559,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             }                            
                             break;
 
-                        case KnowledgeResourceTypeNames.KnowledgeSources:
+                        case ContextResourceTypeNames.KnowledgeSources:
                             // No need to send in the details of the knowledge source.
                             break;
 

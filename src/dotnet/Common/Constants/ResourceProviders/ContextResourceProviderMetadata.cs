@@ -5,9 +5,9 @@ using FoundationaLLM.Common.Models.ResourceProviders.Context;
 namespace FoundationaLLM.Common.Constants.ResourceProviders
 {
     /// <summary>
-    /// Provides metadata for the FoundationaLLM.Knowledge resource provider.
+    /// Provides metadata for the FoundationaLLM.Context resource provider.
     /// </summary>
-    public static class KnowledgeResourceProviderMetadata
+    public static class ContextResourceProviderMetadata
     {
         /// <summary>
         /// The metadata describing the resource types allowed by the resource provider.
@@ -15,9 +15,9 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
         public static Dictionary<string, ResourceTypeDescriptor> AllowedResourceTypes => new()
         {
             {
-                KnowledgeResourceTypeNames.KnowledgeSources,
+                ContextResourceTypeNames.KnowledgeSources,
                 new ResourceTypeDescriptor(
-                    KnowledgeResourceTypeNames.KnowledgeSources,
+                    ContextResourceTypeNames.KnowledgeSources,
                     typeof(KnowledgeSource))
                 {
                     AllowedTypes = [

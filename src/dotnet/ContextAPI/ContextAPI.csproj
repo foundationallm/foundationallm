@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Context\Context.csproj" />
+    <ProjectReference Include="..\ContextEngine\ContextEngine.csproj" />
   </ItemGroup>
 
 </Project>

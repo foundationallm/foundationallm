@@ -526,7 +526,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                 ResourceProviderNames.FoundationaLLM_DataPipeline => DataPipelineResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_Plugin => PluginResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_Vector => VectorResourceProviderMetadata.AllowedResourceTypes,
-                ResourceProviderNames.FoundationaLLM_Knowledge => KnowledgeResourceProviderMetadata.AllowedResourceTypes,
+                ResourceProviderNames.FoundationaLLM_Context => ContextResourceProviderMetadata.AllowedResourceTypes,
                 _ => []
             };
 
