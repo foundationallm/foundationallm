@@ -530,5 +530,29 @@ namespace FoundationaLLM.Common.Constants.Authorization
         public const string FoundationaLLM_Vector_Management_Write = "FoundationaLLM.Vector/management/write";
 
         #endregion
+
+        #region Context
+
+        /// <summary>
+        /// Read context knowledge sources.
+        /// </summary>
+        public const string FoundationaLLM_Context_KnowledgeSources_Read = "FoundationaLLM.Context/knowledgeSources/read";
+
+        /// <summary>
+        /// Create or update context knowledge sources.
+        /// </summary>
+        public const string FoundationaLLM_Context_KnowledgeSources_Write = "FoundationaLLM.Context/knowledgeSources/write";
+
+        /// <summary>
+        /// Delete context knowledge sources.
+        /// </summary>
+        public const string FoundationaLLM_Context_KnowledgeSources_Delete = "FoundationaLLM.Context/knowledgeSources/delete";
+
+        /// <summary>
+        /// Execute management actions.
+        /// </summary>
+        public const string FoundationaLLM_Context_Management_Write = "FoundationaLLM.Context/management/write";
+
+        #endregion
     }
 }

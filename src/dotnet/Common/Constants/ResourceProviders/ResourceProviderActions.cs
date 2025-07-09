@@ -21,6 +21,11 @@
         public const string Filter = "filter";
 
         /// <summary>
+        /// Submit a query to a resource.
+        /// </summary>
+        public const string Query = "query";
+
+        /// <summary>
         /// Load the content of a file.
         /// </summary>
         public const string LoadFileContent = "load-file-content";

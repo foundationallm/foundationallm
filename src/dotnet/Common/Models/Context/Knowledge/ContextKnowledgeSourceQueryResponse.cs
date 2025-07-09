@@ -5,20 +5,8 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
     /// <summary>
     /// Represents the result of a knowledge source query.
     /// </summary>
-    public class ContextKnowledgeSourceQueryResponse
+    public class ContextKnowledgeSourceQueryResponse : ContextServiceResponse
     {
-        /// <summary>
-        /// Gets or sets a flag that indicates if the query was processed successfully.
-        /// </summary>
-        [JsonPropertyName("success")]
-        public bool Success { get; set; }
-
-        /// <summary>
-        /// Gets or sets the error message associated with the current operation or state.
-        /// </summary>
-        [JsonPropertyName("error_message")]
-        public string? ErrorMessage { get; set; }
-
         /// <summary>
         /// Gets or sets the list of text chunks that are part of the result.
         /// </summary>

@@ -3,7 +3,7 @@
     /// <summary>
     /// Contains constants of the names of the resource types managed by the FoundationaLLM.Knowledge resource provider.
     /// </summary>
-    public static class KnowledgeResourceTypeNames
+    public static class ContextResourceTypeNames
     {
         /// <summary>
         /// Knowledge sources.

@@ -538,5 +538,30 @@
 				"field_name": "FoundationaLLM_Vector_Management_Write"
 			}
 		]
+	},
+	{
+		"category": "Context",
+		"actions": [
+			{
+				"name": "FoundationaLLM.Context/knowledgeSources/read",
+				"description": "Read context knowledge sources.",
+				"field_name": "FoundationaLLM_Context_KnowledgeSources_Read"
+			},
+			{
+				"name": "FoundationaLLM.Context/knowledgeSources/write",
+				"description": "Create or update context knowledge sources.",
+				"field_name": "FoundationaLLM_Context_KnowledgeSources_Write"
+			},
+			{
+				"name": "FoundationaLLM.Context/knowledgeSources/delete",
+				"description": "Delete context knowledge sources.",
+				"field_name": "FoundationaLLM_Context_KnowledgeSources_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Context/management/write",
+				"description": "Execute management actions.",
+				"field_name": "FoundationaLLM_Context_Management_Write"
+			}
+		]
 	}
 ]

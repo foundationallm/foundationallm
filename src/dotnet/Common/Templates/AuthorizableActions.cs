@@ -670,6 +670,34 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Execute management actions.",
                         "Vector")
                 },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Read,
+                        "Read context knowledge sources.",
+                        "Context")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Write,
+                        "Create or update context knowledge sources.",
+                        "Context")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Delete,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Delete,
+                        "Delete context knowledge sources.",
+                        "Context")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Context_Management_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Context_Management_Write,
+                        "Execute management actions.",
+                        "Context")
+                },
             });
 
         /// <summary>

@@ -297,7 +297,7 @@ namespace FoundationaLLM.Context.Services
                 {
                     Type = "knowledge-source",
                     Name = knowledgeSourceId,
-                    ObjectId = $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_ContextAPI}/knowledgeSources/{knowledgeSourceId}",
+                    ObjectId = $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Context}/knowledgeSources/{knowledgeSourceId}",
                     EmbeddingModel = updateRequest.EmbeddingModel,
                     EmbeddingDimensions = updateRequest.EmbeddingDimensions,
                     VectorDatabaseObjectId = updateRequest.VectorDatabaseObjectId,
