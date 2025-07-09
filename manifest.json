@@ -3078,6 +3078,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ContextResourceProviderMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ContextResourceProviderMetadata.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.ResourceProviders.ContextResourceProviderMetadata",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ContextResourceProviderMetadata.yml\" sourcestartlinenumber=\"1\">Provides metadata for the FoundationaLLM.Context resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ContextResourceTypeNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ContextResourceTypeNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.ResourceProviders.ContextResourceTypeNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ContextResourceTypeNames.yml\" sourcestartlinenumber=\"1\">Contains constants of the names of the resource types managed by the FoundationaLLM.Knowledge resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ConversationResourceProviderGetParameterNames.yml",
       "output": {
         ".html": {
@@ -3215,34 +3243,6 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Constants.ResourceProviders.DataSourceTypes",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.DataSourceTypes.yml\" sourcestartlinenumber=\"1\">String constants for the types of data sources.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.KnowledgeResourceProviderMetadata.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.KnowledgeResourceProviderMetadata.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Constants.ResourceProviders.KnowledgeResourceProviderMetadata",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.KnowledgeResourceProviderMetadata.yml\" sourcestartlinenumber=\"1\">Provides metadata for the FoundationaLLM.Knowledge resource provider.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.KnowledgeResourceTypeNames.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.KnowledgeResourceTypeNames.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Constants.ResourceProviders.KnowledgeResourceTypeNames",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.KnowledgeResourceTypeNames.yml\" sourcestartlinenumber=\"1\">Contains constants of the names of the resource types managed by the FoundationaLLM.Knowledge resource provider.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -12122,6 +12122,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.ResourceProviders.ContextResourceProviderService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.ResourceProviders.ContextResourceProviderService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.ResourceProviders.ContextResourceProviderService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.ResourceProviders.ContextResourceProviderService.yml\" sourcestartlinenumber=\"1\">Implements the FoundationaLLM.Context resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.ResourceProviders.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.ResourceProviders.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.ResourceProviders",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.AzureContainerAppsCodeInterpreterService.yml",
       "output": {
         ".html": {
@@ -12272,6 +12300,34 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.Context.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Validation.KnowledgeSourceValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Validation.KnowledgeSourceValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Validation.KnowledgeSourceValidator",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Validation.KnowledgeSourceValidator.yml\" sourcestartlinenumber=\"1\">Provides validation methods for knowledge source objects.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Validation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Validation.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Validation",
       "Summary": null
     },
     {
