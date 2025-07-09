@@ -135,7 +135,8 @@ function Invoke-ManagementAPI {
         [string]$Method,
         [string]$RelativeUri,
         [hashtable]$Body = $null,
-        [hashtable]$Headers = $null
+        [hashtable]$Headers = $null,
+        [hashtable]$Form = $null
     )
 
     Write-Host "Calling Management API:" -ForegroundColor Green
@@ -156,6 +157,15 @@ function Invoke-ManagementAPI {
     $uri = "$($baseUri.AbsoluteUri)/$($RelativeUri)"
 
     Write-Host "$($Method) $($uri)" -ForegroundColor Green
+    if ($Form) {
+
+        $Headers["Content-Type"] = "multipart/form-data;boundary=----WebKitFormBoundaryABCDEFGHIJKLMONOPQRSTUVWXYZ"
+        return Invoke-RestMethod `
+            -Method $Method `
+            -Uri  $uri `
+            -Form $Form `
+            -Headers $Headers
+    }
 
     return Invoke-RestMethod `
         -Method $Method `
