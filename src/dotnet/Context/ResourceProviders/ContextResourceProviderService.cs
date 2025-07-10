@@ -102,6 +102,11 @@ namespace FoundationaLLM.Context.ResourceProviders
                         authorizationResult,
                         serializedAction,
                         userIdentity),
+                    ResourceProviderActions.RenderGraph => await RenderKnowledgeSourceGraph(
+                        resourcePath,
+                        authorizationResult,
+                        serializedAction,
+                        userIdentity),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider..")
                 },
                 _ => throw new ResourceProviderException(
@@ -166,6 +171,30 @@ namespace FoundationaLLM.Context.ResourceProviders
                 resourcePath.InstanceId!,
                 resourcePath.MainResourceId!,
                 queryRequest);
+
+            return response;
+        }
+
+        private async Task<ContextKnowledgeSourceRenderGraphResponse> RenderKnowledgeSourceGraph(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity)
+        {
+            //var queryRequest = JsonSerializer.Deserialize<ContextKnowledgeSourceQueryRequest>(serializedAction)
+            //    ?? throw new ResourceProviderException("The query request is not valid.", StatusCodes.Status400BadRequest);
+
+            using var scope = _serviceProvider.CreateScope();
+
+            var contextServiceClient = new ContextServiceClient(
+                new OrchestrationContext { CurrentUserIdentity = ServiceContext.ServiceIdentity },
+                scope.ServiceProvider.GetRequiredService<IHttpClientFactoryService>(),
+                scope.ServiceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
+
+            var response = await contextServiceClient.RenderKnowledgeSourceGraph(
+                resourcePath.InstanceId!,
+                resourcePath.MainResourceId!,
+                null);
 
             return response;
         }

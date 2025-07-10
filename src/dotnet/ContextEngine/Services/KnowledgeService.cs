@@ -320,6 +320,87 @@ namespace FoundationaLLM.Context.Services
             }
         }
 
+        /// <inheritdoc/>
+        public async Task<ContextKnowledgeSourceRenderGraphResponse> RenderKnowledgeSourceGraph(
+            string instanceId,
+            string knowledgeSourceId,
+            ContextKnowledgeSourceQueryRequest? queryRequest,
+            UnifiedUserIdentity userIdentity)
+        {
+            try
+            {
+                var knowledgeSourcePropertiesFilePath = string.Join('/',
+                [
+                    KNOWLEDGE_SOURCE_ROOT_PATH,
+                    $"{knowledgeSourceId}.json"
+                ]);
+
+                var knowledgeSourceBinaryContent = await _storageService.ReadFileAsync(
+                    instanceId,
+                    knowledgeSourcePropertiesFilePath,
+                    default);
+                var knowledgeSource =
+                    JsonSerializer.Deserialize<KnowledgeSource>(knowledgeSourceBinaryContent)
+                    ?? throw new ResourceProviderException(
+                        $"The knowledge source properties for {knowledgeSourceId} could not be deserialized.");
+
+                if (!knowledgeSource.HasKnowledgeGraph)
+                    return new ContextKnowledgeSourceRenderGraphResponse
+                    {
+                        Success = false,
+                        ErrorMessage = $"The knowledge source '{knowledgeSourceId}' for instance '{instanceId}' does not contain a knowledge graph."
+                    };
+
+                var vectorStoreId = string.IsNullOrWhiteSpace(knowledgeSource.VectorStoreId)
+                    ? queryRequest!.VectorStoreId
+                    : knowledgeSource.VectorStoreId;
+                if (string.IsNullOrWhiteSpace(vectorStoreId))
+                    return new ContextKnowledgeSourceRenderGraphResponse
+                    {
+                        Success = false,
+                        ErrorMessage = $"The knowledge source '{knowledgeSourceId}' for instance '{instanceId}' does not have a vector store identifier specified and none was provided in the rendering request."
+                    };
+
+                var vectorDatabase = await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
+                    knowledgeSource!.VectorDatabaseObjectId,
+                    ServiceContext.ServiceIdentity!);
+
+                var cachedKnowledgeSource = await GetKnowledgeSourceFromCache(
+                    instanceId,
+                    knowledgeSource,
+                    vectorDatabase);
+
+                var renderResponse = new ContextKnowledgeSourceRenderGraphResponse
+                {
+                    Success = true
+                };
+
+                if (queryRequest is null)
+                {
+                    renderResponse.Nodes = [.. cachedKnowledgeSource.KnowledgeGraph!.Entities
+                        .Select(e => new KnowledgeGraphRenderingNode
+                        {
+                            Id = e.UniqueId,
+                            Label = e.Name,
+                        })];
+                    renderResponse.Edges = [.. cachedKnowledgeSource.KnowledgeGraph!.Relationships
+                        .Select(r => new List<string> { r.SourceUniqueId, r.TargetUniqueId })];
+                }
+
+                return renderResponse;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while rendering the knowledge graph {KnowledgeGraphId} for instance {InstanceId}.",
+                    knowledgeSourceId, instanceId);
+                return new ContextKnowledgeSourceRenderGraphResponse
+                {
+                    Success = false,
+                    ErrorMessage = $"An error occurred while rendering the knowledge graph '{knowledgeSourceId}' for instance '{instanceId}'."
+                };
+            }
+        }
+
         private async Task UpdateKnowledgeSourceProperties(
             string instanceId,
             string knowledgeSourceId,
