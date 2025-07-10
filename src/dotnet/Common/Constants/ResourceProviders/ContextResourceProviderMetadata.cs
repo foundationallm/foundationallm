@@ -30,6 +30,9 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         new ResourceTypeAction(ResourceProviderActions.Query, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ContextKnowledgeSourceQueryRequest)], [typeof(ContextKnowledgeSourceQueryResponse)])
                         ]),
+                        new ResourceTypeAction(ResourceProviderActions.RenderGraph, true, false, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ContextKnowledgeSourceQueryRequest)], [typeof(ContextKnowledgeSourceRenderGraphResponse)])
+                        ])
                     ]
                 }
             }

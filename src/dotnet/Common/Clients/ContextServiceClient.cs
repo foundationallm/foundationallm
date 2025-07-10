@@ -355,7 +355,7 @@ namespace FoundationaLLM.Common.Clients
                 }
 
                 _logger.LogError(
-                    "An error occurred while updating the knowledge source. Status code: {StatusCode}.",
+                    "An error occurred while querying the knowledge source. Status code: {StatusCode}.",
                     responseMessage.StatusCode);
 
                 return new ContextKnowledgeSourceQueryResponse
@@ -372,6 +372,51 @@ namespace FoundationaLLM.Common.Clients
                 {
                     Success = false,
                     ErrorMessage = "An error occurred while querying the knowledge source."
+                };
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<ContextKnowledgeSourceRenderGraphResponse> RenderKnowledgeSourceGraph(
+            string instanceId,
+            string knowledgeSourceId,
+            ContextKnowledgeSourceQueryRequest? queryRequest)
+        {
+            try
+            {
+                var client = await _httpClientFactoryService.CreateClient(
+                    HttpClientNames.ContextAPI,
+                    _callContext.CurrentUserIdentity!);
+
+                var responseMessage = await client.PostAsJsonAsync(
+                    $"instances/{instanceId}/knowledgeSources/{knowledgeSourceId}/render-graph",
+                    queryRequest);
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                    var response = JsonSerializer.Deserialize<ContextKnowledgeSourceRenderGraphResponse>(responseContent);
+                    return response!;
+                }
+
+                _logger.LogError(
+                    "An error occurred while rendering the knowledge source's graph. Status code: {StatusCode}.",
+                    responseMessage.StatusCode);
+
+                return new ContextKnowledgeSourceRenderGraphResponse
+                {
+                    Success = false,
+                    ErrorMessage = "The service responded with an error status code."
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while rendering the knowledge source's graph.");
+
+                return new ContextKnowledgeSourceRenderGraphResponse
+                {
+                    Success = false,
+                    ErrorMessage = "An error occurred while rendering the knowledge source's graph."
                 };
             }
         }

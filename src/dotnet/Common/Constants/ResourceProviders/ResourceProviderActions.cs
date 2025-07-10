@@ -26,6 +26,11 @@
         public const string Query = "query";
 
         /// <summary>
+        /// Submit a request to render a knowledge graph.
+        /// </summary>
+        public const string RenderGraph = "render-graph";
+
+        /// <summary>
         /// Load the content of a file.
         /// </summary>
         public const string LoadFileContent = "load-file-content";

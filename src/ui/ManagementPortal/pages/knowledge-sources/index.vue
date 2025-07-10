@@ -65,7 +65,7 @@
             <div>
                 <div><h4 class="page-header">Text content</h4></div>
                 <div>
-                    <label>Text chunks maximum count: {{ queryRequest.text_chunks_max_count }}</label>
+                    <label class="query-grid-label">Text chunks maximum count: {{ queryRequest.text_chunks_max_count }}</label>
                     <Slider
                         v-model="queryRequest.text_chunks_max_count"
                         :min="0"
@@ -161,6 +161,13 @@
             />
             <div v-else style="color: #888;">No result</div>
         </div>
+
+        <div
+            v-if="hasKnowledgeGraph" 
+            class="sigma-graph-container">
+            <label class="query-grid-label">Knowledge Graph Visualization:</label>
+            <div ref="sigmaContainer" style="width: 100%; height: 400px; border: 1px solid #ccc; border-radius: 4px; background: #fafbfc;"></div>
+        </div>
     </div>
   </main>
 </template>
@@ -169,6 +176,8 @@
 import api from '@/js/api';
 import type { ResourceProviderGetResult } from '@/js/types';
 import JsonEditorVue from 'json-editor-vue';
+import Sigma from "sigma";
+import Graph from "graphology";
 
 export default {
   name: 'KnowledgeSources',
@@ -196,6 +205,18 @@ export default {
             all_entities_max_count: 20 as number
         } as any,
       queryResponse: null,
+      sigmaInstance: null as Sigma | null,
+      graphRenderingData: {
+        nodes: [
+            { id: '1', label: 'Node 1'},
+            { id: '2', label: 'Node 2'},
+            { id: '3', label: 'Node 3'}
+        ] as any[],
+        edges: [
+            { id: '1-2', source: '1', target: '2' },
+            { id: '2-3', source: '2', target: '3' }
+        ] as any[]
+      },
       loading: false as boolean,
       loadingStatusText: 'Retrieving knowledge sources...' as string,
     };
@@ -210,6 +231,7 @@ export default {
         this.hasKnowledgeGraph = !!(newVal && newVal.resource && newVal.resource.has_knowledge_graph);
         if (this.hasKnowledgeGraph) {
             this.queryRequest.knowledge_graph_query = this.knowledge_graph_query;
+            this.renderSigmaGraph(this.graphRenderingData);
         } else {
             this.queryRequest.knowledge_graph_query = null;
         }
@@ -266,12 +288,40 @@ export default {
             });
         }
         this.loading = false;
+    },
+
+    renderSigmaGraph(data: any) {
+        // Destroy previous instance if exists
+        if (this.sigmaInstance) {
+            this.sigmaInstance.kill();
+            this.sigmaInstance = null;
+        }
+        // Example: expects data to have nodes and edges arrays
+        if (!data || !Array.isArray(data.nodes) || !Array.isArray(data.edges)) return;
+
+        this.$nextTick(() => {
+            const container = this.$refs.sigmaContainer as HTMLElement;
+            if (!container) return; // Defensive: skip if not rendered
+
+            const graph = new Graph();
+            // Add nodes
+            data.nodes.forEach((node: any) => {
+            graph.addNode(node.id, { label: node.label, x: Math.random(), y: Math.random(), size: 10 });
+            });
+            // Add edges
+            data.edges.forEach((edge: any) => {
+            graph.addEdge(edge.source, edge.target);
+            });
+
+            this.sigmaInstance = new Sigma(graph, container);
+        });
     }
   },
 };
 </script>
 
 <style lang="scss" scoped>
+
 .grid--loading {
   pointer-events: none;
 }
@@ -313,28 +363,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center; /* Optional: center content vertically */
-}
-
-/* Override JsonEditorVue background and text color */
-:deep(.jse-main) 
-:deep(.jse-menu) {
-  background: var(--surface-ground, #fff);
-  color: var(--text-color, #222);
-}
-
-:deep(.jse-textarea),
-:deep(.jse-string),
-:deep(.jse-number),
-:deep(.jse-boolean),
-:deep(.jse-null) {
-  background: var(--surface-ground, #fff);
-  color: var(--text-color, #222);
-}
-
-/* Optional: match border and font */
-:deep(.jse-main) {
-  border: 1px solid var(--surface-border, #ccc);
-  font-family: inherit;
 }
 
 </style>

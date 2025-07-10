@@ -98,5 +98,17 @@ namespace FoundationaLLM.Common.Interfaces
             string instanceId,
             string knowledgeSourceId,
             ContextKnowledgeSourceQueryRequest queryRequest);
+
+        /// <summary>
+        /// Retrieves the knowledge source's knowledge graph in a format suitable for visualization or further processing.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
+        /// <param name="queryRequest">The request containing the details of the query.</param>
+        /// <returns></returns>
+        Task<ContextKnowledgeSourceRenderGraphResponse> RenderKnowledgeSourceGraph(
+            string instanceId,
+            string knowledgeSourceId,
+            ContextKnowledgeSourceQueryRequest? queryRequest);
     }
 }

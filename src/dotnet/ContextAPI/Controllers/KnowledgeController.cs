@@ -84,5 +84,26 @@ namespace FoundationaLLM.Context.API.Controllers
                 _callContext.CurrentUserIdentity!);
             return Ok(response);
         }
+
+        /// <summary>
+        /// Retrieves the knowledge graph in a format suitable for rendering.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeSourceId"></param>
+        /// <param name="queryRequest"></param>
+        /// <returns></returns>
+        [HttpPost("knowledgeSources/{knowledgeSourceId}/render-graph")]
+        public async Task<IActionResult> RenderKnowledgeSourceGraph(
+            string instanceId,
+            string knowledgeSourceId,
+            [FromBody] ContextKnowledgeSourceQueryRequest? queryRequest)
+        {
+            var response = await _knowledgeService.RenderKnowledgeSourceGraph(
+                instanceId,
+                knowledgeSourceId,
+                queryRequest,
+                _callContext.CurrentUserIdentity!);
+            return Ok(response);
+        }
     }
 }
