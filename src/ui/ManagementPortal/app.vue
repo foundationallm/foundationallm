@@ -131,4 +131,8 @@ body,
 	padding-left: 0;
 	padding-right: 0;
 }
+
+:root {
+	--jse-theme-color: var(--primary-button-bg, #6366f1); /* Default theme color */
+}
 </style>

@@ -99,6 +99,14 @@
 							>Data Pipeline Runs</NuxtLink
 						>
 					</li>
+					<li>
+						<NuxtLink
+							to="/knowledge-sources"
+							:class="{ 'router-link-active': isRouteActive('/knowledge-sources') }"
+							class="sidebar__item"
+							>Knowledge Sources</NuxtLink
+						>
+					</li>
 				</ul>
 
 				<!-- Models and Endpoints -->

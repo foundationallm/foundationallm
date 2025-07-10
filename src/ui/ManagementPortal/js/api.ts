@@ -1216,5 +1216,27 @@ export default {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.AzureAI/projects?api-version=${this.apiVersion}`,
 		);
+	},
+
+	/*
+		Knowledge Sources
+	*/
+	async getKnowledgeSources(): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async queryKnowledgeSource(
+		knowledgeSourceName: string,
+		queryRequest: any
+	): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources/${knowledgeSourceName}/query?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: queryRequest,
+			},
+		);
 	}
 };
