@@ -728,11 +728,53 @@ public class KnowledgeController : ControllerBase</code></pre>
 </h2>
 
 
+  <a id="FoundationaLLM_Context_API_Controllers_KnowledgeController_GetKnowledgeSources_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.GetKnowledgeSources*"></a>
+
+  <h3 id="FoundationaLLM_Context_API_Controllers_KnowledgeController_GetKnowledgeSources_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceListRequest_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.GetKnowledgeSources(System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceListRequest)">
+  GetKnowledgeSources(string, ContextKnowledgeSourceListRequest)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves the list of knowledge sources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[HttpPost(&quot;knowledgeSources/list&quot;)]
+public Task&lt;IActionResult&gt; GetKnowledgeSources(string instanceId, ContextKnowledgeSourceListRequest listRequest)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>listRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceListRequest.html">ContextKnowledgeSourceListRequest</a></dt>
+    <dd><p>The request containing the information used to filter the knowledge sources.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.iactionresult">IActionResult</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Context_API_Controllers_KnowledgeController_QueryKnowledgeSource_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.QueryKnowledgeSource*"></a>
 
   <h3 id="FoundationaLLM_Context_API_Controllers_KnowledgeController_QueryKnowledgeSource_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.QueryKnowledgeSource(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)">
   QueryKnowledgeSource(string, string, ContextKnowledgeSourceQueryRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L74"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Queries a knowledge graph.</p>
@@ -775,10 +817,10 @@ public Task&lt;IActionResult&gt; QueryKnowledgeSource(string instanceId, string 
 
   <h3 id="FoundationaLLM_Context_API_Controllers_KnowledgeController_UpdateKnowledgeGraph_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceUpdateRequest_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.UpdateKnowledgeGraph(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceUpdateRequest)">
   UpdateKnowledgeGraph(string, string, ContextKnowledgeSourceUpdateRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L52"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Updates a knowledge graph.</p>
+  <div class="markdown level1 summary"><p>Updates a knowledge source.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -796,7 +838,7 @@ public Task&lt;IActionResult&gt; UpdateKnowledgeGraph(string instanceId, string 
     <dd><p>The knowledge source identifier.</p>
 </dd>
     <dt><code>updateRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceUpdateRequest.html">ContextKnowledgeSourceUpdateRequest</a></dt>
-    <dd><p>The request containing the paths to the source files for the knowledge graph.</p>
+    <dd><p>The request containing the information used to update the knowledge source.</p>
 </dd>
   </dl>
 
