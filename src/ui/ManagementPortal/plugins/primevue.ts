@@ -31,6 +31,8 @@ import TabPanel from 'primevue/tabpanel';
 import Checkbox from 'primevue/checkbox';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
+import Slider from 'primevue/slider';
+import InputTextArea from 'primevue/textarea';
 
 import { defineNuxtPlugin } from '#app';
 
@@ -66,5 +68,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('Checkbox', Checkbox);
 	nuxtApp.vueApp.component('IconField', IconField);
 	nuxtApp.vueApp.component('InputIcon', InputIcon);
+	nuxtApp.vueApp.component('Slider', Slider);
+	nuxtApp.vueApp.component('InputTextArea', InputTextArea);
 	nuxtApp.vueApp.use(ToastService);
 });
