@@ -71,7 +71,7 @@
             </div>
 
             <div>
-                <div><h4 class="page-header">Text content</h4></div>
+                <div><h4 class="page-header">Text Content</h4></div>
                 <div>
                     <label class="query-grid-label">Text chunks maximum count: {{ queryRequest.text_chunks_max_count }}</label>
                     <Slider
@@ -101,7 +101,7 @@
                     <Slider
                         v-model="knowledge_graph_query.mapped_entities_max_count"
                         :min="0"
-                        :max="30"
+                        :max="100"
                         :step="1"
                         style="width: 200px;"
                     />
@@ -112,7 +112,7 @@
                     <Slider
                         v-model="knowledge_graph_query.relationships_max_depth"
                         :min="0"
-                        :max="3"
+                        :max="5"
                         :step="1"
                         style="width: 200px;"
                     />
@@ -149,7 +149,7 @@
                     <Slider
                         v-model="knowledge_graph_query.all_entities_max_count"
                         :min="0"
-                        :max="40"
+                        :max="200"
                         :step="1"
                         style="width: 200px;"
                     />
@@ -158,24 +158,38 @@
         </div>
 
         <div
-            v-if="showQueryResult"
-            style="display: flex; flex-direction: column; height: 100%;">
-            <label class="query-grid-label">Query Result:</label>
-            <JsonEditorVue
-                v-if="queryResponse"
-                v-model="queryResponse"
+            v-if="showQueryResult || showKnowledgeGraph"
+            style="display: flex; flex-direction: row; gap: 2rem; align-items: flex-start; margin-top: 2rem; height: 50vh;"
+            >
+            <div v-if="showQueryResult" style="flex: 1; display: flex; flex-direction: column; height: 100%;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; justify-content: space-between;">
+                    <label class="query-grid-label" style="margin-bottom: 0;">Query Result</label>
+                    <Button
+                        type="button"
+                        icon="pi pi-share-alt"
+                        @click="renderQueryResult"
+                        v-tooltip="'Render query result'"
+                        size="small"
+                        style="padding: 0; font-size: 0.7rem; min-width: 1rem; width: 1.5rem; height: 1.5rem; opacity: 0.75;"
+                    />
+                </div>
+                <JsonEditorVue
+                v-model="queryResult"
                 :read-only="true"
-                style="overflow-y: auto; height: 600px;"
-            />
-            <div v-else style="color: #888;">No result</div>
-        </div>
-
-        <div
-            v-if="showKnowledgeGraph"
-            style="display: flex; flex-direction: column; height: 100%;"
-            class="sigma-graph-container">
-            <label class="query-grid-label">Knowledge Graph Visualization:</label>
-            <div ref="sigmaContainer" style="width: 100%; height: 800px; border: 1px solid #ccc; border-radius: 4px; background: #fafbfc;"></div>
+                style="flex: 1 1 0; min-height: 0px; overflow-y: auto;"
+                />
+            </div>
+            <div
+                v-if="showKnowledgeGraph"
+                class="sigma-graph-container"
+                style="flex: 1; display: flex; flex-direction: column; height: 100%;"
+            >
+                <label class="query-grid-label">Knowledge Graph</label>
+                <div
+                ref="sigmaContainer"
+                style="flex: 1 1 0; min-height: 0px; overflow-y: auto; border: 1px solid #ccc; border-radius: 4px; background: #fafbfc;"
+                ></div>
+            </div>
         </div>
     </div>
   </main>
@@ -201,8 +215,8 @@ export default {
       knowledgeSources: [] as any[],
       selectedKnowledgeSource: null,
       hasKnowledgeGraph: false as boolean,
-      showKnowledgeGraph: false as boolean,
-      showQueryResult: false as boolean,
+      showKnowledgeGraph: true as boolean,
+      showQueryResult: true as boolean,
       queryRequest: {
         user_prompt : null as string | null,
         text_chunks_max_count: 20 as number,
@@ -216,7 +230,7 @@ export default {
             relationships_max_depth: 2 as number,
             all_entities_max_count: 20 as number
         } as any,
-      queryResponse: null,
+      queryResult: null,
       sigmaInstance: null as Sigma | null,
       loading: false as boolean,
       loadingStatusText: 'Retrieving knowledge sources...' as string,
@@ -276,7 +290,7 @@ export default {
         this.loadingStatusText = `Querying knowledge source: ${this.selectedKnowledgeSource.resource.name}...`;
         this.loading = true;
         try {
-            this.queryResponse = await api.queryKnowledgeSource(
+            this.queryResult = await api.queryKnowledgeSource(
                 this.selectedKnowledgeSource.resource.name,
                 this.queryRequest
             );
@@ -288,8 +302,6 @@ export default {
             });
         }
         this.loading = false;
-        this.showQueryResult = true; // Show the query result section
-        this.showKnowledgeGraph = false; // Hide the knowledge graph section
     },
 
     async renderKnowledgeGraph() {
@@ -315,8 +327,6 @@ export default {
         this.loading = true;
         api.renderKnowledgeSourceGraph(this.selectedKnowledgeSource.resource.name, {})
             .then(data => {
-                this.showKnowledgeGraph = true; // Show the graph container
-                this.showQueryResult = false; // Hide the query result section
                 this.renderSigmaGraph(data);
             })
             .catch(error => {
@@ -331,7 +341,65 @@ export default {
             });
     },
 
-    renderSigmaGraph(data: any) {
+    renderQueryResult() {
+        // Defensive: ensure we have a query response to render
+        if (!this.queryResult) {
+            this.$toast?.add?.({
+                severity: 'warn',
+                detail: 'No query result to render.',
+                life: 3000,
+            });
+            return;
+        }
+
+        let data = {
+            nodes: [],
+            edges: []
+        }
+        let graphResponse = this.queryResult.knowledge_graph_response;
+
+        // Main entities
+        if (graphResponse.entities && Array.isArray(graphResponse.entities)) {
+            data.nodes = graphResponse.entities.map((entity: any) => ({
+                id: `${entity.type}:${entity.name}`,
+                label: entity.name
+            }));
+        }
+
+        const existingIds = new Set(data.nodes.map(n => n.id));
+
+        // Related entities
+        if (graphResponse.related_entities && Array.isArray(graphResponse.related_entities)) {
+            // Avoid duplicate nodes by checking existing ids
+            graphResponse.related_entities.forEach((entity: any) => {
+                const id = `${entity.type}:${entity.name}`;
+                if (!existingIds.has(id)) {
+                    data.nodes.push({
+                        id,
+                        label: entity.name
+                    });
+                    existingIds.add(id);
+                }
+            });
+        }
+
+        // Relations/edges
+        if (graphResponse.relationships && Array.isArray(graphResponse.relationships)) {
+            graphResponse.relationships.forEach((rel: any) => {
+                const sourceId = `${rel.source_type}:${rel.source}`;
+                const targetid = `${rel.target_type}:${rel.target}`;
+                // Ensure both source and target nodes exist
+                if (existingIds.has(sourceId) && existingIds.has(targetid)) {
+                    data.edges.push([sourceId, targetid]);
+                }
+            });
+        }
+
+        // Render the graph with the transformed data
+        this.renderSigmaGraph(data, 5, { iterations: 1000, settings: { gravity: 10, scalingRatio: 1 } });
+    },
+
+    renderSigmaGraph(data: any, nodeSize: number = 1, forceAtlas2Settings: any = { iterations: 100, settings: { gravity: 0.3, scalingRatio: 3 } }) {
         // Destroy previous instance if exists
         if (this.sigmaInstance) {
             this.sigmaInstance.kill();
@@ -347,7 +415,7 @@ export default {
             const graph = new Graph();
             // Add nodes
             data.nodes.forEach((node: any) => {
-                graph.addNode(node.id, { label: node.label, x: Math.random(), y: Math.random(), size: 1 });
+                graph.addNode(node.id, { label: node.label, x: Math.random(), y: Math.random(), size: nodeSize });
             });
             // Add edges
             data.edges.forEach((edge: any[]) => {
@@ -355,7 +423,7 @@ export default {
             });
 
             // Run ForceAtlas2 layout to compute node positions
-            forceAtlas2.assign(graph, { iterations: 100, settings: { gravity: 0.3, scalingRatio: 3 } });
+            forceAtlas2.assign(graph, forceAtlas2Settings);
 
             this.sigmaInstance = new Sigma(graph, container, this.$options.settings);
         });
