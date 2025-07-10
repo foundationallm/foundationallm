@@ -384,6 +384,8 @@ namespace FoundationaLLM.Context.Services
                             Label = e.Name,
                         })];
                     renderResponse.Edges = [.. cachedKnowledgeSource.KnowledgeGraph!.Relationships
+                        .Where(r => cachedKnowledgeSource.KnowledgeGraph.Index.Nodes.ContainsKey(r.SourceUniqueId)
+                                    && cachedKnowledgeSource.KnowledgeGraph.Index.Nodes.ContainsKey(r.TargetUniqueId))
                         .Select(r => new List<string> { r.SourceUniqueId, r.TargetUniqueId })];
                 }
 

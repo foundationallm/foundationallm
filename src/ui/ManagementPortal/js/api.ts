@@ -1238,5 +1238,18 @@ export default {
 				body: queryRequest,
 			},
 		);
+	},
+
+	async renderKnowledgeSourceGraph(
+		knowledgeSourceName: string,
+		queryRequest: any
+	): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources/${knowledgeSourceName}/render-graph?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: queryRequest,
+			},
+		);
 	}
 };
