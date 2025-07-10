@@ -6354,6 +6354,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceRenderGraphResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceRenderGraphResponse.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceRenderGraphResponse",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceRenderGraphResponse.yml\" sourcestartlinenumber=\"1\">Represents the response to the request to render a knowledge source's knowledge graph.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceUpdateRequest.yml",
       "output": {
         ".html": {
@@ -6365,6 +6379,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceUpdateRequest",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceUpdateRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to update a knowledge source in the FoundationaLLM Context API.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraphRenderingNode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraphRenderingNode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraphRenderingNode",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraphRenderingNode.yml\" sourcestartlinenumber=\"1\">Provides a representation of a node in the knowledge graph rendering.</p>\n"
     },
     {
       "type": "ManagedReference",

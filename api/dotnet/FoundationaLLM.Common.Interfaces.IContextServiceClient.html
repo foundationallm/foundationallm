@@ -404,6 +404,50 @@ Interface IContextServiceClient  <a class="header-action link-secondary" title="
 
 
 
+  <a id="FoundationaLLM_Common_Interfaces_IContextServiceClient_RenderKnowledgeSourceGraph_" data-uid="FoundationaLLM.Common.Interfaces.IContextServiceClient.RenderKnowledgeSourceGraph*"></a>
+
+  <h3 id="FoundationaLLM_Common_Interfaces_IContextServiceClient_RenderKnowledgeSourceGraph_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_" data-uid="FoundationaLLM.Common.Interfaces.IContextServiceClient.RenderKnowledgeSourceGraph(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)">
+  RenderKnowledgeSourceGraph(string, string, ContextKnowledgeSourceQueryRequest?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IContextServiceClient.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves the knowledge source's knowledge graph in a format suitable for visualization or further processing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;ContextKnowledgeSourceRenderGraphResponse&gt; RenderKnowledgeSourceGraph(string instanceId, string knowledgeSourceId, ContextKnowledgeSourceQueryRequest? queryRequest)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>knowledgeSourceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The knowledge source identifier.</p>
+</dd>
+    <dt><code>queryRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.html">ContextKnowledgeSourceQueryRequest</a></dt>
+    <dd><p>The request containing the details of the query.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceRenderGraphResponse.html">ContextKnowledgeSourceRenderGraphResponse</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Interfaces_IContextServiceClient_UpdateKnowledgeSource_" data-uid="FoundationaLLM.Common.Interfaces.IContextServiceClient.UpdateKnowledgeSource*"></a>
 
   <h3 id="FoundationaLLM_Common_Interfaces_IContextServiceClient_UpdateKnowledgeSource_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceUpdateRequest_" data-uid="FoundationaLLM.Common.Interfaces.IContextServiceClient.UpdateKnowledgeSource(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceUpdateRequest)">
