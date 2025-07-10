@@ -11,6 +11,8 @@ using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Context;
+using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -66,6 +68,26 @@ namespace FoundationaLLM.Context.ResourceProviders
         #region Resource provider support for Management API
 
         /// <inheritdoc/>
+        protected override async Task<object> GetResourcesAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null) =>
+            resourcePath.ResourceTypeName switch
+            {
+                ContextResourceTypeNames.KnowledgeSources => await GetKnowledgeSources(
+                    resourcePath,
+                    authorizationResult,
+                    options ?? new ResourceProviderGetOptions
+                    {
+                        IncludeRoles = resourcePath.IsResourceTypePath
+                    }),
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+            };
+
+
+        /// <inheritdoc/>
         protected override async Task<object> ExecuteActionAsync(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
@@ -90,6 +112,39 @@ namespace FoundationaLLM.Context.ResourceProviders
         #endregion
 
         #region Resource management
+
+        private async Task<List<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSources(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            ResourceProviderGetOptions options)
+        {
+            if (!resourcePath.IsResourceTypePath)
+                throw new ResourceProviderException(
+                    "The operation is not supported", StatusCodes.Status400BadRequest);
+
+            using var scope = _serviceProvider.CreateScope();
+            var contextServiceClient = new ContextServiceClient(
+                new OrchestrationContext { CurrentUserIdentity = ServiceContext.ServiceIdentity },
+                scope.ServiceProvider.GetRequiredService<IHttpClientFactoryService>(),
+                scope.ServiceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
+
+            var response = authorizationResult.Authorized
+                ? await contextServiceClient.GetKnowledgeSources(
+                    resourcePath.InstanceId!)
+                : await contextServiceClient.GetKnowledgeSources(
+                    resourcePath.InstanceId!,
+                    authorizationResult.SubordinateResourcePathsAuthorizationResults.Values
+                               .Where(sarp => !string.IsNullOrWhiteSpace(sarp.ResourceName) && sarp.Authorized)
+                               .Select(sarp => sarp.ResourceName!)
+                               .ToList());
+
+            return [.. response.Select(ks => new ResourceProviderGetResult<KnowledgeSource>
+            {
+                Resource = ks,
+                Actions = [],
+                Roles = []
+            })];
+        }
 
         private async Task<ContextKnowledgeSourceQueryResponse> QueryKnowledgeSource(
             ResourcePath resourcePath,

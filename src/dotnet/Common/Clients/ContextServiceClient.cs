@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.CodeExecution;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
+using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -252,6 +253,40 @@ namespace FoundationaLLM.Common.Clients
                     Success = false,
                     ErrorMessage = "An error occurred while creating a code session."
                 };
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<KnowledgeSource>> GetKnowledgeSources(
+            string instanceId,
+            IEnumerable<string>? knowledgeSourceNames = null)
+        {
+            try
+            {
+                var client = await _httpClientFactoryService.CreateClient(
+                    HttpClientNames.ContextAPI,
+                    _callContext.CurrentUserIdentity!);
+                var responseMessage = await client.PostAsJsonAsync(
+                    $"instances/{instanceId}/knowledgeSources/list",
+                    new ContextKnowledgeSourceListRequest
+                    {
+                        KnowledgeSourceNames = knowledgeSourceNames?.ToList()
+                    });
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                    var response = JsonSerializer.Deserialize<IEnumerable<KnowledgeSource>>(responseContent);
+                    return response ?? [];
+                }
+                _logger.LogError(
+                    "An error occurred while retrieving the knowledge sources. Status code: {StatusCode}.",
+                    responseMessage.StatusCode);
+                return [];
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving the knowledge sources.");
+                return [];
             }
         }
 
