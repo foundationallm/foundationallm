@@ -1,6 +1,8 @@
-﻿using FoundationaLLM.Common.Models.CodeExecution;
+﻿using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.CodeExecution;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
+using FoundationaLLM.Common.Models.ResourceProviders.Context;
 
 namespace FoundationaLLM.Common.Interfaces
 {
@@ -62,6 +64,16 @@ namespace FoundationaLLM.Common.Interfaces
             string context,
             string endpointProvider,
             string language);
+
+        /// <summary>
+        /// Call the Context API to retrieve the list of knowledge sources.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeSourceNames">An optional list of specific knowledge sources to retrieve.</param>
+        /// <returns>The list of knowledge sources.</returns>
+        Task<IEnumerable<KnowledgeSource>> GetKnowledgeSources(
+            string instanceId,
+            IEnumerable<string>? knowledgeSourceNames = null);
 
         /// <summary>
         /// Calls the Context API service to update a knowledge source with the specified knowledge graph and vector database/store details.

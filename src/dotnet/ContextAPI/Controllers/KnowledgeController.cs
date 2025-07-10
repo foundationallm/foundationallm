@@ -25,11 +25,29 @@ namespace FoundationaLLM.Context.API.Controllers
         private readonly ILogger<KnowledgeController> _logger = logger;
 
         /// <summary>
-        /// Updates a knowledge graph.
+        /// Retrieves the list of knowledge sources.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="listRequest"> The request containing the information used to filter the knowledge sources.</param>
+        /// <returns></returns>
+        [HttpPost("knowledgeSources/list")]
+        public async Task<IActionResult> GetKnowledgeSources(
+            string instanceId,
+            [FromBody] ContextKnowledgeSourceListRequest listRequest)
+        {
+            var knowledgeSources = await _knowledgeService.GetKnowledgeSources(
+                instanceId,
+                listRequest,
+                _callContext.CurrentUserIdentity!);
+            return Ok(knowledgeSources);
+        }
+
+        /// <summary>
+        /// Updates a knowledge source.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
-        /// <param name="updateRequest"> The request containing the paths to the source files for the knowledge graph.</param>
+        /// <param name="updateRequest"> The request containing the information used to update the knowledge source.</param>
         /// <returns></returns>
         [HttpPost("knowledgeSources/{knowledgeSourceId}")]
         public async Task<IActionResult> UpdateKnowledgeGraph(

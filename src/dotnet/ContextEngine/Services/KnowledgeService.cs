@@ -10,9 +10,11 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
+using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
+using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Context.Interfaces;
@@ -69,6 +71,50 @@ namespace FoundationaLLM.Context.Services
         private const string KNOWLEDGE_GRAPH_ENTITIES_FILE_NAME = "entities.parquet";
         private const string KNOWLEDGE_GRAPH_RELATIONSHIPS_FILE_NAME = "relationships.parquet";
         private const string KEY_FIELD_NAME = "Id";
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<KnowledgeSource>> GetKnowledgeSources(
+            string instanceId,
+            ContextKnowledgeSourceListRequest listRequest,
+            UnifiedUserIdentity userIdentity)
+        {
+            var filePaths = await _storageService.GetMatchingFilePathsAsync(
+               instanceId,
+               $"{KNOWLEDGE_SOURCE_ROOT_PATH}/");
+
+            filePaths = [.. filePaths
+                .Where(fp =>
+                    {
+                        var tokens = fp.Split('/');
+
+                        return
+                            fp.EndsWith(".json", StringComparison.OrdinalIgnoreCase)
+                            && tokens.Length == 2
+                            && (listRequest.KnowledgeSourceNames is null
+                                || listRequest.KnowledgeSourceNames.Contains(
+                                    Path.GetFileNameWithoutExtension(tokens[1])));
+                    })
+            ];
+
+            var result = await filePaths
+                .ToAsyncEnumerable()
+                .SelectAwait(async path =>
+                {
+                    var fileContent = await _storageService.ReadFileAsync(
+                        instanceId,
+                        path,
+                        default);
+
+                    return
+                        JsonSerializer.Deserialize<KnowledgeSource>(fileContent);
+                })
+                .ToListAsync();
+
+            return result
+                .Where(ks => ks != null)
+                .Select(ks => ks!)
+                .OrderBy(ks => ks.Name);
+        }
 
         /// <inheritdoc />
         public async Task UpdateKnowledgeSource(

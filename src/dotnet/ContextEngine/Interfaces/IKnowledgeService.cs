@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Context.Knowledge;
+using FoundationaLLM.Common.Models.ResourceProviders.Context;
 
 namespace FoundationaLLM.Context.Interfaces
 {
@@ -8,6 +9,18 @@ namespace FoundationaLLM.Context.Interfaces
     /// </summary>
     public interface IKnowledgeService
     {
+        /// <summary>
+        /// Retrieves the list of knowledge sources.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="listRequest">The request containing the information used to filter the knowledge sources.</param>
+        /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
+        /// <returns></returns>
+        Task<IEnumerable<KnowledgeSource>> GetKnowledgeSources(
+            string instanceId,
+            ContextKnowledgeSourceListRequest listRequest,
+            UnifiedUserIdentity userIdentity);
+
         /// <summary>
         /// Updates a knowledge source.
         /// </summary>
