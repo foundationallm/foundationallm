@@ -37,6 +37,14 @@
                 type="button"
                 icon="pi pi-refresh"
                 @click="getKnowledgeSources"
+                v-tooltip="'Refresh knowledge sources'"
+            />
+            <Button
+                v-if="selectedKnowledgeSource && hasKnowledgeGraph"
+                type="button"
+                icon="pi pi-share-alt"
+                @click="renderKnowledgeGraph"
+                v-tooltip="'Render knowledge graph'"
             />
         </div>
 
@@ -163,7 +171,7 @@
         </div>
 
         <div
-            v-if="hasKnowledgeGraph" 
+            v-if="showKnowledgeGraph" 
             class="sigma-graph-container">
             <label class="query-grid-label">Knowledge Graph Visualization:</label>
             <div ref="sigmaContainer" style="width: 100%; height: 400px; border: 1px solid #ccc; border-radius: 4px; background: #fafbfc;"></div>
@@ -191,6 +199,7 @@ export default {
       knowledgeSources: [] as any[],
       selectedKnowledgeSource: null,
       hasKnowledgeGraph: false as boolean,
+      showKnowledgeGraph: false as boolean,
       queryRequest: {
         user_prompt : null as string | null,
         text_chunks_max_count: 20 as number,
@@ -231,7 +240,6 @@ export default {
         this.hasKnowledgeGraph = !!(newVal && newVal.resource && newVal.resource.has_knowledge_graph);
         if (this.hasKnowledgeGraph) {
             this.queryRequest.knowledge_graph_query = this.knowledge_graph_query;
-            this.renderSigmaGraph(this.graphRenderingData);
         } else {
             this.queryRequest.knowledge_graph_query = null;
         }
@@ -290,6 +298,44 @@ export default {
         this.loading = false;
     },
 
+    async renderKnowledgeGraph() {
+        // Defensive: ensure we have a selected knowledge source
+        if (!this.selectedKnowledgeSource) {
+            this.$toast?.add?.({
+                severity: 'warn',
+                detail: 'Please select a knowledge source to render the graph.',
+                life: 3000,
+            });
+            return;
+        }
+        if (!this.hasKnowledgeGraph) {
+            this.$toast?.add?.({
+                severity: 'warn',
+                detail: 'The selected knowledge source does not have a knowledge graph.',
+                life: 3000,
+            });
+            return;
+        }
+        // Example: fetch graph data from API or use existing data
+        this.loadingStatusText = `Rendering knowledge graph for: ${this.selectedKnowledgeSource.resource.name}...`;
+        this.loading = true;
+        api.renderKnowledgeSourceGraph(this.selectedKnowledgeSource.resource.name, {})
+            .then(data => {
+                this.showKnowledgeGraph = true; // Show the graph container
+                this.renderSigmaGraph(data);
+            })
+            .catch(error => {
+                this.$toast?.add?.({
+                    severity: 'error',
+                    detail: error?.response?._data || error,
+                    life: 5000,
+                });
+            })
+            .finally(() => {
+                this.loading = false;
+            });
+    },
+
     renderSigmaGraph(data: any) {
         // Destroy previous instance if exists
         if (this.sigmaInstance) {
@@ -306,11 +352,11 @@ export default {
             const graph = new Graph();
             // Add nodes
             data.nodes.forEach((node: any) => {
-            graph.addNode(node.id, { label: node.label, x: Math.random(), y: Math.random(), size: 10 });
+                graph.addNode(node.id, { label: node.label, x: Math.random(), y: Math.random(), size: 10 });
             });
             // Add edges
-            data.edges.forEach((edge: any) => {
-            graph.addEdge(edge.source, edge.target);
+            data.edges.forEach((edge: any[]) => {
+                graph.addEdge(edge[0], edge[1]);
             });
 
             this.sigmaInstance = new Sigma(graph, container);
