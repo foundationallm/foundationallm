@@ -158,7 +158,7 @@
         </div>
 
         <div
-            v-if="selectedKnowledgeSource"
+            v-if="showQueryResult"
             style="display: flex; flex-direction: column; height: 100%;">
             <label class="query-grid-label">Query Result:</label>
             <JsonEditorVue
@@ -171,10 +171,11 @@
         </div>
 
         <div
-            v-if="showKnowledgeGraph" 
+            v-if="showKnowledgeGraph"
+            style="display: flex; flex-direction: column; height: 100%;"
             class="sigma-graph-container">
             <label class="query-grid-label">Knowledge Graph Visualization:</label>
-            <div ref="sigmaContainer" style="width: 100%; height: 400px; border: 1px solid #ccc; border-radius: 4px; background: #fafbfc;"></div>
+            <div ref="sigmaContainer" style="width: 100%; height: 800px; border: 1px solid #ccc; border-radius: 4px; background: #fafbfc;"></div>
         </div>
     </div>
   </main>
@@ -186,6 +187,7 @@ import type { ResourceProviderGetResult } from '@/js/types';
 import JsonEditorVue from 'json-editor-vue';
 import Sigma from "sigma";
 import Graph from "graphology";
+import forceAtlas2 from "graphology-layout-forceatlas2";
 
 export default {
   name: 'KnowledgeSources',
@@ -200,6 +202,7 @@ export default {
       selectedKnowledgeSource: null,
       hasKnowledgeGraph: false as boolean,
       showKnowledgeGraph: false as boolean,
+      showQueryResult: false as boolean,
       queryRequest: {
         user_prompt : null as string | null,
         text_chunks_max_count: 20 as number,
@@ -215,17 +218,6 @@ export default {
         } as any,
       queryResponse: null,
       sigmaInstance: null as Sigma | null,
-      graphRenderingData: {
-        nodes: [
-            { id: '1', label: 'Node 1'},
-            { id: '2', label: 'Node 2'},
-            { id: '3', label: 'Node 3'}
-        ] as any[],
-        edges: [
-            { id: '1-2', source: '1', target: '2' },
-            { id: '2-3', source: '2', target: '3' }
-        ] as any[]
-      },
       loading: false as boolean,
       loadingStatusText: 'Retrieving knowledge sources...' as string,
     };
@@ -296,6 +288,8 @@ export default {
             });
         }
         this.loading = false;
+        this.showQueryResult = true; // Show the query result section
+        this.showKnowledgeGraph = false; // Hide the knowledge graph section
     },
 
     async renderKnowledgeGraph() {
@@ -317,11 +311,12 @@ export default {
             return;
         }
         // Example: fetch graph data from API or use existing data
-        this.loadingStatusText = `Rendering knowledge graph for: ${this.selectedKnowledgeSource.resource.name}...`;
+        this.loadingStatusText = `Rendering knowledge graph for ${this.selectedKnowledgeSource.resource.name}...`;
         this.loading = true;
         api.renderKnowledgeSourceGraph(this.selectedKnowledgeSource.resource.name, {})
             .then(data => {
                 this.showKnowledgeGraph = true; // Show the graph container
+                this.showQueryResult = false; // Hide the query result section
                 this.renderSigmaGraph(data);
             })
             .catch(error => {
@@ -352,17 +347,77 @@ export default {
             const graph = new Graph();
             // Add nodes
             data.nodes.forEach((node: any) => {
-                graph.addNode(node.id, { label: node.label, x: Math.random(), y: Math.random(), size: 10 });
+                graph.addNode(node.id, { label: node.label, x: Math.random(), y: Math.random(), size: 1 });
             });
             // Add edges
             data.edges.forEach((edge: any[]) => {
                 graph.addEdge(edge[0], edge[1]);
             });
 
-            this.sigmaInstance = new Sigma(graph, container);
+            // Run ForceAtlas2 layout to compute node positions
+            forceAtlas2.assign(graph, { iterations: 100, settings: { gravity: 0.3, scalingRatio: 3 } });
+
+            this.sigmaInstance = new Sigma(graph, container, this.$options.settings);
         });
     }
   },
+
+  mounted() {
+        // Add Sigma node/edge selection logic after Sigma instance is created
+        this.$watch(
+            () => this.sigmaInstance,
+            (sigmaInstance) => {
+            if (!sigmaInstance) return;
+            // Remove previous listeners if any
+            sigmaInstance.getGraph().forEachNode((node) => {
+                sigmaInstance.getGraph().setNodeAttribute(node, "highlighted", false);
+            });
+            sigmaInstance.getGraph().forEachEdge((edge) => {
+                sigmaInstance.getGraph().setEdgeAttribute(edge, "highlighted", false);
+            });
+
+            sigmaInstance.on("clickNode", ({ node }) => {
+                const graph = sigmaInstance.getGraph();
+                // Highlight the clicked node
+                graph.updateNodeAttribute(node, "highlighted", () => true);
+                // Highlight all edges connected to the node
+                graph.forEachEdge((edge, attr, source, target) => {
+                if (source === node || target === node) {
+                    graph.updateEdgeAttribute(edge, "highlighted", () => true);
+                } else {
+                    graph.updateEdgeAttribute(edge, "highlighted", () => false);
+                }
+                });
+                // Optionally, unhighlight other nodes
+                graph.forEachNode((n) => {
+                if (n !== node) graph.updateNodeAttribute(n, "highlighted", () => false);
+                });
+            });
+
+            sigmaInstance.on("clickStage", () => {
+                // Unhighlight all nodes and edges
+                const graph = sigmaInstance.getGraph();
+                graph.forEachNode((node) => graph.updateNodeAttribute(node, "highlighted", () => false));
+                graph.forEachEdge((edge) => graph.updateEdgeAttribute(edge, "highlighted", () => false));
+            });
+            },
+            { immediate: true }
+        );
+    },
+    settings: {
+        nodeReducer(node, data) {
+            if (data.highlighted) {
+            return { ...data, color: "#f39c12" };
+            }
+            return data;
+        },
+        edgeReducer(edge, data) {
+            if (data.highlighted) {
+            return { ...data, color: "#f39c12", size: 2 };
+            }
+            return data;
+        }
+    }
 };
 </script>
 
