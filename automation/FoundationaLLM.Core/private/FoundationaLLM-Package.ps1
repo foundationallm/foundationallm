@@ -1,3 +1,18 @@
+    if (Test-Path -Path "$($PackageRoot)/artifacts/dataSources.json") {
+
+        Write-Host "Updating data sources..."
+
+        $dataSources = Get-Content "$($PackageRoot)/artifacts/dataSources.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        foreach ($dataSource in $dataSources) {
+
+            Write-Host "Updating data source: $($dataSource.name)"
+            $dataSourceResult = Merge-DataSource -DataSource $dataSource
+            Write-Host "Data source updated: $($dataSourceResult)" -ForegroundColor Green
+        }
+    }
 
 
 function Resolve-Placeholders {
@@ -154,6 +169,47 @@ function Deploy-FoundationaLLMPackage {
             $vectorDatabaseResult = Merge-VectorDatabase `
                 -VectorDatabase $vectorDatabase
             Write-Host "Vector database updated: $($vectorDatabaseResult)" -ForegroundColor Green
+        }
+    }
+
+    if (Test-Path -Path "$($PackageRoot)/artifacts/appConfigurations.json") {
+
+        Write-Host "Updating app configurations..."
+
+
+        $keyVaultURIResponse = Get-AppConfiguration -Name "FoundationaLLM:Configuration:KeyVaultURI"
+        $keyVaultURI = $keyVaultURIResponse.resource.value
+
+        Write-Host "Key Vault URI: $keyVaultURI"
+
+        # Add KeyVaultURI to the parameters dictionary
+        $Parameters["{{KEY_VAULT_URI}}"] = $keyVaultURI
+
+        $appConfigurations = Get-Content "$($PackageRoot)/artifacts/appConfigurations.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        foreach ($appConfiguration in $appConfigurations) {
+
+            Write-Host "Updating app configuration: $($appConfiguration.name)"
+            $appConfigurationResult = Merge-AppConfiguration -Configuration $appConfiguration
+            Write-Host "App configuration updated: $($appConfigurationResult)" -ForegroundColor Green
+        }
+    }
+
+    if (Test-Path -Path "$($PackageRoot)/artifacts/dataSources.json") {
+
+        Write-Host "Updating data sources..."
+
+        $dataSources = Get-Content "$($PackageRoot)/artifacts/dataSources.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        foreach ($dataSource in $dataSources) {
+
+            Write-Host "Updating data source: $($dataSource.name)"
+            $dataSourceResult = Merge-DataSource -DataSource $dataSource
+            Write-Host "Data source updated: $($dataSourceResult)" -ForegroundColor Green
         }
     }
 
