@@ -33,58 +33,25 @@ function Resolve-Placeholders {
     }
 }
 
-function Merge-RoleAssignments {
+function Import-Dotenv {
     param (
-        [string]$PackageRoot,
-        [hashtable]$Parameters = @{}
+        [string]$FilePath
     )
 
-    Test-RoleDefinitionIds
+    if (-not (Test-Path -Path $FilePath)) {
+        Write-Error "File not found: $FilePath"
+        return
+    }
 
-    $roleAssignments = Get-Content "$($PackageRoot)/artifacts/roleAssignments.json" `
-        | Resolve-Placeholders -Parameters $Parameters `
-        | ConvertFrom-Json -AsHashTable
+    Get-Content -Path $FilePath | ForEach-Object {
+        if ($_ -match '^\s*#') { return } # Skip comments
+        if ($_ -match '^\s*$') { return } # Skip empty lines
 
-    $roleAssignments | ForEach-Object {
-
-        $securityPrincipal = $_
-
-        if ($null -ne $securityPrincipal.principal_id){
-            $securityPrincipalId = $securityPrincipal.principal_id
-        } elseif ($securityPrincipal.principal_type -eq "User") {
-            $securityPrincipalId = Get-EntraUserId -UPN $securityPrincipal.principal_name
-        } else {
-            $securityPrincipalId = Get-EntraSecurityGroupId -Name $securityPrincipal.principal_name
-        }
-
-        Write-Host "Assigning roles for [$($securityPrincipal.principal_name)]($($securityPrincipalId))"
-
-        foreach ($roleAssignment in $securityPrincipal.role_assignments) {
-            $scope = Get-ObjectId -Name $roleAssignment[2] -Type $roleAssignment[1]
-            $roleDefinitionId = $global:RoleDefinitionIds[$roleAssignment[0]]
-            Write-Host "Assigning role [$($roleAssignment[0])]($($roleDefinitionId)) to $($scope)"
-
-            $roleAssignmentRequest = [ordered]@{
-                type = "FoundationaLLM.Authorization/roleAssignments"
-                name = (New-Guid).ToString("D")
-                description = "$($roleAssignment[0]) role for $($securityPrincipal.principal_name)"
-                principal_id = $securityPrincipalId
-                principal_type = $securityPrincipal.principal_type
-                role_definition_id = $roleDefinitionId
-                scope = $scope
-            }
-
-            try {
-                $roleAssignmentResponse = Merge-RoleAssignment -RoleAssignment $roleAssignmentRequest
-                Write-Host "Role assignment created: $($roleAssignmentResponse)" -ForegroundColor Green
-            }
-            catch [System.Net.Http.HttpRequestException] {
-                if ($_.Exception.Response.StatusCode -eq 409) {
-                    Write-Host "Role assignment already exists." -ForegroundColor Yellow
-                } else {
-                    throw $_
-                }
-            }
+        $parts = $_ -split '=', 2
+        if ($parts.Count -eq 2) {
+            $key = $parts[0].Trim()
+            $value = $parts[1].Trim().Trim('"').Trim("'")
+            [System.Environment]::SetEnvironmentVariable($key, $value, [System.EnvironmentVariableTarget]::Process)
         }
     }
 }
