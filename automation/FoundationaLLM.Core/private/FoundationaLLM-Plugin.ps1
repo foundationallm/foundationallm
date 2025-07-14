@@ -1,17 +1,20 @@
-function Update-PluginPackage {
+function Merge-PluginPackage {
     param (
         [string]$PackageName,
         [string]$NuGetPackageName,
-        [string]$NuGetPackageVersion
+        [string]$NuGetPackageVersion,
+        [string]$PackagePath
     )
 
-    $nugetUrl = "https://api.nuget.org/v3-flatcontainer/$NuGetPackageName/$NuGetPackageVersion/$NuGetPackageName.$NuGetPackageVersion.nupkg"
-    $packagePath = Join-Path "$([System.IO.Path]::GetTempPath())" "$NuGetPackageName.$NuGetPackageVersion.nupkg"
+    if (-not $PackagePath) {
+        $nugetUrl = "https://api.nuget.org/v3-flatcontainer/$NuGetPackageName/$NuGetPackageVersion/$NuGetPackageName.$NuGetPackageVersion.nupkg"
+        $PackagePath = Join-Path "$([System.IO.Path]::GetTempPath())" "$NuGetPackageName.$NuGetPackageVersion.nupkg"
 
-    Invoke-RestMethod -Uri $nugetUrl -OutFile $packagePath
+        Invoke-RestMethod -Uri $nugetUrl -OutFile $PackagePath
+    }
 
     $form = @{
-        file = Get-Item -Path $packagePath
+        file = Get-Item -Path $PackagePath
         resource = "{`"type`": `"plugin-package`",`"name`": `"$PackageName`"}"
     }
 
