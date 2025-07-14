@@ -1,4 +1,4 @@
-function Update-VectorDatabase {
+function Merge-VectorDatabase {
     param (
         [hashtable]$VectorDatabase
     )

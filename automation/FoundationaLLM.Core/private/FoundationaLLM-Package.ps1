@@ -164,10 +164,11 @@ function Deploy-FoundationaLLMPackage {
         foreach ($plugin in $plugins.dotnet) {
 
             Write-Host "Updating plugin package: $($plugin[0])"
-            $pluginResult = Update-PluginPackage `
+            $pluginResult = Merge-PluginPackage `
                 -PackageName $plugin[0] `
                 -NuGetPackageName $plugin[1] `
-                -NuGetPackageVersion $plugin[2]
+                -NuGetPackageVersion $plugin[2] `
+                -PackagePath $plugin[3]
             Write-Host "Plugin updated: $($pluginResult)" -ForegroundColor Green
         }
     }
@@ -183,9 +184,25 @@ function Deploy-FoundationaLLMPackage {
         foreach ($vectorDatabase in $vectorDatabases) {
 
             Write-Host "Updating vector database: $($vectorDatabase.name)"
-            $vectorDatabaseResult = Update-VectorDatabase `
+            $vectorDatabaseResult = Merge-VectorDatabase `
                 -VectorDatabase $vectorDatabase
             Write-Host "Vector database updated: $($vectorDatabaseResult)" -ForegroundColor Green
+        }
+    }
+
+    if (Test-Path -Path "$($PackageRoot)/artifacts/dataPipelines.json") {
+
+        Write-Host "Updating data pipelines..."
+
+        $dataPipelines = Get-Content "$($PackageRoot)/artifacts/dataPipelines.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        foreach ($dataPipeline in $dataPipelines) {
+
+            Write-Host "Updating data pipeline: $($dataPipeline.name)"
+            Merge-DataPipeline -DataPipeline $dataPipeline
+            Write-Host "Data pipeline updated: $($dataPipeline.name)" -ForegroundColor Green
         }
     }
 }
