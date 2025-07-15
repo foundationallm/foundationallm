@@ -18,6 +18,8 @@ namespace FoundationaLLM.Common.Services.Plugins
     {
         private readonly IResourceProviderService _pluginResourceProvider = pluginResourceProvider;
         private readonly IServiceProvider _serviceProvider = serviceProvider;
+        private readonly IPluginPackageManagerResolver _packageManagerResolver =
+            new PluginPackageManagerResolver(pluginResourceProvider);
 
         /// <inheritdoc/>
         public async Task<IDataSourcePlugin> GetDataSourcePlugin(
@@ -27,15 +29,19 @@ namespace FoundationaLLM.Common.Services.Plugins
             string dataSourceObjectId,
             UnifiedUserIdentity userIdentity)
         {
-            var result = await GetPluginPackageManagerInternal(
-                instanceId,
+            var pluginDefinition = await _pluginResourceProvider.GetResourceAsync<PluginDefinition>(
                 pluginObjectId,
                 userIdentity);
 
-            var dataSourcePlugin = result.PackageManager.GetDataSourcePlugin(
-                result.PluginDefinition.Name,
+            var packageManager = await _packageManagerResolver.GetPluginPackageManager(
+                pluginDefinition,
+                userIdentity);
+
+            var dataSourcePlugin = packageManager.GetDataSourcePlugin(
+                pluginDefinition.Name,
                 dataSourceObjectId,
                 pluginParameters,
+                _packageManagerResolver,
                 _serviceProvider);
 
             return dataSourcePlugin;
@@ -48,14 +54,18 @@ namespace FoundationaLLM.Common.Services.Plugins
             Dictionary<string, object> pluginParameters,
             UnifiedUserIdentity userIdentity)
         {
-            var result = await GetPluginPackageManagerInternal(
-                instanceId,
+            var pluginDefinition = await _pluginResourceProvider.GetResourceAsync<PluginDefinition>(
                 pluginObjectId,
                 userIdentity);
 
-            var dataPipelineStagePlugin = result.PackageManager.GetDataPipelineStagePlugin(
-                result.PluginDefinition.Name,
+            var packageManager = await _packageManagerResolver.GetPluginPackageManager(
+                pluginDefinition,
+                userIdentity);
+
+            var dataPipelineStagePlugin =packageManager.GetDataPipelineStagePlugin(
+                pluginDefinition.Name,
                 pluginParameters,
+                _packageManagerResolver,
                 _serviceProvider);
 
             return dataPipelineStagePlugin;
@@ -66,28 +76,8 @@ namespace FoundationaLLM.Common.Services.Plugins
             string instanceId,
             string pluginObjectId,
             UnifiedUserIdentity userIdentity) =>
-            (await GetPluginPackageManagerInternal(
-                instanceId,
-                pluginObjectId,
-                userIdentity)).PackageManager;
-
-        private async Task<(IPluginPackageManager PackageManager, PluginDefinition PluginDefinition)> GetPluginPackageManagerInternal(
-            string instanceId,
-            string pluginObjectId,
-            UnifiedUserIdentity userIdentity)
-        {
-            var pluginDefinition = await _pluginResourceProvider.GetResourceAsync<PluginDefinition>(
+            await _packageManagerResolver.GetPluginPackageManager(
                 pluginObjectId,
                 userIdentity);
-
-            var pluginPackage = await _pluginResourceProvider.ExecuteResourceActionAsync<PluginPackageDefinition, object, ResourceProviderActionResult<PluginPackageManagerInstance>>(
-                instanceId,
-                ResourcePath.GetResourcePath(pluginDefinition.PluginPackageObjectId).MainResourceId!,
-                ResourceProviderActions.LoadPluginPackage,
-                null!,
-                userIdentity);
-
-            return (pluginPackage.Resource!.Instance, pluginDefinition);
-        }
     }
 }

@@ -427,11 +427,15 @@ namespace FoundationaLLM.Plugins.DataPipeline
             string pluginName,
             string dataSourceObjectId,
             Dictionary<string, object> pluginParameters,
+            IPluginPackageManagerResolver packageManagerResolver,
             IServiceProvider serviceProvider) => pluginName switch
         {
-            PluginNames.AZUREDATALAKE_DATASOURCE => new AzureDataLakeDataSourcePlugin(dataSourceObjectId, pluginParameters, this, serviceProvider),
-            PluginNames.CONTEXTFILE_DATASOURCE => new ContextFileDataSourcePlugin(dataSourceObjectId, pluginParameters, this, serviceProvider),
-            PluginNames.SHAREPOINTONLINE_DATASOURCE => new SharePointOnlineDataSourcePlugin(dataSourceObjectId, pluginParameters, this, serviceProvider),
+            PluginNames.AZUREDATALAKE_DATASOURCE => new AzureDataLakeDataSourcePlugin(
+                dataSourceObjectId, pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.CONTEXTFILE_DATASOURCE => new ContextFileDataSourcePlugin(
+                dataSourceObjectId, pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.SHAREPOINTONLINE_DATASOURCE => new SharePointOnlineDataSourcePlugin(
+                dataSourceObjectId, pluginParameters, this, packageManagerResolver, serviceProvider),
             _ => throw new NotImplementedException($"The data source plugin '{pluginName}' is not implemented.")
         };
 
@@ -439,14 +443,21 @@ namespace FoundationaLLM.Plugins.DataPipeline
         public IDataPipelineStagePlugin GetDataPipelineStagePlugin(
             string pluginName,
             Dictionary<string, object> pluginParameters,
+            IPluginPackageManagerResolver packageManagerResolver,
             IServiceProvider serviceProvider) => pluginName switch
         {
-            PluginNames.TEXTEXTRACTION_DATAPIPELINESTAGE => new TextExtractionDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
-            PluginNames.TEXTPARTITIONING_DATAPIPELINESTAGE => new TextPartitioningDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
-            PluginNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE => new GatewayTextEmbeddingDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
-            PluginNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE => new AzureAISearchIndexingDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
-            PluginNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE => new KnowledgeExtractionDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
-            PluginNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE => new KnowledgeGraphDataPipelineStagePlugin(pluginParameters, this, serviceProvider),
+            PluginNames.TEXTEXTRACTION_DATAPIPELINESTAGE => new TextExtractionDataPipelineStagePlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.TEXTPARTITIONING_DATAPIPELINESTAGE => new TextPartitioningDataPipelineStagePlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE => new GatewayTextEmbeddingDataPipelineStagePlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE => new AzureAISearchIndexingDataPipelineStagePlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE => new KnowledgeExtractionDataPipelineStagePlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE => new KnowledgeGraphDataPipelineStagePlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
             _ => throw new NotImplementedException($"The data pipeline stage plugin '{pluginName}' is not implemented.")
         };
 
@@ -454,14 +465,21 @@ namespace FoundationaLLM.Plugins.DataPipeline
         public IContentTextExtractionPlugin GetContentTextExtractionPlugin(
             string pluginName,
             Dictionary<string, object> pluginParameters,
+            IPluginPackageManagerResolver packageManagerResolver,
             IServiceProvider serviceProvider) => pluginName switch
         {
-            PluginNames.PDF_CONTENTTEXTEXTRACTION => new PDFContentTextExtractionPlugin(pluginParameters, this, serviceProvider),
-            PluginNames.DOCX_CONTENTTEXTEXTRACTION => new DOCXContentTextExtractionPlugin(pluginParameters, this, serviceProvider),
-            PluginNames.PPTX_CONTENTTEXTEXTRACTION => new PPTXContentTextExtractionPlugin(pluginParameters, this, serviceProvider),
-            PluginNames.XLSX_CONTENTTEXTEXTRACTION => new XLSXContentTextExtractionPlugin(pluginParameters, this, serviceProvider),
-            PluginNames.IMAGE_CONTENTTEXTEXTRACTION => new ImageContentTextExtractionPlugin(pluginParameters, this, serviceProvider),
-            PluginNames.IMAGE_METADATATEXTEXTRACTION => new ImageMetadataTextExtractionPlugin(pluginParameters, this, serviceProvider),
+            PluginNames.PDF_CONTENTTEXTEXTRACTION => new PDFContentTextExtractionPlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.DOCX_CONTENTTEXTEXTRACTION => new DOCXContentTextExtractionPlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.PPTX_CONTENTTEXTEXTRACTION => new PPTXContentTextExtractionPlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.XLSX_CONTENTTEXTEXTRACTION => new XLSXContentTextExtractionPlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.IMAGE_CONTENTTEXTEXTRACTION => new ImageContentTextExtractionPlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.IMAGE_METADATATEXTEXTRACTION => new ImageMetadataTextExtractionPlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
             _ => throw new NotImplementedException($"The content text extraction plugin '{pluginName}' is not implemented.")
         };
 
@@ -469,10 +487,13 @@ namespace FoundationaLLM.Plugins.DataPipeline
         public IContentTextPartitioningPlugin GetContentTextPartitioningPlugin(
             string pluginName,
             Dictionary<string, object> pluginParameters,
+            IPluginPackageManagerResolver packageManagerResolver,
             IServiceProvider serviceProvider) => pluginName switch
         {
-            PluginNames.TOKEN_CONTENTTEXTPARTITIONING => new TokenContentTextPartitioningPlugin(pluginParameters, this, serviceProvider),
-            PluginNames.SEMANTIC_CONTENTTEXTPARTITIONING => new SemanticContentTextPartitioningPlugin(pluginParameters, this, serviceProvider),
+            PluginNames.TOKEN_CONTENTTEXTPARTITIONING => new TokenContentTextPartitioningPlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.SEMANTIC_CONTENTTEXTPARTITIONING => new SemanticContentTextPartitioningPlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
             _ => throw new NotImplementedException($"The content text partitioning plugin '{pluginName}' is not implemented.")
         };
     }

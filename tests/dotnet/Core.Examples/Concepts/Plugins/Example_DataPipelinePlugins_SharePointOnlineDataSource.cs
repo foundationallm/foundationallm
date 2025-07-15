@@ -1,4 +1,8 @@
-﻿using FoundationaLLM.Core.Examples.Setup;
+﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Interfaces.Plugins;
+using FoundationaLLM.Common.Services.Plugins;
+using FoundationaLLM.Core.Examples.Setup;
 using FoundationaLLM.Plugins.DataPipeline;
 using FoundationaLLM.Tests;
 using Xunit.Abstractions;
@@ -28,12 +32,18 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
 
             var packageManager = new PluginPackageManager();
 
+            var pluginResourceProviderService = GetService<IEnumerable<IResourceProviderService>>()
+                .Single(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Plugin);
+            var packageManagerResolver = new PluginPackageManagerResolver(
+                pluginResourceProviderService);
+
             WriteLine("============ FoundationaLLM Data Pipeline Plugins - SharePoint Online Data Source Tests ============");
 
             var dataSourcePlugin = packageManager.GetDataSourcePlugin(
                 PluginNames.SHAREPOINTONLINE_DATASOURCE,
                 dataSourceObjectId,
                 pluginParameters,
+                packageManagerResolver,
                 MainServiceContainer.ServiceProvider);
 
             var contentItems = await dataSourcePlugin.GetContentItems();

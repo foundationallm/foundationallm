@@ -174,6 +174,7 @@ namespace FoundationaLLM.Core.Examples.Setup
             services.AddDataPipelineStateService(configuration);
             services.AddPromptResourceProvider(configuration);
             services.AddVectorResourceProvider(configuration);
+            services.AddPluginResourceProvider(configuration);
         }
 
         protected override void RegisterEventService(

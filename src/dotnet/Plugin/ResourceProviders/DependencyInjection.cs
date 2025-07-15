@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Plugin;
 using FoundationaLLM.Plugin.ResourceProviders;
 using FoundationaLLM.Plugin.Validation;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -22,17 +23,27 @@ namespace FoundationaLLM
         /// Register the FoundationaLLM Plugin resource provider with the Dependency Injection container.
         /// </summary>
         /// <param name="builder">The application builder.</param>
-        public static void AddPluginResourceProvider(this IHostApplicationBuilder builder)
+        public static void AddPluginResourceProvider(this IHostApplicationBuilder builder) =>
+            builder.Services.AddPluginResourceProvider(builder.Configuration);
+
+        /// <summary>
+        /// Registers the FoundationaLLM.DataSource resource provider with the dependency injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfiguration"/> configuration provider.</param>
+        public static void AddPluginResourceProvider(
+            this IServiceCollection services,
+            IConfiguration configuration)
         {
-            builder.AddPluginResourceProviderStorage();
+            services.AddPluginResourceProviderStorage(configuration);
 
             // Register validators.
-            builder.Services.AddSingleton<IValidator<PluginPackageDefinition>, PluginPackageDefinitionValidator>();
-            builder.Services.AddSingleton<IValidator<PluginDefinition>, PluginDefinitionValidator>();
+            services.AddSingleton<IValidator<PluginPackageDefinition>, PluginPackageDefinitionValidator>();
+            services.AddSingleton<IValidator<PluginDefinition>, PluginDefinitionValidator>();
 
             // Register the resource provider services (cannot use Keyed singletons due to the Microsoft Identity package being incompatible):
-            builder.Services.AddSingleton<IResourceProviderService>(sp => 
-                new PluginResourceProviderService(                   
+            services.AddSingleton<IResourceProviderService>(sp =>
+                new PluginResourceProviderService(
                     sp.GetRequiredService<IOptions<InstanceSettings>>(),
                     sp.GetRequiredService<IOptions<ResourceProviderCacheSettings>>(),
                     sp.GetRequiredService<IAuthorizationServiceClient>(),
@@ -40,10 +51,10 @@ namespace FoundationaLLM
                         .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Plugin),
                     sp.GetRequiredService<IEventService>(),
                     sp.GetRequiredService<IResourceValidatorFactory>(),
-                    sp,                    
-                    sp.GetRequiredService<ILoggerFactory>()));          
+                    sp,
+                    sp.GetRequiredService<ILoggerFactory>()));
 
-            builder.Services.ActivateSingleton<IResourceProviderService>();
+            services.ActivateSingleton<IResourceProviderService>();
         }
     }
 }

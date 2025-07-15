@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Constants.Plugins;
+﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.Plugins;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces.Plugins;
@@ -13,13 +14,15 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
     /// Implements the Text Partitioning Data Pipeline Stage Plugin.
     /// </summary>
     /// <param name="pluginParameters">The dictionary containing the plugin parameters.</param>
-    /// <param name="serviceProvider">The service provider of the dependency injection container.</param>
     /// <param name="packageManager">The package manager for the plugin.</param>
+    /// <param name="packageManagerResolver">The package manager resolver for the plugin.</param>
+    /// <param name="serviceProvider">The service provider of the dependency injection container.</param>
     public class TextPartitioningDataPipelineStagePlugin(
         Dictionary<string, object> pluginParameters,
         IPluginPackageManager packageManager,
+        IPluginPackageManagerResolver packageManagerResolver,
         IServiceProvider serviceProvider)
-        : DataPipelineStagePluginBase(pluginParameters, packageManager, serviceProvider)
+        : DataPipelineStagePluginBase(pluginParameters, packageManager, packageManagerResolver, serviceProvider)
     {
         protected override string Name => PluginNames.TEXTPARTITIONING_DATAPIPELINESTAGE;
 
@@ -62,11 +65,18 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             var textPartitioningPluginMetadata = textPartitioningPluginsMetadata
                 .Single(p => p.ObjectId == pluginDependency.PluginObjectId);
 
-            var textPartitioningPlugin = _packageManager
+            // This plugin might originate from a different package manager instance,
+            // so we need to resolve the package manager for plugin dependency plugin.
+            var dependencyPackageManager = await _packageManagerResolver.GetPluginPackageManager(
+                pluginDependency.PluginObjectId,
+                ServiceContext.ServiceIdentity!);
+
+            var textPartitioningPlugin = dependencyPackageManager
                 .GetContentTextPartitioningPlugin(
                     textPartitioningPluginMetadata.Name,
                     dataPipelineRun.TriggerParameterValues.FilterKeys(
                         $"Stage.{dataPipelineRunWorkItem.Stage}.Dependency.{textPartitioningPluginMetadata.Name.Split('-').Last()}."),
+                    _packageManagerResolver,
                     _serviceProvider);
 
             var inputContent = await _dataPipelineStateService.LoadDataPipelineRunWorkItemArtifacts(

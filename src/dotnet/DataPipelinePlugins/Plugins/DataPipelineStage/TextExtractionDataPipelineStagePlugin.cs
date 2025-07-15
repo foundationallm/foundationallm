@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Constants.Plugins;
+﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.Plugins;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces.Plugins;
@@ -15,12 +16,14 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
     /// </summary>
     /// <param name="pluginParameters">The dictionary containing the plugin parameters.</param>
     /// <param name="packageManager">The package manager for the plugin.</param>
+    /// <param name="packageManagerResolver">The package manager resolver for the plugin.</param>
     /// <param name="serviceProvider">The service provider of the dependency injection container.</param>
     public class TextExtractionDataPipelineStagePlugin(
         Dictionary<string, object> pluginParameters,
         IPluginPackageManager packageManager,
+        IPluginPackageManagerResolver packageManagerResolver,
         IServiceProvider serviceProvider)
-        : DataPipelineStagePluginBase(pluginParameters, packageManager, serviceProvider)
+        : DataPipelineStagePluginBase(pluginParameters, packageManager, packageManagerResolver, serviceProvider)
     {
         protected override string Name => PluginNames.TEXTEXTRACTION_DATAPIPELINESTAGE;
 
@@ -78,12 +81,19 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             var dataSourcePluginName = ResourcePath.GetResourcePath(
                 dataPipelineDefinition.DataSource.PluginObjectId).ResourceId;
 
+            // This plugin might originate from a different package manager instance,
+            // so we need to resolve the package manager for the data source plugin.
+            var dataSourcePackageManager = await _packageManagerResolver.GetPluginPackageManager(
+                dataPipelineDefinition.DataSource.PluginObjectId,
+                ServiceContext.ServiceIdentity!);
+                
             var dataSourcePlugin =
-                _packageManager.GetDataSourcePlugin(
+                dataSourcePackageManager.GetDataSourcePlugin(
                     dataSourcePluginName!,
                     dataPipelineDefinition.DataSource.DataSourceObjectId,
                     dataPipelineRun.TriggerParameterValues.FilterKeys(
                         $"DataSource.{dataPipelineDefinition.DataSource.Name}."),
+                    _packageManagerResolver,
                     _serviceProvider);
 
             var contentItem = await _dataPipelineStateService.GetDataPipelineContentItem(
@@ -136,11 +146,18 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     var textExtractionPluginMetadata = textExtractionPluginsMetadata
                         .Single(p => p.ObjectId == pluginDependency.PluginObjectId);
 
-                    var textExtractionPlugin = _packageManager
+                    // This plugin might originate from a different package manager instance,
+                    // so we need to resolve the package manager for plugin dependency plugin.
+                    var dependencyPackageManager = await _packageManagerResolver.GetPluginPackageManager(
+                        pluginDependency.PluginObjectId,
+                        ServiceContext.ServiceIdentity!);
+
+                    var textExtractionPlugin = dependencyPackageManager
                         .GetContentTextExtractionPlugin(
                             textExtractionPluginMetadata.Name,
                             dataPipelineRun.TriggerParameterValues.FilterKeys(
                                 $"Stage.{dataPipelineRunWorkItem.Stage}.Dependency.{textExtractionPluginMetadata.Name.Split('-').Last()}."),
+                            _packageManagerResolver,
                             _serviceProvider);
 
                     var textContentResult = await textExtractionPlugin.ExtractText(
