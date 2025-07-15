@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Core.Examples.Setup;
 using FoundationaLLM.Plugins.DataPipeline;
+using FoundationaLLM.Tests;
 using Xunit.Abstractions;
 
 namespace FoundationaLLM.Core.Examples.Concepts.Plugins
@@ -10,7 +11,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
     public class Example_DataPipelinePlugins_SharePointOnlineDataSource : TestBase, IClassFixture<TestFixture>
     {
         public Example_DataPipelinePlugins_SharePointOnlineDataSource(ITestOutputHelper output, TestFixture fixture)
-            : base(1, output, fixture)
+            : base(1, output, fixture, new DependencyInjectionContainerInitializer())
         {
         }
 

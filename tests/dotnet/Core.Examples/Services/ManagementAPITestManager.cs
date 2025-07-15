@@ -9,8 +9,8 @@ using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Core.Examples.Catalogs;
-using FoundationaLLM.Core.Examples.Exceptions;
 using FoundationaLLM.Core.Examples.Interfaces;
+using FoundationaLLM.Tests.Exceptions;
 using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
@@ -35,7 +35,7 @@ namespace FoundationaLLM.Core.Examples.Services
                 return;
             }
 
-            throw new FoundationaLLMException($"Failed to create app configuration.");
+            throw new TestingException($"Failed to create app configuration.");
         }
 
         public async Task CreateDataSource(string dataSourceName)
@@ -54,7 +54,7 @@ namespace FoundationaLLM.Core.Examples.Services
                 return;
             }
 
-            throw new FoundationaLLMException($"Failed to create data source: {dataSourceName}.");
+            throw new TestingException($"Failed to create data source: {dataSourceName}.");
         }
 
         public async Task CreateIndexingProfile(string indexingProfileName)
@@ -76,7 +76,7 @@ namespace FoundationaLLM.Core.Examples.Services
                 return;
             }
 
-            throw new FoundationaLLMException($"Failed to create indexing profile: {indexingProfileName}.");
+            throw new TestingException($"Failed to create indexing profile: {indexingProfileName}.");
         }
 
         public async Task CreateTextEmbeddingProfile(string textEmbeddingProfileName)
@@ -95,7 +95,7 @@ namespace FoundationaLLM.Core.Examples.Services
                 return;
             }
 
-            throw new FoundationaLLMException($"Failed to create text embedding profile: {textEmbeddingProfileName}.");
+            throw new TestingException($"Failed to create text embedding profile: {textEmbeddingProfileName}.");
         }
 
         public async Task CreateTextPartitioningProfile(string textPartitioningProfileName)
@@ -114,7 +114,7 @@ namespace FoundationaLLM.Core.Examples.Services
                 return;
             }
 
-            throw new FoundationaLLMException($"Failed to create text partitioning profile: {textPartitioningProfileName}.");
+            throw new TestingException($"Failed to create text partitioning profile: {textPartitioningProfileName}.");
         }
 
         public async Task<string> CreateAPIEndpointConfiguration(string apiEndpointName, string apiEndpointUrl)
@@ -181,7 +181,7 @@ namespace FoundationaLLM.Core.Examples.Services
                 var processResult = JsonSerializer.Deserialize<VectorizationResult>(responseContent, _jsonSerializerOptions);
                 return processResult!;
             }
-            throw new FoundationaLLMException($"Failed to process vectorization request. Status code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
+            throw new TestingException($"Failed to process vectorization request. Status code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
         }
 
         public async Task DeleteAppConfiguration(string key)
@@ -347,7 +347,7 @@ namespace FoundationaLLM.Core.Examples.Services
             }
             catch (Exception ex)
             {
-                throw new FoundationaLLMException($"Failed to delete resource: {ex}");
+                throw new TestingException($"Failed to delete resource: {ex}");
             }
         }
 

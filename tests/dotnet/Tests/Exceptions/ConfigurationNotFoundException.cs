@@ -1,4 +1,4 @@
-﻿namespace FoundationaLLM.Core.Examples.Exceptions
+﻿namespace FoundationaLLM.Tests.Exceptions
 {
     /// <summary>
     /// Exception thrown when a configuration key is not found.

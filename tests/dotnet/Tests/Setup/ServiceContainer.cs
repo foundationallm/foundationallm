@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace FoundationaLLM.Core.Examples.Setup
+namespace FoundationaLLM.Testing.Setup
 {
     /// <summary>
     /// Provides a fullyy configured services container used to simulate an individual FoundationaLLM API instance.

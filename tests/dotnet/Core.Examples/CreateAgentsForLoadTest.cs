@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Core.Examples.Constants;
 using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Setup;
+using FoundationaLLM.Tests;
 using Xunit.Abstractions;
 
 namespace FoundationaLLM.Core.Examples
@@ -18,7 +19,7 @@ namespace FoundationaLLM.Core.Examples
         private string indexingProfileSDZWA = "indexing_profile_sdzwa";
 
         public CreateAgentsForLoadTest(ITestOutputHelper output, TestFixture fixture)
-            : base(1, output, fixture)
+            : base(1, output, fixture, new DependencyInjectionContainerInitializer())
         {
             _vectorizationTestService = GetService<IVectorizationTestService>();
             _managementAPITestManager = GetService<IManagementAPITestManager>();

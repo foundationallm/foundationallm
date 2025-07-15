@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Setup;
+using FoundationaLLM.Tests;
 using Xunit.Abstractions;
 
 namespace FoundationaLLM.Core.Examples
@@ -12,7 +13,7 @@ namespace FoundationaLLM.Core.Examples
 		private readonly IAgentConversationTestService _agentConversationTestService;
 
 		public Example0001_FoundationaLLMAgentInteraction(ITestOutputHelper output, TestFixture fixture)
-			: base(1, output, fixture)
+			: base(1, output, fixture, new DependencyInjectionContainerInitializer())
 		{
             _agentConversationTestService = GetService<IAgentConversationTestService>();
 		}

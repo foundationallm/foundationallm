@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Quota;
 using FoundationaLLM.Core.Examples.Setup;
+using FoundationaLLM.Tests;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit.Abstractions;
 
@@ -13,7 +14,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Quota
     public class Example_Quota_DistributedEnforcement : TestBase, IClassFixture<TestFixture>
     {
         public Example_Quota_DistributedEnforcement(ITestOutputHelper output, TestFixture fixture)
-            : base(2, output, fixture)
+            : base(2, output, fixture, new DependencyInjectionContainerInitializer())
         {
         }
 

@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Quota;
 using FoundationaLLM.Core.Examples.Setup;
+using FoundationaLLM.Tests;
 using Xunit.Abstractions;
 
 namespace FoundationaLLM.Core.Examples.Concepts.Quota
@@ -14,7 +15,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Quota
         private readonly IQuotaService _quotaService;
 
         public Example_Quota_LocalEnforcement(ITestOutputHelper output, TestFixture fixture)
-            : base(1, output, fixture)
+            : base(1, output, fixture, new DependencyInjectionContainerInitializer())
         {
             _quotaService = GetService<IQuotaService>();
         }

@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Core.Examples.Models;
+using FoundationaLLM.Tests;
 using Microsoft.Extensions.Configuration;
 
 namespace FoundationaLLM.Core.Examples.Setup

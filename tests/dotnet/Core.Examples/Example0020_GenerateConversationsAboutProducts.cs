@@ -3,6 +3,7 @@ using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Models;
 using FoundationaLLM.Core.Examples.Resources;
 using FoundationaLLM.Core.Examples.Setup;
+using FoundationaLLM.Tests;
 using System.Text.Json;
 using Xunit.Abstractions;
 
@@ -64,7 +65,7 @@ namespace FoundationaLLM.Core.Examples
         private readonly GenerateConversationsConfiguration _settings;
 
 		public Example0020_GenerateConversationsAboutProducts(ITestOutputHelper output, TestFixture fixture)
-			: base(1, output, fixture)
+			: base(1, output, fixture, new DependencyInjectionContainerInitializer())
 		{
             _agentConversationTestService = GetService<IAgentConversationTestService>();
             _products = JsonSerializer.Deserialize<List<Product>>(

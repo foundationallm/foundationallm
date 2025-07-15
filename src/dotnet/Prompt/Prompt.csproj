@@ -13,4 +13,40 @@
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="fllm-icon-128.png" Pack="true" PackagePath="\" />
+    <None Include="readme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <Description>
+      FoundationaLLM.Prompt is a .NET library for the Prompt resource provider. The resource provider manages prompts across a FoundationaLLM instance.
+    </Description>
+    <PackageTags>FoundationaLLM;LLM;GPT;AI;SDK;Prompts</PackageTags>
+    <RepositoryUrl>https://github.com/solliancenet/foundationallm</RepositoryUrl>
+    <PackageId>FoundationaLLM.Prompts</PackageId>
+    <Version>0.0.0</Version>
+    <!-- Placeholder version -->
+    <AssemblyVersion>0.0.0</AssemblyVersion>
+    <!-- Placeholder version -->
+    <FileVersion>0.0.0</FileVersion>
+    <!-- Placeholder version -->
+    <PackageIcon>fllm-icon-128.png</PackageIcon>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <Title>FoundationaLLM Prompt</Title>
+    <Authors>FoundationaLLM</Authors>
+    <RepositoryType>git</RepositoryType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageProjectUrl>https://foundationallm.ai</PackageProjectUrl>
+    <Copyright>Copyright © FoundationaLLM. All rights reserved.</Copyright>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
 </Project>

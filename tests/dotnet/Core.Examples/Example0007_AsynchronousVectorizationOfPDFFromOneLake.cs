@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Models;
 using FoundationaLLM.Core.Examples.Setup;
+using FoundationaLLM.Tests;
 using Xunit.Abstractions;
 
 namespace FoundationaLLM.Core.Examples
@@ -35,7 +36,7 @@ namespace FoundationaLLM.Core.Examples
         private string id = String.Empty;       
 
         public Example0007_AsynchronousVectorizationOfPDFFromOneLake(ITestOutputHelper output, TestFixture fixture)
-            : base(1, output, fixture)
+            : base(1, output, fixture, new DependencyInjectionContainerInitializer())
         {
             _vectorizationTestService = GetService<IVectorizationTestService>();
             _instanceSettings = _vectorizationTestService.InstanceSettings;

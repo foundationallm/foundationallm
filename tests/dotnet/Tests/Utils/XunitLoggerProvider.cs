@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
-namespace FoundationaLLM.Core.Examples.Utils
+namespace FoundationaLLM.Tests.Utils
 {
     /// <summary>
     /// Logger provider for xUnit tests.
