@@ -2,8 +2,8 @@
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Settings;
-using FoundationaLLM.Core.Examples.Exceptions;
 using FoundationaLLM.Core.Examples.Interfaces;
+using FoundationaLLM.Tests.Exceptions;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -37,7 +37,7 @@ namespace FoundationaLLM.Core.Examples.Services
                 return sessionId;
             }
             
-            throw new FoundationaLLMException($"Failed to create a new chat session. Status code: {responseSession.StatusCode}. Reason: {responseSession.ReasonPhrase}");
+            throw new TestingException($"Failed to create a new chat session. Status code: {responseSession.StatusCode}. Reason: {responseSession.ReasonPhrase}");
         }
 
         /// <inheritdoc/>
@@ -60,7 +60,7 @@ namespace FoundationaLLM.Core.Examples.Services
                 return completionResponse ?? throw new InvalidOperationException("The returned completion response is invalid.");
             }
 
-            throw new FoundationaLLMException($"Failed to send completion request. Status code: {responseMessage.StatusCode}. Reason: {responseMessage.ReasonPhrase}");
+            throw new TestingException($"Failed to send completion request. Status code: {responseMessage.StatusCode}. Reason: {responseMessage.ReasonPhrase}");
         }
 
         /// <inheritdoc/>
@@ -77,7 +77,7 @@ namespace FoundationaLLM.Core.Examples.Services
                 return completionPrompt ?? throw new InvalidOperationException("The returned completion prompt is invalid.");
             }
 
-            throw new FoundationaLLMException($"Failed to get completion prompt. Status code: {responseMessage.StatusCode}. Reason: {responseMessage.ReasonPhrase}");
+            throw new TestingException($"Failed to get completion prompt. Status code: {responseMessage.StatusCode}. Reason: {responseMessage.ReasonPhrase}");
         }
 
         /// <inheritdoc/>
@@ -93,7 +93,7 @@ namespace FoundationaLLM.Core.Examples.Services
                 return messages ?? throw new InvalidOperationException("The returned messages are invalid.");
             }
 
-            throw new FoundationaLLMException($"Failed to get chat session messages. Status code: {responseMessage.StatusCode}. Reason: {responseMessage.ReasonPhrase}");
+            throw new TestingException($"Failed to get chat session messages. Status code: {responseMessage.StatusCode}. Reason: {responseMessage.ReasonPhrase}");
         }
 
         /// <inheritdoc/>
@@ -115,7 +115,7 @@ namespace FoundationaLLM.Core.Examples.Services
                 return completionResponse ?? throw new InvalidOperationException("The returned completion response is invalid.");
             }
 
-            throw new FoundationaLLMException($"Failed to send completion request. Status code: {responseMessage.StatusCode}. Reason: {responseMessage.ReasonPhrase}");
+            throw new TestingException($"Failed to send completion request. Status code: {responseMessage.StatusCode}. Reason: {responseMessage.ReasonPhrase}");
         }
 
         /// <inheritdoc/>

@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Core.Examples.Constants;
 using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Setup;
+using FoundationaLLM.Tests;
 using Xunit.Abstractions;
 
 namespace FoundationaLLM.Core.Examples
@@ -14,7 +15,7 @@ namespace FoundationaLLM.Core.Examples
         private readonly IManagementAPITestManager _managementAPITestManager;
 
         public Example0002_KnowledgeManagementInlineContextAgentWithSemanticKernel(ITestOutputHelper output, TestFixture fixture)
-            : base(1, output, fixture)
+            : base(1, output, fixture, new DependencyInjectionContainerInitializer())
         {
             _agentConversationTestService = GetService<IAgentConversationTestService>();
             _managementAPITestManager = GetService<IManagementAPITestManager>();

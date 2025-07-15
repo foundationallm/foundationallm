@@ -2,7 +2,6 @@ using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
-using FoundationaLLM.Core.Examples.Exceptions;
 
 namespace FoundationaLLM.Core.Examples.Interfaces;
 
@@ -55,7 +54,7 @@ public interface IManagementAPITestManager
     /// <param name="resourceProvider">The name of the resource provider that should handle the request.</param>
     /// <param name="resourcePath">The logical path of the resource type.</param>
     /// <returns></returns>
-    /// <exception cref="FoundationaLLMException"></exception>
+    /// <exception cref="TestingException"></exception>
     Task DeleteResourceAsync(string instanceId, string resourceProvider, string resourcePath);
 
     Task CreateAppConfiguration(AppConfigurationKeyValue appConfigurationKeyValue);

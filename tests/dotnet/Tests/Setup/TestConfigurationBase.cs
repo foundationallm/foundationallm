@@ -3,12 +3,12 @@ using Azure.Data.AppConfiguration;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using FoundationaLLM.Common.Constants.Configuration;
-using FoundationaLLM.Core.Examples.Exceptions;
+using FoundationaLLM.Tests.Exceptions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
 
-namespace FoundationaLLM.Core.Examples.Setup
+namespace FoundationaLLM.Tests
 {
     /// <summary>
     /// Configures the test services for the examples.

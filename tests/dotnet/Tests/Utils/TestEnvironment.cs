@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
-using FoundationaLLM.Core.Examples.Exceptions;
+﻿using FoundationaLLM.Tests.Exceptions;
+using Microsoft.Extensions.Configuration;
 
-namespace FoundationaLLM.Core.Examples.Utils
+namespace FoundationaLLM.Tests.Utils
 {
-    public sealed class Environment
+    public sealed class TestEnvironment
 	{
 		/// <summary>
 		/// Simple helper used to load env vars and secrets like credentials,
@@ -14,7 +14,7 @@ namespace FoundationaLLM.Core.Examples.Utils
 		public static string Variable(string name)
 		{
 			var configuration = new ConfigurationBuilder()
-				.AddUserSecrets<Environment>()
+				.AddUserSecrets<TestEnvironment>()
 				.Build();
 
 			var value = configuration[name];
@@ -26,7 +26,7 @@ namespace FoundationaLLM.Core.Examples.Utils
 			value = System.Environment.GetEnvironmentVariable(name);
 			if (string.IsNullOrEmpty(value))
 			{
-				throw new FoundationaLLMException($"Secret / Environment var not set: {name}");
+				throw new TestingException($"Secret / Environment var not set: {name}");
 			}
 
 			return value;

@@ -12,7 +12,7 @@
 
   <PropertyGroup>
     <Description>
-      FoundationaLLM.Configuration is a .NET library for the Configuration resource provider. The resource provider provides a consistent way to manage and access configuration settings across a FoundationaLLM deployment.
+      FoundationaLLM.Configuration is a .NET library for the Configuration resource provider. The resource provider provides a consistent way to manage and access configuration settings across a FoundationaLLM instance.
     </Description>
     <PackageTags>FoundationaLLM;LLM;GPT;AI;SDK;Configuration</PackageTags>
     <RepositoryUrl>https://github.com/solliancenet/foundationallm</RepositoryUrl>
@@ -26,12 +26,12 @@
     <PackageIcon>fllm-icon-128.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <Title>FoundationaLLM Configuration</Title>
-    <Authors>Solliance</Authors>
+    <Authors>FoundationaLLM</Authors>
     <RepositoryType>git</RepositoryType>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageProjectUrl>https://foundationallm.ai</PackageProjectUrl>
-    <Copyright>Copyright © Solliance. All rights reserved.</Copyright>
+    <Copyright>Copyright © FoundationaLLM. All rights reserved.</Copyright>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Deterministic>true</Deterministic>

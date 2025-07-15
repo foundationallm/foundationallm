@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Core.Examples.Setup;
+using FoundationaLLM.Tests;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Parquet.Serialization;
@@ -22,7 +23,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Gateway
         private GatewayServiceClient _gatewayServiceClient = null!;
 
         public Example_Gateway_Embedding(ITestOutputHelper output, TestFixture fixture)
-            : base(1, output, fixture)
+            : base(1, output, fixture, new DependencyInjectionContainerInitializer())
         {
         }
 

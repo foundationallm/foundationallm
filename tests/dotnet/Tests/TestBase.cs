@@ -1,12 +1,13 @@
 ﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Environment;
 using FoundationaLLM.Common.Services.Events;
-using FoundationaLLM.Core.Examples.Setup;
+using FoundationaLLM.Testing;
+using FoundationaLLM.Testing.Setup;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Xunit.Abstractions;
 
-namespace FoundationaLLM.Core.Examples
+namespace FoundationaLLM.Tests
 {
     public class TestBase
     {
@@ -21,24 +22,26 @@ namespace FoundationaLLM.Core.Examples
 		public TestBase(
 			int serviceContainerCount,
             ITestOutputHelper output,
-            TestFixture fixture)
+            TestFixture fixture,
+            DependencyInjectionContainerInitializerBase containerInitializer)
 		{
             _serviceContainerCount = serviceContainerCount;
 
             Output = output;
-			ServiceContainers = GetServiceContainers(output, fixture);
+			ServiceContainers = GetServiceContainers(output, fixture, containerInitializer);
 			MainServiceContainer = ServiceContainers.First();
         }
 
 		protected virtual List<ServiceContainer> GetServiceContainers(
 			ITestOutputHelper output,
-			TestFixture fixture) =>
+			TestFixture fixture,
+            DependencyInjectionContainerInitializerBase containerInitializer) =>
             [.. Enumerable.Range(1, _serviceContainerCount)
 				.Select(serviceContainerIndex =>
 				{
                     var serviceCollection = new ServiceCollection();
 
-                    DependencyInjectionContainerInitializer.InitializeServices(
+                    containerInitializer.InitializeServices(
                         serviceContainerIndex,
                         serviceCollection,
                         fixture.HostBuilder.Configuration,
