@@ -250,6 +250,24 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
             return await RetrieveItemsAsync<DataPipelineRun>(finalQuery);
         }
 
+        /// <inheritdoc/>
+        public async Task<DataPipelineContentItem> GetDataPipelineContentItem(
+            string dataPipelineRunId,
+            string contentItemCanonicalId)
+        {
+            var queryString = "SELECT * FROM c WHERE c.type = @type AND c.run_id = @runId AND c.content_item_canonical_id = @canonicalId";
+            var query = new QueryDefinition(queryString)
+                .WithParameter("@type", DataPipelineTypes.DataPipelineContentItem)
+                .WithParameter("@runId", dataPipelineRunId)
+                .WithParameter("@canonicalId", contentItemCanonicalId);
+            var results = await RetrieveItemsAsync<DataPipelineContentItem>(query);
+            if (results.Count == 0)
+            {
+                throw new DataPipelineServiceException($"No content item found for run ID '{dataPipelineRunId}' and canonical ID '{contentItemCanonicalId}'.");
+            }
+            return results.First();
+        }
+
         #region Change Feed Processor
 
         /// <inheritdoc/>

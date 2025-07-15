@@ -75,6 +75,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 runId,
                 runId);
 
+        public async Task<DataPipelineContentItem> GetDataPipelineContentItem(
+            DataPipelineRunWorkItem dataPipelineRunWorkItem) =>
+            await _cosmosDBService.GetDataPipelineContentItem(
+                dataPipelineRunWorkItem.RunId,
+                dataPipelineRunWorkItem.ContentItemCanonicalId);
+
         /// <inheritdoc/>
         public async Task<DataPipelineRunWorkItem?> GetDataPipelineRunWorkItem(
             string workItemId,

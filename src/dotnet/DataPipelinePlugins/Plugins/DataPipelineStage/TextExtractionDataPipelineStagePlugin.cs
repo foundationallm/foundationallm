@@ -86,8 +86,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                         $"DataSource.{dataPipelineDefinition.DataSource.Name}."),
                     _serviceProvider);
 
+            var contentItem = await _dataPipelineStateService.GetDataPipelineContentItem(
+                dataPipelineRunWorkItem);
             var rawContentResult = await dataSourcePlugin.GetContentItemRawContent(
-                dataPipelineRunWorkItem.ContentItemCanonicalId);
+                contentItem.ContentIdentifier);
 
             if (!rawContentResult.Success)
                 return new PluginResult(false, false, rawContentResult.ErrorMessage);

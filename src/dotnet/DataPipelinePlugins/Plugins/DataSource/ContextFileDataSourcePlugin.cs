@@ -55,8 +55,9 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
 
         /// <inheritdoc/>
         public async Task<PluginResult<ContentItemRawContent>> GetContentItemRawContent(
-            string contentItemCanonicalId)
+            ContentIdentifier contentItemIdentifier)
         {
+            var contentItemCanonicalId = contentItemIdentifier.CanonicalId;
             var contextFileObjectId = _pluginParameters[PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID]?.ToString()
                 ?? throw new PluginException($"The {PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID} parameter is required by the {Name} plugin.");
             var instanceId = contextFileObjectId.Split('/', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)[1];

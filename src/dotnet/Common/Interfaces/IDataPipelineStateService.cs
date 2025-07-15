@@ -37,6 +37,14 @@ namespace FoundationaLLM.Common.Interfaces
             DataPipelineRunFilter dataPipelineRunFilter);
 
         /// <summary>
+        /// Gets a data pipeline content item associated with a data pipeline run work item.
+        /// </summary>
+        /// <param name="dataPipelineRunWorkItem">The data pipeline work item that references the content item.</param>
+        /// <returns>The content item referenced by the work item.</returns>
+        Task<DataPipelineContentItem> GetDataPipelineContentItem(
+            DataPipelineRunWorkItem dataPipelineRunWorkItem);
+
+        /// <summary>
         /// Gets a data pipeline run work item by its identifier.
         /// </summary>
         /// <param name="workItemId">The data pipeline run work item identifier.</param>

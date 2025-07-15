@@ -125,8 +125,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
 
         /// <inheritdoc/>
         public async Task<PluginResult<ContentItemRawContent>> GetContentItemRawContent(
-            string contentItemCanonicalId)
+            ContentIdentifier contentItemIdentifier)
         {
+            var contentItemCanonicalId = contentItemIdentifier.CanonicalId;
+
             var documentLibraryPathsList = _pluginParameters[PluginParameterNames.SHAREPOINTONLINE_DATASOURCE_DOCUMENTLIBRARIES]?.ToString()
                 ?? throw new PluginException($"The {PluginParameterNames.SHAREPOINTONLINE_DATASOURCE_DOCUMENTLIBRARIES} parameter is required by the {Name} plugin.");
 
