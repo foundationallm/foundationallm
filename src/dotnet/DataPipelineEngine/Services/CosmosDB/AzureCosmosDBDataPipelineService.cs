@@ -255,7 +255,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
             string dataPipelineRunId,
             string contentItemCanonicalId)
         {
-            var queryString = "SELECT * FROM c WHERE c.type = @type AND c.run_id = @runId AND c.content_item_canonical_id = @canonicalId";
+            var queryString = "SELECT * FROM c WHERE c.type = @type AND c.run_id = @runId AND c.content_identifier.canonical_id = @canonicalId";
             var query = new QueryDefinition(queryString)
                 .WithParameter("@type", DataPipelineTypes.DataPipelineContentItem)
                 .WithParameter("@runId", dataPipelineRunId)
