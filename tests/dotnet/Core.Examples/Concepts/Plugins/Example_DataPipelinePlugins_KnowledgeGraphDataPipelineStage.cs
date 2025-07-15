@@ -1,7 +1,9 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
+using FoundationaLLM.Common.Services.Plugins;
 using FoundationaLLM.Core.Examples.Setup;
 using FoundationaLLM.Plugins.DataPipeline;
 using FoundationaLLM.Tests;
@@ -32,6 +34,12 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
             ]);
 
             var packageManager = new PluginPackageManager();
+
+            var pluginResourceProviderService = GetService<IEnumerable<IResourceProviderService>>()
+                .Single(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Plugin);
+            var packageManagerResolver = new PluginPackageManagerResolver(
+                pluginResourceProviderService);
+
             var dataPipelineStateService = GetService<IDataPipelineStateService>();
             var dataPipelineResourceProviderService = GetService<IEnumerable<IResourceProviderService>>()
                 .Single(rp => rp.Name == ResourceProviderNames.FoundationaLLM_DataPipeline);
@@ -48,6 +56,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
             var dataSourcePlugin = packageManager.GetDataPipelineStagePlugin(
                 PluginNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE,
                 pluginParameters,
+                packageManagerResolver,
                 MainServiceContainer.ServiceProvider);
 
             var pluginResult = await dataSourcePlugin.ProcessWorkItem(

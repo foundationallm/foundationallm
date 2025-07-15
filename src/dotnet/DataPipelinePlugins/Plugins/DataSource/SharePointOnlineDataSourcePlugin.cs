@@ -30,13 +30,15 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
     /// <param name="dataSourceObjectId">The FoundationaLLM object identifier of the data source.</param>
     /// <param name="pluginParameters">The dictionary containing the plugin parameters.</param>
     /// <param name="packageManager">The package manager for the plugin.</param>
+    /// <param name="packageManagerResolver">The package manager resolver for the plugin.</param>
     /// <param name="serviceProvider">The service provider of the dependency injection container.</param>
     public class SharePointOnlineDataSourcePlugin(
         string dataSourceObjectId,
         Dictionary<string, object> pluginParameters,
         IPluginPackageManager packageManager,
+        IPluginPackageManagerResolver packageManagerResolver,
         IServiceProvider serviceProvider)
-        : PluginBase(pluginParameters, packageManager, serviceProvider), IDataSourcePlugin
+        : PluginBase(pluginParameters, packageManager, packageManagerResolver, serviceProvider), IDataSourcePlugin
     {
         private readonly string _dataSourceObjectId = dataSourceObjectId;
 

@@ -21,12 +21,14 @@ namespace FoundationaLLM.Common.Services.Plugins
         /// </summary>
         /// <param name="pluginParameters"></param>
         /// <param name="packageManager"></param>
+        /// <param name="packageManagerResolver">The package manager resolver for the plugin.</param>
         /// <param name="serviceProvider"></param>
         public DataPipelineStagePluginBase(
             Dictionary<string, object> pluginParameters,
             IPluginPackageManager packageManager,
+            IPluginPackageManagerResolver packageManagerResolver,
             IServiceProvider serviceProvider)
-            : base(pluginParameters, packageManager, serviceProvider) =>
+            : base(pluginParameters, packageManager, packageManagerResolver, serviceProvider) =>
             _dataPipelineStateService =
                 _serviceProvider.GetRequiredService<IDataPipelineStateService>()
                 ?? throw new PluginException("The data pipeline state service is not available in the dependency injection container.");

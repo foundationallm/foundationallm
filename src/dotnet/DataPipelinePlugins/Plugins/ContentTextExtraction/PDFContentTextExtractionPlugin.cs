@@ -12,12 +12,14 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
     /// </summary>
     /// <param name="pluginParameters">The dictionary containing the plugin parameters.</param>
     /// <param name="packageManager">The package manager for the plugin.</param>
+    /// <param name="packageManagerResolver">The package manager resolver for the plugin.</param>
     /// <param name="serviceProvider">The service provider of the dependency injection container.</param>
     public class PDFContentTextExtractionPlugin(
         Dictionary<string, object> pluginParameters,
         IPluginPackageManager packageManager,
+        IPluginPackageManagerResolver packageManagerResolver,
         IServiceProvider serviceProvider)
-        : PluginBase(pluginParameters, packageManager, serviceProvider), IContentTextExtractionPlugin
+        : PluginBase(pluginParameters, packageManager, packageManagerResolver, serviceProvider), IContentTextExtractionPlugin
     {
         protected override string Name => PluginNames.PDF_CONTENTTEXTEXTRACTION;
 

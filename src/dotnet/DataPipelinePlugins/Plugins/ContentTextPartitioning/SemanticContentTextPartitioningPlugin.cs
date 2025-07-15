@@ -10,12 +10,14 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
     /// </summary>
     /// <param name="pluginParameters">The dictionary containing the plugin parameters.</param>
     /// <param name="packageManager">The package manager for the plugin.</param>
+    /// <param name="packageManagerResolver">The package manager resolver for the plugin.</param>
     /// <param name="serviceProvider">The service provider of the dependency injection container.</param>
     public class SemanticContentTextPartitioningPlugin(
         Dictionary<string, object> pluginParameters,
         IPluginPackageManager packageManager,
+        IPluginPackageManagerResolver packageManagerResolver,
         IServiceProvider serviceProvider)
-        : PluginBase(pluginParameters, packageManager, serviceProvider), IContentTextPartitioningPlugin
+        : PluginBase(pluginParameters, packageManager, packageManagerResolver, serviceProvider), IContentTextPartitioningPlugin
     {
         protected override string Name => PluginNames.SEMANTIC_CONTENTTEXTPARTITIONING;
 
