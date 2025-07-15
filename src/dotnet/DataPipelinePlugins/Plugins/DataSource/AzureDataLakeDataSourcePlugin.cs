@@ -27,6 +27,6 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
 
         /// <inheritdoc/>
         public async Task<PluginResult<ContentItemRawContent>> GetContentItemRawContent(
-            string contentItemCanonicalId) => throw new NotImplementedException();
+            ContentIdentifier contentItemIdentifier) => throw new NotImplementedException();
     }
 }

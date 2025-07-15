@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Core.Examples.Setup;
+using FoundationaLLM.Tests;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Xunit.Abstractions;
@@ -17,7 +18,7 @@ namespace FoundationaLLM.Core.Examples.DistributedTests
     public class Example0001_ResourceProviderResourceReferences : TestBase, IClassFixture<TestFixture>
     {
         public Example0001_ResourceProviderResourceReferences(ITestOutputHelper output, TestFixture fixture)
-			: base(2, output, fixture)
+			: base(2, output, fixture, new DependencyInjectionContainerInitializer())
         {
         }
 

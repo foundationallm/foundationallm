@@ -17,9 +17,9 @@ namespace FoundationaLLM.Common.Interfaces.Plugins
         /// <summary>
         /// Gets the raw content of a content item.
         /// </summary>
-        /// <param name="contentItemCanonicalId">The canonical identifier of the content item.</param>
+        /// <param name="contentItemIdentifier">The identifier of the content item.</param>
         /// <returns>A <see cref="PluginResult{T}"/> object with the conten item's raw content.</returns>
         Task<PluginResult<ContentItemRawContent>> GetContentItemRawContent(
-            string contentItemCanonicalId);
+            ContentIdentifier contentItemIdentifier);
     }
 }

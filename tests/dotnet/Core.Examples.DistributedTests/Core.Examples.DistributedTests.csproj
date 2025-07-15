@@ -31,6 +31,7 @@
     <ProjectReference Include="..\..\..\src\dotnet\AzureOpenAI\AzureOpenAI.csproj" />
     <ProjectReference Include="..\..\..\src\dotnet\Common\Common.csproj" />
     <ProjectReference Include="..\Core.Examples\Core.Examples.csproj" />
+    <ProjectReference Include="..\Tests\Tests.csproj" />
   </ItemGroup>
 
   <ItemGroup>

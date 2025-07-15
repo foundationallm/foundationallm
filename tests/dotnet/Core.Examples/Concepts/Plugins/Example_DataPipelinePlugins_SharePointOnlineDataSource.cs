@@ -39,7 +39,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
             var contentItems = await dataSourcePlugin.GetContentItems();
 
             var contentItemContent = await dataSourcePlugin.GetContentItemRawContent(
-                contentItems[0].ContentIdentifier.CanonicalId);
+                contentItems[0].ContentIdentifier);
 
             Assert.NotEmpty(contentItems);
             Assert.True(contentItems.Count > 0);

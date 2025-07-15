@@ -81,6 +81,16 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
             DataPipelineRunFilter dataPipelineRunFilter);
 
         /// <summary>
+        /// Get a data pipeline content item by its canonical identifier.
+        /// </summary>
+        /// <param name="dataPipelineRunId">Thje data pipeine run identifier.</param>
+        /// <param name="contentItemCanonicalId">The canonical identifier of the content item run.</param>
+        /// <returns></returns>
+        Task<DataPipelineContentItem> GetDataPipelineContentItem(
+            string dataPipelineRunId,
+            string contentItemCanonicalId);
+
+        /// <summary>
         /// Starts the change feed processor for the data pipeline run work items.
         /// </summary>
         /// <param name="dataPipelineRunWorkItemProcessor">The asynchronous delegate that is invoked for each data pipeline run work item.</param>
