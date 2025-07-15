@@ -130,8 +130,8 @@ Interface IDataSourcePlugin  <a class="header-action link-secondary" title="View
 
   <a id="FoundationaLLM_Common_Interfaces_Plugins_IDataSourcePlugin_GetContentItemRawContent_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItemRawContent*"></a>
 
-  <h3 id="FoundationaLLM_Common_Interfaces_Plugins_IDataSourcePlugin_GetContentItemRawContent_System_String_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItemRawContent(System.String)">
-  GetContentItemRawContent(string)
+  <h3 id="FoundationaLLM_Common_Interfaces_Plugins_IDataSourcePlugin_GetContentItemRawContent_FoundationaLLM_Common_Models_DataPipelines_ContentIdentifier_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItemRawContent(FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier)">
+  GetContentItemRawContent(ContentIdentifier)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IDataSourcePlugin.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -140,13 +140,13 @@ Interface IDataSourcePlugin  <a class="header-action link-secondary" title="View
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;PluginResult&lt;ContentItemRawContent&gt;&gt; GetContentItemRawContent(string contentItemCanonicalId)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;PluginResult&lt;ContentItemRawContent&gt;&gt; GetContentItemRawContent(ContentIdentifier contentItemIdentifier)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>contentItemCanonicalId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The canonical identifier of the content item.</p>
+    <dt><code>contentItemIdentifier</code> <a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier.html">ContentIdentifier</a></dt>
+    <dd><p>The identifier of the content item.</p>
 </dd>
   </dl>
 
