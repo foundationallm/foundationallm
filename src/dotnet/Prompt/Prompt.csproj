@@ -28,7 +28,7 @@
     </Description>
     <PackageTags>FoundationaLLM;LLM;GPT;AI;SDK;Prompts</PackageTags>
     <RepositoryUrl>https://github.com/solliancenet/foundationallm</RepositoryUrl>
-    <PackageId>FoundationaLLM.Prompts</PackageId>
+    <PackageId>FoundationaLLM.Prompt</PackageId>
     <Version>0.0.0</Version>
     <!-- Placeholder version -->
     <AssemblyVersion>0.0.0</AssemblyVersion>
