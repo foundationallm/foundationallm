@@ -1,20 +1,3 @@
-    if (Test-Path -Path "$($PackageRoot)/artifacts/dataSources.json") {
-
-        Write-Host "Updating data sources..."
-
-        $dataSources = Get-Content "$($PackageRoot)/artifacts/dataSources.json" `
-            | Resolve-Placeholders -Parameters $Parameters `
-            | ConvertFrom-Json -AsHashTable
-
-        foreach ($dataSource in $dataSources) {
-
-            Write-Host "Updating data source: $($dataSource.name)"
-            $dataSourceResult = Merge-DataSource -DataSource $dataSource
-            Write-Host "Data source updated: $($dataSourceResult)" -ForegroundColor Green
-        }
-    }
-
-
 function Resolve-Placeholders {
     param (
         [Parameter(ValueFromPipeline)]
