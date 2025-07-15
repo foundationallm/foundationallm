@@ -158,7 +158,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         """
 
         knowledge_source_object_id = self.tool_config.get_resource_object_id_properties(
-            "FoundationaLLM.Knowledge",
+            "FoundationaLLM.Context",
             "knowledgeSources",
             ResourceObjectIdPropertyNames.OBJECT_ROLE,
             "knowledge_source"
