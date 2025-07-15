@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Plugins_DataPipeline_Plugins_ContentTextExtraction_ImageMetadataTextExtractionPlugin" data-uid="FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageMetadataTextExtractionPlugin" class="text-break">
-Class ImageMetadataTextExtractionPlugin  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/ImageMetadataTextExtractionPlugin.cs/#L13"><i class="bi bi-code-slash"></i></a>
+Class ImageMetadataTextExtractionPlugin  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/ImageMetadataTextExtractionPlugin.cs/#L14"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -133,6 +133,9 @@ Class ImageMetadataTextExtractionPlugin  <a class="header-action link-secondary"
     </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Services.Plugins.PluginBase.html#FoundationaLLM_Common_Services_Plugins_PluginBase__packageManager">PluginBase._packageManager</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Services.Plugins.PluginBase.html#FoundationaLLM_Common_Services_Plugins_PluginBase__packageManagerResolver">PluginBase._packageManagerResolver</a>
     </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Services.Plugins.PluginBase.html#FoundationaLLM_Common_Services_Plugins_PluginBase__pluginMetadata">PluginBase._pluginMetadata</a>
@@ -184,9 +187,9 @@ Class ImageMetadataTextExtractionPlugin  <a class="header-action link-secondary"
 
   <a id="FoundationaLLM_Plugins_DataPipeline_Plugins_ContentTextExtraction_ImageMetadataTextExtractionPlugin__ctor_" data-uid="FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageMetadataTextExtractionPlugin.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Plugins_DataPipeline_Plugins_ContentTextExtraction_ImageMetadataTextExtractionPlugin__ctor_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_System_IServiceProvider_" data-uid="FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageMetadataTextExtractionPlugin.#ctor(System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager,System.IServiceProvider)">
-  ImageMetadataTextExtractionPlugin(Dictionary&lt;string, object&gt;, IPluginPackageManager, IServiceProvider)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/ImageMetadataTextExtractionPlugin.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Plugins_DataPipeline_Plugins_ContentTextExtraction_ImageMetadataTextExtractionPlugin__ctor_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_System_IServiceProvider_" data-uid="FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageMetadataTextExtractionPlugin.#ctor(System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager,FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)">
+  ImageMetadataTextExtractionPlugin(Dictionary&lt;string, object&gt;, IPluginPackageManager, IPluginPackageManagerResolver, IServiceProvider)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/ImageMetadataTextExtractionPlugin.cs/#L14"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Implements the Image Metadata Text Extraction Plugin.</p>
@@ -194,7 +197,7 @@ Class ImageMetadataTextExtractionPlugin  <a class="header-action link-secondary"
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ImageMetadataTextExtractionPlugin(Dictionary&lt;string, object&gt; pluginParameters, IPluginPackageManager packageManager, IServiceProvider serviceProvider)</code></pre>
+    <pre><code class="lang-csharp hljs">public ImageMetadataTextExtractionPlugin(Dictionary&lt;string, object&gt; pluginParameters, IPluginPackageManager packageManager, IPluginPackageManagerResolver packageManagerResolver, IServiceProvider serviceProvider)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -204,6 +207,9 @@ Class ImageMetadataTextExtractionPlugin  <a class="header-action link-secondary"
 </dd>
     <dt><code>packageManager</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.html">IPluginPackageManager</a></dt>
     <dd><p>The package manager for the plugin.</p>
+</dd>
+    <dt><code>packageManagerResolver</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html">IPluginPackageManagerResolver</a></dt>
+    <dd><p>The package manager resolver for the plugin.</p>
 </dd>
     <dt><code>serviceProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></dt>
     <dd><p>The service provider of the dependency injection container.</p>
@@ -229,7 +235,7 @@ Class ImageMetadataTextExtractionPlugin  <a class="header-action link-secondary"
 
   <h3 id="FoundationaLLM_Plugins_DataPipeline_Plugins_ContentTextExtraction_ImageMetadataTextExtractionPlugin_Name" data-uid="FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageMetadataTextExtractionPlugin.Name">
   Name
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/ImageMetadataTextExtractionPlugin.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/ImageMetadataTextExtractionPlugin.cs/#L21"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -264,7 +270,7 @@ Class ImageMetadataTextExtractionPlugin  <a class="header-action link-secondary"
 
   <h3 id="FoundationaLLM_Plugins_DataPipeline_Plugins_ContentTextExtraction_ImageMetadataTextExtractionPlugin_ExtractText_System_BinaryData_" data-uid="FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageMetadataTextExtractionPlugin.ExtractText(System.BinaryData)">
   ExtractText(BinaryData)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/ImageMetadataTextExtractionPlugin.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/ImageMetadataTextExtractionPlugin.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Extracts text from the provided raw content.</p>
@@ -303,7 +309,7 @@ Class ImageMetadataTextExtractionPlugin  <a class="header-action link-secondary"
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/ImageMetadataTextExtractionPlugin.cs/#L13" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/ImageMetadataTextExtractionPlugin.cs/#L14" class="edit-link">Edit this page</a>
         </div>
 
 

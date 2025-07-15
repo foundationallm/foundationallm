@@ -4674,6 +4674,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.yml\" sourcestartlinenumber=\"1\">Defines a mechanism to resolve and retrieve a plugin package manager for a specified plugin object.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.Plugins.IPluginService.yml",
       "output": {
         ".html": {
@@ -10582,6 +10596,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.yml\" sourcestartlinenumber=\"1\">Provides functionality to resolve and manage plugin packages.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Plugins.PluginService.yml",
       "output": {
         ".html": {
@@ -15510,6 +15538,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.yml\" sourcestartlinenumber=\"1\">Represents a custom assembly load context for loading plugins.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Plugin.ResourceProviders.PluginResourceProviderService.yml",
       "output": {
         ".html": {
@@ -15954,7 +15996,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.AzureDataLakeDataSourcePlugin",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.AzureDataLakeDataSourcePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Azure Data Lake data source plugin.</p>\n<param name=\"pluginParameters\">The dictionary containing the plugin parameters.\n<param name=\"packageManager\">The package manager for the plugin.\n<param name=\"serviceProvider\">The service provider of the dependency injection container.\n"
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.AzureDataLakeDataSourcePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Azure Data Lake data source plugin.</p>\n<param name=\"pluginParameters\">The dictionary containing the plugin parameters.\n<param name=\"packageManager\">The package manager for the plugin.\n<param name=\"packageManagerResolver\">The package manager resolver for the plugin.\n<param name=\"serviceProvider\">The service provider of the dependency injection container.\n"
     },
     {
       "type": "ManagedReference",

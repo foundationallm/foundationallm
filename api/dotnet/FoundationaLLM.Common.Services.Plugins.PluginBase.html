@@ -179,9 +179,9 @@ Class PluginBase  <a class="header-action link-secondary" title="View source" hr
 
   <a id="FoundationaLLM_Common_Services_Plugins_PluginBase__ctor_" data-uid="FoundationaLLM.Common.Services.Plugins.PluginBase.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Plugins_PluginBase__ctor_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_System_IServiceProvider_" data-uid="FoundationaLLM.Common.Services.Plugins.PluginBase.#ctor(System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager,System.IServiceProvider)">
-  PluginBase(Dictionary&lt;string, object&gt;, IPluginPackageManager, IServiceProvider)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Plugins/PluginBase.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Services_Plugins_PluginBase__ctor_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_System_IServiceProvider_" data-uid="FoundationaLLM.Common.Services.Plugins.PluginBase.#ctor(System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager,FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)">
+  PluginBase(Dictionary&lt;string, object&gt;, IPluginPackageManager, IPluginPackageManagerResolver, IServiceProvider)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Plugins/PluginBase.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes the plugin with the specified parameters and package manager.</p>
@@ -189,7 +189,7 @@ Class PluginBase  <a class="header-action link-secondary" title="View source" hr
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PluginBase(Dictionary&lt;string, object&gt; pluginParameters, IPluginPackageManager packageManager, IServiceProvider serviceProvider)</code></pre>
+    <pre><code class="lang-csharp hljs">public PluginBase(Dictionary&lt;string, object&gt; pluginParameters, IPluginPackageManager packageManager, IPluginPackageManagerResolver packageManagerResolver, IServiceProvider serviceProvider)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -199,6 +199,9 @@ Class PluginBase  <a class="header-action link-secondary" title="View source" hr
 </dd>
     <dt><code>packageManager</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.html">IPluginPackageManager</a></dt>
     <dd><p>The package manager for the plugin.</p>
+</dd>
+    <dt><code>packageManagerResolver</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html">IPluginPackageManagerResolver</a></dt>
+    <dd><p>The package manager resolver for the plugin.</p>
 </dd>
     <dt><code>serviceProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></dt>
     <dd><p>The service provider of the dependency injection container.</p>
@@ -223,7 +226,7 @@ Class PluginBase  <a class="header-action link-secondary" title="View source" hr
 
   <h3 id="FoundationaLLM_Common_Services_Plugins_PluginBase__logger" data-uid="FoundationaLLM.Common.Services.Plugins.PluginBase._logger">
   _logger
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Plugins/PluginBase.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Plugins/PluginBase.cs/#L21"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -281,9 +284,39 @@ Class PluginBase  <a class="header-action link-secondary" title="View source" hr
 
 
 
+  <h3 id="FoundationaLLM_Common_Services_Plugins_PluginBase__packageManagerResolver" data-uid="FoundationaLLM.Common.Services.Plugins.PluginBase._packageManagerResolver">
+  _packageManagerResolver
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Plugins/PluginBase.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected readonly IPluginPackageManagerResolver _packageManagerResolver</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html">IPluginPackageManagerResolver</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
   <h3 id="FoundationaLLM_Common_Services_Plugins_PluginBase__pluginMetadata" data-uid="FoundationaLLM.Common.Services.Plugins.PluginBase._pluginMetadata">
   _pluginMetadata
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Plugins/PluginBase.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Plugins/PluginBase.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -343,7 +376,7 @@ Class PluginBase  <a class="header-action link-secondary" title="View source" hr
 
   <h3 id="FoundationaLLM_Common_Services_Plugins_PluginBase__serviceProvider" data-uid="FoundationaLLM.Common.Services.Plugins.PluginBase._serviceProvider">
   _serviceProvider
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Plugins/PluginBase.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Plugins/PluginBase.cs/#L19"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>

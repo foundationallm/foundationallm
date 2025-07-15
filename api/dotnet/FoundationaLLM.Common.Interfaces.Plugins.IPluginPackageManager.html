@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager" class="text-break">
-Interface IPluginPackageManager  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L9"><i class="bi bi-code-slash"></i></a>
+Interface IPluginPackageManager  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L8"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -130,9 +130,9 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
 
   <a id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetContentTextExtractionPlugin_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextExtractionPlugin*"></a>
 
-  <h3 id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetContentTextExtractionPlugin_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__System_IServiceProvider_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextExtractionPlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.IServiceProvider)">
-  GetContentTextExtractionPlugin(string, Dictionary&lt;string, object&gt;, IServiceProvider)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetContentTextExtractionPlugin_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_System_IServiceProvider_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextExtractionPlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)">
+  GetContentTextExtractionPlugin(string, Dictionary&lt;string, object&gt;, IPluginPackageManagerResolver, IServiceProvider)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L73"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a content text extraction plugin by its name.</p>
@@ -140,7 +140,7 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IContentTextExtractionPlugin GetContentTextExtractionPlugin(string pluginName, Dictionary&lt;string, object&gt; pluginParameters, IServiceProvider serviceProvider)</code></pre>
+    <pre><code class="lang-csharp hljs">IContentTextExtractionPlugin GetContentTextExtractionPlugin(string pluginName, Dictionary&lt;string, object&gt; pluginParameters, IPluginPackageManagerResolver packageManagerResolver, IServiceProvider serviceProvider)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -150,6 +150,9 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
 </dd>
     <dt><code>pluginParameters</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
     <dd><p>The dictionary containing the plugin parameters.</p>
+</dd>
+    <dt><code>packageManagerResolver</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html">IPluginPackageManagerResolver</a></dt>
+    <dd><p>The package manager resolver for the plugin.</p>
 </dd>
     <dt><code>serviceProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></dt>
     <dd><p>The service provider of the dependency injection container.</p>
@@ -180,9 +183,9 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
 
   <a id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetContentTextPartitioningPlugin_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextPartitioningPlugin*"></a>
 
-  <h3 id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetContentTextPartitioningPlugin_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__System_IServiceProvider_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextPartitioningPlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.IServiceProvider)">
-  GetContentTextPartitioningPlugin(string, Dictionary&lt;string, object&gt;, IServiceProvider)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetContentTextPartitioningPlugin_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_System_IServiceProvider_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextPartitioningPlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)">
+  GetContentTextPartitioningPlugin(string, Dictionary&lt;string, object&gt;, IPluginPackageManagerResolver, IServiceProvider)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L88"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a content text partitioning plugin by its name.</p>
@@ -190,7 +193,7 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IContentTextPartitioningPlugin GetContentTextPartitioningPlugin(string pluginName, Dictionary&lt;string, object&gt; pluginParameters, IServiceProvider serviceProvider)</code></pre>
+    <pre><code class="lang-csharp hljs">IContentTextPartitioningPlugin GetContentTextPartitioningPlugin(string pluginName, Dictionary&lt;string, object&gt; pluginParameters, IPluginPackageManagerResolver packageManagerResolver, IServiceProvider serviceProvider)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -200,6 +203,9 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
 </dd>
     <dt><code>pluginParameters</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
     <dd><p>The dictionary containing the plugin parameters.</p>
+</dd>
+    <dt><code>packageManagerResolver</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html">IPluginPackageManagerResolver</a></dt>
+    <dd><p>The package manager resolver for the plugin.</p>
 </dd>
     <dt><code>serviceProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></dt>
     <dd><p>The service provider of the dependency injection container.</p>
@@ -230,9 +236,9 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
 
   <a id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetDataPipelineStagePlugin_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataPipelineStagePlugin*"></a>
 
-  <h3 id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetDataPipelineStagePlugin_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__System_IServiceProvider_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataPipelineStagePlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.IServiceProvider)">
-  GetDataPipelineStagePlugin(string, Dictionary&lt;string, object&gt;, IServiceProvider)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetDataPipelineStagePlugin_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_System_IServiceProvider_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataPipelineStagePlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)">
+  GetDataPipelineStagePlugin(string, Dictionary&lt;string, object&gt;, IPluginPackageManagerResolver, IServiceProvider)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L58"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a data pipeline stage plugin by its name.</p>
@@ -240,7 +246,7 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IDataPipelineStagePlugin GetDataPipelineStagePlugin(string pluginName, Dictionary&lt;string, object&gt; pluginParameters, IServiceProvider serviceProvider)</code></pre>
+    <pre><code class="lang-csharp hljs">IDataPipelineStagePlugin GetDataPipelineStagePlugin(string pluginName, Dictionary&lt;string, object&gt; pluginParameters, IPluginPackageManagerResolver packageManagerResolver, IServiceProvider serviceProvider)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -250,6 +256,9 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
 </dd>
     <dt><code>pluginParameters</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
     <dd><p>The dictionary containing the plugin parameters.</p>
+</dd>
+    <dt><code>packageManagerResolver</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html">IPluginPackageManagerResolver</a></dt>
+    <dd><p>The package manager resolver for the plugin.</p>
 </dd>
     <dt><code>serviceProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></dt>
     <dd><p>The service provider of the dependency injection container.</p>
@@ -280,8 +289,8 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
 
   <a id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetDataSourcePlugin_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataSourcePlugin*"></a>
 
-  <h3 id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetDataSourcePlugin_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__System_IServiceProvider_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataSourcePlugin(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.IServiceProvider)">
-  GetDataSourcePlugin(string, string, Dictionary&lt;string, object&gt;, IServiceProvider)
+  <h3 id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetDataSourcePlugin_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_System_IServiceProvider_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataSourcePlugin(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)">
+  GetDataSourcePlugin(string, string, Dictionary&lt;string, object&gt;, IPluginPackageManagerResolver, IServiceProvider)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L42"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -290,7 +299,7 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IDataSourcePlugin GetDataSourcePlugin(string pluginName, string dataSourceObjectId, Dictionary&lt;string, object&gt; pluginParameters, IServiceProvider serviceProvider)</code></pre>
+    <pre><code class="lang-csharp hljs">IDataSourcePlugin GetDataSourcePlugin(string pluginName, string dataSourceObjectId, Dictionary&lt;string, object&gt; pluginParameters, IPluginPackageManagerResolver packageManagerResolver, IServiceProvider serviceProvider)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -303,6 +312,9 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
 </dd>
     <dt><code>pluginParameters</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
     <dd><p>The dictionary containing the plugin parameters.</p>
+</dd>
+    <dt><code>packageManagerResolver</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html">IPluginPackageManagerResolver</a></dt>
+    <dd><p>The package manager resolver for the plugin.</p>
 </dd>
     <dt><code>serviceProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></dt>
     <dd><p>The service provider of the dependency injection container.</p>
@@ -335,7 +347,7 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetMetadata_System_String_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetMetadata(System.String)">
   GetMetadata(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the plugin package configuration with the plugin configurations of to the plugins in the package.</p>
@@ -374,7 +386,7 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_RegisterService_System_String_System_Object_" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.RegisterService(System.String,System.Object)">
   RegisterService(string, object)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Registers an internal service in the plugin package.</p>
@@ -410,7 +422,7 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_TryGetService_System_String_System_Object__" data-uid="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.TryGetService(System.String,System.Object@)">
   TryGetService(string, out object?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L23"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Tries to get a service that is registered internally in the plugin package.</p>
@@ -452,7 +464,7 @@ Interface IPluginPackageManager  <a class="header-action link-secondary" title="
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L9" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs/#L8" class="edit-link">Edit this page</a>
         </div>
 
 
