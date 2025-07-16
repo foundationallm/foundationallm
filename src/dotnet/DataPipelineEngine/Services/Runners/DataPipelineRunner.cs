@@ -160,6 +160,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                             stageRunner,
                             // If at least one global error has occurred, do not start the next stages.
                             ((_dataPipelineRun.Errors?.Count ?? 0) == 0) || newErrors);
+
+                        changesInStageRunners = true;
                     }
                     catch (Exception ex)
                     {

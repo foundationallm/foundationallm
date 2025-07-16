@@ -281,7 +281,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
                 _changeFeedProcessor = _dataPipelineContainer
                     .GetChangeFeedProcessorBuilder<dynamic>(
                         "ProcessDataPipelineRunWorkItems", ChangeFeedHandler)
-                    .WithInstanceName($"ProcessDataPipelineRunWorkItems_{Guid.NewGuid().ToBase64String()}")
+                    .WithInstanceName("ProcessDataPipelineRunWorkItems")
                     .WithLeaseContainer(_leasesContainer)
                     .Build();
 

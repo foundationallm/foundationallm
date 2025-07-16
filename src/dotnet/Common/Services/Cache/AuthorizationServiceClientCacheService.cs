@@ -34,8 +34,15 @@ namespace FoundationaLLM.Common.Services.Cache
             await _cacheLock.WaitAsync();
             try
             {
-                _cache.Set(GetCacheKey(authorizationRequest), result, GetMemoryCacheEntryOptions());
-                _logger.LogInformation(
+                var key = GetCacheKey(authorizationRequest);
+                if (string.IsNullOrWhiteSpace(key))
+                {
+                    _logger.LogWarning("An invalid cache key was generated.");
+                    return;
+                }
+
+                _cache.Set(key, result, GetMemoryCacheEntryOptions());
+                _logger.LogDebug(
                     "An action authorization result for the authorizable action {AuthorizableAction} has been set in the cache.",
                     authorizationRequest.Action);
             }
@@ -57,16 +64,23 @@ namespace FoundationaLLM.Common.Services.Cache
 
             try
             {
-                if (_cache.TryGetValue(GetCacheKey(authorizationRequest), out ActionAuthorizationResult? cachedValue)
+                var key = GetCacheKey(authorizationRequest);
+                if (string.IsNullOrWhiteSpace(key))
+                {
+                    _logger.LogWarning("An invalid cache key was generated.");
+                    return false;
+                }
+
+                if (_cache.TryGetValue(key, out ActionAuthorizationResult? cachedValue)
                     && cachedValue != null)
                 {
                     authorizationResult = cachedValue;
-                    _logger.LogInformation("Cache hit for the following authorization request: {AuthorizationRequest}.",
+                    _logger.LogDebug("Cache hit for the following authorization request: {AuthorizationRequest}.",
                         authorizationRequestJson);
                     return true;
                 }
 
-                _logger.LogInformation("Cache miss for the following authorization request: {AuthorizationRequest}.",
+                _logger.LogDebug("Cache miss for the following authorization request: {AuthorizationRequest}.",
                         authorizationRequestJson);
             }
             catch (Exception ex)
@@ -86,8 +100,16 @@ namespace FoundationaLLM.Common.Services.Cache
 
             var keyString = $"{authorizationRequest.Action}:{resourcePaths}:{authorizationRequest.ExpandResourceTypePaths}:{authorizationRequest.IncludeRoles}:{authorizationRequest.IncludeActions}:{userIdentity}";
 
-            var hashBytes = _md5.ComputeHash(Encoding.UTF8.GetBytes(keyString));
-            return Convert.ToBase64String(hashBytes);
+            try
+            {
+                var hashBytes = _md5.ComputeHash(Encoding.UTF8.GetBytes(keyString));
+                return Convert.ToBase64String(hashBytes);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error computing cache key for {KeyString}.", keyString);
+                return string.Empty;
+            }
         }
 
         private MemoryCacheEntryOptions GetMemoryCacheEntryOptions() => new MemoryCacheEntryOptions()
