@@ -81,7 +81,11 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                     {
                         Name = response.Result!.FileName,
                         ContentType = response.Result.ContentType,
-                        RawContent = BinaryData.FromStream(response.Result.FileContent!)
+                        RawContent = BinaryData.FromStream(response.Result.FileContent!),
+                        Metadata = new Dictionary<string, object>
+                        {
+                            { "FileName", response.Result!.FileName }
+                        }
                     },
                     true,
                     false)

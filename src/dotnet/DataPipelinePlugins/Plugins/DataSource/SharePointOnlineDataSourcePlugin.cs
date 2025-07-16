@@ -170,7 +170,11 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                 {
                     Name = document.Name,
                     ContentType = FileMethods.GetMimeType(document.Name),
-                    RawContent = binaryData
+                    RawContent = binaryData,
+                    Metadata = new Dictionary<string, object>
+                    {
+                        { "FileName", document.Name }
+                    }
                 },
                 true,
                 false);
