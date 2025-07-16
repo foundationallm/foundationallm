@@ -97,19 +97,26 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 throw new PluginException(
                     $"The {Name} plugin cannot find the input content for the {dataPipelineRunWorkItem.Stage} stage.");
 
-            var textPartitioningResult = await textPartitioningPlugin.PartitionText(
-                dataPipelineRunWorkItem.ContentItemCanonicalId,
-                inputContent.First().Content.ToString());
+            List<DataPipelineContentItemContentPart> contentParts = [];
 
-            if (textPartitioningResult.Value is not null)
-                foreach (var itemPart in textPartitioningResult.Value)
-                    itemPart.Metadata = new Dictionary<string, string> { { "FileName", originalFileName } };
+            if (inputContent.First().Content.ToArray().Length > 0)
+            {
+                var textPartitioningResult = await textPartitioningPlugin.PartitionText(
+                    dataPipelineRunWorkItem.ContentItemCanonicalId,
+                    inputContent.First().Content.ToString());
+
+                if (textPartitioningResult.Value is not null)
+                    foreach (var itemPart in textPartitioningResult.Value)
+                        itemPart.Metadata = new Dictionary<string, string> { { "FileName", originalFileName } };
+
+                contentParts = textPartitioningResult.Value ?? [];
+            }
 
             await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
                 dataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
-                textPartitioningResult.Value ?? [],
+                contentParts,
                 CONTENT_PARTS_FILE_NAME);
 
             return
