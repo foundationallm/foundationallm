@@ -3,33 +3,21 @@
 namespace FoundationaLLM.Common.Models.Context.Knowledge
 {
     /// <summary>
-    /// Represents a request to query a collection of text chunks.
+    /// Represents a request to query a knowledge source.
     /// </summary>
     public class ContextKnowledgeSourceQueryRequest
     {
         /// <summary>
-        /// Gets or sets the user prompt used to query the knowledge graph.
+        /// Gets or sets the user prompt used to query the knowledge source.
         /// </summary>
         [JsonPropertyName("user_prompt")]
-        public string? UserPrompt { get; set; }
+        public required string UserPrompt { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum number of text chunks included in the query result.
+        /// Gets or sets the vector store query parameters.
         /// </summary>
-        [JsonPropertyName("text_chunks_max_count")]
-        public int TextChunksMaxCount { get; set; }
-
-        /// <summary>
-        /// Gets or sets the minimum similarity measure threshold used to identify relevant text chunks.
-        /// </summary>
-        [JsonPropertyName("text_chunks_similarity_threshold")]
-        public float TextChunksSimilarityThreshold { get; set; }
-
-        /// <summary>
-        /// Gets or sets a flag that indicates whether semantic ranking should be used or not.
-        /// </summary>
-        [JsonPropertyName("use_semantic_ranking")]
-        public bool UseSemanticRanking { get; set; }
+        [JsonPropertyName("vector_store_query")]
+        public ContextVectorStoreQuery? VectorStoreQuery { get; set; }
 
         /// <summary>
         /// Gets or sets the knowledge graph query parameters.
@@ -41,15 +29,15 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
         /// Gets or sets the vector store identifier used to query the knowledge source.
         /// </summary>
         /// <remarks>
-        /// This value is used only when the knowledge source does not have static vector store identier set.
+        /// This value is used only when the knowledge source does not have a static vector store identier set.
         /// </remarks>
         [JsonPropertyName("vector_store_id")]
         public string? VectorStoreId { get; set; }
 
         /// <summary>
-        /// Gets or sets the metadata filter used to filter the text chunks.
+        /// Gets or sets the metadata filter used to provide additional filtering in the vector store queries.
         /// </summary>
-        [JsonPropertyName("metadata_filter")]
-        public Dictionary<string, string>? MetadataFilter { get; set; }
+        [JsonPropertyName("vector_store_metadata_filter")]
+        public Dictionary<string, object>? VectorStoreMetadataFilter { get; set; }
     }
 }

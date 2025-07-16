@@ -50,7 +50,7 @@ namespace FoundationaLLM.Context.API.Controllers
         /// <param name="updateRequest"> The request containing the information used to update the knowledge source.</param>
         /// <returns></returns>
         [HttpPost("knowledgeSources/{knowledgeSourceId}")]
-        public async Task<IActionResult> UpdateKnowledgeGraph(
+        public async Task<IActionResult> UpdateKnowledgeSource(
             string instanceId,
             string knowledgeSourceId,
             [FromBody] ContextKnowledgeSourceUpdateRequest updateRequest)

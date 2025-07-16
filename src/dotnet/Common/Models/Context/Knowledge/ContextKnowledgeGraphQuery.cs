@@ -39,5 +39,11 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
         /// </remarks>
         [JsonPropertyName("all_entities_max_count")]
         public int AllEntitiesMaxCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the vector store query parameters.
+        /// </summary>
+        [JsonPropertyName("vector_store_query")]
+        public ContextVectorStoreQuery? VectorStoreQuery { get; set; }
     }
 }
