@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class ContextKnowledgeSourceQueryRequest | FoundationaLLM ">
       
-      <meta name="description" content="Represents a request to query a collection of text chunks.">
+      <meta name="description" content="Represents a request to query a knowledge source.">
       <link rel="icon" href="../../media/favicon.ico">
       <link rel="stylesheet" href="../../public/docfx.min.css">
       <link rel="stylesheet" href="../../public/main.css">
@@ -97,7 +97,7 @@ Class ContextKnowledgeSourceQueryRequest  <a class="header-action link-secondary
   <dl><dt>Assembly</dt><dd>FoundationaLLM.Common.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Represents a request to query a collection of text chunks.</p>
+  <div class="markdown summary"><p>Represents a request to query a knowledge source.</p>
 </div>
   <div class="markdown conceptual"></div>
 
@@ -164,7 +164,7 @@ Class ContextKnowledgeSourceQueryRequest  <a class="header-action link-secondary
 
   <h3 id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_KnowledgeGraphQuery" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.KnowledgeGraphQuery">
   KnowledgeGraphQuery
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the knowledge graph query parameters.</p>
@@ -193,138 +193,6 @@ public ContextKnowledgeGraphQuery? KnowledgeGraphQuery { get; set; }</code></pre
 
 
 
-  <a id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_MetadataFilter_" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.MetadataFilter*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_MetadataFilter" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.MetadataFilter">
-  MetadataFilter
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L52"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the metadata filter used to filter the text chunks.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;metadata_filter&quot;)]
-public Dictionary&lt;string, string&gt;? MetadataFilter { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_TextChunksMaxCount_" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.TextChunksMaxCount*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_TextChunksMaxCount" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.TextChunksMaxCount">
-  TextChunksMaxCount
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L19"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the maximum number of text chunks included in the query result.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;text_chunks_max_count&quot;)]
-public int TextChunksMaxCount { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_TextChunksSimilarityThreshold_" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.TextChunksSimilarityThreshold*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_TextChunksSimilarityThreshold" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.TextChunksSimilarityThreshold">
-  TextChunksSimilarityThreshold
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L25"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the minimum similarity measure threshold used to identify relevant text chunks.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;text_chunks_similarity_threshold&quot;)]
-public float TextChunksSimilarityThreshold { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_UseSemanticRanking_" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.UseSemanticRanking*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_UseSemanticRanking" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.UseSemanticRanking">
-  UseSemanticRanking
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L31"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets a flag that indicates whether semantic ranking should be used or not.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;use_semantic_ranking&quot;)]
-public bool UseSemanticRanking { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
   <a id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_UserPrompt_" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.UserPrompt*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_UserPrompt" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.UserPrompt">
@@ -332,13 +200,13 @@ public bool UseSemanticRanking { get; set; }</code></pre>
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets or sets the user prompt used to query the knowledge graph.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the user prompt used to query the knowledge source.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;user_prompt&quot;)]
-public string? UserPrompt { get; set; }</code></pre>
+public required string UserPrompt { get; set; }</code></pre>
   </div>
 
 
@@ -362,7 +230,7 @@ public string? UserPrompt { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_VectorStoreId" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.VectorStoreId">
   VectorStoreId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L34"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the vector store identifier used to query the knowledge source.</p>
@@ -388,8 +256,74 @@ public string? VectorStoreId { get; set; }</code></pre>
 
 
   <h4 class="section" id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_VectorStoreId_remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>This value is used only when the knowledge source does not have static vector store identier set.</p>
+  <div class="markdown level1 remarks"><p>This value is used only when the knowledge source does not have a static vector store identier set.</p>
 </div>
+
+
+
+
+  <a id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_VectorStoreMetadataFilter_" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.VectorStoreMetadataFilter*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_VectorStoreMetadataFilter" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.VectorStoreMetadataFilter">
+  VectorStoreMetadataFilter
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the metadata filter used to provide additional filtering in the vector store queries.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;vector_store_metadata_filter&quot;)]
+public Dictionary&lt;string, object&gt;? VectorStoreMetadataFilter { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_VectorStoreQuery_" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.VectorStoreQuery*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_VectorStoreQuery" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.VectorStoreQuery">
+  VectorStoreQuery
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the vector store query parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;vector_store_query&quot;)]
+public ContextVectorStoreQuery? VectorStoreQuery { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreQuery.html">ContextVectorStoreQuery</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
 
 
 

@@ -3988,6 +3988,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.ValidationException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.ValidationException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Exceptions.ValidationException",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Exceptions.ValidationException.yml\" sourcestartlinenumber=\"1\">Represents an error generated during validation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.VectorizationException.yml",
       "output": {
         ".html": {
@@ -6350,7 +6364,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to query a collection of text chunks.</p>\n"
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to query a knowledge source.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6393,6 +6407,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceUpdateRequest",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceUpdateRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to update a knowledge source in the FoundationaLLM Context API.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreQuery.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreQuery.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreQuery",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreQuery.yml\" sourcestartlinenumber=\"1\">Represents a query to be executed against a context vector store.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -12357,6 +12385,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Context.Services.KnowledgeService",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.KnowledgeService.yml\" sourcestartlinenumber=\"1\">Provides the implementation for the FoundationaLLM Knowledge Graph service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine.yml\" sourcestartlinenumber=\"1\">Provides methods for querying knowledge sources.</p>\n"
     },
     {
       "type": "ManagedReference",
