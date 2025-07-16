@@ -134,18 +134,20 @@ namespace FoundationaLLM.Common.Services.Azure
 
             var vectorQuery = new VectorizedQuery(userPromptEmbedding);
             vectorQuery.Fields.Add(embeddingPropertyName);
-            vectorQuery.KNearestNeighborsCount = 5;
+            //vectorQuery.KNearestNeighborsCount = 5;
             vectorQuery.Threshold = new VectorSimilarityThreshold(similarityThreshold);
 
             var searchOptions = new SearchOptions
             {
-                QueryType = SearchQueryType.Semantic,
+                QueryType = useSemanticRanking
+                    ? SearchQueryType.Semantic
+                    : SearchQueryType.Simple,
                 Filter = filter,
                 Size = topN,
-                VectorSearch = new VectorSearchOptions
-                {
-                    FilterMode = VectorFilterMode.PreFilter
-                },
+                VectorSearch = new VectorSearchOptions()
+                //{
+                //    FilterMode = VectorFilterMode.PreFilter
+                //},
             };
             foreach (var field in select)
                 searchOptions.Select.Add(field);

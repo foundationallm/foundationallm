@@ -8,13 +8,10 @@ using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
-using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
-using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Context.Interfaces;
@@ -70,7 +67,6 @@ namespace FoundationaLLM.Context.Services
         private const string KNOWLEDGE_SOURCE_ROOT_PATH = "knowledge-source";
         private const string KNOWLEDGE_GRAPH_ENTITIES_FILE_NAME = "entities.parquet";
         private const string KNOWLEDGE_GRAPH_RELATIONSHIPS_FILE_NAME = "relationships.parquet";
-        private const string KEY_FIELD_NAME = "Id";
 
         /// <inheritdoc />
         public async Task<IEnumerable<KnowledgeSource>> GetKnowledgeSources(
@@ -154,7 +150,7 @@ namespace FoundationaLLM.Context.Services
                 updateRequest,
                 userIdentity);
 
-            // If the knowledge graph is cached, remove it from the cache.
+            // If the knowledge source is cached, remove it from the cache.
             var cacheKey = GetCacheKey(instanceId, knowledgeSourceId);
             if (_cache.TryGetValue(cacheKey, out _))
                 _cache.Remove(cacheKey);
@@ -192,18 +188,8 @@ namespace FoundationaLLM.Context.Services
                         ErrorMessage = $"The knowledge source '{knowledgeSourceId}' for instance '{instanceId}' does not contain a knowledge graph."
                     };
 
-                var vectorStoreId = string.IsNullOrWhiteSpace(knowledgeSource.VectorStoreId)
-                    ? queryRequest.VectorStoreId
-                    : knowledgeSource.VectorStoreId;
-                if (string.IsNullOrWhiteSpace(vectorStoreId))
-                    return new ContextKnowledgeSourceQueryResponse
-                    {
-                        Success = false,
-                        ErrorMessage = $"The knowledge source '{knowledgeSourceId}' for instance '{instanceId}' does not have a vector store identifier specified and none was provided in the query request."
-                    };
-
                 var vectorDatabase = await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
-                    knowledgeSource!.VectorDatabaseObjectId,
+                    knowledgeSource.VectorDatabaseObjectId,
                     ServiceContext.ServiceIdentity!);
 
                 var cachedKnowledgeSource = await GetKnowledgeSourceFromCache(
@@ -211,111 +197,25 @@ namespace FoundationaLLM.Context.Services
                     knowledgeSource,
                     vectorDatabase);
 
-                var userPromptEmbedding = await cachedKnowledgeSource.EmbeddingClient.GenerateEmbeddingAsync(
-                    queryRequest.UserPrompt,
-                    new EmbeddingGenerationOptions
-                    {
-                        Dimensions = knowledgeSource.EmbeddingDimensions
-                    });
+                var queryEngine = new KnowledgeSourceQueryEngine(
+                    knowledgeSource,
+                    cachedKnowledgeSource,
+                    vectorDatabase,
+                    _loggerFactory.CreateLogger<KnowledgeSourceQueryEngine>());
 
-                var queryResponse = new ContextKnowledgeSourceQueryResponse
-                {
-                    Success = true
-                };
-                var matchingDocumentsFilter = string.Empty;
-
-                if (queryRequest.KnowledgeGraphQuery is not null)
-                {
-                    var matchingEntities = GetMatchingKnowledgeGraphEntities(
-                        cachedKnowledgeSource.KnowledgeGraph!,
-                        userPromptEmbedding.Value.ToFloats(),
-                        queryRequest.KnowledgeGraphQuery.MappedEntitiesSimilarityThreshold,
-                        queryRequest.KnowledgeGraphQuery.MappedEntitiesMaxCount,
-                        queryRequest.KnowledgeGraphQuery.RelationshipsMaxDepth,
-                        queryRequest.KnowledgeGraphQuery.AllEntitiesMaxCount);
-
-                    queryResponse.KnowledgeGraphResponse = new ContextKnowledgeGraphResponse
-                    {
-                        Entities = [.. matchingEntities.Entities
-                            .Select(e => new KnowledgeEntity
-                            {
-                                Type = e.Type,
-                                Name = e.Name,
-                                SummaryDescription = e.SummaryDescription
-                            })
-                        ],
-                        RelatedEntities = [.. matchingEntities.RelatedEntities
-                            .Select(re => new KnowledgeEntity
-                            {
-                                Type = re.Type,
-                                Name = re.Name,
-                                SummaryDescription = re.SummaryDescription
-                            })
-                        ],
-                        Relationships = [.. matchingEntities.Relationships
-                            .Select(r => new KnowledgeRelationship
-                            {
-                                SourceType = r.SourceType,
-                                Source = r.Source,
-                                TargetType = r.TargetType,
-                                Target = r.Target,
-                                SummaryDescription = r.SummaryDescription
-                            })
-                        ]
-                    };
-
-                    matchingDocumentsFilter = string.Join(" and ",
-                    [
-                        $"{vectorDatabase.VectorStoreIdPropertyName} eq '{vectorStoreId}'",
-                        $"search.in({KEY_FIELD_NAME}, '{string.Join(',', matchingEntities.Entities.SelectMany(e => e.ChunkIds))}')"
-                    ]);
-                }
-                else
-                {
-                    matchingDocumentsFilter = $"{vectorDatabase.VectorStoreIdPropertyName} eq '{vectorStoreId}'";
-                }
-
-                if (queryRequest.MetadataFilter is not null
-                    && queryRequest.MetadataFilter.Count > 0)
-                {
-                    matchingDocumentsFilter += " and " + string.Join(" and ",
-                        queryRequest.MetadataFilter
-                            .Select(kvp => $"{vectorDatabase.MetadataPropertyName}/{kvp.Key} eq '{kvp.Value.Replace("'", "''")}'"));
-                }
-
-                var matchingDocuments = await cachedKnowledgeSource.SearchService.SearchDocuments(
-                    vectorDatabase.DatabaseName,
-                    [
-                        KEY_FIELD_NAME,
-                        vectorDatabase.ContentPropertyName,
-                        vectorDatabase.MetadataPropertyName
-                    ],
-                    matchingDocumentsFilter,
-                    queryRequest.UserPrompt!,
-                    userPromptEmbedding.Value.ToFloats(),
-                    vectorDatabase.EmbeddingPropertyName,
-                    queryRequest.TextChunksSimilarityThreshold,
-                    queryRequest.TextChunksMaxCount,
-                    queryRequest.UseSemanticRanking);
-
-                queryResponse.TextChunks = [.. matchingDocuments
-                        .Select(md => new ContextTextChunk
-                        {
-                            Content = md.GetString(vectorDatabase.ContentPropertyName),
-                            Metadata = md.GetObject(vectorDatabase.MetadataPropertyName).ToDictionary()
-                        })
-                    ];
+                var queryResponse = await queryEngine.QueryAsync(
+                    queryRequest);
 
                 return queryResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while querying the knowledge graph {KnowledgeGraphId} for instance {InstanceId}.",
+                _logger.LogError(ex, "An error occurred while querying the knowledge source {KnowledgeSourceId} for instance {InstanceId}.",
                     knowledgeSourceId, instanceId);
                 return new ContextKnowledgeSourceQueryResponse
                 {
                     Success = false,
-                    ErrorMessage = $"An error occurred while querying the knowledge graph '{knowledgeSourceId}' for instance '{instanceId}'."
+                    ErrorMessage = $"An error occurred while querying the knowledge source '{knowledgeSourceId}' for instance '{instanceId}'."
                 };
             }
         }
@@ -524,130 +424,6 @@ namespace FoundationaLLM.Context.Services
             }
 
             return cachedKnowledgeSource!;
-        }
-
-
-        private (List<KnowledgeEntity> Entities, List<KnowledgeEntity> RelatedEntities, List<KnowledgeRelationship> Relationships)
-            GetMatchingKnowledgeGraphEntities(
-                CachedKnowledgeGraph knowledgeGraph,
-                ReadOnlyMemory<float> userPromptEmbedding,
-                float similarityThreshold,
-                int matchedEntitiesMaxCount,
-                int relationshipsMaxDepth,
-                int allEntitiesMaxCount)
-        {
-            var similarEntities = new List<(KnowledgeEntity Entity, float SimilarityScore)>();
-            var maxSimilarity = 0f;
-            var minSimilarity = 1f;
-            foreach (var entity in knowledgeGraph.Entities)
-            {
-                var similarity = 1.0f - Distance.Cosine(
-                    userPromptEmbedding.ToArray(),
-                    entity.SummaryDescriptionEmbedding);
-                if (similarity >= similarityThreshold)
-                {
-                    similarEntities.Add((entity, similarity));
-                }
-
-                if (similarity > maxSimilarity)
-                    maxSimilarity = similarity;
-                if (similarity < minSimilarity)
-                    minSimilarity = similarity;
-            }
-
-            _logger.LogInformation("The minimum and maximum similarity values are {MinSimilarity} and {MaxSimilarity}", minSimilarity, maxSimilarity);
-
-            List<KnowledgeEntity> entities = [.. similarEntities
-                .OrderByDescending(se => se.SimilarityScore)
-                .Take(matchedEntitiesMaxCount)
-                .Select(se => se.Entity)];
-
-            var remainingEntitiesCount = allEntitiesMaxCount >= matchedEntitiesMaxCount
-                ? allEntitiesMaxCount - matchedEntitiesMaxCount
-                : 0;
-
-            if (remainingEntitiesCount == 0
-                || relationshipsMaxDepth == 0)
-                return (entities, [], []);
-
-            var entitiesIds = entities
-                .Select(e => e.UniqueId)
-                .ToHashSet();
-
-            var relationshipEntities = new List<KnowledgeEntity>();
-            var relationships = new List<KnowledgeRelationship>();
-
-            // Get the first layer of related entities for the most similar entities.
-            // This is required to kick off the search for the most relevant relationships.
-            var currentIndexRelatedNodes = entities
-                .Select(e => knowledgeGraph.Index.Nodes[e.UniqueId])
-                .SelectMany(n => n.RelatedNodes)
-                .Where(rn => !entitiesIds.Contains(rn.RelatedEntity.UniqueId))
-                .Distinct(new KnowledgeGraphIndexRelatedNodeComparer())
-                .ToList();
-            var currentSimilarityScores = currentIndexRelatedNodes
-                .Select(rn => 1.0f - Distance.Cosine(
-                    userPromptEmbedding.ToArray(),
-                    rn.RelatedEntity.SummaryDescriptionEmbedding))
-                .ToList();
-            var currentDepthLevels = currentIndexRelatedNodes
-                .Select(n => 1)
-                .ToList();
-
-            // Repeat the process until the specified number of entities is reached or there are no more
-            // related nodes to process.
-            while (remainingEntitiesCount > 0
-                && currentIndexRelatedNodes.Count > 0)
-            {
-                // Identify the most similar node.
-                var currentMaxSimilarity = currentSimilarityScores.Max();
-                var mostSimilarIndex = currentSimilarityScores
-                    .FindIndex(s => s == currentMaxSimilarity);
-                var mostSimilarRelatedNode = currentIndexRelatedNodes[mostSimilarIndex];
-                var mostSimilarRelatedNodeDepth = currentDepthLevels[mostSimilarIndex];
-
-                // Add the node at the index to the results.
-                entitiesIds.Add(mostSimilarRelatedNode.RelatedEntity.UniqueId);
-                relationshipEntities.Add(mostSimilarRelatedNode.RelatedEntity);
-                relationships.Add(mostSimilarRelatedNode.Relationship);
-
-                //Remove the node from the current state.
-                currentIndexRelatedNodes.RemoveAt(mostSimilarIndex);
-                currentSimilarityScores.RemoveAt(mostSimilarIndex);
-                currentDepthLevels.RemoveAt(mostSimilarIndex);
-
-                // From the nodes directly related to the most similar node (if any),
-                // determine the ones that are neither in the current results nor in the current state
-                // and add them to the current state.
-                // If the most similar node is not at the maximum allowed depth, do not continue.
-                var mostSimilarIndexNode = knowledgeGraph.Index.Nodes[mostSimilarRelatedNode.RelatedEntity.UniqueId];
-                if (mostSimilarIndexNode.RelatedNodes.Count > 0
-                    && mostSimilarRelatedNodeDepth < relationshipsMaxDepth)
-                {
-                    var indexRelatedNodesToAdd = mostSimilarIndexNode
-                        .RelatedNodes
-                        .Where(rn =>
-                            !entitiesIds.Contains(rn.RelatedEntity.UniqueId)
-                            && !currentIndexRelatedNodes.Contains(rn, new KnowledgeGraphIndexRelatedNodeComparer()))
-                        .ToList();
-                    var similarityScoresToAdd = indexRelatedNodesToAdd
-                        .Select(rn => 1.0f - Distance.Cosine(
-                            userPromptEmbedding.ToArray(),
-                            rn.RelatedEntity.SummaryDescriptionEmbedding))
-                        .ToList();
-                    var depthLevelsToAdd = indexRelatedNodesToAdd
-                        .Select(rn => mostSimilarRelatedNodeDepth + 1)
-                        .ToList();
-
-                    currentIndexRelatedNodes.AddRange(indexRelatedNodesToAdd);
-                    currentSimilarityScores.AddRange(similarityScoresToAdd);
-                    currentDepthLevels.AddRange(depthLevelsToAdd);
-                }
-
-                remainingEntitiesCount--;
-            }
-
-            return (entities, relationshipEntities, relationships);
         }
 
         private MemoryCacheEntryOptions GetMemoryCacheEntryOptions() => new MemoryCacheEntryOptions()

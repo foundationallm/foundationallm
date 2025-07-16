@@ -27,5 +27,11 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
         /// </summary>
         [JsonPropertyName("relationships")]
         public List<KnowledgeRelationship> Relationships { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the list of text chunks that are part of the result.
+        /// </summary>
+        [JsonPropertyName("text_chunks")]
+        public List<ContextTextChunk> TextChunks { get; set; } = [];
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using OpenAI.Embeddings;
 
 namespace FoundationaLLM.Context.Models
