@@ -69,6 +69,12 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 throw new PluginException(
                     $"The plugin {Name} requires the {PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS} parameter.");
 
+            if (!_pluginParameters.TryGetValue(
+                PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_METADATAPROPERTYNAMES,
+                out var metadataPropertyNamesObject))
+                throw new PluginException(
+                    $"The plugin {Name} requires the {PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_METADATAPROPERTYNAMES} parameter.");
+
             using var scope = _serviceProvider.CreateScope();
 
             var clientFactoryService = scope.ServiceProvider
@@ -92,9 +98,11 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 searchIndexClient,
                 _serviceProvider.GetRequiredService<ILogger<AzureAISearchService>>()) as IAzureAISearchService;
 
+            var metadataPropertyNames = metadataPropertyNamesObject.ToString()!
+                .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             var metadataField = new ComplexField(vectorDatabase.MetadataPropertyName);
-            metadataField.Fields.Add(
-                new SearchableField(FILE_NAME_METADATA_PROPERTY_NAME) { IsFilterable = true });
+            foreach (var metadataPropertyName in metadataPropertyNames)
+                metadataField.Fields.Add(new SearchableField(metadataPropertyName) { IsFilterable = true });
 
             IEnumerable<SearchField> indexFields =
                 [
