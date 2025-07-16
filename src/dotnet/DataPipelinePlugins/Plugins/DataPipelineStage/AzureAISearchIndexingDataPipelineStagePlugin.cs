@@ -128,7 +128,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             if (!contentItemParts.Any())
                 return new PluginResult(true, false);
 
-            var fileName = contentItemParts.First().Metadata?.GetValueOrDefault(FILE_NAME_METADATA_PROPERTY_NAME, string.Empty);
+            var fileNameObject = contentItemParts.First().Metadata?.GetValueOrDefault(FILE_NAME_METADATA_PROPERTY_NAME, string.Empty);
+            var fileName = fileNameObject!.ToString();
             if (string.IsNullOrWhiteSpace(fileName))
                 throw new PluginException(
                     $"The {FILE_NAME_METADATA_PROPERTY_NAME} metadata property is not set in the content item parts.");
@@ -136,7 +137,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             var deletedKeysCount = await azureAISearchService.DeleteDocuments(
                 vectorDatabase.DatabaseName,
                 KEY_FIELD_NAME,
-                $"{vectorDatabase.VectorStoreIdPropertyName} eq '{vectorStoreId}' and {vectorDatabase.MetadataPropertyName}/{FILE_NAME_METADATA_PROPERTY_NAME} eq '{fileName}'");
+                $"{vectorDatabase.VectorStoreIdPropertyName} eq '{vectorStoreId}' and {vectorDatabase.MetadataPropertyName}/{FILE_NAME_METADATA_PROPERTY_NAME} eq '{fileName.Replace("'", "''")}'");
 
             _logger.LogInformation("Data pipeline run {DataPipelineRunId}, content item {ContentItemCanonicalId}: removed {DeletedKeysCount} existing entries from the index.",
                 dataPipelineRun.Id,
@@ -150,13 +151,6 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 {
                     cip.IndexEntryId!, vectorStoreId!, cip.Content!, cip.Embedding!, cip.Metadata!
                 })]);
-
-            //await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
-            //    dataPipelineDefinition,
-            //    dataPipelineRun,
-            //    dataPipelineRunWorkItem,
-            //    contentItemParts,
-            //    CONTENT_PARTS_FILE_NAME);
 
             return new PluginResult(true, false);
         }

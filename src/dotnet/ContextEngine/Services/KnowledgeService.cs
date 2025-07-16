@@ -280,7 +280,7 @@ namespace FoundationaLLM.Context.Services
                 {
                     matchingDocumentsFilter += " and " + string.Join(" and ",
                         queryRequest.MetadataFilter
-                            .Select(kvp => $"{vectorDatabase.MetadataPropertyName}/{kvp.Key} eq '{kvp.Value}'"));
+                            .Select(kvp => $"{vectorDatabase.MetadataPropertyName}/{kvp.Key} eq '{kvp.Value.Replace("'", "''")}'"));
                 }
 
                 var matchingDocuments = await cachedKnowledgeSource.SearchService.SearchDocuments(

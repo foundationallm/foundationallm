@@ -8,6 +8,7 @@ using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Services.Plugins;
+using System.Text.Json;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 {
@@ -48,6 +49,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             { "image/bmp", "BMP" },
             { "image/tiff", "TIFF" }
         };
+
+        private const string METADATA_FILE_NAME = "metadata.json";
 
         /// <inheritdoc/>
         public override async Task<List<DataPipelineRunWorkItem>> GetStartingStageWorkItems(
@@ -195,9 +198,9 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     },
                     new DataPipelineStateArtifact
                     {
-                        FileName = "original-file-name.txt",
-                        ContentType = "text/plain",
-                        Content = BinaryData.FromString(rawContentResult.Value.Name)
+                        FileName =  METADATA_FILE_NAME,
+                        ContentType = "application/json",
+                        Content = BinaryData.FromString(JsonSerializer.Serialize(rawContentResult.Value.Metadata))
                     }
                 ]);
 
