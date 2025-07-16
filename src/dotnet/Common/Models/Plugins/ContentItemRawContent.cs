@@ -19,5 +19,10 @@
         /// Gets or sets the raw binary content of the content item.
         /// </summary>
         public required BinaryData RawContent { get; set; }
+
+        /// <summary>
+        /// Gets or sets the metadata associated with the content item.
+        /// </summary>
+        public Dictionary<string, object> Metadata { get; set; } = [];
     }
 }

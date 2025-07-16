@@ -7,6 +7,7 @@ using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Services.Plugins;
+using System.Text.Json;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 {
@@ -27,6 +28,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
         protected override string Name => PluginNames.TEXTPARTITIONING_DATAPIPELINESTAGE;
 
         private const string CONTENT_PARTS_FILE_NAME = "content-parts.parquet";
+        private const string METADATA_FILE_NAME = "metadata.json";
 
         /// <inheritdoc/>
         public override async Task<PluginResult> ProcessWorkItem(
@@ -85,12 +87,13 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 dataPipelineRunWorkItem,
                 "content.txt");
 
-            var originalFileName = (await _dataPipelineStateService.LoadDataPipelineRunWorkItemArtifacts(
+            var serializedMetadata = (await _dataPipelineStateService.LoadDataPipelineRunWorkItemArtifacts(
                 dataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
-                "original-file-name.txt"))
+                METADATA_FILE_NAME))
                 .First().Content.ToString();
+            var metadata = JsonSerializer.Deserialize<Dictionary<string, object>>(serializedMetadata);
 
             if (inputContent == null
                 || inputContent.Count == 0)
@@ -107,7 +110,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
                 if (textPartitioningResult.Value is not null)
                     foreach (var itemPart in textPartitioningResult.Value)
-                        itemPart.Metadata = new Dictionary<string, string> { { "FileName", originalFileName } };
+                        itemPart.Metadata = metadata;
 
                 contentParts = textPartitioningResult.Value ?? [];
             }
