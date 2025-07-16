@@ -164,9 +164,10 @@ namespace FoundationaLLM.Plugins.DataPipeline
                             Description = "The number of dimensions used for embedding."
                         },
                         new() {
-                            Name = PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_METADATAPROPERTYNAMES,
+                            Name = PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_METADATAPROPERTIES,
                             Type = PluginParameterTypes.String,
-                            Description = "Comma-separated list of metadata property names to be indexed in the Azure AI Search index."
+                            Description = "Comma-separated list of metadata property names and types to be indexed in the Azure AI Search index. "
+                                + "The name and type must be separated by '|'. Valid types are 'Edm.String', 'Edm.Int32', 'Edm.Int64','Edm.Single','Edm.Double','Edm.Boolean','Edm.DateTimeOffset'."
                         }
                     ],
                     ParameterSelectionHints = new() {
