@@ -1,7 +1,6 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Services.Plugins;
 using FoundationaLLM.Core.Examples.Setup;
@@ -71,21 +70,25 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
         new()
         {
             {
-                "work-item-HvoV4HxTCEm1sqIdu4MGPA",
-                "run-20250630-165745-JmaV2TETeU2G4S6EwUDjDQ-TAfGit69y0OhQOwAAtltKw",
+                "work-item-vM2h8Vr2o0WQhV94P1DDmg",
+                "run-20250716-171611-2VKRvCqxf0-iKrsJKAgc4A-TAfGit69y0OhQOwAAtltKw",
                 new Dictionary<string, object>
                 {
                     {
                         PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
-                        "instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vector/vectorDatabases/SPO-Test"
+                        "instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vector/vectorDatabases/MSDF-G3-Test"
                     },
                     {
                         PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREID,
-                        "instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vector/vectorDatabases/SPO-Test/vectorStores/Test-Store-01"
+                        "Test-Store-01"
                     },
                     {
                         PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS,
                         2048
+                    },
+                    {
+                        PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_METADATAPROPERTIES,
+                        "ProjectId|Edm.Int32,DocumentId|Edm.Int32,FileName|Edm.String"
                     }
                 }
             }

@@ -70,10 +70,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     $"The plugin {Name} requires the {PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS} parameter.");
 
             if (!_pluginParameters.TryGetValue(
-                PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_METADATAPROPERTYNAMES,
-                out var metadataPropertyNamesObject))
+                PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_METADATAPROPERTIES,
+                out var metadataPropertiesObject))
                 throw new PluginException(
-                    $"The plugin {Name} requires the {PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_METADATAPROPERTYNAMES} parameter.");
+                    $"The plugin {Name} requires the {PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_METADATAPROPERTIES} parameter.");
 
             using var scope = _serviceProvider.CreateScope();
 
@@ -98,11 +98,11 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 searchIndexClient,
                 _serviceProvider.GetRequiredService<ILogger<AzureAISearchService>>()) as IAzureAISearchService;
 
-            var metadataPropertyNames = metadataPropertyNamesObject.ToString()!
+            var metadataProperties = metadataPropertiesObject.ToString()!
                 .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             var metadataField = new ComplexField(vectorDatabase.MetadataPropertyName);
-            foreach (var metadataPropertyName in metadataPropertyNames)
-                metadataField.Fields.Add(new SearchableField(metadataPropertyName) { IsFilterable = true });
+            foreach (var metadataProperty in metadataProperties)
+                metadataField.Fields.Add(GetFieldTemplate(metadataProperty));
 
             IEnumerable<SearchField> indexFields =
                 [
@@ -168,6 +168,25 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 })]);
 
             return new PluginResult(true, false);
+        }
+
+        private SearchFieldTemplate GetFieldTemplate(string fieldDefinition)
+        {
+            var tokens = fieldDefinition.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            if (tokens.Length == 1)
+                return new SearchableField(tokens[0]) { IsFilterable = true };
+
+            return tokens[1] switch
+            {
+                "Edm.String" => new SearchableField(tokens[0]) { IsFilterable = true },
+                "Edm.Int32"
+                or "Edm.Int64"
+                or "Edm.Single"
+                or "Edm.Double"
+                or "Edm.Boolean"
+                or "Edm.DateTimeOffset" => new SimpleField(tokens[0], new SearchFieldDataType(tokens[1])) { IsFilterable = true },
+                _ => throw new PluginException($"The {Name} plugin does not support field type {tokens[1]}.")
+            };
         }
     }
 }
