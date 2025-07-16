@@ -162,6 +162,11 @@ namespace FoundationaLLM.Plugins.DataPipeline
                             Name = PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS,
                             Type = PluginParameterTypes.Int,
                             Description = "The number of dimensions used for embedding."
+                        },
+                        new() {
+                            Name = PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_METADATAPROPERTYNAMES,
+                            Type = PluginParameterTypes.String,
+                            Description = "Comma-separated list of metadata property names to be indexed in the Azure AI Search index."
                         }
                     ],
                     ParameterSelectionHints = new() {
