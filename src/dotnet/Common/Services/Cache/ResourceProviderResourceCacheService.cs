@@ -37,7 +37,7 @@ namespace FoundationaLLM.Common.Services.Cache
             {
                 _cacheLock.Wait();
                 _cache.Set(GetCacheKey(resourceReference), resourceValue, GetMemoryCacheEntryOptions());
-                _logger.LogInformation("The resource {ResourceName} of type {ResourceType} has been set in the cache.",
+                _logger.LogDebug("The resource {ResourceName} of type {ResourceType} has been set in the cache.",
                     resourceReference.Name,
                     resourceReference.Type);
             }
@@ -65,7 +65,7 @@ namespace FoundationaLLM.Common.Services.Cache
                     && cachedValue != null)
                 {
                     resourceValue = cachedValue;
-                    _logger.LogInformation("The resource {ResourceName} of type {ResourceType} has been retrieved from the cache.",
+                    _logger.LogDebug("The resource {ResourceName} of type {ResourceType} has been retrieved from the cache.",
                         resourceReference.Name,
                         resourceReference.Type);
                     return true;

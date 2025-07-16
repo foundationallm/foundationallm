@@ -46,6 +46,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
                 throw new PluginException(
                     $"The plugin {Name} requires the {PluginParameterNames.TOKEN_CONTENTTEXTPARTITIONING_PARTITIONOVERLAPTOKENS} parameter.");
 
+            if (string.IsNullOrWhiteSpace(text))
+                return new PluginResult<List<DataPipelineContentItemContentPart>>(
+                [], true, false);
+
             var tokenizerService =
                 _serviceProvider.GetRequiredKeyedService<ITokenizerService>("MicrosoftML");
 
