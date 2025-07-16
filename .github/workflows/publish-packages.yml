@@ -57,6 +57,10 @@ jobs:
       working-directory: ./src/dotnet/Prompt
       run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
 
+    - name: Build Plugin
+      working-directory: ./src/dotnet/Plugin
+      run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
+
     - name: Build CoreClient
       working-directory: ./src/dotnet/CoreClient
       run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
@@ -87,6 +91,10 @@ jobs:
 
     - name: Pack Prompt
       working-directory: ./src/dotnet/Prompt
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+
+    - name: Pack Plugin
+      working-directory: ./src/dotnet/Plugin
       run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack CoreClient
@@ -121,6 +129,10 @@ jobs:
     - name: Publish Prompt to NuGet
       working-directory: ./src/dotnet/Prompt
       run: dotnet nuget push ./nupkg/*.Prompt.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+
+    - name: Publish Plugin to NuGet
+      working-directory: ./src/dotnet/Plugin
+      run: dotnet nuget push ./nupkg/*.Plugin.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
     - name: Publish CoreClient to NuGet
       working-directory: ./src/dotnet/CoreClient
