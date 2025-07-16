@@ -110,7 +110,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
                 if (textPartitioningResult.Value is not null)
                     foreach (var itemPart in textPartitioningResult.Value)
-                        itemPart.Metadata = metadata;
+                        itemPart.Metadata = JsonSerializer.Serialize(metadata);
 
                 contentParts = textPartitioningResult.Value ?? [];
             }

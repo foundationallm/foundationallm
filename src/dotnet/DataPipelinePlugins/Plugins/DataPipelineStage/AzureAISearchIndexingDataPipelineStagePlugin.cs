@@ -14,6 +14,7 @@ using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Plugins;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 {
@@ -128,7 +129,9 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             if (!contentItemParts.Any())
                 return new PluginResult(true, false);
 
-            var fileNameObject = contentItemParts.First().Metadata?.GetValueOrDefault(FILE_NAME_METADATA_PROPERTY_NAME, string.Empty);
+            var metadata = JsonSerializer.Deserialize<Dictionary<string, object>>(
+                contentItemParts.First().Metadata!);
+            var fileNameObject = metadata!.GetValueOrDefault(FILE_NAME_METADATA_PROPERTY_NAME, string.Empty);
             var fileName = fileNameObject!.ToString();
             if (string.IsNullOrWhiteSpace(fileName))
                 throw new PluginException(
@@ -149,7 +152,11 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 [.. indexFields.Select(f => f.Name)],
                 [.. contentItemParts.Select(cip => new object[]
                 {
-                    cip.IndexEntryId!, vectorStoreId!, cip.Content!, cip.Embedding!, cip.Metadata!
+                    cip.IndexEntryId!,
+                    vectorStoreId!,
+                    cip.Content!,
+                    cip.Embedding!,
+                    JsonSerializer.Deserialize<Dictionary<string, object>>(cip.Metadata!)!
                 })]);
 
             return new PluginResult(true, false);
