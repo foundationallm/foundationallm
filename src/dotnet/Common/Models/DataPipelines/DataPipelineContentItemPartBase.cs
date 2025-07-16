@@ -29,6 +29,6 @@ namespace FoundationaLLM.Common.Models.DataPipelines
         /// Gets or sets the metadata associated with the content item part.
         /// </summary>
         [JsonPropertyName("metadata")]
-        public Dictionary<string, object>? Metadata { get; set; }
+        public string? Metadata { get; set; }
     }
 }
