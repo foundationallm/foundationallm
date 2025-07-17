@@ -20,6 +20,12 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
         public float TextChunksSimilarityThreshold { get; set; }
 
         /// <summary>
+        /// Gets or sets a flag that indicates whether hybrid search should be used or not.
+        /// </summary>
+        [JsonPropertyName("use_hybrid_search")]
+        public bool UseHybridSearch { get; set; }
+
+        /// <summary>
         /// Gets or sets a flag that indicates whether semantic ranking should be used or not.
         /// </summary>
         [JsonPropertyName("use_semantic_ranking")]

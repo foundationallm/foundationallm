@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Context.Models;
 using MathNet.Numerics;
 using Microsoft.Extensions.Logging;
+using NuGet.Packaging;
 using OpenAI.Embeddings;
 using System.ComponentModel.DataAnnotations;
 
@@ -45,7 +46,6 @@ namespace FoundationaLLM.Context.Services
         public async Task<ContextKnowledgeSourceQueryResponse> QueryAsync(
             ContextKnowledgeSourceQueryRequest queryRequest)
         {
-
             try
             {
                 ValidateQueryRequest(queryRequest);
@@ -71,6 +71,7 @@ namespace FoundationaLLM.Context.Services
                 {
                     Success = true
                 };
+                HashSet<string> existingVectorStoreIds = [];
 
                 if (queryRequest.VectorStoreQuery is not null)
                 {
@@ -89,7 +90,9 @@ namespace FoundationaLLM.Context.Services
                             _vectorDatabase.MetadataPropertyName
                         ],
                         matchingDocumentsFilter,
-                        queryRequest.UserPrompt!,
+                        queryRequest.VectorStoreQuery.UseHybridSearch
+                            ? queryRequest.UserPrompt!
+                            : null,
                         userPromptEmbedding.Value.ToFloats(),
                         _vectorDatabase.EmbeddingPropertyName,
                         queryRequest.VectorStoreQuery.TextChunksSimilarityThreshold,
@@ -103,6 +106,9 @@ namespace FoundationaLLM.Context.Services
                             Metadata = md.GetObject(_vectorDatabase.MetadataPropertyName).ToDictionary()
                         })
                     ];
+
+                    existingVectorStoreIds.AddRange(matchingDocuments.Select(
+                        md => md.GetString(KEY_FIELD_NAME)));
 
                     #endregion
                 }
@@ -163,7 +169,9 @@ namespace FoundationaLLM.Context.Services
                             _vectorDatabase.MetadataPropertyName
                             ],
                             matchingDocumentsFilter,
-                            queryRequest.UserPrompt!,
+                            queryRequest.KnowledgeGraphQuery.VectorStoreQuery.UseHybridSearch
+                                ? queryRequest.UserPrompt!
+                                : null,
                             userPromptEmbedding.Value.ToFloats(),
                             _vectorDatabase.EmbeddingPropertyName,
                             queryRequest.KnowledgeGraphQuery.VectorStoreQuery.TextChunksSimilarityThreshold,
@@ -171,6 +179,7 @@ namespace FoundationaLLM.Context.Services
                             queryRequest.KnowledgeGraphQuery.VectorStoreQuery.UseSemanticRanking);
 
                         queryResponse.KnowledgeGraphResponse.TextChunks = [.. matchingDocuments
+                            .Where(md => !existingVectorStoreIds.Contains(md.GetString(KEY_FIELD_NAME))) // Avoid returning any duplicates
                             .Select(md => new ContextTextChunk
                             {
                                 Content = md.GetString(_vectorDatabase.ContentPropertyName),

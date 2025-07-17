@@ -36,5 +36,10 @@ namespace FoundationaLLM.Common.Constants
         /// The name of the Azure Event Grid topic subscription.
         /// </summary>
         public const string AzureEventGridTopicSubscriptionName = "AzureEventGridTopicSubscriptionName";
+
+        /// <summary>
+        /// The dictionary key identifying whether diagnostics are enabled for an HTTP client.
+        /// </summary>
+        public const string EnableDiagnostics = "EnableDiagnostics";
     }
 }
