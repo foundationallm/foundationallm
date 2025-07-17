@@ -452,6 +452,10 @@ namespace FoundationaLLM.Context.Services
                         .ResourceId!,
                     ServiceContext.ServiceIdentity!,
                     AzureAISearchService.CreateSearchIndexClient);
+                    //new Dictionary<string, object>()
+                    //{
+                    //    { HttpClientFactoryServiceKeyNames.EnableDiagnostics, true }
+                    //});
                 azureAISearchService = new AzureAISearchService(
                     searchIndexClient,
                     _loggerFactory.CreateLogger<AzureAISearchService>());

@@ -51,7 +51,7 @@ namespace FoundationaLLM.Common.Interfaces
             string indexName,
             IEnumerable<string> select,
             string filter,
-            string userPrompt,
+            string? userPrompt,
             ReadOnlyMemory<float> userPromptEmbedding,
             string embeddingPropertyName,
             float similarityThreshold,

@@ -5,6 +5,7 @@ using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Indexes.Models;
 using Azure.Search.Documents.Models;
 using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Clients.Http;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Exceptions;
@@ -32,8 +33,39 @@ namespace FoundationaLLM.Common.Services.Azure
         /// <returns>The requested client instance.</returns>
         /// <exception cref="NotImplementedException"></exception>
         public static SearchIndexClient CreateSearchIndexClient(
-            Dictionary<string, object> clientParameters) =>
-            (AuthenticationTypes) clientParameters[HttpClientFactoryServiceKeyNames.AuthenticationType] switch
+            Dictionary<string, object> clientParameters)
+        {
+            if (clientParameters.TryGetValue(HttpClientFactoryServiceKeyNames.EnableDiagnostics, out var enableDiagnostics)
+                && (bool)enableDiagnostics)
+            {
+                var searchClientOptions = new SearchClientOptions
+                {
+                    Diagnostics =
+                    {
+                        IsLoggingEnabled = true,
+                        IsLoggingContentEnabled = true
+                    }
+                };
+                searchClientOptions.AddPolicy(
+                    new HttpPipelineInterceptPolicy(),
+                    HttpPipelinePosition.PerCall);
+
+                return (AuthenticationTypes)clientParameters[HttpClientFactoryServiceKeyNames.AuthenticationType] switch
+                {
+                    AuthenticationTypes.AzureIdentity => new SearchIndexClient(
+                        new Uri(clientParameters[HttpClientFactoryServiceKeyNames.Endpoint].ToString()!),
+                        ServiceContext.AzureCredential,
+                        searchClientOptions),
+                    AuthenticationTypes.APIKey => new SearchIndexClient(
+                        new Uri(clientParameters[HttpClientFactoryServiceKeyNames.Endpoint].ToString()!),
+                        new AzureKeyCredential(clientParameters[HttpClientFactoryServiceKeyNames.APIKey].ToString()!),
+                        searchClientOptions),
+                    _ => throw new ConfigurationValueException(
+                        $"The {clientParameters[HttpClientFactoryServiceKeyNames.AuthenticationType]} authentication type is not supported by the Azure AI Search service.")
+                };
+            }
+
+            return (AuthenticationTypes)clientParameters[HttpClientFactoryServiceKeyNames.AuthenticationType] switch
             {
                 AuthenticationTypes.AzureIdentity => new SearchIndexClient(
                     new Uri(clientParameters[HttpClientFactoryServiceKeyNames.Endpoint].ToString()!),
@@ -44,6 +76,7 @@ namespace FoundationaLLM.Common.Services.Azure
                 _ => throw new ConfigurationValueException(
                     $"The {clientParameters[HttpClientFactoryServiceKeyNames.AuthenticationType]} authentication type is not supported by the Azure AI Search service.")
             };
+        }
 
         private readonly SearchIndexClient _searchIndexClient = searchIndexClient;
         private readonly ILogger<AzureAISearchService> _logger = logger;
@@ -122,7 +155,7 @@ namespace FoundationaLLM.Common.Services.Azure
             string indexName,
             IEnumerable<string> select,
             string filter,
-            string userPrompt,
+            string? userPrompt,
             ReadOnlyMemory<float> userPromptEmbedding,
             string embeddingPropertyName,
             float similarityThreshold,
@@ -134,7 +167,7 @@ namespace FoundationaLLM.Common.Services.Azure
 
             var vectorQuery = new VectorizedQuery(userPromptEmbedding);
             vectorQuery.Fields.Add(embeddingPropertyName);
-            //vectorQuery.KNearestNeighborsCount = 5;
+            vectorQuery.KNearestNeighborsCount = 500;
             vectorQuery.Threshold = new VectorSimilarityThreshold(similarityThreshold);
 
             var searchOptions = new SearchOptions
@@ -145,9 +178,9 @@ namespace FoundationaLLM.Common.Services.Azure
                 Filter = filter,
                 Size = topN,
                 VectorSearch = new VectorSearchOptions()
-                //{
-                //    FilterMode = VectorFilterMode.PreFilter
-                //},
+                {
+                    FilterMode = VectorFilterMode.PostFilter
+                }
             };
             foreach (var field in select)
                 searchOptions.Select.Add(field);
@@ -162,9 +195,12 @@ namespace FoundationaLLM.Common.Services.Azure
 
             // Execute the search
             var results = new List<SearchDocument>();
-            var response = await searchClient.SearchAsync<SearchDocument>(
-                userPrompt,
-                searchOptions);
+            var response = userPrompt is null
+                ? await searchClient.SearchAsync<SearchDocument>(
+                    searchOptions)
+                : await searchClient.SearchAsync<SearchDocument>(
+                    userPrompt,
+                    searchOptions);
 
             await foreach (var result in response.Value.GetResultsAsync())
             {

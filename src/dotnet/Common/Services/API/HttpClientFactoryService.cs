@@ -78,7 +78,8 @@ namespace FoundationaLLM.Common.Services.API
                 clientBuilderParameters[HttpClientFactoryServiceKeyNames.APIKey] = apiKey!;
             }
 
-            return clientBuilder(clientBuilderParameters);
+            var client = clientBuilder(clientBuilderParameters);
+            return client;
         }
 
 
