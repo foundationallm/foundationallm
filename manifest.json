@@ -6452,6 +6452,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreResponse.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreResponse",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreResponse.yml\" sourcestartlinenumber=\"1\">Represents the response from a context vector store query.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraphRenderingNode.yml",
       "output": {
         ".html": {
