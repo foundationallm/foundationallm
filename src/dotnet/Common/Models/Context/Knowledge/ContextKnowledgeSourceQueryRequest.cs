@@ -39,5 +39,12 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
         /// </summary>
         [JsonPropertyName("vector_store_metadata_filter")]
         public Dictionary<string, object>? VectorStoreMetadataFilter { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the response should be formatted.
+        /// </summary>
+        /// <remarks>When <see langword="true"/>, the response will be plain text. Otherwise, the response will be structured.</remarks>
+        [JsonPropertyName("format_response")]
+        public bool? FormatResponse { get; set; }
     }
 }
