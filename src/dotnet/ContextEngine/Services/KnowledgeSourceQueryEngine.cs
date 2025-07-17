@@ -6,9 +6,9 @@ using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Context.Models;
 using MathNet.Numerics;
 using Microsoft.Extensions.Logging;
-using NuGet.Packaging;
 using OpenAI.Embeddings;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 
 namespace FoundationaLLM.Context.Services
 {
@@ -46,6 +46,7 @@ namespace FoundationaLLM.Context.Services
         public async Task<ContextKnowledgeSourceQueryResponse> QueryAsync(
             ContextKnowledgeSourceQueryRequest queryRequest)
         {
+
             try
             {
                 ValidateQueryRequest(queryRequest);
@@ -71,7 +72,6 @@ namespace FoundationaLLM.Context.Services
                 {
                     Success = true
                 };
-                HashSet<string> existingVectorStoreIds = [];
 
                 if (queryRequest.VectorStoreQuery is not null)
                 {
@@ -106,9 +106,6 @@ namespace FoundationaLLM.Context.Services
                             Metadata = md.GetObject(_vectorDatabase.MetadataPropertyName).ToDictionary()
                         })
                     ];
-
-                    existingVectorStoreIds.AddRange(matchingDocuments.Select(
-                        md => md.GetString(KEY_FIELD_NAME)));
 
                     #endregion
                 }
@@ -165,8 +162,8 @@ namespace FoundationaLLM.Context.Services
                             _vectorDatabase.DatabaseName,
                             [
                                 KEY_FIELD_NAME,
-                            _vectorDatabase.ContentPropertyName,
-                            _vectorDatabase.MetadataPropertyName
+                                _vectorDatabase.ContentPropertyName,
+                                _vectorDatabase.MetadataPropertyName
                             ],
                             matchingDocumentsFilter,
                             queryRequest.KnowledgeGraphQuery.VectorStoreQuery.UseHybridSearch
@@ -179,7 +176,6 @@ namespace FoundationaLLM.Context.Services
                             queryRequest.KnowledgeGraphQuery.VectorStoreQuery.UseSemanticRanking);
 
                         queryResponse.KnowledgeGraphResponse.TextChunks = [.. matchingDocuments
-                            .Where(md => !existingVectorStoreIds.Contains(md.GetString(KEY_FIELD_NAME))) // Avoid returning any duplicates
                             .Select(md => new ContextTextChunk
                             {
                                 Content = md.GetString(_vectorDatabase.ContentPropertyName),
@@ -359,9 +355,23 @@ namespace FoundationaLLM.Context.Services
             if (metadataFilter is not null
                 && metadataFilter.Count > 0)
                 filter += " and " + string.Join(" and ", metadataFilter
-                        .Select(kvp => $"{_vectorDatabase.MetadataPropertyName}/{kvp.Key} eq '{kvp.Value.ToString()!.Replace("'", "''")}'"));
+                        .Select(kvp => $"{_vectorDatabase.MetadataPropertyName}/{kvp.Key} eq {GetFilterValue(kvp.Value)}"));
 
             return filter;
+        }
+
+        private string GetFilterValue(object value)
+        {
+            var jsonValue = (JsonElement)value;
+
+            return jsonValue.ValueKind switch
+            {
+                JsonValueKind.String => $"'{jsonValue.GetString()!.Replace("'", "''")}'",
+                JsonValueKind.Number => jsonValue.GetRawText(),
+                JsonValueKind.True => "true",
+                JsonValueKind.False => "false",
+                _ => throw new InvalidOperationException($"Unsupported JSON value kind: {jsonValue.ValueKind}")
+            };
         }
     }
 }
