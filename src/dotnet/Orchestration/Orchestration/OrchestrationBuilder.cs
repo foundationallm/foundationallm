@@ -563,6 +563,16 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             // No need to send in the details of the knowledge source.
                             break;
 
+                        case DataSourceResourceTypeNames.DataSources:
+
+                            var dataSource = await dataSourceResourceProvider.GetResourceAsync<DataSourceBase>(
+                                resourceObjectId.ObjectId,
+                                currentUserIdentity);
+
+                            explodedObjectsManager.TryAdd(
+                                dataSource.ObjectId!,
+                                dataSource);
+                            break;
                         default:
                             throw new OrchestrationException($"Unknown resource type '{resourcePath.MainResourceTypeName}'.");
                     }
