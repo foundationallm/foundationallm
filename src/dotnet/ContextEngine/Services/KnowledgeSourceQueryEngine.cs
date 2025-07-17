@@ -99,13 +99,16 @@ namespace FoundationaLLM.Context.Services
                         queryRequest.VectorStoreQuery.TextChunksMaxCount,
                         queryRequest.VectorStoreQuery.UseSemanticRanking);
 
-                    queryResponse.TextChunks = [.. matchingDocuments
-                        .Select(md => new ContextTextChunk
-                        {
-                            Content = md.GetString(_vectorDatabase.ContentPropertyName),
-                            Metadata = md.GetObject(_vectorDatabase.MetadataPropertyName).ToDictionary()
-                        })
-                    ];
+                    queryResponse.VectorStoreResponse = new ContextVectorStoreResponse
+                    {
+                        TextChunks = [.. matchingDocuments
+                            .Select(md => new ContextTextChunk
+                            {
+                                Content = md.GetString(_vectorDatabase.ContentPropertyName),
+                                Metadata = md.GetObject(_vectorDatabase.MetadataPropertyName).ToDictionary()
+                            })
+                        ]
+                    };
 
                     #endregion
                 }
@@ -185,7 +188,9 @@ namespace FoundationaLLM.Context.Services
                     }
                 }
 
-                return queryResponse;
+                return (queryRequest.FormatResponse ?? false)
+                    ? FormatQueryResponse(queryResponse)
+                    : queryResponse;
             }
             catch (ValidationException ex)
             {
@@ -372,6 +377,86 @@ namespace FoundationaLLM.Context.Services
                 JsonValueKind.False => "false",
                 _ => throw new InvalidOperationException($"Unsupported JSON value kind: {jsonValue.ValueKind}")
             };
+        }
+
+        private ContextKnowledgeSourceQueryResponse FormatQueryResponse(
+            ContextKnowledgeSourceQueryResponse queryResponse)
+        {
+            var formattedResponseChunks = new List<string>();
+
+            var textChunks = new List<ContextTextChunk>();
+
+            if (queryResponse.KnowledgeGraphResponse is not null)
+            {
+                if (queryResponse.KnowledgeGraphResponse.Entities.Count > 0)
+                {
+                    formattedResponseChunks.AddRange(
+                        [
+                            "The following entities are relevant for the answer:",
+                            Environment.NewLine
+                        ]);
+
+                    formattedResponseChunks.AddRange(
+                        queryResponse.KnowledgeGraphResponse.Entities
+                            .Select(e => $"- {e.Name} (of type {e.Type}): {e.SummaryDescription}"));
+                    formattedResponseChunks.Add(Environment.NewLine);
+                }
+
+                if (queryResponse.KnowledgeGraphResponse.RelatedEntities.Count > 0)
+                {
+                    formattedResponseChunks.AddRange(
+                        [
+                            "The following related entities are also relevant for the answer:",
+                            Environment.NewLine
+                        ]);
+
+                    formattedResponseChunks.AddRange(
+                        queryResponse.KnowledgeGraphResponse.RelatedEntities
+                            .Select(e => $"- {e.Name} (of type {e.Type}): {e.SummaryDescription}"));
+                    formattedResponseChunks.Add(Environment.NewLine);
+                }
+
+                if (queryResponse.KnowledgeGraphResponse.Relationships.Count > 0)
+                {
+                    formattedResponseChunks.AddRange(
+                        [
+                            "The following relationship between entities are relevant for the answer:",
+                            Environment.NewLine
+                        ]);
+
+                    formattedResponseChunks.AddRange(
+                        queryResponse.KnowledgeGraphResponse.Relationships
+                            .Select(r => $"- {r.Source} (of type {r.SourceType}) and {r.Target} (of type {r.TargetType}): {r.SummaryDescription}"));
+                    formattedResponseChunks.Add(Environment.NewLine);
+                }
+
+                if (queryResponse.KnowledgeGraphResponse.TextChunks.Count > 0)
+                    textChunks.AddRange(queryResponse.KnowledgeGraphResponse.TextChunks);
+            }
+
+            if (queryResponse.VectorStoreResponse is not null
+                && queryResponse.VectorStoreResponse.TextChunks.Count > 0)
+                textChunks.AddRange(queryResponse.VectorStoreResponse.TextChunks);
+
+            if (textChunks.Count > 0)
+            {
+                formattedResponseChunks.AddRange(
+                    [
+                        "The following information is relevant for the answer:",
+                        Environment.NewLine
+                    ]);
+
+                formattedResponseChunks.AddRange(
+                    textChunks
+                        .Select(tc => $"- {tc.Content}"));
+            }
+
+            var formattedResponse = string.Join(Environment.NewLine, formattedResponseChunks);
+
+            queryResponse.TextResponse = formattedResponse;
+            queryResponse.VectorStoreResponse = null;
+            queryResponse.KnowledgeGraphResponse = null;
+            return queryResponse;
         }
     }
 }
