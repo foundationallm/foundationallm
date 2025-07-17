@@ -1,6 +1,7 @@
 """
 Main entry-point for the FoundationaLLM LangChainAPI.
 """
+import logging
 from fastapi import FastAPI
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from app.lifespan_manager import lifespan
@@ -8,9 +9,9 @@ from app.routers import completions, status, management
 
 app = FastAPI(
     lifespan=lifespan,
-    title=f'FoundationaLLM LangChainAPI',
+    title='FoundationaLLM LangChainAPI',
     summary='API for interacting with large language models using the LangChain orchestrator.',
-    description=f"""The FoundationaLLM LangChainAPI is a wrapper around LangChain functionality
+    description="""The FoundationaLLM LangChainAPI is a wrapper around LangChain functionality
                 contained in the foundationallm.core Python SDK.""",
     version='1.0.0',
     contact={
@@ -26,6 +27,23 @@ app = FastAPI(
         'url': 'https://www.foundationallm.ai/license',
     }
 )
+
+NO_LOGGING_ROUTES = { '/status' }
+
+class SuppressAccessLogFilter(logging.Filter):
+    '''Filter to suppress access logs for specific routes.'''
+    # pylint: disable=R0903
+    def filter(self, record: logging.LogRecord) -> bool:
+        # record.args[1] is the request path in uvicorn access logs
+        # pylint: disable=W0718
+        try:
+            path = record.args[2]
+            return path not in NO_LOGGING_ROUTES
+        except Exception:
+            return True  # fallback to allow logging
+
+# Apply the filter to uvicorn.access logger
+logging.getLogger("uvicorn.access").addFilter(SuppressAccessLogFilter())
 
 app.include_router(completions.router)
 app.include_router(status.router)
@@ -43,4 +61,4 @@ async def root():
     str
         Returns a JSON object containing a message and value.
     """
-    return { 'message': f'FoundationaLLM LangChainAPI' }
+    return { 'message': 'FoundationaLLM LangChainAPI' }
