@@ -220,7 +220,7 @@ Interface IAzureAISearchService  <a class="header-action link-secondary" title="
   <a id="FoundationaLLM_Common_Interfaces_IAzureAISearchService_SearchDocuments_" data-uid="FoundationaLLM.Common.Interfaces.IAzureAISearchService.SearchDocuments*"></a>
 
   <h3 id="FoundationaLLM_Common_Interfaces_IAzureAISearchService_SearchDocuments_System_String_System_Collections_Generic_IEnumerable_System_String__System_String_System_String_System_ReadOnlyMemory_System_Single__System_String_System_Single_System_Int32_System_Boolean_" data-uid="FoundationaLLM.Common.Interfaces.IAzureAISearchService.SearchDocuments(System.String,System.Collections.Generic.IEnumerable{System.String},System.String,System.String,System.ReadOnlyMemory{System.Single},System.String,System.Single,System.Int32,System.Boolean)">
-  SearchDocuments(string, IEnumerable&lt;string&gt;, string, string, ReadOnlyMemory&lt;float&gt;, string, float, int, bool)
+  SearchDocuments(string, IEnumerable&lt;string&gt;, string, string?, ReadOnlyMemory&lt;float&gt;, string, float, int, bool)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L50"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -230,7 +230,7 @@ user prompt embedding.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;IEnumerable&lt;SearchDocument&gt;&gt; SearchDocuments(string indexName, IEnumerable&lt;string&gt; select, string filter, string userPrompt, ReadOnlyMemory&lt;float&gt; userPromptEmbedding, string embeddingPropertyName, float similarityThreshold, int topN, bool useSemanticRanking)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;IEnumerable&lt;SearchDocument&gt;&gt; SearchDocuments(string indexName, IEnumerable&lt;string&gt; select, string filter, string? userPrompt, ReadOnlyMemory&lt;float&gt; userPromptEmbedding, string embeddingPropertyName, float similarityThreshold, int topN, bool useSemanticRanking)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
