@@ -34,7 +34,7 @@ class SuppressAccessLogFilter(logging.Filter):
     '''Filter to suppress access logs for specific routes.'''
     # pylint: disable=R0903
     def filter(self, record: logging.LogRecord) -> bool:
-        # record.args[1] is the request path in uvicorn access logs
+        # record.args[2] is the request path in uvicorn access logs
         # pylint: disable=W0718
         try:
             path = record.args[2]

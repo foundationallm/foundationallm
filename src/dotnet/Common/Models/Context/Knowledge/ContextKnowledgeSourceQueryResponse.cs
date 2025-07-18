@@ -10,6 +10,7 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
         /// <summary>
         /// Gets or sets the response from the vector store query.
         /// </summary>
+        [JsonPropertyName("vector_store_response")]
         public ContextVectorStoreResponse? VectorStoreResponse { get; set; }
 
         /// <summary>
