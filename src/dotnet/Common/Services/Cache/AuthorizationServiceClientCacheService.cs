@@ -27,6 +27,7 @@ namespace FoundationaLLM.Common.Services.Cache
 
         private readonly SemaphoreSlim _cacheLock = new(1, 1);
         private readonly MD5 _md5 = MD5.Create();
+        private readonly object _syncRoot = new();
 
         /// <inheritdoc/>
         public async void SetValue(ActionAuthorizationRequest authorizationRequest, ActionAuthorizationResult result)
@@ -102,7 +103,12 @@ namespace FoundationaLLM.Common.Services.Cache
 
             try
             {
-                var hashBytes = _md5.ComputeHash(Encoding.UTF8.GetBytes(keyString));
+                byte[] hashBytes;
+                lock (_syncRoot)
+                {
+                    // ComputeHash is not thread-safe, so we need to lock it.
+                    hashBytes = _md5.ComputeHash(Encoding.UTF8.GetBytes(keyString));
+                }
                 return Convert.ToBase64String(hashBytes);
             }
             catch (Exception ex)
