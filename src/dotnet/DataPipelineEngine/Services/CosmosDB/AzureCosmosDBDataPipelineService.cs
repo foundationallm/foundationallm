@@ -164,10 +164,10 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
 
             PartitionKey partitionKey = new(dataPipelineRunItems.First().RunId);
 
-            foreach (var chunk in dataPipelineRunItems.Chunk(50))
+            foreach (var chunk in dataPipelineRunItems.Chunk(100))
             {
                 var batch = _dataPipelineContainer.CreateTransactionalBatch(partitionKey);
-                foreach (var message in dataPipelineRunItems)
+                foreach (var message in chunk)
                 {
                     batch.UpsertItem(
                         item: message
