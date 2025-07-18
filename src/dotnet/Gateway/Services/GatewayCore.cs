@@ -356,6 +356,7 @@ namespace FoundationaLLM.Gateway.Services
             var removeAssistantFileFromVectorStore = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromVectorStore, false);
             var addAssistantFileToCodeInterpreter = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.AddOpenAIFileToCodeInterpreter, false);
             var removeAssistantFileFromCodeInterpreter = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromCodeInterpreter, false);
+            var updateAssistantInstructions = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.UpdateOpenAIAssistantInstructions, false);
 
             if (createAssistant
                 && string.IsNullOrEmpty(capabilityName))
@@ -418,6 +419,20 @@ namespace FoundationaLLM.Gateway.Services
                 _logger.LogInformation("Created assistant {AssistantName} with ID {AssistantId}.", assistant.Name, assistant.Id);
                 result[OpenAIAgentCapabilityParameterNames.OpenAIAssistantId] = assistant.Id;
                 result[OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId] = vectorStoreResult.Value!.Id;
+            }
+
+            if (updateAssistantInstructions)
+            {
+                var assistantClient = GetAzureOpenAIAssistantClient(azureOpenAIAccount.Endpoint);
+                var assistantId = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.OpenAIAssistantId);
+                var prompt = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt);
+
+                var updateResult = await assistantClient.ModifyAssistantAsync(
+                    assistantId,
+                    new AssistantModificationOptions { Instructions = prompt });
+
+                var updatedAssistant = updateResult.Value;
+                _logger.LogInformation("Updated instructions for assistant {AssistantName} with ID {AssistantId}.", updatedAssistant.Name, updatedAssistant.Id);
             }
 
             if (createAssistantVectorStore)
