@@ -388,7 +388,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     if (string.IsNullOrEmpty(workflow.VectorStoreId))
                     {
                         // Add vector store to existing assistant
-                        Dictionary<string, object> parameters = new()
+                        Dictionary<string, object> vectorStoreParameters = new()
                         {
                             { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantVectorStore, true },
                             { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpoint.Url },
@@ -401,7 +401,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                             _instanceSettings.Id,
                             AgentCapabilityCategoryNames.OpenAIAssistants,
                             string.Empty,
-                            parameters);
+                            vectorStoreParameters);
 
                         var newOpenAIAssistantVectorStoreId = default(string);
                         if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject)
@@ -413,6 +413,21 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
                         workflow.VectorStoreId = newOpenAIAssistantVectorStoreId;
                     }
+
+                    // Always update the assistant prompt.
+                    Dictionary<string, object> instructionsParameters = new()
+                    {
+                        { OpenAIAgentCapabilityParameterNames.UpdateOpenAIAssistantInstructions, true },
+                        { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpoint.Url },
+                        { OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, openAIAssistantId },
+                        { OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt, (agentPrompt as MultipartPrompt)!.Prefix! }
+                    };
+
+                    await gatewayClient!.CreateAgentCapability(
+                        _instanceSettings.Id,
+                        AgentCapabilityCategoryNames.OpenAIAssistants,
+                        string.Empty,
+                        instructionsParameters);
                 }
             }
 

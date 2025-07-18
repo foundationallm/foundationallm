@@ -51,6 +51,12 @@ namespace FoundationaLLM.Common.Constants.OpenAI
         /// Indicates the need to remove an existing OpenAI assistant file from an OpenAI assistant code interpreter tool.
         /// </summary>
         public const string RemoveOpenAIFileFromCodeInterpreter = "OpenAI.File.RemoveFromCodeInterpreter";
+
+        /// <summary>
+        /// Indicates the need to update the instructions of an existing OpenAI assistant.
+        /// </summary>
+        public const string UpdateOpenAIAssistantInstructions = "OpenAI.Assistants.Assistant.UpdateInstructions";
+
         #endregion
 
         #region Inputs
