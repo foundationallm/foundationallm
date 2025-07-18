@@ -332,10 +332,23 @@ a {
 }
 
 .sidebar__avatar {
-	margin-right: 12px;
-	color: var(--primary-color);
-	height: 61px;
-	width: 61px;
+	   margin-right: 12px;
+	   height: 61px;
+	   width: 61px;
+	   border-radius: 50%; /* circular crop */
+	   background: transparent;
+	   overflow: hidden;
+	   display: flex;
+	   align-items: center;
+	   justify-content: center;
+}
+
+.sidebar__avatar img, .sidebar__avatar picture, .sidebar__avatar svg {
+	   width: 100%;
+	   height: 100%;
+	   object-fit: cover;
+	   border-radius: 50%;
+	   display: block;
 }
 
 .sidebar__username {

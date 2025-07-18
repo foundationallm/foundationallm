@@ -163,16 +163,33 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
             }
 
             PartitionKey partitionKey = new(dataPipelineRunItems.First().RunId);
-            var batch = _dataPipelineContainer.CreateTransactionalBatch(partitionKey);
-            foreach (var message in dataPipelineRunItems)
+
+            foreach (var chunk in dataPipelineRunItems.Chunk(100))
             {
-                batch.UpsertItem(
-                    item: message
-                );
+                var batch = _dataPipelineContainer.CreateTransactionalBatch(partitionKey);
+                foreach (var message in dataPipelineRunItems)
+                {
+                    batch.UpsertItem(
+                        item: message
+                    );
+                }
+
+                var result = await batch.ExecuteAsync();
+
+                if (!result.IsSuccessStatusCode)
+                {
+                    _logger.LogError("Failed to upsert one or more data pipeline run items. Status code: {StatusCode}, Error message: {ErrorMessage}",
+                        result.StatusCode, result.ErrorMessage);
+                    return false;
+                }
+                else
+                {
+                    _logger.LogInformation("Successfully upserted {Count} data pipeline run items.",
+                        chunk.Length);
+                }
             }
 
-            var result = await batch.ExecuteAsync();
-            return result.IsSuccessStatusCode;
+            return true;
         }
 
         /// <inheritdoc/>
