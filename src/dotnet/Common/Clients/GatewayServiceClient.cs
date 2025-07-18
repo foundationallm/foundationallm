@@ -146,7 +146,7 @@ namespace FoundationaLLM.Common.Clients
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var responseObject = JsonSerializer.Deserialize<Dictionary<string, object>>(responseContent);
 
-                if (responseObject == null || responseObject.Count == 0)
+                if (responseObject == null)
                     throw new GatewayException("The Gateway API returned an invalid response.");
 
                 return responseObject;
