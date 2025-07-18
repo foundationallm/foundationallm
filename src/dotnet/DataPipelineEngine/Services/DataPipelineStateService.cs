@@ -7,9 +7,6 @@ using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
-using Microsoft.Graph.Models.Security;
-using NuGet.Common;
-using Parquet;
 using Parquet.Serialization;
 using System.Text.Json;
 
