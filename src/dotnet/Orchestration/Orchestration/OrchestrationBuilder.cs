@@ -17,12 +17,10 @@ using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
-using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Net;
 using System.Text;
 using System.Text.Json;
 
@@ -412,6 +410,41 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         throw new OrchestrationException($"The Context API was not able to create code session: {contextServiceResponse.ErrorMessage}");
                 }
 
+                if (tool.TryGetPropertyValue<Dictionary<string, object>>(
+                        AgentToolPropertyNames.VectorStoreMetadataFilter, out var metadataFilter)
+                    && metadataFilter is not null)
+                {
+                    // Map the metadata filter values to possible values from the completion request.
+                    var completionRequestMetadataKeys = metadataFilter.Values
+                        .Where(v =>
+                            v is JsonElement je
+                            && je.ValueKind == JsonValueKind.String)
+                        .Select(v => ((JsonElement)v).GetString())
+                        .Where(s =>
+                            s is not null
+                            && s.StartsWith(AgentToolPropertyValueSources.CompletionRequestMetadata))
+                        .Select(s => s!.Split(':', 2)[1])
+                        .ToList();
+
+                    if (completionRequestMetadataKeys.Count > 0
+                        && originalRequest.Metadata is null)
+                        throw new OrchestrationException(
+                            "The completion request metadata is required for the tool, but it was not provided in the completion request.");
+
+                    foreach (var key in completionRequestMetadataKeys)
+                    {
+                        if (originalRequest.Metadata!.TryGetValue(key, out var value))
+                        {
+                            toolParameters.Add($"{AgentToolPropertyValueSources.CompletionRequestMetadata}:{key}", value);
+                        }
+                        else
+                        {
+                            // If the metadata key is not found in the completion request, throw an exception.
+                            throw new OrchestrationException($"The metadata key '{key}' was not found in the completion request.");
+                        }
+                    }
+                }
+
                 explodedObjectsManager.TryAdd(
                     tool.Name,
                     toolParameters);
@@ -492,44 +525,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                             break;
 
-                        case VectorizationResourceTypeNames.IndexingProfiles:
-                            var indexingProfile = await vectorizationResourceProvider.GetResourceAsync<IndexingProfile>(
-                                resourceObjectId.ObjectId,
-                                currentUserIdentity);
-
-                            explodedObjectsManager.TryAdd(
-                                resourceObjectId.ObjectId,
-                                indexingProfile);
-
-                            if (indexingProfile.Settings == null)
-                                throw new OrchestrationException($"Tool: {tool.Name}: Settings for indexing profile {indexingProfile.Name} not found.");
-
-                            if (!indexingProfile.Settings.TryGetValue(VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, out var apiEndpointConfigurationObjectId))
-                                throw new OrchestrationException($"Tool: {tool.Name}: API endpoint configuration ID not found in indexing profile settings.");
-
-                            if (!explodedObjectsManager.HasKey(apiEndpointConfigurationObjectId))
-                            {
-                                // Explode the object only if it hasn't been exploded yet.
-
-                                var indexingProfileApiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                                    apiEndpointConfigurationObjectId!,
-                                    currentUserIdentity);
-
-                                explodedObjectsManager.TryAdd(
-                                    apiEndpointConfigurationObjectId,
-                                    indexingProfileApiEndpoint);
-                            }
-
-                            break;
-                        case VectorizationResourceTypeNames.TextEmbeddingProfiles:
-                            var textEmbeddingProfile = await vectorizationResourceProvider.GetResourceAsync<TextEmbeddingProfile>(
-                                resourceObjectId.ObjectId,
-                                currentUserIdentity);
-
-                            explodedObjectsManager.TryAdd(
-                                resourceObjectId.ObjectId,
-                                textEmbeddingProfile);
-                            break;
                         case PromptResourceTypeNames.Prompts:
                             var prompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
                                 resourceObjectId.ObjectId,
@@ -573,6 +568,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 dataSource.ObjectId!,
                                 dataSource);
                             break;
+
                         default:
                             throw new OrchestrationException($"Unknown resource type '{resourcePath.MainResourceTypeName}'.");
                     }
@@ -700,89 +696,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             }
 
             #endregion
-
-            #endregion
-
-            #region Knowledge management processing
-
-            if (agentBase.AgentType == typeof(KnowledgeManagementAgent))
-            {
-                KnowledgeManagementAgent kmAgent = (KnowledgeManagementAgent)agentBase;
-
-                // Check for inline-context agents, they are valid KM agents that do not have a vectorization section.
-                if (kmAgent is { Vectorization: not null, InlineContext: false })
-                {
-                    if (!string.IsNullOrWhiteSpace(kmAgent.Vectorization.DataSourceObjectId))
-                    {
-                        try
-                        {
-                            var dataSource = await dataSourceResourceProvider.GetResourceAsync<DataSourceBase>(
-                                kmAgent.Vectorization.DataSourceObjectId,
-                                currentUserIdentity);
-
-                            if (dataSource == null)
-                                return (null, null, null, null, false);
-                        }
-                        catch (ResourceProviderException ex) when (ex.StatusCode == (int)HttpStatusCode.Forbidden)
-                        {
-                            // Access is denied to the underlying data source.
-                            return (agentBase, null, null, null, true);
-                        }
-                    }
-
-                    foreach (var indexingProfileName in kmAgent.Vectorization.IndexingProfileObjectIds ?? [])
-                    {
-                        if (string.IsNullOrWhiteSpace(indexingProfileName))
-                        {
-                            continue;
-                        }
-
-                        var indexingProfile = await vectorizationResourceProvider.GetResourceAsync<IndexingProfile>(
-                            indexingProfileName,
-                            currentUserIdentity);
-                       
-                        if (indexingProfile == null)
-                            throw new OrchestrationException($"The indexing profile {indexingProfileName} is not a valid indexing profile.");
-
-                        explodedObjectsManager.TryAdd(
-                            indexingProfileName,
-                            indexingProfile);
-                                               
-                        // Provide the indexing profile API endpoint configuration.
-                        if (indexingProfile.Settings == null)
-                            throw new OrchestrationException($"The settings for the indexing profile {indexingProfileName} were not found. Must include \"{VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId}\" setting.");
-
-                        if(indexingProfile.Settings.TryGetValue(VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, out var apiEndpointConfigurationObjectId) == false)
-                            throw new OrchestrationException($"The API endpoint configuration object ID was not found in the settings of the indexing profile.");
-
-                        if (!explodedObjectsManager.HasKey(apiEndpointConfigurationObjectId))
-                        {
-                            // Explode the object only if it hasn't been exploded yet.
-
-                            var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                            apiEndpointConfigurationObjectId,
-                            currentUserIdentity);
-
-                            explodedObjectsManager.TryAdd(
-                                apiEndpointConfigurationObjectId,
-                                indexingProfileAPIEndpointConfiguration);
-                        }
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(kmAgent.Vectorization.TextEmbeddingProfileObjectId)
-                        && !explodedObjectsManager.HasKey(kmAgent.Vectorization.TextEmbeddingProfileObjectId))
-                    {
-                        var textEmbeddingProfile = await vectorizationResourceProvider.GetResourceAsync<TextEmbeddingProfile>(
-                            kmAgent.Vectorization.TextEmbeddingProfileObjectId,
-                            currentUserIdentity)
-                            ?? throw new OrchestrationException($"The text embedding profile {kmAgent.Vectorization.TextEmbeddingProfileObjectId} is not a valid text embedding profile.");
-
-                        explodedObjectsManager.TryAdd(
-                            kmAgent.Vectorization.TextEmbeddingProfileObjectId!,
-                            textEmbeddingProfile);
-                    }
-                }
-            }
 
             #endregion
 

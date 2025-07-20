@@ -29,5 +29,10 @@
         /// The code session endpoint.
         /// </summary>
         public const string CodeSessionEndpoint = "code_session_endpoint";
+
+        /// <summary>
+        /// Represents the metadata filter key used in vector store operations.
+        /// </summary>
+        public const string VectorStoreMetadataFilter = "vector_store_metadata_filter";
     }
 }
