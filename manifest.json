@@ -6550,20 +6550,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.ChatSessionProperties.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.ChatSessionProperties.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Conversation.ChatSessionProperties",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Conversation.ChatSessionProperties.yml\" sourcestartlinenumber=\"1\">The session properties object.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.CompletionPrompt.yml",
       "output": {
         ".html": {
@@ -6589,6 +6575,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.Conversation.Conversation",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Conversation.Conversation.yml\" sourcestartlinenumber=\"1\">The session object.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.ConversationProperties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.ConversationProperties.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Conversation.ConversationProperties",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Conversation.ConversationProperties.yml\" sourcestartlinenumber=\"1\">The session properties object.</p>\n"
     },
     {
       "type": "ManagedReference",

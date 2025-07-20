@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Core_API_Controllers_CompletionsController.md&amp;value=---%0Auid%3A%20FoundationaLLM.Core.API.Controllers.CompletionsController%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Core_API_Controllers_CompletionsController.md&amp;value=---%0Auid%3A%20FoundationaLLM.Core.API.Controllers.CompletionsController%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Core_API_Controllers_CompletionsController" data-uid="FoundationaLLM.Core.API.Controllers.CompletionsController" class="text-break">
-Class CompletionsController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L27"><i class="bi bi-code-slash"></i></a>
+Class CompletionsController  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -691,7 +691,7 @@ public class CompletionsController : ControllerBase</code></pre>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_CompletionsController__ctor_FoundationaLLM_Core_Interfaces_ICoreService_FoundationaLLM_Common_Interfaces_IOrchestrationContext_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__FoundationaLLM_Common_Interfaces_IQuotaService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_API_Controllers_CompletionsController__" data-uid="FoundationaLLM.Core.API.Controllers.CompletionsController.#ctor(FoundationaLLM.Core.Interfaces.ICoreService,FoundationaLLM.Common.Interfaces.IOrchestrationContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Common.Interfaces.IQuotaService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.API.Controllers.CompletionsController})">
   CompletionsController(ICoreService, IOrchestrationContext, IEnumerable&lt;IResourceProviderService&gt;, IQuotaService, ILogger&lt;CompletionsController&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Methods for orchestration services exposed by the Gatekeeper API service.</p>
@@ -745,7 +745,7 @@ completions from the orchestrator.</p>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_CompletionsController_GetAgents_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.CompletionsController.GetAgents(System.String)">
   GetAgents(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L164"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L164"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a list of global and private agents.</p>
@@ -785,7 +785,7 @@ public Task&lt;IEnumerable&lt;ResourceProviderGetResult&lt;AgentBase&gt;&gt;&gt;
 
   <h3 id="FoundationaLLM_Core_API_Controllers_CompletionsController_GetCompletion_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_" data-uid="FoundationaLLM.Core.API.Controllers.CompletionsController.GetCompletion(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)">
   GetCompletion(string, CompletionRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L78"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Requests a completion from the downstream APIs.</p>
@@ -827,7 +827,7 @@ public Task&lt;IActionResult&gt; GetCompletion(string instanceId, CompletionRequ
 
   <h3 id="FoundationaLLM_Core_API_Controllers_CompletionsController_StartCompletionOperation_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_" data-uid="FoundationaLLM.Core.API.Controllers.CompletionsController.StartCompletionOperation(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)">
   StartCompletionOperation(string, CompletionRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L122"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Begins a completion operation.</p>
@@ -870,7 +870,7 @@ public Task&lt;ActionResult&lt;LongRunningOperation&gt;&gt; StartCompletionOpera
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L27" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/CompletionsController.cs/#L27" class="edit-link">Edit this page</a>
         </div>
 
 

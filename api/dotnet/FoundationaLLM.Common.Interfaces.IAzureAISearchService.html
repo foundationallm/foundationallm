@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Interfaces_IAzureAISearchService.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Interfaces.IAzureAISearchService%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Interfaces_IAzureAISearchService.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Interfaces.IAzureAISearchService%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Interfaces_IAzureAISearchService" data-uid="FoundationaLLM.Common.Interfaces.IAzureAISearchService" class="text-break">
-Interface IAzureAISearchService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L9"><i class="bi bi-code-slash"></i></a>
+Interface IAzureAISearchService  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L9"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -132,7 +132,7 @@ Interface IAzureAISearchService  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_Common_Interfaces_IAzureAISearchService_CreateIndexIfNotExists_System_String_System_Collections_Generic_IEnumerable_Azure_Search_Documents_Indexes_Models_SearchField__Azure_Search_Documents_Indexes_Models_VectorSearch_" data-uid="FoundationaLLM.Common.Interfaces.IAzureAISearchService.CreateIndexIfNotExists(System.String,System.Collections.Generic.IEnumerable{Azure.Search.Documents.Indexes.Models.SearchField},Azure.Search.Documents.Indexes.Models.VectorSearch)">
   CreateIndexIfNotExists(string, IEnumerable&lt;SearchField&gt;, VectorSearch?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates an index in the Azure AI Search service if it does not already exist.</p>
@@ -176,7 +176,7 @@ Interface IAzureAISearchService  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_Common_Interfaces_IAzureAISearchService_DeleteDocuments_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Interfaces.IAzureAISearchService.DeleteDocuments(System.String,System.String,System.String)">
   DeleteDocuments(string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L68"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes documents from the specified index in the Azure AI Search service based on a filter.</p>
@@ -221,7 +221,7 @@ Interface IAzureAISearchService  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_Common_Interfaces_IAzureAISearchService_SearchDocuments_System_String_System_Collections_Generic_IEnumerable_System_String__System_String_System_String_System_ReadOnlyMemory_System_Single__System_String_System_Single_System_Int32_System_Boolean_" data-uid="FoundationaLLM.Common.Interfaces.IAzureAISearchService.SearchDocuments(System.String,System.Collections.Generic.IEnumerable{System.String},System.String,System.String,System.ReadOnlyMemory{System.Single},System.String,System.Single,System.Int32,System.Boolean)">
   SearchDocuments(string, IEnumerable&lt;string&gt;, string, string?, ReadOnlyMemory&lt;float&gt;, string, float, int, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L50"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Searches for documents in the specified index that match the given filter and are similar to the provided
@@ -287,7 +287,7 @@ relevance. The collection will be empty if no matching documents are found.</p>
 
   <h3 id="FoundationaLLM_Common_Interfaces_IAzureAISearchService_UploadDocuments_System_String_System_Collections_Generic_List_System_String__System_Collections_Generic_List_System_Object____" data-uid="FoundationaLLM.Common.Interfaces.IAzureAISearchService.UploadDocuments(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Object[]})">
   UploadDocuments(string, List&lt;string&gt;, List&lt;object[]&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L29"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Uploads documents to the specified index in the Azure AI Search service.</p>
@@ -331,7 +331,7 @@ relevance. The collection will be empty if no matching documents are found.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L9" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAISearchService.cs/#L9" class="edit-link">Edit this page</a>
         </div>
 
 
