@@ -78,27 +78,27 @@ namespace FoundationaLLM.Core.API.Controllers
         /// </summary>
         /// <param name="instanceId">The id of the instance.</param>
         /// <param name="chatSessionProperties">The session properties.</param>
-        [HttpPost(Name = "CreateNewChatSession")]
-        public async Task<ConversationModels.Conversation> CreateNewChatSession(string instanceId, [FromBody] ChatSessionProperties chatSessionProperties) =>
+        [HttpPost(Name = "CreateConversation")]
+        public async Task<ConversationModels.Conversation> CreateConversation(string instanceId, [FromBody] ConversationProperties chatSessionProperties) =>
             await _coreService.CreateConversationAsync(instanceId, chatSessionProperties);
 
         /// <summary>
-        /// Rename the chat session.
+        /// Update the conversation.
         /// </summary>
-        /// <param name="instanceId">The id of the instance.</param>
-        /// <param name="sessionId">The id of the session to rename.</param>
-        /// <param name="chatSessionProperties">The session properties.</param>
-        [HttpPost("{sessionId}/rename", Name = "RenameChatSession")]
-        public async Task<ConversationModels.Conversation> RenameChatSession(string instanceId, string sessionId, [FromBody] ChatSessionProperties chatSessionProperties) =>
-            await _coreService.RenameConversationAsync(instanceId, sessionId, chatSessionProperties);
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="conversationId">The identifier of the conversation to update.</param>
+        /// <param name="conversationProperties">The conversation properties to be updated.</param>
+        [HttpPost("{conversationId}/update", Name = "UpdateConversation")]
+        public async Task<ConversationModels.Conversation> UpdateConversation(string instanceId, string conversationId, [FromBody] ConversationProperties conversationProperties) =>
+            await _coreService.UpdateConversationAsync(instanceId, conversationId, conversationProperties);
 
         /// <summary>
         /// Delete a chat session and related messages.
         /// </summary>
         /// <param name="instanceId">The id of the instance.</param>
         /// <param name="sessionId">The session id to delete.</param>
-        [HttpDelete("{sessionId}", Name = "DeleteChatSession")]
-        public async Task DeleteChatSession(string instanceId, string sessionId) =>
+        [HttpDelete("{sessionId}", Name = "DeleteConversation")]
+        public async Task DeleteConversation(string instanceId, string sessionId) =>
             await _coreService.DeleteConversationAsync(instanceId, sessionId);
     }
 }

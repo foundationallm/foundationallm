@@ -26,15 +26,15 @@ public interface ICoreService
     /// </summary>
     /// <param name="instanceId">The instance Id.</param>
     /// <param name="chatSessionProperties">The session properties.</param>
-    Task<Conversation> CreateConversationAsync(string instanceId, ChatSessionProperties chatSessionProperties);
+    Task<Conversation> CreateConversationAsync(string instanceId, ConversationProperties chatSessionProperties);
 
     /// <summary>
-    /// Rename the chat session from its default (eg., "New Chat") to the summary provided by OpenAI.
+    /// Update the conversation.
     /// </summary>
     /// <param name="instanceId">The instance id.</param>
-    /// <param name="sessionId">The session id to rename.</param>
-    /// <param name="chatSessionProperties">The session properties.</param>
-    Task<Conversation> RenameConversationAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties);
+    /// <param name="conversationId">The identifier of the conversation to rename.</param>
+    /// <param name="conversationProperties">The conversation properties to update.</param>
+    Task<Conversation> UpdateConversationAsync(string instanceId, string conversationId, ConversationProperties conversationProperties);
 
     /// <summary>
     /// Delete a chat session and related messages.

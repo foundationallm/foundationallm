@@ -122,7 +122,7 @@ namespace FoundationaLLM.Core.Tests.Services
             // Arrange
             var currentUserUPN = "testuser@example.com";
             var sessionType = "Test_type";
-            var chatSessionProperties = new ChatSessionProperties() { Name = "Test_name" };
+            var chatSessionProperties = new ConversationProperties() { Name = "Test_name" };
             var newSession = new Conversation() { Name = chatSessionProperties.Name, Type = sessionType, UPN = currentUserUPN, SessionId = "" };
 
             // Set up mock returns
@@ -150,7 +150,7 @@ namespace FoundationaLLM.Core.Tests.Services
         {
             // Arrange
             var session = new Conversation() { Name = "OldName", SessionId = "" };
-            var chatSessionProperties = new ChatSessionProperties() { Name = "NewName" };
+            var chatSessionProperties = new ConversationProperties() { Name = "NewName" };
 
             var expectedSession = new Conversation()
             {
@@ -164,7 +164,7 @@ namespace FoundationaLLM.Core.Tests.Services
             //_cosmosDbService.CreateOrUpdateConversationAsync(session.Id, chatSessionProperties.Name).Returns(expectedSession);
 
             // Act
-            var actualSession = await _testedService.RenameConversationAsync(_instanceId, session.Id, chatSessionProperties);
+            var actualSession = await _testedService.UpdateConversationAsync(_instanceId, session.Id, chatSessionProperties);
 
             // Assert
             Assert.Equivalent(expectedSession, actualSession);
@@ -175,12 +175,12 @@ namespace FoundationaLLM.Core.Tests.Services
         public async Task RenameChatSessionAsync_ShouldThrowExceptionWhenSessionIdIsNull()
         {
             // Arrange
-            var chatSessionProperties = new ChatSessionProperties() { Name = "NewName" };
+            var chatSessionProperties = new ConversationProperties() { Name = "NewName" };
 
             // Assert
             await Assert.ThrowsAsync<ArgumentNullException>((Func<Task>)(async () =>
             {
-                await _testedService.RenameConversationAsync(_instanceId, null!, chatSessionProperties);
+                await _testedService.UpdateConversationAsync(_instanceId, null!, chatSessionProperties);
             }));
         }
 
@@ -193,12 +193,12 @@ namespace FoundationaLLM.Core.Tests.Services
             // Assert
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
-                await _testedService.RenameConversationAsync(_instanceId, sessionId, null!);
+                await _testedService.UpdateConversationAsync(_instanceId, sessionId, null!);
             });
 
             await Assert.ThrowsAsync<ArgumentException>(async () =>
             {
-                await _testedService.RenameConversationAsync(_instanceId, sessionId, new ChatSessionProperties() { Name = string.Empty });
+                await _testedService.UpdateConversationAsync(_instanceId, sessionId, new ConversationProperties() { Name = string.Empty });
             });
         }
 

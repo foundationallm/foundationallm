@@ -34,6 +34,11 @@ public class Conversation : ResourceBase
     public override bool Deleted { get; set; }
 
     /// <summary>
+    /// Gets or sets the metadata associated with the conversation.
+    /// </summary>
+    public Dictionary<string, object>? Metadata { get; set; }
+
+    /// <summary>
     /// The list of messages associated with the session.
     /// </summary>
     [JsonIgnore]

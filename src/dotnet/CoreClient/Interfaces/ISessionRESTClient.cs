@@ -26,7 +26,7 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// </summary>
         /// <param name="chatSessionProperties">The session properties.</param>
         /// <returns>Returns the new Session ID.</returns>
-        Task<string> CreateSessionAsync(ChatSessionProperties chatSessionProperties);
+        Task<string> CreateSessionAsync(ConversationProperties chatSessionProperties);
 
         /// <summary>
         /// Renames a chat session.
@@ -34,7 +34,7 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// <param name="sessionId">The chat session ID.</param>
         /// <param name="chatSessionProperties">The session properties.</param>
         /// <returns></returns>
-        Task<string> RenameChatSession(string sessionId, ChatSessionProperties chatSessionProperties);
+        Task<string> RenameChatSession(string sessionId, ConversationProperties chatSessionProperties);
 
         /// <summary>
         /// Gets a completion prompt by session ID and completion prompt ID.

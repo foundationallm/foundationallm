@@ -125,7 +125,7 @@ public partial class CoreService(
     }
 
     /// <inheritdoc/>
-    public async Task<Conversation> CreateConversationAsync(string instanceId, ChatSessionProperties chatSessionProperties)
+    public async Task<Conversation> CreateConversationAsync(string instanceId, ConversationProperties chatSessionProperties)
     {
         ArgumentException.ThrowIfNullOrEmpty(chatSessionProperties.Name);
 
@@ -149,18 +149,24 @@ public partial class CoreService(
     }
 
     /// <inheritdoc/>
-    public async Task<Conversation> RenameConversationAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties)
+    public async Task<Conversation> UpdateConversationAsync(string instanceId, string conversationId, ConversationProperties conversationProperties)
     {
-        ArgumentNullException.ThrowIfNull(sessionId);
-        ArgumentException.ThrowIfNullOrEmpty(chatSessionProperties.Name);
+        ArgumentNullException.ThrowIfNull(conversationId);
+
+        if (string.IsNullOrWhiteSpace(conversationProperties.Name)
+            && conversationProperties.Metadata is null)
+            throw new CoreServiceException("The conversation name and metadata fields cannot be all empty.");
+
+        var propertyValues = new Dictionary<string, object?>();
+        if (!string.IsNullOrWhiteSpace(conversationProperties.Name))
+            propertyValues.Add("/displayName", conversationProperties.Name);
+        if (conversationProperties.Metadata is not null)
+            propertyValues.Add("/metadata", conversationProperties.Metadata);
 
         var result = await _conversationResourceProvider.UpdateResourcePropertiesAsync<Conversation, ResourceProviderUpsertResult<Conversation>>(
             instanceId,
-            sessionId,
-            new Dictionary<string, object?>
-                                             {
-                { "/displayName", chatSessionProperties.Name }
-            },
+            conversationId,
+            propertyValues,
             _userIdentity);
 
         return result.Resource!;
