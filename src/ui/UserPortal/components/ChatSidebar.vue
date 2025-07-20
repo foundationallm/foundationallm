@@ -57,8 +57,8 @@
 							class="chat"
 							:class="{
 								'chat--selected': currentSession?.sessionId === session.sessionId,
-								'chat--editing': session?.sessionId === sessionToRename?.sessionId,
-								'chat--deleting': session?.sessionId === sessionToDelete?.sessionId,
+								'chat--editing': session?.sessionId === conversationToUpdate?.sessionId,
+								'chat--deleting': session?.sessionId === conversationToDelete?.sessionId,
 							}"
 						>
 							<!-- Chat name -->
@@ -101,7 +101,7 @@
 										class="chat-sidebar__button"
 										style="color: var(--primary-text) !important"
 										aria-label="Delete chat session"
-										@click.stop="sessionToDelete = session"
+										@click.stop="conversationToDelete = session"
 										@keydown.esc="hideAllPoppers"
 									/>
 									<template #popper><div role="tooltip">Delete chat session</div></template>
@@ -157,10 +157,10 @@
 
 		<!-- Rename session dialog -->
 		<Dialog
-			v-if="sessionToRename !== null"
+			v-if="conversationToUpdate !== null"
 			v-focustrap
-			:visible="sessionToRename !== null"
-			:header="`Rename Chat ${sessionToRename?.display_name}`"
+			:visible="conversationToUpdate !== null"
+			:header="`Update conversation`"
 			:closable="false"
 			class="sidebar-dialog"
 			modal
@@ -176,15 +176,15 @@
 			></InputText>
 			<template #footer>
 				<Button class="sidebar-dialog__button" label="Cancel" text @click="closeRenameModal" />
-				<Button class="sidebar-dialog__button" label="Rename" @click="handleRenameSession" />
+				<Button class="sidebar-dialog__button" label="Rename" @click="handleUpdateConversation" />
 			</template>
 		</Dialog>
 
 		<!-- Delete session dialog -->
 		<Dialog
-			v-if="sessionToDelete !== null"
+			v-if="conversationToDelete !== null"
 			v-focustrap
-			:visible="sessionToDelete !== null"
+			:visible="conversationToDelete !== null"
 			:closable="false"
 			class="sidebar-dialog"
 			modal
@@ -202,7 +202,7 @@
 				</div>
 			</div>
 			<div v-else>
-				<p>Do you want to delete the chat "{{ sessionToDelete.display_name }}" ?</p>
+				<p>Do you want to delete the chat "{{ conversationToDelete.display_name }}" ?</p>
 			</div>
 			<template #footer>
 				<Button
@@ -210,7 +210,7 @@
 					label="Cancel"
 					text
 					:disabled="deleteProcessing"
-					@click="sessionToDelete = null"
+					@click="conversationToDelete = null"
 				/>
 				<Button
 					class="sidebar-dialog__button"
@@ -286,9 +286,9 @@ export default {
 
 	data() {
 		return {
-			sessionToRename: null as Session | null,
+			conversationToUpdate: null as Session | null,
 			newSessionName: '' as string,
-			sessionToDelete: null as Session | null,
+			conversationToDelete: null as Session | null,
 			deleteProcessing: false,
 			isMobile: window.screen.width < 950,
 			createProcessing: false,
@@ -322,12 +322,12 @@ export default {
 
 	methods: {
 		openRenameModal(session: Session) {
-			this.sessionToRename = session;
+			this.conversationToUpdate = session;
 			this.newSessionName = session.display_name;
 		},
 
 		closeRenameModal() {
-			this.sessionToRename = null;
+			this.conversationToUpdate = null;
 			this.newSessionName = '';
 		},
 
@@ -368,16 +368,16 @@ export default {
 			}
 		},
 
-		handleRenameSession() {
-			this.$appStore.renameSession(this.sessionToRename!, this.newSessionName);
-			this.sessionToRename = null;
+		handleUpdateConversation() {
+			this.$appStore.updateConversation(this.conversationToUpdate!, this.newSessionName);
+			this.conversationToUpdate = null;
 		},
 
 		async handleDeleteSession() {
 			this.deleteProcessing = true;
 			try {
-				await this.$appStore.deleteSession(this.sessionToDelete!);
-				this.sessionToDelete = null;
+				await this.$appStore.deleteSession(this.conversationToDelete!);
+				this.conversationToDelete = null;
 			} catch (error) {
 				this.$appStore.addToast({
 					severity: 'error',
@@ -391,7 +391,7 @@ export default {
 
 		renameSessionInputKeydown(event: KeyboardEvent) {
 			if (event.key === 'Enter') {
-				this.handleRenameSession();
+				this.handleUpdateConversation();
 			}
 			if (event.key === 'Escape') {
 				this.closeRenameModal();
@@ -400,7 +400,7 @@ export default {
 
 		deleteSessionKeydown(event: KeyboardEvent) {
 			if (event.key === 'Escape') {
-				this.sessionToDelete = null;
+				this.conversationToDelete = null;
 			}
 		},
 

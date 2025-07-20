@@ -198,13 +198,13 @@ export default {
 
 	/**
 	 * Renames a session.
-	 * @param sessionId The ID of the session to rename.
+	 * @param conversationId The identifier of the conversation to update.
 	 * @param newChatSessionName The new name for the session.
 	 * @returns The renamed session.
 	 */
-	async renameSession(sessionId: string, newChatSessionName: string): Promise<Session> {
+	async updateConversation(conversationId: string, newChatSessionName: string): Promise<Session> {
 		const properties: ChatSessionProperties = { name: newChatSessionName };
-		return await this.fetch<Session>(`/instances/${this.instanceId}/sessions/${sessionId}/rename`, {
+		return await this.fetch<Session>(`/instances/${this.instanceId}/sessions/${conversationId}/update`, {
 			method: 'POST',
 			body: properties,
 		});

@@ -264,51 +264,27 @@
 				<div id="oneDriveIframeDialogContent" class="onedrive-iframe-content" />
 			</Dialog>
 
-			<Mentionable
-				:keys="['@']"
-				:items="agents"
-				offset="6"
-				:limit="1000"
-				insert-space
-				class="mentionable"
-				@keydown.enter.prevent
-				@open="agentListOpen = true"
-				@close="agentListOpen = false"
-			>
-				<p id="chat-input-label" class="sr-only">
-					The agent can make mistakes. Please check important information carefully. Use Shift+Enter
-					to add a new line.
-				</p>
+			<p id="chat-input-label" class="sr-only">
+				The agent can make mistakes. Please check important information carefully. Use Shift+Enter
+				to add a new line.
+			</p>
 
-				<textarea
-					id="chat-input"
-					ref="inputRef"
-					v-model="text"
-					class="input"
-					aria-describedby="chat-input-label"
-					autofocus
-					:disabled="disabled || isCurrentAgentExpired"
-					:placeholder="
-						isCurrentAgentExpired ? 'This agent has expired.' : 'What would you like to ask?'
-					"
-					:aria-label="
-						isCurrentAgentExpired ? 'This agent has expired.' : 'What would you like to ask?'
-					"
-					@keydown="handleKeydown"
-				/>
-
-				<template #no-result>
-					<div class="dim">No result</div>
-				</template>
-
-				<template #item="{ item }">
-					<div class="user">
-						<span class="dim">
-							{{ item.label }}
-						</span>
-					</div>
-				</template>
-			</Mentionable>
+			<textarea
+				id="chat-input"
+				ref="inputRef"
+				v-model="text"
+				class="input"
+				aria-describedby="chat-input-label"
+				autofocus
+				:disabled="disabled || isCurrentAgentExpired"
+				:placeholder="
+					isCurrentAgentExpired ? 'This agent has expired.' : 'What would you like to ask?'
+				"
+				:aria-label="
+					isCurrentAgentExpired ? 'This agent has expired.' : 'What would you like to ask?'
+				"
+				@keydown="handleKeydown"
+			/>
 		</div>
 
 		<Button
@@ -323,7 +299,6 @@
 
 <script lang="ts">
 import mime from 'mime';
-import { Mentionable } from 'vue-mention';
 import 'floating-vue/dist/style.css';
 import { hideAllPoppers } from 'floating-vue';
 import { isAgentExpired } from '@/js/helpers';
@@ -332,10 +307,6 @@ const DEFAULT_INPUT_TEXT = '';
 
 export default {
 	name: 'ChatInput',
-
-	components: {
-		Mentionable,
-	},
 
 	props: {
 		disabled: {
