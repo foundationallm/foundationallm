@@ -18,7 +18,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         private readonly string _instanceId = instanceId ?? throw new ArgumentNullException(nameof(instanceId));
 
         /// <inheritdoc/>
-        public async Task<string> CreateSessionAsync(ChatSessionProperties chatSessionProperties)
+        public async Task<string> CreateSessionAsync(ConversationProperties chatSessionProperties)
         {
             var coreClient = await GetCoreClientAsync();
             var responseSession = await coreClient.PostAsync(
@@ -39,7 +39,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         }
 
         /// <inheritdoc/>
-        public async Task<string> RenameChatSession(string sessionId, ChatSessionProperties chatSessionProperties)
+        public async Task<string> RenameChatSession(string sessionId, ConversationProperties chatSessionProperties)
         {
             if (string.IsNullOrWhiteSpace(sessionId))
             {

@@ -24,7 +24,7 @@ namespace FoundationaLLM.Client.Core.Tests
         public async Task CreateChatSessionAsync_WithName_CreatesAndRenamesSession()
         {
             // Arrange
-            var chatSessionProperties = new ChatSessionProperties() { Name = "TestSession" };
+            var chatSessionProperties = new ConversationProperties() { Name = "TestSession" };
             var sessionId = "session-id";
             _coreRestClient.Sessions.CreateSessionAsync(chatSessionProperties).Returns(Task.FromResult(sessionId));
 
@@ -105,7 +105,7 @@ namespace FoundationaLLM.Client.Core.Tests
             // Arrange
             var userPrompt = "Hello, World!";
             var agentName = "TestAgent";
-            var chatSessionProperties = new ChatSessionProperties() { Name = "TestSession" };
+            var chatSessionProperties = new ConversationProperties() { Name = "TestSession" };
             var sessionId = "new-session-id";
             var completion = new Message();
             _coreRestClient.Sessions.CreateSessionAsync(chatSessionProperties).Returns(Task.FromResult(sessionId));
@@ -163,7 +163,7 @@ namespace FoundationaLLM.Client.Core.Tests
             var contentType = "text/plain";
             var agentName = "TestAgent";
             var question = "What is this file about?";
-            var chatSessionProperties = new ChatSessionProperties() { Name = "TestSession" };
+            var chatSessionProperties = new ConversationProperties() { Name = "TestSession" };
             var sessionId = "session-id";
             var objectId = "object-id";
             var completion = new Message();
@@ -189,7 +189,7 @@ namespace FoundationaLLM.Client.Core.Tests
             await Assert.ThrowsAsync<ArgumentNullException>(() =>
                 _coreClient.AttachFileAndAskQuestionAsync(
                     null!, "file.txt", "text/plain", "agent", "question", true, "session-id", 
-                    new ChatSessionProperties() { Name = "session-name" }));
+                    new ConversationProperties() { Name = "session-name" }));
         }
 
         [Fact]

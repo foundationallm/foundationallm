@@ -16,7 +16,7 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// </summary>
         /// <param name="sessionProperties">The session properties.</param>
         /// <returns>The new chat session ID.</returns>
-        Task<string> CreateChatSessionAsync(ChatSessionProperties sessionProperties);
+        Task<string> CreateChatSessionAsync(ConversationProperties sessionProperties);
 
         /// <summary>
         /// Runs a single completion request with an agent using the Core API and a chat session.
@@ -30,7 +30,7 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// <param name="agentName">The name of the FoundationaLLM agent that will handle the
         /// completion request.</param>
         /// <returns>A completion from the designated FoundationaLLM agent.</returns>
-        Task<Message> GetCompletionWithSessionAsync(string? sessionId, ChatSessionProperties? sessionProperties,
+        Task<Message> GetCompletionWithSessionAsync(string? sessionId, ConversationProperties? sessionProperties,
             string userPrompt, string agentName);
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// <returns>A completion from the designated FoundationaLLM agent.</returns>
         /// <returns>A completion from the designated FoundationaLLM agent.</returns>
         Task<Message> AttachFileAndAskQuestionAsync(Stream fileStream, string fileName, string contentType,
-            string agentName, string question, bool useSession, string? sessionId, ChatSessionProperties? chatSessionProperties);
+            string agentName, string question, bool useSession, string? sessionId, ConversationProperties? chatSessionProperties);
 
         /// <summary>
         /// Returns the chat messages related to an existing session.

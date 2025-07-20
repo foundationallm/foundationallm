@@ -54,7 +54,7 @@ namespace FoundationaLLM.Client.Core
             _coreRestClient = new CoreRESTClient(coreUri, credential, instanceId, options);
 
         /// <inheritdoc/>
-        public async Task<string> CreateChatSessionAsync(ChatSessionProperties chatSessionProperties)
+        public async Task<string> CreateChatSessionAsync(ConversationProperties chatSessionProperties)
         {
             if (string.IsNullOrWhiteSpace(chatSessionProperties.Name))
                 throw new ArgumentException("A session name must be provided when creating a new session.");
@@ -75,7 +75,7 @@ namespace FoundationaLLM.Client.Core
         }
 
         /// <inheritdoc/>
-        public async Task<Message> GetCompletionWithSessionAsync(string? sessionId, ChatSessionProperties? chatSessionProperties,
+        public async Task<Message> GetCompletionWithSessionAsync(string? sessionId, ConversationProperties? chatSessionProperties,
             string userPrompt, string agentName)
         {
             if (string.IsNullOrWhiteSpace(sessionId))
@@ -143,7 +143,7 @@ namespace FoundationaLLM.Client.Core
 
         /// <inheritdoc/>
         public async Task<Message> AttachFileAndAskQuestionAsync(Stream fileStream, string fileName, string contentType,
-            string agentName, string question, bool useSession, string? sessionId, ChatSessionProperties? chatSessionProperties)
+            string agentName, string question, bool useSession, string? sessionId, ConversationProperties? chatSessionProperties)
         {
             if (fileStream == null)
             {
