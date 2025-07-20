@@ -49,5 +49,11 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
         /// </summary>
         [JsonPropertyName("file_history")]
         public List<FileHistoryItem> FileHistory { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the metadata associated with the completion request.
+        /// </summary>
+        [JsonPropertyName("metadata")]
+        public Dictionary<string, object>? Metadata { get; set; }
     }
 }
