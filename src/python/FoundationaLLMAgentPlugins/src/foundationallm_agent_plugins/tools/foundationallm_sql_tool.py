@@ -55,10 +55,10 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
             exploded objects collection, user_identity, and platform configuration. """
 
         super().__init__(tool_config, objects, user_identity, config)
-        
+
         self.main_llm = self.get_main_language_model()
         self.main_prompt = self.get_main_prompt()
-        self.final_prompt = self.get_prompt("final_prompt")        
+        self.final_prompt = self.get_prompt("final_prompt")
         self.default_error_message = "An error occurred while executing the SQL query."
         self.__setup_sql_configuration(tool_config, config)
         self.vector_store_metadata_filter = self.tool_config.properties.get("vector_store_metadata_filter", None)
@@ -84,7 +84,7 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
         output_tokens = 0
         sql_query_to_execute = ''
         final_response = ''
-        
+
         # Get the original prompt
         if runnable_config is None:
             original_prompt = prompt
@@ -114,7 +114,12 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
                     sql_query_to_execute = self.main_prompt.split('-- STATIC SQL --')[1].strip()
 
                     if self.vector_store_metadata_filter:
+                        tool_runtime_properties = runnable_config['configurable'][self.name] if self.name in runnable_config['configurable'] else {}
                         for key, value in self.vector_store_metadata_filter.items():
+                            if isinstance(value, str) and value.startswith('__COMPLETION_REQUEST_METADATA__'):
+                                value = tool_runtime_properties.get(value, None)
+                                if value is None:
+                                    raise ValueError(f"Metadata key '{value}' not found in tool runtime properties.")
                             sql_query_to_execute = sql_query_to_execute.replace(f'{{{{{key}}}}}', str(value))
 
                     response = self.query_azure_sql(sql_query_to_execute)
@@ -158,7 +163,7 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
                     input_tokens += final_llm_response.usage_metadata['input_tokens']
                     output_tokens += final_llm_response.usage_metadata['output_tokens']
                     final_response = final_llm_response.content
-                
+
                 return final_response, FoundationaLLMToolResult(
                     content=final_response,
                     content_artifacts=[
@@ -219,18 +224,18 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
             connection_string = config.get_value(connection_string_config_name)
             if not connection_string:
                 raise ValueError(f"Connection string '{connection_string_config_name}' not found in the configuration.")
-            
+
             self.connection_string = self.__translate_connection_string(connection_string, database)
         else:
             # Expects Azure credentials to authenticate to the database.
-            # Get access token for Fabric        
+            # Get access token for Fabric
             credential = DefaultAzureCredential()
             token = credential.get_token('https://database.windows.net/.default')
             token_as_bytes = bytes(token.token, "UTF-8")
             encoded_bytes = bytes(chain.from_iterable(zip(token_as_bytes, repeat(0)))) # Encode the bytes to a Windows byte string
             token_bytes = struct.pack("<i", len(encoded_bytes)) + encoded_bytes # Package the token into a bytes object
             self.connection_attrs_before = {1256: token_bytes}  # Attribute pointing to SQL_COPT_SS_ACCESS_TOKEN to pass access token to the driver
-            self.connection_string = f'Driver={{ODBC Driver 18 for SQL Server}};Server=tcp:{self.server},1433;Database={self.database};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'      
+            self.connection_string = f'Driver={{ODBC Driver 18 for SQL Server}};Server=tcp:{self.server},1433;Database={self.database};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'
 
         self.tools = [
             {
@@ -347,7 +352,7 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
 
     def __translate_connection_string(self, connection_string: str, database_name: str) -> str:
         """Translate the connection string to a format compatible with pyodbc."""
-        
+
         matches = re.findall(r'(?i)\b([\w\s]+?)\s*=\s*([^;]+)', connection_string)
 
         # Normalize keys and store in dictionary

@@ -103,10 +103,19 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             }
         # Merge with the vector store metadata filter if it exists
         if self.vector_store_metadata_filter:
+            tool_runtime_properties = runnable_config['configurable'][self.name] if self.name in runnable_config['configurable'] else {}
+            metadata_filter_copy = self.vector_store_metadata_filter.copy()
+            for key, value in metadata_filter_copy.items():
+                if isinstance(value, str) and value.startswith('__COMPLETION_REQUEST_METADATA__'):
+                    value = tool_runtime_properties.get(value, None)
+                    if value is None:
+                        raise ValueError(f"Metadata key '{value}' not found in tool runtime properties.")
+                metadata_filter_copy[key] = value
+
             query_request['vector_store_metadata_filter'] = {
                 **query_request['vector_store_metadata_filter'],
-                **self.vector_store_metadata_filter
-            } if query_request['vector_store_metadata_filter'] else self.vector_store_metadata_filter
+                **metadata_filter_copy
+            } if query_request['vector_store_metadata_filter'] else metadata_filter_copy
 
         query_response = await self.context_api_client.post_async(
             endpoint = f"/instances/{self.instance_id}/knowledgeSources/{self.knowledge_source_id}/query",

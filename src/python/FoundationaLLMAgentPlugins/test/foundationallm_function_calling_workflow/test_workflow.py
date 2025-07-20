@@ -45,8 +45,8 @@ from foundationallm.models.constants import (
 # user_prompt = "Best practices for trading."
 # user_prompt = "Based on the most important recommendations for borrowers from the document named Selling-Guide_02-05-25_highlighted.pdf, determine whether the document is compliant or not."
 # user_prompt = "What is considered acceptable income?"
-# user_prompt = "What are the latest learning outcome measurements and user engagement metrics?"
-user_prompt = "What are the latest project health ratings?"
+user_prompt = "Describe the main project goals"
+# user_prompt = "What are the latest project health ratings?"
 
 operation_id = str(uuid.uuid4())
 conversation_id = "20250717-143700-iDMafKaRXUC5xQsASe6kfA"
