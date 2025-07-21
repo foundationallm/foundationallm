@@ -2,7 +2,14 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine3.21 AS base
 ARG FOUNDATIONALLM_VERSION
 
 RUN apk update
-RUN apk add icu-libs icu-data-full
+
+ENV \
+    DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
+    LC_ALL=en_US.UTF-8 \
+    LANG=en_US.UTF-8
+RUN apk add --no-cache \
+    icu-data-full \
+    icu-libs
 
 WORKDIR /app
 EXPOSE 80
