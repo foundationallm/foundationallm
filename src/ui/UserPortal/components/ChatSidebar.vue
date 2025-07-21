@@ -57,8 +57,8 @@
 							class="chat"
 							:class="{
 								'chat--selected': currentSession?.sessionId === session.sessionId,
-								'chat--editing': session?.sessionId === sessionToRename?.sessionId,
-								'chat--deleting': session?.sessionId === sessionToDelete?.sessionId,
+								'chat--editing': session?.sessionId === conversationToUpdate?.sessionId,
+								'chat--deleting': session?.sessionId === conversationToDelete?.sessionId,
 							}"
 						>
 							<!-- Chat name -->
@@ -78,17 +78,17 @@
 								<!-- Rename session -->
 								<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 									<Button
-										icon="pi pi-pencil"
+										icon="pi pi-cog"
 										size="small"
 										severity="secondary"
 										text
 										class="chat-sidebar__button"
 										style="color: var(--primary-text) !important"
-										aria-label="Rename chat session"
-										@click.stop="openRenameModal(session)"
+										aria-label="Update conversation"
+										@click.stop="openUpdateModal(session)"
 										@keydown.esc="hideAllPoppers"
 									/>
-									<template #popper><div role="tooltip">Rename chat session</div></template>
+									<template #popper><div role="tooltip">Update conversation</div></template>
 								</VTooltip>
 
 								<!-- Delete session -->
@@ -100,11 +100,11 @@
 										text
 										class="chat-sidebar__button"
 										style="color: var(--primary-text) !important"
-										aria-label="Delete chat session"
-										@click.stop="sessionToDelete = session"
+										aria-label="Delete conversation"
+										@click.stop="conversationToDelete = session"
 										@keydown.esc="hideAllPoppers"
 									/>
-									<template #popper><div role="tooltip">Delete chat session</div></template>
+									<template #popper><div role="tooltip">Delete conversation</div></template>
 								</VTooltip>
 							</span>
 						</div>
@@ -155,40 +155,51 @@
 			</div>
 		</div>
 
-		<!-- Rename session dialog -->
+		<!-- Update conversation dialog -->
 		<Dialog
-			v-if="sessionToRename !== null"
+			v-if="conversationToUpdate !== null"
 			v-focustrap
-			:visible="sessionToRename !== null"
-			:header="`Rename Chat ${sessionToRename?.display_name}`"
+			:visible="conversationToUpdate !== null"
+			:header="`Conversation properties`"
 			:closable="false"
 			class="sidebar-dialog"
 			modal
 		>
+			<label for="update-conversation-name" style="margin-bottom: 0.5rem; font-weight: 500; display: block;">Name:</label>
 			<InputText
-				v-model="newSessionName"
-				:style="{ width: '100%' }"
+				id="update-conversation-name"
+				v-model="newConversationName"
+				:style="{ width: '100%', minWidth: '400px' }"
 				type="text"
 				placeholder="New chat name"
 				aria-label="New chat name"
 				autofocus
-				@keydown="renameSessionInputKeydown"
+				@keydown="updateConversationInputKeydown"
 			></InputText>
+			<label for="update-conversation-description" style="margin-top: 1rem; margin-bottom: 0.5rem; font-weight: 500; display: block;">Metadata:</label>
+			<Textarea
+				id="update-conversation-description"
+				v-model="newConversationMetadata"
+				:rows="4"
+				:style="{ width: '100%', minWidth: '400px' }"
+				placeholder="Add metadata for the conversation (must be valid JSON)"
+				aria-label="Conversation description"
+			></Textarea>
 			<template #footer>
-				<Button class="sidebar-dialog__button" label="Cancel" text @click="closeRenameModal" />
-				<Button class="sidebar-dialog__button" label="Rename" @click="handleRenameSession" />
+				<Button class="sidebar-dialog__button" label="Cancel" text autofocus @click="closeUpdateModal" />
+				<Button class="sidebar-dialog__button" label="Update" @click="handleUpdateConversation" />
 			</template>
 		</Dialog>
 
 		<!-- Delete session dialog -->
 		<Dialog
-			v-if="sessionToDelete !== null"
+			v-if="conversationToDelete !== null"
 			v-focustrap
-			:visible="sessionToDelete !== null"
+			:visible="conversationToDelete !== null"
 			:closable="false"
 			class="sidebar-dialog"
 			modal
-			header="Delete a Chat"
+			header="Delete conversation"
 			@keydown="deleteSessionKeydown"
 		>
 			<div v-if="deleteProcessing" class="delete-dialog-content">
@@ -202,21 +213,21 @@
 				</div>
 			</div>
 			<div v-else>
-				<p>Do you want to delete the chat "{{ sessionToDelete.display_name }}" ?</p>
+				<p>Do you want to delete the chat "{{ conversationToDelete.display_name }}" ?</p>
 			</div>
 			<template #footer>
 				<Button
 					class="sidebar-dialog__button"
 					label="Cancel"
 					text
+					autofocus
 					:disabled="deleteProcessing"
-					@click="sessionToDelete = null"
+					@click="conversationToDelete = null"
 				/>
 				<Button
 					class="sidebar-dialog__button"
 					label="Delete"
 					severity="danger"
-					autofocus
 					:disabled="deleteProcessing"
 					@click="handleDeleteSession"
 				/>
@@ -286,9 +297,10 @@ export default {
 
 	data() {
 		return {
-			sessionToRename: null as Session | null,
-			newSessionName: '' as string,
-			sessionToDelete: null as Session | null,
+			conversationToUpdate: null as Session | null,
+			newConversationName: '' as string,
+			newConversationMetadata: '' as string,
+			conversationToDelete: null as Session | null,
 			deleteProcessing: false,
 			isMobile: window.screen.width < 950,
 			createProcessing: false,
@@ -321,14 +333,26 @@ export default {
 	},
 
 	methods: {
-		openRenameModal(session: Session) {
-			this.sessionToRename = session;
-			this.newSessionName = session.display_name;
+		openUpdateModal(session: Session) {
+			this.conversationToUpdate = session;
+			this.newConversationName = session.display_name;
+			if (typeof session.metadata === 'string') {
+				this.newConversationMetadata = session.metadata;
+			} else if (session.metadata) {
+				try {
+					this.newConversationMetadata = JSON.stringify(session.metadata, null, 2);
+				} catch {
+					this.newConversationMetadata = '';
+				}
+			} else {
+				this.newConversationMetadata = '';
+			}
 		},
 
-		closeRenameModal() {
-			this.sessionToRename = null;
-			this.newSessionName = '';
+		closeUpdateModal() {
+			this.conversationToUpdate = null;
+			this.newConversationName = '';
+			this.newConversationMetadata = '';
 		},
 
 		handleSessionSelected(session: Session) {
@@ -368,16 +392,31 @@ export default {
 			}
 		},
 
-		handleRenameSession() {
-			this.$appStore.renameSession(this.sessionToRename!, this.newSessionName);
-			this.sessionToRename = null;
+		handleUpdateConversation() {
+			let metadataJson = this.newConversationMetadata;
+			if (metadataJson.trim() !== '') {
+				try {
+					metadataJson = JSON.parse(metadataJson);
+				} catch (e) {
+					this.$appStore.addToast({
+						severity: 'error',
+						summary: 'Invalid Metadata',
+						detail: 'Metadata must be valid JSON.',
+						life: 4000,
+					});
+					return;
+				}
+			}
+			this.$appStore.updateConversation(this.conversationToUpdate!, this.newConversationName, metadataJson);
+			this.conversationToUpdate = null;
+			this.newConversationMetadata = '';
 		},
 
 		async handleDeleteSession() {
 			this.deleteProcessing = true;
 			try {
-				await this.$appStore.deleteSession(this.sessionToDelete!);
-				this.sessionToDelete = null;
+				await this.$appStore.deleteSession(this.conversationToDelete!);
+				this.conversationToDelete = null;
 			} catch (error) {
 				this.$appStore.addToast({
 					severity: 'error',
@@ -389,18 +428,18 @@ export default {
 			}
 		},
 
-		renameSessionInputKeydown(event: KeyboardEvent) {
+		updateConversationInputKeydown(event: KeyboardEvent) {
 			if (event.key === 'Enter') {
-				this.handleRenameSession();
+				this.handleUpdateConversation();
 			}
 			if (event.key === 'Escape') {
-				this.closeRenameModal();
+				this.closeUpdateModal();
 			}
 		},
 
 		deleteSessionKeydown(event: KeyboardEvent) {
 			if (event.key === 'Escape') {
-				this.sessionToDelete = null;
+				this.conversationToDelete = null;
 			}
 		},
 

@@ -84,8 +84,9 @@ export interface Session {
 	messages: Array<Message>;
 }
 
-export interface ChatSessionProperties {
+export interface ConversationProperties {
 	name: string;
+	metadata?: any;
 }
 
 export interface LongRunningOperation {

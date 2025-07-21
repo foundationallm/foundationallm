@@ -6,7 +6,7 @@ import type {
 	UserProfile,
 	CoreConfiguration,
 	OneDriveWorkSchool,
-	ChatSessionProperties,
+	ConversationProperties,
 	CompletionPrompt,
 	Agent,
 	CompletionRequest,
@@ -189,7 +189,7 @@ export default {
 	 * Adds a new chat session.
 	 * @returns {Promise<Session>} A promise that resolves to the created session.
 	 */
-	async addSession(properties: ChatSessionProperties): Promise<Session> {
+	async addSession(properties: ConversationProperties): Promise<Session> {
 		return await this.fetch<Session>(`/instances/${this.instanceId}/sessions`, {
 			method: 'POST',
 			body: properties,
@@ -198,13 +198,14 @@ export default {
 
 	/**
 	 * Renames a session.
-	 * @param sessionId The ID of the session to rename.
-	 * @param newChatSessionName The new name for the session.
+	 * @param conversationId The identifier of the conversation to update.
+	 * @param newConversationName The new name for the session.
 	 * @returns The renamed session.
 	 */
-	async renameSession(sessionId: string, newChatSessionName: string): Promise<Session> {
-		const properties: ChatSessionProperties = { name: newChatSessionName };
-		return await this.fetch<Session>(`/instances/${this.instanceId}/sessions/${sessionId}/rename`, {
+	async updateConversation(conversationId: string, newConversationName: string, newMetadata: any): Promise<Session> {
+		const metadataValue = (typeof newMetadata === 'string' && newMetadata.trim() === '') ? null : newMetadata;
+		const properties: ConversationProperties = { name: newConversationName, metadata: metadataValue };
+		return await this.fetch<Session>(`/instances/${this.instanceId}/sessions/${conversationId}/update`, {
 			method: 'POST',
 			body: properties,
 		});

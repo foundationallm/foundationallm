@@ -4,7 +4,7 @@ import { useAppConfigStore } from './appConfigStore';
 import { useAuthStore } from './authStore';
 import type {
 	Session,
-	ChatSessionProperties,
+	ConversationProperties,
 	Message,
 	UserProfile,
 	Agent,
@@ -146,7 +146,7 @@ export const useAppStore = defineStore('app', {
 			}
 		},
 
-		getDefaultChatSessionProperties(): ChatSessionProperties {
+		getDefaultChatSessionProperties(): ConversationProperties {
 			const now = new Date();
 			// Using the 'sv-SE' locale since it uses the 'YYY-MM-DD' format.
 			const formattedNow = now
@@ -205,7 +205,7 @@ export const useAppStore = defineStore('app', {
 			});
 		},
 
-		async addSession(properties: ChatSessionProperties) {
+		async addSession(properties: ConversationProperties) {
 			if (!properties) {
 				properties = this.getDefaultChatSessionProperties();
 			}
@@ -223,30 +223,34 @@ export const useAppStore = defineStore('app', {
 			return newSession;
 		},
 
-		async renameSession(sessionToRename: Session, newSessionName: string) {
+		async updateConversation(sessionToRename: Session, newConversationName: string, newMetadata: any) {
 			const existingSession = this.sessions.find(
 				(session: Session) => session.sessionId === sessionToRename.sessionId,
 			);
 
 			// Preemptively rename the session for responsiveness, and revert the name if the request fails.
 			const previousName = existingSession.display_name;
-			existingSession.display_name = newSessionName;
+			const previousMetadata = existingSession.metadata;
+			existingSession.display_name = newConversationName;
+			existingSession.metadata = newMetadata;
 
 			try {
-				await api.renameSession(sessionToRename.sessionId, newSessionName);
+				await api.updateConversation(sessionToRename.sessionId, newConversationName, newMetadata);
 				const existingRenamedSession = this.renamedSessions.find(
 					(session: Session) => session.sessionId === sessionToRename.sessionId,
 				);
 				if (existingRenamedSession) {
-					existingRenamedSession.display_name = newSessionName;
+					existingRenamedSession.display_name = newConversationName;
+					existingRenamedSession.metadata = newMetadata;
 				} else {
 					this.renamedSessions = [
-						{ ...sessionToRename, display_name: newSessionName },
+						{ ...sessionToRename, display_name: newConversationName, metadata: newMetadata },
 						...this.renamedSessions,
 					];
 				}
 			} catch (error) {
 				existingSession.display_name = previousName;
+				existingSession.metadata = previousMetadata;
 			}
 		},
 
@@ -466,7 +470,7 @@ export const useAppStore = defineStore('app', {
 			}
 
 			const initialSession = this.currentSession?.sessionId;
-			
+
 			try {
 				const message = await api.sendMessage(
 					this.currentSession!.sessionId,
@@ -517,12 +521,12 @@ export const useAppStore = defineStore('app', {
 			} catch (error: any) {
 				// Remove the temporary messages we added
 				this.currentMessages = this.currentMessages.slice(0, -2);
-				
+
 				// Check if the error is a rate limit error
 				if (error.data?.quota_exceeded) {
 					const rateLimitError = error.data as RateLimitError;
 					const waitTime = rateLimitError.time_until_retry_seconds;
-					
+
 					// Format the wait time in a more natural way
 					let timeString;
 					if (waitTime < 60) {
@@ -536,7 +540,7 @@ export const useAppStore = defineStore('app', {
 							timeString = `${minutes} minute${minutes !== 1 ? 's' : ''} and ${seconds} second${seconds !== 1 ? 's' : ''}`;
 						}
 					}
-					
+
 					this.addToast({
 						severity: 'warn',
 						summary: 'Rate Limited',
@@ -546,7 +550,7 @@ export const useAppStore = defineStore('app', {
 				} else {
 					// Handle different types of errors
 					let errorMessage = 'Failed to send message. Please try again.';
-					
+
 					if (error.message?.includes('Failed to fetch')) {
 						errorMessage = 'Unable to connect to the server. Please check your internet connection and try again.';
 					} else if (error.message?.includes('NetworkError')) {
@@ -560,7 +564,7 @@ export const useAppStore = defineStore('app', {
 							.replace(/<no response>/g, '') // Remove "no response" text
 							.trim();
 					}
-					
+
 					this.addToast({
 						severity: 'error',
 						summary: 'Error',
@@ -568,7 +572,7 @@ export const useAppStore = defineStore('app', {
 						life: 5000,
 					});
 				}
-				
+
 				return false;
 			}
 		},
@@ -616,9 +620,9 @@ export const useAppStore = defineStore('app', {
 					this.stopPolling(sessionId);
 					return;
 				}
-				
+
 				// Wait for the polling interval before the next call
-        		this.pollingInterval = setTimeout(poll, this.getPollingRateMS());
+				this.pollingInterval = setTimeout(poll, this.getPollingRateMS());
 			};
 
 			poll();
