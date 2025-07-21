@@ -86,7 +86,7 @@ export interface Session {
 
 export interface ConversationProperties {
 	name: string;
-	metadata?: any;
+	metadata: string;
 }
 
 export interface LongRunningOperation {

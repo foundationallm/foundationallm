@@ -223,7 +223,7 @@ export const useAppStore = defineStore('app', {
 			return newSession;
 		},
 
-		async updateConversation(sessionToRename: Session, newConversationName: string, newMetadata: any) {
+		async updateConversation(sessionToRename: Session, newConversationName: string, newMetadata: string) {
 			const existingSession = this.sessions.find(
 				(session: Session) => session.sessionId === sessionToRename.sessionId,
 			);
