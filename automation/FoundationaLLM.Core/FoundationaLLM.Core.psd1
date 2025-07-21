@@ -12,7 +12,7 @@
 RootModule = 'FoundationaLLM.Core.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.12'
+ModuleVersion = '0.0.14'
 
 # Supported PSEditions
 CompatiblePSEditions = @(
@@ -74,7 +74,11 @@ PowerShellVersion = '7.0'
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = @(
     'Deploy-FoundationaLLMPackage',
-    'Import-Dotenv'
+    'Start-DataPipeline',
+    'Import-Dotenv',
+    'Get-Conversations',
+    'New-Conversation',
+    'New-Completion'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.

@@ -35,3 +35,15 @@ function Merge-DataPipeline {
         -RelativeUri "providers/FoundationaLLM.DataPipeline/dataPipelines/$($DataPipeline['name'])" `
         -Body $DataPipeline
 }
+
+function Start-DataPipeline {
+    param (
+        [string]$DataPipelineName,
+        [hashtable]$TriggerParameters
+    )
+
+    return Invoke-ManagementAPI `
+        -Method POST `
+        -RelativeUri "providers/FoundationaLLM.DataPipeline/dataPipelines/$($DataPipelineName)/trigger" `
+        -Body $TriggerParameters
+}
