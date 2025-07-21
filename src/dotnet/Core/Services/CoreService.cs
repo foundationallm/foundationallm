@@ -154,13 +154,13 @@ public partial class CoreService(
         ArgumentNullException.ThrowIfNull(conversationId);
 
         if (string.IsNullOrWhiteSpace(conversationProperties.Name)
-            && conversationProperties.Metadata is null)
+            && string.IsNullOrWhiteSpace(conversationProperties.Metadata))
             throw new CoreServiceException("The conversation name and metadata fields cannot be all empty.");
 
         var propertyValues = new Dictionary<string, object?>();
         if (!string.IsNullOrWhiteSpace(conversationProperties.Name))
             propertyValues.Add("/displayName", conversationProperties.Name);
-        if (conversationProperties.Metadata is not null)
+        if (!string.IsNullOrWhiteSpace(conversationProperties.Metadata))
             propertyValues.Add("/metadata", conversationProperties.Metadata);
 
         var result = await _conversationResourceProvider.UpdateResourcePropertiesAsync<Conversation, ResourceProviderUpsertResult<Conversation>>(

@@ -17,6 +17,6 @@ namespace FoundationaLLM.Common.Models.Conversation
         /// Gets or sets the optional metadata associated with the conversation.
         /// </summary>
         [JsonPropertyName("metadata")]
-        public Dictionary<string, object>? Metadata { get; set; }
+        public string? Metadata { get; set; }
     }
 }
