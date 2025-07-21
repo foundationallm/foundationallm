@@ -50,6 +50,12 @@ function Test-ManagementAPIAccessToken {
     }
 }
 
+function Test-CoreAPIAccessToken {
+    if (Test-JWTExpired $global:CoreAPIAccessToken) {
+        $global:CoreAPIAccessToken = Get-CoreAPIAccessToken
+    }
+}
+
 function Get-CoreAPIAccessToken {
     $accessToken = az account get-access-token `
         --scope "api://FoundationaLLM-Core/Data.Read" `
@@ -149,10 +155,54 @@ function Invoke-ManagementAPI {
             "Content-Type"  = "application/json"
         }
     } else {
-        $Headers["Authorization"] = "Bearer $accessToken"
+        $Headers["Authorization"] = "Bearer $($global:ManagementAPIAccessToken)"
     }
 
     $baseUri = Get-ManagementAPIBaseUri
+
+    $uri = "$($baseUri.AbsoluteUri)/$($RelativeUri)"
+
+    Write-Host "$($Method) $($uri)" -ForegroundColor Green
+    if ($Form) {
+
+        $Headers["Content-Type"] = "multipart/form-data;boundary=----WebKitFormBoundaryABCDEFGHIJKLMONOPQRSTUVWXYZ"
+        return Invoke-RestMethod `
+            -Method $Method `
+            -Uri  $uri `
+            -Form $Form `
+            -Headers $Headers
+    }
+
+    return Invoke-RestMethod `
+        -Method $Method `
+        -Uri  $uri `
+        -Body ($Body | ConvertTo-Json -Depth 20) `
+        -Headers $Headers
+}
+
+function Invoke-CoreAPI {
+    param (
+        [string]$Method,
+        [string]$RelativeUri,
+        [hashtable]$Body = $null,
+        [hashtable]$Headers = $null,
+        [hashtable]$Form = $null
+    )
+
+    Write-Host "Calling Core API:" -ForegroundColor Green
+
+    Test-CoreAPIAccessToken
+
+    if ($Headers -eq $null) {
+        $Headers = @{
+            "Authorization" = "Bearer $($global:CoreAPIAccessToken)"
+            "Content-Type"  = "application/json"
+        }
+    } else {
+        $Headers["Authorization"] = "Bearer $($global:CoreAPIAccessToken)"
+    }
+
+    $baseUri = Get-CoreAPIBaseUri
 
     $uri = "$($baseUri.AbsoluteUri)/$($RelativeUri)"
 
