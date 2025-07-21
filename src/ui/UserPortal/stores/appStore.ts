@@ -4,7 +4,7 @@ import { useAppConfigStore } from './appConfigStore';
 import { useAuthStore } from './authStore';
 import type {
 	Session,
-	ChatSessionProperties,
+	ConversationProperties,
 	Message,
 	UserProfile,
 	Agent,
@@ -146,7 +146,7 @@ export const useAppStore = defineStore('app', {
 			}
 		},
 
-		getDefaultChatSessionProperties(): ChatSessionProperties {
+		getDefaultChatSessionProperties(): ConversationProperties {
 			const now = new Date();
 			// Using the 'sv-SE' locale since it uses the 'YYY-MM-DD' format.
 			const formattedNow = now
@@ -205,7 +205,7 @@ export const useAppStore = defineStore('app', {
 			});
 		},
 
-		async addSession(properties: ChatSessionProperties) {
+		async addSession(properties: ConversationProperties) {
 			if (!properties) {
 				properties = this.getDefaultChatSessionProperties();
 			}
@@ -223,30 +223,34 @@ export const useAppStore = defineStore('app', {
 			return newSession;
 		},
 
-		async updateConversation(sessionToRename: Session, newSessionName: string) {
+		async updateConversation(sessionToRename: Session, newConversationName: string, newMetadata: any) {
 			const existingSession = this.sessions.find(
 				(session: Session) => session.sessionId === sessionToRename.sessionId,
 			);
 
 			// Preemptively rename the session for responsiveness, and revert the name if the request fails.
 			const previousName = existingSession.display_name;
-			existingSession.display_name = newSessionName;
+			const previousMetadata = existingSession.metadata;
+			existingSession.display_name = newConversationName;
+			existingSession.metadata = newMetadata;
 
 			try {
-				await api.updateConversation(sessionToRename.sessionId, newSessionName);
+				await api.updateConversation(sessionToRename.sessionId, newConversationName, newMetadata);
 				const existingRenamedSession = this.renamedSessions.find(
 					(session: Session) => session.sessionId === sessionToRename.sessionId,
 				);
 				if (existingRenamedSession) {
-					existingRenamedSession.display_name = newSessionName;
+					existingRenamedSession.display_name = newConversationName;
+					existingRenamedSession.metadata = newMetadata;
 				} else {
 					this.renamedSessions = [
-						{ ...sessionToRename, display_name: newSessionName },
+						{ ...sessionToRename, display_name: newConversationName, metadata: newMetadata },
 						...this.renamedSessions,
 					];
 				}
 			} catch (error) {
 				existingSession.display_name = previousName;
+				existingSession.metadata = previousMetadata;
 			}
 		},
 
@@ -618,7 +622,7 @@ export const useAppStore = defineStore('app', {
 				}
 
 				// Wait for the polling interval before the next call
-        		this.pollingInterval = setTimeout(poll, this.getPollingRateMS());
+				this.pollingInterval = setTimeout(poll, this.getPollingRateMS());
 			};
 
 			poll();
