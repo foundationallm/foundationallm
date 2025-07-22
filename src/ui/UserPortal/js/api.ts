@@ -279,13 +279,14 @@ export default {
 	 * @param agent The agent object.
 	 * @returns A promise that resolves to a MessageResponse or rejects with a RateLimitError.
 	 */
-	async sendMessage(sessionId: string, text: string, agent: Agent, attachments: string[] = []): Promise<MessageResponse> {
+	async sendMessage(sessionId: string, text: string, agent: Agent, attachments: string[] = [], metadata?: { [key: string]: any } = null): Promise<MessageResponse> {
 		const orchestrationRequest: CompletionRequest = {
 			session_id: sessionId,
 			user_prompt: text,
 			agent_name: agent.name,
 			settings: undefined,
 			attachments,
+			metadata
 		};
 
 		return (await this.fetch(`/instances/${this.instanceId}/async-completions`, {

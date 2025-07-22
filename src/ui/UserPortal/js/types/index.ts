@@ -136,6 +136,7 @@ export interface CompletionRequest {
 	agent_name?: string;
 	settings?: OrchestrationSettings;
 	attachments?: string[];
+	metadata?: { [key: string]: any };
 }
 
 export interface Attachment {

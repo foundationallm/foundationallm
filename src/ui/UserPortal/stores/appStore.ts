@@ -471,12 +471,25 @@ export const useAppStore = defineStore('app', {
 
 			const initialSession = this.currentSession?.sessionId;
 
+			let metadataObj = null;
+			if (this.currentSession?.metadata) {
+				try {
+					// Attempt to parse the metadata as JSON
+					metadataObj = typeof this.currentSession.metadata === 'string'
+						? JSON.parse(this.currentSession.metadata)
+						: this.currentSession.metadata;
+				} catch (e) {
+					console.error('Invalid metadata format:', e);
+				}
+			}
+
 			try {
 				const message = await api.sendMessage(
 					this.currentSession!.sessionId,
 					text,
 					agent,
 					relevantAttachments.map((attachment) => String(attachment.id)),
+					metadataObj
 				);
 
 				if (message.status === 'Completed') {
