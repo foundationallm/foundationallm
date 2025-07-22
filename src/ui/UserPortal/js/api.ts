@@ -202,9 +202,8 @@ export default {
 	 * @param newConversationName The new name for the session.
 	 * @returns The renamed session.
 	 */
-	async updateConversation(conversationId: string, newConversationName: string, newMetadata: any): Promise<Session> {
-		const metadataValue = (typeof newMetadata === 'string' && newMetadata.trim() === '') ? null : newMetadata;
-		const properties: ConversationProperties = { name: newConversationName, metadata: metadataValue };
+	async updateConversation(conversationId: string, newConversationName: string, newMetadata: string): Promise<Session> {
+		const properties: ConversationProperties = { name: newConversationName, metadata: newMetadata };
 		return await this.fetch<Session>(`/instances/${this.instanceId}/sessions/${conversationId}/update`, {
 			method: 'POST',
 			body: properties,

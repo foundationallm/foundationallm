@@ -299,7 +299,7 @@ export default {
 		return {
 			conversationToUpdate: null as Session | null,
 			newConversationName: '' as string,
-			newConversationMetadata: '' as string,
+			newConversationMetadata: null as any | null,
 			conversationToDelete: null as Session | null,
 			deleteProcessing: false,
 			isMobile: window.screen.width < 950,
@@ -336,23 +336,13 @@ export default {
 		openUpdateModal(session: Session) {
 			this.conversationToUpdate = session;
 			this.newConversationName = session.display_name;
-			if (typeof session.metadata === 'string') {
-				this.newConversationMetadata = session.metadata;
-			} else if (session.metadata) {
-				try {
-					this.newConversationMetadata = JSON.stringify(session.metadata, null, 2);
-				} catch {
-					this.newConversationMetadata = '';
-				}
-			} else {
-				this.newConversationMetadata = '';
-			}
+			this.newConversationMetadata = session.metadata
 		},
 
 		closeUpdateModal() {
 			this.conversationToUpdate = null;
 			this.newConversationName = '';
-			this.newConversationMetadata = '';
+			this.newConversationMetadata = null;
 		},
 
 		handleSessionSelected(session: Session) {
@@ -394,7 +384,7 @@ export default {
 
 		handleUpdateConversation() {
 			let metadataJson = this.newConversationMetadata;
-			if (metadataJson.trim() !== '') {
+			if (metadataJson !== null && typeof metadataJson === 'string' && metadataJson.trim() !== '') {
 				try {
 					metadataJson = JSON.parse(metadataJson);
 				} catch (e) {
@@ -407,7 +397,7 @@ export default {
 					return;
 				}
 			}
-			this.$appStore.updateConversation(this.conversationToUpdate!, this.newConversationName, metadataJson);
+			this.$appStore.updateConversation(this.conversationToUpdate!, this.newConversationName, this.newConversationMetadata);
 			this.conversationToUpdate = null;
 			this.newConversationMetadata = '';
 		},
