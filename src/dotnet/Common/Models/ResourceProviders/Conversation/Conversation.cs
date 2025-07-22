@@ -36,7 +36,7 @@ public class Conversation : ResourceBase
     /// <summary>
     /// Gets or sets the metadata associated with the conversation.
     /// </summary>
-    public Dictionary<string, object>? Metadata { get; set; }
+    public string? Metadata { get; set; }
 
     /// <summary>
     /// The list of messages associated with the session.
