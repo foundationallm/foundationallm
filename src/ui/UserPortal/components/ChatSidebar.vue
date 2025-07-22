@@ -336,8 +336,7 @@ export default {
 		openUpdateModal(session: Session) {
 			this.conversationToUpdate = session;
 			this.newConversationName = session.display_name;
-			const parsed = JSON.parse(metadata);
-			this.newConversationMetadata = JSON.stringify(parsed, null, 2);
+			this.newConversationMetadata = session.metadata
 		},
 
 		closeUpdateModal() {
@@ -385,7 +384,7 @@ export default {
 
 		handleUpdateConversation() {
 			let metadataJson = this.newConversationMetadata;
-			if (metadataJson.trim() !== '') {
+			if (metadataJson !== null && typeof metadataJson === 'string' && metadataJson.trim() !== '') {
 				try {
 					metadataJson = JSON.parse(metadataJson);
 				} catch (e) {
@@ -398,7 +397,7 @@ export default {
 					return;
 				}
 			}
-			this.$appStore.updateConversation(this.conversationToUpdate!, this.newConversationName, metadataJson);
+			this.$appStore.updateConversation(this.conversationToUpdate!, this.newConversationName, this.newConversationMetadata);
 			this.conversationToUpdate = null;
 			this.newConversationMetadata = '';
 		},
