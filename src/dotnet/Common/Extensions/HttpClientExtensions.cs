@@ -20,5 +20,19 @@ namespace FoundationaLLM.Common.Extensions
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
         }
+
+        /// <summary>
+        /// Sets the agent access token for the <see cref="HttpClient"/> if the
+        /// passed in token is not null or empty.
+        /// </summary>
+        /// <param name="httpClient">The <see cref="HttpClient"/> to extend.</param>
+        /// <param name="token">An agent access token.</param>
+        public static void SetAgentAccessToken(this HttpClient httpClient, string token)
+        {
+            if (!string.IsNullOrEmpty(token))
+            {
+                httpClient.DefaultRequestHeaders.Add("X-AGENT-ACCESS-TOKEN", token);
+            }
+        }
     }
 }

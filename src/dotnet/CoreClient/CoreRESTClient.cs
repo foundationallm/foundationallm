@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Models.Configuration.API;
 using FoundationaLLM.Common.Settings;
 using Microsoft.Extensions.DependencyInjection;
+using System.ClientModel;
 
 namespace FoundationaLLM.Client.Core
 {
@@ -13,7 +14,8 @@ namespace FoundationaLLM.Client.Core
     {
         private readonly string _coreUri;
         private readonly string _instanceId;
-        private readonly TokenCredential _credential;
+        private readonly TokenCredential _tokenCredential;
+        private readonly ApiKeyCredential _apiKeyCredential;
         private readonly APIClientSettings _options;
 
         /// <summary>
@@ -24,7 +26,8 @@ namespace FoundationaLLM.Client.Core
             _coreUri = null!;
             _instanceId = null!;
             _options = null!;
-            _credential = null!;
+            _tokenCredential = null!;
+            _apiKeyCredential = null!;
         }
 
         /// <summary>
@@ -64,17 +67,57 @@ namespace FoundationaLLM.Client.Core
             APIClientSettings options)
         {
             _coreUri = coreUri ?? throw new ArgumentNullException(nameof(coreUri));
-            _credential = credential ?? throw new ArgumentNullException(nameof(credential));
+            _tokenCredential = credential ?? throw new ArgumentNullException(nameof(credential));
+            _apiKeyCredential = null!;
             _instanceId = instanceId ?? throw new ArgumentNullException(nameof(instanceId));
             _options = options ?? throw new ArgumentNullException(nameof(options));
 
-            var services = new ServiceCollection();
-            ConfigureHttpClient(services, coreUri, options);
+            InitializeClients();
+        }
 
-            var serviceProvider = services.BuildServiceProvider();
-            var httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoreRESTClient"/> class and
+        /// configures <see cref="IHttpClientFactory"/> with a named instance for the
+        /// CoreAPI (<see cref="HttpClientNames.CoreAPI"/>) based on the passed in URL.
+        /// </summary>
+        /// <param name="coreUri">The base URI of the Core API.</param>
+        /// <param name="credential">An <see cref="ApiKeyCredential"/> containing a valid
+        /// agent access token.</param>
+        /// <param name="instanceId">The unique (GUID) ID for the FoundationaLLM deployment.
+        /// Locate this value in the FoundationaLLM Management Portal or in Azure App Config
+        /// (FoundationaLLM:Instance:Id key)</param>
+        public CoreRESTClient(
+            string coreUri,
+            ApiKeyCredential credential,
+            string instanceId)
+            : this(coreUri, credential, instanceId, new APIClientSettings()) { }
 
-            InitializeClients(httpClientFactory);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoreRESTClient"/> class and
+        /// configures <see cref="IHttpClientFactory"/> with a named instance for the
+        /// CoreAPI (<see cref="HttpClientNames.CoreAPI"/>) based on the passed in URL
+        /// and optional client settings.
+        /// </summary>
+        /// <param name="coreUri">The base URI of the Core API.</param>
+        /// <param name="credential">An <see cref="ApiKeyCredential"/> containing a valid
+        /// agent access token.</param>
+        /// <param name="instanceId">The unique (GUID) ID for the FoundationaLLM deployment.
+        /// Locate this value in the FoundationaLLM Management Portal or in Azure App Config
+        /// (FoundationaLLM:Instance:Id key)</param>
+        /// <param name="options">Additional options to configure the HTTP Client.</param>
+        public CoreRESTClient(
+            string coreUri,
+            ApiKeyCredential credential,
+            string instanceId,
+            APIClientSettings options)
+        {
+            _coreUri = coreUri ?? throw new ArgumentNullException(nameof(coreUri));
+            _tokenCredential = null!;
+            _apiKeyCredential = credential ?? throw new ArgumentNullException(nameof(credential));
+            _instanceId = instanceId ?? throw new ArgumentNullException(nameof(instanceId));
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+
+            InitializeClients();
         }
 
         /// <inheritdoc/>
@@ -100,14 +143,36 @@ namespace FoundationaLLM.Client.Core
                 CommonHttpRetryStrategyOptions.GetCommonHttpRetryStrategyOptions();
             });
 
-        private void InitializeClients(IHttpClientFactory httpClientFactory)
+        private void InitializeClients()
         {
-            Sessions = new SessionRESTClient(httpClientFactory, _credential, _instanceId);
-            Attachments = new AttachmentRESTClient(httpClientFactory, _credential, _instanceId);
-            Branding = new BrandingRESTClient(httpClientFactory, _credential, _instanceId);
-            Completions = new CompletionRESTClient(httpClientFactory, _credential, _instanceId);
-            Status = new StatusRESTClient(httpClientFactory, _credential, _instanceId);
-            UserProfiles = new UserProfileRESTClient(httpClientFactory, _credential, _instanceId);
+            var services = new ServiceCollection();
+            ConfigureHttpClient(services, _coreUri, _options);
+
+            var serviceProvider = services.BuildServiceProvider();
+            var httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
+
+            if (_tokenCredential is not null)
+            {
+                Sessions = new SessionRESTClient(httpClientFactory, _tokenCredential, _instanceId);
+                Attachments = new AttachmentRESTClient(httpClientFactory, _tokenCredential, _instanceId);
+                Branding = new BrandingRESTClient(httpClientFactory, _tokenCredential, _instanceId);
+                Completions = new CompletionRESTClient(httpClientFactory, _tokenCredential, _instanceId);
+                Status = new StatusRESTClient(httpClientFactory, _tokenCredential, _instanceId);
+                UserProfiles = new UserProfileRESTClient(httpClientFactory, _tokenCredential, _instanceId);
+            }
+            else if (_apiKeyCredential is not null)
+            {
+                Sessions = new SessionRESTClient(httpClientFactory, _apiKeyCredential, _instanceId);
+                Attachments = new AttachmentRESTClient(httpClientFactory, _apiKeyCredential, _instanceId);
+                Branding = new BrandingRESTClient(httpClientFactory, _apiKeyCredential, _instanceId);
+                Completions = new CompletionRESTClient(httpClientFactory, _apiKeyCredential, _instanceId);
+                Status = new StatusRESTClient(httpClientFactory, _apiKeyCredential, _instanceId);
+                UserProfiles = new UserProfileRESTClient(httpClientFactory, _apiKeyCredential, _instanceId);
+            }
+            else
+            {
+                throw new InvalidOperationException("Either TokenCredential or ApiKeyCredential must be provided.");
+            }
         }
     }
 }
