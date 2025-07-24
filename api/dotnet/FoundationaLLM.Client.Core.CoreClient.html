@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Client_Core_CoreClient" data-uid="FoundationaLLM.Client.Core.CoreClient" class="text-break">
-Class CoreClient  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L12"><i class="bi bi-code-slash"></i></a>
+Class CoreClient  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -170,7 +170,7 @@ Class CoreClient  <a class="header-action link-secondary" title="View source" hr
 
   <h3 id="FoundationaLLM_Client_Core_CoreClient__ctor" data-uid="FoundationaLLM.Client.Core.CoreClient.#ctor">
   CoreClient()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Constructor for mocking. This does not initialize the clients.</p>
@@ -197,7 +197,7 @@ Class CoreClient  <a class="header-action link-secondary" title="View source" hr
 
   <h3 id="FoundationaLLM_Client_Core_CoreClient__ctor_System_String_Azure_Core_TokenCredential_System_String_" data-uid="FoundationaLLM.Client.Core.CoreClient.#ctor(System.String,Azure.Core.TokenCredential,System.String)">
   CoreClient(string, TokenCredential, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Client.Core.CoreClient.html">CoreClient</a> class with
@@ -240,7 +240,7 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
   <h3 id="FoundationaLLM_Client_Core_CoreClient__ctor_System_String_Azure_Core_TokenCredential_System_String_FoundationaLLM_Common_Models_Configuration_API_APIClientSettings_" data-uid="FoundationaLLM.Client.Core.CoreClient.#ctor(System.String,Azure.Core.TokenCredential,System.String,FoundationaLLM.Common.Models.Configuration.API.APIClientSettings)">
   CoreClient(string, TokenCredential, string, APIClientSettings)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L50"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Client.Core.CoreClient.html">CoreClient</a> class with
@@ -282,6 +282,95 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
 
 
+  <a id="FoundationaLLM_Client_Core_CoreClient__ctor_" data-uid="FoundationaLLM.Client.Core.CoreClient.#ctor*"></a>
+
+  <h3 id="FoundationaLLM_Client_Core_CoreClient__ctor_System_String_System_ClientModel_ApiKeyCredential_System_String_" data-uid="FoundationaLLM.Client.Core.CoreClient.#ctor(System.String,System.ClientModel.ApiKeyCredential,System.String)">
+  CoreClient(string, ApiKeyCredential, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Client.Core.CoreClient.html">CoreClient</a> class with
+the specified Core API URI and API key credential.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoreClient(string coreUri, ApiKeyCredential credential, string instanceId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>coreUri</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The base URI of the Core API.</p>
+</dd>
+    <dt><code>credential</code> <span class="xref">ApiKeyCredential</span></dt>
+    <dd><p>An <span class="xref">System.ClientModel.ApiKeyCredential</span> containing a valid
+agent access token.</p>
+</dd>
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The unique (GUID) ID for the FoundationaLLM deployment.
+Locate this value in the FoundationaLLM Management Portal or in Azure App Config
+(FoundationaLLM:Instance:Id key)</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Client_Core_CoreClient__ctor_" data-uid="FoundationaLLM.Client.Core.CoreClient.#ctor*"></a>
+
+  <h3 id="FoundationaLLM_Client_Core_CoreClient__ctor_System_String_System_ClientModel_ApiKeyCredential_System_String_FoundationaLLM_Common_Models_Configuration_API_APIClientSettings_" data-uid="FoundationaLLM.Client.Core.CoreClient.#ctor(System.String,System.ClientModel.ApiKeyCredential,System.String,FoundationaLLM.Common.Models.Configuration.API.APIClientSettings)">
+  CoreClient(string, ApiKeyCredential, string, APIClientSettings)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Client.Core.CoreClient.html">CoreClient</a> class with
+the specified Core API URI, API key credential, and optional client settings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoreClient(string coreUri, ApiKeyCredential credential, string instanceId, APIClientSettings options)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>coreUri</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The base URI of the Core API.</p>
+</dd>
+    <dt><code>credential</code> <span class="xref">ApiKeyCredential</span></dt>
+    <dd><p>An <span class="xref">System.ClientModel.ApiKeyCredential</span> containing a valid
+agent access token.</p>
+</dd>
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The unique (GUID) ID for the FoundationaLLM deployment.
+Locate this value in the FoundationaLLM Management Portal or in Azure App Config
+(FoundationaLLM:Instance:Id key)</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="FoundationaLLM.Common.Models.Configuration.API.APIClientSettings.html">APIClientSettings</a></dt>
+    <dd><p>Additional options to configure the HTTP Client.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
@@ -290,7 +379,7 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
   <h3 id="FoundationaLLM_Client_Core_CoreClient_AttachFileAndAskQuestionAsync_System_IO_Stream_System_String_System_String_System_String_System_String_System_Boolean_System_String_FoundationaLLM_Common_Models_Conversation_ConversationProperties_" data-uid="FoundationaLLM.Client.Core.CoreClient.AttachFileAndAskQuestionAsync(System.IO.Stream,System.String,System.String,System.String,System.String,System.Boolean,System.String,FoundationaLLM.Common.Models.Conversation.ConversationProperties)">
   AttachFileAndAskQuestionAsync(Stream, string, string, string, string, bool, string?, ConversationProperties?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L145"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L180"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Attaches a file to the completion request and sends a question to the agent using the
@@ -358,7 +447,7 @@ is created first.</p>
 
   <h3 id="FoundationaLLM_Client_Core_CoreClient_CreateChatSessionAsync_FoundationaLLM_Common_Models_Conversation_ConversationProperties_" data-uid="FoundationaLLM.Client.Core.CoreClient.CreateChatSessionAsync(FoundationaLLM.Common.Models.Conversation.ConversationProperties)">
   CreateChatSessionAsync(ConversationProperties)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L92"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new chat session with the specified name.</p>
@@ -396,7 +485,7 @@ is created first.</p>
 
   <h3 id="FoundationaLLM_Client_Core_CoreClient_DeleteSessionAsync_System_String_" data-uid="FoundationaLLM.Client.Core.CoreClient.DeleteSessionAsync(System.String)">
   DeleteSessionAsync(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L206"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L241"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes a chat session.</p>
@@ -434,7 +523,7 @@ is created first.</p>
 
   <h3 id="FoundationaLLM_Client_Core_CoreClient_GetAgentsAsync" data-uid="FoundationaLLM.Client.Core.CoreClient.GetAgentsAsync">
   GetAgentsAsync()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L199"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L234"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves agents available to the user for orchestration and session-based requests.</p>
@@ -467,7 +556,7 @@ is created first.</p>
 
   <h3 id="FoundationaLLM_Client_Core_CoreClient_GetChatSessionMessagesAsync_System_String_" data-uid="FoundationaLLM.Client.Core.CoreClient.GetChatSessionMessagesAsync(System.String)">
   GetChatSessionMessagesAsync(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L196"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L231"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the chat messages related to an existing session.</p>
@@ -504,7 +593,7 @@ is created first.</p>
 
   <h3 id="FoundationaLLM_Client_Core_CoreClient_GetCompletionAsync_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_" data-uid="FoundationaLLM.Client.Core.CoreClient.GetCompletionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)">
   GetCompletionAsync(CompletionRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L132"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L167"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Runs a single completion with an agent using the Core API without a chat session
@@ -547,7 +636,7 @@ and UserPrompt at a minimum.</p>
 
   <h3 id="FoundationaLLM_Client_Core_CoreClient_GetCompletionAsync_System_String_System_String_" data-uid="FoundationaLLM.Client.Core.CoreClient.GetCompletionAsync(System.String,System.String)">
   GetCompletionAsync(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L154"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Runs a single completion with an agent using the Core API without a chat session
@@ -592,7 +681,7 @@ completion request.</p>
 
   <h3 id="FoundationaLLM_Client_Core_CoreClient_GetCompletionWithSessionAsync_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_" data-uid="FoundationaLLM.Client.Core.CoreClient.GetCompletionWithSessionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)">
   GetCompletionWithSessionAsync(CompletionRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L140"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Runs a single completion request with an agent using the Core API and a chat session.
@@ -634,7 +723,7 @@ SessionID, AgentName, and UserPrompt at a minimum.</p>
 
   <h3 id="FoundationaLLM_Client_Core_CoreClient_GetCompletionWithSessionAsync_System_String_FoundationaLLM_Common_Models_Conversation_ConversationProperties_System_String_System_String_" data-uid="FoundationaLLM.Client.Core.CoreClient.GetCompletionWithSessionAsync(System.String,FoundationaLLM.Common.Models.Conversation.ConversationProperties,System.String,System.String)">
   GetCompletionWithSessionAsync(string?, ConversationProperties?, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L113"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Runs a single completion request with an agent using the Core API and a chat session.
@@ -685,7 +774,7 @@ completion request.</p>
 
   <h3 id="FoundationaLLM_Client_Core_CoreClient_RateMessageAsync_System_String_System_String_FoundationaLLM_Common_Models_Conversation_MessageRatingRequest_" data-uid="FoundationaLLM.Client.Core.CoreClient.RateMessageAsync(System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)">
   RateMessageAsync(string, string, MessageRatingRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L101"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the rating for a message.</p>
@@ -729,7 +818,7 @@ completion request.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L12" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L13" class="edit-link">Edit this page</a>
         </div>
 
 

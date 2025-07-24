@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Client_Core_CoreRESTClient" data-uid="FoundationaLLM.Client.Core.CoreRESTClient" class="text-break">
-Class CoreRESTClient  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L12"><i class="bi bi-code-slash"></i></a>
+Class CoreRESTClient  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -170,7 +170,7 @@ Class CoreRESTClient  <a class="header-action link-secondary" title="View source
 
   <h3 id="FoundationaLLM_Client_Core_CoreRESTClient__ctor" data-uid="FoundationaLLM.Client.Core.CoreRESTClient.#ctor">
   CoreRESTClient()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Constructor for mocking. This does not initialize the clients.</p>
@@ -197,7 +197,7 @@ Class CoreRESTClient  <a class="header-action link-secondary" title="View source
 
   <h3 id="FoundationaLLM_Client_Core_CoreRESTClient__ctor_System_String_Azure_Core_TokenCredential_System_String_" data-uid="FoundationaLLM.Client.Core.CoreRESTClient.#ctor(System.String,Azure.Core.TokenCredential,System.String)">
   CoreRESTClient(string, TokenCredential, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Client.Core.CoreRESTClient.html">CoreRESTClient</a> class and
@@ -241,7 +241,7 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
   <h3 id="FoundationaLLM_Client_Core_CoreRESTClient__ctor_System_String_Azure_Core_TokenCredential_System_String_FoundationaLLM_Common_Models_Configuration_API_APIClientSettings_" data-uid="FoundationaLLM.Client.Core.CoreRESTClient.#ctor(System.String,Azure.Core.TokenCredential,System.String,FoundationaLLM.Common.Models.Configuration.API.APIClientSettings)">
   CoreRESTClient(string, TokenCredential, string, APIClientSettings)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L63"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Client.Core.CoreRESTClient.html">CoreRESTClient</a> class and
@@ -285,6 +285,98 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
 
 
+  <a id="FoundationaLLM_Client_Core_CoreRESTClient__ctor_" data-uid="FoundationaLLM.Client.Core.CoreRESTClient.#ctor*"></a>
+
+  <h3 id="FoundationaLLM_Client_Core_CoreRESTClient__ctor_System_String_System_ClientModel_ApiKeyCredential_System_String_" data-uid="FoundationaLLM.Client.Core.CoreRESTClient.#ctor(System.String,System.ClientModel.ApiKeyCredential,System.String)">
+  CoreRESTClient(string, ApiKeyCredential, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Client.Core.CoreRESTClient.html">CoreRESTClient</a> class and
+configures <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.ihttpclientfactory">IHttpClientFactory</a> with a named instance for the
+CoreAPI (<a class="xref" href="FoundationaLLM.Common.Constants.HttpClientNames.html#FoundationaLLM_Common_Constants_HttpClientNames_CoreAPI">CoreAPI</a>) based on the passed in URL.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoreRESTClient(string coreUri, ApiKeyCredential credential, string instanceId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>coreUri</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The base URI of the Core API.</p>
+</dd>
+    <dt><code>credential</code> <span class="xref">ApiKeyCredential</span></dt>
+    <dd><p>An <span class="xref">System.ClientModel.ApiKeyCredential</span> containing a valid
+agent access token.</p>
+</dd>
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The unique (GUID) ID for the FoundationaLLM deployment.
+Locate this value in the FoundationaLLM Management Portal or in Azure App Config
+(FoundationaLLM:Instance:Id key)</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Client_Core_CoreRESTClient__ctor_" data-uid="FoundationaLLM.Client.Core.CoreRESTClient.#ctor*"></a>
+
+  <h3 id="FoundationaLLM_Client_Core_CoreRESTClient__ctor_System_String_System_ClientModel_ApiKeyCredential_System_String_FoundationaLLM_Common_Models_Configuration_API_APIClientSettings_" data-uid="FoundationaLLM.Client.Core.CoreRESTClient.#ctor(System.String,System.ClientModel.ApiKeyCredential,System.String,FoundationaLLM.Common.Models.Configuration.API.APIClientSettings)">
+  CoreRESTClient(string, ApiKeyCredential, string, APIClientSettings)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Client.Core.CoreRESTClient.html">CoreRESTClient</a> class and
+configures <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.ihttpclientfactory">IHttpClientFactory</a> with a named instance for the
+CoreAPI (<a class="xref" href="FoundationaLLM.Common.Constants.HttpClientNames.html#FoundationaLLM_Common_Constants_HttpClientNames_CoreAPI">CoreAPI</a>) based on the passed in URL
+and optional client settings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoreRESTClient(string coreUri, ApiKeyCredential credential, string instanceId, APIClientSettings options)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>coreUri</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The base URI of the Core API.</p>
+</dd>
+    <dt><code>credential</code> <span class="xref">ApiKeyCredential</span></dt>
+    <dd><p>An <span class="xref">System.ClientModel.ApiKeyCredential</span> containing a valid
+agent access token.</p>
+</dd>
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The unique (GUID) ID for the FoundationaLLM deployment.
+Locate this value in the FoundationaLLM Management Portal or in Azure App Config
+(FoundationaLLM:Instance:Id key)</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="FoundationaLLM.Common.Models.Configuration.API.APIClientSettings.html">APIClientSettings</a></dt>
+    <dd><p>Additional options to configure the HTTP Client.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <h2 class="section" id="properties">Properties
 </h2>
 
@@ -293,7 +385,7 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
   <h3 id="FoundationaLLM_Client_Core_CoreRESTClient_Attachments" data-uid="FoundationaLLM.Client.Core.CoreRESTClient.Attachments">
   Attachments
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L126"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Contains methods to interact with the Attachments endpoints.</p>
@@ -325,7 +417,7 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
   <h3 id="FoundationaLLM_Client_Core_CoreRESTClient_Branding" data-uid="FoundationaLLM.Client.Core.CoreRESTClient.Branding">
   Branding
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L128"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Contains methods to interact with the Branding endpoints.</p>
@@ -357,7 +449,7 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
   <h3 id="FoundationaLLM_Client_Core_CoreRESTClient_Completions" data-uid="FoundationaLLM.Client.Core.CoreRESTClient.Completions">
   Completions
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L130"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Contains methods to interact with the Orchestration endpoints.</p>
@@ -389,7 +481,7 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
   <h3 id="FoundationaLLM_Client_Core_CoreRESTClient_Sessions" data-uid="FoundationaLLM.Client.Core.CoreRESTClient.Sessions">
   Sessions
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L124"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Contains methods to interact with the Sessions endpoints.</p>
@@ -421,7 +513,7 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
   <h3 id="FoundationaLLM_Client_Core_CoreRESTClient_Status" data-uid="FoundationaLLM.Client.Core.CoreRESTClient.Status">
   Status
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L132"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Contains methods to interact with the Status endpoints.</p>
@@ -453,7 +545,7 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
   <h3 id="FoundationaLLM_Client_Core_CoreRESTClient_UserProfiles" data-uid="FoundationaLLM.Client.Core.CoreRESTClient.UserProfiles">
   UserProfiles
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L134"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Contains methods to interact with the UserProfiles endpoints.</p>
@@ -485,7 +577,7 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L12" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreClient/CoreRESTClient.cs/#L13" class="edit-link">Edit this page</a>
         </div>
 
 
