@@ -193,6 +193,7 @@ namespace FoundationaLLM.Core.Examples.Setup
         {
             services.AddQuotaService(configuration);
             services.AddTokenizers();
+            services.AddInstanceProperties(configuration);
         }
     }
 }
