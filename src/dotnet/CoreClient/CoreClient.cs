@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using System.ClientModel;
 
 namespace FoundationaLLM.Client.Core
 {
@@ -49,6 +50,40 @@ namespace FoundationaLLM.Client.Core
         public CoreClient(
             string coreUri,
             TokenCredential credential,
+            string instanceId,
+            APIClientSettings options) =>
+            _coreRestClient = new CoreRESTClient(coreUri, credential, instanceId, options);
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="CoreClient"/> class with
+            /// the specified Core API URI and API key credential.
+            /// </summary>
+            /// <param name="coreUri">The base URI of the Core API.</param>
+            /// <param name="credential">An <see cref="ApiKeyCredential"/> containing a valid
+            /// agent access token.</param>
+            /// <param name="instanceId">The unique (GUID) ID for the FoundationaLLM deployment.
+            /// Locate this value in the FoundationaLLM Management Portal or in Azure App Config
+            /// (FoundationaLLM:Instance:Id key)</param>
+        public CoreClient(
+            string coreUri,
+            ApiKeyCredential credential,
+            string instanceId)
+            : this(coreUri, credential, instanceId, new APIClientSettings()) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoreClient"/> class with
+        /// the specified Core API URI, API key credential, and optional client settings.
+        /// </summary>
+        /// <param name="coreUri">The base URI of the Core API.</param>
+        /// <param name="credential">An <see cref="ApiKeyCredential"/> containing a valid
+        /// agent access token.</param>
+        /// <param name="instanceId">The unique (GUID) ID for the FoundationaLLM deployment.
+        /// Locate this value in the FoundationaLLM Management Portal or in Azure App Config
+        /// (FoundationaLLM:Instance:Id key)</param>
+        /// <param name="options">Additional options to configure the HTTP Client.</param>
+        public CoreClient(
+            string coreUri,
+            ApiKeyCredential credential,
             string instanceId,
             APIClientSettings options) =>
             _coreRestClient = new CoreRESTClient(coreUri, credential, instanceId, options);
