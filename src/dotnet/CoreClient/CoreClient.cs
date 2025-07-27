@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using System.ClientModel;
+using System.Text.Json;
 
 namespace FoundationaLLM.Client.Core
 {
@@ -132,6 +133,11 @@ namespace FoundationaLLM.Client.Core
                 SessionId = sessionId,
                 UserPrompt = userPrompt
             };
+
+            if (chatSessionProperties is not null
+                && !string.IsNullOrWhiteSpace(chatSessionProperties.Metadata))
+                orchestrationRequest.Metadata =
+                    JsonSerializer.Deserialize<Dictionary<string, object>>(chatSessionProperties.Metadata);
 
             return await GetCompletionWithSessionAsync(orchestrationRequest);
         }

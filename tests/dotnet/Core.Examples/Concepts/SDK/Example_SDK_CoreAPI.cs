@@ -37,11 +37,14 @@ namespace FoundationaLLM.Core.Examples.Concepts.SDK
 
             var completionResponse = await _coreClient.GetCompletionWithSessionAsync(
                 conversationId,
-                null,
+                new ConversationProperties
+                {
+                    Metadata = $"{{\"ProjectId\": {_configuration["CoreClient:ProjectId"]!}}}"
+                },
                 _configuration["CoreClient:UserPrompt"]!,
                 _configuration["CoreClient:AgentName"]!);
 
-            Assert.True(!string.IsNullOrEmpty(completionResponse.Text));
+            Assert.True(!string.IsNullOrEmpty(completionResponse.Content?.FirstOrDefault()?.Value));
         }
 
         private void InitializeCoreClient()
