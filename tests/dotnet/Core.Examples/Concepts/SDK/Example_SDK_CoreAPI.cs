@@ -52,7 +52,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.SDK
                 _configuration["CoreClient:CoreAPIUrl"]!,
                 new ApiKeyCredential(
                     _configuration["FoundationaLLM:Tests:AgentAccessToken"]!),
-                GetService<IOptions<InstanceSettings>>().Value.Id);
+                _configuration["CoreClient:InstanceId"]!);
         }
     }
 }
