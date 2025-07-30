@@ -102,6 +102,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             List<DataPipelineContentItemContentPart> contentParts = [];
 
+            string? warningMessage = null;
             if (inputContent.First().Content.ToArray().Length > 0)
             {
                 var textPartitioningResult = await textPartitioningPlugin.PartitionText(
@@ -114,16 +115,18 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
                 contentParts = textPartitioningResult.Value ?? [];
             }
+            else
+                warningMessage = "The content item has no content.";
 
             await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
-                dataPipelineDefinition,
-                dataPipelineRun,
-                dataPipelineRunWorkItem,
-                contentParts,
-                CONTENT_PARTS_FILE_NAME);
+                    dataPipelineDefinition,
+                    dataPipelineRun,
+                    dataPipelineRunWorkItem,
+                    contentParts,
+                    CONTENT_PARTS_FILE_NAME);
 
             return
-                new PluginResult(true, false);
+                new PluginResult(true, false, WarningMessage: warningMessage);
         }
     }
 }

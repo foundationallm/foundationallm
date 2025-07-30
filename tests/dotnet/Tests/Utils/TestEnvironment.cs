@@ -1,35 +1,45 @@
-﻿using FoundationaLLM.Tests.Exceptions;
+﻿using FoundationaLLM.Common.Authentication;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Xunit.Abstractions;
 
 namespace FoundationaLLM.Tests.Utils
 {
     public sealed class TestEnvironment
 	{
-		/// <summary>
-		/// Simple helper used to load env vars and secrets like credentials,
-		/// to avoid hard coding them in the sample code.
-		/// </summary>
-		/// <param name="name">Secret name / Environment var name.</param>
-		/// <returns>Value found in Secret Manager or Environment Variable.</returns>
-		public static string Variable(string name)
+		private IServiceProvider _serviceProvider = null!;
+		private readonly IConfigurationRoot _configuration;
+
+		public IConfigurationRoot Configuration => _configuration;
+
+        public TestEnvironment()
 		{
-			var configuration = new ConfigurationBuilder()
-				.AddUserSecrets<TestEnvironment>()
-				.Build();
+            _configuration = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .AddUserSecrets<TestEnvironment>()
+                .AddJsonFile("testsettings.json", true)
+                .Build();
+        }
 
-			var value = configuration[name];
-			if (!string.IsNullOrEmpty(value))
-			{
-				return value;
-			}
+        public void InitializeServices(
+            ITestOutputHelper testOutputHelper)
+        {
+            ServiceContext.Initialize(false, "TestEnvironment");
 
-			value = System.Environment.GetEnvironmentVariable(name);
-			if (string.IsNullOrEmpty(value))
-			{
-				throw new TestingException($"Secret / Environment var not set: {name}");
-			}
+            var services = new ServiceCollection();
 
-			return value;
-		}
-	}
+            services.AddLogging(builder =>
+            {
+                builder.AddProvider(new XUnitLoggerProvider(testOutputHelper));
+                builder.AddConsole();
+                builder.AddConfiguration(_configuration.GetSection("Logging"));
+            });
+
+            _serviceProvider = services.BuildServiceProvider();
+        }
+
+        public T GetRequiredService<T>() where T : notnull =>
+            _serviceProvider.GetRequiredService<T>();
+    }
 }

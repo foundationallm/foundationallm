@@ -174,14 +174,14 @@ namespace FoundationaLLM.Core.API
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_AppInsightsConnectionString,
                 ServiceNames.CoreAPI);
 
-            // Increase request size limit to 512 MB.
+            // Increase request size limit to 512 MiB.
             builder.WebHost.ConfigureKestrel(serverOptions =>
             {
-                serverOptions.Limits.MaxRequestBodySize = 536870912; // 512 MB
+                serverOptions.Limits.MaxRequestBodySize = 512 * 1024 * 1024; // 512 MiB
             });
             builder.Services.Configure<FormOptions>(options =>
             {
-                options.MultipartBodyLengthLimit = 536870912; // 512 MB
+                options.MultipartBodyLengthLimit = 512 * 1024 * 1024; // 512 MiB
             });
 
             builder.Services.AddControllers();

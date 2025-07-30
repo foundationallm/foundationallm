@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Parquet.Serialization;
 using Xunit.Abstractions;
-using static System.Net.WebRequestMethods;
 
 namespace FoundationaLLM.Core.Examples.Concepts.Gateway
 {
