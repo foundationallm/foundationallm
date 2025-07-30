@@ -1,4 +1,6 @@
-﻿using FoundationaLLM.Common.Constants.Authentication;
+﻿using FoundationaLLM.Client.Management;
+using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
@@ -52,7 +54,16 @@ namespace FoundationaLLM.Core.Examples.Concepts.Storage
 
             _output.WriteLine("============ FoundationaLLM Storage - Data Pipeline State Service Tests ============");
 
-            
+            var managementClient = new ManagementClient(
+                _testEnvironment.Configuration["ManagementClient:ManagementAPIUrl"]!,
+                ServiceContext.AzureCredential!,
+                _testEnvironment.Configuration["ManagementClient:InstanceId"]!);
+
+            var dataPipelineDefinition = await managementClient.GetResourceByObjectId<DataPipelineDefinition>(
+                $"instances/{_testEnvironment.Configuration["ManagementClient:InstanceId"]}/providers/FoundationaLLM.DataPipeline/dataPipelines/ProcessMSDFG3Files");
+
+            var dataPipelineRun = await managementClient.GetResourceByObjectId<DataPipelineRun>(
+                $"instances/{_testEnvironment.Configuration["ManagementClient:InstanceId"]}/providers/FoundationaLLM.DataPipeline/dataPipelines/ProcessMSDFG3Files/dataPipelineRuns/run-20250727-064902-TUCOQBn84kO5-mce0rtiyQ-R3v15UrLrkiPSmvImMcogg");
         }
     }
 }
