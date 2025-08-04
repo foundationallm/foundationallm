@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Models_Plugins_PluginResult" data-uid="FoundationaLLM.Common.Models.Plugins.PluginResult" class="text-break">
-Class PluginResult  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Plugins/PluginResult.cs/#L14"><i class="bi bi-code-slash"></i></a>
+Class PluginResult  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Plugins/PluginResult.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -179,9 +179,9 @@ identified a permanent error that will not be resolved by retrying the operation
 
   <a id="FoundationaLLM_Common_Models_Plugins_PluginResult__ctor_" data-uid="FoundationaLLM.Common.Models.Plugins.PluginResult.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Plugins_PluginResult__ctor_System_Boolean_System_Boolean_System_String_" data-uid="FoundationaLLM.Common.Models.Plugins.PluginResult.#ctor(System.Boolean,System.Boolean,System.String)">
-  PluginResult(bool, bool, string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Plugins/PluginResult.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Models_Plugins_PluginResult__ctor_System_Boolean_System_Boolean_System_String_System_String_" data-uid="FoundationaLLM.Common.Models.Plugins.PluginResult.#ctor(System.Boolean,System.Boolean,System.String,System.String)">
+  PluginResult(bool, bool, string?, string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Plugins/PluginResult.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The result of an operation executed by a plugin.</p>
@@ -189,7 +189,7 @@ identified a permanent error that will not be resolved by retrying the operation
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PluginResult(bool Success, bool StopProcessing, string? ErrorMessage = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public PluginResult(bool Success, bool StopProcessing, string? ErrorMessage = null, string? WarningMessage = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -203,6 +203,9 @@ identified a permanent error that will not be resolved by retrying the operation
     <dt><code>ErrorMessage</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>When IsSuccess is false, contains an error message with details.</p>
 </dd>
+    <dt><code>WarningMessage</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Contains an optional warning message.</p>
+</dd>
   </dl>
 
 
@@ -212,7 +215,7 @@ identified a permanent error that will not be resolved by retrying the operation
 
 
 
-  <h4 class="section" id="FoundationaLLM_Common_Models_Plugins_PluginResult__ctor_System_Boolean_System_Boolean_System_String__remarks">Remarks</h4>
+  <h4 class="section" id="FoundationaLLM_Common_Models_Plugins_PluginResult__ctor_System_Boolean_System_Boolean_System_String_System_String__remarks">Remarks</h4>
   <div class="markdown level1 remarks"><p>If <code class="paramref">StopProcessing</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, the caller of the plugin should not attempt again to ask
 the plugin to process the same work item. The plugin will set this property to true if it has
 identified a permanent error that will not be resolved by retrying the operation.</p>
@@ -229,7 +232,7 @@ identified a permanent error that will not be resolved by retrying the operation
 
   <h3 id="FoundationaLLM_Common_Models_Plugins_PluginResult_ErrorMessage" data-uid="FoundationaLLM.Common.Models.Plugins.PluginResult.ErrorMessage">
   ErrorMessage
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Plugins/PluginResult.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Plugins/PluginResult.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>When IsSuccess is false, contains an error message with details.</p>
@@ -261,7 +264,7 @@ identified a permanent error that will not be resolved by retrying the operation
 
   <h3 id="FoundationaLLM_Common_Models_Plugins_PluginResult_StopProcessing" data-uid="FoundationaLLM.Common.Models.Plugins.PluginResult.StopProcessing">
   StopProcessing
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Plugins/PluginResult.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Plugins/PluginResult.cs/#L17"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Indicates whether further processing should stop or not.</p>
@@ -293,7 +296,7 @@ identified a permanent error that will not be resolved by retrying the operation
 
   <h3 id="FoundationaLLM_Common_Models_Plugins_PluginResult_Success" data-uid="FoundationaLLM.Common.Models.Plugins.PluginResult.Success">
   Success
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Plugins/PluginResult.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Plugins/PluginResult.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Indicates whether the operation executed successfully or not.</p>
@@ -321,11 +324,43 @@ identified a permanent error that will not be resolved by retrying the operation
 
 
 
+  <a id="FoundationaLLM_Common_Models_Plugins_PluginResult_WarningMessage_" data-uid="FoundationaLLM.Common.Models.Plugins.PluginResult.WarningMessage*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_Plugins_PluginResult_WarningMessage" data-uid="FoundationaLLM.Common.Models.Plugins.PluginResult.WarningMessage">
+  WarningMessage
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Plugins/PluginResult.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Contains an optional warning message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? WarningMessage { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Plugins/PluginResult.cs/#L14" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Plugins/PluginResult.cs/#L15" class="edit-link">Edit this page</a>
         </div>
 
 
