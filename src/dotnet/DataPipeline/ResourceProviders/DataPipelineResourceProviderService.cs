@@ -99,13 +99,10 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                     {
                         IncludeRoles = resourcePath.IsResourceTypePath
                     }),
-                DataPipelineResourceTypeNames.DataPipelineRuns => await _dataPipelineServiceClient.GetDataPipelineRunAsync(
-                        resourcePath.InstanceId!,
-                        resourcePath.MainResourceId!,
-                        resourcePath.ResourceId!,
-                        userIdentity)
-                        ?? throw new ResourceProviderException("The requested data pipeline run could not be loaded.",
-                            StatusCodes.Status404NotFound),
+                DataPipelineResourceTypeNames.DataPipelineRuns => await GetDataPipelineRun(
+                    resourcePath,
+                    authorizationResult,
+                    userIdentity),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
             };
@@ -197,6 +194,27 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             };
 
         #region Helpers for UpsertResourceAsync
+
+        private async Task<ResourceProviderGetResult<DataPipelineRun>> GetDataPipelineRun(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity)
+        {
+            var dataPipelineRun = await _dataPipelineServiceClient.GetDataPipelineRunAsync(
+                resourcePath.InstanceId!,
+                resourcePath.MainResourceId!,
+                resourcePath.ResourceId!,
+                userIdentity)
+                ?? throw new ResourceProviderException("The data pipeline run resource could not be loaded.",
+                    StatusCodes.Status404NotFound);
+
+            return new ResourceProviderGetResult<DataPipelineRun>
+            {
+                Resource = dataPipelineRun,
+                Roles = [],
+                Actions = []
+            };
+        }
 
         private async Task<ResourceProviderActionResult<ResourceCollection<DataPipelineRun>>> GetDataPipelineRuns(
             ResourcePath resourcePath,

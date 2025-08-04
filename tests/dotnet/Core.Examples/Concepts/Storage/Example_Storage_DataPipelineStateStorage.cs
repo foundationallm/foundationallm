@@ -54,16 +54,20 @@ namespace FoundationaLLM.Core.Examples.Concepts.Storage
 
             _output.WriteLine("============ FoundationaLLM Storage - Data Pipeline State Service Tests ============");
 
+            var instanceId = _testEnvironment.Configuration["ManagementClient:InstanceId"];
+            var dataPipelineDefinitionName = _testEnvironment.Configuration["ManagementClient:DataPipelineDefinitionName"];
+            var dataPipelineRunId = _testEnvironment.Configuration["ManagementClient:DataPipelineRunId"];
+
             var managementClient = new ManagementClient(
                 _testEnvironment.Configuration["ManagementClient:ManagementAPIUrl"]!,
                 ServiceContext.AzureCredential!,
-                _testEnvironment.Configuration["ManagementClient:InstanceId"]!);
+                instanceId!);
 
             var dataPipelineDefinition = await managementClient.GetResourceByObjectId<DataPipelineDefinition>(
-                $"instances/{_testEnvironment.Configuration["ManagementClient:InstanceId"]}/providers/FoundationaLLM.DataPipeline/dataPipelines/ProcessMSDFG3Files");
+                $"instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/{dataPipelineDefinitionName}");
 
             var dataPipelineRun = await managementClient.GetResourceByObjectId<DataPipelineRun>(
-                $"instances/{_testEnvironment.Configuration["ManagementClient:InstanceId"]}/providers/FoundationaLLM.DataPipeline/dataPipelines/ProcessMSDFG3Files/dataPipelineRuns/run-20250727-064902-TUCOQBn84kO5-mce0rtiyQ-R3v15UrLrkiPSmvImMcogg");
+                $"instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/{dataPipelineDefinitionName}/dataPipelineRuns/{dataPipelineRunId}");
         }
     }
 }
