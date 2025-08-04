@@ -1,10 +1,8 @@
 ﻿using FoundationaLLM.Client.Core;
-using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Core.Examples.Setup;
 using FoundationaLLM.Tests;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using System.ClientModel;
 using Xunit.Abstractions;
 

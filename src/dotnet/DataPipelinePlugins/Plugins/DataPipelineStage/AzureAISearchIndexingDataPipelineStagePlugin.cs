@@ -135,7 +135,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 CONTENT_PARTS_FILE_NAME);
 
             if (!contentItemParts.Any())
-                return new PluginResult(true, false);
+                return new PluginResult(true, false, WarningMessage: "The content item has no content.");
 
             var metadata = JsonSerializer.Deserialize<Dictionary<string, object>>(
                 contentItemParts.First().Metadata!);

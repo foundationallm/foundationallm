@@ -7,6 +7,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Security;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -92,6 +93,16 @@ builder.AddResourceValidatorFactory();
 builder.Services.AddTransient<IAPIKeyValidationService, APIKeyValidationService>();
 builder.AddOrchestrationContext();
 builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
+
+// Increase request size limit to 512 MiB.
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Limits.MaxRequestBodySize = 512 * 1024 * 1024; // 512 MiB
+});
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 512 * 1024 * 1024; // 512 MiB
+});
 
 builder.Services.AddControllers();
 

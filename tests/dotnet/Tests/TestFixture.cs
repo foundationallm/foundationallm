@@ -27,7 +27,8 @@ namespace FoundationaLLM.Tests
                 .AddUserSecrets<TestEnvironment>()
                 .AddAzureAppConfiguration((Action<AzureAppConfigurationOptions>)(options =>
                 {
-                    var connectionString = TestEnvironment.Variable(EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString);
+                    var testEnvironment = new TestEnvironment();
+                    var connectionString = testEnvironment.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString];
                     if (string.IsNullOrEmpty(connectionString))
                     {
                         throw new InvalidOperationException("Azure App Configuration connection string is not set.");
