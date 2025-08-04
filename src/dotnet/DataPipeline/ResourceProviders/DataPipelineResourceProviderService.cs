@@ -195,7 +195,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
 
         #region Helpers for UpsertResourceAsync
 
-        private async Task<ResourceProviderGetResult<DataPipelineRun>> GetDataPipelineRun(
+        private async Task<List<ResourceProviderGetResult<DataPipelineRun>>> GetDataPipelineRun(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity)
@@ -208,12 +208,14 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 ?? throw new ResourceProviderException("The data pipeline run resource could not be loaded.",
                     StatusCodes.Status404NotFound);
 
-            return new ResourceProviderGetResult<DataPipelineRun>
-            {
-                Resource = dataPipelineRun,
-                Roles = [],
-                Actions = []
-            };
+            return [
+                new ResourceProviderGetResult<DataPipelineRun>
+                {
+                    Resource = dataPipelineRun,
+                    Roles = [],
+                    Actions = []
+                }
+            ];
         }
 
         private async Task<ResourceProviderActionResult<ResourceCollection<DataPipelineRun>>> GetDataPipelineRuns(
