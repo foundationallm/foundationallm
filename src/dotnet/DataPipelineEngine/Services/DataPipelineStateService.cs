@@ -33,27 +33,94 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             DataPipelineRun dataPipelineRun,
             List<DataPipelineContentItem> contentItems)
         {
-            var contentItemsRegistryPath = string.Join('/',
+            #region Save content items list to run root
+
+            var runContentItemsRegistryPath = string.Join('/',
                 [
-                    $"/data-pipeline-state",
-                    dataPipelineDefinition.Name,
-                    dataPipelineRun.UPN.NormalizeUserPrincipalName(),
-                    $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
-                    dataPipelineRun.RunId,
+                    GetDataPipelineRunRootPath(
+                        dataPipelineDefinition,
+                        dataPipelineRun),
                     "content-items",
                     "content-items.json"
                 ]);
 
-            var contentItemsRegistryPathContent = JsonSerializer.Serialize(
+            var runContentItemsRegistryContent = JsonSerializer.Serialize(
                 contentItems.Select(ci => ci.ContentIdentifier.CanonicalId)
                 .ToList());
 
             await _storageService.WriteFileAsync(
                 dataPipelineRun.InstanceId,
-                contentItemsRegistryPath,
-                contentItemsRegistryPathContent,
+                runContentItemsRegistryPath,
+                runContentItemsRegistryContent,
                 "application/json",
                 default);
+
+            _logger.LogInformation("Initialized data pipeline run {DataPipelineRunId} state with {ContentItemsCount} content items.",
+                dataPipelineRun.RunId,
+                contentItems.Count);
+
+            #endregion
+
+            #region Update content items list in the canonical root
+
+            var canonicalContentItemsRegistryPath = string.Join('/',
+                [
+                    GetDataPipelineCanonicalRootPath(
+                        dataPipelineDefinition,
+                        dataPipelineRun),
+                    "content-items",
+                    "content-items.json"
+                ]);
+
+            string updatedCanonicalContentItemsRegistryContent = string.Empty;
+            int netNewContentItemsCount = 0;
+
+            if (await _storageService.FileExistsAsync(
+                dataPipelineRun.InstanceId,
+                canonicalContentItemsRegistryPath,
+                default))
+            {
+                var canonicalContentItemsRegistryRawContent = await _storageService.ReadFileAsync(
+                    dataPipelineRun.InstanceId,
+                    canonicalContentItemsRegistryPath,
+                    default);
+                var canonicalContentItemsRegistry = JsonSerializer.Deserialize<List<string>>(
+                    canonicalContentItemsRegistryRawContent.ToStream());
+                var canonicalContentItemsRegistrySet = new HashSet<string>(canonicalContentItemsRegistry ?? []);
+
+                var newContentItems = contentItems
+                    .Select(ci => ci.ContentIdentifier.CanonicalId)
+                    .Where(canonicalId => !canonicalContentItemsRegistrySet.Contains(canonicalId))
+                    .ToList();
+                netNewContentItemsCount = newContentItems.Count;
+
+                if (newContentItems.Count > 0)
+                    updatedCanonicalContentItemsRegistryContent = JsonSerializer.Serialize(
+                        canonicalContentItemsRegistry!
+                            .Concat(newContentItems)
+                            .ToList());
+            }
+            else
+            {
+                netNewContentItemsCount = contentItems.Count;
+                updatedCanonicalContentItemsRegistryContent = JsonSerializer.Serialize(
+                    contentItems.Select(ci => ci.ContentIdentifier.CanonicalId)
+                    .ToList());
+            }
+
+            if (netNewContentItemsCount > 0)
+                await _storageService.WriteFileAsync(
+                    dataPipelineRun.InstanceId,
+                    canonicalContentItemsRegistryPath,
+                    updatedCanonicalContentItemsRegistryContent,
+                    "application/json",
+                    default);
+
+            _logger.LogInformation("The data pipeline run {DataPipelineRunId} contributed with {NewContentItemsCount} net new content items to the canonical state.",
+                  dataPipelineRun.RunId,
+                  netNewContentItemsCount);
+
+            #endregion
 
             // Combine dataPipelineRun, contentItems, and workItems into a single array
             var combinedArray = new object[] { dataPipelineRun }
@@ -193,7 +260,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             {
                 var artifactsFilter = string.Join('/',
                     [
-                        GetDataPipelineRunArtifactsPath(
+                        GetDataPipelineCanonicalRootPath(
                             dataPipelineDefinition,
                             dataPipelineRun),
                         artifactsNameFilter
@@ -243,7 +310,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
             var artifactsFilter = string.Join('/',
                 [
-                    GetDataPipelineRunArtifactsPath(
+                    GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun),
                     "content-items",
@@ -300,7 +367,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
             var artifactsPath = string.Join('/',
                 [
-                    GetDataPipelineRunArtifactsPath(
+                    GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun),
                     "content-items",
@@ -349,7 +416,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             DataPipelineRun dataPipelineRun,
             List<DataPipelineStateArtifact> artifacts)
         {
-            var artifactsPath = GetDataPipelineRunArtifactsPath(
+            var artifactsPath = GetDataPipelineCanonicalRootPath(
                 dataPipelineDefinition,
                 dataPipelineRun);
 
@@ -383,7 +450,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             var contentItemPartsPath = string.Join('/',
                 [
-                    GetDataPipelineRunArtifactsPath(
+                    GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun),
                     "content-items",
@@ -412,7 +479,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             var contentItemPartsPath = string.Join('/',
                 [
-                    GetDataPipelineRunArtifactsPath(
+                    GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun),
                     "content-items",
@@ -442,7 +509,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             var contentItemPartsPath = string.Join('/',
                 [
-                    GetDataPipelineRunArtifactsPath(
+                    GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun),
                     "content-items",
@@ -472,7 +539,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             var dataPipelineRunPartsPath = string.Join('/',
                 [
-                    GetDataPipelineRunArtifactsPath(
+                    GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun),
                     filePath
@@ -499,7 +566,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             var dataPipelineRunPartsPath = string.Join('/',
                 [
-                    GetDataPipelineRunArtifactsPath(
+                    GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun),
                     filePath
@@ -518,14 +585,26 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 default);
         }
 
-        /// <inheritdoc/>
-        public string GetDataPipelineRunArtifactsPath(
+        public string GetDataPipelineCanonicalRootPath(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun) =>
             string.Join('/',
                 [
                     $"/data-pipeline-state",
                     dataPipelineDefinition.Name,
+                    "/canonical-data",
+                    dataPipelineRun.CanonicalRunId
+                ]);
+
+        /// <inheritdoc/>
+        public string GetDataPipelineRunRootPath(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun) =>
+            string.Join('/',
+                [
+                    $"/data-pipeline-state",
+                    dataPipelineDefinition.Name,
+                    "/runs",
                     dataPipelineRun.UPN.NormalizeUserPrincipalName(),
                     $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
                     dataPipelineRun.RunId

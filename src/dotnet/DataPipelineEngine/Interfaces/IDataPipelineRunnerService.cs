@@ -16,6 +16,14 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
         Dictionary<string, DataPipelineRunner> CurrentRunners { get; }
 
         /// <summary>
+        /// Inidicates whether the specified data pipeline run can be started.
+        /// </summary>
+        /// <param name="dataPipelineRun">The data pipeline run to start.</param>
+        /// <returns><see langword="true"/> if the specified data pipeline run can be started, <see langword="false"/> otherwise.</returns>
+        Task<bool> CanStartRun(
+            DataPipelineRun dataPipelineRun);
+
+        /// <summary>
         /// Starts a data pipeline run.
         /// </summary>
         /// <param name="dataPipelineRun">The data pipeline run to start.</param>

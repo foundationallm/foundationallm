@@ -8,7 +8,6 @@ using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Exceptions;
 using FoundationaLLM.DataPipelineEngine.Models;
-using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
@@ -38,6 +37,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
         private readonly Dictionary<string, DataPipelineStageRunner> _currentStageRunners = [];
         private DataPipelineDefinition _dataPipelineDefinition = null!;
         private DataPipelineRun _dataPipelineRun = null!;
+        private bool _initialized = false;
 
         public Dictionary<string, DataPipelineStageRunner> CurrentStageRunners => _currentStageRunners;
 
@@ -88,6 +88,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                     activeStage.Name, dataPipelineRun.RunId);
             }
 
+            _initialized = true;
             _logger.LogInformation("Finished initializing new data pipeline run {DataPipelineRunId}...",
                dataPipelineRun.RunId);
         }
@@ -124,9 +125,14 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                     activeStageName, dataPipelineRun.RunId);
             }
 
+            _initialized = true;
             _logger.LogInformation("Finished initializing existing data pipeline run {DataPipelineRunId}...",
                dataPipelineRun.RunId);
         }
+
+        public DataPipelineRun DataPipelineRun => _dataPipelineRun;
+
+        public bool Initialized => _initialized;
 
         public async Task<bool> Completed()
         {
