@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
 
 namespace FoundationaLLM.DataPipelineEngine.Services
 {
@@ -92,7 +95,35 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     if (!dataPipelineRun.TriggerParameterValues.ContainsKey(item.Key))
                         dataPipelineRun.TriggerParameterValues.Add(item.Key, item.Value);
 
+            // If the canonical run id is not set, generate it based on the data pipeline run properties.
+            if (string.IsNullOrWhiteSpace(dataPipelineRun.CanonicalRunId))
+            {
+                // Two data pipeline runs for the same data pipeline and identical trigger parameter values
+                // should have the same canonical run id.
+                var canonicalRunIdRaw = $"{dataPipeline.Name}|"
+                    + JsonSerializer.Serialize(dataPipelineRun.TriggerParameterValues);
+
+                dataPipelineRun.CanonicalRunId = Convert.ToBase64String(
+                        MD5.HashData(Encoding.UTF8.GetBytes(canonicalRunIdRaw)))
+                        .Replace("+", "--")
+                        .Replace("/", "--");
+            }
+
             await _validator.ValidateAndThrowAsync<DataPipelineRun>(dataPipelineRun);
+
+            // Before starting the identification of content items,
+            // make a preliminary check to see if the run can be started.
+            // This is to avoid unnecessary work if the run cannot be started.
+            if (!await _dataPipelineRunnerService.CanStartRun(dataPipelineRun))
+            {
+                _logger.LogError(
+                    "The data pipeline with run id {DataPipelineRunId} and canonical run id {DataPipelineCanonicalRunId} is conflicting with an already existing run and cannot be started.",
+                    dataPipelineRun.RunId,
+                    dataPipelineRun.CanonicalRunId);
+                throw new DataPipelineServiceException(
+                    $"The data pipeline with run id {dataPipelineRun.RunId} and canonical run id {dataPipelineRun.CanonicalRunId} is conflicting with an already existing run and cannot be started.",
+                    StatusCodes.Status400BadRequest);
+            }
 
             var dataSourcePlugin = await _pluginService.GetDataSourcePlugin(
                 instanceId,

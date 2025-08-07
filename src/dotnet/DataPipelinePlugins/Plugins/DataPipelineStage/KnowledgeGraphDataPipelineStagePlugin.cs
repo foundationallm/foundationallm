@@ -369,7 +369,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     scope.ServiceProvider.GetRequiredService<IHttpClientFactoryService>(),
                     scope.ServiceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
 
-                var artifactsRootPath = _dataPipelineStateService.GetDataPipelineRunArtifactsPath(
+                var canonicalRootPath = _dataPipelineStateService.GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun);
                 var response = await contextServiceClient.UpdateKnowledgeSource(
@@ -377,8 +377,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     knowledgeSourceId.ToString()!,
                     new ContextKnowledgeSourceUpdateRequest
                     {
-                        EntitiesSourceFilePath = $"{artifactsRootPath}/{KNOWLEDGE_ENTITIES_FILE_PATH}",
-                        RelationshipsSourceFilePath = $"{artifactsRootPath}/{KNOWLEDGE_RELATIONSHIPS_FILE_PATH}",
+                        EntitiesSourceFilePath = $"{canonicalRootPath}/{KNOWLEDGE_ENTITIES_FILE_PATH}",
+                        RelationshipsSourceFilePath = $"{canonicalRootPath}/{KNOWLEDGE_RELATIONSHIPS_FILE_PATH}",
                         EmbeddingModel = entitySummarizationEmbeddingModel.ToString()!,
                         EmbeddingDimensions = (int)entitySummarizationEmbeddingDimensions,
                         VectorDatabaseObjectId = vectorDatabaseObjectId.ToString()!,

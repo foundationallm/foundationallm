@@ -22,6 +22,10 @@ namespace FoundationaLLM.DataPipeline.Validation
                 .NotEmpty()
                 .WithMessage("The triggering user principal name is required for the data pipeline run.");
 
+            RuleFor(dpr => dpr.CanonicalRunId)
+                .NotEmpty()
+                .WithMessage("The canonical run identifier is required for the data pipeline run.");
+
             RuleFor(dpr => dpr.TriggerName)
                 .NotEmpty()
                 .WithMessage("The trigger name is required for the data pipeline run.");

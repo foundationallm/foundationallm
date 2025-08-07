@@ -12,6 +12,7 @@ using FoundationaLLM.DataPipelineEngine.Services.Runners;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NuGet.ContentModel;
 
 namespace FoundationaLLM.DataPipelineEngine.Services
 {
@@ -29,6 +30,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         private readonly QueueClient _backendQueueClient;
 
         private readonly Dictionary<string, DataPipelineRunner> _currentRunners = [];
+        private readonly object _syncRoot = new();
 
         /// <summary>
         public Dictionary<string, DataPipelineRunner> CurrentRunners => _currentRunners;
@@ -73,26 +75,19 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
             foreach (var activeDataPipelineRun in activeDataPipelineRuns)
             {
-                var runner = new DataPipelineRunner(
-                    _stateService,
-                    _pluginService,
-                    activeDataPipelineRun.Processor == DataPipelineRunProcessors.Frontend
-                        ? _frontendQueueClient
-                        : _backendQueueClient,
-                    _serviceProvider);
-
                 var dataPipelineDefinitionSnapshot =
                     await _dataPipelineResourceProvider.GetResourceAsync<DataPipelineDefinitionSnapshot>(
                         activeDataPipelineRun.DataPipelineObjectId,
                         ServiceContext.ServiceIdentity!);
-                await runner.InitializeExisting(
-                    dataPipelineDefinitionSnapshot.DataPipelineDefinition,
-                    activeDataPipelineRun);
 
-                _currentRunners[activeDataPipelineRun.RunId] = runner;
+                await AddRunner(
+                    activeDataPipelineRun,
+                    (runner) => runner.InitializeExisting(
+                        dataPipelineDefinitionSnapshot.DataPipelineDefinition,
+                        activeDataPipelineRun));
             }
 
-            if (! await _stateService.StartDataPipelineRunWorkItemProcessing(
+            if (!await _stateService.StartDataPipelineRunWorkItemProcessing(
                 ProcessDataPipelineRunWorkItem))
             {
                 _logger.LogError("Failed to start data pipeline run work item processing.");
@@ -127,7 +122,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         {
             var runIdsToRemove = new List<string>();
 
-            foreach (var item in _currentRunners)
+            foreach (var item in _currentRunners.Where(cr => cr.Value.Initialized))
             {
                 var complete = await item.Value.Completed();
                 if (complete)
@@ -142,6 +137,22 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         }
 
         /// <inheritdoc/>
+        public async Task<bool> CanStartRun(
+           DataPipelineRun dataPipelineRun)
+        {
+            await _initializationTask;
+
+            lock (_syncRoot)
+            {
+                // This comparer ensures that we do not start a new run that would be incompatible with an existing run.
+                var comparer = new DataPipelineRunCanonicalComparer();
+                return
+                    !_currentRunners.ContainsKey(dataPipelineRun.RunId)
+                    && !_currentRunners.Values.Any(r => comparer.Equals(r.DataPipelineRun, dataPipelineRun));
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task<DataPipelineRun> StartRun(
             DataPipelineRun dataPipelineRun,
             List<DataPipelineContentItem> contentItems,
@@ -153,30 +164,81 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             // This is necessary to avoid any issues during the initialization of the service.
             await _initializationTask;
 
-            var queueClient = dataPipelineRun.Processor switch
+            if (contentItems.Count == 0)
             {
-                DataPipelineRunProcessors.Frontend => _frontendQueueClient,
-                DataPipelineRunProcessors.Backend => _backendQueueClient,
-                _ => throw new DataPipelineServiceException(
-                        $"Unsupported processor type: {dataPipelineRun.Processor}",
-                        StatusCodes.Status400BadRequest)
-            };
+                _logger.LogWarning("No content items provided for data pipeline run {RunId}.", dataPipelineRun.RunId);
 
-            var dataPipelineRunner = new DataPipelineRunner(
-                _stateService,
-                _pluginService,
-                queueClient,
-                _serviceProvider);
+                dataPipelineRun.Completed = true;
+                dataPipelineRun.Successful = true;
+                await _stateService.UpdateDataPipelineRunStatus(dataPipelineRun);
 
-            await dataPipelineRunner.InitializeNew(
+                return dataPipelineRun;
+            }
+
+            await AddRunner(
                 dataPipelineRun,
-                contentItems,
-                dataPipelineDefinition,
-                userIdentity);
-
-            _currentRunners[dataPipelineRun.RunId] = dataPipelineRunner;
+                (runner) => runner.InitializeNew(
+                    dataPipelineRun,
+                    contentItems,
+                    dataPipelineDefinition,
+                    userIdentity));
 
             return dataPipelineRun;
+        }
+
+        private async Task AddRunner(
+            DataPipelineRun dataPipelineRun,
+            Func<DataPipelineRunner, Task> runnerInitializer)
+        {
+            DataPipelineRunner dataPipelineRunner;
+
+            lock (_syncRoot)
+            {
+                // This comparer ensures that we do not start a new run that would be incompatible with an existing run.
+                var comparer = new DataPipelineRunCanonicalComparer();
+                if (_currentRunners.ContainsKey(dataPipelineRun.RunId)
+                    || _currentRunners.Values.Any(r => comparer.Equals(r.DataPipelineRun, dataPipelineRun)))
+                {
+                    _logger.LogError(
+                    "The data pipeline with run id {DataPipelineRunId} and canonical run id {DataPipelineCanonicalRunId} is conflicting with an already existing run and cannot be started.",
+                    dataPipelineRun.RunId,
+                    dataPipelineRun.CanonicalRunId);
+                    throw new DataPipelineServiceException(
+                        $"The data pipeline with run id {dataPipelineRun.RunId} and canonical run id {dataPipelineRun.CanonicalRunId} is conflicting with an already existing run and cannot be started.",
+                        StatusCodes.Status400BadRequest);
+                }
+
+                dataPipelineRunner = new DataPipelineRunner(
+                    _stateService,
+                    _pluginService,
+                    dataPipelineRun.Processor == DataPipelineRunProcessors.Frontend
+                        ? _frontendQueueClient
+                        : _backendQueueClient,
+                    _serviceProvider);
+
+                _currentRunners[dataPipelineRun.RunId] = dataPipelineRunner;
+            }
+
+            try
+            {
+                await runnerInitializer(dataPipelineRunner);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to initialize data pipeline runner for run {RunId}.", dataPipelineRun.RunId);
+
+                lock (_syncRoot)
+                {
+                    // Remove from the current runners if it was added.
+                    if (_currentRunners.ContainsKey(dataPipelineRun.RunId))
+                        _currentRunners.Remove(dataPipelineRun.RunId);
+                }
+
+                throw new DataPipelineServiceException(
+                    $"Failed to initialize data pipeline runner for run {dataPipelineRun.RunId}.",
+                    ex,
+                    StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

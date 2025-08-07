@@ -242,12 +242,30 @@ namespace FoundationaLLM.Common.Interfaces
             where T : class, new();
 
         /// <summary>
-        /// Gets the path to the artifacts directory for a data pipeline run.
+        /// Gets the canonical root path that corresponds to a data pipeline run.
         /// </summary>
         /// <param name="dataPipelineDefinition">The data pipeline definition associated with the run.</param>
         /// <param name="dataPipelineRun">The data pipeline run.</param>
-        /// <returns>The path of the artifacts directory.</returns>
-        string GetDataPipelineRunArtifactsPath(
+        /// <returns>The path of the canonical root directory.</returns>
+        /// <remarks>
+        /// The canonical root path is where we store artifacts shared by all individual runs
+        /// that are trigerred for the same data pipeline definition and set of trigger parameters.
+        /// This includes the content items that are processed by the data pipeline runs.
+        /// </remarks>
+        string GetDataPipelineCanonicalRootPath(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun);
+
+        /// <summary>
+        /// Gets the root path for a data pipeline run.
+        /// </summary>
+        /// <param name="dataPipelineDefinition">The data pipeline definition associated with the run.</param>
+        /// <param name="dataPipelineRun">The data pipeline run.</param>
+        /// <returns>The path of the run root directory.</returns>
+        /// <remarks>
+        /// The run root path is where the run-specific artifacts are stored.
+        /// </remarks>
+        string GetDataPipelineRunRootPath(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun);
 
