@@ -9084,6 +9084,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunCanonicalComparer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunCanonicalComparer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunCanonicalComparer",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunCanonicalComparer.yml\" sourcestartlinenumber=\"1\">Provides a mechanism to compare two <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun\" data-throw-if-not-resolved=\"false\"></xref> objects for canonical equivalence.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter.yml",
       "output": {
         ".html": {

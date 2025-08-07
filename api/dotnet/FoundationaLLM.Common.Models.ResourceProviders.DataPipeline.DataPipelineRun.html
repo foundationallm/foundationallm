@@ -221,7 +221,7 @@ Class DataPipelineRun  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun__ctor" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.#ctor">
   DataPipelineRun()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L125"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Set default property values.</p>
@@ -252,7 +252,7 @@ Class DataPipelineRun  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_ActiveStages" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.ActiveStages">
   ActiveStages
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L73"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the list of active stages in the data pipeline run.</p>
@@ -261,7 +261,7 @@ Class DataPipelineRun  <a class="header-action link-secondary" title="View sourc
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;active_stages&quot;)]
-[JsonPropertyOrder(7)]
+[JsonPropertyOrder(8)]
 public List&lt;string&gt; ActiveStages { get; set; }</code></pre>
   </div>
 
@@ -286,7 +286,7 @@ public List&lt;string&gt; ActiveStages { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_AllStages" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.AllStages">
   AllStages
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L80"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the list of all stages in the data pipeline run.</p>
@@ -295,7 +295,7 @@ public List&lt;string&gt; ActiveStages { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;all_stages&quot;)]
-[JsonPropertyOrder(8)]
+[JsonPropertyOrder(9)]
 public List&lt;string&gt; AllStages { get; set; }</code></pre>
   </div>
 
@@ -316,11 +316,49 @@ public List&lt;string&gt; AllStages { get; set; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_CanonicalRunId_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.CanonicalRunId*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_CanonicalRunId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.CanonicalRunId">
+  CanonicalRunId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or set the canonical run identifier.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;canonical_run_id&quot;)]
+[JsonPropertyOrder(2)]
+public string? CanonicalRunId { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_CanonicalRunId_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>When two separate data pipeline runs are triggered for the same data pipeline
+and the same parameters, they will have the same canonical run identifier.</p>
+</div>
+
+
+
+
   <a id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_Completed_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.Completed*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_Completed" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.Completed">
   Completed
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L99"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the flag that indicates whether the resource run is completed.</p>
@@ -329,7 +367,7 @@ public List&lt;string&gt; AllStages { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;completed&quot;)]
-[JsonPropertyOrder(11)]
+[JsonPropertyOrder(12)]
 public bool Completed { get; set; }</code></pre>
   </div>
 
@@ -354,7 +392,7 @@ public bool Completed { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_CompletedStages" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.CompletedStages">
   CompletedStages
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L87"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the list of completed stages in the data pipeline run.</p>
@@ -363,7 +401,7 @@ public bool Completed { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;completed_stages&quot;)]
-[JsonPropertyOrder(9)]
+[JsonPropertyOrder(10)]
 public List&lt;string&gt; CompletedStages { get; set; }</code></pre>
   </div>
 
@@ -388,7 +426,7 @@ public List&lt;string&gt; CompletedStages { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_DataPipelineObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.DataPipelineObjectId">
   DataPipelineObjectId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the object identifier of the data pipeline.</p>
@@ -397,7 +435,7 @@ public List&lt;string&gt; CompletedStages { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;data_pipeline_object_id&quot;)]
-[JsonPropertyOrder(2)]
+[JsonPropertyOrder(3)]
 public required string DataPipelineObjectId { get; set; }</code></pre>
   </div>
 
@@ -422,7 +460,7 @@ public required string DataPipelineObjectId { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_Errors" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.Errors">
   Errors
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L107"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L118"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the list of errors encountered during the data pipeline run.</p>
@@ -431,7 +469,7 @@ public required string DataPipelineObjectId { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;errors&quot;)]
-[JsonPropertyOrder(14)]
+[JsonPropertyOrder(15)]
 public List&lt;string&gt;? Errors { get; set; }</code></pre>
   </div>
 
@@ -456,7 +494,7 @@ public List&lt;string&gt;? Errors { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_FailedStages" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.FailedStages">
   FailedStages
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L94"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the list of failed stages in the data pipeline run.</p>
@@ -465,7 +503,7 @@ public List&lt;string&gt;? Errors { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;failed_stages&quot;)]
-[JsonPropertyOrder(10)]
+[JsonPropertyOrder(11)]
 public List&lt;string&gt; FailedStages { get; set; }</code></pre>
   </div>
 
@@ -490,7 +528,7 @@ public List&lt;string&gt; FailedStages { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_Processor" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.Processor">
   Processor
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L66"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the name of the processor that is used to process the data pipeline run.</p>
@@ -499,7 +537,7 @@ public List&lt;string&gt; FailedStages { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;processor&quot;)]
-[JsonPropertyOrder(6)]
+[JsonPropertyOrder(7)]
 public required string Processor { get; set; }</code></pre>
   </div>
 
@@ -530,7 +568,7 @@ public required string Processor { get; set; }</code></pre>
   <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L17"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>The unique identifier of the data pipeline run.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the unique identifier of the data pipeline run.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -561,7 +599,7 @@ public string RunId { get; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_StagesMetrics" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.StagesMetrics">
   StagesMetrics
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L100"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L111"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the metrics for each stage in the data pipeline run.</p>
@@ -570,7 +608,7 @@ public string RunId { get; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;stages_metrics&quot;)]
-[JsonPropertyOrder(13)]
+[JsonPropertyOrder(14)]
 public Dictionary&lt;string, DataPipelineStageMetrics&gt; StagesMetrics { get; set; }</code></pre>
   </div>
 
@@ -595,7 +633,7 @@ public Dictionary&lt;string, DataPipelineStageMetrics&gt; StagesMetrics { get; s
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_Successful" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.Successful">
   Successful
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L104"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the flag that indicates whether the resource run was successful.</p>
@@ -604,7 +642,7 @@ public Dictionary&lt;string, DataPipelineStageMetrics&gt; StagesMetrics { get; s
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;successful&quot;)]
-[JsonPropertyOrder(12)]
+[JsonPropertyOrder(13)]
 public bool Successful { get; set; }</code></pre>
   </div>
 
@@ -629,7 +667,7 @@ public bool Successful { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_TriggerName" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.TriggerName">
   TriggerName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L42"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the name of the manual trigger used to start the pipeline.</p>
@@ -638,7 +676,7 @@ public bool Successful { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;trigger_name&quot;)]
-[JsonPropertyOrder(3)]
+[JsonPropertyOrder(4)]
 public required string TriggerName { get; set; }</code></pre>
   </div>
 
@@ -663,7 +701,7 @@ public required string TriggerName { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_TriggerParameterValues" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.TriggerParameterValues">
   TriggerParameterValues
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L49"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a dictionary that contains the parameter values required to trigger the pipeline.</p>
@@ -672,7 +710,7 @@ public required string TriggerName { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;trigger_parameter_values&quot;)]
-[JsonPropertyOrder(4)]
+[JsonPropertyOrder(5)]
 public required Dictionary&lt;string, object&gt; TriggerParameterValues { get; set; }</code></pre>
   </div>
 
@@ -697,7 +735,7 @@ public required Dictionary&lt;string, object&gt; TriggerParameterValues { get; s
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_TriggeringUPN" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.TriggeringUPN">
   TriggeringUPN
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the user principal name (UPN) of the user that triggered the creation of the data pipeline run.</p>
@@ -706,7 +744,7 @@ public required Dictionary&lt;string, object&gt; TriggerParameterValues { get; s
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;triggering_upn&quot;)]
-[JsonPropertyOrder(5)]
+[JsonPropertyOrder(6)]
 public required string TriggeringUPN { get; set; }</code></pre>
   </div>
 
@@ -735,7 +773,7 @@ public required string TriggeringUPN { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_Create_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__System_String_System_String_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.Create(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.String)">
   Create(string, string, Dictionary&lt;string, object&gt;, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L138"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.html">DataPipelineRun</a> instance.</p>
@@ -786,7 +824,7 @@ Must be one of the values from <a class="xref" href="FoundationaLLM.Common.Const
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_FromTriggerRequest_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineTriggerRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.FromTriggerRequest(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineTriggerRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   FromTriggerRequest(DataPipelineTriggerRequest, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineRun.cs/#L166"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.html">DataPipelineRun</a> instance from a data pipeline trigger request.</p>
