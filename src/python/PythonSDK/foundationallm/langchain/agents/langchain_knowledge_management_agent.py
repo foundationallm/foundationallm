@@ -548,16 +548,9 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             tool_factory = ToolFactory(self.plugin_manager)
             tools = []
 
-            parsed_user_prompt = request.user_prompt
-
-            explicit_tool = next((tool for tool in agent.tools if parsed_user_prompt.startswith(f'[{tool.name}]:')), None)
-            if explicit_tool is not None:
-                tools.append(tool_factory.get_tool(agent.name, explicit_tool, request.objects, self.user_identity, self.config))
-                parsed_user_prompt = parsed_user_prompt.split(':', 1)[1].strip()
-            else:
-                # Populate tools list from agent configuration
-                for tool in agent.tools:
-                    tools.append(tool_factory.get_tool(agent.name, tool, request.objects, self.user_identity, self.config))
+            # Populate tools list from agent configuration
+            for tool in agent.tools:
+                tools.append(tool_factory.get_tool(agent.name, tool, request.objects, self.user_identity, self.config))
 
             request.objects['message_history'] = request.message_history[:agent.conversation_history_settings.max_history*2]
 
@@ -573,7 +566,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             with self.tracer.start_as_current_span('langchain_invoke_external_workflow', kind=SpanKind.SERVER) as span:
                 response = await workflow.invoke_async(
                     operation_id=request.operation_id,
-                    user_prompt=parsed_user_prompt,
+                    user_prompt=request.user_prompt,
                     user_prompt_rewrite=request.user_prompt_rewrite,
                     message_history=request.message_history,
                     file_history=request.file_history,
