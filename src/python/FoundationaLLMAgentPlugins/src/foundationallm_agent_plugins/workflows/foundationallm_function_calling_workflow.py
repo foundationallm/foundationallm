@@ -151,6 +151,15 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
             with self.tracer.start_as_current_span(f'{self.name}_workflow_llm_call', kind=SpanKind.INTERNAL):
                 router_start_time = time.time()
+
+                # TODO: This is a placeholder for explicit tool invocation logic (currently copied over from the original code and commented out).
+                # parsed_user_prompt = request.user_prompt
+
+                # explicit_tool = next((tool for tool in agent.tools if parsed_user_prompt.startswith(f'[{tool.name}]:')), None)
+                # if explicit_tool is not None:
+                #     tools.append(tool_factory.get_tool(agent.name, explicit_tool, request.objects, self.user_identity, self.config))
+                #     parsed_user_prompt = parsed_user_prompt.split(':', 1)[1].strip()
+
                 llm_bound_tools = self.workflow_llm.bind_tools(self.tools)
                 llm_response = await llm_bound_tools.ainvoke(
                     messages,
