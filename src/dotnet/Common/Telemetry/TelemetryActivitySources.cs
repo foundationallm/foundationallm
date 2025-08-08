@@ -16,11 +16,27 @@ namespace FoundationaLLM.Common.Telemetry
         /// <summary>
         /// The activity source for the Orchestration API.
         /// </summary>
-        public static readonly ActivitySource OrchestrationAPIActivitySource = new(ServiceNames.OrchestrationAPI);
+        public static readonly ActivitySource OrchestrationAPIActivitySource = new (ServiceNames.OrchestrationAPI);
 
         /// <summary>
-        /// The activity source for the Data Pipeline Worker Service.
+        /// The activity source for the Data Pipeline Frontend Worker Service.
         /// </summary>
-        public static readonly ActivitySource DataPipelineWorkerServiceActivitySource = new(ServiceNames.DataPipelineWorkerService);
+        public static readonly ActivitySource DataPipelineFrontendWorkerActivitySource = new (ServiceNames.DataPipelineFrontendWorker);
+
+        /// <summary>
+        /// The activity source for the Data Pipeline Backend Worker Service.
+        /// </summary>
+        public static readonly ActivitySource DataPipelineBackendWorkerActivitySource = new (ServiceNames.DataPipelineBackendWorker);
+
+        /// <summary>
+        /// A collection of all predefined activity sources.
+        /// </summary>
+        public static readonly IEnumerable<ActivitySource> All = new[]
+        {
+            CoreAPIActivitySource,
+            OrchestrationAPIActivitySource,
+            DataPipelineFrontendWorkerActivitySource,
+            DataPipelineBackendWorkerActivitySource
+        };
     }
 }

@@ -1,9 +1,12 @@
 ﻿using Azure.Core;
 using Azure.Identity;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Telemetry;
 using Microsoft.Identity.Web;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace FoundationaLLM.Common.Authentication
@@ -55,6 +58,11 @@ namespace FoundationaLLM.Common.Authentication
                 var upn = token.Claims.First(c => c.Type == ClaimConstants.PreferredUserName)?.Value;
                 ServiceIdentity.UPN = upn;
             }
+
+            TelemetryActivitySource = TelemetryActivitySources
+                .All
+                .SingleOrDefault(tas => tas.Name == serviceName)
+                ?? new ActivitySource(serviceName);
         }
 
         /// <summary>
@@ -81,6 +89,11 @@ namespace FoundationaLLM.Common.Authentication
         /// The <see cref="UnifiedUserIdentity"/> of the service based on its managed identity."/>
         /// </summary>
         public static UnifiedUserIdentity? ServiceIdentity { get; set; }
+
+        /// <summary>
+        /// The <see cref="ActivitySource"/> used for telemetry.
+        /// </summary>
+        public static ActivitySource TelemetryActivitySource { get; set; } = null!;
 
         /// <summary>
         /// Creates a new <see cref="TokenCredential"/>.
