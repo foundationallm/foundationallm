@@ -31,7 +31,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
     {
         protected override string Name => PluginNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE;
 
-        private const int GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS = 5;
+        private const int GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS = 1;
 
         /// <inheritdoc/>
         public override async Task<PluginResult> ProcessWorkItem(
