@@ -181,5 +181,51 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
                 InstanceId = string.Empty,
                 TriggeringUPN = string.Empty
             };
+
+        /// <summary>
+        /// Gets the metrics for a specific stage in the data pipeline run.
+        /// </summary>
+        /// <param name="stageName">The name of the stage.</param>
+        /// <returns>A <see cref="DataPipelineStageMetrics"/> associated with the specified stage or <see langword="null"/>
+        /// if there are no metrics yet for that stage.</returns>
+        public DataPipelineStageMetrics? GetStageMetrics(string stageName)
+        {
+            if (StagesMetrics.TryGetValue(stageName, out var metrics))
+            {
+                return metrics;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Creates or updates the metrics for a specific stage in the data pipeline run.
+        /// </summary>
+        /// <param name="stageName">The name of the stage.</param>
+        /// <param name="startTimestamp"> The timestamp when the stage started processing.</param>
+        /// <param name="workItemsCount">The number of work items processed in the stage.</param>
+        /// <param name="completedWorkItemsCount">The number of completed work items.</param>
+        /// <param name="successfulWorkItemsCount">The number of work items completed successfully.</param>
+        public void CreateOrUpdateStageMetrics(
+            string stageName,
+            DateTimeOffset startTimestamp,
+            int workItemsCount,
+            int completedWorkItemsCount,
+            int successfulWorkItemsCount)
+        {
+            if (!StagesMetrics.TryGetValue(stageName, out var metrics))
+            {
+                metrics = new DataPipelineStageMetrics
+                {
+                    StartTimestamp = startTimestamp,
+                };
+
+                StagesMetrics[stageName] = metrics;
+            }
+
+            metrics.WorkItemsCount = workItemsCount;
+            metrics.CompletedWorkItemsCount = completedWorkItemsCount;
+            metrics.SuccessfulWorkItemsCount = successfulWorkItemsCount;
+            metrics.LastUpdateTimestamp = DateTimeOffset.UtcNow;
+        }
     }
 }

@@ -51,8 +51,6 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             { "image/tiff", "TIFF" }
         };
 
-        private const string METADATA_FILE_NAME = "metadata.json";
-
         /// <inheritdoc/>
         public override async Task<List<DataPipelineRunWorkItem>> GetStartingStageWorkItems(
             List<DataPipelineContentItem> contentItems,

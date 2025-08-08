@@ -82,6 +82,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
 
                 await CreateStageRunner(
                     activeStage,
+                    dataPipelineRun.GetStageMetrics(activeStage.Name)?.StartTimestamp,
                     workItems);
 
                 _logger.LogInformation("Finished initializing stage {StageName} for new data pipeline run {DataPipelineRunId}...",
@@ -110,6 +111,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
 
                 var dataPipelineStageRunner = new DataPipelineStageRunner(
                     activeStageName,
+                    dataPipelineRun.GetStageMetrics(activeStageName)?.StartTimestamp,
                     _stateService,
                     _serviceProvider.GetRequiredService<ILogger<DataPipelineStageRunner>>());
 
@@ -146,13 +148,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                     stageRunner.ResetChanged();
 
                 foreach (var stageRunner in _currentStageRunners.Values)
-                    _dataPipelineRun.StagesMetrics[stageRunner.StageName] =
-                        new DataPipelineStageMetrics
-                        {
-                            WorkItemsCount = stageRunner.WorkItemsCount,
-                            CompletedWorkItemsCount = stageRunner.CompletedWorkItemsCount,
-                            SuccessfulWorkItemsCount = stageRunner.SuccessfulWorkItemsCount
-                        };
+                    _dataPipelineRun.CreateOrUpdateStageMetrics(
+                        stageRunner.StageName,
+                        stageRunner.StageRunStartTime,
+                        stageRunner.WorkItemsCount,
+                        stageRunner.CompletedWorkItemsCount,
+                        stageRunner.SuccessfulWorkItemsCount);
 
                 // Process completed stage runners and advance to the next stages if there are no global errors.
                 // A data pipeline global error is an error that occurs outside of a specific stage,
@@ -232,10 +233,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
 
         private async Task CreateStageRunner(
             DataPipelineStage dataPipelineStage,
+            DateTimeOffset? stageRunStartTime,
             List<DataPipelineRunWorkItem> workItems)
         {
             var dataPipelineStageRunner = new DataPipelineStageRunner(
                 dataPipelineStage.Name,
+                stageRunStartTime,
                 _stateService,
                 _serviceProvider.GetRequiredService<ILogger<DataPipelineStageRunner>>());
 
@@ -383,6 +386,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
 
                     await CreateStageRunner(
                         nextStage,
+                        _dataPipelineRun.GetStageMetrics(nextStage.Name)?.StartTimestamp,
                         stageWorkItems);
 
                     if (!_dataPipelineRun.ActiveStages.Contains(nextStage.Name))

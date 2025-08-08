@@ -46,7 +46,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             IServiceProvider serviceProvider,
             IOptions<DataPipelineServiceSettings> options,
             ILogger<DataPipelineRunnerService> logger) :
-                base(TimeSpan.FromSeconds(1), serviceProvider, logger)
+                base(TimeSpan.FromMilliseconds(100), serviceProvider, logger)
         {
             _settings = options.Value;
             _stateService = stateService;
