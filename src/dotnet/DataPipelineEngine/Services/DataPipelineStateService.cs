@@ -297,6 +297,34 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         }
 
         /// <inheritdoc/>
+        public async Task<bool> DataPipelineRunWorkItemArtifactChanged(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem,
+            string artifactName)
+        {
+            var artifactPath = string.Join('/',
+                [
+                    GetDataPipelineCanonicalRootPath(
+                        dataPipelineDefinition,
+                        dataPipelineRun),
+                    "content-items",
+                    dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-'),
+                    artifactName
+                ]);
+
+            _logger.LogDebug("Checking if data pipeline run {DataPipelineRunId} has changed artifact {ArtifactPath}.",
+                dataPipelineRun.Id,
+                artifactPath);
+
+            var changeLog = await ReadChangeLog(
+                dataPipelineRun.InstanceId,
+                artifactPath);
+            return
+                changeLog.LastChangedBy.Equals(dataPipelineRun.Id);
+        }
+
+        /// <inheritdoc/>
         public async Task<List<DataPipelineStateArtifact>> LoadDataPipelineRunWorkItemArtifacts(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
@@ -392,12 +420,48 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                         dataPipelineRun.RunId,
                         dataPipelineRunWorkItem.ContentItemCanonicalId);
 
-                    await _storageService.WriteFileAsync(
+                    var artifactFilePath = $"{artifactsPath}/{artifact.FileName}";
+                    var changeLog = await ReadChangeLog(
                         dataPipelineRun.InstanceId,
-                        $"{artifactsPath}/{artifact.FileName}",
-                        artifact.Content.ToStream(),
-                        artifact.ContentType,
-                        token);
+                        artifactFilePath);
+
+                    bool artifactChanged = false;
+
+                    if (await _storageService.FileExistsAsync(
+                        dataPipelineRun.InstanceId,
+                        artifactFilePath,
+                        token))
+                    {
+                        var existingArtifactContent = await _storageService.ReadFileAsync(
+                            dataPipelineRun.InstanceId,
+                            artifactFilePath,
+                            token);
+                        if (!existingArtifactContent.ToArray().SequenceEqual(
+                            artifact.Content.ToArray()))
+                        {
+                            artifactChanged = true;
+                            changeLog.AddChange(dataPipelineRun.Id);
+                        }
+                    }
+                    else
+                    {
+                        artifactChanged = true;
+                        changeLog.AddChange(dataPipelineRun.Id);
+                    }
+
+                    if (artifactChanged)
+                    {
+                        await _storageService.WriteFileAsync(
+                            dataPipelineRun.InstanceId,
+                            artifactFilePath,
+                            artifact.Content.ToStream(),
+                            artifact.ContentType,
+                            token);
+                        await WriteChangeLog(
+                            dataPipelineRun.InstanceId,
+                            artifactFilePath,
+                            changeLog);
+                    }
 
                     _logger.LogDebug("Successfully saved artifact {ArtifactFileName} for run {RunId} and content item {ContentItemCanonicalId}.",
                         artifact.FileName,
@@ -408,7 +472,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             _logger.LogDebug("Successfully saved data pipeline run work item artifacts for {RunId} and content item {ContentItemCanonicalId}.",
                 dataPipelineRun.RunId,
                 dataPipelineRunWorkItem.ContentItemCanonicalId);
-        }
+        } 
 
         /// <inheritdoc/>
         public async Task SaveDataPipelineRunArtifacts(
@@ -458,6 +522,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     fileName
                 ]);
 
+            if (! await _storageService.FileExistsAsync(
+                dataPipelineRun.InstanceId,
+                contentItemPartsPath,
+                default))
+                return [];
+
             var binaryContent = await _storageService.ReadFileAsync(
                 dataPipelineRun.InstanceId,
                 contentItemPartsPath,
@@ -486,6 +556,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     contentItemCanonicalId.Trim('/').Replace('/', '-'),
                     fileName
                 ]);
+
+            if (!await _storageService.FileExistsAsync(
+                dataPipelineRun.InstanceId,
+                contentItemPartsPath,
+                default))
+                return [];
 
             var binaryContent = await _storageService.ReadFileAsync(
                 dataPipelineRun.InstanceId,
@@ -622,5 +698,45 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         /// <inheritdoc/>
         public async Task<List<DataPipelineRun>> GetDataPipelineRuns(DataPipelineRunFilter dataPipelineRunFilter) =>
             await _cosmosDBService.GetDataPipelineRuns(dataPipelineRunFilter);
+
+        #region Changelog utils
+
+        private async Task<DataPipelineStateArtifactChangeLog> ReadChangeLog(
+            string instanceId,
+            string filePath)
+        {
+            var changeLogFilePath = $"{filePath}.changelog";
+            if (await _storageService.FileExistsAsync(
+                instanceId,
+                changeLogFilePath,
+                default))
+            {
+                var changeLogContent = await _storageService.ReadFileAsync(
+                    instanceId,
+                    changeLogFilePath,
+                    default);
+                return JsonSerializer.Deserialize<DataPipelineStateArtifactChangeLog>(
+                    changeLogContent.ToStream())!;
+            }
+
+            return new();
+        }
+
+        private async Task WriteChangeLog(
+            string instanceId,
+            string filePath,
+            DataPipelineStateArtifactChangeLog changeLog)
+        {
+            var changeLogFilePath = $"{filePath}.changelog";
+            var changeLogContent = JsonSerializer.Serialize(changeLog);
+            await _storageService.WriteFileAsync(
+                instanceId,
+                changeLogFilePath,
+                changeLogContent,
+                "application/json",
+                default);
+        }
+
+        #endregion
     }
 }

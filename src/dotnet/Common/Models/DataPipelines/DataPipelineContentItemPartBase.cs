@@ -30,5 +30,11 @@ namespace FoundationaLLM.Common.Models.DataPipelines
         /// </summary>
         [JsonPropertyName("metadata")]
         public string? Metadata { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the data pipeline run that last modified this content item part.
+        /// </summary>
+        [JsonPropertyName("last_changed_by")]
+        public string LastChangedBy { get; set; } = null!;
     }
 }

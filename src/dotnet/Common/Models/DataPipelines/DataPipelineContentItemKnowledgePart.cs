@@ -26,7 +26,8 @@ namespace FoundationaLLM.Common.Models.DataPipelines
                 ContentItemCanonicalId = contentItemPart.ContentItemCanonicalId,
                 Position = contentItemPart.Position,
                 IndexEntryId = contentItemPart.IndexEntryId,
-                Metadata = contentItemPart.Metadata
+                Metadata = contentItemPart.Metadata,
+                LastChangedBy = contentItemPart.LastChangedBy
             };
     }
 }

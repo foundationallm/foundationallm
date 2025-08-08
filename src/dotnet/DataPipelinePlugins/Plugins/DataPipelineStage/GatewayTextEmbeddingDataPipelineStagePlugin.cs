@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.DataPipelines;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
@@ -30,7 +31,6 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
     {
         protected override string Name => PluginNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE;
 
-        private const string CONTENT_PARTS_FILE_NAME = "content-parts.parquet";
         private const int GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS = 5;
 
         /// <inheritdoc/>
@@ -39,6 +39,30 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             DataPipelineRun dataPipelineRun,
             DataPipelineRunWorkItem dataPipelineRunWorkItem)
         {
+            var contentItemParts = await _dataPipelineStateService.LoadDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                dataPipelineRunWorkItem,
+                DataPipelineStateFileNames.ContentParts);
+
+            if (!contentItemParts.Any())
+                return new PluginResult(true, false, WarningMessage: "The content item has no content.");
+
+            var changedContentItemParts = contentItemParts
+               .Where(part => part.LastChangedBy.Equals(dataPipelineRun.Id)) // Only embed parts that have changed in the current data pipeline run.
+               .ToList();
+
+            if (changedContentItemParts.Count == 0)
+            {
+                _logger.LogInformation(
+                    "The {PluginName} plugin for the {Stage} stage determined there were no changes to process for the work item {WorkItemId}.",
+                    Name,
+                    dataPipelineRunWorkItem.Stage,
+                    dataPipelineRunWorkItem.Id);
+                // Since none of the content has changed, we can skip the embedding step.
+                return new PluginResult(true, false);
+            }
+
             if (!_pluginParameters.TryGetValue(
                 PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_EMBEDDINGMODEL,
                 out var embeddingModel))
@@ -50,15 +74,6 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 out var embeddingDimensions))
                 throw new PluginException(
                     $"The plugin {Name} requires the {PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS} parameter.");
-
-            var contentItemParts = await _dataPipelineStateService.LoadDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
-                dataPipelineDefinition,
-                dataPipelineRun,
-                dataPipelineRunWorkItem,
-                CONTENT_PARTS_FILE_NAME);
-
-            if (!contentItemParts.Any())
-                return new PluginResult(true, false, WarningMessage: "The content item has no content.");
 
             using var scope = _serviceProvider.CreateScope();
 
@@ -76,7 +91,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 EmbeddingModelName = embeddingModel.ToString()!,
                 EmbeddingModelDimensions = (int)embeddingDimensions,
                 Prioritized = false,
-                TextChunks = [.. contentItemParts
+                TextChunks = [.. changedContentItemParts
                     .Select(part => new TextChunk
                     {
                         Position = part.Position,
@@ -111,7 +126,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 chunk => chunk.Position,
                 chunk => chunk.Embedding);
 
-            foreach (var contentItemPart in contentItemParts)
+            foreach (var contentItemPart in changedContentItemParts)
             {
                 if (embeddingsDictionary.TryGetValue(contentItemPart.Position, out var embedding))
                 {
@@ -126,7 +141,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
                 contentItemParts,
-                CONTENT_PARTS_FILE_NAME);
+                DataPipelineStateFileNames.ContentParts);
 
             return new PluginResult(true, false);
         }
