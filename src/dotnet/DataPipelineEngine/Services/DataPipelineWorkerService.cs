@@ -110,9 +110,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                         && (await WorkItemMessagesAvailable().ConfigureAwait(false)))
                     {
                         mostRecentAvailableWorkTime = DateTimeOffset.UtcNow;
-                        cycleTimeMilliseconds = AGGRESSIVE_CYCLE_TIME_MILLISECONDS; // Ensure cycle time is set to aggressive value.
-                        _logger.LogInformation("The {ServiceName} service is using a processing cycle time of {CycleTimeMilliseconds} milliseconds.",
-                            _serviceName, cycleTimeMilliseconds);
+                        if (cycleTimeMilliseconds != AGGRESSIVE_CYCLE_TIME_MILLISECONDS)
+                        {
+                            cycleTimeMilliseconds = AGGRESSIVE_CYCLE_TIME_MILLISECONDS; // Ensure cycle time is set to aggressive value.
+                            _logger.LogInformation("The {ServiceName} service is switching to a processing cycle time of {CycleTimeMilliseconds} milliseconds.",
+                                _serviceName, cycleTimeMilliseconds);
+                        }
 
                         // We have available capacity in the task pool and there are messages in the queue.
                         var dequeuedMessages =
@@ -177,11 +180,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                             }));
                     }
 
-                    if ((DateTimeOffset.UtcNow - mostRecentAvailableWorkTime).TotalSeconds > 300)
+                    if ((DateTimeOffset.UtcNow - mostRecentAvailableWorkTime).TotalSeconds > 300
+                        && cycleTimeMilliseconds != NORMAL_CYCLE_TIME_MILLISECONDS)
                     {
                         // If there are no messages available for the last 300 seconds, increase the cycle time to reduce the load on the queue.
                         cycleTimeMilliseconds = NORMAL_CYCLE_TIME_MILLISECONDS;
-                        _logger.LogInformation("The {ServiceName} service is using a processing cycle time of {CycleTimeMilliseconds} milliseconds due to no work available.",
+                        _logger.LogInformation("The {ServiceName} service is switching to a processing cycle time of {CycleTimeMilliseconds} milliseconds because there is no work available.",
                             _serviceName, cycleTimeMilliseconds);
                     }
 
@@ -387,7 +391,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     $"Stage.{dataPipelineRunWorkItem.Stage}."),
                 ServiceContext.ServiceIdentity!);
 
-            using var telemetryActivity = TelemetryActivitySources.DataPipelineWorkerServiceActivitySource.StartActivity(
+            using var telemetryActivity = ServiceContext.TelemetryActivitySource.StartActivity(
                 TelemetryActivityNames.DataPipelineWorkerService_Stage_ProcessWorkItem,
                 ActivityKind.Internal,
                 parentContext: default,
