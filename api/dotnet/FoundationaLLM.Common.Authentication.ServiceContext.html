@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Authentication_ServiceContext" data-uid="FoundationaLLM.Common.Authentication.ServiceContext" class="text-break">
-Class ServiceContext  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L14"><i class="bi bi-code-slash"></i></a>
+Class ServiceContext  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L17"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -157,7 +157,7 @@ Class ServiceContext  <a class="header-action link-secondary" title="View source
 
   <h3 id="FoundationaLLM_Common_Authentication_ServiceContext_AzureCredential" data-uid="FoundationaLLM.Common.Authentication.ServiceContext.AzureCredential">
   AzureCredential
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L86"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The default Azure credential to use for authentication.</p>
@@ -189,7 +189,7 @@ Class ServiceContext  <a class="header-action link-secondary" title="View source
 
   <h3 id="FoundationaLLM_Common_Authentication_ServiceContext_Production" data-uid="FoundationaLLM.Common.Authentication.ServiceContext.Production">
   Production
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L81"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Indicates whether the environment we run in is production or not.</p>
@@ -221,7 +221,7 @@ Class ServiceContext  <a class="header-action link-secondary" title="View source
 
   <h3 id="FoundationaLLM_Common_Authentication_ServiceContext_ServiceIdentity" data-uid="FoundationaLLM.Common.Authentication.ServiceContext.ServiceIdentity">
   ServiceIdentity
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L91"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> of the service based on its managed identity.&quot;/&gt;</p>
@@ -253,7 +253,7 @@ Class ServiceContext  <a class="header-action link-secondary" title="View source
 
   <h3 id="FoundationaLLM_Common_Authentication_ServiceContext_ServiceInstanceName" data-uid="FoundationaLLM.Common.Authentication.ServiceContext.ServiceInstanceName">
   ServiceInstanceName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L76"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the name of the instance service.</p>
@@ -285,7 +285,7 @@ Class ServiceContext  <a class="header-action link-secondary" title="View source
 
   <h3 id="FoundationaLLM_Common_Authentication_ServiceContext_ServiceName" data-uid="FoundationaLLM.Common.Authentication.ServiceContext.ServiceName">
   ServiceName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L71"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the name of the service.</p>
@@ -313,6 +313,38 @@ Class ServiceContext  <a class="header-action link-secondary" title="View source
 
 
 
+  <a id="FoundationaLLM_Common_Authentication_ServiceContext_TelemetryActivitySource_" data-uid="FoundationaLLM.Common.Authentication.ServiceContext.TelemetryActivitySource*"></a>
+
+  <h3 id="FoundationaLLM_Common_Authentication_ServiceContext_TelemetryActivitySource" data-uid="FoundationaLLM.Common.Authentication.ServiceContext.TelemetryActivitySource">
+  TelemetryActivitySource
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.diagnostics.activitysource">ActivitySource</a> used for telemetry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ActivitySource TelemetryActivitySource { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.diagnostics.activitysource">ActivitySource</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
@@ -321,7 +353,7 @@ Class ServiceContext  <a class="header-action link-secondary" title="View source
 
   <h3 id="FoundationaLLM_Common_Authentication_ServiceContext_CreateAzureCredential" data-uid="FoundationaLLM.Common.Authentication.ServiceContext.CreateAzureCredential">
   CreateAzureCredential()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L103"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="https://learn.microsoft.com/dotnet/api/azure.core.tokencredential">TokenCredential</a>.</p>
@@ -355,7 +387,7 @@ and an <a class="xref" href="https://learn.microsoft.com/dotnet/api/azure.identi
 
   <h3 id="FoundationaLLM_Common_Authentication_ServiceContext_Initialize_System_Boolean_System_String_System_String_" data-uid="FoundationaLLM.Common.Authentication.ServiceContext.Initialize(System.Boolean,System.String,System.String)">
   Initialize(bool, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes the service context.</p>
@@ -394,7 +426,7 @@ and an <a class="xref" href="https://learn.microsoft.com/dotnet/api/azure.identi
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L14" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Authentication/ServiceContext.cs/#L17" class="edit-link">Edit this page</a>
         </div>
 
 

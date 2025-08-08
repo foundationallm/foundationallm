@@ -13952,7 +13952,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.DependencyInjection",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DependencyInjection.yml\" sourcestartlinenumber=\"1\">Provides dependency injection extensions for the FoundationaLLM Context service.</p>\n"
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DependencyInjection.yml\" sourcestartlinenumber=\"1\">Provides dependency injection extensions for the FoundationaLLM Data Pipeline service.</p>\n"
     },
     {
       "type": "ManagedReference",
