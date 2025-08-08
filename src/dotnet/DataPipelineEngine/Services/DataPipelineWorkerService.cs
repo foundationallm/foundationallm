@@ -39,6 +39,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         private const int MESSAGE_ERROR_VISIBILITY_TIMEOUT_SECONDS = 5;
         private const int MAX_FAILED_PROCESSING_ATTEMPTS = 10;
 
+        private const int AGGRESSIVE_CYCLE_TIME_MILLISECONDS = 100;
+        private const int NORMAL_CYCLE_TIME_MILLISECONDS = 1000;
+
         /// <summary>
         /// Initializes a new instance of the service.
         /// </summary>
@@ -86,6 +89,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
             _logger.LogInformation("The {ServiceName} service has all the resource providers properly initialized.", _serviceName);
 
+            // Starting with an aggressive cycle time of 100 milliseconds to ensure quick response to new messages.
+            var cycleTimeMilliseconds = AGGRESSIVE_CYCLE_TIME_MILLISECONDS;
+            var mostRecentAvailableWorkTime = DateTimeOffset.MinValue;
+            _logger.LogInformation("The {ServiceName} service is using a processing cycle time of {CycleTimeMilliseconds} milliseconds.",
+                _serviceName, cycleTimeMilliseconds);
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
@@ -95,6 +104,11 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     if (taskPoolAvailableCapacity > 0
                         && (await WorkItemMessagesAvailable().ConfigureAwait(false)))
                     {
+                        mostRecentAvailableWorkTime = DateTimeOffset.UtcNow;
+                        cycleTimeMilliseconds = AGGRESSIVE_CYCLE_TIME_MILLISECONDS; // Ensure cycle time is set to aggressive value.
+                        _logger.LogInformation("The {ServiceName} service is using a processing cycle time of {CycleTimeMilliseconds} milliseconds.",
+                            _serviceName, cycleTimeMilliseconds);
+
                         // We have available capacity in the task pool and there are messages in the queue.
                         var dequeuedMessages =
                             await ReceiveWorkItemMessages(taskPoolAvailableCapacity).ConfigureAwait(false);
@@ -158,7 +172,15 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                             }));
                     }
 
-                    await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);
+                    if ((DateTimeOffset.UtcNow - mostRecentAvailableWorkTime).TotalSeconds > 300)
+                    {
+                        // If there are no messages available for the last 300 seconds, increase the cycle time to reduce the load on the queue.
+                        cycleTimeMilliseconds = NORMAL_CYCLE_TIME_MILLISECONDS;
+                        _logger.LogInformation("The {ServiceName} service is using a processing cycle time of {CycleTimeMilliseconds} milliseconds due to no work available.",
+                            _serviceName, cycleTimeMilliseconds);
+                    }
+
+                    await Task.Delay(TimeSpan.FromMilliseconds(cycleTimeMilliseconds), stoppingToken);
                 }
                 catch (TaskCanceledException)
                 {

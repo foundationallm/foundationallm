@@ -10,16 +10,20 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
     /// Provides capabilities for running data pipelines.
     /// </summary>
     /// <param name="stageName">The name of the data pipeline stage that is run.</param>
+    /// <param name="stageRunStartTime">The start time of the stage run.</param>
     /// <param name="stateService">The Data Pipeline State service.</param>
     /// <param name="logger">The logger used for logging.</param>
     public class DataPipelineStageRunner(
         string stageName,
+        DateTimeOffset? stageRunStartTime,
         IDataPipelineStateService stateService,
         ILogger<DataPipelineStageRunner> logger)
     {
         private readonly string _stageName = stageName;
         private readonly IDataPipelineStateService _stateService = stateService;
         private readonly ILogger<DataPipelineStageRunner> _logger = logger;
+        private readonly DateTimeOffset _stageRunStartTime =
+            stageRunStartTime ?? DateTimeOffset.UtcNow;
 
         private readonly Dictionary<string, DataPipelineRunWorkItemStatus> _workItemsStatus = [];
         private readonly object _syncRoot = new();
@@ -51,6 +55,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                 }
             }
         }
+
+        public DateTimeOffset StageRunStartTime => _stageRunStartTime;
 
         public async Task InitializeNew(
             List<DataPipelineRunWorkItem> workItems)
