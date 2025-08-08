@@ -715,7 +715,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             string instanceId,
             string filePath)
         {
-            var changeLogFilePath = $"{filePath}.changelog";
+            var changeLogFilePath = $"{filePath}.changelog.json";
             if (await _storageService.FileExistsAsync(
                 instanceId,
                 changeLogFilePath,
