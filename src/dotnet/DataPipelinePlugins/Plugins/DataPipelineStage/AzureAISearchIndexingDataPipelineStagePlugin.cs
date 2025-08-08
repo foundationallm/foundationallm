@@ -53,7 +53,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 dataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
-                DataPipelineStateFileNames.ContentParts);
+                DataPipelineStateFileNames.TextContent);
             var metadataChanged = await _dataPipelineStateService.DataPipelineRunWorkItemArtifactChanged(
                 dataPipelineDefinition,
                 dataPipelineRun,
@@ -209,7 +209,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     vectorStoreId!,
                     cip.Content!,
                     cip.Embedding!,
-                    JsonSerializer.Deserialize<Dictionary<string, object>>(cip.Metadata!)!
+                    metadata!
                 })]);
 
             return new PluginResult(true, false);

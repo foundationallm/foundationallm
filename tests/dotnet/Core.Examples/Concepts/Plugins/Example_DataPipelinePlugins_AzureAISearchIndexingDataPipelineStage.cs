@@ -70,13 +70,13 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
         new()
         {
             {
-                "work-item-vM2h8Vr2o0WQhV94P1DDmg",
-                "run-20250716-171611-2VKRvCqxf0-iKrsJKAgc4A-TAfGit69y0OhQOwAAtltKw",
+                "work-item-kgZE8-uAKUmtWAVhhxIdiA",
+                "run-20250808-112603-7FMMokPMBEyg7NAIrr575w-TAfGit69y0OhQOwAAtltKw",
                 new Dictionary<string, object>
                 {
                     {
                         PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
-                        "instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vector/vectorDatabases/MSDF-G3-Test"
+                        "instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vector/vectorDatabases/SPO-Test"
                     },
                     {
                         PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREID,
@@ -88,7 +88,8 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                     },
                     {
                         PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_METADATAPROPERTIES,
-                        "ProjectId|Edm.Int32,DocumentId|Edm.Int32,FileName|Edm.String"
+                        //"ProjectId|Edm.Int32,DocumentId|Edm.Int32,FileName|Edm.String"
+                        "FileName|Edm.String"
                     }
                 }
             }
