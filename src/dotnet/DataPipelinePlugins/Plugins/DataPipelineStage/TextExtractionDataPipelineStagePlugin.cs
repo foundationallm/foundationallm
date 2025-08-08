@@ -187,6 +187,9 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                         $"The content type {contentType} is not supported by the {Name} plugin.");
             }
 
+            // Enforce new line normalization
+            textContent = textContent.Replace("\r\n", "\n").Replace("\r", "\n");
+
             await _dataPipelineStateService.SaveDataPipelineRunWorkItemArtifacts(
                 dataPipelineDefinition,
                 dataPipelineRun,
