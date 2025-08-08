@@ -1,19 +1,24 @@
 ﻿using Azure.Storage.Queues;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Constants.Telemetry;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
+using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Services.Plugins;
 using FoundationaLLM.Common.Tasks;
+using FoundationaLLM.Common.Telemetry;
 using FoundationaLLM.DataPipelineEngine.Models;
 using FoundationaLLM.DataPipelineEngine.Models.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace FoundationaLLM.DataPipelineEngine.Services
@@ -381,6 +386,18 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 dataPipelineRun.TriggerParameterValues.FilterKeys(
                     $"Stage.{dataPipelineRunWorkItem.Stage}."),
                 ServiceContext.ServiceIdentity!);
+
+            using var telemetryActivity = TelemetryActivitySources.DataPipelineWorkerServiceActivitySource.StartActivity(
+                TelemetryActivityNames.DataPipelineWorkerService_Stage_ProcessWorkItem,
+                ActivityKind.Internal,
+                parentContext: default,
+                tags: new Dictionary<string, object?>
+                {
+                    { TelemetryActivityTagNames.InstanceId, dataPipelineRun.InstanceId },
+                    { TelemetryActivityTagNames.DataPipelineRunId, dataPipelineRun.RunId },
+                    { TelemetryActivityTagNames.DataPipelineRunStage, dataPipelineRunWorkItem.Stage },
+                    { TelemetryActivityTagNames.DataPipelineRunWorkItemId, dataPipelineRunWorkItem.Id }
+                });
 
             var result =
                 await dataPipelineStagePlugin.ProcessWorkItem(

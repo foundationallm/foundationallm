@@ -86,6 +86,10 @@
         /// </summary>
         public const string DataPipelineBackendWorker = "DataPipelineBackendWorker";
         /// <summary>
+        /// The name of the Data Pipeline Worker service.
+        /// </summary>
+        public const string DataPipelineWorkerService = "DataPipelineWorkerService";
+        /// <summary>
         /// The name of the Context API service.
         /// </summary>
         public const string ContextAPI = "ContextAPI";

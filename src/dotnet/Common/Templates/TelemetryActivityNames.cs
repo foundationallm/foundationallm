@@ -30,5 +30,10 @@ namespace FoundationaLLM.Common.Constants.Telemetry
         /// </summary>
         public const string OrchestrationAPI_AgentOrchestration_UserPromptRewrite_LLM = "UserPromptRewrite_LLM";
 
+        /// <summary>
+        /// The telemetry activity name for the processing of a data pipeline stage work item in the Data Pipeline Worker Service.
+        /// </summary>
+        public const string DataPipelineWorkerService_Stage_ProcessWorkItem = "DataPipelineWorkerService_Stage_ProcessWorkItem";
+
     }
 }

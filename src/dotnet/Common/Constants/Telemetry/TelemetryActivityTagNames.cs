@@ -44,5 +44,20 @@
         /// The FoundationaLLM file id.
         /// </summary>
         public const string FileId = "FoundationaLLM-FileId";
+
+        /// <summary>
+        /// The FoundationaLLM data pipeline run identifier.
+        /// </summary>
+        public const string DataPipelineRunId = "FoundationaLLM-DataPipelineRunId";
+
+        /// <summary>
+        /// The FoundationaLLM data pipeline run stage.
+        /// </summary>
+        public const string DataPipelineRunStage = "FoundationaLLM-DataPipelineRunStage";
+
+        /// <summary>
+        /// The FoundationaLLM data pipeline run work item identifier.
+        /// </summary>
+        public const string DataPipelineRunWorkItemId = "FoundationaLLM-DataPipelineRunWorkItemId";
     }
 }
