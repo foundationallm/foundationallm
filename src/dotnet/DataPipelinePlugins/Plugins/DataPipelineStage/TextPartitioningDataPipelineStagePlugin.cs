@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.DataPipelines;
 using FoundationaLLM.Common.Constants.Plugins;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
@@ -7,6 +8,7 @@ using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Services.Plugins;
+using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
@@ -27,15 +29,28 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
     {
         protected override string Name => PluginNames.TEXTPARTITIONING_DATAPIPELINESTAGE;
 
-        private const string CONTENT_PARTS_FILE_NAME = "content-parts.parquet";
-        private const string METADATA_FILE_NAME = "metadata.json";
-
         /// <inheritdoc/>
         public override async Task<PluginResult> ProcessWorkItem(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             DataPipelineRunWorkItem dataPipelineRunWorkItem)
         {
+            // Before anything else, check if the content has been changed by the current data pipeline run.
+            if (!await _dataPipelineStateService.DataPipelineRunWorkItemArtifactChanged(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                dataPipelineRunWorkItem,
+                DataPipelineStateFileNames.TextContent))
+            {
+                _logger.LogInformation(
+                    "The {PluginName} plugin for the {Stage} stage determined there were no changes to process the work item {WorkItemId}.",
+                    Name,
+                    dataPipelineRunWorkItem.Stage,
+                    dataPipelineRunWorkItem.Id);
+                // Since the content has not changed, we can skip the partitioning step.
+                return new PluginResult(true, false);
+            }
+
             if (!_pluginParameters.TryGetValue(
                 PluginParameterNames.TEXTPARTITIONING_DATAPIPELINESTAGE_PARITTIONINGSTRATETGY,
                 out var partitioningStrategy))
@@ -85,15 +100,14 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 dataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
-                "content.txt");
+                DataPipelineStateFileNames.TextContent);
 
             var serializedMetadata = (await _dataPipelineStateService.LoadDataPipelineRunWorkItemArtifacts(
                 dataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
-                METADATA_FILE_NAME))
+                DataPipelineStateFileNames.Metadata))
                 .First().Content.ToString();
-            var metadata = JsonSerializer.Deserialize<Dictionary<string, object>>(serializedMetadata);
 
             if (inputContent == null
                 || inputContent.Count == 0)
@@ -111,7 +125,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
                 if (textPartitioningResult.Value is not null)
                     foreach (var itemPart in textPartitioningResult.Value)
-                        itemPart.Metadata = JsonSerializer.Serialize(metadata);
+                        itemPart.LastChangedBy = dataPipelineRun.Id;
 
                 contentParts = textPartitioningResult.Value ?? [];
             }
@@ -123,7 +137,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     dataPipelineRun,
                     dataPipelineRunWorkItem,
                     contentParts,
-                    CONTENT_PARTS_FILE_NAME);
+                    DataPipelineStateFileNames.ContentParts);
 
             return
                 new PluginResult(true, false, WarningMessage: warningMessage);

@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.DataPipelines;
 using FoundationaLLM.Common.Constants.Gateway;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -35,8 +36,6 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
     {
         protected override string Name => PluginNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE;
 
-        private const string CONTENT_PARTS_FILE_NAME = "content-parts.parquet";
-        private const string KNOWLEDGE_PARTS_FILE_NAME = "knowledge-parts.parquet";
         private const string ENTITY_TYPES_PLACEHOLDER = "{entity_types}";
         private const string INPUT_TEXT_PLACEHOLDER = "{input_text}";
 
@@ -87,80 +86,157 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             #endregion
 
+            #region Early stop conditions
+
+            var metadataChanged = await _dataPipelineStateService.DataPipelineRunWorkItemArtifactChanged(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                dataPipelineRunWorkItem,
+                DataPipelineStateFileNames.Metadata);
+            var serializedMetadata = (await _dataPipelineStateService.LoadDataPipelineRunWorkItemArtifacts(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                dataPipelineRunWorkItem,
+                DataPipelineStateFileNames.Metadata))
+                .First().Content.ToString();
             var contentItemContentParts = await _dataPipelineStateService.LoadDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
                 dataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
-                CONTENT_PARTS_FILE_NAME);
+                DataPipelineStateFileNames.ContentParts);
+            var changedContentItemContentParts = contentItemContentParts
+                .Where(part => part.LastChangedBy.Equals(dataPipelineRun.Id))
+                .ToList();
+            var existingContentItemKnowledgeParts = await _dataPipelineStateService.LoadDataPipelineRunWorkItemParts<DataPipelineContentItemKnowledgePart>(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                dataPipelineRunWorkItem,
+                DataPipelineStateFileNames.KnowledgeParts);
 
             string? warningMessage = null;
-            if (contentItemContentParts.Any())
+            if (!contentItemContentParts.Any())
             {
-                var entityExtractionPrompt = await _promptResourceProvider.GetResourceAsync<PromptBase>(
-                    entityExtractionPromptId.ToString()!,
-                    ServiceContext.ServiceIdentity!);
+                warningMessage = "The content item has no content.";
 
-                var entityExtractionPromptText = (entityExtractionPrompt as MultipartPrompt)!.Prefix!
-                    .Replace(ENTITY_TYPES_PLACEHOLDER, entityExtractionEntityTypes.ToString()!);
+                await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemKnowledgePart>(
+                    dataPipelineDefinition,
+                    dataPipelineRun,
+                    dataPipelineRunWorkItem,
+                    [],
+                    DataPipelineStateFileNames.KnowledgeParts);
 
-                using var scope = _serviceProvider.CreateScope();
-
-                var clientFactoryService = scope.ServiceProvider
-                    .GetRequiredService<IHttpClientFactoryService>()
-                    ?? throw new PluginException("The HTTP client factory service is not available in the dependency injection container.");
-
-                var gatewayServiceClient = new GatewayServiceClient(
-                    await clientFactoryService.CreateClient(
-                        HttpClientNames.GatewayAPI, ServiceContext.ServiceIdentity!),
-                    _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
-
-                var textCompletionRequest = new TextCompletionRequest
+                return
+                    new PluginResult(true, false, WarningMessage: warningMessage);
+            }
+            else if (changedContentItemContentParts.Count == 0)
+            {
+                if (!metadataChanged)
                 {
-                    CompletionModelName = entityExtractionCompletionModel.ToString()!,
-                    CompletionModelParameters = new Dictionary<string, object>
+                    _logger.LogInformation(
+                        "The {PluginName} plugin for the {Stage} stage determined there were no changes to process for the work item {WorkItemId}.",
+                        Name,
+                        dataPipelineRunWorkItem.Stage,
+                        dataPipelineRunWorkItem.Id);
+                    return
+                        new PluginResult(true, false, WarningMessage: warningMessage);
+                }
+
+                _logger.LogInformation(
+                    "The {PluginName} plugin for the {Stage} stage determined that only metadata changed for the work item {WorkItemId}.",
+                    Name,
+                    dataPipelineRunWorkItem.Stage,
+                    dataPipelineRunWorkItem.Id);
+
+                foreach (var existingKnowledgePart in existingContentItemKnowledgeParts)
+                {
+                    existingKnowledgePart.Metadata = serializedMetadata;
+                    existingKnowledgePart.LastChangedBy = dataPipelineRun.Id;
+                }
+
+                await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemKnowledgePart>(
+                   dataPipelineDefinition,
+                   dataPipelineRun,
+                   dataPipelineRunWorkItem,
+                   existingContentItemKnowledgeParts,
+                   DataPipelineStateFileNames.KnowledgeParts);
+
+                return
+                    new PluginResult(true, false, WarningMessage: warningMessage);
+            }
+
+            #endregion
+
+            var entityExtractionPrompt = await _promptResourceProvider.GetResourceAsync<PromptBase>(
+                entityExtractionPromptId.ToString()!,
+                ServiceContext.ServiceIdentity!);
+
+            var entityExtractionPromptText = (entityExtractionPrompt as MultipartPrompt)!.Prefix!
+                .Replace(ENTITY_TYPES_PLACEHOLDER, entityExtractionEntityTypes.ToString()!);
+
+            using var scope = _serviceProvider.CreateScope();
+
+            var clientFactoryService = scope.ServiceProvider
+                .GetRequiredService<IHttpClientFactoryService>()
+                ?? throw new PluginException("The HTTP client factory service is not available in the dependency injection container.");
+
+            var gatewayServiceClient = new GatewayServiceClient(
+                await clientFactoryService.CreateClient(
+                    HttpClientNames.GatewayAPI, ServiceContext.ServiceIdentity!),
+                _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
+
+            var textCompletionRequest = new TextCompletionRequest
+            {
+                CompletionModelName = entityExtractionCompletionModel.ToString()!,
+                CompletionModelParameters = new Dictionary<string, object>
                 {
                     { TextOperationModelParameterNames.Temperature, (float)(double)entityExtractionModelTemperature },
                     { TextOperationModelParameterNames.MaxOutputTokenCount, (int)entityExtractionMaxOutputTokenCount }
                 },
-                    TextChunks = [.. contentItemContentParts
-                    .Select(cip => new TextChunk
-                    {
-                        Position = cip.Position,
-                        Content = entityExtractionPromptText.Replace(
-                            INPUT_TEXT_PLACEHOLDER, cip.Content),
-                        TokensCount = cip.ContentSizeTokens + (int)entityExtractionMaxOutputTokenCount
-                    })],
-                };
-
-                var completionsResult = await gatewayServiceClient.StartCompletionOperation(
-                    dataPipelineRun.InstanceId,
-                    textCompletionRequest);
-
-                while (completionsResult.InProgress)
+                TextChunks = [.. changedContentItemContentParts
+                .Select(cip => new TextChunk
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
-                    completionsResult = await gatewayServiceClient.GetCompletionOperationResult(
-                        dataPipelineRun.InstanceId,
-                        completionsResult.OperationId!);
+                    Position = cip.Position,
+                    Content = entityExtractionPromptText.Replace(
+                        INPUT_TEXT_PLACEHOLDER, cip.Content),
+                    TokensCount = cip.ContentSizeTokens + (int)entityExtractionMaxOutputTokenCount
+                })],
+            };
 
-                    _logger.LogInformation("Data pipeline run {DataPipelineRunId} entity extraction for {ContentItemCanonicalId}: {ProcessedEntityCount} of {TotalEntityCount} entities processed.",
-                        dataPipelineRun.Id,
-                        dataPipelineRunWorkItem.ContentItemCanonicalId,
-                        completionsResult.ProcessedTextChunksCount,
-                        textCompletionRequest.TextChunks.Count);
-                }
+            var completionsResult = await gatewayServiceClient.StartCompletionOperation(
+                dataPipelineRun.InstanceId,
+                textCompletionRequest);
 
-                if (completionsResult.Failed)
-                    return new PluginResult(false, false,
-                        $"The {Name} plugin failed to process the work item {dataPipelineRunWorkItem.Id} due to a failure in the Gateway API.");
+            while (completionsResult.InProgress)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
+                completionsResult = await gatewayServiceClient.GetCompletionOperationResult(
+                    dataPipelineRun.InstanceId,
+                    completionsResult.OperationId!);
 
-                var contentItemKnowledgeParts = contentItemContentParts
-                    .Select(p =>
+                _logger.LogInformation("Data pipeline run {DataPipelineRunId} entity extraction for {ContentItemCanonicalId}: {ProcessedEntityCount} of {TotalEntityCount} entities processed.",
+                    dataPipelineRun.Id,
+                    dataPipelineRunWorkItem.ContentItemCanonicalId,
+                    completionsResult.ProcessedTextChunksCount,
+                    textCompletionRequest.TextChunks.Count);
+            }
+
+            if (completionsResult.Failed)
+                return new PluginResult(false, false,
+                    $"The {Name} plugin failed to process the work item {dataPipelineRunWorkItem.Id} due to a failure in the Gateway API.");
+
+            var completionsDictionary = completionsResult.TextChunks.ToDictionary(
+                chunk => chunk.Position,
+                chunk => chunk.Completion);
+
+            var changedContentItemKnowledgeParts = changedContentItemContentParts
+                .Select(p =>
+                {
+                    var knowledgePart = DataPipelineContentItemKnowledgePart.FromContentItemPart(p);
+                    knowledgePart.Metadata = serializedMetadata;
+
+                    if (completionsDictionary.TryGetValue(knowledgePart.Position, out var completion))
                     {
-                        var knowledgePart = DataPipelineContentItemKnowledgePart.FromContentItemPart(p);
-                        var completionResult = completionsResult.TextChunks[knowledgePart.Position - 1];
-
-                        var finalCompletionResult = completionResult.Completion?.Replace("```json", "").Replace("```", "").Trim(); //unwanted extra annotations
+                        var finalCompletionResult = completion!.Replace("```json", "").Replace("```", "").Trim(); //unwanted extra annotations
                         if (!string.IsNullOrWhiteSpace(finalCompletionResult))
                         {
                             try
@@ -177,29 +253,40 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                                     finalCompletionResult);
                             }
                         }
+                    }
+                    else
+                        throw new PluginException($"The Gateway API did not return a completion for the content item part at position {p.Position}");
 
-                        return knowledgePart;
-                    })
-                    .ToList();
+                    return knowledgePart;
+                })
+                .ToList();
+            var changedContentItemKnowledgePartsDictionary = changedContentItemKnowledgeParts
+                .ToDictionary(kp => kp.Position);
 
-                await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemKnowledgePart>(
-                    dataPipelineDefinition,
-                    dataPipelineRun,
-                    dataPipelineRunWorkItem,
-                    contentItemKnowledgeParts,
-                    KNOWLEDGE_PARTS_FILE_NAME);
-            }
-            else
-            {
-                warningMessage = "The content item has no content.";
+            var finalContentItemKnowledgeParts = changedContentItemKnowledgeParts;
 
-                await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemKnowledgePart>(
-                    dataPipelineDefinition,
-                    dataPipelineRun,
-                    dataPipelineRunWorkItem,
-                    [],
-                    KNOWLEDGE_PARTS_FILE_NAME);
-            }
+            // Exclude existing knowledge parts that were not changed in this run
+            // and the are outside the range of content item parts.
+            existingContentItemKnowledgeParts = existingContentItemKnowledgeParts
+                .Where(ekp =>
+                    !changedContentItemKnowledgePartsDictionary.ContainsKey(ekp.Position)
+                    && ekp.Position <= contentItemContentParts.Count())
+                .ToList();
+            if (metadataChanged)
+                foreach (var existingKnowledgePart in existingContentItemKnowledgeParts)
+                {
+                    existingKnowledgePart.Metadata = serializedMetadata;
+                    existingKnowledgePart.LastChangedBy = dataPipelineRun.Id;
+                }
+            finalContentItemKnowledgeParts.AddRange(
+                existingContentItemKnowledgeParts);        
+
+            await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemKnowledgePart>(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                dataPipelineRunWorkItem,
+                finalContentItemKnowledgeParts.OrderBy(x => x.Position),
+                DataPipelineStateFileNames.KnowledgeParts);
 
             return
                 new PluginResult(true, false, WarningMessage: warningMessage);

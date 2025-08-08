@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.DataPipelines;
 using FoundationaLLM.Common.Constants.Plugins;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
@@ -192,13 +193,13 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 dataPipelineRunWorkItem,
                 [ new DataPipelineStateArtifact
                     {
-                        FileName = "content.txt",
+                        FileName = DataPipelineStateFileNames.TextContent,
                         ContentType = "text/plain",
                         Content = BinaryData.FromString(textContent)
                     },
                     new DataPipelineStateArtifact
                     {
-                        FileName =  METADATA_FILE_NAME,
+                        FileName =  DataPipelineStateFileNames.Metadata,
                         ContentType = "application/json",
                         Content = BinaryData.FromString(JsonSerializer.Serialize(rawContentResult.Value.Metadata))
                     }

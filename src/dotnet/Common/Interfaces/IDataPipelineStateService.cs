@@ -116,6 +116,21 @@ namespace FoundationaLLM.Common.Interfaces
             string artifactsNameFilter);
 
         /// <summary>
+        /// Indicates whether an artifact associated with a data pipeline run work item has changed.
+        /// </summary>
+        /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
+        /// <param name="dataPipelineRun">The data pipeline run item associated with the work item.</param>
+        /// <param name="dataPipelineRunWorkItem">The data pipeline run work item.</param>
+        /// <param name="artifactName">The name of the artifact associated with the data pipeline run work item.</param>
+        /// <returns><see langword="true"/> if the artifact was changed by the data pipeline run indicated by
+        /// <paramref name="dataPipelineRun"/>, <see langword="false"/> otherwise.</returns>
+        Task<bool> DataPipelineRunWorkItemArtifactChanged(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem,
+            string artifactName);
+
+        /// <summary>
         /// Loads the artifacts associated with a data pipeline run work item.
         /// </summary>
         /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
