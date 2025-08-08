@@ -2350,6 +2350,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.DataPipelineStateFileNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.DataPipelineStateFileNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.DataPipelines.DataPipelineStateFileNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.DataPipelineStateFileNames.yml\" sourcestartlinenumber=\"1\">Constants for well-known data pipeline state file names.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.DataPipelineTriggerNames.yml",
       "output": {
         ".html": {
@@ -6757,6 +6771,34 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifact",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifact.yml\" sourcestartlinenumber=\"1\">Represents the state of a data pipeline artifact.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifactChangeLog.DataPipelineStateArtifactChangeLogEntry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifactChangeLog.DataPipelineStateArtifactChangeLogEntry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifactChangeLog.DataPipelineStateArtifactChangeLogEntry",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifactChangeLog.DataPipelineStateArtifactChangeLogEntry.yml\" sourcestartlinenumber=\"1\">Represents a change log entry for a data pipeline state artifact.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifactChangeLog.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifactChangeLog.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifactChangeLog",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifactChangeLog.yml\" sourcestartlinenumber=\"1\">Represents a change log for the state of a data pipeline state artifact.</p>\n"
     },
     {
       "type": "ManagedReference",
