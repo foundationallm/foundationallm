@@ -462,6 +462,16 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                             artifactFilePath,
                             changeLog);
                     }
+                    else if (changeLog.Changes.Count == 0)
+                    {
+                        // The change log was just created so we need to persist it
+                        // regardless of whether the artifact changed or not.
+                        changeLog.AddChange(dataPipelineRun.Id);
+                        await WriteChangeLog(
+                            dataPipelineRun.InstanceId,
+                            artifactFilePath,
+                            changeLog);
+                    }
 
                     _logger.LogDebug("Successfully saved artifact {ArtifactFileName} for run {RunId} and content item {ContentItemCanonicalId}.",
                         artifact.FileName,
@@ -668,7 +678,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 [
                     $"/data-pipeline-state",
                     dataPipelineDefinition.Name,
-                    "/canonical-data",
+                    "canonical-data",
                     dataPipelineRun.CanonicalRunId
                 ]);
 
@@ -680,7 +690,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 [
                     $"/data-pipeline-state",
                     dataPipelineDefinition.Name,
-                    "/runs",
+                    "runs",
                     dataPipelineRun.UPN.NormalizeUserPrincipalName(),
                     $"{dataPipelineRun.CreatedOn:yyyy-MM-dd}",
                     dataPipelineRun.RunId
@@ -727,7 +737,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             string filePath,
             DataPipelineStateArtifactChangeLog changeLog)
         {
-            var changeLogFilePath = $"{filePath}.changelog";
+            var changeLogFilePath = $"{filePath}.changelog.json";
             var changeLogContent = JsonSerializer.Serialize(changeLog);
             await _storageService.WriteFileAsync(
                 instanceId,
