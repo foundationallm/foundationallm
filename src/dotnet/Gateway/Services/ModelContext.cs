@@ -64,15 +64,21 @@ namespace FoundationaLLM.Gateway.Services
             _logger.LogInformation("Text operations processing started for the {ModelName} model.", ModelName);
 
             long cycleCount = 0;
+            var lastActiveWorkTimestamp = DateTimeOffset.UtcNow;
 
             while (true)
             {
                 if (cancellationToken.IsCancellationRequested) return;
-                await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+
+                // Wait for longer if the last active work was more than 60 seconds ago.
+                if ((DateTimeOffset.UtcNow - lastActiveWorkTimestamp).TotalSeconds >= 60)
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+                else
+                    await Task.Delay(TimeSpan.FromSeconds(0.1), cancellationToken);
 
                 cycleCount++;
                 var cycleStartTime = DateTimeOffset.UtcNow;
-                if (cycleCount % 60 == 0)
+                if (cycleCount % 100 == 0)
                     _logger.LogInformation("[{ModelName}]: Processing cycle {CycleCount} started at {CycleStartTime}.",
                         ModelName,
                         cycleCount,
@@ -181,6 +187,10 @@ namespace FoundationaLLM.Gateway.Services
                                 _textOperationIds.Remove(successfulOperation.OperationId!);
                         }
                     }
+
+                    // Better to set the last active work timestamp after the cycle's processing is complete,
+                    // to avoid considering time spent in processing as idle time.
+                    lastActiveWorkTimestamp = DateTimeOffset.UtcNow;
                 }
                 catch (Exception ex)
                 {

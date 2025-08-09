@@ -228,6 +228,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 chunk => chunk.Position,
                 chunk => chunk.Completion);
 
+            var changedContentItemsContentPartsForRetry = new List<DataPipelineContentItemContentPart>();
             var changedContentItemKnowledgeParts = changedContentItemContentParts
                 .Select(p =>
                 {
@@ -244,6 +245,13 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                                 knowledgePart.EntitiesAndRelationships =
                                     JsonSerializer.Deserialize<KnowledgeEntityRelationshipCollection<ExtractedKnowledgeEntity, ExtractedKnowledgeRelationship>>(
                                         finalCompletionResult);
+                            }
+                            catch (JsonException jsonEx)
+                            {
+                                _logger.LogWarning(jsonEx, "Could not deserialize entity extraction result for content item {ContentItemCanonicalId} content part {Position}.",
+                                    dataPipelineRunWorkItem.ContentItemCanonicalId,
+                                    knowledgePart.Position);
+                                changedContentItemsContentPartsForRetry.Add(p);
                             }
                             catch (Exception ex)
                             {
@@ -262,6 +270,13 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 .ToList();
             var changedContentItemKnowledgePartsDictionary = changedContentItemKnowledgeParts
                 .ToDictionary(kp => kp.Position);
+
+            #region Submit retry for content item parts that failed to extract entities
+
+            // This is most likely due to the max output token count being too low.
+            // This attempt will retry with a max output token count that is double the original one.
+
+            #endregion
 
             var finalContentItemKnowledgeParts = changedContentItemKnowledgeParts;
 

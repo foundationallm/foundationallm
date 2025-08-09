@@ -70,17 +70,6 @@ namespace FoundationaLLM.Gateway.Models
         }
 
         /// <summary>
-        /// Marks the text operation as complete.
-        /// </summary>
-        public void SetComplete()
-        {
-            lock ( _syncRoot)
-            {
-                Result.InProgress = false;
-            }
-        }
-
-        /// <summary>
         /// Updates the text chunks using the specified update and completeness check lambdas. 
         /// If all positions are complete, marks the operation as complete.
         /// </summary>
@@ -97,7 +86,9 @@ namespace FoundationaLLM.Gateway.Models
                         textChunk);
                 }
 
-                if (Result.TextChunks.All(tc => TextChunkCompletenessChecker(tc)))
+                Result.ProcessedTextChunksCount =
+                    Result.TextChunks.Count(tc => TextChunkCompletenessChecker(tc));
+                if (Result.ProcessedTextChunksCount == Result.TextChunks.Count)
                     Result.InProgress = false;
             }
         }
