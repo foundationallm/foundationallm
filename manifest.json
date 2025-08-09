@@ -13452,6 +13452,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService<T>",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService-1.yml\" sourcestartlinenumber=\"1\">Defines the interface for a message queue service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Interfaces.yml",
       "output": {
         ".html": {
@@ -13550,17 +13564,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage-1.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage.html"
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage-1.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage.yml\" sourcestartlinenumber=\"1\">Represents a dequeued message from a data pipeline worker queue.</p>\n"
+      "Title": "FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage<T>",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage-1.yml\" sourcestartlinenumber=\"1\">Represents a dequeued message from a data pipeline worker queue.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -13687,6 +13701,48 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.DataPipelineEngine.Services.DataPipelineWorkerService",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Services.DataPipelineWorkerService.yml\" sourcestartlinenumber=\"1\">Provides capabilites for background processing of data pipeline work items.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Queueing.AzureStorageQueueService-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Queueing.AzureStorageQueueService-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services.Queueing.AzureStorageQueueService<T>",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Queueing.AzureStorageQueueService-1.yml\" sourcestartlinenumber=\"1\">Provides an implementation of the IMessageQueueService interface for Azure Storage Queues.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry<T>",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry-1.yml\" sourcestartlinenumber=\"1\">Maintains a registry of payloads that are currently being processed.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Queueing.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Services.Queueing.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Services.Queueing",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
