@@ -187,16 +187,21 @@ namespace FoundationaLLM.Gateway.Services
                 embeddingRequest.EmbeddingModelDimensions != -1)
                 throw new GatewayException("The text-embedding-ada-002 model does not suport dimensions. The EmbeddingModelDimension value must be -1.", StatusCodes.Status400BadRequest);
 
+            // Ensure all TextChunks have distinct Position values
+            if (embeddingRequest.TextChunks.Select(tc => tc.Position).Distinct().Count() != embeddingRequest.TextChunks.Count)
+                throw new GatewayException("The request contains duplicate Position values in text chunks.", StatusCodes.Status400BadRequest);
+
             var operationId = Guid.NewGuid().ToString().ToLower();
             var embeddingOperationContext = new TextOperationContext
             {
-                InputTextChunks = [.. embeddingRequest.TextChunks.Select(tc => new TextChunk
-                {
-                    OperationId = operationId,
-                    Position = tc.Position,
-                    Content = tc.Content,
-                    TokensCount = tc.TokensCount
-                })],
+                InputTextChunks = embeddingRequest.TextChunks.Select(tc => new TextChunk
+                    {
+                        OperationId = operationId,
+                        Position = tc.Position,
+                        Content = tc.Content,
+                        TokensCount = tc.TokensCount
+                    })
+                    .ToDictionary(tc => tc.Position),
                 Result = new TextOperationResult
                 {
                     InProgress = true,
@@ -252,16 +257,21 @@ namespace FoundationaLLM.Gateway.Services
             if (!_completionModels.TryGetValue(completionRequest.CompletionModelName, out var completionModel))
                 throw new GatewayException("The requested completion model is not available.", StatusCodes.Status404NotFound);
 
+            // Ensure all TextChunks have distinct Position values
+            if (completionRequest.TextChunks.Select(tc => tc.Position).Distinct().Count() != completionRequest.TextChunks.Count)
+                throw new GatewayException("The request contains duplicate Position values in text chunks.", StatusCodes.Status400BadRequest);
+
             var operationId = Guid.NewGuid().ToString().ToLower();
             var completionOperationContext = new TextOperationContext
             {
-                InputTextChunks = [.. completionRequest.TextChunks.Select(tc => new TextChunk
-                {
-                    OperationId = operationId,
-                    Position = tc.Position,
-                    Content = tc.Content,
-                    TokensCount = tc.TokensCount
-                })],
+                InputTextChunks = completionRequest.TextChunks.Select(tc => new TextChunk
+                    {
+                        OperationId = operationId,
+                        Position = tc.Position,
+                        Content = tc.Content,
+                        TokensCount = tc.TokensCount
+                    })
+                    .ToDictionary(tc => tc.Position),
                 Result = new TextOperationResult
                 {
                     InProgress = true,

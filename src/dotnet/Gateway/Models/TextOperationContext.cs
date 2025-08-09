@@ -21,9 +21,9 @@ namespace FoundationaLLM.Gateway.Models
         public Func<TextChunk, bool> TextChunkCompletenessChecker { get; set; } = null!;
 
         /// <summary>
-        /// The list of <see cref="TextChunk"/> objects which provide the input to the text operation.
+        /// The position-indexed dictionary of <see cref="TextChunk"/> objects which provide the input to the text operation.
         /// </summary>
-        public required IList<TextChunk> InputTextChunks { get; set; } = [];
+        public required Dictionary<int, TextChunk> InputTextChunks { get; set; } = [];
 
         /// <summary>
         /// The <see cref="TextOperationResult"/> holding the result of the text operation.
@@ -82,7 +82,7 @@ namespace FoundationaLLM.Gateway.Models
                 foreach (var textChunk in  textChunks)
                 {
                     TextChunkUpdater(
-                        Result.TextChunks[textChunk.Position - 1],
+                        Result.TextChunks.Single(resultTextChunk => resultTextChunk.Position == textChunk.Position),
                         textChunk);
                 }
 
