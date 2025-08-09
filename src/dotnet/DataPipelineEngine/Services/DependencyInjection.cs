@@ -6,9 +6,11 @@ using FoundationaLLM.Common.Services.Storage;
 using FoundationaLLM.DataPipeline.Interfaces;
 using FoundationaLLM.DataPipelineEngine.Clients;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
+using FoundationaLLM.DataPipelineEngine.Models;
 using FoundationaLLM.DataPipelineEngine.Models.Configuration;
 using FoundationaLLM.DataPipelineEngine.Services;
 using FoundationaLLM.DataPipelineEngine.Services.CosmosDB;
+using FoundationaLLM.DataPipelineEngine.Services.Queueing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -127,6 +129,17 @@ namespace FoundationaLLM
             services.AddOptions<DataPipelineWorkerServiceSettings>()
                 .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_DataPipelineFrontendWorker_Configuration));
 
+            services.AddSingleton<
+                IMessageQueueService<DataPipelineRunWorkItemMessage>,
+                AzureStorageQueueService<DataPipelineRunWorkItemMessage>>(sp =>
+                {
+                    var settings = sp.GetRequiredService<IOptions<DataPipelineWorkerServiceSettings>>().Value;
+                    return new AzureStorageQueueService<DataPipelineRunWorkItemMessage>(
+                        settings.Storage.AccountName!,
+                        settings.Queue,
+                        logger: sp.GetRequiredService<ILogger<AzureStorageQueueService<DataPipelineRunWorkItemMessage>>>());
+                });
+
             services.AddHostedService<DataPipelineWorkerService>();
         }
 
@@ -146,6 +159,17 @@ namespace FoundationaLLM
         {
             services.AddOptions<DataPipelineWorkerServiceSettings>()
                 .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_DataPipelineBackendWorker_Configuration));
+
+            services.AddSingleton<
+                IMessageQueueService<DataPipelineRunWorkItemMessage>,
+                AzureStorageQueueService<DataPipelineRunWorkItemMessage>>(sp =>
+                {
+                    var settings = sp.GetRequiredService<IOptions<DataPipelineWorkerServiceSettings>>().Value;
+                    return new AzureStorageQueueService<DataPipelineRunWorkItemMessage>(
+                        settings.Storage.AccountName!,
+                        settings.Queue,
+                        logger: sp.GetRequiredService<ILogger<AzureStorageQueueService<DataPipelineRunWorkItemMessage>>>());
+                });
 
             services.AddHostedService<DataPipelineWorkerService>();
         }

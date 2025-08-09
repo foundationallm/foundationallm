@@ -33,6 +33,14 @@ namespace FoundationaLLM.Common.Tasks
         public int AvailableCapacity => _maxConcurrentTasks - _taskInfo.Count(ti => (ti != null) && _runningStates.Contains(ti.Task.Status));
 
         /// <summary>
+        /// Retrieves the list of active payload identifiers for tasks that are currently active.
+        /// </summary>
+        public List<string> ActivePayloadIds =>
+            [.. _taskInfo
+                .Where(ti => ti != null && _runningStates.Contains(ti.Task.Status))
+                .Select(ti => ti.PayloadId)];
+
+        /// <summary>
         /// Adds a new batch of tasks to the task pool.
         /// </summary>
         /// <param name="tasks">The list of <see cref="TaskInfo"/> items to be added to the pool.</param>

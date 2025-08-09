@@ -1,25 +1,22 @@
-﻿using Azure.Storage.Queues;
-using FoundationaLLM.Common.Authentication;
+﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Constants.Telemetry;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
-using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Services.Plugins;
 using FoundationaLLM.Common.Tasks;
-using FoundationaLLM.Common.Telemetry;
+using FoundationaLLM.DataPipelineEngine.Interfaces;
 using FoundationaLLM.DataPipelineEngine.Models;
 using FoundationaLLM.DataPipelineEngine.Models.Configuration;
+using FoundationaLLM.DataPipelineEngine.Services.Queueing;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
-using System.Text.Json;
 
 namespace FoundationaLLM.DataPipelineEngine.Services
 {
@@ -37,11 +34,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
         private readonly string _serviceName = "Data Pipeline Worker Service";
 
-        private readonly QueueClient _queueClient;
+        private readonly ProcessingPayloadsRegistry<DataPipelineRunWorkItemMessage> _payloadsRegistry;
         private readonly TaskPool _taskPool;
 
-        private const int MESSAGE_VISIBILITY_TIMEOUT_SECONDS = 600;
-        private const int MESSAGE_ERROR_VISIBILITY_TIMEOUT_SECONDS = 5;
         private const int MAX_FAILED_PROCESSING_ATTEMPTS = 10;
 
         private const int AGGRESSIVE_CYCLE_TIME_MILLISECONDS = 100;
@@ -52,12 +47,14 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         /// </summary>
         /// <param name="stateService">The Data Pipeline State service providing state management services.</param>
         /// <param name="resourceProviderServices">The FoundationaLLM resource provider services.</param>
+        /// <param name="queueService">The message queue service providing queueing capabilities.</param>
         /// <param name="options">The options with the service settings.</param>
         /// <param name="serviceProvider">The service collection provided by the dependency injection container.</param>
         /// <param name="logger">The logger used for logging.</param>
         public DataPipelineWorkerService(
             IDataPipelineStateService stateService,
             IEnumerable<IResourceProviderService> resourceProviderServices,
+            IMessageQueueService<DataPipelineRunWorkItemMessage> queueService,
             IOptions<DataPipelineWorkerServiceSettings> options,
             IServiceProvider serviceProvider,
             ILogger<DataPipelineWorkerService> logger)
@@ -67,15 +64,14 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             _settings = options.Value;
             _logger = logger;
 
+            _payloadsRegistry = new ProcessingPayloadsRegistry<DataPipelineRunWorkItemMessage>(
+                queueService,
+                _logger);
+
             _pluginResourceProvider = resourceProviderServices.Single(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Plugin);
             _pluginService = new PluginService(
                 _pluginResourceProvider,
                 serviceProvider);
-
-            var queueServiceClient = new QueueServiceClient(
-                new Uri($"https://{_settings.Storage.AccountName}.queue.core.windows.net"),
-                ServiceContext.AzureCredential);
-            _queueClient = queueServiceClient.GetQueueClient(_settings.Queue);
 
             _taskPool = new TaskPool(
                 _settings.ParallelProcessorsCount,
@@ -107,7 +103,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     var taskPoolAvailableCapacity = _taskPool.AvailableCapacity;
 
                     if (taskPoolAvailableCapacity > 0
-                        && (await WorkItemMessagesAvailable().ConfigureAwait(false)))
+                        && (await _payloadsRegistry.NewPayloadsAvailable()))
                     {
                         mostRecentAvailableWorkTime = DateTimeOffset.UtcNow;
                         if (cycleTimeMilliseconds != AGGRESSIVE_CYCLE_TIME_MILLISECONDS)
@@ -117,20 +113,26 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                                 _serviceName, cycleTimeMilliseconds);
                         }
 
+                        // Ensure the messages that are being processed have their visibility timeout updated
+                        await _payloadsRegistry.ExtendPayloadsProcessingTime(
+                            _taskPool.ActivePayloadIds);
+
                         // We have available capacity in the task pool and there are messages in the queue.
-                        var dequeuedMessages =
-                            await ReceiveWorkItemMessages(taskPoolAvailableCapacity).ConfigureAwait(false);
-                        var validMessages =
-                            new List<(DequeuedMessage Message, DataPipelineRunWorkItem WorkItem)>();
+                        var dequeuedPayloads = await _payloadsRegistry.ReceivePayloadsForProcessing(
+                            taskPoolAvailableCapacity,
+                            p => p.WorkItemId);
 
-                        #region Check for failed processing attempts
+                        #region Check for processing attempts that must be stoppped because of too many failures
 
-                        foreach (var dequeuedMessage in dequeuedMessages)
+                        var validPayloads =
+                            new List<(DataPipelineRunWorkItemMessage Message, DataPipelineRunWorkItem WorkItem)>();
+
+                        foreach (var dequeuedPayload in dequeuedPayloads)
                         {
                             var dataPipelineRunWorkItem =
                                 await _stateService.GetDataPipelineRunWorkItem(
-                                    dequeuedMessage.Message.WorkItemId,
-                                    dequeuedMessage.Message.RunId);
+                                    dequeuedPayload.WorkItemId,
+                                    dequeuedPayload.RunId);
 
                             if (dataPipelineRunWorkItem!.FailedProcessingAttempts >=
                                 MAX_FAILED_PROCESSING_ATTEMPTS)
@@ -142,27 +144,35 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                                 await _stateService.UpdateDataPipelineRunWorkItemsStatus(
                                     [dataPipelineRunWorkItem]);
 
-                                await DeleteWorkItemMessage(
-                                    dequeuedMessage.MessageId,
-                                    dequeuedMessage.PopReceipt);
+                                await _payloadsRegistry.RemovePayload(
+                                    dequeuedPayload.WorkItemId);
                             }
                             else
-                                validMessages.Add(
-                                    (dequeuedMessage, dataPipelineRunWorkItem));
+                                validPayloads.Add(
+                                    (dequeuedPayload, dataPipelineRunWorkItem));
                         }
 
                         #endregion
 
-                        #region Check for messages that are still processing
+                        #region Check for newly dequeued payloads that are still processing
 
-                        var ignoredMessages = validMessages
-                            .Where(m => _taskPool.HasRunningTaskForPayload(m.WorkItem.Id))
-                            .Select(m => m.WorkItem.Id)
+                        // If this happens, there is likely an issue in the code that is processing the payloads.
+                        // When a payload that is still being processed is dequeued,
+                        // it means that when the processing completes, there will be an error trying to cleanup the associated payload
+                        // artifacts (e.g. deleting the message from the queue).
+                        // This situation is considered an error and the payload will be ignored.
+
+                        var ignoredPayloadIds = validPayloads
+                            .Where(m => _taskPool.HasRunningTaskForPayload(m.Message.WorkItemId))
+                            .Select(m => m.Message.WorkItemId)
                             .ToList();
 
-                        if (ignoredMessages.Count > 0)
-                            _logger.LogWarning("The following messages were dequeued while still being processed based on the previous dequeuing: {IgnoredRequestIds}. The requests will be ignored.",
-                                string.Join(",", ignoredMessages));
+                        if (ignoredPayloadIds.Count > 0)
+                        {
+                            _logger.LogError("The following payloads were dequeued while still being processed: {IgnoredPayloadIds}. The payloads will be ignored.",
+                                string.Join(",", ignoredPayloadIds));
+                            await _payloadsRegistry.IgnorePayloads(ignoredPayloadIds);
+                        }
 
                         #endregion
 
@@ -170,12 +180,14 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                         // No need to use ConfigureAwait(false) since the code is going to be executed on a
                         // thread pool thread, with no user code higher on the stack (for details, see
                         // https://devblogs.microsoft.com/dotnet/configureawait-faq/).
-                        _taskPool.Add(validMessages
-                            .Where(m => !_taskPool.HasRunningTaskForPayload(m.WorkItem.Id))
+                        _taskPool.Add(validPayloads
+                            .Where(m => !_taskPool.HasRunningTaskForPayload(m.Message.WorkItemId))
                             .Select(m => new TaskInfo
                             {
                                 PayloadId = m.WorkItem.Id,
-                                Task = ProcessMessage(m.Message, m.WorkItem),
+                                Task = ProcessPayload(
+                                    m.Message,
+                                    m.WorkItem),
                                 StartTime = DateTimeOffset.UtcNow
                             }));
                     }
@@ -204,8 +216,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             _logger.LogInformation("The {ServiceName} service is stopping.", _serviceName);
         }
 
-        private async Task ProcessMessage(
-            DequeuedMessage message,
+        private async Task ProcessPayload(
+            DataPipelineRunWorkItemMessage payload,
             DataPipelineRunWorkItem dataPipelineRunWorkItem)
         {
             var successfulProcessing = true;
@@ -259,113 +271,13 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             }
 
             if (successfulProcessing)
-            {
-                // The message was processed successfully, we can delete it from the queue.
-                await DeleteWorkItemMessage(
-                    message.MessageId,
-                    message.PopReceipt);
-            }
+                await _payloadsRegistry.RemovePayload(
+                    payload.WorkItemId);
             else
-            {
-                // Make the request visible again in the queue to
-                // allow the it to be processed again after a short delay (in case of transient errors).
-                var success = await TryUpdateWorkItemMessage(
-                    message.MessageId,
-                    message.PopReceipt,
-                    TimeSpan.FromSeconds(MESSAGE_ERROR_VISIBILITY_TIMEOUT_SECONDS)).ConfigureAwait(false);
-                if (!success)
-                    _logger.LogWarning("Could not update the visibility timeout of the data pipeline run work item message with id {MessageId} and work item id {WorkItemId}.",
-                        message.MessageId, dataPipelineRunWorkItem.Id);
-            }
+                await _payloadsRegistry.ExtendPayloadsProcessingTime(
+                    [payload.WorkItemId],
+                    recoverFromError: true);
         }
-
-        #region Queue messages management
-
-        private async Task<bool> WorkItemMessagesAvailable()
-        {
-            try
-            {
-                var message = await _queueClient.PeekMessageAsync().ConfigureAwait(false);
-                return message.Value != null;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occured while attempting to peek at messages in queue {QueueName}.",
-                    _settings.Queue);
-                return false;
-            }
-        }
-
-        private async Task<IEnumerable<DequeuedMessage>> ReceiveWorkItemMessages(int count)
-        {
-            var receivedMessages = await _queueClient.ReceiveMessagesAsync(
-                count,
-                TimeSpan.FromSeconds(MESSAGE_VISIBILITY_TIMEOUT_SECONDS)).ConfigureAwait(false);
-
-            var result = new List<DequeuedMessage>();
-
-            if (receivedMessages.HasValue)
-            {
-                foreach (var m in receivedMessages.Value)
-                {
-                    try
-                    {
-                        result.Add(new DequeuedMessage()
-                        {
-                            Message = JsonSerializer.Deserialize<DataPipelineRunWorkItemMessage>(m.Body)!,
-                            MessageId = m.MessageId,
-                            PopReceipt = m.PopReceipt!,
-                            DequeueCount = m.DequeueCount
-                        });
-
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogWarning(ex, "Cannot deserialize message with id {MessageId}.", m.MessageId);
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        private async Task<bool> TryUpdateWorkItemMessage(
-            string messageId,
-            string popReceipt,
-            TimeSpan visibilityTimeout)
-        {
-            try
-            {
-                await _queueClient.UpdateMessageAsync(
-                    messageId,
-                    popReceipt,
-                    visibilityTimeout: visibilityTimeout).ConfigureAwait(false);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error updating message with id {MessageId}.", messageId);
-                return false;
-            }
-        }
-
-        private async Task DeleteWorkItemMessage(
-            string messageId,
-            string popReceipt)
-        {
-            var response = await _queueClient.DeleteMessageAsync(messageId, popReceipt).ConfigureAwait(false);
-            if (response.IsError)
-            {
-                _logger.LogError("Error deleting message with id {MessageId}.", messageId);
-            }
-            else
-            {
-                _logger.LogInformation("Message with id {MessageId} deleted.", messageId);
-            }
-        }
-
-        #endregion
 
         #region Plugin management
 
