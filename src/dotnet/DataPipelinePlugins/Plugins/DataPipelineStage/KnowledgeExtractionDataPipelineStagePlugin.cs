@@ -184,41 +184,16 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     HttpClientNames.GatewayAPI, ServiceContext.ServiceIdentity!),
                 _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
 
-            var textCompletionRequest = new TextCompletionRequest
-            {
-                CompletionModelName = entityExtractionCompletionModel.ToString()!,
-                CompletionModelParameters = new Dictionary<string, object>
-                {
-                    { TextOperationModelParameterNames.Temperature, (float)(double)entityExtractionModelTemperature },
-                    { TextOperationModelParameterNames.MaxOutputTokenCount, (int)entityExtractionMaxOutputTokenCount }
-                },
-                TextChunks = [.. changedContentItemContentParts
-                .Select(cip => new TextChunk
-                {
-                    Position = cip.Position,
-                    Content = entityExtractionPromptText.Replace(
-                        INPUT_TEXT_PLACEHOLDER, cip.Content),
-                    TokensCount = cip.ContentSizeTokens + (int)entityExtractionMaxOutputTokenCount
-                })],
-            };
-
-            var completionsResult = await gatewayServiceClient.StartCompletionOperation(
-                dataPipelineRun.InstanceId,
-                textCompletionRequest);
-
-            while (completionsResult.InProgress)
-            {
-                await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
-                completionsResult = await gatewayServiceClient.GetCompletionOperationResult(
-                    dataPipelineRun.InstanceId,
-                    completionsResult.OperationId!);
-
-                _logger.LogInformation("Data pipeline run {DataPipelineRunId} entity extraction for {ContentItemCanonicalId}: {ProcessedEntityCount} of {TotalEntityCount} entities processed.",
-                    dataPipelineRun.Id,
-                    dataPipelineRunWorkItem.ContentItemCanonicalId,
-                    completionsResult.ProcessedTextChunksCount,
-                    textCompletionRequest.TextChunks.Count);
-            }
+            var completionsResult = await CreateAndExecuteTextCompletionRequestAsync(
+                gatewayServiceClient,
+                dataPipelineRun,
+                dataPipelineRunWorkItem,
+                changedContentItemContentParts,
+                entityExtractionPromptText,
+                entityExtractionCompletionModel,
+                entityExtractionModelTemperature,
+                entityExtractionMaxOutputTokenCount,
+                _logger);
 
             if (completionsResult.Failed)
                 return new PluginResult(false, false,
@@ -237,6 +212,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
                     if (completionsDictionary.TryGetValue(knowledgePart.Position, out var completion))
                     {
+                        #region Parse completion result
+
                         var finalCompletionResult = completion!.Replace("```json", "").Replace("```", "").Trim(); //unwanted extra annotations
                         if (!string.IsNullOrWhiteSpace(finalCompletionResult))
                         {
@@ -261,6 +238,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                                     finalCompletionResult);
                             }
                         }
+
+                        #endregion
                     }
                     else
                         throw new PluginException($"The Gateway API did not return a completion for the content item part at position {p.Position}");
@@ -268,16 +247,85 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     return knowledgePart;
                 })
                 .ToList();
-            var changedContentItemKnowledgePartsDictionary = changedContentItemKnowledgeParts
-                .ToDictionary(kp => kp.Position);
 
             #region Submit retry for content item parts that failed to extract entities
 
             // This is most likely due to the max output token count being too low.
             // This attempt will retry with a max output token count that is double the original one.
 
+            _logger.LogInformation(
+                "The {PluginName} plugin for the {Stage} stage is retrying entity extraction for {RetryCount} content item parts for work item {WorkItemId}.",
+                Name,
+                dataPipelineRunWorkItem.Stage,
+                changedContentItemsContentPartsForRetry.Count,
+                dataPipelineRunWorkItem.Id);
+
+            var completionsRetryResult = await CreateAndExecuteTextCompletionRequestAsync(
+                gatewayServiceClient,
+                dataPipelineRun,
+                dataPipelineRunWorkItem,
+                changedContentItemsContentPartsForRetry,
+                entityExtractionPromptText,
+                entityExtractionCompletionModel,
+                entityExtractionModelTemperature,
+                (int)entityExtractionMaxOutputTokenCount * 2,
+                _logger);
+
+            if (!completionsRetryResult.Failed)
+            {
+                var completionsRetryDictionary = completionsRetryResult.TextChunks.ToDictionary(
+                    chunk => chunk.Position,
+                    chunk => chunk.Completion);
+
+                var contentItemKnowledgePartsFromRetry = changedContentItemsContentPartsForRetry
+                    .Select(p =>
+                    {
+                        var knowledgePart = DataPipelineContentItemKnowledgePart.FromContentItemPart(p);
+                        knowledgePart.Metadata = serializedMetadata;
+
+                        if (completionsRetryDictionary.TryGetValue(knowledgePart.Position, out var completion))
+                        {
+                            #region Parse completion result
+
+                            var finalCompletionResult = completion!.Replace("```json", "").Replace("```", "").Trim(); //unwanted extra annotations
+                            if (!string.IsNullOrWhiteSpace(finalCompletionResult))
+                            {
+                                try
+                                {
+                                    knowledgePart.EntitiesAndRelationships =
+                                        JsonSerializer.Deserialize<KnowledgeEntityRelationshipCollection<ExtractedKnowledgeEntity, ExtractedKnowledgeRelationship>>(
+                                            finalCompletionResult);
+                                }
+                                catch (Exception ex)
+                                {
+                                    _logger.LogWarning(ex, "Invalid entity extraction result for content item {ContentItemCanonicalId} content part {Position}: {EntityExtractionResult}",
+                                        dataPipelineRunWorkItem.ContentItemCanonicalId,
+                                        knowledgePart.Position,
+                                        finalCompletionResult);
+                                }
+                            }
+
+                            #endregion
+                        }
+
+                        return knowledgePart;
+                    })
+                    .ToList();
+
+                changedContentItemKnowledgeParts.AddRange(contentItemKnowledgePartsFromRetry);
+            }
+            else
+                _logger.LogWarning(
+                    "The {PluginName} plugin for the {Stage} stage failed retrying entity extraction for {RetryCount} content item parts for work item {WorkItemId} due to a failure in the Gateway API.",
+                    Name,
+                    dataPipelineRunWorkItem.Stage,
+                    changedContentItemsContentPartsForRetry.Count,
+                    dataPipelineRunWorkItem.Id);
+
             #endregion
 
+            var changedContentItemKnowledgePartsDictionary = changedContentItemKnowledgeParts
+                .ToDictionary(kp => kp.Position);
             var finalContentItemKnowledgeParts = changedContentItemKnowledgeParts;
 
             // Exclude existing knowledge parts that were not changed in this run
@@ -305,6 +353,70 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             return
                 new PluginResult(true, false, WarningMessage: warningMessage);
+        }
+
+        /// <summary>
+        /// Creates and executes a text completion request using the GatewayServiceClient and polls until completion.
+        /// </summary>
+        /// <param name="gatewayServiceClient">The GatewayServiceClient instance.</param>
+        /// <param name="dataPipelineRun">The current DataPipelineRun.</param>
+        /// <param name="dataPipelineRunWorkItem">The current DataPipelineRunWorkItem.</param>
+        /// <param name="changedContentItemContentParts">The content parts to process.</param>
+        /// <param name="entityExtractionPromptText">The prompt text to use for each chunk.</param>
+        /// <param name="entityExtractionCompletionModel">The completion model name.</param>
+        /// <param name="entityExtractionModelTemperature">The model temperature.</param>
+        /// <param name="entityExtractionMaxOutputTokenCount">The max output token count.</param>
+        /// <param name="logger">The logger instance.</param>
+        /// <param name="pollingIntervalSeconds">Polling interval in seconds.</param>
+        /// <returns>The completed TextOperationResult.</returns>
+        private async Task<TextOperationResult> CreateAndExecuteTextCompletionRequestAsync(
+            GatewayServiceClient gatewayServiceClient,
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem,
+            List<DataPipelineContentItemContentPart> changedContentItemContentParts,
+            string entityExtractionPromptText,
+            object entityExtractionCompletionModel,
+            object entityExtractionModelTemperature,
+            object entityExtractionMaxOutputTokenCount,
+            ILogger logger,
+            int pollingIntervalSeconds = GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS)
+        {
+            var textCompletionRequest = new TextCompletionRequest
+            {
+                CompletionModelName = entityExtractionCompletionModel.ToString()!,
+                CompletionModelParameters = new Dictionary<string, object>
+                {
+                    { TextOperationModelParameterNames.Temperature, (float)(double)entityExtractionModelTemperature },
+                    { TextOperationModelParameterNames.MaxOutputTokenCount, (int)entityExtractionMaxOutputTokenCount }
+                },
+                TextChunks = [.. changedContentItemContentParts
+                    .Select(cip => new TextChunk
+                    {
+                        Position = cip.Position,
+                        Content = entityExtractionPromptText.Replace(INPUT_TEXT_PLACEHOLDER, cip.Content),
+                        TokensCount = cip.ContentSizeTokens + (int)entityExtractionMaxOutputTokenCount
+                    })],
+            };
+
+            var completionsResult = await gatewayServiceClient.StartCompletionOperation(
+                dataPipelineRun.InstanceId,
+                textCompletionRequest);
+
+            while (completionsResult.InProgress)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(pollingIntervalSeconds));
+                completionsResult = await gatewayServiceClient.GetCompletionOperationResult(
+                    dataPipelineRun.InstanceId,
+                    completionsResult.OperationId!);
+
+                logger.LogInformation("Data pipeline run {DataPipelineRunId} entity extraction for {ContentItemCanonicalId}: {ProcessedEntityCount} of {TotalEntityCount} entities processed.",
+                    dataPipelineRun.Id,
+                    dataPipelineRunWorkItem.ContentItemCanonicalId,
+                    completionsResult.ProcessedTextChunksCount,
+                    textCompletionRequest.TextChunks.Count);
+            }
+
+            return completionsResult;
         }
     }
 }
