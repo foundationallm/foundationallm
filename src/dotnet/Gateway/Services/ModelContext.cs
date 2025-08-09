@@ -100,8 +100,8 @@ namespace FoundationaLLM.Gateway.Services
                             if (_textOperationContexts.TryGetValue(operationId, out var textOperationContext)
                                 && textOperationContext.Result.InProgress)
                                 foreach (var inputTextChunk in textOperationContext.Result.TextChunks
-                                    .Where(tc => !textOperationContext.TextChunkCompletenessChecker(tc))
-                                    .Select(tc => textOperationContext.InputTextChunks[tc.Position - 1]))
+                                    .Where(resultTextChunk => !textOperationContext.TextChunkCompletenessChecker(resultTextChunk))
+                                    .Select(resultTextChunk => textOperationContext.InputTextChunks[resultTextChunk.Position]))
                                 {
                                     var modelDeploymentContext = DeploymentContexts[currentDeploymentContextIndex];
                                     if (!modelDeploymentContext.TryAddInputTextChunk(
