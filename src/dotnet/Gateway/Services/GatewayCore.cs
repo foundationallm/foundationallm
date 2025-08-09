@@ -238,23 +238,7 @@ namespace FoundationaLLM.Gateway.Services
             if (!_embeddingOperations.TryGetValue(operationId, out var operationContext))
                 throw new GatewayException("The operation identifier was not found.", StatusCodes.Status404NotFound);
 
-            if (operationContext.Result.Failed)
-                return await Task.FromResult(new TextOperationResult
-                {
-                    InProgress = false,
-                    Failed = true,
-                    ErrorMessage = operationContext.Result.ErrorMessage,
-                    OperationId = operationId
-                });
-            else if (operationContext.Result.InProgress)
-                return await Task.FromResult(new TextOperationResult
-                {
-                    InProgress = true,
-                    OperationId = operationId,
-                    ProcessedTextChunksCount = operationContext.ProcessedTextChunksCount
-                });
-            else
-                return await Task.FromResult(operationContext.Result);
+            return await Task.FromResult(operationContext.Result);
         }
 
         public Task<TextOperationResult> StartCompletionOperation(string instanceId, TextCompletionRequest completionRequest, UnifiedUserIdentity userIdentity)
@@ -310,23 +294,7 @@ namespace FoundationaLLM.Gateway.Services
             if (!_completionOperations.TryGetValue(operationId, out var operationContext))
                 throw new GatewayException("The operation identifier was not found.", StatusCodes.Status404NotFound);
 
-            if (operationContext.Result.Failed)
-                return Task.FromResult(new TextOperationResult
-                {
-                    InProgress = false,
-                    Failed = true,
-                    ErrorMessage = operationContext.Result.ErrorMessage,
-                    OperationId = operationId
-                });
-            else if (operationContext.Result.InProgress)
-                return Task.FromResult(new TextOperationResult
-                {
-                    InProgress = true,
-                    OperationId = operationId,
-                    ProcessedTextChunksCount = operationContext.ProcessedTextChunksCount
-                });
-            else
-                return Task.FromResult(operationContext.Result);
+            return Task.FromResult(operationContext.Result);
         }
 
         /// <inheritdoc/>
