@@ -3,12 +3,12 @@
     /// <summary>
     /// Represents a dequeued message from a data pipeline worker queue.
     /// </summary>
-    public class DequeuedMessage
+    public class DequeuedMessage<T>
     {
         /// <summary>
         /// Gets or sets the data pipeline run work item queue message.
         /// </summary>
-        public required DataPipelineRunWorkItemMessage Message { get; set; }
+        public required T Message { get; set; }
 
         /// <summary>
         /// Gets or sets the queue message identifier.
