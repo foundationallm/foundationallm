@@ -53,13 +53,13 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
 
             WriteLine("============ FoundationaLLM Data Pipeline Plugins - Knowledge Extraction Data Pipeline Stage Tests ============");
 
-            var dataSourcePlugin = packageManager.GetDataPipelineStagePlugin(
+            var dataPipelineStagePlugin = packageManager.GetDataPipelineStagePlugin(
                 PluginNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE,
                 pluginParameters,
                 packageManagerResolver,
                 MainServiceContainer.ServiceProvider);
 
-            var pluginResult = await dataSourcePlugin.ProcessWorkItem(
+            var pluginResult = await dataPipelineStagePlugin.ProcessWorkItem(
                 dataPipelineDefinitionSnapshot.DataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem!);
@@ -73,8 +73,8 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
             {
                 //"work-item-AtzJMo4iV06EdZ9348DuRg", // Fannie Mae
                 //"work-item-v9Z2ktVYC0aRjqs2VGbxQA", // Curious cat
-                "work-item-OeT7azA-Jk2VkUxk3taERw", // web-rule
-                "run-20250626-120304-m3sUVTY41E6vJY0SK2BQFQ-TAfGit69y0OhQOwAAtltKw",
+                "work-item-zzlwhEqF8EKHyxwYcTZkdg", // web-rule
+                "run-20250809-144558-L95tVbPyTEufBQNxhO--Eg-TAfGit69y0OhQOwAAtltKw",
                 new Dictionary<string, object>
                 {
                     {
