@@ -248,99 +248,112 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 })
                 .ToList();
 
+            var changedContentItemKnowledgePartsDictionary = changedContentItemKnowledgeParts
+                .ToDictionary(kp => kp.Position);
+
             #region Submit retry for content item parts that failed to extract entities
 
-            // This is most likely due to the max output token count being too low.
-            // This attempt will retry with a max output token count that is double the original one.
-
-            _logger.LogInformation(
-                "The {PluginName} plugin for the {Stage} stage is retrying entity extraction for {RetryCount} content item parts for work item {WorkItemId}.",
-                Name,
-                dataPipelineRunWorkItem.Stage,
-                changedContentItemsContentPartsForRetry.Count,
-                dataPipelineRunWorkItem.Id);
-
-            var completionsRetryResult = await CreateAndExecuteTextCompletionRequestAsync(
-                gatewayServiceClient,
-                dataPipelineRun,
-                dataPipelineRunWorkItem,
-                changedContentItemsContentPartsForRetry,
-                entityExtractionPromptText,
-                entityExtractionCompletionModel,
-                entityExtractionModelTemperature,
-                (int)entityExtractionMaxOutputTokenCount * 2,
-                _logger);
-
-            if (!completionsRetryResult.Failed)
+            if (changedContentItemsContentPartsForRetry.Count > 0)
             {
-                var completionsRetryDictionary = completionsRetryResult.TextChunks.ToDictionary(
-                    chunk => chunk.Position,
-                    chunk => chunk.Completion);
 
-                var contentItemKnowledgePartsFromRetry = changedContentItemsContentPartsForRetry
-                    .Select(p =>
-                    {
-                        var knowledgePart = DataPipelineContentItemKnowledgePart.FromContentItemPart(p);
-                        knowledgePart.Metadata = serializedMetadata;
+                // This is most likely due to the max output token count being too low.
+                // This attempt will retry with a max output token count that is double the original one.
 
-                        if (completionsRetryDictionary.TryGetValue(knowledgePart.Position, out var completion))
-                        {
-                            #region Parse completion result
-
-                            var finalCompletionResult = completion!.Replace("```json", "").Replace("```", "").Trim(); //unwanted extra annotations
-                            if (!string.IsNullOrWhiteSpace(finalCompletionResult))
-                            {
-                                try
-                                {
-                                    knowledgePart.EntitiesAndRelationships =
-                                        JsonSerializer.Deserialize<KnowledgeEntityRelationshipCollection<ExtractedKnowledgeEntity, ExtractedKnowledgeRelationship>>(
-                                            finalCompletionResult);
-                                }
-                                catch (Exception ex)
-                                {
-                                    _logger.LogWarning(ex, "Invalid entity extraction result for content item {ContentItemCanonicalId} content part {Position}: {EntityExtractionResult}",
-                                        dataPipelineRunWorkItem.ContentItemCanonicalId,
-                                        knowledgePart.Position,
-                                        finalCompletionResult);
-                                }
-                            }
-
-                            #endregion
-                        }
-
-                        return knowledgePart;
-                    })
-                    .ToList();
-
-                changedContentItemKnowledgeParts.AddRange(contentItemKnowledgePartsFromRetry);
-            }
-            else
-                _logger.LogWarning(
-                    "The {PluginName} plugin for the {Stage} stage failed retrying entity extraction for {RetryCount} content item parts for work item {WorkItemId} due to a failure in the Gateway API.",
+                _logger.LogInformation(
+                    "The {PluginName} plugin for the {Stage} stage is retrying entity extraction for {RetryCount} content item parts for work item {WorkItemId}.",
                     Name,
                     dataPipelineRunWorkItem.Stage,
                     changedContentItemsContentPartsForRetry.Count,
                     dataPipelineRunWorkItem.Id);
 
+                var completionsRetryResult = await CreateAndExecuteTextCompletionRequestAsync(
+                    gatewayServiceClient,
+                    dataPipelineRun,
+                    dataPipelineRunWorkItem,
+                    changedContentItemsContentPartsForRetry,
+                    entityExtractionPromptText,
+                    entityExtractionCompletionModel,
+                    entityExtractionModelTemperature,
+                    (int)entityExtractionMaxOutputTokenCount * 2,
+                    _logger);
+
+                if (!completionsRetryResult.Failed)
+                {
+                    var completionsRetryDictionary = completionsRetryResult.TextChunks.ToDictionary(
+                        chunk => chunk.Position,
+                        chunk => chunk.Completion);
+
+                    var contentItemKnowledgePartsFromRetry = changedContentItemsContentPartsForRetry
+                        .Select(p =>
+                        {
+                            var knowledgePart = DataPipelineContentItemKnowledgePart.FromContentItemPart(p);
+                            knowledgePart.Metadata = serializedMetadata;
+
+                            if (completionsRetryDictionary.TryGetValue(knowledgePart.Position, out var completion))
+                            {
+                                #region Parse completion result
+
+                                var finalCompletionResult = completion!.Replace("```json", "").Replace("```", "").Trim(); //unwanted extra annotations
+                                if (!string.IsNullOrWhiteSpace(finalCompletionResult))
+                                {
+                                    try
+                                    {
+                                        knowledgePart.EntitiesAndRelationships =
+                                            JsonSerializer.Deserialize<KnowledgeEntityRelationshipCollection<ExtractedKnowledgeEntity, ExtractedKnowledgeRelationship>>(
+                                                finalCompletionResult);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        _logger.LogWarning(ex, "Invalid entity extraction result for content item {ContentItemCanonicalId} content part {Position}: {EntityExtractionResult}",
+                                            dataPipelineRunWorkItem.ContentItemCanonicalId,
+                                            knowledgePart.Position,
+                                            finalCompletionResult);
+                                    }
+                                }
+
+                                #endregion
+                            }
+
+                            return knowledgePart;
+                        })
+                        .ToList();
+
+                    // Overwrite the existing knowledge parts with the ones from the retry.
+                    foreach (var contentItemKnowledgePartFromRetry in contentItemKnowledgePartsFromRetry)
+                        changedContentItemKnowledgePartsDictionary[contentItemKnowledgePartFromRetry.Position] =
+                            contentItemKnowledgePartFromRetry;
+                }
+                else
+                    _logger.LogWarning(
+                        "The {PluginName} plugin for the {Stage} stage failed retrying entity extraction for {RetryCount} content item parts for work item {WorkItemId} due to a failure in the Gateway API.",
+                        Name,
+                        dataPipelineRunWorkItem.Stage,
+                        changedContentItemsContentPartsForRetry.Count,
+                        dataPipelineRunWorkItem.Id);
+            }
+
             #endregion
 
-            var changedContentItemKnowledgePartsDictionary = changedContentItemKnowledgeParts
-                .ToDictionary(kp => kp.Position);
-            var finalContentItemKnowledgeParts = changedContentItemKnowledgeParts;
+            var finalContentItemKnowledgeParts =
+                changedContentItemKnowledgePartsDictionary.Values.ToList();
 
-            // Exclude existing knowledge parts that were not changed in this run
-            // and the are outside the range of content item parts.
-            existingContentItemKnowledgeParts = existingContentItemKnowledgeParts
+            // Determine if there are existing knowledge parts that were not changed in this run
+            // and the are inside the range of content item parts (which means they need to be kept).
+            var existingContentItemKnowledgePartsToKeep = existingContentItemKnowledgeParts
                 .Where(ekp =>
                     !changedContentItemKnowledgePartsDictionary.ContainsKey(ekp.Position)
                     && ekp.Position <= contentItemContentParts.Count())
                 .ToList();
+
+            // If the metadata has changed, we need to update it on the existing knowledge parts to keep.
+            // Note that for the changed ones, we already set the metadata above.
             if (metadataChanged)
-                foreach (var existingKnowledgePart in existingContentItemKnowledgeParts)
+                foreach (var existingKnowledgePartToKeep in existingContentItemKnowledgePartsToKeep)
                 {
-                    existingKnowledgePart.Metadata = serializedMetadata;
-                    existingKnowledgePart.LastChangedBy = dataPipelineRun.Id;
+                    existingKnowledgePartToKeep.Metadata = serializedMetadata;
+                    existingKnowledgePartToKeep.LastChangedBy = dataPipelineRun.Id;
                 }
+
             finalContentItemKnowledgeParts.AddRange(
                 existingContentItemKnowledgeParts);        
 
