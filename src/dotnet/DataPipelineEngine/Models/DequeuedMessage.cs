@@ -24,5 +24,10 @@
         /// Gets or sets the number of times the message has been dequeued.
         /// </summary>
         public long DequeueCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the time of the last visibility timeout update for this message.
+        /// </summary>
+        public DateTimeOffset LastVisibilityTimeoutUpdate { get; set; } = DateTimeOffset.MinValue;
     }
 }

@@ -19,6 +19,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Queueing
         private readonly ILogger<AzureStorageQueueService<T>> _logger;
 
         private const int MESSAGE_VISIBILITY_TIMEOUT_SECONDS = 600;
+        private const int MESSAGE_VISIBILITY_TIMEOUT_REFRESH_SECONDS = 300;
         private const int MESSAGE_ERROR_VISIBILITY_TIMEOUT_SECONDS = 5;
 
         /// <summary>
@@ -107,6 +108,14 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Queueing
         {
             try
             {
+                if ((DateTimeOffset.UtcNow - message.LastVisibilityTimeoutUpdate).TotalSeconds <=
+                    MESSAGE_VISIBILITY_TIMEOUT_REFRESH_SECONDS)
+                {
+                    // No need to update visibility timeout yet
+                    // (we want to avoid unnecessary updates)
+                    return message;
+                }
+
                 var updateReceiptResponse = await _queueClient.UpdateMessageAsync(
                     message.MessageId,
                     message.PopReceipt,
@@ -121,7 +130,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Queueing
                     Message = message.Message,
                     MessageId = message.MessageId,
                     PopReceipt = updateReceiptResponse.Value.PopReceipt!,
-                    DequeueCount = message.DequeueCount
+                    DequeueCount = message.DequeueCount,
+                    LastVisibilityTimeoutUpdate = DateTimeOffset.UtcNow
                 };
             }
             catch (Exception ex)
