@@ -6,6 +6,11 @@
     public static class ContextResourceTypeNames
     {
         /// <summary>
+        /// Knowledge units.
+        /// </summary>
+        public const string KnowledgeUnits = "knowledgeUnits";
+
+        /// <summary>
         /// Knowledge sources.
         /// </summary>
         public const string KnowledgeSources = "knowledgeSources";

@@ -16,6 +16,20 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
         public static Dictionary<string, ResourceTypeDescriptor> AllowedResourceTypes => new()
         {
             {
+                ContextResourceTypeNames.KnowledgeUnits,
+                new ResourceTypeDescriptor(
+                    ContextResourceTypeNames.KnowledgeUnits,
+                    typeof(KnowledgeUnit))
+                {
+                    AllowedTypes = [
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<KnowledgeUnit>)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(KnowledgeUnit)], [typeof(ResourceProviderUpsertResult)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], [])
+                    ],
+                    Actions = []
+                }
+            },
+            {
                 ContextResourceTypeNames.KnowledgeSources,
                 new ResourceTypeDescriptor(
                     ContextResourceTypeNames.KnowledgeSources,

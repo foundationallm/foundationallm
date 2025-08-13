@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
@@ -44,12 +45,16 @@ namespace FoundationaLLM
             // Register validators.
             services.AddSingleton<IValidator<KnowledgeSource>, KnowledgeSourceValidator>();
 
+            services.AddContextResourceProviderStorage(configuration);
+
             // Register the resource provider services (cannot use Keyed singletons due to the Microsoft Identity package being incompatible):
             services.AddSingleton<IResourceProviderService>(sp =>
                 new ContextResourceProviderService(
                     sp.GetRequiredService<IOptions<InstanceSettings>>(),
                     sp.GetRequiredService<IOptions<ResourceProviderCacheSettings>>(),
                     sp.GetRequiredService<IAuthorizationServiceClient>(),
+                    sp.GetRequiredService<IEnumerable<IStorageService>>()
+                        .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Context),
                     sp.GetRequiredService<IEventService>(),
                     sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp,

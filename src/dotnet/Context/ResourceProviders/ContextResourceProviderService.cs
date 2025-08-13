@@ -27,6 +27,7 @@ namespace FoundationaLLM.Context.ResourceProviders
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>    
     /// <param name="cacheOptions">The options providing the <see cref="ResourceProviderCacheSettings"/> with settings for the resource provider cache.</param>
     /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
+    /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
@@ -36,6 +37,7 @@ namespace FoundationaLLM.Context.ResourceProviders
         IOptions<InstanceSettings> instanceOptions,
         IOptions<ResourceProviderCacheSettings> cacheOptions,
         IAuthorizationServiceClient authorizationService,
+        IStorageService storageService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
         IServiceProvider serviceProvider,
@@ -45,7 +47,7 @@ namespace FoundationaLLM.Context.ResourceProviders
             instanceOptions.Value,
             cacheOptions.Value,
             authorizationService,
-            null!,
+            storageService,
             eventService,
             resourceValidatorFactory,
             serviceProvider,
@@ -56,6 +58,8 @@ namespace FoundationaLLM.Context.ResourceProviders
             useInternalReferencesStore: false,
             proxyMode: proxyMode)
     {
+        private IContextServiceClient? _contextServiceClient;
+
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
             ContextResourceProviderMetadata.AllowedResourceTypes;
@@ -64,8 +68,18 @@ namespace FoundationaLLM.Context.ResourceProviders
         protected override string _name => ResourceProviderNames.FoundationaLLM_Context;
 
         /// <inheritdoc/>
-        protected override async Task InitializeInternal() =>
+        protected override async Task InitializeInternal()
+        {
+            // Defer resolving to this point to avoid circular dependency issues.
+            // Only create the context service client if we're in proxy mode.
+            if (_proxyMode)
+                _contextServiceClient = new ContextServiceClient(
+                    new OrchestrationContext { CurrentUserIdentity = ServiceContext.ServiceIdentity },
+                    _serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
+                    _serviceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
+
             await Task.CompletedTask;
+        }
 
         #region Resource provider support for Management API
 
@@ -120,6 +134,8 @@ namespace FoundationaLLM.Context.ResourceProviders
 
         #region Resource management
 
+        protected override Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) => base.GetResourceAsyncInternal<T>(resourcePath, authorizationResult, userIdentity, options);
+
         private async Task<List<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSources(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
@@ -129,16 +145,10 @@ namespace FoundationaLLM.Context.ResourceProviders
                 throw new ResourceProviderException(
                     "The operation is not supported", StatusCodes.Status400BadRequest);
 
-            using var scope = _serviceProvider.CreateScope();
-            var contextServiceClient = new ContextServiceClient(
-                new OrchestrationContext { CurrentUserIdentity = ServiceContext.ServiceIdentity },
-                scope.ServiceProvider.GetRequiredService<IHttpClientFactoryService>(),
-                scope.ServiceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
-
             var response = authorizationResult.Authorized
-                ? await contextServiceClient.GetKnowledgeSources(
+                ? await _contextServiceClient!.GetKnowledgeSources(
                     resourcePath.InstanceId!)
-                : await contextServiceClient.GetKnowledgeSources(
+                : await _contextServiceClient!.GetKnowledgeSources(
                     resourcePath.InstanceId!,
                     authorizationResult.SubordinateResourcePathsAuthorizationResults.Values
                                .Where(sarp => !string.IsNullOrWhiteSpace(sarp.ResourceName) && sarp.Authorized)
@@ -162,14 +172,7 @@ namespace FoundationaLLM.Context.ResourceProviders
             var queryRequest = JsonSerializer.Deserialize<ContextKnowledgeSourceQueryRequest>(serializedAction)
                 ?? throw new ResourceProviderException("The query request is not valid.", StatusCodes.Status400BadRequest);
 
-            using var scope = _serviceProvider.CreateScope();
-
-            var contextServiceClient = new ContextServiceClient(
-                new OrchestrationContext { CurrentUserIdentity = ServiceContext.ServiceIdentity },
-                scope.ServiceProvider.GetRequiredService<IHttpClientFactoryService>(),
-                scope.ServiceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
-
-            var response = await contextServiceClient.QueryKnowledgeSource(
+            var response = await _contextServiceClient!.QueryKnowledgeSource(
                 resourcePath.InstanceId!,
                 resourcePath.MainResourceId!,
                 queryRequest);
@@ -186,14 +189,7 @@ namespace FoundationaLLM.Context.ResourceProviders
             //var queryRequest = JsonSerializer.Deserialize<ContextKnowledgeSourceQueryRequest>(serializedAction)
             //    ?? throw new ResourceProviderException("The query request is not valid.", StatusCodes.Status400BadRequest);
 
-            using var scope = _serviceProvider.CreateScope();
-
-            var contextServiceClient = new ContextServiceClient(
-                new OrchestrationContext { CurrentUserIdentity = ServiceContext.ServiceIdentity },
-                scope.ServiceProvider.GetRequiredService<IHttpClientFactoryService>(),
-                scope.ServiceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
-
-            var response = await contextServiceClient.RenderKnowledgeSourceGraph(
+            var response = await _contextServiceClient!.RenderKnowledgeSourceGraph(
                 resourcePath.InstanceId!,
                 resourcePath.MainResourceId!,
                 null);

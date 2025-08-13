@@ -2,10 +2,8 @@ using Asp.Versioning;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
-using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Services.RequestProcessors;
@@ -67,6 +65,7 @@ namespace FoundationaLLM.Management.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataPipeline_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Plugin_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vector_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Context_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vectorization_Storage);
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
@@ -121,10 +120,10 @@ namespace FoundationaLLM.Management.API
             builder.AddAttachmentResourceProvider();
             builder.AddAIModelResourceProvider();
             builder.AddRemoteDataPipelineServiceClient(); // Required by the DataPipeline resource provider.
-            builder.AddDataPipelineResourceProvider();
+            builder.AddDataPipelineResourceProvider(proxyMode: true);
             builder.AddPluginResourceProvider();
             builder.AddVectorResourceProvider();
-            builder.AddContextResourceProvider();
+            builder.AddContextResourceProvider(proxyMode: true);
 
             builder.AddAzureCosmosDBService();
 

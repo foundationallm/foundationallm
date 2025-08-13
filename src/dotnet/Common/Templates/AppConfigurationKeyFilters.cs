@@ -115,6 +115,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:ResourceProviders:Vector:Storage:*";
         
         /// <summary>
+        /// Filter for the configuration section used to identify the storage settings for the FoundationaLLM.Context resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Context_Storage =
+            "FoundationaLLM:ResourceProviders:Context:Storage:*";
+        
+        /// <summary>
         /// Filter for the configuration section used to identify the settings for all API endpoints.
         /// </summary>
         public const string FoundationaLLM_APIEndpoints =
