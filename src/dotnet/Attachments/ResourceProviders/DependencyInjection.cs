@@ -22,7 +22,10 @@ namespace FoundationaLLM
         /// Add the Attachment resource provider and its related services the the dependency injection container.
         /// </summary>
         /// <param name="builder">The application builder.</param>
-        public static void AddAttachmentResourceProvider(this IHostApplicationBuilder builder)
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
+        public static void AddAttachmentResourceProvider(
+            this IHostApplicationBuilder builder,
+            bool proxyMode = false)
         {
             builder.AddAttachmentResourceProviderStorage();
 
@@ -40,7 +43,8 @@ namespace FoundationaLLM
                     sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp.GetRequiredService<IAzureCosmosDBService>(),
                     sp,
-                    sp.GetRequiredService<ILoggerFactory>()));
+                    sp.GetRequiredService<ILoggerFactory>(),
+                    proxyMode: proxyMode));
             builder.Services.ActivateSingleton<IResourceProviderService>();
         }
     }

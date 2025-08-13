@@ -112,6 +112,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             WriteIndented = true
         };
 
+        /// <summary>
+        /// Indicates whether the resource provider is running in proxy mode.
+        /// When running in proxy mode, the resource provider will use a remote service to
+        /// manage resources instead of managing them locally.
+        /// </summary>
+        protected readonly bool _proxyMode = false;
+
         /// <inheritdoc/>
         public string Name => _name;
 
@@ -143,6 +150,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
         /// <param name="eventTypesToSubscribe">The list of Event Service event namespaces to subscribe to for local event processing.</param>
         /// <param name="useInternalReferencesStore">Indicates whether the resource provider should use the internal resource references store or provide one of its own.</param>
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
         public ResourceProviderServiceBase(
             InstanceSettings instanceSettings,
             ResourceProviderCacheSettings cacheSettings,
@@ -153,7 +161,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             IServiceProvider serviceProvider,
             ILogger logger,
             List<string>? eventTypesToSubscribe = default,
-            bool useInternalReferencesStore = false)
+            bool useInternalReferencesStore = false,
+            bool proxyMode = false)
         {
             _authorizationServiceClient = authorizationServiceClient;
             _storageService = storageService;

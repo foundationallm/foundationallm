@@ -40,7 +40,8 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>    
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
-    /// <param name="loggerFactory">The factory responsible for creating loggers.</param>    
+    /// <param name="loggerFactory">The factory responsible for creating loggers.</param>
+    /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
     public class VectorizationResourceProviderService(        
         IOptions<InstanceSettings> instanceOptions,
         IOptions<ResourceProviderCacheSettings> cacheOptions,
@@ -49,7 +50,8 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,        
         IServiceProvider serviceProvider,
-        ILoggerFactory loggerFactory)
+        ILoggerFactory loggerFactory,
+        bool proxyMode = false)
         : ResourceProviderServiceBase<ResourceReference>(
             instanceOptions.Value,
             cacheOptions.Value,
@@ -61,7 +63,8 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             loggerFactory.CreateLogger<VectorizationResourceProviderService>(),
             [
                 EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand                
-            ])
+            ],
+            proxyMode: proxyMode)
     {
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>

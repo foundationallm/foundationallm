@@ -22,7 +22,10 @@ namespace FoundationaLLM
         /// Add the Agent resource provider and its related services the the dependency injection container.
         /// </summary>
         /// <param name="builder">The application builder.</param>
-        public static void AddAgentResourceProvider(this IHostApplicationBuilder builder)
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
+        public static void AddAgentResourceProvider(
+            this IHostApplicationBuilder builder,
+            bool proxyMode = false)
         {
             builder.AddAgentResourceProviderStorage();
 
@@ -43,7 +46,8 @@ namespace FoundationaLLM
                     sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp.GetRequiredService<IAzureCosmosDBService>(),
                     sp,
-                    sp.GetRequiredService<ILoggerFactory>()));
+                    sp.GetRequiredService<ILoggerFactory>(),
+                    proxyMode: proxyMode));
             builder.Services.ActivateSingleton<IResourceProviderService>();
         }
     }

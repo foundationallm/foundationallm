@@ -23,17 +23,24 @@ namespace FoundationaLLM
         /// Register the FoundationaLLM Plugin resource provider with the Dependency Injection container.
         /// </summary>
         /// <param name="builder">The application builder.</param>
-        public static void AddPluginResourceProvider(this IHostApplicationBuilder builder) =>
-            builder.Services.AddPluginResourceProvider(builder.Configuration);
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
+        public static void AddPluginResourceProvider(
+            this IHostApplicationBuilder builder,
+            bool proxyMode = false) =>
+            builder.Services.AddPluginResourceProvider(
+                builder.Configuration,
+                proxyMode: proxyMode);
 
         /// <summary>
         /// Registers the FoundationaLLM.DataSource resource provider with the dependency injection container.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
         /// <param name="configuration">The <see cref="IConfiguration"/> configuration provider.</param>
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
         public static void AddPluginResourceProvider(
             this IServiceCollection services,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            bool proxyMode = false)
         {
             services.AddPluginResourceProviderStorage(configuration);
 
@@ -52,7 +59,8 @@ namespace FoundationaLLM
                     sp.GetRequiredService<IEventService>(),
                     sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp,
-                    sp.GetRequiredService<ILoggerFactory>()));
+                    sp.GetRequiredService<ILoggerFactory>(),
+                    proxyMode: proxyMode));
 
             services.ActivateSingleton<IResourceProviderService>();
         }

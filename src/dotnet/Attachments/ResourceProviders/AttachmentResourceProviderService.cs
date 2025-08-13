@@ -32,6 +32,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
     /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> providing Cosmos DB services.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to provide loggers for logging.</param>
+    /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
     public class AttachmentResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
         IOptions<ResourceProviderCacheSettings> cacheOptions,
@@ -41,7 +42,8 @@ namespace FoundationaLLM.Attachment.ResourceProviders
         IResourceValidatorFactory resourceValidatorFactory,
         IAzureCosmosDBService cosmosDBService,
         IServiceProvider serviceProvider,
-        ILoggerFactory loggerFactory)
+        ILoggerFactory loggerFactory,
+        bool proxyMode = false)
         : ResourceProviderServiceBase<AttachmentReference>(
             instanceOptions.Value,
             cacheOptions.Value,
@@ -54,7 +56,8 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             [
                 EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ],
-            useInternalReferencesStore: false)
+            useInternalReferencesStore: false,
+            proxyMode: proxyMode)
     {
         private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
 

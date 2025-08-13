@@ -22,7 +22,10 @@ namespace FoundationaLLM
         /// Add the AIModel resource provider and its related services the the dependency injection container.
         /// </summary>
         /// <param name="builder">The application builder.</param>
-        public static void AddAIModelResourceProvider(this IHostApplicationBuilder builder)
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
+        public static void AddAIModelResourceProvider(
+            this IHostApplicationBuilder builder,
+            bool proxyMode = false)
         {
             builder.AddAIModelResourceProviderStorage();
 
@@ -39,7 +42,8 @@ namespace FoundationaLLM
                     sp.GetRequiredService<IEventService>(),
                     sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp,
-                    sp.GetRequiredService<ILoggerFactory>()));
+                    sp.GetRequiredService<ILoggerFactory>(),
+                    proxyMode: proxyMode));
             builder.Services.ActivateSingleton<IResourceProviderService>();
         }
     }

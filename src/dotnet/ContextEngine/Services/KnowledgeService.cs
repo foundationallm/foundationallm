@@ -17,7 +17,6 @@ using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Context.Interfaces;
 using FoundationaLLM.Context.Models;
 using FoundationaLLM.Context.Models.Configuration;
-using MathNet.Numerics;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using OpenAI.Embeddings;

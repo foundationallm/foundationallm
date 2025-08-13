@@ -26,13 +26,15 @@ namespace FoundationaLLM.Authorization.ResourceProviders
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to provide loggers for logging.</param>
+    /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
     public class AuthorizationResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
         IOptions<ResourceProviderCacheSettings> cacheOptions,
         IAuthorizationServiceClient authorizationServiceClient,
         IResourceValidatorFactory resourceValidatorFactory,
         IServiceProvider serviceProvider,
-        ILoggerFactory loggerFactory)
+        ILoggerFactory loggerFactory,
+        bool proxyMode = false)
         : ResourceProviderServiceBase<ResourceReference>(
             instanceOptions.Value,
             cacheOptions.Value,
@@ -42,7 +44,8 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             resourceValidatorFactory,
             serviceProvider,
             loggerFactory.CreateLogger<AuthorizationResourceProviderService>(),
-            [])
+            [],
+            proxyMode: proxyMode)
     {
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
             AuthorizationResourceProviderMetadata.AllowedResourceTypes;
