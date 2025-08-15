@@ -239,11 +239,43 @@
 			v-model:visible="settingsModalVisible"
 			v-focustrap
 			modal
-			class="sidebar-dialog"
+			class="sidebar-dialog csm-profile-setting-modal-1 w-full"
 			header="Settings"
 			@keydown.esc="settingsModalVisible = false"
 		>
 			<TabView>
+				
+				<!-- Agents List Tab (T#8)-->
+				<TabPanel header="Agents">
+					<div class="mb-5">
+						<nuxt-link 
+							to="#"
+							class="p-button p-component create-agent-button">
+							New Agent <i class="pi pi-plus ml-3"></i>
+						</nuxt-link>
+					</div>
+
+					<div class="csm-table-container-1">
+						<table class="csm-table-1">
+							<thead>
+								<tr>
+									<th>Name</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(agent, index) in agentOptions" :key="index">
+									<td>{{ agent.label }}</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<!-- Empty Message -->
+						<div v-if="agentOptions.length === 0">
+							{{ emptyAgentsMessage || 'No agents available.' }}
+						</div>
+					</div>
+				</TabPanel>
+
 				<TabPanel header="Accessibility">
 					<div class="setting-option">
 						<h4 id="auto-hide-toasts" class="setting-option-label">
@@ -287,445 +319,237 @@
 </template>
 
 <script lang="ts">
-import { hideAllPoppers } from 'floating-vue';
-import eventBus from '@/js/eventBus';
-import type { Session } from '@/js/types';
-declare const process: any;
+	import { hideAllPoppers } from 'floating-vue';
+	import eventBus from '@/js/eventBus';
+	import { isAgentExpired } from '@/js/helpers';
+	import type { Session } from '@/js/types';
+	declare const process: any;
 
-export default {
-	name: 'ChatSidebar',
+	export default {
+		name: 'ChatSidebar',
 
-	data() {
-		return {
-			conversationToUpdate: null as Session | null,
-			newConversationName: '' as string,
-			newConversationMetadata: null as any | null,
-			conversationToDelete: null as Session | null,
-			deleteProcessing: false,
-			isMobile: window.screen.width < 950,
-			createProcessing: false,
-			debounceTimeout: null as NodeJS.Timeout | null,
-			settingsModalVisible: false,
-		};
-	},
+		data() {
+			return {
+				conversationToUpdate: null as Session | null,
+				newConversationName: '' as string,
+				newConversationMetadata: null as any | null,
+				conversationToDelete: null as Session | null,
+				deleteProcessing: false,
+				isMobile: window.screen.width < 950,
+				createProcessing: false,
+				debounceTimeout: null as NodeJS.Timeout | null,
+				settingsModalVisible: false,
 
-	computed: {
-		sessions() {
-			return this.$appStore.sessions.filter((session) => !session.is_temp);
+				agentOptions: [],
+				emptyAgentsMessage: null,
+			};
 		},
 
-		currentSession() {
-			return this.$appStore.currentSession;
-		},
-	},
+		computed: {
+			sessions() {
+				return this.$appStore.sessions.filter((session) => !session.is_temp);
+			},
 
-	async created() {
-		if (window.screen.width < 950) {
-			this.$appStore.isSidebarClosed = true;
-		}
-
-		if (process.client) {
-			await this.$appStore.init(this.$nuxt._route.query.chat);
-		}
-
-		// Listen for the agent change event.
-		eventBus.on('agentChanged', this.handleAddSession);
-	},
-
-	methods: {
-		openUpdateModal(session: Session) {
-			this.conversationToUpdate = session;
-			this.newConversationName = session.display_name;
-			this.newConversationMetadata = session.metadata
+			currentSession() {
+				return this.$appStore.currentSession;
+			},
 		},
 
-		closeUpdateModal() {
-			this.conversationToUpdate = null;
-			this.newConversationName = '';
-			this.newConversationMetadata = null;
+		watch: {
+			'$appStore.agents': {
+				handler() {
+					this.setAgentOptions();
+				},
+				deep: true,
+			},
+			'$appStore.lastSelectedAgent': {
+				handler() {
+					this.setAgentOptions();
+				},
+				deep: true,
+			},
 		},
 
-		handleSessionSelected(session: Session) {
-			this.$appStore.changeSession(session);
-		},
-
-		async handleAddSession() {
-			if (this.createProcessing) return;
-
-			if (this.debounceTimeout) {
-				this.$appStore.addToast({
-					severity: 'warn',
-					summary: 'Warning',
-					detail: 'Please wait before creating another session.',
-					life: 3000,
-				});
-				return;
+		async created() {
+			if (window.screen.width < 950) {
+				this.$appStore.isSidebarClosed = true;
 			}
 
-			this.createProcessing = true;
-
-			try {
-				const newSession = await this.$appStore.addSession();
-				this.handleSessionSelected(newSession);
-
-				this.debounceTimeout = setTimeout(() => {
-					this.debounceTimeout = null;
-				}, 2000);
-			} catch (error) {
-				this.$appStore.addToast({
-					severity: 'error',
-					summary: 'Error',
-					detail: 'Could not create a new session. Please try again.',
-				});
-			} finally {
-				this.createProcessing = false; // Re-enable the button
+			if (process.client) {
+				await this.$appStore.init(this.$nuxt._route.query.chat);
 			}
+
+			// Listen for the agent change event.
+			eventBus.on('agentChanged', this.handleAddSession);
 		},
 
-		handleUpdateConversation() {
-			let metadataJson = this.newConversationMetadata;
-			if (metadataJson !== null && typeof metadataJson === 'string' && metadataJson.trim() !== '') {
-				try {
-					metadataJson = JSON.parse(metadataJson);
-				} catch (e) {
+		async mounted() {
+			await this.setAgentOptions();
+		},
+
+		methods: {
+			openUpdateModal(session: Session) {
+				this.conversationToUpdate = session;
+				this.newConversationName = session.display_name;
+				this.newConversationMetadata = session.metadata
+			},
+
+			closeUpdateModal() {
+				this.conversationToUpdate = null;
+				this.newConversationName = '';
+				this.newConversationMetadata = null;
+			},
+
+			handleSessionSelected(session: Session) {
+				this.$appStore.changeSession(session);
+			},
+
+			async handleAddSession() {
+				if (this.createProcessing) return;
+
+				if (this.debounceTimeout) {
 					this.$appStore.addToast({
-						severity: 'error',
-						summary: 'Invalid Metadata',
-						detail: 'Metadata must be valid JSON.',
-						life: 4000,
+						severity: 'warn',
+						summary: 'Warning',
+						detail: 'Please wait before creating another session.',
+						life: 3000,
 					});
 					return;
 				}
-			}
-			this.$appStore.updateConversation(this.conversationToUpdate!, this.newConversationName, this.newConversationMetadata);
-			this.conversationToUpdate = null;
-			this.newConversationMetadata = '';
-		},
 
-		async handleDeleteSession() {
-			this.deleteProcessing = true;
-			try {
-				await this.$appStore.deleteSession(this.conversationToDelete!);
-				this.conversationToDelete = null;
-			} catch (error) {
-				this.$appStore.addToast({
-					severity: 'error',
-					summary: 'Error',
-					detail: 'Could not delete the session. Please try again.',
-				});
-			} finally {
-				this.deleteProcessing = false;
-			}
-		},
+				this.createProcessing = true;
 
-		updateConversationInputKeydown(event: KeyboardEvent) {
-			if (event.key === 'Enter') {
-				this.handleUpdateConversation();
-			}
-			if (event.key === 'Escape') {
-				this.closeUpdateModal();
-			}
-		},
+				try {
+					const newSession = await this.$appStore.addSession();
+					this.handleSessionSelected(newSession);
 
-		deleteSessionKeydown(event: KeyboardEvent) {
-			if (event.key === 'Escape') {
-				this.conversationToDelete = null;
-			}
-		},
+					this.debounceTimeout = setTimeout(() => {
+						this.debounceTimeout = null;
+					}, 2000);
+				} catch (error) {
+					this.$appStore.addToast({
+						severity: 'error',
+						summary: 'Error',
+						detail: 'Could not create a new session. Please try again.',
+					});
+				} finally {
+					this.createProcessing = false; // Re-enable the button
+				}
+			},
 
-		hideAllPoppers() {
-			hideAllPoppers();
+			handleUpdateConversation() {
+				let metadataJson = this.newConversationMetadata;
+				if (metadataJson !== null && typeof metadataJson === 'string' && metadataJson.trim() !== '') {
+					try {
+						metadataJson = JSON.parse(metadataJson);
+					} catch (e) {
+						this.$appStore.addToast({
+							severity: 'error',
+							summary: 'Invalid Metadata',
+							detail: 'Metadata must be valid JSON.',
+							life: 4000,
+						});
+						return;
+					}
+				}
+				this.$appStore.updateConversation(this.conversationToUpdate!, this.newConversationName, this.newConversationMetadata);
+				this.conversationToUpdate = null;
+				this.newConversationMetadata = '';
+			},
+
+			async handleDeleteSession() {
+				this.deleteProcessing = true;
+				try {
+					await this.$appStore.deleteSession(this.conversationToDelete!);
+					this.conversationToDelete = null;
+				} catch (error) {
+					this.$appStore.addToast({
+						severity: 'error',
+						summary: 'Error',
+						detail: 'Could not delete the session. Please try again.',
+					});
+				} finally {
+					this.deleteProcessing = false;
+				}
+			},
+
+			updateConversationInputKeydown(event: KeyboardEvent) {
+				if (event.key === 'Enter') {
+					this.handleUpdateConversation();
+				}
+				if (event.key === 'Escape') {
+					this.closeUpdateModal();
+				}
+			},
+
+			deleteSessionKeydown(event: KeyboardEvent) {
+				if (event.key === 'Escape') {
+					this.conversationToDelete = null;
+				}
+			},
+			
+			/**
+			 * Sets the agent options for the agent dropdown.
+			 * Filters out expired agents but keeps the currently selected agent even if it is expired.
+			 * T#8
+			 */ 
+			async setAgentOptions() {
+				const isCurrentAgent = (agent): boolean => {
+					return (
+						agent.resource.name ===
+						this.$appStore.getSessionAgent(this.currentSession)?.resource?.name
+					);
+				};
+
+				// Filter out expired agents, but keep the currently selected agent even if it is expired
+				const notExpiredOrCurrentAgents = this.$appStore.agents.filter(
+					(agent) => !isAgentExpired(agent) || isCurrentAgent(agent),
+				);
+
+				this.agentOptions = notExpiredOrCurrentAgents.map((agent) => ({
+					label: agent.resource.display_name ? agent.resource.display_name : agent.resource.name,
+					type: agent.resource.type,
+					object_id: agent.resource.object_id,
+					description: agent.resource.description,
+					my_agent: agent.roles.includes('Owner'),
+					value: agent,
+				}));
+			},
+
+			hideAllPoppers() {
+				hideAllPoppers();
+			},
 		},
-	},
-};
+	};
 </script>
 
 <style lang="scss" scoped>
-.chat-sidebar {
-	width: 300px;
-	max-width: 100%;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	flex: 1;
-	background-color: var(--primary-color);
-	z-index: 3;
-	scrollbar-color: var(--sidebar-scrollbar-default) transparent;
-
-	&:hover {
-		scrollbar-color: var(--sidebar-scrollbar-focused) transparent;
-	}
-}
-
-.chat-sidebar__header {
-	height: 70px;
-	width: 100%;
-	padding-right: 24px;
-	padding-left: 24px;
-	padding-top: 12px;
-	display: flex;
-	align-items: center;
-	color: var(--primary-text);
-
-	img {
-		max-height: 100%;
-		width: auto;
-		max-width: 148px;
-		margin-right: 12px;
-	}
-}
-
-.chat-sidebar__section-header {
-	height: 64px;
-	padding: 24px;
-	padding-bottom: 12px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	color: var(--primary-text);
-	text-transform: uppercase;
-	// font-size: 14px;
-	font-size: 0.875rem;
-	font-weight: 600;
-}
-
-.chat-sidebar__section-header__text {
-	font-size: 0.875rem;
-	font-weight: 600;
-}
-
-.chat-sidebar__section-header--mobile {
-	display: none;
-}
-
-.chat-sidebar__chats {
-	flex: 1;
-	overflow-y: auto;
-}
-
-.chat {
-	padding: 24px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	color: var(--primary-text);
-	transition: all 0.1s ease-in-out;
-	font-size: 13px;
-	font-size: 0.8125rem;
-	height: 72px;
-
-	&:hover {
-		.chat__icons {
-			display: flex;
-			opacity: 1;
-		}
-	}
-}
-
-.chat__name {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	font-size: 0.8125rem;
-	font-weight: 400;
-}
-
-.chat__icons {
-	display: none;
-	justify-content: space-between;
-	opacity: 0;
-	flex-shrink: 0;
-	margin-left: 12px;
-	transition: all 0.1s ease-in-out;
-}
-
-.chat:hover {
-	background-color: rgba(217, 217, 217, 0.05);
-}
-
-.chat--selected {
-	color: var(--secondary-text);
-	background-color: var(--secondary-color);
-	border-left: 4px solid rgba(217, 217, 217, 0.5);
-
-	.chat__icons {
+	.chat-sidebar {
+		width: 300px;
+		max-width: 100%;
+		height: 100%;
 		display: flex;
-		opacity: 1;
-	}
-}
+		flex-direction: column;
+		flex: 1;
+		background-color: var(--primary-color);
+		z-index: 3;
+		scrollbar-color: var(--sidebar-scrollbar-default) transparent;
 
-.chat--selected .option {
-	background-color: rgba(245, 245, 245, 1);
-}
-
-@mixin blink-background($startColor, $endColor, $duration: 2s, $iterations: infinite) {
-	$animation-name: blink-background-#{random(1000)};
-
-	@keyframes #{$animation-name} {
-		0% {
-			background-color: $startColor;
-		}
-		40% {
-			background-color: $endColor;
-		}
-		100% {
-			background-color: $startColor;
+		&:hover {
+			scrollbar-color: var(--sidebar-scrollbar-focused) transparent;
 		}
 	}
 
-	animation: $animation-name ease-out $duration $iterations;
-}
-
-.chat--editing {
-	@include blink-background(transparent, var(--secondary-color));
-}
-
-.chat--deleting {
-	@include blink-background(transparent, var(--red-600));
-}
-
-.option {
-	background-color: rgba(220, 220, 220, 1);
-	padding: 4px;
-	border-radius: 3px;
-}
-
-.option:hover {
-	background-color: rgba(200, 200, 200, 1);
-	cursor: pointer;
-}
-
-.delete {
-	margin-left: 8px;
-}
-
-.chat__name {
-	cursor: pointer;
-}
-
-.chat-sidebar__account {
-	display: grid;
-	grid-template-columns: min-content auto;
-	// added extra padding to the right to account for resize handle width
-	padding: 12px 29px 12px 24px;
-	text-transform: inherit;
-	align-items: center;
-}
-
-.chat-sidebar__avatar {
-	margin-right: 12px;
-	height: 61px;
-	width: 61px;
-	border-radius: 50%; /* circular crop */
-	background: transparent;
-	overflow: hidden;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.chat-sidebar__avatar img,
-.chat-sidebar__avatar picture,
-.chat-sidebar__avatar svg {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	border-radius: 50%;
-	display: block;
-}
-
-.chat-sidebar__sign-out {
-	width: 100%;
-}
-
-.p-button-text.sidebar-dialog__button:focus {
-	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
-}
-
-.sidebar-dialog__button:focus {
-	box-shadow: 0 0 0 0.1rem #000;
-}
-
-.chat-sidebar__button:focus {
-	box-shadow: 0 0 0 0.1rem #fff;
-}
-
-.chat-sidebar__username {
-	color: var(--primary-text);
-	font-weight: 600;
-	font-size: 0.875rem;
-	text-transform: capitalize;
-	line-height: 0;
-	vertical-align: super;
-}
-
-.chat-sidebar__options {
-	display: flex;
-	align-items: stretch;
-}
-
-.chat-sidebar__settings {
-	margin-left: 4px;
-	height: 100%;
-}
-
-.p-overlaypanel-content {
-	background-color: var(--primary-color);
-}
-
-.overlay-panel__option {
-	display: flex;
-	align-items: center;
-	cursor: pointer;
-}
-
-.overlay-panel__option:hover {
-	color: var(--primary-color);
-}
-
-.delete-dialog-content {
-	display: flex;
-	justify-content: center;
-	padding: 20px 150px;
-}
-
-ul.chat-list {
-	list-style-type: none;
-	padding-left: 0;
-	margin: 0;
-}
-
-li.chat-list-item {
-	padding: 0;
-	margin: 0;
-}
-
-.setting-option {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	gap: 1rem;
-}
-
-.text-size-slider-container {
-	display: flex;
-	align-items: center;
-	width: 100%;
-	max-width: 300px;
-}
-
-#text-size {
-	text-wrap: nowrap;
-}
-
-@media only screen and (max-width: 950px) {
-	.chat-sidebar__section-header--mobile {
+	.chat-sidebar__header {
 		height: 70px;
-		padding: 12px 24px;
+		width: 100%;
+		padding-right: 24px;
+		padding-left: 24px;
+		padding-top: 12px;
 		display: flex;
-		justify-content: space-between;
 		align-items: center;
+		color: var(--primary-text);
+
 		img {
 			max-height: 100%;
 			width: auto;
@@ -733,50 +557,351 @@ li.chat-list-item {
 			margin-right: 12px;
 		}
 	}
-}
+
+	.chat-sidebar__section-header {
+		height: 64px;
+		padding: 24px;
+		padding-bottom: 12px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		color: var(--primary-text);
+		text-transform: uppercase;
+		// font-size: 14px;
+		font-size: 0.875rem;
+		font-weight: 600;
+	}
+
+	.chat-sidebar__section-header__text {
+		font-size: 0.875rem;
+		font-weight: 600;
+	}
+
+	.chat-sidebar__section-header--mobile {
+		display: none;
+	}
+
+	.chat-sidebar__chats {
+		flex: 1;
+		overflow-y: auto;
+	}
+
+	.chat {
+		padding: 24px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		color: var(--primary-text);
+		transition: all 0.1s ease-in-out;
+		font-size: 13px;
+		font-size: 0.8125rem;
+		height: 72px;
+
+		&:hover {
+			.chat__icons {
+				display: flex;
+				opacity: 1;
+			}
+		}
+	}
+
+	.chat__name {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		font-size: 0.8125rem;
+		font-weight: 400;
+	}
+
+	.chat__icons {
+		display: none;
+		justify-content: space-between;
+		opacity: 0;
+		flex-shrink: 0;
+		margin-left: 12px;
+		transition: all 0.1s ease-in-out;
+	}
+
+	.chat:hover {
+		background-color: rgba(217, 217, 217, 0.05);
+	}
+
+	.chat--selected {
+		color: var(--secondary-text);
+		background-color: var(--secondary-color);
+		border-left: 4px solid rgba(217, 217, 217, 0.5);
+
+		.chat__icons {
+			display: flex;
+			opacity: 1;
+		}
+	}
+
+	.chat--selected .option {
+		background-color: rgba(245, 245, 245, 1);
+	}
+
+	@mixin blink-background($startColor, $endColor, $duration: 2s, $iterations: infinite) {
+		$animation-name: blink-background-#{random(1000)};
+
+		@keyframes #{$animation-name} {
+			0% {
+				background-color: $startColor;
+			}
+			40% {
+				background-color: $endColor;
+			}
+			100% {
+				background-color: $startColor;
+			}
+		}
+
+		animation: $animation-name ease-out $duration $iterations;
+	}
+
+	.chat--editing {
+		@include blink-background(transparent, var(--secondary-color));
+	}
+
+	.chat--deleting {
+		@include blink-background(transparent, var(--red-600));
+	}
+
+	.option {
+		background-color: rgba(220, 220, 220, 1);
+		padding: 4px;
+		border-radius: 3px;
+	}
+
+	.option:hover {
+		background-color: rgba(200, 200, 200, 1);
+		cursor: pointer;
+	}
+
+	.delete {
+		margin-left: 8px;
+	}
+
+	.chat__name {
+		cursor: pointer;
+	}
+
+	.chat-sidebar__account {
+		display: grid;
+		grid-template-columns: min-content auto;
+		// added extra padding to the right to account for resize handle width
+		padding: 12px 29px 12px 24px;
+		text-transform: inherit;
+		align-items: center;
+	}
+
+	.chat-sidebar__avatar {
+		margin-right: 12px;
+		height: 61px;
+		width: 61px;
+		border-radius: 50%; /* circular crop */
+		background: transparent;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.chat-sidebar__avatar img,
+	.chat-sidebar__avatar picture,
+	.chat-sidebar__avatar svg {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: 50%;
+		display: block;
+	}
+
+	.chat-sidebar__sign-out {
+		width: 100%;
+	}
+
+	.p-button-text.sidebar-dialog__button:focus {
+		box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+	}
+
+	.sidebar-dialog__button:focus {
+		box-shadow: 0 0 0 0.1rem #000;
+	}
+
+	.chat-sidebar__button:focus {
+		box-shadow: 0 0 0 0.1rem #fff;
+	}
+
+	.chat-sidebar__username {
+		color: var(--primary-text);
+		font-weight: 600;
+		font-size: 0.875rem;
+		text-transform: capitalize;
+		line-height: 0;
+		vertical-align: super;
+	}
+
+	.chat-sidebar__options {
+		display: flex;
+		align-items: stretch;
+	}
+
+	.chat-sidebar__settings {
+		margin-left: 4px;
+		height: 100%;
+	}
+
+	.p-overlaypanel-content {
+		background-color: var(--primary-color);
+	}
+
+	.overlay-panel__option {
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+	}
+
+	.overlay-panel__option:hover {
+		color: var(--primary-color);
+	}
+
+	.delete-dialog-content {
+		display: flex;
+		justify-content: center;
+		padding: 20px 150px;
+	}
+
+	ul.chat-list {
+		list-style-type: none;
+		padding-left: 0;
+		margin: 0;
+	}
+
+	li.chat-list-item {
+		padding: 0;
+		margin: 0;
+	}
+
+	.setting-option {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+
+	.text-size-slider-container {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		max-width: 300px;
+	}
+
+	#text-size {
+		text-wrap: nowrap;
+	}
+
+	@media only screen and (max-width: 950px) {
+		.chat-sidebar__section-header--mobile {
+			height: 70px;
+			padding: 12px 24px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			img {
+				max-height: 100%;
+				width: auto;
+				max-width: 148px;
+				margin-right: 12px;
+			}
+		}
+	}
 </style>
 
 <style lang="scss">
-.p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
-	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
-}
-
-.p-inputswitch.p-highlight:not(.p-disabled):has(.p-inputswitch-input:focus-visible)
-	.p-inputswitch-slider {
-	box-shadow: 0 0 0 0.1rem #000; /* Black box-shadow when p-highlight is also present */
-}
-
-.p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
-	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
-}
-
-.p-slider .p-slider-handle:focus-visible {
-	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
-}
-
-.p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus-visible {
-	box-shadow: inset 0 0 0 0.1rem var(--primary-button-bg);
-}
-
-.p-dialog .p-dialog-header .p-dialog-header-icon:focus-visible {
-	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
-}
-
-.p-inputtext:focus:not(.p-dropdown-label) {
-	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
-}
-
-.p-dropdown:not(.p-disabled).p-focus {
-	border-color: var(--primary-button-bg);
-}
-
-.sidebar-dialog {
-	max-width: 90vw;
-}
-
-@media only screen and (max-width: 950px) {
-	.sidebar-dialog {
-		width: 95vw;
+	.p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
+		box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
 	}
-}
+
+	.p-inputswitch.p-highlight:not(.p-disabled):has(.p-inputswitch-input:focus-visible)
+		.p-inputswitch-slider {
+		box-shadow: 0 0 0 0.1rem #000; /* Black box-shadow when p-highlight is also present */
+	}
+
+	.p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
+		box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+	}
+
+	.p-slider .p-slider-handle:focus-visible {
+		box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+	}
+
+	.p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus-visible {
+		box-shadow: inset 0 0 0 0.1rem var(--primary-button-bg);
+	}
+
+	.p-dialog .p-dialog-header .p-dialog-header-icon:focus-visible {
+		box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+	}
+
+	.p-inputtext:focus:not(.p-dropdown-label) {
+		box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+	}
+
+	.p-dropdown:not(.p-disabled).p-focus {
+		border-color: var(--primary-button-bg);
+	}
+
+	.sidebar-dialog {
+		max-width: 90vw;
+	}
+
+	@media only screen and (max-width: 950px) {
+		.sidebar-dialog {
+			width: 95vw;
+		}
+	}
+</style>
+
+<style>
+	.csm-profile-setting-modal-1{
+		max-width: 750px;
+	}
+	.csm-table-container-1{
+		max-height: 240px;
+		min-height: 240px;
+		overflow-y: auto;
+		border: 1px solid #dedede;
+		margin-bottom: 20px;
+	}
+	.csm-table-1{
+		width: 100%;
+		border-collapse: collapse;
+	}
+	.csm-table-1 thead th{
+		text-align: left;
+		background-color: #eeeeee;
+		padding: 10px;
+		border-right: 2px solid #ffffff;
+		font-weight: 500;
+		position: sticky;
+		top: 0;
+		z-index: 1;
+	}
+	.csm-table-1 thead tr th:last-child{
+		border-right: 0px;
+	}
+	.csm-table-1 tbody td{
+		text-align: left;
+		padding: 10px;
+		border-bottom: 1px solid #dedede;
+	}
+	.csm-table-1 tbody tr:last-child td{
+		border-bottom: 0px;
+	}
+	.create-agent-button{
+		text-decoration: none;
+		font-weight: 600;
+	}
 </style>
