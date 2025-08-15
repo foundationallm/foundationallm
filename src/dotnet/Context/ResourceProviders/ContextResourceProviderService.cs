@@ -1,5 +1,4 @@
-﻿using FoundationaLLM.Common.Authentication;
-using FoundationaLLM.Common.Clients;
+﻿using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -8,6 +7,7 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
+using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.ResourceProviders;
@@ -55,11 +55,9 @@ namespace FoundationaLLM.Context.ResourceProviders
             [
                 EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ],
-            useInternalReferencesStore: false,
+            useInternalReferencesStore: true,
             proxyMode: proxyMode)
     {
-        private IContextServiceClient? _contextServiceClient;
-
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
             ContextResourceProviderMetadata.AllowedResourceTypes;
@@ -68,18 +66,10 @@ namespace FoundationaLLM.Context.ResourceProviders
         protected override string _name => ResourceProviderNames.FoundationaLLM_Context;
 
         /// <inheritdoc/>
-        protected override async Task InitializeInternal()
-        {
-            // Defer resolving to this point to avoid circular dependency issues.
-            // Only create the context service client if we're in proxy mode.
-            if (_proxyMode)
-                _contextServiceClient = new ContextServiceClient(
-                    new OrchestrationContext { CurrentUserIdentity = ServiceContext.ServiceIdentity },
-                    _serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
-                    _serviceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
+        protected override string _storageContainerName => _instanceSettings.Id;
 
-            await Task.CompletedTask;
-        }
+        /// <inheritdoc/>
+        protected override string _storageRootPath => "/resource-provider";
 
         #region Resource provider support for Management API
 
@@ -94,14 +84,45 @@ namespace FoundationaLLM.Context.ResourceProviders
                 ContextResourceTypeNames.KnowledgeSources => await GetKnowledgeSources(
                     resourcePath,
                     authorizationResult,
+                    userIdentity,
                     options ?? new ResourceProviderGetOptions
                     {
                         IncludeRoles = resourcePath.IsResourceTypePath
                     }),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
+                ContextResourceTypeNames.KnowledgeUnits => await GetKnowledgeUnits(
+                    resourcePath,
+                    authorizationResult,
+                    userIdentity,
+                    options ?? new ResourceProviderGetOptions
+                    {
+                        IncludeRoles = resourcePath.IsResourceTypePath
+                    }),
+                _ => throw new ResourceProviderException(
+                        $"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
             };
 
+        protected override async Task<object> UpsertResourceAsync(
+            ResourcePath resourcePath,
+            string? serializedResource,
+            ResourceProviderFormFile? formFile,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity) =>
+            resourcePath.ResourceTypeName switch
+            {
+                ContextResourceTypeNames.KnowledgeUnits =>
+                    await UpdateKnowledgeResource<KnowledgeUnit>(
+                        resourcePath,
+                        JsonSerializer.Deserialize<KnowledgeUnit>(serializedResource!)!,
+                        userIdentity),
+                ContextResourceTypeNames.KnowledgeSources =>
+                    await UpdateKnowledgeResource<KnowledgeSource>(
+                        resourcePath,
+                        JsonSerializer.Deserialize<KnowledgeSource>(serializedResource!)!,
+                        userIdentity),
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
+                    StatusCodes.Status400BadRequest)
+            };
 
         /// <inheritdoc/>
         protected override async Task<object> ExecuteActionAsync(
@@ -133,34 +154,131 @@ namespace FoundationaLLM.Context.ResourceProviders
         #endregion
 
         #region Resource management
-
-        protected override Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) => base.GetResourceAsyncInternal<T>(resourcePath, authorizationResult, userIdentity, options);
-
+        
         private async Task<List<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSources(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
             ResourceProviderGetOptions options)
         {
+            if (!_proxyMode)
+                return await LoadResources<KnowledgeSource>(
+                    resourcePath.ResourceTypeInstances.First(),
+                    authorizationResult,
+                    options);
+
+            var contextServiceClient = GetContextServiceClient(userIdentity);
+            ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>> contextResponse = null!;
             if (!resourcePath.IsResourceTypePath)
-                throw new ResourceProviderException(
-                    "The operation is not supported", StatusCodes.Status400BadRequest);
-
-            var response = authorizationResult.Authorized
-                ? await _contextServiceClient!.GetKnowledgeSources(
-                    resourcePath.InstanceId!)
-                : await _contextServiceClient!.GetKnowledgeSources(
-                    resourcePath.InstanceId!,
-                    authorizationResult.SubordinateResourcePathsAuthorizationResults.Values
-                               .Where(sarp => !string.IsNullOrWhiteSpace(sarp.ResourceName) && sarp.Authorized)
-                               .Select(sarp => sarp.ResourceName!)
-                               .ToList());
-
-            return [.. response.Select(ks => new ResourceProviderGetResult<KnowledgeSource>
             {
-                Resource = ks,
-                Actions = [],
-                Roles = []
-            })];
+                contextResponse = await contextServiceClient!.GetKnowledgeSources(
+                    resourcePath.InstanceId!,
+                    [resourcePath.MainResourceId!]);
+            }
+            else
+            {
+                contextResponse = authorizationResult.Authorized
+                    ? await contextServiceClient!.GetKnowledgeSources(
+                        resourcePath.InstanceId!)
+                    : await contextServiceClient!.GetKnowledgeSources(
+                        resourcePath.InstanceId!,
+                        authorizationResult.SubordinateResourcePathsAuthorizationResults.Values
+                                   .Where(sarp => !string.IsNullOrWhiteSpace(sarp.ResourceName) && sarp.Authorized)
+                                   .Select(sarp => sarp.ResourceName!)
+                                   .ToList());
+            }
+            if (contextResponse.Success)
+                return [..
+                        contextResponse.Result!
+                ];
+            else
+                throw new ResourceProviderException(
+                    $"The following error occured when retrieving knowledge sources from the {_name} resource provider: {contextResponse.ErrorMessage ?? "N/A"}.",
+                    StatusCodes.Status500InternalServerError);
+        }
+
+        private async Task<List<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnits(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions options)
+        {
+            if (!_proxyMode)
+                return await LoadResources<KnowledgeUnit>(
+                    resourcePath.ResourceTypeInstances.First(),
+                    authorizationResult,
+                    options);
+
+            var contextServiceClient = GetContextServiceClient(userIdentity);
+            ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>> contextResponse = null!;
+            if (!resourcePath.IsResourceTypePath)
+            {
+                contextResponse = await contextServiceClient!.GetKnowledgeUnits(
+                    resourcePath.InstanceId!,
+                    [resourcePath.MainResourceId!]);
+            }
+            else
+            {
+                contextResponse = authorizationResult.Authorized
+                    ? await contextServiceClient!.GetKnowledgeUnits(
+                        resourcePath.InstanceId!)
+                    : await contextServiceClient!.GetKnowledgeUnits(
+                        resourcePath.InstanceId!,
+                        authorizationResult.SubordinateResourcePathsAuthorizationResults.Values
+                                   .Where(sarp => !string.IsNullOrWhiteSpace(sarp.ResourceName) && sarp.Authorized)
+                                   .Select(sarp => sarp.ResourceName!)
+                                   .ToList());
+            }
+
+            if (contextResponse.Success)
+                return [..
+                        contextResponse.Result!
+                ];
+            else
+                throw new ResourceProviderException(
+                    $"The following error occured when retrieving knowledge unit from the {_name} resource provider: {contextResponse.ErrorMessage ?? "N/A"}.",
+                    StatusCodes.Status500InternalServerError);
+        }
+
+        private async Task<ResourceProviderUpsertResult> UpdateKnowledgeResource<T>(
+            ResourcePath resourcePath,
+            T resource,
+            UnifiedUserIdentity userIdentity) where T : ResourceBase
+        {
+            if (!_proxyMode)
+                return await UpdateResource<T>(
+                    resourcePath,
+                    resource,
+                    userIdentity.NormalizedName);
+
+            var contextServiceClient = GetContextServiceClient(userIdentity);
+            switch (resource)
+            {
+                case KnowledgeUnit knowledgeUnit:
+                    var knowledgeUnitResult = await contextServiceClient!.UpsertKnowledgeUnit(
+                        resourcePath.InstanceId!,
+                        knowledgeUnit);
+                    if (knowledgeUnitResult.Success)
+                        return (ResourceProviderUpsertResult)knowledgeUnitResult.Result!;
+                    throw new ResourceProviderException(
+                        $"The following error occured when upserting knowledge unit {knowledgeUnit.Name} in the {_name} resource provider: {knowledgeUnitResult.ErrorMessage ?? "N/A"}.",
+                        StatusCodes.Status500InternalServerError);
+
+                case KnowledgeSource knowledgeSource:
+                    var knowledgeSourceResult = await contextServiceClient!.UpsertKnowledgeSource(
+                        resourcePath.InstanceId!,
+                        knowledgeSource);
+                    if (knowledgeSourceResult.Success)
+                        return (ResourceProviderUpsertResult)knowledgeSourceResult.Result!;
+                    throw new ResourceProviderException(
+                        $"The following error occured when upserting knowledge source {knowledgeSource.Name} in the {_name} resource provider: {knowledgeSourceResult.ErrorMessage ?? "N/A"}.",
+                        StatusCodes.Status500InternalServerError);
+
+                default:
+                    throw new ResourceProviderException(
+                        $"The resource type {resource.GetType().Name} is not supported by the {_name} resource provider.",
+                            StatusCodes.Status400BadRequest);
+            };
         }
 
         private async Task<ContextKnowledgeSourceQueryResponse> QueryKnowledgeSource(
@@ -172,7 +290,8 @@ namespace FoundationaLLM.Context.ResourceProviders
             var queryRequest = JsonSerializer.Deserialize<ContextKnowledgeSourceQueryRequest>(serializedAction)
                 ?? throw new ResourceProviderException("The query request is not valid.", StatusCodes.Status400BadRequest);
 
-            var response = await _contextServiceClient!.QueryKnowledgeSource(
+            var contextServiceClient = GetContextServiceClient(userIdentity);
+            var response = await contextServiceClient!.QueryKnowledgeSource(
                 resourcePath.InstanceId!,
                 resourcePath.MainResourceId!,
                 queryRequest);
@@ -189,13 +308,26 @@ namespace FoundationaLLM.Context.ResourceProviders
             //var queryRequest = JsonSerializer.Deserialize<ContextKnowledgeSourceQueryRequest>(serializedAction)
             //    ?? throw new ResourceProviderException("The query request is not valid.", StatusCodes.Status400BadRequest);
 
-            var response = await _contextServiceClient!.RenderKnowledgeSourceGraph(
+            var contextServiceClient = GetContextServiceClient(userIdentity);
+
+            var response = await contextServiceClient!.RenderKnowledgeSourceGraph(
                 resourcePath.InstanceId!,
                 resourcePath.MainResourceId!,
                 null);
 
             return response;
         }
+
+        #endregion
+
+        #region Utils
+
+        private IContextServiceClient GetContextServiceClient(
+            UnifiedUserIdentity userIdentity) =>
+            new ContextServiceClient(
+                new OrchestrationContext { CurrentUserIdentity = userIdentity },
+                _serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
+                _serviceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
 
         #endregion
     }

@@ -100,6 +100,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         protected virtual string _storageContainerName => "resource-provider";
 
         /// <summary>
+        /// The optional root path used by the resource provider to store its internal data.
+        /// </summary>
+        protected virtual string? _storageRootPath => null;
+
+        /// <summary>
         /// The name of the resource provider. Must be overridden in derived classes.
         /// </summary>
         protected virtual string _name => throw new NotImplementedException();
@@ -136,6 +141,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
         /// <inheritdoc/>
         public string StorageContainerName => _storageContainerName;
+
+        /// <inheritdoc/>
+        public string? StorageRootPath => _storageRootPath;
 
         /// <summary>
         /// Creates a new instance of the resource provider.
@@ -1595,6 +1603,54 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <summary>
+        /// Updates a resource based on its resource path and the resource itself.
+        /// </summary>
+        /// <typeparam name="T">The type of the resource to create.</typeparam>
+        /// <param name="resourcePath">The <see cref="ResourcePath"/> identifying the resource to update.</param>
+        /// <param name="resource">The resource to be updated.</param>
+        /// <param name="userIdentity">The user identity that creates or updates the resource.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// If the resource does not exist, it will be created.
+        /// </remarks>
+        protected async Task<ResourceProviderUpsertResult> UpdateResource<T>(
+            ResourcePath resourcePath,
+            T resource,
+            string userIdentity)
+            where T : ResourceBase
+        {
+            var existingResourceReference = await _resourceReferenceStore!.GetResourceReference(resource.Name);
+
+            if (resourcePath.ResourceTypeInstances[0].ResourceId != resource.Name)
+                throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
+                    StatusCodes.Status400BadRequest);
+
+            var resourceReference = new ResourceReference
+            {
+                Name = resource.Name!,
+                Type = resource.Type!,
+                Filename = $"/{_name}/{resource.Name}.json",
+                Deleted = false
+            };
+
+            // TODO: Add validation.
+
+            resource.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
+
+            UpdateBaseProperties(resource, userIdentity, isNew: existingResourceReference is null);
+            if (existingResourceReference is null)
+                await CreateResource<T>((TResourceReference)resourceReference, resource);
+            else
+                await SaveResource<T>(existingResourceReference, resource);
+
+            return new ResourceProviderUpsertResult
+            {
+                ObjectId = resource!.ObjectId,
+                ResourceExists = existingResourceReference is not null
+            };
+        }
+
+        /// <summary>
         /// Deletes a resource.
         /// </summary>
         /// <typeparam name="T">The type of resource to delete.</typeparam>
@@ -2029,7 +2085,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="resource">The <see cref="ResourceBase"/> object to be updated.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing the information about the identity of the user that performed a create or update operation on the resource.</param>
         /// <param name="isNew">Indicates whether the resource is new or being updated.</param>
-        protected void UpdateBaseProperties(ResourceBase resource, UnifiedUserIdentity userIdentity, bool isNew = false)
+        protected void UpdateBaseProperties(
+            ResourceBase resource,
+            UnifiedUserIdentity userIdentity,
+            bool isNew = false)
         {
             if (isNew)
             {
@@ -2041,6 +2100,31 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             {
                 // The resource was updated
                 resource.UpdatedBy = userIdentity.UPN ?? userIdentity.UserId ?? "N/A";
+                resource.UpdatedOn = DateTimeOffset.UtcNow;
+            }
+        }
+
+        /// <summary>
+        /// Updates the base properties of an object derived from <see cref="ResourceBase"/>.
+        /// </summary>
+        /// <param name="resource">The <see cref="ResourceBase"/> object to be updated.</param>
+        /// <param name="userIdentity">Theidentity of the user that performed a create or update operation on the resource.</param>
+        /// <param name="isNew">Indicates whether the resource is new or being updated.</param>
+        protected void UpdateBaseProperties(
+            ResourceBase resource,
+            string userIdentity,
+            bool isNew = false)
+        {
+            if (isNew)
+            {
+                // The resource was just created
+                resource.CreatedBy = userIdentity;
+                resource.CreatedOn = DateTimeOffset.UtcNow;
+            }
+            else
+            {
+                // The resource was updated
+                resource.UpdatedBy = userIdentity;
                 resource.UpdatedOn = DateTimeOffset.UtcNow;
             }
         }

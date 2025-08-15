@@ -637,7 +637,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
             return upsertResult;
         }
 
-        private async Task<List<ResourceProviderGetResult<AgentAccessToken>>> LoadAgentAccessTokens(ResourcePath resourcePath)
+        private async Task<List<ResourceProviderGetResult<AgentAccessToken>>> LoadAgentAccessTokens(
+            ResourcePath resourcePath)
         {
             var agentClientSecretKey = new AgentClientSecretKey
             {

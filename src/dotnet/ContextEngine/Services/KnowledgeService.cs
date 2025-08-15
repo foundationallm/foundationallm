@@ -8,6 +8,7 @@ using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders;
@@ -31,6 +32,7 @@ namespace FoundationaLLM.Context.Services
     /// </summary>
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="authorizationServiceClient">The client for the FoundationaLLM Authorization API.</param>
+    /// <param name="contextResourceProvider"> The FoundationaLLM.Context resource provider service.</param>
     /// <param name="configurationResourceProvider">The FoundationaLLM.Configuration resource provider service.</param>
     /// <param name="vectorResourceProvider">The FoundationaLLM.Vector resource provider service.</param>
     /// <param name="httpClientFactory"> The factory for creating HTTP clients.</param>
@@ -39,6 +41,7 @@ namespace FoundationaLLM.Context.Services
     public class KnowledgeService(
         IStorageService storageService,
         IAuthorizationServiceClient authorizationServiceClient,
+        IResourceProviderService contextResourceProvider,
         IResourceProviderService configurationResourceProvider,
         IResourceProviderService vectorResourceProvider,
         IHttpClientFactoryService httpClientFactory,
@@ -47,6 +50,7 @@ namespace FoundationaLLM.Context.Services
     {
         private readonly IStorageService _storageService = storageService;
         private readonly IAuthorizationServiceClient _authorizationServiceClient = authorizationServiceClient;
+        private readonly IResourceProviderService _contextResourceProvider = contextResourceProvider;
         private readonly IResourceProviderService _configurationResourceProvider = configurationResourceProvider;
         private readonly IResourceProviderService _vectorResourceProvider = vectorResourceProvider;
         private readonly IHttpClientFactoryService _httpClientFactory = httpClientFactory;
@@ -67,48 +71,81 @@ namespace FoundationaLLM.Context.Services
         private const string KNOWLEDGE_GRAPH_ENTITIES_FILE_NAME = "entities.parquet";
         private const string KNOWLEDGE_GRAPH_RELATIONSHIPS_FILE_NAME = "relationships.parquet";
 
-        /// <inheritdoc />
-        public async Task<IEnumerable<KnowledgeSource>> GetKnowledgeSources(
+        public async Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeUnits(
             string instanceId,
-            ContextKnowledgeSourceListRequest listRequest,
+            ContextKnowledgeResourceListRequest listRequest,
             UnifiedUserIdentity userIdentity)
         {
-            var filePaths = await _storageService.GetMatchingFilePathsAsync(
-               instanceId,
-               $"{KNOWLEDGE_SOURCE_ROOT_PATH}/");
+            var knowledgeUnitResults = await _contextResourceProvider.GetResourcesAsync<KnowledgeUnit>(
+                instanceId,
+                userIdentity);
+            return new ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>
+            {
+                Success = true,
+                Result = listRequest.KnowledgeResourceNames is null
+                    ? knowledgeUnitResults
+                        .OrderBy(r => r.Resource.Name)
+                    : knowledgeUnitResults
+                        .Where(r => listRequest.KnowledgeResourceNames.Contains(r.Resource.Name))
+                        .OrderBy(r => r.Resource.Name)
+            };
+        }
 
-            filePaths = [.. filePaths
-                .Where(fp =>
-                    {
-                        var tokens = fp.Split('/');
+        /// <inheritdoc />
+        public async Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
+            string instanceId,
+            ContextKnowledgeResourceListRequest listRequest,
+            UnifiedUserIdentity userIdentity)
+        {
+            var knowledgeSourceResults = await _contextResourceProvider.GetResourcesAsync<KnowledgeSource>(
+                instanceId,
+                userIdentity);
+            return new ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>
+            {
+                Success = true,
+                Result = listRequest.KnowledgeResourceNames is null
+                    ? knowledgeSourceResults
+                        .OrderBy(r => r.Resource.Name)
+                    : knowledgeSourceResults
+                        .Where(r => listRequest.KnowledgeResourceNames.Contains(r.Resource.Name))
+                        .OrderBy(r => r.Resource.Name)
+            };
+        }
 
-                        return
-                            fp.EndsWith(".json", StringComparison.OrdinalIgnoreCase)
-                            && tokens.Length == 2
-                            && (listRequest.KnowledgeSourceNames is null
-                                || listRequest.KnowledgeSourceNames.Contains(
-                                    Path.GetFileNameWithoutExtension(tokens[1])));
-                    })
-            ];
+        /// <inheritdoc />
+        public async Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeUnit>>> UpsertKnowledgeUnit(
+            string instanceId,
+            KnowledgeUnit knowledgeUnit,
+            UnifiedUserIdentity userIdentity)
+        {
+            var upsertResult =
+                await _contextResourceProvider.UpsertResourceAsync<KnowledgeUnit, ResourceProviderUpsertResult<KnowledgeUnit>>(
+                    instanceId,
+                    knowledgeUnit,
+                    userIdentity);
+            return new ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeUnit>>
+            {
+                Success = true,
+                Result = upsertResult
+            };
+        }
 
-            var result = await filePaths
-                .ToAsyncEnumerable()
-                .SelectAwait(async path =>
-                {
-                    var fileContent = await _storageService.ReadFileAsync(
-                        instanceId,
-                        path,
-                        default);
-
-                    return
-                        JsonSerializer.Deserialize<KnowledgeSource>(fileContent);
-                })
-                .ToListAsync();
-
-            return result
-                .Where(ks => ks != null)
-                .Select(ks => ks!)
-                .OrderBy(ks => ks.Name);
+        /// <inheritdoc />
+        public async Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeSource>>> UpsertKnowledgeSource(
+            string instanceId,
+            KnowledgeSource knowledgeSource,
+            UnifiedUserIdentity userIdentity)
+        {
+            var upsertResult =
+                await _contextResourceProvider.UpsertResourceAsync<KnowledgeSource, ResourceProviderUpsertResult<KnowledgeSource>>(
+                    instanceId,
+                    knowledgeSource,
+                    userIdentity);
+            return new ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeSource>>
+            {
+                Success = true,
+                Result = upsertResult
+            };
         }
 
         /// <inheritdoc />
@@ -301,6 +338,8 @@ namespace FoundationaLLM.Context.Services
                 };
             }
         }
+
+        #region Utils
 
         private async Task UpdateKnowledgeSourceProperties(
             string instanceId,
@@ -513,5 +552,7 @@ namespace FoundationaLLM.Context.Services
 
             return client;
         }
+
+        #endregion
     }
 }

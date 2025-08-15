@@ -1,5 +1,7 @@
 ﻿using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 
 namespace FoundationaLLM.Context.Interfaces
@@ -10,15 +12,51 @@ namespace FoundationaLLM.Context.Interfaces
     public interface IKnowledgeService
     {
         /// <summary>
+        /// Retrieves the list of knowledge units.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="listRequest">The request containing the information used to filter the knowledge resources.</param>
+        /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
+        /// <returns></returns>
+        Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeUnits(
+            string instanceId,
+            ContextKnowledgeResourceListRequest listRequest,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
         /// Retrieves the list of knowledge sources.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="listRequest">The request containing the information used to filter the knowledge sources.</param>
+        /// <param name="listRequest">The request containing the information used to filter the knowledge resources.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
         /// <returns></returns>
-        Task<IEnumerable<KnowledgeSource>> GetKnowledgeSources(
+        Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
             string instanceId,
-            ContextKnowledgeSourceListRequest listRequest,
+            ContextKnowledgeResourceListRequest listRequest,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Creates or updates a knowledge unit in the context service.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeUnit">The knowledge unit to be created or updated.</param>
+        /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
+        /// <returns></returns>
+        Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeUnit>>> UpsertKnowledgeUnit(
+            string instanceId,
+            KnowledgeUnit knowledgeUnit,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Creates or updates a knowledge source in the context service.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeSource">The knowledge source to be created or updated.</param>
+        /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
+        /// <returns></returns>
+        Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeSource>>> UpsertKnowledgeSource(
+            string instanceId,
+            KnowledgeSource knowledgeSource,
             UnifiedUserIdentity userIdentity);
 
         /// <summary>
