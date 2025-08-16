@@ -21,7 +21,10 @@ namespace FoundationaLLM
         /// Register the FoundationaLLM.Authorization resource provider with the dependency injection container.
         /// </summary>
         /// <param name="builder">Application builder.</param>
-        public static void AddAuthorizationResourceProvider(this IHostApplicationBuilder builder)
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
+        public static void AddAuthorizationResourceProvider(
+            this IHostApplicationBuilder builder,
+            bool proxyMode = false)
         {
             builder.Services.AddSingleton<IValidator<RoleAssignment>, RoleAssignmentValidator>();
 
@@ -35,7 +38,8 @@ namespace FoundationaLLM
                     sp.GetRequiredService<IAuthorizationServiceClient>(),
                     sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp,
-                    sp.GetRequiredService<ILoggerFactory>()));
+                    sp.GetRequiredService<ILoggerFactory>(),
+                    proxyMode: proxyMode));
             builder.Services.ActivateSingleton<IResourceProviderService>();
         }
     }

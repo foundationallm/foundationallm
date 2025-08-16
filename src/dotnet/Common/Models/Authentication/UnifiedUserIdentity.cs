@@ -43,5 +43,11 @@ namespace FoundationaLLM.Common.Models.Authentication
         /// </summary>
         [JsonPropertyName("group_ids")]
         public List<string> GroupIds { get; set; } = [];
+
+        /// <summary>
+        /// Gets the normalized name of the user identity.
+        /// </summary>
+        [JsonIgnore]
+        public string NormalizedName => UPN ?? UserId ?? "N/A";
     }
 }

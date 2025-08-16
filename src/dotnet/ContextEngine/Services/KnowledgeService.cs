@@ -8,22 +8,20 @@ using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
-using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Services.Azure;
+using FoundationaLLM.Context.Exceptions;
 using FoundationaLLM.Context.Interfaces;
 using FoundationaLLM.Context.Models;
 using FoundationaLLM.Context.Models.Configuration;
-using MathNet.Numerics;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using OpenAI.Embeddings;
-using Parquet.Serialization;
 using System.ClientModel.Primitives;
-using System.Text.Json;
 
 namespace FoundationaLLM.Context.Services
 {
@@ -32,6 +30,7 @@ namespace FoundationaLLM.Context.Services
     /// </summary>
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="authorizationServiceClient">The client for the FoundationaLLM Authorization API.</param>
+    /// <param name="contextResourceProvider"> The FoundationaLLM.Context resource provider service.</param>
     /// <param name="configurationResourceProvider">The FoundationaLLM.Configuration resource provider service.</param>
     /// <param name="vectorResourceProvider">The FoundationaLLM.Vector resource provider service.</param>
     /// <param name="httpClientFactory"> The factory for creating HTTP clients.</param>
@@ -40,6 +39,7 @@ namespace FoundationaLLM.Context.Services
     public class KnowledgeService(
         IStorageService storageService,
         IAuthorizationServiceClient authorizationServiceClient,
+        IResourceProviderService contextResourceProvider,
         IResourceProviderService configurationResourceProvider,
         IResourceProviderService vectorResourceProvider,
         IHttpClientFactoryService httpClientFactory,
@@ -48,6 +48,7 @@ namespace FoundationaLLM.Context.Services
     {
         private readonly IStorageService _storageService = storageService;
         private readonly IAuthorizationServiceClient _authorizationServiceClient = authorizationServiceClient;
+        private readonly IResourceProviderService _contextResourceProvider = contextResourceProvider;
         private readonly IResourceProviderService _configurationResourceProvider = configurationResourceProvider;
         private readonly IResourceProviderService _vectorResourceProvider = vectorResourceProvider;
         private readonly IHttpClientFactoryService _httpClientFactory = httpClientFactory;
@@ -63,97 +64,113 @@ namespace FoundationaLLM.Context.Services
             SizeLimit = 100, // Limit cache size to 100 units (knowledge graph instances).
             ExpirationScanFrequency = TimeSpan.FromSeconds(60) // How often to scan for expired items.
         });
+        private readonly SemaphoreSlim _cacheLock = new(1, 1);
 
-        private const string KNOWLEDGE_SOURCE_ROOT_PATH = "knowledge-source";
-        private const string KNOWLEDGE_GRAPH_ENTITIES_FILE_NAME = "entities.parquet";
-        private const string KNOWLEDGE_GRAPH_RELATIONSHIPS_FILE_NAME = "relationships.parquet";
-
-        /// <inheritdoc />
-        public async Task<IEnumerable<KnowledgeSource>> GetKnowledgeSources(
+        public async Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeUnits(
             string instanceId,
-            ContextKnowledgeSourceListRequest listRequest,
+            ContextKnowledgeResourceListRequest listRequest,
             UnifiedUserIdentity userIdentity)
         {
-            var filePaths = await _storageService.GetMatchingFilePathsAsync(
-               instanceId,
-               $"{KNOWLEDGE_SOURCE_ROOT_PATH}/");
-
-            filePaths = [.. filePaths
-                .Where(fp =>
-                    {
-                        var tokens = fp.Split('/');
-
-                        return
-                            fp.EndsWith(".json", StringComparison.OrdinalIgnoreCase)
-                            && tokens.Length == 2
-                            && (listRequest.KnowledgeSourceNames is null
-                                || listRequest.KnowledgeSourceNames.Contains(
-                                    Path.GetFileNameWithoutExtension(tokens[1])));
-                    })
-            ];
-
-            var result = await filePaths
-                .ToAsyncEnumerable()
-                .SelectAwait(async path =>
-                {
-                    var fileContent = await _storageService.ReadFileAsync(
-                        instanceId,
-                        path,
-                        default);
-
-                    return
-                        JsonSerializer.Deserialize<KnowledgeSource>(fileContent);
-                })
-                .ToListAsync();
-
-            return result
-                .Where(ks => ks != null)
-                .Select(ks => ks!)
-                .OrderBy(ks => ks.Name);
+            var knowledgeUnitResults = await _contextResourceProvider.GetResourcesAsync<KnowledgeUnit>(
+                instanceId,
+                userIdentity);
+            return new ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>
+            {
+                Success = true,
+                Result = listRequest.KnowledgeResourceNames is null
+                    ? knowledgeUnitResults
+                        .OrderBy(r => r.Resource.Name)
+                    : knowledgeUnitResults
+                        .Where(r => listRequest.KnowledgeResourceNames.Contains(r.Resource.Name))
+                        .OrderBy(r => r.Resource.Name)
+            };
         }
 
         /// <inheritdoc />
-        public async Task UpdateKnowledgeSource(
+        public async Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
             string instanceId,
-            string knowledgeSourceId,
-            ContextKnowledgeSourceUpdateRequest updateRequest,
+            ContextKnowledgeResourceListRequest listRequest,
             UnifiedUserIdentity userIdentity)
         {
-            if (!string.IsNullOrWhiteSpace(updateRequest.EntitiesSourceFilePath))
-            {
-                // The knowledge source also contains a graph of entities and relationships.
-
-                await _storageService.CopyFileAsync(
-                    instanceId,
-                    updateRequest.EntitiesSourceFilePath,
-                    string.Join('/',
-                        [
-                            KNOWLEDGE_SOURCE_ROOT_PATH,
-                        knowledgeSourceId,
-                        KNOWLEDGE_GRAPH_ENTITIES_FILE_NAME
-                        ]));
-
-                await _storageService.CopyFileAsync(
-                    instanceId,
-                    updateRequest.RelationshipsSourceFilePath!,
-                    string.Join('/',
-                        [
-                            KNOWLEDGE_SOURCE_ROOT_PATH,
-                        knowledgeSourceId,
-                        KNOWLEDGE_GRAPH_RELATIONSHIPS_FILE_NAME
-                        ]));
-            }
-
-            await UpdateKnowledgeSourceProperties(
+            var knowledgeSourceResults = await _contextResourceProvider.GetResourcesAsync<KnowledgeSource>(
                 instanceId,
-                knowledgeSourceId,
-                updateRequest,
+                userIdentity);
+            return new ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>
+            {
+                Success = true,
+                Result = listRequest.KnowledgeResourceNames is null
+                    ? knowledgeSourceResults
+                        .OrderBy(r => r.Resource.Name)
+                    : knowledgeSourceResults
+                        .Where(r => listRequest.KnowledgeResourceNames.Contains(r.Resource.Name))
+                        .OrderBy(r => r.Resource.Name)
+            };
+        }
+
+        /// <inheritdoc />
+        public async Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeUnit>>> UpsertKnowledgeUnit(
+            string instanceId,
+            KnowledgeUnit knowledgeUnit,
+            UnifiedUserIdentity userIdentity)
+        {
+            var upsertResult =
+                await _contextResourceProvider.UpsertResourceAsync<KnowledgeUnit, ResourceProviderUpsertResult<KnowledgeUnit>>(
+                    instanceId,
+                    knowledgeUnit,
+                    userIdentity);
+            return new ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeUnit>>
+            {
+                Success = true,
+                Result = upsertResult
+            };
+        }
+
+        /// <inheritdoc />
+        public async Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeSource>>> UpsertKnowledgeSource(
+            string instanceId,
+            KnowledgeSource knowledgeSource,
+            UnifiedUserIdentity userIdentity)
+        {
+            var upsertResult =
+                await _contextResourceProvider.UpsertResourceAsync<KnowledgeSource, ResourceProviderUpsertResult<KnowledgeSource>>(
+                    instanceId,
+                    knowledgeSource,
+                    userIdentity);
+            return new ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeSource>>
+            {
+                Success = true,
+                Result = upsertResult
+            };
+        }
+
+        /// <inheritdoc />
+        public async Task<ContextServiceResponse<ResourceProviderActionResult>> SetKnowledgeUnitGraph(
+            string instanceId,
+            string knowledgeUnitId,
+            ContextKnowledgeUnitSetGraphRequest setGraphRequest,
+            UnifiedUserIdentity userIdentity)
+        {
+            var result = await _contextResourceProvider.ExecuteResourceActionAsync<
+                KnowledgeUnit,
+                ContextKnowledgeUnitSetGraphRequest,
+                ResourceProviderActionResult>(
+                instanceId,
+                knowledgeUnitId,
+                ResourceProviderActions.SetGraph,
+                setGraphRequest,
                 userIdentity);
 
             // If the knowledge source is cached, remove it from the cache.
-            var cacheKey = GetCacheKey(instanceId, knowledgeSourceId);
-            if (_cache.TryGetValue(cacheKey, out _))
-                _cache.Remove(cacheKey);
+            RemoveKnowledgeUnitFromCache(
+                instanceId,
+                knowledgeUnitId);
+
+            return new ContextServiceResponse<ResourceProviderActionResult>
+            {
+                Success = result.IsSuccess,
+                ErrorMessage = result.ErrorMessage,
+                Result = result
+            };
         }
 
         /// <inheritdoc/>
@@ -165,42 +182,45 @@ namespace FoundationaLLM.Context.Services
         {
             try
             {
-                var knowledgeSourcePropertiesFilePath = string.Join('/',
-                [
-                    KNOWLEDGE_SOURCE_ROOT_PATH,
-                    $"{knowledgeSourceId}.json"
-                ]);
-
-                var knowledgeSourceBinaryContent = await _storageService.ReadFileAsync(
+                var knowledgeSource = await _contextResourceProvider.GetResourceAsync<KnowledgeSource>(
                     instanceId,
-                    knowledgeSourcePropertiesFilePath,
-                    default);
-                var knowledgeSource =
-                    JsonSerializer.Deserialize<KnowledgeSource>(knowledgeSourceBinaryContent)
-                    ?? throw new ResourceProviderException(
-                        $"The knowledge source properties for {knowledgeSourceId} could not be deserialized.");
+                    knowledgeSourceId,
+                    userIdentity);
 
-                if (!knowledgeSource.HasKnowledgeGraph
-                    && queryRequest.KnowledgeGraphQuery is not null)
-                    return new ContextKnowledgeSourceQueryResponse
-                    {
-                        Success = false,
-                        ErrorMessage = $"The knowledge source '{knowledgeSourceId}' for instance '{instanceId}' does not contain a knowledge graph."
-                    };
+                var knowledgeUnitTasks = knowledgeSource.KnowledgeUnitObjectIds
+                    .Select(knowledgeUnitObjectId =>
+                        _contextResourceProvider.GetResourceAsync<KnowledgeUnit>(
+                            knowledgeUnitObjectId,
+                            userIdentity))
+                    .ToList();
+                var knowledgeUnits = await Task.WhenAll(knowledgeUnitTasks);
 
-                var vectorDatabase = await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
-                    knowledgeSource.VectorDatabaseObjectId,
-                    ServiceContext.ServiceIdentity!);
+                var vectorDatabaseTasks = knowledgeUnits
+                    .Select(knowledgeUnit => _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
+                        knowledgeUnit.VectorDatabaseObjectId,
+                        userIdentity))
+                    .ToList();
+                var vectorDatabases = await Task.WhenAll(vectorDatabaseTasks);
 
-                var cachedKnowledgeSource = await GetKnowledgeSourceFromCache(
-                    instanceId,
-                    knowledgeSource,
-                    vectorDatabase);
+                var cachedKnowledgeUnitTasks = Enumerable.Range(0, knowledgeUnits.Length)
+                    .Select(i => GetCachedKnowledgeUnit(
+                        instanceId,
+                        knowledgeUnits[i],
+                        vectorDatabases[i],
+                        userIdentity))
+                    .ToList();
+                var cachedKnowledgeUnits = await Task.WhenAll(cachedKnowledgeUnitTasks);
+
+                var knowledgeUnitQueryEngines = Enumerable.Range(0, knowledgeUnits.Length)
+                    .Select(i => new KnowledgeUnitQueryEngine(
+                        knowledgeUnits[i],
+                        cachedKnowledgeUnits[i],
+                        vectorDatabases[i],
+                        _loggerFactory.CreateLogger<KnowledgeUnitQueryEngine>()))
+                    .ToList();
 
                 var queryEngine = new KnowledgeSourceQueryEngine(
-                    knowledgeSource,
-                    cachedKnowledgeSource,
-                    vectorDatabase,
+                    knowledgeUnitQueryEngines,
                     _loggerFactory.CreateLogger<KnowledgeSourceQueryEngine>());
 
                 var queryResponse = await queryEngine.QueryAsync(
@@ -210,229 +230,197 @@ namespace FoundationaLLM.Context.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while querying the knowledge source {KnowledgeSourceId} for instance {InstanceId}.",
+                _logger.LogError(ex, "An error occurred while querying the knowledge source {KnowledgeSourceId} from instance {InstanceId}.",
                     knowledgeSourceId, instanceId);
                 return new ContextKnowledgeSourceQueryResponse
                 {
                     Success = false,
-                    ErrorMessage = $"An error occurred while querying the knowledge source '{knowledgeSourceId}' for instance '{instanceId}'."
+                    ErrorMessage = $"An error occurred while querying the knowledge source {knowledgeSourceId} from instance {instanceId}."
                 };
             }
         }
 
         /// <inheritdoc/>
-        public async Task<ContextKnowledgeSourceRenderGraphResponse> RenderKnowledgeSourceGraph(
+        public async Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeUnitGraph(
             string instanceId,
-            string knowledgeSourceId,
+            string knowledgeUnitId,
             ContextKnowledgeSourceQueryRequest? queryRequest,
             UnifiedUserIdentity userIdentity)
         {
             try
             {
-                var knowledgeSourcePropertiesFilePath = string.Join('/',
-                [
-                    KNOWLEDGE_SOURCE_ROOT_PATH,
-                    $"{knowledgeSourceId}.json"
-                ]);
-
-                var knowledgeSourceBinaryContent = await _storageService.ReadFileAsync(
+                var knowledgeUnit = await _contextResourceProvider.GetResourceAsync<KnowledgeUnit>(
                     instanceId,
-                    knowledgeSourcePropertiesFilePath,
-                    default);
-                var knowledgeSource =
-                    JsonSerializer.Deserialize<KnowledgeSource>(knowledgeSourceBinaryContent)
-                    ?? throw new ResourceProviderException(
-                        $"The knowledge source properties for {knowledgeSourceId} could not be deserialized.");
+                    knowledgeUnitId,
+                    userIdentity);
 
-                if (!knowledgeSource.HasKnowledgeGraph)
-                    return new ContextKnowledgeSourceRenderGraphResponse
+                var vectorStoreFilter = queryRequest?.KnowledgeUnitVectorStoreFilters
+                    .SingleOrDefault(f => f.KnowledgeUnitId == knowledgeUnitId);
+
+                if (!knowledgeUnit.HasKnowledgeGraph)
+                    return new ContextKnowledgeUnitRenderGraphResponse
                     {
                         Success = false,
-                        ErrorMessage = $"The knowledge source '{knowledgeSourceId}' for instance '{instanceId}' does not contain a knowledge graph."
+                        ErrorMessage = $"The knowledge unit {knowledgeUnitId} from instance {instanceId} does not contain a knowledge graph."
                     };
 
-                var vectorStoreId = string.IsNullOrWhiteSpace(knowledgeSource.VectorStoreId)
-                    ? queryRequest!.VectorStoreId
-                    : knowledgeSource.VectorStoreId;
+                var vectorStoreId = string.IsNullOrWhiteSpace(knowledgeUnit.VectorStoreId)
+                    ? vectorStoreFilter?.VectorStoreId
+                    : knowledgeUnit.VectorStoreId;
                 if (string.IsNullOrWhiteSpace(vectorStoreId))
-                    return new ContextKnowledgeSourceRenderGraphResponse
+                    return new ContextKnowledgeUnitRenderGraphResponse
                     {
                         Success = false,
-                        ErrorMessage = $"The knowledge source '{knowledgeSourceId}' for instance '{instanceId}' does not have a vector store identifier specified and none was provided in the rendering request."
+                        ErrorMessage = $"The knowledge unit {knowledgeUnitId} from instance {instanceId} does not have a vector store identifier specified and none was provided in the rendering request."
                     };
 
                 var vectorDatabase = await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
-                    knowledgeSource!.VectorDatabaseObjectId,
-                    ServiceContext.ServiceIdentity!);
+                    knowledgeUnit.VectorDatabaseObjectId,
+                    userIdentity);
 
-                var cachedKnowledgeSource = await GetKnowledgeSourceFromCache(
+                var cachedKnowledgeUnit = await GetCachedKnowledgeUnit(
                     instanceId,
-                    knowledgeSource,
-                    vectorDatabase);
+                    knowledgeUnit,
+                    vectorDatabase,
+                    userIdentity);
 
-                var renderResponse = new ContextKnowledgeSourceRenderGraphResponse
+                var renderResponse = new ContextKnowledgeUnitRenderGraphResponse
                 {
                     Success = true
                 };
 
                 if (queryRequest is null)
                 {
-                    renderResponse.Nodes = [.. cachedKnowledgeSource.KnowledgeGraph!.Entities
+                    renderResponse.Nodes = [.. cachedKnowledgeUnit.KnowledgeGraph!.Graph.Entities
                         .Select(e => new KnowledgeGraphRenderingNode
                         {
                             Id = e.UniqueId,
                             Label = e.Name,
                         })];
-                    renderResponse.Edges = [.. cachedKnowledgeSource.KnowledgeGraph!.Relationships
-                        .Where(r => cachedKnowledgeSource.KnowledgeGraph.Index.Nodes.ContainsKey(r.SourceUniqueId)
-                                    && cachedKnowledgeSource.KnowledgeGraph.Index.Nodes.ContainsKey(r.TargetUniqueId))
+                    renderResponse.Edges = [.. cachedKnowledgeUnit.KnowledgeGraph!.Graph.Relationships
+                        .Where(r => cachedKnowledgeUnit.KnowledgeGraph.Index.Nodes.ContainsKey(r.SourceUniqueId)
+                                    && cachedKnowledgeUnit.KnowledgeGraph.Index.Nodes.ContainsKey(r.TargetUniqueId))
                         .Select(r => new List<string> { r.SourceUniqueId, r.TargetUniqueId })];
+                }
+                else
+                {
+                    // TODO: Execute the query against the knowledge graph and render the result.
                 }
 
                 return renderResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while rendering the knowledge graph {KnowledgeGraphId} for instance {InstanceId}.",
-                    knowledgeSourceId, instanceId);
-                return new ContextKnowledgeSourceRenderGraphResponse
+                _logger.LogError(ex, "An error occurred while rendering the knowledge graph for knowledge unit {KnowledgeUnitId} from instance {InstanceId}.",
+                    knowledgeUnitId, instanceId);
+                return new ContextKnowledgeUnitRenderGraphResponse
                 {
                     Success = false,
-                    ErrorMessage = $"An error occurred while rendering the knowledge graph '{knowledgeSourceId}' for instance '{instanceId}'."
+                    ErrorMessage = $"An error occurred while rendering the knowledge graph for knowledge unit {knowledgeUnitId} from instance {instanceId}."
                 };
             }
         }
 
-        private async Task UpdateKnowledgeSourceProperties(
+        #region Utils
+
+        private async Task<CachedKnowledgeUnit> GetCachedKnowledgeUnit(
             string instanceId,
-            string knowledgeSourceId,
-            ContextKnowledgeSourceUpdateRequest updateRequest,
+            KnowledgeUnit knowledgeUnit,
+            VectorDatabase vectorDatabase,
             UnifiedUserIdentity userIdentity)
         {
-            var knowledgeSource = default(KnowledgeSource);
-            var knowledgeSourceFilePath = string.Join('/',
-                [
-                    KNOWLEDGE_SOURCE_ROOT_PATH,
-                    $"{knowledgeSourceId}.json"
-                ]);
-
-            if (!await _storageService.FileExistsAsync(
+            var cachedKnowledgeUnit = GetKnowledgeUnitFromCache(
                 instanceId,
-                knowledgeSourceFilePath,
-                default))
+                knowledgeUnit.Name);
+            if (cachedKnowledgeUnit is not null)
+                return cachedKnowledgeUnit;
+
+            // Add a new cached knowledge unit to the cache.
+
+            cachedKnowledgeUnit = new CachedKnowledgeUnit
             {
-                // If the knowledge source properties file does not exist, create it with default values.
-                knowledgeSource = new KnowledgeSource
-                {
-                    Type = "knowledge-source",
-                    Name = knowledgeSourceId,
-                    ObjectId = $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Context}/knowledgeSources/{knowledgeSourceId}",
-                    EmbeddingModel = updateRequest.EmbeddingModel,
-                    EmbeddingDimensions = updateRequest.EmbeddingDimensions,
-                    VectorDatabaseObjectId = updateRequest.VectorDatabaseObjectId,
-                    VectorStoreId = updateRequest.VectorStoreId,
-                    HasKnowledgeGraph = !string.IsNullOrWhiteSpace(updateRequest.EntitiesSourceFilePath),
-                    CreatedBy = userIdentity.UPN,
-                    CreatedOn = DateTimeOffset.UtcNow
-                };
-            }
-            else
-            {
-                var knowledgeSourceContent = await _storageService.ReadFileAsync(
-                    instanceId,
-                    knowledgeSourceFilePath,
-                    default);
-                knowledgeSource = JsonSerializer.Deserialize<KnowledgeSource>(knowledgeSourceContent);
-
-                knowledgeSource!.EmbeddingModel = updateRequest.EmbeddingModel;
-                knowledgeSource.EmbeddingDimensions = updateRequest.EmbeddingDimensions;
-                knowledgeSource.VectorDatabaseObjectId = updateRequest.VectorDatabaseObjectId;
-                knowledgeSource.VectorStoreId = updateRequest.VectorStoreId;
-                knowledgeSource.HasKnowledgeGraph = !string.IsNullOrWhiteSpace(updateRequest.EntitiesSourceFilePath);
-                knowledgeSource.UpdatedBy = userIdentity.UPN;
-                knowledgeSource.UpdatedOn = DateTimeOffset.UtcNow;
-            }
-
-            await _storageService.WriteFileAsync(
-                    instanceId,
-                    knowledgeSourceFilePath,
-                    JsonSerializer.Serialize(knowledgeSource),
-                    "application/json",
-                    default);
-        }
-
-        private async Task<CachedKnowledgeSource> GetKnowledgeSourceFromCache(
-            string instanceId,
-            KnowledgeSource knowledgeSource,
-            VectorDatabase vectorDatabase)
-        {
-            var cacheKey = GetCacheKey(instanceId, knowledgeSource.Name);
-
-            if (!_cache.TryGetValue(cacheKey, out CachedKnowledgeSource? cachedKnowledgeSource))
-            {
-                cachedKnowledgeSource = new CachedKnowledgeSource
-                {
-                    SearchService = await GetAzureAISearchService(
+                SearchService = await GetAzureAISearchService(
                         vectorDatabase),
-                    EmbeddingClient = await GetEmbeddingClient(
-                        _settings.Embedding.ModelDeployments[knowledgeSource.EmbeddingModel]),
-                };
+                EmbeddingClient = await GetEmbeddingClient(
+                        _settings.Embedding.ModelDeployments[knowledgeUnit.EmbeddingModel]),
+            };
 
-                if (knowledgeSource.HasKnowledgeGraph)
+            if (knowledgeUnit.HasKnowledgeGraph)
+            {
+                var actionResult = await _contextResourceProvider.ExecuteResourceActionAsync<
+                    KnowledgeUnit,
+                    object,
+                    ResourceProviderActionResult<KnowledgeGraph>>(
+                    instanceId,
+                    knowledgeUnit.Name,
+                    ResourceProviderActions.LoadGraph,
+                    null!,
+                    userIdentity);
+
+                if (!actionResult.IsSuccess)
                 {
-                    var entitiesBinaryContent = await _storageService.ReadFileAsync(
-                        instanceId,
-                        string.Join('/',
-                            [
-                                KNOWLEDGE_SOURCE_ROOT_PATH,
-                            knowledgeSource.Name,
-                            KNOWLEDGE_GRAPH_ENTITIES_FILE_NAME
-                            ]),
-                        default);
-
-                    var entities = await ParquetSerializer.DeserializeAsync<KnowledgeEntity>(
-                        entitiesBinaryContent.ToStream());
-
-                    var relationshipsBinaryContent = await _storageService.ReadFileAsync(
-                        instanceId,
-                        string.Join('/',
-                            [
-                                KNOWLEDGE_SOURCE_ROOT_PATH,
-                            knowledgeSource.Name,
-                            KNOWLEDGE_GRAPH_RELATIONSHIPS_FILE_NAME
-                            ]),
-                        default);
-
-                    var relationships = await ParquetSerializer.DeserializeAsync<KnowledgeRelationship>(
-                        relationshipsBinaryContent.ToStream());
-
-                    cachedKnowledgeSource.KnowledgeGraph = new CachedKnowledgeGraph
-                    {
-                        Entities = [.. entities],
-                        Relationships = [.. relationships],
-                        Index = KnowledgeGraphIndex.Create(
-                            entities,
-                            relationships)
-                    };
+                    _logger.LogError(
+                        "Failed to load knowledge graph for knowledge unit {KnowledgeUnitId}: {ErrorMessage}",
+                        knowledgeUnit.Name, actionResult.ErrorMessage ?? "N/A");
+                    throw new ContextServiceException(
+                        $"Failed to load knowledge graph for knowledge unit {knowledgeUnit.Name}: {actionResult.ErrorMessage ?? "N/A"}");
                 }
-                
-                // Store the knowledge source in the cache.
-                _cache.Set(
-                    cacheKey,
-                    cachedKnowledgeSource,
-                    GetMemoryCacheEntryOptions());
+
+                cachedKnowledgeUnit.KnowledgeGraph = new IndexedKnowledgeGraph
+                {
+                    Graph = actionResult.Resource!,
+                    Index = KnowledgeGraphIndex.Create(
+                        actionResult.Resource!.Entities,
+                        actionResult.Resource!.Relationships)
+                };
             }
 
-            return cachedKnowledgeSource!;
+            SetKnowledgeUnitInCache(
+                instanceId,
+                knowledgeUnit.Name,
+                cachedKnowledgeUnit);
+
+            return cachedKnowledgeUnit;
         }
 
         private MemoryCacheEntryOptions GetMemoryCacheEntryOptions() => new MemoryCacheEntryOptions()
            .SetAbsoluteExpiration(TimeSpan.FromSeconds(3600)) // Cache entries are valid for 60 minutes.
            .SetSlidingExpiration(TimeSpan.FromSeconds(1800)) // Reset expiration time if accessed within 30 minutes.
-           .SetSize(1); // Each cache entry is a single knowledge graph instance.
+           .SetSize(1); // Each cache entry is a single knowledge unit instance.
 
-        private string GetCacheKey(string instanceId, string knowledgeSourceId) =>
-            $"{instanceId}:{knowledgeSourceId}";
+        private string GetCacheKey(string instanceId, string knowledgeUnitId) =>
+            $"{instanceId}:{knowledgeUnitId}";
+
+        private void SetKnowledgeUnitInCache(
+            string instanceId,
+            string knowledgeUnitId,
+            CachedKnowledgeUnit cachedKnowledgeUnit)
+        {
+            var cacheKey = GetCacheKey(instanceId, knowledgeUnitId);
+            _cache.Set(
+                cacheKey,
+                cachedKnowledgeUnit,
+                GetMemoryCacheEntryOptions());
+        }
+
+        private void RemoveKnowledgeUnitFromCache(
+            string instanceId,
+            string knowledgeUnitId)
+        {
+            var cacheKey = GetCacheKey(instanceId, knowledgeUnitId);
+            if (_cache.TryGetValue(cacheKey, out _))
+                _cache.Remove(cacheKey);
+        }
+
+        private CachedKnowledgeUnit? GetKnowledgeUnitFromCache(
+            string instanceId,
+            string knowledgeUnitId)
+        {
+            var cacheKey = GetCacheKey(instanceId, knowledgeUnitId);
+            if (_cache.TryGetValue(cacheKey, out CachedKnowledgeUnit? cachedKnowledgeUnit))
+                return cachedKnowledgeUnit;
+            return null;
+        }
 
         private async Task<EmbeddingClient> GetEmbeddingClient(
             string modelDeploymentName)
@@ -514,5 +502,7 @@ namespace FoundationaLLM.Context.Services
 
             return client;
         }
+
+        #endregion
     }
 }

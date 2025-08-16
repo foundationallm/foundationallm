@@ -4,8 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>FoundationaLLM.Context</AssemblyName>
-    <RootNamespace>FoundationaLLM.Context</RootNamespace>
+    <AssemblyName>FoundationaLLM.ContextEngine</AssemblyName>
+    <RootNamespace>FoundationaLLM.ContextEngine</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
+    <ProjectReference Include="..\Context\Context.csproj" />
     <ProjectReference Include="..\Vector\Vector.csproj" />
   </ItemGroup>
 

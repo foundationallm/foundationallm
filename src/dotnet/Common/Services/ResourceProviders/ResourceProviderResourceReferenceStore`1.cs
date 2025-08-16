@@ -31,7 +31,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         private readonly Dictionary<string, T> _resourceReferences = [];
 
         private const string RESOURCE_REFERENCES_FILE_NAME = "_resource-references.json";
-        private string ResourceReferencesFilePath => $"/{_resourceProvider.Name}/{RESOURCE_REFERENCES_FILE_NAME}";
+        private string ResourceReferencesFilePath =>
+            string.IsNullOrEmpty(_resourceProvider.StorageRootPath)
+                ? $"/{_resourceProvider.Name}/{RESOURCE_REFERENCES_FILE_NAME}"
+                : $"{_resourceProvider.StorageRootPath}/{_resourceProvider.Name}/{RESOURCE_REFERENCES_FILE_NAME}";
 
         private SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
         private string? _defaultResourceName;

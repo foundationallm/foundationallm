@@ -49,6 +49,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
     /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> providing Cosmos DB services.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to provide loggers for logging.</param>
+    /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
     public class AgentResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
         IOptions<ResourceProviderCacheSettings> cacheOptions,
@@ -58,7 +59,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
         IResourceValidatorFactory resourceValidatorFactory,
         IAzureCosmosDBService cosmosDBService,
         IServiceProvider serviceProvider,
-        ILoggerFactory loggerFactory)
+        ILoggerFactory loggerFactory,
+        bool proxyMode = false)
         : ResourceProviderServiceBase<AgentReference>(
             instanceOptions.Value,
             cacheOptions.Value,
@@ -71,7 +73,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
             eventTypesToSubscribe: [
                 EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ],
-            useInternalReferencesStore: true)
+            useInternalReferencesStore: true,
+            proxyMode: proxyMode)
     {
         private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
 
@@ -634,7 +637,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
             return upsertResult;
         }
 
-        private async Task<List<ResourceProviderGetResult<AgentAccessToken>>> LoadAgentAccessTokens(ResourcePath resourcePath)
+        private async Task<List<ResourceProviderGetResult<AgentAccessToken>>> LoadAgentAccessTokens(
+            ResourcePath resourcePath)
         {
             var agentClientSecretKey = new AgentClientSecretKey
             {

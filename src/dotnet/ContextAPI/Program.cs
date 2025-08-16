@@ -43,6 +43,11 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
 
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vector_Storage);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Context_Storage);
+
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
+    options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_ContextAPI);
 }));
 
 if (builder.Environment.IsDevelopment())
@@ -104,6 +109,7 @@ builder.AddConfigurationResourceProvider();
 //builder.AddAIModelResourceProvider();
 //builder.AddConversationResourceProvider();
 builder.AddVectorResourceProvider();
+builder.AddContextResourceProvider(proxyMode: false);
 
 // Add API Key Authorization
 builder.Services.AddHttpContextAccessor();

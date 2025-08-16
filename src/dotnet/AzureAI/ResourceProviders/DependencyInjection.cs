@@ -3,7 +3,6 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -17,10 +16,13 @@ namespace FoundationaLLM
         /// Registers the FoundationaLLM.AzureAI resource provider as a singleton service.
         /// </summary>
         /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
         /// <remarks>
         /// Requires an <see cref="GatewayServiceClient"/> service to be also registered with the dependency injection container.
         /// </remarks>
-        public static void AddAzureAIResourceProvider(this IHostApplicationBuilder builder)
+        public static void AddAzureAIResourceProvider(
+            this IHostApplicationBuilder builder,
+            bool proxyMode = false)
         {
             builder.AddAzureAIResourceProviderStorage();
             builder.Services.AddSingleton<IResourceProviderService, AzureAIResourceProviderService>(sp =>
@@ -34,7 +36,8 @@ namespace FoundationaLLM
                     sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp.GetRequiredService<IAzureCosmosDBService>(),
                     sp,
-                    sp.GetRequiredService<ILogger<AzureAIResourceProviderService>>()));
+                    sp.GetRequiredService<ILogger<AzureAIResourceProviderService>>(),
+                    proxyMode: proxyMode));
 
             builder.Services.ActivateSingleton<IResourceProviderService>();
         }

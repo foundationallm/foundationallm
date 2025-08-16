@@ -19,21 +19,30 @@ namespace FoundationaLLM
         /// Registers the FoundationaLLM.AzureOpenAI resource provider as a singleton service.
         /// </summary>
         /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
         /// <remarks>
         /// Requires a <see cref="GatewayServiceClient"/> service to be also registered with the dependency injection container.
         /// </remarks>
-        public static void AddAzureOpenAIResourceProvider(this IHostApplicationBuilder builder) =>
-            builder.Services.AddAzureOpenAIResourceProvider(builder.Configuration);
+        public static void AddAzureOpenAIResourceProvider(
+            this IHostApplicationBuilder builder,
+            bool proxyMode = false) =>
+            builder.Services.AddAzureOpenAIResourceProvider(
+                builder.Configuration,
+                proxyMode: proxyMode);
 
         /// <summary>
         /// Registers the FoundationaLLM.AzureOpenAI resource provider as a singleton service.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
         /// <param name="configuration">The <see cref="IConfigurationRoot"/> configuration manager.</param>
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
         /// <remarks>
         /// Requires a <see cref="GatewayServiceClient"/> service to be also registered with the dependency injection container.
         /// </remarks>
-        public static void AddAzureOpenAIResourceProvider(this IServiceCollection services, IConfigurationManager configuration)
+        public static void AddAzureOpenAIResourceProvider(
+            this IServiceCollection services,
+            IConfigurationManager configuration,
+            bool proxyMode = false)
         {
             services.AddSingleton<IResourceProviderService, AzureOpenAIResourceProviderService>(sp =>
                 new AzureOpenAIResourceProviderService(
@@ -44,7 +53,8 @@ namespace FoundationaLLM
                     sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp.GetRequiredService<IAzureCosmosDBService>(),
                     sp,
-                    sp.GetRequiredService<ILogger<AzureOpenAIResourceProviderService>>()));
+                    sp.GetRequiredService<ILogger<AzureOpenAIResourceProviderService>>(),
+                    proxyMode: proxyMode));
 
             services.ActivateSingleton<IResourceProviderService>();
         }

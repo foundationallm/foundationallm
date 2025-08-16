@@ -23,43 +23,24 @@ namespace FoundationaLLM
         /// Register the FoundationaLLM.Configuration resource provider with the dependency injection container.
         /// </summary>
         /// <param name="builder">Application builder.</param>
-        public static void AddConfigurationResourceProvider(this IHostApplicationBuilder builder)
-        {
-            builder.AddAzureKeyVaultService(AppConfigurationKeys.FoundationaLLM_Configuration_KeyVaultURI);
-
-            builder.Services.AddAzureClients(clientBuilder =>
-            {
-                clientBuilder.AddConfigurationClient(
-                    builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]);
-            });
-
-            builder.Services.AddSingleton<IAzureAppConfigurationService, AzureAppConfigurationService>();
-
-            builder.AddConfigurationResourceProviderStorage();
-
-            builder.Services.AddSingleton<IResourceProviderService, ConfigurationResourceProviderService>(sp =>
-                new ConfigurationResourceProviderService(
-                    sp.GetRequiredService<IOptions<InstanceSettings>>(),
-                    sp.GetRequiredService<IOptions<ResourceProviderCacheSettings>>(),
-                    sp.GetRequiredService<IAuthorizationServiceClient>(),
-                    sp.GetRequiredService<IEnumerable<IStorageService>>()
-                        .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Configuration),
-                    sp.GetRequiredService<IEventService>(),
-                    sp.GetRequiredService<IResourceValidatorFactory>(),
-                    sp.GetRequiredService<IAzureAppConfigurationService>(),
-                    sp.GetRequiredService<IAzureKeyVaultService>(),
-                    builder.Configuration,
-                    sp,
-                    sp.GetRequiredService<ILogger<ConfigurationResourceProviderService>>()));
-            builder.Services.ActivateSingleton<IResourceProviderService>();
-        }
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
+        public static void AddConfigurationResourceProvider(
+            this IHostApplicationBuilder builder,
+            bool proxyMode = false) =>
+            builder.Services.AddConfigurationResourceProvider(
+                builder.Configuration,
+                proxyMode);
 
         /// <summary>
         /// Registers the FoundationaLLM.Configuration resource provider with the dependency injection container.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
         /// <param name="configuration">The <see cref="IConfiguration"/> configuration provider.</param>
-        public static void AddConfigurationResourceProvider(this IServiceCollection services, IConfiguration configuration)
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
+        public static void AddConfigurationResourceProvider(
+            this IServiceCollection services,
+            IConfiguration configuration,
+            bool proxyMode = false)
         {
             services.AddAzureKeyVaultService(
                 configuration,
@@ -88,7 +69,8 @@ namespace FoundationaLLM
                     sp.GetRequiredService<IAzureKeyVaultService>(),
                     configuration,
                     sp,
-                    sp.GetRequiredService<ILogger<ConfigurationResourceProviderService>>()));
+                    sp.GetRequiredService<ILogger<ConfigurationResourceProviderService>>(),
+                    proxyMode: proxyMode));
             services.ActivateSingleton<IResourceProviderService>();
         }
     }

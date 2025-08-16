@@ -43,6 +43,8 @@ namespace FoundationaLLM
             services.AddSingleton<IKnowledgeService, KnowledgeService>(sp =>
                 new KnowledgeService(
                     authorizationServiceClient: sp.GetRequiredService<IAuthorizationServiceClient>(),
+                    contextResourceProvider: sp.GetRequiredService<IEnumerable<IResourceProviderService>>()
+                        .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Context)!,
                     configurationResourceProvider: sp.GetRequiredService<IEnumerable<IResourceProviderService>>()
                         .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Configuration)!,
                     vectorResourceProvider: sp.GetRequiredService<IEnumerable<IResourceProviderService>>()

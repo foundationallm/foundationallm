@@ -100,6 +100,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         protected virtual string _storageContainerName => "resource-provider";
 
         /// <summary>
+        /// The optional root path used by the resource provider to store its internal data.
+        /// </summary>
+        protected virtual string? _storageRootPath => null;
+
+        /// <summary>
         /// The name of the resource provider. Must be overridden in derived classes.
         /// </summary>
         protected virtual string _name => throw new NotImplementedException();
@@ -111,6 +116,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         {
             WriteIndented = true
         };
+
+        /// <summary>
+        /// Indicates whether the resource provider is running in proxy mode.
+        /// When running in proxy mode, the resource provider will use a remote service to
+        /// manage resources instead of managing them locally.
+        /// </summary>
+        protected readonly bool _proxyMode = false;
 
         /// <inheritdoc/>
         public string Name => _name;
@@ -130,6 +142,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <inheritdoc/>
         public string StorageContainerName => _storageContainerName;
 
+        /// <inheritdoc/>
+        public string? StorageRootPath => _storageRootPath;
+
         /// <summary>
         /// Creates a new instance of the resource provider.
         /// </summary>
@@ -143,6 +158,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
         /// <param name="eventTypesToSubscribe">The list of Event Service event namespaces to subscribe to for local event processing.</param>
         /// <param name="useInternalReferencesStore">Indicates whether the resource provider should use the internal resource references store or provide one of its own.</param>
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
         public ResourceProviderServiceBase(
             InstanceSettings instanceSettings,
             ResourceProviderCacheSettings cacheSettings,
@@ -153,7 +169,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             IServiceProvider serviceProvider,
             ILogger logger,
             List<string>? eventTypesToSubscribe = default,
-            bool useInternalReferencesStore = false)
+            bool useInternalReferencesStore = false,
+            bool proxyMode = false)
         {
             _authorizationServiceClient = authorizationServiceClient;
             _storageService = storageService;
@@ -1560,7 +1577,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="resourceReference">The resource reference used to identify the resource.</param>
         /// <param name="resource">The resource to be saved.</param>
         /// <returns></returns>
-        protected async Task SaveResource<T>(TResourceReference resourceReference, T resource) where T : ResourceBase
+        protected async Task SaveResource<T>(
+            TResourceReference resourceReference,
+            T resource) where T : ResourceBase
         {
             try
             {
@@ -2020,7 +2039,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="resource">The <see cref="ResourceBase"/> object to be updated.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing the information about the identity of the user that performed a create or update operation on the resource.</param>
         /// <param name="isNew">Indicates whether the resource is new or being updated.</param>
-        protected void UpdateBaseProperties(ResourceBase resource, UnifiedUserIdentity userIdentity, bool isNew = false)
+        protected void UpdateBaseProperties(
+            ResourceBase resource,
+            UnifiedUserIdentity userIdentity,
+            bool isNew = false)
         {
             if (isNew)
             {
@@ -2032,6 +2054,31 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             {
                 // The resource was updated
                 resource.UpdatedBy = userIdentity.UPN ?? userIdentity.UserId ?? "N/A";
+                resource.UpdatedOn = DateTimeOffset.UtcNow;
+            }
+        }
+
+        /// <summary>
+        /// Updates the base properties of an object derived from <see cref="ResourceBase"/>.
+        /// </summary>
+        /// <param name="resource">The <see cref="ResourceBase"/> object to be updated.</param>
+        /// <param name="userIdentity">Theidentity of the user that performed a create or update operation on the resource.</param>
+        /// <param name="isNew">Indicates whether the resource is new or being updated.</param>
+        protected void UpdateBaseProperties(
+            ResourceBase resource,
+            string userIdentity,
+            bool isNew = false)
+        {
+            if (isNew)
+            {
+                // The resource was just created
+                resource.CreatedBy = userIdentity;
+                resource.CreatedOn = DateTimeOffset.UtcNow;
+            }
+            else
+            {
+                // The resource was updated
+                resource.UpdatedBy = userIdentity;
                 resource.UpdatedOn = DateTimeOffset.UtcNow;
             }
         }
