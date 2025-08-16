@@ -260,10 +260,10 @@ namespace FoundationaLLM.Common.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
+        public async Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeSources(
             string instanceId,
             IEnumerable<string>? knowledgeSourceNames = null) =>
-            await GetKnowledgeResources<KnowledgeSource>(
+            await GetKnowledgeResources<KnowledgeUnit>(
                 instanceId,
                 ContextResourceTypeNames.KnowledgeSources,
                 knowledgeSourceNames);
@@ -391,10 +391,10 @@ namespace FoundationaLLM.Common.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<ContextServiceResponse> UpdateKnowledgeSource(
+        public async Task<ContextServiceResponse<ResourceProviderActionResult>> SetKnowledgeUnitGraph(
             string instanceId,
-            string knowledgeSourceId,
-            ContextKnowledgeSourceUpdateRequest updateRequest)
+            string knowledgeUnitId,
+            ContextKnowledgeUnitSetGraphRequest setGraphRequest)
         {
             try
             {
@@ -403,17 +403,25 @@ namespace FoundationaLLM.Common.Clients
                     _callContext.CurrentUserIdentity!);
 
                 var responseMessage = await client.PostAsJsonAsync(
-                    $"instances/{instanceId}/knowledgeSources/{knowledgeSourceId}",
-                    updateRequest);
+                    $"instances/{instanceId}/knowledgeUnits/{knowledgeUnitId}/set-graph",
+                    setGraphRequest);
 
                 if (responseMessage.IsSuccessStatusCode)
-                    return new ContextServiceResponse { Success = true };
+                {
+                    var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                    var response = JsonSerializer.Deserialize<ResourceProviderActionResult>(responseContent);
+                    return new ContextServiceResponse<ResourceProviderActionResult>
+                    {
+                        Success = true,
+                        Result = response
+                    };
+                }
 
                 _logger.LogError(
-                    "An error occurred while updating the knowledge source. Status code: {StatusCode}.",
+                    "An error occurred while setting the knowledge graph for the knowledge unit. Status code: {StatusCode}.",
                     responseMessage.StatusCode);
 
-                return new ContextServiceResponse
+                return new ContextServiceResponse<ResourceProviderActionResult>
                 {
                     Success = false,
                     ErrorMessage = "The service responded with an error status code."
@@ -421,12 +429,12 @@ namespace FoundationaLLM.Common.Clients
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while updating the knowledge source.");
+                _logger.LogError(ex, "An error occurred while setting the knowledge graph for the knowledge unit.");
 
-                return new ContextServiceResponse
+                return new ContextServiceResponse<ResourceProviderActionResult>
                 {
                     Success = false,
-                    ErrorMessage = "An error occurred while updating the knowledge source."
+                    ErrorMessage = "An error occurred while setting the knowledge graph for the knowledge unit."
                 };
             }
         }
@@ -477,7 +485,7 @@ namespace FoundationaLLM.Common.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<ContextKnowledgeSourceRenderGraphResponse> RenderKnowledgeSourceGraph(
+        public async Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeSourceGraph(
             string instanceId,
             string knowledgeSourceId,
             ContextKnowledgeSourceQueryRequest? queryRequest)
@@ -495,7 +503,7 @@ namespace FoundationaLLM.Common.Clients
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                    var response = JsonSerializer.Deserialize<ContextKnowledgeSourceRenderGraphResponse>(responseContent);
+                    var response = JsonSerializer.Deserialize<ContextKnowledgeUnitRenderGraphResponse>(responseContent);
                     return response!;
                 }
 
@@ -503,7 +511,7 @@ namespace FoundationaLLM.Common.Clients
                     "An error occurred while rendering the knowledge source's graph. Status code: {StatusCode}.",
                     responseMessage.StatusCode);
 
-                return new ContextKnowledgeSourceRenderGraphResponse
+                return new ContextKnowledgeUnitRenderGraphResponse
                 {
                     Success = false,
                     ErrorMessage = "The service responded with an error status code."
@@ -513,7 +521,7 @@ namespace FoundationaLLM.Common.Clients
             {
                 _logger.LogError(ex, "An error occurred while rendering the knowledge source's graph.");
 
-                return new ContextKnowledgeSourceRenderGraphResponse
+                return new ContextKnowledgeUnitRenderGraphResponse
                 {
                     Success = false,
                     ErrorMessage = "An error occurred while rendering the knowledge source's graph."

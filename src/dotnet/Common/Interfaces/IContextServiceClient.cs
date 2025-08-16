@@ -82,7 +82,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeSourceNames">An optional list of specific knowledge sources to retrieve.</param>
         /// <returns>The list of knowledge sources.</returns>
-        Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
+        Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeSources(
             string instanceId,
             IEnumerable<string>? knowledgeSourceNames = null);
 
@@ -107,16 +107,16 @@ namespace FoundationaLLM.Common.Interfaces
             KnowledgeSource knowledgeSource);
 
         /// <summary>
-        /// Calls the Context API service to update a knowledge source with the specified knowledge graph and vector database/store details.
+        /// Sets the knowledge graph for a knowledge unit.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
-        /// <param name="updateRequest">The update request containing the knowledge graph and vector database/store details.</param>
+        /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
+        /// <param name="setGraphRequest">The request containing the knowledge graph details.</param>
         /// <returns>A response indicating the success of the operation and an optional error message.</returns>
-        Task<ContextServiceResponse> UpdateKnowledgeSource(
+        Task<ContextServiceResponse<ResourceProviderActionResult>> SetKnowledgeUnitGraph(
             string instanceId,
-            string knowledgeSourceId,
-            ContextKnowledgeSourceUpdateRequest updateRequest);
+            string knowledgeUnitId,
+            ContextKnowledgeUnitSetGraphRequest setGraphRequest);
 
         /// <summary>
         /// Calls the Context API to query a knowledge source.
@@ -137,7 +137,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
         /// <param name="queryRequest">The request containing the details of the query.</param>
         /// <returns></returns>
-        Task<ContextKnowledgeSourceRenderGraphResponse> RenderKnowledgeSourceGraph(
+        Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeSourceGraph(
             string instanceId,
             string knowledgeSourceId,
             ContextKnowledgeSourceQueryRequest? queryRequest);

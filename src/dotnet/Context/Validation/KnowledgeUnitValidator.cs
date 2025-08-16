@@ -8,23 +8,23 @@ namespace FoundationaLLM.Context.Validation
     /// <summary>
     /// Provides validation methods for knowledge source objects.
     /// </summary>
-    public class KnowledgeSourceValidator : AbstractValidator<KnowledgeSource>
+    public class KnowledgeUnitValidator : AbstractValidator<KnowledgeUnit>
     {
         /// <summary>
-        /// Configures the validation rules for the <see cref="KnowledgeSource"/> model.
+        /// Configures the validation rules for the <see cref="KnowledgeUnit"/> model.
         /// </summary>
-        public KnowledgeSourceValidator()
+        public KnowledgeUnitValidator()
         {
             Include(new ResourceBaseValidator());
 
-            RuleFor(ks => ks.KnowledgeUnitObjectIds)
+            RuleFor(vd => vd.EmbeddingModel)
                 .NotEmpty()
-                .WithMessage("At least one knowledge unit object identifier is required.");
+                .WithMessage("The embedding model is required.");
 
-            RuleForEach(ks => ks.KnowledgeUnitObjectIds)
+            RuleFor(vd => vd.VectorDatabaseObjectId)
                 .NotEmpty()
                 .Must(ValidationUtils.ValidateObjectId)
-                .WithMessage("Each knowledge unit object identifier must be a valid FoundationaLLM object identifier.");
+                .WithMessage("The vector database object identifier is required for the knowledge source and it must be a valid FoundationaLLM object identifier.");
         }
     }
 }

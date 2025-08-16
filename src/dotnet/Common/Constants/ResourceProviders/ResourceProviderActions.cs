@@ -26,6 +26,16 @@
         public const string Query = "query";
 
         /// <summary>
+        /// Set the knowledge graph associated with a knowledge unit.
+        /// </summary>
+        public const string SetGraph = "set-graph";
+
+        /// <summary>
+        /// Load the knowledge graph associated with a knowledge unit.
+        /// </summary>
+        public const string LoadGraph = "load-graph";
+
+        /// <summary>
         /// Submit a request to render a knowledge graph.
         /// </summary>
         public const string RenderGraph = "render-graph";

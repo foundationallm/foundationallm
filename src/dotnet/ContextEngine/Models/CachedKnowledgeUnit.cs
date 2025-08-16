@@ -1,13 +1,12 @@
 ﻿using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using OpenAI.Embeddings;
 
 namespace FoundationaLLM.Context.Models
 {
     /// <summary>
-    /// Represents a knowledge source that caches data to improve retrieval performance.
+    /// Represents a cached knowledge unit.
     /// </summary>
-    public class CachedKnowledgeSource
+    public class CachedKnowledgeUnit
     {
         /// <summary>
         /// Gets or sets the Azure AI Search service used for performing search operations.
@@ -22,6 +21,6 @@ namespace FoundationaLLM.Context.Models
         /// <summary>
         /// Gets or sets the cached knowledge graph associated with this knowledge source.
         /// </summary>
-        public CachedKnowledgeGraph? KnowledgeGraph { get; set; }
+        public IndexedKnowledgeGraph? KnowledgeGraph { get; set; }
     }
 }

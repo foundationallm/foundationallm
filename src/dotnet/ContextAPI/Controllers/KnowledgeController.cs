@@ -88,7 +88,7 @@ namespace FoundationaLLM.Context.API.Controllers
         [HttpPost("knowledgeSources")]
         public async Task<IActionResult> UpsertKnowledgeSource(
             string instanceId,
-            [FromBody] KnowledgeSource knowledgeSource)
+            [FromBody] KnowledgeUnit knowledgeSource)
         {
             var response = await _knowledgeService.UpsertKnowledgeSource(
                 instanceId,
@@ -98,25 +98,46 @@ namespace FoundationaLLM.Context.API.Controllers
         }
 
         /// <summary>
-        /// Updates a knowledge source.
+        /// Sets the knowledge graph for a knowledge unit.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
-        /// <param name="updateRequest"> The request containing the information used to update the knowledge source.</param>
+        /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
+        /// <param name="setGraphRequest"> The request containing the information used to set the knowledge graph.</param>
         /// <returns></returns>
-        [HttpPost("knowledgeSources/{knowledgeSourceId}")]
-        public async Task<IActionResult> UpdateKnowledgeSource(
+        [HttpPost("knowledgeUnits/{knowledgeUnitId}/set-graph")]
+        public async Task<IActionResult> SetKnowledgeUnitGraph(
             string instanceId,
-            string knowledgeSourceId,
-            [FromBody] ContextKnowledgeSourceUpdateRequest updateRequest)
+            string knowledgeUnitId,
+            [FromBody] ContextKnowledgeUnitSetGraphRequest setGraphRequest)
         {
-            await _knowledgeService.UpdateKnowledgeSource(
+            var response = await _knowledgeService.SetKnowledgeUnitGraph(
                 instanceId,
-                knowledgeSourceId,
-                updateRequest,
+                knowledgeUnitId,
+                setGraphRequest,
                 _callContext.CurrentUserIdentity!);
 
-            return Ok();
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Retrieves the knowledge graph in a format suitable for rendering.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeUnitId"></param>
+        /// <param name="queryRequest"></param>
+        /// <returns></returns>
+        [HttpPost("knowledgeUnits/{knowledgeSourceId}/render-graph")]
+        public async Task<IActionResult> RenderKnowledgeUnitGraph(
+            string instanceId,
+            string knowledgeUnitId,
+            [FromBody] ContextKnowledgeSourceQueryRequest? queryRequest)
+        {
+            var response = await _knowledgeService.RenderKnowledgeUnitGraph(
+                instanceId,
+                knowledgeUnitId,
+                queryRequest,
+                _callContext.CurrentUserIdentity!);
+            return Ok(response);
         }
 
         /// <summary>
@@ -133,27 +154,6 @@ namespace FoundationaLLM.Context.API.Controllers
             [FromBody] ContextKnowledgeSourceQueryRequest queryRequest)
         {
             var response = await _knowledgeService.QueryKnowledgeSource(
-                instanceId,
-                knowledgeSourceId,
-                queryRequest,
-                _callContext.CurrentUserIdentity!);
-            return Ok(response);
-        }
-
-        /// <summary>
-        /// Retrieves the knowledge graph in a format suitable for rendering.
-        /// </summary>
-        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="knowledgeSourceId"></param>
-        /// <param name="queryRequest"></param>
-        /// <returns></returns>
-        [HttpPost("knowledgeSources/{knowledgeSourceId}/render-graph")]
-        public async Task<IActionResult> RenderKnowledgeSourceGraph(
-            string instanceId,
-            string knowledgeSourceId,
-            [FromBody] ContextKnowledgeSourceQueryRequest? queryRequest)
-        {
-            var response = await _knowledgeService.RenderKnowledgeSourceGraph(
                 instanceId,
                 knowledgeSourceId,
                 queryRequest,

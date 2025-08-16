@@ -372,17 +372,13 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 var canonicalRootPath = _dataPipelineStateService.GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun);
-                var response = await contextServiceClient.UpdateKnowledgeSource(
+                var response = await contextServiceClient.SetKnowledgeUnitGraph(
                     dataPipelineRun.InstanceId,
                     knowledgeSourceId.ToString()!,
-                    new ContextKnowledgeSourceUpdateRequest
+                    new ContextKnowledgeUnitSetGraphRequest
                     {
                         EntitiesSourceFilePath = $"{canonicalRootPath}/{KNOWLEDGE_ENTITIES_FILE_PATH}",
-                        RelationshipsSourceFilePath = $"{canonicalRootPath}/{KNOWLEDGE_RELATIONSHIPS_FILE_PATH}",
-                        EmbeddingModel = entitySummarizationEmbeddingModel.ToString()!,
-                        EmbeddingDimensions = (int)entitySummarizationEmbeddingDimensions,
-                        VectorDatabaseObjectId = vectorDatabaseObjectId.ToString()!,
-                        VectorStoreId = vectorStoreId.ToString()!
+                        RelationshipsSourceFilePath = $"{canonicalRootPath}/{KNOWLEDGE_RELATIONSHIPS_FILE_PATH}"
                     });
 
                 if (!response.Success)

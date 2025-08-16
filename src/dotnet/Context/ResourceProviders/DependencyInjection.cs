@@ -43,6 +43,7 @@ namespace FoundationaLLM
             bool proxyMode = false)
         {
             // Register validators.
+            services.AddSingleton<IValidator<KnowledgeUnit>, KnowledgeUnitValidator>();
             services.AddSingleton<IValidator<KnowledgeSource>, KnowledgeSourceValidator>();
 
             services.AddContextResourceProviderStorage(configuration);

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.ResourceProviders.Context
 {
@@ -8,36 +9,16 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Context
     public class KnowledgeSource : ResourceBase
     {
         /// <summary>
-        /// Gets or sets the object identifier of the vector database associated with the knowledge source.
+        /// Initializes a new instance of the <see cref="KnowledgeSource"/> class and sets its type to <see
+        /// cref="ContextTypes.KnowledgeSource"/>.
         /// </summary>
-        [JsonPropertyName("vector_database_object_id")]
-        public required string VectorDatabaseObjectId { get; set; }
+        public KnowledgeSource() =>
+            Type = ContextTypes.KnowledgeSource;
 
         /// <summary>
-        /// Gets or sets the object identifier of the vector store associated with the knowledge source.
+        /// Gets or sets the list of the object identifiers of the knowledge units associated with the knowledge source.
         /// </summary>
-        /// <remarks>
-        /// If this value is null, the knowledge source queries must specify the vector store identifier explicitly.
-        /// </remarks>
-        [JsonPropertyName("vector_store_id")]
-        public string? VectorStoreId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the embedding model used for the knowledge source.
-        /// </summary>
-        [JsonPropertyName("embedding_model")]
-        public required string EmbeddingModel { get; set; }
-
-        /// <summary>
-        /// Gets or sets the number of dimensions for the embeddings used in the knowledge source.
-        /// </summary>
-        [JsonPropertyName("embedding_dimensions")]
-        public required int EmbeddingDimensions { get; set; }
-
-        /// <summary>
-        /// Gets or sets a flag that indicates whether the knowledge source has a knowledge graph.
-        /// </summary>
-        [JsonPropertyName("has_knowledge_graph")]
-        public bool HasKnowledgeGraph { get; set; }
+        [JsonPropertyName("knowledge_unit_object_ids")]
+        public List<string> KnowledgeUnitObjectIds { get; set; } = [];
     }
 }

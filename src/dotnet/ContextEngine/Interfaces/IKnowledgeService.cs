@@ -30,7 +30,7 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="listRequest">The request containing the information used to filter the knowledge resources.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
         /// <returns></returns>
-        Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
+        Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeSources(
             string instanceId,
             ContextKnowledgeResourceListRequest listRequest,
             UnifiedUserIdentity userIdentity);
@@ -54,23 +54,37 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="knowledgeSource">The knowledge source to be created or updated.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
         /// <returns></returns>
-        Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeSource>>> UpsertKnowledgeSource(
+        Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeUnit>>> UpsertKnowledgeSource(
             string instanceId,
-            KnowledgeSource knowledgeSource,
+            KnowledgeUnit knowledgeSource,
             UnifiedUserIdentity userIdentity);
 
         /// <summary>
-        /// Updates a knowledge source.
+        /// Sets the knowledge graph associated with a knowledge unit.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="knowledgeSourceId">The knowledge source+ identifier.</param>
-        /// <param name="updateRequest"> The request containing the information to update the knowledge source.</param>
+        /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
+        /// <param name="setGraphRequest">The request containing the knowledge graph details.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
         /// <returns></returns>
-        Task UpdateKnowledgeSource(
+        Task<ContextServiceResponse<ResourceProviderActionResult>> SetKnowledgeUnitGraph(
             string instanceId,
-            string knowledgeSourceId,
-            ContextKnowledgeSourceUpdateRequest updateRequest,
+            string knowledgeUnitId,
+            ContextKnowledgeUnitSetGraphRequest setGraphRequest,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Retrieves the knowledge unit's knowledge graph in a format suitable for visualization or further processing.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
+        /// <param name="queryRequest">The request containing the details of the query.</param>
+        /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
+        /// <returns></returns>
+        Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeUnitGraph(
+            string instanceId,
+            string knowledgeUnitId,
+            ContextKnowledgeSourceQueryRequest? queryRequest,
             UnifiedUserIdentity userIdentity);
 
         /// <summary>
@@ -85,20 +99,6 @@ namespace FoundationaLLM.Context.Interfaces
             string instanceId,
             string knowledgeSourceId,
             ContextKnowledgeSourceQueryRequest queryRequest,
-            UnifiedUserIdentity userIdentity);
-
-        /// <summary>
-        /// Retrieves the knowledge source's knowledge graph in a format suitable for visualization or further processing.
-        /// </summary>
-        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
-        /// <param name="queryRequest">The request containing the details of the query.</param>
-        /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
-        /// <returns></returns>
-        Task<ContextKnowledgeSourceRenderGraphResponse> RenderKnowledgeSourceGraph(
-            string instanceId,
-            string knowledgeSourceId,
-            ContextKnowledgeSourceQueryRequest? queryRequest,
             UnifiedUserIdentity userIdentity);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.ResourceProviders.Context
 {
@@ -7,6 +8,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Context
     /// </summary>
     public class KnowledgeUnit : ResourceBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KnowledgeUnit"/> class and sets its type to <see
+        /// cref="ContextTypes.KnowledgeUnit"/>.
+        /// </summary>
+        public KnowledgeUnit() =>
+            Type = ContextTypes.KnowledgeUnit;
+
         /// <summary>
         /// Gets or sets the object identifier of the vector database associated with the knowledge unit.
         /// </summary>

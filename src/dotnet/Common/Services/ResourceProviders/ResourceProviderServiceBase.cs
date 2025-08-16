@@ -1577,7 +1577,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="resourceReference">The resource reference used to identify the resource.</param>
         /// <param name="resource">The resource to be saved.</param>
         /// <returns></returns>
-        protected async Task SaveResource<T>(TResourceReference resourceReference, T resource) where T : ResourceBase
+        protected async Task SaveResource<T>(
+            TResourceReference resourceReference,
+            T resource) where T : ResourceBase
         {
             try
             {
@@ -1600,54 +1602,6 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             {
                 _lock.Release();
             }
-        }
-
-        /// <summary>
-        /// Updates a resource based on its resource path and the resource itself.
-        /// </summary>
-        /// <typeparam name="T">The type of the resource to create.</typeparam>
-        /// <param name="resourcePath">The <see cref="ResourcePath"/> identifying the resource to update.</param>
-        /// <param name="resource">The resource to be updated.</param>
-        /// <param name="userIdentity">The user identity that creates or updates the resource.</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// If the resource does not exist, it will be created.
-        /// </remarks>
-        protected async Task<ResourceProviderUpsertResult> UpdateResource<T>(
-            ResourcePath resourcePath,
-            T resource,
-            string userIdentity)
-            where T : ResourceBase
-        {
-            var existingResourceReference = await _resourceReferenceStore!.GetResourceReference(resource.Name);
-
-            if (resourcePath.ResourceTypeInstances[0].ResourceId != resource.Name)
-                throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
-                    StatusCodes.Status400BadRequest);
-
-            var resourceReference = new ResourceReference
-            {
-                Name = resource.Name!,
-                Type = resource.Type!,
-                Filename = $"/{_name}/{resource.Name}.json",
-                Deleted = false
-            };
-
-            // TODO: Add validation.
-
-            resource.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
-
-            UpdateBaseProperties(resource, userIdentity, isNew: existingResourceReference is null);
-            if (existingResourceReference is null)
-                await CreateResource<T>((TResourceReference)resourceReference, resource);
-            else
-                await SaveResource<T>(existingResourceReference, resource);
-
-            return new ResourceProviderUpsertResult
-            {
-                ObjectId = resource!.ObjectId,
-                ResourceExists = existingResourceReference is not null
-            };
         }
 
         /// <summary>
