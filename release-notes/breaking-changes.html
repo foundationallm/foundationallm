@@ -116,6 +116,16 @@
 </thead>
 <tbody>
 <tr>
+<td><code>FoundationaLLM:ResourceProviders:Context:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the storage account used by the FoundationaLLM Context resource provider.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:Context:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Context resource provider to connect to the storage account.</td>
+</tr>
+<tr>
 <td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Embedding</code></td>
 <td><code>{&quot;EmbeddingAPIEndpointConfigurationObjectId&quot;: null, &quot;ModelDeployments&quot;: {}}</code></td>
 <td>The embedding configuration used by the FoundationaLLM Context API Knowledge service. This configuration value must have a content type of <code>application/json</code>.</td>
@@ -234,6 +244,11 @@
 <td><code>FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:ParallelProcessorsCount</code></td>
 <td>10</td>
 <td>The number of parallel processors of data pipeline run work items used by the Data Pipeline Backend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Events:Profiles:ContextAPI</code></td>
+<td><code>{&quot;EventProcessingCycleSeconds&quot;:60,&quot;Topics&quot;:[{&quot;Name&quot;: &quot;resource-providers&quot;, &quot;SubscriptionPrefix&quot;: &quot;rp-context&quot;}]}</code></td>
+<td>The event processing settings for the Context API.</td>
 </tr>
 <tr>
 <td><code>FoundationaLLM:Events:Profiles:DataPipelineAPI</code></td>

@@ -164,7 +164,7 @@ Class ContextKnowledgeSourceQueryRequest  <a class="header-action link-secondary
 
   <h3 id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_FormatResponse" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.FormatResponse">
   FormatResponse
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L38"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the response should be formatted.</p>
@@ -229,6 +229,39 @@ public ContextKnowledgeGraphQuery? KnowledgeGraphQuery { get; set; }</code></pre
 
 
 
+  <a id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_KnowledgeUnitVectorStoreFilters_" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.KnowledgeUnitVectorStoreFilters*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_KnowledgeUnitVectorStoreFilters" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.KnowledgeUnitVectorStoreFilters">
+  KnowledgeUnitVectorStoreFilters
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the list of knowledge unit vector store filters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;knowledge_unit_vector_store_filters&quot;)]
+public List&lt;ContextKnowledgeUnitVectorStoreFilter&gt; KnowledgeUnitVectorStoreFilters { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitVectorStoreFilter.html">ContextKnowledgeUnitVectorStoreFilter</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_UserPrompt_" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.UserPrompt*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_UserPrompt" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.UserPrompt">
@@ -252,75 +285,6 @@ public required string UserPrompt { get; set; }</code></pre>
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_VectorStoreId_" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.VectorStoreId*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_VectorStoreId" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.VectorStoreId">
-  VectorStoreId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L34"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the vector store identifier used to query the knowledge source.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;vector_store_id&quot;)]
-public string? VectorStoreId { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-  <h4 class="section" id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_VectorStoreId_remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>This value is used only when the knowledge source does not have a static vector store identier set.</p>
-</div>
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_VectorStoreMetadataFilter_" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.VectorStoreMetadataFilter*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_VectorStoreMetadataFilter" data-uid="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.VectorStoreMetadataFilter">
-  VectorStoreMetadataFilter
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Context/Knowledge/ContextKnowledgeSourceQueryRequest.cs/#L40"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the metadata filter used to provide additional filtering in the vector store queries.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;vector_store_metadata_filter&quot;)]
-public Dictionary&lt;string, object&gt;? VectorStoreMetadataFilter { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
     <dd></dd>
   </dl>
 

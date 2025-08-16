@@ -89,7 +89,7 @@
 
 
   <h1 id="AzureAI_ResourceProviders_AzureAIResourceProviderService" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService" class="text-break">
-Class AzureAIResourceProviderService  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L40"><i class="bi bi-code-slash"></i></a>
+Class AzureAIResourceProviderService  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L41"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -160,7 +160,13 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__storageContainerName">ResourceProviderServiceBase&lt;AzureAIReference&gt;._storageContainerName</a>
     </div>
     <div>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__storageRootPath">ResourceProviderServiceBase&lt;AzureAIReference&gt;._storageRootPath</a>
+    </div>
+    <div>
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__serializerSettings">ResourceProviderServiceBase&lt;AzureAIReference&gt;._serializerSettings</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__proxyMode">ResourceProviderServiceBase&lt;AzureAIReference&gt;._proxyMode</a>
     </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_Name">ResourceProviderServiceBase&lt;AzureAIReference&gt;.Name</a>
@@ -179,6 +185,9 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
     </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_StorageContainerName">ResourceProviderServiceBase&lt;AzureAIReference&gt;.StorageContainerName</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_StorageRootPath">ResourceProviderServiceBase&lt;AzureAIReference&gt;.StorageRootPath</a>
     </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_Initialize">ResourceProviderServiceBase&lt;AzureAIReference&gt;.Initialize()</a>
@@ -286,6 +295,9 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpdateBaseProperties_FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Boolean_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.UpdateBaseProperties(ResourceBase, UnifiedUserIdentity, bool)</a>
     </div>
     <div>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpdateBaseProperties_FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_System_String_System_Boolean_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.UpdateBaseProperties(ResourceBase, string, bool)</a>
+    </div>
+    <div>
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourcePath_System_String_System_Type_System_String_System_String_">ResourceProviderServiceBase&lt;AzureAIReference&gt;.GetResourcePath(string, Type, string, string)</a>
     </div>
     <div>
@@ -338,9 +350,9 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
 
   <a id="AzureAI_ResourceProviders_AzureAIResourceProviderService__ctor_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.#ctor*"></a>
 
-  <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_ResourceProviders_ResourceProviderCacheSettings__FoundationaLLM_Common_Interfaces_IAuthorizationServiceClient_FoundationaLLM_Common_Interfaces_IStorageService_FoundationaLLM_Common_Interfaces_IEventService_FoundationaLLM_Common_Interfaces_IResourceValidatorFactory_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_System_IServiceProvider_Microsoft_Extensions_Logging_ILogger_AzureAI_ResourceProviders_AzureAIResourceProviderService__" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.ResourceProviders.ResourceProviderCacheSettings},FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient,FoundationaLLM.Common.Interfaces.IStorageService,FoundationaLLM.Common.Interfaces.IEventService,FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,System.IServiceProvider,Microsoft.Extensions.Logging.ILogger{AzureAI.ResourceProviders.AzureAIResourceProviderService})">
-  AzureAIResourceProviderService(IOptions&lt;InstanceSettings&gt;, IOptions&lt;ResourceProviderCacheSettings&gt;, IAuthorizationServiceClient, IStorageService, IEventService, IResourceValidatorFactory, IAzureCosmosDBService, IServiceProvider, ILogger&lt;AzureAIResourceProviderService&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_ResourceProviders_ResourceProviderCacheSettings__FoundationaLLM_Common_Interfaces_IAuthorizationServiceClient_FoundationaLLM_Common_Interfaces_IStorageService_FoundationaLLM_Common_Interfaces_IEventService_FoundationaLLM_Common_Interfaces_IResourceValidatorFactory_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_System_IServiceProvider_Microsoft_Extensions_Logging_ILogger_AzureAI_ResourceProviders_AzureAIResourceProviderService__System_Boolean_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.ResourceProviders.ResourceProviderCacheSettings},FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient,FoundationaLLM.Common.Interfaces.IStorageService,FoundationaLLM.Common.Interfaces.IEventService,FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,System.IServiceProvider,Microsoft.Extensions.Logging.ILogger{AzureAI.ResourceProviders.AzureAIResourceProviderService},System.Boolean)">
+  AzureAIResourceProviderService(IOptions&lt;InstanceSettings&gt;, IOptions&lt;ResourceProviderCacheSettings&gt;, IAuthorizationServiceClient, IStorageService, IEventService, IResourceValidatorFactory, IAzureCosmosDBService, IServiceProvider, ILogger&lt;AzureAIResourceProviderService&gt;, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L41"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Implements the FoundationaLLM.AzureAI resource provider.</p>
@@ -348,7 +360,7 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AzureAIResourceProviderService(IOptions&lt;InstanceSettings&gt; instanceOptions, IOptions&lt;ResourceProviderCacheSettings&gt; cacheOptions, IAuthorizationServiceClient authorizationService, IStorageService storageService, IEventService eventService, IResourceValidatorFactory resourceValidatorFactory, IAzureCosmosDBService cosmosDBService, IServiceProvider serviceProvider, ILogger&lt;AzureAIResourceProviderService&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public AzureAIResourceProviderService(IOptions&lt;InstanceSettings&gt; instanceOptions, IOptions&lt;ResourceProviderCacheSettings&gt; cacheOptions, IAuthorizationServiceClient authorizationService, IStorageService storageService, IEventService eventService, IResourceValidatorFactory resourceValidatorFactory, IAzureCosmosDBService cosmosDBService, IServiceProvider serviceProvider, ILogger&lt;AzureAIResourceProviderService&gt; logger, bool proxyMode = false)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -379,6 +391,9 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
     <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="AzureAI.ResourceProviders.AzureAIResourceProviderService.html">AzureAIResourceProviderService</a>&gt;</dt>
     <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a> used for logging.</p>
 </dd>
+    <dt><code>proxyMode</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Indicates whether the resource provider is running in proxy mode.</p>
+</dd>
   </dl>
 
 
@@ -400,7 +415,7 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService__name" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService._name">
   _name
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L75"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The name of the resource provider. Must be overridden in derived classes.</p>
@@ -436,7 +451,7 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_DeleteResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.DeleteResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   DeleteResourceAsync(ResourcePath, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L160"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of DeleteResourceAsync. Must be overridden in derived classes.</p>
@@ -477,7 +492,7 @@ Class AzureAIResourceProviderService  <a class="header-action link-secondary" ti
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_ExecuteActionAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.ExecuteActionAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   ExecuteActionAsync(ResourcePath, ResourcePathAuthorizationResult, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L133"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L136"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of ExecuteActionAsync. Must be overriden in derived classes.</p>
@@ -533,7 +548,7 @@ of the authorization result should be returned (if any).</li></ol>
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_ExecuteResourceActionAsyncInternal__3_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult___1_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.ExecuteResourceActionAsyncInternal``3(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,``1,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   ExecuteResourceActionAsyncInternal&lt;T, TAction, TResult&gt;(ResourcePath, ResourcePathAuthorizationResult, TAction, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L243"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L246"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of ExecuteResourceActionAsync. Must be overridden in derived classes.</p>
@@ -598,7 +613,7 @@ of the authorization result should be returned (if any).</li></ol>
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_GetResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.GetResourceAsyncInternal``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions)">
   GetResourceAsyncInternal&lt;T&gt;(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity, ResourceProviderGetOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L178"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L181"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of GetResource. Must be overridden in derived classes.</p>
@@ -650,7 +665,7 @@ of the authorization result should be returned (if any).</li></ol>
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_GetResourceTypes" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.GetResourceTypes">
   GetResourceTypes()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L71"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the details about the resource types managed by the resource provider.</p>
@@ -683,7 +698,7 @@ of the authorization result should be returned (if any).</li></ol>
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_GetResourcesAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.GetResourcesAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions)">
   GetResourcesAsync(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity, ResourceProviderGetOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L83"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of GetResourcesAsync. Must be overridden in derived classes.</p>
@@ -738,7 +753,7 @@ In this case, only the resources specified in the subordinate authorized resourc
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_InitializeInternal" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.InitializeInternal">
   InitializeInternal()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L77"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of Initialize. Must be overridden in derived classes.</p>
@@ -770,7 +785,7 @@ In this case, only the resources specified in the subordinate authorized resourc
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_ResourceExistsAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.ResourceExistsAsyncInternal``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   ResourceExistsAsyncInternal&lt;T&gt;(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L214"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L217"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of ResourceExistsAsync. Must be overridden in derived classes.</p>
@@ -824,7 +839,7 @@ In this case, only the resources specified in the subordinate authorized resourc
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, ResourcePathAuthorizationResult, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L104"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of UpsertResourceAsync. Must be overridden in derived classes.</p>
@@ -875,7 +890,7 @@ of the resource path authorization request.</p>
 
   <h3 id="AzureAI_ResourceProviders_AzureAIResourceProviderService_UpsertResourceAsyncInternal__2_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult___0_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderUpsertOptions_" data-uid="AzureAI.ResourceProviders.AzureAIResourceProviderService.UpsertResourceAsyncInternal``2(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,``0,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertOptions)">
   UpsertResourceAsyncInternal&lt;T, TResult&gt;(ResourcePath, ResourcePathAuthorizationResult, T, UnifiedUserIdentity, ResourceProviderUpsertOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L273"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L276"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of UpsertResourceAsync. Must be overridden in derived classes.</p>
@@ -934,7 +949,7 @@ of the resource path authorization request.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L40" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AzureAI/ResourceProviders/AzureAIResourceProviderService.cs/#L41" class="edit-link">Edit this page</a>
         </div>
 
 

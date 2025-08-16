@@ -336,6 +336,38 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
 
 
+  <a id="FoundationaLLM_Common_Interfaces_IResourceProviderService_StorageRootPath_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.StorageRootPath*"></a>
+
+  <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_StorageRootPath" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.StorageRootPath">
+  StorageRootPath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the optional storage root path used by the resource provider.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string? StorageRootPath { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
@@ -344,7 +376,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
   <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_DeleteResourceAsync__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.DeleteResourceAsync``1(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   DeleteResourceAsync&lt;T&gt;(string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L177"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L182"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes logically a resource based on its logical path.</p>
@@ -394,7 +426,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
   <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_ExecuteResourceActionAsync__3_System_String_System_String_System_String___1_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.ExecuteResourceActionAsync``3(System.String,System.String,System.String,``1,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   ExecuteResourceActionAsync&lt;T, TAction, TResult&gt;(string, string, string, TAction, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L124"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Executes an action on a resource.</p>
@@ -456,7 +488,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
   <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_ExecuteResourceActionAsync__4_System_String_System_String_System_String_System_String___2_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.ExecuteResourceActionAsync``4(System.String,System.String,System.String,System.String,``2,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   ExecuteResourceActionAsync&lt;TMain, TSubordinate, TAction, TResult&gt;(string, string, string, string, TAction, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L143"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L148"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Executes an action on a main resource and it subordinate resource.</p>
@@ -524,7 +556,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
   <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_GetResourceAsync__1_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.GetResourceAsync``1(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions)">
   GetResourceAsync&lt;T&gt;(string, UnifiedUserIdentity, ResourceProviderGetOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L70"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a resource based on its logical path.</p>
@@ -575,7 +607,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
   <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_GetResourceAsync__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.GetResourceAsync``1(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions)">
   GetResourceAsync&lt;T&gt;(string, string, UnifiedUserIdentity, ResourceProviderGetOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L82"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a resource based on its name.</p>
@@ -629,7 +661,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
   <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_GetResourcesAsync__1_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.GetResourcesAsync``1(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions)">
   GetResourcesAsync&lt;T&gt;(string, UnifiedUserIdentity, ResourceProviderGetOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L58"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets resources of a specific type.</p>
@@ -680,7 +712,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
   <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_Initialize" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.Initialize">
   Initialize()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L184"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L189"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes the resource provider.</p>
@@ -712,7 +744,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
   <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_ResourceExistsAsync__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.ResourceExistsAsync``1(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   ResourceExistsAsync&lt;T&gt;(string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L166"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L171"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Checks if a resource exists.</p>
@@ -766,7 +798,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
   <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_UpdateResourcePropertiesAsync__2_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.UpdateResourcePropertiesAsync``2(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   UpdateResourcePropertiesAsync&lt;T, TResult&gt;(string, string, Dictionary&lt;string, object?&gt;, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L108"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates a subset of the properties of a resource.</p>
@@ -822,7 +854,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
   <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_UpsertResourceAsync__2_System_String___0_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderUpsertOptions_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.UpsertResourceAsync``2(System.String,``0,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertOptions)">
   UpsertResourceAsync&lt;T, TResult&gt;(string, T, UnifiedUserIdentity, ResourceProviderUpsertOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L95"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates or updates a resource based on its logical path.</p>
@@ -879,7 +911,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
   <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_WaitForInitialization" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.WaitForInitialization">
   WaitForInitialization()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L194"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Waits for the resource provider service to be initialized.</p>
