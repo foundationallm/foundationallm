@@ -30,7 +30,7 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="listRequest">The request containing the information used to filter the knowledge resources.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
         /// <returns></returns>
-        Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeSources(
+        Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
             string instanceId,
             ContextKnowledgeResourceListRequest listRequest,
             UnifiedUserIdentity userIdentity);
@@ -54,9 +54,9 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="knowledgeSource">The knowledge source to be created or updated.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
         /// <returns></returns>
-        Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeUnit>>> UpsertKnowledgeSource(
+        Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeSource>>> UpsertKnowledgeSource(
             string instanceId,
-            KnowledgeUnit knowledgeSource,
+            KnowledgeSource knowledgeSource,
             UnifiedUserIdentity userIdentity);
 
         /// <summary>

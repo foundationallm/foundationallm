@@ -82,7 +82,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeSourceNames">An optional list of specific knowledge sources to retrieve.</param>
         /// <returns>The list of knowledge sources.</returns>
-        Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeSources(
+        Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
             string instanceId,
             IEnumerable<string>? knowledgeSourceNames = null);
 

@@ -13,7 +13,7 @@ namespace FoundationaLLM.Context.Models
         public override Type ResourceType => 
             Type switch
             {
-                ContextTypes.KnowledgeSource => typeof(KnowledgeUnit),
+                ContextTypes.KnowledgeSource => typeof(KnowledgeSource),
                 ContextTypes.KnowledgeUnit => typeof(KnowledgeUnit),
                 _ => throw new ResourceProviderException($"The context type {Type} is not supported.")
             };

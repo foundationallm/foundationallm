@@ -192,7 +192,7 @@ namespace FoundationaLLM.Context.ResourceProviders
                         $"The knowledge unit {resourcePath.MainResourceId} could not be loaded.",
                         StatusCodes.Status404NotFound),
                 ContextResourceTypeNames.KnowledgeSources =>
-                    (await LoadResource<KnowledgeUnit>(
+                    (await LoadResource<KnowledgeSource>(
                         resourcePath.MainResourceId!)) as T
                     ?? throw new ResourceProviderException(
                         $"The knowledge source {resourcePath.MainResourceId} could not be loaded.",
@@ -217,10 +217,10 @@ namespace FoundationaLLM.Context.ResourceProviders
                         resourcePath,
                         (resource as KnowledgeUnit)!,
                         userIdentity)) as TResult)!,
-                Type t when t == typeof(KnowledgeUnit) =>
-                    ((await UpdateKnowledgeResource<KnowledgeUnit>(
+                Type t when t == typeof(KnowledgeSource) =>
+                    ((await UpdateKnowledgeResource<KnowledgeSource>(
                         resourcePath,
-                        (resource as KnowledgeUnit)!,
+                        (resource as KnowledgeSource)!,
                         userIdentity)) as TResult)!,
                 _ => throw new ResourceProviderException(
                     $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",
@@ -261,20 +261,20 @@ namespace FoundationaLLM.Context.ResourceProviders
 
         #region Resource management
 
-        private async Task<List<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeSources(
+        private async Task<List<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSources(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
             ResourceProviderGetOptions options)
         {
             if (!_proxyMode)
-                return await LoadResources<KnowledgeUnit>(
+                return await LoadResources<KnowledgeSource>(
                     resourcePath.ResourceTypeInstances.First(),
                     authorizationResult,
                     options);
 
             var contextServiceClient = GetContextServiceClient(userIdentity);
-            ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>> contextResponse = null!;
+            ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>> contextResponse = null!;
             if (!resourcePath.IsResourceTypePath)
             {
                 contextResponse = await contextServiceClient!.GetKnowledgeSources(

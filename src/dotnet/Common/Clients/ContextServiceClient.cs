@@ -260,10 +260,10 @@ namespace FoundationaLLM.Common.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeSources(
+        public async Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
             string instanceId,
             IEnumerable<string>? knowledgeSourceNames = null) =>
-            await GetKnowledgeResources<KnowledgeUnit>(
+            await GetKnowledgeResources<KnowledgeSource>(
                 instanceId,
                 ContextResourceTypeNames.KnowledgeSources,
                 knowledgeSourceNames);

@@ -88,7 +88,7 @@ namespace FoundationaLLM.Context.API.Controllers
         [HttpPost("knowledgeSources")]
         public async Task<IActionResult> UpsertKnowledgeSource(
             string instanceId,
-            [FromBody] KnowledgeUnit knowledgeSource)
+            [FromBody] KnowledgeSource knowledgeSource)
         {
             var response = await _knowledgeService.UpsertKnowledgeSource(
                 instanceId,
@@ -126,7 +126,7 @@ namespace FoundationaLLM.Context.API.Controllers
         /// <param name="knowledgeUnitId"></param>
         /// <param name="queryRequest"></param>
         /// <returns></returns>
-        [HttpPost("knowledgeUnits/{knowledgeSourceId}/render-graph")]
+        [HttpPost("knowledgeUnits/{knowledgeUnitId}/render-graph")]
         public async Task<IActionResult> RenderKnowledgeUnitGraph(
             string instanceId,
             string knowledgeUnitId,

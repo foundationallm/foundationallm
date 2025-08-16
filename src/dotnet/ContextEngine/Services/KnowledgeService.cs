@@ -87,15 +87,15 @@ namespace FoundationaLLM.Context.Services
         }
 
         /// <inheritdoc />
-        public async Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeSources(
+        public async Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
             string instanceId,
             ContextKnowledgeResourceListRequest listRequest,
             UnifiedUserIdentity userIdentity)
         {
-            var knowledgeSourceResults = await _contextResourceProvider.GetResourcesAsync<KnowledgeUnit>(
+            var knowledgeSourceResults = await _contextResourceProvider.GetResourcesAsync<KnowledgeSource>(
                 instanceId,
                 userIdentity);
-            return new ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>
+            return new ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>
             {
                 Success = true,
                 Result = listRequest.KnowledgeResourceNames is null
@@ -126,17 +126,17 @@ namespace FoundationaLLM.Context.Services
         }
 
         /// <inheritdoc />
-        public async Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeUnit>>> UpsertKnowledgeSource(
+        public async Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeSource>>> UpsertKnowledgeSource(
             string instanceId,
-            KnowledgeUnit knowledgeSource,
+            KnowledgeSource knowledgeSource,
             UnifiedUserIdentity userIdentity)
         {
             var upsertResult =
-                await _contextResourceProvider.UpsertResourceAsync<KnowledgeUnit, ResourceProviderUpsertResult<KnowledgeUnit>>(
+                await _contextResourceProvider.UpsertResourceAsync<KnowledgeSource, ResourceProviderUpsertResult<KnowledgeSource>>(
                     instanceId,
                     knowledgeSource,
                     userIdentity);
-            return new ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeUnit>>
+            return new ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeSource>>
             {
                 Success = true,
                 Result = upsertResult
@@ -399,7 +399,8 @@ namespace FoundationaLLM.Context.Services
             var cacheKey = GetCacheKey(instanceId, knowledgeUnitId);
             _cache.Set(
                 cacheKey,
-                cachedKnowledgeUnit);
+                cachedKnowledgeUnit,
+                GetMemoryCacheEntryOptions());
         }
 
         private void RemoveKnowledgeUnitFromCache(

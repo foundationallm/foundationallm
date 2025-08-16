@@ -32,6 +32,9 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         ]),
                         new ResourceTypeAction(ResourceProviderActions.LoadGraph, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderActionResult<KnowledgeGraph>)])
+                        ]),
+                        new ResourceTypeAction(ResourceProviderActions.RenderGraph, true, false, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ContextKnowledgeSourceQueryRequest)], [typeof(ContextKnowledgeUnitRenderGraphResponse)])
                         ])
                     ]
                 }
@@ -40,7 +43,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                 ContextResourceTypeNames.KnowledgeSources,
                 new ResourceTypeDescriptor(
                     ContextResourceTypeNames.KnowledgeSources,
-                    typeof(KnowledgeUnit))
+                    typeof(KnowledgeSource))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<KnowledgeUnit>)]),
@@ -50,9 +53,6 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     Actions = [
                         new ResourceTypeAction(ResourceProviderActions.Query, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ContextKnowledgeSourceQueryRequest)], [typeof(ContextKnowledgeSourceQueryResponse)])
-                        ]),
-                        new ResourceTypeAction(ResourceProviderActions.RenderGraph, true, false, [
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ContextKnowledgeSourceQueryRequest)], [typeof(ContextKnowledgeUnitRenderGraphResponse)])
                         ])
                     ]
                 }
