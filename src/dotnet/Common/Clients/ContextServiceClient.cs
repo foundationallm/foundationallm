@@ -297,12 +297,8 @@ namespace FoundationaLLM.Common.Clients
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                    var response = JsonSerializer.Deserialize<IEnumerable<ResourceProviderGetResult<T>>>(responseContent);
-                    return new ContextServiceResponse<IEnumerable<ResourceProviderGetResult<T>>>
-                    {
-                        Success = true,
-                        Result = response ?? []
-                    };
+                    var response = JsonSerializer.Deserialize<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<T>>>>(responseContent);
+                    return response!;
                 }
                 _logger.LogError(
                     "An error occurred while retrieving the knowledge resources of type {KnowledgeResourceType}. Status code: {StatusCode}.",
@@ -361,12 +357,8 @@ namespace FoundationaLLM.Common.Clients
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                    var response = JsonSerializer.Deserialize<ResourceProviderUpsertResult<T>>(responseContent);
-                    return new ContextServiceResponse<ResourceProviderUpsertResult<T>>
-                    {
-                        Success = true,
-                        Result = response
-                    };
+                    var response = JsonSerializer.Deserialize<ContextServiceResponse<ResourceProviderUpsertResult<T>>>(responseContent);
+                    return response!;
                 }
                 _logger.LogError(
                     "An error occurred while upserting the knowledge resorce {ResourceName}. Status code: {StatusCode}.",
@@ -409,12 +401,8 @@ namespace FoundationaLLM.Common.Clients
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                    var response = JsonSerializer.Deserialize<ResourceProviderActionResult>(responseContent);
-                    return new ContextServiceResponse<ResourceProviderActionResult>
-                    {
-                        Success = true,
-                        Result = response
-                    };
+                    var response = JsonSerializer.Deserialize<ContextServiceResponse<ResourceProviderActionResult>>(responseContent);
+                    return response!;
                 }
 
                 _logger.LogError(
