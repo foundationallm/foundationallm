@@ -22,8 +22,8 @@ export interface ContentArtifact {
 }
 
 export interface ResourceProviderUpsertResult {
-	objectId: string;
-	resourceExists: boolean;
+	object_id: string;
+	resource_exists: boolean;
 }
 
 export interface MessageContent {

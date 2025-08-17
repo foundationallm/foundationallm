@@ -182,6 +182,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             _cacheSettings = cacheSettings;
             _eventTypesToSubscribe = eventTypesToSubscribe;
             _useInternalReferencesStore = useInternalReferencesStore;
+            _proxyMode = proxyMode;
 
             logger.LogInformation("Resource provider caching {CacheStatusString} enabled.",
                 _cacheSettings.EnableCache ? "is" : "is not");
