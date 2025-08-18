@@ -210,7 +210,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateCodeSession_System_String_System_String_System_String_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateCodeSession(System.String,System.String,System.String,System.String,System.String,System.String)">
   CreateCodeSession(string, string, string, string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L225"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls the Context API service to create a code session.</p>
@@ -264,6 +264,101 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateFile_System_String_System_String_System_String_System_String_System_IO_Stream_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateFile(System.String,System.String,System.String,System.String,System.IO.Stream)">
   CreateFile(string, string, string, string, Stream)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;ContextFileRecord&gt;&gt; CreateFile(string instanceId, string resourceRoute, string fileName, string fileContentType, Stream fileContent)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>resourceRoute</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>fileName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>fileContentType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>fileContent</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateFileForAgent_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateFileForAgent*"></a>
+
+  <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateFileForAgent_System_String_System_String_System_String_System_String_System_IO_Stream_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateFileForAgent(System.String,System.String,System.String,System.String,System.IO.Stream)">
+  CreateFileForAgent(string, string, string, string, Stream)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calls the Context API service to create a file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;ContextFileRecord&gt;&gt; CreateFileForAgent(string instanceId, string agentName, string fileName, string fileContentType, Stream fileContent)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>agentName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the agent.</p>
+</dd>
+    <dt><code>fileName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the file to be created.</p>
+</dd>
+    <dt><code>fileContentType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The content type of the file to be created.</p>
+</dd>
+    <dt><code>fileContent</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The binary content of the file.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse&lt;T&gt;</a> instance where <code>T</code> is of type <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateFileForConversation_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateFileForConversation*"></a>
+
+  <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateFileForConversation_System_String_System_String_System_String_System_String_System_IO_Stream_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateFileForConversation(System.String,System.String,System.String,System.String,System.IO.Stream)">
+  CreateFileForConversation(string, string, string, string, Stream)
   <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L130"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -272,7 +367,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;ContextFileRecord&gt;&gt; CreateFile(string instanceId, string conversationId, string fileName, string fileContentType, Stream fileContent)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;ContextFileRecord&gt;&gt; CreateFileForConversation(string instanceId, string conversationId, string fileName, string fileContentType, Stream fileContent)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -399,7 +494,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_GetKnowledgeSources_System_String_System_Collections_Generic_IEnumerable_System_String__" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.GetKnowledgeSources(System.String,System.Collections.Generic.IEnumerable{System.String})">
   GetKnowledgeSources(string, IEnumerable&lt;string&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L263"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L291"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Call the Context API to retrieve the list of knowledge sources.</p>
@@ -441,7 +536,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_GetKnowledgeUnits_System_String_System_Collections_Generic_IEnumerable_System_String__" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.GetKnowledgeUnits(System.String,System.Collections.Generic.IEnumerable{System.String})">
   GetKnowledgeUnits(string, IEnumerable&lt;string&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L272"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L300"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Call the Context API to retrieve the list of knowledge units.</p>
@@ -483,7 +578,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_QueryKnowledgeSource_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.QueryKnowledgeSource(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)">
   QueryKnowledgeSource(string, string, ContextKnowledgeSourceQueryRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L431"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L459"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls the Context API to query a knowledge source.</p>
@@ -528,7 +623,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_RenderKnowledgeSourceGraph_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.RenderKnowledgeSourceGraph(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)">
   RenderKnowledgeSourceGraph(string, string, ContextKnowledgeSourceQueryRequest?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L476"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L504"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves the knowledge source's knowledge graph in a format suitable for visualization or further processing.</p>
@@ -572,7 +667,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_SetKnowledgeUnitGraph_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeUnitSetGraphRequest_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.SetKnowledgeUnitGraph(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitSetGraphRequest)">
   SetKnowledgeUnitGraph(string, string, ContextKnowledgeUnitSetGraphRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L386"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L414"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the knowledge graph for a knowledge unit.</p>
@@ -617,7 +712,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_UpsertKnowledgeSource_System_String_FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeSource_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.UpsertKnowledgeSource(System.String,FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource)">
   UpsertKnowledgeSource(string, KnowledgeSource)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L335"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L363"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates or updates a knowledge source in the context service.</p>
@@ -658,7 +753,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_UpsertKnowledgeUnit_System_String_FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeUnit_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.UpsertKnowledgeUnit(System.String,FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit)">
   UpsertKnowledgeUnit(string, KnowledgeUnit)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L326"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L354"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates or updates a knowledge unit in the context service.</p>

@@ -214,10 +214,70 @@ Class FileService  <a class="header-action link-secondary" title="View source" h
 </h2>
 
 
-  <a id="FoundationaLLM_Context_Services_FileService_CreateFile_" data-uid="FoundationaLLM.Context.Services.FileService.CreateFile*"></a>
+  <a id="FoundationaLLM_Context_Services_FileService_CreateFileForAgent_" data-uid="FoundationaLLM.Context.Services.FileService.CreateFileForAgent*"></a>
 
-  <h3 id="FoundationaLLM_Context_Services_FileService_CreateFile_System_String_System_String_System_String_System_String_System_String_System_IO_Stream_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="FoundationaLLM.Context.Services.FileService.CreateFile(System.String,System.String,System.String,System.String,System.String,System.IO.Stream,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})">
-  CreateFile(string, string, string, string, string, Stream, UnifiedUserIdentity, Dictionary&lt;string, string&gt;?)
+  <h3 id="FoundationaLLM_Context_Services_FileService_CreateFileForAgent_System_String_System_String_System_String_System_String_System_String_System_IO_Stream_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="FoundationaLLM.Context.Services.FileService.CreateFileForAgent(System.String,System.String,System.String,System.String,System.String,System.IO.Stream,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})">
+  CreateFileForAgent(string, string, string, string, string, Stream, UnifiedUserIdentity, Dictionary&lt;string, string&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/FileService.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Create a new file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;ContextFileRecord&gt; CreateFileForAgent(string instanceId, string origin, string agentName, string fileName, string contentType, Stream content, UnifiedUserIdentity userIdentity, Dictionary&lt;string, string&gt;? metadata)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>origin</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The origin of the file.</p>
+</dd>
+    <dt><code>agentName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the agent.</p>
+</dd>
+    <dt><code>fileName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The original name of the file.</p>
+</dd>
+    <dt><code>contentType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The content type of the file.</p>
+</dd>
+    <dt><code>content</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a> providing the raw content of the file.</p>
+</dd>
+    <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> providing details about the user identity.</p>
+</dd>
+    <dt><code>metadata</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>Optional metadata dictionary associated with the file.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a> instance with details about the newly created file.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Context_Services_FileService_CreateFileForConversation_" data-uid="FoundationaLLM.Context.Services.FileService.CreateFileForConversation*"></a>
+
+  <h3 id="FoundationaLLM_Context_Services_FileService_CreateFileForConversation_System_String_System_String_System_String_System_String_System_String_System_IO_Stream_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="FoundationaLLM.Context.Services.FileService.CreateFileForConversation(System.String,System.String,System.String,System.String,System.String,System.IO.Stream,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})">
+  CreateFileForConversation(string, string, string, string, string, Stream, UnifiedUserIdentity, Dictionary&lt;string, string&gt;?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/FileService.cs/#L54"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -226,7 +286,7 @@ Class FileService  <a class="header-action link-secondary" title="View source" h
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextFileRecord&gt; CreateFile(string instanceId, string origin, string conversationId, string fileName, string contentType, Stream content, UnifiedUserIdentity userIdentity, Dictionary&lt;string, string&gt;? metadata)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;ContextFileRecord&gt; CreateFileForConversation(string instanceId, string origin, string conversationId, string fileName, string contentType, Stream content, UnifiedUserIdentity userIdentity, Dictionary&lt;string, string&gt;? metadata)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -278,7 +338,7 @@ Class FileService  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="FoundationaLLM_Context_Services_FileService_GetFileContent_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Services.FileService.GetFileContent(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetFileContent(string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/FileService.cs/#L128"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/FileService.cs/#L167"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Get the binary content of a file.</p>
@@ -323,7 +383,7 @@ Class FileService  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="FoundationaLLM_Context_Services_FileService_GetFileContent_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Services.FileService.GetFileContent(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetFileContent(string, string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/FileService.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/FileService.cs/#L130"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Get the binary content of a file.</p>
@@ -371,7 +431,7 @@ Class FileService  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="FoundationaLLM_Context_Services_FileService_GetFileRecord_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Services.FileService.GetFileRecord(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetFileRecord(string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/FileService.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/FileService.cs/#L197"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Get the file record associated with a file.</p>
@@ -416,7 +476,7 @@ Class FileService  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="FoundationaLLM_Context_Services_FileService_ShouldBypassOwnerCheck_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Services.FileService.ShouldBypassOwnerCheck(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   ShouldBypassOwnerCheck(string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/FileService.cs/#L175"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/FileService.cs/#L214"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
