@@ -105,7 +105,104 @@
                         </div>
                     </TabPanel>
 
-                    <TabPanel header="AI Configuration" :disabled="true"></TabPanel>
+                    <TabPanel header="AI Configuration">
+                        <div class="px-4 py-8 mt-8 border border-solid border-gray-300">
+                            <div class="w-full max-w-[1000px] mx-auto">
+                                <div class="flex flex-wrap -mx-4">
+                                    <div class="w-full max-w-full md:max-w-[50%] px-4">
+                                        <div class="mb-6">
+                                            <label for="chatModel" class="block text-base text-[#898989] mb-2">
+                                                <VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']"
+                                                    class="inline-block relative top-[2px]">
+                                                    <i class="pi pi-info-circle text-[#5472d4]"></i>
+                                                    <template #popper>
+                                                        <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate tenetur iure, distinctio soluta nostrum corporis excepturi consectetur vitae mollitia eum cumque corrupti necessitatibus? Nihil vero, dolorem nesciunt perspiciatis voluptas amet!</div>
+                                                    </template>
+                                                </VTooltip>
+                                                Chat Model <span
+                                                class="text-[#ff0000]">*</span>
+                                            </label>
+                                            <Dropdown
+                                                class="w-full"
+                                                option-group-label="label"
+                                                option-group-children="items"
+                                                option-disabled="disabled"
+                                                option-label="label"
+                                                placeholder="--Select--"
+                                                aria-label="Select an agent"
+                                            />
+                                        </div>
+
+                                        <div class="mb-6">
+                                            <label for="systemPrompt" class="block text-base text-[#898989] mb-2">
+                                                <VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']"
+                                                    class="inline-block relative top-[2px]">
+                                                    <i class="pi pi-info-circle text-[#5472d4]"></i>
+                                                    <template #popper>
+                                                        <div role="tooltip" class="max-w-[250px]">You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional.</div>
+                                                    </template>
+                                                </VTooltip>
+                                                System Prompt
+                                            </label>
+                                            <Textarea
+                                                class="w-full resize-none"
+                                                name="systemPrompt"
+                                                id="systemPrompt" 
+                                                aria-labelledby="aria-system-prompt"
+                                                rows="5"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div class="w-full max-w-full md:max-w-[50%] px-4 mb-6">
+                                        <div class="flex flex-wrap items-center mt-8 max-w-[275px] m-auto">
+                                            <div class="w-full max-w-[calc(100%-50px)] pr-4">
+                                                <p class="block text-base text-[#898989] my-0">
+                                                    <VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']"
+                                                        class="inline-block relative top-[2px]">
+                                                        <i class="pi pi-info-circle text-[#5472d4]"></i>
+                                                        <template #popper>
+                                                            <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto quae molestias quam numquam alias?</div>
+                                                        </template>
+                                                    </VTooltip>
+                                                    Image Generation
+                                                </p>
+                                            </div>
+
+                                            <div class="w-full max-w-[50px]">
+                                                <InputSwitch
+                                                    v-model="$appStore.autoHideToasts"
+                                                    class="csm-input-switch-1"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div class="flex flex-wrap items-center mt-8 max-w-[275px] m-auto">
+                                            <div class="w-full max-w-[calc(100%-50px)] pr-4">
+                                                <p class="block text-base text-[#898989] my-0">
+                                                    <VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']"
+                                                        class="inline-block relative top-[2px]">
+                                                        <i class="pi pi-info-circle text-[#5472d4]"></i>
+                                                        <template #popper>
+                                                            <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto quae molestias quam numquam alias?</div>
+                                                        </template>
+                                                    </VTooltip>
+                                                    User Portal File Upload
+                                                </p>
+                                            </div>
+
+                                            <div class="w-full max-w-[50px]">
+                                                <InputSwitch
+                                                    v-model="$appStore.showToastLogs"
+                                                    class="csm-input-switch-1"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </TabPanel>
 
                     <TabPanel header="Data Sources" :disabled="true"></TabPanel>
 
@@ -150,6 +247,29 @@
         a {
             color: var(--primary-button-bg);
             text-decoration: none;
+        }
+    }
+    .csm-input-switch-1{
+        &.p-inputswitch{
+            .p-inputswitch-slider{
+                border-radius: 50px;
+                background: transparent;
+                border: 3px solid #334581;
+                &:before{
+                    background: #334581;
+                    border-radius: 50%;
+                    left: 0.1rem;
+                }
+            }
+            &.p-highlight{
+                .p-inputswitch-slider{
+                    background: #334581;
+                    &:before{
+                        background-color: #ffffff;
+                        transform: translateX(1.2rem);
+                    }
+                }
+            }
         }
     }
 </style>
