@@ -205,7 +205,7 @@ Class VectorDatabase  <a class="header-action link-secondary" title="View source
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_APIEndpointConfigurationObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.APIEndpointConfigurationObjectId">
   APIEndpointConfigurationObjectId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs/#L73"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the API Endpoint Configuration object identifier.</p>
@@ -238,7 +238,7 @@ public required string APIEndpointConfigurationObjectId { get; set; }</code></pr
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_ContentPropertyName" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.ContentPropertyName">
   ContentPropertyName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the name of the property that stores the content.</p>
@@ -334,11 +334,77 @@ public required VectorDatabaseType DatabaseType { get; set; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_EmbeddingDimensions_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingDimensions*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_EmbeddingDimensions" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingDimensions">
+  EmbeddingDimensions
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the number of dimensions for the embeddings used in the knowledge unit.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;embedding_dimensions&quot;)]
+public required int EmbeddingDimensions { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_EmbeddingModel_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingModel*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_EmbeddingModel" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingModel">
+  EmbeddingModel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the embedding model used for the knowledge unit.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;embedding_model&quot;)]
+public required string EmbeddingModel { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_EmbeddingPropertyName_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingPropertyName*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_EmbeddingPropertyName" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingPropertyName">
   EmbeddingPropertyName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs/#L38"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the name of the property that stores the embeddings.</p>
@@ -367,11 +433,49 @@ public required string EmbeddingPropertyName { get; set; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_MetadataProperties_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataProperties*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_MetadataProperties" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataProperties">
+  MetadataProperties
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the list of metadata properties managed by the vector database.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;metadata_properties&quot;)]
+public required string MetadataProperties { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_MetadataProperties_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Must be a comma-separated list of metadata property names and types to be indexed.
+The name and type must be separated by '|'.
+For Azure AI Search databases, valid types are 'Edm.String', 'Edm.Int32', 'Edm.Int64','Edm.Single','Edm.Double','Edm.Boolean','Edm.DateTimeOffset'.</p>
+</div>
+
+
+
+
   <a id="FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_MetadataPropertyName_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataPropertyName*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_MetadataPropertyName" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataPropertyName">
   MetadataPropertyName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the name of the metadata property that stores additional information about each item.</p>
@@ -404,7 +508,7 @@ public required string MetadataPropertyName { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_VectorStoreIdPropertyName" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.VectorStoreIdPropertyName">
   VectorStoreIdPropertyName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs/#L50"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the name of the property that stores the vector store identifier.</p>
