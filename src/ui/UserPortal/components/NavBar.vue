@@ -106,369 +106,322 @@
 </template>
 
 <script lang="ts">
-import { hideAllPoppers } from 'floating-vue';
-import eventBus from '@/js/eventBus';
-import { isAgentExpired } from '@/js/helpers';
-import type { Session } from '@/js/types';
+	import { hideAllPoppers } from 'floating-vue';
+	import eventBus from '@/js/eventBus';
+	import { isAgentExpired } from '@/js/helpers';
+	import type { Session } from '@/js/types';
+	import '@/styles/navbar.scss';
 
-interface AgentDropdownOption {
-	label: string;
-	value: any;
-	disabled?: boolean;
-	my_agent?: boolean;
-	type: string;
-	object_id: string;
-	description: string;
-}
+	interface AgentDropdownOption {
+		label: string;
+		value: any;
+		disabled?: boolean;
+		my_agent?: boolean;
+		type: string;
+		object_id: string;
+		description: string;
+	}
 
-interface AgentDropdownOptionsGroup {
-	label: string;
-	items: AgentDropdownOption[];
-}
+	interface AgentDropdownOptionsGroup {
+		label: string;
+		items: AgentDropdownOption[];
+	}
 
-export default {
-	name: 'NavBar',
+	export default {
+		name: 'NavBar',
 
-	data() {
-		return {
-			agentSelection: null as AgentDropdownOption | null,
-			agentOptions: [] as AgentDropdownOption[],
-			agentOptionsGroup: [] as AgentDropdownOptionsGroup[],
-			virtualUser: null as string | null,
-			isMobile: window.screen.width < 950,
-			emptyAgentsMessage: null as string | null,
-		};
-	},
-
-	computed: {
-		currentSession() {
-			return this.$appStore.currentSession;
-		},
-
-		showNoAgentsMessage() {
-			return this.agentOptions.length === 0 && this.emptyAgentsMessage !== null;
-		},
-	},
-
-	watch: {
-		currentSession(newSession: Session, oldSession: Session) {
-			if (newSession.sessionId !== oldSession?.sessionId) {
-				this.updateAgentSelection();
-			}
-		},
-		'$appStore.selectedAgents': {
-			handler() {
-				this.updateAgentSelection();
-			},
-			deep: true,
-		},
-		'$appStore.agents': {
-			handler() {
-				this.setAgentOptions();
-			},
-			deep: true,
-		},
-		'$appStore.lastSelectedAgent': {
-			handler() {
-				this.setAgentOptions();
-				this.updateAgentSelection();
-			},
-			deep: true,
-		},
-	},
-
-	mounted() {
-		this.updateAgentSelection();
-	},
-
-	methods: {
-		handleAgentChange() {
-			if (isAgentExpired(this.agentSelection!.value)) return;
-
-			this.$appStore.setSessionAgent(this.currentSession, this.agentSelection!.value);
-			const message = this.agentSelection!.value
-				? `Agent changed to ${this.agentSelection!.label}`
-				: `Cleared agent hint selection`;
-
-			this.$appStore.addToast({
-				severity: 'success',
-				detail: message,
-			});
-
-			if (this.$appStore.currentMessages?.length > 0) {
-				// Emit the event to create a new session.
-				// TODO: Add flag on the agent to determine whether to create a new session.
-				eventBus.emit('agentChanged');
-			}
-		},
-
-		async handleLogout() {
-			await this.$authStore.logout();
-		},
-
-		handlePrint() {
-			window.print();
-		},
-
-		async setAgentOptions() {
-			const isCurrentAgent = (agent): boolean => {
-				return (
-					agent.resource.name ===
-					this.$appStore.getSessionAgent(this.currentSession)?.resource?.name
-				);
+		data() {
+			return {
+				agentSelection: null as AgentDropdownOption | null,
+				agentOptions: [] as AgentDropdownOption[],
+				agentOptionsGroup: [] as AgentDropdownOptionsGroup[],
+				virtualUser: null as string | null,
+				isMobile: window.screen.width < 950,
+				emptyAgentsMessage: null as string | null,
 			};
+		},
 
-			// Filter out expired agents, but keep the currently selected agent even if it is expired
-			const notExpiredOrCurrentAgents = this.$appStore.agents.filter(
-				(agent) => !isAgentExpired(agent) || isCurrentAgent(agent),
-			);
+		computed: {
+			currentSession() {
+				return this.$appStore.currentSession;
+			},
 
-			this.agentOptions = notExpiredOrCurrentAgents.map((agent) => ({
-				label: agent.resource.display_name ? agent.resource.display_name : agent.resource.name,
-				type: agent.resource.type,
-				object_id: agent.resource.object_id,
-				description: agent.resource.description,
-				my_agent: agent.roles.includes('Owner'),
-				value: agent,
-			}));
+			showNoAgentsMessage() {
+				return this.agentOptions.length === 0 && this.emptyAgentsMessage !== null;
+			},
+		},
 
-			if (this.agentOptions.length === 0) {
-				this.emptyAgentsMessage = this.$appConfigStore.noAgentsMessage ?? null;
-			}
-
-			const publicAgentOptions = this.agentOptions.filter((agent) => !agent.my_agent);
-			const privateAgentOptions = this.agentOptions.filter((agent) => agent.my_agent);
-			const noAgentOptions = [
-				{
-					label: 'None',
-					value: null,
-					disabled: true,
-					type: '',
-					object_id: '',
-					description: '',
+		watch: {
+			currentSession(newSession: Session, oldSession: Session) {
+				if (newSession.sessionId !== oldSession?.sessionId) {
+					this.updateAgentSelection();
+				}
+			},
+			'$appStore.selectedAgents': {
+				handler() {
+					this.updateAgentSelection();
 				},
-			];
-			this.virtualUser = await this.$appStore.getVirtualUser();
+				deep: true,
+			},
+			'$appStore.agents': {
+				handler() {
+					this.setAgentOptions();
+				},
+				deep: true,
+			},
+			'$appStore.lastSelectedAgent': {
+				handler() {
+					this.setAgentOptions();
+					this.updateAgentSelection();
+				},
+				deep: true,
+			},
+		},
 
-			this.agentOptionsGroup = [];
-			this.agentOptionsGroup.push({
-				label: '',
-				items: [
+		mounted() {
+			this.updateAgentSelection();
+		},
+
+		methods: {
+			handleAgentChange() {
+				if (isAgentExpired(this.agentSelection!.value)) return;
+
+				this.$appStore.setSessionAgent(this.currentSession, this.agentSelection!.value);
+				const message = this.agentSelection!.value
+					? `Agent changed to ${this.agentSelection!.label}`
+					: `Cleared agent hint selection`;
+
+				this.$appStore.addToast({
+					severity: 'success',
+					detail: message,
+				});
+
+				if (this.$appStore.currentMessages?.length > 0) {
+					// Emit the event to create a new session.
+					// TODO: Add flag on the agent to determine whether to create a new session.
+					eventBus.emit('agentChanged');
+				}
+			},
+
+			async handleLogout() {
+				await this.$authStore.logout();
+			},
+
+			handlePrint() {
+				window.print();
+			},
+
+			async setAgentOptions() {
+				const isCurrentAgent = (agent): boolean => {
+					return (
+						agent.resource.name ===
+						this.$appStore.getSessionAgent(this.currentSession)?.resource?.name
+					);
+				};
+
+				// Filter out expired agents, but keep the currently selected agent even if it is expired
+				const notExpiredOrCurrentAgents = this.$appStore.agents.filter(
+					(agent) => !isAgentExpired(agent) || isCurrentAgent(agent),
+				);
+
+				this.agentOptions = notExpiredOrCurrentAgents.map((agent) => ({
+					label: agent.resource.display_name ? agent.resource.display_name : agent.resource.name,
+					type: agent.resource.type,
+					object_id: agent.resource.object_id,
+					description: agent.resource.description,
+					my_agent: agent.roles.includes('Owner'),
+					value: agent,
+				}));
+
+				if (this.agentOptions.length === 0) {
+					this.emptyAgentsMessage = this.$appConfigStore.noAgentsMessage ?? null;
+				}
+
+				const publicAgentOptions = this.agentOptions.filter((agent) => !agent.my_agent);
+				const privateAgentOptions = this.agentOptions.filter((agent) => agent.my_agent);
+				const noAgentOptions = [
 					{
-						label: '--select--',
+						label: 'None',
 						value: null,
+						disabled: true,
 						type: '',
 						object_id: '',
 						description: '',
 					},
-				],
-			});
+				];
+				this.virtualUser = await this.$appStore.getVirtualUser();
 
-			if (this.agentOptions.length === 0) {
-				// Append noAgentOptions to the last entry in the agentOptionsGroup
-				this.agentOptionsGroup[this.agentOptionsGroup.length - 1].items.push(...noAgentOptions);
-				return;
-			}
-
-			if (privateAgentOptions.length > 0) {
+				this.agentOptionsGroup = [];
 				this.agentOptionsGroup.push({
-					label: 'My Agents',
-					items: privateAgentOptions,
+					label: '',
+					items: [
+						{
+							label: '--select--',
+							value: null,
+							type: '',
+							object_id: '',
+							description: '',
+						},
+					],
 				});
-				this.agentOptionsGroup.push({
-					label: 'Other Agents',
-					items: publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions,
-				});
-			} else {
-				this.agentOptionsGroup[this.agentOptionsGroup.length - 1].items.push(
-					...(publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions),
-				);
-			}
+
+				if (this.agentOptions.length === 0) {
+					// Append noAgentOptions to the last entry in the agentOptionsGroup
+					this.agentOptionsGroup[this.agentOptionsGroup.length - 1].items.push(...noAgentOptions);
+					return;
+				}
+
+				if (privateAgentOptions.length > 0) {
+					this.agentOptionsGroup.push({
+						label: 'My Agents',
+						items: privateAgentOptions,
+					});
+					this.agentOptionsGroup.push({
+						label: 'Other Agents',
+						items: publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions,
+					});
+				} else {
+					this.agentOptionsGroup[this.agentOptionsGroup.length - 1].items.push(
+						...(publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions),
+					);
+				}
+			},
+
+			// handleCopySession() {
+			// 	const chatLink = `${window.location.origin}?chat=${this.currentSession!.sessionId}`;
+			// 	navigator.clipboard.writeText(chatLink);
+
+			// 	this.$appStore.addToast({
+			// 		severity: 'success',
+			// 		detail: 'Chat link copied!',
+			// 	});
+			// },
+
+			updateAgentSelection() {
+				const agent = this.$appStore.getSessionAgent(this.currentSession);
+
+				this.agentSelection =
+					this.agentOptions.find(
+						(option) => option.value.resource.object_id === agent.resource.object_id,
+					) || null;
+
+				if (this.agentSelection) {
+					this.$appStore.setSessionAgent(this.currentSession, this.agentSelection.value);
+				}
+			},
+
+			hideAllPoppers() {
+				hideAllPoppers();
+			},
 		},
-
-		// handleCopySession() {
-		// 	const chatLink = `${window.location.origin}?chat=${this.currentSession!.sessionId}`;
-		// 	navigator.clipboard.writeText(chatLink);
-
-		// 	this.$appStore.addToast({
-		// 		severity: 'success',
-		// 		detail: 'Chat link copied!',
-		// 	});
-		// },
-
-		updateAgentSelection() {
-			const agent = this.$appStore.getSessionAgent(this.currentSession);
-
-			this.agentSelection =
-				this.agentOptions.find(
-					(option) => option.value.resource.object_id === agent.resource.object_id,
-				) || null;
-
-			if (this.agentSelection) {
-				this.$appStore.setSessionAgent(this.currentSession, this.agentSelection.value);
-			}
-		},
-
-		hideAllPoppers() {
-			hideAllPoppers();
-		},
-	},
-};
+	};
 </script>
 
 <style lang="scss" scoped>
-.navbar {
-	height: 70px;
-	width: 100%;
-	overflow: hidden;
-	display: flex;
-	flex-direction: row;
-	box-shadow: 0 5px 10px 0 rgba(27, 29, 33, 0.1);
-}
-
-.navbar--collapsed {
-	.navbar__content {
-		background-color: var(--primary-color);
-		justify-content: flex-end;
-		border-bottom: none;
+	.navbar__content__left {
+		display: flex;
+		align-items: center;
 	}
-}
 
-.navbar__header {
-	width: 300px;
-	padding-right: 24px;
-	padding-left: 24px;
-	padding-top: 12px;
-	padding-bottom: 12px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	color: var(--primary-text);
-	background-color: var(--primary-color);
+	.navbar__content__left__item {
+		display: flex;
+		align-items: center;
+	}
 
-	img {
-		max-height: 100%;
-		width: auto;
-		max-width: 148px;
+	.navbar__content__right__item {
+		display: flex;
+		align-items: center;
+	}
+
+	.button--share {
+		margin-left: 8px;
+		color: var(--accent-text);
+	}
+
+	.button--auth {
+		margin-left: 24px;
+	}
+
+	.header__dropdown {
+		display: flex;
+		align-items: center;
+	}
+
+	.avatar {
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
 		margin-right: 12px;
 	}
-}
 
-.navbar__content {
-	flex: 1;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 24px;
-	border-bottom: 1px solid #eaeaea;
-	color: var(--accent-text);
-	background-color: var(--accent-color);
-}
-
-.navbar__content__left {
-	display: flex;
-	align-items: center;
-}
-
-.navbar__content__left__item {
-	display: flex;
-	align-items: center;
-}
-
-.navbar__content__right__item {
-	display: flex;
-	align-items: center;
-}
-
-.button--share {
-	margin-left: 8px;
-	color: var(--accent-text);
-}
-
-.button--auth {
-	margin-left: 24px;
-}
-
-.header__dropdown {
-	display: flex;
-	align-items: center;
-}
-
-.avatar {
-	width: 32px;
-	height: 32px;
-	border-radius: 50%;
-	margin-right: 12px;
-}
-
-.navbar__header__button:focus {
-	box-shadow: 0 0 0 0.1rem #fff;
-}
-
-.print-button {
-	margin-left: 8px;
-}
-
-.no-agents {
-	position: fixed;
-	top: 60px;
-	left: 50%;
-	transform: translateX(-50%);
-	background-color: #fafafa;
-	box-shadow: 0 5px 10px 0 rgba(27, 29, 33, 0.1);
-	border-radius: 6px;
-	width: 55%;
-	text-align: center;
-	z-index: 1000;
-
-	.body {
-		color: #5f0000;
-		padding: 10px 14px;
+	.navbar__header__button:focus {
+		box-shadow: 0 0 0 0.1rem #fff;
 	}
-}
 
-@media only screen and (max-width: 620px) {
-	.navbar__header {
-		width: 95px;
-		justify-content: center;
+	.print-button {
+		margin-left: 8px;
+	}
 
-		img {
-			display: none;
+	.no-agents {
+		position: fixed;
+		top: 60px;
+		left: 50%;
+		transform: translateX(-50%);
+		background-color: #fafafa;
+		box-shadow: 0 5px 10px 0 rgba(27, 29, 33, 0.1);
+		border-radius: 6px;
+		width: 55%;
+		text-align: center;
+		z-index: 1000;
+
+		.body {
+			color: #5f0000;
+			padding: 10px 14px;
 		}
 	}
-}
+
+	@media only screen and (max-width: 620px) {
+		.navbar__header {
+			width: 95px;
+			justify-content: center;
+
+			img {
+				display: none;
+			}
+		}
+	}
 </style>
 
 <style>
-.dropdown--agent:focus {
-	box-shadow: 0 0 0 0.1rem #000;
-}
+	.dropdown--agent:focus {
+		box-shadow: 0 0 0 0.1rem #000;
+	}
 
-@media only screen and (max-width: 545px) {
-	.dropdown--agent .p-dropdown-label {
-		/* display: none; */
+	@media only screen and (max-width: 545px) {
+		.dropdown--agent .p-dropdown-label {
+			/* display: none; */
+		}
+		.dropdown--agent .p-dropdown-trigger {
+			height: 40px;
+		}
+		.current_session_name {
+			display: none;
+		}
 	}
-	.dropdown--agent .p-dropdown-trigger {
-		height: 40px;
-	}
-	.current_session_name {
-		display: none;
-	}
-}
 
-@media only screen and (max-width: 500px) {
-	.dropdown--agent {
-		max-width: 200px;
+	@media only screen and (max-width: 500px) {
+		.dropdown--agent {
+			max-width: 200px;
+		}
 	}
-}
 
-@media only screen and (max-width: 450px) {
-	.dropdown--agent {
-		max-width: 160px;
+	@media only screen and (max-width: 450px) {
+		.dropdown--agent {
+			max-width: 160px;
+		}
 	}
-}
 
-.p-dropdown-items-wrapper {
-	max-height: 300px !important;
-}
+	.p-dropdown-items-wrapper {
+		max-height: 300px !important;
+	}
 </style>
