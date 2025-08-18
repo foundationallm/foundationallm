@@ -130,9 +130,9 @@ namespace FoundationaLLM.Context.ResourceProviders
                         JsonSerializer.Deserialize<KnowledgeUnit>(serializedResource!)!,
                         userIdentity),
                 ContextResourceTypeNames.KnowledgeSources =>
-                    await UpdateKnowledgeResource<KnowledgeUnit>(
+                    await UpdateKnowledgeResource<KnowledgeSource>(
                         resourcePath,
-                        JsonSerializer.Deserialize<KnowledgeUnit>(serializedResource!)!,
+                        JsonSerializer.Deserialize<KnowledgeSource>(serializedResource!)!,
                         userIdentity),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
