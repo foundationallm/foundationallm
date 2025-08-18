@@ -155,6 +155,38 @@ function Deploy-FoundationaLLMPackage {
         }
     }
 
+    if (Test-Path -Path "$($PackageRoot)/artifacts/knowledgeUnits.json") {
+
+        Write-Host "Updating knowledge units..."
+
+        $knowledgeUnits = Get-Content "$($PackageRoot)/artifacts/knowledgeUnits.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        foreach ($knowledgeUnit in $knowledgeUnits) {
+
+            Write-Host "Updating knowledge unit: $($knowledgeUnit.name)"
+            $knowledgeUnitResult = Merge-KnowledgeUnit -KnowledgeUnit $knowledgeUnit
+            Write-Host "Knowledge unit updated: $($knowledgeUnitResult)" -ForegroundColor Green
+        }
+    }
+
+    if (Test-Path -Path "$($PackageRoot)/artifacts/knowledgeSources.json") {
+
+        Write-Host "Updating knowledge sources..."
+
+        $knowledgeSources = Get-Content "$($PackageRoot)/artifacts/knowledgeSources.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        foreach ($knowledgeSource in $knowledgeSources) {
+
+            Write-Host "Updating knowledge source: $($knowledgeSource.name)"
+            $knowledgeSourceResult = Merge-KnowledgeSource -KnowledgeSource $knowledgeSource
+            Write-Host "Knowledge source updated: $($knowledgeSourceResult)" -ForegroundColor Green
+        }
+    }
+
     if (Test-Path -Path "$($PackageRoot)/artifacts/appConfigurations.json") {
 
         Write-Host "Updating app configurations..."
