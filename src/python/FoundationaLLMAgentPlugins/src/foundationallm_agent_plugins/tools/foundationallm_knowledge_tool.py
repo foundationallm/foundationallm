@@ -100,7 +100,6 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                 'user_prompt': original_prompt,
                 'vector_store_query': self.vector_store_query,
                 'knowledge_graph_query': self.knowledge_graph_query,
-                'vector_store_id': conversation_id if self.use_conversation_as_vector_store else None,
                 'knowledge_unit_vector_store_filters': self.knowledge_unit_vector_store_filters,
                 "format_response": True
             }
