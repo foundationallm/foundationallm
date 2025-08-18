@@ -39,6 +39,7 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Plugin_Storage);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataSource_Storage);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Context_Storage);
 
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_DataSources);
 
@@ -105,6 +106,7 @@ builder.AddLocalDataPipelineServiceClient(); // Required by the DataPipeline res
 builder.AddDataPipelineResourceProvider();
 builder.AddDataSourceResourceProvider();
 builder.AddPromptResourceProvider();
+builder.AddContextResourceProvider(proxyMode: true);
 
 
 // Add API Key Authorization

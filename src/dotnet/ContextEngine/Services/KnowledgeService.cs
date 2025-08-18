@@ -342,7 +342,7 @@ namespace FoundationaLLM.Context.Services
                 SearchService = await GetAzureAISearchService(
                         vectorDatabase),
                 EmbeddingClient = await GetEmbeddingClient(
-                        _settings.Embedding.ModelDeployments[knowledgeUnit.EmbeddingModel]),
+                        _settings.Embedding.ModelDeployments[vectorDatabase.EmbeddingModel]),
             };
 
             if (knowledgeUnit.HasKnowledgeGraph)

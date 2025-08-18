@@ -41,10 +41,9 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
         private const int GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS = 5;
 
-        private readonly IResourceProviderService _promptResourceProvider =
-            serviceProvider.GetRequiredService<IEnumerable<IResourceProviderService>>()
-                .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Prompt)
-            ?? throw new PluginException($"The resource provider {ResourceProviderNames.FoundationaLLM_Prompt} is not available in the dependency injection container.");
+        private readonly IResourceProviderService? _promptResourceProvider = serviceProvider
+            .GetServices<IResourceProviderService>()
+            .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Prompt);
 
         /// <inheritdoc/>
         public override async Task<PluginResult> ProcessWorkItem(
@@ -53,6 +52,9 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             DataPipelineRunWorkItem dataPipelineRunWorkItem)
         {
             #region Load parameters
+
+            if (_promptResourceProvider is null)
+                throw new ResourceProviderException($"The resource provider {ResourceProviderNames.FoundationaLLM_Prompt} was not loaded");
 
             if (!_pluginParameters.TryGetValue(
                 PluginParameterNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE_ENTITYEXTRACTIONPROMPTOBJECTID,

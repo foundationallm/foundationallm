@@ -17,10 +17,6 @@ namespace FoundationaLLM.Context.Validation
         {
             Include(new ResourceBaseValidator());
 
-            RuleFor(vd => vd.EmbeddingModel)
-                .NotEmpty()
-                .WithMessage("The embedding model is required.");
-
             RuleFor(vd => vd.VectorDatabaseObjectId)
                 .NotEmpty()
                 .Must(ValidationUtils.ValidateObjectId)
