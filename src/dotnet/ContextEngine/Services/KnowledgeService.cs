@@ -66,6 +66,50 @@ namespace FoundationaLLM.Context.Services
         });
         private readonly SemaphoreSlim _cacheLock = new(1, 1);
 
+        /// <inheritdoc/>
+        public async Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
+            string instanceId,
+            string knowledgeUnitId,
+            UnifiedUserIdentity userIdentity)
+        {
+            var knowledgeUnit = await _contextResourceProvider.GetResourceAsync<KnowledgeUnit>(
+                instanceId,
+                knowledgeUnitId,
+                userIdentity);
+            return new ContextServiceResponse<ResourceProviderGetResult<KnowledgeUnit>>
+            {
+                Success = true,
+                Result = new ResourceProviderGetResult<KnowledgeUnit>
+                {
+                    Resource = knowledgeUnit,
+                    Actions = [],
+                    Roles = []
+                }
+            };
+        }
+
+        /// <inheritdoc/>
+        public async Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSource(
+            string instanceId,
+            string knowledgeSourceId,
+            UnifiedUserIdentity userIdentity)
+        {
+            var knowledgeSource = await _contextResourceProvider.GetResourceAsync<KnowledgeSource>(
+                instanceId,
+                knowledgeSourceId,
+                userIdentity);
+            return new ContextServiceResponse<ResourceProviderGetResult<KnowledgeSource>>
+            {
+                Success = true,
+                Result = new ResourceProviderGetResult<KnowledgeSource>
+                {
+                    Resource = knowledgeSource,
+                    Actions = [],
+                    Roles = []
+                }
+            };
+        }
+
         public async Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeUnits(
             string instanceId,
             ContextKnowledgeResourceListRequest listRequest,
