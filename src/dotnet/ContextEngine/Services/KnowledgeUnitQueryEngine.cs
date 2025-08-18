@@ -67,7 +67,7 @@ namespace FoundationaLLM.Context.Services
                     queryRequest.UserPrompt,
                     new EmbeddingGenerationOptions
                     {
-                        Dimensions = _knowledgeUnit.EmbeddingDimensions
+                        Dimensions = _vectorDatabase.EmbeddingDimensions
                     });
 
                 var queryResponse = new ContextKnowledgeSourceQueryResponse

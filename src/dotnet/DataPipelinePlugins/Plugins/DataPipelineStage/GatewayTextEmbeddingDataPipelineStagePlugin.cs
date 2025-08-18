@@ -2,12 +2,15 @@
 using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.DataPipelines;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Plugins;
+using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
+using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Services.Plugins;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +35,13 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
         protected override string Name => PluginNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE;
 
         private const int GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS = 1;
+
+        private readonly IResourceProviderService? _contextResourceProvider = serviceProvider
+            .GetServices<IResourceProviderService>()
+            .SingleOrDefault(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Context);
+        private readonly IResourceProviderService? _vectorResourceProvider = serviceProvider
+            .GetServices<IResourceProviderService>()
+            .SingleOrDefault(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Vector);
 
         /// <inheritdoc/>
         public override async Task<PluginResult> ProcessWorkItem(
@@ -63,17 +73,25 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 return new PluginResult(true, false);
             }
 
-            if (!_pluginParameters.TryGetValue(
-                PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_EMBEDDINGMODEL,
-                out var embeddingModel))
-                throw new PluginException(
-                    $"The plugin {Name} requires the {PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_EMBEDDINGMODEL} parameter.");
+            if (_contextResourceProvider is null)
+                throw new ResourceProviderException($"The resource provider {ResourceProviderNames.FoundationaLLM_Context} was not loaded.");
+
+            if (_vectorResourceProvider is null)
+                throw new ResourceProviderException($"The resource provider {ResourceProviderNames.FoundationaLLM_Vector} was not loaded.");
 
             if (!_pluginParameters.TryGetValue(
-                PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS,
-                out var embeddingDimensions))
+                PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
+                out var knowledgeUnitObjectId))
                 throw new PluginException(
-                    $"The plugin {Name} requires the {PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS} parameter.");
+                    $"The plugin {Name} requires the {PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID} parameter.");
+
+            var knowledgeUnit = await _contextResourceProvider.GetResourceAsync<KnowledgeUnit>(
+                knowledgeUnitObjectId.ToString()!,
+                ServiceContext.ServiceIdentity!);
+
+            var vectorDatabase = await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
+                knowledgeUnit.VectorDatabaseObjectId,
+                ServiceContext.ServiceIdentity!);
 
             using var scope = _serviceProvider.CreateScope();
 
@@ -88,8 +106,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             var textEmbeddingRequest = new TextEmbeddingRequest
             {
-                EmbeddingModelName = embeddingModel.ToString()!,
-                EmbeddingModelDimensions = (int)embeddingDimensions,
+                EmbeddingModelName = vectorDatabase.EmbeddingModel,
+                EmbeddingModelDimensions = vectorDatabase.EmbeddingDimensions,
                 Prioritized = false,
                 TextChunks = [.. changedContentItemParts
                     .Select(part => new TextChunk

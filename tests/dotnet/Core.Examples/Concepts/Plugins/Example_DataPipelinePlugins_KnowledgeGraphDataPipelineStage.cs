@@ -92,24 +92,8 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                         0.7
                     },
                     {
-                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONEMBEDDINGMODEL,
-                        "text-embedding-3-large"
-                    },
-                    {
-                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONEMBEDDINGDIMENSIONS,
-                        2048
-                    },
-                    {
-                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGESOURCEID,
-                        "ProcessSPOFiles"
-                    },
-                    {
-                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
-                        "instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vector/vectorDatabases/SPO-Test"
-                    },
-                    {
-                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORSTOREID,
-                        "Test-Store-01"
+                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
+                        "instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeUnits/ProcessSPOFiles-KG-01"
                     }
                 }
             }
