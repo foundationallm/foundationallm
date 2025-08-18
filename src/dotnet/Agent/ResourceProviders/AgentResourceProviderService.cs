@@ -1525,15 +1525,17 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 ?? throw new OrchestrationException(
                     $"The agent {agent.Name} does not have the required knowledge search settings set.");
             var fileResourcePath = ResourcePath.GetResourcePath(fileObjectId);
+            var fileId =
+                $"/instances/{instanceId}/providers/FoundationaLLM.ContextAPI/files/{fileResourcePath.ResourceId!}";
 
             var newDataPipelineRun = DataPipelineRun.Create(
                 knowledgeSearchSettings.FileUploadDataPipelineObjectId,
                 DataPipelineTriggerNames.DefaultManualTrigger,
                 new()
                 {
-                    { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId, fileResourcePath.ResourceId!},
-                    { DataPipelineTriggerParameterNames.StageEmbedKnowledgeUnitObjectId, knowledgeSearchSettings.ConversationKnowledgeUnitObjectId },
-                    { DataPipelineTriggerParameterNames.StageIndexKnowledgeUnitObjectId, knowledgeSearchSettings.ConversationKnowledgeUnitObjectId },
+                    { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId, fileId},
+                    { DataPipelineTriggerParameterNames.StageEmbedKnowledgeUnitObjectId, knowledgeSearchSettings.AgentPrivateStoreKnowledgeUnitObjectId },
+                    { DataPipelineTriggerParameterNames.StageIndexKnowledgeUnitObjectId, knowledgeSearchSettings.AgentPrivateStoreKnowledgeUnitObjectId },
                     // By convention, the vector store id for the agent's private files is the agent's name.
                     { DataPipelineTriggerParameterNames.StageIndexVectorStoreId, agent.Name }
                 },
