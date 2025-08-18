@@ -31,7 +31,7 @@ namespace FoundationaLLM.Context.API.Controllers
         /// <param name="conversationId">The conversation identifier.</param>
         /// <returns></returns>
         [HttpPost("conversations/{conversationId}/files")]
-        public async Task<IActionResult> UploadFile(
+        public async Task<IActionResult> UploadFileForConversation(
             string instanceId,
             string conversationId)
         {
@@ -48,7 +48,7 @@ namespace FoundationaLLM.Context.API.Controllers
             using var memoryStream = new MemoryStream();
             await stream.CopyToAsync(memoryStream);
 
-            var fileRecord = await _fileService.CreateFile(
+            var fileRecord = await _fileService.CreateFileForConversation(
                 instanceId,
                 ContextRecordOrigins.UserUpload,
                 conversationId,
@@ -59,6 +59,43 @@ namespace FoundationaLLM.Context.API.Controllers
 
             return new OkObjectResult(fileRecord);
         }
+
+        /// <summary>
+        /// Uploads a file to an agent.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="agentName">The name of the agent.</param>
+        /// <returns></returns>
+        [HttpPost("agents/{agentName}/files")]
+        public async Task<IActionResult> UploadFileForAgent(
+            string instanceId,
+            string agentName)
+        {
+            var formFiles = HttpContext.Request.HasFormContentType ? HttpContext.Request.Form?.Files : null;
+            IFormFile? formFile = (formFiles != null && formFiles.Count > 0) ? formFiles[0] : null;
+
+            if (formFile == null || formFile.Length == 0)
+                return BadRequest("File not selected.");
+
+            var fileName = formFile.FileName;
+            var contentType = formFile.ContentType;
+
+            await using var stream = formFile.OpenReadStream();
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+
+            var fileRecord = await _fileService.CreateFileForAgent(
+                instanceId,
+                ContextRecordOrigins.UserUpload,
+                agentName,
+                fileName,
+                contentType,
+                memoryStream,
+                _callContext.CurrentUserIdentity!);
+
+            return new OkObjectResult(fileRecord);
+        }
+
 
         /// <summary>
         /// Downloads a file.

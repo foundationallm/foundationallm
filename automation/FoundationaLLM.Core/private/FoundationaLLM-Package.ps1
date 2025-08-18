@@ -47,6 +47,23 @@ function Deploy-FoundationaLLMPackage {
 
     Write-Host "Deploying package from $($PackageRoot)" -ForegroundColor Blue
 
+    if (Test-Path -Path "$($PackageRoot)/artifacts/toolTypes.json") {
+
+        Write-Host "Updating tool types..."
+
+        $toolTypes = Get-Content "$($PackageRoot)/artifacts/toolTypes.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        foreach ($toolType in $toolTypes) {
+
+            Write-Host "Updating tool type: $($toolType.name)"
+            $toolTypeResult = Merge-ToolType `
+                -ToolType $toolType
+            Write-Host "Tool type updated: $($toolTypeResult)" -ForegroundColor Green
+        }
+    }
+
     if (Test-Path -Path "$($PackageRoot)/artifacts/prompts.json") {
 
         Write-Host "Creating prompts..."

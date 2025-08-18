@@ -226,7 +226,7 @@ namespace FoundationaLLM.Context.Services
                         newFileStoreItem.Name,
                         newFileStoreItem.ParentPath);
 
-                    var fileRecord = await _fileService.CreateFile(
+                    var fileRecord = await _fileService.CreateFileForConversation(
                     codeSessionRecord.InstanceId,
                     ContextRecordOrigins.CodeSession,
                     codeSessionRecord.ConversationId,
