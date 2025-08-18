@@ -127,9 +127,37 @@ namespace FoundationaLLM.Common.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<ContextServiceResponse<ContextFileRecord>> CreateFile(
+        public async Task<ContextServiceResponse<ContextFileRecord>> CreateFileForConversation(
             string instanceId,
             string conversationId,
+            string fileName,
+            string fileContentType,
+            Stream fileContent) =>
+            await CreateFile(
+                instanceId,
+                $"conversations/{conversationId}",
+                fileName,
+                fileContentType,
+                fileContent);
+
+        /// <inheritdoc/>
+        public async Task<ContextServiceResponse<ContextFileRecord>> CreateFileForAgent(
+            string instanceId,
+            string agentName,
+            string fileName,
+            string fileContentType,
+            Stream fileContent) =>
+            await CreateFile(
+                instanceId,
+                $"agents/{agentName}",
+                fileName,
+                fileContentType,
+                fileContent);
+
+        /// <inheritdoc/>
+        public async Task<ContextServiceResponse<ContextFileRecord>> CreateFile(
+            string instanceId,
+            string resourceRoute,
             string fileName,
             string fileContentType,
             Stream fileContent)
@@ -151,7 +179,7 @@ namespace FoundationaLLM.Common.Clients
                 multipartFormDataContent.Add(streamContent);
 
                 var responseMessage = await client.PostAsync(
-                    $"instances/{instanceId}/conversations/{conversationId}/files",
+                    $"instances/{instanceId}/{resourceRoute}/files",
                     multipartFormDataContent);
 
                 if (responseMessage.IsSuccessStatusCode)

@@ -19,5 +19,15 @@
         /// Name of the built-in tool for DALL-E image generation.
         /// </summary>
         public const string DALLEImageGenerationTool = "DALLEImageGeneration";
+
+        /// <summary>
+        /// The name of the FoundationaLLM code interpreter tool.
+        /// </summary>
+        public const string FoundationaLLMCodeInterpreterTool = "Code";
+
+        /// <summary>
+        /// The name of the FoundationaLLM knowledge search tool.
+        /// </summary>
+        public const string FoundationaLLMKnowledgeSearchTool = "Knowledge";
     }
 }
