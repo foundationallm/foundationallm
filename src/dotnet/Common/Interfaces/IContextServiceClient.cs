@@ -21,9 +21,25 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="fileContentType">The content type of the file to be created.</param>
         /// <param name="fileContent">The binary content of the file.</param>
         /// <returns>A <see cref="ContextServiceResponse{T}"/> instance where <c>T</c> is of type <see cref="ContextFileRecord"/>.</returns>
-        Task<ContextServiceResponse<ContextFileRecord>> CreateFile(
+        Task<ContextServiceResponse<ContextFileRecord>> CreateFileForConversation(
             string instanceId,
             string conversationId,
+            string fileName,
+            string fileContentType,
+            Stream fileContent);
+
+        /// <summary>
+        /// Calls the Context API service to create a file.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="agentName">The name of the agent.</param>
+        /// <param name="fileName">The name of the file to be created.</param>
+        /// <param name="fileContentType">The content type of the file to be created.</param>
+        /// <param name="fileContent">The binary content of the file.</param>
+        /// <returns>A <see cref="ContextServiceResponse{T}"/> instance where <c>T</c> is of type <see cref="ContextFileRecord"/>.</returns>
+        Task<ContextServiceResponse<ContextFileRecord>> CreateFileForAgent(
+            string instanceId,
+            string agentName,
             string fileName,
             string fileContentType,
             Stream fileContent);

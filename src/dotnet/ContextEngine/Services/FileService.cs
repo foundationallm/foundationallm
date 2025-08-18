@@ -51,7 +51,7 @@ namespace FoundationaLLM.Context.Services
         private readonly ILogger<FileService> _logger = logger;
 
         /// <inheritdoc/>
-        public async Task<ContextFileRecord> CreateFile(
+        public async Task<ContextFileRecord> CreateFileForConversation(
             string instanceId,
             string origin,
             string conversationId,
@@ -65,6 +65,45 @@ namespace FoundationaLLM.Context.Services
                 instanceId,
                 origin,
                 conversationId,
+                null,
+                fileName,
+                contentType,
+                content.Length,
+                GetFileProcessingType(
+                    origin,
+                    Path.GetExtension(fileName).Replace(".", string.Empty).ToLower(),
+                    content.Length),
+                userIdentity,
+                metadata);
+
+            await _cosmosDBService.UpsertFileRecord(fileRecord);
+
+            await _storageService.WriteFileAsync(
+                instanceId,
+                fileRecord.FilePath,
+                content,
+                contentType,
+                CancellationToken.None);
+
+            return fileRecord;
+        }
+
+        /// <inheritdoc/>
+        public async Task<ContextFileRecord> CreateFileForAgent(
+            string instanceId,
+            string origin,
+            string agentName,
+            string fileName,
+            string contentType,
+            Stream content,
+            UnifiedUserIdentity userIdentity,
+            Dictionary<string, string>? metadata)
+        {
+            var fileRecord = new ContextFileRecord(
+                instanceId,
+                origin,
+                null,
+                agentName,
                 fileName,
                 contentType,
                 content.Length,

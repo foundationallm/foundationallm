@@ -1,11 +1,13 @@
 using FluentValidation;
 using FoundationaLLM.Agent.Models.Resources;
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.AzureAI;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Constants.DataPipelines;
 using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -15,14 +17,17 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
+using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureAI;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
+using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Services.ResourceProviders;
@@ -30,7 +35,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Graph.Models;
+using Microsoft.Graph.Models.CallRecords;
 using System.Data;
 using System.Text;
 using System.Text.Json;
@@ -867,40 +872,80 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 throw new ResourceProviderException("The attached file is not valid.",
                     StatusCodes.Status400BadRequest);
 
-            var uniqueId = $"af-{Guid.NewGuid()}";
-            var extension = GetFileExtension(formFile.FileName);
-            var fullName = $"{uniqueId}{extension}";
-            var filePath = $"/{_name}/{_instanceSettings.Id}/{resourcePath.MainResourceId}/private-file-store/{fullName}";
-            var objectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!, AgentResourceTypeNames.AgentFiles, uniqueId);
-
-            var agentPrivateFile = new AgentFileReference
+            AgentFileReference agentPrivateFile = null!;
+            var agent = await LoadResource<AgentBase>(resourcePath.MainResourceId!);
+            if (agent!.HasExternalWorkflow()
+                && agent.Workflow!.ClassName == AgentWorkflowNames.FoundationaLLMFunctionCallingWorkflow)
             {
-                Id = uniqueId,
-                Name = uniqueId,
-                ObjectId = objectId,
-                OriginalFilename = formFile.FileName,
-                ContentType = formFile.ContentType!,
-                Type = AgentTypes.AgentFile,
-                Filename = filePath,
-                Size = formFile.BinaryContent.Length,
-                UPN = userIdentity.UPN ?? string.Empty,
-                InstanceId = _instanceSettings.Id,
-                AgentName = resourcePath.MainResourceId!,
-                Deleted = false,
-            };
+                // Use the Context API to store the file.
 
-            await _storageService.WriteFileAsync(
-                _storageContainerName,
-                agentPrivateFile.Filename,
-                new MemoryStream(formFile.BinaryContent.ToArray()),
-                agentPrivateFile.ContentType ?? default,
-                default);
+                var contextServiceClient = GetContextServiceClient(userIdentity);
+                var contextServiceResult = await contextServiceClient.CreateFileForAgent(
+                    resourcePath.InstanceId!,
+                    agent.Name,
+                    formFile.FileName,
+                    formFile.ContentType!,
+                    new MemoryStream(formFile.BinaryContent.ToArray()));
+
+                if (!contextServiceResult.Success)
+                    throw new ResourceProviderException(
+                        $"Failed to add the file {formFile.FileName} to the FoundationaLLM file store.",
+                        StatusCodes.Status500InternalServerError);
+                var objectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!, AgentResourceTypeNames.AgentFiles, contextServiceResult.Result!.Id);
+
+                agentPrivateFile = new AgentFileReference
+                {
+                    Id = contextServiceResult.Result!.Id,
+                    Name = contextServiceResult.Result.Id,
+                    ObjectId =  objectId,
+                    OriginalFilename = formFile.FileName,
+                    ContentType = formFile.ContentType!,
+                    Type = AgentTypes.AgentFile,
+                    Filename = contextServiceResult.Result.FilePath,
+                    Size = formFile.BinaryContent.Length,
+                    UPN = userIdentity.UPN ?? string.Empty,
+                    InstanceId = resourcePath.InstanceId!,
+                    AgentName = resourcePath.MainResourceId!,
+                    Deleted = false,
+                };
+            }
+            else
+            {
+                var uniqueId = $"af-{Guid.NewGuid()}";
+                var extension = GetFileExtension(formFile.FileName);
+                var fullName = $"{uniqueId}{extension}";
+                var filePath = $"/{_name}/{resourcePath.InstanceId}/{resourcePath.MainResourceId}/private-file-store/{fullName}";
+                var objectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!, AgentResourceTypeNames.AgentFiles, uniqueId);
+
+                agentPrivateFile = new AgentFileReference
+                {
+                    Id = uniqueId,
+                    Name = uniqueId,
+                    ObjectId = objectId,
+                    OriginalFilename = formFile.FileName,
+                    ContentType = formFile.ContentType!,
+                    Type = AgentTypes.AgentFile,
+                    Filename = filePath,
+                    Size = formFile.BinaryContent.Length,
+                    UPN = userIdentity.UPN ?? string.Empty,
+                    InstanceId = resourcePath.InstanceId!,
+                    AgentName = resourcePath.MainResourceId!,
+                    Deleted = false
+                };
+
+                await _storageService.WriteFileAsync(
+                    _storageContainerName,
+                    agentPrivateFile.Filename,
+                    new MemoryStream(formFile.BinaryContent.ToArray()),
+                    agentPrivateFile.ContentType ?? default,
+                    default);
+            }
 
             await _cosmosDBService.CreateAgentFile(agentPrivateFile);
 
             return new ResourceProviderUpsertResult<AgentFile>
             {
-                ObjectId = agentPrivateFile!.ObjectId,
+                ObjectId = agentPrivateFile!.ObjectId!,
                 ResourceExists = false,
                 Resource = new AgentFile
                 {
@@ -1208,13 +1253,14 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     StatusCodes.Status400BadRequest);
 
             var toolResource = await GetResourceAsync<Tool>(toolObjectId, userIdentity);
+            var agentObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!);
+            AgentBase agent = null!;
 
             switch (toolResource.Name)
             {
                 case AgentToolNames.OpenAIAssistantsFileSearchTool:
                     var gatewayClient = await GetGatewayServiceClient(userIdentity);
-                    var agentObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!);
-                    var agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
+                    agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
                     (var openAIAssistantId, var openAIAssistantVectorStoreId, var workflow, var agentAIModel, var agentPrompt, var agentAIModelAPIEndpoint)
                         = await ResolveAgentProperties(agent, userIdentity);
@@ -1262,11 +1308,10 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
                 case AgentToolNames.OpenAIAssistantsCodeInterpreterTool:
                     var gatewayClientCI = await GetGatewayServiceClient(userIdentity);
-                    var agentObjectIdCI = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!);
-                    var agentCI = await GetResourceAsync<AgentBase>(agentObjectIdCI, userIdentity);
+                    agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
                     (var openAIAssistantIdCI, var openAIAssistantVectorStoreIdCI, var workflowCI, var agentAIModelCI, var agentPromptCI, var agentAIModelAPIEndpointCI)
-                        = await ResolveAgentProperties(agentCI, userIdentity);
+                        = await ResolveAgentProperties(agent, userIdentity);
 
                     // check reference for the Azure OpenAI File ID
                     if (string.IsNullOrWhiteSpace(fileToolAssociation.OpenAIFileId))
@@ -1309,9 +1354,31 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
                     break;
 
+                case AgentToolNames.FoundationaLLMKnowledgeSearchTool:
+                    agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
+
+                    await AddFileToKnowledgeUnit(
+                        _instanceSettings.Id,
+                        fileObjectId,
+                        agent,
+                        userIdentity);
+
+                    // Add the tool association to the agent file reference
+                    fileToolAssociation.AssociatedResourceObjectIds!.Add(toolObjectId, new ResourceObjectIdProperties
+                    {
+                        ObjectId = toolObjectId,
+                        Properties = new Dictionary<string, object>
+                            {
+                                { ResourceObjectIdPropertyNames.ObjectRole, ResourceObjectIdPropertyValues.ToolAssociation }
+                            }
+                    });
+
+                    break;
+
                 default:
-                    throw new ResourceProviderException($"The tool {toolResource.Name} is not supported for file association by the {_name} resource provider.",
-                                                StatusCodes.Status400BadRequest);
+                    throw new ResourceProviderException(
+                        $"The tool {toolResource.Name} is not supported for file association by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest);
             };
         }
 
@@ -1329,12 +1396,14 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     StatusCodes.Status400BadRequest);
 
             var toolResource = await GetResourceAsync<Tool>(toolObjectId, userIdentity);
+            var agentObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!);
+            AgentBase agent = default!;
+
             switch (toolResource.Name)
             {
                 case AgentToolNames.OpenAIAssistantsFileSearchTool:
                     var gatewayClient = await GetGatewayServiceClient(userIdentity);
-                    var agentObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!);
-                    var agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
+                    agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
                     (var openAIAssistantId, var openAIAssistantVectorStoreId, var workflow, var agentAIModel, var agentPrompt, var agentAIModelAPIEndpoint)
                         = await ResolveAgentProperties(agent, userIdentity);
@@ -1354,11 +1423,10 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
                 case AgentToolNames.OpenAIAssistantsCodeInterpreterTool:
                     var gatewayClientCI = await GetGatewayServiceClient(userIdentity);
-                    var agentObjectIdCI = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!);
-                    var agentCI = await GetResourceAsync<AgentBase>(agentObjectIdCI, userIdentity);
+                    agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
                     (var openAIAssistantIdCI, var openAIAssistantVectorStoreIdCI, var workflowCI, var agentAIModelCI, var agentPromptCI, var agentAIModelAPIEndpointCI)
-                        = await ResolveAgentProperties(agentCI, userIdentity);
+                        = await ResolveAgentProperties(agent, userIdentity);
 
                     _ = await RemoveFileFromAssistantsCodeInterpreter(
                             _instanceSettings.Id,
@@ -1370,6 +1438,11 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
                     // Remove the tool association from the agent file reference
                     fileToolAssociation.AssociatedResourceObjectIds!.Remove(toolObjectId);
+
+                    break;
+
+                case AgentToolNames.FoundationaLLMCodeInterpreterTool:
+                    agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
                     break;
 
@@ -1435,6 +1508,52 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     .GetResourceAsync<AzureAIProject>(workflow.AIProjectObjectId!, userIdentity);            
 
             return (agentId!, vectorStoreId!, workflow!, agentAIModel, agentPrompt, project);
+        }
+
+        private async Task AddFileToKnowledgeUnit(
+            string instanceId,
+            string fileObjectId,
+            AgentBase agent,
+            UnifiedUserIdentity userIdentity)
+        {
+            var dataPipelineResourceProvider =
+                GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_DataPipeline);
+            var knowledgeSearchSettings = agent!.Tools
+                .Select(t => t.GetKnowledgeSearchSettings())
+                .Where(s => s != null)
+                .SingleOrDefault()
+                ?? throw new OrchestrationException(
+                    $"The agent {agent.Name} does not have the required knowledge search settings set.");
+            var fileResourcePath = ResourcePath.GetResourcePath(fileObjectId);
+            var fileId =
+                $"/instances/{instanceId}/providers/FoundationaLLM.ContextAPI/files/{fileResourcePath.ResourceId!}";
+
+            var newDataPipelineRun = DataPipelineRun.Create(
+                knowledgeSearchSettings.FileUploadDataPipelineObjectId,
+                DataPipelineTriggerNames.DefaultManualTrigger,
+                new()
+                {
+                    { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId, fileId},
+                    { DataPipelineTriggerParameterNames.StageEmbedKnowledgeUnitObjectId, knowledgeSearchSettings.AgentPrivateStoreKnowledgeUnitObjectId },
+                    { DataPipelineTriggerParameterNames.StageIndexKnowledgeUnitObjectId, knowledgeSearchSettings.AgentPrivateStoreKnowledgeUnitObjectId },
+                    // By convention, the vector store id for the agent's private files is the agent's name.
+                    { DataPipelineTriggerParameterNames.StageIndexVectorStoreId, agent.Name }
+                },
+                userIdentity.UPN!,
+                DataPipelineRunProcessors.Frontend);
+
+            var success = await PollingResourceRunner<DataPipelineRun>.Start(
+                instanceId,
+                dataPipelineResourceProvider,
+                newDataPipelineRun,
+                TimeSpan.FromSeconds(1),
+                TimeSpan.FromSeconds(300),
+                _logger,
+                ServiceContext.ServiceIdentity!);
+
+            if (!success)
+                throw new ResourceProviderException(
+                    $"The execution of the data pipeline for file {fileObjectId} failed.");
         }
 
         /// <summary>
@@ -1583,6 +1702,17 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
         private static string GetFileExtension(string fileName) =>
             Path.GetExtension(fileName);
+
+        #endregion
+
+        #region Utils
+
+        private IContextServiceClient GetContextServiceClient(
+            UnifiedUserIdentity userIdentity) =>
+            new ContextServiceClient(
+                new OrchestrationContext { CurrentUserIdentity = userIdentity },
+                _serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
+                _serviceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
 
         #endregion
     }

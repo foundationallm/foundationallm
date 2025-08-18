@@ -15,3 +15,14 @@ function Merge-Agent {
         -RelativeUri "providers/FoundationaLLM.Agent/agents/$($Agent.name)" `
         -Body $Agent
 }
+
+function Merge-ToolType {
+    param (
+        [hashtable]$ToolType
+    )
+
+    return Invoke-ManagementAPI `
+        -Method POST `
+        -RelativeUri "providers/FoundationaLLM.Agent/tools/$($ToolType.name)" `
+        -Body $ToolType
+}
