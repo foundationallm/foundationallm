@@ -392,6 +392,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
         runnable_config = RunnableConfig(
             {
+                'agent_name': objects['Agent.AgentName'],
                 RunnableConfigKeys.ORIGINAL_USER_PROMPT: user_prompt,
                 RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE: user_prompt_rewrite,
                 RunnableConfigKeys.CONVERSATION_ID: conversation_id,
