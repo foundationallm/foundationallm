@@ -64,6 +64,7 @@ namespace FoundationaLLM.Orchestration.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataPipeline_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vector_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Context_Storage);
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
@@ -151,6 +152,7 @@ namespace FoundationaLLM.Orchestration.API
             builder.AddRemoteDataPipelineServiceClient(); // Required by the DataPipeline resource provider.
             builder.AddDataPipelineResourceProvider();
             builder.AddVectorResourceProvider();
+            builder.AddContextResourceProvider(proxyMode: true);
 
             // Register the downstream services and HTTP clients.
             builder.AddHttpClientFactoryService();
