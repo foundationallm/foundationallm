@@ -107,13 +107,17 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
             TryGetResourceObjectIdsWithRole(ResourceObjectIdPropertyValues.FileUploadDataPipeline, out var dataPipelineResourceObjectIds)
             && dataPipelineResourceObjectIds != null
             && dataPipelineResourceObjectIds.Count == 1
-            && TryGetResourceObjectIdsWithRole(ResourceObjectIdPropertyValues.VectorDatabase, out var vectorDatabaseObjectIds)
-            && vectorDatabaseObjectIds != null
-            && vectorDatabaseObjectIds.Count == 1
+            && TryGetResourceObjectIdsWithRole(ResourceObjectIdPropertyValues.ConversationKnowledgeUnit, out var conversationKnowledgeUnitObjectIds)
+            && conversationKnowledgeUnitObjectIds != null
+            && conversationKnowledgeUnitObjectIds.Count == 1
+            && TryGetResourceObjectIdsWithRole(ResourceObjectIdPropertyValues.AgentPrivateStoreKnowledgeUnit, out var agentPrivateStoreKnowledgeUnitObjectIds)
+            && agentPrivateStoreKnowledgeUnitObjectIds != null
+            && agentPrivateStoreKnowledgeUnitObjectIds.Count == 1
             ? new KnowledgeSearchSettings
             {
                 FileUploadDataPipelineObjectId = ResourceObjectIds[dataPipelineResourceObjectIds[0]].ObjectId,
-                FileUploadVectorDatabaseObjectId = ResourceObjectIds[vectorDatabaseObjectIds[0]].ObjectId
+                ConversationKnowledgeUnitObjectId = ResourceObjectIds[conversationKnowledgeUnitObjectIds[0]].ObjectId,
+                AgentPrivateStoreKnowledgeUnitObjectId = ResourceObjectIds[agentPrivateStoreKnowledgeUnitObjectIds[0]].ObjectId
             }
             : null;
     }

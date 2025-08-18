@@ -11,9 +11,15 @@
         public const string DataSourceContextFileContextFileObjectId = "DataSource.ContextFile.ContextFileObjectId";
 
         /// <summary>
-        /// The vector store template object identifier for the indexing stage.
+        /// The knowledge unit object identifier for the embed stage.
         /// </summary>
-        public const string StageIndexVectorDatabaseObjectId = "Stage.Index.VectorDatabaseObjectId";
+        public const string StageEmbedKnowledgeUnitObjectId = "Stage.Embed.KnowledgeUnitObjectId";
+
+
+        /// <summary>
+        /// The knowledge unit object identifier for the index stage.
+        /// </summary>
+        public const string StageIndexKnowledgeUnitObjectId = "Stage.Index.KnowledgeUnitObjectId";
 
         /// <summary>
         /// The vector store identifier for the indexing stage.

@@ -46,21 +46,36 @@ namespace FoundationaLLM.Agent.Validation.Metadata
                         if (toolsWithDataPipeline.Count > 1)
                             context.AddFailure($"At most one tool from the {AgentToolCategories.KnowledgeSearch} category is allowed to have a file upload data pipeline in its configuration.");
 
-                        var toolsWithVectorDatabase = tools
-                            .Where(t => t.TryGetResourceObjectIdsWithRole(ResourceObjectIdPropertyValues.VectorDatabase, out var result2))
+                        var toolsWithConversationKnowledgeUnit = tools
+                            .Where(t => t.TryGetResourceObjectIdsWithRole(ResourceObjectIdPropertyValues.ConversationKnowledgeUnit, out var result2))
                             .Select(t => t.Name)
                             .ToList();
 
-                        if (toolsWithVectorDatabase.Count > 1)
-                            context.AddFailure($"At most one tool from the {AgentToolCategories.KnowledgeSearch} category is allowed to have a vector database in its configuration.");
+                        if (toolsWithConversationKnowledgeUnit.Count > 1)
+                            context.AddFailure($"At most one tool from the {AgentToolCategories.KnowledgeSearch} category is allowed to have a conversation knowledge unit in its configuration.");
 
-                        if (toolsWithDataPipeline.Count == 1 && toolsWithVectorDatabase.Count == 1
-                            && toolsWithDataPipeline[0] != toolsWithVectorDatabase[0])
-                            context.AddFailure($"The file upload data pipeline and the vector database must be configured in the same tool.");
+                        var toolsWithAgentPrivateStoreKnowledgeUnit = tools
+                            .Where(t => t.TryGetResourceObjectIdsWithRole(ResourceObjectIdPropertyValues.AgentPrivateStoreKnowledgeUnit, out var result3))
+                            .Select(t => t.Name)
+                            .ToList();
 
-                        if ((toolsWithDataPipeline.Count == 1 && toolsWithVectorDatabase.Count == 0)
-                            || (toolsWithDataPipeline.Count == 0 && toolsWithVectorDatabase.Count == 1))
-                            context.AddFailure($"Both file upload data pipeline and vector database must be configured.");
+                        if (toolsWithAgentPrivateStoreKnowledgeUnit.Count > 1)
+                            context.AddFailure($"At most one tool from the {AgentToolCategories.KnowledgeSearch} category is allowed to have a conversation knowledge unit in its configuration.");
+
+                        if (toolsWithDataPipeline.Count == 1
+                            && toolsWithConversationKnowledgeUnit.Count == 1
+                            && toolsWithAgentPrivateStoreKnowledgeUnit.Count == 1)
+                        {
+                            List<string> toolNames = [
+                                toolsWithDataPipeline[0],
+                                toolsWithConversationKnowledgeUnit[0],
+                                toolsWithAgentPrivateStoreKnowledgeUnit[0]
+                            ];
+
+                            if (toolNames.Distinct().Count() > 1)
+                                context.AddFailure($"The file upload data pipeline, context knowledge unit and agent private store knowledge unit must all be configured for the same tool.");
+                        }
+                            context.AddFailure($"The file upload data pipeline, context knowledge unit and agent private store knowledge unit must all be configured.");
                     });
             });
         }
