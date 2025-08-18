@@ -24,9 +24,9 @@ function Merge-KnowledgeSource {
         [hashtable]$KnowledgeSource
     )
 
-    $KnowledgeSource['knowledge_unit_object_ids'] = $KnowledgeSource['knowledge_unit_object_ids'] | ForEach-Object {
+    $KnowledgeSource['knowledge_unit_object_ids'] = @($KnowledgeSource['knowledge_unit_object_ids'] | ForEach-Object {
         Get-ObjectId -Name $_['name'] -Type $_['type']
-    }
+    })
 
     return Invoke-ManagementAPI `
         -Method POST `
