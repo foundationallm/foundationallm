@@ -24,6 +24,8 @@ import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import InputSwitch from 'primevue/inputswitch';
 import Slider from 'primevue/slider';
+import Calendar from 'primevue/calendar';
+import ToggleButton from 'primevue/togglebutton';
 
 import { defineNuxtPlugin } from '#app';
 
@@ -56,4 +58,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.use(ConfirmationService);
 
 	nuxtApp.vueApp.use(ToastService);
+
+	nuxtApp.vueApp.component('Calendar', Calendar);
+	nuxtApp.vueApp.component('ToggleButton', ToggleButton);
 });
