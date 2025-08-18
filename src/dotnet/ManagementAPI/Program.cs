@@ -120,7 +120,7 @@ namespace FoundationaLLM.Management.API
             builder.AddAttachmentResourceProvider();
             builder.AddAIModelResourceProvider();
             builder.AddRemoteDataPipelineServiceClient(); // Required by the DataPipeline resource provider.
-            builder.AddDataPipelineResourceProvider(proxyMode: true);
+            builder.AddDataPipelineResourceProvider();
             builder.AddPluginResourceProvider();
             builder.AddVectorResourceProvider();
             builder.AddContextResourceProvider(proxyMode: true);
