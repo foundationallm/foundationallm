@@ -14,6 +14,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureAI;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
+using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
@@ -232,6 +233,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureAI} was not loaded.");
             if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Vector, out var vectorResourceProvider))
                 throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureAI} was not loaded.");
+            if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Context, out var contextResourceProvider))
+                throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Context} was not loaded.");
 
             var explodedObjectsManager = new ExplodedObjectsManager();
 
@@ -556,6 +559,18 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                         case ContextResourceTypeNames.KnowledgeSources:
                             // No need to send in the details of the knowledge source.
+                            break;
+
+                        case ContextResourceTypeNames.KnowledgeUnits:
+
+                            var knowledgeUnit = await contextResourceProvider.GetResourceAsync<KnowledgeUnit>(
+                                resourceObjectId.ObjectId,
+                                currentUserIdentity);
+
+                            explodedObjectsManager.TryAdd(
+                                resourceObjectId.ObjectId,
+                                knowledgeUnit);
+
                             break;
 
                         case DataSourceResourceTypeNames.DataSources:
