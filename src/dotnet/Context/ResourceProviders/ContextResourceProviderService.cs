@@ -1,5 +1,4 @@
-﻿using Azure.ResourceManager.Models;
-using FoundationaLLM.Common.Clients;
+﻿using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -14,16 +13,12 @@ using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
-using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.Context.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Graph.Models;
-using Microsoft.Graph.Models.Security;
-using OpenTelemetry.Resources;
 using Parquet.Serialization;
 using System.Text.Json;
 
@@ -186,14 +181,20 @@ namespace FoundationaLLM.Context.ResourceProviders
             resourcePath.MainResourceTypeName switch
             {
                 ContextResourceTypeNames.KnowledgeUnits =>
-                    (await LoadResource<KnowledgeUnit>(
-                        resourcePath.MainResourceId!)) as T
+                    (await GetKnowledgeUnit(
+                        resourcePath,
+                        authorizationResult,
+                        userIdentity,
+                        options)) as T
                     ?? throw new ResourceProviderException(
                         $"The knowledge unit {resourcePath.MainResourceId} could not be loaded.",
                         StatusCodes.Status404NotFound),
                 ContextResourceTypeNames.KnowledgeSources =>
-                    (await LoadResource<KnowledgeSource>(
-                        resourcePath.MainResourceId!)) as T
+                    (await GetKnowledgeSource(
+                        resourcePath,
+                        authorizationResult,
+                        userIdentity,
+                        options)) as T
                     ?? throw new ResourceProviderException(
                         $"The knowledge source {resourcePath.MainResourceId} could not be loaded.",
                         StatusCodes.Status404NotFound),
@@ -260,6 +261,52 @@ namespace FoundationaLLM.Context.ResourceProviders
         #endregion
 
         #region Resource management
+
+        private async Task<KnowledgeSource> GetKnowledgeSource(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options)
+        {
+            if (!_proxyMode)
+                return (await LoadResource<KnowledgeSource>(
+                    resourcePath.MainResourceId!))!;
+
+            var contextServiceClient = GetContextServiceClient(userIdentity);
+            var contextResponse = await contextServiceClient.GetKnowledgeSource(
+                resourcePath.InstanceId!,
+                resourcePath.MainResourceId!);
+
+            if (contextResponse.Success)
+                return contextResponse.Result!.Resource;
+            else
+                throw new ResourceProviderException(
+                    $"The following error occured when retrieving the knowledge source {resourcePath.MainResourceId!} from the {_name} resource provider: {contextResponse.ErrorMessage ?? "N/A"}.",
+                    StatusCodes.Status500InternalServerError);
+        }
+        private async Task<KnowledgeUnit> GetKnowledgeUnit(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options)
+        {
+            if (!_proxyMode)
+                return (await LoadResource<KnowledgeUnit>(
+                    resourcePath.MainResourceId!))!;
+
+            var contextServiceClient = GetContextServiceClient(userIdentity);
+            var contextResponse = await contextServiceClient.GetKnowledgeUnit(
+                resourcePath.InstanceId!,
+                resourcePath.MainResourceId!);
+
+            if (contextResponse.Success)
+                return contextResponse.Result!.Resource;
+            else
+                throw new ResourceProviderException(
+                    $"The following error occured when retrieving the knowledge unit {resourcePath.MainResourceId!} from the {_name} resource provider: {contextResponse.ErrorMessage ?? "N/A"}.",
+                    StatusCodes.Status500InternalServerError);
+        }
+
 
         private async Task<List<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSources(
             ResourcePath resourcePath,

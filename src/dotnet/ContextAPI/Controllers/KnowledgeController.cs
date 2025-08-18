@@ -26,6 +26,42 @@ namespace FoundationaLLM.Context.API.Controllers
         private readonly ILogger<KnowledgeController> _logger = logger;
 
         /// <summary>
+        /// Retrieves a specified knowledge unit.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
+        /// <returns></returns>
+        [HttpGet("knowledgeUnits/{knowledgeUnitId}")]
+        public async Task<IActionResult> GetKnowledgeUnit(
+            string instanceId,
+            string knowledgeUnitId)
+        {
+            var knowledgeUnit = await _knowledgeService.GetKnowledgeUnit(
+                instanceId,
+                knowledgeUnitId,
+                _callContext.CurrentUserIdentity!);
+            return Ok(knowledgeUnit);
+        }
+
+        /// <summary>
+        /// Retrieves a specified knowledge source.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
+        /// <returns></returns>
+        [HttpGet("knowledgeSources/{knowledgeSourceId}")]
+        public async Task<IActionResult> GetKnowledgeSource(
+            string instanceId,
+            string knowledgeSourceId)
+        {
+            var knowledgeSource = await _knowledgeService.GetKnowledgeSource(
+                instanceId,
+                knowledgeSourceId,
+                _callContext.CurrentUserIdentity!);
+            return Ok(knowledgeSource);
+        }
+
+        /// <summary>
         /// Retrieves the list of knowledge units.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

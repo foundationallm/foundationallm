@@ -288,6 +288,67 @@ namespace FoundationaLLM.Common.Clients
         }
 
         /// <inheritdoc/>
+        public async Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
+            string instanceId,
+            string knowledgeUnitId) =>
+            await GetKnowledgeResource<KnowledgeUnit>(
+                instanceId,
+                ContextResourceTypeNames.KnowledgeUnits,
+                knowledgeUnitId);
+
+        /// <inheritdoc/>
+        public async Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSource(
+            string instanceId,
+            string knowledgeSourceId) =>
+            await GetKnowledgeResource<KnowledgeSource>(
+                instanceId,
+                ContextResourceTypeNames.KnowledgeSources,
+                knowledgeSourceId);
+
+        private async Task<ContextServiceResponse<ResourceProviderGetResult<T>>> GetKnowledgeResource<T>(
+            string instanceId,
+            string knowledgeResourceType,
+            string knowledgeResourceId)
+            where T : ResourceBase
+        {
+            try
+            {
+                var client = await _httpClientFactoryService.CreateClient(
+                    HttpClientNames.ContextAPI,
+                    _callContext.CurrentUserIdentity!);
+                var responseMessage = await client.GetAsync(
+                    $"instances/{instanceId}/{knowledgeResourceType}/{knowledgeResourceId}");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                    var response = JsonSerializer.Deserialize<ContextServiceResponse<ResourceProviderGetResult<T>>>(responseContent);
+                    return response!;
+                }
+                _logger.LogError(
+                    "An error occurred while retrieving the knowledge resource {KnowledgeResourceId} of type {KnowledgeResourceType}. Status code: {StatusCode}.",
+                    knowledgeResourceId,
+                    knowledgeResourceType,
+                    responseMessage.StatusCode);
+                return new ContextServiceResponse<ResourceProviderGetResult<T>>
+                {
+                    Success = false,
+                    ErrorMessage = $"The service responded with error status code {responseMessage.StatusCode}.",
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving the knowledge resource {KnowledgeResourceId} of type {KnowledgeResourceType}.",
+                    knowledgeResourceId,
+                    knowledgeResourceType);
+                return new ContextServiceResponse<ResourceProviderGetResult<T>>
+                {
+                    Success = false,
+                    ErrorMessage = $"An error occurred while retrieving the knowledge resource {knowledgeResourceId} of type {knowledgeResourceType}: {ex.Message}."
+                };
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
             string instanceId,
             IEnumerable<string>? knowledgeSourceNames = null) =>

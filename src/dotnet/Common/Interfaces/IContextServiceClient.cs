@@ -83,6 +83,26 @@ namespace FoundationaLLM.Common.Interfaces
             string language);
 
         /// <summary>
+        /// Call the Context API to retrieve the a knowledge unit.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
+        /// <returns>The requested knowledge unit.</returns>
+        Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
+            string instanceId,
+            string knowledgeUnitId);
+
+        /// <summary>
+        /// Call the Context API to retrieve a knowledge source.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
+        /// <returns>The requested knowledge source.</returns>
+        Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSource(
+            string instanceId,
+            string knowledgeSourceId);
+
+        /// <summary>
         /// Call the Context API to retrieve the list of knowledge units.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
