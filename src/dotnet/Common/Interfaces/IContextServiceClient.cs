@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Models.CodeExecution;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 
 namespace FoundationaLLM.Common.Interfaces
@@ -20,9 +21,25 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="fileContentType">The content type of the file to be created.</param>
         /// <param name="fileContent">The binary content of the file.</param>
         /// <returns>A <see cref="ContextServiceResponse{T}"/> instance where <c>T</c> is of type <see cref="ContextFileRecord"/>.</returns>
-        Task<ContextServiceResponse<ContextFileRecord>> CreateFile(
+        Task<ContextServiceResponse<ContextFileRecord>> CreateFileForConversation(
             string instanceId,
             string conversationId,
+            string fileName,
+            string fileContentType,
+            Stream fileContent);
+
+        /// <summary>
+        /// Calls the Context API service to create a file.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="agentName">The name of the agent.</param>
+        /// <param name="fileName">The name of the file to be created.</param>
+        /// <param name="fileContentType">The content type of the file to be created.</param>
+        /// <param name="fileContent">The binary content of the file.</param>
+        /// <returns>A <see cref="ContextServiceResponse{T}"/> instance where <c>T</c> is of type <see cref="ContextFileRecord"/>.</returns>
+        Task<ContextServiceResponse<ContextFileRecord>> CreateFileForAgent(
+            string instanceId,
+            string agentName,
             string fileName,
             string fileContentType,
             Stream fileContent);
@@ -66,26 +83,56 @@ namespace FoundationaLLM.Common.Interfaces
             string language);
 
         /// <summary>
+        /// Call the Context API to retrieve the list of knowledge units.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeUnitNames">An optional list of specific knowledge units to retrieve.</param>
+        /// <returns>The list of knowledge units.</returns>
+        Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeUnits(
+            string instanceId,
+            IEnumerable<string>? knowledgeUnitNames = null);
+
+        /// <summary>
         /// Call the Context API to retrieve the list of knowledge sources.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeSourceNames">An optional list of specific knowledge sources to retrieve.</param>
         /// <returns>The list of knowledge sources.</returns>
-        Task<IEnumerable<KnowledgeSource>> GetKnowledgeSources(
+        Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
             string instanceId,
             IEnumerable<string>? knowledgeSourceNames = null);
 
         /// <summary>
-        /// Calls the Context API service to update a knowledge source with the specified knowledge graph and vector database/store details.
+        /// Creates or updates a knowledge unit in the context service.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
-        /// <param name="updateRequest">The update request containing the knowledge graph and vector database/store details.</param>
-        /// <returns>A response indicating the success of the operation and an optional error message.</returns>
-        Task<ContextServiceResponse> UpdateKnowledgeSource(
+        /// <param name="knowledgeUnit">The knowledge unit resource to be created or updated.</param>
+        /// <returns></returns>
+        Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeUnit>>> UpsertKnowledgeUnit(
             string instanceId,
-            string knowledgeSourceId,
-            ContextKnowledgeSourceUpdateRequest updateRequest);
+            KnowledgeUnit knowledgeUnit);
+
+        /// <summary>
+        /// Creates or updates a knowledge source in the context service.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeSource">The knowledge source resource to be created or updated.</param>
+        /// <returns></returns>
+        Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeSource>>> UpsertKnowledgeSource(
+            string instanceId,
+            KnowledgeSource knowledgeSource);
+
+        /// <summary>
+        /// Sets the knowledge graph for a knowledge unit.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
+        /// <param name="setGraphRequest">The request containing the knowledge graph details.</param>
+        /// <returns>A response indicating the success of the operation and an optional error message.</returns>
+        Task<ContextServiceResponse<ResourceProviderActionResult>> SetKnowledgeUnitGraph(
+            string instanceId,
+            string knowledgeUnitId,
+            ContextKnowledgeUnitSetGraphRequest setGraphRequest);
 
         /// <summary>
         /// Calls the Context API to query a knowledge source.
@@ -106,7 +153,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
         /// <param name="queryRequest">The request containing the details of the query.</param>
         /// <returns></returns>
-        Task<ContextKnowledgeSourceRenderGraphResponse> RenderKnowledgeSourceGraph(
+        Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeSourceGraph(
             string instanceId,
             string knowledgeSourceId,
             ContextKnowledgeSourceQueryRequest? queryRequest);

@@ -21,6 +21,18 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Vector
         public required string DatabaseName { get; set; }
 
         /// <summary>
+        /// Gets or sets the embedding model used for the knowledge unit.
+        /// </summary>
+        [JsonPropertyName("embedding_model")]
+        public required string EmbeddingModel { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of dimensions for the embeddings used in the knowledge unit.
+        /// </summary>
+        [JsonPropertyName("embedding_dimensions")]
+        public required int EmbeddingDimensions { get; set; }
+
+        /// <summary>
         /// Gets or sets the name of the property that stores the embeddings.
         /// </summary>
         [JsonPropertyName("embedding_property_name")]
@@ -43,6 +55,17 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Vector
         /// </summary>
         [JsonPropertyName("metadata_property_name")]
         public required string MetadataPropertyName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of metadata properties managed by the vector database.
+        /// </summary>
+        /// <remarks>
+        /// Must be a comma-separated list of metadata property names and types to be indexed.
+        /// The name and type must be separated by '|'.
+        /// For Azure AI Search databases, valid types are 'Edm.String', 'Edm.Int32', 'Edm.Int64','Edm.Single','Edm.Double','Edm.Boolean','Edm.DateTimeOffset'.
+        /// </remarks>
+        [JsonPropertyName("metadata_properties")]
+        public required string MetadataProperties {  get; set; }
 
         /// <summary>
         /// Gets or sets the API Endpoint Configuration object identifier.

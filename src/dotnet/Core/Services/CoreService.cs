@@ -754,7 +754,7 @@ public partial class CoreService(
             return attachmentUpsertResult;
         }
        
-        var serviceResult = await _contextServiceClient.CreateFile(
+        var serviceResult = await _contextServiceClient.CreateFileForConversation(
             instanceId,
             sessionId,
             attachmentFile.OriginalFileName,

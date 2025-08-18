@@ -31,6 +31,7 @@ namespace FoundationaLLM.Prompt.ResourceProviders
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
+    /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
     public class PromptResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
         IOptions<ResourceProviderCacheSettings> cacheOptions,
@@ -39,7 +40,8 @@ namespace FoundationaLLM.Prompt.ResourceProviders
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
         IServiceProvider serviceProvider,
-        ILogger<PromptResourceProviderService> logger)
+        ILogger<PromptResourceProviderService> logger,
+        bool proxyMode = false)
         : ResourceProviderServiceBase<PromptReference>(
             instanceOptions.Value,
             cacheOptions.Value,
@@ -52,7 +54,8 @@ namespace FoundationaLLM.Prompt.ResourceProviders
             [
                 EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ],
-            useInternalReferencesStore: true)
+            useInternalReferencesStore: true,
+            proxyMode: proxyMode)
     {
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>

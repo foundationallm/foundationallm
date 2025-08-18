@@ -9,6 +9,7 @@ using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Services.Azure;
@@ -35,7 +36,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
     {
         protected override string Name => PluginNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE;
 
-        protected readonly IResourceProviderService? _vectorResourceProvider = serviceProvider
+        private readonly IResourceProviderService? _contextResourceProvider = serviceProvider
+            .GetServices<IResourceProviderService>()
+            .SingleOrDefault(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Context);
+        private readonly IResourceProviderService? _vectorResourceProvider = serviceProvider
             .GetServices<IResourceProviderService>()
             .SingleOrDefault(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Vector);
 
@@ -95,42 +99,48 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 return new PluginResult(true, false);
             }
 
+            if (_contextResourceProvider is null)
+                throw new ResourceProviderException($"The resource provider {ResourceProviderNames.FoundationaLLM_Context} was not loaded.");
+
             if (_vectorResourceProvider is null)
                 throw new ResourceProviderException($"The resource provider {ResourceProviderNames.FoundationaLLM_Vector} was not loaded.");
 
             if (!_pluginParameters.TryGetValue(
-                PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
-                out var vectorDatabaseObjectId))
+                PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
+                out var knowledgeUnitObjectId))
                 throw new PluginException(
-                    $"The plugin {Name} requires the {PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID} parameter.");
+                    $"The plugin {Name} requires the {PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID} parameter.");
 
             if (!_pluginParameters.TryGetValue(
                 PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREID,
-                out var vectorStoreId))
+                out var vectorStoreIdObj))
                 throw new PluginException(
                     $"The plugin {Name} requires the {PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREID} parameter.");
 
-            if (!_pluginParameters.TryGetValue(
-                PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS,
-                out var embeddingDimensions))
-                throw new PluginException(
-                    $"The plugin {Name} requires the {PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS} parameter.");
+            var knowledgeUnit = await _contextResourceProvider.GetResourceAsync<KnowledgeUnit>(
+                knowledgeUnitObjectId.ToString()!,
+                ServiceContext.ServiceIdentity!);
 
-            if (!_pluginParameters.TryGetValue(
-                PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_METADATAPROPERTIES,
-                out var metadataPropertiesObject))
+            var vectorDatabase = await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
+                knowledgeUnit.VectorDatabaseObjectId,
+                ServiceContext.ServiceIdentity!);
+
+            if (vectorDatabase.DatabaseType != VectorDatabaseType.AzureAISearch)
                 throw new PluginException(
-                    $"The plugin {Name} requires the {PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_METADATAPROPERTIES} parameter.");
+                    $"The vector database type {vectorDatabase.DatabaseType} is not supported by the {Name} plugin.");
+
+            var vectorStoreId = string.IsNullOrWhiteSpace(knowledgeUnit.VectorStoreId)
+                ? vectorStoreIdObj?.ToString()
+                : knowledgeUnit.VectorStoreId;
+            if (string.IsNullOrWhiteSpace(vectorStoreId))
+                throw new PluginException(
+                    $"The knowledge unit {knowledgeUnit.Name} does not specify a vector store id and the {PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREID} is empty.");
 
             using var scope = _serviceProvider.CreateScope();
 
             var clientFactoryService = scope.ServiceProvider
                 .GetRequiredService<IHttpClientFactoryService>()
                 ?? throw new PluginException("The HTTP client factory service is not available in the dependency injection container.");
-
-            var vectorDatabase = await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
-                vectorDatabaseObjectId.ToString()!,
-                ServiceContext.ServiceIdentity!);
 
             var endpointResourcePath =
                 ResourcePath.GetResourcePath(vectorDatabase.APIEndpointConfigurationObjectId);
@@ -145,7 +155,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 searchIndexClient,
                 _serviceProvider.GetRequiredService<ILogger<AzureAISearchService>>()) as IAzureAISearchService;
 
-            var metadataProperties = metadataPropertiesObject.ToString()!
+            var metadataProperties = vectorDatabase.MetadataProperties
                 .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             var metadataField = new ComplexField(vectorDatabase.MetadataPropertyName);
             foreach (var metadataProperty in metadataProperties)
@@ -156,7 +166,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     new SimpleField(KEY_FIELD_NAME, SearchFieldDataType.String) { IsKey = true, IsFilterable = true },
                     new SimpleField(vectorDatabase.VectorStoreIdPropertyName, SearchFieldDataType.String) { IsFilterable = true },
                     new SearchableField(vectorDatabase.ContentPropertyName),
-                    new VectorSearchField(vectorDatabase.EmbeddingPropertyName, (int)embeddingDimensions, "vector-profile"),
+                    new VectorSearchField(vectorDatabase.EmbeddingPropertyName, vectorDatabase.EmbeddingDimensions, "vector-profile"),
                     metadataField
                 ];
 

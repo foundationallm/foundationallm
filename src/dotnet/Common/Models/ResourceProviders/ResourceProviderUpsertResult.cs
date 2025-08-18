@@ -10,11 +10,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// <summary>
         /// The id of the object that was created or updated.
         /// </summary>
+        [JsonPropertyName("object_id")]
         public required string ObjectId { get; set; }
 
         /// <summary>
         /// A flag denoting whether the upserted resource already exists.
         /// </summary>
+        [JsonPropertyName("resource_exists")]
         public required bool ResourceExists { get; set; }
 
         /// <summary>

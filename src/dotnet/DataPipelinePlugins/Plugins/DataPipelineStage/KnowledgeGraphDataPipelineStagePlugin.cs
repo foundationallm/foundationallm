@@ -12,8 +12,11 @@ using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Plugins;
+using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
+using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Services.Plugins;
 using FoundationaLLM.Plugins.DataPipeline.Constants;
@@ -48,10 +51,15 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
         private const int GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS = 5;
 
-        private readonly IResourceProviderService _promptResourceProvider =
-            serviceProvider.GetRequiredService<IEnumerable<IResourceProviderService>>()
-                .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Prompt)
-            ?? throw new PluginException($"The resource provider {ResourceProviderNames.FoundationaLLM_Prompt} is not available in the dependency injection container.");
+        private readonly IResourceProviderService? _promptResourceProvider = serviceProvider
+            .GetServices<IResourceProviderService>()
+            .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Prompt);
+        private readonly IResourceProviderService? _contextResourceProvider = serviceProvider
+            .GetServices<IResourceProviderService>()
+            .SingleOrDefault(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Context);
+        private readonly IResourceProviderService? _vectorResourceProvider = serviceProvider
+            .GetServices<IResourceProviderService>()
+            .SingleOrDefault(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Vector);
         private readonly ITokenizerService _tokenizer =
             serviceProvider.GetRequiredKeyedService<ITokenizerService>("MicrosoftML")
             ?? throw new PluginException("The MicrosoftML tokenizer service is not available in the dependency injection container.");
@@ -123,6 +131,15 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             #region Load parameters
 
+            if (_promptResourceProvider is null)
+                throw new ResourceProviderException($"The resource provider {ResourceProviderNames.FoundationaLLM_Prompt} was not loaded");
+
+            if (_contextResourceProvider is null)
+                throw new ResourceProviderException($"The resource provider {ResourceProviderNames.FoundationaLLM_Context} was not loaded.");
+
+            if (_vectorResourceProvider is null)
+                throw new ResourceProviderException($"The resource provider {ResourceProviderNames.FoundationaLLM_Vector} was not loaded.");
+
             if (!_pluginParameters.TryGetValue(
                 PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONPROMPTOBJECTID,
                 out var entitySummarizationPromptId))
@@ -148,34 +165,22 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONCOMPLETIONMAXOUTPUTTOKENCOUNT} parameter.");
 
             if (!_pluginParameters.TryGetValue(
-                PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONEMBEDDINGMODEL,
-                out var entitySummarizationEmbeddingModel))
+                PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
+                out var knowledgeUnitObjectId))
                 throw new PluginException(
-                    $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONEMBEDDINGMODEL} parameter.");
+                    $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID} parameter.");
 
-            if (!_pluginParameters.TryGetValue(
-                PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONEMBEDDINGDIMENSIONS,
-                out var entitySummarizationEmbeddingDimensions))
-                throw new PluginException(
-                    $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONEMBEDDINGDIMENSIONS} parameter.");
+            var knowledgeUnit = await _contextResourceProvider.GetResourceAsync<KnowledgeUnit>(
+                knowledgeUnitObjectId.ToString()!,
+                ServiceContext.ServiceIdentity!);
 
-            if (!_pluginParameters.TryGetValue(
-                PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGESOURCEID,
-                out var knowledgeSourceId))
+            if (!knowledgeUnit.HasKnowledgeGraph)
                 throw new PluginException(
-                    $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGESOURCEID} parameter.");
+                    $"The knowledge unit {knowledgeUnit.Name} cannot be used by the {Name} plugin because it does not have a knowledge graph.");
 
-            if (!_pluginParameters.TryGetValue(
-                PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
-                out var vectorDatabaseObjectId))
-                throw new PluginException(
-                    $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID} parameter.");
-
-            if (!_pluginParameters.TryGetValue(
-                PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORSTOREID,
-                out var vectorStoreId))
-                throw new PluginException(
-                    $"The plugin {Name} requires the {PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORSTOREID} parameter.");
+            var vectorDatabase = await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
+                knowledgeUnit.KnowledgeGraphVectorDatabaseObjectId!,
+                ServiceContext.ServiceIdentity!);
 
             #endregion
 
@@ -305,8 +310,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
                 var entitiesEmbeddingResult = await EmbedEntities(
                     dataPipelineRun,
-                    entitySummarizationEmbeddingModel.ToString()!,
-                    (int)entitySummarizationEmbeddingDimensions);
+                    vectorDatabase.EmbeddingModel,
+                    vectorDatabase.EmbeddingDimensions);
 
                 if (!entitiesEmbeddingResult.Success)
                     return entitiesEmbeddingResult;
@@ -338,8 +343,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
                 var relationshipsEmbeddingResult = await EmbedRelationships(
                     dataPipelineRun,
-                    entitySummarizationEmbeddingModel.ToString()!,
-                    (int)entitySummarizationEmbeddingDimensions);
+                    vectorDatabase.EmbeddingModel,
+                    vectorDatabase.EmbeddingDimensions);
 
                 if (!relationshipsEmbeddingResult.Success)
                     return relationshipsEmbeddingResult;
@@ -362,32 +367,27 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             {
                 #region Publish knowledge graph to the Context API
 
-                using var scope = _serviceProvider.CreateScope();
-
-                var contextServiceClient = new ContextServiceClient(
-                    new OrchestrationContext { CurrentUserIdentity = ServiceContext.ServiceIdentity },
-                    scope.ServiceProvider.GetRequiredService<IHttpClientFactoryService>(),
-                    scope.ServiceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
-
                 var canonicalRootPath = _dataPipelineStateService.GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun);
-                var response = await contextServiceClient.UpdateKnowledgeSource(
+
+                var contextResult = await _contextResourceProvider.ExecuteResourceActionAsync<
+                    KnowledgeUnit,
+                    ContextKnowledgeUnitSetGraphRequest,
+                    ResourceProviderActionResult>(
                     dataPipelineRun.InstanceId,
-                    knowledgeSourceId.ToString()!,
-                    new ContextKnowledgeSourceUpdateRequest
+                    knowledgeUnit.Name,
+                    ResourceProviderActions.SetGraph,
+                    new ContextKnowledgeUnitSetGraphRequest
                     {
                         EntitiesSourceFilePath = $"{canonicalRootPath}/{KNOWLEDGE_ENTITIES_FILE_PATH}",
-                        RelationshipsSourceFilePath = $"{canonicalRootPath}/{KNOWLEDGE_RELATIONSHIPS_FILE_PATH}",
-                        EmbeddingModel = entitySummarizationEmbeddingModel.ToString()!,
-                        EmbeddingDimensions = (int)entitySummarizationEmbeddingDimensions,
-                        VectorDatabaseObjectId = vectorDatabaseObjectId.ToString()!,
-                        VectorStoreId = vectorStoreId.ToString()!
-                    });
+                        RelationshipsSourceFilePath = $"{canonicalRootPath}/{KNOWLEDGE_RELATIONSHIPS_FILE_PATH}"
+                    },
+                    ServiceContext.ServiceIdentity!);
 
-                if (!response.Success)
+                if (!contextResult.IsSuccess)
                     return new PluginResult(false, false,
-                        $"The {Name} plugin failed to publish the knowledge graph for data pipeline run {dataPipelineRun.Id} due to a failure in the Context API: {response.ErrorMessage}");
+                        $"The {Name} plugin failed to publish the knowledge graph for data pipeline run {dataPipelineRun.Id} due to a failure in the Context resource provider: {contextResult.ErrorMessage ?? "N/A"}");
 
                 #endregion
 

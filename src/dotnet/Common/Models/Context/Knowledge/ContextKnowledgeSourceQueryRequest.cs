@@ -26,19 +26,10 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
         public ContextKnowledgeGraphQuery? KnowledgeGraphQuery { get; set; }
 
         /// <summary>
-        /// Gets or sets the vector store identifier used to query the knowledge source.
+        /// Gets or sets the list of knowledge unit vector store filters.
         /// </summary>
-        /// <remarks>
-        /// This value is used only when the knowledge source does not have a static vector store identier set.
-        /// </remarks>
-        [JsonPropertyName("vector_store_id")]
-        public string? VectorStoreId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the metadata filter used to provide additional filtering in the vector store queries.
-        /// </summary>
-        [JsonPropertyName("vector_store_metadata_filter")]
-        public Dictionary<string, object>? VectorStoreMetadataFilter { get; set; }
+        [JsonPropertyName("knowledge_unit_vector_store_filters")]
+        public List<ContextKnowledgeUnitVectorStoreFilter> KnowledgeUnitVectorStoreFilters { get; set; } = [];
 
         /// <summary>
         /// Gets or sets a value indicating whether the response should be formatted.

@@ -26,45 +26,52 @@ namespace FoundationaLLM.Common.Models.Context
         public string ConversationId { get; set; }
 
         /// <summary>
+        /// Gets or sets the agent name.
+        /// </summary>
+        [JsonPropertyName("agent_name")]
+        [JsonPropertyOrder(1)]
+        public string AgentName { get; set; }
+
+        /// <summary>
         /// Gets or sets the FoundationaLLM object identifier of the file
         /// </summary>
         [JsonPropertyName("file_object_id")]
-        [JsonPropertyOrder(1)]
+        [JsonPropertyOrder(2)]
         public string FileObjectId { get; set; }
 
         /// <summary>
         /// Gets or sets the file name.
         /// </summary>
         [JsonPropertyName("file_name")]
-        [JsonPropertyOrder(2)]
+        [JsonPropertyOrder(3)]
         public string FileName { get; set; }
 
         /// <summary>
         /// Gets or sets the content type.
         /// </summary>
         [JsonPropertyName("content_type")]
-        [JsonPropertyOrder(3)]
+        [JsonPropertyOrder(4)]
         public string ContentType { get; set; }
 
         /// <summary>
         /// Gets or sets the file path on the storage account.
         /// </summary>
         [JsonPropertyName("file_path")]
-        [JsonPropertyOrder(4)]
+        [JsonPropertyOrder(5)]
         public string FilePath { get; set; }
 
         /// <summary>
         /// Gets or sets the file size in bytes.
         /// </summary>
         [JsonPropertyName("file_size_bytes")]
-        [JsonPropertyOrder(5)]
+        [JsonPropertyOrder(6)]
         public long FileSizeBytes { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating the type of processing that is required for the file.
         /// </summary>
         [JsonPropertyName("file_processing_type")]
-        [JsonPropertyOrder(6)]
+        [JsonPropertyOrder(7)]
         public string FileProcessingType { get; set; }
 
         /// <summary>
@@ -83,6 +90,7 @@ namespace FoundationaLLM.Common.Models.Context
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="origin">The origin of the record.</param>
         /// <param name="conversationId">The conversation identifier.</param>
+        /// <param name="agentName">The name of the agent.</param>
         /// <param name="fileName">The original name of the file.</param>
         /// <param name="contentType">The content type of the file.</param>
         /// <param name="fileSizeBytes">The size of the file in bytes.</param>
@@ -92,7 +100,8 @@ namespace FoundationaLLM.Common.Models.Context
         public ContextFileRecord(
             string instanceId,
             string origin,
-            string conversationId,
+            string? conversationId,
+            string? agentName,
             string fileName,
             string contentType,
             long fileSizeBytes,
@@ -107,10 +116,14 @@ namespace FoundationaLLM.Common.Models.Context
         {
             var fileId = $"file-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToBase64String()}";
             var fileObjectId = $"/instances/{instanceId}/providers/{ContextProviderNames.FoundationaLLM_ContextAPI}/files/{fileId}";
-            var filePath = $"file/{userIdentity.UPN!.NormalizeUserPrincipalName()}/{conversationId}/{fileId}{Path.GetExtension(fileName)}";
+
+            var filePath = string.IsNullOrEmpty(conversationId)
+                ? $"file/agents/{agentName}/{fileId}{Path.GetExtension(fileName)}"
+                : $"file/users/{userIdentity.UPN!.NormalizeUserPrincipalName()}/{conversationId}/{fileId}{Path.GetExtension(fileName)}";
 
             Id = fileId;
-            ConversationId = conversationId;
+            ConversationId = conversationId ?? "N/A";
+            AgentName = agentName ?? "N/A";
             FileObjectId = fileObjectId;
             FileName = fileName;
             ContentType = contentType;

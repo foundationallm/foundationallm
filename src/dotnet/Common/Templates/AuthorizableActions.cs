@@ -692,6 +692,27 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Context")
                 },
                 {
+                    AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Read,
+                        "Read context knowledge units.",
+                        "Context")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Write,
+                        "Create or update context knowledge units.",
+                        "Context")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Delete,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Delete,
+                        "Delete context knowledge units.",
+                        "Context")
+                },
+                {
                     AuthorizableActionNames.FoundationaLLM_Context_Management_Write,
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_Context_Management_Write,

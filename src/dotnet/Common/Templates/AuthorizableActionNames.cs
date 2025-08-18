@@ -549,6 +549,21 @@ namespace FoundationaLLM.Common.Constants.Authorization
         public const string FoundationaLLM_Context_KnowledgeSources_Delete = "FoundationaLLM.Context/knowledgeSources/delete";
 
         /// <summary>
+        /// Read context knowledge units.
+        /// </summary>
+        public const string FoundationaLLM_Context_KnowledgeUnits_Read = "FoundationaLLM.Context/knowledgeUnits/read";
+
+        /// <summary>
+        /// Create or update context knowledge units.
+        /// </summary>
+        public const string FoundationaLLM_Context_KnowledgeUnits_Write = "FoundationaLLM.Context/knowledgeUnits/write";
+
+        /// <summary>
+        /// Delete context knowledge units.
+        /// </summary>
+        public const string FoundationaLLM_Context_KnowledgeUnits_Delete = "FoundationaLLM.Context/knowledgeUnits/delete";
+
+        /// <summary>
         /// Execute management actions.
         /// </summary>
         public const string FoundationaLLM_Context_Management_Write = "FoundationaLLM.Context/management/write";

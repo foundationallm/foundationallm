@@ -47,6 +47,23 @@ function Deploy-FoundationaLLMPackage {
 
     Write-Host "Deploying package from $($PackageRoot)" -ForegroundColor Blue
 
+    if (Test-Path -Path "$($PackageRoot)/artifacts/toolTypes.json") {
+
+        Write-Host "Updating tool types..."
+
+        $toolTypes = Get-Content "$($PackageRoot)/artifacts/toolTypes.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        foreach ($toolType in $toolTypes) {
+
+            Write-Host "Updating tool type: $($toolType.name)"
+            $toolTypeResult = Merge-ToolType `
+                -ToolType $toolType
+            Write-Host "Tool type updated: $($toolTypeResult)" -ForegroundColor Green
+        }
+    }
+
     if (Test-Path -Path "$($PackageRoot)/artifacts/prompts.json") {
 
         Write-Host "Creating prompts..."
@@ -152,6 +169,38 @@ function Deploy-FoundationaLLMPackage {
             $vectorDatabaseResult = Merge-VectorDatabase `
                 -VectorDatabase $vectorDatabase
             Write-Host "Vector database updated: $($vectorDatabaseResult)" -ForegroundColor Green
+        }
+    }
+
+    if (Test-Path -Path "$($PackageRoot)/artifacts/knowledgeUnits.json") {
+
+        Write-Host "Updating knowledge units..."
+
+        $knowledgeUnits = Get-Content "$($PackageRoot)/artifacts/knowledgeUnits.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        foreach ($knowledgeUnit in $knowledgeUnits) {
+
+            Write-Host "Updating knowledge unit: $($knowledgeUnit.name)"
+            $knowledgeUnitResult = Merge-KnowledgeUnit -KnowledgeUnit $knowledgeUnit
+            Write-Host "Knowledge unit updated: $($knowledgeUnitResult)" -ForegroundColor Green
+        }
+    }
+
+    if (Test-Path -Path "$($PackageRoot)/artifacts/knowledgeSources.json") {
+
+        Write-Host "Updating knowledge sources..."
+
+        $knowledgeSources = Get-Content "$($PackageRoot)/artifacts/knowledgeSources.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        foreach ($knowledgeSource in $knowledgeSources) {
+
+            Write-Host "Updating knowledge source: $($knowledgeSource.name)"
+            $knowledgeSourceResult = Merge-KnowledgeSource -KnowledgeSource $knowledgeSource
+            Write-Host "Knowledge source updated: $($knowledgeSourceResult)" -ForegroundColor Green
         }
     }
 

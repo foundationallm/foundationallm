@@ -42,6 +42,11 @@ namespace FoundationaLLM.Common.Interfaces
         string StorageContainerName { get; }
 
         /// <summary>
+        /// Gets the optional storage root path used by the resource provider.
+        /// </summary>
+        string? StorageRootPath { get; }
+
+        /// <summary>
         /// Gets resources of a specific type.
         /// </summary>
         /// <typeparam name="T">The type of resource to return.</typeparam>

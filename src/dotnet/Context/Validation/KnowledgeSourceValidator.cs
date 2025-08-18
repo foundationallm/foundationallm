@@ -17,14 +17,14 @@ namespace FoundationaLLM.Context.Validation
         {
             Include(new ResourceBaseValidator());
 
-            RuleFor(vd => vd.EmbeddingModel)
+            RuleFor(ks => ks.KnowledgeUnitObjectIds)
                 .NotEmpty()
-                .WithMessage("The embedding model is required.");
+                .WithMessage("At least one knowledge unit object identifier is required.");
 
-            RuleFor(vd => vd.VectorDatabaseObjectId)
+            RuleForEach(ks => ks.KnowledgeUnitObjectIds)
                 .NotEmpty()
                 .Must(ValidationUtils.ValidateObjectId)
-                .WithMessage("The vector database object identifier is required for the knowledge source and it must be a valid FoundationaLLM object identifier.");
+                .WithMessage("Each knowledge unit object identifier must be a valid FoundationaLLM object identifier.");
         }
     }
 }

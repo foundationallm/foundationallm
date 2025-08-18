@@ -558,6 +558,21 @@
 				"field_name": "FoundationaLLM_Context_KnowledgeSources_Delete"
 			},
 			{
+				"name": "FoundationaLLM.Context/knowledgeUnits/read",
+				"description": "Read context knowledge units.",
+				"field_name": "FoundationaLLM_Context_KnowledgeUnits_Read"
+			},
+			{
+				"name": "FoundationaLLM.Context/knowledgeUnits/write",
+				"description": "Create or update context knowledge units.",
+				"field_name": "FoundationaLLM_Context_KnowledgeUnits_Write"
+			},
+			{
+				"name": "FoundationaLLM.Context/knowledgeUnits/delete",
+				"description": "Delete context knowledge units.",
+				"field_name": "FoundationaLLM_Context_KnowledgeUnits_Delete"
+			},
+			{
 				"name": "FoundationaLLM.Context/management/write",
 				"description": "Execute management actions.",
 				"field_name": "FoundationaLLM_Context_Management_Write"

@@ -38,6 +38,7 @@ namespace FoundationaLLM.Configuration.Services
     /// <param name="configuration">The <see cref="IConfiguration"/> providing configuration services.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
+    /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
     public class ConfigurationResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
         IOptions<ResourceProviderCacheSettings> cacheOptions,
@@ -49,7 +50,8 @@ namespace FoundationaLLM.Configuration.Services
         IAzureKeyVaultService keyVaultService,
         IConfiguration configuration,
         IServiceProvider serviceProvider,
-        ILogger<ConfigurationResourceProviderService> logger)
+        ILogger<ConfigurationResourceProviderService> logger,
+        bool proxyMode = false)
         : ResourceProviderServiceBase<APIEndpointReference>(
             instanceOptions.Value,
             cacheOptions.Value,
@@ -63,7 +65,8 @@ namespace FoundationaLLM.Configuration.Services
                 EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand,
                 EventTypes.FoundationaLLM_ResourceProvider_AppConfig_UpdateKeyCommand
             ],
-            useInternalReferencesStore: true)
+            useInternalReferencesStore: true,
+            proxyMode: proxyMode)
     {
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>

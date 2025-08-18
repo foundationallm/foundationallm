@@ -524,8 +524,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             DataPipelineTriggerNames.DefaultManualTrigger,
                             new()
                             {
-                                { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId,  contextFileResponse.Result.FileObjectId},
-                                { DataPipelineTriggerParameterNames.StageIndexVectorDatabaseObjectId, knowledgeSearchSettings.FileUploadVectorDatabaseObjectId },
+                                { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId, contextFileResponse.Result.FileObjectId},
+                                { DataPipelineTriggerParameterNames.StageEmbedKnowledgeUnitObjectId, knowledgeSearchSettings.ConversationKnowledgeUnitObjectId },
+                                { DataPipelineTriggerParameterNames.StageIndexKnowledgeUnitObjectId, knowledgeSearchSettings.ConversationKnowledgeUnitObjectId },
                                 { DataPipelineTriggerParameterNames.StageIndexVectorStoreId, _vectorStoreId }
                             },
                             _callContext.CurrentUserIdentity!.UPN!,

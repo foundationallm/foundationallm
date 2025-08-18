@@ -75,21 +75,8 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                 new Dictionary<string, object>
                 {
                     {
-                        PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
-                        "instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vector/vectorDatabases/SPO-Test"
-                    },
-                    {
-                        PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREID,
-                        "Test-Store-01"
-                    },
-                    {
-                        PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS,
-                        2048
-                    },
-                    {
-                        PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_METADATAPROPERTIES,
-                        //"ProjectId|Edm.Int32,DocumentId|Edm.Int32,FileName|Edm.String"
-                        "FileName|Edm.String"
+                        PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
+                        "instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeUnits/ProcessSPOFiles-KG-01"
                     }
                 }
             }

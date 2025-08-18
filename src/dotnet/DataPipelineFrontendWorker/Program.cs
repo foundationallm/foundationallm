@@ -42,6 +42,7 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vector_Storage);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataSource_Storage);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Context_Storage);
 
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_DataSources);
 
@@ -103,6 +104,7 @@ builder.AddDataPipelineResourceProvider();
 builder.AddVectorResourceProvider();
 builder.AddDataSourceResourceProvider();
 builder.AddPromptResourceProvider();
+builder.AddContextResourceProvider(proxyMode: true);
 
 // Add API Key Authorization
 builder.Services.AddHttpContextAccessor();

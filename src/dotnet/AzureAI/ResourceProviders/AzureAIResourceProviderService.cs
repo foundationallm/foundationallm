@@ -37,6 +37,7 @@ namespace AzureAI.ResourceProviders
     /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> providing Cosmos DB services.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
+    /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
     public class AzureAIResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
         IOptions<ResourceProviderCacheSettings> cacheOptions,
@@ -46,7 +47,8 @@ namespace AzureAI.ResourceProviders
         IResourceValidatorFactory resourceValidatorFactory,
         IAzureCosmosDBService cosmosDBService,
         IServiceProvider serviceProvider,
-        ILogger<AzureAIResourceProviderService> logger)
+        ILogger<AzureAIResourceProviderService> logger,
+        bool proxyMode = false)
         : ResourceProviderServiceBase<AzureAIReference>(
             instanceOptions.Value,
             cacheOptions.Value,
@@ -59,7 +61,8 @@ namespace AzureAI.ResourceProviders
             [
                 EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand
             ],
-            useInternalReferencesStore: true)
+            useInternalReferencesStore: true,
+            proxyMode: proxyMode)
     {
         
         private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;

@@ -36,14 +36,14 @@
         public const string FileUploadDataPipeline = "file_upload_data_pipeline";
 
         /// <summary>
-        /// The vector store container used to store individual vector stores.
+        /// The knowledge unit used for conversation files.
         /// </summary>
-        public const string VectorDatabase = "vector_database";
+        public const string ConversationKnowledgeUnit = "conversation_knowledge_unit";
 
         /// <summary>
-        /// Main indexing profile.
+        /// The knowledge unit used for agent private store files.
         /// </summary>
-        public const string MainIndexingProfile = "main_indexing_profile";
+        public const string AgentPrivateStoreKnowledgeUnit = "agent_private_store_knowledge_unit";
 
         /// <summary>
         /// Tool association.

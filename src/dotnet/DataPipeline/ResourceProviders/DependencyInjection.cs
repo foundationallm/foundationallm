@@ -27,20 +27,24 @@ namespace FoundationaLLM
         /// Registers the FoundationaLLM DataPipeline resource provider with the Dependency Injection container.
         /// </summary>
         /// <param name="builder">The application builder.</param>
-        /// <param name="remoteClient">The flag the controls which Data Pipeline API client should the resource provider use.
-        /// Defaults to <c>true</c> which means the remote client will be used (HTTP calls to the Data Pipeline API).</param>
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
         public static void AddDataPipelineResourceProvider(
-            this IHostApplicationBuilder builder) =>
-            builder.Services.AddDataPipelineResourceProvider(builder.Configuration);
+            this IHostApplicationBuilder builder,
+            bool proxyMode = false) =>
+            builder.Services.AddDataPipelineResourceProvider(
+                builder.Configuration,
+                proxyMode: proxyMode);
 
         /// <summary>
         /// Registers the FoundationaLLM.DataPipeline resource provider with the dependency injection container.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
         /// <param name="configuration">The <see cref="IConfiguration"/> configuration provider.</param>
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
         public static void AddDataPipelineResourceProvider(
             this IServiceCollection services,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            bool proxyMode = false)
         {
             services.AddDataPipelineResourceProviderStorage(configuration);
 
@@ -60,7 +64,8 @@ namespace FoundationaLLM
                     sp.GetRequiredService<IEventService>(),
                     sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp,
-                    sp.GetRequiredService<ILoggerFactory>()));
+                    sp.GetRequiredService<ILoggerFactory>(),
+                    proxyMode: proxyMode));
 
             services.ActivateSingleton<IResourceProviderService>();
         }

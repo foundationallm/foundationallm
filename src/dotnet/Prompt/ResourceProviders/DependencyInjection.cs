@@ -20,17 +20,24 @@ namespace FoundationaLLM
         /// Register the handler as a hosted service, passing the step name to the handler ctor
         /// </summary>
         /// <param name="builder">The application builder.</param>
-        public static void AddPromptResourceProvider(this IHostApplicationBuilder builder) =>
-            builder.Services.AddPromptResourceProvider(builder.Configuration);
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
+        public static void AddPromptResourceProvider(
+            this IHostApplicationBuilder builder,
+            bool proxyMode = false) =>
+            builder.Services.AddPromptResourceProvider(
+                builder.Configuration,
+                proxyMode: proxyMode);
 
         /// <summary>
         /// Registers the FoundationaLLM.Prompt resource provider with the dependency injection container.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
         /// <param name="configuration">The <see cref="IConfiguration"/> configuration provider.</param>
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
         public static void AddPromptResourceProvider(
             this IServiceCollection services,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            bool proxyMode = false)
         {
             services.AddPromptResourceProviderStorage(configuration);
 
@@ -44,7 +51,8 @@ namespace FoundationaLLM
                     sp.GetRequiredService<IEventService>(),
                     sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp,
-                    sp.GetRequiredService<ILogger<PromptResourceProviderService>>()));
+                    sp.GetRequiredService<ILogger<PromptResourceProviderService>>(),
+                    proxyMode: proxyMode));
 
             services.ActivateSingleton<IResourceProviderService>();
         }

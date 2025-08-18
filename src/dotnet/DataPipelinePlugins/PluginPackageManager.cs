@@ -129,16 +129,20 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Category = PluginCategoryNames.DataPipelineStage,
                     Parameters = [
                         new() {
-                            Name = PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_EMBEDDINGMODEL,
-                            Type = PluginParameterTypes.String,
-                            Description = "The embedding model used for embedding (the recommended model is text-embedding-3-large)."
-                        },
-                        new() {
-                            Name = PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS,
-                            Type = PluginParameterTypes.Int,
-                            Description = "The number of dimensions used for embedding (the recommended number is 2048)."
+                            Name = PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
+                            Type = PluginParameterTypes.ResourceObjectId,
+                            Description = "The FoundationaLLM resource identifier of the Knowledge Unit that provides the embedding configuration."
                         }
                     ],
+                    ParameterSelectionHints = new() {
+                        {
+                            PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
+                            new() {
+                                ResourcePath = "providers/FoundationaLLM.Context/knowledgeUnits",
+                                FilterActionPayload = null
+                            }
+                        }
+                    },
                     Dependencies = []
                 },
                 new() {
@@ -149,35 +153,22 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Category = PluginCategoryNames.DataPipelineStage,
                     Parameters = [
                         new() {
-                            Name = PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
+                            Name = PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
                             Type = PluginParameterTypes.ResourceObjectId,
-                            Description = "The FoundationaLLM resource identifier of the Vector Database resource that identifies the Azure AI Search instance and the index."
+                            Description = "The FoundationaLLM resource identifier of the Knowledge Unit that provides the embedding configuration."
                         },
                         new() {
                             Name = PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREID,
                             Type = PluginParameterTypes.String,
                             Description = "The name of the Vector Store resource that identifies the logical partition of the Azure AI Search index."
                         },
-                        new() {
-                            Name = PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_EMBEDDINGDIMENSIONS,
-                            Type = PluginParameterTypes.Int,
-                            Description = "The number of dimensions used for embedding."
-                        },
-                        new() {
-                            Name = PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_METADATAPROPERTIES,
-                            Type = PluginParameterTypes.String,
-                            Description = "Comma-separated list of metadata property names and types to be indexed in the Azure AI Search index. "
-                                + "The name and type must be separated by '|'. Valid types are 'Edm.String', 'Edm.Int32', 'Edm.Int64','Edm.Single','Edm.Double','Edm.Boolean','Edm.DateTimeOffset'."
-                        }
                     ],
                     ParameterSelectionHints = new() {
                         {
-                            PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
+                            PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
                             new() {
-                                ResourcePath = "providers/FoundationaLLM.Vector/vectorDatabases",
-                                FilterActionPayload = new {
-                                    category = "AzureAISearch"
-                                }
+                                ResourcePath = "providers/FoundationaLLM.Context/knowledgeUnits",
+                                FilterActionPayload = null
                             }
                         }
                     },
@@ -257,29 +248,9 @@ namespace FoundationaLLM.Plugins.DataPipeline
                             Description = "The maximum number of output tokens for the entity summarization model."
                         },
                         new() {
-                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONEMBEDDINGMODEL,
-                            Type = PluginParameterTypes.String,
-                            Description = "The embedding model used for entity summary embedding (the recommended model is text-embedding-3-large)."
-                        },
-                        new() {
-                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONEMBEDDINGDIMENSIONS,
-                            Type = PluginParameterTypes.Int,
-                            Description = "The number of dimensions used for embedding entity summarizations (the recommended number is 2048)."
-                        },
-                        new() {
-                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGESOURCEID,
-                            Type = PluginParameterTypes.String,
-                            Description = "The identifier of the Knowledge source resource that identifies the knowledge graph to be built."
-                        },
-                        new() {
-                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
                             Type = PluginParameterTypes.ResourceObjectId,
-                            Description = "The FoundationaLLM resource identifier of the Vector Database resource that identifies the Azure AI Search instance and the index."
-                        },
-                        new() {
-                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORSTOREID,
-                            Type = PluginParameterTypes.String,
-                            Description = "The name of the Vector Store resource that identifies the logical partition of the Azure AI Search index."
+                            Description = "The FoundationaLLM resource identifier of the Knowledge Unit that provides the embedding configuration."
                         }
                     ],
                     ParameterSelectionHints = new() {
@@ -293,12 +264,10 @@ namespace FoundationaLLM.Plugins.DataPipeline
                             }
                         },
                         {
-                            PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_VECTORDATABASEOBJECTID,
+                            PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
                             new() {
-                                ResourcePath = "providers/FoundationaLLM.Vector/vectorDatabases",
-                                FilterActionPayload = new {
-                                    category = "AzureAISearch"
-                                }
+                                ResourcePath = "providers/FoundationaLLM.Context/knowledgeUnits",
+                                FilterActionPayload = null
                             }
                         }
                     },

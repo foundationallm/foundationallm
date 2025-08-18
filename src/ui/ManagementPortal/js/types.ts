@@ -32,12 +32,12 @@ export type ResourceProviderUpsertResult = {
 	/**
 	 * The id of the object that was created or updated.
 	 */
-	objectId: string;
+	object_id: string;
 
 	/**
 	 * A flag denoting whether the upserted resource already exists.
 	 */
-	resourceExists: boolean;
+	resource_exists: boolean;
 
 	/**
 	 * Gets or sets the resource resulting from the upsert operation.

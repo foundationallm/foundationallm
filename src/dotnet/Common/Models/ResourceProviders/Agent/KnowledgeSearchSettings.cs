@@ -11,8 +11,13 @@
         public required string FileUploadDataPipelineObjectId { get; set; }
 
         /// <summary>
-        /// The object identifier of the vector database used to store the processed uploaded files.
+        /// The object identifier of the knowledge unit used for the conversation files.
         /// </summary>
-        public required string FileUploadVectorDatabaseObjectId { get; set; }
+        public required string ConversationKnowledgeUnitObjectId { get; set; }
+
+        /// <summary>
+        /// The object identifier of the knowledge unit used for the agent private store files.
+        /// </summary>
+        public required string AgentPrivateStoreKnowledgeUnitObjectId { get; set; }
     }
 }
