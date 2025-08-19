@@ -347,10 +347,20 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         #region IManagementProviderService
 
         /// <inheritdoc/>
-        public async Task<object> HandleGetAsync(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
+        public async Task<object> HandleGetAsync(
+            string resourcePath,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null,
+            Func<HttpMethod, ResourcePath, bool>? resourcePathAvailabilityChecker = null)
         {
             EnsureServiceInitialization();
             var (ParsedResourcePath, AuthorizationRequirements) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Get, false, requireResource: false);
+
+            if (resourcePathAvailabilityChecker is not null
+                && !resourcePathAvailabilityChecker(HttpMethod.Get, ParsedResourcePath))
+                throw new ResourceProviderException(
+                    $"The resource path {resourcePath} is not available.",
+                    StatusCodes.Status400BadRequest);
 
             // Authorize access to the resource path.
             var authorizationResult = ParsedResourcePath.IsResourceTypePath
@@ -361,10 +371,21 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <inheritdoc/>
-        public async Task<object> HandlePostAsync(string resourcePath, string? serializedResource, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity)
+        public async Task<object> HandlePostAsync(
+            string resourcePath,
+            string? serializedResource,
+            ResourceProviderFormFile? formFile,
+            UnifiedUserIdentity userIdentity,
+            Func<HttpMethod, ResourcePath, bool>? resourcePathAvailabilityChecker = null)
         {
             EnsureServiceInitialization();
             var (ParsedResourcePath, AuthorizationRequirements) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Post, true, requireResource: false);
+
+            if (resourcePathAvailabilityChecker is not null
+                && !resourcePathAvailabilityChecker(HttpMethod.Get, ParsedResourcePath))
+                throw new ResourceProviderException(
+                    $"The resource path {resourcePath} is not available.",
+                    StatusCodes.Status400BadRequest);
 
             if (ParsedResourcePath.HasAction)
             {
@@ -409,10 +430,19 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <inheritdoc/>
-        public async Task HandleDeleteAsync(string resourcePath, UnifiedUserIdentity userIdentity)
+        public async Task HandleDeleteAsync(
+            string resourcePath,
+            UnifiedUserIdentity userIdentity,
+            Func<HttpMethod, ResourcePath, bool>? resourcePathAvailabilityChecker = null)
         {
             EnsureServiceInitialization();
             var (ParsedResourcePath, AuthorizationRequirements) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Delete, false);
+
+            if (resourcePathAvailabilityChecker is not null
+                && !resourcePathAvailabilityChecker(HttpMethod.Get, ParsedResourcePath))
+                throw new ResourceProviderException(
+                    $"The resource path {resourcePath} is not available.",
+                    StatusCodes.Status400BadRequest);
 
             // Authorize access to the resource path.
             await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, false, false, false);

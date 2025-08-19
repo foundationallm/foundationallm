@@ -3,10 +3,8 @@ using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
@@ -36,6 +34,7 @@ namespace FoundationaLLM.Core.API
                 builder.Environment.IsProduction(),
                 ServiceNames.CoreAPI);
 
+            builder.AddCoreResourcePathAvailabilityCheckerService();
             builder.AddDIContainerSettings();
 
             builder.Configuration.Sources.Clear();

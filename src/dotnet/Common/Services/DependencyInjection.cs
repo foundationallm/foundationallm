@@ -9,6 +9,7 @@ using FoundationaLLM.Common.Models.Configuration.Environment;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
+using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.Common.Services.Security;
 using FoundationaLLM.Common.Services.Tokenizers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

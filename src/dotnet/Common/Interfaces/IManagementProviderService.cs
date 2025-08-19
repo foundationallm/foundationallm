@@ -14,8 +14,14 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="resourcePath">The resource path.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
         /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
+        /// <param name="resourcePathAvailabilityChecker">An optional resource path availability checker used to block certain resource
+        /// providers and resource types.</param>
         /// <returns>The serialized form of the result of handling the request.</returns>
-        Task<object> HandleGetAsync(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null);
+        Task<object> HandleGetAsync(
+            string resourcePath,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null,
+            Func<HttpMethod, ResourcePath, bool>? resourcePathAvailabilityChecker = null);
 
         /// <summary>
         /// Handles a HTTP POST request for a specified resource path.
@@ -24,14 +30,26 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="requestPayload">The optional request payload.</param>
         /// <param name="formFile">The optional file attached to the request.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
+        /// <param name="resourcePathAvailabilityChecker">An optional resource path availability checker used to block certain resource
+        /// providers and resource types.</param>
         /// <returns>The serialized form of the result of handling the request.</returns>
-        Task<object> HandlePostAsync(string resourcePath, string? requestPayload, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity);
+        Task<object> HandlePostAsync(
+            string resourcePath,
+            string? requestPayload,
+            ResourceProviderFormFile? formFile,
+            UnifiedUserIdentity userIdentity,
+            Func<HttpMethod, ResourcePath, bool>? resourcePathAvailabilityChecker = null);
 
         /// <summary>
         /// Handles a HTTP DELETE request for a specified resource path.
         /// </summary>
         /// <param name="resourcePath">The resource path.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
-        Task HandleDeleteAsync(string resourcePath, UnifiedUserIdentity userIdentity);
+        /// <param name="resourcePathAvailabilityChecker">An optional resource path availability checker used to block certain resource
+        /// providers and resource types.</param>
+        Task HandleDeleteAsync(
+            string resourcePath,
+            UnifiedUserIdentity userIdentity,
+            Func<HttpMethod, ResourcePath, bool>? resourcePathAvailabilityChecker = null);
     }
 }
