@@ -78,6 +78,7 @@ FunctionsToExport = @(
     'Import-Dotenv',
     'Get-Conversations',
     'New-Conversation',
+    'Send-ConversationFile',
     'New-Completion'
 )
 

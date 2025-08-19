@@ -3,6 +3,7 @@ function New-Completion {
         [string]$AgentName,
         [string]$ConversationId,
         [string]$UserPrompt,
+        [string[]]$Attachments = $null,
         [hashtable]$Metadata = $null
     )
 
@@ -10,6 +11,7 @@ function New-Completion {
         agent_name = $AgentName
         session_id = $ConversationId
         user_prompt = $UserPrompt
+        attachments = $Attachments
         metadata = $Metadata
     }
 

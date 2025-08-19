@@ -18,3 +18,20 @@ function New-Conversation {
         -RelativeUri "sessions" `
         -Body $body
 }
+
+function Send-ConversationFile {
+    param (
+        [string]$AgentName,
+        [string]$ConversationId,
+        [string]$FilePath
+    )
+
+    $form = @{
+        file = Get-Item -Path $FilePath
+    }
+
+    return Invoke-CoreAPI `
+        -Method POST `
+        -RelativeUri "files/upload?sessionId=$ConversationId&agentName=$AgentName" `
+        -Form $form
+}

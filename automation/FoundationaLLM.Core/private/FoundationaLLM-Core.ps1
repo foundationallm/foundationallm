@@ -222,4 +222,18 @@ function Invoke-CoreAPI {
         -Uri  $uri `
         -Body ($Body | ConvertTo-Json -Depth 20) `
         -Headers $Headers
+
+    # TODO: We need a more advanced approach for making the call:
+
+    # $FilePath = "C:\path\to\file.pdf"
+    # $FileStream = [System.IO.File]::OpenRead($FilePath)
+    # $FileContent = New-Object System.Net.Http.StreamContent($FileStream)
+    # $FileContent.Headers.ContentType = [System.Net.Http.Headers.MediaTypeHeaderValue]::Parse("application/pdf")
+
+    # $Form = New-Object System.Net.Http.MultipartFormDataContent
+    # $Form.Add($FileContent, "file", [System.IO.Path]::GetFileName($FilePath))
+
+    # $Client = New-Object System.Net.Http.HttpClient
+    # $Response = $Client.PostAsync($url, $Form).Result
+    # $ResponseContent = $Response.Content.ReadAsStringAsync().Result
 }
