@@ -382,7 +382,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             var (ParsedResourcePath, AuthorizationRequirements) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Post, true, requireResource: false);
 
             if (resourcePathAvailabilityChecker is not null
-                && !resourcePathAvailabilityChecker(HttpMethod.Get, ParsedResourcePath))
+                && !resourcePathAvailabilityChecker(HttpMethod.Post, ParsedResourcePath))
                 throw new ResourceProviderException(
                     $"The resource path {resourcePath} is not available.",
                     StatusCodes.Status400BadRequest);
@@ -439,7 +439,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             var (ParsedResourcePath, AuthorizationRequirements) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Delete, false);
 
             if (resourcePathAvailabilityChecker is not null
-                && !resourcePathAvailabilityChecker(HttpMethod.Get, ParsedResourcePath))
+                && !resourcePathAvailabilityChecker(HttpMethod.Delete, ParsedResourcePath))
                 throw new ResourceProviderException(
                     $"The resource path {resourcePath} is not available.",
                     StatusCodes.Status400BadRequest);
