@@ -2138,7 +2138,7 @@ export default {
 				let promptObjectId = '';
 				if (promptRequest.prefix !== '') {
 					const promptResponse = await api.createOrUpdatePrompt(promptRequest.name, promptRequest);
-					promptObjectId = promptResponse.objectId;
+					promptObjectId = promptResponse.object_id;
 				}
 
 				// if (this.selectedWorkflow) {
@@ -2152,7 +2152,7 @@ export default {
 				// 	};
 
 				// 	const workflowPromptResponse = await api.createOrUpdatePrompt(this.selectedWorkflow.prompt_object_ids.main_prompt, promptRequest);
-				// 	workflowPromptResponse = promptResponse.objectId;
+				// 	workflowPromptResponse = promptResponse.object_id;
 				// }
 
 				let textPartitioningProfileObjectId = '';
