@@ -34,6 +34,7 @@ namespace FoundationaLLM.Core.API
                 builder.Environment.IsProduction(),
                 ServiceNames.CoreAPI);
 
+            builder.AddCoreResourcePathAvailabilityCheckerService();
             builder.AddDIContainerSettings();
 
             builder.Configuration.Sources.Clear();

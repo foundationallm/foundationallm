@@ -158,6 +158,7 @@ The following role assignments must be added to the Context API's Managed Identi
 |`Storage Blob Data Contributor` | Azure | Main FoundationaLLM storage account.|
 |`Azure ContainerApps Session Executor` | Azure | Azure Container Apps Dynamic Sessions used by the FoundationaLLM Context API.|
 |`Azure ContainerApps Session Executor` | Azure | Azure Container Apps Custom Container used by the FoundationaLLM Context API.|
+|`EventGrid Contributor` | Azure | Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline API.|
 |`Search Index Data Reader` | Azure | Azure AI Search service used by the FoundationaLLM instance.|
 
 The following role assignments must be added to the Orchestrations API's Managed Identity:
