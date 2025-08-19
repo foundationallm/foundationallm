@@ -23,6 +23,10 @@ namespace FoundationaLLM.Core.Services
                     [ResourceProviderNames.FoundationaLLM_AIModel] = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                     {
                         AIModelResourceTypeNames.AIModels
+                    },
+                    [ResourceProviderNames.FoundationaLLM_Agent] = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        AgentResourceTypeNames.Agents
                     }
                 }
             };
