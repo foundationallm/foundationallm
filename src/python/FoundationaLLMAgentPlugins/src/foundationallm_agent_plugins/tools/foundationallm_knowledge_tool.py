@@ -44,7 +44,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         self.knowledge_source_id = self.get_knowledge_source_id()
         self.vector_store_query = self.tool_config.properties.get("vector_store_query", None)
         self.knowledge_graph_query = self.tool_config.properties.get("knowledge_graph_query", None)
-        self.vector_store_metadata_filter = self.tool_config.properties.get("vector_store_metadata_filter", None)
+        self.knowledge_unit_vector_store_filters = self.tool_config.properties.get("knowledge_unit_vector_store_filters", None)
         self.context_api_client = self.get_context_api_client(user_identity, config)
         self.instance_id = objects.get(CompletionRequestObjectKeys.INSTANCE_ID, None)
 
@@ -82,6 +82,11 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         if RunnableConfigKeys.CONVERSATION_ID in runnable_config['configurable']:
             conversation_id = runnable_config['configurable'][RunnableConfigKeys.CONVERSATION_ID]
 
+        # Retrieve the agent name from the runnable config if availabl;e
+        agent_name = None
+        if 'agent_name' in runnable_config['configurable']:
+            agent_name = runnable_config['configurable']['agent_name']
+
         user_prompt = runnable_config['configurable'][RunnableConfigKeys.ORIGINAL_USER_PROMPT] \
             if RunnableConfigKeys.ORIGINAL_USER_PROMPT in runnable_config['configurable'] \
             else None
@@ -95,27 +100,45 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                 'user_prompt': original_prompt,
                 'vector_store_query': self.vector_store_query,
                 'knowledge_graph_query': self.knowledge_graph_query,
-                'vector_store_id': conversation_id if self.use_conversation_as_vector_store else None,
-                'vector_store_metadata_filter': {
-                    'FileName': file_name
-                } if file_name else None,
+                'knowledge_unit_vector_store_filters': self.knowledge_unit_vector_store_filters,
                 "format_response": True
             }
-        # Merge with the vector store metadata filter if it exists
-        if self.vector_store_metadata_filter:
-            tool_runtime_properties = runnable_config['configurable'][self.name] if self.name in runnable_config['configurable'] else {}
-            metadata_filter_copy = self.vector_store_metadata_filter.copy()
-            for key, value in metadata_filter_copy.items():
-                if isinstance(value, str) and value.startswith('__COMPLETION_REQUEST_METADATA__'):
-                    value = tool_runtime_properties.get(value, None)
-                    if value is None:
-                        raise ValueError(f"Metadata key '{value}' not found in tool runtime properties.")
-                metadata_filter_copy[key] = value
+        
+        if self.knowledge_unit_vector_store_filters:
 
-            query_request['vector_store_metadata_filter'] = {
-                **query_request['vector_store_metadata_filter'],
-                **metadata_filter_copy
-            } if query_request['vector_store_metadata_filter'] else metadata_filter_copy
+            # Get the tool's runtime properties, if any.
+            tool_runtime_properties = runnable_config['configurable'][self.name] if self.name in runnable_config['configurable'] else {}
+
+            for vector_store_filter in self.knowledge_unit_vector_store_filters:
+                if not vector_store_filter['vector_store_metadata_filter']:
+                    vector_store_filter['vector_store_metadata_filter'] = {}
+
+                # Add the file name to the metadata filter if it exists
+                if file_name:
+                    vector_store_filter['vector_store_metadata_filter']['FileName'] = file_name
+
+                # Parse all metadata filters and replace placeholders with runtime properties
+                for key, value in vector_store_filter['vector_store_metadata_filter'].items():
+                    if isinstance(value, str) and value.startswith('__COMPLETION_REQUEST_METADATA__'):
+                        value = tool_runtime_properties.get(value, None)
+                        if value is None:
+                            raise ValueError(f"Metadata key '{value}' not found in tool runtime properties.")
+                    vector_store_filter['vector_store_metadata_filter'][key] = value
+
+                # Handle the well-known knowledge unit named Conversations
+                if vector_store_filter['knowledge_unit_id'] == 'Conversations':
+                    if self.use_conversation_as_vector_store:
+                        if conversation_id:
+                            vector_store_filter['vector_store_id'] = conversation_id
+                        else:
+                            raise ToolException("The conversation id is required to query the Conversations knowledge unit..")
+                        
+                # Handle the well known knowledge unit named AgentPrivateStores
+                if vector_store_filter['knowledge_unit_id'] == 'AgentPrivateStores':
+                    if agent_name:
+                        vector_store_filter['vector_store_id'] = agent_name
+                    else:
+                        raise ToolException("The agent name is required to query the AgentPrivateStores knowledge unit.")
 
         query_response = await self.context_api_client.post_async(
             endpoint = f"/instances/{self.instance_id}/knowledgeSources/{self.knowledge_source_id}/query",

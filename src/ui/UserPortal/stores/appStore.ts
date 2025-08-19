@@ -788,7 +788,7 @@ export const useAppStore = defineStore('app', {
 			const fileName = file.get('file')?.name;
 			const contentType = file.get('file')?.type;
 			const newAttachment: Attachment = {
-				id: upsertResult.objectId,
+				id: upsertResult.object_id,
 				fileName,
 				sessionId,
 				contentType,
@@ -797,7 +797,7 @@ export const useAppStore = defineStore('app', {
 
 			this.attachments.push(newAttachment);
 
-			return upsertResult.objectId;
+			return upsertResult.object_id;
 		},
 
 		async deleteAttachment(attachment: Attachment) {

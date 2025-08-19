@@ -213,7 +213,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             {
                 _logger.LogInformation("Starting to initialize the {ResourceProvider} resource provider...", _name);
 
-                if (_useInternalReferencesStore)
+                if (_useInternalReferencesStore
+                    && !_proxyMode)
                 {
                     // The resource provider uses the default internal resource reference store.
                     _resourceReferenceStore = new ResourceProviderResourceReferenceStore<TResourceReference>(
@@ -227,7 +228,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 await InitializeInternal();
 
                 if (_eventTypesToSubscribe != null
-                    && _eventTypesToSubscribe.Count > 0)
+                    && _eventTypesToSubscribe.Count > 0
+                    && !_proxyMode)
                 {
                     _localEventService = new LocalEventService(
                         new LocalEventServiceSettings { EventProcessingCycleSeconds = 10 },
@@ -239,7 +241,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 
                 _isInitialized = true;
 
-                if (_useInternalReferencesStore && _cacheSettings.EnableCache)
+                if (_useInternalReferencesStore
+                    && _cacheSettings.EnableCache
+                    && !_proxyMode)
                     await WarmupCache();
 
                 _logger.LogInformation("The {ResourceProvider} resource provider was successfully initialized.", _name);

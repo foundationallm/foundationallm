@@ -249,7 +249,7 @@
 				<TabPanel header="Agents">
 					<div class="mb-5">
 						<nuxt-link 
-							to="#"
+							to="/create-agent"
 							class="p-button p-component create-agent-button">
 							New Agent <i class="pi pi-plus ml-3"></i>
 						</nuxt-link>

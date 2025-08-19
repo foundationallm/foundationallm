@@ -8,6 +8,7 @@ class UserIdentity(BaseModel):
     name: str = None
     user_name: str = None
     upn: str = None
+    user_id: str = None
 
     @staticmethod
     def from_json(json_dict):
@@ -17,5 +18,6 @@ class UserIdentity(BaseModel):
             return UserIdentity(
                 name=json_dict['name'],
                 user_name=json_dict['user_name'],
-                upn=json_dict['upn']
+                upn=json_dict['upn'],
+                user_id=json_dict['user_id']
             )

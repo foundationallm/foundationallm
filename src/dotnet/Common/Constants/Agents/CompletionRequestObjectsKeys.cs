@@ -54,6 +54,11 @@ namespace FoundationaLLM.Common.Constants.Agents
         public const string InstanceId = "FoundationaLLM.InstanceId";
 
         /// <summary>
+        /// The key name for the FoundationaLLM agent name;
+        /// </summary>
+        public const string AgentName = "Agent.AgentName";
+
+        /// <summary>
         /// The key name for the workflow invocation conversation files.
         /// </summary>
         public const string WorkflowInvocationConversationFiles = "Workflow.Invocation.ConversationFiles";

@@ -12,6 +12,30 @@ namespace FoundationaLLM.Context.Interfaces
     public interface IKnowledgeService
     {
         /// <summary>
+        /// Retrieves a specified knowledge unit.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
+        /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
+        /// <returns></returns>
+        Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
+            string instanceId,
+            string knowledgeUnitId,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Retrieves a specified knowledge source.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
+        /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
+        /// <returns></returns>
+        Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSource(
+            string instanceId,
+            string knowledgeSourceId,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
         /// Retrieves the list of knowledge units.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

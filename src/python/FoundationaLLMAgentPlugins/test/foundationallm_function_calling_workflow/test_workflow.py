@@ -45,13 +45,10 @@ from foundationallm.models.constants import (
 # user_prompt = "Best practices for trading."
 # user_prompt = "Based on the most important recommendations for borrowers from the document named Selling-Guide_02-05-25_highlighted.pdf, determine whether the document is compliant or not."
 # user_prompt = "What is considered acceptable income?"
-user_prompt = "Describe the main project goals"
+# user_prompt = "Describe the main project goals"
 # user_prompt = "What are the latest project health ratings?"
 
-operation_id = str(uuid.uuid4())
-conversation_id = "20250717-143700-iDMafKaRXUC5xQsASe6kfA"
-
-user_identity_json = {"name": "Experimental Test", "user_name":"ciprian@foundationaLLM.ai","upn":"ciprian@foundationaLLM.ai"}
+user_identity_json = {"name": "Experimental Test", "user_name":"ciprian@foundationaLLM.ai","upn":"ciprian@foundationaLLM.ai", "user_id": "949195b1-f432-4da3-8f7d-5298e3fda432"}
 full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
 
 user_identity = UserIdentity.from_json(user_identity_json)
@@ -59,6 +56,10 @@ config = Configuration()
 
 with open(full_request_json_file_name, 'r') as f:
     request_json = json.load(f)
+
+operation_id = request_json['operation_id']
+conversation_id = request_json['session_id']
+user_prompt = request_json['user_prompt']
 
 request = KnowledgeManagementCompletionRequest(**request_json)
 agent = request.agent
