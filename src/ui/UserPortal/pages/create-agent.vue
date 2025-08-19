@@ -88,16 +88,11 @@
                                             </VTooltip>
                                             Welcome Message
                                         </label>
-                                        <Textarea
-                                            class="w-full resize-none"
-                                            name="agentWelcomeMessage"
-                                            id="agentWelcomeMessage" 
-                                            aria-labelledby="aria-welcome-message-desc"
-                                            rows="5"
-                                            v-model="textCounter"
-                                            @input="updateCharacterCount"
-                                        />
-                                        <p class="text-xs text-[#898989]">(<span class="charectersControl">{{ characterCount }}</span>
+                                        <Textarea class="w-full resize-none" name="agentWelcomeMessage"
+                                            id="agentWelcomeMessage" aria-labelledby="aria-welcome-message-desc"
+                                            rows="5" v-model="textCounter" @input="updateCharacterCount" />
+                                        <p class="text-xs text-[#898989]">(<span class="charectersControl">{{
+                                            characterCount }}</span>
                                             Characters)</p>
                                     </div>
                                 </div>
@@ -135,11 +130,15 @@
 
                                         <div class="mb-6">
                                             <label for="systemPrompt" class="block text-base text-[#898989] mb-2">
-                                                <VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']"
+                                                <VTooltip :auto-hide="isMobile"
+                                                    :popper-triggers="isMobile ? [] : ['hover']"
                                                     class="inline-block relative top-[2px]">
                                                     <i class="pi pi-info-circle text-[#5472d4]"></i>
                                                     <template #popper>
-                                                        <div role="tooltip" class="max-w-[250px]">You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional.</div>
+                                                        <div role="tooltip" class="max-w-[250px]">You are an analytic
+                                                            agent named Khalil that helps people find information about
+                                                            FoundationaLLM. Provide concise answers that are polite and
+                                                            professional.</div>
                                                     </template>
                                                 </VTooltip>
                                                 System Prompt
@@ -158,11 +157,14 @@
                                         <div class="flex flex-wrap items-center mt-8 max-w-[275px] m-auto">
                                             <div class="w-full max-w-[calc(100%-50px)] pr-4">
                                                 <p class="block text-base text-[#898989] my-0">
-                                                    <VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']"
+                                                    <VTooltip :auto-hide="isMobile"
+                                                        :popper-triggers="isMobile ? [] : ['hover']"
                                                         class="inline-block relative top-[2px]">
                                                         <i class="pi pi-info-circle text-[#5472d4]"></i>
                                                         <template #popper>
-                                                            <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto quae molestias quam numquam alias?</div>
+                                                            <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor
+                                                                sit amet, consectetur adipisicing elit. Iusto quae
+                                                                molestias quam numquam alias?</div>
                                                         </template>
                                                     </VTooltip>
                                                     Image Generation
@@ -180,11 +182,14 @@
                                         <div class="flex flex-wrap items-center mt-8 max-w-[275px] m-auto">
                                             <div class="w-full max-w-[calc(100%-50px)] pr-4">
                                                 <p class="block text-base text-[#898989] my-0">
-                                                    <VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']"
+                                                    <VTooltip :auto-hide="isMobile"
+                                                        :popper-triggers="isMobile ? [] : ['hover']"
                                                         class="inline-block relative top-[2px]">
                                                         <i class="pi pi-info-circle text-[#5472d4]"></i>
                                                         <template #popper>
-                                                            <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto quae molestias quam numquam alias?</div>
+                                                            <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor
+                                                                sit amet, consectetur adipisicing elit. Iusto quae
+                                                                molestias quam numquam alias?</div>
                                                         </template>
                                                     </VTooltip>
                                                     User Portal File Upload
@@ -204,7 +209,44 @@
                         </div>
                     </TabPanel>
 
-                    <TabPanel header="Data Sources" :disabled="true"></TabPanel>
+                    <TabPanel header="Data Sources">
+                        <div class="px-4 py-8 mt-8 border border-solid border-gray-300">
+                            <div class="w-full max-w-[1000px] mx-auto">
+                                <div class="mb-6">
+                                    <p class="block text-base text-[#898989] mb-6">
+                                        <VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']"
+                                            class="inline-block relative top-[2px]">
+                                            <i class="pi pi-info-circle text-[#5472d4]"></i>
+                                            <template #popper>
+                                                <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor sit amet
+                                                    consectetur adipisicing elit. Voluptate tenetur iure, distinctio
+                                                    soluta nostrum corporis excepturi consectetur vitae mollitia eum
+                                                    cumque corrupti necessitatibus? Nihil vero, dolorem nesciunt
+                                                    perspiciatis voluptas amet!</div>
+                                            </template>
+                                        </VTooltip>
+                                        Data Source(s)
+                                    </p>
+
+                                    <p class="block text-base text-[#898989] mb-3">Upload File(s)</p>
+
+                                    <!-- File Upload Area -->
+                                    <div class="custom-uploader" :class="{ 'drag-over': isDragOver }"
+                                        @dragover.prevent="onDragOver" @dragleave.prevent="onDragLeave"
+                                        @drop.prevent="onDrop" @click="triggerFileInput">
+                                        <div class="upload-content">
+                                            <i class="pi pi-upload text-3xl text-[#94a3b8] mb-3 block"></i>
+                                            <p class="text-lg text-[#64748b] font-normal mb-2">Drop and drag or <span class="text-[#5472d4] underline">choose file</span> to
+                                                upload</p>
+                                            <p class="text-sm text-[#94a3b8] font-medium italic">(TBD file type list)</p>
+                                        </div>
+                                        <input ref="fileInput" type="file" accept=".pdf,.doc,.docx,.txt"
+                                            @change="onFileSelect" class="hidden">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </TabPanel>
 
                     <TabPanel header="Share" :disabled="true"></TabPanel>
                 </TabView>
@@ -229,6 +271,8 @@
                 isMobile: window.screen.width < 950,
                 textCounter: '',
                 characterCount: 0,
+                isDragOver: false,
+                uploadedFiles: [] as File[],
             };
         },
 
@@ -236,6 +280,65 @@
             updateCharacterCount() {
                 this.characterCount = this.textCounter.length;
             },
+
+            onDragOver(event: DragEvent) {
+                this.isDragOver = true;
+            },
+
+            onDragLeave(event: DragEvent) {
+                this.isDragOver = false;
+            },
+
+            onDrop(event: DragEvent) {
+                this.isDragOver = false;
+                const files = Array.from(event.dataTransfer?.files || []);
+                this.handleFiles(files);
+            },
+
+            triggerFileInput() {
+                (this.$refs.fileInput as HTMLInputElement).click();
+            },
+
+            onFileSelect(event: Event) {
+                const target = event.target as HTMLInputElement;
+                const files = Array.from(target.files || []);
+                this.handleFiles(files);
+            },
+
+            handleFiles(files: File[]) {
+                const allowedTypes = [
+                    'application/pdf',
+                    'application/msword',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'text/plain'
+                ];
+
+                const validFiles = files.filter(file => {
+                    if (!allowedTypes.includes(file.type)) {
+                        console.warn(`File type not supported: ${file.name}`);
+                        return false;
+                    }
+                    if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                        console.warn(`File too large: ${file.name}`);
+                        return false;
+                    }
+                    return true;
+                });
+
+                this.uploadedFiles.push(...validFiles);
+            },
+
+            removeFile(index: number) {
+                this.uploadedFiles.splice(index, 1);
+            },
+
+            formatFileSize(bytes: number): string {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
         },
     });
 </script>
@@ -271,5 +374,26 @@
                 }
             }
         }
+    }
+
+    .custom-uploader {
+        border: 2px dashed #94a3b8;
+        padding: 2rem;
+        text-align: center;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &.drag-over {
+            transform: scale(1.02);
+        }
+
+        .upload-content {
+            pointer-events: none;
+        }
+    }
+
+    .hidden {
+        display: none;
     }
 </style>
