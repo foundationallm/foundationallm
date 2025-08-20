@@ -30,7 +30,7 @@
 		margin-right: 12px;
 		height: 55px;
 		width: 55px;
-		border-radius: 10px;
+		border-radius: 50%;
 		background: transparent;
 		overflow: hidden;
 		display: flex;
