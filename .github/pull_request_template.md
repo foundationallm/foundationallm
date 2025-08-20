@@ -1,8 +1,10 @@
 # {PR title}
 
-## The issue or feature being addressed
+## The Azure DevOps work item being addressed
 
-Fixes #{bug number} (in this specific format)
+(replace below `<work_item_id>` with the actual work item ID)
+
+AB#<work_item_id>
 
 ## Details on the issue fix or feature implementation
 
