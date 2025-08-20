@@ -15,7 +15,6 @@ import type {
 	ResourceProviderDeleteResults,
 	RateLimitError,
 	MessageResponse,
-	AgentWrapper
 } from '@/js/types';
 
 export default {
@@ -312,7 +311,7 @@ export default {
 		try {
 			const agents = await this.fetch(
 			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents`
-			) as AgentWrapper[];
+			) as ResourceProviderGetResult<Agent>[];
 			
 			agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
 			

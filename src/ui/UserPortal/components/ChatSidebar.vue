@@ -538,8 +538,8 @@
 
 					const agentsArray = Array.isArray(response) ? response : [];
 					
-					this.agentOptions2 = agentsArray.map((agentWrapper, index) => {
-						const agent = agentWrapper.resource || agentWrapper;
+					this.agentOptions2 = agentsArray.map((ResourceProviderGetResult, index) => {
+						const agent = ResourceProviderGetResult.resource || ResourceProviderGetResult;
 						
 						return {
 							object_id: agent.object_id,

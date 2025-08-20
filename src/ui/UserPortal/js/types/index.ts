@@ -199,7 +199,7 @@ export interface MessageResponse {
 	status_message?: string;
 }
 
-export interface AgentResource {
+export interface ResourceBase {
 	type: string;
 	name: string;
 	object_id: string;
@@ -212,10 +212,4 @@ export interface AgentResource {
 	updated_by: string;
 	deleted: boolean;
 	expiration_date: string | null;
-}
-
-export interface AgentWrapper {
-	resource: AgentResource;
-	roles: any[];
-	actions: any[];
 }
