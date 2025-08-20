@@ -26,6 +26,11 @@
         public const string AgentFileToolAssociations = "agentFileToolAssociations";
 
         /// <summary>
+        /// Agent templates.
+        /// </summary>
+        public const string AgentTemplates = "agentTemplates";
+
+        /// <summary>
         /// Workflows.
         /// </summary>
         public const string Workflows = "workflows";

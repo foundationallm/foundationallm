@@ -81,6 +81,21 @@
 				"name": "FoundationaLLM.Agent/management/write",
 				"description": "Execute management actions.",
 				"field_name": "FoundationaLLM_Agent_Management_Write"
+			},
+			{
+				"name": "FoundationaLLM.Agent/agentTemplates/read",
+				"description": "Read agent templates.",
+				"field_name": "FoundationaLLM_Agent_Templates_Read"
+			},
+			{
+				"name": "FoundationaLLM.Agent/agentTemplates/write",
+				"description": "Create or update agent templates.",
+				"field_name": "FoundationaLLM_Agent_Templates_Write"
+			},
+			{
+				"name": "FoundationaLLM.Agent/agentTemplates/delete",
+				"description": "Delete agent templates.",
+				"field_name": "FoundationaLLM_Agent_Templates_Delete"
 			}
 		]
 	},

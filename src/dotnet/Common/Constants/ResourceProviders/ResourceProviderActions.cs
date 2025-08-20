@@ -6,6 +6,11 @@
     public static class ResourceProviderActions
     {
         /// <summary>
+        /// Create a new resource.
+        /// </summary>
+        public const string CreateNew = "create-new";
+
+        /// <summary>
         /// Check the validity of a resource name.
         /// </summary>
         public const string CheckName = "checkname";

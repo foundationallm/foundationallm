@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates;
 
 namespace FoundationaLLM.Common.Constants.ResourceProviders
 {
@@ -87,6 +88,20 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                             }
                         }
                     }
+                }
+            },
+            {
+                AgentResourceTypeNames.AgentTemplates,
+                new ResourceTypeDescriptor(
+                    AgentResourceTypeNames.AgentTemplates,
+                        typeof(AgentTemplate))
+                {
+                    AllowedTypes = [],
+                    Actions = [
+                        new ResourceTypeAction(ResourceProviderActions.CreateNew, true, false, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Write}|{RoleDefinitionNames.Agents_Contributor}", [], [typeof(AgentCreationFromTemplateRequest)], [typeof(ResourceProviderUpsertResult)])
+                        ])
+                    ]
                 }
             },
             {
