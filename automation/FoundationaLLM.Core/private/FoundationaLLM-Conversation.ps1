@@ -23,15 +23,12 @@ function Send-ConversationFile {
     param (
         [string]$AgentName,
         [string]$ConversationId,
-        [string]$FilePath
+        [string]$FilePath,
+        [string]$FileContentType
     )
-
-    $form = @{
-        file = Get-Item -Path $FilePath
-    }
-
     return Invoke-CoreAPI `
         -Method POST `
         -RelativeUri "files/upload?sessionId=$ConversationId&agentName=$AgentName" `
-        -Form $form
+        -FilePath $FilePath `
+        -FileContentType $FileContentType
 }

@@ -186,7 +186,8 @@ function Invoke-CoreAPI {
         [string]$RelativeUri,
         [hashtable]$Body = $null,
         [hashtable]$Headers = $null,
-        [hashtable]$Form = $null
+        [string]$FilePath = $null,
+        [string]$FileContentType = $null
     )
 
     Write-Host "Calling Core API:" -ForegroundColor Green
@@ -207,14 +208,19 @@ function Invoke-CoreAPI {
     $uri = "$($baseUri.AbsoluteUri)/$($RelativeUri)"
 
     Write-Host "$($Method) $($uri)" -ForegroundColor Green
-    if ($Form) {
+    if ($FilePath) {
 
-        $Headers["Content-Type"] = "multipart/form-data;boundary=----WebKitFormBoundaryABCDEFGHIJKLMONOPQRSTUVWXYZ"
-        return Invoke-RestMethod `
-            -Method $Method `
-            -Uri  $uri `
-            -Form $Form `
-            -Headers $Headers
+        $FileStream = [System.IO.File]::OpenRead($FilePath)
+        $FileContent = New-Object System.Net.Http.StreamContent($FileStream)
+        $FileContent.Headers.ContentType = [System.Net.Http.Headers.MediaTypeHeaderValue]::Parse($FileContentType)
+
+        $Form = New-Object System.Net.Http.MultipartFormDataContent
+        $Form.Add($FileContent, "file", [System.IO.Path]::GetFileName($FilePath))
+
+        $Client = New-Object System.Net.Http.HttpClient
+        $Response = $Client.PostAsync($uri, $Form).Result
+        $ResponseContent = $Response.Content.ReadAsStringAsync().Result
+        return $ResponseContent | ConvertFrom-Json
     }
 
     return Invoke-RestMethod `
@@ -222,18 +228,4 @@ function Invoke-CoreAPI {
         -Uri  $uri `
         -Body ($Body | ConvertTo-Json -Depth 20) `
         -Headers $Headers
-
-    # TODO: We need a more advanced approach for making the call:
-
-    # $FilePath = "C:\path\to\file.pdf"
-    # $FileStream = [System.IO.File]::OpenRead($FilePath)
-    # $FileContent = New-Object System.Net.Http.StreamContent($FileStream)
-    # $FileContent.Headers.ContentType = [System.Net.Http.Headers.MediaTypeHeaderValue]::Parse("application/pdf")
-
-    # $Form = New-Object System.Net.Http.MultipartFormDataContent
-    # $Form.Add($FileContent, "file", [System.IO.Path]::GetFileName($FilePath))
-
-    # $Client = New-Object System.Net.Http.HttpClient
-    # $Response = $Client.PostAsync($url, $Form).Result
-    # $ResponseContent = $Response.Content.ReadAsStringAsync().Result
 }
