@@ -22,8 +22,8 @@ export interface ContentArtifact {
 }
 
 export interface ResourceProviderUpsertResult {
-	object_id: string;
-	resource_exists: boolean;
+	objectId: string;
+	resourceExists: boolean;
 }
 
 export interface MessageContent {
@@ -197,4 +197,25 @@ export interface MessageResponse {
 	result?: Message;
 	operation_id?: string;
 	status_message?: string;
+}
+
+export interface AgentResource {
+	type: string;
+	name: string;
+	object_id: string;
+	display_name: string;
+	description: string;
+	cost_center?: string;
+	created_on: string;
+	updated_on: string;
+	created_by: string | null;
+	updated_by: string;
+	deleted: boolean;
+	expiration_date: string | null;
+}
+
+export interface AgentWrapper {
+	resource: AgentResource;
+	roles: any[];
+	actions: any[];
 }
