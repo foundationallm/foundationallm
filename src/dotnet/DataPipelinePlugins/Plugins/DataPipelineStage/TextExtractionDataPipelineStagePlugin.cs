@@ -110,7 +110,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 rawContentResult.Value!.ContentType,
                 out var contentType))
             {
-                return new PluginResult(false, false,
+                return new PluginResult(false, true,
                     $"The content type {rawContentResult.Value.ContentType} is not supported by the {Name} plugin.");
             }
 
