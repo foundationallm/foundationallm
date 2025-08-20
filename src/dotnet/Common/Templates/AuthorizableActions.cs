@@ -118,6 +118,27 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Agent")
                 },
                 {
+                    AuthorizableActionNames.FoundationaLLM_Agent_Templates_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Agent_Templates_Read,
+                        "Read agent templates.",
+                        "Agent")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Agent_Templates_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Agent_Templates_Write,
+                        "Create or update agent templates.",
+                        "Agent")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Agent_Templates_Delete,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Agent_Templates_Delete,
+                        "Delete agent templates.",
+                        "Agent")
+                },
+                {
                     AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Read,
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Read,

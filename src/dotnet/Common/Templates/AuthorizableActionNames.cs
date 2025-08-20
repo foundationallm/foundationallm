@@ -86,6 +86,21 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string FoundationaLLM_Agent_Management_Write = "FoundationaLLM.Agent/management/write";
 
+        /// <summary>
+        /// Read agent templates.
+        /// </summary>
+        public const string FoundationaLLM_Agent_Templates_Read = "FoundationaLLM.Agent/agentTemplates/read";
+
+        /// <summary>
+        /// Create or update agent templates.
+        /// </summary>
+        public const string FoundationaLLM_Agent_Templates_Write = "FoundationaLLM.Agent/agentTemplates/write";
+
+        /// <summary>
+        /// Delete agent templates.
+        /// </summary>
+        public const string FoundationaLLM_Agent_Templates_Delete = "FoundationaLLM.Agent/agentTemplates/delete";
+
         #endregion
 
         #region AzureAI

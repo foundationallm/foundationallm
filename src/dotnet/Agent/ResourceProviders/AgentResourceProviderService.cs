@@ -22,6 +22,7 @@ using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
@@ -31,10 +32,12 @@ using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Services.ResourceProviders;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Graph.Models;
 using Microsoft.Graph.Models.CallRecords;
 using System.Data;
 using System.Text;
@@ -182,6 +185,16 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         JsonSerializer.Deserialize<AgentAccessTokenValidationRequest>(serializedAction)!,
                         userIdentity),
 
+                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+                },
+                AgentResourceTypeNames.AgentTemplates => resourcePath.Action switch
+                {
+                    ResourceProviderActions.CreateNew => await CreateNewAgentFromTemplate(
+                        resourcePath,
+                        authorizationResult,
+                        JsonSerializer.Deserialize<AgentCreationFromTemplateRequest>(serializedAction)!,
+                        userIdentity),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
@@ -1700,12 +1713,24 @@ namespace FoundationaLLM.Agent.ResourceProviders
             return removalSuccess;
         }
 
-        private static string GetFileExtension(string fileName) =>
-            Path.GetExtension(fileName);
+        private async Task<ResourceProviderUpsertResult> CreateNewAgentFromTemplate(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            AgentCreationFromTemplateRequest creationRequest,
+            UnifiedUserIdentity userIdentity)
+        {
+            return new ResourceProviderUpsertResult
+            {
+                ObjectId = "test",
+                ResourceExists = false
+            };
+        }
 
         #endregion
 
         #region Utils
+        private static string GetFileExtension(string fileName) =>
+            Path.GetExtension(fileName);
 
         private IContextServiceClient GetContextServiceClient(
             UnifiedUserIdentity userIdentity) =>

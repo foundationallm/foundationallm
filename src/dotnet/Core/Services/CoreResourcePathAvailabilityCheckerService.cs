@@ -46,7 +46,15 @@ namespace FoundationaLLM.Core.Services
                             {
                                 ResourceProviderActions.CheckName
                             }
-                        }
+                        },
+                        [AgentResourceTypeNames.AgentTemplates] = new ResourceTypeAvailability
+                        {
+                            IsResourceTypeAvailable = false,
+                            AvailableActions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                            {
+                                ResourceProviderActions.CreateNew
+                            }
+                        },
                     }
                 },
             };
