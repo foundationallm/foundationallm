@@ -218,6 +218,13 @@ function Invoke-CoreAPI {
         $Form.Add($FileContent, "file", [System.IO.Path]::GetFileName($FilePath))
 
         $Client = New-Object System.Net.Http.HttpClient
+        $Client.DefaultRequestHeaders.Clear()
+        foreach ($key in $Headers.Keys) {
+            if ($key -ne 'Content-Type') {
+                $Client.DefaultRequestHeaders.Add($key, $Headers[$key])
+            }
+        }
+
         $Response = $Client.PostAsync($uri, $Form).Result
         $ResponseContent = $Response.Content.ReadAsStringAsync().Result
         return $ResponseContent | ConvertFrom-Json
