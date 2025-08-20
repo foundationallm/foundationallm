@@ -25,20 +25,16 @@ using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
-using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureAI;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Services.ResourceProviders;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Graph.Models;
-using Microsoft.Graph.Models.CallRecords;
 using System.Data;
 using System.Text;
 using System.Text.Json;
@@ -54,6 +50,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
+    /// <param name="agentTemplateService">The agent template service used to create agents from templates.</param>
     /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> providing Cosmos DB services.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to provide loggers for logging.</param>
@@ -65,6 +62,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
         [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Agent)] IStorageService storageService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
+        IAgentTemplateService agentTemplateService,
         IAzureCosmosDBService cosmosDBService,
         IServiceProvider serviceProvider,
         ILoggerFactory loggerFactory,
@@ -85,6 +83,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             proxyMode: proxyMode)
     {
         private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
+        private readonly IAgentTemplateService _agentTemplateService = agentTemplateService;
 
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
@@ -94,8 +93,12 @@ namespace FoundationaLLM.Agent.ResourceProviders
         protected override string _name => ResourceProviderNames.FoundationaLLM_Agent;
 
         /// <inheritdoc/>
-        protected override async Task InitializeInternal() =>
+        protected override async Task InitializeInternal()
+        {
+            _agentTemplateService.SetResourceProviderServices(
+                _serviceProvider.GetServices<IResourceProviderService>());
             await Task.CompletedTask;
+        }
 
         #region Resource provider support for Management API
 
@@ -145,7 +148,14 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
             resourcePath.ResourceTypeName switch
             {
-                AgentResourceTypeNames.Agents => await UpdateAgent(resourcePath, serializedResource!, authorizationResult, userIdentity),
+                AgentResourceTypeNames.Agents => await UpdateAgent(
+                    resourcePath,
+                    JsonSerializer.Deserialize<AgentBase>(serializedResource!)
+                        ?? throw new ResourceProviderException(
+                            "The object definition is invalid.",
+                            StatusCodes.Status400BadRequest),
+                    authorizationResult,
+                    userIdentity),
                 AgentResourceTypeNames.AgentFiles => await UpdateAgentFile(resourcePath, formFile!, userIdentity),
                 AgentResourceTypeNames.AgentAccessTokens => await UpdateAgentAccessToken(resourcePath, serializedResource!, authorizationResult, userIdentity),
                 AgentResourceTypeNames.AgentFileToolAssociations => await UpdateFileToolAssociations(resourcePath, serializedResource!, userIdentity),
@@ -251,6 +261,25 @@ namespace FoundationaLLM.Agent.ResourceProviders
             }
         }
 
+        /// <inheritdoc/>
+        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            T resource,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderUpsertOptions? options = null) =>
+            resource.GetType() switch
+            {
+                Type t when t == typeof(KnowledgeManagementAgent) =>
+                    ((await UpdateAgent(
+                        resourcePath,
+                        (resource as AgentBase)!,
+                        authorizationResult,
+                        userIdentity)).ToResourceProviderUpsertResult<KnowledgeManagementAgent>() as TResult)!,
+                _ => throw new ResourceProviderException($"The resource type {resource.GetType().Name} is not supported by the {_name} resource provider.",
+                    StatusCodes.Status400BadRequest)
+            };
+
         #endregion
 
         #region Resource management
@@ -269,14 +298,10 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
         private async Task<ResourceProviderUpsertResult> UpdateAgent(
             ResourcePath resourcePath,
-            string serializedAgent,
+            AgentBase agent,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity)
         {
-            var agent = JsonSerializer.Deserialize<AgentBase>(serializedAgent)
-                ?? throw new ResourceProviderException("The object definition is invalid.",
-                    StatusCodes.Status400BadRequest);
-
             var existingAgentReference = await _resourceReferenceStore!.GetResourceReference(agent.Name);
             var existingAgent = existingAgentReference is not null
                 ? await LoadResource<AgentBase>(existingAgentReference)
@@ -337,7 +362,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     throw new ResourceProviderException("There was an error attempting to create the associated vectorization pipeline for the agent.",
                         StatusCodes.Status500InternalServerError);
             }
-
 
             if (agent.Workflow is AzureOpenAIAssistantsAgentWorkflow)
             {
@@ -1716,14 +1740,53 @@ namespace FoundationaLLM.Agent.ResourceProviders
         private async Task<ResourceProviderUpsertResult> CreateNewAgentFromTemplate(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
-            AgentCreationFromTemplateRequest creationRequest,
+            AgentCreationFromTemplateRequest agentCreationRequest,
             UnifiedUserIdentity userIdentity)
         {
-            return new ResourceProviderUpsertResult
-            {
-                ObjectId = "test",
-                ResourceExists = false
-            };
+            var agentTemplate = await LoadResource<AgentTemplate>(
+                resourcePath.MainResourceId!)
+                ?? throw new ResourceProviderException(
+                    $"The agent template {resourcePath.MainResourceId} does not exist.",
+                    StatusCodes.Status404NotFound);
+
+            var agentTemplateFolderPath = string.Join('/', [
+                _storageRootPath ?? string.Empty,
+                _name,
+                resourcePath.InstanceId!,
+                agentTemplate.Name
+            ]);
+
+            var agentTemplateFilesPaths = await _storageService.GetFilePathsAsync(
+                _storageContainerName,
+                agentTemplateFolderPath);
+
+            var fileLoadTasks = agentTemplateFilesPaths
+                .Select(filePath =>
+                    _storageService.ReadFileAsync(
+                        _storageContainerName,
+                        filePath,
+                        default))
+                .ToArray();
+
+            await Task.WhenAll(fileLoadTasks);
+
+            var agentTemplateFiles = agentTemplateFilesPaths.Zip(fileLoadTasks, (filePath, fileContent) =>
+                    new
+                    {
+                        FileName = Path.GetFileName(filePath),
+                        Content = fileContent.Result.ToString()
+                    })
+                .ToDictionary(
+                    x => x.FileName,
+                    x => x.Content);
+
+            var result = await _agentTemplateService.CreateAgent(
+                resourcePath.InstanceId!,
+                agentCreationRequest,
+                agentTemplateFiles,
+                userIdentity);
+
+            return result;
         }
 
         #endregion
