@@ -27,5 +27,20 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// </remarks>
         [JsonPropertyName("resource")]
         public object? Resource { get; set; }
+
+        /// <summary>
+        /// Converts the current instance to a <see cref="ResourceProviderUpsertResult{T}"/> object.
+        /// </summary>
+        /// <typeparam name="T">The type of the resource, which must derive from <see cref="ResourceBase"/>.</typeparam>
+        /// <returns>A <see cref="ResourceProviderUpsertResult{T}"/> containing the object ID, resource existence status,  and
+        /// the resource cast to the specified type <typeparamref name="T"/>.</returns>
+        public ResourceProviderUpsertResult<T> ToResourceProviderUpsertResult<T>()
+            where T : ResourceBase =>
+            new()
+            {
+                ObjectId = this.ObjectId,
+                ResourceExists = this.ResourceExists,
+                Resource = this.Resource as T
+            };
     }
 }
