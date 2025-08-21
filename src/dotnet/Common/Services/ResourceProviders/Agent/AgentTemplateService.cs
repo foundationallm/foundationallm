@@ -97,7 +97,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders.Agent
                 (JsonElement)agentTemplateFiles[TOOLS_FILE_NAME],
                 finalParameterValues!);
 
-            var agentObjectId = await CreateAgent(
+            var agentCreationResult = await CreateAgent(
                 instanceId,
                 (JsonElement)agentTemplateFiles[AGENT_FILE_NAME],
                 finalParameterValues!,
@@ -105,11 +105,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders.Agent
                 toolsArray,
                 userIdentity);
 
-            return new ResourceProviderUpsertResult
-            {
-                ObjectId = agentObjectId,
-                ResourceExists = false
-            };
+            return agentCreationResult;
         }
 
         private Dictionary<string, object> ValidateAndDeserializeTemplateFiles(
@@ -227,7 +223,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders.Agent
                     $"The prompts file {PROMPTS_FILE_NAME} has an invalid structure.");
         }
 
-        private async Task<string> CreateAgent(
+        private async Task<ResourceProviderUpsertResult<AgentBase>> CreateAgent(
             string instanceId,
             JsonElement agentElement,
             Dictionary<string, string> parameterValues,
@@ -248,13 +244,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders.Agent
                 var agent = JsonSerializer.Deserialize<KnowledgeManagementAgent>(
                     agentObject.ToJsonString());
 
-                var agentCreationResult = await _agentResourceProviderService.UpsertResourceAsync<KnowledgeManagementAgent, ResourceProviderUpsertResult<KnowledgeManagementAgent>>(
+                var agentCreationResult = await _agentResourceProviderService.UpsertResourceAsync<AgentBase, ResourceProviderUpsertResult<AgentBase>>(
                     instanceId,
-                    agent,
+                    (agent as AgentBase)!,
                     userIdentity);
 
                 return
-                    agentCreationResult.ObjectId;
+                    agentCreationResult;
             }
             else
                 throw new ResourceProviderException(

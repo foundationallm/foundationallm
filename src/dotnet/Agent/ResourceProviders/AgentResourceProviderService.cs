@@ -275,7 +275,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         resourcePath,
                         (resource as AgentBase)!,
                         authorizationResult,
-                        userIdentity)).ToResourceProviderUpsertResult<KnowledgeManagementAgent>() as TResult)!,
+                        userIdentity,
+                        includeResourceInResponse: true)).ToResourceProviderUpsertResult<AgentBase>() as TResult)!,
                 _ => throw new ResourceProviderException($"The resource type {resource.GetType().Name} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
@@ -300,7 +301,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
             ResourcePath resourcePath,
             AgentBase agent,
             ResourcePathAuthorizationResult authorizationResult,
-            UnifiedUserIdentity userIdentity)
+            UnifiedUserIdentity userIdentity,
+            bool includeResourceInResponse = false)
         {
             var existingAgentReference = await _resourceReferenceStore!.GetResourceReference(agent.Name);
             var existingAgent = existingAgentReference is not null
@@ -615,7 +617,10 @@ namespace FoundationaLLM.Agent.ResourceProviders
             var upsertResult = new ResourceProviderUpsertResult
             {
                 ObjectId = agent!.ObjectId,
-                ResourceExists = existingAgentReference is not null
+                ResourceExists = existingAgentReference is not null,
+                Resource = includeResourceInResponse
+                    ? agent
+                    : null
             };
 
             if (virtualSecurityGroupGenerated)
