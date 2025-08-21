@@ -148,16 +148,16 @@ namespace FoundationaLLM.Context.ResourceProviders
                         authorizationResult,
                         JsonSerializer.Deserialize<ContextKnowledgeUnitSetGraphRequest>(serializedAction)!,
                         userIdentity),
+                    ResourceProviderActions.RenderGraph => await RenderKnowledgeSourceGraph(
+                        resourcePath,
+                        authorizationResult,
+                        serializedAction,
+                        userIdentity),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.")
                 },
                 ContextResourceTypeNames.KnowledgeSources => resourcePath.Action switch
                 {
                     ResourceProviderActions.Query => await QueryKnowledgeSource(
-                        resourcePath,
-                        authorizationResult,
-                        serializedAction,
-                        userIdentity),
-                    ResourceProviderActions.RenderGraph => await RenderKnowledgeSourceGraph(
                         resourcePath,
                         authorizationResult,
                         serializedAction,
