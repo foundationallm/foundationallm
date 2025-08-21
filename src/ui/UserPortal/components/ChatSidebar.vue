@@ -261,8 +261,8 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="agentsFromManagement in agentOptions2" :key="agentsFromManagement.object_id">
-									<td>{{ agentsFromManagement.display_name || agentsFromManagement.name }}</td>
+								<tr v-for="getAgents in agentOptions2" :key="getAgents.object_id">
+									<td>{{ getAgents.display_name || getAgents.name }}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -402,7 +402,7 @@
 
 		async mounted() {
 			await this.setAgentOptions();
-			await this.loadAgentsFromManagement();
+			await this.loadgetAgents();
 		},
 
 		methods: {
@@ -529,12 +529,12 @@
 				}));
 			},
 
-			async loadAgentsFromManagement() {
+			async loadgetAgents() {
 				this.loadingAgents2 = true;
 				this.agentError2 = '';
 				
 				try {
-					const response = await api.getAllowedAgents();
+					const response = await api.getAgents();
 
 					const agentsArray = Array.isArray(response) ? response : [];
 					
@@ -561,11 +561,11 @@
 			},
 
 			async refreshAgents() {
-				await this.loadAgentsFromManagement();
+				await this.loadgetAgents();
 			},
 
-			selectAgent(agentsFromManagement) {
-				this.$emit('agent-selected', agentsFromManagement);
+			selectAgent(getAgents) {
+				this.$emit('agent-selected', getAgents);
 			},
 
 			hideAllPoppers() {

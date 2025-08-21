@@ -307,7 +307,7 @@ export default {
 		return agents;
 	},
 
-	async getAgentsFromManagement() {
+	async getAgents() {
 		try {
 			const agents = await this.fetch(
 			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents`
