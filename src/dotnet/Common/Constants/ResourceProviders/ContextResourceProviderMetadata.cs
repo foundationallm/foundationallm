@@ -56,6 +56,16 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         ])
                     ]
                 }
+            },
+            {
+                ContextResourceTypeNames.Files,
+                new ResourceTypeDescriptor(
+                    ContextResourceTypeNames.Files,
+                    typeof(ResourceBase))
+                {
+                    AllowedTypes = [],
+                    Actions = []
+                }
             }
         };
     }

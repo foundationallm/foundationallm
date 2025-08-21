@@ -137,5 +137,24 @@ namespace FoundationaLLM.Context.API.Controllers
 
             return new OkObjectResult(fileRecord);
         }
+
+        /// <summary>
+        /// Deletes a file record.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="fileId">The identifier of the file to be deleted.</param>
+        /// <returns></returns>
+        [HttpDelete("fileRecords/{fileId}")]
+        public async Task<IActionResult> DeleteFileRecord(
+            string instanceId,
+            string fileId)
+        {
+            await _fileService.DeleteFileRecord(
+                instanceId,
+                fileId,
+                _callContext.CurrentUserIdentity!);
+
+            return Ok();
+        }
     }
 }
