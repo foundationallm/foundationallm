@@ -85,6 +85,23 @@ namespace FoundationaLLM.Core.Services
                         }
                     },
                 },
+                [HttpMethod.Delete] = new Dictionary<string, Dictionary<string, ResourceTypeAvailability>>(StringComparer.OrdinalIgnoreCase)
+                {
+                    [ResourceProviderNames.FoundationaLLM_Agent] = new Dictionary<string, ResourceTypeAvailability>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        [AgentResourceTypeNames.Agents] = new ResourceTypeAvailability
+                        {
+                            IsResourceTypeAvailable = false,
+                            AvailableSubordinateResourceTypes = new Dictionary<string, ResourceTypeAvailability>(StringComparer.OrdinalIgnoreCase)
+                            {
+                                [AgentResourceTypeNames.AgentFiles] = new ResourceTypeAvailability
+                                {
+                                    IsResourceTypeAvailable = true
+                                }
+                            }
+                        }
+                    }
+                }
             };
 
         /// <inheritdoc/>
@@ -100,9 +117,12 @@ namespace FoundationaLLM.Core.Services
                 if (_availabilityMap.TryGetValue(method, out var resourceProviders)
                     && resourceProviders.TryGetValue(resourcePath.ResourceProvider!, out var currentResourceTypesAvailability))
                 {
-                    foreach (var resourceTypeInstance in resourcePath.ResourceTypeInstances)
+                    ResourceTypeAvailability lastResourceTypeAvailability = null!;
+
+                    // Move to the last resource type in the path and update the currentResourceTypesAvailability value while iterating through the resource types.
+                    for (int i = 0; i < resourcePath.ResourceTypeInstances.Count; i++)
                     {
-                        //  Check if the resource type is registered in the availability map.
+                        var resourceTypeInstance = resourcePath.ResourceTypeInstances[i];
                         if (currentResourceTypesAvailability is null
                             || !currentResourceTypesAvailability.TryGetValue(resourceTypeInstance.ResourceTypeName, out var resourceTypeAvailability))
                         {
@@ -110,32 +130,32 @@ namespace FoundationaLLM.Core.Services
                             break;
                         }
 
+                        lastResourceTypeAvailability = resourceTypeAvailability;
+                        currentResourceTypesAvailability = resourceTypeAvailability.AvailableSubordinateResourceTypes;
+                    }
+
+                    var lastResourceTypeInstance = resourcePath.ResourceTypeInstances.Last();
+
+                    // At this point lastResourceTypeAvailability and lastResourceTypeInstance are set to the last resource type in the path.
+                    // They are all we need to decide whether the resource path is available or not.
+
+                    // First check we have not already decided the resource path is unavailable.
+                    if (isAvailable)
+                    {
                         // NOTE: An action on a resource type can be available even if the resource type itself is not available.
                         // This is to allow for actions that can be performed on a resource type that is not available for general use.
 
-                        bool hasAction = !string.IsNullOrWhiteSpace(resourceTypeInstance.Action);
+                        bool hasAction = !string.IsNullOrWhiteSpace(lastResourceTypeInstance.Action);
                         bool isActionAvailable =
                             hasAction
-                            && resourceTypeAvailability.AvailableActions.Contains(resourceTypeInstance.Action!);
+                            && lastResourceTypeAvailability.AvailableActions.Contains(lastResourceTypeInstance.Action!);
 
-                        // Check if the action is available.
-                        if (hasAction && !isActionAvailable)
-                        {
+                        // The resource path is not available if:
+                        // 1. The action is specified and it is not available for the resource type.
+                        // 2. The action is not specified and the resource type is not available.
+                        if ((hasAction && !isActionAvailable)
+                            || (!hasAction && !lastResourceTypeAvailability.IsResourceTypeAvailable))
                             isAvailable = false;
-                            break;
-                        }
-
-                        // Check if the resource type is available.
-                        // We only need to check the availability of the resource type if there is no action.
-                        // If an action is present it's either unavailable (already checked above) or available, and the resource type availability is not relevant.
-                        if (!hasAction
-                            && !resourceTypeAvailability.IsResourceTypeAvailable)
-                        {
-                            isAvailable = false;
-                            break;
-                        }
-
-                        currentResourceTypesAvailability = resourceTypeAvailability.AvailableSubordinateResourceTypes;
                     }
                 }
                 else
