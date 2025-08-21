@@ -62,6 +62,7 @@
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
     <ProjectReference Include="..\Conversation\Conversation.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Prompt\Prompt.csproj" />
   </ItemGroup>
 
 </Project>
