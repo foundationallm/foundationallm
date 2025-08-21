@@ -181,7 +181,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     break;
 
                 default:
-                    return new PluginResult(false, false,
+                    return new PluginResult(false, true,
                         $"The content type {contentType} is not supported by the {Name} plugin.");
             }
 
