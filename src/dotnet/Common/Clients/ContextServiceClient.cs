@@ -562,7 +562,7 @@ namespace FoundationaLLM.Common.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeSourceGraph(
+        public async Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeUnitGraph(
             string instanceId,
             string knowledgeSourceId,
             ContextKnowledgeSourceQueryRequest? queryRequest)
@@ -574,7 +574,7 @@ namespace FoundationaLLM.Common.Clients
                     _callContext.CurrentUserIdentity!);
 
                 var responseMessage = await client.PostAsJsonAsync(
-                    $"instances/{instanceId}/knowledgeSources/{knowledgeSourceId}/render-graph",
+                    $"instances/{instanceId}/{ContextResourceTypeNames.KnowledgeUnits}/{knowledgeSourceId}/render-graph",
                     queryRequest);
 
                 if (responseMessage.IsSuccessStatusCode)
