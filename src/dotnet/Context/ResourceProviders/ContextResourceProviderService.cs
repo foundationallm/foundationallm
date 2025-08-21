@@ -148,7 +148,7 @@ namespace FoundationaLLM.Context.ResourceProviders
                         authorizationResult,
                         JsonSerializer.Deserialize<ContextKnowledgeUnitSetGraphRequest>(serializedAction)!,
                         userIdentity),
-                    ResourceProviderActions.RenderGraph => await RenderKnowledgeSourceGraph(
+                    ResourceProviderActions.RenderGraph => await RenderKnowledgeUnitGraph(
                         resourcePath,
                         authorizationResult,
                         serializedAction,
@@ -584,7 +584,7 @@ namespace FoundationaLLM.Context.ResourceProviders
             return response;
         }
 
-        private async Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeSourceGraph(
+        private async Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeUnitGraph(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             string serializedAction,
@@ -595,7 +595,7 @@ namespace FoundationaLLM.Context.ResourceProviders
 
             var contextServiceClient = GetContextServiceClient(userIdentity);
 
-            var response = await contextServiceClient!.RenderKnowledgeSourceGraph(
+            var response = await contextServiceClient!.RenderKnowledgeUnitGraph(
                 resourcePath.InstanceId!,
                 resourcePath.MainResourceId!,
                 null);
