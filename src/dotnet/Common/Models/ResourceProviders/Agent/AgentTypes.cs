@@ -20,6 +20,10 @@
         /// </summary>
         public const string AgentFile = "agent-file";
 
+        /// <summary>
+        /// Agent template.
+        /// </summary>
+        public const string AgentTemplate = "agent-template";
 
         /// <summary>
         /// Workflow.

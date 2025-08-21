@@ -157,6 +157,23 @@ namespace FoundationaLLM.Prompt.ResourceProviders
         protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) =>
             (await LoadResource<T>(resourcePath.ResourceId!))!;
 
+        /// <inheritdoc/>
+        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            T resource, UnifiedUserIdentity userIdentity,
+            ResourceProviderUpsertOptions? options = null) =>
+            resource.GetType() switch
+            {
+                Type t when t == typeof(MultipartPrompt) =>
+                    ((await UpdatePrompt(
+                        resourcePath,
+                        (resource as PromptBase)!,
+                        userIdentity)).ToResourceProviderUpsertResult<PromptBase>() as TResult)!,
+                _ => throw new ResourceProviderException($"The resource type {resource.GetType().Name} is not supported by the {_name} resource provider.",
+                    StatusCodes.Status400BadRequest)
+            };
+
         #endregion
 
         #region Resource management
@@ -179,6 +196,13 @@ namespace FoundationaLLM.Prompt.ResourceProviders
                 ?? throw new ResourceProviderException("The object definition is invalid.",
                     StatusCodes.Status400BadRequest);
 
+            return await UpdatePrompt(resourcePath, prompt, userIdentity);
+        }
+        private async Task<ResourceProviderUpsertResult> UpdatePrompt(
+            ResourcePath resourcePath,
+            PromptBase prompt,
+            UnifiedUserIdentity userIdentity)
+        {
             var existingPromptReference = await _resourceReferenceStore!.GetResourceReference(prompt.Name);
 
             if (resourcePath.ResourceTypeInstances[0].ResourceId != prompt.Name)
@@ -209,6 +233,7 @@ namespace FoundationaLLM.Prompt.ResourceProviders
                 ResourceExists = existingPromptReference is not null
             };
         }
+
 
         #endregion
     }

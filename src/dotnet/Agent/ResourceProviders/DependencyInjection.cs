@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Services.ResourceProviders.Agent;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -27,6 +28,9 @@ namespace FoundationaLLM
             this IHostApplicationBuilder builder,
             bool proxyMode = false)
         {
+            builder.Services.AddSingleton<IAgentTemplateService, AgentTemplateService>();
+            builder.Services.ActivateSingleton<IAgentTemplateService>();
+
             builder.AddAgentResourceProviderStorage();
 
             // Register validators.
@@ -44,6 +48,7 @@ namespace FoundationaLLM
                         .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Agent),
                     sp.GetRequiredService<IEventService>(),
                     sp.GetRequiredService<IResourceValidatorFactory>(),
+                    sp.GetRequiredService<IAgentTemplateService>(),
                     sp.GetRequiredService<IAzureCosmosDBService>(),
                     sp,
                     sp.GetRequiredService<ILoggerFactory>(),

@@ -33,6 +33,13 @@ namespace FoundationaLLM.Core.Services
                         {
                             IsResourceTypeAvailable = true
                         }
+                    },
+                    [ResourceProviderNames.FoundationaLLM_Prompt] = new Dictionary<string, ResourceTypeAvailability>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        [PromptResourceTypeNames.Prompts] = new ResourceTypeAvailability
+                        {
+                            IsResourceTypeAvailable = true
+                        }
                     }
                 },
                 [HttpMethod.Post] = new Dictionary<string, Dictionary<string, ResourceTypeAvailability>>(StringComparer.OrdinalIgnoreCase)
@@ -41,7 +48,7 @@ namespace FoundationaLLM.Core.Services
                     {
                         [AgentResourceTypeNames.Agents] = new ResourceTypeAvailability
                         {
-                            IsResourceTypeAvailable = false,
+                            IsResourceTypeAvailable = true,
                             AvailableActions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                             {
                                 ResourceProviderActions.CheckName
@@ -55,7 +62,14 @@ namespace FoundationaLLM.Core.Services
                                 ResourceProviderActions.CreateNew
                             }
                         },
-                    }
+                    },
+                    [ResourceProviderNames.FoundationaLLM_Prompt] = new Dictionary<string, ResourceTypeAvailability>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        [PromptResourceTypeNames.Prompts] = new ResourceTypeAvailability
+                        {
+                            IsResourceTypeAvailable = true
+                        }
+                    },
                 },
             };
 
