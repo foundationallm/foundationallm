@@ -146,10 +146,6 @@ jobs:
       working-directory: ./src/dotnet/DataPipelinePlugins
       run: dotnet nuget push ./nupkg/*.DataPipelinePlugins.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
-    - name: Publish DataPipelinePlugins PDB to NuGet
-      working-directory: ./src/dotnet/DataPipelinePlugins
-      run: dotnet nuget push ./nupkg/*.DataPipelinePlugins.*.snupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
-
     - name: Publish Core.Examples to NuGet
       working-directory: ./tests/dotnet/Tests
       run: dotnet nuget push ./nupkg/*.Tests.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
