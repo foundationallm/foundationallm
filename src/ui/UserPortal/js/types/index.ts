@@ -198,3 +198,33 @@ export interface MessageResponse {
 	operation_id?: string;
 	status_message?: string;
 }
+
+export interface ResourceBase {
+	type: string;
+	name: string;
+	object_id: string;
+	display_name?: string | null;
+	description?: string | null;
+	cost_center?: string | null;
+	created_on?: string;
+	updated_on?: string;
+	created_by?: string | null;
+	updated_by?: string | null;
+	deleted?: boolean;
+	expiration_date?: string | null;
+}
+
+
+export interface AIModelResource extends ResourceBase {
+	version?: string;
+	deployment_name?: string;
+	model_parameters?: Record<string, any>;
+	endpoint_object_id?: string;
+	properties?: Record<string, any>;
+}
+
+export interface AIModelWrapper {
+	resource: AIModelResource;
+	roles: any[];
+	actions: any[];
+}
