@@ -703,19 +703,19 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
 
 
-  <a id="FoundationaLLM_Common_Clients_ContextServiceClient_RenderKnowledgeSourceGraph_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.RenderKnowledgeSourceGraph*"></a>
+  <a id="FoundationaLLM_Common_Clients_ContextServiceClient_RenderKnowledgeUnitGraph_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.RenderKnowledgeUnitGraph*"></a>
 
-  <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_RenderKnowledgeSourceGraph_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.RenderKnowledgeSourceGraph(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)">
-  RenderKnowledgeSourceGraph(string, string, ContextKnowledgeSourceQueryRequest?)
+  <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_RenderKnowledgeUnitGraph_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.RenderKnowledgeUnitGraph(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)">
+  RenderKnowledgeUnitGraph(string, string, ContextKnowledgeSourceQueryRequest?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L565"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Retrieves the knowledge source's knowledge graph in a format suitable for visualization or further processing.</p>
+  <div class="markdown level1 summary"><p>Retrieves the knowledge unit's knowledge graph in a format suitable for visualization or further processing.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextKnowledgeUnitRenderGraphResponse&gt; RenderKnowledgeSourceGraph(string instanceId, string knowledgeSourceId, ContextKnowledgeSourceQueryRequest? queryRequest)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;ContextKnowledgeUnitRenderGraphResponse&gt; RenderKnowledgeUnitGraph(string instanceId, string knowledgeSourceId, ContextKnowledgeSourceQueryRequest? queryRequest)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -724,8 +724,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
     <dd><p>The FoundationaLLM instance identifier.</p>
 </dd>
     <dt><code>knowledgeSourceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The knowledge source identifier.</p>
-</dd>
+    <dd></dd>
     <dt><code>queryRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.html">ContextKnowledgeSourceQueryRequest</a></dt>
     <dd><p>The request containing the details of the query.</p>
 </dd>
