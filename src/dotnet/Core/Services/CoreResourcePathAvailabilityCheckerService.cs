@@ -31,7 +31,14 @@ namespace FoundationaLLM.Core.Services
                     {
                         [AgentResourceTypeNames.Agents] = new ResourceTypeAvailability
                         {
-                            IsResourceTypeAvailable = true
+                            IsResourceTypeAvailable = true,
+                            AvailableSubordinateResourceTypes = new Dictionary<string, ResourceTypeAvailability>(StringComparer.OrdinalIgnoreCase)
+                            {
+                                [AgentResourceTypeNames.AgentFiles] = new ResourceTypeAvailability
+                                {
+                                    IsResourceTypeAvailable = true
+                                }
+                            }
                         }
                     },
                     [ResourceProviderNames.FoundationaLLM_Prompt] = new Dictionary<string, ResourceTypeAvailability>(StringComparer.OrdinalIgnoreCase)
@@ -52,6 +59,13 @@ namespace FoundationaLLM.Core.Services
                             AvailableActions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                             {
                                 ResourceProviderActions.CheckName
+                            },
+                            AvailableSubordinateResourceTypes = new Dictionary<string, ResourceTypeAvailability>(StringComparer.OrdinalIgnoreCase)
+                            {
+                                [AgentResourceTypeNames.AgentFiles] = new ResourceTypeAvailability
+                                {
+                                    IsResourceTypeAvailable = true
+                                }
                             }
                         },
                         [AgentResourceTypeNames.AgentTemplates] = new ResourceTypeAvailability
