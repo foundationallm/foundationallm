@@ -120,7 +120,7 @@ Class ResourceProviderUpsertResult  <a class="header-action link-secondary" titl
   <dl class="typelist derived">
     <dt>Derived</dt>
     <dd>
-      <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult-1.html">ResourceProviderUpsertResult&lt;T&gt;</a></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult-1.html">ResourceProviderUpsertResult</a>&lt;T&gt;</div>
     </dd>
   </dl>
 
@@ -260,6 +260,50 @@ public required bool ResourceExists { get; set; }</code></pre>
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
     <dd></dd>
   </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderUpsertResult_ToResourceProviderUpsertResult_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.ToResourceProviderUpsertResult*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderUpsertResult_ToResourceProviderUpsertResult__1" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.ToResourceProviderUpsertResult``1">
+  ToResourceProviderUpsertResult&lt;T&gt;()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceProviderUpsertResult.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts the current instance to a <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult-1.html">ResourceProviderUpsertResult&lt;T&gt;</a> object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ResourceProviderUpsertResult&lt;T&gt; ToResourceProviderUpsertResult&lt;T&gt;() where T : ResourceBase</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult-1.html">ResourceProviderUpsertResult</a>&lt;T&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult-1.html">ResourceProviderUpsertResult&lt;T&gt;</a> containing the object ID, resource existence status,  and
+the resource cast to the specified type <code class="typeparamref">T</code>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of the resource, which must derive from <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html">ResourceBase</a>.</p>
+</dd>
+  </dl>
+
+
 
 
 

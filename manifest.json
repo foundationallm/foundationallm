@@ -1692,6 +1692,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Agents.AgentTemplateParameterNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Agents.AgentTemplateParameterNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Agents.AgentTemplateParameterNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Agents.AgentTemplateParameterNames.yml\" sourcestartlinenumber=\"1\">Provides a collection of predefined parameter names used in agent templates.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Agents.AgentToolCategories.yml",
       "output": {
         ".html": {
@@ -4265,6 +4279,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Interfaces.IAPIKeyValidationService",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IAPIKeyValidationService.yml\" sourcestartlinenumber=\"1\">Common interface for X-API-Key header validation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IAgentTemplateService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IAgentTemplateService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.IAgentTemplateService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IAgentTemplateService.yml\" sourcestartlinenumber=\"1\">Defines the contract for working with agent templates.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -11012,6 +11040,34 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Services.Quota",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.Agent.AgentTemplateService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.Agent.AgentTemplateService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Services.ResourceProviders.Agent.AgentTemplateService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.Agent.AgentTemplateService.yml\" sourcestartlinenumber=\"1\">Provides functionality for interacting with agent templates.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.Agent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.Agent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Services.ResourceProviders.Agent",
       "Summary": null
     },
     {
