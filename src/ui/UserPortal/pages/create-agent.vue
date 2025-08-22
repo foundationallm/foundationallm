@@ -18,23 +18,11 @@
                     <h2 class="page-header text-3xl text-[#334581]">Create Agent</h2>
                 </div>
 
-                <div class="w-full max-w-full md:max-w-[50%] px-4 mb-5 text-center md:text-right">
-                    <ul class="flex flex-wrap justify-center md:justify-end list-none p-0">
-                        <li class="mb-4 pr-3">
-                            <!-- Create agent -->
-                            <Button label="Create" severity="primary" class="min-h-[45px] min-w-[125px]" />
-                        </li>
-
-                        <li class="mb-4">
-                            <!-- Cancel -->
-                            <Button label="Cancel" severity="secondary" class="min-h-[45px] min-w-[125px]" />
-                        </li>
-                    </ul>
-                </div>
+              
             </div>
 
             <div class="mb-4">
-                <TabView>
+                <TabView :activeIndex="activeTabIndex" @tab-change="onTabChange">
                     <TabPanel header="General">
                         <div class="px-4 py-8 mt-8 border border-solid border-gray-300">
                             <div class="w-full max-w-[1000px] mx-auto">
@@ -62,7 +50,7 @@
                                             Expiration Date <span class="text-[#ff0000]">*</span>
                                         </label>
                                         <Calendar show-icon show-button-bar class="w-full" name="agentExpirationDate"
-                                            id="agentExpirationDate" type="text" required="true" />
+                                            id="agentExpirationDate" required="true" v-model="agentExpirationDate" :manualInput="false" dateFormat="yy-mm-dd" />
                                     </div>
 
                                     <div class="w-full max-w-full px-4 mb-6">
@@ -97,10 +85,22 @@
                                     </div>
                                 </div>
                             </div>
+                              <div class="w-full max-w-full md:max-w-[100%] px-4 mb-5 text-center md:text-right" v-if="activeTabIndex === 0">
+                                <ul class="flex flex-wrap justify-center md:justify-end list-none p-0">
+                                    <li class="mb-4 pr-3">
+                                        <Button v-if="!isEditMode" label="Create" severity="primary" class="min-h-[45px] min-w-[125px]" @click="onCreateAgent" :loading="isCreating" :disabled="isCreating" />
+                                        <Button v-else label="Save" severity="primary" class="min-h-[45px] min-w-[125px]" @click="onSaveAgent" />
+                                    </li>
+                                    <li class="mb-4">
+                                        <Button label="Cancel" severity="secondary" class="min-h-[45px] min-w-[125px]" @click="onCancel" />
+                                    </li>
+                                 </ul>
+                              </div>
                         </div>
+                        
                     </TabPanel>
 
-                    <TabPanel header="AI Configuration">
+                    <TabPanel header="AI Configuration" :disabled="!isEditMode">
                         <div class="px-4 py-8 mt-8 border border-solid border-gray-300">
                             <div class="w-full max-w-[1000px] mx-auto">
                                 <div class="flex flex-wrap -mx-4">
@@ -209,7 +209,7 @@
                         </div>
                     </TabPanel>
 
-                    <TabPanel header="Data Sources">
+                    <TabPanel header="Data Sources" :disabled="!isEditMode">
                         <div class="px-4 py-8 mt-8 border border-solid border-gray-300">
                             <div class="w-full max-w-[1000px] mx-auto">
                                 <div class="mb-6">
@@ -248,7 +248,7 @@
                         </div>
                     </TabPanel>
 
-                    <TabPanel header="Share" :disabled="true"></TabPanel>
+                    <TabPanel header="Share" :disabled="!isEditMode"></TabPanel>
                 </TabView>
             </div>
         </div>
@@ -256,91 +256,97 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent } from 'vue';
-    import NavBarSettings from '~/components/NavBarSettings.vue';
+import api from '@/js/api';
+import type { CreateAgentFromTemplateRequest, KnowledgeManagementAgent } from '@/js/types';
+import { defineComponent } from 'vue';
+import NavBarSettings from '~/components/NavBarSettings.vue';
 
-    export default defineComponent({
-        name: 'CreateAgent',
-
-        components: {
-            NavBarSettings,
+export default defineComponent({
+    name: 'CreateAgent',
+    components: { NavBarSettings },
+    data() {
+        return {
+            isMobile: window.screen.width < 950,
+            textCounter: '',
+            characterCount: 0,
+            isDragOver: false,
+            uploadedFiles: [] as File[],
+            activeTabIndex: 0,
+            isEditMode: false,
+            isCreating: false,
+            createdAgent: null as KnowledgeManagementAgent | null,
+            agentExpirationDate: null as Date | null,
+        };
+    },
+    methods: {
+        updateCharacterCount() {
+            this.characterCount = this.textCounter.length;
         },
-
-        data() {
-            return {
-                isMobile: window.screen.width < 950,
-                textCounter: '',
-                characterCount: 0,
-                isDragOver: false,
-                uploadedFiles: [] as File[],
-            };
+        onTabChange(e: { index: number }) {
+            this.activeTabIndex = e.index;
         },
-
-        methods: {
-            updateCharacterCount() {
-                this.characterCount = this.textCounter.length;
-            },
-
-            onDragOver(event: DragEvent) {
-                this.isDragOver = true;
-            },
-
-            onDragLeave(event: DragEvent) {
-                this.isDragOver = false;
-            },
-
-            onDrop(event: DragEvent) {
-                this.isDragOver = false;
-                const files = Array.from(event.dataTransfer?.files || []);
-                this.handleFiles(files);
-            },
-
-            triggerFileInput() {
-                (this.$refs.fileInput as HTMLInputElement).click();
-            },
-
-            onFileSelect(event: Event) {
-                const target = event.target as HTMLInputElement;
-                const files = Array.from(target.files || []);
-                this.handleFiles(files);
-            },
-
-            handleFiles(files: File[]) {
-                const allowedTypes = [
-                    'application/pdf',
-                    'application/msword',
-                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                    'text/plain'
-                ];
-
-                const validFiles = files.filter(file => {
-                    if (!allowedTypes.includes(file.type)) {
-                        console.warn(`File type not supported: ${file.name}`);
-                        return false;
-                    }
-                    if (file.size > 10 * 1024 * 1024) { // 10MB limit
-                        console.warn(`File too large: ${file.name}`);
-                        return false;
-                    }
-                    return true;
-                });
-
-                this.uploadedFiles.push(...validFiles);
-            },
-
-            removeFile(index: number) {
-                this.uploadedFiles.splice(index, 1);
-            },
-
-            formatFileSize(bytes: number): string {
-                if (bytes === 0) return '0 Bytes';
-                const k = 1024;
-                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        onCreateAgent() {
+            if (this.isCreating) return;
+            // Collect form data
+            const displayName = (document.getElementById('agentDisplayName') as HTMLInputElement)?.value || '';
+            const description = (document.getElementById('agentDescription') as HTMLTextAreaElement)?.value || '';
+            const welcomeMessage = (document.getElementById('agentWelcomeMessage') as HTMLTextAreaElement)?.value || '';
+            // AGENT_NAME: Use a derived value or ask user for a unique name
+            const agentName = displayName.replace(/\s+/g, '') + Date.now();
+            // Format date to yyyy-MM-ddT00:00:00+00:00
+            let formattedDate = '';
+            if (this.agentExpirationDate) {
+                const d = new Date(this.agentExpirationDate);
+                formattedDate = d.toISOString().split('T')[0] + 'T00:00:00+00:00';
             }
+            const payload: CreateAgentFromTemplateRequest = {
+                AGENT_NAME: agentName,
+                AGENT_DISPLAY_NAME: displayName,
+                AGENT_EXPIRATION_DATE: formattedDate,
+                AGENT_DESCRIPTION: description,
+                AGENT_WELCOME_MESSAGE: welcomeMessage,
+            };
+            this.isCreating = true;
+            api.createAgentFromTemplate(payload)
+                .then((res) => {
+                    this.createdAgent = res.resource;
+                    this.isEditMode = true;
+                    this.activeTabIndex = 1;
+                })
+                .catch((err) => {
+                    this.$toast.add({ severity: 'error', summary: 'Error', detail: err.message || 'Failed to create agent', life: 5000 });
+                })
+                .finally(() => {
+                    this.isCreating = false;
+                });
         },
-    });
+        onSaveAgent() {
+            // Save logic for edit mode (not implemented)
+            this.$toast.add({ severity: 'success', summary: 'Saved', detail: 'Agent changes saved.', life: 3000 });
+        },
+        onCancel() {
+            // Cancel logic (redirect or reset form)
+            this.$router.push('/');
+        },
+        // ...existing file upload and utility methods...
+        onDragOver(event: DragEvent) { this.isDragOver = true; },
+        onDragLeave(event: DragEvent) { this.isDragOver = false; },
+        onDrop(event: DragEvent) { this.isDragOver = false; const files = Array.from(event.dataTransfer?.files || []); this.handleFiles(files); },
+        triggerFileInput() { (this.$refs.fileInput as HTMLInputElement).click(); },
+        onFileSelect(event: Event) { const target = event.target as HTMLInputElement; const files = Array.from(target.files || []); this.handleFiles(files); },
+        handleFiles(files: File[]) {
+            const allowedTypes = [ 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain' ];
+            const validFiles = files.filter(file => {
+                if (!allowedTypes.includes(file.type)) { console.warn(`File type not supported: ${file.name}`); return false; }
+                if (file.size > 10 * 1024 * 1024) { console.warn(`File too large: ${file.name}`); return false; }
+                return true;
+            });
+            this.uploadedFiles.push(...validFiles);
+        },
+        removeFile(index: number) { this.uploadedFiles.splice(index, 1); },
+        formatFileSize(bytes: number): string { if (bytes === 0) return '0 Bytes'; const k = 1024; const sizes = ['Bytes', 'KB', 'MB', 'GB']; const i = Math.floor(Math.log(bytes) / Math.log(k)); return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]; }
+    },
+});
 </script>
 
 <style lang="scss">

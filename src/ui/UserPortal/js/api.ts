@@ -1,23 +1,26 @@
 import type {
+	Agent,
+	CompletionPrompt,
+	CompletionRequest,
+	ConversationProperties,
+	CoreConfiguration,
+	CreateAgentFromTemplateRequest,
+	KnowledgeManagementAgent,
+	LongRunningOperation,
 	Message,
 	MessageRatingRequest,
-	Session,
-	LongRunningOperation,
-	UserProfile,
-	CoreConfiguration,
+	MessageResponse,
 	OneDriveWorkSchool,
-	ConversationProperties,
-	CompletionPrompt,
-	Agent,
-	CompletionRequest,
+	ResourceProviderDeleteResults,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
-	ResourceProviderDeleteResults,
-	RateLimitError,
-	MessageResponse,
+	Session,
+	UserProfile
 } from '@/js/types';
 
 export default {
+
+	
 	apiUrl: null as string | null,
 	virtualUser: null as string | null,
 
@@ -440,6 +443,20 @@ export default {
 				body: oneDriveWorkSchool,
 			},
 		)) as OneDriveWorkSchool;
+	},
+	/**
+	 * Creates a new agent from the BasicAgentTemplate.
+	 * @param templateParameters The parameters for the agent template.
+	 * @returns A promise that resolves to the upsert result containing the new agent.
+	 */
+	async createAgentFromTemplate(templateParameters: CreateAgentFromTemplateRequest): Promise<ResourceProviderUpsertResult & { resource: KnowledgeManagementAgent }> {
+		const url = `/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agentTemplates/BasicAgentTemplate/create-new`;
+		return await this.fetch<ResourceProviderUpsertResult & { resource: KnowledgeManagementAgent }>(url, {
+			method: 'POST',
+			body: {
+				template_parameters: templateParameters,
+			},
+		});
 	},
 };
 
