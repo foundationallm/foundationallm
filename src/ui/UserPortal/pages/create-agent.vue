@@ -238,10 +238,56 @@
                                             <i class="pi pi-upload text-3xl text-[#94a3b8] mb-3 block"></i>
                                             <p class="text-lg text-[#64748b] font-normal mb-2">Drop and drag or <span class="text-[#5472d4] underline">choose file</span> to
                                                 upload</p>
-                                            <p class="text-sm text-[#94a3b8] font-medium italic">(TBD file type list)</p>
+                                            <p class="text-sm text-[#94a3b8] font-medium italic">(Only PDF)</p>
                                         </div>
-                                        <input ref="fileInput" type="file" accept=".pdf,.doc,.docx,.txt"
+                                        <input ref="fileInput" type="file" accept=".pdf"
                                             @change="onFileSelect" class="hidden">
+                                    </div>
+
+                                    <!-- Selected files preview list -->
+                                    <div v-if="uploadedFiles.length > 0" class="mt-8">
+                                        <table class="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr>
+                                                    <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white">File name</th>
+                                                    <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white text-center">Size</th>
+                                                    <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white text-center">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(file, idx) in uploadedFiles" :key="file.name + file.size">
+                                                    <td class="mnt-b-bottom p-3">{{ file.name }}</td>
+                                                    <td class="mnt-b-bottom p-3 text-center">{{ formatFileSize(file.size) }}</td>
+                                                    <td class="mnt-b-bottom p-3 text-center">
+                                                        <Button label="Remove" severity="secondary" @click="removeFile(idx)" class="min-h-[45px] min-w-[125px]"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="mt-10">
+                                    <p class="block text-base text-[#898989] mb-3">Existing File(s)</p>
+
+                                    <div v-if="filesLoading" class="text-sm text-[#64748b]">Loading files...</div>
+                                    <div v-else-if="filesError" class="text-sm text-red-600">{{ filesError }}</div>
+                                    <div v-else>
+                                        <div v-if="agentFiles.length === 0" class="text-sm text-[#94a3b8] italic">No files found for the selected agent.</div>
+                                        <table v-else class="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr>
+                                                    <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white">File ID</th>
+                                                    <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white">Filename</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="f in agentFiles" :key="f.resource?.name">
+                                                    <td class="mnt-b-bottom p-3">{{ f.resource?.name }}</td>
+                                                    <td class="mnt-b-bottom p-3">{{ f.resource?.filename || '-' }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -256,6 +302,8 @@
 </template>
 
 <script lang="ts">
+    import api from '@/js/api';
+    import type { ResourceBase } from '@/js/types/index';
     import { defineComponent } from 'vue';
     import NavBarSettings from '~/components/NavBarSettings.vue';
 
@@ -273,6 +321,10 @@
                 characterCount: 0,
                 isDragOver: false,
                 uploadedFiles: [] as File[],
+
+                filesLoading: false as boolean,
+                filesError: '' as string,
+                agentFiles: [] as any[],
             };
         },
 
@@ -296,21 +348,21 @@
             },
 
             triggerFileInput() {
-                (this.$refs.fileInput as HTMLInputElement).click();
+                const input = this.$refs.fileInput as HTMLInputElement;
+                if (input) input.value = '';
+                input?.click();
             },
 
             onFileSelect(event: Event) {
                 const target = event.target as HTMLInputElement;
                 const files = Array.from(target.files || []);
                 this.handleFiles(files);
+                if (target) target.value = '';
             },
 
             handleFiles(files: File[]) {
                 const allowedTypes = [
                     'application/pdf',
-                    'application/msword',
-                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                    'text/plain'
                 ];
 
                 const validFiles = files.filter(file => {
@@ -318,7 +370,7 @@
                         console.warn(`File type not supported: ${file.name}`);
                         return false;
                     }
-                    if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                    if (file.size > 10 * 1024 * 1024) {
                         console.warn(`File too large: ${file.name}`);
                         return false;
                     }
@@ -338,7 +390,27 @@
                 const sizes = ['Bytes', 'KB', 'MB', 'GB'];
                 const i = Math.floor(Math.log(bytes) / Math.log(k));
                 return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-            }
+            },
+
+            async loadAgentFiles(agentName?: string) {
+                this.filesError = '';
+                this.filesLoading = true;
+                try {
+                    const resolvedAgentName = agentName;
+                    if (!resolvedAgentName) {
+                        this.agentFiles = [];
+                        return;
+                    }
+
+                    const results = await api.getAgentPrivateFiles(resolvedAgentName);
+                    this.agentFiles = Array.isArray(results) ? results : [];
+                } catch (e: any) {
+                    this.filesError = e?.message || 'Failed to load files.';
+                    this.agentFiles = [];
+                } finally {
+                    this.filesLoading = false;
+                }
+            },
         },
     });
 </script>
@@ -395,5 +467,9 @@
 
     .hidden {
         display: none;
+    }
+
+    .mnt-b-bottom{
+        border-bottom: 1px solid #94a3b8;
     }
 </style>
