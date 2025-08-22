@@ -215,16 +215,10 @@ export interface ResourceBase {
 }
 
 
-export interface AIModelResource extends ResourceBase {
+export interface AIModel extends ResourceBase {
 	version?: string;
 	deployment_name?: string;
 	model_parameters?: Record<string, any>;
 	endpoint_object_id?: string;
 	properties?: Record<string, any>;
-}
-
-export interface AIModelWrapper {
-	resource: AIModelResource;
-	roles: any[];
-	actions: any[];
 }
