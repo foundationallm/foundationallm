@@ -203,13 +203,22 @@ export interface ResourceBase {
 	type: string;
 	name: string;
 	object_id: string;
-	display_name: string;
-	description: string;
-	cost_center?: string;
-	created_on: string;
-	updated_on: string;
-	created_by: string | null;
-	updated_by: string;
-	deleted: boolean;
-	expiration_date: string | null;
+	display_name?: string | null;
+	description?: string | null;
+	cost_center?: string | null;
+	created_on?: string;
+	updated_on?: string;
+	created_by?: string | null;
+	updated_by?: string | null;
+	deleted?: boolean;
+	expiration_date?: string | null;
+}
+
+
+export interface AIModel extends ResourceBase {
+	version?: string;
+	deployment_name?: string;
+	model_parameters?: Record<string, any>;
+	endpoint_object_id?: string;
+	properties?: Record<string, any>;
 }

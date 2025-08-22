@@ -1,20 +1,20 @@
-import type {
+	import type {
+	Agent,
+	CompletionPrompt,
+	CompletionRequest,
+	ConversationProperties,
+	CoreConfiguration,
+	LongRunningOperation,
 	Message,
 	MessageRatingRequest,
-	Session,
-	LongRunningOperation,
-	UserProfile,
-	CoreConfiguration,
+	MessageResponse,
 	OneDriveWorkSchool,
-	ConversationProperties,
-	CompletionPrompt,
-	Agent,
-	CompletionRequest,
+	ResourceProviderDeleteResults,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
-	ResourceProviderDeleteResults,
-	RateLimitError,
-	MessageResponse,
+	Session,
+	UserProfile,
+	ResourceBase
 } from '@/js/types';
 
 export default {
@@ -440,6 +440,22 @@ export default {
 				body: oneDriveWorkSchool,
 			},
 		)) as OneDriveWorkSchool;
+	},
+
+		/**
+	 * Retrieves the list of AI models from the management endpoint.
+	 * Returns an array of ResourceBase (see aiModel.ts) as required.
+	 */
+	async getAIModels(): Promise<ResourceBase[]> {
+		try {
+			const aiModels = await this.fetch<ResourceBase[]>(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels`
+			);
+			return aiModels;
+		} catch (error) {
+			console.error('Error fetching AI models:', error);
+			throw error;
+		}
 	},
 };
 
