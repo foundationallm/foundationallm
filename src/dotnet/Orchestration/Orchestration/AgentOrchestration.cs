@@ -504,7 +504,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     {
                         OriginalFileName = contextFileResponse.Result!.FileName,
                         ContentType = contextFileResponse.Result.ContentType!,
-                        Provider = ContextProviderNames.FoundationaLLM_ContextAPI,
+                        Provider = ResourceProviderNames.FoundationaLLM_Context,
                         ProviderFileName = contextFileResponse.Result.FilePath,
                         EmbedContentInRequest = contextFileResponse.Result!.FileProcessingType == FileProcessingTypes.CompletionRequestContext
                     };
@@ -955,7 +955,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 if (annotation.Type == "file_path")
                 {
-                    annotation.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ContextProviderNames.FoundationaLLM_ContextAPI}/{annotation.FileId}";
+                    annotation.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ResourceProviderNames.FoundationaLLM_Context}/{annotation.FileId}";
                 }
             }
 
@@ -1009,7 +1009,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
         private ImageFileMessageContentItem TransformFoundationaLLMImageFile(ImageFileMessageContentItem imageFile)
         {        
-            imageFile.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ContextProviderNames.FoundationaLLM_ContextAPI}/{imageFile.FileId}";
+            imageFile.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ResourceProviderNames.FoundationaLLM_Context}/{imageFile.FileId}";
             return imageFile;
         }
 

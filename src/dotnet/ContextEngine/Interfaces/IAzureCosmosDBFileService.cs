@@ -19,7 +19,7 @@ namespace FoundationaLLM.Context.Interfaces
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="fileId">The idenfier of the file.</param>
-        /// <param name="userPrincipalName">The user principal name of the user associated with the code session.</param>
+        /// <param name="userPrincipalName">The user principal name of the user associated with the file record.</param>
         /// <param name="bypassOwnerCheck">Indicates whether to bypass the owner check for the file record.</param>
         /// <returns></returns>
         Task<ContextFileRecord> GetFileRecord(
@@ -34,7 +34,7 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="conversationId">The idenfier of the conversation to which the file is associated.</param>
         /// <param name="fileName">The name of the file.</param>
-        /// <param name="userPrincipalName">The user principal name of the user associated with the code session.</param>
+        /// <param name="userPrincipalName">The user principal name of the user associated with the file record.</param>
         /// <param name="bypassOwnerCheck">Indicates whether to bypass the owner check for the file records.</param>
         /// <returns></returns>
         Task<List<ContextFileRecord>> GetFileRecords(
@@ -43,5 +43,17 @@ namespace FoundationaLLM.Context.Interfaces
             string fileName,
             string userPrincipalName,
             bool bypassOwnerCheck);
+
+        /// <summary>
+        /// Deletes the file record for a specified file identifier.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="fileId">The idenfier of the file.</param>
+        /// <param name="userPrincipalName">The user principal name of the user associated with the file record.</param>
+        /// <returns></returns>
+        Task DeleteFileRecord(
+            string instanceId,
+            string fileId,
+            string userPrincipalName);
     }
 }

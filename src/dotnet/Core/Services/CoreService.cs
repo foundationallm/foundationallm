@@ -92,6 +92,8 @@ public partial class CoreService(
         resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Configuration);
     private readonly IResourceProviderService _conversationResourceProvider =
         resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Conversation);
+    private readonly IResourceProviderService _contextResourceProvider =
+        resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Context);
 
     private readonly HashSet<string> _azureOpenAIFileSearchFileExtensions =
         settings.Value.AzureOpenAIAssistantsFileSearchFileExtensions
@@ -765,12 +767,12 @@ public partial class CoreService(
             {
                 return new ResourceProviderUpsertResult<AttachmentFile>
                 {
-                    ObjectId = serviceResult.Result!.Id,
+                    ObjectId = serviceResult.Result!.FileObjectId,
                     ResourceExists = false,
                     Resource = new AttachmentFile
                     {
                         Name = serviceResult.Result.Id,
-                        ObjectId = serviceResult.Result.Id,
+                        ObjectId = serviceResult.Result.FileObjectId,
                         DisplayName = serviceResult.Result.FileName,
                         CreatedBy = serviceResult.Result.UPN,
                         CreatedOn = serviceResult.Result.CreatedAt,
@@ -826,7 +828,7 @@ public partial class CoreService(
                         ContentType = azureAIResponse.Resource!.ContentType,
                         Content = azureAIResponse.Resource!.BinaryContent!.Value.ToArray()
                     };
-                case ContextProviderNames.FoundationaLLM_ContextAPI:
+                case ResourceProviderNames.FoundationaLLM_Context:
 
                     var responseMessage = await _contextServiceClient.GetFileContent(instanceId, fileId);
 
@@ -861,29 +863,41 @@ public partial class CoreService(
     {
         var results = resourcePaths.ToDictionary(key => key, value => (ResourceProviderDeleteResult?)null);
 
-        foreach (var resourcePath in resourcePaths)
+        foreach (var rawResourcePath in resourcePaths)
         {
             try
             {
-                if (!ResourcePath.TryParseResourceProvider(resourcePath, out var resourceProviderName))
+                var resourcePath = ResourcePath.GetResourcePath(rawResourcePath);
+                if (string.IsNullOrWhiteSpace(resourcePath.ResourceProvider))
                     throw new ResourceProviderException(
-                        $"Invalid resource provider for resource path [{resourcePath}].");
+                        $"Invalid resource provider for resource path [{rawResourcePath}].");
 
-                if (resourceProviderName != ResourceProviderNames.FoundationaLLM_Attachment)
-                    throw new ResourceProviderException(
-                        $"The resource provider [{resourceProviderName}] is not supported by the delete attachments endpoint.");
-
-                await _attachmentResourceProvider.HandleDeleteAsync(resourcePath, _userIdentity);
-                results[resourcePath] = new ResourceProviderDeleteResult()
+                switch (resourcePath.ResourceProvider)
                 {
-                    Deleted = true
-                };
+                    case ResourceProviderNames.FoundationaLLM_Attachment:
+                        await _attachmentResourceProvider.HandleDeleteAsync(rawResourcePath, _userIdentity);
+                        results[rawResourcePath] = new ResourceProviderDeleteResult()
+                        {
+                            Deleted = true
+                        };
+                        break;
+                    case ResourceProviderNames.FoundationaLLM_Context:
+                        var contextServiceResponse = await _contextServiceClient.DeleteFileRecord(resourcePath.InstanceId!, resourcePath.MainResourceId!);
+                        results[rawResourcePath] = new ResourceProviderDeleteResult()
+                        {
+                            Deleted = contextServiceResponse.Success
+                        };
+                        break;
+                    default:
+                        throw new ResourceProviderException(
+                            $"The resource provider [{resourcePath.ResourceProvider}] is not supported by the delete attachments endpoint.");
+                }
             }
             catch (ResourceProviderException rpex)
             {
                 _logger.LogError(rpex, "{Message}", rpex.Message);
 
-                results[resourcePath] = new ResourceProviderDeleteResult()
+                results[rawResourcePath] = new ResourceProviderDeleteResult()
                 {
                     Deleted = false,
                     Reason = rpex.Message
@@ -891,12 +905,12 @@ public partial class CoreService(
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "There was an error when handling the deletion for resource path [{ResourcePath}].", resourcePath);
+                _logger.LogError(ex, "There was an error when handling the deletion for resource path [{ResourcePath}].", rawResourcePath);
 
-                results[resourcePath] = new ResourceProviderDeleteResult()
+                results[rawResourcePath] = new ResourceProviderDeleteResult()
                 {
                     Deleted = false,
-                    Reason = $"There was an error when handling the deletion for resource path [{resourcePath}]."
+                    Reason = $"There was an error when handling the deletion for resource path [{rawResourcePath}]."
                 };
             }
         }

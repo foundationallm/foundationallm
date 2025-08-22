@@ -308,6 +308,21 @@ export default {
 		return agents;
 	},
 
+	async getAgents() {
+		try {
+			const agents = await this.fetch(
+			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents`
+			) as ResourceProviderGetResult<Agent>[];
+			
+			agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
+			
+			return agents;
+		} catch (error) {
+			console.error('Error fetching agents from management endpoint:', error);
+			throw error;
+		}
+	},
+
 	/**
 	 * Uploads attachment to the API.
 	 * @param file The file formData to upload.
