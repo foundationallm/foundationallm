@@ -65,6 +65,16 @@ namespace FoundationaLLM.Common.Interfaces
             string fileId);
 
         /// <summary>
+        /// Calls the Context API service to delete a file record.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="fileId">The unique identifier of the file.</param>
+        /// <returns>A <see cref="ContextServiceResponse"/> instance .</returns>
+        Task<ContextServiceResponse> DeleteFileRecord(
+            string instanceId,
+            string fileId);
+
+        /// <summary>
         /// Calls the Context API service to create a code session.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

@@ -6,7 +6,6 @@ using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
-using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -125,6 +124,47 @@ namespace FoundationaLLM.Common.Clients
                 };
             }
         }
+
+        /// <inheritdoc/>
+        public async Task<ContextServiceResponse> DeleteFileRecord(
+            string instanceId,
+            string fileId)
+        {
+            try
+            {
+                var client = await _httpClientFactoryService.CreateClient(
+                    HttpClientNames.ContextAPI,
+                    _callContext.CurrentUserIdentity!);
+
+                var responseMessage = await client.DeleteAsync($"instances/{instanceId}/fileRecords/{fileId}");
+
+                if (responseMessage.IsSuccessStatusCode)
+                    return new ContextServiceResponse
+                    {
+                        Success = true
+                    };
+
+                _logger.LogError(
+                    "An error occurred while deleting the file record for file {FileId}. Status code: {StatusCode}.",
+                    fileId, responseMessage.StatusCode);
+
+                return new ContextServiceResponse
+                {
+                    Success = false,
+                    ErrorMessage = $"The service responded with an error status code for file {fileId}."
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting the file record for file {FileId}.", fileId);
+                return new ContextServiceResponse
+                {
+                    Success = false,
+                    ErrorMessage = $"An error occurred while deleting the file record for file {fileId}."
+                };
+            }
+        }
+
 
         /// <inheritdoc/>
         public async Task<ContextServiceResponse<ContextFileRecord>> CreateFileForConversation(

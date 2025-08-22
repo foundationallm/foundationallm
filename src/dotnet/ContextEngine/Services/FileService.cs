@@ -211,6 +211,33 @@ namespace FoundationaLLM.Context.Services
             return fileRecord;
         }
 
+        /// <inheritdoc/>
+        public async Task DeleteFileRecord(
+            string instanceId,
+            string fileId,
+            UnifiedUserIdentity userIdentity)
+        {
+            //NOTE: We do not allow bypassing the ownership check for file deletion.
+
+            var fileRecord = await _cosmosDBService.GetFileRecord(
+                instanceId,
+                fileId,
+                userIdentity.UPN!,
+                false);
+
+            await _storageService.DeleteFileAsync(
+                instanceId,
+                fileRecord.FilePath.StartsWith("file/")
+                    ? fileRecord.FilePath
+                    : $"file/{fileRecord.FilePath}",
+                CancellationToken.None);
+
+            await _cosmosDBService.DeleteFileRecord(
+                instanceId,
+                fileId,
+                userIdentity.UPN!);
+        }
+
         public async Task<bool> ShouldBypassOwnerCheck(
             string instanceId,
             UnifiedUserIdentity userIdentity)
