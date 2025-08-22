@@ -1227,6 +1227,14 @@ export default {
 		);
 	},
 
+	async getKnowledgeUnit(
+		knowledgeUnitName: string
+	): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits/${knowledgeUnitName}?api-version=${this.apiVersion}`,
+		);
+	},
+
 	async queryKnowledgeSource(
 		knowledgeSourceName: string,
 		queryRequest: any
@@ -1240,12 +1248,12 @@ export default {
 		);
 	},
 
-	async renderKnowledgeSourceGraph(
-		knowledgeSourceName: string,
+	async renderKnowledgeUnitGraph(
+		knowledgeUnitName: string,
 		queryRequest: any
 	): Promise<any> {
 		return await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources/${knowledgeSourceName}/render-graph?api-version=${this.apiVersion}`,
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits/${knowledgeUnitName}/render-graph?api-version=${this.apiVersion}`,
 			{
 				method: 'POST',
 				body: queryRequest,

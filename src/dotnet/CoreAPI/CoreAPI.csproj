@@ -60,8 +60,10 @@
     <ProjectReference Include="..\AzureOpenAI\AzureOpenAI.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
+    <ProjectReference Include="..\Context\Context.csproj" />
     <ProjectReference Include="..\Conversation\Conversation.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Prompt\Prompt.csproj" />
   </ItemGroup>
 
 </Project>

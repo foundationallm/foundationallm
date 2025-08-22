@@ -92,5 +92,30 @@ namespace FoundationaLLM.Context.Services.CosmosDB
 
             return results;
         }
+
+        /// <inheritdoc/>
+        public async Task DeleteFileRecord(
+            string instanceId,
+            string fileId,
+            string userPrincipalName)
+        {
+            try
+            {
+                await _cosmosDB.ContextContainer.PatchItemAsync<ContextFileRecord>(
+                    fileId,
+                    new PartitionKey(userPrincipalName),
+                    [
+                        PatchOperation.Set("/deleted", true),
+                        PatchOperation.Set("/updated_at", DateTimeOffset.UtcNow),
+                        PatchOperation.Set("/updated_by", userPrincipalName)
+                    ]
+                );
+            }
+            catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                _logger.LogError("File record with id {FileId} not found for deletion.", fileId);
+                throw new Exception($"File record with id {fileId} not found for deletion.", ex);
+            }
+        }
     }
 }

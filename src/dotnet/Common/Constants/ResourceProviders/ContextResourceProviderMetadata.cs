@@ -46,7 +46,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     typeof(KnowledgeSource))
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<KnowledgeUnit>)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<KnowledgeSource>)]),
                         new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(KnowledgeUnit)], [typeof(ResourceProviderUpsertResult)]),
                         new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], [])
                     ],
@@ -55,6 +55,16 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ContextKnowledgeSourceQueryRequest)], [typeof(ContextKnowledgeSourceQueryResponse)])
                         ])
                     ]
+                }
+            },
+            {
+                ContextResourceTypeNames.Files,
+                new ResourceTypeDescriptor(
+                    ContextResourceTypeNames.Files,
+                    typeof(ResourceBase))
+                {
+                    AllowedTypes = [],
+                    Actions = []
                 }
             }
         };

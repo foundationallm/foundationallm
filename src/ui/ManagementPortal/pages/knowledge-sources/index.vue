@@ -26,6 +26,8 @@
             <div class="w-full flex gap-4">
                 <Dropdown v-model="selectedKnowledgeSource" :options="knowledgeSources" option-label="resource.name"
                     placeholder="-- Select Knowledge Source --" />
+                <Dropdown v-model="selectedKnowledgeUnitName" :options="knowledgeUnitNames" option-label=""
+                    placeholder="-- Select Knowledge Units --" />
                 <Button type="button" icon="pi pi-refresh" @click="getKnowledgeSources"
                     v-tooltip="'Refresh knowledge sources'" />
                 <Button v-if="selectedKnowledgeSource && hasKnowledgeGraph" type="button" icon="pi pi-share-alt"
@@ -218,6 +220,9 @@ export default {
         return {
             knowledgeSources: [] as any[],
             selectedKnowledgeSource: null as any,
+            knowledgeUnitNames: [] as any[],
+            selectedKnowledgeUnitName: null as any,
+            selectedKnowledgeUnit: null as any,
             hasKnowledgeGraph: false as boolean,
             showKnowledgeGraph: true as boolean,
             showQueryResult: true as boolean,
@@ -269,7 +274,21 @@ export default {
 
     watch: {
         selectedKnowledgeSource(newVal) {
-            this.hasKnowledgeGraph = !!(newVal && newVal.resource && newVal.resource.has_knowledge_graph);
+            this.knowledgeUnitNames = newVal
+                ? newVal.resource.knowledge_unit_object_ids.map(id => {
+                    const parts = id.split('/');
+                    return parts[parts.length - 1];
+                })
+                : [];
+            this.selectedKnowledgeUnitName = null;
+        },
+        selectedKnowledgeUnitName(newVal) {
+            if (newVal) {
+                this.getKnowledgeUnit(newVal);
+            }
+        },
+        selectedKnowledgeUnit(newVal) {
+            this.hasKnowledgeGraph = !!(newVal && newVal.has_knowledge_graph);
             this.useKnowledgeGraphQuery = this.hasKnowledgeGraph;
             this.useKnowledgeGraphVectorStoreQuery = this.hasKnowledgeGraph;
         },
@@ -284,6 +303,24 @@ export default {
             this.loading = true;
             try {
                 this.knowledgeSources = await api.getKnowledgeSources();
+            } catch (error) {
+                this.$toast?.add?.({
+                    severity: 'error',
+                    detail: error?.response?._data || error,
+                    life: 5000,
+                });
+            }
+            this.loading = false;
+        },
+
+        async getKnowledgeUnit(
+            knowledgeUnitName: string) {
+
+            this.loadingStatusText = 'Retrieving the knowledge unit...';
+            this.loading = true;
+            try {
+                let result = await api.getKnowledgeUnit(knowledgeUnitName);
+                this.selectedKnowledgeUnit = result[0].resource;
             } catch (error) {
                 this.$toast?.add?.({
                     severity: 'error',
@@ -368,10 +405,10 @@ export default {
 
         async renderKnowledgeGraph() {
             // Defensive: ensure we have a selected knowledge source
-            if (!this.selectedKnowledgeSource) {
+            if (!this.selectedKnowledgeUnit) {
                 this.$toast?.add?.({
                     severity: 'warn',
-                    detail: 'Please select a knowledge source to render the graph.',
+                    detail: 'Please select a knowledge unit to render the graph.',
                     life: 3000,
                 });
                 return;
@@ -385,9 +422,9 @@ export default {
                 return;
             }
             // Example: fetch graph data from API or use existing data
-            this.loadingStatusText = `Rendering knowledge graph for ${this.selectedKnowledgeSource.resource.name}...`;
+            this.loadingStatusText = `Rendering knowledge graph for ${this.selectedKnowledgeUnit.name}...`;
             this.loading = true;
-            api.renderKnowledgeSourceGraph(this.selectedKnowledgeSource.resource.name, {})
+            api.renderKnowledgeUnitGraph(this.selectedKnowledgeUnit.name, {})
                 .then(data => {
                     this.renderSigmaGraph(data);
                     this.fullGraphOnDisplay = true;

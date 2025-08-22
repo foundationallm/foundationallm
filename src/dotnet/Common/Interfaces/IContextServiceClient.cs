@@ -65,6 +65,16 @@ namespace FoundationaLLM.Common.Interfaces
             string fileId);
 
         /// <summary>
+        /// Calls the Context API service to delete a file record.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="fileId">The unique identifier of the file.</param>
+        /// <returns>A <see cref="ContextServiceResponse"/> instance .</returns>
+        Task<ContextServiceResponse> DeleteFileRecord(
+            string instanceId,
+            string fileId);
+
+        /// <summary>
         /// Calls the Context API service to create a code session.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
@@ -167,15 +177,15 @@ namespace FoundationaLLM.Common.Interfaces
             ContextKnowledgeSourceQueryRequest queryRequest);
 
         /// <summary>
-        /// Retrieves the knowledge source's knowledge graph in a format suitable for visualization or further processing.
+        /// Retrieves the knowledge unit's knowledge graph in a format suitable for visualization or further processing.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
+        /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
         /// <param name="queryRequest">The request containing the details of the query.</param>
         /// <returns></returns>
-        Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeSourceGraph(
+        Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeUnitGraph(
             string instanceId,
-            string knowledgeSourceId,
+            string knowledgeUnitId,
             ContextKnowledgeSourceQueryRequest? queryRequest);
     }
 }

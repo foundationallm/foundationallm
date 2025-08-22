@@ -14,5 +14,10 @@
         /// Knowledge sources.
         /// </summary>
         public const string KnowledgeSources = "knowledgeSources";
+
+        /// <summary>
+        /// Files.
+        /// </summary>
+        public const string Files = "files";
     }
 }

@@ -148,16 +148,16 @@ namespace FoundationaLLM.Context.ResourceProviders
                         authorizationResult,
                         JsonSerializer.Deserialize<ContextKnowledgeUnitSetGraphRequest>(serializedAction)!,
                         userIdentity),
+                    ResourceProviderActions.RenderGraph => await RenderKnowledgeUnitGraph(
+                        resourcePath,
+                        authorizationResult,
+                        serializedAction,
+                        userIdentity),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.")
                 },
                 ContextResourceTypeNames.KnowledgeSources => resourcePath.Action switch
                 {
                     ResourceProviderActions.Query => await QueryKnowledgeSource(
-                        resourcePath,
-                        authorizationResult,
-                        serializedAction,
-                        userIdentity),
-                    ResourceProviderActions.RenderGraph => await RenderKnowledgeSourceGraph(
                         resourcePath,
                         authorizationResult,
                         serializedAction,
@@ -584,7 +584,7 @@ namespace FoundationaLLM.Context.ResourceProviders
             return response;
         }
 
-        private async Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeSourceGraph(
+        private async Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeUnitGraph(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             string serializedAction,
@@ -595,7 +595,7 @@ namespace FoundationaLLM.Context.ResourceProviders
 
             var contextServiceClient = GetContextServiceClient(userIdentity);
 
-            var response = await contextServiceClient!.RenderKnowledgeSourceGraph(
+            var response = await contextServiceClient!.RenderKnowledgeUnitGraph(
                 resourcePath.InstanceId!,
                 resourcePath.MainResourceId!,
                 null);

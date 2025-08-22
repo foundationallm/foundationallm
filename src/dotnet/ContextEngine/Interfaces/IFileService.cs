@@ -89,5 +89,16 @@ namespace FoundationaLLM.Context.Interfaces
             string instanceId,
             string fileId,
             UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Deletes the file record associated with a file.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="fileId">The identifier of the file.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing details about the user identity.</param>
+        Task DeleteFileRecord(
+            string instanceId,
+            string fileId,
+            UnifiedUserIdentity userIdentity);
     }
 }

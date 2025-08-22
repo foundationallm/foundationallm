@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.Context;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Models.Authentication;
 using System.Text.Json.Serialization;
@@ -115,7 +116,7 @@ namespace FoundationaLLM.Common.Models.Context
                 metadata)
         {
             var fileId = $"file-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToBase64String()}";
-            var fileObjectId = $"/instances/{instanceId}/providers/{ContextProviderNames.FoundationaLLM_ContextAPI}/files/{fileId}";
+            var fileObjectId = $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Context}/files/{fileId}";
 
             var filePath = string.IsNullOrEmpty(conversationId)
                 ? $"file/agents/{agentName}/{fileId}{Path.GetExtension(fileName)}"

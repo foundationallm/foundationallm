@@ -64,10 +64,12 @@ namespace FoundationaLLM.Core.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Essentials);
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Attachment_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AIModel_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AzureAI_Storage);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);                
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Context_Storage);
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Quota_Storage);
 
@@ -110,13 +112,16 @@ namespace FoundationaLLM.Core.API
             builder.AddResourceProviderCacheSettings();
             builder.AddResourceValidatorFactory();
 
+            builder.AddAuthorizationResourceProvider();
             builder.AddAgentResourceProvider();
+            builder.AddPromptResourceProvider();
             builder.AddAttachmentResourceProvider();
             builder.AddConfigurationResourceProvider();
             builder.AddAzureAIResourceProvider();
             builder.AddAzureOpenAIResourceProvider();
             builder.AddAIModelResourceProvider();
             builder.AddConversationResourceProvider();
+            builder.AddContextResourceProvider();
 
             // Register the downstream services and HTTP clients.
             builder.AddHttpClientFactoryService();

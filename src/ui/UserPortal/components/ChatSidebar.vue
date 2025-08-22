@@ -244,8 +244,6 @@
 			@keydown.esc="settingsModalVisible = false"
 		>
 			<TabView>
-				
-				<!-- Agents List Tab (T#8)-->
 				<TabPanel header="Agents">
 					<div class="mb-5">
 						<nuxt-link 
@@ -254,7 +252,7 @@
 							New Agent <i class="pi pi-plus ml-3"></i>
 						</nuxt-link>
 					</div>
-
+					
 					<div class="csm-table-container-1">
 						<table class="csm-table-1">
 							<thead>
@@ -263,17 +261,28 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="(agent, index) in agentOptions" :key="index">
-									<td>{{ agent.label }}</td>
+								<tr v-for="getAgents in agentOptions2" :key="getAgents.object_id">
+									<td>{{ getAgents.display_name || getAgents.name }}</td>
 								</tr>
 							</tbody>
 						</table>
-
+						
+						<!-- Loading state -->
+						<div v-if="loadingAgents2" class="loading-container">
+							Loading agents...
+						</div>
+						
 						<!-- Empty Message -->
-						<div v-if="agentOptions.length === 0">
-							{{ emptyAgentsMessage || 'No agents available.' }}
+						<div v-if="agentOptions2.length === 0 && !loadingAgents2">
+							{{ emptyAgentsMessage2 || 'No agents available.' }}
+						</div>
+						
+						<!-- Error Message -->
+						<div v-if="agentError2" class="error-message">
+							{{ agentError2 }}
 						</div>
 					</div>
+
 				</TabPanel>
 
 				<TabPanel header="Accessibility">
@@ -306,6 +315,7 @@
 					</div> -->
 				</TabPanel>
 			</TabView>
+
 			<template #footer>
 				<Button
 					class="sidebar-dialog__button"
@@ -325,6 +335,8 @@
 	import type { Session } from '@/js/types';
 	declare const process: any;
 
+	import api from '@/js/api';
+
 	export default {
 		name: 'ChatSidebar',
 
@@ -342,6 +354,11 @@
 
 				agentOptions: [],
 				emptyAgentsMessage: null,
+
+				agentOptions2: [],
+				loadingAgents2: false,
+				agentError2: '',
+				emptyAgentsMessage2: 'No agents available.',
 			};
 		},
 
@@ -385,6 +402,7 @@
 
 		async mounted() {
 			await this.setAgentOptions();
+			await this.loadgetAgents();
 		},
 
 		methods: {
@@ -487,12 +505,7 @@
 					this.conversationToDelete = null;
 				}
 			},
-			
-			/**
-			 * Sets the agent options for the agent dropdown.
-			 * Filters out expired agents but keeps the currently selected agent even if it is expired.
-			 * T#8
-			 */ 
+
 			async setAgentOptions() {
 				const isCurrentAgent = (agent): boolean => {
 					return (
@@ -514,6 +527,45 @@
 					my_agent: agent.roles.includes('Owner'),
 					value: agent,
 				}));
+			},
+
+			async loadgetAgents() {
+				this.loadingAgents2 = true;
+				this.agentError2 = '';
+				
+				try {
+					const response = await api.getAgents();
+
+					const agentsArray = Array.isArray(response) ? response : [];
+					
+					this.agentOptions2 = agentsArray.map((ResourceProviderGetResult, index) => {
+						const agent = ResourceProviderGetResult.resource || ResourceProviderGetResult;
+						
+						return {
+							object_id: agent.object_id,
+							name: agent.name,
+							display_name: agent.display_name,
+							label: agent.display_name || agent.name,
+							value: agent.object_id,
+							type: agent.type,
+							description: agent.description
+						};
+					});
+				} catch (error) {
+					console.error('Failed to load agents:', error);
+					this.agentError2 = 'Failed to load agents. Please try again later.';
+					this.agentOptions2 = [];
+				} finally {
+					this.loadingAgents2 = false;
+				}
+			},
+
+			async refreshAgents() {
+				await this.loadgetAgents();
+			},
+
+			selectAgent(getAgents) {
+				this.$emit('agent-selected', getAgents);
 			},
 
 			hideAllPoppers() {

@@ -20,6 +20,8 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>FoundationaLLM;LLM;GPT;AI;Data;Pipeline;Plugin</PackageTags>
     <FileVersion>0.0.0</FileVersion>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
