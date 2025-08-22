@@ -126,24 +126,32 @@
                                     <div class="w-full max-w-full md:max-w-[50%] px-4">
                                         <div class="mb-6">
                                             <label for="chatModel" class="block text-base text-[#898989] mb-2">
-                                                <VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']"
+                                                <VTooltip :auto-hide="isMobile"
+                                                    :popper-triggers="isMobile ? [] : ['hover']"
                                                     class="inline-block relative top-[2px]">
                                                     <i class="pi pi-info-circle text-[#5472d4]"></i>
                                                     <template #popper>
-                                                        <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate tenetur iure, distinctio soluta nostrum corporis excepturi consectetur vitae mollitia eum cumque corrupti necessitatibus? Nihil vero, dolorem nesciunt perspiciatis voluptas amet!</div>
+                                                        <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor sit
+                                                            amet consectetur adipisicing elit. Voluptate tenetur iure,
+                                                            distinctio soluta nostrum corporis excepturi consectetur
+                                                            vitae mollitia eum cumque corrupti necessitatibus? Nihil
+                                                            vero, dolorem nesciunt perspiciatis voluptas amet!</div>
                                                     </template>
                                                 </VTooltip>
-                                                Chat Model <span
-                                                class="text-[#ff0000]">*</span>
+                                                Chat Model <span class="text-[#ff0000]">*</span>
                                             </label>
                                             <Dropdown
                                                 class="w-full"
-                                                option-group-label="label"
-                                                option-group-children="items"
-                                                option-disabled="disabled"
-                                                option-label="label"
+                                                :options="aiModels"
+                                                optionLabel="name"
+                                                optionValue="object_id"
+                                                v-model="selectedAIModel"
                                                 placeholder="--Select--"
-                                                aria-label="Select an agent"
+                                                aria-label="Select a chat model"
+                                                :filter="true"
+                                                :showClear="true"
+                                                :virtualScrollerOptions="{ itemSize: 38 }"
+                                                :itemTemplate="(model: ResourceBase) => model?.name || model?.display_name || model?.object_id"
                                             />
                                         </div>
 
@@ -165,7 +173,7 @@
                                             <Textarea
                                                 class="w-full resize-none"
                                                 name="systemPrompt"
-                                                id="systemPrompt" 
+                                                id="systemPrompt"
                                                 aria-labelledby="aria-system-prompt"
                                                 rows="5"
                                             />
@@ -278,6 +286,7 @@
 <script lang="ts">
 import api from '@/js/api';
 import { debounce } from '@/js/helpers';
+import type { ResourceBase } from '@/js/types/aiModel';
 import { defineComponent } from 'vue';
 import NavBarSettings from '~/components/NavBarSettings.vue';
 
@@ -298,13 +307,17 @@ import NavBarSettings from '~/components/NavBarSettings.vue';
                 agentDisplayName: '',
                 displayNameStatus: '', // '', 'loading', 'success', 'error'
                 displayNameDebouncedCheck: null as null | ((name: string) => void),
+                aiModels: [] as ResourceBase[],
+                selectedAIModel: null as string | null,
             };
         },
 
         mounted() {
             // Setup debounced check function
             this.displayNameDebouncedCheck = debounce(this.checkDisplayName, 500);
-        },
+					this.fetchAIModels();
+
+				},
 
         methods: {
             async onDisplayNameInput() {
@@ -326,6 +339,18 @@ import NavBarSettings from '~/components/NavBarSettings.vue';
                     this.displayNameStatus = 'error';
                 }
             },
+            async fetchAIModels() {
+                try {
+                    const wrappers = await api.getAIModels();
+
+                    this.aiModels = Array.isArray(wrappers)
+                        ? wrappers.map((w: any) => w.resource)
+                        : [];
+                } catch (e) {
+                    this.aiModels = [];
+                }
+            },
+
             updateCharacterCount() {
                 this.characterCount = this.textCounter.length;
             },
@@ -401,22 +426,26 @@ import NavBarSettings from '~/components/NavBarSettings.vue';
             text-decoration: none;
         }
     }
-    .csm-input-switch-1{
-        &.p-inputswitch{
-            .p-inputswitch-slider{
+
+    .csm-input-switch-1 {
+        &.p-inputswitch {
+            .p-inputswitch-slider {
                 border-radius: 50px;
                 background: transparent;
                 border: 3px solid #334581;
-                &:before{
+
+                &:before {
                     background: #334581;
                     border-radius: 50%;
                     left: 0.1rem;
                 }
             }
-            &.p-highlight{
-                .p-inputswitch-slider{
+
+            &.p-highlight {
+                .p-inputswitch-slider {
                     background: #334581;
-                    &:before{
+
+                    &:before {
                         background-color: #ffffff;
                         transform: translateX(1.2rem);
                     }

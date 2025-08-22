@@ -14,6 +14,7 @@ import type {
 	ResourceProviderDeleteResults,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
+	ResourceBase,
 	Session,
 	UserProfile,
 } from '@/js/types';
@@ -313,9 +314,9 @@ export default {
 			const agents = await this.fetch(
 			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents`
 			) as ResourceProviderGetResult<Agent>[];
-			
+
 			agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
-			
+
 			return agents;
 		} catch (error) {
 			console.error('Error fetching agents from management endpoint:', error);
@@ -441,6 +442,22 @@ export default {
 				body: oneDriveWorkSchool,
 			},
 		)) as OneDriveWorkSchool;
+	},
+
+		/**
+	 * Retrieves the list of AI models from the management endpoint.
+	 * Returns an array of ResourceBase (see aiModel.ts) as required.
+	 */
+	async getAIModels(): Promise<ResourceBase[]> {
+		try {
+			const aiModels = await this.fetch<ResourceBase[]>(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels`
+			);
+			return aiModels;
+		} catch (error) {
+			console.error('Error fetching AI models:', error);
+			throw error;
+		}
 	},
 	/**
 	 * Checks if the derived agent resource name is available.
