@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Clients;
+using FoundationaLLM.Common.Constants.DataPipelines;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
@@ -7,6 +8,7 @@ using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Plugins;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Services.Plugins;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -35,10 +37,21 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
 
         public async Task<List<DataPipelineContentItem>> GetContentItems()
         {
-            var contextFileObjectId = _pluginParameters[PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID]?.ToString()
-                ?? throw new PluginException($"The {PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID} parameter is required by the {Name} plugin.");
+            if (!_pluginParameters.TryGetValue(
+                PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID,
+                out var contextFileObjectIdObject))
+                throw new PluginException(
+                    $"The plugin {Name} requires the {PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID} parameter.");
+            var contextFileObjectId = contextFileObjectIdObject.ToString()!;
 
-            var canonicalId = contextFileObjectId[(contextFileObjectId.LastIndexOf('/') + 1)..];
+            var contentAction = ContentItemActions.AddOrUpdate;
+            if (_pluginParameters.TryGetValue(
+                PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTENTACTION,
+                out var contentActionObject))
+                contentAction = contentActionObject.ToString()!;
+
+            var resourcePath = ResourcePath.GetResourcePath( contextFileObjectId );
+            var canonicalId = resourcePath.MainResourceId!;
 
             return await Task.FromResult<List<DataPipelineContentItem>>(
                     [
@@ -50,7 +63,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                             {
                                 MultipartId = [contextFileObjectId],
                                 CanonicalId = canonicalId
-                            }
+                            },
+                            ContentAction = contentAction
                         }
                     ]);
         }

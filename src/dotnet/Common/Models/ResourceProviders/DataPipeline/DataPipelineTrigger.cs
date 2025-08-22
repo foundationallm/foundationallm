@@ -39,5 +39,14 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
         /// </remarks>
         [JsonPropertyName("parameter_values")]
         public required Dictionary<string, object> ParameterValues { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the list of parameter names that are used to generate the canonical run identifier.
+        /// </summary>
+        /// <remarks>
+        /// If not specified, all the parameters in <see cref="ParameterValues"/> are used.
+        /// </remarks>
+        [JsonPropertyName("canonical_id_parameters")]
+        public List<string>? CanonicalIdParameters { get; set; }
     }
 }

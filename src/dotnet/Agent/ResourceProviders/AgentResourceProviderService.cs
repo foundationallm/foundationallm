@@ -1486,6 +1486,15 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 case AgentToolNames.FoundationaLLMCodeInterpreterTool:
                     agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
+                    await RemoveFileFromKnowledgeUnit(
+                        _instanceSettings.Id,
+                        fileObjectId,
+                        agent,
+                        userIdentity);
+
+                    // Remove the tool association from the agent file reference
+                    fileToolAssociation.AssociatedResourceObjectIds!.Remove(toolObjectId);
+
                     break;
 
                 default:
@@ -1596,6 +1605,14 @@ namespace FoundationaLLM.Agent.ResourceProviders
             if (!success)
                 throw new ResourceProviderException(
                     $"The execution of the data pipeline for file {fileObjectId} failed.");
+        }
+
+        private async Task RemoveFileFromKnowledgeUnit(
+           string instanceId,
+           string fileObjectId,
+           AgentBase agent,
+           UnifiedUserIdentity userIdentity)
+        {
         }
 
         /// <summary>

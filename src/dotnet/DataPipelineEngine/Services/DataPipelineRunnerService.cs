@@ -12,7 +12,6 @@ using FoundationaLLM.DataPipelineEngine.Services.Runners;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using NuGet.ContentModel;
 
 namespace FoundationaLLM.DataPipelineEngine.Services
 {
@@ -200,12 +199,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     || _currentRunners.Values.Any(r => comparer.Equals(r.DataPipelineRun, dataPipelineRun)))
                 {
                     _logger.LogError(
-                    "The data pipeline with run id {DataPipelineRunId} and canonical run id {DataPipelineCanonicalRunId} is conflicting with an already existing run and cannot be started.",
-                    dataPipelineRun.RunId,
-                    dataPipelineRun.CanonicalRunId);
-                    throw new DataPipelineServiceException(
-                        $"The data pipeline with run id {dataPipelineRun.RunId} and canonical run id {dataPipelineRun.CanonicalRunId} is conflicting with an already existing run and cannot be started.",
-                        StatusCodes.Status400BadRequest);
+                        "The data pipeline with run id {DataPipelineRunId} and canonical run id {DataPipelineCanonicalRunId} is conflicting with an already existing run and cannot be started.",
+                        dataPipelineRun.RunId,
+                        dataPipelineRun.CanonicalRunId);
+                        throw new DataPipelineServiceException(
+                            $"The data pipeline with run id {dataPipelineRun.RunId} and canonical run id {dataPipelineRun.CanonicalRunId} is conflicting with an already existing run and cannot be started.",
+                            StatusCodes.Status400BadRequest);
                 }
 
                 dataPipelineRunner = new DataPipelineRunner(
