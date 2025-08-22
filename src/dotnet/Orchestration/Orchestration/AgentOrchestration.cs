@@ -348,14 +348,19 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             foreach (var attachmentObjectId in attachmentObjectIds)
             {
-                if (ResourcePath.TryParseResourceProvider(attachmentObjectId, out string? resourceProvider))
+                var resourcePath = ResourcePath.GetResourcePath(attachmentObjectId);
+                switch (resourcePath.ResourceProvider)
                 {
-                    legacyAttachmentObjectIds.Add(attachmentObjectId);
-                }                    
-                else
-                {                    
-                    contextAttachmentObjectIds.Add(attachmentObjectId);
-                }                    
+                    case ResourceProviderNames.FoundationaLLM_Attachment:
+                        legacyAttachmentObjectIds.Add(attachmentObjectId);
+                        break;
+                    case ResourceProviderNames.FoundationaLLM_Context:
+                        contextAttachmentObjectIds.Add(resourcePath.ResourceId!);
+                        break;
+                    default:
+                        throw new OrchestrationException(
+                            $"The resource provider {resourcePath.ResourceProvider} cannot be used in an attachement object identifier.");
+                }                   
             }
 
             List<AttachmentProperties> result = [];
