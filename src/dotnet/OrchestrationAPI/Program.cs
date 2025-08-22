@@ -140,6 +140,7 @@ namespace FoundationaLLM.Orchestration.API
             //----------------------------
             builder.AddResourceProviderCacheSettings();
 
+            builder.AddAuthorizationResourceProvider();
             builder.AddAgentResourceProvider();
             builder.AddPromptResourceProvider();
             builder.AddVectorizationResourceProvider();
