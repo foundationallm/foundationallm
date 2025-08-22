@@ -2280,20 +2280,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.ContextProviderNames.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.ContextProviderNames.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Constants.Context.ContextProviderNames",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Context.ContextProviderNames.yml\" sourcestartlinenumber=\"1\">Provides the names of the FoundationaLLM context providers.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.ContextRecordOrigins.yml",
       "output": {
         ".html": {

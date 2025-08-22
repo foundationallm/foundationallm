@@ -128,6 +128,50 @@ Interface IAzureCosmosDBFileService  <a class="header-action link-secondary" tit
 </h2>
 
 
+  <a id="FoundationaLLM_Context_Interfaces_IAzureCosmosDBFileService_DeleteFileRecord_" data-uid="FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.DeleteFileRecord*"></a>
+
+  <h3 id="FoundationaLLM_Context_Interfaces_IAzureCosmosDBFileService_DeleteFileRecord_System_String_System_String_System_String_" data-uid="FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.DeleteFileRecord(System.String,System.String,System.String)">
+  DeleteFileRecord(string, string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Deletes the file record for a specified file identifier.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task DeleteFileRecord(string instanceId, string fileId, string userPrincipalName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>fileId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The idenfier of the file.</p>
+</dd>
+    <dt><code>userPrincipalName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The user principal name of the user associated with the file record.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Context_Interfaces_IAzureCosmosDBFileService_GetFileRecord_" data-uid="FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecord*"></a>
 
   <h3 id="FoundationaLLM_Context_Interfaces_IAzureCosmosDBFileService_GetFileRecord_System_String_System_String_System_String_System_Boolean_" data-uid="FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecord(System.String,System.String,System.String,System.Boolean)">
@@ -152,7 +196,7 @@ Interface IAzureCosmosDBFileService  <a class="header-action link-secondary" tit
     <dd><p>The idenfier of the file.</p>
 </dd>
     <dt><code>userPrincipalName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The user principal name of the user associated with the code session.</p>
+    <dd><p>The user principal name of the user associated with the file record.</p>
 </dd>
     <dt><code>bypassOwnerCheck</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
     <dd><p>Indicates whether to bypass the owner check for the file record.</p>
@@ -202,7 +246,7 @@ Interface IAzureCosmosDBFileService  <a class="header-action link-secondary" tit
     <dd><p>The name of the file.</p>
 </dd>
     <dt><code>userPrincipalName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The user principal name of the user associated with the code session.</p>
+    <dd><p>The user principal name of the user associated with the file record.</p>
 </dd>
     <dt><code>bypassOwnerCheck</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
     <dd><p>Indicates whether to bypass the owner check for the file records.</p>
