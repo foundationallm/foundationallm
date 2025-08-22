@@ -213,3 +213,12 @@ export interface ResourceBase {
     deleted?: boolean;
     expiration_date?: string | null;
 }
+
+
+export interface AIModel extends ResourceBase {
+	version?: string;
+	deployment_name?: string;
+	model_parameters?: Record<string, any>;
+	endpoint_object_id?: string;
+	properties?: Record<string, any>;
+}
