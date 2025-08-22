@@ -3,7 +3,7 @@
 		<Toast position="top-center" />
 		<div class="navbar navbar--collapsed">
 			<!-- Sidebar header -->
-			<div class="navbar__header">
+			<div class="navbar__header type-2">
 				<UserAvatar size="large" class="chat-sidebar__avatar" />
 
 				<img v-if="$appConfigStore.logoUrl !== ''" :src="$appConfigStore.logoUrl"

@@ -33,6 +33,13 @@
         max-width: 148px;
         margin-right: 12px;
     }
+
+    &.type-2{
+        width: 275px;
+        img{
+            margin-right: 0px;
+        }
+    }
 }
 
 .navbar__content {
