@@ -1,20 +1,21 @@
 import type {
+	Agent,
+	AgentNameCheckRequest,
+	AgentNameCheckResponse,
+	CompletionPrompt,
+	CompletionRequest,
+	ConversationProperties,
+	CoreConfiguration,
+	LongRunningOperation,
 	Message,
 	MessageRatingRequest,
-	Session,
-	LongRunningOperation,
-	UserProfile,
-	CoreConfiguration,
+	MessageResponse,
 	OneDriveWorkSchool,
-	ConversationProperties,
-	CompletionPrompt,
-	Agent,
-	CompletionRequest,
+	ResourceProviderDeleteResults,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
-	ResourceProviderDeleteResults,
-	RateLimitError,
-	MessageResponse,
+	Session,
+	UserProfile,
 } from '@/js/types';
 
 export default {
@@ -440,6 +441,24 @@ export default {
 				body: oneDriveWorkSchool,
 			},
 		)) as OneDriveWorkSchool;
+	},
+	/**
+	 * Checks if the derived agent resource name is available.
+	 * @param name - The derived resource name to check.
+	 * @returns Promise resolving to the check response.
+	 */
+	async checkAgentNameAvailability(name: string): Promise<AgentNameCheckResponse> {
+		const payload: AgentNameCheckRequest = {
+			type: 'knowledge-management',
+			name,
+		};
+		return await this.fetch<AgentNameCheckResponse>(
+			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/checkname`,
+			{
+				method: 'POST',
+				body: payload,
+			}
+		);
 	},
 };
 

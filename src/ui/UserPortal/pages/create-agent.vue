@@ -44,8 +44,27 @@
                                         <label for="agentDisplayName"
                                             class="block text-base text-[#898989] mb-2">Display Name <span
                                                 class="text-[#ff0000]">*</span></label>
-                                        <InputText type="text" class="w-full" name="agentDisplayName"
-                                            id="agentDisplayName" required="true" maxlength="50" />
+                                        <div class="relative">
+                                            <InputText
+                                                v-model="agentDisplayName"
+                                                type="text"
+                                                class="w-full pr-10"
+                                                name="agentDisplayName"
+                                                id="agentDisplayName"
+                                                required="true"
+                                                maxlength="50"
+                                                @input="onDisplayNameInput"
+                                            />
+                                            <span v-if="displayNameStatus === 'loading'" class="absolute right-2 top-1/2 -translate-y-1/2">
+                                                <i class="pi pi-spin pi-spinner text-blue-500"></i>
+                                            </span>
+                                            <span v-else-if="displayNameStatus === 'success'" class="absolute right-2 top-1/2 -translate-y-1/2">
+                                                <i class="pi pi-check-circle text-green-500"></i>
+                                            </span>
+                                            <span v-else-if="displayNameStatus === 'error'" class="absolute right-2 top-1/2 -translate-y-1/2">
+                                                <i class="pi pi-times-circle text-red-500"></i>
+                                            </span>
+                                        </div>
                                         <p class="text-xs text-[#898989]">(50 Characters)</p>
                                     </div>
 
@@ -255,9 +274,12 @@
     </main>
 </template>
 
+
 <script lang="ts">
-    import { defineComponent } from 'vue';
-    import NavBarSettings from '~/components/NavBarSettings.vue';
+import api from '@/js/api';
+import { debounce } from '@/js/helpers';
+import { defineComponent } from 'vue';
+import NavBarSettings from '~/components/NavBarSettings.vue';
 
     export default defineComponent({
         name: 'CreateAgent',
@@ -273,10 +295,37 @@
                 characterCount: 0,
                 isDragOver: false,
                 uploadedFiles: [] as File[],
+                agentDisplayName: '',
+                displayNameStatus: '', // '', 'loading', 'success', 'error'
+                displayNameDebouncedCheck: null as null | ((name: string) => void),
             };
         },
 
+        mounted() {
+            // Setup debounced check function
+            this.displayNameDebouncedCheck = debounce(this.checkDisplayName, 500);
+        },
+
         methods: {
+            async onDisplayNameInput() {
+                this.displayNameStatus = this.agentDisplayName ? 'loading' : '';
+                if (this.displayNameDebouncedCheck) {
+                    this.displayNameDebouncedCheck(this.agentDisplayName);
+                }
+            },
+
+            async checkDisplayName(name: string) {
+                if (!name) {
+                    this.displayNameStatus = '';
+                    return;
+                }
+                try {
+                    const res = await api.checkAgentNameAvailability(name);
+                    this.displayNameStatus = (res.status === 'Allowed' && !res.exists && !res.deleted) ? 'success' : 'error';
+                } catch (e) {
+                    this.displayNameStatus = 'error';
+                }
+            },
             updateCharacterCount() {
                 this.characterCount = this.textCounter.length;
             },

@@ -213,3 +213,18 @@ export interface ResourceBase {
 	deleted: boolean;
 	expiration_date: string | null;
 }
+
+// --- Agent Name Availability Check Types ---
+export interface AgentNameCheckRequest {
+	type: 'knowledge-management';
+	name: string;
+}
+
+export interface AgentNameCheckResponse {
+	type: 'knowledge-management';
+	name: string;
+	status: 'Allowed' | 'NotAllowed';
+	message: string | null;
+	exists: boolean;
+	deleted: boolean;
+}
