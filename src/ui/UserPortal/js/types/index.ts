@@ -198,3 +198,18 @@ export interface MessageResponse {
 	operation_id?: string;
 	status_message?: string;
 }
+
+export interface ResourceBase {
+	type: string;
+	name: string;
+	object_id: string;
+	display_name: string;
+	description: string;
+	cost_center?: string;
+	created_on: string;
+	updated_on: string;
+	created_by: string | null;
+	updated_by: string;
+	deleted: boolean;
+	expiration_date: string | null;
+}
