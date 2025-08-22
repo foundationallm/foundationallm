@@ -1328,16 +1328,19 @@ public partial class CoreService(
                 {
                     case ResourceProviderNames.FoundationaLLM_Attachment:
 
-                        //Get resource path for attachment
-                        var rp = ResourcePath.GetResourcePath(attachmentObjectId);
-                        var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(instanceId, rp.MainResourceId!, _userIdentity);
+                        var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(
+                            instanceId,
+                            resourcePath.MainResourceId!,
+                            _userIdentity);
                         fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder, true));
 
                         break;
 
                     case ResourceProviderNames.FoundationaLLM_Context:
 
-                        var fileResponse = await _contextServiceClient.GetFileRecord(instanceId, attachmentObjectId);
+                        var fileResponse = await _contextServiceClient.GetFileRecord(
+                            instanceId,
+                            resourcePath.MainResourceId!);
                         if (fileResponse.Success)
                         {
                             fileHistory.Add(FileHistoryItem.FromContextFileRecord(
