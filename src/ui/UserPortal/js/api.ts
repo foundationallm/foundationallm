@@ -1,12 +1,12 @@
-import type {
+	import type {
 	Agent,
 	CompletionPrompt,
 	CompletionRequest,
 	ConversationProperties,
 	CoreConfiguration,
+	LongRunningOperation,
 	CreateAgentFromTemplateRequest,
 	KnowledgeManagementAgent,
-	LongRunningOperation,
 	Message,
 	MessageRatingRequest,
 	MessageResponse,
@@ -14,13 +14,14 @@ import type {
 	ResourceProviderDeleteResults,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
+	ResourceBase,
 	Session,
 	UserProfile
 } from '@/js/types';
 
 export default {
 
-	
+
 	apiUrl: null as string | null,
 	virtualUser: null as string | null,
 
@@ -315,9 +316,9 @@ export default {
 			const agents = await this.fetch(
 			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents`
 			) as ResourceProviderGetResult<Agent>[];
-			
+
 			agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
-			
+
 			return agents;
 		} catch (error) {
 			console.error('Error fetching agents from management endpoint:', error);
@@ -457,6 +458,22 @@ export default {
 				template_parameters: templateParameters,
 			},
 		});
+	},
+
+		/**
+	 * Retrieves the list of AI models from the management endpoint.
+	 * Returns an array of ResourceBase (see aiModel.ts) as required.
+	 */
+	async getAIModels(): Promise<ResourceBase[]> {
+		try {
+			const aiModels = await this.fetch<ResourceBase[]>(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels`
+			);
+			return aiModels;
+		} catch (error) {
+			console.error('Error fetching AI models:', error);
+			throw error;
+		}
 	},
 };
 

@@ -18,7 +18,7 @@
                     <h2 class="page-header text-3xl text-[#334581]">Create Agent</h2>
                 </div>
 
-              
+
             </div>
 
             <div class="mb-4">
@@ -97,7 +97,7 @@
                                  </ul>
                               </div>
                         </div>
-                        
+
                     </TabPanel>
 
                     <TabPanel header="AI Configuration" :disabled="!isEditMode">
@@ -107,24 +107,32 @@
                                     <div class="w-full max-w-full md:max-w-[50%] px-4">
                                         <div class="mb-6">
                                             <label for="chatModel" class="block text-base text-[#898989] mb-2">
-                                                <VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']"
+                                                <VTooltip :auto-hide="isMobile"
+                                                    :popper-triggers="isMobile ? [] : ['hover']"
                                                     class="inline-block relative top-[2px]">
                                                     <i class="pi pi-info-circle text-[#5472d4]"></i>
                                                     <template #popper>
-                                                        <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate tenetur iure, distinctio soluta nostrum corporis excepturi consectetur vitae mollitia eum cumque corrupti necessitatibus? Nihil vero, dolorem nesciunt perspiciatis voluptas amet!</div>
+                                                        <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor sit
+                                                            amet consectetur adipisicing elit. Voluptate tenetur iure,
+                                                            distinctio soluta nostrum corporis excepturi consectetur
+                                                            vitae mollitia eum cumque corrupti necessitatibus? Nihil
+                                                            vero, dolorem nesciunt perspiciatis voluptas amet!</div>
                                                     </template>
                                                 </VTooltip>
-                                                Chat Model <span
-                                                class="text-[#ff0000]">*</span>
+                                                Chat Model <span class="text-[#ff0000]">*</span>
                                             </label>
                                             <Dropdown
                                                 class="w-full"
-                                                option-group-label="label"
-                                                option-group-children="items"
-                                                option-disabled="disabled"
-                                                option-label="label"
+                                                :options="aiModels"
+                                                optionLabel="name"
+                                                optionValue="object_id"
+                                                v-model="selectedAIModel"
                                                 placeholder="--Select--"
-                                                aria-label="Select an agent"
+                                                aria-label="Select a chat model"
+                                                :filter="true"
+                                                :showClear="true"
+                                                :virtualScrollerOptions="{ itemSize: 38 }"
+                                                :itemTemplate="(model: ResourceBase) => model?.name || model?.display_name || model?.object_id"
                                             />
                                         </div>
 
@@ -146,7 +154,7 @@
                                             <Textarea
                                                 class="w-full resize-none"
                                                 name="systemPrompt"
-                                                id="systemPrompt" 
+                                                id="systemPrompt"
                                                 aria-labelledby="aria-system-prompt"
                                                 rows="5"
                                             />
@@ -258,6 +266,7 @@
 <script lang="ts">
 import api from '@/js/api';
 import type { CreateAgentFromTemplateRequest, KnowledgeManagementAgent } from '@/js/types';
+import type { ResourceBase } from '@/js/types/aiModel';
 import { defineComponent } from 'vue';
 import NavBarSettings from '~/components/NavBarSettings.vue';
 
@@ -276,10 +285,27 @@ export default defineComponent({
             isCreating: false,
             createdAgent: null as KnowledgeManagementAgent | null,
             agentExpirationDate: null as Date | null,
-        };
+					aiModels: [] as ResourceBase[],
+					selectedAIModel: null as string | null,
+
+				};
     },
+	mounted() {
+		this.fetchAIModels();
+	},
     methods: {
-        updateCharacterCount() {
+			async fetchAIModels() {
+				try {
+					const wrappers = await api.getAIModels();
+
+					this.aiModels = Array.isArray(wrappers)
+						? wrappers.map((w: any) => w.resource)
+						: [];
+				} catch (e) {
+					this.aiModels = [];
+				}
+			},
+			updateCharacterCount() {
             this.characterCount = this.textCounter.length;
         },
         onTabChange(e: { index: number }) {
@@ -343,9 +369,18 @@ export default defineComponent({
             });
             this.uploadedFiles.push(...validFiles);
         },
-        removeFile(index: number) { this.uploadedFiles.splice(index, 1); },
-        formatFileSize(bytes: number): string { if (bytes === 0) return '0 Bytes'; const k = 1024; const sizes = ['Bytes', 'KB', 'MB', 'GB']; const i = Math.floor(Math.log(bytes) / Math.log(k)); return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]; }
-    },
+			removeFile(index: number) {
+				this.uploadedFiles.splice(index, 1);
+			},
+
+			formatFileSize(bytes: number): string {
+				if (bytes === 0) return '0 Bytes';
+				const k = 1024;
+				const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+				const i = Math.floor(Math.log(bytes) / Math.log(k));
+				return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+			}
+			},
 });
 </script>
 
@@ -358,22 +393,26 @@ export default defineComponent({
             text-decoration: none;
         }
     }
-    .csm-input-switch-1{
-        &.p-inputswitch{
-            .p-inputswitch-slider{
+
+    .csm-input-switch-1 {
+        &.p-inputswitch {
+            .p-inputswitch-slider {
                 border-radius: 50px;
                 background: transparent;
                 border: 3px solid #334581;
-                &:before{
+
+                &:before {
                     background: #334581;
                     border-radius: 50%;
                     left: 0.1rem;
                 }
             }
-            &.p-highlight{
-                .p-inputswitch-slider{
+
+            &.p-highlight {
+                .p-inputswitch-slider {
                     background: #334581;
-                    &:before{
+
+                    &:before {
                         background-color: #ffffff;
                         transform: translateX(1.2rem);
                     }
