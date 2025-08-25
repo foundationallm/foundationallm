@@ -2364,6 +2364,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.ContentItemActions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.ContentItemActions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.DataPipelines.ContentItemActions",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.ContentItemActions.yml\" sourcestartlinenumber=\"1\">Constants for actions that can be performed on content items.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.DataPipelineRunProcessors.yml",
       "output": {
         ".html": {
@@ -13827,6 +13841,48 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.DataPipelineEngine.Models.DataPipelineRunWorkItemMessage",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineRunWorkItemMessage.yml\" sourcestartlinenumber=\"1\">Represents a queue message for a data pipeline run work item.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistry",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistry.yml\" sourcestartlinenumber=\"1\">Represents a registry for content items within the data pipeline engine.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistryEntry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistryEntry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistryEntry",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistryEntry.yml\" sourcestartlinenumber=\"1\">Represents an entry in the registry for content items within a data pipeline state.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.DataPipelineEngine.Models.DataPipelineState",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
