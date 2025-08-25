@@ -94,6 +94,35 @@ async def clear_plugins_cache(
         except Exception as e:
             handle_exception(e)
 
+@router.get(
+    '/plugins/cache/stats',
+    summary = 'Retrieves the plugin cache statistics.',
+    status_code = status.HTTP_200_OK,
+    responses = {
+        200: {'description': 'Plugins cache statistics retrieved.'},
+    }
+)
+async def get_plugins_cache_stats(
+    instance_id: str,
+    plugin_manager: PluginManager = Depends(get_plugin_manager),
+    x_user_identity: Optional[str] = Header(None)
+) -> dict:
+    """
+    Retrieves the plugin cache statistics for the specified instance.
+
+    Returns
+    -------
+    dict
+        A dictionary containing the plugins cache statistics.
+    """
+    with tracer.start_as_current_span('langchainapi_plugins_cache_stats', kind=SpanKind.SERVER) as span:
+        try:
+            stats = list(plugin_manager.object_cache.keys())
+            return stats
+
+        except Exception as e:
+            handle_exception(e)
+
 def handle_exception(exception: Exception, status_code: int = 500):
     """
     Handles an exception that occurred while processing a request.
