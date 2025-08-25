@@ -5,6 +5,9 @@ FROM ${BASE_IMAGE}
 ARG FOUNDATIONALLM_VERSION
 ENV FOUNDATIONALLM_VERSION=${FOUNDATIONALLM_VERSION:-0.0.0}
 
+RUN apt-get update 
+RUN apt-get install -y antiword
+
 WORKDIR /code
 COPY ./PythonCodeSessionAPI/requirements.txt /code/requirements.txt
 RUN python3 -m pip install --no-cache-dir --upgrade -r /code/requirements.txt
