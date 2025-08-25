@@ -292,9 +292,9 @@
                                         <Button 
                                             label="Load Files" 
                                             severity="secondary" 
-                                            @click="() => loadAgentFiles()" 
+                                            @click="loadAgentFiles" 
                                             :loading="filesLoading"
-                                            :disabled="filesLoading"
+                                            :disabled="filesLoading || !selectedAgentName"
                                             class="min-h-[35px] min-w-[100px]"
                                         />
                                     </div>
@@ -358,11 +358,16 @@
                 aiModels: [] as ResourceBase[],
                 selectedAIModel: null as string | null,
                 agentDisplayName: '' as string,
+                
+                selectedAgentName: null as string | null,
+                availableAgents: [] as any[],
+                agentsLoaded: false as boolean,
             };
         },
 
         mounted() {
             this.fetchAIModels();
+            this.loadAvailableAgents();
         },
 
         methods: {
@@ -376,6 +381,44 @@
                 } catch (e) {
                     this.aiModels = [];
                 }
+            },
+
+            async loadAvailableAgents() {
+                if (this.agentsLoaded) return;
+                
+                try {
+                    const agents = await api.getAgents();
+                    this.availableAgents = agents.map((a: any) => ({
+                        name: a?.resource?.name,
+                        displayName: a?.resource?.display_name
+                    }));
+                    this.agentsLoaded = true;
+                } catch (err) {
+                    console.error('Error loading agents:', err);
+                    this.availableAgents = [];
+                }
+            },
+            
+            findAgentNameByDisplayName(displayName: string): string | null {
+                if (!displayName.trim()) return null;
+                
+                const trimmedInput = displayName.trim().toLowerCase();
+                
+                let match = this.availableAgents.find(a => a.name === displayName.trim());
+                if (match) return match.name;
+                
+                match = this.availableAgents.find(a => 
+                    (a.displayName || '').toLowerCase().trim() === trimmedInput
+                );
+                if (match) return match.name;
+                
+                const hyphenated = displayName.trim().replace(/\s+/g, '-');
+                match = this.availableAgents.find(a => 
+                    a.name?.toLowerCase() === hyphenated.toLowerCase()
+                );
+                if (match) return match.name;
+                
+                return null;
             },
 
             updateCharacterCount() {
@@ -441,43 +484,13 @@
                 return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
             },
 
-            async resolveAgentNameFromInput(inputName: string): Promise<string | null> {
-                const typed = (inputName || '').trim();
-                if (!typed) return null;
-                try {
-                    const agents = await api.getAgents();
-                    const names = agents.map((a: any) => ({ name: a?.resource?.name, display_name: a?.resource?.display_name }));
-
-                    let match = agents.find((a: any) => a?.resource?.name === typed);
-                    if (match) return match.resource.name;
-
-                    match = agents.find((a: any) => (a?.resource?.display_name || '').toLowerCase().trim() === typed.toLowerCase());
-                    if (match) return match.resource.name;
-
-                    const hyphenated = typed.replace(/\s+/g, '-');
-                    match = agents.find((a: any) => a?.resource?.name?.toLowerCase() === hyphenated.toLowerCase());
-                    if (match) return match.resource.name;
-
-                    return null;
-                } catch (err) {
-                    console.error('Error resolving agent name:', err);
-                    return null;
-                }
-            },
-
             async uploadFiles() {
-                if (this.uploadedFiles.length === 0) {
-                    return;
-                }
-
-                const resolved = await this.resolveAgentNameFromInput(this.agentDisplayName);
-                if (!resolved) {
+                if (this.uploadedFiles.length === 0 || !this.selectedAgentName) {
                     return;
                 }
 
                 let filesUploaded = 0;
                 let filesFailed = 0;
-                const totalFiles = this.uploadedFiles.length;
 
                 for (const file of this.uploadedFiles) {
                     try {
@@ -490,7 +503,7 @@
                         const formData = new FormData();
                         formData.append('file', uploadFile);
 
-                        await api.uploadAgentFile(resolved, file.name, formData);
+                        await api.uploadAgentFile(this.selectedAgentName, file.name, formData);
                         
                         filesUploaded++;
                         
@@ -506,21 +519,17 @@
                 }
             },
 
-            async loadAgentFiles(agentName?: string) {
+            async loadAgentFiles() {
+                if (!this.selectedAgentName) {
+                    this.agentFiles = [];
+                    return;
+                }
+
                 this.filesError = '';
                 this.filesLoading = true;
+                
                 try {
-                    let resolvedAgentName = (agentName || '').trim();
-                    if (!resolvedAgentName) {
-                        const resolved = await this.resolveAgentNameFromInput(this.agentDisplayName);
-                        if (!resolved) {
-                            this.agentFiles = [];
-                            return;
-                        }
-                        resolvedAgentName = resolved;
-                    }
-
-                    const results = await api.getAgentPrivateFiles(resolvedAgentName);
+                    const results = await api.getAgentPrivateFiles(this.selectedAgentName);
                     this.agentFiles = Array.isArray(results) ? results : [];
                 } catch (e: any) {
                     this.filesError = e?.message || 'Failed to load files.';
@@ -529,12 +538,20 @@
                     this.filesLoading = false;
                 }
             },
-
+            
             onAgentNameChange() {
-                const input = (this.agentDisplayName || '').trim();
-                if (input) {
-                    this.loadAgentFiles();
+                const displayName = (this.agentDisplayName || '').trim();
+                
+                if (displayName) {
+                    this.selectedAgentName = this.findAgentNameByDisplayName(displayName);
+                    
+                    if (this.selectedAgentName) {
+                        this.loadAgentFiles();
+                    } else {
+                        this.agentFiles = [];
+                    }
                 } else {
+                    this.selectedAgentName = null;
                     this.agentFiles = [];
                 }
             },
