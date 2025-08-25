@@ -510,7 +510,7 @@ public string? SecondaryProviderObjectId { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Orchestration_Request_FileHistoryItem_FromContextFileRecord_FoundationaLLM_Common_Models_Context_ContextFileRecord_System_Int32_System_Boolean_System_Boolean_" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.FileHistoryItem.FromContextFileRecord(FoundationaLLM.Common.Models.Context.ContextFileRecord,System.Int32,System.Boolean,System.Boolean)">
   FromContextFileRecord(ContextFileRecord, int, bool, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/FileHistoryItem.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/FileHistoryItem.cs/#L101"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates an instance of FileHistoryItem based on a ContextFileRecord. Context files are managed entirely by FoundationaLLM.</p>
@@ -518,7 +518,7 @@ public string? SecondaryProviderObjectId { get; set; }</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static FileHistoryItem FromContextFileRecord(ContextFileRecord fileRecord, int order, bool currentMessageAttachment, bool embedContentInRequest)</code></pre>
+    <pre><code class="lang-csharp hljs">public static FileHistoryItem FromContextFileRecord(ContextFileRecord fileRecord, int order, bool currentMessageAttachment, bool allowContentEmbeddingInRequest)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -532,8 +532,8 @@ public string? SecondaryProviderObjectId { get; set; }</code></pre>
     <dt><code>currentMessageAttachment</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
     <dd><p>Indicates if the file is an attachment to the current message.</p>
 </dd>
-    <dt><code>embedContentInRequest</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd><p>Indicates if the content of the file should be embedded in the request.</p>
+    <dt><code>allowContentEmbeddingInRequest</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Indicates if the content of the file is allowed be embedded in the request.</p>
 </dd>
   </dl>
 
@@ -550,6 +550,11 @@ public string? SecondaryProviderObjectId { get; set; }</code></pre>
 
 
 
+  <h4 class="section" id="FoundationaLLM_Common_Models_Orchestration_Request_FileHistoryItem_FromContextFileRecord_FoundationaLLM_Common_Models_Context_ContextFileRecord_System_Int32_System_Boolean_System_Boolean__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Content embedding in the request is only allowed for files with FileProcessingType of CompletionRequestContext.
+When <code class="paramref">allowContentEmbeddingInRequest</code> is false, the content will not be embedded regardless of the file processing type.
+This case handles files that are part of the message history but not directly attached to the current message.</p>
+</div>
 
 
 
