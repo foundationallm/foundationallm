@@ -1,21 +1,22 @@
 	import type {
-	Agent,
-	CompletionPrompt,
-	CompletionRequest,
-	ConversationProperties,
-	CoreConfiguration,
-	LongRunningOperation,
-	Message,
-	MessageRatingRequest,
-	MessageResponse,
-	OneDriveWorkSchool,
-	ResourceProviderDeleteResults,
-	ResourceProviderGetResult,
-	ResourceProviderUpsertResult,
-	Session,
-	UserProfile,
-	ResourceBase
-} from '@/js/types';
+		Agent,
+		CompletionPrompt,
+		CompletionRequest,
+		ConversationProperties,
+		CoreConfiguration,
+		LongRunningOperation,
+		Message,
+		MessageRatingRequest,
+		MessageResponse,
+		OneDriveWorkSchool,
+		ResourceProviderDeleteResults,
+		ResourceProviderGetResult,
+		ResourceProviderUpsertResult,
+		RateLimitError,
+		ResourceBase,
+		Session,
+		UserProfile,
+	} from '@/js/types';
 
 export default {
 	apiUrl: null as string | null,
@@ -442,7 +443,46 @@ export default {
 		)) as OneDriveWorkSchool;
 	},
 
-		/**
+	/**
+	 * Retrieves private store files for a given agent from the management endpoint.
+	 * Returns an array of ResourceProviderGetResult where each result.resource contains file details.
+	 */
+	async getAgentPrivateFiles(agentName: string): Promise<ResourceProviderGetResult<any>[]> {
+		try {
+			const files = await this.fetch<ResourceProviderGetResult<any>[]>(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFiles`
+			);
+			return files;
+		} catch (error) {
+			console.error('Error fetching agent private files:', error);
+			throw error;
+		}
+	},
+
+	/**
+	 * Uploads a file to an agent's private storage.
+	 * @param agentName - The name of the agent.
+	 * @param fileName - The name of the file to upload.
+	 * @param file - The FormData containing the file.
+	 * @returns A promise that resolves to the upload result.
+	 */
+	async uploadAgentFile(agentName: string, fileName: string, file: FormData): Promise<any> {
+		try {
+			const result = await this.fetch(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFiles/${fileName}`,
+				{
+					method: 'POST',
+					body: file,
+				}
+			);
+			return result;
+		} catch (error) {
+			console.error('Error uploading agent file:', error);
+			throw error;
+		}
+	},
+
+	/**
 	 * Retrieves the list of AI models from the management endpoint.
 	 * Returns an array of ResourceBase (see aiModel.ts) as required.
 	 */
