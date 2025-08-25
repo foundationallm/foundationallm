@@ -91,13 +91,18 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
         /// <param name="fileRecord">The ContextFileRecord to convert to FileHistoryItem.</param>
         /// <param name="order">The order in which the file appeared in the conversation.</param>
         /// <param name="currentMessageAttachment"> Indicates if the file is an attachment to the current message.</param>
-        /// <param name="embedContentInRequest"> Indicates if the content of the file should be embedded in the request.</param>
+        /// <param name="allowContentEmbeddingInRequest"> Indicates if the content of the file is allowed be embedded in the request.</param>
         /// <returns>The FileHistoryItem object based on the ContextFileRecord.</returns>
+        /// <remarks>
+        /// Content embedding in the request is only allowed for files with FileProcessingType of CompletionRequestContext.
+        /// When <paramref name="allowContentEmbeddingInRequest"/> is false, the content will not be embedded regardless of the file processing type.
+        /// This case handles files that are part of the message history but not directly attached to the current message.
+        /// </remarks>
         public static FileHistoryItem FromContextFileRecord(
             ContextFileRecord fileRecord,
             int order,
             bool currentMessageAttachment,
-            bool embedContentInRequest) =>
+            bool allowContentEmbeddingInRequest) =>
             new()
             {
                 Order = order,
@@ -107,7 +112,7 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
                 FilePath = fileRecord.FilePath,
                 ContentType = fileRecord.ContentType,
                 EmbedContentInRequest =
-                    embedContentInRequest
+                    allowContentEmbeddingInRequest
                     && (fileRecord.FileProcessingType == FileProcessingTypes.CompletionRequestContext)
             };  
     }

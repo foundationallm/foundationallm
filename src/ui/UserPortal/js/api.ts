@@ -14,9 +14,10 @@
 	ResourceProviderDeleteResults,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
+	RateLimitError,
 	ResourceBase,
 	Session,
-	UserProfile
+	UserProfile,
 } from '@/js/types';
 
 export default {
@@ -460,7 +461,22 @@ export default {
 		});
 	},
 
-		/**
+	/**
+	 * Retrieves private store files for a given agent from the management endpoint.
+	 * Returns an array of ResourceProviderGetResult where each result.resource contains file details.
+	 */
+	async getAgentPrivateFiles(agentName: string): Promise<ResourceProviderGetResult<any>[]> {
+		try {
+			const files = await this.fetch<ResourceProviderGetResult<any>[]>(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFiles`
+			);
+			return files;
+		} catch (error) {
+			console.error('Error fetching agent private files:', error);
+			throw error;
+		}
+	},
+	/**
 	 * Retrieves the list of AI models from the management endpoint.
 	 * Returns an array of ResourceBase (see aiModel.ts) as required.
 	 */
