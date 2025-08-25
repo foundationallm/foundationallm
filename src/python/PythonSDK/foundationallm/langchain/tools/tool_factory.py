@@ -10,6 +10,7 @@ from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.tools import DALLEImageGenerationTool, FoundationaLLMContentSearchTool
 from foundationallm.models.agents import AgentTool
 from foundationallm.plugins import PluginManager, PluginManagerTypes
+from foundationallm.telemetry import Telemetry
 
 class ToolFactory:
     """
@@ -29,6 +30,7 @@ class ToolFactory:
             The plugin manager object used to load external tools.
         """
         self.plugin_manager = plugin_manager
+        self.logger = Telemetry.get_logger(self.__class__.__name__)
 
     def get_tool(
         self,
@@ -46,7 +48,10 @@ class ToolFactory:
         cache_key = f"{(self.__normalize_upn(user_identity.upn))}|{agent_name}|{tool_config.package_name}|{tool_config.name}"
 
         if cache_key in self.plugin_manager.object_cache:
+            self.logger.info("Using cached tool instance for key: %s", cache_key)
             return self.plugin_manager.object_cache[cache_key]
+
+        self.logger.info("Creating new tool instance for key: %s", cache_key)
 
         if tool_config.package_name == self.FLLM_PACKAGE_NAME:
             # Initialize by class name.
@@ -71,8 +76,8 @@ class ToolFactory:
                 tool = tool_plugin_manager.create_tool(tool_config, objects, user_identity, config)
                 self.plugin_manager.object_cache[cache_key] = tool
                 return tool
-            else:
-                raise LangChainException(f"Package {tool_config.package_name} not found in the list of external modules loaded by the package manager.")
+
+            raise LangChainException(f"Package {tool_config.package_name} not found in the list of external modules loaded by the package manager.")
 
         raise LangChainException(f"Tool {tool_config.name} not found in package {tool_config.package_name}")
 
