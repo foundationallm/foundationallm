@@ -146,6 +146,16 @@
             "justMyCode": true
         },
         {
+            "name": "Python: Agent Test Harness",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd" : "${workspaceFolder}/evaluation/python/agent-test-harness",
+            "python": "${workspaceFolder}/.venv/Scripts/python.exe",
+            "justMyCode": true
+        },
+        {
             "name": "Python: Current File",
             "type": "debugpy",
             "request": "launch",
