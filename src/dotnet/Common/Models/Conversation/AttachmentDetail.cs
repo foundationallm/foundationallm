@@ -46,7 +46,7 @@ namespace FoundationaLLM.Common.Models.Conversation
         /// <returns>The newly created <see cref="AttachmentDetail"/> instance.</returns>
         public static AttachmentDetail FromContextFileRecord(ContextFileRecord contextFileRecord) => new()
         {
-            ObjectId = contextFileRecord.Id,
+            ObjectId = contextFileRecord.FileObjectId,
             DisplayName = contextFileRecord.FileName,
             ContentType = contextFileRecord.ContentType
         };
