@@ -230,6 +230,10 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                         output_tokens += final_llm_response.usage_metadata['output_tokens']
                         final_response = final_llm_response.content
 
+            else:
+                if 'ROUTER' in commands:
+                    final_response = '__NO_TOOL__'
+
             workflow_content_artifact = self.__create_workflow_execution_content_artifact(
                 llm_prompt,
                 input_tokens,
