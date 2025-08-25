@@ -5,7 +5,11 @@ FROM ${BASE_IMAGE}
 ARG FOUNDATIONALLM_VERSION
 ENV FOUNDATIONALLM_VERSION=${FOUNDATIONALLM_VERSION:-0.0.0}
 
-RUN apk update && apk add --no-cache antiword
+FROM alpine:3.21 AS antiword
+RUN apk add --no-cache antiword
+
+FROM ${BASE_IMAGE}
+COPY --from=antiword /usr/bin/antiword /usr/bin/antiword
 
 WORKDIR /code
 COPY ./PythonCodeSessionAPI/requirements.txt /code/requirements.txt
