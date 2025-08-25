@@ -45,7 +45,7 @@
                                             class="block text-base text-[#898989] mb-2">Display Name <span
                                                 class="text-[#ff0000]">*</span></label>
                                         <InputText type="text" class="w-full" name="agentDisplayName"
-                                            id="agentDisplayName" required="true" maxlength="50" />
+                                            id="agentDisplayName" required="true" maxlength="50" @input="onAgentNameChange" v-model="agentDisplayName" />
                                         <p class="text-xs text-[#898989]">(50 Characters)</p>
                                     </div>
 
@@ -254,6 +254,17 @@
 
                                     <!-- Selected files preview list -->
                                     <div v-if="uploadedFiles.length > 0" class="mt-8">
+                                        <div class="mb-4">
+                                            <Button 
+                                                label="Upload Files" 
+                                                severity="primary" 
+                                                @click="uploadFiles" 
+                                                :loading="filesLoading"
+                                                :disabled="filesLoading"
+                                                class="min-h-[45px] min-w-[125px]"
+                                            />
+                                        </div>
+                                        
                                         <table class="w-full text-left border-collapse">
                                             <thead>
                                                 <tr>
@@ -276,23 +287,33 @@
                                 </div>
 
                                 <div class="mt-10">
-                                    <p class="block text-base text-[#898989] mb-3">Existing File(s)</p>
+                                    <div class="flex justify-between items-center mb-3">
+                                        <p class="block text-base text-[#898989]">Existing File(s)</p>
+                                        <Button 
+                                            label="Load Files" 
+                                            severity="secondary" 
+                                            @click="loadAgentFiles" 
+                                            :loading="filesLoading"
+                                            :disabled="filesLoading || !selectedAgentName"
+                                            class="min-h-[35px] min-w-[100px]"
+                                        />
+                                    </div>
 
-                                    <div v-if="filesLoading" class="text-sm text-[#64748b]">Loading files...</div>
-                                    <div v-else-if="filesError" class="text-sm text-red-600">{{ filesError }}</div>
+                                    <div v-if="filesLoading" class="text-sm text-[#64748b] mt-10">Loading files...</div>
+                                    <div v-else-if="filesError" class="text-sm text-red-600 mt-10">{{ filesError }}</div>
                                     <div v-else>
-                                        <div v-if="agentFiles.length === 0" class="text-sm text-[#94a3b8] italic">No files found for the selected agent.</div>
+                                        <div v-if="agentFiles.length === 0" class="text-sm text-[#94a3b8] italic mt-10">No files found for the selected agent.</div>
                                         <table v-else class="w-full text-left border-collapse">
                                             <thead>
                                                 <tr>
-                                                    <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white">File ID</th>
                                                     <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white">Filename</th>
+                                                    <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white">File ID</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr v-for="f in agentFiles" :key="f.resource?.name">
+                                                    <td class="mnt-b-bottom p-3">{{ f.resource?.display_name || f.resource?.filename || '-' }}</td>
                                                     <td class="mnt-b-bottom p-3">{{ f.resource?.name }}</td>
-                                                    <td class="mnt-b-bottom p-3">{{ f.resource?.filename || '-' }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -314,6 +335,7 @@
     import type { ResourceBase } from '@/js/types/index';
     import { defineComponent } from 'vue';
     import NavBarSettings from '~/components/NavBarSettings.vue';
+    import mime from 'mime';
 
     export default defineComponent({
         name: 'CreateAgent',
@@ -335,11 +357,17 @@
                 agentFiles: [] as any[],
                 aiModels: [] as ResourceBase[],
                 selectedAIModel: null as string | null,
+                agentDisplayName: '' as string,
+                
+                selectedAgentName: null as string | null,
+                availableAgents: [] as any[],
+                agentsLoaded: false as boolean,
             };
         },
 
         mounted() {
             this.fetchAIModels();
+            this.loadAvailableAgents();
         },
 
         methods: {
@@ -353,6 +381,44 @@
                 } catch (e) {
                     this.aiModels = [];
                 }
+            },
+
+            async loadAvailableAgents() {
+                if (this.agentsLoaded) return;
+                
+                try {
+                    const agents = await api.getAgents();
+                    this.availableAgents = agents.map((a: any) => ({
+                        name: a?.resource?.name,
+                        displayName: a?.resource?.display_name
+                    }));
+                    this.agentsLoaded = true;
+                } catch (err) {
+                    console.error('Error loading agents:', err);
+                    this.availableAgents = [];
+                }
+            },
+            
+            findAgentNameByDisplayName(displayName: string): string | null {
+                if (!displayName.trim()) return null;
+                
+                const trimmedInput = displayName.trim().toLowerCase();
+                
+                let match = this.availableAgents.find(a => a.name === displayName.trim());
+                if (match) return match.name;
+                
+                match = this.availableAgents.find(a => 
+                    (a.displayName || '').toLowerCase().trim() === trimmedInput
+                );
+                if (match) return match.name;
+                
+                const hyphenated = displayName.trim().replace(/\s+/g, '-');
+                match = this.availableAgents.find(a => 
+                    a.name?.toLowerCase() === hyphenated.toLowerCase()
+                );
+                if (match) return match.name;
+                
+                return null;
             },
 
             updateCharacterCount() {
@@ -418,23 +484,75 @@
                 return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
             },
 
-            async loadAgentFiles(agentName?: string) {
+            async uploadFiles() {
+                if (this.uploadedFiles.length === 0 || !this.selectedAgentName) {
+                    return;
+                }
+
+                let filesUploaded = 0;
+                let filesFailed = 0;
+
+                for (const file of this.uploadedFiles) {
+                    try {
+                        let uploadFile = file;
+                        if (file.name) {
+                            const mimeType = mime.getType(file.name) || 'application/pdf';
+                            uploadFile = new File([file], file.name, { type: mimeType });
+                        }
+
+                        const formData = new FormData();
+                        formData.append('file', uploadFile);
+
+                        await api.uploadAgentFile(this.selectedAgentName, file.name, formData);
+                        
+                        filesUploaded++;
+                        
+                    } catch (error: any) {
+                        filesFailed++;
+                        console.error('Upload error:', error);
+                    }
+                }
+                
+                if (filesUploaded > 0) {
+                    this.uploadedFiles = [];
+                    await this.loadAgentFiles();
+                }
+            },
+
+            async loadAgentFiles() {
+                if (!this.selectedAgentName) {
+                    this.agentFiles = [];
+                    return;
+                }
+
                 this.filesError = '';
                 this.filesLoading = true;
+                
                 try {
-                    const resolvedAgentName = agentName;
-                    if (!resolvedAgentName) {
-                        this.agentFiles = [];
-                        return;
-                    }
-
-                    const results = await api.getAgentPrivateFiles(resolvedAgentName);
+                    const results = await api.getAgentPrivateFiles(this.selectedAgentName);
                     this.agentFiles = Array.isArray(results) ? results : [];
                 } catch (e: any) {
                     this.filesError = e?.message || 'Failed to load files.';
                     this.agentFiles = [];
                 } finally {
                     this.filesLoading = false;
+                }
+            },
+            
+            onAgentNameChange() {
+                const displayName = (this.agentDisplayName || '').trim();
+                
+                if (displayName) {
+                    this.selectedAgentName = this.findAgentNameByDisplayName(displayName);
+                    
+                    if (this.selectedAgentName) {
+                        this.loadAgentFiles();
+                    } else {
+                        this.agentFiles = [];
+                    }
+                } else {
+                    this.selectedAgentName = null;
+                    this.agentFiles = [];
                 }
             },
         },
