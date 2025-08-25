@@ -1,5 +1,7 @@
-	import type {
+import type {
 	Agent,
+	AgentNameCheckRequest,
+	AgentNameCheckResponse,
 	CompletionPrompt,
 	CompletionRequest,
 	ConversationProperties,
@@ -313,9 +315,9 @@ export default {
 			const agents = await this.fetch(
 			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents`
 			) as ResourceProviderGetResult<Agent>[];
-			
+
 			agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
-			
+
 			return agents;
 		} catch (error) {
 			console.error('Error fetching agents from management endpoint:', error);
@@ -472,6 +474,24 @@ export default {
 			console.error('Error fetching AI models:', error);
 			throw error;
 		}
+	},
+	/**
+	 * Checks if the derived agent resource name is available.
+	 * @param name - The derived resource name to check.
+	 * @returns Promise resolving to the check response.
+	 */
+	async checkAgentNameAvailability(name: string): Promise<AgentNameCheckResponse> {
+		const payload: AgentNameCheckRequest = {
+			type: 'knowledge-management',
+			name,
+		};
+		return await this.fetch<AgentNameCheckResponse>(
+			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/checkname`,
+			{
+				method: 'POST',
+				body: payload,
+			}
+		);
 	},
 };
 

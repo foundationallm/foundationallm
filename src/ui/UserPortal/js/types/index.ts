@@ -222,3 +222,18 @@ export interface AIModel extends ResourceBase {
 	endpoint_object_id?: string;
 	properties?: Record<string, any>;
 }
+
+// --- Agent Name Availability Check Types ---
+export interface AgentNameCheckRequest {
+	type: 'knowledge-management';
+	name: string;
+}
+
+export interface AgentNameCheckResponse {
+	type: 'knowledge-management';
+	name: string;
+	status: 'Allowed' | 'NotAllowed';
+	message: string | null;
+	exists: boolean;
+	deleted: boolean;
+}
