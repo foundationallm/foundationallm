@@ -2252,6 +2252,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ContentTypeMappings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ContentTypeMappings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.ContentTypeMappings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.ContentTypeMappings.yml\" sourcestartlinenumber=\"1\">Provides mappings from MIME content types to file type identifiers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Context.CodeSessionLanguages.yml",
       "output": {
         ".html": {
