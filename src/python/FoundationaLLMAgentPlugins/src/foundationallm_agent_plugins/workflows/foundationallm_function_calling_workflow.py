@@ -4,6 +4,7 @@ Description: FoundationaLLM Function Calling workflow to invoke tools at a low l
 """
 
 import base64
+import re
 import time
 from typing import Dict, List, Optional
 from logging import Logger
@@ -94,6 +95,12 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
         self.instance_id = objects.get(CompletionRequestObjectKeys.INSTANCE_ID, None)
 
+        # Special commands pattern for user prompts
+        # Matches patterns like [command1, command2]: user prompt
+        self.special_commands_pattern = re.compile(
+            r'^\[\s*([A-Za-z_][A-Za-z0-9_]*(\s*,\s*[A-Za-z_][A-Za-z0-9_]*)*)?\s*\]:'
+        )
+
     async def invoke_async(self,
                            operation_id: str,
                            user_prompt:str,
@@ -125,6 +132,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         if objects is None:
             objects = {}
         llm_prompt = user_prompt_rewrite or user_prompt
+
+        commands, llm_prompt = self.__extract_special_commands(llm_prompt)
 
         runnable_config = self.__get_tools_runnable_config(
             user_prompt,
@@ -170,50 +179,56 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
             if llm_response.tool_calls:
 
-                intermediate_responses.append(str(llm_response.content))
+                if 'ROUTER' in commands:
+                    # If the special command [ROUTER] is present, return the router's tool selection directly without tool execution.
+                    
+                    final_response = ','.join([tool_call['name'] for tool_call in llm_response.tool_calls])
+                
+                else:
+                    intermediate_responses.append(str(llm_response.content))
 
-                for tool_call in llm_response.tool_calls:
+                    for tool_call in llm_response.tool_calls:
 
-                    with self.tracer.start_as_current_span(f'{self.name}_tool_call', kind=SpanKind.INTERNAL) as tool_call_span:
-                        tool_call_span.set_attribute('tool_call_id', tool_call['id'])
-                        tool_call_span.set_attribute('tool_call_function', tool_call['name'])
+                        with self.tracer.start_as_current_span(f'{self.name}_tool_call', kind=SpanKind.INTERNAL) as tool_call_span:
+                            tool_call_span.set_attribute('tool_call_id', tool_call['id'])
+                            tool_call_span.set_attribute('tool_call_function', tool_call['name'])
 
-                        # Get the tool from the tools list
-                        tool = next((t for t in self.tools if t.name == tool_call['name']), None)
-                        if tool:
-                            tool_result = await tool.ainvoke(tool_call, runnable_config)
-                            content_artifacts.extend(tool_result.artifact.content_artifacts)
-                            intermediate_responses.append(str(tool_result.artifact.content))
-                            input_tokens += tool_result.artifact.input_tokens
-                            output_tokens += tool_result.artifact.output_tokens
-                        else:
-                            self.logger.error(
-                                'Tool %s not found in the tools list. Skipping tool call.', tool_call["name"])
+                            # Get the tool from the tools list
+                            tool = next((t for t in self.tools if t.name == tool_call['name']), None)
+                            if tool:
+                                tool_result = await tool.ainvoke(tool_call, runnable_config)
+                                content_artifacts.extend(tool_result.artifact.content_artifacts)
+                                intermediate_responses.append(str(tool_result.artifact.content))
+                                input_tokens += tool_result.artifact.input_tokens
+                                output_tokens += tool_result.artifact.output_tokens
+                            else:
+                                self.logger.error(
+                                    'Tool %s not found in the tools list. Skipping tool call.', tool_call["name"])
 
-                # Ask the LLM to verify if the answer is correct if not, loop again with the current messages.
-                # verification_messages = messages_with_toolchain.copy()
-                # verification_messages.append(HumanMessage(content=f'Verify the requirements are met for this request: "{llm_prompt}", use the other messages only for context. If yes, answer with the single word "DONE". If not, generate more detailed instructions to satisfy the request.'))
-                # verification_llm_response = await self.workflow_llm.ainvoke(verification_messages, tools=None)
-                # verification_response = verification_llm_response.content
-                # if verification_response.strip().upper() == 'DONE':
-                #     break # exit the loop if the requirements are met.
-                # else:
-                #     messages_with_toolchain.append(AIMessage(content=verification_response))
-                #     continue # loop again if the requirements are not met.
+                    # Ask the LLM to verify if the answer is correct if not, loop again with the current messages.
+                    # verification_messages = messages_with_toolchain.copy()
+                    # verification_messages.append(HumanMessage(content=f'Verify the requirements are met for this request: "{llm_prompt}", use the other messages only for context. If yes, answer with the single word "DONE". If not, generate more detailed instructions to satisfy the request.'))
+                    # verification_llm_response = await self.workflow_llm.ainvoke(verification_messages, tools=None)
+                    # verification_response = verification_llm_response.content
+                    # if verification_response.strip().upper() == 'DONE':
+                    #     break # exit the loop if the requirements are met.
+                    # else:
+                    #     messages_with_toolchain.append(AIMessage(content=verification_response))
+                    #     continue # loop again if the requirements are not met.
 
-                final_message = self.__get_message_for_final_response(
-                    intermediate_responses,
-                    llm_prompt
-                )
+                    final_message = self.__get_message_for_final_response(
+                        intermediate_responses,
+                        llm_prompt
+                    )
 
-                with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
+                    with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
 
-                    final_llm_response = await self.workflow_llm.ainvoke(
-                        messages[:-1] + [final_message], # Exclude the last message which is replaced by final_message.
-                        tools=None)
-                    input_tokens += final_llm_response.usage_metadata['input_tokens']
-                    output_tokens += final_llm_response.usage_metadata['output_tokens']
-                    final_response = final_llm_response.content
+                        final_llm_response = await self.workflow_llm.ainvoke(
+                            messages[:-1] + [final_message], # Exclude the last message which is replaced by final_message.
+                            tools=None)
+                        input_tokens += final_llm_response.usage_metadata['input_tokens']
+                        output_tokens += final_llm_response.usage_metadata['output_tokens']
+                        final_response = final_llm_response.content
 
             workflow_content_artifact = self.__create_workflow_execution_content_artifact(
                 llm_prompt,
@@ -520,3 +535,24 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
         return \
             HumanMessage(content=final_response_content)
+
+    def __extract_special_commands(self, llm_prompt: str) -> tuple[List[str], str]:
+        """
+        Extracts special commands and the main prompt from the LLM prompt.
+
+        Parameters
+        ----------
+        llm_prompt : str
+            The original LLM prompt.
+
+        Returns
+        -------
+        Tuple[List[str], str]
+            A tuple containing a list of special commands and the main prompt.
+        """
+        match = self.special_commands_pattern.match(llm_prompt)
+        if match:
+            commands = match.group(1).split(',') if match.group(1) else []
+            main_prompt = llm_prompt[match.end():].strip()
+            return commands, main_prompt
+        return [], llm_prompt

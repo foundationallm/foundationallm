@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.DataPipelines;
 using FoundationaLLM.Common.Constants.Plugins;
 using FoundationaLLM.Common.Exceptions;
@@ -28,28 +29,6 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
         : DataPipelineStagePluginBase(pluginParameters, packageManager, packageManagerResolver, serviceProvider)
     {
         protected override string Name => PluginNames.TEXTEXTRACTION_DATAPIPELINESTAGE;
-
-        private readonly Dictionary<string, string> _contentTypeMappings = new()
-        {
-            { "application/pdf", "PDF" },
-            { "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "DOCX" },
-            { "application/vnd.openxmlformats-officedocument.presentationml.presentation", "PPTX" },
-            { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "XLSX" },
-            { "text/plain", "TXT" },
-            { "text/markdown", "MD" },
-            { "text/html", "HTML" },
-            { "application/json", "JSON" },
-            { "application/x-ndjson", "JSONL" },
-            { "application/jsonlines", "JSONL" },
-            { "application/xml", "XML" },
-            { "text/csv", "CSV" },
-            { "application/zip", "ZIP" },
-            { "image/jpeg", "JPEG" },
-            { "image/png", "PNG" },
-            { "image/gif", "GIF" },
-            { "image/bmp", "BMP" },
-            { "image/tiff", "TIFF" }
-        };
 
         /// <inheritdoc/>
         public override async Task<List<DataPipelineRunWorkItem>> GetStartingStageWorkItems(
@@ -106,7 +85,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             if (!rawContentResult.Success)
                 return new PluginResult(false, false, rawContentResult.ErrorMessage);
 
-            if (!_contentTypeMappings.TryGetValue(
+            if (!ContentTypeMappings.Map.TryGetValue(
                 rawContentResult.Value!.ContentType,
                 out var contentType))
             {
@@ -175,6 +154,19 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 case "TXT":
                 case "MD":
                 case "HTML":
+                case "RTF":
+                case "JS":
+                case "YAML":
+                case "TOML":
+                case "JSON":
+                case "JSONL":
+                case "XML":
+                case "TSV":
+                case "CSV":
+                case "CSS":
+                case "PY":
+                case "JAVA":
+                case "SH":
 
                     textContent = rawContentResult.Value.RawContent.ToString();
 

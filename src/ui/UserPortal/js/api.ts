@@ -482,6 +482,8 @@ export default {
 		}
 	},
 
+	
+
 	/**
 	 * Retrieves the list of AI models from the management endpoint.
 	 * Returns an array of ResourceBase (see aiModel.ts) as required.

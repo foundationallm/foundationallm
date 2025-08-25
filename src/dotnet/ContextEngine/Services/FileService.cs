@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Constants.Authorization;
+﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.Context;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
@@ -8,6 +9,7 @@ using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Context.Interfaces;
 using FoundationaLLM.Context.Models.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Text;
 using System.Text.Json;
 
 namespace FoundationaLLM.Context.Services
@@ -78,6 +80,9 @@ namespace FoundationaLLM.Context.Services
 
             await _cosmosDBService.UpsertFileRecord(fileRecord);
 
+            if (ContentTypeMappings.TextContentTypes.Contains(contentType.ToLower()))
+                content = StandardizeTextContentEncoding(content);
+
             await _storageService.WriteFileAsync(
                 instanceId,
                 fileRecord.FilePath,
@@ -115,6 +120,9 @@ namespace FoundationaLLM.Context.Services
                 metadata);
 
             await _cosmosDBService.UpsertFileRecord(fileRecord);
+
+            if (ContentTypeMappings.TextContentTypes.Contains(contentType.ToLower()))
+                content = StandardizeTextContentEncoding(content);
 
             await _storageService.WriteFileAsync(
                 instanceId,
@@ -295,5 +303,59 @@ namespace FoundationaLLM.Context.Services
                         : FileProcessingTypes.None,
                 _ => FileProcessingTypes.None
             };
+
+        private Stream StandardizeTextContentEncoding(
+            Stream content)
+        {
+            ArgumentNullException.ThrowIfNull(content);
+
+            if (content.CanSeek)
+                content.Position = 0;
+
+            byte[] buffer;
+            using (var ms = new MemoryStream())
+            {
+                content.CopyTo(ms);
+                buffer = ms.ToArray();
+            }
+
+            // Try to detect encoding from BOM
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            Encoding encoding = DetectEncodingFromBom(buffer) ?? Encoding.UTF8;
+
+            // If already UTF-8, return a new MemoryStream with the same content
+            if (Equals(encoding, Encoding.UTF8))
+                return new MemoryStream(buffer);
+
+            // Convert to UTF-8
+            string text = encoding.GetString(buffer);
+            byte[] utf8Bytes = Encoding.UTF8.GetBytes(text);
+            return new MemoryStream(utf8Bytes);
+        }
+
+        private static Encoding? DetectEncodingFromBom(byte[] buffer)
+        {
+            if (buffer.Length >= 3 &&
+                buffer[0] == 0xEF && buffer[1] == 0xBB && buffer[2] == 0xBF)
+                return Encoding.UTF8;
+            if (buffer.Length >= 2)
+            {
+                if (buffer[0] == 0xFE && buffer[1] == 0xFF)
+                    return Encoding.BigEndianUnicode; // UTF-16 BE
+                if (buffer[0] == 0xFF && buffer[1] == 0xFE)
+                    return Encoding.Unicode; // UTF-16 LE
+            }
+            if (buffer.Length >= 4)
+            {
+                if (buffer[0] == 0x00 && buffer[1] == 0x00 &&
+                    buffer[2] == 0xFE && buffer[3] == 0xFF)
+                    return Encoding.GetEncoding("utf-32BE");
+                if (buffer[0] == 0xFF && buffer[1] == 0xFE &&
+                    buffer[2] == 0x00 && buffer[3] == 0x00)
+                    return Encoding.UTF32;
+            }
+            // No BOM detected
+            return null;
+        }
     }
 }
