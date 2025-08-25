@@ -1289,28 +1289,41 @@ public partial class CoreService(
                 {
                     foreach (var attachmentObjectId in message.Attachments)
                     {
-                        if (ResourcePath.TryParseResourceProvider(attachmentObjectId, out var resourceProviderName))
+                        var resourcePath = ResourcePath.GetResourcePath(attachmentObjectId);
+                        switch (resourcePath.ResourceProvider)
                         {
-                            //Get resource path for attachment
-                            var rp = ResourcePath.GetResourcePath(attachmentObjectId);
-                            var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(instanceId, rp.MainResourceId!, _userIdentity);
-                            fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder, false));
-                        }
-                        else
-                        {
-                            var fileResponse = await _contextServiceClient.GetFileRecord(instanceId, attachmentObjectId);
-                            if (fileResponse.Success)
-                            {
-                                fileHistory.Add(FileHistoryItem.FromContextFileRecord(
-                                    fileResponse.Result!,
-                                    ++attachmentOrder,
-                                    false,
-                                    false));
-                            }
-                            else
-                            {
-                                _logger.LogError("Failed to retrieve file record for attachment {AttachmentObjectId}.", attachmentObjectId);
-                            }
+                            case ResourceProviderNames.FoundationaLLM_Attachment:
+
+                                var file = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(
+                                    instanceId,
+                                    resourcePath.MainResourceId!,
+                                    _userIdentity);
+                                fileHistory.Add(FileHistoryItem.FromAttachmentFile(file, ++attachmentOrder, false));
+
+                                break;
+
+                            case ResourceProviderNames.FoundationaLLM_Context:
+
+                                var fileResponse = await _contextServiceClient.GetFileRecord(
+                                    instanceId,
+                                    resourcePath.MainResourceId!);
+                                if (fileResponse.Success)
+                                {
+                                    fileHistory.Add(FileHistoryItem.FromContextFileRecord(
+                                        fileResponse.Result!,
+                                        ++attachmentOrder,
+                                        false,
+                                        false));
+                                }
+                                else
+                                {
+                                    _logger.LogError("Failed to retrieve file record for attachment {AttachmentObjectId}.", attachmentObjectId);
+                                }
+
+                                break;
+                            default:
+                                throw new CoreServiceException(
+                                    $"The resource provider [{resourcePath.ResourceProvider}] is not supported for attachments in the completion request.");
                         }
                     }
                 }
