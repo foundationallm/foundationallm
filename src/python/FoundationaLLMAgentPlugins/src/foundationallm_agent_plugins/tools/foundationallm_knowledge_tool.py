@@ -195,10 +195,6 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             input_tokens=input_tokens,
             output_tokens=output_tokens
         )
-    
-    def initialize_for_run(self):
-
-        
 
     def get_knowledge_source_id(self) -> str:
         """
