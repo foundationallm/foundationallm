@@ -58,6 +58,11 @@ namespace FoundationaLLM.Plugins.DataPipeline
                             Name = PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID,
                             Type = PluginParameterTypes.ResourceObjectId,
                             Description = "The FoundationaLLM object identifier of the context file."
+                        },
+                        new() {
+                            Name = PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTENTACTION,
+                            Type = PluginParameterTypes.String,
+                            Description = "The action to be performed on the content item. Can be 'add-or-update' or 'remove'."
                         }
                     ],
                     Dependencies = []
