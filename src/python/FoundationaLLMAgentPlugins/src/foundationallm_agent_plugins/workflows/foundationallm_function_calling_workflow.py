@@ -475,7 +475,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 context_file_message)
 
         context_message = HumanMessage(
-            content=context_file_messages+[{"type": "text", "text": llm_prompt}])
+            content=[{"type": "text", "text": llm_prompt}]+context_file_messages)
 
         files_prompt = self.workflow_files_prompt \
             .replace(f'{{{{{TemplateVariables.CONVERSATION_FILES}}}}}', '\n'.join(conversation_files)) \

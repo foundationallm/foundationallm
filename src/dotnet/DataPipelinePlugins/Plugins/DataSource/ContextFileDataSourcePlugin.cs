@@ -54,19 +54,19 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
             var canonicalId = resourcePath.MainResourceId!;
 
             return await Task.FromResult<List<DataPipelineContentItem>>(
-                    [
-                        new DataPipelineContentItem
+                [
+                    new DataPipelineContentItem
+                    {
+                        Id = $"content-item-{canonicalId}-{Guid.NewGuid().ToBase64String()}",
+                        DataSourceObjectId = _dataSourceObjectId,
+                        ContentIdentifier = new ContentIdentifier
                         {
-                            Id = $"content-item-{canonicalId}-{Guid.NewGuid().ToBase64String()}",
-                            DataSourceObjectId = _dataSourceObjectId,
-                            ContentIdentifier = new ContentIdentifier
-                            {
-                                MultipartId = [contextFileObjectId],
-                                CanonicalId = canonicalId
-                            },
-                            ContentAction = contentAction
-                        }
-                    ]);
+                            MultipartId = [contextFileObjectId],
+                            CanonicalId = canonicalId
+                        },
+                        ContentAction = contentAction
+                    }
+                ]);
         }
 
         /// <inheritdoc/>
