@@ -5,6 +5,8 @@
 	ConversationProperties,
 	CoreConfiguration,
 	LongRunningOperation,
+	CreateAgentFromTemplateRequest,
+	KnowledgeManagementAgent,
 	Message,
 	MessageRatingRequest,
 	MessageResponse,
@@ -19,6 +21,8 @@
 } from '@/js/types';
 
 export default {
+
+
 	apiUrl: null as string | null,
 	virtualUser: null as string | null,
 
@@ -313,9 +317,9 @@ export default {
 			const agents = await this.fetch(
 			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents`
 			) as ResourceProviderGetResult<Agent>[];
-			
+
 			agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
-			
+
 			return agents;
 		} catch (error) {
 			console.error('Error fetching agents from management endpoint:', error);
@@ -441,6 +445,20 @@ export default {
 				body: oneDriveWorkSchool,
 			},
 		)) as OneDriveWorkSchool;
+	},
+	/**
+	 * Creates a new agent from the BasicAgentTemplate.
+	 * @param templateParameters The parameters for the agent template.
+	 * @returns A promise that resolves to the upsert result containing the new agent.
+	 */
+	async createAgentFromTemplate(templateParameters: CreateAgentFromTemplateRequest): Promise<ResourceProviderUpsertResult & { resource: KnowledgeManagementAgent }> {
+		const url = `/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agentTemplates/BasicAgentTemplate/create-new`;
+		return await this.fetch<ResourceProviderUpsertResult & { resource: KnowledgeManagementAgent }>(url, {
+			method: 'POST',
+			body: {
+				template_parameters: templateParameters,
+			},
+		});
 	},
 
 	/**
