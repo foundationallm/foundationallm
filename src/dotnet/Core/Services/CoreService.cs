@@ -952,7 +952,7 @@ public partial class CoreService(
 
                     case ResourceProviderNames.FoundationaLLM_Context:
 
-                        contextAttachmentIds.Add(attachmentObjectId);
+                        contextAttachmentIds.Add(resourcePath.MainResourceId!);
                         break;
 
                     default:
