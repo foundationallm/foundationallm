@@ -108,8 +108,10 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Queueing
         {
             try
             {
-                if ((DateTimeOffset.UtcNow - message.LastVisibilityTimeoutUpdate).TotalSeconds <=
-                    MESSAGE_VISIBILITY_TIMEOUT_REFRESH_SECONDS)
+                // If recovering from an error we must update the visibility timeout
+                if (!recoverFromError
+                    && (DateTimeOffset.UtcNow - message.LastVisibilityTimeoutUpdate).TotalSeconds <=
+                        MESSAGE_VISIBILITY_TIMEOUT_REFRESH_SECONDS)
                 {
                     // No need to update visibility timeout yet
                     // (we want to avoid unnecessary updates)

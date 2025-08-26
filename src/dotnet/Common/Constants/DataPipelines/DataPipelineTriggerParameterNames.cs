@@ -11,10 +11,14 @@
         public const string DataSourceContextFileContextFileObjectId = "DataSource.ContextFile.ContextFileObjectId";
 
         /// <summary>
+        /// The content action for the ContextFile data source.
+        /// </summary>
+        public const string DataSourceContextFileContentAction = "DataSource.ContextFile.ContentAction";
+
+        /// <summary>
         /// The knowledge unit object identifier for the embed stage.
         /// </summary>
         public const string StageEmbedKnowledgeUnitObjectId = "Stage.Embed.KnowledgeUnitObjectId";
-
 
         /// <summary>
         /// The knowledge unit object identifier for the index stage.
@@ -25,5 +29,15 @@
         /// The vector store identifier for the indexing stage.
         /// </summary>
         public const string StageIndexVectorStoreId = "Stage.Index.VectorStoreId";
+
+        /// <summary>
+        /// The knowledge unit object identifier for the removal stage.
+        /// </summary>
+        public const string StageRemovalKnowledgeUnitObjectId = "Stage.Removal.KnowledgeUnitObjectId";
+
+        /// <summary>
+        /// The vector store identifier for the removal stage.
+        /// </summary>
+        public const string StageRemovalVectorStoreId = "Stage.Removal.VectorStoreId";
     }
 }

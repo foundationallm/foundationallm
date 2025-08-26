@@ -14,6 +14,7 @@
         public const string TEXTPARTITIONING_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-TextPartitioningDataPipelineStage";
         public const string GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-GatewayTextEmbeddingDataPipelineStage";
         public const string AZUREAISEARCHINDEXING_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-AzureAISearchIndexingDataPipelineStage";
+        public const string AZUREAISEARCHREMOVAL_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-AzureAISearchRemovalDataPipelineStage";
         public const string PDF_CONTENTTEXTEXTRACTION = $"{PACKAGE_NAME}-PDFContentTextExtraction";
         public const string DOCX_CONTENTTEXTEXTRACTION = $"{PACKAGE_NAME}-DOCXContentTextExtraction";
         public const string PPTX_CONTENTTEXTEXTRACTION = $"{PACKAGE_NAME}-PPTXContentTextExtraction";
