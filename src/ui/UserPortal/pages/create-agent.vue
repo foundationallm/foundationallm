@@ -440,23 +440,31 @@ export default defineComponent({
             }
         },
 
-        findAgentNameByDisplayName(displayName: string): string | null {
-            if (!displayName.trim()) return null;
+        findAgentNameByName(agentName: string): string | null {
+            if (!agentName.trim()) return null;
 
-            const trimmedInput = displayName.trim().toLowerCase();
-            let match = this.availableAgents.find(a => a.name === displayName.trim());
-            if (match) return match.name;
-
+            const trimmedInput = agentName.trim().toLowerCase();
+            
+            let match = this.availableAgents.find(a => 
+                a.name && a.name.trim() && a.name.toLowerCase() === trimmedInput
+            );
+            if (match && match.name) return match.name;
+            
+            match = this.availableAgents.find(a => 
+                a.name && a.name.trim() && a.name === agentName.trim()
+            );
+            if (match && match.name) return match.name;
+            
             match = this.availableAgents.find(a =>
                 (a.displayName || '').toLowerCase().trim() === trimmedInput
             );
-            if (match) return match.name;
-
-            const hyphenated = displayName.trim().replace(/\s+/g, '-');
+            if (match && match.name && match.name.trim()) return match.name;
+            
+            const hyphenated = agentName.trim().replace(/\s+/g, '-');
             match = this.availableAgents.find(a =>
-                a.name?.toLowerCase() === hyphenated.toLowerCase()
+                a.name && a.name.trim() && a.name.toLowerCase() === hyphenated.toLowerCase()
             );
-            if (match) return match.name;
+            if (match && match.name) return match.name;
 
             return null;
         },
@@ -642,7 +650,7 @@ export default defineComponent({
             const agentName = (this.agentDisplayName || '').trim();
 
             if (agentName) {
-                this.selectedAgentName = this.findAgentNameByDisplayName(agentName);
+                this.selectedAgentName = this.findAgentNameByName(agentName);
                 if (!this.selectedAgentName && this.isEditMode && this.createdAgent?.name) {
                     this.selectedAgentName = this.createdAgent.name;
                 }
