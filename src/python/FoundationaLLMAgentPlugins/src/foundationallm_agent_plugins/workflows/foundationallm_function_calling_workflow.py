@@ -87,9 +87,6 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             'An error occurred while processing the request.') \
             if workflow_config.properties else 'An error occurred while processing the request.'
 
-        self.__create_workflow_main_prompt()
-        self.__create_workflow_files_prompt()
-        self.__create_workflow_final_prompt()
         self.__create_workflow_llm()
         self.__create_context_client()
 
@@ -131,6 +128,11 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         """
         if objects is None:
             objects = {}
+
+        workflow_main_prompt = self.__create_workflow_main_prompt()
+        workflow_files_prompt = self.__create_workflow_files_prompt()
+        workflow_final_prompt = self.__create_workflow_final_prompt()
+
         llm_prompt = user_prompt_rewrite or user_prompt
 
         commands, llm_prompt = self.__extract_special_commands(llm_prompt)
@@ -145,6 +147,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
         messages = await self.__get_message_list(
             llm_prompt,
+            workflow_main_prompt,
+            workflow_files_prompt,
             message_history,
             objects,
             file_history
@@ -218,7 +222,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
                     final_message = self.__get_message_for_final_response(
                         intermediate_responses,
-                        llm_prompt
+                        llm_prompt,
+                        workflow_final_prompt
                     )
 
                     with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
@@ -272,7 +277,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 content = response_content,
                 content_artifacts=content_artifacts,
                 user_prompt=llm_prompt,
-                full_prompt=self.workflow_main_prompt,
+                full_prompt=workflow_main_prompt,
                 completion_tokens=output_tokens,
                 prompt_tokens=input_tokens,
                 total_tokens=output_tokens + input_tokens,
@@ -296,8 +301,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             self.logger.error(error_msg)
             raise ValueError(error_msg)
 
-    def __create_workflow_main_prompt(self):
-        """ Creates the workflow main prompt and saves it to self.workflow_main_prompt. """
+    def __create_workflow_main_prompt(self) -> str:
+        """ Creates the workflow main prompt. """
         prompt_object_id = self.workflow_config.get_resource_object_id_properties(
             ResourceProviderNames.FOUNDATIONALLM_PROMPT,
             PromptResourceTypeNames.PROMPTS,
@@ -307,14 +312,14 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         if prompt_object_id:
             main_prompt_object_id = prompt_object_id.object_id
             main_prompt_properties = self.objects[main_prompt_object_id]
-            self.workflow_main_prompt = main_prompt_properties['prefix']
+            return main_prompt_properties['prefix']
         else:
             error_message = 'No main prompt found in workflow configuration'
             self.logger.error(error_message)
             raise ValueError(error_message)
 
-    def __create_workflow_files_prompt(self):
-        """ Creates the workflow files prompt and saves it to self.workflow_files_prompt. """
+    def __create_workflow_files_prompt(self) -> str:
+        """ Creates the workflow files prompt. """
         files_prompt_properties = self.workflow_config.get_resource_object_id_properties(
             ResourceProviderNames.FOUNDATIONALLM_PROMPT,
             PromptResourceTypeNames.PROMPTS,
@@ -323,15 +328,15 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         )
         if files_prompt_properties:
             files_prompt_object_id = files_prompt_properties.object_id
-            self.workflow_files_prompt = \
+            return \
                 self.objects[files_prompt_object_id]['prefix'] if files_prompt_object_id in self.objects else None
         else:
             warning_message = 'No files prompt found in workflow configuration'
             self.logger.warning(warning_message)
-            self.workflow_files_prompt = None
+            return None
 
-    def __create_workflow_final_prompt(self):
-        """ Creates the workflow final prompt and saves it to self.workflow_final_prompt. """
+    def __create_workflow_final_prompt(self) -> str:
+        """ Creates the workflow final prompt. """
         final_prompt_properties = self.workflow_config.get_resource_object_id_properties(
             ResourceProviderNames.FOUNDATIONALLM_PROMPT,
             PromptResourceTypeNames.PROMPTS,
@@ -340,12 +345,12 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         )
         if final_prompt_properties:
             final_prompt_object_id = final_prompt_properties.object_id
-            self.workflow_final_prompt = \
+            return \
                 self.objects[final_prompt_object_id]['prefix'] if final_prompt_object_id in self.objects else None
         else:
             warning_message = 'No final prompt found in workflow configuration'
             self.logger.warning(warning_message)
-            self.workflow_final_prompt = None
+            return None
 
     def __create_context_client(self):
         """
@@ -428,6 +433,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
     async def __get_message_list(
         self,
         llm_prompt: str,
+        workflow_main_prompt: str,
+        workflow_files_prompt: str,
         message_history: List[MessageHistoryItem],
         objects: dict,
         file_history: List[FileHistoryItem]
@@ -496,13 +503,13 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         context_message = HumanMessage(
             content=[{"type": "text", "text": llm_prompt}]+context_file_messages)
 
-        files_prompt = self.workflow_files_prompt \
+        files_prompt = workflow_files_prompt \
             .replace(f'{{{{{TemplateVariables.CONVERSATION_FILES}}}}}', '\n'.join(conversation_files)) \
             .replace(f'{{{{{TemplateVariables.ATTACHED_FILES}}}}}', '\n'.join(attached_files)) \
             .replace(f'{{{{{TemplateVariables.CONTEXT_FILES}}}}}', '') \
-            if self.workflow_files_prompt else ''
+            if workflow_files_prompt else ''
 
-        main_prompt = self.workflow_main_prompt \
+        main_prompt = workflow_main_prompt \
             .replace(f'{{{{{TemplateVariables.FILES_PROMPT}}}}}', files_prompt)
 
         self.logger.debug('Workflow prompt: %s', main_prompt)
@@ -518,6 +525,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             self,
             tool_responses: List[str],
             llm_prompt: str,
+            workflow_final_prompt: str
     ) -> HumanMessage:
         """
         Returns the final response message for the workflow.
@@ -530,8 +538,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             The original LLM prompt used to generate the response.
         """
         tool_results = '\n\n'.join(tool_responses)
-        if self.workflow_final_prompt:
-            final_response_content = self.workflow_final_prompt \
+        if workflow_final_prompt:
+            final_response_content = workflow_final_prompt \
                 .replace(f'{{{{{TemplateVariables.TOOL_RESULTS}}}}}', tool_results) \
                 .replace(f'{{{{{TemplateVariables.PROMPT}}}}}', llm_prompt)
         else:

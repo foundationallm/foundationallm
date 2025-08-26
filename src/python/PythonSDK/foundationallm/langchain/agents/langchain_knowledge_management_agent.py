@@ -457,13 +457,13 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         # Start Azure AI Agent Service workflow implementation
         if isinstance(agent.workflow, AzureAIAgentServiceAgentWorkflow):
             # create the workflow
-            tools = []
+            workflow_tools = []
             parsed_user_prompt = request.user_prompt
             workflow_factory = WorkflowFactory(self.plugin_manager, self.operations_manager)
             workflow = workflow_factory.get_workflow(
                 agent.workflow,
                 request.objects,
-                tools,
+                workflow_tools,
                 self.user_identity,
                 self.config)
 
@@ -483,21 +483,21 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         # Start LangGraph ReAct Agent workflow implementation
         if isinstance(agent.workflow, LangGraphReactAgentWorkflow):
             tool_factory = ToolFactory(self.plugin_manager)
-            tools = []
+            workflow_tools = []
 
             parsed_user_prompt = request.user_prompt
 
             explicit_tool = next((tool for tool in agent.tools if parsed_user_prompt.startswith(f'[{tool.name}]:')), None)
             if explicit_tool is not None:
-                tools.append(tool_factory.get_tool(agent.name, explicit_tool, request.objects, self.user_identity, self.config))
+                workflow_tools.append(tool_factory.get_tool(agent.name, explicit_tool, request.objects, self.user_identity, self.config))
                 parsed_user_prompt = parsed_user_prompt.split(':', 1)[1].strip()
             else:
                 # Populate tools list from agent configuration
                 for tool in agent.tools:
-                    tools.append(tool_factory.get_tool(agent.name, tool, request.objects, self.user_identity, self.config))
+                    workflow_tools.append(tool_factory.get_tool(agent.name, tool, request.objects, self.user_identity, self.config))
 
             # Define the graph
-            graph = create_react_agent(llm, tools=tools, state_modifier=prompt.prefix)
+            graph = create_react_agent(llm, tools=workflow_tools, state_modifier=prompt.prefix)
             if agent.conversation_history_settings.enabled:
                 messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history*2)
             else:
@@ -546,11 +546,14 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         if isinstance(agent.workflow, ExternalAgentWorkflow):
             # prepare tools
             tool_factory = ToolFactory(self.plugin_manager)
-            tools = []
+            workflow_tools = []
 
             # Populate tools list from agent configuration
-            for tool in agent.tools:
-                tools.append(tool_factory.get_tool(agent.name, tool, request.objects, self.user_identity, self.config))
+            for tool_config in agent.tools:
+                tool_instance = \
+                    tool_factory.get_tool(agent.name, tool_config, request.objects, self.user_identity, self.config)
+                tool_instance.description = tool_config.description
+                workflow_tools.append(tool_instance)
 
             request.objects['message_history'] = request.message_history[:agent.conversation_history_settings.max_history*2]
 
@@ -559,7 +562,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             workflow = workflow_factory.get_workflow(
                 agent.workflow,
                 request.objects,
-                tools,
+                workflow_tools,
                 self.user_identity,
                 self.config)
 
