@@ -224,12 +224,12 @@ export interface AIModel extends ResourceBase {
 }
 
 // --- Agent Name Availability Check Types ---
-export interface AgentNameCheckRequest {
+export interface ResourceName {
 	type: 'knowledge-management';
 	name: string;
 }
 
-export interface AgentNameCheckResponse {
+export interface ResourceNameCheckResult {
 	type: 'knowledge-management';
 	name: string;
 	status: 'Allowed' | 'NotAllowed';

@@ -1,7 +1,5 @@
 import type {
 	Agent,
-	AgentNameCheckRequest,
-	AgentNameCheckResponse,
 	CompletionPrompt,
 	CompletionRequest,
 	ConversationProperties,
@@ -18,6 +16,8 @@ import type {
 	ResourceBase,
 	Session,
 	UserProfile,
+	ResourceNameCheckResult,
+	ResourceName,
 } from '@/js/types';
 
 export default {
@@ -481,11 +481,11 @@ export default {
 	 * @returns Promise resolving to the check response.
 	 */
 	async checkAgentNameAvailability(name: string): Promise<AgentNameCheckResponse> {
-		const payload: AgentNameCheckRequest = {
+		const payload: ResourceName = {
 			type: 'knowledge-management',
 			name,
 		};
-		return await this.fetch<AgentNameCheckResponse>(
+		return await this.fetch<ResourceNameCheckResult>(
 			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/checkname`,
 			{
 				method: 'POST',
