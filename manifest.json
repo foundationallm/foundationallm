@@ -16430,7 +16430,21 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchIndexingDataPipelineStagePlugin",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchIndexingDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Azure AI Indexing Data Pipeline Stage Plugin.</p>\n"
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchIndexingDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Azure AI Search Indexing Data Pipeline Stage Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchRemovalDataPipelineStagePlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchRemovalDataPipelineStagePlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchRemovalDataPipelineStagePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchRemovalDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Azure AI Search Removal Data Pipeline Stage Plugin.</p>\n"
     },
     {
       "type": "ManagedReference",
