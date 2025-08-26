@@ -18,23 +18,11 @@
                     <h2 class="page-header text-3xl text-[#334581]">Create Agent</h2>
                 </div>
 
-                <div class="w-full max-w-full md:max-w-[50%] px-4 mb-5 text-center md:text-right">
-                    <ul class="flex flex-wrap justify-center md:justify-end list-none p-0">
-                        <li class="mb-4 pr-3">
-                            <!-- Create agent -->
-                            <Button label="Create" severity="primary" class="min-h-[45px] min-w-[125px]" />
-                        </li>
 
-                        <li class="mb-4">
-                            <!-- Cancel -->
-                            <Button label="Cancel" severity="secondary" class="min-h-[45px] min-w-[125px]" />
-                        </li>
-                    </ul>
-                </div>
             </div>
 
             <div class="mb-4">
-                <TabView>
+                <TabView :activeIndex="activeTabIndex" @tab-change="onTabChange">
                     <TabPanel header="General">
                         <div class="px-4 py-8 mt-8 border border-solid border-gray-300">
                             <div class="w-full max-w-[1000px] mx-auto">
@@ -45,23 +33,20 @@
                                             class="block text-base text-[#898989] mb-2">Display Name <span
                                                 class="text-[#ff0000]">*</span></label>
                                         <div class="relative">
-                                            <InputText
-                                                v-model="agentDisplayName"
-                                                type="text"
-                                                class="w-full pr-10"
-                                                name="agentDisplayName"
-                                                id="agentDisplayName"
-                                                required="true"
+                                            <InputText v-model="agentDisplayName" type="text" class="w-full pr-10"
+                                                name="agentDisplayName" id="agentDisplayName" required="true"
                                                 maxlength="50"
-                                                @input="() => { onDisplayNameInput(); onAgentNameChange(); }"
-                                            />
-                                            <span v-if="displayNameStatus === 'loading'" class="absolute right-2 top-1/2 -translate-y-1/2">
+                                                @input="() => { onDisplayNameInput(); onAgentNameChange(); }" />
+                                            <span v-if="displayNameStatus === 'loading'"
+                                                class="absolute right-2 top-1/2 -translate-y-1/2">
                                                 <i class="pi pi-spin pi-spinner text-blue-500"></i>
                                             </span>
-                                            <span v-else-if="displayNameStatus === 'success'" class="absolute right-2 top-1/2 -translate-y-1/2">
+                                            <span v-else-if="displayNameStatus === 'success'"
+                                                class="absolute right-2 top-1/2 -translate-y-1/2">
                                                 <i class="pi pi-check-circle text-green-500"></i>
                                             </span>
-                                            <span v-else-if="displayNameStatus === 'error'" class="absolute right-2 top-1/2 -translate-y-1/2">
+                                            <span v-else-if="displayNameStatus === 'error'"
+                                                class="absolute right-2 top-1/2 -translate-y-1/2">
                                                 <i class="pi pi-times-circle text-red-500"></i>
                                             </span>
                                         </div>
@@ -81,7 +66,8 @@
                                             Expiration Date <span class="text-[#ff0000]">*</span>
                                         </label>
                                         <Calendar show-icon show-button-bar class="w-full" name="agentExpirationDate"
-                                            id="agentExpirationDate" type="text" required="true" />
+                                            id="agentExpirationDate" required="true" v-model="agentExpirationDate"
+                                            :manualInput="false" dateFormat="yy-mm-dd" />
                                     </div>
 
                                     <div class="w-full max-w-full px-4 mb-6">
@@ -116,10 +102,27 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="w-full max-w-full md:max-w-[100%] px-4 mb-5 text-center md:text-right"
+                                v-if="activeTabIndex === 0">
+                                <ul class="flex flex-wrap justify-center md:justify-end list-none p-0">
+                                    <li class="mb-4 pr-3">
+                                        <Button v-if="!isEditMode" label="Create" severity="primary"
+                                            class="min-h-[45px] min-w-[125px]" @click="onCreateAgent"
+                                            :loading="isCreating" :disabled="isCreating" />
+                                        <Button v-else label="Save" severity="primary"
+                                            class="min-h-[45px] min-w-[125px]" @click="onSaveAgent" />
+                                    </li>
+                                    <li class="mb-4">
+                                        <Button label="Cancel" severity="secondary" class="min-h-[45px] min-w-[125px]"
+                                            @click="onCancel" />
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
+
                     </TabPanel>
 
-                    <TabPanel header="AI Configuration">
+                    <TabPanel header="AI Configuration" :disabled="!isEditMode">
                         <div class="px-4 py-8 mt-8 border border-solid border-gray-300">
                             <div class="w-full max-w-[1000px] mx-auto">
                                 <div class="flex flex-wrap -mx-4">
@@ -140,19 +143,11 @@
                                                 </VTooltip>
                                                 Chat Model <span class="text-[#ff0000]">*</span>
                                             </label>
-                                            <Dropdown
-                                                class="w-full"
-                                                :options="aiModels"
-                                                optionLabel="name"
-                                                optionValue="object_id"
-                                                v-model="selectedAIModel"
-                                                placeholder="--Select--"
-                                                aria-label="Select a chat model"
-                                                :filter="true"
-                                                :showClear="true"
-                                                :virtualScrollerOptions="{ itemSize: 38 }"
-                                                :itemTemplate="(model: ResourceBase) => model?.name || model?.display_name || model?.object_id"
-                                            />
+                                            <Dropdown class="w-full" :options="aiModels" optionLabel="name"
+                                                optionValue="object_id" v-model="selectedAIModel"
+                                                placeholder="--Select--" aria-label="Select a chat model" :filter="true"
+                                                :showClear="true" :virtualScrollerOptions="{ itemSize: 38 }"
+                                                :itemTemplate="(model: ResourceBase) => model?.name || model?.display_name || model?.object_id" />
                                         </div>
 
                                         <div class="mb-6">
@@ -170,13 +165,8 @@
                                                 </VTooltip>
                                                 System Prompt
                                             </label>
-                                            <Textarea
-                                                class="w-full resize-none"
-                                                name="systemPrompt"
-                                                id="systemPrompt"
-                                                aria-labelledby="aria-system-prompt"
-                                                rows="5"
-                                            />
+                                            <Textarea class="w-full resize-none" name="systemPrompt" id="systemPrompt"
+                                                aria-labelledby="aria-system-prompt" rows="5" />
                                         </div>
                                     </div>
 
@@ -199,10 +189,8 @@
                                             </div>
 
                                             <div class="w-full max-w-[50px]">
-                                                <InputSwitch
-                                                    v-model="$appStore.autoHideToasts"
-                                                    class="csm-input-switch-1"
-                                                />
+                                                <InputSwitch v-model="$appStore.autoHideToasts"
+                                                    class="csm-input-switch-1" />
                                             </div>
                                         </div>
 
@@ -224,10 +212,8 @@
                                             </div>
 
                                             <div class="w-full max-w-[50px]">
-                                                <InputSwitch
-                                                    v-model="$appStore.showToastLogs"
-                                                    class="csm-input-switch-1"
-                                                />
+                                                <InputSwitch v-model="$appStore.showToastLogs"
+                                                    class="csm-input-switch-1" />
                                             </div>
                                         </div>
                                     </div>
@@ -236,7 +222,7 @@
                         </div>
                     </TabPanel>
 
-                    <TabPanel header="Data Sources">
+                    <TabPanel header="Data Sources" :disabled="!isEditMode">
                         <div class="px-4 py-8 mt-8 border border-solid border-gray-300">
                             <div class="w-full max-w-[1000px] mx-auto">
                                 <div class="mb-6">
@@ -263,41 +249,42 @@
                                         @drop.prevent="onDrop" @click="triggerFileInput">
                                         <div class="upload-content">
                                             <i class="pi pi-upload text-3xl text-[#94a3b8] mb-3 block"></i>
-                                            <p class="text-lg text-[#64748b] font-normal mb-2">Drop and drag or <span class="text-[#5472d4] underline">choose file</span> to
+                                            <p class="text-lg text-[#64748b] font-normal mb-2">Drop and drag or <span
+                                                    class="text-[#5472d4] underline">choose file</span> to
                                                 upload</p>
                                             <p class="text-sm text-[#94a3b8] font-medium italic">(Only PDF)</p>
                                         </div>
-                                        <input ref="fileInput" type="file" accept=".pdf"
-                                            @change="onFileSelect" class="hidden">
+                                        <input ref="fileInput" type="file" accept=".pdf" @change="onFileSelect"
+                                            class="hidden">
                                     </div>
 
                                     <!-- Selected files preview list -->
                                     <div v-if="uploadedFiles.length > 0" class="mt-8">
                                         <div class="mb-4">
-                                            <Button 
-                                                label="Upload Files" 
-                                                severity="primary" 
-                                                @click="uploadFiles" 
-                                                :loading="filesLoading"
-                                                :disabled="filesLoading"
-                                                class="min-h-[45px] min-w-[125px]"
-                                            />
+                                            <Button label="Upload Files" severity="primary" @click="uploadFiles"
+                                                :loading="filesLoading" :disabled="filesLoading"
+                                                class="min-h-[45px] min-w-[125px]" />
                                         </div>
-                                        
+
                                         <table class="w-full text-left border-collapse">
                                             <thead>
                                                 <tr>
                                                     <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white">File name</th>
-                                                    <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white text-center">Size</th>
-                                                    <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white text-center">Actions</th>
+                                                    <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white text-center">
+                                                        Size</th>
+                                                    <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white text-center">
+                                                        Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr v-for="(file, idx) in uploadedFiles" :key="file.name + file.size">
                                                     <td class="mnt-b-bottom p-3">{{ file.name }}</td>
-                                                    <td class="mnt-b-bottom p-3 text-center">{{ formatFileSize(file.size) }}</td>
+                                                    <td class="mnt-b-bottom p-3 text-center">{{
+                                                        formatFileSize(file.size) }}</td>
                                                     <td class="mnt-b-bottom p-3 text-center">
-                                                        <Button label="Remove" severity="secondary" @click="removeFile(idx)" class="min-h-[45px] min-w-[125px]"/>
+                                                        <Button label="Remove" severity="secondary"
+                                                            @click="removeFile(idx)"
+                                                            class="min-h-[45px] min-w-[125px]" />
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -308,20 +295,18 @@
                                 <div class="mt-10">
                                     <div class="flex justify-between items-center mb-3">
                                         <p class="block text-base text-[#898989]">Existing File(s)</p>
-                                        <Button 
-                                            label="Load Files" 
-                                            severity="secondary" 
-                                            @click="loadAgentFiles" 
-                                            :loading="filesLoading"
-                                            :disabled="filesLoading || !selectedAgentName"
-                                            class="min-h-[35px] min-w-[100px]"
-                                        />
+                                        <Button label="Load Files" severity="secondary" @click="loadAgentFiles"
+                                            :loading="filesLoading" :disabled="filesLoading || !selectedAgentName"
+                                            class="min-h-[35px] min-w-[100px]" />
                                     </div>
 
                                     <div v-if="filesLoading" class="text-sm text-[#64748b] mt-10">Loading files...</div>
-                                    <div v-else-if="filesError" class="text-sm text-red-600 mt-10">{{ filesError }}</div>
+                                    <div v-else-if="filesError" class="text-sm text-red-600 mt-10">{{ filesError }}
+                                    </div>
                                     <div v-else>
-                                        <div v-if="agentFiles.length === 0" class="text-sm text-[#94a3b8] italic mt-10">No files found for the selected agent.</div>
+                                        <div v-if="agentFiles.length === 0" class="text-sm text-[#94a3b8] italic mt-10">
+                                            No files found for
+                                            the selected agent.</div>
                                         <table v-else class="w-full text-left border-collapse">
                                             <thead>
                                                 <tr>
@@ -331,7 +316,9 @@
                                             </thead>
                                             <tbody>
                                                 <tr v-for="f in agentFiles" :key="f.resource?.name">
-                                                    <td class="mnt-b-bottom p-3">{{ f.resource?.display_name || f.resource?.filename || '-' }}</td>
+                                                    <td class="mnt-b-bottom p-3">{{ f.resource?.display_name ||
+                                                        f.resource?.filename || '-'
+                                                    }}</td>
                                                     <td class="mnt-b-bottom p-3">{{ f.resource?.name }}</td>
                                                 </tr>
                                             </tbody>
@@ -342,7 +329,7 @@
                         </div>
                     </TabPanel>
 
-                    <TabPanel header="Share" :disabled="true"></TabPanel>
+                    <TabPanel header="Share" :disabled="!isEditMode"></TabPanel>
                 </TabView>
             </div>
         </div>
@@ -352,315 +339,372 @@
 
 <script lang="ts">
 import api from '@/js/api';
-    import { debounce } from '@/js/helpers';
-import type { ResourceBase } from '@/js/types/index';
-    import { defineComponent } from 'vue';
-    import NavBarSettings from '~/components/NavBarSettings.vue';
-    import mime from 'mime';
+import { debounce } from '@/js/helpers';
+import type { AgentBase } from '@/js/types';
+import type { ResourceBase, AgentCreationFromTemplateRequest } from '@/js/types/index';
+import { defineComponent } from 'vue';
+import NavBarSettings from '~/components/NavBarSettings.vue';
+import mime from 'mime';
 
-    export default defineComponent({
-        name: 'CreateAgent',
+export default defineComponent({
+    name: 'CreateAgent',
 
-        components: {
-            NavBarSettings,
+    components: {
+        NavBarSettings,
+    },
+
+    data() {
+        return {
+            isMobile: window.screen.width < 950,
+            textCounter: '',
+            characterCount: 0,
+            isDragOver: false,
+            uploadedFiles: [] as File[],
+            activeTabIndex: 0,
+            isEditMode: false,
+            isCreating: false,
+            createdAgent: null as AgentBase | null,
+            agentExpirationDate: null as Date | null,
+            filesLoading: false as boolean,
+            filesError: '' as string,
+            agentFiles: [] as any[],
+            agentDisplayName: '',
+            displayNameStatus: '', // '', 'loading', 'success', 'error'
+            displayNameDebouncedCheck: null as null | ((name: string) => void),
+            aiModels: [] as ResourceBase[],
+            selectedAIModel: null as string | null,
+
+            selectedAgentName: null as string | null,
+            availableAgents: [] as any[],
+            agentsLoaded: false as boolean,
+        };
+    },
+
+    mounted() {
+        // Setup debounced check function
+        this.displayNameDebouncedCheck = debounce(this.checkDisplayName, 500);
+        this.fetchAIModels();
+        this.loadAvailableAgents();
+    },
+
+    methods: {
+        async onDisplayNameInput() {
+            this.displayNameStatus = this.agentDisplayName ? 'loading' : '';
+            if (this.displayNameDebouncedCheck) {
+                this.displayNameDebouncedCheck(this.agentDisplayName);
+            }
         },
 
-        data() {
-            return {
-                isMobile: window.screen.width < 950,
-                textCounter: '',
-                characterCount: 0,
-                isDragOver: false,
-                uploadedFiles: [] as File[],
+        async checkDisplayName(name: string) {
+            if (!name) {
+                this.displayNameStatus = '';
+                return;
+            }
+            try {
+                const res = await api.checkAgentNameAvailability(name);
+                this.displayNameStatus = (res.status === 'Allowed' && !res.exists && !res.deleted) ? 'success' : 'error';
+            } catch (e) {
+                this.displayNameStatus = 'error';
+            }
+        },
 
-                filesLoading: false as boolean,
-                filesError: '' as string,
-                agentFiles: [] as any[],
-                agentDisplayName: '',
-                displayNameStatus: '', // '', 'loading', 'success', 'error'
-                displayNameDebouncedCheck: null as null | ((name: string) => void),
-                aiModels: [] as ResourceBase[],
-                selectedAIModel: null as string | null,
-                
-                selectedAgentName: null as string | null,
-                availableAgents: [] as any[],
-                agentsLoaded: false as boolean,
+        async fetchAIModels() {
+            try {
+                const wrappers = await api.getAIModels();
+
+                this.aiModels = Array.isArray(wrappers)
+                    ? wrappers.map((w: any) => w.resource)
+                    : [];
+            } catch (e) {
+                this.aiModels = [];
+            }
+        },
+
+        async loadAvailableAgents() {
+            if (this.agentsLoaded) return;
+
+            try {
+                const agents = await api.getAgents();
+                this.availableAgents = agents.map((a: any) => ({
+                    name: a?.resource?.name,
+                    displayName: a?.resource?.display_name
+                }));
+                this.agentsLoaded = true;
+            } catch (err) {
+                console.error('Error loading agents:', err);
+                this.availableAgents = [];
+            }
+        },
+
+        findAgentNameByDisplayName(displayName: string): string | null {
+            if (!displayName.trim()) return null;
+
+            const trimmedInput = displayName.trim().toLowerCase();
+            let match = this.availableAgents.find(a => a.name === displayName.trim());
+            if (match) return match.name;
+
+            match = this.availableAgents.find(a =>
+                (a.displayName || '').toLowerCase().trim() === trimmedInput
+            );
+            if (match) return match.name;
+
+            const hyphenated = displayName.trim().replace(/\s+/g, '-');
+            match = this.availableAgents.find(a =>
+                a.name?.toLowerCase() === hyphenated.toLowerCase()
+            );
+            if (match) return match.name;
+
+            return null;
+        },
+
+        updateCharacterCount() {
+            this.characterCount = this.textCounter.length;
+        },
+
+        onTabChange(e: { index: number }) {
+            this.activeTabIndex = e.index;
+        },
+
+        onCreateAgent() {
+            if (this.isCreating) return;
+            // Collect form data
+            const displayName = (document.getElementById('agentDisplayName') as HTMLInputElement)?.value || '';
+            const description = (document.getElementById('agentDescription') as HTMLTextAreaElement)?.value || '';
+            const welcomeMessage = (document.getElementById('agentWelcomeMessage') as HTMLTextAreaElement)?.value || '';
+            // AGENT_NAME: Use a derived value or ask user for a unique name
+            const agentName = displayName.replace(/\s+/g, '') + Date.now();
+            // Format date to yyyy-MM-ddT00:00:00+00:00
+            let formattedDate = '';
+            if (this.agentExpirationDate) {
+                const d = new Date(this.agentExpirationDate);
+                formattedDate = d.toISOString().split('T')[0] + 'T00:00:00+00:00';
+            }
+            const payload: AgentCreationFromTemplateRequest = {
+                AGENT_NAME: agentName,
+                AGENT_DISPLAY_NAME: displayName,
+                AGENT_EXPIRATION_DATE: formattedDate,
+                AGENT_DESCRIPTION: description,
+                AGENT_WELCOME_MESSAGE: welcomeMessage,
             };
-        },
-
-        mounted() {
-            // Setup debounced check function
-            this.displayNameDebouncedCheck = debounce(this.checkDisplayName, 500);
-            this.fetchAIModels();
-            this.loadAvailableAgents();
-        },
-
-        methods: {
-            async onDisplayNameInput() {
-                this.displayNameStatus = this.agentDisplayName ? 'loading' : '';
-                if (this.displayNameDebouncedCheck) {
-                    this.displayNameDebouncedCheck(this.agentDisplayName);
-                }
-            },
-
-            async checkDisplayName(name: string) {
-                if (!name) {
-                    this.displayNameStatus = '';
-                    return;
-                }
-                try {
-                    const res = await api.checkAgentNameAvailability(name);
-                    this.displayNameStatus = (res.status === 'Allowed' && !res.exists && !res.deleted) ? 'success' : 'error';
-                } catch (e) {
-                    this.displayNameStatus = 'error';
-                }
-            },
-            async fetchAIModels() {
-                try {
-                    const wrappers = await api.getAIModels();
-
-                    this.aiModels = Array.isArray(wrappers)
-                        ? wrappers.map((w: any) => w.resource)
-                        : [];
-                } catch (e) {
-                    this.aiModels = [];
-                }
-            },
-
-            async loadAvailableAgents() {
-                if (this.agentsLoaded) return;
-                
-                try {
-                    const agents = await api.getAgents();
-                    this.availableAgents = agents.map((a: any) => ({
-                        name: a?.resource?.name,
-                        displayName: a?.resource?.display_name
-                    }));
-                    this.agentsLoaded = true;
-                } catch (err) {
-                    console.error('Error loading agents:', err);
-                    this.availableAgents = [];
-                }
-            },
-            
-            findAgentNameByDisplayName(displayName: string): string | null {
-                if (!displayName.trim()) return null;
-                
-                const trimmedInput = displayName.trim().toLowerCase();
-                let match = this.availableAgents.find(a => a.name === displayName.trim());
-                if (match) return match.name;
-                
-                match = this.availableAgents.find(a => 
-                    (a.displayName || '').toLowerCase().trim() === trimmedInput
-                );
-                if (match) return match.name;
-                
-                const hyphenated = displayName.trim().replace(/\s+/g, '-');
-                match = this.availableAgents.find(a => 
-                    a.name?.toLowerCase() === hyphenated.toLowerCase()
-                );
-                if (match) return match.name;
-                
-                return null;
-            },
-            
-            updateCharacterCount() {
-                this.characterCount = this.textCounter.length;
-            },
-
-            onDragOver(event: DragEvent) {
-                this.isDragOver = true;
-            },
-
-            onDragLeave(event: DragEvent) {
-                this.isDragOver = false;
-            },
-
-            onDrop(event: DragEvent) {
-                this.isDragOver = false;
-                const files = Array.from(event.dataTransfer?.files || []);
-                this.handleFiles(files);
-            },
-
-            triggerFileInput() {
-                const input = this.$refs.fileInput as HTMLInputElement;
-                if (input) input.value = '';
-                input?.click();
-            },
-
-            onFileSelect(event: Event) {
-                const target = event.target as HTMLInputElement;
-                const files = Array.from(target.files || []);
-                this.handleFiles(files);
-                if (target) target.value = '';
-            },
-
-            handleFiles(files: File[]) {
-                const allowedTypes = [
-                    'application/pdf',
-                ];
-
-                const validFiles = files.filter(file => {
-                    if (!allowedTypes.includes(file.type)) {
-                        console.warn(`File type not supported: ${file.name}`);
-                        return false;
-                    }
-                    if (file.size > 10 * 1024 * 1024) {
-                        console.warn(`File too large: ${file.name}`);
-                        return false;
-                    }
-                    return true;
+            this.isCreating = true;
+            api.createAgentFromTemplate(payload)
+                .then((res) => {
+                    this.createdAgent = res.resource;
+                    this.isEditMode = true;
+                    this.activeTabIndex = 1;
+                })
+                .catch((err) => {
+                    this.$toast.add({ severity: 'error', summary: 'Error', detail: err.message || 'Failed to create agent', life: 5000 });
+                })
+                .finally(() => {
+                    this.isCreating = false;
                 });
-
-                this.uploadedFiles.push(...validFiles);
-            },
-
-            removeFile(index: number) {
-                this.uploadedFiles.splice(index, 1);
-            },
-
-            formatFileSize(bytes: number): string {
-                if (bytes === 0) return '0 Bytes';
-                const k = 1024;
-                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-            },
-
-            async uploadFiles() {
-                if (this.uploadedFiles.length === 0 || !this.selectedAgentName) {
-                    return;
-                }
-
-                let filesUploaded = 0;
-                let filesFailed = 0;
-
-                for (const file of this.uploadedFiles) {
-                    try {
-                        let uploadFile = file;
-                        if (file.name) {
-                            const mimeType = mime.getType(file.name) || 'application/pdf';
-                            uploadFile = new File([file], file.name, { type: mimeType });
-                        }
-
-                        const formData = new FormData();
-                        formData.append('file', uploadFile);
-
-                        await api.uploadAgentFile(this.selectedAgentName, file.name, formData);
-                        
-                        filesUploaded++;
-                        
-                    } catch (error: any) {
-                        filesFailed++;
-                        console.error('Upload error:', error);
-                    }
-                }
-                
-                if (filesUploaded > 0) {
-                    this.uploadedFiles = [];
-                    await this.loadAgentFiles();
-                }
-            },
-
-            async loadAgentFiles() {
-                if (!this.selectedAgentName) {
-                    this.agentFiles = [];
-                    return;
-                }
-
-                this.filesError = '';
-                this.filesLoading = true;
-                
-                try {
-                    const results = await api.getAgentPrivateFiles(this.selectedAgentName);
-                    this.agentFiles = Array.isArray(results) ? results : [];
-                } catch (e: any) {
-                    this.filesError = e?.message || 'Failed to load files.';
-                    this.agentFiles = [];
-                } finally {
-                    this.filesLoading = false;
-                }
-            },
-            
-            onAgentNameChange() {
-                const displayName = (this.agentDisplayName || '').trim();
-                
-                if (displayName) {
-                    this.selectedAgentName = this.findAgentNameByDisplayName(displayName);
-                    
-                    if (this.selectedAgentName) {
-                        this.loadAgentFiles();
-                    } else {
-                        this.agentFiles = [];
-                    }
-                } else {
-                    this.selectedAgentName = null;
-                    this.agentFiles = [];
-                }
-            },
         },
-    });
+
+        onSaveAgent() {
+            // Save logic for edit mode (not implemented)
+            this.$toast.add({ severity: 'success', summary: 'Saved', detail: 'Agent changes saved.', life: 3000 });
+        },
+
+        onCancel() {
+            // Cancel logic (redirect or reset form)
+            this.$router.push('/');
+        },
+
+        // ...existing file upload and utility methods...
+        onDragOver(event: DragEvent) {
+            this.isDragOver = true;
+        },
+
+        onDragLeave(event: DragEvent) {
+            this.isDragOver = false;
+        },
+
+        onDrop(event: DragEvent) {
+            this.isDragOver = false;
+            const files = Array.from(event.dataTransfer?.files || []);
+            this.handleFiles(files);
+        },
+
+        triggerFileInput() {
+            const input = this.$refs.fileInput as HTMLInputElement;
+            if (input) input.value = '';
+            input?.click();
+        },
+
+        onFileSelect(event: Event) {
+            const target = event.target as HTMLInputElement;
+            const files = Array.from(target.files || []);
+            this.handleFiles(files);
+            if (target) target.value = '';
+        },
+
+        handleFiles(files: File[]) {
+            const allowedTypes = [
+                'application/pdf',
+            ];
+
+            const validFiles = files.filter(file => {
+                if (!allowedTypes.includes(file.type)) {
+                    console.warn(`File type not supported: ${file.name}`);
+                    return false;
+                }
+                if (file.size > 10 * 1024 * 1024) {
+                    console.warn(`File too large: ${file.name}`);
+                    return false;
+                }
+                return true;
+            });
+
+            this.uploadedFiles.push(...validFiles);
+        },
+
+        removeFile(index: number) {
+            this.uploadedFiles.splice(index, 1);
+        },
+
+        formatFileSize(bytes: number): string {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        },
+
+        async uploadFiles() {
+            if (this.uploadedFiles.length === 0 || !this.selectedAgentName) {
+                return;
+            }
+
+            let filesUploaded = 0;
+            let filesFailed = 0;
+
+            for (const file of this.uploadedFiles) {
+                try {
+                    let uploadFile = file;
+                    if (file.name) {
+                        const mimeType = mime.getType(file.name) || 'application/pdf';
+                        uploadFile = new File([file], file.name, { type: mimeType });
+                    }
+
+                    const formData = new FormData();
+                    formData.append('file', uploadFile);
+
+                    await api.uploadAgentFile(this.selectedAgentName, file.name, formData);
+
+                    filesUploaded++;
+
+                } catch (error: any) {
+                    filesFailed++;
+                    console.error('Upload error:', error);
+                }
+            }
+
+            if (filesUploaded > 0) {
+                this.uploadedFiles = [];
+                await this.loadAgentFiles();
+            }
+        },
+
+        async loadAgentFiles() {
+            if (!this.selectedAgentName) {
+                this.agentFiles = [];
+                return;
+            }
+
+            this.filesError = '';
+            this.filesLoading = true;
+
+            try {
+                const results = await api.getAgentPrivateFiles(this.selectedAgentName);
+                this.agentFiles = Array.isArray(results) ? results : [];
+            } catch (e: any) {
+                this.filesError = e?.message || 'Failed to load files.';
+                this.agentFiles = [];
+            } finally {
+                this.filesLoading = false;
+            }
+        },
+
+        onAgentNameChange() {
+            const displayName = (this.agentDisplayName || '').trim();
+
+            if (displayName) {
+                this.selectedAgentName = this.findAgentNameByDisplayName(displayName);
+
+                if (this.selectedAgentName) {
+                    this.loadAgentFiles();
+                } else {
+                    this.agentFiles = [];
+                }
+            } else {
+                this.selectedAgentName = null;
+                this.agentFiles = [];
+            }
+        },
+    },
+});
 </script>
 
 <style lang="scss">
-    .csm-backto-chats-1 {
-        margin-bottom: 30px;
+.csm-backto-chats-1 {
+    margin-bottom: 30px;
 
-        a {
-            color: var(--primary-button-bg);
-            text-decoration: none;
-        }
+    a {
+        color: var(--primary-button-bg);
+        text-decoration: none;
     }
+}
 
-    .csm-input-switch-1 {
-        &.p-inputswitch {
+.csm-input-switch-1 {
+    &.p-inputswitch {
+        .p-inputswitch-slider {
+            border-radius: 50px;
+            background: transparent;
+            border: 3px solid #334581;
+
+            &:before {
+                background: #334581;
+                border-radius: 50%;
+                left: 0.1rem;
+            }
+        }
+
+        &.p-highlight {
             .p-inputswitch-slider {
-                border-radius: 50px;
-                background: transparent;
-                border: 3px solid #334581;
+                background: #334581;
 
                 &:before {
-                    background: #334581;
-                    border-radius: 50%;
-                    left: 0.1rem;
-                }
-            }
-
-            &.p-highlight {
-                .p-inputswitch-slider {
-                    background: #334581;
-
-                    &:before {
-                        background-color: #ffffff;
-                        transform: translateX(1.2rem);
-                    }
+                    background-color: #ffffff;
+                    transform: translateX(1.2rem);
                 }
             }
         }
     }
+}
 
-    .custom-uploader {
-        border: 2px dashed #94a3b8;
-        padding: 2rem;
-        text-align: center;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
+.custom-uploader {
+    border: 2px dashed #94a3b8;
+    padding: 2rem;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 
-        &.drag-over {
-            transform: scale(1.02);
-        }
-
-        .upload-content {
-            pointer-events: none;
-        }
+    &.drag-over {
+        transform: scale(1.02);
     }
 
-    .hidden {
-        display: none;
+    .upload-content {
+        pointer-events: none;
     }
+}
 
-    .mnt-b-bottom{
-        border-bottom: 1px solid #94a3b8;
-    }
+.hidden {
+    display: none;
+}
+
+.mnt-b-bottom {
+    border-bottom: 1px solid #94a3b8;
+}
 </style>

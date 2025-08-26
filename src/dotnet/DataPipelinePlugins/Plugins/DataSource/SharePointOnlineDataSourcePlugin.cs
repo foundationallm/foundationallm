@@ -175,6 +175,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                     RawContent = binaryData,
                     Metadata = new Dictionary<string, object>
                     {
+                        { "FileId", contentItemCanonicalId },
                         { "FileName", document.Name }
                     }
                 },

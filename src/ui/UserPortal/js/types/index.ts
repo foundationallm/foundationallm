@@ -200,18 +200,18 @@ export interface MessageResponse {
 }
 
 export interface ResourceBase {
-    type: string;
-    name: string;
-    object_id: string;
-    display_name?: string | null;
-    description?: string | null;
-    cost_center?: string | null;
-    created_on?: string;
-    updated_on?: string;
-    created_by?: string | null;
-    updated_by?: string | null;
-    deleted?: boolean;
-    expiration_date?: string | null;
+	type: string;
+	name: string;
+	object_id: string;
+	display_name?: string | null;
+	description?: string | null;
+	cost_center?: string | null;
+	created_on?: string;
+	updated_on?: string;
+	created_by?: string | null;
+	updated_by?: string | null;
+	deleted?: boolean;
+	expiration_date?: string | null;
 }
 
 
@@ -222,6 +222,86 @@ export interface AIModel extends ResourceBase {
 	endpoint_object_id?: string;
 	properties?: Record<string, any>;
 }
+
+export interface AgentBase {
+	type: string;
+	name: string;
+	object_id: string;
+	display_name: string;
+	description: string;
+	cost_center: string;
+	inline_context: boolean;
+	sessions_enabled: boolean;
+	text_rewrite_settings: {
+		user_prompt_rewrite_enabled: boolean;
+		user_prompt_rewrite_settings: {
+			user_prompt_rewrite_ai_model_object_id: string | null;
+			user_prompt_rewrite_prompt_object_id: string | null;
+			user_prompts_window_size: number;
+		};
+	};
+	cache_settings: {
+		semantic_cache_enabled: boolean;
+		semantic_cache_settings: {
+			embedding_ai_model_object_id: string | null;
+			embedding_dimensions: number;
+			minimum_similarity_threshold: number;
+		};
+	};
+	conversation_history_settings: {
+		enabled: boolean;
+		max_history: number;
+		history_content_artifact_types: string[] | null;
+	};
+	gatekeeper_settings: {
+		use_system_setting: boolean;
+		options: any[];
+	};
+	workflow: {
+		type: string;
+		name: string;
+		package_name: string;
+		class_name: string;
+		workflow_host: string;
+		resource_object_ids: {
+			[objectId: string]: {
+				object_id: string;
+				properties: Record<string, any>;
+			};
+		};
+		properties: Record<string, any> | null;
+	};
+	tools: Array<{
+		name: string;
+		description: string;
+		category: string;
+		package_name: string;
+		class_name: string;
+		resource_object_ids: {
+			[objectId: string]: {
+				object_id: string;
+				properties: Record<string, any>;
+			};
+		};
+		properties: Record<string, any>;
+	}>;
+	virtual_security_group_id: string;
+	show_message_tokens: boolean;
+	show_message_rating: boolean;
+	show_view_prompt: boolean;
+	show_file_upload: boolean;
+	properties: {
+		welcome_message: string;
+		[key: string]: any;
+	};
+	created_on: string;
+	updated_on: string;
+	created_by: string | null;
+	updated_by: string;
+	deleted: boolean;
+	expiration_date: string;
+}
+
 
 // --- Agent Name Availability Check Types ---
 export interface ResourceName {
@@ -236,4 +316,12 @@ export interface ResourceNameCheckResult {
 	message: string | null;
 	exists: boolean;
 	deleted: boolean;
+}
+
+export interface AgentCreationFromTemplateRequest {
+	AGENT_NAME: string;
+	AGENT_DISPLAY_NAME: string;
+	AGENT_EXPIRATION_DATE: string;
+	AGENT_DESCRIPTION: string;
+	AGENT_WELCOME_MESSAGE: string;
 }

@@ -15,9 +15,11 @@ import type {
 	RateLimitError,
 	ResourceBase,
 	Session,
-	UserProfile,
 	ResourceNameCheckResult,
 	ResourceName,
+	UserProfile,
+	AgentBase,
+	AgentCreationFromTemplateRequest
 } from '@/js/types';
 
 export default {
@@ -313,11 +315,11 @@ export default {
 	async getAgents() {
 		try {
 			const agents = await this.fetch(
-			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents`
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents`
 			) as ResourceProviderGetResult<Agent>[];
-			
+
 			agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
-			
+
 			return agents;
 		} catch (error) {
 			console.error('Error fetching agents from management endpoint:', error);
@@ -444,6 +446,20 @@ export default {
 			},
 		)) as OneDriveWorkSchool;
 	},
+	/**
+	 * Creates a new agent from the BasicAgentTemplate.
+	 * @param templateParameters The parameters for the agent template.
+	 * @returns A promise that resolves to the upsert result containing the new agent.
+	 */
+	async createAgentFromTemplate(templateParameters: AgentCreationFromTemplateRequest): Promise<ResourceProviderUpsertResult & { resource: AgentBase }> {
+		const url = `/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agentTemplates/BasicAgentTemplate/create-new`;
+		return await this.fetch<ResourceProviderUpsertResult & { resource: AgentBase }>(url, {
+			method: 'POST',
+			body: {
+				template_parameters: templateParameters,
+			},
+		});
+	},
 
 	/**
 	 * Retrieves private store files for a given agent from the management endpoint.
@@ -461,7 +477,7 @@ export default {
 		}
 	},
 
-	/**
+		/**
 	 * Uploads a file to an agent's private storage.
 	 * @param agentName - The name of the agent.
 	 * @param fileName - The name of the file to upload.
@@ -484,8 +500,6 @@ export default {
 		}
 	},
 
-	
-
 	/**
 	 * Retrieves the list of AI models from the management endpoint.
 	 * Returns an array of ResourceBase (see aiModel.ts) as required.
@@ -501,6 +515,7 @@ export default {
 			throw error;
 		}
 	},
+	
 	/**
 	 * Checks if the derived agent resource name is available.
 	 * @param name - The derived resource name to check.

@@ -1399,10 +1399,11 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 case AgentToolNames.FoundationaLLMKnowledgeSearchTool:
                     agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
-                    await AddFileToKnowledgeUnit(
+                    await RunDataPipeline(
                         _instanceSettings.Id,
                         fileObjectId,
                         agent,
+                        ContentItemActions.AddOrUpdate,
                         userIdentity);
 
                     // Add the tool association to the agent file reference
@@ -1486,10 +1487,11 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 case AgentToolNames.FoundationaLLMCodeInterpreterTool:
                     agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
-                    await RemoveFileFromKnowledgeUnit(
+                    await RunDataPipeline(
                         _instanceSettings.Id,
                         fileObjectId,
                         agent,
+                        ContentItemActions.Remove,
                         userIdentity);
 
                     // Remove the tool association from the agent file reference
@@ -1561,10 +1563,11 @@ namespace FoundationaLLM.Agent.ResourceProviders
             return (agentId!, vectorStoreId!, workflow!, agentAIModel, agentPrompt, project);
         }
 
-        private async Task AddFileToKnowledgeUnit(
+        private async Task RunDataPipeline(
             string instanceId,
             string fileObjectId,
             AgentBase agent,
+            string contentAction,
             UnifiedUserIdentity userIdentity)
         {
             var dataPipelineResourceProvider =
@@ -1585,10 +1588,14 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 new()
                 {
                     { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId, fileId},
+                    { DataPipelineTriggerParameterNames.DataSourceContextFileContentAction, contentAction },
                     { DataPipelineTriggerParameterNames.StageEmbedKnowledgeUnitObjectId, knowledgeSearchSettings.AgentPrivateStoreKnowledgeUnitObjectId },
                     { DataPipelineTriggerParameterNames.StageIndexKnowledgeUnitObjectId, knowledgeSearchSettings.AgentPrivateStoreKnowledgeUnitObjectId },
                     // By convention, the vector store id for the agent's private files is the agent's name.
-                    { DataPipelineTriggerParameterNames.StageIndexVectorStoreId, agent.Name }
+                    { DataPipelineTriggerParameterNames.StageIndexVectorStoreId, agent.Name },
+                    { DataPipelineTriggerParameterNames.StageRemovalKnowledgeUnitObjectId, knowledgeSearchSettings.AgentPrivateStoreKnowledgeUnitObjectId },
+                    // By convention, the vector store id for the agent's private files is the agent's name.
+                    { DataPipelineTriggerParameterNames.StageRemovalVectorStoreId, agent.Name }
                 },
                 userIdentity.UPN!,
                 DataPipelineRunProcessors.Frontend);
@@ -1605,14 +1612,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
             if (!success)
                 throw new ResourceProviderException(
                     $"The execution of the data pipeline for file {fileObjectId} failed.");
-        }
-
-        private async Task RemoveFileFromKnowledgeUnit(
-           string instanceId,
-           string fileObjectId,
-           AgentBase agent,
-           UnifiedUserIdentity userIdentity)
-        {
         }
 
         /// <summary>

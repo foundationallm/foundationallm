@@ -465,7 +465,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
 
             var dataPipelineSnapshotReference = new DataPipelineReference
             {
-                Name = finalResourcePath!.MainResourceId!,
+                Name = finalResourcePath!.ResourceId!,
                 Type = DataPipelineTypes.DataPipelineSnapshot,
                 Filename = $"/{_name}/{resourcePath.ParentResourceId}/{finalResourcePath.ResourceId!}.json"
             };

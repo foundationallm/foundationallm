@@ -41,8 +41,11 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Queueing
             IEnumerable<string> payloadIds,
             bool recoverFromError = false)
         {
-            _logger.LogInformation("Extending processing time for payloads: {PayloadIds}", 
-                string.Join(", ", payloadIds));
+            if (payloadIds == null || !payloadIds.Any())
+                return;
+
+            _logger.LogInformation("Extending processing time for payloads: {PayloadIds} (recover from error: {RecoverFromError})", 
+                string.Join(", ", payloadIds), recoverFromError);
 
             foreach (var payloadId in payloadIds)
                 if (_messageRegistry.TryGetValue(payloadId, out var message))
