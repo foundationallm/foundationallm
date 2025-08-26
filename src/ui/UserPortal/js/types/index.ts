@@ -223,14 +223,6 @@ export interface AIModel extends ResourceBase {
 	properties?: Record<string, any>;
 }
 
-export interface KnowledgeManagementAgent {
-	AGENT_NAME: string;
-	AGENT_DISPLAY_NAME: string;
-	AGENT_EXPIRATION_DATE: string;
-	AGENT_DESCRIPTION: string;
-	AGENT_WELCOME_MESSAGE: string;
-}
-
 export interface AgentBase {
   type: string;
   name: string;
@@ -308,4 +300,28 @@ export interface AgentBase {
   updated_by: string;
   deleted: boolean;
   expiration_date: string;
+}
+
+
+// --- Agent Name Availability Check Types ---
+export interface ResourceName {
+	type: 'knowledge-management';
+	name: string;
+}
+
+export interface ResourceNameCheckResult {
+	type: 'knowledge-management';
+	name: string;
+	status: 'Allowed' | 'NotAllowed';
+	message: string | null;
+	exists: boolean;
+	deleted: boolean;
+}
+
+export interface AgentCreationFromTemplateRequest {
+	AGENT_NAME: string;
+	AGENT_DISPLAY_NAME: string;
+	AGENT_EXPIRATION_DATE: string;
+	AGENT_DESCRIPTION: string;
+	AGENT_WELCOME_MESSAGE: string;
 }

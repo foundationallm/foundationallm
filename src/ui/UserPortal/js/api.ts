@@ -1,12 +1,11 @@
-	import type {
+import type {
 	Agent,
 	CompletionPrompt,
 	CompletionRequest,
 	ConversationProperties,
 	CoreConfiguration,
 	LongRunningOperation,
-		KnowledgeManagementAgent,
-	Message,
+		Message,
 	MessageRatingRequest,
 	MessageResponse,
 	OneDriveWorkSchool,
@@ -16,7 +15,11 @@
 	RateLimitError,
 	ResourceBase,
 	Session,
-	UserProfile, AgentBase,
+	ResourceNameCheckResult,
+	ResourceName,
+	UserProfile,
+	AgentBase,
+	AgentCreationFromTemplateRequest
 } from '@/js/types';
 
 export default {
@@ -450,7 +453,7 @@ export default {
 	 * @param templateParameters The parameters for the agent template.
 	 * @returns A promise that resolves to the upsert result containing the new agent.
 	 */
-	async createAgentFromTemplate(templateParameters: KnowledgeManagementAgent): Promise<ResourceProviderUpsertResult & { resource: AgentBase }> {
+	async createAgentFromTemplate(templateParameters: AgentCreationFromTemplateRequest): Promise<ResourceProviderUpsertResult & { resource: AgentBase }> {
 		const url = `/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agentTemplates/BasicAgentTemplate/create-new`;
 		return await this.fetch<ResourceProviderUpsertResult & { resource: AgentBase }>(url, {
 			method: 'POST',
@@ -489,6 +492,24 @@ export default {
 			console.error('Error fetching AI models:', error);
 			throw error;
 		}
+	},
+	/**
+	 * Checks if the derived agent resource name is available.
+	 * @param name - The derived resource name to check.
+	 * @returns Promise resolving to the check response.
+	 */
+	async checkAgentNameAvailability(name: string): Promise<AgentNameCheckResponse> {
+		const payload: ResourceName = {
+			type: 'knowledge-management',
+			name,
+		};
+		return await this.fetch<ResourceNameCheckResult>(
+			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/checkname`,
+			{
+				method: 'POST',
+				body: payload,
+			}
+		);
 	},
 };
 

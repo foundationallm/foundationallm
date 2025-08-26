@@ -230,6 +230,10 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                         output_tokens += final_llm_response.usage_metadata['output_tokens']
                         final_response = final_llm_response.content
 
+            else:
+                if 'ROUTER' in commands:
+                    final_response = '__NO_TOOL__'
+
             workflow_content_artifact = self.__create_workflow_execution_content_artifact(
                 llm_prompt,
                 input_tokens,
@@ -490,7 +494,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 context_file_message)
 
         context_message = HumanMessage(
-            content=context_file_messages+[{"type": "text", "text": llm_prompt}])
+            content=[{"type": "text", "text": llm_prompt}]+context_file_messages)
 
         files_prompt = self.workflow_files_prompt \
             .replace(f'{{{{{TemplateVariables.CONVERSATION_FILES}}}}}', '\n'.join(conversation_files)) \

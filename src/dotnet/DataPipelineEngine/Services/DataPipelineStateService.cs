@@ -1,13 +1,16 @@
 ﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.DataPipelines;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
+using FoundationaLLM.DataPipelineEngine.Models.DataPipelineState;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Parquet.Serialization;
+using System.Collections;
 using System.Text.Json;
 
 namespace FoundationaLLM.DataPipelineEngine.Services
@@ -44,9 +47,35 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     "content-items.json"
                 ]);
 
+            var runContentItemsRegistry = new ContentItemsRegistry
+            {
+                ToAddOrUpdate = new SortedDictionary<string, ContentItemsRegistryEntry>(
+                    contentItems
+                    .Where(ci => ci.ContentAction == ContentItemActions.AddOrUpdate)
+                    .Select(ci => new ContentItemsRegistryEntry
+                    {
+                        ContentItemCanonicalId = ci.ContentIdentifier.CanonicalId,
+                        LastContentAction = ci.ContentAction,
+                        LastModifiedAt = DateTimeOffset.UtcNow
+                    })
+                    .ToDictionary(
+                        entry => entry.ContentItemCanonicalId,
+                        entry => entry)),
+                ToRemove = new SortedDictionary<string, ContentItemsRegistryEntry>(
+                    contentItems
+                    .Where(ci => ci.ContentAction == ContentItemActions.Remove)
+                    .Select(ci => new ContentItemsRegistryEntry
+                    {
+                        ContentItemCanonicalId = ci.ContentIdentifier.CanonicalId,
+                        LastContentAction = ci.ContentAction,
+                        LastModifiedAt = DateTimeOffset.UtcNow
+                    })
+                    .ToDictionary(
+                        entry => entry.ContentItemCanonicalId,
+                        entry => entry))
+            };
             var runContentItemsRegistryContent = JsonSerializer.Serialize(
-                contentItems.Select(ci => ci.ContentIdentifier.CanonicalId)
-                .ToList());
+                runContentItemsRegistry);
 
             await _storageService.WriteFileAsync(
                 dataPipelineRun.InstanceId,
@@ -73,7 +102,6 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 ]);
 
             string updatedCanonicalContentItemsRegistryContent = string.Empty;
-            int netNewContentItemsCount = 0;
 
             if (await _storageService.FileExistsAsync(
                 dataPipelineRun.InstanceId,
@@ -84,41 +112,47 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     dataPipelineRun.InstanceId,
                     canonicalContentItemsRegistryPath,
                     default);
-                var canonicalContentItemsRegistry = JsonSerializer.Deserialize<List<string>>(
-                    canonicalContentItemsRegistryRawContent.ToStream());
-                var canonicalContentItemsRegistrySet = new HashSet<string>(canonicalContentItemsRegistry ?? []);
+                var canonicalContentItemsRegistry = JsonSerializer.Deserialize<ContentItemsRegistry>(
+                    canonicalContentItemsRegistryRawContent.ToStream())!;
 
-                var newContentItems = contentItems
-                    .Select(ci => ci.ContentIdentifier.CanonicalId)
-                    .Where(canonicalId => !canonicalContentItemsRegistrySet.Contains(canonicalId))
-                    .ToList();
-                netNewContentItemsCount = newContentItems.Count;
+                foreach (var runAddOrUpdateEntry in runContentItemsRegistry.ToAddOrUpdate.Values)
+                {
+                    if (canonicalContentItemsRegistry.ToRemove.ContainsKey(
+                        runAddOrUpdateEntry.ContentItemCanonicalId))
+                        canonicalContentItemsRegistry.ToRemove.Remove(
+                            runAddOrUpdateEntry.ContentItemCanonicalId);
+                    canonicalContentItemsRegistry.ToAddOrUpdate[runAddOrUpdateEntry.ContentItemCanonicalId] = runAddOrUpdateEntry;
+                }
 
-                if (newContentItems.Count > 0)
-                    updatedCanonicalContentItemsRegistryContent = JsonSerializer.Serialize(
-                        canonicalContentItemsRegistry!
-                            .Concat(newContentItems)
-                            .ToList());
+                foreach (var runRemoveEntry in runContentItemsRegistry.ToRemove.Values)
+                {
+                    if (canonicalContentItemsRegistry.ToAddOrUpdate.ContainsKey(
+                        runRemoveEntry.ContentItemCanonicalId))
+                        canonicalContentItemsRegistry.ToAddOrUpdate.Remove(
+                            runRemoveEntry.ContentItemCanonicalId);
+                    canonicalContentItemsRegistry.ToRemove[runRemoveEntry.ContentItemCanonicalId] = runRemoveEntry;
+                }
+
+                updatedCanonicalContentItemsRegistryContent = JsonSerializer.Serialize(
+                    canonicalContentItemsRegistry!);
             }
             else
             {
-                netNewContentItemsCount = contentItems.Count;
                 updatedCanonicalContentItemsRegistryContent = JsonSerializer.Serialize(
-                    contentItems.Select(ci => ci.ContentIdentifier.CanonicalId)
-                    .ToList());
+                    runContentItemsRegistry);
             }
 
-            if (netNewContentItemsCount > 0)
-                await _storageService.WriteFileAsync(
-                    dataPipelineRun.InstanceId,
-                    canonicalContentItemsRegistryPath,
-                    updatedCanonicalContentItemsRegistryContent,
-                    "application/json",
-                    default);
+            await _storageService.WriteFileAsync(
+                dataPipelineRun.InstanceId,
+                canonicalContentItemsRegistryPath,
+                updatedCanonicalContentItemsRegistryContent,
+                "application/json",
+                default);
 
-            _logger.LogInformation("The data pipeline run {DataPipelineRunId} contributed with {NewContentItemsCount} net new content items to the canonical state.",
+            _logger.LogInformation("The data pipeline run {DataPipelineRunId} updated the canonical content item state with {AddOrUpdateCount} content items to add or update and {RemoveCount} content items to remove.",
                   dataPipelineRun.RunId,
-                  netNewContentItemsCount);
+                  runContentItemsRegistry.ToAddOrUpdate.Count,
+                  runContentItemsRegistry.ToRemove.Count);
 
             #endregion
 

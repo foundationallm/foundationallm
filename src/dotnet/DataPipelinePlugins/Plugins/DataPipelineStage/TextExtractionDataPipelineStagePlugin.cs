@@ -37,6 +37,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             string dataPipelineStageName)
         {
             var workItems = contentItems
+                .Where(ci => ci.ContentAction == ContentItemActions.AddOrUpdate)
                 .Select(ci => new DataPipelineRunWorkItem
                 {
                     Id = $"work-item-{Guid.NewGuid().ToBase64String()}",

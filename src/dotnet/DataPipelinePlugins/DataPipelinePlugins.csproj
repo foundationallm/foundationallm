@@ -9,7 +9,6 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>FoundationaLLM.DataPipelinePlugins</PackageId>
     <Title>FoundationaLLM Data Pipeline Plugins</Title>
-    <Version>0.0.0</Version>
     <Authors>FoundationaLLM</Authors>
     <Description>FoundationaLLM.DataPipelinePlugin contains the standard Data Pipeline plugins provided by FoundationaLLM.</Description>
     <Copyright>Copyright © FoundationaLLM. All rights reserved.</Copyright>
@@ -19,17 +18,20 @@
     <RepositoryUrl>https://github.com/solliancenet/foundationallm</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>FoundationaLLM;LLM;GPT;AI;Data;Pipeline;Plugin</PackageTags>
-    <FileVersion>0.0.0</FileVersion>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <Version>0.9.7</Version>
     <AssemblyVersion>0.9.7</AssemblyVersion>
+    <FileVersion>0.9.7</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' != 'Debug'">
+    <Version>0.0.0</Version>
     <AssemblyVersion>0.0.0</AssemblyVersion>
+    <FileVersion>0.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
