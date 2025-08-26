@@ -1,6 +1,7 @@
 ﻿using Azure.Security.KeyVault.Certificates;
 using Azure.Security.KeyVault.Secrets;
 using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.DataPipelines;
 using FoundationaLLM.Common.Constants.DataSource;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -116,7 +117,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                                             item.File.Name
                                     ],
                                 CanonicalId = canonicalId
-                            }
+                            },
+                            ContentAction = ContentItemActions.AddOrUpdate
                         });
                     }
                 }

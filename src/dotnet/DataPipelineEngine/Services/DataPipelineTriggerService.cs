@@ -89,19 +89,24 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
             // Add the default parameter values if they are not already set.
             var dataPipelineTrigger = dataPipeline.Triggers
-                .SingleOrDefault(t => t.Name == dataPipelineRun.TriggerName);
-            if (dataPipelineTrigger != null)
-                foreach(var item in dataPipelineTrigger.ParameterValues)
-                    if (!dataPipelineRun.TriggerParameterValues.ContainsKey(item.Key))
-                        dataPipelineRun.TriggerParameterValues.Add(item.Key, item.Value);
+                .SingleOrDefault(t => t.Name == dataPipelineRun.TriggerName)
+                ?? throw new DataPipelineServiceException(
+                    $"The data pipeline trigger with name {dataPipelineRun.TriggerName} does not exist in the data pipeline {dataPipeline.Name}.",
+                    StatusCodes.Status400BadRequest);
+
+            foreach (var item in dataPipelineTrigger.ParameterValues)
+                if (!dataPipelineRun.TriggerParameterValues.ContainsKey(item.Key))
+                    dataPipelineRun.TriggerParameterValues.Add(item.Key, item.Value);
 
             // If the canonical run id is not set, generate it based on the data pipeline run properties.
             if (string.IsNullOrWhiteSpace(dataPipelineRun.CanonicalRunId))
             {
-                // Two data pipeline runs for the same data pipeline and identical trigger parameter values
+                // Two data pipeline runs for the same data pipeline and identical relevant trigger parameter values
                 // should have the same canonical run id.
                 var canonicalRunIdRaw = $"{dataPipeline.Name}|"
-                    + JsonSerializer.Serialize(dataPipelineRun.TriggerParameterValues);
+                    + JsonSerializer.Serialize(GetParameterValuesForCanonicalId(
+                        dataPipelineRun,
+                        dataPipelineTrigger));
 
                 dataPipelineRun.CanonicalRunId = Convert.ToBase64String(
                         MD5.HashData(Encoding.UTF8.GetBytes(canonicalRunIdRaw)))
@@ -142,6 +147,36 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 userIdentity);
 
             return updatedDataPipelineRun!;
+        }
+
+        private Dictionary<string, object> GetParameterValuesForCanonicalId(
+            DataPipelineRun dataPipelineRun,
+            DataPipelineTrigger dataPipelineTrigger)
+        {
+            if (dataPipelineTrigger.CanonicalIdParameters == null
+                || dataPipelineTrigger.CanonicalIdParameters.Count == 0)
+            {
+                _logger.LogWarning(
+                    "The data pipeline trigger {DataPipelineTriggerName} does not have any canonical id parameters defined. "
+                    + "All the trigger parameters will be used to generate the canonical run id for the data pipeline run {DataPipelineRunId}. "
+                    + "It is recommended to define a subset of parameters that uniquely identify the run to avoid unnecessary conflicts.",
+                    dataPipelineTrigger.Name,
+                    dataPipelineRun.RunId);
+                return dataPipelineRun.TriggerParameterValues;
+            }
+
+            _logger.LogInformation(
+                "The data pipeline trigger {DataPipelineTriggerName} has the following canonical id parameters defined: {CanonicalIdParameters}. "
+                + "Only these parameters will be used to generate the canonical run id for the data pipeline run {DataPipelineRunId}.",
+                dataPipelineTrigger.Name,
+                string.Join(", ", dataPipelineTrigger.CanonicalIdParameters),
+                dataPipelineRun.RunId);
+
+            return
+                dataPipelineTrigger.CanonicalIdParameters
+                    .ToDictionary(
+                        p => p,
+                        p => dataPipelineRun.TriggerParameterValues[p]);
         }
     }
 }

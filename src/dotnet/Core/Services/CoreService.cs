@@ -942,13 +942,22 @@ public partial class CoreService(
 
             foreach (var attachmentObjectId in attachmentIds)
             {
-                if (ResourcePath.TryParseResourceProvider(attachmentObjectId, out string? resourceProvider))
+                var resourcePath = ResourcePath.GetResourcePath(attachmentObjectId);
+                switch (resourcePath.ResourceProvider)
                 {
-                    legacyAttachmentIds.Add(attachmentObjectId);
-                }
-                else
-                {
-                    contextAttachmentIds.Add(attachmentObjectId);
+                    case ResourceProviderNames.FoundationaLLM_Attachment:
+
+                        legacyAttachmentIds.Add(attachmentObjectId);
+                        break;
+
+                    case ResourceProviderNames.FoundationaLLM_Context:
+
+                        contextAttachmentIds.Add(resourcePath.MainResourceId!);
+                        break;
+
+                    default:
+                        throw new CoreServiceException(
+                            $"The resource provider [{resourcePath.ResourceProvider}] is not supported for attachments.");
                 }
             }
 

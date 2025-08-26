@@ -5,6 +5,7 @@
         public const string AZUREDATALAKE_DATASOURCE_FOLDERS = "Folders";
 
         public const string CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID = "ContextFileObjectId";
+        public const string CONTEXTFILE_DATASOURCE_CONTENTACTION = "ContentAction";
 
         public const string SHAREPOINTONLINE_DATASOURCE_DOCUMENTLIBRARIES = "DocumentLibraries";
 

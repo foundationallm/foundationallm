@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+﻿using FoundationaLLM.Common.Constants.DataPipelines;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.DataPipelines
@@ -47,10 +48,20 @@ namespace FoundationaLLM.Common.Models.DataPipelines
         public required ContentIdentifier ContentIdentifier { get; set; }
 
         /// <summary>
+        /// Gets or sets the content action to be performed on the content item.
+        /// </summary>
+        /// <remarks>
+        /// The valid values are defined in <see cref="ContentItemActions"/>.
+        /// </remarks>
+        [JsonPropertyName("content_action")]
+        [JsonPropertyOrder(6)]
+        public required string ContentAction { get; set; }
+
+        /// <summary>
         /// Gets or sets the additional metadata associated with the content item.
         /// </summary>
         [JsonPropertyName("metadata")]
-        [JsonPropertyOrder(6)]
+        [JsonPropertyOrder(7)]
         public Dictionary<string, object>? Metadata { get; set; }
 
         /// <summary>

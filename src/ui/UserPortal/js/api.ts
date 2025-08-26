@@ -1,22 +1,24 @@
-	import type {
-		Agent,
-		CompletionPrompt,
-		CompletionRequest,
-		ConversationProperties,
-		CoreConfiguration,
-		LongRunningOperation,
-		Message,
-		MessageRatingRequest,
-		MessageResponse,
-		OneDriveWorkSchool,
-		ResourceProviderDeleteResults,
-		ResourceProviderGetResult,
-		ResourceProviderUpsertResult,
-		RateLimitError,
-		ResourceBase,
-		Session,
-		UserProfile,
-	} from '@/js/types';
+import type {
+	Agent,
+	CompletionPrompt,
+	CompletionRequest,
+	ConversationProperties,
+	CoreConfiguration,
+	LongRunningOperation,
+	Message,
+	MessageRatingRequest,
+	MessageResponse,
+	OneDriveWorkSchool,
+	ResourceProviderDeleteResults,
+	ResourceProviderGetResult,
+	ResourceProviderUpsertResult,
+	RateLimitError,
+	ResourceBase,
+	Session,
+	UserProfile,
+	ResourceNameCheckResult,
+	ResourceName,
+} from '@/js/types';
 
 export default {
 	apiUrl: null as string | null,
@@ -498,6 +500,24 @@ export default {
 			console.error('Error fetching AI models:', error);
 			throw error;
 		}
+	},
+	/**
+	 * Checks if the derived agent resource name is available.
+	 * @param name - The derived resource name to check.
+	 * @returns Promise resolving to the check response.
+	 */
+	async checkAgentNameAvailability(name: string): Promise<AgentNameCheckResponse> {
+		const payload: ResourceName = {
+			type: 'knowledge-management',
+			name,
+		};
+		return await this.fetch<ResourceNameCheckResult>(
+			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/checkname`,
+			{
+				method: 'POST',
+				body: payload,
+			}
+		);
 	},
 };
 
