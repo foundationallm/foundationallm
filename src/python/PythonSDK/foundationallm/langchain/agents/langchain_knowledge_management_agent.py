@@ -553,6 +553,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 tool_instance = \
                     tool_factory.get_tool(agent.name, tool_config, request.objects, self.user_identity, self.config)
                 tool_instance.description = tool_config.description
+                tool_instance.tool_config = tool_config
                 workflow_tools.append(tool_instance)
 
             request.objects['message_history'] = request.message_history[:agent.conversation_history_settings.max_history*2]
