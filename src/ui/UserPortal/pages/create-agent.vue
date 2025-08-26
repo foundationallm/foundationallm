@@ -311,7 +311,7 @@
 
 <script lang="ts">
 import api from '@/js/api';
-    import type { CreateAgentFromTemplateRequest, KnowledgeManagementAgent } from '@/js/types';
+    import type { KnowledgeManagementAgent, AgentBase } from '@/js/types';
 import type { ResourceBase } from '@/js/types/index';
     import { defineComponent } from 'vue';
     import NavBarSettings from '~/components/NavBarSettings.vue';
@@ -333,7 +333,7 @@ import type { ResourceBase } from '@/js/types/index';
 							activeTabIndex: 0,
 							isEditMode: false,
 							isCreating: false,
-							createdAgent: null as KnowledgeManagementAgent | null,
+							createdAgent: null as AgentBase | null,
 							agentExpirationDate: null as Date | null,
 							filesLoading: false as boolean,
 							filesError: '' as string,
@@ -379,7 +379,7 @@ import type { ResourceBase } from '@/js/types/index';
                 const d = new Date(this.agentExpirationDate);
                 formattedDate = d.toISOString().split('T')[0] + 'T00:00:00+00:00';
             }
-            const payload: CreateAgentFromTemplateRequest = {
+            const payload: KnowledgeManagementAgent = {
                 AGENT_NAME: agentName,
                 AGENT_DISPLAY_NAME: displayName,
                 AGENT_EXPIRATION_DATE: formattedDate,

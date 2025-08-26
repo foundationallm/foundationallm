@@ -223,7 +223,7 @@ export interface AIModel extends ResourceBase {
 	properties?: Record<string, any>;
 }
 
-export interface CreateAgentFromTemplateRequest {
+export interface KnowledgeManagementAgent {
 	AGENT_NAME: string;
 	AGENT_DISPLAY_NAME: string;
 	AGENT_EXPIRATION_DATE: string;
@@ -231,7 +231,7 @@ export interface CreateAgentFromTemplateRequest {
 	AGENT_WELCOME_MESSAGE: string;
 }
 
-export interface KnowledgeManagementAgent {
+export interface AgentBase {
   type: string;
   name: string;
   object_id: string;

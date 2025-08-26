@@ -5,8 +5,7 @@
 	ConversationProperties,
 	CoreConfiguration,
 	LongRunningOperation,
-	CreateAgentFromTemplateRequest,
-	KnowledgeManagementAgent,
+		KnowledgeManagementAgent,
 	Message,
 	MessageRatingRequest,
 	MessageResponse,
@@ -17,7 +16,7 @@
 	RateLimitError,
 	ResourceBase,
 	Session,
-	UserProfile,
+	UserProfile, AgentBase,
 } from '@/js/types';
 
 export default {
@@ -451,9 +450,9 @@ export default {
 	 * @param templateParameters The parameters for the agent template.
 	 * @returns A promise that resolves to the upsert result containing the new agent.
 	 */
-	async createAgentFromTemplate(templateParameters: CreateAgentFromTemplateRequest): Promise<ResourceProviderUpsertResult & { resource: KnowledgeManagementAgent }> {
+	async createAgentFromTemplate(templateParameters: KnowledgeManagementAgent): Promise<ResourceProviderUpsertResult & { resource: AgentBase }> {
 		const url = `/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agentTemplates/BasicAgentTemplate/create-new`;
-		return await this.fetch<ResourceProviderUpsertResult & { resource: KnowledgeManagementAgent }>(url, {
+		return await this.fetch<ResourceProviderUpsertResult & { resource: AgentBase }>(url, {
 			method: 'POST',
 			body: {
 				template_parameters: templateParameters,
