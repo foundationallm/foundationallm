@@ -1580,7 +1580,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     $"The agent {agent.Name} does not have the required knowledge search settings set.");
             var fileResourcePath = ResourcePath.GetResourcePath(fileObjectId);
             var fileId =
-                $"/instances/{instanceId}/providers/FoundationaLLM.ContextAPI/files/{fileResourcePath.ResourceId!}";
+                $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Context}/files/{fileResourcePath.ResourceId!}";
 
             var newDataPipelineRun = DataPipelineRun.Create(
                 knowledgeSearchSettings.FileUploadDataPipelineObjectId,
