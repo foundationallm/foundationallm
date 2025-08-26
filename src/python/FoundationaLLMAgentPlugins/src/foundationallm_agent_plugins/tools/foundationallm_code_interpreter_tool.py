@@ -48,7 +48,6 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             exploded objects collection, user_identity, and platform configuration. """
         super().__init__(tool_config, objects, user_identity, config)
 
-        self.description = tool_config.description or self.repl.description
         context_api_endpoint_configuration = APIEndpointConfiguration(**objects.get(CompletionRequestObjectKeys.CONTEXT_API_ENDPOINT_CONFIGURATION, None))
         if context_api_endpoint_configuration:
             self.context_api_client = HttpClientService(
@@ -60,7 +59,6 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             raise ToolException("The Context API endpoint configuration is required to use the Code Interpreter tool.")
         self.instance_id = objects.get(CompletionRequestObjectKeys.INSTANCE_ID, None)
         self.main_llm = self.get_main_language_model()
-        self.main_prompt = self.get_main_prompt()
 
     def _run(
         self,
@@ -76,6 +74,8 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
             runnable_config: RunnableConfig = None,
             **kwargs: Any) -> Tuple[str, FoundationaLLMToolResult]:
+
+        main_prompt = self.get_main_prompt()
 
         # Get the original prompt
         if runnable_config is None:
@@ -110,7 +110,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         with self.tracer.start_as_current_span(f'{self.name}_initial_llm_call', kind=SpanKind.INTERNAL):
 
             available_file_names = '\n'.join(file_names)
-            code_generation_prompt = self.main_prompt.replace('{{file_names}}', available_file_names)
+            code_generation_prompt = main_prompt.replace('{{file_names}}', available_file_names)
 
             messages = [
                 SystemMessage(content=code_generation_prompt),

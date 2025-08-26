@@ -40,7 +40,6 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             exploded objects collection, and platform configuration. """
         super().__init__(tool_config, objects, user_identity, config)
         self.main_llm = self.get_main_language_model()
-        self.main_prompt = self.get_main_prompt()
         self.knowledge_source_id = self.get_knowledge_source_id()
         self.vector_store_query = self.tool_config.properties.get("vector_store_query", None)
         self.knowledge_graph_query = self.tool_config.properties.get("knowledge_graph_query", None)
@@ -51,9 +50,6 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         self.use_conversation_as_vector_store = \
             'vector_store_provider' in self.tool_config.properties and \
             self.tool_config.properties['vector_store_provider'] == 'conversation'
-
-        # When configuring the tool on an agent, the description will be set providing context to the document source.
-        self.description = self.tool_config.description or "Answers questions by searching through documents."
 
     def _run(self,
             prompt: str,
@@ -69,6 +65,8 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             runnable_config: RunnableConfig = None,
     ) -> Tuple[str, FoundationaLLMToolResult]:
         """ Retrieves documents from an index based on the proximity to the prompt to answer the prompt."""
+
+        main_prompt = self.get_main_prompt()
 
         input_tokens = 0
         output_tokens = 0
@@ -148,7 +146,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         if query_response.get('success', False):
 
             context = query_response.get('text_response','')
-            completion_prompt = self.main_prompt.replace('{{context}}', context).replace('{{prompt}}', prompt)
+            completion_prompt = main_prompt.replace('{{context}}', context).replace('{{prompt}}', prompt)
 
             completion = await self.main_llm.ainvoke(completion_prompt)
             input_tokens += completion.usage_metadata['input_tokens']
