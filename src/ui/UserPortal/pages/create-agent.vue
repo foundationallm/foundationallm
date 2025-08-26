@@ -295,9 +295,11 @@
                                 <div class="mt-10">
                                     <div class="flex justify-between items-center mb-3">
                                         <p class="block text-base text-[#898989]">Existing File(s)</p>
-                                        <Button label="Load Files" severity="secondary" @click="loadAgentFiles"
-                                            :loading="filesLoading" :disabled="filesLoading || !selectedAgentName"
-                                            class="min-h-[35px] min-w-[100px]" />
+                                        <div class="flex items-center gap-2">
+                                            <Button label="Load Files" severity="secondary" @click="loadAgentFiles"
+                                                :loading="filesLoading" :disabled="filesLoading || !selectedAgentName"
+                                                class="min-h-[35px] min-w-[100px]" />
+                                        </div>
                                     </div>
 
                                     <div v-if="filesLoading" class="text-sm text-[#64748b] mt-10">Loading files...</div>
@@ -377,6 +379,8 @@ export default defineComponent({
             selectedAgentName: null as string | null,
             availableAgents: [] as any[],
             agentsLoaded: false as boolean,
+            imageGenerationEnabled: false as boolean,
+            userPortalFileUploadEnabled: false as boolean,
         };
     },
 
@@ -463,6 +467,9 @@ export default defineComponent({
 
         onTabChange(e: { index: number }) {
             this.activeTabIndex = e.index;
+            if (e.index === 2 && this.selectedAgentName && this.agentFiles.length === 0) {
+                this.loadAgentFiles();
+            }
         },
 
         onCreateAgent() {
@@ -490,8 +497,13 @@ export default defineComponent({
             api.createAgentFromTemplate(payload)
                 .then((res) => {
                     this.createdAgent = res.resource;
+                    
+                    this.selectedAgentName = res.resource?.name;
                     this.isEditMode = true;
                     this.activeTabIndex = 1;
+                    
+                    this.agentsLoaded = false;
+                    this.loadAvailableAgents();
                 })
                 .catch((err) => {
                     this.$toast.add({ severity: 'error', summary: 'Error', detail: err.message || 'Failed to create agent', life: 5000 });
@@ -627,10 +639,13 @@ export default defineComponent({
         },
 
         onAgentNameChange() {
-            const displayName = (this.agentDisplayName || '').trim();
+            const agentName = (this.agentDisplayName || '').trim();
 
-            if (displayName) {
-                this.selectedAgentName = this.findAgentNameByDisplayName(displayName);
+            if (agentName) {
+                this.selectedAgentName = this.findAgentNameByDisplayName(agentName);
+                if (!this.selectedAgentName && this.isEditMode && this.createdAgent?.name) {
+                    this.selectedAgentName = this.createdAgent.name;
+                }
 
                 if (this.selectedAgentName) {
                     this.loadAgentFiles();
