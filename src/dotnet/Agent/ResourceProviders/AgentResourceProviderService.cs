@@ -1484,7 +1484,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
                     break;
 
-                case AgentToolNames.FoundationaLLMCodeInterpreterTool:
+                case AgentToolNames.FoundationaLLMKnowledgeSearchTool:
                     agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
                     await RunDataPipeline(
