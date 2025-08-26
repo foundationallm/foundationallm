@@ -381,7 +381,6 @@ import type { ResourceBase } from '@/js/types/index';
                 displayNameDebouncedCheck: null as null | ((name: string) => void),
                 aiModels: [] as ResourceBase[],
                 selectedAIModel: null as string | null,
-                agentDisplayName: '' as string,
                 
                 selectedAgentName: null as string | null,
                 availableAgents: [] as any[],
@@ -390,12 +389,11 @@ import type { ResourceBase } from '@/js/types/index';
         },
 
         mounted() {
-            this.loadAvailableAgents();
-
             // Setup debounced check function
             this.displayNameDebouncedCheck = debounce(this.checkDisplayName, 500);
-                this.fetchAIModels();
-            },
+            this.fetchAIModels();
+            this.loadAvailableAgents();
+        },
 
         methods: {
             async onDisplayNameInput() {
@@ -449,7 +447,6 @@ import type { ResourceBase } from '@/js/types/index';
                 if (!displayName.trim()) return null;
                 
                 const trimmedInput = displayName.trim().toLowerCase();
-                
                 let match = this.availableAgents.find(a => a.name === displayName.trim());
                 if (match) return match.name;
                 
@@ -466,7 +463,7 @@ import type { ResourceBase } from '@/js/types/index';
                 
                 return null;
             },
-
+            
             updateCharacterCount() {
                 this.characterCount = this.textCounter.length;
             },
