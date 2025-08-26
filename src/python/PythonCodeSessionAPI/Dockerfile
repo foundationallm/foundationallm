@@ -5,8 +5,13 @@ FROM ${BASE_IMAGE}
 ARG FOUNDATIONALLM_VERSION
 ENV FOUNDATIONALLM_VERSION=${FOUNDATIONALLM_VERSION:-0.0.0}
 
-RUN apt-get update 
-RUN apt-get install -y antiword
+FROM alpine:3.21 AS antiword
+RUN apk add --no-cache antiword
+
+FROM ${BASE_IMAGE}
+COPY --from=antiword /usr/bin/antiword /usr/bin/antiword
+COPY --from=antiword /usr/share/antiword /usr/share/antiword
+ENV ANTIWORDHOME=/usr/share/antiword
 
 WORKDIR /code
 COPY ./PythonCodeSessionAPI/requirements.txt /code/requirements.txt
