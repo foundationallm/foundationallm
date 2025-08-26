@@ -274,9 +274,17 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 await _payloadsRegistry.RemovePayload(
                     payload.WorkItemId);
             else
+            {
+                // An error occured, but it's not one that results in preventing future processing attempts.
+                // Extend the payload processing time with a flag to recover from error,
+                // and remove the payload from processing (without deleting the underlying message) so it can be retried.
                 await _payloadsRegistry.ExtendPayloadsProcessingTime(
                     [payload.WorkItemId],
                     recoverFromError: true);
+                await _payloadsRegistry.RemovePayload(
+                    payload.WorkItemId,
+                    deleteMessage: false);
+            }
         }
 
         #region Plugin management

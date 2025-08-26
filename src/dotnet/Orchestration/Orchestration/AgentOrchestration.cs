@@ -530,9 +530,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             new()
                             {
                                 { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId, contextFileResponse.Result.FileObjectId},
+                                { DataPipelineTriggerParameterNames.DataSourceContextFileContentAction, ContentItemActions.AddOrUpdate },
                                 { DataPipelineTriggerParameterNames.StageEmbedKnowledgeUnitObjectId, knowledgeSearchSettings.ConversationKnowledgeUnitObjectId },
                                 { DataPipelineTriggerParameterNames.StageIndexKnowledgeUnitObjectId, knowledgeSearchSettings.ConversationKnowledgeUnitObjectId },
-                                { DataPipelineTriggerParameterNames.StageIndexVectorStoreId, _vectorStoreId }
+                                { DataPipelineTriggerParameterNames.StageIndexVectorStoreId, _vectorStoreId },
+                                { DataPipelineTriggerParameterNames.StageRemovalKnowledgeUnitObjectId, knowledgeSearchSettings.ConversationKnowledgeUnitObjectId },
+                                { DataPipelineTriggerParameterNames.StageRemovalVectorStoreId, _vectorStoreId }
                             },
                             _callContext.CurrentUserIdentity!.UPN!,
                             DataPipelineRunProcessors.Frontend);

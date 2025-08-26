@@ -98,6 +98,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                         RawContent = BinaryData.FromStream(response.Result.FileContent!),
                         Metadata = new Dictionary<string, object>
                         {
+                            { "FileId", contentItemCanonicalId },
                             { "FileName", response.Result!.FileName }
                         }
                     },

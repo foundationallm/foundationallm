@@ -180,6 +180,35 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Dependencies = []
                 },
                 new() {
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.AZUREAISEARCHREMOVAL_DATAPIPELINESTAGE}",
+                    Name = PluginNames.AZUREAISEARCHREMOVAL_DATAPIPELINESTAGE,
+                    DisplayName = "Azure AI Search Removal Data Pipeline Stage (FoundationaLLM)",
+                    Description = "Provides the FoundationaLLM standard implementation for content removal data pipeline stages that use Azure AI Search.",
+                    Category = PluginCategoryNames.DataPipelineStage,
+                    Parameters = [
+                        new() {
+                            Name = PluginParameterNames.AZUREAISEARCHREMOVAL_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
+                            Type = PluginParameterTypes.ResourceObjectId,
+                            Description = "The FoundationaLLM resource identifier of the Knowledge Unit that provides the vector database configuration."
+                        },
+                        new() {
+                            Name = PluginParameterNames.AZUREAISEARCHREMOVAL_DATAPIPELINESTAGE_VECTORSTOREID,
+                            Type = PluginParameterTypes.String,
+                            Description = "The name of the Vector Store resource that identifies the logical partition of the Azure AI Search index."
+                        },
+                    ],
+                    ParameterSelectionHints = new() {
+                        {
+                            PluginParameterNames.AZUREAISEARCHREMOVAL_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
+                            new() {
+                                ResourcePath = "providers/FoundationaLLM.Context/knowledgeUnits",
+                                FilterActionPayload = null
+                            }
+                        }
+                    },
+                    Dependencies = []
+                },
+                new() {
                     ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE}",
                     Name = PluginNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE,
                     DisplayName = "Knowledge Extraction Data Pipeline Stage (FoundationaLLM)",
@@ -433,6 +462,8 @@ namespace FoundationaLLM.Plugins.DataPipeline
             PluginNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE => new GatewayTextEmbeddingDataPipelineStagePlugin(
                 pluginParameters, this, packageManagerResolver, serviceProvider),
             PluginNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE => new AzureAISearchIndexingDataPipelineStagePlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.AZUREAISEARCHREMOVAL_DATAPIPELINESTAGE => new AzureAISearchRemovalDataPipelineStagePlugin(
                 pluginParameters, this, packageManagerResolver, serviceProvider),
             PluginNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE => new KnowledgeExtractionDataPipelineStagePlugin(
                 pluginParameters, this, packageManagerResolver, serviceProvider),
