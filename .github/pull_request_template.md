@@ -2,9 +2,7 @@
 
 ## The Azure DevOps work item being addressed
 
-(replace below `<work_item_id>` with the actual work item ID)
-
-AB#<work_item_id>
+AB#<work_item_id_replace_with_actual_value>
 
 ## Details on the issue fix or feature implementation
 
