@@ -10,6 +10,8 @@ RUN apk add --no-cache antiword
 
 FROM ${BASE_IMAGE}
 COPY --from=antiword /usr/bin/antiword /usr/bin/antiword
+COPY --from=antiword /usr/share/antiword /usr/share/antiword
+ENV ANTIWORDHOME=/usr/share/antiword
 
 WORKDIR /code
 COPY ./PythonCodeSessionAPI/requirements.txt /code/requirements.txt
