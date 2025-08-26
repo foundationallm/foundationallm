@@ -5,7 +5,7 @@ import type {
 	ConversationProperties,
 	CoreConfiguration,
 	LongRunningOperation,
-	Message,
+		Message,
 	MessageRatingRequest,
 	MessageResponse,
 	OneDriveWorkSchool,
@@ -15,12 +15,16 @@ import type {
 	RateLimitError,
 	ResourceBase,
 	Session,
-	UserProfile,
 	ResourceNameCheckResult,
 	ResourceName,
+	UserProfile,
+	AgentBase,
+	AgentCreationFromTemplateRequest
 } from '@/js/types';
 
 export default {
+
+
 	apiUrl: null as string | null,
 	virtualUser: null as string | null,
 
@@ -443,6 +447,20 @@ export default {
 				body: oneDriveWorkSchool,
 			},
 		)) as OneDriveWorkSchool;
+	},
+	/**
+	 * Creates a new agent from the BasicAgentTemplate.
+	 * @param templateParameters The parameters for the agent template.
+	 * @returns A promise that resolves to the upsert result containing the new agent.
+	 */
+	async createAgentFromTemplate(templateParameters: AgentCreationFromTemplateRequest): Promise<ResourceProviderUpsertResult & { resource: AgentBase }> {
+		const url = `/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agentTemplates/BasicAgentTemplate/create-new`;
+		return await this.fetch<ResourceProviderUpsertResult & { resource: AgentBase }>(url, {
+			method: 'POST',
+			body: {
+				template_parameters: templateParameters,
+			},
+		});
 	},
 
 	/**
