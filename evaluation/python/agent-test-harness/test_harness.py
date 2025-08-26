@@ -10,10 +10,111 @@ import mimetypes
 from dotenv import load_dotenv
 
 TEST_FILE = "TestQuestions.csv"
-AGENT_NAME = "MAA-01"  
+AGENT_NAME = "MAA-02"  
 
 # Load environment variables from .env file
 load_dotenv()
+
+# -----------------------------
+# Results helpers
+# -----------------------------
+def _safe_dump(obj, limit=50000):
+    try:
+        s = json.dumps(obj, ensure_ascii=False)
+    except Exception:
+        return "[]"
+    return s if len(s) <= limit else s[:limit] + "... [truncated]"
+
+def _safe_text(val, limit=5000):
+    if val is None:
+        return ""
+    s = str(val)
+    return s if len(s) <= limit else s[:limit] + "... [truncated]"
+
+def _single_line(val: str) -> str:
+    try:
+        return ' '.join((val or '').split())
+    except Exception:
+        return str(val) if val is not None else ''
+
+# -----------------------------
+# Management API (Prompts) helpers
+# -----------------------------
+def _get_management_headers():
+    mgmt_token = os.getenv("FLLM_MGMT_BEARER_TOKEN")
+    if not mgmt_token:
+        raise RuntimeError("FLLM_MGMT_BEARER_TOKEN environment variable is not set. Acquire a bearer token with scope api://FoundationaLLM-Management/Data.Manage and set it in .env.")
+    return {
+        "Authorization": f"Bearer {mgmt_token}",
+        "Content-Type": "application/json"
+    }
+
+def list_prompts():
+    """List all Prompt resources accessible to the caller via the Management API."""
+    mgmt_endpoint = os.getenv("FLLM_MGMT_ENDPOINT")
+    if not mgmt_endpoint:
+        raise RuntimeError("FLLM_MGMT_ENDPOINT environment variable is not set. Set it to the Management API base URL including /instances/{instanceId}/ and a trailing slash.")
+
+    url = f"{mgmt_endpoint}providers/FoundationaLLM.Prompt/prompts"
+    headers = _get_management_headers()
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred listing prompts: {str(e)}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"Response Status Code: {e.response.status_code}")
+            print(f"Response Text: {e.response.text}")
+        return None
+
+def get_prompt(prompt_name: str):
+    """Get a Prompt resource by name via the Management API."""
+    mgmt_endpoint = os.getenv("FLLM_MGMT_ENDPOINT")
+    if not mgmt_endpoint:
+        raise RuntimeError("FLLM_MGMT_ENDPOINT environment variable is not set. Set it to the Management API base URL including /instances/{instanceId}/ and a trailing slash.")
+
+    url = f"{mgmt_endpoint}providers/FoundationaLLM.Prompt/prompts/{prompt_name}"
+    headers = _get_management_headers()
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        payload = response.json()
+        if isinstance(payload, list) and len(payload) > 0:
+            return payload[0].get("resource") or payload[0]
+        return payload
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred getting prompt '{prompt_name}': {str(e)}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"Response Status Code: {e.response.status_code}")
+            print(f"Response Text: {e.response.text}")
+        return None
+
+def upsert_prompt(prompt_object: dict):
+    """Create or update a Prompt resource via the Management API.
+
+    The prompt_object should follow the PromptBase contract. For multipart prompts provide keys:
+    {"type":"multipart","name":"<name>","category": <optional>, "prefix": "...", "suffix": "..."}
+    """
+    mgmt_endpoint = os.getenv("FLLM_MGMT_ENDPOINT")
+    if not mgmt_endpoint:
+        raise RuntimeError("FLLM_MGMT_ENDPOINT environment variable is not set. Set it to the Management API base URL including /instances/{instanceId}/ and a trailing slash.")
+
+    if not isinstance(prompt_object, dict) or not prompt_object.get("name"):
+        raise ValueError("prompt_object must be a dict containing at least a 'name' key")
+
+    url = f"{mgmt_endpoint}providers/FoundationaLLM.Prompt/prompts/{prompt_object['name']}"
+    headers = _get_management_headers()
+    try:
+        response = requests.post(url, headers=headers, json=prompt_object)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred upserting prompt '{prompt_object.get('name','')}': {str(e)}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"Response Status Code: {e.response.status_code}")
+            print(f"Response Text: {e.response.text}")
+        return None
 
 def create_session():
     fllm_endpoint = os.getenv("FLLM_ENDPOINT")
@@ -235,11 +336,14 @@ def process_question(question, answer, filename):
             'ErrorDetails': 'Failed to create session'
         }
     
+    # Normalize filename for output
+    input_filename = '' if pd.isna(filename) else str(filename)
+
     # Time the completion request
     completion_start_time = time.time()
     if (not pd.isna(filename)):
         # Upload the file
-        file_path = os.path.join(os.getcwd(), 'uploads', filename)
+        file_path = os.path.join(os.getcwd(), 'uploads', input_filename)
         fllm_endpoint = os.getenv("FLLM_ENDPOINT")
         upload_response = upload_file_with_progress(file_path, fllm_endpoint, session_id, AGENT_NAME)
 
@@ -247,7 +351,7 @@ def process_question(question, answer, filename):
             session_id=session_id,
             agent_name=AGENT_NAME,
             user_prompt=question,
-            attachments=[upload_response['objectId']]
+            attachments=[upload_response.get('object_id') or upload_response.get('objectId')]
         )
     else:   
         response = send_completion_request(
@@ -287,30 +391,126 @@ def process_question(question, answer, filename):
             print(f"Error details: {error_details}")
         
         tokens = response.get('tokens', 0)
+
+        # Extract content artifacts (handles both snake_case and camelCase)
+        artifacts = response.get('content_artifacts') or response.get('contentArtifacts') or []
+
+        # Build a compact summary per artifact
+        def _summarize_artifact(a):
+            meta = a.get('metadata') or {}
+            return {
+                'id': a.get('id'),
+                'title': a.get('title'),
+                'type': a.get('type'),
+                'source': a.get('source'),
+                'filepath': a.get('filepath'),
+                'tool_result': meta.get('tool_result'),
+                'tool_error': meta.get('tool_error')
+            }
+
+        artifacts_summary = [_summarize_artifact(a) for a in artifacts]
+        artifacts_json = _safe_dump(artifacts)
+        artifacts_summary_json = _safe_dump(artifacts_summary)
+
+        # Extract details from Code tool execution artifact(s)
+        # Only consider tool execution artifacts for code success/failure evaluation.
+        code_artifacts = [a for a in artifacts if a.get('type') == 'ToolExecution']
+        code_count = len(code_artifacts)
+        code_meta = (code_artifacts[0].get('metadata') or {}) if code_artifacts else {}
+
+        code_original_user_prompt = _safe_text(code_meta.get('original_user_prompt'))
+        code_tool_input_prompt   = _safe_text(code_meta.get('tool_input_prompt'))
+        code_tool_input_files    = _safe_text(code_meta.get('tool_input_files'))
+        code_tool_generated_code = _safe_text(code_meta.get('tool_generated_code'))
+        code_tool_output         = _safe_text(code_meta.get('tool_output'))
+        code_tool_error          = _safe_text(code_meta.get('tool_error'))
+        code_tool_result         = _safe_text(code_meta.get('tool_result'))
+
+        # Determine Code tool failures across all Code artifacts
+        failed_msgs = []
+        for a in code_artifacts:
+            tr = ((a.get('metadata') or {}).get('tool_result') or '')
+            if isinstance(tr, str) and tr.startswith('Code execution failed'):
+                failed_msgs.append(_safe_text(tr))
+        code_tool_failed = len(failed_msgs) > 0
+        if code_tool_failed:
+            error_occurred = 1
+            error_details = (error_details + ('; ' if error_details else '')) + ' | '.join(failed_msgs)
+
+        # Extract file artifacts (produced files)
+        file_artifacts = [a for a in artifacts if a.get('type') == 'File']
+        produced_files_count = len(file_artifacts)
+        def _summarize_file(a):
+            meta = a.get('metadata') or {}
+            return {
+                'id': a.get('id'),
+                'title': a.get('title'),
+                'original_file_name': meta.get('original_file_name'),
+                'content_type': meta.get('content_type'),
+                'file_size': meta.get('file_size'),
+                'file_object_id': meta.get('file_object_id'),
+                'filepath': a.get('filepath')
+            }
+        produced_files_summary_json = _safe_dump([_summarize_file(a) for a in file_artifacts])
         
+        # Prepare answer preview and sanitized error details for CSV readability
+        agent_answer_full = agent_answer
+        agent_answer_preview = _single_line(agent_answer_full)[:50]
+        error_details_single_line = _single_line(error_details)
+
         return {
             'Question': question,
+            'Filename': input_filename,
             'Answer': answer,
-            'AgentAnswer': agent_answer,
+            'AgentAnswer': agent_answer_full,
+            'AgentAnswerPreview': agent_answer_preview,
             'OtherAgentContent': other_agent_content,
             'Tokens': tokens,
             'SessionRequestDuration': session_duration,
             'CompletionRequestDuration': completion_duration,
             'ErrorOccured': error_occurred,
-            'ErrorDetails': error_details
+            'ErrorDetails': error_details_single_line,
+            'ContentArtifacts': artifacts_json,
+            'ArtifactsSummary': artifacts_summary_json,
+            'CodeArtifactCount': code_count,
+            'CodeOriginalUserPrompt': code_original_user_prompt,
+            'CodeToolInputPrompt': code_tool_input_prompt,
+            'CodeToolInputFiles': code_tool_input_files,
+            'CodeToolGeneratedCode': code_tool_generated_code,
+            'CodeToolOutput': code_tool_output,
+            'CodeToolError': code_tool_error,
+            'CodeToolResult': code_tool_result,
+            'CodeToolFailed': code_tool_failed,
+            'ProducedFilesCount': produced_files_count,
+            'ProducedFilesSummary': produced_files_summary_json
         }
     else:
         print(f"Failed to get completion for question: {question}")
         return {
             'Question': question,
+            'Filename': input_filename,
             'Answer': answer,
             'AgentAnswer': '',
+            'AgentAnswerPreview': '',
             'OtherAgentContent': [],
             'Tokens': 0,
             'SessionRequestDuration': session_duration,
             'CompletionRequestDuration': completion_duration,
             'ErrorOccured': 1,
-            'ErrorDetails': 'Failed to get completion response'
+            'ErrorDetails': 'Failed to get completion response',
+            'ContentArtifacts': '[]',
+            'ArtifactsSummary': '[]',
+            'CodeArtifactCount': 0,
+            'CodeOriginalUserPrompt': '',
+            'CodeToolInputPrompt': '',
+            'CodeToolInputFiles': '',
+            'CodeToolGeneratedCode': '',
+            'CodeToolOutput': '',
+            'CodeToolError': '',
+            'CodeToolResult': '',
+            'CodeToolFailed': False,
+            'ProducedFilesCount': 0,
+            'ProducedFilesSummary': '[]'
         }
 
 def execute_tests(max_workers=2):
@@ -375,9 +575,24 @@ def execute_tests(max_workers=2):
     
     # Create DataFrame from results
     results_df = pd.DataFrame(results)
+
+    # Save compact CSV (summary columns kept on one line)
+    summary_columns = [
+        'Question','Filename','AgentAnswerPreview','ErrorOccured','ErrorDetails','Tokens',
+        'SessionRequestDuration','CompletionRequestDuration','CodeArtifactCount',
+        'CodeToolFailed','CodeToolError','CodeToolResult',
+        'ProducedFilesCount','ProducedFilesSummary','ArtifactsSummary'
+    ]
+    # Only use columns that exist (older runs may not have all fields)
+    summary_columns = [c for c in summary_columns if c in results_df.columns]
+    results_df.to_csv('test_results.csv', index=False, columns=summary_columns)
     
-    # Save results to CSV
-    results_df.to_csv('test_results.csv', index=False)
+    # Save full-fidelity JSON
+    try:
+        with open('test_results.json', 'w', encoding='utf-8') as f:
+            json.dump(results, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"Warning: could not write test_results.json: {e}\n")
     
     return results_df
 

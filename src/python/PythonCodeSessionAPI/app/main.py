@@ -67,7 +67,7 @@ async def execute_code(request_body: dict):
         sys.stdout = new_stdout
 
         # pylint: disable=exec-used
-        exec(code, {}, namespace)
+        exec(code, namespace, namespace)
         # pylint: enable=exec-used
 
         output = new_stdout.getvalue()

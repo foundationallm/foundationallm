@@ -39,10 +39,38 @@ What are the key points in this book?,
 7. Set the value of the FLLM_ENDPOINT to the URI for core API. It should have a value like:
 https://cacoreapil42jljq2i5ox6.somewords-a0804c39.eastus2.azurecontainerapps.io/instances/8ad6074c-cdde-43cb-a140-ec0002d96d2b/
 
+8. (Optional) To enable prompt management operations (list/get/update) via the Management API, also set:
+   - `FLLM_MGMT_ENDPOINT` to the Management API base URL including `/instances/{instanceId}/` and a trailing slash.
+   - `FLLM_MGMT_BEARER_TOKEN` to a bearer token with scope `api://FoundationaLLM-Management/Data.Manage`.
+
+   Example (PowerShell):
+   ```powershell
+   az login
+   az account set --subscription "<SUBSCRIPTION_NAME_OR_ID>"
+   $env:FLLM_MGMT_BEARER_TOKEN = az account get-access-token --scope api://FoundationaLLM-Management/Data.Manage --query accessToken -o tsv
+   ```
 
 # Run Tests
 1. Within Visual Studio Code, open test_harness.py.
 2. Right click anywhere with that file and select Run Python->Run Python File in Terminal
 3. Watch the terminal as the tests execute.
 4. When the tests complete a test_results.csv file will be created in directory next to the test_harness.py file.
+
+# Prompt Management (Optional)
+If `FLLM_MGMT_ENDPOINT` and `FLLM_MGMT_BEARER_TOKEN` are set, the harness exposes helper functions:
+
+- `list_prompts()` – returns all prompts you can access.
+- `get_prompt(prompt_name)` – returns the prompt resource with its `prefix`/`suffix` (for multipart prompts).
+- `upsert_prompt(prompt_object)` – creates/updates a prompt. For multipart prompts, use:
+```
+{
+  "type": "multipart",
+  "name": "<prompt-name>",
+  "category": "System", // optional
+  "prefix": "...",
+  "suffix": "..."
+}
+```
+
+Note: These calls require Management API RBAC and a valid bearer token; they are independent from the Core API agent access token.
 

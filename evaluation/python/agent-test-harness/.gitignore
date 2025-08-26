@@ -2,3 +2,4 @@ uploads/
 .env*
 .venv/
 *.csv
+test_results.json
