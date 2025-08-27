@@ -1,5 +1,7 @@
 import type {
 	Agent,
+	AgentBase,
+	AgentCreationFromTemplateRequest,
 	CompletionPrompt,
 	CompletionRequest,
 	ConversationProperties,
@@ -8,19 +10,16 @@ import type {
 	Message,
 	MessageRatingRequest,
 	MessageResponse,
+	MultipartPrompt,
 	OneDriveWorkSchool,
+	ResourceBase,
+	ResourceName,
+	ResourceNameCheckResult,
 	ResourceProviderDeleteResults,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
-	RateLimitError,
-	ResourceBase,
 	Session,
-	ResourceNameCheckResult,
-	ResourceName,
-	UserProfile,
-	AgentBase,
-	AgentCreationFromTemplateRequest,
-	MultipartPrompt
+	UserProfile
 } from '@/js/types';
 
 export default {
