@@ -1,25 +1,25 @@
 import type {
 	Agent,
+	AgentBase,
+	AgentCreationFromTemplateRequest,
 	CompletionPrompt,
 	CompletionRequest,
 	ConversationProperties,
 	CoreConfiguration,
 	LongRunningOperation,
-		Message,
+	Message,
 	MessageRatingRequest,
 	MessageResponse,
+	MultipartPrompt,
 	OneDriveWorkSchool,
+	ResourceBase,
+	ResourceName,
+	ResourceNameCheckResult,
 	ResourceProviderDeleteResults,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
-	RateLimitError,
-	ResourceBase,
 	Session,
-	ResourceNameCheckResult,
-	ResourceName,
-	UserProfile,
-	AgentBase,
-	AgentCreationFromTemplateRequest
+	UserProfile
 } from '@/js/types';
 
 export default {
@@ -317,7 +317,7 @@ export default {
 	async getAgents() {
 		try {
 			const agents = await this.fetch(
-			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents`
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents`
 			) as ResourceProviderGetResult<Agent>[];
 
 			agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
@@ -498,7 +498,7 @@ export default {
 	 * @param name - The derived resource name to check.
 	 * @returns Promise resolving to the check response.
 	 */
-	async checkAgentNameAvailability(name: string): Promise<AgentNameCheckResponse> {
+	async checkAgentNameAvailability(name: string): Promise<ResourceNameCheckResult> {
 		const payload: ResourceName = {
 			type: 'knowledge-management',
 			name,
@@ -510,6 +510,42 @@ export default {
 				body: payload,
 			}
 		);
+	},
+
+	/**
+	 * Retrieves the main system prompt (prefix) for the agent's workflow.
+	 * @param agent The agent object.
+	 * @returns The main prompt string (prefix) or null if not found.
+	 */
+	async getAgentMainPrompt(agent: AgentBase): Promise<string | null> {
+		if (!agent?.workflow) {
+			return null;
+		}
+		// Find the main_prompt object_id from workflow.resource_object_ids
+		const workflow = agent.workflow;
+		if (!workflow?.resource_object_ids) return null;
+		let mainPromptObjectId: string | null = null;
+		for (const [objectId, obj] of Object.entries(workflow.resource_object_ids)) {
+			if (obj?.properties?.role === 'main_prompt') {
+				mainPromptObjectId = obj.object_id;
+				break;
+			}
+		}
+		if (!mainPromptObjectId) return null;
+		// Extract the prompt name from the object_id (last segment)
+		const promptId = mainPromptObjectId.split('/').pop();
+		if (!promptId) return null;
+		// Fetch the prompt resource
+		const result = await this.fetch<ResourceProviderGetResult<MultipartPrompt>[]>(
+			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptId}`
+		);
+
+		// Check if the result contains the expected prompt
+		if (Array.isArray(result) && result.length > 0 && result[0].resource?.prefix) {
+			return result[0].resource.prefix;
+		}
+
+		return null;
 	},
 };
 

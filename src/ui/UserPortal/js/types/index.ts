@@ -115,6 +115,28 @@ export interface OrchestrationSettings {
 	endpoint_configuration?: { [key: string]: any } | null;
 	model_parameters?: { [key: string]: any } | null;
 }
+
+// --- Agent Workflow Types ---
+export interface ResourceObjectId {
+	object_id: string;
+	properties: {
+		role?: string;
+		[key: string]: any;
+	};
+}
+
+export interface AgentWorkflow {
+	type: string;
+	name: string;
+	package_name: string;
+	class_name: string;
+	workflow_host: string;
+	resource_object_ids: {
+		[objectId: string]: ResourceObjectId;
+	};
+	properties?: Record<string, any>;
+}
+
 export interface Agent {
 	type: string;
 	name: string;
@@ -128,6 +150,7 @@ export interface Agent {
 	show_message_rating?: boolean;
 	show_view_prompt?: boolean;
 	show_file_upload?: boolean;
+	workflow?: AgentWorkflow;
 }
 
 export interface CompletionRequest {
@@ -324,4 +347,24 @@ export interface AgentCreationFromTemplateRequest {
 	AGENT_EXPIRATION_DATE: string;
 	AGENT_DESCRIPTION: string;
 	AGENT_WELCOME_MESSAGE: string;
+}
+
+// --- MultipartPrompt Type ---
+export interface MultipartPrompt {
+	type: string;
+	name: string;
+	object_id: string;
+	display_name: string;
+	description: string;
+	cost_center?: string | null;
+	prefix: string;
+	suffix?: string | null;
+	category?: string;
+	properties?: Record<string, any>;
+	created_on?: string;
+	updated_on?: string;
+	created_by?: string | null;
+	updated_by?: string;
+	deleted?: boolean;
+	expiration_date?: string | null;
 }

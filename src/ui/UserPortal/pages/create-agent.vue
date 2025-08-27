@@ -176,6 +176,8 @@
                                                 id="systemPrompt"
                                                 aria-labelledby="aria-system-prompt"
                                                 rows="5"
+                                                v-model="systemPrompt"
+                                                readonly
                                             />
                                         </div>
                                     </div>
@@ -331,11 +333,11 @@
 
 <script lang="ts">
 import api from '@/js/api';
-    import { debounce } from '@/js/helpers';
+import { debounce } from '@/js/helpers';
 import type { AgentBase } from '@/js/types';
-import type { ResourceBase,AgentCreationFromTemplateRequest } from '@/js/types/index';
-    import { defineComponent } from 'vue';
-    import NavBarSettings from '~/components/NavBarSettings.vue';
+import type { AgentCreationFromTemplateRequest, ResourceBase } from '@/js/types/index';
+import { defineComponent } from 'vue';
+import NavBarSettings from '~/components/NavBarSettings.vue';
 
     export default defineComponent({
         name: 'CreateAgent',
@@ -344,6 +346,7 @@ import type { ResourceBase,AgentCreationFromTemplateRequest } from '@/js/types/i
             NavBarSettings,
         },
 
+
         data() {
             return {
                 isMobile: window.screen.width < 950,
@@ -351,19 +354,20 @@ import type { ResourceBase,AgentCreationFromTemplateRequest } from '@/js/types/i
                 characterCount: 0,
                 isDragOver: false,
                 uploadedFiles: [] as File[],
-							activeTabIndex: 0,
-							isEditMode: false,
-							isCreating: false,
-							createdAgent: null as AgentBase | null,
-							agentExpirationDate: null as Date | null,
-							filesLoading: false as boolean,
-							filesError: '' as string,
-							agentFiles: [] as any[],
-							agentDisplayName: '',
+                activeTabIndex: 0,
+                isEditMode: false,
+                isCreating: false,
+                createdAgent: null as AgentBase | null,
+                agentExpirationDate: null as Date | null,
+                filesLoading: false as boolean,
+                filesError: '' as string,
+                agentFiles: [] as any[],
+                agentDisplayName: '',
                 displayNameStatus: '', // '', 'loading', 'success', 'error'
                 displayNameDebouncedCheck: null as null | ((name: string) => void),
                 aiModels: [] as ResourceBase[],
                 selectedAIModel: null as string | null,
+                systemPrompt: '',
             };
         },
 
@@ -411,7 +415,7 @@ import type { ResourceBase,AgentCreationFromTemplateRequest } from '@/js/types/i
         onTabChange(e: { index: number }) {
             this.activeTabIndex = e.index;
         },
-        onCreateAgent() {
+        async onCreateAgent() {
             if (this.isCreating) return;
             // Collect form data
             const displayName = (document.getElementById('agentDisplayName') as HTMLInputElement)?.value || '';
@@ -433,18 +437,18 @@ import type { ResourceBase,AgentCreationFromTemplateRequest } from '@/js/types/i
                 AGENT_WELCOME_MESSAGE: welcomeMessage,
             };
             this.isCreating = true;
-            api.createAgentFromTemplate(payload)
-                .then((res) => {
-                    this.createdAgent = res.resource;
-                    this.isEditMode = true;
-                    this.activeTabIndex = 1;
-                })
-                .catch((err) => {
-                    this.$toast.add({ severity: 'error', summary: 'Error', detail: err.message || 'Failed to create agent', life: 5000 });
-                })
-                .finally(() => {
-                    this.isCreating = false;
-                });
+            try {
+                const res = await api.createAgentFromTemplate(payload);
+                this.createdAgent = res.resource;
+                this.isEditMode = true;
+                this.activeTabIndex = 1;
+                const prompt = await api.getAgentMainPrompt(res.resource);
+                this.systemPrompt = prompt || '';
+            } catch (err: any) {
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: err.message || 'Failed to create agent', life: 5000 });
+            } finally {
+                this.isCreating = false;
+            }
         },
         onSaveAgent() {
             // Save logic for edit mode (not implemented)
