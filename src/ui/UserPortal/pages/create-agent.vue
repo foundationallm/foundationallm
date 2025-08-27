@@ -350,9 +350,10 @@
 import api from '@/js/api';
 import { debounce } from '@/js/helpers';
 import type { AgentBase } from '@/js/types';
-import type {  AgentCreationFromTemplateRequest, ResourceBase } from '@/js/types/index';
+import type { AgentCreationFromTemplateRequest, ResourceBase } from '@/js/types/index';
+import mime from 'mime';
 import { defineComponent } from 'vue';
-import NavBarSettings from '~/components/NavBarSettings.vue';import mime from 'mime';
+import NavBarSettings from '~/components/NavBarSettings.vue';
 
 export default defineComponent({
     name: 'CreateAgent',
