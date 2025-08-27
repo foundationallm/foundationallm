@@ -5,7 +5,7 @@ import type {
 	ConversationProperties,
 	CoreConfiguration,
 	LongRunningOperation,
-		Message,
+	Message,
 	MessageRatingRequest,
 	MessageResponse,
 	OneDriveWorkSchool,
@@ -23,8 +23,6 @@ import type {
 } from '@/js/types';
 
 export default {
-
-
 	apiUrl: null as string | null,
 	virtualUser: null as string | null,
 
@@ -317,7 +315,7 @@ export default {
 	async getAgents() {
 		try {
 			const agents = await this.fetch(
-			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents`
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents`
 			) as ResourceProviderGetResult<Agent>[];
 
 			agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
@@ -478,6 +476,30 @@ export default {
 			throw error;
 		}
 	},
+
+		/**
+	 * Uploads a file to an agent's private storage.
+	 * @param agentName - The name of the agent.
+	 * @param fileName - The name of the file to upload.
+	 * @param file - The FormData containing the file.
+	 * @returns A promise that resolves to the upload result.
+	 */
+	async uploadAgentFile(agentName: string, fileName: string, file: FormData): Promise<any> {
+		try {
+			const result = await this.fetch(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFiles/${fileName}`,
+				{
+					method: 'POST',
+					body: file,
+				}
+			);
+			return result;
+		} catch (error) {
+			console.error('Error uploading agent file:', error);
+			throw error;
+		}
+	},
+
 	/**
 	 * Retrieves the list of AI models from the management endpoint.
 	 * Returns an array of ResourceBase (see aiModel.ts) as required.
@@ -493,6 +515,7 @@ export default {
 			throw error;
 		}
 	},
+	
 	/**
 	 * Checks if the derived agent resource name is available.
 	 * @param name - The derived resource name to check.
