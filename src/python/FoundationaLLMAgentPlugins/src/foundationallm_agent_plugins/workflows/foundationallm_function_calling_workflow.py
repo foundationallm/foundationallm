@@ -4,6 +4,7 @@ Description: FoundationaLLM Function Calling workflow to invoke tools at a low l
 """
 
 import base64
+import json
 import re
 import time
 from typing import Dict, List, Optional
@@ -185,9 +186,9 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
                 if 'ROUTER' in commands:
                     # If the special command [ROUTER] is present, return the router's tool selection directly without tool execution.
-                    
-                    final_response = ','.join([tool_call['name'] for tool_call in llm_response.tool_calls])
-                
+
+                    final_response = '\n'.join(f'{tool_call["name"]} [{json.dumps(tool_call["args"])}]' for tool_call in llm_response.tool_calls)
+
                 else:
                     intermediate_responses.append(str(llm_response.content))
 
