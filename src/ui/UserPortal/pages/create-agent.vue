@@ -536,16 +536,9 @@ export default defineComponent({
             // Remove leading and trailing hyphens
             slug = slug.replace(/^-+|-+$/g, '');
 
-            // Ensure it's not empty and has reasonable length
+            // Ensure it's not empty
             if (!slug || slug.length === 0) {
                 slug = 'agent';
-            }
-
-            // Limit length to 50 characters (common limit for resource names)
-            if (slug.length > 50) {
-                slug = slug.substring(0, 50);
-                // Remove trailing hyphen if it was cut off
-                slug = slug.replace(/-+$/, '');
             }
 
             // Add timestamp to ensure uniqueness
