@@ -355,7 +355,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders.Agent
                     };
 
                     if (resourceObject.ContainsKey("role"))
-                        newProperties["role"] =
+                        newProperties["object_role"] =
                             resourceObject["role"]?.ToString();
 
                     if (resourceObject.ContainsKey("properties"))
