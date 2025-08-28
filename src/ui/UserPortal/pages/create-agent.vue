@@ -519,22 +519,7 @@ export default defineComponent({
                 return 'agent-' + Date.now();
             }
 
-            // Turkish character mapping
-            const turkishCharMap: { [key: string]: string } = {
-                'ç': 'c', 'Ç': 'C',
-                'ğ': 'g', 'Ğ': 'G',
-                'ı': 'i', 'I': 'I',
-                'ö': 'o', 'Ö': 'O',
-                'ş': 's', 'Ş': 'S',
-                'ü': 'u', 'Ü': 'U'
-            };
-
             let slug = displayName.trim();
-
-            // Replace Turkish characters
-            for (const [turkish, english] of Object.entries(turkishCharMap)) {
-                slug = slug.replace(new RegExp(turkish, 'g'), english);
-            }
 
             // Convert to lowercase
             slug = slug.toLowerCase();
