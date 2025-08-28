@@ -413,12 +413,44 @@ export default defineComponent({
                 this.displayNameStatus = '';
                 return;
             }
+
+            if (!this.isValidDisplayName(name)) {
+                this.displayNameStatus = 'error';
+                return;
+            }
+            
             try {
                 const res = await api.checkAgentNameAvailability(name);
                 this.displayNameStatus = (res.status === 'Allowed' && !res.exists && !res.deleted) ? 'success' : 'error';
             } catch (e) {
                 this.displayNameStatus = 'error';
             }
+        },
+
+        isValidDisplayName(name: string): boolean {
+            if (!name || !name.trim()) {
+                return false;
+            }
+
+            const trimmedName = name.trim();
+            
+            // Check length
+            if (trimmedName.length < 2 || trimmedName.length > 50) {
+                return false;
+            }
+
+            // Check for valid characters (allow letters, numbers, spaces, hyphens, and common punctuation)
+            const validPattern = /^[a-zA-Z0-9\s\-.,!?()]+$/;
+            if (!validPattern.test(trimmedName)) {
+                return false;
+            }
+
+            // Check that it doesn't start or end with special characters
+            if (/^[\s\-.,!?()]/.test(trimmedName) || /[\s\-.,!?()]$/.test(trimmedName)) {
+                return false;
+            }
+
+            return true;
         },
 
         async fetchAIModels() {
@@ -482,6 +514,36 @@ export default defineComponent({
             this.characterCount = this.textCounter.length;
         },
 
+        generateAgentName(displayName: string): string {
+            if (!displayName || !displayName.trim()) {
+                return 'agent';
+            }
+
+            let slug = displayName.trim();
+
+            // Convert to lowercase
+            slug = slug.toLowerCase();
+
+            // Remove special characters and keep only alphanumeric, hyphens, and underscores
+            slug = slug.replace(/[^a-z0-9\s-]/g, '');
+
+            // Replace multiple spaces with single hyphen
+            slug = slug.replace(/\s+/g, '-');
+
+            // Remove multiple consecutive hyphens
+            slug = slug.replace(/-+/g, '-');
+
+            // Remove leading and trailing hyphens
+            slug = slug.replace(/^-+|-+$/g, '');
+
+            // Ensure it's not empty
+            if (!slug || slug.length === 0) {
+                slug = 'agent';
+            }
+            
+            return slug;
+        },
+
         onTabChange(e: { index: number }) {
             this.activeTabIndex = e.index;
             if (e.index === 2 && this.selectedAgentName && this.agentFiles.length === 0) {
@@ -494,8 +556,8 @@ export default defineComponent({
             const displayName = (document.getElementById('agentDisplayName') as HTMLInputElement)?.value || '';
             const description = (document.getElementById('agentDescription') as HTMLTextAreaElement)?.value || '';
             const welcomeMessage = (document.getElementById('agentWelcomeMessage') as HTMLTextAreaElement)?.value || '';
-            // AGENT_NAME: Use a derived value or ask user for a unique name
-            const agentName = displayName.replace(/\s+/g, '') + Date.now();
+            // AGENT_NAME: Create a proper slug from display name
+            const agentName = this.generateAgentName(displayName);
             // Format date to yyyy-MM-ddT00:00:00+00:00
             let formattedDate = '';
             if (this.agentExpirationDate) {
