@@ -1,17 +1,16 @@
 """
 The API endpoint for returning the completion from the LLM for the specified user prompt.
 """
-import asyncio
-import json
+
 from typing import Optional
 
 from app.dependencies import validate_api_key_header
-from app.lifespan_manager import get_plugin_manager
 from fastapi import (
     APIRouter,
     Depends,
     Header,
     HTTPException,
+    Request,
     status
 )
 from opentelemetry.trace import SpanKind
@@ -41,7 +40,7 @@ router = APIRouter(
 )
 async def reload_plugins(
     instance_id: str,
-    plugin_manager: PluginManager = Depends(get_plugin_manager),
+    request: Request,
     x_user_identity: Optional[str] = Header(None)
 ) -> str:
     """
@@ -54,9 +53,8 @@ async def reload_plugins(
     """
     with tracer.start_as_current_span('langchainapi_plugins_reload', kind=SpanKind.SERVER) as span:
         try:
-            
-            plugin_manager.load_external_modules(reload_modules=True)
-            plugin_manager.clear_cache()
+            request.app.state.plugin_manager.load_external_modules(reload_modules=True)
+            request.app.state.plugin_manager.clear_cache()
 
             return 'Plugins reloaded successfully.'
 
@@ -73,7 +71,7 @@ async def reload_plugins(
 )
 async def clear_plugins_cache(
     instance_id: str,
-    plugin_manager: PluginManager = Depends(get_plugin_manager),
+    request: Request,
     x_user_identity: Optional[str] = Header(None)
 ) -> str:
     """
@@ -86,8 +84,7 @@ async def clear_plugins_cache(
     """
     with tracer.start_as_current_span('langchainapi_plugins_cache_clear', kind=SpanKind.SERVER) as span:
         try:
-            
-            plugin_manager.clear_cache()
+            request.app.state.plugin_manager.clear_cache()
 
             return 'Plugins cache cleared successfully.'
 
@@ -104,7 +101,7 @@ async def clear_plugins_cache(
 )
 async def get_plugins_cache_stats(
     instance_id: str,
-    plugin_manager: PluginManager = Depends(get_plugin_manager),
+    request: Request,
     x_user_identity: Optional[str] = Header(None)
 ) -> dict:
     """
@@ -117,7 +114,7 @@ async def get_plugins_cache_stats(
     """
     with tracer.start_as_current_span('langchainapi_plugins_cache_stats', kind=SpanKind.SERVER) as span:
         try:
-            stats = list(plugin_manager.object_cache.keys())
+            stats = list(request.app.state.plugin_manager.object_cache.keys())
             return stats
 
         except Exception as e:

@@ -1,11 +1,16 @@
 """
-Main entry-point for the FoundationaLLM LangChainAPI.
+Main entry-point for the FoundationaLLM LangChain API.
 """
+import datetime
+import json
 import logging
-from fastapi import FastAPI
+from typing import Optional
+
+from fastapi import FastAPI, Header, Request
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from app.lifespan_manager import lifespan
 from app.routers import completions, status, management
+from foundationallm.telemetry import Telemetry
 
 app = FastAPI(
     lifespan=lifespan,
@@ -44,6 +49,7 @@ class SuppressAccessLogFilter(logging.Filter):
 
 # Apply the filter to uvicorn.access logger
 logging.getLogger("uvicorn.access").addFilter(SuppressAccessLogFilter())
+logger = Telemetry.get_logger(__name__)
 
 app.include_router(completions.router)
 app.include_router(status.router)
@@ -62,3 +68,48 @@ async def root():
         Returns a JSON object containing a message and value.
     """
     return { 'message': 'FoundationaLLM LangChainAPI' }
+
+COMPLETION_REQUESTS_TRACING_HEADER = \
+    'x-completion-requests-tracing'
+USER_IDENTITY_HEADER = 'x-user-identity'
+
+@app.middleware("http")
+async def log_requests(
+    request: Request,
+    call_next):
+    """Middleware to log incoming requests and their processing time."""
+
+    if COMPLETION_REQUESTS_TRACING_HEADER in request.headers \
+        and request.headers[COMPLETION_REQUESTS_TRACING_HEADER].lower() == 'true' \
+        and USER_IDENTITY_HEADER in request.headers \
+        and request.headers[USER_IDENTITY_HEADER]:
+
+        try:
+            user_identity_dict = json.loads(
+                request.headers[USER_IDENTITY_HEADER])
+            upn = user_identity_dict.get('upn', None)
+
+            if upn:
+                # Read and store the raw body
+                body = await request.body()
+
+                upn = upn.replace('@', '-').replace('.', '-')
+                ref_time = datetime.datetime.now(tz=datetime.timezone.utc)
+                file_path = f"{upn}/{ref_time:%Y-%m-%d}/{ref_time:%Y-%m-%d-%H%M%S}-langchain-request-IN.json"
+
+                request.app.state.completion_requests_storage_manager.write_file_content(
+                    file_path,
+                    body.decode('utf-8'))
+
+                # Rebuild the request stream, so downstream handlers can read it
+                async def receive():
+                    return {"type": "http.request", "body": body}
+
+                request = Request(request.scope, receive=receive)
+
+        except Exception as e:
+            logger.error("Error persisting raw request: %s", e, exc_info=True)
+
+    # Process the request
+    response = await call_next(request)
+    return response
