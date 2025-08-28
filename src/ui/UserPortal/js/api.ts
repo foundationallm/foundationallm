@@ -515,7 +515,7 @@ export default {
 			throw error;
 		}
 	},
-
+	
 	/**
 	 * Checks if the derived agent resource name is available.
 	 * @param name - The derived resource name to check.
