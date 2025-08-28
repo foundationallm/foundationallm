@@ -9,8 +9,11 @@ using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Context.Interfaces;
 using FoundationaLLM.Context.Models.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
+using UtfUnknown;
 
 namespace FoundationaLLM.Context.Services
 {
@@ -310,52 +313,24 @@ namespace FoundationaLLM.Context.Services
             ArgumentNullException.ThrowIfNull(content);
 
             if (content.CanSeek)
-                content.Position = 0;
+                content.Seek(0, SeekOrigin.Begin);
 
-            byte[] buffer;
-            using (var ms = new MemoryStream())
-            {
-                content.CopyTo(ms);
-                buffer = ms.ToArray();
-            }
-
-            // Try to detect encoding from BOM
+            // Ensure legacy code pages (Windows-125x, etc.) are available on .NET Core/5+/6+/7+/8+
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            Encoding encoding = DetectEncodingFromBom(buffer) ?? Encoding.UTF8;
 
-            // If already UTF-8, return a new MemoryStream with the same content
-            if (Equals(encoding, Encoding.UTF8))
-                return new MemoryStream(buffer);
+            // Detect
+            var result = CharsetDetector.DetectFromStream(content);
+            var detectedEncoding = result.Detected; // may be null if uncertain
+            var sourceEncoding = detectedEncoding?.Encoding ?? Encoding.GetEncoding(1252); // sensible fallback
+
+            if (content.CanSeek)
+                content.Seek(0, SeekOrigin.Begin);
+            var streamReader = new StreamReader(content, sourceEncoding, detectEncodingFromByteOrderMarks: true);
 
             // Convert to UTF-8
-            string text = encoding.GetString(buffer);
+            string text = streamReader.ReadToEnd();
             byte[] utf8Bytes = Encoding.UTF8.GetBytes(text);
             return new MemoryStream(utf8Bytes);
-        }
-
-        private static Encoding? DetectEncodingFromBom(byte[] buffer)
-        {
-            if (buffer.Length >= 3 &&
-                buffer[0] == 0xEF && buffer[1] == 0xBB && buffer[2] == 0xBF)
-                return Encoding.UTF8;
-            if (buffer.Length >= 2)
-            {
-                if (buffer[0] == 0xFE && buffer[1] == 0xFF)
-                    return Encoding.BigEndianUnicode; // UTF-16 BE
-                if (buffer[0] == 0xFF && buffer[1] == 0xFE)
-                    return Encoding.Unicode; // UTF-16 LE
-            }
-            if (buffer.Length >= 4)
-            {
-                if (buffer[0] == 0x00 && buffer[1] == 0x00 &&
-                    buffer[2] == 0xFE && buffer[3] == 0xFF)
-                    return Encoding.GetEncoding("utf-32BE");
-                if (buffer[0] == 0xFF && buffer[1] == 0xFE &&
-                    buffer[2] == 0x00 && buffer[3] == 0x00)
-                    return Encoding.UTF32;
-            }
-            // No BOM detected
-            return null;
         }
     }
 }
