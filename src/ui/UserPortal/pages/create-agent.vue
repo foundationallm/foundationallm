@@ -516,7 +516,7 @@ export default defineComponent({
 
         generateAgentName(displayName: string): string {
             if (!displayName || !displayName.trim()) {
-                return 'agent-' + Date.now();
+                return 'agent';
             }
 
             let slug = displayName.trim();
@@ -540,15 +540,8 @@ export default defineComponent({
             if (!slug || slug.length === 0) {
                 slug = 'agent';
             }
-
-            // Add timestamp to ensure uniqueness
-            const timestamp = Date.now().toString().slice(-3); // Last 3 digits
-            const finalName = `${slug}-${timestamp}`;
             
-            // Debug log to verify name generation
-            console.log(`Generated agent name: "${finalName}" from display name: "${displayName}"`);
-            
-            return finalName;
+            return slug;
         },
 
         onTabChange(e: { index: number }) {
