@@ -323,10 +323,6 @@ namespace FoundationaLLM.Context.Services
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             Encoding encoding = DetectEncodingFromBom(buffer) ?? Encoding.UTF8;
 
-            // If already UTF-8, return a new MemoryStream with the same content
-            if (Equals(encoding, Encoding.UTF8))
-                return new MemoryStream(buffer);
-
             // Convert to UTF-8
             string text = encoding.GetString(buffer);
             byte[] utf8Bytes = Encoding.UTF8.GetBytes(text);

@@ -165,8 +165,15 @@
                                                 </VTooltip>
                                                 System Prompt
                                             </label>
-                                            <Textarea class="w-full resize-none" name="systemPrompt" id="systemPrompt"
-                                                aria-labelledby="aria-system-prompt" rows="5" />
+                                            <Textarea
+                                                class="w-full resize-none"
+                                                name="systemPrompt"
+                                                id="systemPrompt"
+                                                aria-labelledby="aria-system-prompt"
+                                                rows="5"
+                                                v-model="systemPrompt"
+                                                readonly
+                                            />
                                         </div>
                                     </div>
 
@@ -343,10 +350,10 @@
 import api from '@/js/api';
 import { debounce } from '@/js/helpers';
 import type { AgentBase } from '@/js/types';
-import type { ResourceBase, AgentCreationFromTemplateRequest } from '@/js/types/index';
+import type { AgentCreationFromTemplateRequest, ResourceBase } from '@/js/types/index';
+import mime from 'mime';
 import { defineComponent } from 'vue';
 import NavBarSettings from '~/components/NavBarSettings.vue';
-import mime from 'mime';
 
 export default defineComponent({
     name: 'CreateAgent',
@@ -355,26 +362,28 @@ export default defineComponent({
         NavBarSettings,
     },
 
-    data() {
-        return {
-            isMobile: window.screen.width < 950,
-            textCounter: '',
-            characterCount: 0,
-            isDragOver: false,
-            uploadedFiles: [] as File[],
-            activeTabIndex: 0,
-            isEditMode: false,
-            isCreating: false,
-            createdAgent: null as AgentBase | null,
-            agentExpirationDate: null as Date | null,
-            filesLoading: false as boolean,
-            filesError: '' as string,
-            agentFiles: [] as any[],
-            agentDisplayName: '',
-            displayNameStatus: '', // '', 'loading', 'success', 'error'
-            displayNameDebouncedCheck: null as null | ((name: string) => void),
-            aiModels: [] as ResourceBase[],
-            selectedAIModel: null as string | null,
+
+        data() {
+            return {
+                isMobile: window.screen.width < 950,
+                textCounter: '',
+                characterCount: 0,
+                isDragOver: false,
+                uploadedFiles: [] as File[],
+                activeTabIndex: 0,
+                isEditMode: false,
+                isCreating: false,
+                createdAgent: null as AgentBase | null,
+                agentExpirationDate: null as Date | null,
+                filesLoading: false as boolean,
+                filesError: '' as string,
+                agentFiles: [] as any[],
+                agentDisplayName: '',
+                displayNameStatus: '', // '', 'loading', 'success', 'error'
+                displayNameDebouncedCheck: null as null | ((name: string) => void),
+                aiModels: [] as ResourceBase[],
+                selectedAIModel: null as string | null,
+                systemPrompt: '',
 
             selectedAgentName: null as string | null,
             availableAgents: [] as any[],
@@ -476,22 +485,22 @@ export default defineComponent({
             if (!agentName.trim()) return null;
 
             const trimmedInput = agentName.trim().toLowerCase();
-            
-            let match = this.availableAgents.find(a => 
+
+            let match = this.availableAgents.find(a =>
                 a.name && a.name.trim() && a.name.toLowerCase() === trimmedInput
             );
             if (match && match.name) return match.name;
-            
-            match = this.availableAgents.find(a => 
+
+            match = this.availableAgents.find(a =>
                 a.name && a.name.trim() && a.name === agentName.trim()
             );
             if (match && match.name) return match.name;
-            
+
             match = this.availableAgents.find(a =>
                 (a.displayName || '').toLowerCase().trim() === trimmedInput
             );
             if (match && match.name && match.name.trim()) return match.name;
-            
+
             const hyphenated = agentName.trim().replace(/\s+/g, '-');
             match = this.availableAgents.find(a =>
                 a.name && a.name.trim() && a.name.toLowerCase() === hyphenated.toLowerCase()
@@ -570,8 +579,7 @@ export default defineComponent({
                 this.loadAgentFiles();
             }
         },
-
-        onCreateAgent() {
+        async onCreateAgent() {
             if (this.isCreating) return;
             // Collect form data
             const displayName = (document.getElementById('agentDisplayName') as HTMLInputElement)?.value || '';
@@ -593,23 +601,19 @@ export default defineComponent({
                 AGENT_WELCOME_MESSAGE: welcomeMessage,
             };
             this.isCreating = true;
-            api.createAgentFromTemplate(payload)
-                .then((res) => {
-                    this.createdAgent = res.resource;
-                    
-                    this.selectedAgentName = res.resource?.name;
-                    this.isEditMode = true;
-                    this.activeTabIndex = 1;
-                    
-                    this.agentsLoaded = false;
+            try {
+                const res = await api.createAgentFromTemplate(payload);
+                this.createdAgent = res.resource;
+                this.selectedAgentName = res.resource?.name;this.isEditMode = true;
+                this.activeTabIndex = 1;this.agentsLoaded = false;
                     this.loadAvailableAgents();
-                })
-                .catch((err) => {
-                    this.$toast.add({ severity: 'error', summary: 'Error', detail: err.message || 'Failed to create agent', life: 5000 });
-                })
-                .finally(() => {
-                    this.isCreating = false;
-                });
+                const prompt = await api.getAgentMainPrompt(res.resource);
+                this.systemPrompt = prompt || '';
+            } catch (err: any) {
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: err.message || 'Failed to create agent', life: 5000 });
+            } finally {
+                this.isCreating = false;
+            }
         },
 
         onSaveAgent() {
