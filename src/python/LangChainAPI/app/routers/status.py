@@ -13,10 +13,10 @@ router = APIRouter(
 
 @router.get(
     '/status',
-    summary = f'Get the status of the LangChainAPI.'
+    summary = 'Get the status of the LangChainAPI.'
 )
 async def get_status():
-    f"""
+    """
     Get the status of the LangChainAPI.
     
     Returns
@@ -34,10 +34,10 @@ async def get_status():
 
 @router.get(
     '/instances/{instance_id}/status',
-    summary = f'Get the status of a specified instance of the LangChainAPI.'
+    summary = 'Get the status of a specified instance of the LangChainAPI.'
 )
 async def get_instance_status(instance_id: str):
-    f"""
+    """
     Get the status of a specified instance of the LangChainAPI.
     
     Returns

@@ -1,44 +1,60 @@
-from aiohttp import ClientSession
+'''
+Handles the FastAPI application lifespan events.
+'''
 from contextlib import asynccontextmanager
+
+from aiohttp import ClientSession
+from fastapi import FastAPI
+
 from foundationallm.config import Configuration
-from foundationallm.plugins import PluginManager, plugin_manager
+from foundationallm.plugins import PluginManager
+from foundationallm.storage import BlobStorageManager
 from foundationallm.telemetry import Telemetry
 
-config: Configuration = None
-http_client_session: ClientSession = None
-plugin_manager: PluginManager = None
+COMPLETION_REQUESTS_CONFIGURATION_NAMESPACE = \
+    'FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage'
+COMPLETION_REQUESTS_STORAGE_ACCOUNT_NAME = \
+    f'{COMPLETION_REQUESTS_CONFIGURATION_NAMESPACE}:AccountName'
+COMPLETION_REQUESTS_STORAGE_AUTHENTICATION_TYPE = \
+    f'{COMPLETION_REQUESTS_CONFIGURATION_NAMESPACE}:AuthenticationType'
+COMPLETION_REQUESTS_STORAGE_CONTAINER = \
+    f'{COMPLETION_REQUESTS_CONFIGURATION_NAMESPACE}:ContainerName'
 
 @asynccontextmanager
-async def lifespan(app):
+async def lifespan(app: FastAPI):
     """Async context manager for the FastAPI application lifespan."""
-    global config
-    global http_client_session
-    global plugin_manager
 
     # Create the application configuration
-    config = Configuration()
+    app.state.config = Configuration()
 
     # Create an aiohttp client session
-    http_client_session = ClientSession()
+    app.state.http_client_session = ClientSession()
+
+    # Configure telemetry monitoring
+    Telemetry.configure_monitoring(
+        app.state.config,
+        'FoundationaLLM:APIEndpoints:LangChainAPI:Essentials:AppInsightsConnectionString',
+        'LangChainAPI')
 
     # Create the plugin manager
-    Telemetry.configure_monitoring(config, f'FoundationaLLM:APIEndpoints:LangChainAPI:Essentials:AppInsightsConnectionString', 'LangChainAPI')
-    plugin_manager = PluginManager(config, Telemetry.get_logger(__name__))
-    plugin_manager.load_external_modules()
+    app.state.plugin_manager = PluginManager(
+        app.state.config,
+        Telemetry.get_logger(__name__))
+    app.state.plugin_manager.load_external_modules()
+
+    storage_account_name = app.state.config.get_value(
+        COMPLETION_REQUESTS_STORAGE_ACCOUNT_NAME)
+    storage_authentication_type = app.state.config.get_value(
+        COMPLETION_REQUESTS_STORAGE_AUTHENTICATION_TYPE)
+    storage_container_name = app.state.config.get_value(
+        COMPLETION_REQUESTS_STORAGE_CONTAINER)
+    app.state.completion_requests_storage_manager = BlobStorageManager(
+        account_name = storage_account_name,
+        authentication_type = storage_authentication_type,
+        container_name = storage_container_name
+    )
 
     yield
 
     # Perform shutdown actions here
-    await http_client_session.close()
-
-async def get_config() -> Configuration:
-    """Retrieves the application configuration."""
-    return config
-
-async def get_http_client_session() -> ClientSession:
-    """Retrieves the aiohttp client session."""
-    return http_client_session
-
-async def get_plugin_manager() -> PluginManager:
-    """Retrieves the plugin manager."""
-    return plugin_manager
+    await app.state.http_client_session.close()
