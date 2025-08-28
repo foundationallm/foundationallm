@@ -10,7 +10,8 @@ import mimetypes
 from dotenv import load_dotenv
 
 TEST_FILE = "TestQuestions.csv"
-AGENT_NAME = "MAA-02"  
+AGENT_NAME = "MAA-06"  
+MAX_WORKERS=5
 
 # Load environment variables from .env file
 load_dotenv()
@@ -36,6 +37,10 @@ def _single_line(val: str) -> str:
         return ' '.join((val or '').split())
     except Exception:
         return str(val) if val is not None else ''
+
+def _ellipsis(val: str, limit: int = 200) -> str:
+    s = _single_line(val or '')
+    return s if len(s) <= limit else s[:limit] + '...'
 
 # -----------------------------
 # Management API (Prompts) helpers
@@ -538,6 +543,7 @@ def execute_tests(max_workers=2):
             try:
                 result = future.result()
                 if result:
+                    result['Ordinal'] = index + 1
                     results.append(result)
                 else:
                     # Get the original question from the DataFrame
@@ -545,6 +551,7 @@ def execute_tests(max_workers=2):
                     original_answer = df.iloc[index]['Answer']
                     # Add a row with error details
                     results.append({
+                        'Ordinal': index + 1,
                         'Question': original_question,
                         'Answer': original_answer,
                         'AgentAnswer': '',
@@ -561,6 +568,7 @@ def execute_tests(max_workers=2):
                 original_answer = df.iloc[index]['Answer']
                 # Add a row with exception details
                 results.append({
+                    'Ordinal': index + 1,
                     'Question': original_question,
                     'Answer': original_answer,
                     'AgentAnswer': '',
@@ -597,8 +605,50 @@ def execute_tests(max_workers=2):
     return results_df
 
 if __name__ == "__main__":
-    # Execute tests with default 2 workers
-    results = execute_tests()
+    # Execute tests with N workers
+    results = execute_tests(MAX_WORKERS)
     if results is not None:
         print("\nTest Results:")
-        print(results) 
+        # Compact ordered summary: Ordinal, Question, ErrorOccured, ArtifactsSummary
+        try:
+            view_cols = ['Ordinal', 'Question', 'ErrorOccured', 'ArtifactsSummary']
+            existing = [c for c in view_cols if c in results.columns]
+            view = results[existing].copy()
+            if 'Ordinal' in view:
+                view = view.sort_values('Ordinal')
+            for _, row in view.iterrows():
+                ord_str = str(row.get('Ordinal', ''))
+                q = _single_line(str(row.get('Question', '')))
+                err = str(row.get('ErrorOccured', ''))
+                # Build artifact titles list from ArtifactsSummary JSON
+                titles_display = '-'
+                try:
+                    art = row.get('ArtifactsSummary', '[]')
+                    art_list = json.loads(art) if isinstance(art, str) else (art or [])
+                    titles = [str(a.get('title')) for a in art_list if isinstance(a, dict) and a.get('title')]
+                    if titles:
+                        titles_display = ', '.join(titles)
+                except Exception:
+                    pass
+                print(f"{ord_str:>3}. Q: {q} | Error: {err} | Artifacts: {titles_display}")
+
+            # Print failures-only section
+            if 'ErrorOccured' in results.columns:
+                print("\nFailed Tests:")
+                try:
+                    failed = results.copy()
+                    if 'Ordinal' in failed:
+                        failed = failed.sort_values('Ordinal')
+                    failed = failed[failed['ErrorOccured'] == 1]
+                    if failed.empty:
+                        print("  (none)")
+                    else:
+                        for _, row in failed.iterrows():
+                            ord_str = str(row.get('Ordinal', ''))
+                            details = _ellipsis(str(row.get('ErrorDetails', '')), limit=500)
+                            print(f"{ord_str:>3}. {details}")
+                except Exception:
+                    pass
+        except Exception:
+            # Fallback to printing the DataFrame if anything goes wrong
+            print(results)
