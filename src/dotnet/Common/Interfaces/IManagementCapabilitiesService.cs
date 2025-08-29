@@ -3,11 +3,11 @@
 namespace FoundationaLLM.Common.Interfaces
 {
     /// <summary>
-    /// Defines a mechanism to check the availability of a resource path in a certain context.
+    /// Defines a mechanism to restrict access to resource providers and resource types.
     /// </summary>
     /// <remarks>Implementations of this interface should provide logic to determine whether a given resource
     /// path is available for use, such as limiting the exposed resource provider capabilities in certain APIs.</remarks>
-    public interface IResourcePathAvailabilityCheckerService
+    public interface IManagementCapabilitiesService
     {
         /// <summary>
         /// Determines whether the specified resource path is available for the given HTTP method.
@@ -19,5 +19,13 @@ namespace FoundationaLLM.Common.Interfaces
         bool IsResourcePathAvailable(
             HttpMethod method,
             ResourcePath resourcePath);
+
+        /// <summary>
+        /// Determines whether the provided request payload is valid.
+        /// </summary>
+        /// <param name="requestPayload"></param>
+        /// <returns></returns>
+        bool IsValidRequestPayload(
+            object requestPayload);
     }
 }

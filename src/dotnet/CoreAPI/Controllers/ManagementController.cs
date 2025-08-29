@@ -14,7 +14,7 @@ namespace FoundationaLLM.Core.API.Controllers
     /// </summary>
     /// <param name="callContext">The call context containing user identity details.</param>
     /// <param name="resourceProviderServices">The list of <see cref="IResourceProviderService"/> resource providers.</param>
-    /// <param name="resourcePathAvailabilityChecker">The resource path availability checker service used to restrict access
+    /// <param name="managementCapabilitiesService">The management capabilities service used to restrict access
     /// to resource providers and resource types.</param>
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     [Authorize(
@@ -27,13 +27,13 @@ namespace FoundationaLLM.Core.API.Controllers
     public class ResourceController(
         IOrchestrationContext callContext,
         IEnumerable<IResourceProviderService> resourceProviderServices,
-        IResourcePathAvailabilityCheckerService resourcePathAvailabilityChecker,
+        IManagementCapabilitiesService managementCapabilitiesService,
         ILogger<ResourceController> logger) : Controller
     {
         private readonly Dictionary<string, IResourceProviderService> _resourceProviderServices =
             resourceProviderServices.ToDictionary<IResourceProviderService, string>(
                 rps => rps.Name);
-        private readonly IResourcePathAvailabilityCheckerService _resourcePathAvailabilityChecker = resourcePathAvailabilityChecker;
+        private readonly IManagementCapabilitiesService _managementCapabilitiesService = managementCapabilitiesService;
         private readonly ILogger<ResourceController> _logger = logger;
         private readonly IOrchestrationContext _callContext = callContext;
 
@@ -59,7 +59,7 @@ namespace FoundationaLLM.Core.API.Controllers
                             IncludeActions = false,
                             IncludeRoles = false
                         },
-                        _resourcePathAvailabilityChecker.IsResourcePathAvailable);
+                        resourcePathAvailabilityChecker: _managementCapabilitiesService.IsResourcePathAvailable);
                     return new OkObjectResult(result);
                 });
 
@@ -115,7 +115,8 @@ namespace FoundationaLLM.Core.API.Controllers
                         serializedResource?.ToString(),
                         resourceProviderFormFile,
                         _callContext.CurrentUserIdentity!,
-                        _resourcePathAvailabilityChecker.IsResourcePathAvailable);
+                        resourcePathAvailabilityChecker: _managementCapabilitiesService.IsResourcePathAvailable,
+                        requestPayloadValidator: _managementCapabilitiesService.IsValidRequestPayload);
                     return new OkObjectResult(result);
                 });
 
@@ -137,7 +138,7 @@ namespace FoundationaLLM.Core.API.Controllers
                     await resourceProviderService.HandleDeleteAsync(
                         objectId,
                         _callContext.CurrentUserIdentity!,
-                        _resourcePathAvailabilityChecker.IsResourcePathAvailable);
+                        resourcePathAvailabilityChecker: _managementCapabilitiesService.IsResourcePathAvailable);
                     return new OkObjectResult(new ResourceProviderActionResult(objectId, true));
                 });
 

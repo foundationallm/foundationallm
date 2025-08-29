@@ -1,7 +1,9 @@
 ﻿using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace FoundationaLLM.Core.Services
 {
@@ -9,12 +11,12 @@ namespace FoundationaLLM.Core.Services
     /// Provides functionality to restrict access to resource providers and resource types in the Core API.
     /// </summary>
     /// <param name="logger">The logger used for logging.</param>
-    /// <remarks>This class implements the <see cref="IResourcePathAvailabilityCheckerService"/> interface, allowing
+    /// <remarks>This class implements the <see cref="IManagementCapabilitiesService"/> interface, allowing
     /// API controllers to limit the availability of resource providers and resource types.</remarks>
-    public class CoreResourcePathAvailabilityCheckerService(
-        ILogger<CoreResourcePathAvailabilityCheckerService> logger) : IResourcePathAvailabilityCheckerService
+    public class CoreManagementCapabilitiesService(
+        ILogger<CoreManagementCapabilitiesService> logger) : IManagementCapabilitiesService
     {
-        private readonly ILogger<CoreResourcePathAvailabilityCheckerService> _logger = logger;
+        private readonly ILogger<CoreManagementCapabilitiesService> _logger = logger;
         private readonly Dictionary<HttpMethod, Dictionary<string, Dictionary<string, ResourceTypeAvailability>>> _availabilityMap =
             new()
             {
@@ -91,6 +93,17 @@ namespace FoundationaLLM.Core.Services
                             IsResourceTypeAvailable = true
                         }
                     },
+                    [ResourceProviderNames.FoundationaLLM_Authorization] = new Dictionary<string, ResourceTypeAvailability>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        [AuthorizationResourceTypeNames.RoleAssignments] = new ResourceTypeAvailability
+                        {
+                            IsResourceTypeAvailable = false,
+                            AvailableActions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                            {
+                                ResourceProviderActions.Filter
+                            }
+                        }
+                    }
                 },
                 [HttpMethod.Delete] = new Dictionary<string, Dictionary<string, ResourceTypeAvailability>>(StringComparer.OrdinalIgnoreCase)
                 {
@@ -179,6 +192,42 @@ namespace FoundationaLLM.Core.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while checking the availability of the resource path: {ResourcePath}", resourcePath.RawResourcePath);
+                return false;
+            }
+        }
+
+        /// <inheritdoc/>
+        public bool IsValidRequestPayload(
+            object requestPayload) =>
+        requestPayload.GetType() switch
+        {
+           Type t when t == typeof(RoleAssignmentQueryParameters) =>
+                ValidateRoleAssignmentQueryParameters((requestPayload as RoleAssignmentQueryParameters)!),
+            _ => false
+        };
+
+        private bool ValidateRoleAssignmentQueryParameters(
+            RoleAssignmentQueryParameters queryParameters)
+        {
+            try
+            {
+                var resourcePath = ResourcePath.GetResourcePath(queryParameters.Scope!);
+
+                if (resourcePath.ResourceProvider != ResourceProviderNames.FoundationaLLM_Agent
+                    || resourcePath.MainResourceTypeName != AgentResourceTypeNames.Agents
+                    || resourcePath.ResourceTypeInstances.Count != 1)
+                {
+                    _logger.LogWarning("The RoleAssignmentQueryParameters.Scope value is invalid: {Scope}",
+                        queryParameters.Scope);
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while validating the RoleAssignmentQueryParameters with scope {Scope}",
+                    queryParameters.Scope);
                 return false;
             }
         }

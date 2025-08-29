@@ -106,7 +106,8 @@ namespace AzureAI.ResourceProviders
             string? serializedResource,
             ResourceProviderFormFile? formFile,
             ResourcePathAuthorizationResult authorizationResult,
-            UnifiedUserIdentity userIdentity)
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null)
         {
             switch(resourcePath.ResourceTypeName)
             {               
@@ -137,7 +138,8 @@ namespace AzureAI.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             string serializedAction,
-            UnifiedUserIdentity userIdentity) =>
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null) =>
             resourcePath.ResourceTypeName switch
             {
                 AzureAIResourceTypeNames.Projects => resourcePath.Action switch

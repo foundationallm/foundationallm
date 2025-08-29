@@ -97,7 +97,8 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             string? serializedResource,
             ResourceProviderFormFile? formFile,
             ResourcePathAuthorizationResult authorizationResult,
-            UnifiedUserIdentity userIdentity) =>
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null) =>
 
             resourcePath.MainResourceTypeName switch
             {
@@ -181,12 +182,17 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             string serializedAction,
-            UnifiedUserIdentity userIdentity) =>
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null) =>
             resourcePath.ResourceTypeName switch
             {
                 AuthorizationResourceTypeNames.RoleAssignments => resourcePath.Action switch
                 {
-                    ResourceProviderActions.Filter => await FilterRoleAssignments(resourcePath.ResourceTypeInstances[0], serializedAction, userIdentity),
+                    ResourceProviderActions.Filter => await FilterRoleAssignments(
+                        resourcePath.ResourceTypeInstances[0],
+                        serializedAction,
+                        userIdentity,
+                        requestPayloadValidator: requestPayloadValidator),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
@@ -195,12 +201,19 @@ namespace FoundationaLLM.Authorization.ResourceProviders
 
         #region Helpers for ExecuteActionAsync
         private async Task<List<ResourceProviderGetResult<RoleAssignment>>> FilterRoleAssignments(
-            ResourceTypeInstance instance, string serializedAction, UnifiedUserIdentity userIdentity)
+            ResourceTypeInstance instance,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null)
         {
             var queryParameters = JsonSerializer.Deserialize<RoleAssignmentQueryParameters>(serializedAction)!;
 
             if (string.IsNullOrWhiteSpace(queryParameters.Scope))
                 throw new ResourceProviderException("Invalid scope. Unable to retrieve role assignments.");
+            else if (requestPayloadValidator is not null
+                && !requestPayloadValidator(queryParameters))
+                throw new ResourceProviderException("The request payload is invalid.",
+                    StatusCodes.Status400BadRequest);
             else
             {
                 var roleAssignments = (await _authorizationServiceClient.GetRoleAssignments(

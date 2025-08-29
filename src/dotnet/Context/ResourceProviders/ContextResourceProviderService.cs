@@ -116,7 +116,8 @@ namespace FoundationaLLM.Context.ResourceProviders
             string? serializedResource,
             ResourceProviderFormFile? formFile,
             ResourcePathAuthorizationResult authorizationResult,
-            UnifiedUserIdentity userIdentity) =>
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null) =>
             resourcePath.ResourceTypeName switch
             {
                 ContextResourceTypeNames.KnowledgeUnits =>
@@ -138,7 +139,8 @@ namespace FoundationaLLM.Context.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             string serializedAction,
-            UnifiedUserIdentity userIdentity) =>
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null) =>
             resourcePath.ResourceTypeName switch
             {
                 ContextResourceTypeNames.KnowledgeUnits => resourcePath.Action switch
