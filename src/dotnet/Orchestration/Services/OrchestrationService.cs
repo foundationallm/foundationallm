@@ -135,6 +135,7 @@ public class OrchestrationService : IOrchestrationService
                 _configuration,
                 _resourceProviderServices,
                 _llmOrchestrationServiceManager,
+                _userProfileService,
                 _cosmosDBService,
                 _templatingService,
                 _contextServiceClient,
@@ -179,6 +180,7 @@ public class OrchestrationService : IOrchestrationService
                 _configuration,
                 _resourceProviderServices,
                 _llmOrchestrationServiceManager,
+                _userProfileService,
                 _cosmosDBService,
                 _templatingService,
                 _contextServiceClient,
@@ -258,31 +260,23 @@ public class OrchestrationService : IOrchestrationService
     {
         try
         {
-            var userProfile = await _userProfileService.GetUserProfileForUserAsync(
-                _callContext.InstanceId!,
-                _callContext.CurrentUserIdentity!.UPN!);
-            var persistCompletionRequest = userProfile?.Flags.GetValueOrDefault(UserProfileFlags.PersistOrchestrationCompletionRequests, false) ?? false;
+            var refTime = DateTimeOffset.UtcNow;
 
-            if (persistCompletionRequest)
-            {
-                var refTime = DateTimeOffset.UtcNow;
+            _logger.LogInformation("Persisting inbound completion request for operation {OperationId}.", inboundCompletionRequest.OperationId);
+            await _completionRequestsStorage.WriteFileAsync(
+                _completionRequestsStorage.StorageContainerName!,
+                $"{_callContext.CurrentUserIdentity!.UPN!.NormalizeUserPrincipalName()}/{refTime:yyyy-MM-dd}/{refTime:yyyy-MM-dd-HHmmss}-completion-request-IN.json",
+                JsonSerializer.Serialize(inboundCompletionRequest),
+                "application/json",
+                default);
 
-                _logger.LogInformation("Persisting inbound completion request for operation {OperationId}.", inboundCompletionRequest.OperationId);
-                await _completionRequestsStorage.WriteFileAsync(
-                    _completionRequestsStorage.StorageContainerName!,
-                    $"{_callContext.CurrentUserIdentity.UPN!.NormalizeUserPrincipalName()}/{refTime:yyyy-MM-dd}/{refTime:yyyy-MM-dd-HHmmss}-completion-request-IN.json",
-                    JsonSerializer.Serialize(inboundCompletionRequest),
-                    "application/json",
-                    default);
-
-                _logger.LogInformation("Persisting outbound completion request for operation {OperationId}.", outboundCompletionRequest.OperationId);
-                await _completionRequestsStorage.WriteFileAsync(
-                    _completionRequestsStorage.StorageContainerName!,
-                    $"{_callContext.CurrentUserIdentity.UPN!.NormalizeUserPrincipalName()}/{refTime:yyyy-MM-dd}/{refTime:yyyy-MM-dd-HHmmss}-completion-request-OUT.json",
-                    JsonSerializer.Serialize(outboundCompletionRequest),
-                    "application/json",
-                    default);
-            }
+            _logger.LogInformation("Persisting outbound completion request for operation {OperationId}.", outboundCompletionRequest.OperationId);
+            await _completionRequestsStorage.WriteFileAsync(
+                _completionRequestsStorage.StorageContainerName!,
+                $"{_callContext.CurrentUserIdentity.UPN!.NormalizeUserPrincipalName()}/{refTime:yyyy-MM-dd}/{refTime:yyyy-MM-dd-HHmmss}-completion-request-OUT.json",
+                JsonSerializer.Serialize(outboundCompletionRequest),
+                "application/json",
+                default);
         }
         catch (Exception ex)
         {
@@ -310,6 +304,7 @@ public class OrchestrationService : IOrchestrationService
                 _configuration,
                 _resourceProviderServices,
                 _llmOrchestrationServiceManager,
+                _userProfileService,
                 _cosmosDBService,
                 _templatingService,
                 _contextServiceClient,
