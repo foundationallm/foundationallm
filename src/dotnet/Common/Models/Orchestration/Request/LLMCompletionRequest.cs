@@ -360,5 +360,11 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
                 return _indexingProfiles;
             }
         }
+
+        /// <summary>
+        /// Gets or sets a flag indicating whether to trace the completion request for debugging purposes.
+        /// </summary>
+        [JsonIgnore]
+        public bool TraceCompletionRequest { get; set; } = false;
     }
 }

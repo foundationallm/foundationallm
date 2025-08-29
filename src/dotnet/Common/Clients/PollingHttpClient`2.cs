@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.Orchestration;
+﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Settings;
@@ -58,6 +59,8 @@ namespace FoundationaLLM.Common.Clients
         public async Task<LongRunningOperation> StartOperationAsync(CancellationToken cancellationToken = default)
         {
             var body = JsonSerializer.Serialize(_request, _jsonSerializerOptions);
+            HandleCompletionRequestTracing();
+
             var responseMessage = await _operationStarterHttpClient.PostAsync(
                 _operationStarterPath,
                 new StringContent(
@@ -205,5 +208,13 @@ namespace FoundationaLLM.Common.Clients
                 return default;
             }
         }
+
+        private void HandleCompletionRequestTracing() =>
+            _operationStarterHttpClient.DefaultRequestHeaders.Add(
+                HttpHeaders.TraceCompletionRequest,
+                (_request is LLMCompletionRequest llmCompletionRequest
+                    && llmCompletionRequest.TraceCompletionRequest)
+                ? "true"
+                : "false");
     }
 }

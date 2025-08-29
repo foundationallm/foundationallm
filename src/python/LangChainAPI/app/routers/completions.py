@@ -3,25 +3,26 @@ The API endpoint for returning the completion from the LLM for the specified use
 """
 import asyncio
 import json
-from aiohttp import ClientSession
-from app.dependencies import validate_api_key_header
-from app.lifespan_manager import get_config, get_http_client_session, get_plugin_manager
+from typing import Optional
+
+from app.dependencies import (
+    validate_api_key_header,
+    resolve_completion_request
+)
 from fastapi import (
     APIRouter,
-    Body,
     Depends,
     Header,
     HTTPException,
+    Request,
     status
 )
 from opentelemetry.trace import SpanKind
-from typing import Optional, List
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.orchestration import OrchestrationManager
 from foundationallm.models.agents import KnowledgeManagementCompletionRequest
 from foundationallm.models.operations import (
     LongRunningOperation,
-    LongRunningOperationLogEntry,
     OperationStatus
 )
 from foundationallm.models.orchestration import CompletionRequestBase, CompletionResponse
@@ -41,17 +42,6 @@ router = APIRouter(
     responses={404: {'description':'Not found'}}
 )
 
-async def resolve_completion_request(request_body: dict = Body(...)) -> CompletionRequestBase:
-    agent_type = request_body.get("agent", {}).get("type", None)
-
-    match agent_type:
-        case "knowledge-management":
-            request = KnowledgeManagementCompletionRequest(**request_body)
-            request.agent.type = agent_type
-            return request
-        case _:
-            raise ValueError(f"Unsupported agent type: {agent_type}")
-
 @router.post(
     '/async-completions',
     summary = 'Submit an async completion request.',
@@ -62,10 +52,8 @@ async def resolve_completion_request(request_body: dict = Body(...)) -> Completi
 )
 async def submit_completion_request(
     instance_id: str,
+    request: Request,
     completion_request: CompletionRequestBase = Depends(resolve_completion_request),
-    config: Configuration = Depends(get_config),
-    http_client_session: ClientSession = Depends(get_http_client_session),
-    plugin_manager: PluginManager = Depends(get_plugin_manager),
     x_user_identity: Optional[str] = Header(None)
 ) -> LongRunningOperation:
     """
@@ -76,7 +64,9 @@ async def submit_completion_request(
     CompletionOperation
         Object containing the operation ID and status.
     """
-    with tracer.start_as_current_span('langchainapi_submit_completion_request', kind=SpanKind.SERVER) as span:
+    with tracer.start_as_current_span(
+        'langchainapi_submit_completion_request',
+        kind=SpanKind.SERVER) as span:
         try:
             # Get the operation_id from the completion request.
             operation_id = completion_request.operation_id
@@ -86,9 +76,15 @@ async def submit_completion_request(
             span.set_attribute('user_identity', x_user_identity)
 
             # Create an operations manager to create the operation.
-            operations_manager = OperationsManager(config, http_client_session, logger)
+            operations_manager = OperationsManager(
+                request.app.state.config,
+                request.app.state.http_client_session,
+                logger)
             # Submit the completion request operation to the state API.
-            operation = await operations_manager.create_operation_async(operation_id, instance_id, x_user_identity)
+            operation = await operations_manager.create_operation_async(
+                operation_id,
+                instance_id,
+                x_user_identity)
 
             # Start a background task to perform the completion request.
             asyncio.create_task(
@@ -96,8 +92,8 @@ async def submit_completion_request(
                     operation_id,
                     instance_id,
                     completion_request,
-                    config,
-                    plugin_manager,
+                    request.app.state.config,
+                    request.app.state.plugin_manager,
                     operations_manager,
                     x_user_identity
                 )
@@ -121,7 +117,9 @@ async def create_completion_response(
     """
     Generates the completion response for the specified completion request.
     """
-    with tracer.start_as_current_span('langchainapi_create_completion_response', kind=SpanKind.SERVER) as span:
+    with tracer.start_as_current_span(
+        'langchainapi_create_completion_response',
+        kind=SpanKind.SERVER) as span:
         try:
             span.set_attribute('operation_id', operation_id)
             span.set_attribute('instance_id', instance_id)
@@ -178,6 +176,11 @@ async def create_completion_response(
                 content = [],
                 errors=[f"{e}"]
             )
+
+            logger.info(
+                "Starting to persist operation result for failed operation_id: %s, instance_id: %s",
+                operation_id,
+                instance_id)
             await asyncio.gather(
                 operations_manager.set_operation_result_async(
                     operation_id = operation_id,
@@ -190,6 +193,11 @@ async def create_completion_response(
                     status_message = f"{e}",
                     user_identity = x_user_identity
                 )
+            )
+            logger.info(
+                "Finished persisting operation result for failed operation_id: %s, instance_id: %s",
+                operation_id,
+                instance_id
             )
 
 def handle_exception(exception: Exception, status_code: int = 500):

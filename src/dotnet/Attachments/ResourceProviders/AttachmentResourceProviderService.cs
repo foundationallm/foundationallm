@@ -119,7 +119,8 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             string serializedAction,
-            UnifiedUserIdentity userIdentity)
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null)
         {
             var policyDefinition = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
 

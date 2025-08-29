@@ -172,7 +172,15 @@
                                                 aria-labelledby="aria-system-prompt"
                                                 rows="5"
                                                 v-model="systemPrompt"
-                                                readonly
+                                                :readonly="!isEditMode"
+                                            />
+                                            <Button
+                                                v-if="isEditMode"
+                                                label="Save System Prompt"
+                                                class="mt-2 min-h-[35px] min-w-[100px]"
+                                                :loading="isSavingSystemPrompt"
+                                                :disabled="isSavingSystemPrompt || !createdAgent"
+                                                @click="onSaveSystemPrompt"
                                             />
                                         </div>
                                     </div>
@@ -382,6 +390,7 @@ export default defineComponent({
                 activeTabIndex: 0,
                 isEditMode: false,
                 isCreating: false,
+                isSavingSystemPrompt: false,
                 createdAgent: null as AgentBase | null,
                 agentExpirationDate: null as Date | null,
                 filesLoading: false as boolean,
@@ -394,13 +403,13 @@ export default defineComponent({
                 selectedAIModel: null as string | null,
                 systemPrompt: '',
 
-            selectedAgentName: null as string | null,
-            availableAgents: [] as any[],
-            agentsLoaded: false as boolean,
-            imageGenerationEnabled: false as boolean,
-            userPortalFileUploadEnabled: false as boolean,
-        };
-    },
+                selectedAgentName: null as string | null,
+                availableAgents: [] as any[],
+                agentsLoaded: false as boolean,
+                imageGenerationEnabled: false as boolean,
+                userPortalFileUploadEnabled: false as boolean,
+            };
+        },
 
     mounted() {
         // Setup debounced check function
@@ -530,11 +539,8 @@ export default defineComponent({
 
             let slug = displayName.trim();
 
-            // Convert to lowercase
-            slug = slug.toLowerCase();
-
-            // Remove special characters and keep only alphanumeric, hyphens, and underscores
-            slug = slug.replace(/[^a-z0-9\s-]/g, '');
+            // Remove special characters and keep only alphanumeric, hyphens, and underscores (preserve case)
+            slug = slug.replace(/[^a-zA-Z0-9\s_-]/g, '');
 
             // Replace multiple spaces with single hyphen
             slug = slug.replace(/\s+/g, '-');
@@ -548,6 +554,11 @@ export default defineComponent({
             // Ensure it's not empty
             if (!slug || slug.length === 0) {
                 slug = 'agent';
+            }
+
+            // Ensure it starts with a letter (required by resource name pattern)
+            if (slug.length > 0 && !/^[a-zA-Z]/.test(slug)) {
+                slug = 'agent-' + slug;
             }
             
             return slug;
@@ -596,9 +607,23 @@ export default defineComponent({
             }
         },
 
-        onSaveAgent() {
+
+        async onSaveAgent() {
             // Save logic for edit mode (not implemented)
             this.$toast.add({ severity: 'success', summary: 'Saved', detail: 'Agent changes saved.', life: 3000 });
+        },
+
+        async onSaveSystemPrompt() {
+            if (!this.createdAgent) return;
+            this.isSavingSystemPrompt = true;
+            try {
+                await api.updateAgentMainPrompt(this.createdAgent, this.systemPrompt);
+                this.$toast.add({ severity: 'success', summary: 'System Prompt Updated', detail: 'The system prompt was updated successfully.', life: 3000 });
+            } catch (err: any) {
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: err.message || 'Failed to update system prompt', life: 5000 });
+            } finally {
+                this.isSavingSystemPrompt = false;
+            }
         },
 
         onCancel() {

@@ -260,7 +260,8 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             string? serializedResource,
             ResourceProviderFormFile? formFile,
             ResourcePathAuthorizationResult authorizationResult,
-            UnifiedUserIdentity userIdentity) =>
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null) =>
 
             resourcePath.MainResourceTypeName switch
             {
@@ -387,7 +388,8 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         protected override async Task<object> ExecuteActionAsync(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
-            string serializedAction, UnifiedUserIdentity userIdentity) =>
+            string serializedAction, UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null) =>
             resourcePath.ResourceTypeName switch
             {
                 VectorizationResourceTypeNames.IndexingProfiles => resourcePath.Action switch

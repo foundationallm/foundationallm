@@ -32,13 +32,15 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
         /// <param name="resourcePathAvailabilityChecker">An optional resource path availability checker used to block certain resource
         /// providers and resource types.</param>
+        /// <param name="requestPayloadValidator">An optional function to validate the request payload after deserialization.</param>
         /// <returns>The serialized form of the result of handling the request.</returns>
         Task<object> HandlePostAsync(
             string resourcePath,
             string? requestPayload,
             ResourceProviderFormFile? formFile,
             UnifiedUserIdentity userIdentity,
-            Func<HttpMethod, ResourcePath, bool>? resourcePathAvailabilityChecker = null);
+            Func<HttpMethod, ResourcePath, bool>? resourcePathAvailabilityChecker = null,
+            Func<object, bool>? requestPayloadValidator = null);
 
         /// <summary>
         /// Handles a HTTP DELETE request for a specified resource path.

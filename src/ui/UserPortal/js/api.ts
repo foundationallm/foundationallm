@@ -591,6 +591,51 @@ export default {
 
 		return null;
 	},
+
+	/**
+	 * Updates the main prompt of an agent's workflow.
+	 * @param agent The agent object (must have workflow).
+	 * @param newPrefix The new prefix value for the main prompt.
+	 * @returns The updated MultipartPrompt resource.
+	 */
+	async updateAgentMainPrompt(agent: AgentBase, newPrefix: string): Promise<MultipartPrompt | null> {
+
+		if (!agent?.workflow) {
+			throw new Error('Agent workflow is missing.');
+		}
+
+		const workflow = agent.workflow;
+		if (!workflow?.resource_object_ids) throw new Error('Workflow resource_object_ids missing.');
+		let mainPromptObjectId: string | null = null;
+		for (const [objectId, obj] of Object.entries(workflow.resource_object_ids)) {
+			if (obj?.properties?.role === 'main_prompt') {
+				mainPromptObjectId = obj.object_id;
+				break;
+			}
+		}
+		if (!mainPromptObjectId) throw new Error('Main prompt object_id not found.');
+		const promptId = mainPromptObjectId.split('/').pop();
+		if (!promptId) throw new Error('Prompt ID could not be determined.');
+
+		// Fetch the current MultipartPrompt resource
+		const result = await this.fetch<ResourceProviderGetResult<MultipartPrompt>[]>(
+			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptId}`
+		);
+		if (!Array.isArray(result) || result.length === 0 || !result[0].resource) {
+			throw new Error('Prompt resource not found.');
+		}
+		const promptResource: MultipartPrompt = { ...result[0].resource, prefix: newPrefix };
+
+		// Update the prompt by POSTing the full MultipartPrompt resource
+		const updated = await this.fetch<MultipartPrompt>(
+			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptId}`,
+			{
+				method: 'POST',
+				body: promptResource,
+			}
+		);
+		return updated;
+	},
 };
 
 function formatError(error: any): string {
