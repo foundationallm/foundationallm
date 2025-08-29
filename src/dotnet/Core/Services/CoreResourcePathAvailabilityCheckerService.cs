@@ -47,6 +47,13 @@ namespace FoundationaLLM.Core.Services
                         {
                             IsResourceTypeAvailable = true
                         }
+                    },
+                    [ResourceProviderNames.FoundationaLLM_Authorization] = new Dictionary<string, ResourceTypeAvailability>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        [AuthorizationResourceTypeNames.RoleDefinitions] = new ResourceTypeAvailability
+                        {
+                            IsResourceTypeAvailable = true
+                        }
                     }
                 },
                 [HttpMethod.Post] = new Dictionary<string, Dictionary<string, ResourceTypeAvailability>>(StringComparer.OrdinalIgnoreCase)
