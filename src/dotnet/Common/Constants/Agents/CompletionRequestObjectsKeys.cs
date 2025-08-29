@@ -69,6 +69,11 @@ namespace FoundationaLLM.Common.Constants.Agents
         public const string WorkflowInvocationAttachedFiles = "Workflow.Invocation.AttachedFiles";
 
         /// <summary>
+        /// The key name for the flag that indicates the need to trace completion requests.
+        /// </summary>
+        public const string TracingTraceCompletionRequest = "Tracing.TraceCompletionRequest";
+
+        /// <summary>
         /// All completion request objects dictionary keys.
         /// </summary>
         public readonly static string[] All = [

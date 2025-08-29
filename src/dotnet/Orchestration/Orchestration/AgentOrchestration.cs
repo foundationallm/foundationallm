@@ -134,8 +134,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             }
 
             var llmCompletionRequest = await GetLLMCompletionRequest(completionRequest);
-            if (_completionRequestObserver != null)
-                await _completionRequestObserver(llmCompletionRequest, completionRequest);
 
             var result = await _orchestrationService.StartCompletionOperation(
                 _instanceId,
@@ -199,8 +197,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             }
 
             var llmCompletionRequest = await GetLLMCompletionRequest(completionRequest);
-            if (_completionRequestObserver != null)
-                await _completionRequestObserver(llmCompletionRequest, completionRequest);
 
             var llmCompletionResponse = await _orchestrationService.GetCompletion(
                 _instanceId,
@@ -324,8 +320,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             }
         }
 
-        private async Task<LLMCompletionRequest> GetLLMCompletionRequest(CompletionRequest completionRequest) =>
-            new LLMCompletionRequest
+        private async Task<LLMCompletionRequest> GetLLMCompletionRequest(CompletionRequest completionRequest)
+        {
+            var llmCompletionRequest = new LLMCompletionRequest
             {
                 OperationId = completionRequest.OperationId,
                 SessionId = completionRequest.SessionId,
@@ -337,6 +334,15 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 Agent = _agent!,
                 Objects = _explodedObjects!
             };
+
+            if (_completionRequestObserver != null)
+            {
+                llmCompletionRequest.TraceCompletionRequest = true;
+                await _completionRequestObserver(llmCompletionRequest, completionRequest);
+            }
+
+            return llmCompletionRequest;
+        }
 
         private async Task<List<AttachmentProperties>> PrepareAttachments(List<string> attachmentObjectIds)
         {

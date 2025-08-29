@@ -18,10 +18,12 @@ using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
+using FoundationaLLM.Common.Services.Users;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json;
 
@@ -42,6 +44,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         /// <param name="configuration">The <see cref="IConfiguration"/> used to retrieve app settings from configuration.</param>
         /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
         /// <param name="llmOrchestrationServiceManager">The <see cref="ILLMOrchestrationServiceManager"/> that manages internal and external orchestration services.</param>
+        /// <param name="userProfileService">The user profile service that manages user profiles.</param>
         /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> used to interact with the Cosmos DB database.</param>
         /// <param name="templatingService">The <see cref="ITemplatingService"/> used to render templates.</param>
         /// <param name="contextServiceClient">The <see cref="IContextServiceClient"/> client used to call the Context API.</param>
@@ -60,6 +63,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             IConfiguration configuration,
             Dictionary<string, IResourceProviderService> resourceProviderServices,
             ILLMOrchestrationServiceManager llmOrchestrationServiceManager,
+            IUserProfileService userProfileService,
             IAzureCosmosDBService cosmosDBService,
             ITemplatingService templatingService,
             IContextServiceClient contextServiceClient,
@@ -110,7 +114,20 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         });
                 }
 
-                var orchestrationService = llmOrchestrationServiceManager.GetService(instanceId, orchestrator!, serviceProvider, callContext);
+                var userProfile = await userProfileService.GetUserProfileForUserAsync(
+                    instanceId,
+                    callContext.CurrentUserIdentity!.UPN!);
+                var persistCompletionRequest = userProfile?.Flags.GetValueOrDefault(UserProfileFlags.PersistOrchestrationCompletionRequests, false) ?? false;
+
+                result.ExplodedObjectsManager.TryAdd(
+                    CompletionRequestObjectsKeys.TracingTraceCompletionRequest,
+                    persistCompletionRequest);
+
+                var orchestrationService = llmOrchestrationServiceManager.GetService(
+                    instanceId,
+                    orchestrator!,
+                    serviceProvider,
+                    callContext);
 
                 var kmOrchestration = new AgentOrchestration(
                     instanceId,
@@ -130,7 +147,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     vectorStoreId,
                     null,
                     contextServiceClient,
-                    completionRequestObserver);
+                    persistCompletionRequest ? completionRequestObserver : null);
 
                 return kmOrchestration;
             }

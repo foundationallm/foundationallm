@@ -19,5 +19,10 @@
         /// Agent access token header used by APIs to implement API key authentication for FoundationaLLM agents.
         /// </summary>
         public const string AgentAccessToken = "X-AGENT-ACCESS-TOKEN";
+
+        /// <summary>
+        /// Indicates the requirement to trace the completion request for debugging or monitoring purposes.
+        /// </summary>
+        public const string TraceCompletionRequest = "X-TRACE-COMPLETION-REQUEST";
     }
 }
