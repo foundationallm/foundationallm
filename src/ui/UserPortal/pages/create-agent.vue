@@ -773,8 +773,9 @@ export default defineComponent({
 
             try {
                 await api.deleteAgentFile(this.selectedAgentName, fileName);
+                // Remove from both uploaded files and existing files lists
                 this.uploadedFiles = this.uploadedFiles.filter(f => f.name !== fileName);
-                await this.loadAgentFiles();
+                this.agentFiles = this.agentFiles.filter(f => f.resource?.name !== fileName);
                 this.$toast.add({ severity: 'success', summary: 'Success', detail: `File "${fileName}" deleted.`, life: 3000 });
             } catch (error: any) {
                 this.$toast.add({ severity: 'error', summary: 'Error', detail: `Failed to delete file "${fileName}": ${error.message}`, life: 5000 });
