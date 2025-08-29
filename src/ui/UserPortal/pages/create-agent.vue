@@ -530,11 +530,8 @@ export default defineComponent({
 
             let slug = displayName.trim();
 
-            // Convert to lowercase
-            slug = slug.toLowerCase();
-
-            // Remove special characters and keep only alphanumeric, hyphens, and underscores
-            slug = slug.replace(/[^a-z0-9\s-]/g, '');
+            // Remove special characters and keep only alphanumeric, hyphens, and underscores (preserve case)
+            slug = slug.replace(/[^a-zA-Z0-9\s_-]/g, '');
 
             // Replace multiple spaces with single hyphen
             slug = slug.replace(/\s+/g, '-');
@@ -548,6 +545,11 @@ export default defineComponent({
             // Ensure it's not empty
             if (!slug || slug.length === 0) {
                 slug = 'agent';
+            }
+
+            // Ensure it starts with a letter (required by resource name pattern)
+            if (slug.length > 0 && !/^[a-zA-Z]/.test(slug)) {
+                slug = 'agent-' + slug;
             }
             
             return slug;
