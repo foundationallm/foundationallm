@@ -96,7 +96,8 @@ namespace FoundationaLLM.Prompt.ResourceProviders
             string? serializedResource,
             ResourceProviderFormFile? formFile,
             ResourcePathAuthorizationResult authorizationResult,
-            UnifiedUserIdentity userIdentity) =>
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null) =>
 
             resourcePath.MainResourceTypeName switch
             {
@@ -111,7 +112,8 @@ namespace FoundationaLLM.Prompt.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             string serializedAction,
-            UnifiedUserIdentity userIdentity) =>
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null) =>
             resourcePath.ResourceTypeName switch
             {
                 SharedResourceTypeNames.Management => resourcePath.Action switch

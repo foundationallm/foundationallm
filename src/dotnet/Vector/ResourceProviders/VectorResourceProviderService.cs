@@ -94,7 +94,8 @@ namespace FoundationaLLM.Vector.ResourceProviders
             string? serializedResource,
             ResourceProviderFormFile? formFile,
             ResourcePathAuthorizationResult authorizationResult,
-            UnifiedUserIdentity userIdentity) =>
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null) =>
 
             resourcePath.ResourceTypeName switch
             {

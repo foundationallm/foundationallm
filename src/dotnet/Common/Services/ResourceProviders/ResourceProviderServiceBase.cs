@@ -376,7 +376,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             string? serializedResource,
             ResourceProviderFormFile? formFile,
             UnifiedUserIdentity userIdentity,
-            Func<HttpMethod, ResourcePath, bool>? resourcePathAvailabilityChecker = null)
+            Func<HttpMethod, ResourcePath, bool>? resourcePathAvailabilityChecker = null,
+            Func<object, bool>? requestPayloadValidator = null)
         {
             EnsureServiceInitialization();
             var (ParsedResourcePath, AuthorizationRequirements) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Post, true, requireResource: false);
@@ -408,7 +409,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 var actionAuthorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements,
                     ParsedResourcePath.Action! == ResourceProviderActions.Filter, false, false);
 
-                return await ExecuteActionAsync(ParsedResourcePath, actionAuthorizationResult, serializedResource!, userIdentity);
+                return await ExecuteActionAsync(
+                    ParsedResourcePath,
+                    actionAuthorizationResult,
+                    serializedResource!,
+                    userIdentity,
+                    requestPayloadValidator: requestPayloadValidator);
             }
 
             // All resource upserts require a resource identifier.
@@ -420,7 +426,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             // Authorize access to the resource path.
             var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, false, false, false);
 
-            var upsertResult = await UpsertResourceAsync(ParsedResourcePath, serializedResource, formFile, authorizationResult, userIdentity);
+            var upsertResult = await UpsertResourceAsync(
+                ParsedResourcePath,
+                serializedResource,
+                formFile,
+                authorizationResult,
+                userIdentity,
+                requestPayloadValidator: requestPayloadValidator);
 
             await UpsertResourcePostProcess(ParsedResourcePath, (upsertResult as ResourceProviderUpsertResult)!, authorizationResult, userIdentity);
 
@@ -493,13 +505,16 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result
         /// of the resource path authorization request.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
+        /// <param name="requestPayloadValidator">An optional validator used to perform additional validation on the serialized
+        /// resource after deserialization.</param>
         /// <returns></returns>
         protected virtual async Task<object> UpsertResourceAsync(
             ResourcePath resourcePath,
             string? serializedResource,
             ResourceProviderFormFile? formFile,
             ResourcePathAuthorizationResult authorizationResult,
-            UnifiedUserIdentity userIdentity)
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null)
         {
             await Task.CompletedTask;
             throw new NotImplementedException();
@@ -513,6 +528,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// of the resource path authorization request.</param>
         /// <param name="serializedAction">The serialized details of the action being executed.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
+        /// <param name="requestPayloadValidator">An optional validator used to perform additional validation on the action payload
+        /// after deserialization.</param>
         /// <returns></returns>
         /// <remarks>
         /// In the special case of the <c>filter</c> action, the override must handle the authorization result and return
@@ -529,7 +546,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             string serializedAction,
-            UnifiedUserIdentity userIdentity)
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null)
         {
             await Task.CompletedTask;
             throw new NotImplementedException();

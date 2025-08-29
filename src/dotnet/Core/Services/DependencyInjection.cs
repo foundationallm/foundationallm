@@ -23,8 +23,8 @@ namespace FoundationaLLM
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
         public static void AddCoreResourcePathAvailabilityCheckerService(this IServiceCollection services)
         {
-            services.AddSingleton<IResourcePathAvailabilityCheckerService, CoreResourcePathAvailabilityCheckerService>();
-            services.ActivateSingleton<IResourcePathAvailabilityCheckerService>();
+            services.AddSingleton<IManagementCapabilitiesService, CoreManagementCapabilitiesService>();
+            services.ActivateSingleton<IManagementCapabilitiesService>();
         }
     }
 }
