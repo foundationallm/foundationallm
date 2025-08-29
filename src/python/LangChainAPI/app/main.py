@@ -93,7 +93,7 @@ async def log_requests(
                 # Read and store the raw body
                 body = await request.body()
 
-                upn = upn.replace('@', '-').replace('.', '-')
+                upn = upn.lower().replace('@', '-').replace('.', '-')
                 ref_time = datetime.datetime.now(tz=datetime.timezone.utc)
                 file_path = f"{upn}/{ref_time:%Y-%m-%d}/{ref_time:%Y-%m-%d-%H%M%S}-langchain-request-IN.json"
 
