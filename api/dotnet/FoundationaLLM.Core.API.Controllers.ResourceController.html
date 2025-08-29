@@ -763,8 +763,8 @@ public class ResourceController : Controller, IActionFilter, IAsyncActionFilter,
 
   <a id="FoundationaLLM_Core_API_Controllers_ResourceController__ctor_" data-uid="FoundationaLLM.Core.API.Controllers.ResourceController.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Core_API_Controllers_ResourceController__ctor_FoundationaLLM_Common_Interfaces_IOrchestrationContext_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__FoundationaLLM_Common_Interfaces_IResourcePathAvailabilityCheckerService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_API_Controllers_ResourceController__" data-uid="FoundationaLLM.Core.API.Controllers.ResourceController.#ctor(FoundationaLLM.Common.Interfaces.IOrchestrationContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Common.Interfaces.IResourcePathAvailabilityCheckerService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.API.Controllers.ResourceController})">
-  ResourceController(IOrchestrationContext, IEnumerable&lt;IResourceProviderService&gt;, IResourcePathAvailabilityCheckerService, ILogger&lt;ResourceController&gt;)
+  <h3 id="FoundationaLLM_Core_API_Controllers_ResourceController__ctor_FoundationaLLM_Common_Interfaces_IOrchestrationContext_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__FoundationaLLM_Common_Interfaces_IManagementCapabilitiesService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_API_Controllers_ResourceController__" data-uid="FoundationaLLM.Core.API.Controllers.ResourceController.#ctor(FoundationaLLM.Common.Interfaces.IOrchestrationContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.API.Controllers.ResourceController})">
+  ResourceController(IOrchestrationContext, IEnumerable&lt;IResourceProviderService&gt;, IManagementCapabilitiesService, ILogger&lt;ResourceController&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/ManagementController.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -773,7 +773,7 @@ public class ResourceController : Controller, IActionFilter, IAsyncActionFilter,
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ResourceController(IOrchestrationContext callContext, IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices, IResourcePathAvailabilityCheckerService resourcePathAvailabilityChecker, ILogger&lt;ResourceController&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public ResourceController(IOrchestrationContext callContext, IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices, IManagementCapabilitiesService managementCapabilitiesService, ILogger&lt;ResourceController&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -784,8 +784,8 @@ public class ResourceController : Controller, IActionFilter, IAsyncActionFilter,
     <dt><code>resourceProviderServices</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Interfaces.IResourceProviderService.html">IResourceProviderService</a>&gt;</dt>
     <dd><p>The list of <a class="xref" href="FoundationaLLM.Common.Interfaces.IResourceProviderService.html">IResourceProviderService</a> resource providers.</p>
 </dd>
-    <dt><code>resourcePathAvailabilityChecker</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IResourcePathAvailabilityCheckerService.html">IResourcePathAvailabilityCheckerService</a></dt>
-    <dd><p>The resource path availability checker service used to restrict access
+    <dt><code>managementCapabilitiesService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.html">IManagementCapabilitiesService</a></dt>
+    <dd><p>The management capabilities service used to restrict access
 to resource providers and resource types.</p>
 </dd>
     <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="FoundationaLLM.Core.API.Controllers.ResourceController.html">ResourceController</a>&gt;</dt>
@@ -812,7 +812,7 @@ to resource providers and resource types.</p>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_ResourceController_DeleteResource_System_String_System_String_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.ResourceController.DeleteResource(System.String,System.String,System.String)">
   DeleteResource(string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/ManagementController.cs/#L129"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/ManagementController.cs/#L130"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes a resource.</p>

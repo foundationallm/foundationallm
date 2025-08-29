@@ -132,7 +132,7 @@ Interface IManagementProviderService  <a class="header-action link-secondary" ti
 
   <h3 id="FoundationaLLM_Common_Interfaces_IManagementProviderService_HandleDeleteAsync_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Func_System_Net_Http_HttpMethod_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_Boolean__" data-uid="FoundationaLLM.Common.Interfaces.IManagementProviderService.HandleDeleteAsync(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Func{System.Net.Http.HttpMethod,FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.Boolean})">
   HandleDeleteAsync(string, UnifiedUserIdentity, Func&lt;HttpMethod, ResourcePath, bool&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IManagementProviderService.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IManagementProviderService.cs/#L52"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Handles a HTTP DELETE request for a specified resource path.</p>
@@ -224,9 +224,9 @@ providers and resource types.</p>
 
   <a id="FoundationaLLM_Common_Interfaces_IManagementProviderService_HandlePostAsync_" data-uid="FoundationaLLM.Common.Interfaces.IManagementProviderService.HandlePostAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Interfaces_IManagementProviderService_HandlePostAsync_System_String_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Func_System_Net_Http_HttpMethod_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_Boolean__" data-uid="FoundationaLLM.Common.Interfaces.IManagementProviderService.HandlePostAsync(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Func{System.Net.Http.HttpMethod,FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.Boolean})">
-  HandlePostAsync(string, string?, ResourceProviderFormFile?, UnifiedUserIdentity, Func&lt;HttpMethod, ResourcePath, bool&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IManagementProviderService.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Interfaces_IManagementProviderService_HandlePostAsync_System_String_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Func_System_Net_Http_HttpMethod_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_Boolean__System_Func_System_Object_System_Boolean__" data-uid="FoundationaLLM.Common.Interfaces.IManagementProviderService.HandlePostAsync(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Func{System.Net.Http.HttpMethod,FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.Boolean},System.Func{System.Object,System.Boolean})">
+  HandlePostAsync(string, string?, ResourceProviderFormFile?, UnifiedUserIdentity, Func&lt;HttpMethod, ResourcePath, bool&gt;?, Func&lt;object, bool&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IManagementProviderService.cs/#L37"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Handles a HTTP POST request for a specified resource path.</p>
@@ -234,7 +234,7 @@ providers and resource types.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;object&gt; HandlePostAsync(string resourcePath, string? requestPayload, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity, Func&lt;HttpMethod, ResourcePath, bool&gt;? resourcePathAvailabilityChecker = null)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;object&gt; HandlePostAsync(string resourcePath, string? requestPayload, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity, Func&lt;HttpMethod, ResourcePath, bool&gt;? resourcePathAvailabilityChecker = null, Func&lt;object, bool&gt;? requestPayloadValidator = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -254,6 +254,9 @@ providers and resource types.</p>
     <dt><code>resourcePathAvailabilityChecker</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpmethod">HttpMethod</a>, <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
     <dd><p>An optional resource path availability checker used to block certain resource
 providers and resource types.</p>
+</dd>
+    <dt><code>requestPayloadValidator</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>An optional function to validate the request payload after deserialization.</p>
 </dd>
   </dl>
 

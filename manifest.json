@@ -4534,6 +4534,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.yml\" sourcestartlinenumber=\"1\">Defines a mechanism to restrict access to resource providers and resource types.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IManagementProviderService.yml",
       "output": {
         ".html": {
@@ -4573,20 +4587,6 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Interfaces.IQuotaService",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IQuotaService.yml\" sourcestartlinenumber=\"1\">Defines methods exposed by the FoundationaLLM Quota service.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IResourcePathAvailabilityCheckerService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IResourcePathAvailabilityCheckerService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Interfaces.IResourcePathAvailabilityCheckerService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IResourcePathAvailabilityCheckerService.yml\" sourcestartlinenumber=\"1\">Defines a mechanism to check the availability of a resource path in a certain context.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -13186,17 +13186,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Core.Services.CoreResourcePathAvailabilityCheckerService.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Core.Services.CoreManagementCapabilitiesService.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Core.Services.CoreResourcePathAvailabilityCheckerService.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Core.Services.CoreManagementCapabilitiesService.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Core.Services.CoreResourcePathAvailabilityCheckerService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Core.Services.CoreResourcePathAvailabilityCheckerService.yml\" sourcestartlinenumber=\"1\">Provides functionality to restrict access to resource providers and resource types in the Core API.</p>\n"
+      "Title": "FoundationaLLM.Core.Services.CoreManagementCapabilitiesService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Core.Services.CoreManagementCapabilitiesService.yml\" sourcestartlinenumber=\"1\">Provides functionality to restrict access to resource providers and resource types in the Core API.</p>\n"
     },
     {
       "type": "ManagedReference",

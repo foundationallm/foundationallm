@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-      <title>Interface IResourcePathAvailabilityCheckerService | FoundationaLLM </title>
+      <title>Interface IManagementCapabilitiesService | FoundationaLLM </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Interface IResourcePathAvailabilityCheckerService | FoundationaLLM ">
+      <meta name="title" content="Interface IManagementCapabilitiesService | FoundationaLLM ">
       
-      <meta name="description" content="Defines a mechanism to check the availability of a resource path in a certain context.">
+      <meta name="description" content="Defines a mechanism to restrict access to resource providers and resource types.">
       <link rel="icon" href="../../media/favicon.ico">
       <link rel="stylesheet" href="../../public/docfx.min.css">
       <link rel="stylesheet" href="../../public/main.css">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Interfaces_IResourcePathAvailabilityCheckerService.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Interfaces.IResourcePathAvailabilityCheckerService%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Interfaces_IManagementCapabilitiesService.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -84,12 +84,12 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="FoundationaLLM.Common.Interfaces.IResourcePathAvailabilityCheckerService">
+        <article data-uid="FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService">
 
 
 
-  <h1 id="FoundationaLLM_Common_Interfaces_IResourcePathAvailabilityCheckerService" data-uid="FoundationaLLM.Common.Interfaces.IResourcePathAvailabilityCheckerService" class="text-break">
-Interface IResourcePathAvailabilityCheckerService  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourcePathAvailabilityCheckerService.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  <h1 id="FoundationaLLM_Common_Interfaces_IManagementCapabilitiesService" data-uid="FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService" class="text-break">
+Interface IManagementCapabilitiesService  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IManagementCapabilitiesService.cs/#L10"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,12 +97,12 @@ Interface IResourcePathAvailabilityCheckerService  <a class="header-action link-
   <dl><dt>Assembly</dt><dd>FoundationaLLM.Common.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Defines a mechanism to check the availability of a resource path in a certain context.</p>
+  <div class="markdown summary"><p>Defines a mechanism to restrict access to resource providers and resource types.</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IResourcePathAvailabilityCheckerService</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IManagementCapabilitiesService</code></pre>
   </div>
 
 
@@ -122,7 +122,7 @@ Interface IResourcePathAvailabilityCheckerService  <a class="header-action link-
 
 
 
-  <h2 id="FoundationaLLM_Common_Interfaces_IResourcePathAvailabilityCheckerService_remarks">Remarks</h2>
+  <h2 id="FoundationaLLM_Common_Interfaces_IManagementCapabilitiesService_remarks">Remarks</h2>
   <div class="markdown level0 remarks"><p>Implementations of this interface should provide logic to determine whether a given resource
 path is available for use, such as limiting the exposed resource provider capabilities in certain APIs.</p>
 </div>
@@ -132,11 +132,11 @@ path is available for use, such as limiting the exposed resource provider capabi
 </h2>
 
 
-  <a id="FoundationaLLM_Common_Interfaces_IResourcePathAvailabilityCheckerService_IsResourcePathAvailable_" data-uid="FoundationaLLM.Common.Interfaces.IResourcePathAvailabilityCheckerService.IsResourcePathAvailable*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IManagementCapabilitiesService_IsResourcePathAvailable_" data-uid="FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsResourcePathAvailable*"></a>
 
-  <h3 id="FoundationaLLM_Common_Interfaces_IResourcePathAvailabilityCheckerService_IsResourcePathAvailable_System_Net_Http_HttpMethod_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_" data-uid="FoundationaLLM.Common.Interfaces.IResourcePathAvailabilityCheckerService.IsResourcePathAvailable(System.Net.Http.HttpMethod,FoundationaLLM.Common.Models.ResourceProviders.ResourcePath)">
+  <h3 id="FoundationaLLM_Common_Interfaces_IManagementCapabilitiesService_IsResourcePathAvailable_System_Net_Http_HttpMethod_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_" data-uid="FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsResourcePathAvailable(System.Net.Http.HttpMethod,FoundationaLLM.Common.Models.ResourceProviders.ResourcePath)">
   IsResourcePathAvailable(HttpMethod, ResourcePath)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourcePathAvailabilityCheckerService.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IManagementCapabilitiesService.cs/#L19"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Determines whether the specified resource path is available for the given HTTP method.</p>
@@ -174,11 +174,48 @@ path is available for use, such as limiting the exposed resource provider capabi
 
 
 
+  <a id="FoundationaLLM_Common_Interfaces_IManagementCapabilitiesService_IsValidRequestPayload_" data-uid="FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsValidRequestPayload*"></a>
+
+  <h3 id="FoundationaLLM_Common_Interfaces_IManagementCapabilitiesService_IsValidRequestPayload_System_Object_" data-uid="FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsValidRequestPayload(System.Object)">
+  IsValidRequestPayload(object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IManagementCapabilitiesService.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the provided request payload is valid.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsValidRequestPayload(object requestPayload)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>requestPayload</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourcePathAvailabilityCheckerService.cs/#L10" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IManagementCapabilitiesService.cs/#L10" class="edit-link">Edit this page</a>
         </div>
 
 
