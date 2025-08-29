@@ -70,7 +70,7 @@ async def root():
     return { 'message': 'FoundationaLLM LangChainAPI' }
 
 COMPLETION_REQUESTS_TRACING_HEADER = \
-    'x-completion-requests-tracing'
+    'x-trace-completion-request'
 USER_IDENTITY_HEADER = 'x-user-identity'
 
 @app.middleware("http")
