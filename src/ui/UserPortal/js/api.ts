@@ -501,6 +501,27 @@ export default {
 	},
 
 	/**
+	 * Deletes a file from an agent's private storage.
+	 * @param agentName - The name of the agent.
+	 * @param fileId - The unique identifier of the file to delete.
+	 * @returns A promise that resolves to the delete result.
+	 */
+	async deleteAgentFile(agentName: string, fileId: string): Promise<any> {
+		try {
+			const result = await this.fetch(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFiles/${fileId}`,
+				{
+					method: 'DELETE',
+				}
+			);
+			return result;
+		} catch (error) {
+			console.error('Error deleting agent file:', error);
+			throw error;
+		}
+	},
+
+	/**
 	 * Retrieves the list of AI models from the management endpoint.
 	 * Returns an array of ResourceBase (see aiModel.ts) as required.
 	 */

@@ -329,6 +329,7 @@
                                                 <tr>
                                                     <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white">Filename</th>
                                                     <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white">File ID</th>
+                                                    <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white text-center">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -337,6 +338,14 @@
                                                         f.resource?.filename || '-'
                                                     }}</td>
                                                     <td class="mnt-b-bottom p-3">{{ f.resource?.name }}</td>
+                                                    <td class="mnt-b-bottom p-3 text-center">
+                                                        <Button 
+                                                            label="Delete" 
+                                                            severity="danger" 
+                                                            @click="deleteFile(f.resource?.name)" 
+                                                            class="min-h-[35px] min-w-[80px]"
+                                                        />
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -756,6 +765,23 @@ export default defineComponent({
                 this.agentFiles = [];
             }
         },
+
+        async deleteFile(fileName: string) {
+            if (!this.selectedAgentName) {
+                return;
+            }
+
+            try {
+                await api.deleteAgentFile(this.selectedAgentName, fileName);
+                // Remove from both uploaded files and existing files lists
+                this.uploadedFiles = this.uploadedFiles.filter(f => f.name !== fileName);
+                this.agentFiles = this.agentFiles.filter(f => f.resource?.name !== fileName);
+                this.$toast.add({ severity: 'success', summary: 'Success', detail: `File "${fileName}" deleted.`, life: 3000 });
+            } catch (error: any) {
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: `Failed to delete file "${fileName}": ${error.message}`, life: 5000 });
+                console.error('Delete error:', error);
+            }
+        }
     },
 });
 </script>
