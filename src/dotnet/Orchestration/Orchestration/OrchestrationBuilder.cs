@@ -116,6 +116,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     callContext.CurrentUserIdentity!.UPN!);
                 var persistCompletionRequest = userProfile?.Flags.GetValueOrDefault(UserProfileFlags.PersistOrchestrationCompletionRequests, false) ?? false;
 
+                result.ExplodedObjectsManager.TryAdd(
+                    CompletionRequestObjectsKeys.TracingTraceCompletionRequest,
+                    persistCompletionRequest);
+
                 var orchestrationService = llmOrchestrationServiceManager.GetService(
                     instanceId,
                     orchestrator!,
