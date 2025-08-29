@@ -443,11 +443,14 @@ export default {
 
 			//console.log('Triggering pipeline with payload:', JSON.stringify(payload));
 
+			this.loading = true;
+			const existingLoadingStatusText = this.loadingStatusText;
+			this.loadingStatusText = 'Triggering pipeline...';
 			api.triggerPipeline(this.selectedPipelineResource.name, payload)
 				.then(() => {
 					this.$toast.add({
 						severity: 'success',
-						detail: 'Pipeline ${this.selectedPipelineResource.name} triggered successfully.',
+						detail: `Pipeline ${this.selectedPipelineResource.name} triggered successfully.`,
 						life: 3000,
 					});
 					this.closeTriggerPipeline();
@@ -459,6 +462,8 @@ export default {
 						life: 5000,
 					});
 				});
+			this.loading = false;
+			this.loadingStatusText = existingLoadingStatusText;
 		},
 
 		// extractPluginParameters(obj, results = []) {

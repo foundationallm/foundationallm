@@ -790,12 +790,13 @@ export default {
 			const selectedPlugin = this.stagePluginsOptions.find((p) => p.object_id === event.value);
 
 			this.selectedStagePlugins[stageIndex].plugin_object_id = selectedPlugin.object_id;
-			this.selectedStagePlugins[stageIndex].plugin_parameters = selectedPlugin.parameters.map(
-				(param) => ({
-					parameter_metadata: param,
-					default_value: null,
-				}),
-			);
+			this.selectedStagePlugins[stageIndex].plugin_parameters = 
+				selectedPlugin.parameters.map(
+					(param) => ({
+						parameter_metadata: param,
+						default_value: null,
+					}))
+				?? [];
 			this.selectedStagePlugins[stageIndex].plugin_dependencies = [{ plugin_object_id: null }];
 
 			for (const param of selectedPlugin.parameters) {
@@ -944,16 +945,18 @@ export default {
 				this.selectedDependencyIdsMap[stage.name] =
 					stage.plugin_dependencies?.map((dep) => dep.plugin_object_id) ?? [];
 
-				for (const param of stage.plugin_parameters) {
-					const resourceOption = this.stagePluginResourceOptions.find(
-						(p) => p.parameter_metadata.name === param.parameter_metadata.name,
-					);
-					if (resourceOption) {
-						const options = await this.getResourceOptions(
-							param.parameter_metadata.name,
-							stage.plugin_object_id,
+				if (stage.plugin_parameters) {
+					for (const param of stage.plugin_parameters) {
+						const resourceOption = this.stagePluginResourceOptions.find(
+							(p) => p.parameter_metadata.name === param.parameter_metadata.name,
 						);
-						resourceOption.parameter_selection_hints_options = options;
+						if (resourceOption) {
+							const options = await this.getResourceOptions(
+								param.parameter_metadata.name,
+								stage.plugin_object_id,
+							);
+							resourceOption.parameter_selection_hints_options = options;
+						}
 					}
 				}
 
