@@ -18,12 +18,10 @@ using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
-using FoundationaLLM.Common.Services.Users;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json;
 
@@ -143,7 +141,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     loggerFactory.CreateLogger<OrchestrationBase>(),
                     serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
                     resourceProviderServices,
-                    result.DataSourceAccessDenied,
                     vectorStoreId,
                     null,
                     contextServiceClient,
@@ -205,7 +202,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
                 resourceProviderServices,
                 null,
-                null,
                 operationContext,
                 null);
 
@@ -216,8 +212,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             AgentBase? Agent,
             AIModelBase? AIModel,
             APIEndpointConfiguration? APIEndpointConfiguration,
-            ExplodedObjectsManager ExplodedObjectsManager,
-            bool DataSourceAccessDenied
+            ExplodedObjectsManager ExplodedObjectsManager
             )>
             LoadAgent(
                 string instanceId,
@@ -256,7 +251,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             var explodedObjectsManager = new ExplodedObjectsManager();
 
             var agentBase = await agentResourceProvider.GetResourceAsync<AgentBase>(
-                $"/{AgentResourceTypeNames.Agents}/{agentName}",
+                instanceId,
+                agentName,
                 currentUserIdentity);
 
             var agentWorkflow = agentBase.Workflow;
@@ -316,7 +312,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             retrievedWorkflow);
 
                         break;
-
                     case AzureAIResourceTypeNames.Projects:
                         var retrievedProject = await azureAIResourceProvider.GetResourceAsync<AzureAIProject>(
                                 resourceObjectId.ObjectId,
@@ -369,19 +364,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             explodedObjectsManager.TryAdd(
                 CompletionRequestObjectsKeys.AgentName,
                 agentBase.Name);
-
-            // TODO: New agent-to-agent conversations model is in development. Until then, no need to send the list of all agents and their descriptions..
-
-            //var allAgents = await agentResourceProvider.GetResourcesAsync<AgentBase>(instanceId, currentUserIdentity);
-            //var allAgentsDescriptions = allAgents
-            //    .Where(a => !string.IsNullOrWhiteSpace(a.Resource.Description) && a.Resource.Name != agentBase.Name)
-            //    .Select(a => new
-            //    {
-            //        a.Resource.Name,
-            //        a.Resource.Description
-            //    })
-            //    .ToDictionary(x => x.Name, x => x.Description);
-            //explodedObjects[CompletionRequestObjectsKeys.AllAgents] = allAgentsDescriptions;
 
             #region Tools
 
@@ -735,7 +717,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             #endregion
 
-            return (agentBase, mainAIModel, mainAIModelAPIEndpointConfiguration, explodedObjectsManager, false);
+            return (agentBase, mainAIModel, mainAIModelAPIEndpointConfiguration, explodedObjectsManager);
         }
 
         private static async Task<string?> EnsureAgentCapabilities(
