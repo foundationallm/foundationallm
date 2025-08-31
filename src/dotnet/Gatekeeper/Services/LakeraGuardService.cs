@@ -43,7 +43,10 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <inheritdoc/>
         public async Task<string?> DetectPromptInjection(string content)
         {
-            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.LakeraGuard, _callContext.CurrentUserIdentity);
+            var client = await _httpClientFactoryService.CreateClient(
+                _callContext.InstanceId!,
+                HttpClientNames.LakeraGuard,
+                _callContext.CurrentUserIdentity!);
 
             var response = await client.PostAsync("prompt_injection",
                 new StringContent(JsonSerializer.Serialize(new { input = content }), Encoding.UTF8, "application/json"));

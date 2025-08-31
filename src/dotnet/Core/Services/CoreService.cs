@@ -1444,6 +1444,7 @@ public partial class CoreService(
             if (callContext.CurrentUserIdentity is { AssociatedWithAccessToken: false })
             {
                 var baseUrlOverride = await httpClientFactory.CreateClient<string?>(
+                    callContext.InstanceId,
                     HttpClientNames.CoreAPI,
                     callContext.CurrentUserIdentity!,
                     BuildClient);

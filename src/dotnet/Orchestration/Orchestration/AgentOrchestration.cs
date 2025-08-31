@@ -222,7 +222,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         {
             _gatewayClient = new GatewayServiceClient(
                 await _httpClientFactoryService
-                    .CreateClient(HttpClientNames.GatewayAPI, _callContext.CurrentUserIdentity!),
+                    .CreateClient(
+                        _callContext.InstanceId!,
+                        HttpClientNames.GatewayAPI,
+                        _callContext.CurrentUserIdentity!),
                 _logger);
 
             if (_agent!.ExpirationDate.HasValue && _agent.ExpirationDate.Value < DateTime.UtcNow)

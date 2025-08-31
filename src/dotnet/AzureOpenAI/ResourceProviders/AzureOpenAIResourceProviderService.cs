@@ -206,11 +206,13 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
             return updatedResource switch
             {
                 AzureOpenAIConversationMapping conversationMapping => ((await UpdateConversationMapping(
+                    resourcePath.InstanceId!,
                     conversationMapping,
                     existingResource == null,
                     userIdentity,
                     options)) as TResult)!,
                 AzureOpenAIFileMapping fileMapping => ((await UpdateFileMapping(
+                    resourcePath.InstanceId!,
                     fileMapping,
                     existingResource == null,
                     userIdentity,
@@ -251,6 +253,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
         }
 
         private async Task<AzureOpenAIConversationMappingUpsertResult> UpdateConversationMapping(
+            string instanceId,
             AzureOpenAIConversationMapping conversationMapping,
             bool isNew,
             UnifiedUserIdentity userIdentity,
@@ -294,9 +297,12 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
             if (mustCreateAssistantThread)
             {
                 var gatewayClient = new GatewayServiceClient(
-                   await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
-                       .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
-                   _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
+                    await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
+                        .CreateClient(
+                            instanceId,
+                            HttpClientNames.GatewayAPI,
+                            userIdentity),
+                     _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
 
                 Dictionary<string, object> parameters = new()
                 {
@@ -356,6 +362,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
         }
 
         private async Task<ResourceProviderUpsertResult<AzureOpenAIFileMapping>> UpdateFileMapping(
+            string instanceId,
             AzureOpenAIFileMapping fileMapping,
             bool isNew,
             UnifiedUserIdentity userIdentity,
@@ -379,9 +386,12 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
             if (mustCreateOpenAIFile)
             {
                 var gatewayClient = new GatewayServiceClient(
-                   await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
-                       .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
-                   _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
+                    await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
+                       .CreateClient(
+                            instanceId,
+                            HttpClientNames.GatewayAPI,
+                            userIdentity),
+                    _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
 
                 Dictionary<string, object> parameters = new()
                     {

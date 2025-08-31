@@ -4,13 +4,13 @@ using Azure.Messaging.EventGrid.Namespaces;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authentication;
-using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Environment;
 using FoundationaLLM.Common.Models.Configuration.Events;
+using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -22,6 +22,7 @@ namespace FoundationaLLM.Common.Services.Events
     /// </summary>
     public class AzureEventGridEventService : IEventService
     {
+        private readonly InstanceSettings _instanceSettings;
         private readonly DependencyInjectionContainerSettings _dependencyInjectionContainerSettings;
         private readonly string _serviceIdentifier;
 
@@ -51,6 +52,7 @@ namespace FoundationaLLM.Common.Services.Events
         /// <summary>
         /// Creates a new instance of the <see cref="AzureEventGridEventService"/> event service.
         /// </summary>
+        /// <param name="instanceOptions">The FoundationaLLM instance-level settings.</param>
         /// <param name="dependencyInjectionContainerSettings">The <see cref="DependencyInjectionContainerSettings"/> providing the configuration of the dependency injection container.</param>
         /// <param name="settingsOptions">The options providing the settings for the service.</param>
         /// <param name="profileOptions">The options providing the profile for the service.</param>
@@ -58,6 +60,7 @@ namespace FoundationaLLM.Common.Services.Events
         /// <param name="httpClientFactory">The <see cref="IHttpClientFactoryService"/> service used to create HTTP clients.</param>
         /// <param name="logger">The logger used for logging.</param>
         public AzureEventGridEventService(
+            IOptions<InstanceSettings> instanceOptions,
             DependencyInjectionContainerSettings dependencyInjectionContainerSettings,
             IOptions<AzureEventGridEventServiceSettings> settingsOptions,
             IOptions<AzureEventGridEventServiceProfile> profileOptions,
@@ -65,6 +68,7 @@ namespace FoundationaLLM.Common.Services.Events
             IHttpClientFactoryService httpClientFactory,
             ILogger<AzureEventGridEventService> logger)
         {
+            _instanceSettings = instanceOptions.Value;
             _dependencyInjectionContainerSettings = dependencyInjectionContainerSettings;
             _serviceIdentifier = $"{_dependencyInjectionContainerSettings.Id:D3}";
             _serviceInstanceName = $"https://foundationallm.ai/events/serviceinstances/{ServiceContext.ServiceInstanceName}";
@@ -406,6 +410,7 @@ namespace FoundationaLLM.Common.Services.Events
 
         private async Task<EventGridSenderClient?> GetSenderClient(string topicName) =>
             await _httpClientFactory.CreateClient<EventGridSenderClient?>(
+                _instanceSettings.Id,
                 HttpClientNames.AzureEventGrid,
                 ServiceContext.ServiceIdentity!,
                 BuildSenderClient,
@@ -446,6 +451,7 @@ namespace FoundationaLLM.Common.Services.Events
 
         private async Task<EventGridReceiverClient?> GetReceiverClient(string topicName, string subscriptionName) =>
             await _httpClientFactory.CreateClient<EventGridReceiverClient?>(
+                _instanceSettings.Id,
                 HttpClientNames.AzureEventGrid,
                 ServiceContext.ServiceIdentity!,
                 BuildReceiverClient,

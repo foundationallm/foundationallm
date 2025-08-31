@@ -36,7 +36,10 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <inheritdoc/>
         public async Task<List<PIIResult>> AnalyzeText(string text)
         {
-            var client = await _httpClientFactoryService.CreateClient(Common.Constants.HttpClientNames.GatekeeperIntegrationAPI, _callContext.CurrentUserIdentity);
+            var client = await _httpClientFactoryService.CreateClient(
+                _callContext.InstanceId!,
+                Common.Constants.HttpClientNames.GatekeeperIntegrationAPI,
+                _callContext.CurrentUserIdentity!);
 
             var content = JsonSerializer.Serialize(new AnalyzeRequest() { Content = text, Anonymize = false, Language = "en" });
 
@@ -56,7 +59,10 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <inheritdoc/>
         public async Task<string> AnonymizeText(string text)
         {
-            var client = await _httpClientFactoryService.CreateClient(Common.Constants.HttpClientNames.GatekeeperIntegrationAPI, _callContext.CurrentUserIdentity);
+            var client = await _httpClientFactoryService.CreateClient(
+                _callContext.InstanceId!,
+                Common.Constants.HttpClientNames.GatekeeperIntegrationAPI,
+                _callContext.CurrentUserIdentity!);
 
             var content = JsonSerializer.Serialize(new AnalyzeRequest() { Content = text, Anonymize = true, Language = "en" });
 

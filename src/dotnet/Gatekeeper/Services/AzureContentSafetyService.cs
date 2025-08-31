@@ -44,7 +44,10 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <inheritdoc/>
         public async Task<AnalyzeTextFilterResult> AnalyzeText(string content)
         {
-            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.AzureContentSafety, _callContext.CurrentUserIdentity);
+            var client = await _httpClientFactoryService.CreateClient(
+                _callContext.InstanceId!,
+                HttpClientNames.AzureContentSafety,
+                _callContext.CurrentUserIdentity!);
 
             AnalyzeTextResult? results = null;
             try
@@ -105,7 +108,10 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <inheritdoc/>
         public async Task<string?> DetectPromptInjection(string content)
         {
-            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.AzureContentSafety, _callContext.CurrentUserIdentity);
+            var client = await _httpClientFactoryService.CreateClient(
+                _callContext.InstanceId!,
+                HttpClientNames.AzureContentSafety,
+                _callContext.CurrentUserIdentity!);
 
             var response = await client.PostAsync("/contentsafety/text:shieldPrompt?api-version=2024-02-15-preview",
                 new StringContent(JsonSerializer.Serialize(new

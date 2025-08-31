@@ -205,89 +205,91 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
 
         private Kernel BuildKernel()
         {
-            var credential = ServiceContext.AzureCredential;
+            return null;
 
-            var builder = Kernel.CreateBuilder();
-            builder.Services.AddSingleton<ILoggerFactory>(_loggerFactory);
+            //var credential = ServiceContext.AzureCredential;
 
-            // Create an HTTP client with to pass into AddAzureOpenAIChatCompletion           
-            var httpClient = httpClientFactoryService.CreateUnregisteredClient(TimeSpan.FromMinutes(20));
+            //var builder = Kernel.CreateBuilder();
+            //builder.Services.AddSingleton<ILoggerFactory>(_loggerFactory);
 
-            builder.AddAzureOpenAIChatCompletion(
-                _deploymentName,
-                _endpointUrl,
-                credential!,
-                null,
-                null,
-                httpClient
-               );
-            builder.Services.ConfigureHttpClientDefaults(c =>
-            {
-                // Use a standard resiliency policy configured to retry on 429 (too many requests).
-                c.AddStandardResilienceHandler().Configure(o =>
-                {
-                    o.Retry.ShouldHandle = args => ValueTask.FromResult(args.Outcome.Result?.StatusCode is HttpStatusCode.TooManyRequests);
-                });
-            });
-            var kernel = builder.Build();
+            //// Create an HTTP client with to pass into AddAzureOpenAIChatCompletion           
+            //var httpClient = httpClientFactoryService.CreateUnregisteredClient(TimeSpan.FromMinutes(20));
 
-            // If the vectorization properties are not set, we are not going to import the context building capabilities.
-            switch (_indexerType)
-            {
-                case IndexerType.AzureAISearchIndexer:
-                    if (_azureAISearchIndexingServiceSettings != null &&
-                        !string.IsNullOrWhiteSpace(_azureAISearchIndexingServiceSettings.Endpoint))
-                    {
-                        var memory = new MemoryBuilder()
-                            .WithMemoryStore(new AzureAISearchMemoryStore(_azureAISearchIndexingServiceSettings.Endpoint, credential!))
-                            //TODO: IMPLEMENT GATEWAY
-                            //       .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
-                            .Build();
+            //builder.AddAzureOpenAIChatCompletion(
+            //    _deploymentName,
+            //    _endpointUrl,
+            //    credential!,
+            //    null,
+            //    null,
+            //    httpClient
+            //   );
+            //builder.Services.ConfigureHttpClientDefaults(c =>
+            //{
+            //    // Use a standard resiliency policy configured to retry on 429 (too many requests).
+            //    c.AddStandardResilienceHandler().Configure(o =>
+            //    {
+            //        o.Retry.ShouldHandle = args => ValueTask.FromResult(args.Outcome.Result?.StatusCode is HttpStatusCode.TooManyRequests);
+            //    });
+            //});
+            //var kernel = builder.Build();
 
-                        kernel.ImportPluginFromObject(new KnowledgeManagementContextPlugin(memory, _indexName));
-                    }
-                    break;
-                case IndexerType.AzureCosmosDBNoSQLIndexer:
-                    if (_azureCosmosDBNoSQLIndexingServiceSettings != null &&
-                        !string.IsNullOrWhiteSpace(_azureCosmosDBNoSQLIndexingServiceSettings.ConnectionString))
-                    {
-                        var memory = new MemoryBuilder()
-                            .WithMemoryStore(new AzureCosmosDBNoSQLMemoryStore(
-                                _azureCosmosDBNoSQLIndexingServiceSettings.ConnectionString,
-                                _azureCosmosDBNoSQLIndexingServiceSettings.VectorDatabase!,
-                                _azureCosmosDBNoSQLIndexingServiceSettings.VectorEmbeddingPolicy,
-                                _azureCosmosDBNoSQLIndexingServiceSettings.IndexingPolicy))
-                       // TODO: IMPLEMENT GATEWAY
-                       //     .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
-                            .Build();
+            //// If the vectorization properties are not set, we are not going to import the context building capabilities.
+            //switch (_indexerType)
+            //{
+            //    case IndexerType.AzureAISearchIndexer:
+            //        if (_azureAISearchIndexingServiceSettings != null &&
+            //            !string.IsNullOrWhiteSpace(_azureAISearchIndexingServiceSettings.Endpoint))
+            //        {
+            //            var memory = new MemoryBuilder()
+            //                .WithMemoryStore(new AzureAISearchMemoryStore(_azureAISearchIndexingServiceSettings.Endpoint, credential!))
+            //                //TODO: IMPLEMENT GATEWAY
+            //                //       .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
+            //                .Build();
 
-                        kernel.ImportPluginFromObject(new KnowledgeManagementContextPlugin(memory, _indexName));
-                    }
-                    break;
-                case IndexerType.PostgresIndexer:
-                    if (_postgresIndexingServiceSettings != null &&
-                        !string.IsNullOrWhiteSpace(_postgresIndexingServiceSettings.ConnectionString))
-                    {
-                        _ = int.TryParse(_postgresIndexingServiceSettings.VectorSize, out var vectorSize);
-                        var memory = new MemoryBuilder()
-                            .WithMemoryStore(new PostgresMemoryStore(
-                                _postgresIndexingServiceSettings.ConnectionString,
-                                vectorSize))
-                         //TODO: IMPLEMENT GATEWAY
-                         //   .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
-                            .Build();
+            //            kernel.ImportPluginFromObject(new KnowledgeManagementContextPlugin(memory, _indexName));
+            //        }
+            //        break;
+            //    case IndexerType.AzureCosmosDBNoSQLIndexer:
+            //        if (_azureCosmosDBNoSQLIndexingServiceSettings != null &&
+            //            !string.IsNullOrWhiteSpace(_azureCosmosDBNoSQLIndexingServiceSettings.ConnectionString))
+            //        {
+            //            var memory = new MemoryBuilder()
+            //                .WithMemoryStore(new AzureCosmosDBNoSQLMemoryStore(
+            //                    _azureCosmosDBNoSQLIndexingServiceSettings.ConnectionString,
+            //                    _azureCosmosDBNoSQLIndexingServiceSettings.VectorDatabase!,
+            //                    _azureCosmosDBNoSQLIndexingServiceSettings.VectorEmbeddingPolicy,
+            //                    _azureCosmosDBNoSQLIndexingServiceSettings.IndexingPolicy))
+            //           // TODO: IMPLEMENT GATEWAY
+            //           //     .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
+            //                .Build();
 
-                        kernel.ImportPluginFromObject(new KnowledgeManagementContextPlugin(memory, _indexName));
-                    }
-                    break;
-            }
+            //            kernel.ImportPluginFromObject(new KnowledgeManagementContextPlugin(memory, _indexName));
+            //        }
+            //        break;
+            //    case IndexerType.PostgresIndexer:
+            //        if (_postgresIndexingServiceSettings != null &&
+            //            !string.IsNullOrWhiteSpace(_postgresIndexingServiceSettings.ConnectionString))
+            //        {
+            //            _ = int.TryParse(_postgresIndexingServiceSettings.VectorSize, out var vectorSize);
+            //            var memory = new MemoryBuilder()
+            //                .WithMemoryStore(new PostgresMemoryStore(
+            //                    _postgresIndexingServiceSettings.ConnectionString,
+            //                    vectorSize))
+            //             //TODO: IMPLEMENT GATEWAY
+            //             //   .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
+            //                .Build();
 
-            if (_agentDescriptions != null && _agentDescriptions.Count > 0)
-            {
-                kernel.ImportPluginFromObject(new AgentConversationPlugin(_agentDescriptions));
-            }
+            //            kernel.ImportPluginFromObject(new KnowledgeManagementContextPlugin(memory, _indexName));
+            //        }
+            //        break;
+            //}
 
-            return kernel;
+            //if (_agentDescriptions != null && _agentDescriptions.Count > 0)
+            //{
+            //    kernel.ImportPluginFromObject(new AgentConversationPlugin(_agentDescriptions));
+            //}
+
+            //return kernel;
         }
     }
 }

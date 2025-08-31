@@ -384,9 +384,11 @@ namespace FoundationaLLM.Context.Services
             cachedKnowledgeUnit = new CachedKnowledgeUnit
             {
                 SearchService = await GetAzureAISearchService(
-                        vectorDatabase),
+                    instanceId,
+                    vectorDatabase),
                 EmbeddingClient = await GetEmbeddingClient(
-                        _settings.Embedding.ModelDeployments[vectorDatabase.EmbeddingModel]),
+                    instanceId,
+                    _settings.Embedding.ModelDeployments[vectorDatabase.EmbeddingModel]),
             };
 
             if (knowledgeUnit.HasKnowledgeGraph)
@@ -467,18 +469,21 @@ namespace FoundationaLLM.Context.Services
         }
 
         private async Task<EmbeddingClient> GetEmbeddingClient(
+            string instanceId,
             string modelDeploymentName)
         {
-            _azureOpenAIClient ??= await GetAzureOpenAIClient();
+            _azureOpenAIClient ??= await GetAzureOpenAIClient(instanceId);
             return _azureOpenAIClient.GetEmbeddingClient(modelDeploymentName);
         }
 
         private async Task<IAzureAISearchService> GetAzureAISearchService(
+            string instanceId,
             VectorDatabase vectorDatabase)
         {
             if (!_azureAISearchServices.TryGetValue(vectorDatabase.APIEndpointConfigurationObjectId, out var azureAISearchService))
             {
                 var searchIndexClient = await _httpClientFactory.CreateClient<SearchIndexClient>(
+                    instanceId,
                     ResourcePath.GetResourcePath(
                         vectorDatabase.APIEndpointConfigurationObjectId)
                         .ResourceId!,
@@ -497,8 +502,10 @@ namespace FoundationaLLM.Context.Services
             return azureAISearchService;
         }
 
-        private async Task<AzureOpenAIClient> GetAzureOpenAIClient() =>
+        private async Task<AzureOpenAIClient> GetAzureOpenAIClient(
+            string instanceId) =>
             await _httpClientFactory.CreateClient<AzureOpenAIClient>(
+                instanceId,
                 ResourcePath.GetResourcePath(
                     _settings.Embedding.EmbeddingAPIEndpointConfigurationObjectId)
                     .ResourceId!,

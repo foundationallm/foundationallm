@@ -56,7 +56,10 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
                 StatusMessage = "An error occured while attempting to start the completion operation."
             };
 
-            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.StateAPI, _callContext.CurrentUserIdentity!);
+            var client = await _httpClientFactoryService.CreateClient(
+                instanceId,
+                HttpClientNames.StateAPI,
+                _callContext.CurrentUserIdentity!);
 
             var response = await client.PostAsync($"instances/{instanceId}/operations/{completionRequest.OperationId}", null);
 
@@ -95,7 +98,10 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
                 Status = OperationStatus.Failed
             };
 
-            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.StateAPI, _callContext.CurrentUserIdentity!);
+            var client = await _httpClientFactoryService.CreateClient(
+                instanceId,
+                HttpClientNames.StateAPI,
+                _callContext.CurrentUserIdentity!);
 
             var response = await client.GetAsync($"instances/{instanceId}/operations/{operationId}");
 
