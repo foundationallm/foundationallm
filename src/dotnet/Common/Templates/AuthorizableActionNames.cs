@@ -28,6 +28,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         public const string FoundationaLLM_Authorization_RoleDefinitions_Read = "FoundationaLLM.Authorization/roleDefinitions/read";
 
         /// <summary>
+        /// Security principals (users, groups, service principals).
+        /// </summary>
+        public const string FoundationaLLM_Authorization_SecurityPrincipals_Read = "FoundationaLLM.Authorization/securityPrincipals/read";
+
+        /// <summary>
         /// Execute management actions.
         /// </summary>
         public const string FoundationaLLM_Authorization_Management_Write = "FoundationaLLM.Authorization/management/write";

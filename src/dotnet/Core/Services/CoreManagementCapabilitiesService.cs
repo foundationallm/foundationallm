@@ -102,6 +102,14 @@ namespace FoundationaLLM.Core.Services
                             {
                                 ResourceProviderActions.Filter
                             }
+                        },
+                        [AuthorizationResourceTypeNames.SecurityPrincipals] = new ResourceTypeAvailability
+                        {
+                            IsResourceTypeAvailable = false,
+                            AvailableActions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                            {
+                                ResourceProviderActions.Filter
+                            }
                         }
                     }
                 },

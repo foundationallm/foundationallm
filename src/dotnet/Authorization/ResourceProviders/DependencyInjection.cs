@@ -36,6 +36,7 @@ namespace FoundationaLLM
                         EnableCache = false
                     }),
                     sp.GetRequiredService<IAuthorizationServiceClient>(),
+                    sp.GetRequiredService<IIdentityManagementService>(),
                     sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp,
                     sp.GetRequiredService<ILoggerFactory>(),
