@@ -168,9 +168,9 @@ Class AzureEventGridEventService  <a class="header-action link-secondary" title=
 
   <a id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService__ctor_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService__ctor_FoundationaLLM_Common_Models_Configuration_Environment_DependencyInjectionContainerSettings_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Events_AzureEventGridEventServiceSettings__Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Events_AzureEventGridEventServiceProfile__FoundationaLLM_Common_Interfaces_IAzureResourceManagerService_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Events_AzureEventGridEventService__" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.#ctor(FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings},Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile},FoundationaLLM.Common.Interfaces.IAzureResourceManagerService,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Events.AzureEventGridEventService})">
-  AzureEventGridEventService(DependencyInjectionContainerSettings, IOptions&lt;AzureEventGridEventServiceSettings&gt;, IOptions&lt;AzureEventGridEventServiceProfile&gt;, IAzureResourceManagerService, IHttpClientFactoryService, ILogger&lt;AzureEventGridEventService&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__FoundationaLLM_Common_Models_Configuration_Environment_DependencyInjectionContainerSettings_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Events_AzureEventGridEventServiceSettings__Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Events_AzureEventGridEventServiceProfile__FoundationaLLM_Common_Interfaces_IAzureResourceManagerService_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Events_AzureEventGridEventService__" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings},Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile},FoundationaLLM.Common.Interfaces.IAzureResourceManagerService,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Events.AzureEventGridEventService})">
+  AzureEventGridEventService(IOptions&lt;InstanceSettings&gt;, DependencyInjectionContainerSettings, IOptions&lt;AzureEventGridEventServiceSettings&gt;, IOptions&lt;AzureEventGridEventServiceProfile&gt;, IAzureResourceManagerService, IHttpClientFactoryService, ILogger&lt;AzureEventGridEventService&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L62"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.html">AzureEventGridEventService</a> event service.</p>
@@ -178,11 +178,14 @@ Class AzureEventGridEventService  <a class="header-action link-secondary" title=
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AzureEventGridEventService(DependencyInjectionContainerSettings dependencyInjectionContainerSettings, IOptions&lt;AzureEventGridEventServiceSettings&gt; settingsOptions, IOptions&lt;AzureEventGridEventServiceProfile&gt; profileOptions, IAzureResourceManagerService azureResourceManager, IHttpClientFactoryService httpClientFactory, ILogger&lt;AzureEventGridEventService&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public AzureEventGridEventService(IOptions&lt;InstanceSettings&gt; instanceOptions, DependencyInjectionContainerSettings dependencyInjectionContainerSettings, IOptions&lt;AzureEventGridEventServiceSettings&gt; settingsOptions, IOptions&lt;AzureEventGridEventServiceProfile&gt; profileOptions, IAzureResourceManagerService azureResourceManager, IHttpClientFactoryService httpClientFactory, ILogger&lt;AzureEventGridEventService&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
+    <dt><code>instanceOptions</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings.html">InstanceSettings</a>&gt;</dt>
+    <dd><p>The FoundationaLLM instance-level settings.</p>
+</dd>
     <dt><code>dependencyInjectionContainerSettings</code> <a class="xref" href="FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings.html">DependencyInjectionContainerSettings</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings.html">DependencyInjectionContainerSettings</a> providing the configuration of the dependency injection container.</p>
 </dd>
@@ -222,7 +225,7 @@ Class AzureEventGridEventService  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_InitializationTask" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.InitializationTask">
   InitializationTask
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L50"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.taskcompletionsource-1">TaskCompletionSource&lt;TResult&gt;</a> (<code>TResult</code> of type <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>)
@@ -258,7 +261,7 @@ that signals the completion of the initialization task.</p>
 
   <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_ServiceInstanceName" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ServiceInstanceName">
   ServiceInstanceName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L47"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The name of the service instance.</p>
@@ -294,7 +297,7 @@ that signals the completion of the initialization task.</p>
 
   <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_ExecuteAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ExecuteAsync(System.Threading.CancellationToken)">
   ExecuteAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L118"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L122"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Executes the event service until cancellation is signaled.</p>
@@ -332,7 +335,7 @@ that signals the completion of the initialization task.</p>
 
   <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_SendEvent_System_String_Azure_Messaging_CloudEvent_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SendEvent(System.String,Azure.Messaging.CloudEvent)">
   SendEvent(string, CloudEvent)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L216"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L220"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sends an event to the event service.</p>
@@ -373,7 +376,7 @@ that signals the completion of the initialization task.</p>
 
   <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_StartAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StartAsync(System.Threading.CancellationToken)">
   StartAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L86"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Starts the event service, allowing it to initialize.</p>
@@ -411,7 +414,7 @@ that signals the completion of the initialization task.</p>
 
   <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_StopAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StopAsync(System.Threading.CancellationToken)">
   StopAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L118"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Stops the event service, allowing it to cleanup.</p>
@@ -449,7 +452,7 @@ that signals the completion of the initialization task.</p>
 
   <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_SubscribeToEventTypeEvent_System_String_FoundationaLLM_Common_Models_Events_EventTypeEventDelegate_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SubscribeToEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)">
   SubscribeToEventTypeEvent(string, EventTypeEventDelegate)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L192"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L196"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds an event set event delgate to the list of event handlers for a specified event set namespace.</p>
@@ -485,7 +488,7 @@ that signals the completion of the initialization task.</p>
 
   <h3 id="FoundationaLLM_Common_Services_Events_AzureEventGridEventService_UnsubscribeFromEventTypeEvent_System_String_FoundationaLLM_Common_Models_Events_EventTypeEventDelegate_" data-uid="FoundationaLLM.Common.Services.Events.AzureEventGridEventService.UnsubscribeFromEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)">
   UnsubscribeFromEventTypeEvent(string, EventTypeEventDelegate)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L206"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Events/AzureEventGridEventService.cs/#L210"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes an event set event delegate from the list of event handlers for a specified event set namespace.</p>
