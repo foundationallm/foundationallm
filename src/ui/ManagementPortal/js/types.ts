@@ -149,6 +149,8 @@ export type Agent = ResourceBase & {
 			minimum_similarity_threshold: number;
 		};
 	};
+
+	inheritable_authorizable_actions: string[];
 };
 
 export type AgentAccessToken = ResourceBase & {
@@ -450,6 +452,8 @@ export type CreateAgentRequest = ResourceBase & {
 			minimum_similarity_threshold: number;
 		};
 	};
+
+	inheritable_authorizable_actions: string[];
 };
 
 export type CreatePromptRequest = ResourceBase & {
