@@ -23,6 +23,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>
     /// <param name="cacheOptions">The options providing the <see cref="ResourceProviderCacheSettings"/> with settings for the resource provider cache.</param>
     /// <param name="authorizationServiceClient">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
+    /// <param name="identityManagementService">The <see cref="IIdentityManagementService"/> providing identity management services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to provide loggers for logging.</param>
@@ -31,6 +32,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
         IOptions<InstanceSettings> instanceOptions,
         IOptions<ResourceProviderCacheSettings> cacheOptions,
         IAuthorizationServiceClient authorizationServiceClient,
+        IIdentityManagementService identityManagementService,
         IResourceValidatorFactory resourceValidatorFactory,
         IServiceProvider serviceProvider,
         ILoggerFactory loggerFactory,
@@ -47,6 +49,8 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             [],
             proxyMode: proxyMode)
     {
+        private readonly IIdentityManagementService _identityManagementService = identityManagementService;
+
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
             AuthorizationResourceProviderMetadata.AllowedResourceTypes;
 
@@ -196,10 +200,23 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
+                AuthorizationResourceTypeNames.SecurityPrincipals => resourcePath.Action switch
+                {
+                    ResourceProviderActions.Filter => await FilterSecurityPrincipals(
+                        resourcePath,
+                        JsonSerializer.Deserialize<SecurityPrincipalQueryParameters>(serializedAction)
+                            ?? throw new ResourceProviderException("Invalid query parameters object.",
+                                StatusCodes.Status400BadRequest),
+                        userIdentity,
+                        requestPayloadValidator: requestPayloadValidator),
+                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+                },
                 _ => throw new ResourceProviderException()
             };
 
         #region Helpers for ExecuteActionAsync
+
         private async Task<List<ResourceProviderGetResult<RoleAssignment>>> FilterRoleAssignments(
             ResourceTypeInstance instance,
             string serializedAction,
@@ -234,6 +251,33 @@ namespace FoundationaLLM.Authorization.ResourceProviders
 
                 return roleAssignments.Select(x => new ResourceProviderGetResult<RoleAssignment>() { Resource = x, Roles = [], Actions = [] }).ToList();
             }
+        }
+
+        private async Task<List<ResourceProviderGetResult<SecurityPrincipal>>> FilterSecurityPrincipals(
+            ResourcePath resourcePath,
+            SecurityPrincipalQueryParameters queryParameters,
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null)
+        {
+            var identityObjects = await _identityManagementService.GetObjectsByIds(
+                new ObjectQueryParameters
+                {
+                    Ids = queryParameters.Ids
+                });
+
+             return [.. identityObjects
+                .Select(io => new ResourceProviderGetResult<SecurityPrincipal>
+                {
+                    Resource = new SecurityPrincipal
+                    {
+                        Id = io.Id!,
+                        Type = io.ObjectType,
+                        Name = io.DisplayName!,
+                        Email = io.Email
+                    },
+                    Roles = [],
+                    Actions = []
+                })];
         }
 
         #endregion

@@ -43,6 +43,20 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     ],
                     Actions = []
                 }
+            },
+            {
+                AuthorizationResourceTypeNames.SecurityPrincipals,
+                new ResourceTypeDescriptor(
+                        AuthorizationResourceTypeNames.SecurityPrincipals,
+                        typeof(SecurityPrincipal))
+                {
+                    AllowedTypes = [],
+                    Actions = [
+                        new ResourceTypeAction(ResourceProviderActions.Filter, false, true, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(SecurityPrincipalQueryParameters)], [typeof(ResourceProviderGetResult<SecurityPrincipal>)])
+                        ])
+                    ]
+                }
             }
         };
     }

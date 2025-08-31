@@ -23,6 +23,11 @@
 				"field_name": "FoundationaLLM_Authorization_RoleDefinitions_Read"
 			},
 			{
+				"name": "FoundationaLLM.Authorization/securityPrincipals/read",
+				"description": "Security principals (users, groups, service principals).",
+				"field_name": "FoundationaLLM_Authorization_SecurityPrincipals_Read"
+			},
+			{
 				"name": "FoundationaLLM.Authorization/management/write",
 				"description": "Execute management actions.",
 				"field_name": "FoundationaLLM_Authorization_Management_Write"

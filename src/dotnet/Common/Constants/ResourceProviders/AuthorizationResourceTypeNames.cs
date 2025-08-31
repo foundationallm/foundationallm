@@ -14,5 +14,10 @@
         /// Role definitions.
         /// </summary>
         public const string RoleDefinitions = "roleDefinitions";
+
+        /// <summary>
+        /// Security principals (users, groups, service principals).
+        /// </summary>
+        public const string SecurityPrincipals = "securityPrincipals";
     }
 }

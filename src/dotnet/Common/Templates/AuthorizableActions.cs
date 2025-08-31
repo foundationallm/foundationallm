@@ -41,6 +41,13 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Authorization")
                 },
                 {
+                    AuthorizableActionNames.FoundationaLLM_Authorization_SecurityPrincipals_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Authorization_SecurityPrincipals_Read,
+                        "Security principals (users, groups, service principals).",
+                        "Authorization")
+                },
+                {
                     AuthorizableActionNames.FoundationaLLM_Authorization_Management_Write,
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_Authorization_Management_Write,
