@@ -375,7 +375,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     = await ResolveAgentProperties(agent, userIdentity);
 
                 var workflow = (workflowBase as AzureOpenAIAssistantsAgentWorkflow)!;
-                var gatewayClient = await GetGatewayServiceClient(userIdentity);
+                var gatewayClient = await GetGatewayServiceClient(
+                    resourcePath.InstanceId!,
+                    userIdentity);
 
                 if (string.IsNullOrWhiteSpace(openAIAssistantId))
                 {
@@ -488,7 +490,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     = await ResolveAgentServiceProperties(agent, userIdentity);
 
                 var workflow = (workflowBase as AzureAIAgentServiceAgentWorkflow)!;
-                var gatewayClient = await GetGatewayServiceClient(userIdentity);
+                var gatewayClient = await GetGatewayServiceClient(
+                    resourcePath.InstanceId!,
+                    userIdentity);
 
                 if(string.IsNullOrWhiteSpace(workflow.ProjectConnectionString))
                     workflow.ProjectConnectionString = project.ProjectConnectionString;
@@ -1315,7 +1319,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
             switch (toolResource.Name)
             {
                 case AgentToolNames.OpenAIAssistantsFileSearchTool:
-                    var gatewayClient = await GetGatewayServiceClient(userIdentity);
+                    var gatewayClient = await GetGatewayServiceClient(
+                        resourcePath.InstanceId!,
+                        userIdentity);
                     agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
                     (var openAIAssistantId, var openAIAssistantVectorStoreId, var workflow, var agentAIModel, var agentPrompt, var agentAIModelAPIEndpoint)
@@ -1363,7 +1369,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     break;
 
                 case AgentToolNames.OpenAIAssistantsCodeInterpreterTool:
-                    var gatewayClientCI = await GetGatewayServiceClient(userIdentity);
+                    var gatewayClientCI = await GetGatewayServiceClient(
+                        resourcePath.InstanceId!,
+                        userIdentity);
                     agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
                     (var openAIAssistantIdCI, var openAIAssistantVectorStoreIdCI, var workflowCI, var agentAIModelCI, var agentPromptCI, var agentAIModelAPIEndpointCI)
@@ -1459,7 +1467,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
             switch (toolResource.Name)
             {
                 case AgentToolNames.OpenAIAssistantsFileSearchTool:
-                    var gatewayClient = await GetGatewayServiceClient(userIdentity);
+                    var gatewayClient = await GetGatewayServiceClient(
+                        resourcePath.InstanceId!,
+                        userIdentity);
                     agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
                     (var openAIAssistantId, var openAIAssistantVectorStoreId, var workflow, var agentAIModel, var agentPrompt, var agentAIModelAPIEndpoint)
@@ -1479,7 +1489,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     break;
 
                 case AgentToolNames.OpenAIAssistantsCodeInterpreterTool:
-                    var gatewayClientCI = await GetGatewayServiceClient(userIdentity);
+                    var gatewayClientCI = await GetGatewayServiceClient(
+                        resourcePath.InstanceId!,
+                        userIdentity);
                     agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
                     (var openAIAssistantIdCI, var openAIAssistantVectorStoreIdCI, var workflowCI, var agentAIModelCI, var agentPromptCI, var agentAIModelAPIEndpointCI)
@@ -1522,13 +1534,16 @@ namespace FoundationaLLM.Agent.ResourceProviders
         /// <summary>
         /// Retrieves the GatewayServiceClient.
         /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="userIdentity">Identity of the user.</param>
         /// <returns></returns>
-        private async Task<GatewayServiceClient> GetGatewayServiceClient(UnifiedUserIdentity userIdentity)
+        private async Task<GatewayServiceClient> GetGatewayServiceClient(
+            string instanceId,
+            UnifiedUserIdentity userIdentity)
         {
             var gatewayClient = new GatewayServiceClient(
                        await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
-                           .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
+                           .CreateClient(instanceId, HttpClientNames.GatewayAPI, userIdentity),
                        _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
             return gatewayClient;
         }
@@ -1639,9 +1654,17 @@ namespace FoundationaLLM.Agent.ResourceProviders
         /// <param name="fileId">The OpenAI FileId indicating the file to add to the vector store.</param>
         /// <param name="userIdentity">The identity of the user.</param>
         /// <returns>Returns true if successful, false otherwise.</returns>
-        private async Task<bool> AddFileToAssistantsVectorStore(string instanceId, string apiEndpointUrl, string deploymentName, string vectorStoreId, string fileId, UnifiedUserIdentity userIdentity)
+        private async Task<bool> AddFileToAssistantsVectorStore(
+            string instanceId,
+            string apiEndpointUrl,
+            string deploymentName,
+            string vectorStoreId,
+            string fileId,
+            UnifiedUserIdentity userIdentity)
         {
-            var gatewayClient = await GetGatewayServiceClient(userIdentity);
+            var gatewayClient = await GetGatewayServiceClient(
+                instanceId,
+                userIdentity);
 
             Dictionary<string, object> parameters = new()
             {
@@ -1675,9 +1698,17 @@ namespace FoundationaLLM.Agent.ResourceProviders
         /// <param name="fileId">The OpenAI FileId indicating the file to remove from the vector store.</param>
         /// <param name="userIdentity">The identity of the user.</param>
         /// <returns>Returns true if successful, false otherwise.</returns>
-        private async Task<bool> RemoveFileFromAssistantsVectorStore(string instanceId, string apiEndpointUrl, string deploymentName, string vectorStoreId, string fileId, UnifiedUserIdentity userIdentity)
+        private async Task<bool> RemoveFileFromAssistantsVectorStore(
+            string instanceId,
+            string apiEndpointUrl,
+            string deploymentName,
+            string vectorStoreId,
+            string fileId,
+            UnifiedUserIdentity userIdentity)
         {
-            var gatewayClient = await GetGatewayServiceClient(userIdentity);
+            var gatewayClient = await GetGatewayServiceClient(
+                instanceId,
+                userIdentity);
 
             Dictionary<string, object> parameters = new()
             {
@@ -1711,9 +1742,17 @@ namespace FoundationaLLM.Agent.ResourceProviders
         /// <param name="fileId">The OpenAI FileId indicating the file to add to the code interpreter resources.</param>
         /// <param name="userIdentity">The identity of the user.</param>
         /// <returns>Returns true if successful, false otherwise.</returns>
-        private async Task<bool> AddFileToAssistantsCodeInterpreter(string instanceId, string apiEndpointUrl, string deploymentName, string assistantId, string fileId, UnifiedUserIdentity userIdentity)
+        private async Task<bool> AddFileToAssistantsCodeInterpreter(
+            string instanceId,
+            string apiEndpointUrl,
+            string deploymentName,
+            string assistantId,
+            string fileId,
+            UnifiedUserIdentity userIdentity)
         {
-            var gatewayClient = await GetGatewayServiceClient(userIdentity);
+            var gatewayClient = await GetGatewayServiceClient(
+                instanceId,
+                userIdentity);
 
             Dictionary<string, object> parameters = new()
             {
@@ -1747,9 +1786,17 @@ namespace FoundationaLLM.Agent.ResourceProviders
         /// <param name="fileId">The OpenAI FileId indicating the file to remove from the code interpreter.</param>
         /// <param name="userIdentity">The identity of the user.</param>
         /// <returns>Returns true if successful, false otherwise.</returns>
-        private async Task<bool> RemoveFileFromAssistantsCodeInterpreter(string instanceId, string apiEndpointUrl, string deploymentName, string assistantId, string fileId, UnifiedUserIdentity userIdentity)
+        private async Task<bool> RemoveFileFromAssistantsCodeInterpreter(
+            string instanceId,
+            string apiEndpointUrl,
+            string deploymentName,
+            string assistantId,
+            string fileId,
+            UnifiedUserIdentity userIdentity)
         {
-            var gatewayClient = await GetGatewayServiceClient(userIdentity);
+            var gatewayClient = await GetGatewayServiceClient(
+                instanceId,
+                userIdentity);
 
             Dictionary<string, object> parameters = new()
             {

@@ -146,6 +146,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 ResourcePath.GetResourcePath(vectorDatabase.APIEndpointConfigurationObjectId);
 
             var searchIndexClient = await clientFactoryService.CreateClient<SearchIndexClient>(
+                dataPipelineRun.InstanceId,
                 endpointResourcePath.ResourceId!,
                 ServiceContext.ServiceIdentity!,
                 AzureAISearchService.CreateSearchIndexClient,

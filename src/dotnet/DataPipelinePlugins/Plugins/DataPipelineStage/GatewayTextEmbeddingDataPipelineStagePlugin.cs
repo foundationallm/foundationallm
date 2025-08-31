@@ -101,6 +101,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             var embeddingServiceClient = new GatewayServiceClient(
                 await clientFactoryService.CreateClient(
+                    dataPipelineRun.InstanceId,
                     HttpClientNames.GatewayAPI, ServiceContext.ServiceIdentity!),
                 _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
 

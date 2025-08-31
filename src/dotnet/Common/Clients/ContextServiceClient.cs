@@ -33,6 +33,7 @@ namespace FoundationaLLM.Common.Clients
             try
             {
                 var client = await _httpClientFactoryService.CreateClient(
+                    instanceId,
                     HttpClientNames.ContextAPI,
                     _callContext.CurrentUserIdentity!);
 
@@ -81,6 +82,7 @@ namespace FoundationaLLM.Common.Clients
             try
             {
                 var client = await _httpClientFactoryService.CreateClient(
+                    instanceId,
                     HttpClientNames.ContextAPI,
                     _callContext.CurrentUserIdentity!);
 
@@ -133,6 +135,7 @@ namespace FoundationaLLM.Common.Clients
             try
             {
                 var client = await _httpClientFactoryService.CreateClient(
+                    instanceId,
                     HttpClientNames.ContextAPI,
                     _callContext.CurrentUserIdentity!);
 
@@ -205,6 +208,7 @@ namespace FoundationaLLM.Common.Clients
             try
             {
                 var client = await _httpClientFactoryService.CreateClient(
+                    instanceId,
                     HttpClientNames.ContextAPI,
                     _callContext.CurrentUserIdentity!);
 
@@ -273,6 +277,7 @@ namespace FoundationaLLM.Common.Clients
             try
             {
                 var client = await _httpClientFactoryService.CreateClient(
+                    instanceId,
                     HttpClientNames.ContextAPI,
                     _callContext.CurrentUserIdentity!);
 
@@ -354,6 +359,7 @@ namespace FoundationaLLM.Common.Clients
             try
             {
                 var client = await _httpClientFactoryService.CreateClient(
+                    instanceId,
                     HttpClientNames.ContextAPI,
                     _callContext.CurrentUserIdentity!);
                 var responseMessage = await client.GetAsync(
@@ -415,6 +421,7 @@ namespace FoundationaLLM.Common.Clients
             try
             {
                 var client = await _httpClientFactoryService.CreateClient(
+                    instanceId,
                     HttpClientNames.ContextAPI,
                     _callContext.CurrentUserIdentity!);
                 var responseMessage = await client.PostAsJsonAsync(
@@ -478,6 +485,7 @@ namespace FoundationaLLM.Common.Clients
             try
             {
                 var client = await _httpClientFactoryService.CreateClient(
+                    instanceId,
                     HttpClientNames.ContextAPI,
                     _callContext.CurrentUserIdentity!);
                 var responseMessage = await client.PostAsJsonAsync(
@@ -520,6 +528,7 @@ namespace FoundationaLLM.Common.Clients
             try
             {
                 var client = await _httpClientFactoryService.CreateClient(
+                    instanceId,
                     HttpClientNames.ContextAPI,
                     _callContext.CurrentUserIdentity!);
 
@@ -565,6 +574,7 @@ namespace FoundationaLLM.Common.Clients
             try
             {
                 var client = await _httpClientFactoryService.CreateClient(
+                    instanceId,
                     HttpClientNames.ContextAPI,
                     _callContext.CurrentUserIdentity!);
 
@@ -610,6 +620,7 @@ namespace FoundationaLLM.Common.Clients
             try
             {
                 var client = await _httpClientFactoryService.CreateClient(
+                    instanceId,
                     HttpClientNames.ContextAPI,
                     _callContext.CurrentUserIdentity!);
 

@@ -330,11 +330,13 @@ namespace AzureAI.ResourceProviders
             return updatedResource switch
             {
                 AzureAIAgentConversationMapping conversationMapping => ((await UpdateConversationMappingAsync(
+                    resourcePath.InstanceId!,
                     conversationMapping,
                     existingResource == null,
                     userIdentity,
                     options)) as TResult)!,
                 AzureAIAgentFileMapping fileMapping => ((await UpdateFileMappingAsync(
+                    resourcePath.InstanceId!,
                     fileMapping,
                     existingResource == null,
                     userIdentity,
@@ -369,6 +371,7 @@ namespace AzureAI.ResourceProviders
         }
 
         private async Task<AzureAIAgentConversationMappingUpsertResult> UpdateConversationMappingAsync(
+            string instanceId,
             AzureAIAgentConversationMapping conversationMapping,
             bool isNew,
             UnifiedUserIdentity userIdentity,
@@ -413,7 +416,10 @@ namespace AzureAI.ResourceProviders
             {
                 var gatewayClient = new GatewayServiceClient(
                    await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
-                       .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
+                       .CreateClient(
+                            instanceId,
+                            HttpClientNames.GatewayAPI,
+                            userIdentity),
                    _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
 
                 Dictionary<string, object> parameters = new()
@@ -474,6 +480,7 @@ namespace AzureAI.ResourceProviders
         }
 
         private async Task<ResourceProviderUpsertResult<AzureAIAgentFileMapping>> UpdateFileMappingAsync(
+            string instanceId,
             AzureAIAgentFileMapping fileMapping,
             bool isNew,
             UnifiedUserIdentity userIdentity,
@@ -497,8 +504,11 @@ namespace AzureAI.ResourceProviders
             if (mustCreateAzureAIAgentFile)
             {
                 var gatewayClient = new GatewayServiceClient(
-                   await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
-                       .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
+                    await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
+                        .CreateClient(
+                            instanceId,
+                            HttpClientNames.GatewayAPI,
+                            userIdentity),
                    _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
 
                 Dictionary<string, object> parameters = new()

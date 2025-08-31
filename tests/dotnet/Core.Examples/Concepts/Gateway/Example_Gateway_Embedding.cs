@@ -34,15 +34,17 @@ namespace FoundationaLLM.Core.Examples.Concepts.Gateway
             int waitTimeSeconds,
             bool expectRateLimitExceeded)
         {
+            var instanceSettings = GetService<IOptions<InstanceSettings>>().Value;
+
             // Wait for all required initialization tasks to complete.
             await Task.WhenAll([
                 StartEventsWorkers(),
-                InitializeGatewayServiceClient()
+                InitializeGatewayServiceClient(instanceSettings.Id)
             ]);
 
             WriteLine("============ FoundationaLLM Gateway - Embedding Tests ============");
 
-            var instanceSettings = GetService<IOptions<InstanceSettings>>().Value;
+            
             var storageService = GetService<IStorageService>();
 
             var microsoftMLTokenizer = GetKeyedService<ITokenizerService>("MicrosoftML");
@@ -86,10 +88,12 @@ namespace FoundationaLLM.Core.Examples.Concepts.Gateway
             Assert.Equal(expectRateLimitExceeded, embeddingResult.Failed);
         }
 
-        private async Task InitializeGatewayServiceClient()
+        private async Task InitializeGatewayServiceClient(
+            string instanceId)
         {
             _gatewayServiceClient = new GatewayServiceClient(
                 await GetService<IHttpClientFactoryService>().CreateClient(
+                    instanceId,
                     ServiceNames.GatewayAPI,
                     ServiceContext.ServiceIdentity!),
                 GetService<ILogger<GatewayServiceClient>>());

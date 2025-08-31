@@ -42,9 +42,12 @@ namespace FoundationaLLM.Common.Services.API
         }
 
         /// <inheritdoc/>
-        public async Task<HttpClient> CreateClient(string clientName, UnifiedUserIdentity userIdentity)
+        public async Task<HttpClient> CreateClient(
+            string instanceId,
+            string clientName,
+            UnifiedUserIdentity userIdentity)
         {
-            var endpointConfiguration = await GetEndpoint(clientName, userIdentity);
+            var endpointConfiguration = await GetEndpoint(instanceId, clientName, userIdentity);
 
             var client = await CreateClient(endpointConfiguration, userIdentity);
 
@@ -53,12 +56,13 @@ namespace FoundationaLLM.Common.Services.API
 
         /// <inheritdoc/>
         public async Task<T> CreateClient<T>(
+            string instanceId,
             string clientName,
             UnifiedUserIdentity userIdentity,
             Func<Dictionary<string, object>, T> clientBuilder,
             Dictionary<string, object>? clientBuilderParameters = null)
         {
-            var endpointConfiguration = await GetEndpoint(clientName, userIdentity);
+            var endpointConfiguration = await GetEndpoint(instanceId,clientName, userIdentity);
 
             if (clientBuilderParameters == null)
                 clientBuilderParameters = [];
@@ -82,9 +86,10 @@ namespace FoundationaLLM.Common.Services.API
             return client;
         }
 
-
         /// <inheritdoc/>
-        public async Task<HttpClient> CreateClient(APIEndpointConfiguration endpointConfiguration, UnifiedUserIdentity? userIdentity)
+        public async Task<HttpClient> CreateClient(
+            APIEndpointConfiguration endpointConfiguration,
+            UnifiedUserIdentity? userIdentity)
         {
             var httpClient = _httpClientFactory.CreateClient(endpointConfiguration.Name);
 
@@ -176,9 +181,13 @@ namespace FoundationaLLM.Common.Services.API
             return httpClient;
         }
 
-        public async Task<HttpClient> CreateClientForStatus(string clientName, UnifiedUserIdentity userIdentity)
+        /// <inheritdoc/>
+        public async Task<HttpClient> CreateClientForStatus(
+            string instanceId,
+            string clientName,
+            UnifiedUserIdentity userIdentity)
         {
-            var endpointConfiguration = await GetEndpoint(clientName, userIdentity);
+            var endpointConfiguration = await GetEndpoint(instanceId, clientName, userIdentity);
 
             var client = await CreateClient(endpointConfiguration, userIdentity);
 
@@ -197,14 +206,6 @@ namespace FoundationaLLM.Common.Services.API
             return client;
         }
 
-        /// <inheritdoc/>
-        public HttpClient CreateUnregisteredClient(TimeSpan? timeout = null)
-        {
-            var httpClient = _httpClientFactory.CreateClient();
-            httpClient.Timeout = timeout ?? _defaultTimeout;
-            return httpClient;
-        }
-
         private async Task EnsureConfigurationResourceProvider()
         {
             if (_configurationResourceProvider != null)
@@ -219,12 +220,15 @@ namespace FoundationaLLM.Common.Services.API
             await _configurationResourceProvider.WaitForInitialization();
         }
 
-        private async Task<APIEndpointConfiguration> GetEndpoint(string name, UnifiedUserIdentity userIdentity)
+        private async Task<APIEndpointConfiguration> GetEndpoint(
+            string instanceId,
+            string name,
+            UnifiedUserIdentity userIdentity)
         {
             await EnsureConfigurationResourceProvider();
 
             var endpointConfiguration = await _configurationResourceProvider!.GetResourceAsync<APIEndpointConfiguration>(
-                $"/{ConfigurationResourceTypeNames.APIEndpointConfigurations}/{name}",
+                $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Configuration}/{ConfigurationResourceTypeNames.APIEndpointConfigurations}/{name}",
                 userIdentity)
                 ?? throw new Exception($"The resource provider {ResourceProviderNames.FoundationaLLM_Configuration} did not load the {name} endpoint configuration.");
 

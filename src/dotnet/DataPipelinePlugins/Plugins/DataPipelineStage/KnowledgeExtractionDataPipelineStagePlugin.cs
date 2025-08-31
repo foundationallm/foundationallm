@@ -183,6 +183,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             var gatewayServiceClient = new GatewayServiceClient(
                 await clientFactoryService.CreateClient(
+                    dataPipelineRun.InstanceId,
                     HttpClientNames.GatewayAPI, ServiceContext.ServiceIdentity!),
                 _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
 

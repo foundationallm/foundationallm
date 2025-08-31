@@ -231,7 +231,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             if (knowledgeGrapBuildingStep ==
                 KnowledgeGraphBuildingSteps.EntitiesSummarization)
             {
-                await CreateGatewayServiceClient();
+                await CreateGatewayServiceClient(dataPipelineRun.InstanceId);
                 await LoadSummarizationPrompt(
                     entitySummarizationPromptId.ToString()!);
                 await LoadEntities(
@@ -265,7 +265,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             if (knowledgeGrapBuildingStep ==
                 KnowledgeGraphBuildingSteps.RelationshipsSummarization)
             {
-                await CreateGatewayServiceClient();
+                await CreateGatewayServiceClient(dataPipelineRun.InstanceId);
                 await LoadSummarizationPrompt(
                     entitySummarizationPromptId.ToString()!);
                 await LoadRelationships(
@@ -299,7 +299,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             if (knowledgeGrapBuildingStep ==
                 KnowledgeGraphBuildingSteps.EntitiesEmbedding)
             {
-                await CreateGatewayServiceClient();
+                await CreateGatewayServiceClient(dataPipelineRun.InstanceId);
                 await LoadSummarizationPrompt(
                     entitySummarizationPromptId.ToString()!);
                 await LoadEntities(
@@ -332,7 +332,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             if (knowledgeGrapBuildingStep ==
                 KnowledgeGraphBuildingSteps.RelationshipsEmbedding)
             {
-                await CreateGatewayServiceClient();
+                await CreateGatewayServiceClient(
+                    dataPipelineRun.InstanceId);
                 await LoadSummarizationPrompt(
                     entitySummarizationPromptId.ToString()!);
                 await LoadRelationships(
@@ -641,7 +642,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 _entityRelationships.Relationships,
                 KNOWLEDGE_RELATIONSHIPS_FILE_PATH);
 
-        private async Task CreateGatewayServiceClient()
+        private async Task CreateGatewayServiceClient(
+            string instanceId)
         {
             if (_gatewayServiceClient is not null)
                 return; // Already created
@@ -654,7 +656,9 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             _gatewayServiceClient = new GatewayServiceClient(
                 await clientFactoryService.CreateClient(
-                    HttpClientNames.GatewayAPI, ServiceContext.ServiceIdentity!),
+                    instanceId,
+                    HttpClientNames.GatewayAPI,
+                    ServiceContext.ServiceIdentity!),
                 _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
         }
 

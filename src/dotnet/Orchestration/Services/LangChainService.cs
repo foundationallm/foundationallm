@@ -48,7 +48,10 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <inheritdoc/>
         public async Task<ServiceStatusInfo> GetStatus(string instanceId)
         {
-            var client = await _httpClientFactoryService.CreateClientForStatus(HttpClientNames.LangChainAPI, ServiceContext.ServiceIdentity!);
+            var client = await _httpClientFactoryService.CreateClientForStatus(
+                instanceId,
+                HttpClientNames.LangChainAPI,
+                ServiceContext.ServiceIdentity!);
             // Set the requestUri value to empty since we requested the status endpoint for this service.
             var responseMessage = await client.SendAsync(
                 new HttpRequestMessage(HttpMethod.Get, ""));
@@ -139,8 +142,14 @@ namespace FoundationaLLM.Orchestration.Core.Services
             {
                 throw new ArgumentException("The provided call context does not have a valid user identity.");
             }
-            var operationStarterClient = await _httpClientFactoryService.CreateClient(HttpClientNames.LangChainAPI, _userIdentity);
-            var operationRetrieverClient = await _httpClientFactoryService.CreateClient(HttpClientNames.StateAPI, _userIdentity);
+            var operationStarterClient = await _httpClientFactoryService.CreateClient(
+                instanceId,
+                HttpClientNames.LangChainAPI,
+                _userIdentity);
+            var operationRetrieverClient = await _httpClientFactoryService.CreateClient(
+                instanceId,
+                HttpClientNames.StateAPI,
+                _userIdentity);
 
             return new PollingHttpClient<LLMCompletionRequest, LLMCompletionResponse>(
                 operationStarterClient,

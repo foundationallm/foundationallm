@@ -46,7 +46,10 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <inheritdoc/>
         public async Task<ServiceStatusInfo> GetStatus(string instanceId)
         {
-            var client = await _httpClientFactoryService.CreateClient(_serviceName, _userIdentity);
+            var client = await _httpClientFactoryService.CreateClient(
+                instanceId,
+                _serviceName,
+                _userIdentity);
             var responseMessage = await client.SendAsync(
                 new HttpRequestMessage(HttpMethod.Get, $"/instances/{instanceId}/status"));
 
@@ -60,7 +63,10 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <inheritdoc/>
         public async Task<LLMCompletionResponse> GetCompletion(string instanceId, LLMCompletionRequest request)
         {
-            var client = await _httpClientFactoryService.CreateClient(_serviceName, _userIdentity);
+            var client = await _httpClientFactoryService.CreateClient(
+                instanceId,
+                _serviceName,
+                _userIdentity);
             var pollingClient = new PollingHttpClient<LLMCompletionRequest, LLMCompletionResponse>(
                 client,
                 client,
@@ -145,7 +151,10 @@ namespace FoundationaLLM.Orchestration.Core.Services
             string instanceId,
             LLMCompletionRequest? request = null)
         {
-            var client = await _httpClientFactoryService.CreateClient(_serviceName, _userIdentity);
+            var client = await _httpClientFactoryService.CreateClient(
+                instanceId,
+                _serviceName,
+                _userIdentity);
 
             return new PollingHttpClient<LLMCompletionRequest, LLMCompletionResponse>(
                 client,

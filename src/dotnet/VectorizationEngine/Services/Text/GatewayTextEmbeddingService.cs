@@ -51,8 +51,9 @@ namespace FoundationaLLM.Vectorization.Services.Text
         private async Task<GatewayServiceClient> GetGatewayServiceClientAsync()
         {
             var httpClient = await _httpClientFactoryService.CreateClient(
-                                HttpClientNames.GatewayAPI,
-                                ServiceContext.ServiceIdentity!);
+                _instanceSettings.Id,
+                HttpClientNames.GatewayAPI,
+                ServiceContext.ServiceIdentity!);
             var logger = _loggerFactory.CreateLogger<GatewayServiceClient>();
             var gatewayClient = new GatewayServiceClient(httpClient,logger);
             return gatewayClient;

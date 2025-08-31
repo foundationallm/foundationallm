@@ -3,9 +3,11 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipeline.Interfaces;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
@@ -17,25 +19,33 @@ namespace FoundationaLLM.DataPipeline.Clients
     /// </summary>
     public class RemoteDataPipelineServiceClient : IDataPipelineServiceClient
     {
+        private readonly InstanceSettings _instanceSettings;
         private readonly Task<HttpClient> _httpClientTask;
         private readonly ILogger _logger;
 
         /// <summary>
         /// Initializes the remote client for the Data Pipeline API.
         /// </summary>
+        /// <param name="instanceOptions">The FoundationaLLM instance options.</param>
         /// <param name="httpClientFactoryService">The HTTP client factory used to create HTTP clients.</param>
         /// <param name="logger">The logger used for logging.</param>
         public RemoteDataPipelineServiceClient(
+            IOptions<InstanceSettings> instanceOptions,
             IHttpClientFactoryService httpClientFactoryService,
             ILogger<RemoteDataPipelineServiceClient> logger)
         {
-            _httpClientTask = CreateHttpClient(httpClientFactoryService);
+            _instanceSettings = instanceOptions.Value;
+            _httpClientTask = CreateHttpClient(
+                _instanceSettings.Id,
+                httpClientFactoryService);
             _logger = logger;
         }
 
         private static async Task<HttpClient> CreateHttpClient(
+            string instanceId,
             IHttpClientFactoryService httpClientFactory) =>
            await httpClientFactory.CreateClient(
+                instanceId,
                 HttpClientNames.DataPipelineAPI,
                 ServiceContext.ServiceIdentity!);
 

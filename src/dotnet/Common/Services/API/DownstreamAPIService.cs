@@ -47,7 +47,10 @@ namespace FoundationaLLM.Common.Services.API
                 UserPromptEmbedding = [ 0f ]
             };
 
-            var client = await _httpClientFactoryService.CreateClient(_downstreamHttpClientName, _callContext.CurrentUserIdentity);
+            var client = await _httpClientFactoryService.CreateClient(
+                instanceId,
+                _downstreamHttpClientName,
+                _callContext.CurrentUserIdentity!);
 
             _logger.LogInformation(
                 "Created Http client {ClientName} with timeout {Timeout} seconds.",
@@ -86,7 +89,10 @@ namespace FoundationaLLM.Common.Services.API
                 StatusMessage = "An error occured while attempting to start the completion operation."
             };
 
-            var client = await _httpClientFactoryService.CreateClient(_downstreamHttpClientName, _callContext.CurrentUserIdentity);
+            var client = await _httpClientFactoryService.CreateClient(
+                instanceId,
+                _downstreamHttpClientName,
+                _callContext.CurrentUserIdentity!);
 
             _logger.LogInformation(
                 "Created Http client {ClientName} with timeout {Timeout} seconds.",
@@ -125,7 +131,10 @@ namespace FoundationaLLM.Common.Services.API
                 StatusMessage = "An error occured while attempting to get the completion operation status."
             };
 
-            var client = await _httpClientFactoryService.CreateClient(_downstreamHttpClientName, _callContext.CurrentUserIdentity);
+            var client = await _httpClientFactoryService.CreateClient(
+                instanceId,
+                _downstreamHttpClientName,
+                _callContext.CurrentUserIdentity!);
 
             _logger.LogInformation(
                 "Created Http client {ClientName} with timeout {Timeout} seconds.",

@@ -63,7 +63,10 @@ namespace FoundationaLLM.Common.Services.Azure
 
             try
             {
-                var httpClient = await _httpClientFactoryService.CreateClient(_settings.APIEndpointConfigurationName, _callContext.CurrentUserIdentity);
+                var httpClient = await _httpClientFactoryService.CreateClient(
+                    _callContext.InstanceId!,
+                    _settings.APIEndpointConfigurationName,
+                    _callContext.CurrentUserIdentity!);
                 var response = await httpClient.PostAsync(
                     $"/api/{_settings.Region}/data/v1.0/subscriptions/{_settings.SubscriptionId}/resourceGroups/{_settings.ResourceGroup}/providers/Microsoft.MachineLearningServices/workspaces/{_settings.ProjectName}/dataversion/{dataSetName}/versions",
                     JsonContent.Create(req));
@@ -117,7 +120,10 @@ namespace FoundationaLLM.Common.Services.Azure
                     MaxDepth = 10
                 };
 
-                var httpClient = await _httpClientFactoryService.CreateClient(_settings.APIEndpointConfigurationName, _callContext.CurrentUserIdentity);
+                var httpClient = await _httpClientFactoryService.CreateClient(
+                    _callContext.InstanceId!,
+                    _settings.APIEndpointConfigurationName,
+                    _callContext.CurrentUserIdentity!);
                 var response = await httpClient.PostAsync(
                     $"/api/{_settings.Region}/flow/api/subscriptions/{_settings.SubscriptionId}/resourceGroups/{_settings.ResourceGroup}/providers/Microsoft.MachineLearningServices/workspaces/{_settings.ProjectName}/BulkRuns/submit",
                     JsonContent.Create(job));
@@ -146,7 +152,10 @@ namespace FoundationaLLM.Common.Services.Azure
         {
             try
             {
-                var httpClient = await _httpClientFactoryService.CreateClient(_settings.APIEndpointConfigurationName, _callContext.CurrentUserIdentity);
+                var httpClient = await _httpClientFactoryService.CreateClient(
+                    _callContext.InstanceId!,
+                    _settings.APIEndpointConfigurationName,
+                    _callContext.CurrentUserIdentity!);
                 var response = await httpClient.GetAsync(
                     $"/api/{_settings.Region}/history/v1.0/subscriptions/{_settings.SubscriptionId}/resourceGroups/{_settings.ResourceGroup}/providers/Microsoft.MachineLearningServices/workspaces/{_settings.ProjectName}/runs/{jobId}"
                     );
@@ -175,7 +184,10 @@ namespace FoundationaLLM.Common.Services.Azure
         {
             try
             {
-                var httpClient = await _httpClientFactoryService.CreateClient(_settings.APIEndpointConfigurationName, _callContext.CurrentUserIdentity);
+                var httpClient = await _httpClientFactoryService.CreateClient(
+                    _callContext.InstanceId!,
+                    _settings.APIEndpointConfigurationName,
+                    _callContext.CurrentUserIdentity!);
                 var response = await httpClient.GetAsync(
                     $"/api/{_settings.Region}/flow/api/subscriptions/{_settings.SubscriptionId}/resourceGroups/{_settings.ResourceGroup}/providers/Microsoft.MachineLearningServices/workspaces/{_settings.ProjectName}/BulkRuns/{jobId}/childRuns?startIndex={startIndex}&endIndex={endIndex}"
                     );
@@ -204,7 +216,10 @@ namespace FoundationaLLM.Common.Services.Azure
         {
             try
             {
-                var httpClient = await _httpClientFactoryService.CreateClient(_settings.APIEndpointConfigurationName, _callContext.CurrentUserIdentity);
+                var httpClient = await _httpClientFactoryService.CreateClient(
+                    _callContext.InstanceId!,
+                    _settings.APIEndpointConfigurationName,
+                    _callContext.CurrentUserIdentity!);
                 var response = await httpClient.GetAsync(
                     $"/api/{_settings.Region}/flow/api/subscriptions/{_settings.SubscriptionId}/resourceGroups/{_settings.ResourceGroup}/providers/Microsoft.MachineLearningServices/workspaces/{_settings.ProjectName}/BulkRuns/{jobId}/results"
                     );
