@@ -3,3 +3,5 @@ uploads/
 .venv/
 *.csv
 test_results.json
+test_results*
+old_test_results*
