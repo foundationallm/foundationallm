@@ -159,7 +159,7 @@
 							link
 							:disabled="!data.actions.includes('FoundationaLLM.Agent/agents/delete')"
 							:aria-label="`Delete ${data.resource.name}`"
-							@click="agentToDelete = data.resource"
+							@click="data.actions.includes('FoundationaLLM.Agent/agents/delete') && (agentToDelete = data.resource)"
 						>
 							<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
 						</Button>
@@ -190,7 +190,7 @@
 							link
 							:disabled="!data.roles.includes('User Access Administrator')"
 							:aria-label="`Set ${data.resource.name} as default`"
-							@click="agentToSetAsDefault = data.resource"
+							@click="data.roles.includes('User Access Administrator') && (agentToSetAsDefault = data.resource)"
 						>
 							<i class="pi pi-star" style="font-size: 1.2rem" aria-hidden="true"></i>
 						</Button>

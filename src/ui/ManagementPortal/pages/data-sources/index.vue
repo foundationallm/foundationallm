@@ -145,7 +145,7 @@
 								link
 								:aria-label="`Delete ${data.resource.name}`"
 								:disabled="!data.actions.includes('FoundationaLLM.DataSource/dataSources/delete')"
-								@click="dataSourceToDelete = data.resource"
+								@click="data.actions.includes('FoundationaLLM.DataSource/dataSources/delete') && (dataSourceToDelete = data.resource)"
 							>
 								<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
 							</Button>
