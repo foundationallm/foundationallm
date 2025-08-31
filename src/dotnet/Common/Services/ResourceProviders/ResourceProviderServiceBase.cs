@@ -967,7 +967,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 bool useParentResourceInstance = false;
 
                 var authorizableAction = $"{_name}/{resourcePath.MainResourceTypeName!}/{actionType}";
-                var resourceObjectId = resourcePath.ObjectId
+                var resourceObjectId = resourcePath.ObjectIdWithoutAction
                     ?? throw new ResourceProviderException(
                         $"The resource path {resourcePath} does not nave a valid object identifier.",
                         StatusCodes.Status400BadRequest);

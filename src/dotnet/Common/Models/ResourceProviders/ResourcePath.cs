@@ -485,7 +485,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                 resourcePath,
                 allowedResourceProviders,
                 allowedResourceTypes,
-                false,
+                true,
                 out ResourcePath? parsedResourcePath)
                 || parsedResourcePath is null)
                 throw new ResourcePathException($"The resource path [{resourcePath}] is invalid.");
