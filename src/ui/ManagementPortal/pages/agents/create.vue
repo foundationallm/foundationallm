@@ -1441,6 +1441,8 @@ const getDefaultFormValues = () => {
 		semanticCacheAIModel: null as string | null,
 		semanticCacheEmbeddingDimensions: 2048 as number,
 		semanticCacheMinimumSimilarityThreshold: 0.97 as number,
+
+		inheritable_authorizable_actions: [] as string[]
 	};
 };
 
@@ -1879,6 +1881,7 @@ export default {
 			this.semanticCacheMinimumSimilarityThreshold =
 				semanticCacheSettings?.minimum_similarity_threshold ?? 0.97;
 
+			this.inheritable_authorizable_actions = agent.inheritable_authorizable_actions || [];
 			// this.showFileUpload = agent.show_file_upload ?? false;
 		},
 
@@ -2306,6 +2309,8 @@ export default {
 							minimum_similarity_threshold: this.semanticCacheMinimumSimilarityThreshold,
 						},
 					},
+
+					inheritable_authorizable_actions: this.inheritable_authorizable_actions
 				};
 
 				if (this.editAgent) {
