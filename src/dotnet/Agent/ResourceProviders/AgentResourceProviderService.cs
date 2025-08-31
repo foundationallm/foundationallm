@@ -652,33 +652,45 @@ namespace FoundationaLLM.Agent.ResourceProviders
                             agent.Name);
                     }
 
-                    if (!string.IsNullOrWhiteSpace(agent.Workflow?.MainPromptObjectId))
+                    if (!agent.InheritableAuthorizableActions.Contains(
+                        AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Read))
                     {
-                        roleAssignmentName = Guid.NewGuid().ToString();
-                        roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
-                            _instanceSettings.Id,
-                            new RoleAssignmentCreateRequest()
-                            {
-                                Name = roleAssignmentName,
-                                Description = roleAssignmentDescription,
-                                ObjectId = $"/instances/{resourcePath.InstanceId}/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}/{roleAssignmentName}",
-                                PrincipalId = agent.VirtualSecurityGroupId,
-                                PrincipalType = PrincipalTypes.Group,
-                                RoleDefinitionId = $"/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleDefinitions}/{RoleDefinitionNames.Reader}",
-                                Scope = agent.Workflow.MainPromptObjectId
-                            },
-                            userIdentity);
-
-                        if (!roleAssignmentResult.Success)
-                        {
-                            _logger.LogWarning("Failed to assign the agent's virtual security group identifier read permissions to the prompt {PromptObjectId}.",
-                                agent.Workflow.MainPromptObjectId);
-                        }
+                        _logger.LogWarning("The agent {AgentName} does not specify {ActionName} as an inheritable authorizable action. Explicit role assignments must be set on all referenced resources for the virtual security group identifier {VirtualSecurityGroupId}.",
+                            agent.Name,
+                            AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Read,
+                            agent.VirtualSecurityGroupId!);
                     }
+
+                    // With the introduction of the more complex prompt structure,
+                    // the approach of assigning permissions to a single main prompt is no longer valid.
+                    //
+                    //if (!string.IsNullOrWhiteSpace(agent.Workflow?.MainPromptObjectId))
+                    //{
+                    //    roleAssignmentName = Guid.NewGuid().ToString();
+                    //    roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
+                    //        _instanceSettings.Id,
+                    //        new RoleAssignmentCreateRequest()
+                    //        {
+                    //            Name = roleAssignmentName,
+                    //            Description = roleAssignmentDescription,
+                    //            ObjectId = $"/instances/{resourcePath.InstanceId}/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}/{roleAssignmentName}",
+                    //            PrincipalId = agent.VirtualSecurityGroupId,
+                    //            PrincipalType = PrincipalTypes.Group,
+                    //            RoleDefinitionId = $"/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleDefinitions}/{RoleDefinitionNames.Reader}",
+                    //            Scope = agent.Workflow.MainPromptObjectId
+                    //        },
+                    //        userIdentity);
+
+                    //    if (!roleAssignmentResult.Success)
+                    //    {
+                    //        _logger.LogWarning("Failed to assign the agent's virtual security group identifier read permissions to the prompt {PromptObjectId}.",
+                    //            agent.Workflow.MainPromptObjectId);
+                    //    }
+                    //}
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError(e, "An error occurred while assigning the agent's virtual security group identifier read permissions to the agent {AgentName}.and/or its prompt.",
+                    _logger.LogError(e, "An error occurred while assigning the agent's virtual security group identifier read permissions to the agent {AgentName}.",
                         agent.Name);
                 }
             }
