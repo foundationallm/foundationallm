@@ -56,8 +56,10 @@ namespace FoundationaLLM.Common.Interfaces
         /// <returns>A list of <see cref="ResourceProviderGetResult{T}"/> containing the loaded resources.</returns>
         /// <returns></returns>
         Task<List<ResourceProviderGetResult<T>>> GetResourcesAsync<T>(
-           string instanceId, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
-           where T : ResourceBase;
+            string instanceId,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null)
+            where T : ResourceBase;
 
         /// <summary>
         /// Gets a resource based on its logical path.
@@ -66,8 +68,17 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="resourcePath">The logical path of the resource.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
         /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
+        /// <param name="parentResourceInstance">The optional parent resource of the resource identified by <paramref name="resourcePath"/>.</param>
         /// <returns>The instance of the resource corresponding to the specified logical path.</returns>
-       Task<T> GetResourceAsync<T>(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
+        /// <remarks>
+        /// When the parent resource instance is provided, and it specifies inheritable authorizable actions,
+        /// the parent resource instance is used to authorize the request for any of those actions.
+        /// </remarks>
+        Task<T> GetResourceAsync<T>(
+            string resourcePath,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null,
+            ResourceBase? parentResourceInstance = null)
             where T : ResourceBase;
 
         /// <summary>
@@ -78,8 +89,19 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="resourceName">The logical path of the resource.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
         /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
+        /// <param name="parentResourceInstance">The optional parent resource of the resource identified by
+        /// <paramref name="instanceId"/> and <paramref name="resourceName"/>.</param>
         /// <returns>The instance of the resource corresponding to the specified logical path.</returns>
-        Task<T> GetResourceAsync<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
+        /// <remarks>
+        /// When the parent resource instance is provided, and it specifies inheritable authorizable actions,
+        /// the parent resource instance is used to authorize the request for any of those actions.
+        /// </remarks>
+        Task<T> GetResourceAsync<T>(
+            string instanceId,
+            string resourceName,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null,
+            ResourceBase? parentResourceInstance = null)
             where T : ResourceBase;
 
         /// <summary>
@@ -92,7 +114,11 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
         /// <param name="options">The <see cref="ResourceProviderUpsertOptions"/> which provides operation parameters.</param>
         /// <returns>The object id of the resource.</returns>
-        Task<TResult> UpsertResourceAsync<T, TResult>(string instanceId, T resource, UnifiedUserIdentity userIdentity, ResourceProviderUpsertOptions? options = null)
+        Task<TResult> UpsertResourceAsync<T, TResult>(
+            string instanceId,
+            T resource,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderUpsertOptions? options = null)
             where T : ResourceBase
             where TResult : ResourceProviderUpsertResult<T>;
 
@@ -105,7 +131,11 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="resourceName">The name of the resource being updated.</param>
         /// <param name="propertyValues">The dictionary with propery names and values to update.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
-        Task<TResult> UpdateResourcePropertiesAsync<T, TResult>(string instanceId, string resourceName, Dictionary<string, object?> propertyValues, UnifiedUserIdentity userIdentity)
+        Task<TResult> UpdateResourcePropertiesAsync<T, TResult>(
+            string instanceId,
+            string resourceName,
+            Dictionary<string, object?> propertyValues,
+            UnifiedUserIdentity userIdentity)
             where T : ResourceBase
             where TResult : ResourceProviderUpsertResult<T>;
 
@@ -168,7 +198,10 @@ namespace FoundationaLLM.Common.Interfaces
         /// <remarks>
         /// If a resource was logically deleted but not purged, this method will return True, indicating the existence of the resource.
         /// </remarks>
-        Task<(bool Exists, bool Deleted)> ResourceExistsAsync<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity)
+        Task<(bool Exists, bool Deleted)> ResourceExistsAsync<T>(
+            string instanceId,
+            string resourceName,
+            UnifiedUserIdentity userIdentity)
             where T : ResourceBase;
 
         /// <summary>
@@ -179,7 +212,10 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="resourceName">The name of the resource being logically deleted.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
         /// <returns></returns>
-        Task DeleteResourceAsync<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity)
+        Task DeleteResourceAsync<T>(
+            string instanceId,
+            string resourceName,
+            UnifiedUserIdentity userIdentity)
             where T : ResourceBase;
 
         /// <summary>

@@ -467,7 +467,10 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// <returns>A <see cref="ResourcePath"/> object containing the parsed resource path.</returns>
         public static ResourcePath GetResourcePath(string resourcePath)
         {
-            TryParseResourceProvider(resourcePath, out var resourceProvider);
+            if (string.IsNullOrWhiteSpace(resourcePath))
+                throw new ResourcePathException("The resource path to parse cannot be an empty or whitespace string.");
+
+            _ = TryParseResourceProvider(resourcePath, out var resourceProvider);
 
             var allowedResourceProviders = ImmutableList<string>.Empty;
             var allowedResourceTypes = new Dictionary<string, ResourceTypeDescriptor>();
@@ -483,8 +486,9 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                 allowedResourceProviders,
                 allowedResourceTypes,
                 false,
-                out ResourcePath? parsedResourcePath))
-                throw new AuthorizationException($"The resource path [{resourcePath}] is invalid.");
+                out ResourcePath? parsedResourcePath)
+                || parsedResourcePath is null)
+                throw new ResourcePathException($"The resource path [{resourcePath}] is invalid.");
 
             return parsedResourcePath!;
         }
@@ -565,9 +569,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
 
                     // The instance id must be a valid GUID.
                     if (!Guid.TryParse(instanceId, out _))
-                        throw new Exception();
+                        throw new ResourcePathException($"The FoundationaLLM instance identifier is invalid.");
                     currentIndex = 2;
                 }
+                else
+                    throw new ResourcePathException($"All resource paths must include the FoundationaLLM instance identifier.");
 
                 // An instance identifier is a valid resource path.
                 if (currentIndex >= tokens.Length)
@@ -580,30 +586,30 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
 
                     // Raise an exception if the resource provider name is not a valid FoundationaLLM resource provider.
                     if (!allowedResourceProviders.Contains(resourceProvider))
-                        throw new Exception();
+                        throw new ResourcePathException($"The resource provider name is invalid.");
 
                     currentIndex += 2;
                 }
                 else if (currentIndex != 0)
                     // If an instance id token is present, the resource provider token must be present as well.
-                    throw new Exception();
+                    throw new ResourcePathException($"The resource provider is missing.");
 
                 // There must be at least one resource type after instance id and/or resource provider.
                 if (currentIndex >= tokens.Length)
-                    throw new Exception();
+                    throw new ResourcePathException($"The main resource type is missing.");
 
                 var currentResourceTypes = allowedResourceTypes;
 
                 while (currentIndex < tokens.Length)
                 {
                     if (currentResourceTypes == null)
-                        throw new Exception();
+                        throw new ResourcePathException("Missing allowed resource types.");
 
                     var sharedResourceType = default(ResourceTypeDescriptor);
 
                     if (!currentResourceTypes.TryGetValue(tokens[currentIndex], out ResourceTypeDescriptor? currentResourceType)
                         && !SharedResourceProviderMetadata.AllowedResourceTypes.TryGetValue(tokens[currentIndex], out sharedResourceType))
-                        throw new Exception();
+                        throw new ResourcePathException($"{tokens[currentIndex]} is not a valid resource type.");
 
                     currentResourceType ??= sharedResourceType;
 
@@ -628,7 +634,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                         // If actions are not allowed or the action is not allowed on a resource type, raise an exception.
                         if (!allowAction
                             || !action.AllowedOnResourceType)
-                            throw new Exception();
+                            throw new ResourcePathException($"The action {action.Name} is not allowed.");
 
                         resourceTypeInstance.Action = tokens[currentIndex + 1];
 
@@ -636,7 +642,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                         if (currentIndex + 2 == tokens.Length)
                             break;
                         else
-                            throw new Exception();
+                            throw new ResourcePathException($"The structure of the resource path is invalid (unexpected number of tokens).");
                     }
                     else
                     {
@@ -657,7 +663,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                                 // If actions are not allowed or the action is not allowed on a resource, raise an exception.
                                 if (!allowAction
                                     || !action2.AllowedOnResource)
-                                    throw new Exception();
+                                    throw new ResourcePathException($"The action {action2.Name} is not allowed.");
 
                                 resourceTypeInstance.Action = tokens[currentIndex + 2];
 
@@ -665,7 +671,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                                 if (currentIndex + 2 == tokens.Length - 1)
                                     break;
                                 else
-                                    throw new Exception();
+                                    throw new ResourcePathException($"The structure of the resource path is invalid (unexpected number of tokens).");
                             }
                         }
                     }
@@ -674,10 +680,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                     currentIndex += 2;
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 throw new ResourceProviderException(
                     $"The resource path [{resourcePath}] is invalid.",
+                    ex,
                     StatusCodes.Status400BadRequest);
             }
         }
@@ -686,7 +693,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         {
             // Resource path cannot be null, empty or whitespace.
             if (string.IsNullOrWhiteSpace(resourcePath))
-                throw new Exception();
+                throw new ResourcePathException("The resource path cannot be null, empty or whitespace.");
 
             // Remove leading slash if present.
             if (resourcePath.StartsWith('/'))
@@ -696,7 +703,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
 
             // None of the tokens can be null, empty or whitespace.
             if (tokens.Any(t => string.IsNullOrWhiteSpace(t)))
-                throw new Exception();
+                throw new ResourcePathException("The resource path contains invalid tokens.");
 
             return tokens;
         }

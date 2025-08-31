@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Collections.Immutable;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Text.Json;
 
@@ -572,7 +573,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         #region IResourceProviderService
 
         /// <inheritdoc/>
-        public async Task<List<ResourceProviderGetResult<T>>> GetResourcesAsync<T>(string instanceId, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
+        public async Task<List<ResourceProviderGetResult<T>>> GetResourcesAsync<T>(
+            string instanceId,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null)
             where T : ResourceBase
         {
             EnsureServiceInitialization();
@@ -586,7 +590,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <inheritdoc/>
-        public async Task<T> GetResourceAsync<T>(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
+        public async Task<T> GetResourceAsync<T>(
+            string resourcePath,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null,
+            ResourceBase? parentResourceInstance = null)
             where T : ResourceBase
         {
             EnsureServiceInitialization();
@@ -595,13 +603,25 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             // Authorize access to the resource path.
             var authorizationResult =
-                await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, false, false, false);
+                await Authorize(
+                    ParsedResourcePath,
+                    userIdentity,
+                    AuthorizationRequirements,
+                    false,
+                    false,
+                    false,
+                    parentResourceInstance: parentResourceInstance);
 
             return await GetResourceAsyncInternal<T>(ParsedResourcePath, authorizationResult, userIdentity, options);
         }
 
         /// <inheritdoc/>
-        public async Task<T> GetResourceAsync<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
+        public async Task<T> GetResourceAsync<T>(
+            string instanceId,
+            string resourceName,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null,
+            ResourceBase? parentResourceInstance = null)
             where T : ResourceBase
         {
             EnsureServiceInitialization();
@@ -610,7 +630,14 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             // Authorize access to the resource path.
             var authorizationResult =
-                await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, false, false, false);
+                await Authorize(
+                    ParsedResourcePath,
+                    userIdentity,
+                    AuthorizationRequirements,
+                    false,
+                    false,
+                    false,
+                    parentResourceInstance: parentResourceInstance);
 
             return await GetResourceAsyncInternal<T>(ParsedResourcePath, authorizationResult, userIdentity, options);
         }
@@ -885,12 +912,24 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="expandResourceTypePaths">Indicates whether to expand resource type paths that are not authorized.</param>
         /// <param name="includeRoles">Indicates whether to include roles in the response.</param>
         /// <param name="includeActions">Indicates whether to include authorizable actions in the response.</param>
+        /// <param name="parentResourceInstance">The optional parent resource of the resource identified by <paramref name="resourcePath"/>.</param>
         /// <returns></returns>
         /// <exception cref="ResourceProviderException"></exception>
         /// <remarks>
+        /// <para>
         /// The authorization requirements contain the name of the authorizable operation optionally followed by a RBAC role name
         /// When the RBAC role name is specified, it must be separated from the authorizable operation by the '|' character.
-        /// The presence of the RBAC role name indicates that assignment to
+        /// The presence of the RBAC role name indicates that assignment to that role can be used to authorize the request even if
+        /// the authorizable operation is not directly authorized.
+        /// The RBAC role name can be immediately followed by the '!' character, which indicates that the role assignment is mandatory.
+        /// </para>
+        /// <para>
+        /// When the parent resource instance is provided, and it specifies inheritable authorizable actions,
+        /// the parent resource instance is used to authorize the request for any of those actions. When the parent resource instance
+        /// is provided, none of the <paramref name="expandResourceTypePaths"/>, <paramref name="includeRoles"/>, or <paramref name="includeActions"/>
+        /// parameters are allowed to be set to <see langword="true"/>. Also, when the parent resource instance is provided,
+        /// the use of an optional RBAC role name in the authorization requirements is not allowed.
+        /// </para>
         /// </remarks>
         private async Task<ResourcePathAuthorizationResult> Authorize(
             ResourcePath resourcePath,
@@ -898,35 +937,79 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             string authorizationRequirements,
             bool expandResourceTypePaths,
             bool includeRoles,
-            bool includeActions)
+            bool includeActions,
+            ResourceBase? parentResourceInstance = null)
         {
+            if (parentResourceInstance is not null
+                && (expandResourceTypePaths || includeRoles || includeActions))
+                throw new ResourceProviderException(
+                    "When a parent resource instance is provided, none of the expandResourceTypePaths, includeRoles, or includeActions parameters can be set to true.",
+                    StatusCodes.Status400BadRequest);
+
             var authorizationRequirementsTokens = authorizationRequirements.Split('|');
             var actionType = authorizationRequirementsTokens[0];
             var roleName = authorizationRequirementsTokens.Length > 1
                 ? authorizationRequirementsTokens[1]
                 : null;
 
+            if (parentResourceInstance is not null
+                && roleName is not null)
+                throw new ResourceProviderException(
+                    "When a parent resource instance is provided, the use of an optional RBAC role name in the authorization requirements is not allowed.",
+                    StatusCodes.Status400BadRequest);
+
+            if (userIdentity is null
+                || userIdentity.UserId is null)
+                throw new ResourceProviderException("The provided user identity information cannot be used for authorization.");
+
             try
             {
-                if (userIdentity == null
-                    || userIdentity.UserId == null)
-                    throw new Exception("The provided user identity information cannot be used for authorization.");
+                bool useParentResourceInstance = false;
 
-                var rp = resourcePath.GetObjectId(_instanceSettings.Id, _name);
+                var authorizableAction = $"{_name}/{resourcePath.MainResourceTypeName!}/{actionType}";
+                var resourceObjectId = resourcePath.ObjectId
+                    ?? throw new ResourceProviderException(
+                        $"The resource path {resourcePath} does not nave a valid object identifier.",
+                        StatusCodes.Status400BadRequest);
+
+                var originalAuthorizableAction = authorizableAction;
+                var originalResourceObjectId = resourceObjectId;
+
+                if (parentResourceInstance is not null
+                    && parentResourceInstance.InheritableAuthorizableActions.Contains(authorizableAction))
+                {
+                    // When the parent resource instance is provided, and it specifies inheritable authorizable actions,
+                    // the parent resource instance is used to authorize the request for any of those actions.
+                    useParentResourceInstance = true;
+
+                    var parentResourcePath = parentResourceInstance.ResourcePath;
+                    authorizableAction = $"{parentResourcePath.ResourceProvider!}/{parentResourcePath.MainResourceTypeName!}/{actionType}";
+                    resourceObjectId = parentResourcePath.ObjectId
+                        ?? throw new ResourceProviderException(
+                            $"The parent resource path {parentResourcePath} does not nave a valid object identifier.",
+                            StatusCodes.Status400BadRequest);
+
+                    _logger.LogDebug(
+                        "Authorizing the {ActionType} action on resource path {ResourcePath} using the parent resource path {ParentResourcePath}.",
+                        actionType,
+                        originalResourceObjectId,
+                        resourceObjectId);
+                }
+
                 var result = await _authorizationServiceClient.ProcessAuthorizationRequest(
                     _instanceSettings.Id,
-                    $"{_name}/{resourcePath.MainResourceTypeName!}/{actionType}",
+                    authorizableAction,
                     roleName,
-                    [rp],
+                    [resourceObjectId],
                     expandResourceTypePaths,
                     includeRoles,
                     includeActions,
                     userIdentity);
 
-                if (!result.AuthorizationResults[rp].Authorized
+                if (!result.AuthorizationResults[resourceObjectId].Authorized
                     && !resourcePath.IsResourceTypePath
-                    && !result.AuthorizationResults[rp].HasRequiredRole
-                    && result.AuthorizationResults[rp].PolicyDefinitionIds.Count == 0)
+                    && !result.AuthorizationResults[resourceObjectId].HasRequiredRole
+                    && result.AuthorizationResults[resourceObjectId].PolicyDefinitionIds.Count == 0)
                 {
                     // When the specified action is not authorized, throw an exception when the following conditions are met:
                     // - The resource path refers to a specific resource.
@@ -949,7 +1032,14 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     throw new AuthorizationException("Access is not authorized.");
                 }
 
-                return result.AuthorizationResults[rp];
+                if (useParentResourceInstance)
+                {
+                    // Restore the original values in the authorization result.
+                    result.AuthorizationResults[resourceObjectId].ResourcePath = originalResourceObjectId;
+                    result.AuthorizationResults[resourceObjectId].ResourceName = resourcePath.MainResourceId!;
+                }
+
+                return result.AuthorizationResults[resourceObjectId];
             }
             catch (AuthorizationException)
             {

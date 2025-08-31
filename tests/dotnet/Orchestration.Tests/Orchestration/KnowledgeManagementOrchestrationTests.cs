@@ -36,7 +36,6 @@ namespace FoundationaLLM.Orchestration.Tests.Orchestration
                 _logger,
                 null,
                 null,
-                false,
                 string.Empty,
                 null,
                 _contextServiceClient);

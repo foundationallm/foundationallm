@@ -15,6 +15,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         public string? ObjectId { get; set; }
 
         /// <summary>
+        /// Gets the resource path associated with the resource's object identifier.
+        /// </summary>
+        [JsonIgnore]
+        public ResourcePath ResourcePath =>
+            ResourcePath.GetResourcePath(ObjectId!);
+
+        /// <summary>
         /// The display name of the resource.
         /// </summary>
         [JsonPropertyName("display_name")]
@@ -83,5 +90,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         [JsonPropertyName("expiration_date")]
         [JsonPropertyOrder(505)]
         public DateTimeOffset? ExpirationDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of authorizable actions that are
+        /// automatically inherited by child resources.
+        /// </summary>
+        [JsonPropertyName("inheritable_authorizable_actions")]
+        [JsonPropertyOrder(506)]
+        public HashSet<string> InheritableAuthorizableActions { get; set; } = [];
     }
 }

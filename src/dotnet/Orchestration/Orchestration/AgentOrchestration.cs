@@ -45,7 +45,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// <param name="logger">The logger used for logging.</param>
     /// <param name="httpClientFactoryService">The <see cref="IHttpClientFactoryService"/> used to create HttpClient instances.</param>
     /// <param name="resourceProviderServices">The dictionary of <see cref="IResourceProviderService"/></param>
-    /// <param name="dataSourceAccessDenied">Inidicates that access was denied to all underlying data sources.</param>
     /// <param name="vectorStoreId">The OpenAI Assistants or Azure AI Agent Service vector store id.</param>
     /// <param name="longRunningOperationContext">The <see cref="LongRunningOperationContext"/> providing the context of the long-running operation.</param>
     /// <param name="contextServiceClient"> The <see cref="IContextServiceClient"/> used to interact with the context service.</param>
@@ -64,7 +63,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         ILogger<OrchestrationBase> logger,
         IHttpClientFactoryService httpClientFactoryService,
         Dictionary<string, IResourceProviderService> resourceProviderServices,
-        bool? dataSourceAccessDenied,
         string? vectorStoreId,
         LongRunningOperationContext? longRunningOperationContext,
         IContextServiceClient contextServiceClient,
@@ -80,7 +78,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private readonly IOrchestrationContext _callContext = callContext;
         private readonly ILogger<OrchestrationBase> _logger = logger;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
-        private readonly bool? _dataSourceAccessDenied = dataSourceAccessDenied;
         private readonly LongRunningOperationContext? _longRunningOperationContext = longRunningOperationContext;
         private readonly Func<LLMCompletionRequest, CompletionRequest, Task>? _completionRequestObserver = completionRequestObserver;
 
@@ -227,16 +224,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 await _httpClientFactoryService
                     .CreateClient(HttpClientNames.GatewayAPI, _callContext.CurrentUserIdentity!),
                 _logger);
-
-            if (_dataSourceAccessDenied.HasValue
-                && _dataSourceAccessDenied.Value)
-                return new CompletionResponse
-                {
-                    OperationId = completionRequest.OperationId!,
-                    Completion = "I have no knowledge that can be used to answer this question.",
-                    UserPrompt = completionRequest.UserPrompt!,
-                    AgentName = _agent!.Name
-                };
 
             if (_agent!.ExpirationDate.HasValue && _agent.ExpirationDate.Value < DateTime.UtcNow)
                 return new CompletionResponse
