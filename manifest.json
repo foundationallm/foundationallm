@@ -4030,6 +4030,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.ResourcePathException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.ResourcePathException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Exceptions.ResourcePathException",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Exceptions.ResourcePathException.yml\" sourcestartlinenumber=\"1\">Represents an error related to a resource path.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.ResourceProviderException.yml",
       "output": {
         ".html": {
