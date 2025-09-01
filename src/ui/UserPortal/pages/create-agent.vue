@@ -75,7 +75,7 @@
                                             class="block text-base text-[#898989] mb-2">Description</label>
                                         <Textarea class="w-full resize-none" name="agentDescription"
                                             id="agentDescription" aria-labelledby="aria-description" rows="5"
-                                            maxlength="150" />
+                                            maxlength="150" v-model="agentDescription" />
                                         <p class="text-xs text-[#898989]">(150 Characters)</p>
                                     </div>
 
@@ -95,7 +95,7 @@
                                         </label>
                                         <Textarea class="w-full resize-none" name="agentWelcomeMessage"
                                             id="agentWelcomeMessage" aria-labelledby="aria-welcome-message-desc"
-                                            rows="5" v-model="textCounter" @input="updateCharacterCount" />
+                                            rows="5" v-model="welcomeMessage" @input="updateCharacterCount" />
                                         <p class="text-xs text-[#898989]">(<span class="charectersControl">{{
                                             characterCount }}</span>
                                             Characters)</p>
@@ -339,10 +339,10 @@
                                                     }}</td>
                                                     <td class="mnt-b-bottom p-3">{{ f.resource?.name }}</td>
                                                     <td class="mnt-b-bottom p-3 text-center">
-                                                        <Button 
-                                                            label="Delete" 
-                                                            severity="danger" 
-                                                            @click="deleteFile(f.resource?.name)" 
+                                                        <Button
+                                                            label="Delete"
+                                                            severity="danger"
+                                                            @click="deleteFile(f.resource?.name)"
                                                             class="min-h-[35px] min-w-[80px]"
                                                         />
                                                     </td>
@@ -403,6 +403,9 @@ export default defineComponent({
                 selectedAIModel: null as string | null,
                 systemPrompt: '',
 
+                agentDescription: '',
+                welcomeMessage: '',
+
                 selectedAgentName: null as string | null,
                 availableAgents: [] as any[],
                 agentsLoaded: false as boolean,
@@ -436,7 +439,7 @@ export default defineComponent({
                 this.displayNameStatus = 'error';
                 return;
             }
-            
+
             try {
                 const res = await api.checkAgentNameAvailability(name);
                 this.displayNameStatus = (res.status === 'Allowed' && !res.exists && !res.deleted) ? 'success' : 'error';
@@ -451,7 +454,7 @@ export default defineComponent({
             }
 
             const trimmedName = name.trim();
-            
+
             // Check length
             if (trimmedName.length < 2 || trimmedName.length > 50) {
                 return false;
@@ -529,7 +532,7 @@ export default defineComponent({
         },
 
         updateCharacterCount() {
-            this.characterCount = this.textCounter.length;
+            this.characterCount = this.welcomeMessage.length;
         },
 
         generateAgentName(displayName: string): string {
@@ -560,7 +563,7 @@ export default defineComponent({
             if (slug.length > 0 && !/^[a-zA-Z]/.test(slug)) {
                 slug = 'agent-' + slug;
             }
-            
+
             return slug;
         },
 
@@ -572,10 +575,10 @@ export default defineComponent({
         },
         async onCreateAgent() {
             if (this.isCreating) return;
-            // Collect form data
-            const displayName = (document.getElementById('agentDisplayName') as HTMLInputElement)?.value || '';
-            const description = (document.getElementById('agentDescription') as HTMLTextAreaElement)?.value || '';
-            const welcomeMessage = (document.getElementById('agentWelcomeMessage') as HTMLTextAreaElement)?.value || '';
+            // Collect form data from v-model bindings
+            const displayName = this.agentDisplayName || '';
+            const description = this.agentDescription || '';
+            const welcomeMessage = this.welcomeMessage || '';
             // AGENT_NAME: Create a proper slug from display name
             const agentName = this.generateAgentName(displayName);
             // Format date to yyyy-MM-ddT00:00:00+00:00
@@ -595,9 +598,11 @@ export default defineComponent({
             try {
                 const res = await api.createAgentFromTemplate(payload);
                 this.createdAgent = res.resource;
-                this.selectedAgentName = res.resource?.name;this.isEditMode = true;
-                this.activeTabIndex = 1;this.agentsLoaded = false;
-                    this.loadAvailableAgents();
+                this.selectedAgentName = res.resource?.name;
+                this.isEditMode = true;
+                this.activeTabIndex = 1;
+                this.agentsLoaded = false;
+                this.loadAvailableAgents();
                 const prompt = await api.getAgentMainPrompt(res.resource);
                 this.systemPrompt = prompt || '';
             } catch (err: any) {
@@ -607,10 +612,50 @@ export default defineComponent({
             }
         },
 
-
         async onSaveAgent() {
-            // Save logic for edit mode (not implemented)
-            this.$toast.add({ severity: 'success', summary: 'Saved', detail: 'Agent changes saved.', life: 3000 });
+            if (!this.createdAgent) {
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: 'No agent to update.', life: 5000 });
+                return;
+            }
+
+            // Update agent model with new values from v-model bindings
+            const displayName = this.agentDisplayName || '';
+            const description = this.agentDescription || '';
+            const welcomeMessage = this.welcomeMessage || '';
+            let formattedDate = '';
+            if (this.agentExpirationDate) {
+                const d = new Date(this.agentExpirationDate);
+                formattedDate = d.toISOString().split('T')[0] + 'T00:00:00+00:00';
+            }
+
+            // Set values on the agent model
+            this.createdAgent.display_name = displayName;
+            this.createdAgent.description = description;
+            if (!this.createdAgent.properties) this.createdAgent.properties = {};
+            this.createdAgent.properties.welcome_message = welcomeMessage;
+            this.createdAgent.expiration_date = formattedDate;
+
+            let currentMainModelId = null;
+            if (this.createdAgent.workflow && this.createdAgent.workflow.resource_object_ids) {
+                for (const [key, obj] of Object.entries(this.createdAgent.workflow.resource_object_ids)) {
+                    if (obj && obj.properties && obj.properties.object_role === 'main_model') {
+                        currentMainModelId = obj.object_id;
+                        break;
+                    }
+                }
+            }
+            const modelIdToUpdate = this.selectedAIModel || currentMainModelId;
+            if (!modelIdToUpdate) {
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: 'No model selected or found.', life: 5000 });
+                return;
+            }
+            try {
+                const updatedAgent = await api.updateAgentMainModel(this.createdAgent, modelIdToUpdate);
+                this.createdAgent.object_id = updatedAgent.object_id;
+                this.$toast.add({ severity: 'success', summary: 'Agent Updated', detail: 'Agent changes saved.', life: 3000 });
+            } catch (err) {
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: err.message || 'Failed to update agent', life: 5000 });
+            }
         },
 
         async onSaveSystemPrompt() {

@@ -569,7 +569,7 @@ export default {
 		if (!workflow?.resource_object_ids) return null;
 		let mainPromptObjectId: string | null = null;
 		for (const [objectId, obj] of Object.entries(workflow.resource_object_ids)) {
-			if (obj?.properties?.role === 'main_prompt') {
+			if (obj?.properties?.object_role === 'main_prompt') {
 				mainPromptObjectId = obj.object_id;
 				break;
 			}
@@ -607,7 +607,7 @@ export default {
 		if (!workflow?.resource_object_ids) throw new Error('Workflow resource_object_ids missing.');
 		let mainPromptObjectId: string | null = null;
 		for (const [objectId, obj] of Object.entries(workflow.resource_object_ids)) {
-			if (obj?.properties?.role === 'main_prompt') {
+			if (obj?.properties?.object_role === 'main_prompt') {
 				mainPromptObjectId = obj.object_id;
 				break;
 			}
@@ -635,6 +635,50 @@ export default {
 		);
 		return updated;
 	},
+
+       /**
+	* Updates the main model of an agent's workflow.
+	* Replaces the main model object_id in both the key and value of resource_object_ids.
+	* The payload must be the entire KnowledgeManagementAgent (AgentBase) object, as in CP-7.
+	* @param agent The full agent model (AgentBase).
+	* @param newModelObjectId The new model's object_id to set as main model.
+	* @returns The updated agent.
+	*/
+       async updateAgentMainModel(agent: AgentBase, newModelObjectId: string): Promise<AgentBase> {
+	       if (!agent?.workflow || !agent.workflow.resource_object_ids) {
+		       throw new Error('Agent workflow or resource_object_ids missing.');
+	       }
+
+	       // Find the current main model object_id (by object_role)
+	       let mainModelKey: string | null = null;
+	       let mainModelObj: any = null;
+	       for (const [key, obj] of Object.entries(agent.workflow.resource_object_ids)) {
+		       if (obj?.properties?.object_role === 'main_model') {
+			       mainModelKey = key;
+			       mainModelObj = obj;
+			       break;
+		       }
+	       }
+	       if (!mainModelKey || !mainModelObj) {
+		       throw new Error('Main model object_id not found in agent.workflow.resource_object_ids.');
+	       }
+
+	       // Remove the old main model entry
+	       delete agent.workflow.resource_object_ids[mainModelKey];
+
+	       // Add the new main model entry (key and value)
+	       agent.workflow.resource_object_ids[newModelObjectId] = {
+		       ...mainModelObj,
+		       object_id: newModelObjectId,
+	       };
+
+	       // POST the full agent model to update (must match KnowledgeManagementAgent/AgentBase shape)
+	       const url = `/management/${agent.object_id}`;
+	       return await this.fetch<AgentBase>(url, {
+		       method: 'POST',
+		       body: agent,
+	       });
+       },
 };
 
 function formatError(error: any): string {

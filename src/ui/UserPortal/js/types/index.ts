@@ -126,7 +126,7 @@ export interface OrchestrationSettings {
 export interface ResourceObjectId {
 	object_id: string;
 	properties: {
-		role?: string;
+		object_role?: string;
 		[key: string]: any;
 	};
 }
@@ -251,9 +251,9 @@ export interface AIModel extends ResourceBase {
 
 export interface AgentBase extends ResourceBase {
 	// Inherited from ResourceBase:
-	// type, name, object_id, display_name, description, cost_center, properties, 
+	// type, name, object_id, display_name, description, cost_center, properties,
 	// created_on, updated_on, created_by, updated_by, deleted, expiration_date
-	
+
 	inline_context: boolean;
 	sessions_enabled: boolean;
 	long_running: boolean;
