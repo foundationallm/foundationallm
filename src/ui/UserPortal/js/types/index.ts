@@ -328,12 +328,12 @@ export interface AgentBase {
 
 // --- Agent Name Availability Check Types ---
 export interface ResourceName {
-	type: 'knowledge-management';
+	type: string | null;
 	name: string;
 }
 
 export interface ResourceNameCheckResult {
-	type: 'knowledge-management';
+	type: string | null;
 	name: string;
 	status: 'Allowed' | 'NotAllowed';
 	message: string | null;

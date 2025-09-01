@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Models;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 using FoundationaLLM.Common.Validation.ResourceProvider;
@@ -13,7 +12,7 @@ namespace FoundationaLLM.Authorization.Validation
     public class RoleAssignmentValidator : AbstractValidator<RoleAssignment>
     {
         /// <summary>
-        /// Configured the validation rules for the <see cref="RoleAssignment"/> model.
+        /// Configures the validation rules for the <see cref="RoleAssignment"/> model.
         /// </summary>
         public RoleAssignmentValidator()
         {

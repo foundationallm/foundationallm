@@ -2,6 +2,7 @@
 using FoundationaLLM.Authorization.ResourceProviders;
 using FoundationaLLM.Authorization.Validation;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
@@ -27,6 +28,7 @@ namespace FoundationaLLM
             bool proxyMode = false)
         {
             builder.Services.AddSingleton<IValidator<RoleAssignment>, RoleAssignmentValidator>();
+            builder.Services.AddSingleton<IValidator<SecurityPrincipalQueryParameters>, SecurityPrincipalQueryParametersValidator>();
 
             builder.Services.AddSingleton<IResourceProviderService, AuthorizationResourceProviderService>(sp =>
                 new AuthorizationResourceProviderService(
