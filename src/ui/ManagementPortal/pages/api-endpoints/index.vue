@@ -124,6 +124,7 @@
 									'FoundationaLLM.Configuration/apiEndpointConfigurations/write',
 								)
 							"
+							:tabindex="!data.actions.includes('FoundationaLLM.Configuration/apiEndpointConfigurations/write') ? -1 : 0"
 							:style="{
 								pointerEvents: !data.actions.includes(
 									'FoundationaLLM.Configuration/apiEndpointConfigurations/write',
@@ -169,7 +170,7 @@
 									'FoundationaLLM.Configuration/apiEndpointConfigurations/delete',
 								)
 							"
-							@click="itemToDelete = data.resource"
+							@click="data.actions.includes('FoundationaLLM.Configuration/apiEndpointConfigurations/delete') && (itemToDelete = data.resource)"
 						>
 							<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
 						</Button>

@@ -149,6 +149,7 @@
 							:aria-disabled="
 								!data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write')
 							"
+							:tabindex="!data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write') ? -1 : 0"
 							:style="{
 								pointerEvents: !data.actions.includes(
 									'FoundationaLLM.DataPipeline/dataPipelines/write',
@@ -189,7 +190,7 @@
 								!data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write')
 							"
 							:aria-label="`Run ${data.resource.name}`"
-							@click="openTriggerPipeline(data.resource)"
+							@click="data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write') && openTriggerPipeline(data.resource)"
 						>
 							<i class="pi pi-play-circle" style="font-size: 1.2rem" aria-hidden="true"></i>
 						</Button>

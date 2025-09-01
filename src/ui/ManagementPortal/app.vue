@@ -135,4 +135,11 @@ body,
 :root {
 	--jse-theme-color: var(--primary-button-bg, #6366f1); /* Default theme color */
 }
+
+a.table__button[aria-disabled="true"],
+.table__button[aria-disabled="true"] {
+	pointer-events: none;
+	opacity: 0.6;
+	cursor: default;
+}
 </style>
