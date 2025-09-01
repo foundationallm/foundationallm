@@ -75,7 +75,7 @@
                                             class="block text-base text-[#898989] mb-2">Description</label>
                                         <Textarea class="w-full resize-none" name="agentDescription"
                                             id="agentDescription" aria-labelledby="aria-description" rows="5"
-                                            maxlength="150" />
+                                            maxlength="150" v-model="agentDescription" />
                                         <p class="text-xs text-[#898989]">(150 Characters)</p>
                                     </div>
 
@@ -95,7 +95,7 @@
                                         </label>
                                         <Textarea class="w-full resize-none" name="agentWelcomeMessage"
                                             id="agentWelcomeMessage" aria-labelledby="aria-welcome-message-desc"
-                                            rows="5" v-model="textCounter" @input="updateCharacterCount" />
+                                            rows="5" v-model="welcomeMessage" @input="updateCharacterCount" />
                                         <p class="text-xs text-[#898989]">(<span class="charectersControl">{{
                                             characterCount }}</span>
                                             Characters)</p>
@@ -403,6 +403,9 @@ export default defineComponent({
                 selectedAIModel: null as string | null,
                 systemPrompt: '',
 
+                agentDescription: '',
+                welcomeMessage: '',
+
                 selectedAgentName: null as string | null,
                 availableAgents: [] as any[],
                 agentsLoaded: false as boolean,
@@ -529,7 +532,7 @@ export default defineComponent({
         },
 
         updateCharacterCount() {
-            this.characterCount = this.textCounter.length;
+            this.characterCount = this.welcomeMessage.length;
         },
 
         generateAgentName(displayName: string): string {
@@ -572,10 +575,10 @@ export default defineComponent({
         },
         async onCreateAgent() {
             if (this.isCreating) return;
-            // Collect form data
-            const displayName = (document.getElementById('agentDisplayName') as HTMLInputElement)?.value || '';
-            const description = (document.getElementById('agentDescription') as HTMLTextAreaElement)?.value || '';
-            const welcomeMessage = (document.getElementById('agentWelcomeMessage') as HTMLTextAreaElement)?.value || '';
+            // Collect form data from v-model bindings
+            const displayName = this.agentDisplayName || '';
+            const description = this.agentDescription || '';
+            const welcomeMessage = this.welcomeMessage || '';
             // AGENT_NAME: Create a proper slug from display name
             const agentName = this.generateAgentName(displayName);
             // Format date to yyyy-MM-ddT00:00:00+00:00
@@ -595,9 +598,11 @@ export default defineComponent({
             try {
                 const res = await api.createAgentFromTemplate(payload);
                 this.createdAgent = res.resource;
-                this.selectedAgentName = res.resource?.name;this.isEditMode = true;
-                this.activeTabIndex = 1;this.agentsLoaded = false;
-                    this.loadAvailableAgents();
+                this.selectedAgentName = res.resource?.name;
+                this.isEditMode = true;
+                this.activeTabIndex = 1;
+                this.agentsLoaded = false;
+                this.loadAvailableAgents();
                 const prompt = await api.getAgentMainPrompt(res.resource);
                 this.systemPrompt = prompt || '';
             } catch (err: any) {
@@ -613,10 +618,10 @@ export default defineComponent({
                 return;
             }
 
-            // Update agent model with new values from form
-            const displayName = (document.getElementById('agentDisplayName') as HTMLInputElement)?.value || '';
-            const description = (document.getElementById('agentDescription') as HTMLTextAreaElement)?.value || '';
-            const welcomeMessage = (document.getElementById('agentWelcomeMessage') as HTMLTextAreaElement)?.value || '';
+            // Update agent model with new values from v-model bindings
+            const displayName = this.agentDisplayName || '';
+            const description = this.agentDescription || '';
+            const welcomeMessage = this.welcomeMessage || '';
             let formattedDate = '';
             if (this.agentExpirationDate) {
                 const d = new Date(this.agentExpirationDate);
