@@ -1,5 +1,4 @@
 import type {
-	Agent,
 	AgentBase,
 	AgentCreationFromTemplateRequest,
 	CompletionPrompt,
@@ -284,7 +283,7 @@ export default {
 	 * @param agent The agent object.
 	 * @returns A promise that resolves to a MessageResponse or rejects with a RateLimitError.
 	 */
-	async sendMessage(sessionId: string, text: string, agent: Agent, attachments: string[] = [], metadata?: { [key: string]: any } = null): Promise<MessageResponse> {
+	async sendMessage(sessionId: string, text: string, agent: AgentBase, attachments: string[] = [], metadata?: { [key: string]: any }): Promise<MessageResponse> {
 		const orchestrationRequest: CompletionRequest = {
 			session_id: sessionId,
 			user_prompt: text,
@@ -307,7 +306,7 @@ export default {
 	async getAllowedAgents() {
 		const agents = (await this.fetch(
 			`/instances/${this.instanceId}/completions/agents`,
-		)) as ResourceProviderGetResult<Agent>[];
+		)) as ResourceProviderGetResult<AgentBase>[];
 		agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
 		return agents;
 	},
@@ -316,7 +315,7 @@ export default {
 		try {
 			const agents = await this.fetch(
 				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents`
-			) as ResourceProviderGetResult<Agent>[];
+			) as ResourceProviderGetResult<AgentBase>[];
 
 			agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
 

@@ -49,7 +49,7 @@ export interface AnalysisResult {
 }
 
 export interface Message {
-	id: string;
+	id?: string; // Made optional to allow temporary messages
 	type: string;
 	sessionId: string;
 	timeStamp: string;
@@ -67,6 +67,10 @@ export interface Message {
 	attachmentDetails: Array<AttachmentDetail>;
 	analysisResults: Array<AnalysisResult>;
 	processingTime: number; // Calculated in milliseconds - not from the API
+	operation_id?: string; // For long-running operations
+	status?: string; // For long-running operations
+	status_message?: string; // For long-running operations
+	renderId?: number; // For temporary messages
 }
 
 export interface MessageRatingRequest {
@@ -81,7 +85,9 @@ export interface Session {
 	tokensUsed: Number;
 	name: string;
 	display_name: string;
+	metadata: string;
 	messages: Array<Message>;
+	is_temp?: boolean; // For temporary sessions
 }
 
 export interface ConversationProperties {
@@ -137,21 +143,7 @@ export interface AgentWorkflow {
 	properties?: Record<string, any>;
 }
 
-export interface Agent {
-	type: string;
-	name: string;
-	display_name: string;
-	object_id: string;
-	description: string;
-	properties?: { [key: string]: string | null };
-	long_running: boolean;
-	orchestration_settings?: OrchestrationSettings;
-	show_message_tokens?: boolean;
-	show_message_rating?: boolean;
-	show_view_prompt?: boolean;
-	show_file_upload?: boolean;
-	workflow?: AgentWorkflow;
-}
+
 
 export interface CompletionRequest {
 	session_id?: string;
@@ -257,15 +249,15 @@ export interface AIModel extends ResourceBase {
 	properties?: Record<string, any>;
 }
 
-export interface AgentBase {
-	type: string;
-	name: string;
-	object_id: string;
-	display_name: string;
-	description: string;
-	cost_center: string;
+export interface AgentBase extends ResourceBase {
+	// Inherited from ResourceBase:
+	// type, name, object_id, display_name, description, cost_center, properties, 
+	// created_on, updated_on, created_by, updated_by, deleted, expiration_date
+	
 	inline_context: boolean;
 	sessions_enabled: boolean;
+	long_running: boolean;
+	orchestration_settings?: OrchestrationSettings;
 	text_rewrite_settings: {
 		user_prompt_rewrite_enabled: boolean;
 		user_prompt_rewrite_settings: {
@@ -291,20 +283,7 @@ export interface AgentBase {
 		use_system_setting: boolean;
 		options: any[];
 	};
-	workflow: {
-		type: string;
-		name: string;
-		package_name: string;
-		class_name: string;
-		workflow_host: string;
-		resource_object_ids: {
-			[objectId: string]: {
-				object_id: string;
-				properties: Record<string, any>;
-			};
-		};
-		properties: Record<string, any> | null;
-	};
+	workflow?: AgentWorkflow;
 	tools: Array<{
 		name: string;
 		description: string;
@@ -324,16 +303,6 @@ export interface AgentBase {
 	show_message_rating: boolean;
 	show_view_prompt: boolean;
 	show_file_upload: boolean;
-	properties: {
-		welcome_message: string;
-		[key: string]: any;
-	};
-	created_on: string;
-	updated_on: string;
-	created_by: string | null;
-	updated_by: string;
-	deleted: boolean;
-	expiration_date: string;
 }
 
 

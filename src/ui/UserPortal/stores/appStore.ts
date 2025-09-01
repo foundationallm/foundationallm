@@ -7,7 +7,7 @@ import type {
 	ConversationProperties,
 	Message,
 	UserProfile,
-	Agent,
+	AgentBase,
 	CoreConfiguration,
 	OneDriveWorkSchool,
 	ResourceProviderGetResult,
@@ -33,9 +33,9 @@ export const useAppStore = defineStore('app', {
 		deletedSessions: [] as Session[],
 		currentMessages: [] as Message[],
 		isSidebarClosed: false as boolean,
-		agents: [] as ResourceProviderGetResult<Agent>[],
+		agents: [] as ResourceProviderGetResult<AgentBase>[],
 		selectedAgents: new Map(),
-		lastSelectedAgent: null as ResourceProviderGetResult<Agent> | null,
+		lastSelectedAgent: null as ResourceProviderGetResult<AgentBase> | null,
 		attachments: [] as Attachment[],
 		longRunningOperations: new Map<string, string>(), // sessionId -> operation_id
 		coreConfiguration: null as CoreConfiguration | null,
@@ -162,9 +162,10 @@ export const useAppStore = defineStore('app', {
 				.replace(' ', 'T')
 				.replace('T', ' ');
 
-			return {
-				name: formattedNow,
-			};
+					return {
+			name: formattedNow,
+			metadata: '',
+		};
 		},
 
 		async getSessions(session?: Session) {
@@ -227,6 +228,10 @@ export const useAppStore = defineStore('app', {
 			const existingSession = this.sessions.find(
 				(session: Session) => session.sessionId === sessionToRename.sessionId,
 			);
+
+			if (!existingSession) {
+				throw new Error('Session not found');
+			}
 
 			// Preemptively rename the session for responsiveness, and revert the name if the request fails.
 			const previousName = existingSession.display_name;
@@ -402,7 +407,7 @@ export const useAppStore = defineStore('app', {
 			return selectedAgent;
 		},
 
-		setSessionAgent(session: Session, agent: ResourceProviderGetResult<Agent>) {
+		setSessionAgent(session: Session, agent: ResourceProviderGetResult<AgentBase>) {
 			this.lastSelectedAgent = agent;
 			return this.selectedAgents.set(session.sessionId, agent);
 		},
