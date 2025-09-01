@@ -232,6 +232,10 @@ export interface ResourceBase extends ResourceName {
 	updated_by?: string | null;
 	deleted?: boolean;
 	expiration_date?: string | null;
+	/**
+	 * List of authorizable actions that can be inherited by child resources.
+	 * This property is automatically preserved when loading and saving resources.
+	 */
 	inheritable_authorizable_actions?: string[];
 }
 
