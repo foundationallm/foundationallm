@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using Microsoft.Extensions.DependencyInjection;
+using System.IO.Hashing;
 
 namespace FoundationaLLM.Common.Services.Plugins
 {
@@ -15,6 +16,7 @@ namespace FoundationaLLM.Common.Services.Plugins
     public class DataPipelineStagePluginBase: PluginBase, IDataPipelineStagePlugin
     {
         protected readonly IDataPipelineStateService _dataPipelineStateService;
+        protected readonly XxHash128 _hasher = new XxHash128();
 
         /// <summary>
         /// Initializes a new instance of the base data pipeline stage plugin.
@@ -74,5 +76,18 @@ namespace FoundationaLLM.Common.Services.Plugins
                 new PluginResult(
                     Success: true,
                     StopProcessing: false));
+
+        /// <summary>
+        /// Computes a hexadecimal hash string for the specified input using the current hashing algorithm.
+        /// </summary>
+        /// <param name="input">The input string to compute the hash for. Cannot be <see langword="null"/> or empty.</param>
+        /// <returns>A lowercase hexadecimal string representing the computed hash of the input.</returns>
+        protected string ComputeHash(string input)
+        {
+            var inputBytes = System.Text.Encoding.UTF8.GetBytes(input);
+            _hasher.Append(inputBytes);
+            var hashBytes = _hasher.GetHashAndReset();
+            return Convert.ToBase64String(hashBytes);
+        }
     }
 }

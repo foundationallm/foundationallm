@@ -175,6 +175,7 @@ namespace FoundationaLLM.Core.Examples.Setup
             services.AddPromptResourceProvider(configuration);
             services.AddVectorResourceProvider(configuration);
             services.AddPluginResourceProvider(configuration);
+            services.AddContextResourceProvider(configuration);
         }
 
         protected override void RegisterEventService(

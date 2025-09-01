@@ -12,6 +12,7 @@ namespace FoundationaLLM.Common.Models.DataPipelines
         /// Gets or sets the entities and relationships extracted from the content item part.
         /// </summary>
         [JsonPropertyName("entities")]
+        [JsonPropertyOrder(1)]
         public KnowledgeEntityRelationshipCollection<ExtractedKnowledgeEntity, ExtractedKnowledgeRelationship>? EntitiesAndRelationships { get; set; }
 
         /// <summary>

@@ -10,7 +10,6 @@ using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Knowledge;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
@@ -23,6 +22,9 @@ using FoundationaLLM.Plugins.DataPipeline.Constants;
 using FoundationaLLM.Plugins.DataPipeline.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Security.Cryptography;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
@@ -44,6 +46,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
         protected override string Name => PluginNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE;
 
         private const string KNOWLEDGE_PARTS_FILE_NAME = "knowledge-parts.parquet";
+        private const string KNOWLEDGE_GRAPH_ROOT_PATH = "knowledge-graph";
+        private const string KNOWLEDGE_GRAPH_ENTITIES_FILE_NAME = "knowledge-graph-entities.parquet";
+        private const string KNOWLEDGE_GRAPH_RELATIONSHIPS_FILE_NAME = "knowledge-graph-relationships.parquet";
+
         private const string KNOWLEDGE_ENTITIES_FILE_PATH = "knowledge-graph/knowledge-graph-entities.parquet";
         private const string KNOWLEDGE_RELATIONSHIPS_FILE_PATH = "knowledge-graph/knowledge-graph-relationships.parquet";
         private const string ENTITY_NAMES_PLACEHOLDER = "{entity_names}";
@@ -198,10 +204,11 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     || contentArtifactsLoadResult.Artifacts.Count == 0)
                     throw new PluginException("The content items artifact is missing.");
 
-                var contentItemCanonicalIds = JsonSerializer.Deserialize<List<string>>(
+                var contentItemsRegistry = JsonSerializer.Deserialize<ContentItemsRegistry>(
                     contentArtifactsLoadResult.Artifacts[0].Content)
                     ?? throw new PluginException("The content items artifact is not valid.");
 
+                var contentItemCanonicalIds = contentItemsRegistry.ToAddOrUpdate.Keys.ToList();
                 var knowledgeParts = await LoadExtractedKnowledge(
                     dataPipelineDefinition,
                     dataPipelineRun,
@@ -209,7 +216,11 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     contentItemCanonicalIds);
 
                 foreach (var knowledgePart in knowledgeParts)
-                    AddExtractedKnowledgePart(knowledgePart);
+                    ProcessExtractedKnowledgePart(knowledgePart);
+
+                await UpdateKnowledgeEntities(
+                    dataPipelineDefinition,
+                    dataPipelineRun);
 
                 await SaveEntities(
                     dataPipelineDefinition,
@@ -401,54 +412,6 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 new PluginResult(true, false);
         }
 
-        private async Task LoadKnowledgeGraphState(
-            DataPipelineDefinition dataPipelineDefinition,
-            DataPipelineRun dataPipelineRun)
-        {
-            var graphStateLoadResult = await _dataPipelineStateService.TryLoadDataPipelineRunArtifacts(
-                dataPipelineDefinition,
-                dataPipelineRun,
-                "knowledge-graph/knowledge-graph-state.json");
-
-            if (!graphStateLoadResult.Success
-                || graphStateLoadResult.Artifacts is null
-                || graphStateLoadResult.Artifacts.Count == 0)
-            {
-                _knowledgeGraphBuildingState = new KnowledgeGraphBuildingState();
-                await _dataPipelineStateService.SaveDataPipelineRunArtifacts(
-                    dataPipelineDefinition,
-                    dataPipelineRun,
-                    [
-                        new DataPipelineStateArtifact
-                        {
-                            FileName = "knowledge-graph/knowledge-graph-state.json",
-                            Content = BinaryData.FromString(JsonSerializer.Serialize(_knowledgeGraphBuildingState)),
-                            ContentType = "application/json"
-                        }
-                    ]);
-            }
-            else
-            {
-                _knowledgeGraphBuildingState = JsonSerializer.Deserialize<KnowledgeGraphBuildingState>(
-                    graphStateLoadResult.Artifacts[0].Content)!;
-            }
-        }
-
-        private async Task SaveKnowledgeGrapState(
-            DataPipelineDefinition dataPipelineDefinition,
-            DataPipelineRun dataPipelineRun) =>
-            await _dataPipelineStateService.SaveDataPipelineRunArtifacts(
-                dataPipelineDefinition,
-                dataPipelineRun,
-                [
-                    new DataPipelineStateArtifact
-                    {
-                        FileName = "knowledge-graph/knowledge-graph-state.json",
-                        Content = BinaryData.FromString(JsonSerializer.Serialize(_knowledgeGraphBuildingState)),
-                        ContentType = "application/json"
-                    }
-                ]);
-
         private async Task<List<DataPipelineContentItemKnowledgePart>> LoadExtractedKnowledge(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
@@ -518,7 +481,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             }
         }
 
-        private void AddExtractedKnowledgePart(
+        private void ProcessExtractedKnowledgePart(
             DataPipelineContentItemKnowledgePart knowledgePart)
         {
             foreach (var entity in knowledgePart.EntitiesAndRelationships!.Entities)
@@ -539,11 +502,15 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 {
                     _entityRelationships.Entities.Add(new KnowledgeEntity
                     {
-                        Position = _entityRelationships.Entities.Count + 1,
                         Type = entity.Type,
                         Name = entity.Name,
                         Descriptions = [entity.Description],
-                        ChunkIds = [knowledgePart.IndexEntryId]
+                        ChunkIds = [knowledgePart.IndexEntryId],
+                        IndexEntryId = Convert.ToBase64String(
+                            MD5.HashData(Encoding.UTF8.GetBytes(
+                                $"{entity.Type}-{entity.Name}-{Guid.NewGuid()}")))
+                            .Replace("+", "--")
+                            .Replace("/", "--")
                     });
                 }
             }
@@ -568,31 +535,196 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 }
                 else
                 {
-                    _entityRelationships.Relationships.Add(new KnowledgeRelationship
-                    {
-                        Position = _entityRelationships.Relationships.Count + 1,
-                        Source = relationship.Source,
-                        SourceType = knowledgePart
+                    var sourceType = knowledgePart
                             .EntitiesAndRelationships
                             .Entities
                             .FirstOrDefault(e => e.Name == relationship.Source)?
                             .Type
-                            ?? "N/A",
-                        Target = relationship.Target,
-                        TargetType = knowledgePart
+                            ?? "N/A";
+                    var targetType = knowledgePart
                             .EntitiesAndRelationships
                             .Entities
                             .FirstOrDefault(e => e.Name == relationship.Target)?
                             .Type
-                            ?? "N/A",
+                            ?? "N/A";
+
+                    _entityRelationships.Relationships.Add(new KnowledgeRelationship
+                    {
+                        Source = relationship.Source,
+                        SourceType = sourceType,
+                        Target = relationship.Target,
+                        TargetType = targetType,
                         Strengths = [relationship.Strength],
                         ShortDescriptions = [relationship.ShortDescription],
                         Descriptions = [relationship.Description],
-                        ChunkIds = [knowledgePart.IndexEntryId!]
+                        ChunkIds = [knowledgePart.IndexEntryId!],
+                        IndexEntryId = Convert.ToBase64String(
+                            MD5.HashData(Encoding.UTF8.GetBytes(
+                                $"{relationship.Source}-{sourceType}-{relationship.Target}-{targetType}-{Guid.NewGuid()}")))
+                            .Replace("+", "--")
+                            .Replace("/", "--")
                     });
                 }
             }
+
+            foreach (var entity in _entityRelationships.Entities)
+                entity.DescriptionsHash = ComputeHash(entity.ConsolidatedDescriptions);
+
+            foreach (var relationship in _entityRelationships.Relationships)
+                relationship.DescriptionsHash = ComputeHash(relationship.ConsolidatedDescriptions);
         }
+
+        private async Task UpdateKnowledgeEntities(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun)
+        {
+            var entityBuckets = _entityRelationships.Entities
+                .GroupBy(e => e.BucketId)
+                .ToList();
+
+            using var semaphore = new SemaphoreSlim(10);
+
+            var updateTasks = entityBuckets
+                .Select(async g =>
+                {
+                    await semaphore.WaitAsync();
+                    try
+                    {
+                        return await UpdateKnowledgeEntities(
+                            dataPipelineDefinition,
+                            dataPipelineRun,
+                            g.Key,
+                            g);
+                    }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                })
+                .ToList();
+
+            var updateTaskResults = await Task.WhenAll(updateTasks);
+
+            var successResults = updateTaskResults.Count(r => r);
+            if (successResults < entityBuckets.Count)
+            {
+                _logger.LogWarning("Not all entity buckets were updated successfully in data pipeline run {DataPipelineRunId}. Expected {ExpectedCount}, but got {ActualCount}.",
+                    dataPipelineRun.Id, entityBuckets.Count, successResults);
+                // We do not fail the entire process if some buckets fail to update.
+            }
+        }
+
+        private async Task<bool> UpdateKnowledgeEntities(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
+            string bucketId,
+            IEnumerable<KnowledgeEntity> knowledgeEntities)
+        {
+            try
+            {
+                var knowledgeEntitiesFilePath = string.Join('/', [
+                    KNOWLEDGE_GRAPH_ROOT_PATH,
+                bucketId,
+                KNOWLEDGE_GRAPH_ENTITIES_FILE_NAME
+                ]);
+                var existingKnowledgeEntites = (await _dataPipelineStateService.LoadDataPipelineRunParts<KnowledgeEntity>(
+                    dataPipelineDefinition,
+                    dataPipelineRun,
+                    knowledgeEntitiesFilePath)).ToList();
+
+                var newKnowledgeEntities = knowledgeEntities
+                    .ToDictionary(ke => ke.UniqueId);
+
+                foreach (var existingKnowledgeEntity in existingKnowledgeEntites)
+                {
+                    if (newKnowledgeEntities.TryGetValue(existingKnowledgeEntity.UniqueId, out var newKnowledgeEntity))
+                    {
+                        if (existingKnowledgeEntity.DescriptionsHash == newKnowledgeEntity.DescriptionsHash)
+                        {
+                            // No changes, skip
+                            newKnowledgeEntities.Remove(existingKnowledgeEntity.UniqueId);
+                            continue;
+                        }
+
+                        existingKnowledgeEntity.Descriptions = newKnowledgeEntity.Descriptions;
+                        existingKnowledgeEntity.ChunkIds = newKnowledgeEntity.ChunkIds;
+                        newKnowledgeEntities.Remove(existingKnowledgeEntity.UniqueId);
+                    }
+                }
+
+                var maxPosition = existingKnowledgeEntites.Max(ke => ke.Position);
+
+                foreach (var newKnowledgeEntity in newKnowledgeEntities.Values)
+                {
+                    maxPosition++;
+                    newKnowledgeEntity.Position = maxPosition;
+                    existingKnowledgeEntites.Add(newKnowledgeEntity);
+                }
+
+                await _dataPipelineStateService.SaveDataPipelineRunParts<KnowledgeEntity>(
+                    dataPipelineDefinition,
+                    dataPipelineRun,
+                    existingKnowledgeEntites,
+                    knowledgeEntitiesFilePath);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to update knowledge entities for bucket {BucketId} in data pipeline run {DataPipelineRunId}.",
+                    bucketId, dataPipelineRun.Id);
+                return false;
+            }
+        }
+
+
+        private async Task LoadKnowledgeGraphState(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun)
+        {
+            var graphStateLoadResult = await _dataPipelineStateService.TryLoadDataPipelineRunArtifacts(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                "knowledge-graph/knowledge-graph-state.json");
+
+            if (!graphStateLoadResult.Success
+                || graphStateLoadResult.Artifacts is null
+                || graphStateLoadResult.Artifacts.Count == 0)
+            {
+                _knowledgeGraphBuildingState = new KnowledgeGraphBuildingState();
+                await _dataPipelineStateService.SaveDataPipelineRunArtifacts(
+                    dataPipelineDefinition,
+                    dataPipelineRun,
+                    [
+                        new DataPipelineStateArtifact
+                        {
+                            FileName = "knowledge-graph/knowledge-graph-state.json",
+                            Content = BinaryData.FromString(JsonSerializer.Serialize(_knowledgeGraphBuildingState)),
+                            ContentType = "application/json"
+                        }
+                    ]);
+            }
+            else
+            {
+                _knowledgeGraphBuildingState = JsonSerializer.Deserialize<KnowledgeGraphBuildingState>(
+                    graphStateLoadResult.Artifacts[0].Content)!;
+            }
+        }
+
+        private async Task SaveKnowledgeGrapState(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun) =>
+            await _dataPipelineStateService.SaveDataPipelineRunArtifacts(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                [
+                    new DataPipelineStateArtifact
+                    {
+                        FileName = "knowledge-graph/knowledge-graph-state.json",
+                        Content = BinaryData.FromString(JsonSerializer.Serialize(_knowledgeGraphBuildingState)),
+                        ContentType = "application/json"
+                    }
+                ]);
 
         private async Task LoadEntities(
             DataPipelineDefinition dataPipelineDefinition,
@@ -904,12 +1036,12 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             foreach (var entity in _entityRelationships.Entities)
             {
-                if (embeddingsDictionary.TryGetValue(entity.Position, out var embedding))
-                    entity.SummaryDescriptionEmbedding = embedding!.Value.Vector.ToArray();
-                else
-                    _logger.LogWarning("Data pipeline run {DataPipelineRunId}: The Gateway API did not return an embedding for the entity at position {EntityPosition}.",
-                        dataPipelineRun.Id,
-                        entity.Position);
+                //if (embeddingsDictionary.TryGetValue(entity.Position, out var embedding))
+                //    entity.SummaryDescriptionEmbedding = embedding!.Value.Vector.ToArray();
+                //else
+                //    _logger.LogWarning("Data pipeline run {DataPipelineRunId}: The Gateway API did not return an embedding for the entity at position {EntityPosition}.",
+                //        dataPipelineRun.Id,
+                //        entity.Position);
             }
 
             return new PluginResult(true, false);
@@ -967,12 +1099,12 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             foreach (var relationship in _entityRelationships.Relationships)
             {
-                if (embeddingsDictionary.TryGetValue(relationship.Position, out var embedding))
-                    relationship.SummaryDescriptionEmbedding = embedding!.Value.Vector.ToArray();
-                else
-                    _logger.LogWarning("Data pipeline run {DataPipelineRunId}: The Gateway API did not return an embedding for the relationship at position {EntityPosition}.",
-                        dataPipelineRun.Id,
-                        relationship.Position);
+                //if (embeddingsDictionary.TryGetValue(relationship.Position, out var embedding))
+                //    relationship.SummaryDescriptionEmbedding = embedding!.Value.Vector.ToArray();
+                //else
+                //    _logger.LogWarning("Data pipeline run {DataPipelineRunId}: The Gateway API did not return an embedding for the relationship at position {EntityPosition}.",
+                //        dataPipelineRun.Id,
+                //        relationship.Position);
             }
 
             return new PluginResult(true, false);

@@ -59,7 +59,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                 packageManagerResolver,
                 MainServiceContainer.ServiceProvider);
 
-            var pluginResult = await dataSourcePlugin.ProcessWorkItem(
+           var pluginResult = await dataSourcePlugin.ProcessWorkItem(
                 dataPipelineDefinitionSnapshot.DataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem!);
@@ -71,8 +71,8 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
         new()
         {
             {
-                "work-item-FwB5zJHt3k6PmGF5rofb7g",
-                "run-20250630-165745-JmaV2TETeU2G4S6EwUDjDQ-TAfGit69y0OhQOwAAtltKw",
+                "work-item-8-cQXjU5s0-LYPlm2IlYNg",
+                "run-20250901-144203-Cy5HBLyiM0iY31pfwYO-tA-TAfGit69y0OhQOwAAtltKw",
                 new Dictionary<string, object>
                 {
                     {

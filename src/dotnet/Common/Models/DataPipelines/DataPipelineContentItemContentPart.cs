@@ -13,18 +13,21 @@ namespace FoundationaLLM.Common.Models.DataPipelines
         /// Gets or sets the text content of the content item part.
         /// </summary>
         [JsonPropertyName("content")]
+        [JsonPropertyOrder(1)]
         public string? Content { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the content item part in tokens.
         /// </summary>
         [JsonPropertyName("content_size_tokens")]
+        [JsonPropertyOrder(2)]
         public int ContentSizeTokens { get; set; }
 
         /// <summary>
         /// Gets or sets the embedding of the content item part.
         /// </summary>
         [JsonPropertyName("embedding")]
+        [JsonPropertyOrder(3)]
         public float[]? Embedding { get; set; }
 
         /// <summary>

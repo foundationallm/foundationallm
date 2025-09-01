@@ -6,11 +6,9 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
-using FoundationaLLM.DataPipelineEngine.Models.DataPipelineState;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Parquet.Serialization;
-using System.Collections;
 using System.Text.Json;
 
 namespace FoundationaLLM.DataPipelineEngine.Services
@@ -664,6 +662,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                         dataPipelineRun),
                     filePath
                 ]);
+
+            if (!await _storageService.FileExistsAsync(
+                dataPipelineRun.InstanceId,
+                dataPipelineRunPartsPath,
+                default))
+                return [];
 
             var binaryContent = await _storageService.ReadFileAsync(
                 dataPipelineRun.InstanceId,

@@ -1,7 +1,7 @@
 ﻿using FoundationaLLM.Common.Constants.DataPipelines;
 using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.DataPipelineEngine.Models.DataPipelineState
+namespace FoundationaLLM.Common.Models.DataPipelines
 {
     /// <summary>
     /// Represents a registry for content items within the data pipeline engine.
