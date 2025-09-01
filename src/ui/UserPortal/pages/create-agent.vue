@@ -635,7 +635,6 @@ export default defineComponent({
             this.createdAgent.properties.welcome_message = welcomeMessage;
             this.createdAgent.expiration_date = formattedDate;
 
-            // Her zaman güncelle, model id olarak selectedAIModel varsa onu, yoksa mevcut ana modeli kullan
             let currentMainModelId = null;
             if (this.createdAgent.workflow && this.createdAgent.workflow.resource_object_ids) {
                 for (const [key, obj] of Object.entries(this.createdAgent.workflow.resource_object_ids)) {
