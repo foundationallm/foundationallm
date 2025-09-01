@@ -120,7 +120,7 @@ export interface OrchestrationSettings {
 export interface ResourceObjectId {
 	object_id: string;
 	properties: {
-		role?: string;
+		object_role?: string;
 		[key: string]: any;
 	};
 }
@@ -367,4 +367,10 @@ export interface MultipartPrompt {
 	updated_by?: string;
 	deleted?: boolean;
 	expiration_date?: string | null;
+}
+
+// --- Update Main Model Types ---
+export interface UpdateMainModelRequest {
+	agent: AgentBase;
+	newModelObjectId: string;
 }

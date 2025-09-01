@@ -339,10 +339,10 @@
                                                     }}</td>
                                                     <td class="mnt-b-bottom p-3">{{ f.resource?.name }}</td>
                                                     <td class="mnt-b-bottom p-3 text-center">
-                                                        <Button 
-                                                            label="Delete" 
-                                                            severity="danger" 
-                                                            @click="deleteFile(f.resource?.name)" 
+                                                        <Button
+                                                            label="Delete"
+                                                            severity="danger"
+                                                            @click="deleteFile(f.resource?.name)"
                                                             class="min-h-[35px] min-w-[80px]"
                                                         />
                                                     </td>
@@ -436,7 +436,7 @@ export default defineComponent({
                 this.displayNameStatus = 'error';
                 return;
             }
-            
+
             try {
                 const res = await api.checkAgentNameAvailability(name);
                 this.displayNameStatus = (res.status === 'Allowed' && !res.exists && !res.deleted) ? 'success' : 'error';
@@ -451,7 +451,7 @@ export default defineComponent({
             }
 
             const trimmedName = name.trim();
-            
+
             // Check length
             if (trimmedName.length < 2 || trimmedName.length > 50) {
                 return false;
@@ -560,7 +560,7 @@ export default defineComponent({
             if (slug.length > 0 && !/^[a-zA-Z]/.test(slug)) {
                 slug = 'agent-' + slug;
             }
-            
+
             return slug;
         },
 
@@ -607,10 +607,51 @@ export default defineComponent({
             }
         },
 
-
         async onSaveAgent() {
-            // Save logic for edit mode (not implemented)
-            this.$toast.add({ severity: 'success', summary: 'Saved', detail: 'Agent changes saved.', life: 3000 });
+            if (!this.createdAgent) {
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: 'No agent to update.', life: 5000 });
+                return;
+            }
+
+            // Update agent model with new values from form
+            const displayName = (document.getElementById('agentDisplayName') as HTMLInputElement)?.value || '';
+            const description = (document.getElementById('agentDescription') as HTMLTextAreaElement)?.value || '';
+            const welcomeMessage = (document.getElementById('agentWelcomeMessage') as HTMLTextAreaElement)?.value || '';
+            let formattedDate = '';
+            if (this.agentExpirationDate) {
+                const d = new Date(this.agentExpirationDate);
+                formattedDate = d.toISOString().split('T')[0] + 'T00:00:00+00:00';
+            }
+
+            // Set values on the agent model
+            this.createdAgent.display_name = displayName;
+            this.createdAgent.description = description;
+            if (!this.createdAgent.properties) this.createdAgent.properties = {};
+            this.createdAgent.properties.welcome_message = welcomeMessage;
+            this.createdAgent.expiration_date = formattedDate;
+
+            // Her zaman güncelle, model id olarak selectedAIModel varsa onu, yoksa mevcut ana modeli kullan
+            let currentMainModelId = null;
+            if (this.createdAgent.workflow && this.createdAgent.workflow.resource_object_ids) {
+                for (const [key, obj] of Object.entries(this.createdAgent.workflow.resource_object_ids)) {
+                    if (obj && obj.properties && obj.properties.object_role === 'main_model') {
+                        currentMainModelId = obj.object_id;
+                        break;
+                    }
+                }
+            }
+            const modelIdToUpdate = this.selectedAIModel || currentMainModelId;
+            if (!modelIdToUpdate) {
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: 'No model selected or found.', life: 5000 });
+                return;
+            }
+            try {
+                const updatedAgent = await api.updateAgentMainModel(this.createdAgent, modelIdToUpdate);
+                this.createdAgent.object_id = updatedAgent.object_id;
+                this.$toast.add({ severity: 'success', summary: 'Agent Updated', detail: 'Agent changes saved.', life: 3000 });
+            } catch (err) {
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: err.message || 'Failed to update agent', life: 5000 });
+            }
         },
 
         async onSaveSystemPrompt() {
