@@ -831,9 +831,9 @@ export default {
 						: `<i class="pi pi-file" class="attachment-icon"></i>`;
 					return `${fileIcon}<a href="#" data-href="${href}" data-filename="${fileName}" title="${title || ''}" class="file-download-link">${text}</a>`;
 				} else {
-					const linkHTML = `<a href="${href}" title="${title || ''}" target="_blank">${text}</a>`;
-					// Process link html again in case it contains nested markdown content
-					return marked(linkHTML, { renderer: this.markedRenderer });
+					// Render as inline anchor; if the label itself may contain markdown, parse only inline
+					const label = (marked.parseInline && marked.parseInline(text)) || text;
+					return `<a href="${href}" title="${title || ''}" target="_blank">${label}</a>`;
 				}
 			};
 		},
@@ -841,17 +841,21 @@ export default {
 		markSkippableContent() {
 			if (!this.processedContent) return;
 
+			// Normalize URLs to improve matching
+			const normalize = (u = '') =>
+				u.replace(/^\/+/, '').replace(/[.,);]+$/, '');
+
 			this.processedContent.forEach((contentBlock) => {
 				if (contentBlock.type === 'file_path') {
-					// Check for a matching text content that shares the same URL
+					const target = normalize(contentBlock.origValue);
 					const matchingTextContent = this.processedContent.find(
-						(block) => block.type === 'text' && block.origValue.includes(contentBlock.origValue),
+						(block) =>
+							block.type === 'text' &&
+							normalize(block.origValue).includes(target),
 					);
 
 					if (matchingTextContent) {
-						// Set the fileName in the matching text content
 						matchingTextContent.fileName = contentBlock.fileName;
-						// Skip rendering this file_path block
 						contentBlock.skip = true;
 					}
 				}
