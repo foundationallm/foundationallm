@@ -1,19 +1,20 @@
 ﻿using FluentValidation;
+using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Graph;
 using System.Text.Json;
-using FoundationaLLM.Common.Constants.Authentication;
-using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 
 namespace FoundationaLLM.Authorization.ResourceProviders
 {
@@ -259,13 +260,17 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             UnifiedUserIdentity userIdentity,
             Func<object, bool>? requestPayloadValidator = null)
         {
-            var identityObjects = await _identityManagementService.GetObjectsByIds(
-                new ObjectQueryParameters
-                {
-                    Ids = queryParameters.Ids
-                });
+            await _validator.ValidateAndThrowAsync<SecurityPrincipalQueryParameters>(queryParameters);
 
-             return [.. identityObjects
+            if (queryParameters.Ids is not null)
+            {
+                var identityObjects = await _identityManagementService.GetObjectsByIds(
+                    new ObjectQueryParameters
+                    {
+                        Ids = queryParameters.Ids
+                    });
+
+                return [.. identityObjects
                 .Select(io => new ResourceProviderGetResult<SecurityPrincipal>
                 {
                     Resource = new SecurityPrincipal
@@ -278,6 +283,47 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                     Roles = [],
                     Actions = []
                 })];
+            }
+
+            var identityObjects2 = queryParameters.SecurityPrincipalType switch
+            {
+                SecurityPrincipalTypes.User => await _identityManagementService.GetUsers(
+                    new ObjectQueryParameters
+                    {
+                        Name = queryParameters.Name,
+                        Ids = []
+                    }),
+                SecurityPrincipalTypes.Group => await _identityManagementService.GetUserGroups(
+                    new ObjectQueryParameters
+                    {
+                        Name = queryParameters.Name,
+                        Ids = []
+                    }),
+                SecurityPrincipalTypes.ServicePrincipal => await _identityManagementService.GetServicePrincipals(
+                    new ObjectQueryParameters
+                    {
+                        Name = queryParameters.Name,
+                        Ids = []
+                    }),
+                _ => throw new ResourceProviderException(
+                    "Invalid security principal type. Unable to retrieve security principals.",
+                    StatusCodes.Status400BadRequest)
+            };
+
+            return [.. identityObjects2.Items!
+                .Select(io => new ResourceProviderGetResult<SecurityPrincipal>
+                {
+                    Resource = new SecurityPrincipal
+                    {
+                        Id = io.Id!,
+                        Type = io.ObjectType,
+                        Name = io.DisplayName!,
+                        Email = io.Email
+                    },
+                    Roles = [],
+                    Actions = []
+                })
+            ];
         }
 
         #endregion

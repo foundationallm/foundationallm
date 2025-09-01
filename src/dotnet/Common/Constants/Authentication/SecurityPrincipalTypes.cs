@@ -3,7 +3,7 @@
     /// <summary>
     /// Contains the names of common authentication object types.
     /// </summary>
-    public static class ObjectTypes
+    public static class SecurityPrincipalTypes
     {
         /// <summary>
         /// A user account.
@@ -21,5 +21,15 @@
         /// Other object type.
         /// </summary>
         public const string Other = "Other";
+
+        /// <summary>
+        /// All valid security principal types.
+        /// </summary>
+        public static readonly List<string> All =
+        [
+            User,
+            Group,
+            ServicePrincipal
+        ];
     }
 }

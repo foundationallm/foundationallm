@@ -104,24 +104,24 @@ namespace FoundationaLLM.Common.Services.Security
             {
                 string? email = null;
                 string? displayName = null;
-                var objectType = ObjectTypes.Other;
+                var objectType = SecurityPrincipalTypes.Other;
 
                 if (directoryObject is User user)
                 {
                     email = user.Mail;
                     displayName = user.DisplayName;
-                    objectType = ObjectTypes.User;
+                    objectType = SecurityPrincipalTypes.User;
                 }
                 else if (directoryObject is Group group)
                 {
                     email = group.Mail;
                     displayName = group.DisplayName;
-                    objectType = ObjectTypes.Group;
+                    objectType = SecurityPrincipalTypes.Group;
                 }
                 else if (directoryObject is ServicePrincipal servicePrincipal)
                 {
                     displayName = servicePrincipal.DisplayName;
-                    objectType = ObjectTypes.ServicePrincipal;
+                    objectType = SecurityPrincipalTypes.ServicePrincipal;
                 }
 
                 results.Add(new ObjectQueryResult
@@ -142,7 +142,7 @@ namespace FoundationaLLM.Common.Services.Security
                     {
                         Id = id,
                         DisplayName = id,
-                        ObjectType = ObjectTypes.Other
+                        ObjectType = SecurityPrincipalTypes.Other
                     });
                 }
             }
@@ -160,7 +160,7 @@ namespace FoundationaLLM.Common.Services.Security
                 Id = group?.Id,
                 Email = group?.Mail,
                 DisplayName = group?.DisplayName,
-                ObjectType = ObjectTypes.Group,
+                ObjectType = SecurityPrincipalTypes.Group,
             };
         }
 
@@ -205,7 +205,7 @@ namespace FoundationaLLM.Common.Services.Security
                     Id = x?.Id,
                     Email = x?.Mail,
                     DisplayName = x?.DisplayName,
-                    ObjectType = ObjectTypes.Group,
+                    ObjectType = SecurityPrincipalTypes.Group,
                 }));
             }
 
@@ -227,7 +227,7 @@ namespace FoundationaLLM.Common.Services.Security
                 Id = user?.Id,
                 Email = user?.Mail,
                 DisplayName = user?.DisplayName,
-                ObjectType = ObjectTypes.User,
+                ObjectType = SecurityPrincipalTypes.User,
             };
         }
 
@@ -272,7 +272,7 @@ namespace FoundationaLLM.Common.Services.Security
                     Id = x?.Id,
                     Email = x?.Mail,
                     DisplayName = x?.DisplayName,
-                    ObjectType = ObjectTypes.User,
+                    ObjectType = SecurityPrincipalTypes.User,
                 }));
             }
 
@@ -294,7 +294,7 @@ namespace FoundationaLLM.Common.Services.Security
                 Id = servicePrincipal?.Id,
                 Email = null,
                 DisplayName = servicePrincipal?.DisplayName,
-                ObjectType = ObjectTypes.ServicePrincipal,
+                ObjectType = SecurityPrincipalTypes.ServicePrincipal,
             };
         }
 
@@ -339,7 +339,7 @@ namespace FoundationaLLM.Common.Services.Security
                     Id = x?.Id,
                     Email = null,
                     DisplayName = x?.DisplayName,
-                    ObjectType = ObjectTypes.ServicePrincipal,
+                    ObjectType = SecurityPrincipalTypes.ServicePrincipal,
                 }));
             }
 

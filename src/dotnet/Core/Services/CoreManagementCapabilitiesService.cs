@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
@@ -97,7 +98,7 @@ namespace FoundationaLLM.Core.Services
                     {
                         [AuthorizationResourceTypeNames.RoleAssignments] = new ResourceTypeAvailability
                         {
-                            IsResourceTypeAvailable = false,
+                            IsResourceTypeAvailable = true,
                             AvailableActions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                             {
                                 ResourceProviderActions.Filter
@@ -209,8 +210,10 @@ namespace FoundationaLLM.Core.Services
             object requestPayload) =>
         requestPayload.GetType() switch
         {
-           Type t when t == typeof(RoleAssignmentQueryParameters) =>
+            Type t when t == typeof(RoleAssignmentQueryParameters) =>
                 ValidateRoleAssignmentQueryParameters((requestPayload as RoleAssignmentQueryParameters)!),
+            Type t when t == typeof(RoleAssignment) =>
+                ValidateRoleAssignment((requestPayload as RoleAssignment)!),
             _ => false
         };
 
@@ -236,6 +239,32 @@ namespace FoundationaLLM.Core.Services
             {
                 _logger.LogError(ex, "An error occurred while validating the RoleAssignmentQueryParameters with scope {Scope}",
                     queryParameters.Scope);
+                return false;
+            }
+        }
+
+        private bool ValidateRoleAssignment(
+            RoleAssignment roleAssignment)
+        {
+            try
+            {
+                var resourcePath = ResourcePath.GetResourcePath(roleAssignment.Scope!);
+                if (resourcePath.IsRootPath
+                    || resourcePath.IsInstancePath
+                    || resourcePath.ResourceProvider != ResourceProviderNames.FoundationaLLM_Agent
+                    || resourcePath.MainResourceTypeName != AgentResourceTypeNames.Agents
+                    || resourcePath.ResourceTypeInstances.Count != 1)
+                {
+                    _logger.LogWarning("The RoleAssignment.Scope value is invalid: {Scope}",
+                        roleAssignment.Scope);
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while validating the RoleAssignment with scope {Scope}",
+                    roleAssignment.Scope);
                 return false;
             }
         }
