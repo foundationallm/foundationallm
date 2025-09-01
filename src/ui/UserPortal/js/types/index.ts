@@ -368,9 +368,3 @@ export interface MultipartPrompt {
 	deleted?: boolean;
 	expiration_date?: string | null;
 }
-
-// --- Update Main Model Types ---
-export interface UpdateMainModelRequest {
-	agent: AgentBase;
-	newModelObjectId: string;
-}
