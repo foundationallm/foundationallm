@@ -222,19 +222,30 @@ export interface MessageResponse {
 	status_message?: string;
 }
 
-export interface ResourceBase {
-	type: string;
+
+export interface ResourceName {
+	type: string | null;
 	name: string;
-	object_id: string;
+}
+
+export interface ResourceBase extends ResourceName {
+	object_id?: string;
 	display_name?: string | null;
 	description?: string | null;
 	cost_center?: string | null;
+	properties?: Record<string, string>;
 	created_on?: string;
 	updated_on?: string;
 	created_by?: string | null;
 	updated_by?: string | null;
 	deleted?: boolean;
 	expiration_date?: string | null;
+	inheritable_authorizable_actions?: string[];
+}
+
+export interface PromptBase extends ResourceBase {
+	type: string | null;
+	category?: string | null;
 }
 
 
@@ -350,21 +361,7 @@ export interface AgentCreationFromTemplateRequest {
 }
 
 // --- MultipartPrompt Type ---
-export interface MultipartPrompt {
-	type: string;
-	name: string;
-	object_id: string;
-	display_name: string;
-	description: string;
-	cost_center?: string | null;
-	prefix: string;
+export interface MultipartPrompt extends PromptBase {
+	prefix?: string | null;
 	suffix?: string | null;
-	category?: string;
-	properties?: Record<string, any>;
-	created_on?: string;
-	updated_on?: string;
-	created_by?: string | null;
-	updated_by?: string;
-	deleted?: boolean;
-	expiration_date?: string | null;
 }
