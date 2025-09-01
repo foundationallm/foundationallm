@@ -516,6 +516,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Authorization.Validation.SecurityPrincipalQueryParametersValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Authorization.Validation.SecurityPrincipalQueryParametersValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Authorization.Validation.SecurityPrincipalQueryParametersValidator",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Authorization.Validation.SecurityPrincipalQueryParametersValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.Authorization.SecurityPrincipalQueryParameters\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Authorization.Validation.yml",
       "output": {
         ".html": {
@@ -1902,20 +1916,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authentication.ObjectTypes.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authentication.ObjectTypes.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Constants.Authentication.ObjectTypes",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Authentication.ObjectTypes.yml\" sourcestartlinenumber=\"1\">Contains the names of common authentication object types.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authentication.RoleAssignmentResultReasons.yml",
       "output": {
         ".html": {
@@ -1941,6 +1941,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Constants.Authentication.ScopeURIs",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Authentication.ScopeURIs.yml\" sourcestartlinenumber=\"1\">The URIs for the scopes used in the application.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authentication.SecurityPrincipalTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authentication.SecurityPrincipalTypes.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Authentication.SecurityPrincipalTypes",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Authentication.SecurityPrincipalTypes.yml\" sourcestartlinenumber=\"1\">Contains the names of common authentication object types.</p>\n"
     },
     {
       "type": "ManagedReference",
