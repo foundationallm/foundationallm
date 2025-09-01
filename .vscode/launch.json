@@ -121,9 +121,12 @@
             "type": "debugpy",
             "request": "launch",
             "module": "uvicorn",
-            "cwd" : "${workspaceFolder}/src/python/PythonCodeSessionAPI/app",
-            "args": ["main:app","--reload", "--port", "8000"],
-            "python": "${workspaceFolder}/src/python/PythonCodeSessionAPI/.venv/Scripts/python.exe"
+            "cwd": "${workspaceFolder}/src/python/PythonCodeSessionAPI/app",
+            "args": ["main:app", "--reload", "--port", "8000"],
+            "python": "${workspaceFolder}/src/python/PythonCodeSessionAPI/.venv/Scripts/python.exe",
+            "env": {
+                "Path": "${env:Path};C:\\antiword"
+            }
         },
         {
             "name": "Python: Vectorization Pipeline",
