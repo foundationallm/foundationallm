@@ -267,9 +267,9 @@
                                             <p class="text-lg text-[#64748b] font-normal mb-2">Drop and drag or <span
                                                     class="text-[#5472d4] underline">choose file</span> to
                                                 upload</p>
-                                            <p class="text-sm text-[#94a3b8] font-medium italic">(Only PDF)</p>
+                                            <p class="text-sm text-[#94a3b8] font-medium italic">(Any file type)</p>
                                         </div>
-                                        <input ref="fileInput" type="file" accept=".pdf" @change="onFileSelect"
+                                        <input ref="fileInput" type="file" @change="onFileSelect"
                                             class="hidden">
                                     </div>
 
@@ -705,22 +705,14 @@ export default defineComponent({
         },
 
         handleFiles(files: File[]) {
-            const allowedTypes = [
-                'application/pdf',
-            ];
-
+            // Allow all file types, but keep the size restriction (10MB)
             const validFiles = files.filter(file => {
-                if (!allowedTypes.includes(file.type)) {
-                    console.warn(`File type not supported: ${file.name}`);
-                    return false;
-                }
                 if (file.size > 10 * 1024 * 1024) {
                     console.warn(`File too large: ${file.name}`);
                     return false;
                 }
                 return true;
             });
-
             this.uploadedFiles.push(...validFiles);
         },
 
