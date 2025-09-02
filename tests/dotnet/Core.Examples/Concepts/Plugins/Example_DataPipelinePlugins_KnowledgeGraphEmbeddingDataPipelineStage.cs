@@ -13,16 +13,16 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
     /// <summary>
     /// Example class for testing the SharePoint Online Data Source Plugin in Data Pipelines.
     /// </summary>
-    public class Example_DataPipelinePlugins_KnowledgeGraphConsolidationDataPipelineStage : TestBase, IClassFixture<TestFixture>
+    public class Example_DataPipelinePlugins_KnowledgeGraphEmbeddingDataPipelineStage : TestBase, IClassFixture<TestFixture>
     {
-        public Example_DataPipelinePlugins_KnowledgeGraphConsolidationDataPipelineStage(ITestOutputHelper output, TestFixture fixture)
+        public Example_DataPipelinePlugins_KnowledgeGraphEmbeddingDataPipelineStage(ITestOutputHelper output, TestFixture fixture)
             : base(1, output, fixture, new DependencyInjectionContainerInitializer())
         {
         }
 
         [Theory]
         [MemberData(nameof(TestData))]
-        public async Task DataPipelinePlugins_KnowledgeGraphConsolidationDataPipelineStage_ProcessWorkItem(
+        public async Task DataPipelinePlugins_KnowledgeGraphEmbeddingDataPipelineStage_ProcessWorkItem(
             string dataPipelineRunWorkItemId,
             string dataPipelineRunId,
             Dictionary<string, object> pluginParameters)
@@ -50,10 +50,10 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                 dataPipelineRun!.DataPipelineObjectId,
                 ServiceContext.ServiceIdentity!);
 
-            WriteLine("============ FoundationaLLM Data Pipeline Plugins - Knowledge Graph Consolidation Data Pipeline Stage Tests ============");
+            WriteLine("============ FoundationaLLM Data Pipeline Plugins - Knowledge Graph Embedding Data Pipeline Stage Tests ============");
 
             var dataSourcePlugin = packageManager.GetDataPipelineStagePlugin(
-                PluginNames.KNOWLEDGEGRAPH_CONSOLIDATION_DATAPIPELINESTAGE,
+                PluginNames.KNOWLEDGEGRAPH_EMBEDDING_DATAPIPELINESTAGE,
                 pluginParameters,
                 packageManagerResolver,
                 MainServiceContainer.ServiceProvider);
@@ -70,9 +70,15 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
         new()
         {
             {
-                "work-item-8-cQXjU5s0-LYPlm2IlYNg",
-                "run-20250901-144203-Cy5HBLyiM0iY31pfwYO-tA-TAfGit69y0OhQOwAAtltKw",
-                new Dictionary<string, object>()
+                "work-item-z-8mZiIG10iecR-9XVBirA",
+                "run-20250902-161546-87vC4rsf1066jGXo6UBMZQ-TAfGit69y0OhQOwAAtltKw",
+                new Dictionary<string, object>
+                {
+                    {
+                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
+                        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeUnits/ProcessSPOFiles-KG-01"
+                    }
+                }
             }
         };
     }
