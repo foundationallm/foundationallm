@@ -258,11 +258,17 @@
 							<thead>
 								<tr>
 									<th>Name</th>
+									<th>Edit</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr v-for="getAgents in agentOptions2" :key="getAgents.object_id">
 									<td>{{ getAgents.display_name || getAgents.name }}</td>
+									<td>
+										<Button link class="csm-table-edit-btn-1" @click="editAgent(getAgents)">
+											<i class="pi pi-pencil"></i>
+										</Button>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -566,6 +572,18 @@
 
 			selectAgent(getAgents) {
 				this.$emit('agent-selected', getAgents);
+			},
+
+			editAgent(agent) {
+				// Navigate to create-agent page with agent data for editing
+				this.$router.push({
+					path: '/create-agent',
+					query: { 
+						edit: 'true',
+						agentName: agent.name,
+						agentId: agent.object_id
+					}
+				});
 			},
 
 			hideAllPoppers() {
@@ -952,8 +970,15 @@
 	.csm-table-1 tbody tr:last-child td{
 		border-bottom: 0px;
 	}
+	.csm-table-1 thead tr th:last-child, .csm-table-1 tbody tr td:last-child{
+		text-align: center;
+	}
 	.create-agent-button{
 		text-decoration: none;
 		font-weight: 600;
+	}
+	.csm-table-edit-btn-1.p-button:not(.p-button-text){
+		background-color: transparent !important;
+    	color: #6c6c6c !important;
 	}
 </style>
