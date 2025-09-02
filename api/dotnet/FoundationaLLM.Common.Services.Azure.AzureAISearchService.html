@@ -298,7 +298,7 @@ Class AzureAISearchService  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Services_Azure_AzureAISearchService_DeleteDocuments_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Services.Azure.AzureAISearchService.DeleteDocuments(System.String,System.String,System.String)">
   DeleteDocuments(string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureAISearchService.cs/#L219"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureAISearchService.cs/#L268"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes documents from the specified index in the Azure AI Search service based on a filter.</p>
@@ -343,7 +343,7 @@ Class AzureAISearchService  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Services_Azure_AzureAISearchService_SearchDocuments_System_String_System_Collections_Generic_IEnumerable_System_String__System_String_System_String_System_ReadOnlyMemory_System_Single__System_String_System_Single_System_Int32_System_Boolean_" data-uid="FoundationaLLM.Common.Services.Azure.AzureAISearchService.SearchDocuments(System.String,System.Collections.Generic.IEnumerable{System.String},System.String,System.String,System.ReadOnlyMemory{System.Single},System.String,System.Single,System.Int32,System.Boolean)">
   SearchDocuments(string, IEnumerable&lt;string&gt;, string, string?, ReadOnlyMemory&lt;float&gt;, string, float, int, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureAISearchService.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureAISearchService.cs/#L203"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Searches for documents in the specified index that match the given filter and are similar to the provided
@@ -417,7 +417,7 @@ relevance. The collection will be empty if no matching documents are found.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task UploadDocuments(string indexName, List&lt;string&gt; fieldNames, List&lt;object[]&gt; fieldValues)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Dictionary&lt;string, bool&gt;&gt; UploadDocuments(string indexName, List&lt;string&gt; fieldNames, List&lt;object[]&gt; fieldValues)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -435,8 +435,9 @@ relevance. The collection will be empty if no matching documents are found.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
-    <dd></dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;&gt;</dt>
+    <dd><p>A dictionary that specifies for each index id value whether it was successfully uploaded or not.</p>
+</dd>
   </dl>
 
 
@@ -445,6 +446,9 @@ relevance. The collection will be empty if no matching documents are found.</p>
 
 
 
+  <h4 class="section" id="FoundationaLLM_Common_Services_Azure_AzureAISearchService_UploadDocuments_System_String_System_Collections_Generic_List_System_String__System_Collections_Generic_List_System_Object_____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The code in this method assumes that the first field in <code class="paramref">fieldNames</code> is the key field for the index.</p>
+</div>
 
 
 
