@@ -1006,8 +1006,8 @@
 	
 	/* Custom checkbox styling */
 	.custom-checkbox {
-		width: 30px;
-		height: 30px;
+		width: 21px;
+		height: 21px;
 		border: 2px solid #ced4da;
 		border-radius: 4px;
 		display: flex;
@@ -1032,7 +1032,7 @@
 	
 	.custom-checkbox.checked i {
 		color: white;
-		font-size: 16px;
+		font-size: 12px;
 		font-weight: bold;
 	}
 </style>
