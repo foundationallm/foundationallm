@@ -330,32 +330,6 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         }
 
         /// <inheritdoc/>
-        public async Task<(bool Success, DataPipelineStateArtifact? Artifact)> TryLoadDataPipelineRunArtifact(
-            string artifactFilePath)
-        {
-            try
-            {
-                var fileContent = await _storageService.ReadFileAsync(
-                            dataPipelineRun.InstanceId,
-                            path,
-                            default);
-                return new DataPipelineStateArtifact
-                {
-                    FileName = Path.GetFileName(path),
-                    Content = fileContent
-                };
-
-                return (true, result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Could not load data pipeline run artifacts for {RunId} and filter {ArtifactsNameFilter}.",
-                    dataPipelineRun.RunId, artifactsNameFilter);
-                return (false, []);
-            }
-        }
-
-        /// <inheritdoc/>
         public async Task<bool> DataPipelineRunWorkItemArtifactChanged(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,

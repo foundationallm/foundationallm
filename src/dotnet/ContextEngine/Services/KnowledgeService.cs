@@ -246,11 +246,22 @@ namespace FoundationaLLM.Context.Services
                     .ToList();
                 var vectorDatabases = await Task.WhenAll(vectorDatabaseTasks);
 
+                var knowledgeGraphVectorDatabaseTasks = knowledgeUnits
+                    .Select(async knowledgeUnit =>
+                        knowledgeUnit.HasKnowledgeGraph
+                        ? await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
+                                    knowledgeUnit.KnowledgeGraphVectorDatabaseObjectId!,
+                                    userIdentity)
+                        : null)
+                    .ToList();
+                var knowledgeGraphVectorDatabases = await Task.WhenAll(knowledgeGraphVectorDatabaseTasks);
+
                 var cachedKnowledgeUnitTasks = Enumerable.Range(0, knowledgeUnits.Length)
                     .Select(i => GetCachedKnowledgeUnit(
                         instanceId,
                         knowledgeUnits[i],
                         vectorDatabases[i],
+                        knowledgeGraphVectorDatabases[i],
                         userIdentity))
                     .ToList();
                 var cachedKnowledgeUnits = await Task.WhenAll(cachedKnowledgeUnitTasks);
@@ -260,6 +271,7 @@ namespace FoundationaLLM.Context.Services
                         knowledgeUnits[i],
                         cachedKnowledgeUnits[i],
                         vectorDatabases[i],
+                        knowledgeGraphVectorDatabases[i],
                         _loggerFactory.CreateLogger<KnowledgeUnitQueryEngine>()))
                     .ToList();
 
@@ -322,10 +334,15 @@ namespace FoundationaLLM.Context.Services
                     knowledgeUnit.VectorDatabaseObjectId,
                     userIdentity);
 
+                var knowledgeGraphVectorDatabase = await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
+                    knowledgeUnit.KnowledgeGraphVectorDatabaseObjectId!,
+                    userIdentity);
+
                 var cachedKnowledgeUnit = await GetCachedKnowledgeUnit(
                     instanceId,
                     knowledgeUnit,
                     vectorDatabase,
+                    knowledgeGraphVectorDatabase,
                     userIdentity);
 
                 var renderResponse = new ContextKnowledgeUnitRenderGraphResponse
@@ -371,6 +388,7 @@ namespace FoundationaLLM.Context.Services
             string instanceId,
             KnowledgeUnit knowledgeUnit,
             VectorDatabase vectorDatabase,
+            VectorDatabase? knowledgeGraphVectorDatabase,
             UnifiedUserIdentity userIdentity)
         {
             var cachedKnowledgeUnit = GetKnowledgeUnitFromCache(
@@ -393,6 +411,16 @@ namespace FoundationaLLM.Context.Services
 
             if (knowledgeUnit.HasKnowledgeGraph)
             {
+                if (knowledgeGraphVectorDatabase is not null)
+                {
+                    cachedKnowledgeUnit.KnowledgeGraphSearchService = await GetAzureAISearchService(
+                        instanceId,
+                        knowledgeGraphVectorDatabase);
+                    cachedKnowledgeUnit.KnowledgeGraphEmbeddingClient = await GetEmbeddingClient(
+                        instanceId,
+                        _settings.Embedding.ModelDeployments[knowledgeGraphVectorDatabase.EmbeddingModel]);
+                }
+
                 var actionResult = await _contextResourceProvider.ExecuteResourceActionAsync<
                     KnowledgeUnit,
                     object,

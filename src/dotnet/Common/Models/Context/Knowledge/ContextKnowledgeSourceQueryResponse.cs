@@ -24,5 +24,11 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
         /// </summary>
         [JsonPropertyName("text_response")]
         public string? TextResponse { get; set; }
+
+        /// <summary>
+        /// Gets or sets the content references associated with the query response.
+        /// </summary>
+        [JsonPropertyName("content_references")]
+        public List<Dictionary<string, object>>? ContentReferences { get; set; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
-using FoundationaLLM.Context.Services;
 using Microsoft.Extensions.Logging;
 
 namespace FoundationaLLM.Context.Services
@@ -167,6 +166,8 @@ namespace FoundationaLLM.Context.Services
             queryResponse.TextResponse = formattedResponse;
             queryResponse.VectorStoreResponse = null;
             queryResponse.KnowledgeGraphResponse = null;
+            queryResponse.ContentReferences =
+                [.. textChunks.Select(tc => tc.Metadata)];
             return queryResponse;
         }
     }

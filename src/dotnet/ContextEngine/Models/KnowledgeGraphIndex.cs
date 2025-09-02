@@ -12,6 +12,11 @@ namespace FoundationaLLM.Context.Models
         /// </summary>
         public Dictionary<string, KnowledgeGraphIndexNode> Nodes { get; set; } = [];
 
+        /// <summary>
+        /// Gets or sets the hash map of relationships in the knowledge graph, indexed by their unique identifiers.
+        /// </summary>
+        public Dictionary<string, KnowledgeRelationship> Relationships { get; set; } = [];
+
         public static KnowledgeGraphIndex Create(
             IEnumerable<KnowledgeEntity> entities,
             IEnumerable<KnowledgeRelationship> relationships)
@@ -25,7 +30,10 @@ namespace FoundationaLLM.Context.Models
                         {
                             Entity = entity,
                             RelatedNodes = []
-                        })
+                        }),
+                Relationships = relationships
+                    .ToDictionary(
+                        relationship => relationship.UniqueId)
             };
 
             foreach (var relationship in relationships)
@@ -37,7 +45,7 @@ namespace FoundationaLLM.Context.Models
                     {
                         RelatedEntity = targetNode.Entity,
                         Relationship = relationship,
-                        RelationshipStrength = relationship.Strengths.Max()
+                        RelationshipStrength = relationship.Strengths.Sum()
                     });
                 }
             }

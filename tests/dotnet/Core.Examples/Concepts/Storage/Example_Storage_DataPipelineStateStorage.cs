@@ -198,7 +198,6 @@ namespace FoundationaLLM.Core.Examples.Concepts.Storage
                 {
                     _entityRelationships.Entities.Add(new KnowledgeEntity
                     {
-                        Position = _entityRelationships.Entities.Count + 1,
                         Type = entity.Type,
                         Name = entity.Name,
                         Descriptions = [entity.Description],
@@ -229,7 +228,6 @@ namespace FoundationaLLM.Core.Examples.Concepts.Storage
                 {
                     _entityRelationships.Relationships.Add(new KnowledgeRelationship
                     {
-                        Position = _entityRelationships.Relationships.Count + 1,
                         Source = relationship.Source,
                         SourceType = knowledgePart
                             .EntitiesAndRelationships

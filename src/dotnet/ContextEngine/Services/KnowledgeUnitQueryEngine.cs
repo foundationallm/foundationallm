@@ -3,10 +3,14 @@ using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
+using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Context.Models;
 using MathNet.Numerics;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph.Models;
+using Microsoft.Graph.Search.Query;
 using OpenAI.Embeddings;
+using OpenAI.VectorStores;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
@@ -20,9 +24,14 @@ namespace FoundationaLLM.Context.Services
         private readonly KnowledgeUnit _knowledgeUnit;
         private readonly CachedKnowledgeUnit _cachedKnowledgeUnit;
         private readonly VectorDatabase _vectorDatabase;
+        private readonly VectorDatabase? _knowledgeGraphVectorDatabase;
         private readonly ILogger<KnowledgeUnitQueryEngine> _logger;
 
         private const string KEY_FIELD_NAME = "Id";
+        private const string UNIQUE_ID_METADATA_PROPERTY_NAME = "UniqueId";
+        private const string ITEM_TYPE_METADATA_PROPERTY_NAME = "ItemType";
+        private const string KNOWLEDGE_GRAPH_ENTITY = "Entity";
+        private const string KNOWLEDGE_GRAPH_RELATIONSHIP = "Relationship";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="KnowledgeUnitQueryEngine"/> class.
@@ -35,11 +44,13 @@ namespace FoundationaLLM.Context.Services
             KnowledgeUnit knowledgeUnit,
             CachedKnowledgeUnit cachedKnowledgeUnit,
             VectorDatabase vectorDatabase,
+            VectorDatabase? knowledgeGraphDatabase,
             ILogger<KnowledgeUnitQueryEngine> logger)
         {
             _knowledgeUnit = knowledgeUnit;
             _cachedKnowledgeUnit = cachedKnowledgeUnit;
             _vectorDatabase = vectorDatabase;
+            _knowledgeGraphVectorDatabase = knowledgeGraphDatabase;
             _logger = logger;
         }
 
@@ -80,6 +91,7 @@ namespace FoundationaLLM.Context.Services
                     #region Direct filtering on the vector store
 
                     var matchingDocumentsFilter = GetFilter(
+                        _vectorDatabase,
                         vectorStoreId,
                         [],
                         vectorStoreFilter?.VectorStoreMetadataFilter);
@@ -106,6 +118,7 @@ namespace FoundationaLLM.Context.Services
                         TextChunks = [.. matchingDocuments
                             .Select(md => new ContextTextChunk
                             {
+                                Score = md.GetDouble("Score"),
                                 Content = md.GetString(_vectorDatabase.ContentPropertyName),
                                 Metadata = md.GetObject(_vectorDatabase.MetadataPropertyName).ToDictionary()
                             })
@@ -117,9 +130,26 @@ namespace FoundationaLLM.Context.Services
 
                 if (queryRequest.KnowledgeGraphQuery is not null)
                 {
-                    var matchingEntities = GetMatchingKnowledgeGraphEntities(
-                        _cachedKnowledgeUnit.KnowledgeGraph!,
-                        userPromptEmbedding.Value.ToFloats(),
+                    if (_knowledgeGraphVectorDatabase is null)
+                        return new ContextKnowledgeSourceQueryResponse
+                        {
+                            Success = false,
+                            ErrorMessage = $"The knowledge unit {_knowledgeUnit.Name} does not have a knowledge graph vector database."
+                        };
+
+                    var knowledgeGraphUserPromptEmbedding = await _cachedKnowledgeUnit.KnowledgeGraphEmbeddingClient!.GenerateEmbeddingAsync(
+                        queryRequest.UserPrompt,
+                        new EmbeddingGenerationOptions
+                        {
+                            Dimensions = _knowledgeGraphVectorDatabase.EmbeddingDimensions
+                        });
+
+                    var matchingEntities = await GetMatchingKnowledgeGraphEntities(
+                        _cachedKnowledgeUnit,
+                        _knowledgeGraphVectorDatabase,
+                        vectorStoreId,
+                        vectorStoreFilter,
+                        knowledgeGraphUserPromptEmbedding.Value.ToFloats(),
                         queryRequest.KnowledgeGraphQuery.MappedEntitiesSimilarityThreshold,
                         queryRequest.KnowledgeGraphQuery.MappedEntitiesMaxCount,
                         queryRequest.KnowledgeGraphQuery.RelationshipsMaxDepth,
@@ -158,6 +188,7 @@ namespace FoundationaLLM.Context.Services
                     if (queryRequest.KnowledgeGraphQuery.VectorStoreQuery is not null)
                     {
                         var matchingDocumentsFilter = GetFilter(
+                            _vectorDatabase,
                             vectorStoreId,
                             [.. matchingEntities.Entities.SelectMany(e => e.ChunkIds).Distinct()],
                             vectorStoreFilter?.VectorStoreMetadataFilter);
@@ -182,6 +213,7 @@ namespace FoundationaLLM.Context.Services
                         queryResponse.KnowledgeGraphResponse.TextChunks = [.. matchingDocuments
                             .Select(md => new ContextTextChunk
                             {
+                                Score = md.GetDouble("Score"),
                                 Content = md.GetString(_vectorDatabase.ContentPropertyName),
                                 Metadata = md.GetObject(_vectorDatabase.MetadataPropertyName).ToDictionary()
                             })
@@ -223,38 +255,107 @@ namespace FoundationaLLM.Context.Services
                 throw new ValidationException("At least one of VectorStoreQuery or KnowledgeGraphQuery must be provided.");
         }
 
-        private (List<KnowledgeEntity> Entities, List<KnowledgeEntity> RelatedEntities, List<KnowledgeRelationship> Relationships)
+        private async Task<(List<KnowledgeEntity> Entities, List<KnowledgeEntity> RelatedEntities, List<KnowledgeRelationship> Relationships)>
             GetMatchingKnowledgeGraphEntities(
-                IndexedKnowledgeGraph knowledgeGraph,
+                CachedKnowledgeUnit cachedKnowledgeUnit,
+                VectorDatabase vectorDatabase,
+                string vectorStoreId,
+                ContextKnowledgeUnitVectorStoreFilter? vectorStoreFilter,
                 ReadOnlyMemory<float> userPromptEmbedding,
                 float similarityThreshold,
                 int matchedEntitiesMaxCount,
                 int relationshipsMaxDepth,
                 int allEntitiesMaxCount)
         {
-            var similarEntities = new List<(KnowledgeEntity Entity, float SimilarityScore)>();
-            var maxSimilarity = 0f;
-            var minSimilarity = 1f;
-            foreach (var entity in knowledgeGraph.Graph.Entities)
-            {
-                var similarity = 1.0f - Distance.Cosine(
-                    userPromptEmbedding.ToArray(),
-                    entity.SummaryDescriptionEmbedding);
-                if (similarity >= similarityThreshold)
+            var knowledgeGraph = cachedKnowledgeUnit.KnowledgeGraph!;
+
+            var matchingDocumentsFilter = GetFilter(
+                        _vectorDatabase,
+                        vectorStoreId,
+                        [],
+                        vectorStoreFilter?.VectorStoreMetadataFilter);
+
+            var matchingDocuments = await cachedKnowledgeUnit.KnowledgeGraphSearchService!.SearchDocuments(
+                vectorDatabase.DatabaseName,
+                [
+                    KEY_FIELD_NAME,
+                    vectorDatabase.ContentPropertyName,
+                    vectorDatabase.MetadataPropertyName
+                ],
+                matchingDocumentsFilter,
+                null, // No hybrid search for knowledge graph entities
+                userPromptEmbedding,
+                vectorDatabase.EmbeddingPropertyName,
+                similarityThreshold,
+                matchedEntitiesMaxCount,
+                false);
+
+            List<ContextTextChunk> matchingTextChunks = [.. matchingDocuments
+                .Select(md => new ContextTextChunk
                 {
-                    similarEntities.Add((entity, similarity));
+                    Score = md.GetDouble("Score"),
+                    Content = md.GetString(_vectorDatabase.ContentPropertyName),
+                    Metadata = md.GetObject(_vectorDatabase.MetadataPropertyName).ToDictionary()
+                })
+            ];
+
+            var minScore = matchingTextChunks.Min(tc => tc.Score);
+            var maxScore = matchingTextChunks.Max(tc => tc.Score);
+
+            _logger.LogInformation(
+                "The minimum and maximum score values are {MinScore} and {MaxScore}",
+                minScore, maxScore);
+
+            var similarEntitiesIds = new HashSet<string>();
+            var similarEntities = new List<(KnowledgeEntity Entity, double Score)>();
+
+            foreach (var matchingTextChunk in matchingTextChunks)
+                if (matchingTextChunk.Metadata.TryGetValue(UNIQUE_ID_METADATA_PROPERTY_NAME, out var uniqueIdObj)
+                    && uniqueIdObj is not null
+                    && uniqueIdObj is string uniqueId
+                    && matchingTextChunk.Metadata.TryGetValue(ITEM_TYPE_METADATA_PROPERTY_NAME, out var itemTypeObj)
+                    && itemTypeObj is not null
+                    && itemTypeObj is string itemType)
+                {
+                    switch (itemType)
+                    {
+                        case KNOWLEDGE_GRAPH_ENTITY:
+                            if (!similarEntitiesIds.Contains(uniqueId)
+                                && knowledgeGraph.Index.Nodes.TryGetValue(uniqueId, out var node))
+                            {
+                                similarEntitiesIds.Add(node.Entity.UniqueId);
+                                similarEntities.Add((node.Entity, matchingTextChunk.Score ?? 0));
+                            }
+                            break;
+                        case KNOWLEDGE_GRAPH_RELATIONSHIP:
+                            // If a relationship is matched, include both the source and target entities.
+                            if (knowledgeGraph.Index.Relationships.TryGetValue(uniqueId, out var relationship))
+                            {
+                                if (!similarEntitiesIds.Contains(relationship.SourceUniqueId)
+                                    && knowledgeGraph.Index.Nodes.TryGetValue(relationship.SourceUniqueId, out var sourceNode))
+                                {
+                                    similarEntitiesIds.Add(sourceNode.Entity.UniqueId);
+                                    similarEntities.Add((sourceNode.Entity, matchingTextChunk.Score ?? 0));
+                                }
+
+                                if (!similarEntitiesIds.Contains(relationship.TargetUniqueId)
+                                    && knowledgeGraph.Index.Nodes.TryGetValue(relationship.TargetUniqueId, out var targetNode))
+                                {
+                                    similarEntitiesIds.Add(targetNode.Entity.UniqueId);
+                                    similarEntities.Add((targetNode.Entity, matchingTextChunk.Score ?? 0));
+                                }
+                            }
+                            break;
+                        default:
+                            _logger.LogWarning(
+                                "The item type {ItemType} is not supported when querying the knowledge graph.",
+                                itemType);
+                            break;
+                    }
                 }
 
-                if (similarity > maxSimilarity)
-                    maxSimilarity = similarity;
-                if (similarity < minSimilarity)
-                    minSimilarity = similarity;
-            }
-
-            _logger.LogInformation("The minimum and maximum similarity values are {MinSimilarity} and {MaxSimilarity}", minSimilarity, maxSimilarity);
-
             List<KnowledgeEntity> entities = [.. similarEntities
-                .OrderByDescending(se => se.SimilarityScore)
+                .OrderByDescending(se => se.Score)
                 .Take(matchedEntitiesMaxCount)
                 .Select(se => se.Entity)];
 
@@ -281,10 +382,8 @@ namespace FoundationaLLM.Context.Services
                 .Where(rn => !entitiesIds.Contains(rn.RelatedEntity.UniqueId))
                 .Distinct(new KnowledgeGraphIndexRelatedNodeComparer())
                 .ToList();
-            var currentSimilarityScores = currentIndexRelatedNodes
-                .Select(rn => 1.0f - Distance.Cosine(
-                    userPromptEmbedding.ToArray(),
-                    rn.RelatedEntity.SummaryDescriptionEmbedding))
+            var currentRelationshipStrengths = currentIndexRelatedNodes
+                .Select(rn => rn.RelationshipStrength)
                 .ToList();
             var currentDepthLevels = currentIndexRelatedNodes
                 .Select(n => 1)
@@ -296,47 +395,45 @@ namespace FoundationaLLM.Context.Services
                 && currentIndexRelatedNodes.Count > 0)
             {
                 // Identify the most similar node.
-                var currentMaxSimilarity = currentSimilarityScores.Max();
-                var mostSimilarIndex = currentSimilarityScores
-                    .FindIndex(s => s == currentMaxSimilarity);
-                var mostSimilarRelatedNode = currentIndexRelatedNodes[mostSimilarIndex];
-                var mostSimilarRelatedNodeDepth = currentDepthLevels[mostSimilarIndex];
+                var currentMaxStrength = currentRelationshipStrengths.Max();
+                var mostStrengthfulIndex = currentRelationshipStrengths
+                    .FindIndex(s => s == currentMaxStrength);
+                var mostStrengthfulRelatedNode = currentIndexRelatedNodes[mostStrengthfulIndex];
+                var mostStrengthfulRelatedNodeDepth = currentDepthLevels[mostStrengthfulIndex];
 
                 // Add the node at the index to the results.
-                entitiesIds.Add(mostSimilarRelatedNode.RelatedEntity.UniqueId);
-                relationshipEntities.Add(mostSimilarRelatedNode.RelatedEntity);
-                relationships.Add(mostSimilarRelatedNode.Relationship);
+                entitiesIds.Add(mostStrengthfulRelatedNode.RelatedEntity.UniqueId);
+                relationshipEntities.Add(mostStrengthfulRelatedNode.RelatedEntity);
+                relationships.Add(mostStrengthfulRelatedNode.Relationship);
 
                 //Remove the node from the current state.
-                currentIndexRelatedNodes.RemoveAt(mostSimilarIndex);
-                currentSimilarityScores.RemoveAt(mostSimilarIndex);
-                currentDepthLevels.RemoveAt(mostSimilarIndex);
+                currentIndexRelatedNodes.RemoveAt(mostStrengthfulIndex);
+                currentRelationshipStrengths.RemoveAt(mostStrengthfulIndex);
+                currentDepthLevels.RemoveAt(mostStrengthfulIndex);
 
-                // From the nodes directly related to the most similar node (if any),
+                // From the nodes directly related to the most strengthful node (if any),
                 // determine the ones that are neither in the current results nor in the current state
                 // and add them to the current state.
-                // If the most similar node is not at the maximum allowed depth, do not continue.
-                var mostSimilarIndexNode = knowledgeGraph.Index.Nodes[mostSimilarRelatedNode.RelatedEntity.UniqueId];
-                if (mostSimilarIndexNode.RelatedNodes.Count > 0
-                    && mostSimilarRelatedNodeDepth < relationshipsMaxDepth)
+                // If the most strengthful node is at the maximum allowed depth, do not continue.
+                var mostStrengthfulIndexNode = knowledgeGraph.Index.Nodes[mostStrengthfulRelatedNode.RelatedEntity.UniqueId];
+                if (mostStrengthfulIndexNode.RelatedNodes.Count > 0
+                    && mostStrengthfulRelatedNodeDepth < relationshipsMaxDepth)
                 {
-                    var indexRelatedNodesToAdd = mostSimilarIndexNode
+                    var indexRelatedNodesToAdd = mostStrengthfulIndexNode
                         .RelatedNodes
                         .Where(rn =>
                             !entitiesIds.Contains(rn.RelatedEntity.UniqueId)
                             && !currentIndexRelatedNodes.Contains(rn, new KnowledgeGraphIndexRelatedNodeComparer()))
                         .ToList();
-                    var similarityScoresToAdd = indexRelatedNodesToAdd
-                        .Select(rn => 1.0f - Distance.Cosine(
-                            userPromptEmbedding.ToArray(),
-                            rn.RelatedEntity.SummaryDescriptionEmbedding))
+                    var strengthScoresToAdd = indexRelatedNodesToAdd
+                        .Select(rn => rn.RelationshipStrength)
                         .ToList();
                     var depthLevelsToAdd = indexRelatedNodesToAdd
-                        .Select(rn => mostSimilarRelatedNodeDepth + 1)
+                        .Select(rn => mostStrengthfulRelatedNodeDepth + 1)
                         .ToList();
 
                     currentIndexRelatedNodes.AddRange(indexRelatedNodesToAdd);
-                    currentSimilarityScores.AddRange(similarityScoresToAdd);
+                    currentRelationshipStrengths.AddRange(strengthScoresToAdd);
                     currentDepthLevels.AddRange(depthLevelsToAdd);
                 }
 
@@ -347,11 +444,12 @@ namespace FoundationaLLM.Context.Services
         }
 
         private string GetFilter(
+            VectorDatabase vectorDatabase,
             string vectorStoreId,
             List<string> indexIds,
             Dictionary<string, object>? metadataFilter)
         {
-            var filter = $"{_vectorDatabase.VectorStoreIdPropertyName} eq '{vectorStoreId}'";
+            var filter = $"{vectorDatabase.VectorStoreIdPropertyName} eq '{vectorStoreId}'";
 
             if (indexIds.Count > 0)
                 filter += $" and search.in({KEY_FIELD_NAME}, '{string.Join(',', indexIds)}')";
@@ -359,7 +457,7 @@ namespace FoundationaLLM.Context.Services
             if (metadataFilter is not null
                 && metadataFilter.Count > 0)
                 filter += " and " + string.Join(" and ", metadataFilter
-                        .Select(kvp => $"{_vectorDatabase.MetadataPropertyName}/{kvp.Key} eq {GetFilterValue(kvp.Value)}"));
+                        .Select(kvp => $"{vectorDatabase.MetadataPropertyName}/{kvp.Key} eq {GetFilterValue(kvp.Value)}"));
 
             return filter;
         }

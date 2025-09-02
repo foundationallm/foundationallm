@@ -116,14 +116,6 @@ namespace FoundationaLLM.Common.Interfaces
             string artifactsNameFilter);
 
         /// <summary>
-        /// Tries to load a data pipeline run artifact from a specified file path.
-        /// </summary>
-        /// <param name="artifactFilePath">The full path of the artifact file.</param>
-        /// <returns>The binary content of the requested data pipeline run artifact.</returns>
-        Task<(bool Success, DataPipelineStateArtifact? Artifact)> TryLoadDataPipelineRunArtifact(
-            string artifactFilePath);
-
-        /// <summary>
         /// Indicates whether an artifact associated with a data pipeline run work item has changed.
         /// </summary>
         /// <param name="dataPipelineDefinition">The data pipeline definition associated with the work item.</param>
