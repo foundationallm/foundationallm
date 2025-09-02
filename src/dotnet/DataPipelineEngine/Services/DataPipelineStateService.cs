@@ -9,6 +9,7 @@ using FoundationaLLM.DataPipelineEngine.Interfaces;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Parquet.Serialization;
+using System.IO;
 using System.Text.Json;
 
 namespace FoundationaLLM.DataPipelineEngine.Services
@@ -329,6 +330,32 @@ namespace FoundationaLLM.DataPipelineEngine.Services
         }
 
         /// <inheritdoc/>
+        public async Task<(bool Success, DataPipelineStateArtifact? Artifact)> TryLoadDataPipelineRunArtifact(
+            string artifactFilePath)
+        {
+            try
+            {
+                var fileContent = await _storageService.ReadFileAsync(
+                            dataPipelineRun.InstanceId,
+                            path,
+                            default);
+                return new DataPipelineStateArtifact
+                {
+                    FileName = Path.GetFileName(path),
+                    Content = fileContent
+                };
+
+                return (true, result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Could not load data pipeline run artifacts for {RunId} and filter {ArtifactsNameFilter}.",
+                    dataPipelineRun.RunId, artifactsNameFilter);
+                return (false, []);
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task<bool> DataPipelineRunWorkItemArtifactChanged(
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
@@ -551,7 +578,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             DataPipelineRunWorkItem dataPipelineRunWorkItem,
-            string fileName)
+            string fileName,
+            string contentSection = "content-items")
             where T : class, new()
         {
             var contentItemPartsPath = string.Join('/',
@@ -559,7 +587,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun),
-                    "content-items",
+                    contentSection,
                     dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-'),
                     fileName
                 ]);
@@ -586,7 +614,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             string contentItemCanonicalId,
-            string fileName)
+            string fileName,
+            string contentSection = "content-items")
             where T : class, new()
         {
             var contentItemPartsPath = string.Join('/',
@@ -594,7 +623,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun),
-                    "content-items",
+                    contentSection,
                     contentItemCanonicalId.Trim('/').Replace('/', '-'),
                     fileName
                 ]);
@@ -622,7 +651,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             DataPipelineRun dataPipelineRun,
             DataPipelineRunWorkItem dataPipelineRunWorkItem,
             IEnumerable<T> contentItemParts,
-            string fileName)
+            string fileName,
+            string contentSection = "content-items")
             where T : class, new()
         {
             var contentItemPartsPath = string.Join('/',
@@ -630,7 +660,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun),
-                    "content-items",
+                    contentSection,
                     dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-'),
                     fileName
                 ]);

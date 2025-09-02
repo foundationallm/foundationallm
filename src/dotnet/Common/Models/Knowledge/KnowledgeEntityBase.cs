@@ -28,7 +28,7 @@ namespace FoundationaLLM.Common.Models.Knowledge
 
         /// <inheritdoc/>
         [JsonIgnore]
-        public override string BucketId => $"{Type}-{Name.First()}";
+        public override string BucketId => $"Entity-{Type}";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="KnowledgeEntity"/> class.

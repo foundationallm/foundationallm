@@ -8,13 +8,6 @@ namespace FoundationaLLM.Common.Models.DataPipelines
     public class DataPipelineItemBase
     {
         /// <summary>
-        /// Gets or sets the position of the item within its parent context.
-        /// </summary>
-        [JsonPropertyName("position")]
-        [JsonPropertyOrder(-100)]
-        public int Position { get; set; }
-
-        /// <summary>
         /// Gets or sets the identifier of the index entry associated with this item.
         /// </summary>
         [JsonPropertyName("index_entry_id")]

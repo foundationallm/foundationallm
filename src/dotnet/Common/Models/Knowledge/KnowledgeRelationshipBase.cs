@@ -54,7 +54,7 @@ namespace FoundationaLLM.Common.Models.Knowledge
 
         /// <inheritdoc/>
         [JsonIgnore]
-        public override string BucketId => $"{SourceType}-{Source.First()}";
+        public override string BucketId => $"Relationship-{SourceType}";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="KnowledgeRelationship"/> class.

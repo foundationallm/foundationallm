@@ -15,7 +15,14 @@ namespace FoundationaLLM.Common.Services.Plugins
     /// </summary>
     public class DataPipelineStagePluginBase: PluginBase, IDataPipelineStagePlugin
     {
+        /// <summary>
+        /// The data pipeline state service.
+        /// </summary>
         protected readonly IDataPipelineStateService _dataPipelineStateService;
+
+        /// <summary>
+        /// The hasher used to identify identical text content.
+        /// </summary>
         protected readonly XxHash128 _hasher = new XxHash128();
 
         /// <summary>
@@ -37,8 +44,9 @@ namespace FoundationaLLM.Common.Services.Plugins
 
         /// <inheritdoc/>
         public virtual async Task<List<DataPipelineRunWorkItem>> GetStartingStageWorkItems(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
             List<DataPipelineContentItem> contentItems,
-            string dataPipelineRunId,
             string dataPipelineStageName)
         {
             await Task.CompletedTask;
@@ -48,8 +56,9 @@ namespace FoundationaLLM.Common.Services.Plugins
 
         /// <inheritdoc/>
         public virtual async Task<List<DataPipelineRunWorkItem>> GetStageWorkItems(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
             List<string> contentItemsCanonicalIds,
-            string dataPipelineRunId,
             string dataPipelineStageName,
             string previousDataPipelineStageName)
         {
@@ -57,7 +66,7 @@ namespace FoundationaLLM.Common.Services.Plugins
                 .Select(contentItemCanonicalId => new DataPipelineRunWorkItem
                 {
                     Id = $"work-item-{Guid.NewGuid().ToBase64String()}",
-                    RunId = dataPipelineRunId,
+                    RunId = dataPipelineRun.RunId,
                     Stage = dataPipelineStageName,
                     PreviousStage = previousDataPipelineStageName,
                     ContentItemCanonicalId = contentItemCanonicalId

@@ -49,8 +49,9 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
         // <inheritdoc/>
         public override async Task<List<DataPipelineRunWorkItem>> GetStartingStageWorkItems(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
             List<DataPipelineContentItem> contentItems,
-            string dataPipelineRunId,
             string dataPipelineStageName)
         {
             var workItems = contentItems
@@ -58,7 +59,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 .Select(ci => new DataPipelineRunWorkItem
                 {
                     Id = $"work-item-{Guid.NewGuid().ToBase64String()}",
-                    RunId = dataPipelineRunId,
+                    RunId = dataPipelineRun.RunId,
                     Stage = dataPipelineStageName,
                     ContentItemCanonicalId = ci.ContentIdentifier.CanonicalId
                 })

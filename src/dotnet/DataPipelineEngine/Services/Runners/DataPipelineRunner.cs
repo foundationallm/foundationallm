@@ -276,8 +276,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                 userIdentity);
 
             var workItems = await dataPipelineStagePlugin.GetStartingStageWorkItems(
+                _dataPipelineDefinition,
+                dataPipelineRun,
                 contentItems,
-                dataPipelineRun.RunId,
                 dataPipelineStage.Name);
 
             return workItems;
@@ -297,8 +298,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Runners
                 userIdentity);
 
             var workItems = await dataPipelineStagePlugin.GetStageWorkItems(
+                _dataPipelineDefinition,
+                dataPipelineRun,
                 previousStageRunner.ContentItemsCanonicalIds,
-                dataPipelineRun.RunId,
                 dataPipelineStage.Name,
                 previousStageRunner.StageName);
 
