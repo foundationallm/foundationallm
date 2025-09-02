@@ -100,13 +100,14 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             _logger.LogInformation("Consolidated all knowledge entities. Total count: {KnowledgeEntitiesCount}.",
                 allKnowledgeEntities.Count);
 
-            await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<KnowledgeEntity>(
+            await _dataPipelineStateService.SaveDataPipelineRunParts<KnowledgeEntity>(
                 dataPipelineDefinition,
                 dataPipelineRun,
-                dataPipelineRunWorkItem,
                 allKnowledgeEntities,
-                KNOWLEDGE_GRAPH_ENTITIES_FILE_NAME,
-                contentSection: KNOWLEDGE_GRAPH_ROOT_PATH);
+                string.Join('/', [
+                    KNOWLEDGE_GRAPH_ROOT_PATH,
+                    KNOWLEDGE_GRAPH_ENTITIES_FILE_NAME
+                ]));
 
             _logger.LogInformation("Saved all knowledge entities. Total count: {KnowledgeEntitiesCount}.",
                 allKnowledgeEntities.Count);
@@ -120,13 +121,14 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             _logger.LogInformation("Consolidated all knowledge relationships. Total count: {KnowledgeRelationshipsCount}.",
                 allKnowledgeRelationships.Count);
 
-            await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<KnowledgeRelationship>(
+            await _dataPipelineStateService.SaveDataPipelineRunParts<KnowledgeRelationship>(
                 dataPipelineDefinition,
                 dataPipelineRun,
-                dataPipelineRunWorkItem,
                 allKnowledgeRelationships,
-                KNOWLEDGE_GRAPH_RELATIONSHIPS_FILE_NAME,
-                contentSection: KNOWLEDGE_GRAPH_ROOT_PATH);
+                string.Join('/', [
+                    KNOWLEDGE_GRAPH_ROOT_PATH,
+                    KNOWLEDGE_GRAPH_RELATIONSHIPS_FILE_NAME
+                ]));
 
             _logger.LogInformation("Saved all knowledge relationships. Total count: {KnowledgeRelationshipsCount}.",
                 allKnowledgeRelationships.Count);
