@@ -219,9 +219,9 @@
 					);
 				};
 
-				// Filter out expired agents, but keep the currently selected agent even if it is expired
+				// Filter out expired agents and disabled agents, but keep the currently selected agent even if it is expired or disabled
 				const notExpiredOrCurrentAgents = this.$appStore.agents.filter(
-					(agent) => !isAgentExpired(agent) || isCurrentAgent(agent),
+					(agent) => (!isAgentExpired(agent) && agent.enabled !== false) || isCurrentAgent(agent),
 				);
 
 				this.agentOptions = notExpiredOrCurrentAgents.map((agent) => ({
