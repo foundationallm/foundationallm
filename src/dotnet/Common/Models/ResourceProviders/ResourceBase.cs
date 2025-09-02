@@ -19,7 +19,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// </summary>
         [JsonIgnore]
         public ResourcePath ResourcePath =>
-            ResourcePath.GetResourcePath(ObjectId!);
+            ResourcePath.GetResourcePath(ObjectId ?? "/");
 
         /// <summary>
         /// The display name of the resource.
