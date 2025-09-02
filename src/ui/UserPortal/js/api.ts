@@ -327,6 +327,24 @@ export default {
 	},
 
 	/**
+	 * Retrieves a specific agent by name.
+	 * @param agentName The name of the agent to retrieve.
+	 * @returns A promise that resolves to the agent resource.
+	 */
+	async getAgent(agentName: string): Promise<ResourceProviderGetResult<AgentBase>> {
+		try {
+			const [agentGetResult]: ResourceProviderGetResult<AgentBase>[] = await this.fetch(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}`
+			) as ResourceProviderGetResult<AgentBase>[];
+
+			return agentGetResult;
+		} catch (error) {
+			console.error(`Error fetching agent '${agentName}' from management endpoint:`, error);
+			throw error;
+		}
+	},
+
+	/**
 	 * Uploads attachment to the API.
 	 * @param file The file formData to upload.
 	 * @returns The ObjectID of the uploaded attachment.

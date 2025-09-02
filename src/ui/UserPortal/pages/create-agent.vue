@@ -441,11 +441,8 @@ export default defineComponent({
             if (!this.selectedAgentName) return;
             
             try {
-                // Get all agents and find the specific one
-                const agentsResponse = await api.getAgents();
-                const agentResult = agentsResponse.find(agent => 
-                    agent.resource?.name === this.selectedAgentName
-                );
+                // Get the specific agent directly by name
+                const agentResult = await api.getAgent(this.selectedAgentName);
                 
                 if (agentResult?.resource) {
                     this.createdAgent = agentResult.resource;
