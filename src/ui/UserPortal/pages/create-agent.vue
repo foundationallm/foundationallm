@@ -267,7 +267,7 @@
                                             <p class="text-lg text-[#64748b] font-normal mb-2">Drop and drag or <span
                                                     class="text-[#5472d4] underline">choose file</span> to
                                                 upload</p>
-                                            <p class="text-sm text-[#94a3b8] font-medium italic">(Any file type)</p>
+                                            <p class="text-sm text-[#94a3b8] font-medium italic">(TBD file type list)</p>
                                         </div>
                                         <input ref="fileInput" type="file" @change="onFileSelect"
                                             class="hidden">
