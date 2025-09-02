@@ -96,6 +96,7 @@
                                         
                                         <CustomQuillEditor
                                             v-model="welcomeMessage"
+                                            :initial-content="JSON.parse(JSON.stringify(welcomeMessage))"
                                             class="w-full"
                                             placeholder="Enter agent welcome message"
                                             aria-labelledby="aria-welcome-message-desc"
@@ -462,7 +463,7 @@ export default defineComponent({
                     // Load welcome message from properties
                     if (this.createdAgent.properties?.welcome_message) {
                         this.welcomeMessage = this.createdAgent.properties.welcome_message;
-                        this.updateCharacterCount();
+                        this.characterCount = this.welcomeMessage.length;
                     }
                     
                     // Load expiration date
