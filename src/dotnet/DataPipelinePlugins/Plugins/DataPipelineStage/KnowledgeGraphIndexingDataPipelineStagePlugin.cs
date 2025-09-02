@@ -150,7 +150,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
                 var entitiesToIndex = _entityRelationships.Entities
                     .Where(e =>
-                        e.LastChangedBy.Equals(dataPipelineRun.RunId) // Only index entities that have changed in the current data pipeline run.
+                        (
+                            e.LastChangedBy.Equals(dataPipelineRun.RunId)   // Only index entities that have changed in the current data pipeline run.
+                            || !e.Indexed                                   // Or entities that have never been indexed.
+                        )
                         && _entitiesEmbeddings.ContainsKey(e.UniqueId))
                     .ToList();
 
@@ -175,6 +178,20 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                             }
                         })
                 ];
+
+                if (fieldValues.Count > 0)
+                    await azureAISearchService.UploadDocuments(
+                        vectorDatabase.DatabaseName,
+                        [.. indexFields.Select(f => f.Name)],
+                        fieldValues);
+
+                foreach (var entity in entitiesToIndex)
+                    entity.Indexed = true;
+
+                await SaveEntities(
+                    dataPipelineDefinition,
+                    dataPipelineRun,
+                    dataPipelineRunWorkItem);
             }
             else if (dataPipelineRunWorkItem.ContentItemCanonicalId.StartsWith(
                 KNOWLEDGE_GRAPH_RELATIONSHIP))
@@ -191,7 +208,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
                 var relationshipsToIndex = _entityRelationships.Relationships
                     .Where(r =>
-                        r.LastChangedBy.Equals(dataPipelineRun.RunId) // Only index relationships that have changed in the current data pipeline run.
+                        (
+                            r.LastChangedBy.Equals(dataPipelineRun.RunId) // Only index relationships that have changed in the current data pipeline run.
+                            || !r.Indexed                                 // Or relationships that have never been indexed.
+                        )
                         && _relationshipsEmbeddings.ContainsKey(r.UniqueId))
                     .ToList();
 
@@ -216,16 +236,24 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                             }
                         })
                 ];
+
+                if (fieldValues.Count > 0)
+                    await azureAISearchService.UploadDocuments(
+                        vectorDatabase.DatabaseName,
+                        [.. indexFields.Select(f => f.Name)],
+                        fieldValues);
+
+                foreach (var relationship in relationshipsToIndex)
+                    relationship.Indexed = true;
+
+                await SaveRelationships(
+                    dataPipelineDefinition,
+                    dataPipelineRun,
+                    dataPipelineRunWorkItem);
             }
             else
                 return new PluginResult(false, true,
                     $"The {Name} plugin received an invalid content item canonical identifier {dataPipelineRunWorkItem.ContentItemCanonicalId}.");
-
-
-            await azureAISearchService.UploadDocuments(
-                vectorDatabase.DatabaseName,
-                [.. indexFields.Select(f => f.Name)],
-                fieldValues);
 
             return
                 new PluginResult(true, false);

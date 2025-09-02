@@ -50,7 +50,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                 dataPipelineRun!.DataPipelineObjectId,
                 ServiceContext.ServiceIdentity!);
 
-            WriteLine("============ FoundationaLLM Data Pipeline Plugins - Knowledge Graph Embedding Data Pipeline Stage Tests ============");
+            WriteLine("============ FoundationaLLM Data Pipeline Plugins - Knowledge Graph Indexing Data Pipeline Stage Tests ============");
 
             var dataSourcePlugin = packageManager.GetDataPipelineStagePlugin(
                 PluginNames.KNOWLEDGEGRAPH_INDEXING_DATAPIPELINESTAGE,
