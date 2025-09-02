@@ -211,7 +211,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 dataPipelineRunWorkItem.ContentItemCanonicalId,
                 deletedKeysCount);
 
-            await azureAISearchService.UploadDocuments(
+            var uploadResults = await azureAISearchService.UploadDocuments(
                 vectorDatabase.DatabaseName,
                 [.. indexFields.Select(f => f.Name)],
                 [.. contentItemParts.Select(cip => new object[]
@@ -222,6 +222,12 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     cip.Embedding!,
                     metadata!
                 })]);
+
+            if (uploadResults.Values.Any(ur => !ur))
+                return new PluginResult(
+                    false,
+                    false,
+                    ErrorMessage: $"Failed to index {uploadResults.Values.Count(ur => !ur)} content item parts out of {uploadResults.Values.Count}.");
 
             return new PluginResult(true, false);
         }

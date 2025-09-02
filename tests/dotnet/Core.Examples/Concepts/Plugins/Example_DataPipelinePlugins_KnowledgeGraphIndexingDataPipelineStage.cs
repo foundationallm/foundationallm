@@ -70,8 +70,8 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
         new()
         {
             {
-                "work-item-wAy9CyM4c0K8xqyZFFyICQ",
-                "run-20250902-173645-N0FxMNd13kCxukiJVAXBew-TAfGit69y0OhQOwAAtltKw",
+                "work-item-BXq8ZetpM0OmFmenicaE1Q",
+                "run-20250902-195452-lNw7KBSolkmYQYJKEd2TSQ-TAfGit69y0OhQOwAAtltKw",
                 new Dictionary<string, object>
                 {
                     {

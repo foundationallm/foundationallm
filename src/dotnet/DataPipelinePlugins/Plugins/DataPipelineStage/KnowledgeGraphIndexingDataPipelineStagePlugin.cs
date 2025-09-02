@@ -180,13 +180,18 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 ];
 
                 if (fieldValues.Count > 0)
-                    await azureAISearchService.UploadDocuments(
+                {
+                    var uploadResults = await azureAISearchService.UploadDocuments(
                         vectorDatabase.DatabaseName,
                         [.. indexFields.Select(f => f.Name)],
                         fieldValues);
 
-                foreach (var entity in entitiesToIndex)
-                    entity.Indexed = true;
+                    foreach (var entity in entitiesToIndex
+                        .Where(e =>
+                            uploadResults.TryGetValue(e.IndexEntryId!, out bool success)
+                            && success))
+                        entity.Indexed = true;
+                }
 
                 await SaveEntities(
                     dataPipelineDefinition,
@@ -238,13 +243,18 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 ];
 
                 if (fieldValues.Count > 0)
-                    await azureAISearchService.UploadDocuments(
+                {
+                    var uploadResults = await azureAISearchService.UploadDocuments(
                         vectorDatabase.DatabaseName,
                         [.. indexFields.Select(f => f.Name)],
                         fieldValues);
 
-                foreach (var relationship in relationshipsToIndex)
-                    relationship.Indexed = true;
+                    foreach (var relationship in relationshipsToIndex
+                        .Where(r =>
+                            uploadResults.TryGetValue(r.IndexEntryId!, out bool success)
+                            && success))
+                        relationship.Indexed = true;
+                }
 
                 await SaveRelationships(
                     dataPipelineDefinition,

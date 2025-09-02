@@ -26,7 +26,11 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="indexName">The name of the index in which the documents should be uploaded.</param>
         /// <param name="fieldNames">The names of the fields of the documents.</param>
         /// <param name="fieldValues">The values of the fields of the documents.</param>
-        Task UploadDocuments(
+        /// <returns>A dictionary that specifies for each index id value whether it was successfully uploaded or not.</returns>
+        /// <remarks>
+        /// The code in this method assumes that the first field in <paramref name="fieldNames"/> is the key field for the index.
+        /// </remarks>
+        Task<Dictionary<string,bool>> UploadDocuments(
             string indexName,
             List<string> fieldNames,
             List<object[]> fieldValues);
