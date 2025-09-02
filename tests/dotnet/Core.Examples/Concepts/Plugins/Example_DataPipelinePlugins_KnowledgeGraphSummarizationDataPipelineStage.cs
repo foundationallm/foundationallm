@@ -1,7 +1,6 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Services.Plugins;
 using FoundationaLLM.Core.Examples.Setup;
@@ -14,16 +13,16 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
     /// <summary>
     /// Example class for testing the SharePoint Online Data Source Plugin in Data Pipelines.
     /// </summary>
-    public class Example_DataPipelinePlugins_KnowledgeGraphDataPipelineStage : TestBase, IClassFixture<TestFixture>
+    public class Example_DataPipelinePlugins_KnowledgeGraphSummarizationDataPipelineStage : TestBase, IClassFixture<TestFixture>
     {
-        public Example_DataPipelinePlugins_KnowledgeGraphDataPipelineStage(ITestOutputHelper output, TestFixture fixture)
+        public Example_DataPipelinePlugins_KnowledgeGraphSummarizationDataPipelineStage(ITestOutputHelper output, TestFixture fixture)
             : base(1, output, fixture, new DependencyInjectionContainerInitializer())
         {
         }
 
         [Theory]
         [MemberData(nameof(TestData))]
-        public async Task DataPipelinePlugins_KnowledgeGraphDataPipelineStage_ProcessWorkItem(
+        public async Task DataPipelinePlugins_KnowledgeGraphSummarizationDataPipelineStage_ProcessWorkItem(
             string dataPipelineRunWorkItemId,
             string dataPipelineRunId,
             Dictionary<string, object> pluginParameters)
@@ -54,12 +53,12 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
             WriteLine("============ FoundationaLLM Data Pipeline Plugins - Knowledge Graph Data Pipeline Stage Tests ============");
 
             var dataSourcePlugin = packageManager.GetDataPipelineStagePlugin(
-                PluginNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE,
+                PluginNames.KNOWLEDGEGRAPH_SUMMARIZATION_DATAPIPELINESTAGE,
                 pluginParameters,
                 packageManagerResolver,
                 MainServiceContainer.ServiceProvider);
 
-            var pluginResult = await dataSourcePlugin.ProcessWorkItem(
+           var pluginResult = await dataSourcePlugin.ProcessWorkItem(
                 dataPipelineDefinitionSnapshot.DataPipelineDefinition,
                 dataPipelineRun,
                 dataPipelineRunWorkItem!);
@@ -71,24 +70,24 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
         new()
         {
             {
-                "work-item-FwB5zJHt3k6PmGF5rofb7g",
-                "run-20250630-165745-JmaV2TETeU2G4S6EwUDjDQ-TAfGit69y0OhQOwAAtltKw",
+                "work-item-8-cQXjU5s0-LYPlm2IlYNg",
+                "run-20250901-144203-Cy5HBLyiM0iY31pfwYO-tA-TAfGit69y0OhQOwAAtltKw",
                 new Dictionary<string, object>
                 {
                     {
-                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONPROMPTOBJECTID,
+                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_SUMMARIZATIONPROMPTOBJECTID,
                         "instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/ProcessSPOFiles-EntitySummarization"
                     },
                     {
-                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONCOMPLETIONMODEL,
+                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_SUMMARIZATIONCOMPLETIONMODEL,
                         "gpt-4o-mini"
                     },
                     {
-                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONCOMPLETIONMAXOUTPUTTOKENCOUNT,
+                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_SUMMARIZATIONCOMPLETIONMAXOUTPUTTOKENCOUNT,
                         1000
                     },
                     {
-                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONCOMPLETIONMODELTEMPERATURE,
+                        PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_SUMMARIZATIONCOMPLETIONMODELTEMPERATURE,
                         0.7
                     },
                     {

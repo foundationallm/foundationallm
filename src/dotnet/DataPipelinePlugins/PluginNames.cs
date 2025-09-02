@@ -24,6 +24,10 @@
         public const string TOKEN_CONTENTTEXTPARTITIONING = $"{PACKAGE_NAME}-TokenContentTextPartitioning";
         public const string SEMANTIC_CONTENTTEXTPARTITIONING = $"{PACKAGE_NAME}-SemanticContentTextPartitioning";
         public const string KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-KnowledgeExtractionDataPipelineStage";
-        public const string KNOWLEDGEGRAPH_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-KnowledgeGraphDataPipelineStage";
+        public const string KNOWLEDGEGRAPH_CONSOLIDATION_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-KnowledgeGraphConsolidationDataPipelineStage";
+        public const string KNOWLEDGEGRAPH_SUMMARIZATION_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-KnowledgeGraphSummarizationDataPipelineStage";
+        public const string KNOWLEDGEGRAPH_EMBEDDING_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-KnowledgeGraphEmbeddingDataPipelineStage";
+        public const string KNOWLEDGEGRAPH_INDEXING_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-KnowledgeGraphIndexingDataPipelineStage";
+        public const string KNOWLEDGEGRAPH_PUBLISHING_DATAPIPELINESTAGE = $"{PACKAGE_NAME}-KnowledgeGraphPublishingDataPipelineStage";
     }
 }

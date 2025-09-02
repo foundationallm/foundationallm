@@ -255,32 +255,62 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     Dependencies = []
                 },
                 new() {
-                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE}",
-                    Name = PluginNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE,
-                    DisplayName = "Knowledge Graph Data Pipeline Stage (FoundationaLLM)",
-                    Description = "Provides the FoundationaLLM standard implementation for knowledge graph data pipeline stages.",
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.KNOWLEDGEGRAPH_CONSOLIDATION_DATAPIPELINESTAGE}",
+                    Name = PluginNames.KNOWLEDGEGRAPH_CONSOLIDATION_DATAPIPELINESTAGE,
+                    DisplayName = "Knowledge Graph Consolidation Data Pipeline Stage (FoundationaLLM)",
+                    Description = "Provides the FoundationaLLM standard implementation for knowledge graph consolidation data pipeline stages.",
+                    Category = PluginCategoryNames.DataPipelineStage,
+                    Parameters = [],
+                    Dependencies = []
+                },
+                new() {
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.KNOWLEDGEGRAPH_SUMMARIZATION_DATAPIPELINESTAGE}",
+                    Name = PluginNames.KNOWLEDGEGRAPH_SUMMARIZATION_DATAPIPELINESTAGE,
+                    DisplayName = "Knowledge Graph Summarization Data Pipeline Stage (FoundationaLLM)",
+                    Description = "Provides the FoundationaLLM standard implementation for knowledge graph summarization data pipeline stages.",
                     Category = PluginCategoryNames.DataPipelineStage,
                     Parameters = [
                         new() {
-                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONPROMPTOBJECTID,
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_SUMMARIZATIONPROMPTOBJECTID,
                             Type = PluginParameterTypes.ResourceObjectId,
                             Description = "The FoundationaLLM resource identifier of the Prompt resource that is used for entity summarization."
                         },
                         new() {
-                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONCOMPLETIONMODEL,
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_SUMMARIZATIONCOMPLETIONMODEL,
                             Type = PluginParameterTypes.String,
                             Description = "The completion model used for entity summarization."
                         },
                         new() {
-                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONCOMPLETIONMODELTEMPERATURE,
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_SUMMARIZATIONCOMPLETIONMODELTEMPERATURE,
                             Type = PluginParameterTypes.Float,
                             Description = "The temperature used for the entity summarization model (recommended value is 0.7)."
                         },
                         new() {
-                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONCOMPLETIONMAXOUTPUTTOKENCOUNT,
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_SUMMARIZATIONCOMPLETIONMAXOUTPUTTOKENCOUNT,
                             Type = PluginParameterTypes.Int,
                             Description = "The maximum number of output tokens for the entity summarization model."
-                        },
+                        }
+                    ],
+                    ParameterSelectionHints = new() {
+                        {
+                            PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_SUMMARIZATIONPROMPTOBJECTID,
+                            new() {
+                                ResourcePath = "providers/FoundationaLLM.Prompt/prompts",
+                                FilterActionPayload = new {
+                                    category = "DataPipeline"
+                                }
+                            }
+                        }
+                    },
+                    Dependencies = []
+                },
+                new() {
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.KNOWLEDGEGRAPH_EMBEDDING_DATAPIPELINESTAGE}",
+                    Name = PluginNames.KNOWLEDGEGRAPH_EMBEDDING_DATAPIPELINESTAGE,
+                    DisplayName = "Knowledge Graph Embedding Data Pipeline Stage (FoundationaLLM)",
+                    Description = "Provides the FoundationaLLM standard implementation for knowledge graph embedding data pipeline stages.",
+                    Category = PluginCategoryNames.DataPipelineStage,
+                    Parameters = [
                         new() {
                             Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
                             Type = PluginParameterTypes.ResourceObjectId,
@@ -289,14 +319,53 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     ],
                     ParameterSelectionHints = new() {
                         {
-                            PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_ENTITYSUMMARIZATIONPROMPTOBJECTID,
+                            PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
                             new() {
-                                ResourcePath = "providers/FoundationaLLM.Prompt/prompts",
-                                FilterActionPayload = new {
-                                    category = "DataPipeline"
-                                }
+                                ResourcePath = "providers/FoundationaLLM.Context/knowledgeUnits",
+                                FilterActionPayload = null
                             }
-                        },
+                        }
+                    },
+                    Dependencies = []
+                },
+                new() {
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.KNOWLEDGEGRAPH_INDEXING_DATAPIPELINESTAGE}",
+                    Name = PluginNames.KNOWLEDGEGRAPH_INDEXING_DATAPIPELINESTAGE,
+                    DisplayName = "Knowledge Graph Indexing Data Pipeline Stage (FoundationaLLM)",
+                    Description = "Provides the FoundationaLLM standard implementation for knowledge graph indexing data pipeline stages.",
+                    Category = PluginCategoryNames.DataPipelineStage,
+                    Parameters = [
+                        new() {
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
+                            Type = PluginParameterTypes.ResourceObjectId,
+                            Description = "The FoundationaLLM resource identifier of the Knowledge Unit that provides the indexing configuration."
+                        }
+                    ],
+                    ParameterSelectionHints = new() {
+                        {
+                            PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
+                            new() {
+                                ResourcePath = "providers/FoundationaLLM.Context/knowledgeUnits",
+                                FilterActionPayload = null
+                            }
+                        }
+                    },
+                    Dependencies = []
+                },
+                new() {
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.KNOWLEDGEGRAPH_PUBLISHING_DATAPIPELINESTAGE}",
+                    Name = PluginNames.KNOWLEDGEGRAPH_PUBLISHING_DATAPIPELINESTAGE,
+                    DisplayName = "Knowledge Graph Publishing Data Pipeline Stage (FoundationaLLM)",
+                    Description = "Provides the FoundationaLLM standard implementation for knowledge graph publishing data pipeline stages.",
+                    Category = PluginCategoryNames.DataPipelineStage,
+                    Parameters = [
+                        new() {
+                            Name = PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
+                            Type = PluginParameterTypes.ResourceObjectId,
+                            Description = "The FoundationaLLM resource identifier of the Knowledge Unit that provides the publishing configuration."
+                        }
+                    ],
+                    ParameterSelectionHints = new() {
                         {
                             PluginParameterNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
                             new() {
@@ -467,7 +536,15 @@ namespace FoundationaLLM.Plugins.DataPipeline
                 pluginParameters, this, packageManagerResolver, serviceProvider),
             PluginNames.KNOWLEDGEEXTRACTION_DATAPIPELINESTAGE => new KnowledgeExtractionDataPipelineStagePlugin(
                 pluginParameters, this, packageManagerResolver, serviceProvider),
-            PluginNames.KNOWLEDGEGRAPH_DATAPIPELINESTAGE => new KnowledgeGraphDataPipelineStagePlugin(
+            PluginNames.KNOWLEDGEGRAPH_CONSOLIDATION_DATAPIPELINESTAGE => new KnowledgeGraphConsolidationDataPipelineStagePlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.KNOWLEDGEGRAPH_SUMMARIZATION_DATAPIPELINESTAGE => new KnowledgeGraphSummarizationDataPipelineStagePlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.KNOWLEDGEGRAPH_EMBEDDING_DATAPIPELINESTAGE => new KnowledgeGraphEmbeddingDataPipelineStagePlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.KNOWLEDGEGRAPH_INDEXING_DATAPIPELINESTAGE => new KnowledgeGraphIndexingDataPipelineStagePlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.KNOWLEDGEGRAPH_PUBLISHING_DATAPIPELINESTAGE => new KnowledgeGraphPublishingDataPipelineStagePlugin(
                 pluginParameters, this, packageManagerResolver, serviceProvider),
             _ => throw new NotImplementedException($"The data pipeline stage plugin '{pluginName}' is not implemented.")
         };

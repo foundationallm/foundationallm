@@ -6,11 +6,10 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
-using FoundationaLLM.DataPipelineEngine.Models.DataPipelineState;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Parquet.Serialization;
-using System.Collections;
+using System.IO;
 using System.Text.Json;
 
 namespace FoundationaLLM.DataPipelineEngine.Services
@@ -553,7 +552,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             DataPipelineRunWorkItem dataPipelineRunWorkItem,
-            string fileName)
+            string fileName,
+            string contentSection = "content-items")
             where T : class, new()
         {
             var contentItemPartsPath = string.Join('/',
@@ -561,7 +561,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun),
-                    "content-items",
+                    contentSection,
                     dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-'),
                     fileName
                 ]);
@@ -588,7 +588,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             DataPipelineDefinition dataPipelineDefinition,
             DataPipelineRun dataPipelineRun,
             string contentItemCanonicalId,
-            string fileName)
+            string fileName,
+            string contentSection = "content-items")
             where T : class, new()
         {
             var contentItemPartsPath = string.Join('/',
@@ -596,7 +597,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun),
-                    "content-items",
+                    contentSection,
                     contentItemCanonicalId.Trim('/').Replace('/', '-'),
                     fileName
                 ]);
@@ -624,7 +625,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             DataPipelineRun dataPipelineRun,
             DataPipelineRunWorkItem dataPipelineRunWorkItem,
             IEnumerable<T> contentItemParts,
-            string fileName)
+            string fileName,
+            string contentSection = "content-items")
             where T : class, new()
         {
             var contentItemPartsPath = string.Join('/',
@@ -632,7 +634,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                     GetDataPipelineCanonicalRootPath(
                         dataPipelineDefinition,
                         dataPipelineRun),
-                    "content-items",
+                    contentSection,
                     dataPipelineRunWorkItem.ContentItemCanonicalId.Trim('/').Replace('/', '-'),
                     fileName
                 ]);
@@ -664,6 +666,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                         dataPipelineRun),
                     filePath
                 ]);
+
+            if (!await _storageService.FileExistsAsync(
+                dataPipelineRun.InstanceId,
+                dataPipelineRunPartsPath,
+                default))
+                return [];
 
             var binaryContent = await _storageService.ReadFileAsync(
                 dataPipelineRun.InstanceId,

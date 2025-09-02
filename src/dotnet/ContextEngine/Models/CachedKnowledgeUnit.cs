@@ -19,6 +19,16 @@ namespace FoundationaLLM.Context.Models
         public EmbeddingClient EmbeddingClient { get; set; } = null!;
 
         /// <summary>
+        /// Gets or sets the Azure AI Search service used for performing knowledge graph search operations.
+        /// </summary>
+        public IAzureAISearchService? KnowledgeGraphSearchService { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or sets the embedding client used for embedding-related knowledge graph operations.
+        /// </summary>
+        public EmbeddingClient? KnowledgeGraphEmbeddingClient { get; set; } = null!;
+
+        /// <summary>
         /// Gets or sets the cached knowledge graph associated with this knowledge source.
         /// </summary>
         public IndexedKnowledgeGraph? KnowledgeGraph { get; set; }

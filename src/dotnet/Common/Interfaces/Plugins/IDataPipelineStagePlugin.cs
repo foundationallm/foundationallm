@@ -12,26 +12,30 @@ namespace FoundationaLLM.Common.Interfaces.Plugins
         /// <summary>
         /// Gets the list of data pipeline work items based on the provided content items.
         /// </summary>
+        /// <param name="dataPipelineDefinition">The definition of the data pipeline.</param>
+        /// <param name="dataPipelineRun">The data pipeline run.</param>
         /// <param name="contentItems">The list of content items.</param>
-        /// <param name="dataPipelineRunId">The unique identifier of the data pipeline run.</param>
         /// <param name="dataPipelineStageName">The name of the data pipeline stage.</param>
         /// <returns>A list of data pipeline work items.</returns>
         Task<List<DataPipelineRunWorkItem>> GetStartingStageWorkItems(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
             List<DataPipelineContentItem> contentItems,
-            string dataPipelineRunId,
             string dataPipelineStageName);
 
         /// <summary>
         /// Gets the list of data pipeline work items based on the provided content items canonical identifiers.
         /// </summary>
+        /// <param name="dataPipelineDefinition">The definition of the data pipeline.</param>
+        /// <param name="dataPipelineRun">The data pipeline run.</param>
         /// <param name="contentItemsCanonicalIds">The list of icontent items canonical identifiers.</param>
-        /// <param name="dataPipelineRunId">The unique identifier of the data pipeline run.</param>
         /// <param name="dataPipelineStageName">The name of the data pipeline stage.</param>
         /// <param name="previousDataPipelineStageName">The name of the previous data pipeline stage.</param>
         /// <returns>A list of data pipeline work items.</returns>
         Task<List<DataPipelineRunWorkItem>> GetStageWorkItems(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
             List<string> contentItemsCanonicalIds,
-            string dataPipelineRunId,
             string dataPipelineStageName,
             string previousDataPipelineStageName);
 

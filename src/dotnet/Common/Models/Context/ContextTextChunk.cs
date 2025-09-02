@@ -8,6 +8,12 @@ namespace FoundationaLLM.Common.Models.Context
     public class ContextTextChunk
     {
         /// <summary>
+        /// Gets or sets the relevance score of the text chunk.
+        /// </summary>
+        [JsonPropertyName("score")]
+        public double? Score { get; set; }
+
+        /// <summary>
         /// Gets or sets the text content of the text chunk.
         /// </summary>
         [JsonPropertyName("content")]

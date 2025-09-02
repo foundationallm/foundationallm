@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using Microsoft.Extensions.DependencyInjection;
+using System.IO.Hashing;
 
 namespace FoundationaLLM.Common.Services.Plugins
 {
@@ -14,7 +15,15 @@ namespace FoundationaLLM.Common.Services.Plugins
     /// </summary>
     public class DataPipelineStagePluginBase: PluginBase, IDataPipelineStagePlugin
     {
+        /// <summary>
+        /// The data pipeline state service.
+        /// </summary>
         protected readonly IDataPipelineStateService _dataPipelineStateService;
+
+        /// <summary>
+        /// The hasher used to identify identical text content.
+        /// </summary>
+        protected readonly XxHash128 _hasher = new XxHash128();
 
         /// <summary>
         /// Initializes a new instance of the base data pipeline stage plugin.
@@ -35,8 +44,9 @@ namespace FoundationaLLM.Common.Services.Plugins
 
         /// <inheritdoc/>
         public virtual async Task<List<DataPipelineRunWorkItem>> GetStartingStageWorkItems(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
             List<DataPipelineContentItem> contentItems,
-            string dataPipelineRunId,
             string dataPipelineStageName)
         {
             await Task.CompletedTask;
@@ -46,8 +56,9 @@ namespace FoundationaLLM.Common.Services.Plugins
 
         /// <inheritdoc/>
         public virtual async Task<List<DataPipelineRunWorkItem>> GetStageWorkItems(
+            DataPipelineDefinition dataPipelineDefinition,
+            DataPipelineRun dataPipelineRun,
             List<string> contentItemsCanonicalIds,
-            string dataPipelineRunId,
             string dataPipelineStageName,
             string previousDataPipelineStageName)
         {
@@ -55,7 +66,7 @@ namespace FoundationaLLM.Common.Services.Plugins
                 .Select(contentItemCanonicalId => new DataPipelineRunWorkItem
                 {
                     Id = $"work-item-{Guid.NewGuid().ToBase64String()}",
-                    RunId = dataPipelineRunId,
+                    RunId = dataPipelineRun.RunId,
                     Stage = dataPipelineStageName,
                     PreviousStage = previousDataPipelineStageName,
                     ContentItemCanonicalId = contentItemCanonicalId
@@ -74,5 +85,18 @@ namespace FoundationaLLM.Common.Services.Plugins
                 new PluginResult(
                     Success: true,
                     StopProcessing: false));
+
+        /// <summary>
+        /// Computes a hexadecimal hash string for the specified input using the current hashing algorithm.
+        /// </summary>
+        /// <param name="input">The input string to compute the hash for. Cannot be <see langword="null"/> or empty.</param>
+        /// <returns>A lowercase hexadecimal string representing the computed hash of the input.</returns>
+        protected string ComputeHash(string input)
+        {
+            var inputBytes = System.Text.Encoding.UTF8.GetBytes(input);
+            _hasher.Append(inputBytes);
+            var hashBytes = _hasher.GetHashAndReset();
+            return Convert.ToBase64String(hashBytes);
+        }
     }
 }
