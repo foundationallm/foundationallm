@@ -11,6 +11,7 @@ using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
+using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Services.Azure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -153,19 +154,27 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                         && _entitiesEmbeddings.ContainsKey(e.UniqueId))
                     .ToList();
 
-                fieldValues = [.. entitiesToIndex.Select(
-                    e => new object[]
-                    {
-                        e.IndexEntryId!, // Id
-                        vectorStoreId, // VectorStoreId
-                        e.SummaryDescription!, // Content
-                        _entitiesEmbeddings[e.UniqueId], // Embedding
-                        new Dictionary<string, object?> // Metadata
+                fieldValues = [.. entitiesToIndex
+                    .Select(e => new
                         {
-                            { UNIQUE_ID_METADATA_PROPERTY_NAME, e.UniqueId },
-                            { ITEM_TYPE_METADATA_PROPERTY_NAME, KNOWLEDGE_GRAPH_ENTITY }
-                        }
-                    })];
+                            Entity = e,
+                            Embedding = _entitiesEmbeddings[e.UniqueId].SummaryDescriptionEmbedding
+                        })
+                    .Where (x => x.Embedding is not null)
+                    .Select(
+                        x => new object[]
+                        {
+                            x.Entity.IndexEntryId!, // Id
+                            vectorStoreId, // VectorStoreId
+                            x.Entity.SummaryDescription!, // Content
+                           x.Embedding!, // Embedding
+                            new Dictionary<string, object?> // Metadata
+                            {
+                                { UNIQUE_ID_METADATA_PROPERTY_NAME, x.Entity.UniqueId },
+                                { ITEM_TYPE_METADATA_PROPERTY_NAME, KNOWLEDGE_GRAPH_ENTITY }
+                            }
+                        })
+                ];
             }
             else if (dataPipelineRunWorkItem.ContentItemCanonicalId.StartsWith(
                 KNOWLEDGE_GRAPH_RELATIONSHIP))
@@ -186,19 +195,27 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                         && _relationshipsEmbeddings.ContainsKey(r.UniqueId))
                     .ToList();
 
-                fieldValues = [.. relationshipsToIndex.Select(
-                    r => new object[]
-                    {
-                        r.IndexEntryId!, // Id
-                        vectorStoreId, // VectorStoreId
-                        r.SummaryDescription!, // Content
-                        _relationshipsEmbeddings[r.UniqueId], // Embedding
-                        new Dictionary<string, object?> // Metadata
+                fieldValues = [.. relationshipsToIndex
+                    .Select(r => new
                         {
-                            { UNIQUE_ID_METADATA_PROPERTY_NAME, r.UniqueId },
-                            { ITEM_TYPE_METADATA_PROPERTY_NAME, KNOWLEDGE_GRAPH_RELATIONSHIP }
-                        }
-                    })];
+                            Relationship = r,
+                            Embedding = _relationshipsEmbeddings[r.UniqueId].SummaryDescriptionEmbedding
+                        })
+                    .Where(x => x.Embedding is not null)
+                    .Select(
+                        x => new object[]
+                        {
+                            x.Relationship.IndexEntryId!, // Id
+                            vectorStoreId, // VectorStoreId
+                            x.Relationship.SummaryDescription!, // Content
+                            x.Embedding!, // Embedding
+                            new Dictionary<string, object?> // Metadata
+                            {
+                                { UNIQUE_ID_METADATA_PROPERTY_NAME, x.Relationship.UniqueId },
+                                { ITEM_TYPE_METADATA_PROPERTY_NAME, KNOWLEDGE_GRAPH_RELATIONSHIP }
+                            }
+                        })
+                ];
             }
             else
                 return new PluginResult(false, true,
