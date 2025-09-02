@@ -35,6 +35,7 @@
 		"@azure/app-configuration": "^1.7.0",
 		"@azure/msal-browser": "^4.15.0",
 		"@pinia/nuxt": "^0.11.1",
+		"@vueup/vue-quill": "^1.2.0",
 		"color": "^5.0.0",
 		"dompurify": "^3.1.6",
 		"file-icons-js": "github:websemantics/file-icons-js",
@@ -50,7 +51,10 @@
 		"pinia": "^3.0.3",
 		"primeicons": "^7.0.0",
 		"primevue": "^3.53.0",
-		"truncate-html": "^1.1.1"
+		"simple-code-editor": "^2.0.9",
+		"uuid": "^10.0.0",
+		"truncate-html": "^1.1.1",
+		"vue-diff": "^1.2.4"
 	},
 	"optionalDependencies": {
 		"@rollup/rollup-linux-x64-gnu": "4.21.0"
