@@ -35,8 +35,6 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
         private string _summarizationPrompt = null!;
 
-        private readonly KnowledgeEntityRelationshipCollection<KnowledgeEntity, KnowledgeRelationship> _entityRelationships = new();
-
         /// <inheritdoc/>
         public override async Task<List<DataPipelineRunWorkItem>> GetStageWorkItems(
             DataPipelineDefinition dataPipelineDefinition,

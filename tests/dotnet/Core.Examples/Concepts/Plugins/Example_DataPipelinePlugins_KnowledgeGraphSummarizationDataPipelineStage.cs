@@ -50,7 +50,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                 dataPipelineRun!.DataPipelineObjectId,
                 ServiceContext.ServiceIdentity!);
 
-            WriteLine("============ FoundationaLLM Data Pipeline Plugins - Knowledge Graph Data Pipeline Stage Tests ============");
+            WriteLine("============ FoundationaLLM Data Pipeline Plugins - Knowledge Graph Summarization Data Pipeline Stage Tests ============");
 
             var dataSourcePlugin = packageManager.GetDataPipelineStagePlugin(
                 PluginNames.KNOWLEDGEGRAPH_SUMMARIZATION_DATAPIPELINESTAGE,
@@ -70,8 +70,8 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
         new()
         {
             {
-                "work-item-8-cQXjU5s0-LYPlm2IlYNg",
-                "run-20250901-144203-Cy5HBLyiM0iY31pfwYO-tA-TAfGit69y0OhQOwAAtltKw",
+                "work-item-bt2lVKvEaE-bXOlgyhHihQ",
+                "run-20250902-161546-87vC4rsf1066jGXo6UBMZQ-TAfGit69y0OhQOwAAtltKw",
                 new Dictionary<string, object>
                 {
                     {
