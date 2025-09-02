@@ -112,6 +112,7 @@ Class DataPipelineContentItemContentPart  <a class="header-action link-secondary
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineItemBase.html">DataPipelineItemBase</a></div>
       <div><a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.html">DataPipelineContentItemPartBase</a></div>
       <div><span class="xref">DataPipelineContentItemContentPart</span></div>
     </dd>
@@ -123,19 +124,19 @@ Class DataPipelineContentItemContentPart  <a class="header-action link-secondary
     <dt>Inherited Members</dt>
     <dd>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.html#FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemPartBase_ContentItemCanonicalId">DataPipelineContentItemPartBase.ContentItemCanonicalId</a>
-    </div>
-    <div>
       <a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.html#FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemPartBase_Position">DataPipelineContentItemPartBase.Position</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.html#FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemPartBase_IndexEntryId">DataPipelineContentItemPartBase.IndexEntryId</a>
+      <a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.html#FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemPartBase_ContentItemCanonicalId">DataPipelineContentItemPartBase.ContentItemCanonicalId</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.html#FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemPartBase_Metadata">DataPipelineContentItemPartBase.Metadata</a>
+      <a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineItemBase.html#FoundationaLLM_Common_Models_DataPipelines_DataPipelineItemBase_IndexEntryId">DataPipelineItemBase.IndexEntryId</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.html#FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemPartBase_LastChangedBy">DataPipelineContentItemPartBase.LastChangedBy</a>
+      <a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineItemBase.html#FoundationaLLM_Common_Models_DataPipelines_DataPipelineItemBase_Metadata">DataPipelineItemBase.Metadata</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineItemBase.html#FoundationaLLM_Common_Models_DataPipelines_DataPipelineItemBase_LastChangedBy">DataPipelineItemBase.LastChangedBy</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
@@ -189,6 +190,7 @@ Class DataPipelineContentItemContentPart  <a class="header-action link-secondary
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;content&quot;)]
+[JsonPropertyOrder(1)]
 public string? Content { get; set; }</code></pre>
   </div>
 
@@ -213,7 +215,7 @@ public string? Content { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemContentPart_ContentSizeTokens" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemContentPart.ContentSizeTokens">
   ContentSizeTokens
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineContentItemContentPart.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineContentItemContentPart.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the size of the content item part in tokens.</p>
@@ -222,6 +224,7 @@ public string? Content { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;content_size_tokens&quot;)]
+[JsonPropertyOrder(2)]
 public int ContentSizeTokens { get; set; }</code></pre>
   </div>
 
@@ -246,7 +249,7 @@ public int ContentSizeTokens { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemContentPart_Embedding" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemContentPart.Embedding">
   Embedding
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineContentItemContentPart.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineContentItemContentPart.cs/#L29"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the embedding of the content item part.</p>
@@ -255,6 +258,7 @@ public int ContentSizeTokens { get; set; }</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;embedding&quot;)]
+[JsonPropertyOrder(3)]
 public float[]? Embedding { get; set; }</code></pre>
   </div>
 
@@ -283,7 +287,7 @@ public float[]? Embedding { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemContentPart_Create_System_String_System_Int32_System_String_System_Int32_" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemContentPart.Create(System.String,System.Int32,System.String,System.Int32)">
   Create(string, int, string, int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineContentItemContentPart.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineContentItemContentPart.cs/#L41"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemContentPart.html">DataPipelineContentItemContentPart</a> with the specified parameters.</p>

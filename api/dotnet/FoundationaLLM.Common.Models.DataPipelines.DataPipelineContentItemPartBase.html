@@ -102,7 +102,7 @@ Class DataPipelineContentItemPartBase  <a class="header-action link-secondary" t
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DataPipelineContentItemPartBase</code></pre>
+    <pre><code class="lang-csharp hljs">public class DataPipelineContentItemPartBase : DataPipelineItemBase</code></pre>
   </div>
 
 
@@ -112,6 +112,7 @@ Class DataPipelineContentItemPartBase  <a class="header-action link-secondary" t
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineItemBase.html">DataPipelineItemBase</a></div>
       <div><span class="xref">DataPipelineContentItemPartBase</span></div>
     </dd>
   </dl>
@@ -128,6 +129,15 @@ Class DataPipelineContentItemPartBase  <a class="header-action link-secondary" t
   <dl class="typelist inheritedMembers">
     <dt>Inherited Members</dt>
     <dd>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineItemBase.html#FoundationaLLM_Common_Models_DataPipelines_DataPipelineItemBase_IndexEntryId">DataPipelineItemBase.IndexEntryId</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineItemBase.html#FoundationaLLM_Common_Models_DataPipelines_DataPipelineItemBase_Metadata">DataPipelineItemBase.Metadata</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.DataPipelines.DataPipelineItemBase.html#FoundationaLLM_Common_Models_DataPipelines_DataPipelineItemBase_LastChangedBy">DataPipelineItemBase.LastChangedBy</a>
+    </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
@@ -171,7 +181,7 @@ Class DataPipelineContentItemPartBase  <a class="header-action link-secondary" t
 
   <h3 id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemPartBase_ContentItemCanonicalId" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.ContentItemCanonicalId">
   ContentItemCanonicalId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineContentItemPartBase.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineContentItemPartBase.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the canonical identifier of the content item.</p>
@@ -180,106 +190,8 @@ Class DataPipelineContentItemPartBase  <a class="header-action link-secondary" t
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;content_item_canonical_id&quot;)]
+[JsonPropertyOrder(-99)]
 public string? ContentItemCanonicalId { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemPartBase_IndexEntryId_" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.IndexEntryId*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemPartBase_IndexEntryId" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.IndexEntryId">
-  IndexEntryId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineContentItemPartBase.cs/#L25"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the identifier of the index entry associated with this content item part.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;index_entry_id&quot;)]
-public string? IndexEntryId { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemPartBase_LastChangedBy_" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.LastChangedBy*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemPartBase_LastChangedBy" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.LastChangedBy">
-  LastChangedBy
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineContentItemPartBase.cs/#L37"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the identifier of the data pipeline run that last modified this content item part.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;last_changed_by&quot;)]
-public string LastChangedBy { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemPartBase_Metadata_" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.Metadata*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemPartBase_Metadata" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.Metadata">
-  Metadata
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineContentItemPartBase.cs/#L31"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the metadata associated with the content item part.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;metadata&quot;)]
-public string? Metadata { get; set; }</code></pre>
   </div>
 
 
@@ -303,15 +215,16 @@ public string? Metadata { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_DataPipelines_DataPipelineContentItemPartBase_Position" data-uid="FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.Position">
   Position
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineContentItemPartBase.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/DataPipelines/DataPipelineContentItemPartBase.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets or sets the position of the part within the content item.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the position of the item within its parent context.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;position&quot;)]
+[JsonPropertyOrder(-100)]
 public int Position { get; set; }</code></pre>
   </div>
 

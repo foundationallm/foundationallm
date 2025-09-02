@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Context_Services_KnowledgeUnitQueryEngine" data-uid="FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine" class="text-break">
-Class KnowledgeUnitQueryEngine  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeUnitQueryEngine.cs/#L18"><i class="bi bi-code-slash"></i></a>
+Class KnowledgeUnitQueryEngine  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeUnitQueryEngine.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -162,9 +162,9 @@ Class KnowledgeUnitQueryEngine  <a class="header-action link-secondary" title="V
 
   <a id="FoundationaLLM_Context_Services_KnowledgeUnitQueryEngine__ctor_" data-uid="FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Context_Services_KnowledgeUnitQueryEngine__ctor_FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeUnit_FoundationaLLM_Context_Models_CachedKnowledgeUnit_FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Context_Services_KnowledgeUnitQueryEngine__" data-uid="FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.#ctor(FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit,FoundationaLLM.Context.Models.CachedKnowledgeUnit,FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine})">
-  KnowledgeUnitQueryEngine(KnowledgeUnit, CachedKnowledgeUnit, VectorDatabase, ILogger&lt;KnowledgeUnitQueryEngine&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeUnitQueryEngine.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Context_Services_KnowledgeUnitQueryEngine__ctor_FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeUnit_FoundationaLLM_Context_Models_CachedKnowledgeUnit_FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Context_Services_KnowledgeUnitQueryEngine__" data-uid="FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.#ctor(FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit,FoundationaLLM.Context.Models.CachedKnowledgeUnit,FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase,FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine})">
+  KnowledgeUnitQueryEngine(KnowledgeUnit, CachedKnowledgeUnit, VectorDatabase, VectorDatabase?, ILogger&lt;KnowledgeUnitQueryEngine&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeUnitQueryEngine.cs/#L43"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.html">KnowledgeUnitQueryEngine</a> class.</p>
@@ -172,7 +172,7 @@ Class KnowledgeUnitQueryEngine  <a class="header-action link-secondary" title="V
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public KnowledgeUnitQueryEngine(KnowledgeUnit knowledgeUnit, CachedKnowledgeUnit cachedKnowledgeUnit, VectorDatabase vectorDatabase, ILogger&lt;KnowledgeUnitQueryEngine&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public KnowledgeUnitQueryEngine(KnowledgeUnit knowledgeUnit, CachedKnowledgeUnit cachedKnowledgeUnit, VectorDatabase vectorDatabase, VectorDatabase? knowledgeGraphDatabase, ILogger&lt;KnowledgeUnitQueryEngine&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -186,6 +186,8 @@ Class KnowledgeUnitQueryEngine  <a class="header-action link-secondary" title="V
     <dt><code>vectorDatabase</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.html">VectorDatabase</a></dt>
     <dd><p>The vector database associated with the knowledge unit.</p>
 </dd>
+    <dt><code>knowledgeGraphDatabase</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.html">VectorDatabase</a></dt>
+    <dd></dd>
     <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.html">KnowledgeUnitQueryEngine</a>&gt;</dt>
     <dd><p>The logger used for logging operations within the query engine.</p>
 </dd>
@@ -210,7 +212,7 @@ Class KnowledgeUnitQueryEngine  <a class="header-action link-secondary" title="V
 
   <h3 id="FoundationaLLM_Context_Services_KnowledgeUnitQueryEngine_QueryAsync_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_" data-uid="FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.QueryAsync(FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)">
   QueryAsync(ContextKnowledgeSourceQueryRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeUnitQueryEngine.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeUnitQueryEngine.cs/#L57"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -246,7 +248,7 @@ Class KnowledgeUnitQueryEngine  <a class="header-action link-secondary" title="V
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeUnitQueryEngine.cs/#L18" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeUnitQueryEngine.cs/#L22" class="edit-link">Edit this page</a>
         </div>
 
 

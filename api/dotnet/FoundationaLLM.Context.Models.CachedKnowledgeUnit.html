@@ -196,7 +196,7 @@ Class CachedKnowledgeUnit  <a class="header-action link-secondary" title="View s
 
   <h3 id="FoundationaLLM_Context_Models_CachedKnowledgeUnit_KnowledgeGraph" data-uid="FoundationaLLM.Context.Models.CachedKnowledgeUnit.KnowledgeGraph">
   KnowledgeGraph
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Models/CachedKnowledgeUnit.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Models/CachedKnowledgeUnit.cs/#L34"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the cached knowledge graph associated with this knowledge source.</p>
@@ -214,6 +214,70 @@ Class CachedKnowledgeUnit  <a class="header-action link-secondary" title="View s
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><a class="xref" href="FoundationaLLM.Context.Models.IndexedKnowledgeGraph.html">IndexedKnowledgeGraph</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Context_Models_CachedKnowledgeUnit_KnowledgeGraphEmbeddingClient_" data-uid="FoundationaLLM.Context.Models.CachedKnowledgeUnit.KnowledgeGraphEmbeddingClient*"></a>
+
+  <h3 id="FoundationaLLM_Context_Models_CachedKnowledgeUnit_KnowledgeGraphEmbeddingClient" data-uid="FoundationaLLM.Context.Models.CachedKnowledgeUnit.KnowledgeGraphEmbeddingClient">
+  KnowledgeGraphEmbeddingClient
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Models/CachedKnowledgeUnit.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the embedding client used for embedding-related knowledge graph operations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EmbeddingClient? KnowledgeGraphEmbeddingClient { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">EmbeddingClient</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Context_Models_CachedKnowledgeUnit_KnowledgeGraphSearchService_" data-uid="FoundationaLLM.Context.Models.CachedKnowledgeUnit.KnowledgeGraphSearchService*"></a>
+
+  <h3 id="FoundationaLLM_Context_Models_CachedKnowledgeUnit_KnowledgeGraphSearchService" data-uid="FoundationaLLM.Context.Models.CachedKnowledgeUnit.KnowledgeGraphSearchService">
+  KnowledgeGraphSearchService
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Models/CachedKnowledgeUnit.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the Azure AI Search service used for performing knowledge graph search operations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAzureAISearchService? KnowledgeGraphSearchService { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Interfaces.IAzureAISearchService.html">IAzureAISearchService</a></dt>
     <dd></dd>
   </dl>
 

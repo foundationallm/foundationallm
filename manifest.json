@@ -6844,6 +6844,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.ContentItemsRegistry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.ContentItemsRegistry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.DataPipelines.ContentItemsRegistry",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.ContentItemsRegistry.yml\" sourcestartlinenumber=\"1\">Represents a registry for content items within the data pipeline engine.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.ContentItemsRegistryEntry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.ContentItemsRegistryEntry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.DataPipelines.ContentItemsRegistryEntry",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.ContentItemsRegistryEntry.yml\" sourcestartlinenumber=\"1\">Represents an entry in the registry for content items within a data pipeline state.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem.yml",
       "output": {
         ".html": {
@@ -6897,6 +6925,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase.yml\" sourcestartlinenumber=\"1\">Represents the common properties of a content item part.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineItemBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineItemBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.DataPipelines.DataPipelineItemBase",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.DataPipelines.DataPipelineItemBase.yml\" sourcestartlinenumber=\"1\">Represents the common properties of an item processed by a data pipeline.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7110,6 +7152,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistry",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistry.yml\" sourcestartlinenumber=\"1\">Represents a registry for knowledge buckets within the data pipeline engine.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistryEntry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistryEntry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistryEntry",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistryEntry.yml\" sourcestartlinenumber=\"1\">Represents an entry in the registry for content items within a data pipeline state.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntity.yml",
       "output": {
         ".html": {
@@ -7121,6 +7191,34 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.Knowledge.KnowledgeEntity",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntity.yml\" sourcestartlinenumber=\"1\">Represents a knowledge entity used in a knowledge graph.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityBase",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityBase.yml\" sourcestartlinenumber=\"1\">Represents the common properties of a knowledge entity used in a knowledge graph.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityEmbedding.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityEmbedding.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityEmbedding",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityEmbedding.yml\" sourcestartlinenumber=\"1\">Represents a knowledge entity embedding used in a knowledge graph.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7138,6 +7236,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeItemBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeItemBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Knowledge.KnowledgeItemBase",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeItemBase.yml\" sourcestartlinenumber=\"1\">Represents the common properties of a knowledge item used in a data pipeline.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship.yml",
       "output": {
         ".html": {
@@ -7149,6 +7261,34 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship.yml\" sourcestartlinenumber=\"1\">Represents a relationship between two knowledge entities in a knowledge graph.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipBase",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipBase.yml\" sourcestartlinenumber=\"1\">Represents the common properties of a knowledge relationship used in a knowledge graph.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipEmbedding.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipEmbedding.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipEmbedding",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipEmbedding.yml\" sourcestartlinenumber=\"1\">Represents a knowledge relationship embedding used in a knowledge graph.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -13900,48 +14040,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistry.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistry.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistry",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistry.yml\" sourcestartlinenumber=\"1\">Represents a registry for content items within the data pipeline engine.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistryEntry.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistryEntry.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistryEntry",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.ContentItemsRegistryEntry.yml\" sourcestartlinenumber=\"1\">Represents an entry in the registry for content items within a data pipeline state.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DataPipelineState.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.DataPipelineEngine.Models.DataPipelineState",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage-1.yml",
       "output": {
         ".html": {
@@ -16266,34 +16364,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Models.KnowledgeGraphBuildingState.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Models.KnowledgeGraphBuildingState.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Plugins.DataPipeline.Models.KnowledgeGraphBuildingState",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Models.KnowledgeGraphBuildingState.yml\" sourcestartlinenumber=\"1\">Represents the state of the knowledge graph building process.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Models.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Models.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Plugins.DataPipeline.Models",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.PluginNames.yml",
       "output": {
         ".html": {
@@ -16532,17 +16602,87 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphDataPipelineStagePlugin.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphConsolidationDataPipelineStagePlugin.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphDataPipelineStagePlugin.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphConsolidationDataPipelineStagePlugin.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphDataPipelineStagePlugin",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Knowledge Graph Data Pipeline Stage Plugin.</p>\n"
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphConsolidationDataPipelineStagePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphConsolidationDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Knowledge Graph Consolidation Data Pipeline Stage Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphDataPipelineStagePluginBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphDataPipelineStagePluginBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphDataPipelineStagePluginBase",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphDataPipelineStagePluginBase.yml\" sourcestartlinenumber=\"1\">Implements basic capabilities for Knowledge Graph Data Pipeline Stage Plugins.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphEmbeddingDataPipelineStagePlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphEmbeddingDataPipelineStagePlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphEmbeddingDataPipelineStagePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphEmbeddingDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Knowledge Graph Data Pipeline Stage Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphIndexingDataPipelineStagePlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphIndexingDataPipelineStagePlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphIndexingDataPipelineStagePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphIndexingDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Knowledge Graph Indexing Data Pipeline Stage Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphPublishingDataPipelineStagePlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphPublishingDataPipelineStagePlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphPublishingDataPipelineStagePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphPublishingDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Knowledge Graph Publishing Data Pipeline Stage Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphSummarizationDataPipelineStagePlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphSummarizationDataPipelineStagePlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphSummarizationDataPipelineStagePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphSummarizationDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Knowledge Graph Data Pipeline Stage Plugin.</p>\n"
     },
     {
       "type": "ManagedReference",
