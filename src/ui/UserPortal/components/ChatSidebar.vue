@@ -258,12 +258,28 @@
 							<thead>
 								<tr>
 									<th>Name</th>
+									<th>Enabled</th>
 									<th>Edit</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr v-for="getAgents in agentOptions2" :key="getAgents.object_id">
 									<td>{{ getAgents.display_name || getAgents.name }}</td>
+									<td>
+										<div 
+											class="custom-checkbox"
+											:class="{ 'checked': getAgents.enabled }"
+											@click="toggleAgentStatus(getAgents)"
+											:aria-label="`Toggle agent status - ${getAgents.enabled ? 'enabled' : 'disabled'}`"
+											role="checkbox"
+											:aria-checked="getAgents.enabled"
+											tabindex="0"
+											@keydown.enter="toggleAgentStatus(getAgents)"
+											@keydown.space.prevent="toggleAgentStatus(getAgents)"
+										>
+											<i v-if="getAgents.enabled" class="pi pi-check"></i>
+										</div>
+									</td>
 									<td>
 										<Button link class="csm-table-edit-btn-1" @click="editAgent(getAgents)">
 											<i class="pi pi-pencil"></i>
@@ -554,7 +570,8 @@
 							label: agent.display_name || agent.name,
 							value: agent.object_id,
 							type: agent.type,
-							description: agent.description
+							description: agent.description,
+							enabled: agent.enabled !== undefined ? agent.enabled : true
 						};
 					});
 				} catch (error) {
@@ -572,6 +589,36 @@
 
 			selectAgent(getAgents) {
 				this.$emit('agent-selected', getAgents);
+			},
+
+			async toggleAgentStatus(agent) {
+				try {
+					// Toggle the enabled status
+					agent.enabled = !agent.enabled;
+					
+					// Here you would typically make an API call to update the agent status
+					// For now, we'll just update the local state
+					// await api.updateAgentStatus(agent.object_id, agent.enabled);
+					
+					// Show success message with appropriate severity
+					this.$appStore.addToast({
+						severity: agent.enabled ? 'success' : 'warn',
+						summary: 'Agent Status Updated',
+						detail: `Agent "${agent.display_name || agent.name}" is now ${agent.enabled ? 'enabled' : 'disabled'}`,
+						life: 2000,
+					});
+				} catch (error) {
+					// Revert the change if the API call fails
+					agent.enabled = !agent.enabled;
+					
+					console.error('Failed to update agent status:', error);
+					this.$appStore.addToast({
+						severity: 'error',
+						summary: 'Update Failed',
+						detail: 'Failed to update agent status. Please try again.',
+						life: 3000,
+					});
+				}
 			},
 
 			editAgent(agent) {
@@ -980,5 +1027,37 @@
 	.csm-table-edit-btn-1.p-button:not(.p-button-text){
 		background-color: transparent !important;
     	color: #6c6c6c !important;
+	}
+	
+	/* Custom checkbox styling */
+	.custom-checkbox {
+		width: 21px;
+		height: 21px;
+		border: 2px solid #ced4da;
+		border-radius: 4px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		background-color: transparent;
+		position: relative;
+		margin: 0 auto;
+	}
+	
+	.custom-checkbox:hover {
+		border-color: #5472d4;
+		background-color: rgba(84, 114, 212, 0.1);
+	}
+	
+	.custom-checkbox.checked {
+		background-color: #5472d4;
+		border-color: #5472d4;
+	}
+	
+	.custom-checkbox.checked i {
+		color: white;
+		font-size: 12px;
+		font-weight: bold;
 	}
 </style>
