@@ -9,13 +9,13 @@
         <div class="w-full max-w-[1430px] mx-auto px-4 py-7">
             <div class="csm-backto-chats-1">
                 <nuxt-link to="/" class="backto-chats">
-                    <i class="pi pi-angle-left relative top-[2px]"></i> Return to Chats
+                    <i class="pi pi-angle-left relative top-[2px]"></i> {{ isEditMode ? 'Return to Chats' : 'Return to Chats' }}
                 </nuxt-link>
             </div>
 
             <div class="flex flex-wrap items-center -mx-4">
                 <div class="w-full max-w-full md:max-w-[50%] px-4 mb-5 text-center md:text-left">
-                    <h2 class="page-header text-3xl text-[#334581]">Create Agent</h2>
+                    <h2 class="page-header text-3xl text-[#334581]">{{ isEditMode ? 'Edit Agent' : 'Create Agent' }}</h2>
                 </div>
 
 
@@ -419,9 +419,95 @@ export default defineComponent({
         this.displayNameDebouncedCheck = debounce(this.checkDisplayName, 500);
         this.fetchAIModels();
         this.loadAvailableAgents();
+        
+        // Check if we're in edit mode
+        this.checkEditMode();
     },
 
     methods: {
+        async checkEditMode() {
+            // Check if we're in edit mode based on query parameters
+            const query = this.$route.query;
+            if (query.edit === 'true' && query.agentName) {
+                this.isEditMode = true;
+                this.selectedAgentName = query.agentName as string;
+                
+                // Load the agent data
+                await this.loadAgentForEditing();
+            }
+        },
+
+        async loadAgentForEditing() {
+            if (!this.selectedAgentName) return;
+            
+            try {
+                // Get all agents and find the specific one
+                const agentsResponse = await api.getAgents();
+                const agentResult = agentsResponse.find(agent => 
+                    agent.resource?.name === this.selectedAgentName
+                );
+                
+                if (agentResult?.resource) {
+                    this.createdAgent = agentResult.resource;
+                    
+                    // Populate form fields
+                    this.agentDisplayName = this.createdAgent.display_name || '';
+                    this.agentDescription = this.createdAgent.description || '';
+                    
+                    // Load welcome message from properties
+                    if (this.createdAgent.properties?.welcome_message) {
+                        this.welcomeMessage = this.createdAgent.properties.welcome_message;
+                        this.updateCharacterCount();
+                    }
+                    
+                    // Load expiration date
+                    if (this.createdAgent.expiration_date) {
+                        this.agentExpirationDate = new Date(this.createdAgent.expiration_date);
+                    }
+                    
+                    // Load system prompt
+                    try {
+                        const prompt = await api.getAgentMainPrompt(this.createdAgent);
+                        this.systemPrompt = prompt || '';
+                    } catch (e) {
+                        console.warn('Could not load system prompt:', e);
+                    }
+                    
+                    // Load current AI model
+                    this.loadCurrentAIModel();
+                    
+                    // Load agent files
+                    await this.loadAgentFiles();
+                    
+                    // Switch to first tab after loading
+                    this.activeTabIndex = 0;
+                } else {
+                    throw new Error('Agent not found');
+                }
+            } catch (error: any) {
+                this.$toast.add({ 
+                    severity: 'error', 
+                    summary: 'Error', 
+                    detail: error.message || 'Failed to load agent for editing', 
+                    life: 5000 
+                });
+                // Redirect back if agent loading fails
+                this.$router.push('/');
+            }
+        },
+
+        loadCurrentAIModel() {
+            if (!this.createdAgent?.workflow?.resource_object_ids) return;
+            
+            // Find the current main model from the workflow
+            for (const [key, obj] of Object.entries(this.createdAgent.workflow.resource_object_ids)) {
+                if (obj && obj.properties && obj.properties.object_role === 'main_model') {
+                    this.selectedAIModel = obj.object_id;
+                    break;
+                }
+            }
+        },
+
         async onDisplayNameInput() {
             this.displayNameStatus = this.agentDisplayName ? 'loading' : '';
             if (this.displayNameDebouncedCheck) {
@@ -572,9 +658,15 @@ export default defineComponent({
             if (e.index === 2 && this.selectedAgentName && this.agentFiles.length === 0) {
                 this.loadAgentFiles();
             }
+            
+            // If switching to AI Configuration tab in edit mode, ensure we have the current model selected
+            if (e.index === 1 && this.isEditMode && this.createdAgent && !this.selectedAIModel) {
+                this.loadCurrentAIModel();
+            }
         },
         async onCreateAgent() {
-            if (this.isCreating) return;
+            if (this.isCreating || this.isEditMode) return;
+            
             // Collect form data from v-model bindings
             const displayName = this.agentDisplayName || '';
             const description = this.agentDescription || '';
@@ -635,25 +727,31 @@ export default defineComponent({
             this.createdAgent.properties.welcome_message = welcomeMessage;
             this.createdAgent.expiration_date = formattedDate;
 
-            let currentMainModelId = null;
-            if (this.createdAgent.workflow && this.createdAgent.workflow.resource_object_ids) {
-                for (const [key, obj] of Object.entries(this.createdAgent.workflow.resource_object_ids)) {
-                    if (obj && obj.properties && obj.properties.object_role === 'main_model') {
-                        currentMainModelId = obj.object_id;
-                        break;
+            try {
+                // Update main model if changed
+                let currentMainModelId = null;
+                if (this.createdAgent.workflow && this.createdAgent.workflow.resource_object_ids) {
+                    for (const [key, obj] of Object.entries(this.createdAgent.workflow.resource_object_ids)) {
+                        if (obj && obj.properties && obj.properties.object_role === 'main_model') {
+                            currentMainModelId = obj.object_id;
+                            break;
+                        }
                     }
                 }
-            }
-            const modelIdToUpdate = this.selectedAIModel || currentMainModelId;
-            if (!modelIdToUpdate) {
-                this.$toast.add({ severity: 'error', summary: 'Error', detail: 'No model selected or found.', life: 5000 });
-                return;
-            }
-            try {
-                const updatedAgent = await api.updateAgentMainModel(this.createdAgent, modelIdToUpdate);
-                this.createdAgent.object_id = updatedAgent.object_id;
-                this.$toast.add({ severity: 'success', summary: 'Agent Updated', detail: 'Agent changes saved.', life: 3000 });
-            } catch (err) {
+                
+                const modelIdToUpdate = this.selectedAIModel || currentMainModelId;
+                if (modelIdToUpdate && modelIdToUpdate !== currentMainModelId) {
+                    const updatedAgent = await api.updateAgentMainModel(this.createdAgent, modelIdToUpdate);
+                    this.createdAgent.object_id = updatedAgent.object_id;
+                }
+
+                // Update system prompt if changed
+                if (this.systemPrompt !== '') {
+                    await api.updateAgentMainPrompt(this.createdAgent, this.systemPrompt);
+                }
+
+                this.$toast.add({ severity: 'success', summary: 'Agent Updated', detail: 'Agent changes saved successfully.', life: 3000 });
+            } catch (err: any) {
                 this.$toast.add({ severity: 'error', summary: 'Error', detail: err.message || 'Failed to update agent', life: 5000 });
             }
         },
@@ -673,7 +771,13 @@ export default defineComponent({
 
         onCancel() {
             // Cancel logic (redirect or reset form)
-            this.$router.push('/');
+            if (this.isEditMode) {
+                // If editing, go back to previous page or reset form
+                this.$router.push('/');
+            } else {
+                // If creating, just go back
+                this.$router.push('/');
+            }
         },
 
         // ...existing file upload and utility methods...
@@ -795,9 +899,12 @@ export default defineComponent({
             const agentName = (this.agentDisplayName || '').trim();
 
             if (agentName) {
-                this.selectedAgentName = this.findAgentNameByName(agentName);
-                if (!this.selectedAgentName && this.isEditMode && this.createdAgent?.name) {
+                // In edit mode, use the current agent name
+                if (this.isEditMode && this.createdAgent?.name) {
                     this.selectedAgentName = this.createdAgent.name;
+                } else {
+                    // In create mode, try to find the agent by name
+                    this.selectedAgentName = this.findAgentNameByName(agentName);
                 }
 
                 if (this.selectedAgentName) {
