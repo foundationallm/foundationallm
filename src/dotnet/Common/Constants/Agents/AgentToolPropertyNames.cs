@@ -34,5 +34,10 @@
         /// Represents the metadata filter key used in vector store operations.
         /// </summary>
         public const string VectorStoreMetadataFilter = "vector_store_metadata_filter";
+
+        /// <summary>
+        /// Represents the list of knowledge unit vector store metadata filters
+        /// </summary>
+        public const string KnowledgeUnitVectorStoreFilters = "knowledge_unit_vector_store_filters";
     }
 }
