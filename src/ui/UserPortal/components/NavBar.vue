@@ -234,12 +234,12 @@
 				const filteredAgents = this.$appStore.agents.filter((agent) => {
 					const isExpiredOrDisabled = isAgentExpired(agent) || agent.enabled === false;
 					
-					// Check if agent is in user profile by matching object_id or name at the end of the path
-					const isNotInUserProfile = enabledAgentIds.length > 0 && !enabledAgentIds.some(agentId => 
-						agentId.includes(agent.resource.object_id) || 
-						agentId.endsWith(`/agents/${agent.resource.name}`) ||
-						agentId.endsWith(agent.resource.object_id)
+					// Check if agent is in user profile by exact matching object_id
+					console.log('Agent object_id:', agent.resource.object_id);
+					const foundAgent = enabledAgentIds.find(agentId => 
+						agentId == agent.resource.object_id
 					);
+					const isNotInUserProfile = enabledAgentIds.length > 0 && !foundAgent;
 					
 					// Include if: (not expired AND not disabled AND in user profile) OR is current agent
 					return (!isExpiredOrDisabled && !isNotInUserProfile) || isCurrentAgent(agent);
