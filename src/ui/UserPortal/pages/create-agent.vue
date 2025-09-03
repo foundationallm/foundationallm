@@ -152,7 +152,8 @@
                                                 </VTooltip>
                                                 Chat Model <span class="text-[#ff0000]">*</span>
                                             </label>
-                                            <Dropdown class="w-full" :options="aiModels" optionLabel="name"
+                                            <Dropdown class="w-full" :options="aiModels"
+                                                :optionLabel="model => model.display_name || model.name"
                                                 optionValue="object_id" v-model="selectedAIModel"
                                                 placeholder="--Select--" aria-label="Select a chat model" :filter="true"
                                                 :showClear="true" :virtualScrollerOptions="{ itemSize: 38 }"
