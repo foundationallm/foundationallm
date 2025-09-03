@@ -3,7 +3,7 @@ name: Release End to End Testing
 on:
   push:
     branches:
-    - release/**
+    - e2e/**
   workflow_dispatch: {}
 
 jobs:
