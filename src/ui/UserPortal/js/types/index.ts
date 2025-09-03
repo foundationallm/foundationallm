@@ -176,6 +176,22 @@ export interface UserProfile {
 	type: string;
 	upn: string;
 	flags: Record<string, boolean>;
+	agents: string[];
+}
+
+export interface UserProfileUpdateRequest {
+	agent_object_id: string;
+}
+
+export interface AgentOption {
+	object_id?: string;
+	name: string;
+	display_name?: string | null;
+	label: string;
+	value?: string;
+	type?: string | null;
+	description?: string | null;
+	enabled: boolean;
 }
 
 export interface FileStoreConnector {
