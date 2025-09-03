@@ -638,6 +638,9 @@
 						}
 					}
 					
+					// Update the global app store user profile
+					this.$appStore.updateUserProfileAgent(agent.object_id!, agent.enabled);
+
 					// Show success message with appropriate severity
 					(this.$appStore as any).addToast({
 						severity: agent.enabled ? 'success' : 'warn',
