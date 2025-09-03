@@ -97,8 +97,9 @@ namespace FoundationaLLM.Context.Services
                         vectorStoreFilter?.VectorStoreMetadataFilter);
 
                     _logger.LogInformation(
-                        "Filter for vector store {VectorStore} in knowledge unit {KnowledgeUnit}: {Filter}",
+                        "Vector store query - filter for vector store {VectorDatabase}/{VectorStore} in knowledge unit {KnowledgeUnit}: {Filter}",
                         _vectorDatabase.DatabaseName,
+                        vectorStoreId,
                         _knowledgeUnit.Name,
                         matchingDocumentsFilter);
 
@@ -200,8 +201,9 @@ namespace FoundationaLLM.Context.Services
                             vectorStoreFilter?.VectorStoreMetadataFilter);
 
                         _logger.LogInformation(
-                            "Filter for vector store {VectorStore} in knowledge unit {KnowledgeUnit}: {Filter}",
+                            "Vector store query (via KG) - filter for vector store {VectorDatabase}/{VectorStore} in knowledge unit {KnowledgeUnit}: {Filter}",
                             _vectorDatabase.DatabaseName,
+                            vectorStoreId,
                             _knowledgeUnit.Name,
                             matchingDocumentsFilter);
 
@@ -285,11 +287,12 @@ namespace FoundationaLLM.Context.Services
                         _vectorDatabase,
                         vectorStoreId,
                         [],
-                        vectorStoreFilter?.VectorStoreMetadataFilter);
+                        null);
 
             _logger.LogInformation(
-                "Filter for vector store {VectorStore} in knowledge unit {KnowledgeUnit}: {Filter}",
+                "Match knowledge graph items - filter for vector store {VectorDatabase}/{VectorStore} in knowledge unit {KnowledgeUnit}: {Filter}",
                 vectorDatabase.DatabaseName,
+                vectorStoreId,
                 _knowledgeUnit.Name,
                 matchingDocumentsFilter);
 
