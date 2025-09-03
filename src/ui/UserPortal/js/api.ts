@@ -18,7 +18,8 @@ import type {
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
 	Session,
-	UserProfile
+	UserProfile,
+	UserProfileUpdateRequest
 } from '@/js/types';
 
 export default {
@@ -436,11 +437,41 @@ export default {
 	},
 
 	/**
-	 * Retrieves user profile for the current user.
-	 * @returns A user profile with enabled agent identifiers.
+	 * Retrieves user profile for a given instance.
+	 * @returns The user profile.
 	 */
 	async getUserProfile() {
-		return (await this.fetch(`/instances/${this.instanceId}/userprofiles`)) as UserProfile;
+		return (await this.fetch(`/instances/${this.instanceId}/userProfiles/`)) as UserProfile;
+	},
+
+	/**
+	 * Adds an agent to the user's profile selection.
+	 * @param agentObjectId - The object ID of the agent to add.
+	 * @returns A Promise that resolves to the response from the server.
+	 */
+	async addAgentToUserProfile(agentObjectId: string) {
+		const payload: UserProfileUpdateRequest = {
+			agent_object_id: agentObjectId
+		};
+		return await this.fetch(`/instances/${this.instanceId}/userprofiles/add-agent`, {
+			method: 'POST',
+			body: JSON.stringify(payload),
+		});
+	},
+
+	/**
+	 * Removes an agent from the user's profile selection.
+	 * @param agentObjectId - The object ID of the agent to remove.
+	 * @returns A Promise that resolves to the response from the server.
+	 */
+	async removeAgentFromUserProfile(agentObjectId: string) {
+		const payload: UserProfileUpdateRequest = {
+			agent_object_id: agentObjectId
+		};
+		return await this.fetch(`/instances/${this.instanceId}/userprofiles/remove-agent`, {
+			method: 'POST',
+			body: JSON.stringify(payload),
+		});
 	},
 
 	/**
