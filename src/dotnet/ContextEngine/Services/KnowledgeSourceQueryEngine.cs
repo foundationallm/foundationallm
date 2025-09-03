@@ -7,12 +7,15 @@ namespace FoundationaLLM.Context.Services
     /// <summary>
     /// Provides methods for querying knowledge sources.
     /// </summary>
+    /// <param name="knowledgeSourceId">The identifier of the knowldege source.</param>
     /// <param name="knowledgeUnitQueryEngines"> The collection of knowledge unit query engines used to execute queries.</param>
     /// <param name="logger"> The logger used for logging.</param>
     public class KnowledgeSourceQueryEngine(
+        string knowledgeSourceId,
         IEnumerable<KnowledgeUnitQueryEngine> knowledgeUnitQueryEngines,
         ILogger<KnowledgeSourceQueryEngine> logger)
     {
+        private readonly string _knowledgeSourceId = knowledgeSourceId;
         private readonly IEnumerable<KnowledgeUnitQueryEngine> _knowledgeUnitQueryEngines = knowledgeUnitQueryEngines;
         private readonly ILogger<KnowledgeSourceQueryEngine> _logger = logger;
 
@@ -51,16 +54,30 @@ namespace FoundationaLLM.Context.Services
                 // If there's only one response, return it directly
                 return queryResponses.First();
 
+            foreach (var response in queryResponses.Where(qr => !qr.Success))
+                _logger.LogWarning(
+                    "Knowledge unit {KnowledgeUnitId} failed to process the query with error: {ErrorMessage}",
+                    response.Source,
+                    response.ErrorMessage);
+
             if (!queryResponses.Any(qr => qr.Success))
-                // If there are no responses, return an empty response
+            {
+                _logger.LogError(
+                    "All knowledge unit queries failed for knowledge source {KnowledgeSourceId}.",
+                    _knowledgeSourceId);
+
+                // Not getting any responses is an error condition.
                 return new ContextKnowledgeSourceQueryResponse
                 {
+                    Source = _knowledgeSourceId,
                     Success = false,
                     ErrorMessage = "None of the knowledge unit queries returned a successful response."
                 };
+            }
 
             var consolidatedResponse = new ContextKnowledgeSourceQueryResponse
             {
+                Source = _knowledgeSourceId,
                 Success = true,
                 VectorStoreResponse = new ContextVectorStoreResponse(),
                 KnowledgeGraphResponse = new ContextKnowledgeGraphResponse()

@@ -595,6 +595,7 @@ namespace FoundationaLLM.Common.Clients
 
                 return new ContextKnowledgeSourceQueryResponse
                 {
+                    Source = knowledgeSourceId,
                     Success = false,
                     ErrorMessage = "The service responded with an error status code."
                 };
@@ -605,6 +606,7 @@ namespace FoundationaLLM.Common.Clients
 
                 return new ContextKnowledgeSourceQueryResponse
                 {
+                    Source = knowledgeSourceId,
                     Success = false,
                     ErrorMessage = "An error occurred while querying the knowledge source."
                 };

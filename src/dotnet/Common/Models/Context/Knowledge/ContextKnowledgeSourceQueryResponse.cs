@@ -8,6 +8,11 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
     public class ContextKnowledgeSourceQueryResponse : ContextServiceResponse
     {
         /// <summary>
+        /// Gets or sets the source of the response..
+        /// </summary>
+        public required string Source { get; set; }
+
+        /// <summary>
         /// Gets or sets the response from the vector store query.
         /// </summary>
         [JsonPropertyName("vector_store_response")]
