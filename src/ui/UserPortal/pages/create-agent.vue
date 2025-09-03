@@ -93,7 +93,7 @@
                                             </VTooltip>
                                             Welcome Message
                                         </label>
-
+                                        
                                         <CustomQuillEditor
                                             v-model="welcomeMessage"
                                             :initial-content="JSON.parse(JSON.stringify(welcomeMessage))"
@@ -429,7 +429,7 @@ export default defineComponent({
         this.displayNameDebouncedCheck = debounce(this.checkDisplayName, 500);
         this.fetchAIModels();
         this.loadAvailableAgents();
-
+        
         // Check if we're in edit mode
         this.checkEditMode();
     },
@@ -441,7 +441,7 @@ export default defineComponent({
             if (query.edit === 'true' && query.agentName) {
                 this.isEditMode = true;
                 this.selectedAgentName = query.agentName as string;
-
+                
                 // Load the agent data
                 await this.loadAgentForEditing();
             }
@@ -449,29 +449,29 @@ export default defineComponent({
 
         async loadAgentForEditing() {
             if (!this.selectedAgentName) return;
-
+            
             try {
                 // Get the specific agent directly by name
                 const agentResult = await api.getAgent(this.selectedAgentName);
-
+                
                 if (agentResult?.resource) {
                     this.createdAgent = agentResult.resource;
-
+                    
                     // Populate form fields
                     this.agentDisplayName = this.createdAgent.display_name || '';
                     this.agentDescription = this.createdAgent.description || '';
-
+                    
                     // Load welcome message from properties
                     if (this.createdAgent.properties?.welcome_message) {
                         this.welcomeMessage = this.createdAgent.properties.welcome_message;
                         this.characterCount = this.welcomeMessage.length;
                     }
-
+                    
                     // Load expiration date
                     if (this.createdAgent.expiration_date) {
                         this.agentExpirationDate = new Date(this.createdAgent.expiration_date);
                     }
-
+                    
                     // Load system prompt
                     try {
                         const prompt = await api.getAgentMainPrompt(this.createdAgent);
@@ -479,24 +479,24 @@ export default defineComponent({
                     } catch (e) {
                         console.warn('Could not load system prompt:', e);
                     }
-
+                    
                     // Load current AI model
                     this.loadCurrentAIModel();
-
+                    
                     // Load agent files
                     await this.loadAgentFiles();
-
+                    
                     // Switch to first tab after loading
                     this.activeTabIndex = 0;
                 } else {
                     throw new Error('Agent not found');
                 }
             } catch (error: any) {
-                this.$toast.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: error.message || 'Failed to load agent for editing',
-                    life: 5000
+                this.$toast.add({ 
+                    severity: 'error', 
+                    summary: 'Error', 
+                    detail: error.message || 'Failed to load agent for editing', 
+                    life: 5000 
                 });
                 // Redirect back if agent loading fails
                 this.$router.push('/');
@@ -505,7 +505,7 @@ export default defineComponent({
 
         loadCurrentAIModel() {
             if (!this.createdAgent?.workflow?.resource_object_ids) return;
-
+            
             // Find the current main model from the workflow
             for (const [key, obj] of Object.entries(this.createdAgent.workflow.resource_object_ids)) {
                 if (obj && obj.properties && obj.properties.object_role === 'main_model') {
@@ -667,7 +667,7 @@ export default defineComponent({
             if (e.index === 2 && this.selectedAgentName && this.agentFiles.length === 0) {
                 this.loadAgentFiles();
             }
-
+            
             // If switching to AI Configuration tab in edit mode, ensure we have the current model selected
             if (e.index === 1 && this.isEditMode && this.createdAgent && !this.selectedAIModel) {
                 this.loadCurrentAIModel();
@@ -675,7 +675,7 @@ export default defineComponent({
         },
         async onCreateAgent() {
             if (this.isCreating || this.isEditMode) return;
-
+            
             // Collect form data from v-model bindings
             const displayName = this.agentDisplayName || '';
             const description = this.agentDescription || '';
@@ -747,7 +747,7 @@ export default defineComponent({
                         }
                     }
                 }
-
+                
                 const modelIdToUpdate = this.selectedAIModel || currentMainModelId;
                 if (modelIdToUpdate && modelIdToUpdate !== currentMainModelId) {
                     const updatedAgent = await api.updateAgentMainModel(this.createdAgent, modelIdToUpdate);
