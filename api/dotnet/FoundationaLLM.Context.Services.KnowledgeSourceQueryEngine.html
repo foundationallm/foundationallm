@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Context_Services_KnowledgeSourceQueryEngine" data-uid="FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine" class="text-break">
-Class KnowledgeSourceQueryEngine  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L12"><i class="bi bi-code-slash"></i></a>
+Class KnowledgeSourceQueryEngine  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -162,9 +162,9 @@ Class KnowledgeSourceQueryEngine  <a class="header-action link-secondary" title=
 
   <a id="FoundationaLLM_Context_Services_KnowledgeSourceQueryEngine__ctor_" data-uid="FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Context_Services_KnowledgeSourceQueryEngine__ctor_System_Collections_Generic_IEnumerable_FoundationaLLM_Context_Services_KnowledgeUnitQueryEngine__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Context_Services_KnowledgeSourceQueryEngine__" data-uid="FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine.#ctor(System.Collections.Generic.IEnumerable{FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine})">
-  KnowledgeSourceQueryEngine(IEnumerable&lt;KnowledgeUnitQueryEngine&gt;, ILogger&lt;KnowledgeSourceQueryEngine&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Context_Services_KnowledgeSourceQueryEngine__ctor_System_String_System_Collections_Generic_IEnumerable_FoundationaLLM_Context_Services_KnowledgeUnitQueryEngine__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Context_Services_KnowledgeSourceQueryEngine__" data-uid="FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine.#ctor(System.String,System.Collections.Generic.IEnumerable{FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine})">
+  KnowledgeSourceQueryEngine(string, IEnumerable&lt;KnowledgeUnitQueryEngine&gt;, ILogger&lt;KnowledgeSourceQueryEngine&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Provides methods for querying knowledge sources.</p>
@@ -172,11 +172,14 @@ Class KnowledgeSourceQueryEngine  <a class="header-action link-secondary" title=
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public KnowledgeSourceQueryEngine(IEnumerable&lt;KnowledgeUnitQueryEngine&gt; knowledgeUnitQueryEngines, ILogger&lt;KnowledgeSourceQueryEngine&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public KnowledgeSourceQueryEngine(string knowledgeSourceId, IEnumerable&lt;KnowledgeUnitQueryEngine&gt; knowledgeUnitQueryEngines, ILogger&lt;KnowledgeSourceQueryEngine&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
+    <dt><code>knowledgeSourceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The identifier of the knowldege source.</p>
+</dd>
     <dt><code>knowledgeUnitQueryEngines</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.html">KnowledgeUnitQueryEngine</a>&gt;</dt>
     <dd><p>The collection of knowledge unit query engines used to execute queries.</p>
 </dd>
@@ -204,7 +207,7 @@ Class KnowledgeSourceQueryEngine  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Context_Services_KnowledgeSourceQueryEngine_QueryAsync_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_" data-uid="FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine.QueryAsync(FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)">
   QueryAsync(ContextKnowledgeSourceQueryRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Executes an asynchronous query against the context knowledge source.</p>
@@ -248,7 +251,7 @@ before calling this method.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L12" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L13" class="edit-link">Edit this page</a>
         </div>
 
 
