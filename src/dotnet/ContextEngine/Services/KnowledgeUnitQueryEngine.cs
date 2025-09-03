@@ -96,6 +96,12 @@ namespace FoundationaLLM.Context.Services
                         [],
                         vectorStoreFilter?.VectorStoreMetadataFilter);
 
+                    _logger.LogInformation(
+                        "Filter for vector store {VectorStore} in knowledge unit {KnowledgeUnit}: {Filter}",
+                        _vectorDatabase.DatabaseName,
+                        _knowledgeUnit.Name,
+                        matchingDocumentsFilter);
+
                     var matchingDocuments = await _cachedKnowledgeUnit.SearchService.SearchDocuments(
                         _vectorDatabase.DatabaseName,
                         [
@@ -193,6 +199,12 @@ namespace FoundationaLLM.Context.Services
                             [.. matchingEntities.Entities.SelectMany(e => e.ChunkIds).Distinct()],
                             vectorStoreFilter?.VectorStoreMetadataFilter);
 
+                        _logger.LogInformation(
+                            "Filter for vector store {VectorStore} in knowledge unit {KnowledgeUnit}: {Filter}",
+                            _vectorDatabase.DatabaseName,
+                            _knowledgeUnit.Name,
+                            matchingDocumentsFilter);
+
                         var matchingDocuments = await _cachedKnowledgeUnit.SearchService.SearchDocuments(
                             _vectorDatabase.DatabaseName,
                             [
@@ -274,6 +286,12 @@ namespace FoundationaLLM.Context.Services
                         vectorStoreId,
                         [],
                         vectorStoreFilter?.VectorStoreMetadataFilter);
+
+            _logger.LogInformation(
+                "Filter for vector store {VectorStore} in knowledge unit {KnowledgeUnit}: {Filter}",
+                vectorDatabase.DatabaseName,
+                _knowledgeUnit.Name,
+                matchingDocumentsFilter);
 
             var matchingDocuments = await cachedKnowledgeUnit.KnowledgeGraphSearchService!.SearchDocuments(
                 vectorDatabase.DatabaseName,
