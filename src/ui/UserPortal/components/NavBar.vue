@@ -235,7 +235,6 @@
 					const isExpiredOrDisabled = isAgentExpired(agent) || agent.enabled === false;
 					
 					// Check if agent is in user profile by exact matching object_id
-					console.log('Agent object_id:', agent.resource.object_id);
 					const foundAgent = enabledAgentIds.find(agentId => 
 						agentId == agent.resource.object_id
 					);
