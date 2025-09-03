@@ -305,6 +305,8 @@ namespace FoundationaLLM.Common.Services.Azure
         public async Task<T> PatchItemPropertiesAsync<T>(string containerName, string partitionKey, string id,
             string upn, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default)
         {
+            await EnsureContainerAvailability(containerName);
+
             var response = await _containers[containerName].PatchItemAsync<T>(
                 id: id,
                 partitionKey: new PartitionKey(partitionKey),
@@ -766,6 +768,21 @@ namespace FoundationaLLM.Common.Services.Azure
             }
 
             return null;
+        }
+
+        private async Task EnsureContainerAvailability(string containerName)
+        {
+            if (_containers.ContainsKey(containerName))
+                return;
+
+            switch (containerName)
+            {
+                case AzureCosmosDBContainers.UserProfiles:
+                    _containers[containerName] = await _userProfilesTask;
+                    return;
+                default:
+                    return;
+            }
         }
     }
 }

@@ -115,39 +115,88 @@ namespace FoundationaLLM.Common.Services.Azure
         }
 
         /// <inheritdoc/>
-        public async Task UploadDocuments(
+        public async Task<Dictionary<string, bool>> UploadDocuments(
             string indexName,
             List<string> fieldNames,
             List<object[]> fieldValues)
         {
-            // Build the endpoint URI for the documents action
-            var endpoint = new Uri($"{_searchIndexClient.Endpoint}/indexes/{indexName}/docs/index?api-version=2024-07-01");
+            int bucketSize = 500;
+            int bucketCount = (fieldValues.Count + bucketSize - 1) / bucketSize;
 
-            var request = _searchIndexClient.Pipeline.CreateRequest();
-            request.Uri.Reset(endpoint);
+            using var semaphore = new SemaphoreSlim(10); // Limit to 10 concurrent uploads
 
-            fieldNames = [.. fieldNames.Prepend("@search.action")];
-            var payload = new
+            var uploadTasks = Enumerable.Range(0, bucketCount)
+                .Select(async i =>
+                {
+                    await semaphore.WaitAsync();
+                    try
+                    {
+                        return await UploadDocumentsInternal(
+                            indexName,
+                            fieldNames,
+                            [.. fieldValues.Skip(i * bucketSize).Take(bucketSize)]);
+                    }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                })
+                .ToList();
+
+            var uploadResults = await Task.WhenAll(uploadTasks);
+            return uploadResults
+                .SelectMany(x => x)
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        }
+
+        private async Task<Dictionary<string, bool>> UploadDocumentsInternal(
+            string indexName,
+            List<string> fieldNames,
+            List<object[]> fieldValues)
+        {
+            try
             {
-                value = fieldValues.Select(
-                x => fieldNames
-                    .Zip(
-                        x.Prepend("mergeOrUpload"),
-                        (name, value) => new KeyValuePair<string, object>(name, value))
-                    .ToDictionary(kvp => kvp.Key, kvp => kvp.Value))
-            };
+                // Build the endpoint URI for the documents action
+                var endpoint = new Uri($"{_searchIndexClient.Endpoint}/indexes/{indexName}/docs/index?api-version=2024-07-01");
 
-            var json = JsonSerializer.Serialize(payload);
-            var jsonBytes = Encoding.UTF8.GetBytes(json);
+                var request = _searchIndexClient.Pipeline.CreateRequest();
+                request.Uri.Reset(endpoint);
 
-            request.Headers.Add("Content-Type", "application/json");
-            request.Method = RequestMethod.Post;
-            request.Content = RequestContent.Create(jsonBytes);
-            var message = new HttpMessage(request, _searchIndexClient.Pipeline.ResponseClassifier);
-            await _searchIndexClient.Pipeline.SendAsync(message, default);
+                fieldNames = [.. fieldNames.Prepend("@search.action")];
+                var payload = new
+                {
+                    value = fieldValues.Select(
+                    x => fieldNames
+                        .Zip(
+                            x.Prepend("mergeOrUpload"),
+                            (name, value) => new KeyValuePair<string, object>(name, value))
+                        .ToDictionary(kvp => kvp.Key, kvp => kvp.Value))
+                };
 
-            if (message.Response.IsError)
-                throw new RequestFailedException(message.Response);
+                var json = JsonSerializer.Serialize(payload);
+                var jsonBytes = Encoding.UTF8.GetBytes(json);
+
+                request.Headers.Add("Content-Type", "application/json");
+                request.Method = RequestMethod.Post;
+                request.Content = RequestContent.Create(jsonBytes);
+                var message = new HttpMessage(request, _searchIndexClient.Pipeline.ResponseClassifier);
+                await _searchIndexClient.Pipeline.SendAsync(message, default);
+
+                if (message.Response.IsError)
+                    throw new RequestFailedException(message.Response);
+
+                return fieldValues
+                    .Select(fv => fv[0].ToString()!)
+                    .ToDictionary(id => id, id => true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error uploading documents to index {IndexName}", indexName);
+
+                return fieldValues
+                    .Select(fv => fv[0].ToString()!)
+                    .ToDictionary(id => id, id => false);
+            }
         }
 
         /// <inheritdoc/>

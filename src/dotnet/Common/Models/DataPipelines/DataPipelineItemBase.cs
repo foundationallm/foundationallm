@@ -15,17 +15,24 @@ namespace FoundationaLLM.Common.Models.DataPipelines
         public string? IndexEntryId { get; set; }
 
         /// <summary>
+        /// Gets or sets a flag indicating whether the item has been saved to an index.
+        /// </summary>
+        [JsonPropertyName("indexed")]
+        [JsonPropertyOrder(101)]
+        public bool Indexed { get; set; }
+
+        /// <summary>
         /// Gets or sets the metadata associated with the item.
         /// </summary>
         [JsonPropertyName("metadata")]
-        [JsonPropertyOrder(101)]
+        [JsonPropertyOrder(102)]
         public string? Metadata { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the data pipeline run that last modified this item.
         /// </summary>
         [JsonPropertyName("last_changed_by")]
-        [JsonPropertyOrder(102)]
+        [JsonPropertyOrder(103)]
         public string LastChangedBy { get; set; } = null!;
     }
 }

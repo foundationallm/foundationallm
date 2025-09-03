@@ -333,7 +333,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     chunk => chunk.Embedding);
             }
 
-            foreach (var relationship in _entityRelationships.Relationships)
+            foreach (var relationship in relationshipsToEmbed)
             {
                 if (embeddingsDictionary.TryGetValue(positionsMapping[relationship.UniqueId], out var embedding))
                 {

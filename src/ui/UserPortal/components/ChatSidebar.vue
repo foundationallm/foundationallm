@@ -354,7 +354,7 @@
 	import { hideAllPoppers } from 'floating-vue';
 	import eventBus from '@/js/eventBus';
 	import { isAgentExpired } from '@/js/helpers';
-	import type { Session } from '@/js/types';
+	import type { Session, AgentOption } from '@/js/types';
 	declare const process: any;
 
 	import api from '@/js/api';
@@ -371,26 +371,27 @@
 				deleteProcessing: false,
 				isMobile: window.screen.width < 950,
 				createProcessing: false,
-				debounceTimeout: null as NodeJS.Timeout | null,
+				debounceTimeout: null as ReturnType<typeof setTimeout> | null,
 				settingsModalVisible: false,
 
 				agentOptions: [],
 				emptyAgentsMessage: null,
 
-				agentOptions2: [],
+				agentOptions2: [] as AgentOption[],
 				loadingAgents2: false,
 				agentError2: '',
 				emptyAgentsMessage2: 'No agents available.',
+				userProfile: null as any,
 			};
 		},
 
 		computed: {
-			sessions() {
-				return this.$appStore.sessions.filter((session) => !session.is_temp);
+			sessions(): Session[] {
+				return (this.$appStore as any).sessions.filter((session: Session) => !session.is_temp);
 			},
 
-			currentSession() {
-				return this.$appStore.currentSession;
+			currentSession(): Session | null {
+				return (this.$appStore as any).currentSession;
 			},
 		},
 
@@ -411,11 +412,11 @@
 
 		async created() {
 			if (window.screen.width < 950) {
-				this.$appStore.isSidebarClosed = true;
+				(this.$appStore as any).isSidebarClosed = true;
 			}
 
 			if (process.client) {
-				await this.$appStore.init(this.$nuxt._route.query.chat);
+				await (this.$appStore as any).init((this.$nuxt as any)._route.query.chat);
 			}
 
 			// Listen for the agent change event.
@@ -424,6 +425,7 @@
 
 		async mounted() {
 			await this.setAgentOptions();
+			await this.loadUserProfile();
 			await this.loadgetAgents();
 		},
 
@@ -441,14 +443,14 @@
 			},
 
 			handleSessionSelected(session: Session) {
-				this.$appStore.changeSession(session);
+				(this.$appStore as any).changeSession(session);
 			},
 
 			async handleAddSession() {
 				if (this.createProcessing) return;
 
 				if (this.debounceTimeout) {
-					this.$appStore.addToast({
+					(this.$appStore as any).addToast({
 						severity: 'warn',
 						summary: 'Warning',
 						detail: 'Please wait before creating another session.',
@@ -460,14 +462,14 @@
 				this.createProcessing = true;
 
 				try {
-					const newSession = await this.$appStore.addSession();
+					const newSession = await (this.$appStore as any).addSession();
 					this.handleSessionSelected(newSession);
 
 					this.debounceTimeout = setTimeout(() => {
 						this.debounceTimeout = null;
 					}, 2000);
 				} catch (error) {
-					this.$appStore.addToast({
+					(this.$appStore as any).addToast({
 						severity: 'error',
 						summary: 'Error',
 						detail: 'Could not create a new session. Please try again.',
@@ -483,7 +485,7 @@
 					try {
 						metadataJson = JSON.parse(metadataJson);
 					} catch (e) {
-						this.$appStore.addToast({
+						(this.$appStore as any).addToast({
 							severity: 'error',
 							summary: 'Invalid Metadata',
 							detail: 'Metadata must be valid JSON.',
@@ -492,7 +494,7 @@
 						return;
 					}
 				}
-				this.$appStore.updateConversation(this.conversationToUpdate!, this.newConversationName, this.newConversationMetadata);
+				(this.$appStore as any).updateConversation(this.conversationToUpdate!, this.newConversationName, this.newConversationMetadata);
 				this.conversationToUpdate = null;
 				this.newConversationMetadata = '';
 			},
@@ -500,10 +502,10 @@
 			async handleDeleteSession() {
 				this.deleteProcessing = true;
 				try {
-					await this.$appStore.deleteSession(this.conversationToDelete!);
+					await (this.$appStore as any).deleteSession(this.conversationToDelete!);
 					this.conversationToDelete = null;
 				} catch (error) {
-					this.$appStore.addToast({
+					(this.$appStore as any).addToast({
 						severity: 'error',
 						summary: 'Error',
 						detail: 'Could not delete the session. Please try again.',
@@ -529,19 +531,19 @@
 			},
 
 			async setAgentOptions() {
-				const isCurrentAgent = (agent): boolean => {
+				const isCurrentAgent = (agent: any): boolean => {
 					return (
 						agent.resource.name ===
-						this.$appStore.getSessionAgent(this.currentSession)?.resource?.name
+						(this.$appStore as any).getSessionAgent(this.currentSession)?.resource?.name
 					);
 				};
 
 				// Filter out expired agents, but keep the currently selected agent even if it is expired
-				const notExpiredOrCurrentAgents = this.$appStore.agents.filter(
-					(agent) => !isAgentExpired(agent) || isCurrentAgent(agent),
+				const notExpiredOrCurrentAgents = (this.$appStore as any).agents.filter(
+					(agent: any) => !isAgentExpired(agent) || isCurrentAgent(agent),
 				);
 
-				this.agentOptions = notExpiredOrCurrentAgents.map((agent) => ({
+				this.agentOptions = notExpiredOrCurrentAgents.map((agent: any) => ({
 					label: agent.resource.display_name ? agent.resource.display_name : agent.resource.name,
 					type: agent.resource.type,
 					object_id: agent.resource.object_id,
@@ -549,6 +551,16 @@
 					my_agent: agent.roles.includes('Owner'),
 					value: agent,
 				}));
+			},
+
+			async loadUserProfile() {
+				try {
+					const userProfile = await api.getUserProfile();
+					this.userProfile = userProfile || null;
+				} catch (error) {
+					console.error('Failed to load user profile:', error);
+					this.userProfile = null;
+				}
 			},
 
 			async loadgetAgents() {
@@ -560,18 +572,21 @@
 
 					const agentsArray = Array.isArray(response) ? response : [];
 					
-					this.agentOptions2 = agentsArray.map((ResourceProviderGetResult, index) => {
+					this.agentOptions2 = agentsArray.map((ResourceProviderGetResult: any, index: number): AgentOption => {
 						const agent = ResourceProviderGetResult.resource || ResourceProviderGetResult;
+						
+						// Check if this agent is in the user's selected agents list
+						const isAgentSelected = this.userProfile?.agents?.includes(agent.object_id) || false;
 						
 						return {
 							object_id: agent.object_id,
-							name: agent.name,
+							name: agent.name || 'Unknown Agent',
 							display_name: agent.display_name,
-							label: agent.display_name || agent.name,
+							label: agent.display_name || agent.name || 'Unknown Agent',
 							value: agent.object_id,
 							type: agent.type,
 							description: agent.description,
-							enabled: agent.enabled !== undefined ? agent.enabled : true
+							enabled: isAgentSelected
 						};
 					});
 				} catch (error) {
@@ -584,24 +599,50 @@
 			},
 
 			async refreshAgents() {
+				await this.loadUserProfile();
 				await this.loadgetAgents();
 			},
 
-			selectAgent(getAgents) {
+			selectAgent(getAgents: AgentOption) {
 				this.$emit('agent-selected', getAgents);
 			},
 
-			async toggleAgentStatus(agent) {
+			async toggleAgentStatus(agent: AgentOption) {
+				const originalStatus = agent.enabled;
+				
 				try {
-					// Toggle the enabled status
+					// Toggle the enabled status optimistically
 					agent.enabled = !agent.enabled;
 					
-					// Here you would typically make an API call to update the agent status
-					// For now, we'll just update the local state
-					// await api.updateAgentStatus(agent.object_id, agent.enabled);
+					// Make API call to update the agent status on the server
+					if (agent.enabled) {
+						await api.addAgentToUserProfile(agent.object_id!);
+						// Update local user profile state
+						if (!this.userProfile) {
+							this.userProfile = { agents: [] };
+						}
+						if (!this.userProfile.agents) {
+							this.userProfile.agents = [];
+						}
+						if (!this.userProfile.agents.includes(agent.object_id!)) {
+							this.userProfile.agents.push(agent.object_id!);
+						}
+					} else {
+						await api.removeAgentFromUserProfile(agent.object_id!);
+						// Update local user profile state
+						if (this.userProfile?.agents) {
+							const index = this.userProfile.agents.indexOf(agent.object_id!);
+							if (index > -1) {
+								this.userProfile.agents.splice(index, 1);
+							}
+						}
+					}
 					
+					// Update the global app store user profile
+					this.$appStore.updateUserProfileAgent(agent.object_id!, agent.enabled);
+
 					// Show success message with appropriate severity
-					this.$appStore.addToast({
+					(this.$appStore as any).addToast({
 						severity: agent.enabled ? 'success' : 'warn',
 						summary: 'Agent Status Updated',
 						detail: `Agent "${agent.display_name || agent.name}" is now ${agent.enabled ? 'enabled' : 'disabled'}`,
@@ -609,10 +650,10 @@
 					});
 				} catch (error) {
 					// Revert the change if the API call fails
-					agent.enabled = !agent.enabled;
+					agent.enabled = originalStatus;
 					
 					console.error('Failed to update agent status:', error);
-					this.$appStore.addToast({
+					(this.$appStore as any).addToast({
 						severity: 'error',
 						summary: 'Update Failed',
 						detail: 'Failed to update agent status. Please try again.',
@@ -621,7 +662,7 @@
 				}
 			},
 
-			editAgent(agent) {
+			editAgent(agent: AgentOption) {
 				// Navigate to create-agent page with agent data for editing
 				this.$router.push({
 					path: '/create-agent',

@@ -171,19 +171,38 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             type = ContentArtifactTypeNames.TOOL_EXECUTION,
             metadata=metadata))
 
-        reference_file_names = list(set([text_chunk['metadata'].get('FileName', '') for text_chunk in query_response.get('text_chunks', [])]))
+        content_references = {}
+        for content_reference in query_response.get('content_references', []):
+            file_id = content_reference.get('FileId', None)
+            file_name = content_reference.get('FileName', None)
+            if file_id and file_name:
+                if file_id not in content_references:
+                    content_references[file_id] = {
+                        'FileId': file_id,
+                        'FileName': file_name,
+                        'ReferenceCount': 1
+                    }
+                else:
+                    content_references[file_id]['ReferenceCount'] += 1
+
         reference_content_artifacts = [
             ContentArtifact(
-                id = file_name,
-                title = file_name,
+                id = content_reference['FileId'],
+                title = content_reference['FileName'],
                 content = None,
                 source = None,
-                type = ContentArtifactTypeNames.FILE,
+                type = 'ContentReference', # ContentArtifactTypeNames.FILE,
                 metadata = {
-                    'original_file_name': file_name,
+                    'reference_count': content_reference['ReferenceCount'],
+                    'original_file_name': content_reference['FileName']
                 }
-            ) for file_name in reference_file_names if file_name != ''
+            ) for content_reference in content_references.values()
         ]
+
+        # Only string metadata properties are allowed.
+        for reference_content_artifact in reference_content_artifacts:
+            reference_content_artifact.metadata['reference_count'] = \
+                str(reference_content_artifact.metadata['reference_count'])
 
         content_artifacts.extend(reference_content_artifacts)
 
