@@ -93,9 +93,18 @@
                                             </VTooltip>
                                             Welcome Message
                                         </label>
-                                        <Textarea class="w-full resize-none" name="agentWelcomeMessage"
-                                            id="agentWelcomeMessage" aria-labelledby="aria-welcome-message-desc"
-                                            rows="5" v-model="welcomeMessage" @input="updateCharacterCount" />
+                                        
+                                        <CustomQuillEditor
+                                            v-model="welcomeMessage"
+                                            :initial-content="JSON.parse(JSON.stringify(welcomeMessage))"
+                                            class="w-full"
+                                            placeholder="Enter agent welcome message"
+                                            aria-labelledby="aria-welcome-message-desc"
+                                            @content-update="updateAgentWelcomeMessage($event)"
+                                            name="agentWelcomeMessage"
+                                            id="agentWelcomeMessage"
+                                        />
+
                                         <p class="text-xs text-[#898989]">(<span class="charectersControl">{{
                                             characterCount }}</span>
                                             Characters)</p>
@@ -454,7 +463,7 @@ export default defineComponent({
                     // Load welcome message from properties
                     if (this.createdAgent.properties?.welcome_message) {
                         this.welcomeMessage = this.createdAgent.properties.welcome_message;
-                        this.updateCharacterCount();
+                        this.characterCount = this.welcomeMessage.length;
                     }
                     
                     // Load expiration date
@@ -614,9 +623,11 @@ export default defineComponent({
             return null;
         },
 
-        updateCharacterCount() {
+        updateAgentWelcomeMessage(newContent: string) {
+			this.welcomeMessage = newContent;
             this.characterCount = this.welcomeMessage.length;
-        },
+		},
+
 
         generateAgentName(displayName: string): string {
             if (!displayName || !displayName.trim()) {

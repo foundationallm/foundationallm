@@ -13,16 +13,16 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
     /// <summary>
     /// Example class for testing the SharePoint Online Data Source Plugin in Data Pipelines.
     /// </summary>
-    public class Example_DataPipelinePlugins_KnowledgeGraphEmbeddingDataPipelineStage : TestBase, IClassFixture<TestFixture>
+    public class Example_DataPipelinePlugins_KnowledgeGraphIndexingDataPipelineStage : TestBase, IClassFixture<TestFixture>
     {
-        public Example_DataPipelinePlugins_KnowledgeGraphEmbeddingDataPipelineStage(ITestOutputHelper output, TestFixture fixture)
+        public Example_DataPipelinePlugins_KnowledgeGraphIndexingDataPipelineStage(ITestOutputHelper output, TestFixture fixture)
             : base(1, output, fixture, new DependencyInjectionContainerInitializer())
         {
         }
 
         [Theory]
         [MemberData(nameof(TestData))]
-        public async Task DataPipelinePlugins_KnowledgeGraphEmbeddingDataPipelineStage_ProcessWorkItem(
+        public async Task DataPipelinePlugins_KnowledgeGraphIndexingDataPipelineStage_ProcessWorkItem(
             string dataPipelineRunWorkItemId,
             string dataPipelineRunId,
             Dictionary<string, object> pluginParameters)
@@ -50,10 +50,10 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                 dataPipelineRun!.DataPipelineObjectId,
                 ServiceContext.ServiceIdentity!);
 
-            WriteLine("============ FoundationaLLM Data Pipeline Plugins - Knowledge Graph Embedding Data Pipeline Stage Tests ============");
+            WriteLine("============ FoundationaLLM Data Pipeline Plugins - Knowledge Graph Indexing Data Pipeline Stage Tests ============");
 
             var dataSourcePlugin = packageManager.GetDataPipelineStagePlugin(
-                PluginNames.KNOWLEDGEGRAPH_EMBEDDING_DATAPIPELINESTAGE,
+                PluginNames.KNOWLEDGEGRAPH_INDEXING_DATAPIPELINESTAGE,
                 pluginParameters,
                 packageManagerResolver,
                 MainServiceContainer.ServiceProvider);
@@ -70,8 +70,8 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
         new()
         {
             {
-                "work-item-trP5iSgCoUSgp8liRtbfOw",
-                "run-20250902-190323-Z3eWaGLlt0-oM3xIYyZmVg-TAfGit69y0OhQOwAAtltKw",
+                "work-item-BXq8ZetpM0OmFmenicaE1Q",
+                "run-20250902-195452-lNw7KBSolkmYQYJKEd2TSQ-TAfGit69y0OhQOwAAtltKw",
                 new Dictionary<string, object>
                 {
                     {
