@@ -31,5 +31,25 @@ namespace FoundationaLLM.Common.Interfaces
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
         Task UpsertUserProfileAsync(string instanceId, UserProfile userProfile);
+
+        /// <summary>
+        /// Adds an agent to the user's profile.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="agentObjectId">The object identifier of the agent to add.</param>
+        /// <returns></returns>
+        Task AddAgent(
+            string instanceId,
+            string agentObjectId);
+
+        /// <summary>
+        /// Removes an agent to the user's profile.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="agentObjectId">The object identifier of the agent to remove.</param>
+        /// <returns></returns>
+        Task RemoveAgent(
+            string instanceId,
+            string agentObjectId);
     }
 }

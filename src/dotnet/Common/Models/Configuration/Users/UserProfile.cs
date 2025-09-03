@@ -28,6 +28,16 @@ namespace FoundationaLLM.Common.Models.Configuration.Users
         /// <summary>
         /// A dictionary of <see cref="UserProfileFlags"/>.
         /// </summary>
+        [JsonPropertyName("flags")]
         public Dictionary<string, bool> Flags { get; set; } = UserProfileFlags.All.ToDictionary(key => key, value => false);
+
+        /// <summary>
+        /// Gets or sets the list of agents the user selected for their profile.
+        /// </summary>
+        /// <remarks>
+        /// The list contains the resource object identifiers of the agents.
+        /// </remarks>
+        [JsonPropertyName("agents")]
+        public List<string> Agents { get; set; } = [];
     }
 }

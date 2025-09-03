@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,5 +31,35 @@ namespace FoundationaLLM.Core.API.Controllers
         [HttpGet(Name = "GetUserProfile")]
         public async Task<IActionResult> Index(string instanceId) =>
             Ok(await _userProfileService.GetUserProfileAsync(instanceId));
+
+        /// <summary>
+        /// Adds an agent to the user's profile.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="updateRequest">The user profile update request.</param>
+        /// <returns></returns>
+        [HttpPost("add-agent")]
+        public async Task<IActionResult> AddAgentToUserProfile(
+            string instanceId,
+            [FromBody] UserProfileUpdateRequest updateRequest)
+        {
+            await _userProfileService.AddAgent(instanceId, updateRequest.AgentObjectId!);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Adds an agent to the user's profile.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="updateRequest">The user profile update request.</param>
+        /// <returns></returns>
+        [HttpPost("remove-agent")]
+        public async Task<IActionResult> RemoveAgentFromUserProfile(
+            string instanceId,
+            [FromBody] UserProfileUpdateRequest updateRequest)
+        {
+            await _userProfileService.RemoveAgent(instanceId, updateRequest.AgentObjectId!);
+            return Ok();
+        }
     }
 }
