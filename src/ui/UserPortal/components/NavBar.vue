@@ -176,6 +176,12 @@
 				},
 				deep: true,
 			},
+			'$appStore.userProfiles': {
+				handler() {
+					this.setAgentOptions();
+				},
+				deep: true,
+			},
 		},
 
 		mounted() {
@@ -219,12 +225,27 @@
 					);
 				};
 
-				// Filter out expired agents and disabled agents, but keep the currently selected agent even if it is expired or disabled
-				const notExpiredOrCurrentAgents = this.$appStore.agents.filter(
-					(agent) => (!isAgentExpired(agent) && agent.enabled !== false) || isCurrentAgent(agent),
-				);
+				// Get user profiles to filter enabled agents
+				const userProfile = this.$appStore.userProfiles;
+				const enabledAgentIds = userProfile?.agents || [];
 
-				this.agentOptions = notExpiredOrCurrentAgents.map((agent) => ({
+				// Filter out expired agents, disabled agents, and agents not enabled in user profile
+				// but keep the currently selected agent even if it doesn't meet these criteria
+				const filteredAgents = this.$appStore.agents.filter((agent) => {
+					const isExpiredOrDisabled = isAgentExpired(agent) || agent.enabled === false;
+					
+					// Check if agent is in user profile by matching object_id or name at the end of the path
+					const isNotInUserProfile = enabledAgentIds.length > 0 && !enabledAgentIds.some(agentId => 
+						agentId.includes(agent.resource.object_id) || 
+						agentId.endsWith(`/agents/${agent.resource.name}`) ||
+						agentId.endsWith(agent.resource.object_id)
+					);
+					
+					// Include if: (not expired AND not disabled AND in user profile) OR is current agent
+					return (!isExpiredOrDisabled && !isNotInUserProfile) || isCurrentAgent(agent);
+				});
+
+				this.agentOptions = filteredAgents.map((agent) => ({
 					label: agent.resource.display_name ? agent.resource.display_name : agent.resource.name,
 					type: agent.resource.type,
 					object_id: agent.resource.object_id,
@@ -285,6 +306,9 @@
 						...(publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions),
 					);
 				}
+
+				// Update agent selection after options are set
+				this.updateAgentSelection();
 			},
 
 			// handleCopySession() {
@@ -299,6 +323,11 @@
 
 			updateAgentSelection() {
 				const agent = this.$appStore.getSessionAgent(this.currentSession);
+
+				if (!agent) {
+					this.agentSelection = null;
+					return;
+				}
 
 				this.agentSelection =
 					this.agentOptions.find(

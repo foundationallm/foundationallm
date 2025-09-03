@@ -176,6 +176,7 @@ export interface UserProfile {
 	type: string;
 	upn: string;
 	flags: Record<string, boolean>;
+	agents: string[];
 }
 
 export interface FileStoreConnector {

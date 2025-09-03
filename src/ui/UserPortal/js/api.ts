@@ -436,11 +436,11 @@ export default {
 	},
 
 	/**
-	 * Retrieves user profiles for a given instance.
-	 * @returns An array of user profiles.
+	 * Retrieves user profile for the current user.
+	 * @returns A user profile with enabled agent identifiers.
 	 */
 	async getUserProfile() {
-		return (await this.fetch(`/instances/${this.instanceId}/userProfiles/`)) as Array<UserProfile>;
+		return (await this.fetch(`/instances/${this.instanceId}/userprofiles`)) as UserProfile;
 	},
 
 	/**
