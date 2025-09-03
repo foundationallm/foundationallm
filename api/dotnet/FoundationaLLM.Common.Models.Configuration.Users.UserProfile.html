@@ -203,6 +203,42 @@ Class UserProfile  <a class="header-action link-secondary" title="View source" h
 </h2>
 
 
+  <a id="FoundationaLLM_Common_Models_Configuration_Users_UserProfile_Agents_" data-uid="FoundationaLLM.Common.Models.Configuration.Users.UserProfile.Agents*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_Configuration_Users_UserProfile_Agents" data-uid="FoundationaLLM.Common.Models.Configuration.Users.UserProfile.Agents">
+  Agents
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Configuration/Users/UserProfile.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the list of agents the user selected for their profile.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;agents&quot;)]
+public List&lt;string&gt; Agents { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_Common_Models_Configuration_Users_UserProfile_Agents_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The list contains the resource object identifiers of the agents.</p>
+</div>
+
+
+
+
   <a id="FoundationaLLM_Common_Models_Configuration_Users_UserProfile_Flags_" data-uid="FoundationaLLM.Common.Models.Configuration.Users.UserProfile.Flags*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_Configuration_Users_UserProfile_Flags" data-uid="FoundationaLLM.Common.Models.Configuration.Users.UserProfile.Flags">
@@ -215,7 +251,8 @@ Class UserProfile  <a class="header-action link-secondary" title="View source" h
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, bool&gt; Flags { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;flags&quot;)]
+public Dictionary&lt;string, bool&gt; Flags { get; set; }</code></pre>
   </div>
 
 
