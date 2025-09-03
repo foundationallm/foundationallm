@@ -355,7 +355,124 @@
                         </div>
                     </TabPanel>
 
-                    <TabPanel header="Share" :disabled="!isEditMode"></TabPanel>
+                    <TabPanel header="Share" :disabled="!isEditMode">
+                        <div class="px-4 py-8 mt-8 border border-solid border-gray-300">
+                            <div class="w-full max-w-[1000px] mx-auto">
+                                <div class="mb-6">
+                                    <p class="block text-base text-[#898989] mb-6">
+                                        <VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']"
+                                            class="inline-block relative top-[2px]">
+                                            <i class="pi pi-info-circle text-[#5472d4]"></i>
+                                            <template #popper>
+                                                <div role="tooltip" class="max-w-[250px]">View role assignments for this agent. Shows which users and groups have been granted specific roles to access and use this agent, including their names, email addresses, and assigned permissions.</div>
+                                            </template>
+                                        </VTooltip>
+                                        Share with Individual Users
+                                    </p>
+                                </div>
+
+                                <div class="flex items-center flex-wrap mb-6">
+                                    <div class="w-full max-w-full md:max-w-[45%] lg:max-w-[35%] mb-4"></div>
+
+                                    <div class="w-full max-w-full md:max-w-[55%] lg:max-w-[65%] mb-4 relative">
+                                        <div class="flex items-center">
+                                            <label for="searchTabelInput1"
+                                            class="block text-base text-[#898989] min-w-[70px]">Search</label>
+                                            
+                                            <InputText 
+                                                type="text" 
+                                                class="w-full" 
+                                                name="searchTabelInput1" 
+                                                id="searchTabelInput1" 
+                                                v-model="globalFilter"
+                                                placeholder="Search by principal name, email, role, or type..."
+                                            />
+
+                                            <Button aria-label="Search Users" severity="primary" icon="pi pi-search" class="min-h-[40px] min-w-[40px] w-auto absolute top-0 right-0 z-[2]"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-6">
+                                    <div v-if="roleAssignmentsLoading" class="text-sm text-[#64748b] mt-10">Loading role assignments...</div>
+                                    <div v-else-if="roleAssignmentsError" class="text-sm text-red-600 mt-10">{{ roleAssignmentsError }}</div>
+                                    <div v-else>
+                                        <div v-if="roleAssignments.length === 0" class="text-sm text-[#94a3b8] italic mt-10">
+                                            No role assignments found for this agent.
+                                        </div>
+
+                                        <div class="csm-table-area-1" v-else>
+                                            <DataTable 
+                                                :value="filteredRoleAssignments" 
+                                                scrollable
+                                                scrollHeight="400px"
+                                                responsiveLayout="scroll"
+                                                :sortOrder="1"
+                                                class="p-datatable-sm csm-dataTable-1"
+                                                tableStyle="min-width: 50rem"
+                                            >
+                                                <Column 
+                                                    field="resource.principal_details.name" 
+                                                    header="Principal Name" 
+                                                    :sortable="true" 
+                                                    style="min-width: 200px"
+                                                >
+                                                    <template #body="slotProps">
+                                                        {{ slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id || '-' }}
+                                                    </template>
+                                                </Column>
+
+                                                <Column 
+                                                    field="resource.principal_type" 
+                                                    header="Principal Type" 
+                                                    :sortable="true" 
+                                                    style="min-width: 200px"
+                                                >
+                                                    <template #body="slotProps">
+                                                        {{ slotProps.data.resource.principal_type || '-' }}
+                                                    </template>
+                                                </Column>
+
+                                                <Column 
+                                                    field="resource.principal_details.email" 
+                                                    header="Principal Email" 
+                                                    :sortable="false" 
+                                                    style="min-width: 200px"
+                                                >
+                                                    <template #body="slotProps">
+                                                        {{ slotProps.data.resource.principal_details?.email || '-' }}
+                                                    </template>
+                                                </Column>
+
+                                                <Column 
+                                                    field="resource.role_definition.display_name" 
+                                                    header="Role" 
+                                                    :sortable="true" 
+                                                    style="min-width: 180px"
+                                                >
+                                                    <template #body="slotProps">
+                                                        {{ slotProps.data.resource.role_definition?.display_name || 
+                                                           slotProps.data.resource.role_definition_id || '-' }}
+                                                    </template>
+                                                </Column>
+
+                                                <Column 
+                                                    field="resource.scope_name" 
+                                                    header="Scope" 
+                                                    :sortable="false" 
+                                                    style="min-width: 120px"
+                                                >
+                                                    <template #body="slotProps">
+                                                        {{ slotProps.data.resource.scope_name || 'Direct Assignment' }}
+                                                    </template>
+                                                </Column>
+                                            </DataTable>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </TabPanel>
                 </TabView>
             </div>
         </div>
@@ -372,11 +489,16 @@ import mime from 'mime';
 import { defineComponent } from 'vue';
 import NavBarSettings from '~/components/NavBarSettings.vue';
 
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+
 export default defineComponent({
     name: 'CreateAgent',
 
     components: {
         NavBarSettings,
+        DataTable,
+        Column,
     },
 
 
@@ -411,7 +533,46 @@ export default defineComponent({
                 agentsLoaded: false as boolean,
                 imageGenerationEnabled: false as boolean,
                 userPortalFileUploadEnabled: false as boolean,
+
+
+                roleAssignments: [] as any[],
+                roleAssignmentsLoading: false as boolean,
+                roleAssignmentsError: '' as string,
+                filters: {} as any,
+                globalFilter: '' as string,
             };
+        },
+
+        computed: {
+            filteredRoleAssignments() {
+                if (!this.globalFilter) {
+                    return this.roleAssignments;
+                }
+                
+                const filter = this.globalFilter.toLowerCase();
+                return this.roleAssignments.filter(assignment => {
+                    const resource = assignment.resource || {};
+                    
+                    // Search in basic fields
+                    const name = resource.name || '';
+                    const displayName = resource.display_name || '';
+                    
+                    // Search in principal details
+                    const principalName = resource.principal_details?.name || '';
+                    const principalEmail = resource.principal_details?.email || '';
+                    const principalType = resource.principal_type || '';
+                    
+                    // Search in role definition
+                    const roleName = resource.role_definition?.display_name || '';
+                    
+                    return name.toLowerCase().includes(filter) || 
+                           displayName.toLowerCase().includes(filter) ||
+                           principalName.toLowerCase().includes(filter) ||
+                           principalEmail.toLowerCase().includes(filter) ||
+                           principalType.toLowerCase().includes(filter) ||
+                           roleName.toLowerCase().includes(filter);
+                });
+            }
         },
 
     mounted() {
@@ -659,6 +820,11 @@ export default defineComponent({
             // If switching to AI Configuration tab in edit mode, ensure we have the current model selected
             if (e.index === 1 && this.isEditMode && this.createdAgent && !this.selectedAIModel) {
                 this.loadCurrentAIModel();
+            }
+
+            // If switching to Share tab in edit mode, load role assignments
+            if (e.index === 3 && this.isEditMode && this.selectedAgentName) {
+                this.loadRoleAssignments();
             }
         },
         async onCreateAgent() {
@@ -922,7 +1088,80 @@ export default defineComponent({
                 this.$toast.add({ severity: 'error', summary: 'Error', detail: `Failed to delete file "${fileName}": ${error.message}`, life: 5000 });
                 console.error('Delete error:', error);
             }
-        }
+        },
+
+        async loadRoleAssignments() {
+            if (!this.selectedAgentName) {
+                this.roleAssignments = [];
+                return;
+            }
+
+            this.roleAssignmentsError = '';
+            this.roleAssignmentsLoading = true;
+
+            try {
+                const scope = `providers/FoundationaLLM.Agent/agents/${this.selectedAgentName}`;
+                const assignments = await api.getRoleAssignments(scope);
+                
+                if (!Array.isArray(assignments) || assignments.length === 0) {
+                    this.roleAssignments = [];
+                    return;
+                }
+
+                // Extract principal IDs for resolution
+                const principalIds = assignments.map(assignment => assignment.resource.principal_id).filter(Boolean);
+
+                // Get security principals and role definitions in parallel
+                const [principalsResult, roleDefinitionsResult] = await Promise.allSettled([
+                    principalIds.length > 0 ? api.getSecurityPrincipals(principalIds) : Promise.resolve([]),
+                    api.getRoleDefinitions()
+                ]);
+
+                // Extract results or fallback to empty arrays
+                const principals = principalsResult.status === 'fulfilled' ? principalsResult.value : [];
+                const roleDefinitions = roleDefinitionsResult.status === 'fulfilled' ? roleDefinitionsResult.value : [];
+
+                // Log warnings for failed requests
+                if (principalsResult.status === 'rejected') {
+                    console.warn('Failed to load security principals:', principalsResult.reason);
+                }
+                if (roleDefinitionsResult.status === 'rejected') {
+                    console.warn('Failed to load role definitions:', roleDefinitionsResult.reason);
+                }
+
+                // Map assignments with resolved data
+                this.roleAssignments = assignments.map(assignment => {
+                    const principal = principals.find(p => p.id === assignment.resource.principal_id);
+                    const roleDefinition = roleDefinitions.find(r => r.object_id === assignment.resource.role_definition_id);
+                    
+                    return {
+                        ...assignment,
+                        resource: {
+                            ...assignment.resource,
+                            principal_details: principal,
+                            role_definition: roleDefinition
+                        }
+                    };
+                });
+            } catch (e: any) {
+                this.roleAssignmentsError = e?.message || 'Failed to load role assignments.';
+                this.roleAssignments = [];
+            } finally {
+                this.roleAssignmentsLoading = false;
+            }
+        },
+
+        getPrincipalDisplayName(assignment: any): string {
+            if (!assignment) return '-';
+            return assignment.resource?.principal_details?.name || 
+                   assignment.resource?.principal_id || 'Unknown Principal';
+        },
+
+        getRoleDisplayName(assignment: any): string {
+            if (!assignment) return '-';
+            return assignment.resource?.role_definition?.display_name || 
+                   assignment.resource?.role_definition_id || 'Unknown Role';
+        },
     },
 });
 </script>
@@ -987,5 +1226,43 @@ export default defineComponent({
 
 .mnt-b-bottom {
     border-bottom: 1px solid #94a3b8;
+}
+.csm-dataTable-1{
+    border: 1px solid #d1d5db;
+    table {
+        thead {
+            tr {
+                th {
+                    background-color: #eeeeee;
+                    padding: 15px 10px;
+                    border-right: 2px solid #ffffff;
+                    font-weight: 500;
+                    border-bottom: 0px;
+                    
+                    &:last-child {
+                        border-right: 0px;
+                    }
+                    
+                    .p-column-title{
+                        width: 100%;
+                    }
+                }
+            }
+        }
+        tbody {
+            tr {
+                td {
+                    padding: 15px 10px;
+                    border-bottom: 2px solid #dedede;
+                }
+
+                &:last-child {
+                    td{
+                        border-bottom: 0px;
+                    }
+                }
+            }
+        }
+    }
 }
 </style>

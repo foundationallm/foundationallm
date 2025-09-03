@@ -18,7 +18,10 @@ import type {
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
 	Session,
-	UserProfile
+	UserProfile,
+	RoleDefinition,
+	RoleAssignment,
+	SecurityPrincipal
 } from '@/js/types';
 
 export default {
@@ -117,7 +120,7 @@ export default {
 				throw response;
 			}
 			return response as T;
-		} catch (error) {
+		} catch (error: any) {
 			// Preserve the original error structure
 			if (error.data?.quota_exceeded) {
 				throw error;
@@ -696,7 +699,109 @@ export default {
 		       method: 'POST',
 		       body: agent,
 	       });
-       },
+		},
+
+	/**
+	 * Retrieves role definitions from the management endpoint.
+	 * Returns an array of RoleDefinition resources.
+	 */
+	async getRoleDefinitions(): Promise<RoleDefinition[]> {
+		try {
+			const roleDefinitions = await this.fetch<RoleDefinition[]>(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleDefinitions`
+			);
+			return roleDefinitions;
+		} catch (error) {
+			console.error('Error fetching role definitions:', error);
+			throw error;
+		}
+	},
+
+	/**
+	 * Retrieves role assignments for a specific scope (e.g., agent).
+	 * @param scope - The scope to get role assignments for (e.g., 'providers/FoundationaLLM.Agent/agents/AgentName').
+	 * @returns Promise resolving to an array of role assignments.
+	 */
+	async getRoleAssignments(scope: string): Promise<ResourceProviderGetResult<RoleAssignment>[]> {
+		try {
+			const assignments = await this.fetch<ResourceProviderGetResult<RoleAssignment>[]>(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/filter`,
+				{
+					method: 'POST',
+					body: {
+						scope: `/instances/${this.instanceId}${scope ? `/${scope}` : ''}`,
+					},
+				}
+			);
+
+			// Add scope name for display purposes
+			assignments.forEach((assignment) => {
+				if (assignment.resource.scope === `/instances/${this.instanceId}`) {
+					assignment.resource.scope_name = scope ? 'Instance (Inherited)' : 'Instance';
+				} else if (assignment.resource.scope === `/instances/${this.instanceId}/${scope}`) {
+					assignment.resource.scope_name = 'Resource';
+				}
+			});
+
+			return assignments;
+		} catch (error) {
+			console.error('Error fetching role assignments:', error);
+			throw error;
+		}
+	},
+
+	/**
+	 * Retrieves security principals (users/groups) by their IDs.
+	 * @param ids - Array of principal IDs to retrieve.
+	 * @returns Promise resolving to an array of security principals.
+	 */
+	async getSecurityPrincipals(ids: string[]): Promise<SecurityPrincipal[]> {
+		try {
+			const principals = await this.fetch<ResourceProviderGetResult<SecurityPrincipal>[]>(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/securityPrincipals/filter`,
+				{
+					method: 'POST',
+					body: { ids },
+				}
+			);
+			// Extract the resource from each ResourceProviderGetResult wrapper
+			return principals.map(wrapper => wrapper.resource);
+		} catch (error) {
+			console.error('Error fetching security principals:', error);
+			throw error;
+		}
+	},
+
+	/**
+	 * Retrieves users with optional filtering.
+	 * @param params - Optional parameters for filtering users.
+	 * @returns Promise resolving to user results.
+	 */
+	async getUsers(params: { name?: string; ids?: string[]; page_number?: number; page_size?: number | null } = {}): Promise<{ items: SecurityPrincipal[] }> {
+		try {
+			const defaults = {
+				name: '',
+				ids: [],
+				page_number: 1,
+				page_size: null,
+			};
+
+			const users = await this.fetch<{ items: SecurityPrincipal[] }>(
+				`/management/instances/${this.instanceId}/identity/users/retrieve`,
+				{
+					method: 'POST',
+					body: {
+						...defaults,
+						...params,
+					},
+				}
+			);
+			return users;
+		} catch (error) {
+			console.error('Error fetching users:', error);
+			throw error;
+		}
+	},
 };
 
 function formatError(error: any): string {

@@ -338,3 +338,31 @@ export interface MultipartPrompt extends PromptBase {
 	prefix?: string | null;
 	suffix?: string | null;
 }
+
+// --- Role Assignment Types ---
+export interface RoleDefinition extends ResourceBase {
+	assignable_scopes: string[];
+	permissions: RoleDefinitionPermissions[];
+}
+
+export interface RoleDefinitionPermissions {
+	actions: string[];
+	not_actions: string[];
+	data_actions: string[];
+	not_data_actions: string[];
+}
+
+export interface RoleAssignment extends ResourceBase {
+	role_definition_id: string;
+	principal_id: string;
+	principal_type: 'User' | 'Group' | 'ServicePrincipal' | 'ManagedIdentity';
+	scope: string;
+	scope_name?: string;
+	role_definition?: RoleDefinition;
+	allowed_actions?: string[];
+}
+
+export interface SecurityPrincipal extends ResourceBase {
+	id: string;
+	email?: string;
+}
