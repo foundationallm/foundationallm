@@ -752,6 +752,29 @@ export const useAppStore = defineStore('app', {
 			return this.userProfiles;
 		},
 
+		updateUserProfileAgent(agentObjectId: string, enabled: boolean) {
+			if (!this.userProfiles) {
+				return;
+			}
+
+			if (!this.userProfiles.agents) {
+				this.userProfiles.agents = [];
+			}
+
+			if (enabled) {
+				// Add agent if not already present
+				if (!this.userProfiles.agents.includes(agentObjectId)) {
+					this.userProfiles.agents.push(agentObjectId);
+				}
+			} else {
+				// Remove agent
+				const index = this.userProfiles.agents.indexOf(agentObjectId);
+				if (index > -1) {
+					this.userProfiles.agents.splice(index, 1);
+				}
+			}
+		},
+
 		async oneDriveWorkSchoolDownload(sessionId: string, oneDriveWorkSchool: OneDriveWorkSchool) {
 			const agent = this.getSessionAgent(this.currentSession!).resource;
 			// If the agent is not found, do not upload the attachment and display an error message.
