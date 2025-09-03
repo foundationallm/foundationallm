@@ -416,44 +416,55 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         throw new OrchestrationException($"The Context API was not able to create code session: {contextServiceResponse.ErrorMessage}");
                 }
 
+                // Map the metadata filter values to possible values from the completion request.
+
+                List<string> completionRequestMetadataKeys = [];
+
                 if (tool.TryGetPropertyValue<Dictionary<string, object>>(
                         AgentToolPropertyNames.VectorStoreMetadataFilter, out var metadataFilter)
                     && metadataFilter is not null)
-                {
-                    // Map the metadata filter values to possible values from the completion request.
-                    var completionRequestMetadataKeys = metadataFilter.Values
-                        .Where(v =>
-                            v is JsonElement je
-                            && je.ValueKind == JsonValueKind.String)
-                        .Select(v => ((JsonElement)v).GetString())
-                        .Where(s =>
-                            s is not null
-                            && s.StartsWith(AgentToolPropertyValueSources.CompletionRequestMetadata))
-                        .Select(s => s!.Split(':', 2)[1])
-                        .ToList();
+                    completionRequestMetadataKeys.AddRange(
+                        GetCompletionRequestMetadataKeys(
+                            metadataFilter.Values));
 
-                    if (completionRequestMetadataKeys.Count > 0
-                        && originalRequest.Metadata is null)
-                        throw new OrchestrationException(
-                            "The completion request metadata is required for the tool, but it was not provided in the completion request.");
-
-                    foreach (var key in completionRequestMetadataKeys)
-                    {
-                        if (originalRequest.Metadata!.TryGetValue(key, out var value))
+                if (tool.TryGetPropertyValue<List<Dictionary<string, object>>>(
+                        AgentToolPropertyNames.KnowledgeUnitVectorStoreFilters, out var knowledgeUnitVectorStoreFilters)
+                    && knowledgeUnitVectorStoreFilters is not null)
+                    foreach (var knowledgeUnitVectorStoreFilter in knowledgeUnitVectorStoreFilters)
+                        if (knowledgeUnitVectorStoreFilter.TryGetValue(AgentToolPropertyNames.VectorStoreMetadataFilter, out object knowldegeUnitMetadataFilter))
                         {
-                            toolParameters.Add($"{AgentToolPropertyValueSources.CompletionRequestMetadata}:{key}", value);
+                            if (knowldegeUnitMetadataFilter is not null
+                                && knowldegeUnitMetadataFilter is JsonElement je
+                                && je.ValueKind == JsonValueKind.Object)
+                                completionRequestMetadataKeys.AddRange(
+                                    GetCompletionRequestMetadataKeys(
+                                        je.Deserialize<Dictionary<string, object>>()!.Values));
                         }
                         else
-                        {
-                            // If the metadata key is not found in the completion request, throw an exception.
-                            throw new OrchestrationException($"The metadata key '{key}' was not found in the completion request.");
-                        }
+                            throw new OrchestrationException(
+                                $"Each knowledge unit vector store filter must contain a {AgentToolPropertyNames.VectorStoreMetadataFilter} property (even if it's set to null).");
+
+                if (completionRequestMetadataKeys.Count > 0
+                        && originalRequest.Metadata is null)
+                    throw new OrchestrationException(
+                        "The completion request metadata is required for the tool, but it was not provided in the completion request.");
+
+                foreach (var key in completionRequestMetadataKeys)
+                {
+                    if (originalRequest.Metadata!.TryGetValue(key, out var value))
+                    {
+                        toolParameters.Add($"{AgentToolPropertyValueSources.CompletionRequestMetadata}:{key}", value);
+                    }
+                    else
+                    {
+                        // If the metadata key is not found in the completion request, throw an exception.
+                        throw new OrchestrationException($"The metadata key '{key}' was not found in the completion request.");
                     }
                 }
 
                 explodedObjectsManager.TryAdd(
-                    tool.Name,
-                    toolParameters);
+                tool.Name,
+                toolParameters);
 
                 // Ensure all resource object identifiers are exploded.
                 foreach (var resourceObjectId in tool.ResourceObjectIds.Values)
@@ -719,6 +730,19 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             return (agentBase, mainAIModel, mainAIModelAPIEndpointConfiguration, explodedObjectsManager);
         }
+
+        private static List<string> GetCompletionRequestMetadataKeys(
+            IEnumerable<object> values) =>
+                [.. values
+                    .Where(v =>
+                        v is JsonElement je
+                        && je.ValueKind == JsonValueKind.String)
+                    .Select(v => ((JsonElement) v).GetString())
+                    .Where(s =>
+                        s is not null
+                        && s.StartsWith(AgentToolPropertyValueSources.CompletionRequestMetadata))
+                    .Select(s => s!.Split(':', 2)[1])
+                ];
 
         private static async Task<string?> EnsureAgentCapabilities(
             string instanceId,
