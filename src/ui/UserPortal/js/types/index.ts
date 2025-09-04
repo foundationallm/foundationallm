@@ -192,6 +192,7 @@ export interface AgentOption {
 	type?: string | null;
 	description?: string | null;
 	enabled: boolean;
+	isReadonly?: boolean;
 }
 
 export interface FileStoreConnector {
