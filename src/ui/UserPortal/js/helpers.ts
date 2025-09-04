@@ -12,3 +12,8 @@ export function debounce<T extends (...args: any[]) => any>(func: T, wait: numbe
 		timeout = setTimeout(() => func.apply(this, args), wait);
 	} as T;
 }
+
+// Returns true if the roles array means the agent is readonly (has Reader but not Owner or Contributor)
+export function isAgentReadonly(roles: string[] = []): boolean {
+	return roles.includes('Reader') && !roles.includes('Owner') && !roles.includes('Contributor');
+}

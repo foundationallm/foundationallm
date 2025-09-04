@@ -281,8 +281,8 @@
 										</div>
 									</td>
 									<td>
-										<Button link class="csm-table-edit-btn-1" @click="editAgent(getAgents)">
-											<i class="pi pi-pencil"></i>
+										<Button link class="csm-table-edit-btn-1" @click="editAgent(getAgents)" :disabled="getAgents.isReadonly">
+										<i class="pi pi-pencil"></i>
 										</Button>
 									</td>
 								</tr>
@@ -351,10 +351,10 @@
 </template>
 
 <script lang="ts">
-	import { hideAllPoppers } from 'floating-vue';
 	import eventBus from '@/js/eventBus';
-	import { isAgentExpired } from '@/js/helpers';
-	import type { Session, AgentOption } from '@/js/types';
+import { isAgentExpired, isAgentReadonly } from '@/js/helpers';
+import type { AgentOption, Session } from '@/js/types';
+import { hideAllPoppers } from 'floating-vue';
 	declare const process: any;
 
 	import api from '@/js/api';
@@ -567,8 +567,9 @@
 				this.loadingAgents2 = true;
 				this.agentError2 = '';
 				
+				 
 				try {
-					const response = await api.getAgents();
+					const response = await api.getAllowedAgents();
 
 					const agentsArray = Array.isArray(response) ? response : [];
 					
@@ -586,7 +587,8 @@
 							value: agent.object_id,
 							type: agent.type,
 							description: agent.description,
-							enabled: isAgentSelected
+							enabled: isAgentSelected,
+							isReadonly: isAgentReadonly(ResourceProviderGetResult.roles || []),
 						};
 					});
 				} catch (error) {
