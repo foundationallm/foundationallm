@@ -1249,7 +1249,7 @@ export default defineComponent({
             this.roleAssignmentsLoading = true;
 
             try {
-                const scope = `providers/FoundationaLLM.Agent/agents/${this.selectedAgentName}`;
+                const scope = api.getAgentScopeIdentifier(this.selectedAgentName);
                 const assignments = await api.getRoleAssignments(scope);
                 
                 if (!Array.isArray(assignments) || assignments.length === 0) {
@@ -1350,16 +1350,18 @@ export default defineComponent({
             try {
                 // Generate a new GUID for the role assignment name
                 const roleAssignmentId = this.generateGuid();
-                const scope = `/instances/${api.instanceId}/providers/FoundationaLLM.Agent/agents/${this.selectedAgentName}`;
+                
+                // Get the agent scope dynamically from the API
+                const scope = api.getAgentScope(this.selectedAgentName);
                 
                 // Use exact payload format as specified in requirements
                 const payload = {
                     name: roleAssignmentId,
                     description: "",
                     principal_id: this.newRoleAssignment.selectedUser.id,
-                    role_definition_id: `/providers/FoundationaLLM.Authorization/roleDefinitions/${this.newRoleAssignment.selectedRole}`,
-                    type: "FoundationaLLM.Authorization/roleAssignments",
-                    principal_type: "User",
+                    role_definition_id: this.newRoleAssignment.selectedRole,
+                    type: api.getRoleAssignmentType(),
+                    principal_type: api.getPrincipalType(this.newRoleAssignment.selectedUser),
                     scope: scope
                 };
                 

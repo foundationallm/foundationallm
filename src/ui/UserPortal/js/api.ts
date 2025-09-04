@@ -349,6 +349,42 @@ export default {
 	},
 
 	/**
+	 * Gets the scope path for an agent.
+	 * @param agentName The name of the agent.
+	 * @returns The scope path for the agent.
+	 */
+	getAgentScope(agentName: string): string {
+		return `/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}`;
+	},
+
+	/**
+	 * Gets the scope identifier for an agent (used in role assignment filtering).
+	 * @param agentName The name of the agent.
+	 * @returns The scope identifier for the agent.
+	 */
+	getAgentScopeIdentifier(agentName: string): string {
+		return `providers/FoundationaLLM.Agent/agents/${agentName}`;
+	},
+
+	/**
+	 * Gets the resource type for role assignments.
+	 * @returns The resource type string for role assignments.
+	 */
+	getRoleAssignmentType(): string {
+		return "FoundationaLLM.Authorization/roleAssignments";
+	},
+
+	/**
+	 * Gets the principal type for a security principal.
+	 * @param principal The security principal object.
+	 * @returns The principal type string.
+	 */
+	getPrincipalType(principal: any): string {
+		// Default to User, but can be extended to detect other types
+		return "User";
+	},
+
+	/**
 	 * Uploads attachment to the API.
 	 * @param file The file formData to upload.
 	 * @returns The ObjectID of the uploaded attachment.
