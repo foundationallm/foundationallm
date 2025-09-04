@@ -499,8 +499,8 @@ import mime from 'mime';
 import { defineComponent } from 'vue';
 import NavBarSettings from '~/components/NavBarSettings.vue';
 
-import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import DataTable from 'primevue/datatable';
 
 export default defineComponent({
     name: 'CreateAgent',
@@ -614,6 +614,10 @@ export default defineComponent({
             try {
                 // Get the specific agent directly by name
                 const agentResult = await api.getAgent(this.selectedAgentName);
+                
+                if((agentResult?.roles || []).includes('Reader')) {
+                     throw new Error('Permission denied. You have read-only access to this agent.');
+                }
                 
                 if (agentResult?.resource) {
                     this.createdAgent = agentResult.resource;
