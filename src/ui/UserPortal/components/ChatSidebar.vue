@@ -352,7 +352,7 @@
 
 <script lang="ts">
 	import eventBus from '@/js/eventBus';
-import { isAgentExpired } from '@/js/helpers';
+import { isAgentExpired, isAgentReadonly } from '@/js/helpers';
 import type { AgentOption, Session } from '@/js/types';
 import { hideAllPoppers } from 'floating-vue';
 	declare const process: any;
@@ -588,7 +588,7 @@ import { hideAllPoppers } from 'floating-vue';
 							type: agent.type,
 							description: agent.description,
 							enabled: isAgentSelected,
-							isReadonly: (ResourceProviderGetResult.roles || []).includes('Reader')
+							isReadonly: isAgentReadonly(ResourceProviderGetResult.roles || []),
 						};
 					});
 				} catch (error) {
