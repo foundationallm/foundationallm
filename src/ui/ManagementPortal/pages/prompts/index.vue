@@ -114,33 +114,23 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink
-							:to="'/prompts/edit/' + data.resource.name"
-							class="table__button"
-							tabindex="-1"
-							:aria-disabled="!data.actions.includes('FoundationaLLM.Prompt/prompts/write')"
-							:style="{
-								pointerEvents: !data.actions.includes('FoundationaLLM.Prompt/prompts/write')
-									? 'none'
-									: 'auto',
-							}"
-							@click="guardEvent($event, data.actions.includes('FoundationaLLM.Prompt/prompts/write'))"
-							@keydown.enter="guardEvent($event, data.actions.includes('FoundationaLLM.Prompt/prompts/write'))"
-							@keydown.space="guardEvent($event, data.actions.includes('FoundationaLLM.Prompt/prompts/write'))"
-						>
-							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-								<Button
-									link
-									:disabled="!data.actions.includes('FoundationaLLM.Prompt/prompts/write')"
-									:aria-label="`Edit ${data.resource.name}`"
-								>
-									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
-								</Button>
-								<template #popper
-									><div role="tooltip">Edit {{ data.resource.name }}</div></template
-								>
-							</VTooltip>
-						</NuxtLink>
+						<template v-if="data.actions.includes('FoundationaLLM.Prompt/prompts/write')">
+							<NuxtLink :to="'/prompts/edit/' + data.resource.name" class="table__button">
+								<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+									<Button link :aria-label="`Edit ${data.resource.name}`">
+										<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
+									</Button>
+									<template #popper
+										><div role="tooltip">Edit {{ data.resource.name }}</div></template
+									>
+								</VTooltip>
+							</NuxtLink>
+						</template>
+						<template v-else>
+							<span aria-disabled="true" class="table__button" style="opacity:.6; cursor: default;">
+								<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
+							</span>
+						</template>
 					</template>
 				</Column>
 				<template #groupheader="slotProps">
@@ -156,7 +146,6 @@
 
 <script lang="ts">
 import api from '@/js/api';
-import { guardAction } from '@/js/helpers';
 import type { Prompt, ResourceProviderGetResult } from '@/js/types';
 
 export default {
@@ -188,9 +177,6 @@ export default {
 	},
 
 	methods: {
-		guardEvent(e: Event, allowed: boolean): void {
-			guardAction(e, allowed);
-		},
 		async getPrompts() {
 			this.loading = true;
 			try {

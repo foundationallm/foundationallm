@@ -112,35 +112,25 @@
 				}"
 			>
 				<template #body="{ data }">
-					<NuxtLink
-						:to="'/agents/edit/' + data.resource.name"
-						class="table__button"
-						tabindex="-1"
-						:aria-disabled="!data.actions.includes('FoundationaLLM.Agent/agents/write')"
-						:style="{
-							pointerEvents: !data.actions.includes('FoundationaLLM.Agent/agents/write')
-								? 'none'
-								: 'auto',
-						}"
-						@click="guardEvent($event, data.actions.includes('FoundationaLLM.Agent/agents/write'))"
-						@keydown.enter="guardEvent($event, data.actions.includes('FoundationaLLM.Agent/agents/write'))"
-						@keydown.space="guardEvent($event, data.actions.includes('FoundationaLLM.Agent/agents/write'))"
-					>
-						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-							<Button
-								link
-								:disabled="!data.actions.includes('FoundationaLLM.Agent/agents/write')"
-								:aria-label="`Edit ${data.resource.name}`"
-							>
-								<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
-							</Button>
-							<template #popper
-								><div role="tooltip">
-									Edit {{ data.resource.display_name || data.resource.name }}
-								</div></template
-							>
-						</VTooltip>
-					</NuxtLink>
+					<template v-if="data.actions.includes('FoundationaLLM.Agent/agents/write')">
+						<NuxtLink :to="'/agents/edit/' + data.resource.name" class="table__button">
+							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+								<Button link :aria-label="`Edit ${data.resource.name}`">
+									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
+								</Button>
+								<template #popper
+									><div role="tooltip">
+										Edit {{ data.resource.display_name || data.resource.name }}
+									</div></template
+								>
+							</VTooltip>
+						</NuxtLink>
+					</template>
+					<template v-else>
+						<span aria-disabled="true" class="table__button" style="opacity:.6; cursor: default;">
+							<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
+						</span>
+					</template>
 				</template>
 			</Column>
 
@@ -157,21 +147,23 @@
 				}"
 			>
 				<template #body="{ data }">
-					<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-						<Button
-							link
-							:disabled="!data.actions.includes('FoundationaLLM.Agent/agents/delete')"
-							:aria-label="`Delete ${data.resource.name}`"
-							@click="guardEventWith($event, data.actions.includes('FoundationaLLM.Agent/agents/delete'), () => (agentToDelete = data.resource))"
-						>
+					<template v-if="data.actions.includes('FoundationaLLM.Agent/agents/delete')">
+						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+							<Button link :aria-label="`Delete ${data.resource.name}`" @click="agentToDelete = data.resource">
+								<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
+							</Button>
+							<template #popper
+								><div role="tooltip">
+									Delete {{ data.resource.display_name || data.resource.name }}
+								</div></template
+							>
+						</VTooltip>
+					</template>
+					<template v-else>
+						<span aria-disabled="true" style="opacity:.6; cursor: default;">
 							<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
-						</Button>
-						<template #popper
-							><div role="tooltip">
-								Delete {{ data.resource.display_name || data.resource.name }}
-							</div></template
-						>
-					</VTooltip>
+						</span>
+					</template>
 				</template>
 			</Column>
 
@@ -188,21 +180,23 @@
 				}"
 			>
 				<template #body="{ data }">
-					<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-						<Button
-							link
-							:disabled="!data.roles.includes('User Access Administrator')"
-							:aria-label="`Set ${data.resource.name} as default`"
-							@click="guardEventWith($event, data.roles.includes('User Access Administrator'), () => (agentToSetAsDefault = data.resource))"
-						>
+					<template v-if="data.roles.includes('User Access Administrator')">
+						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+							<Button link :aria-label="`Set ${data.resource.name} as default`" @click="agentToSetAsDefault = data.resource">
+								<i class="pi pi-star" style="font-size: 1.2rem" aria-hidden="true"></i>
+							</Button>
+							<template #popper
+								><div role="tooltip">
+									Set {{ data.resource.display_name || data.resource.name }} as default agent
+								</div></template
+							>
+						</VTooltip>
+					</template>
+					<template v-else>
+						<span aria-disabled="true" style="opacity:.6; cursor: default;">
 							<i class="pi pi-star" style="font-size: 1.2rem" aria-hidden="true"></i>
-						</Button>
-						<template #popper
-							><div role="tooltip">
-								Set {{ data.resource.display_name || data.resource.name }} as default agent
-							</div></template
-						>
-					</VTooltip>
+						</span>
+					</template>
 				</template>
 			</Column>
 		</DataTable>
@@ -244,7 +238,6 @@
 
 <script lang="ts">
 import api from '@/js/api';
-import { guardAction } from '@/js/helpers';
 import type { Agent, ResourceProviderGetResult, ResourceProviderActionResult } from '@/js/types';
 
 export default {
@@ -289,13 +282,6 @@ export default {
 	},
 
 	methods: {
-		guardEvent(e: Event, allowed: boolean): void {
-			guardAction(e, allowed);
-		},
-
-		guardEventWith(e: Event, allowed: boolean, fn: () => void): void {
-			guardAction(e, allowed, fn);
-		},
 		async handleDeleteAgent() {
 			try {
 				await api.deleteAgent(this.agentToDelete!.name);
