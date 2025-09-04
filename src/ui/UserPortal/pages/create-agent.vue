@@ -603,7 +603,7 @@
 
 <script lang="ts">
 import api from '@/js/api';
-import { debounce } from '@/js/helpers';
+import { debounce, isAgentReadonly } from '@/js/helpers';
 import type { AgentBase } from '@/js/types';
 import type { AgentCreationFromTemplateRequest, ResourceBase } from '@/js/types/index';
 import mime from 'mime';
@@ -751,7 +751,7 @@ export default defineComponent({
                 // Get the specific agent directly by name
                 const agentResult = await api.getAgent(this.selectedAgentName);
                 
-                if((agentResult?.roles || []).includes('Reader')) {
+                if(isAgentReadonly(agentResult?.roles || [])) {
                      throw new Error('Permission denied. You have read-only access to this agent.');
                 }
                 
