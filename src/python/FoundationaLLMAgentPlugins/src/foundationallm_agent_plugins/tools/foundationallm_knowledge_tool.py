@@ -117,11 +117,14 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
 
                 # Parse all metadata filters and replace placeholders with runtime properties
                 for key, value in vector_store_filter['vector_store_metadata_filter'].items():
-                    if isinstance(value, str) and value.startswith('__COMPLETION_REQUEST_METADATA__'):
-                        value = tool_runtime_properties.get(value, None)
-                        if value is None:
-                            raise ValueError(f"Metadata key '{value}' not found in tool runtime properties.")
-                    vector_store_filter['vector_store_metadata_filter'][key] = value
+                    if isinstance(value, str):
+                        request_metadata_required = value.startswith('__COMPLETION_REQUEST_METADATA_!__')
+                        request_metadata_optional = value.startswith('__COMPLETION_REQUEST_METADATA__')
+                        if request_metadata_required or request_metadata_optional:
+                            request_value = tool_runtime_properties.get(value, None)
+                            if (request_value is None) and request_metadata_required:
+                                raise ValueError(f"Metadata key {key} is required and is missing from the tool runtime properties.")
+                            vector_store_filter['vector_store_metadata_filter'][key] = request_value
 
                 # Handle the well-known knowledge unit named Conversations
                 if vector_store_filter['knowledge_unit_id'] == 'Conversations':

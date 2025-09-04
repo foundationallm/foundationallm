@@ -418,7 +418,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                 // Map the metadata filter values to possible values from the completion request.
 
-                List<string> completionRequestMetadataKeys = [];
+                List<(string Key, bool Required)> completionRequestMetadataKeys = [];
 
                 if (tool.TryGetPropertyValue<Dictionary<string, object>>(
                         AgentToolPropertyNames.VectorStoreMetadataFilter, out var metadataFilter)
@@ -449,16 +449,21 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     throw new OrchestrationException(
                         "The completion request metadata is required for the tool, but it was not provided in the completion request.");
 
-                foreach (var key in completionRequestMetadataKeys)
+                foreach (var (Key, Required) in completionRequestMetadataKeys)
                 {
-                    if (originalRequest.Metadata!.TryGetValue(key, out var value))
+                    if (originalRequest.Metadata!.TryGetValue(Key, out var value))
                     {
-                        toolParameters.Add($"{AgentToolPropertyValueSources.CompletionRequestMetadata}:{key}", value);
+                        toolParameters.Add(
+                            Required
+                                ? $"{AgentToolPropertyValueSources.CompletionRequestMetadata_Required}:{Key}"
+                                : $"{AgentToolPropertyValueSources.CompletionRequestMetadata_Optional}:{Key}",
+                            value);
                     }
                     else
                     {
-                        // If the metadata key is not found in the completion request, throw an exception.
-                        throw new OrchestrationException($"The metadata key '{key}' was not found in the completion request.");
+                        // If the metadata key is required and is not found in the completion request, throw an exception.
+                        if (Required)
+                            throw new OrchestrationException($"The metadata key {Key} is required and it was missing from the completion request.");
                     }
                 }
 
@@ -731,17 +736,52 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             return (agentBase, mainAIModel, mainAIModelAPIEndpointConfiguration, explodedObjectsManager);
         }
 
-        private static List<string> GetCompletionRequestMetadataKeys(
+        private static List<(string Key, bool Required)> GetCompletionRequestMetadataKeys(
             IEnumerable<object> values) =>
                 [.. values
                     .Where(v =>
                         v is JsonElement je
                         && je.ValueKind == JsonValueKind.String)
-                    .Select(v => ((JsonElement) v).GetString())
-                    .Where(s =>
-                        s is not null
-                        && s.StartsWith(AgentToolPropertyValueSources.CompletionRequestMetadata))
-                    .Select(s => s!.Split(':', 2)[1])
+                    .Select(v =>
+                        {
+                            var s = ((JsonElement) v).GetString();
+                            if (string.IsNullOrEmpty(s))
+                                return new {
+                                    Ignore = true,
+                                    Key = string.Empty,
+                                    Required = false
+                                };
+
+                            var tokens = s.Split(':', 2);
+                            if (tokens.Length != 2)
+                                return new {
+                                    Ignore = true,
+                                    Key = string.Empty,
+                                    Required = false
+                                };
+
+                            if (tokens[0] == AgentToolPropertyValueSources.CompletionRequestMetadata_Required)
+                                return new {
+                                    Ignore = false,
+                                    Key = tokens[1],
+                                    Required = true
+                                };
+                            else if (tokens[0] == AgentToolPropertyValueSources.CompletionRequestMetadata_Optional)
+                                return new {
+                                    Ignore = false,
+                                    Key = tokens[1],
+                                    Required = false
+                                };
+                            else
+
+                            return new {
+                                    Ignore = true,
+                                    Key = string.Empty,
+                                    Required = false
+                                };
+                        })
+                    .Where(x => !x.Ignore)
+                    .Select(s => (s.Key, s.Required))
                 ];
 
         private static async Task<string?> EnsureAgentCapabilities(
