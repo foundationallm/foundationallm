@@ -833,6 +833,57 @@ export default {
 			throw error;
 		}
 	},
+
+	/**
+	 * Filters security principals by name for user search functionality.
+	 * @param name - Partial name to search for.
+	 * @returns Promise resolving to an array of security principals.
+	 */
+	async filterSecurityPrincipalsByName(name: string): Promise<SecurityPrincipal[]> {
+		try {
+			const principals = await this.fetch<ResourceProviderGetResult<SecurityPrincipal>[]>(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/securityPrincipals/filter`,
+				{
+					method: 'POST',
+					body: {
+						name: name,
+						security_principal_type: 'User'
+					},
+				}
+			);
+			// Extract the resource from each ResourceProviderGetResult wrapper
+			return principals.map(wrapper => wrapper.resource);
+		} catch (error) {
+			console.error('Error filtering security principals by name:', error);
+			throw error;
+		}
+	},
+
+	/**
+	 * Creates a new role assignment.
+	 * @param roleAssignment - The role assignment to create.
+	 * @returns Promise resolving to the creation result.
+	 */
+	async createRoleAssignment(roleAssignment: any): Promise<any> {
+		try {
+			// Use the correct endpoint format as specified in requirements
+			// HTTP POST {{core_base_url}}/management/instances/{{instanceId}}/providers/FoundationaLLM.Authorization/roleAssignments/<role_assignment_id>
+			const result = await this.fetch(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/${roleAssignment.name}`,
+				{
+					method: 'POST',
+					body: roleAssignment,
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+			);
+			return result;
+		} catch (error) {
+			console.error('Error creating role assignment:', error);
+			throw error;
+		}
+	},
 };
 
 function formatError(error: any): string {
