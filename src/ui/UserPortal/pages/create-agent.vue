@@ -611,6 +611,7 @@ import { defineComponent } from 'vue';
 import NavBarSettings from '~/components/NavBarSettings.vue';
 
 import Column from 'primevue/column';
+import DataTable from 'primevue/datatable';
 import Dropdown from 'primevue/dropdown';
 
 export default defineComponent({
@@ -750,10 +751,7 @@ export default defineComponent({
             try {
                 // Get the specific agent directly by name
                 const agentResult = await api.getAgent(this.selectedAgentName);
-                
-                if(isAgentReadonly(agentResult?.roles || [])) {
-                     throw new Error('Permission denied. You have read-only access to this agent.');
-                }
+
                 
                 if (agentResult?.resource) {
                     this.createdAgent = agentResult.resource;
@@ -1022,6 +1020,11 @@ export default defineComponent({
         async onSaveAgent() {
             if (!this.createdAgent) {
                 this.$toast.add({ severity: 'error', summary: 'Error', detail: 'No agent to update.', life: 5000 });
+                return;
+            }
+            // Permission check
+            if (isAgentReadonly(this.createdAgent?.roles || [])) {
+                this.$toast.add({ severity: 'error', summary: 'Permission Denied', detail: 'You have read-only access to this agent.', life: 5000 });
                 return;
             }
 
