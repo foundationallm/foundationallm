@@ -382,7 +382,9 @@
                                 </div>
 
                                 <div class="flex items-center flex-wrap mb-6">
-                                    <div class="w-full max-w-full md:max-w-[45%] lg:max-w-[35%] mb-4"></div>
+                                    <div class="w-full max-w-full md:max-w-[45%] lg:max-w-[35%] mb-4">
+                                        <Button label="Add Role Assignment" severity="primary" class="min-h-[45px] min-w-[125px] w-full md:w-auto" @click="openAddRoleAssignmentModal"/>
+                                    </div>
 
                                     <div class="w-full max-w-full md:max-w-[55%] lg:max-w-[65%] mb-4 relative">
                                         <div class="flex items-center">
@@ -486,6 +488,115 @@
                 </TabView>
             </div>
         </div>
+
+        <Dialog 
+            v-model:visible="showAddRoleAssignmentModal" 
+            modal 
+            class="csm-roleDialog-modal-1"
+            header="Add New Role Assignment" 
+            :style="{ width: '30rem' }" 
+            :breakpoints="{ '1199px': '50vw', '575px': '90vw' }"
+        >
+            <!-- Add New Role Assignment Section -->
+            <div class="mb-4">
+                <div class="mb-2">
+                    <!-- User Search -->
+                    <div class="relative mb-5">
+                        <label for="userSearch" class="block text-sm font-medium text-[#898989] mb-2">
+                            Search User
+                        </label>
+                        <div class="relative">
+                            <InputText 
+                                id="userSearch"
+                                v-model="newRoleAssignment.userSearch"
+                                @input="onUserSearchInput"
+                                placeholder="Start typing user name..."
+                                class="w-full"
+                            />
+                            <div v-if="userSearchLoading" class="absolute right-2 top-1/2 -translate-y-1/2">
+                                <i class="pi pi-spin pi-spinner text-blue-500"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- User Search Results Dropdown -->
+                        <div v-if="userSearchResults.length > 0 && newRoleAssignment.userSearch" 
+                                class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                            <div v-for="user in userSearchResults" 
+                                    :key="user.id"
+                                    @click="selectUser(user)"
+                                    class="px-3 py-2 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0">
+                                <div class="font-medium text-[#334581] mb-3">{{ user.display_name || user.name }}</div>
+                                <div class="text-sm text-[#898989] mb-3">Email: {{ user.email || 'No email' }}</div>
+                                <div class="text-sm text-[#898989]">ID: {{ user.id || 'No id' }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Role Selection -->
+                    <div class="relative mb-5">
+                        <label for="roleSelect" class="block text-sm font-medium text-[#898989] mb-2">
+                            Select Role
+                        </label>
+                        <Dropdown 
+                            id="roleSelect"
+                            v-model="newRoleAssignment.selectedRole"
+                            :options="availableRoles"
+                            optionLabel="display_name"
+                            optionValue="object_id"
+                            placeholder="Select a role..."
+                            class="w-full"
+                            :loading="rolesLoading"
+                        />
+                    </div>
+                </div>
+
+                <!-- Selected User Display -->
+                <div v-if="newRoleAssignment.selectedUser" class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-sm font-medium text-[#334581]">Selected User:</span>
+                            <span class="ml-2 text-sm text-[#898989]">
+                                {{ newRoleAssignment.selectedUser.display_name || newRoleAssignment.selectedUser.name }}
+                                <span v-if="newRoleAssignment.selectedUser.email" class="ml-2 text-gray-500">
+                                    ({{ newRoleAssignment.selectedUser.email }})
+                                </span>
+                            </span>
+                        </div>
+                        <Button 
+                            icon="pi pi-times" 
+                            severity="secondary" 
+                            text 
+                            @click="clearSelectedUser"
+                            class="p-1"
+                        />
+                    </div>
+                </div>
+            </div>
+            
+            <template #footer>
+                <div class="flex justify-between items-center w-full">
+                    <div class="w-full max-w-[50%]">
+                        <Button 
+                            label="Cancel" 
+                            class="w-full" 
+                            @click="closeAddModal" 
+                            text 
+                        />
+                    </div>
+
+                    <div class="w-full max-w-[50%]">
+                        <Button 
+                            label="Add Role Assignment"
+                            severity="primary w-full"
+                            @click="addRoleAssignment"
+                            :disabled="!canAddRoleAssignment || addingRoleAssignment"
+                            :loading="addingRoleAssignment"
+                            class="w-full"
+                        />
+                    </div>
+                </div>
+            </template>
+        </Dialog>
     </main>
 </template>
 
@@ -501,6 +612,7 @@ import NavBarSettings from '~/components/NavBarSettings.vue';
 
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import Dropdown from 'primevue/dropdown';
 
 export default defineComponent({
     name: 'CreateAgent',
@@ -509,6 +621,7 @@ export default defineComponent({
         NavBarSettings,
         DataTable,
         Column,
+        Dropdown,
     },
 
 
@@ -550,6 +663,19 @@ export default defineComponent({
                 roleAssignmentsError: '' as string,
                 filters: {} as any,
                 globalFilter: '' as string,
+
+                // New role assignment form data
+                newRoleAssignment: {
+                    userSearch: '',
+                    selectedRole: null as string | null,
+                    selectedUser: null as any,
+                },
+                userSearchLoading: false as boolean,
+                userSearchResults: [] as any[],
+                rolesLoading: false as boolean,
+                availableRoles: [] as any[],
+                addingRoleAssignment: false as boolean,
+                showAddRoleAssignmentModal: false as boolean,
             };
         },
 
@@ -582,6 +708,16 @@ export default defineComponent({
                            principalType.toLowerCase().includes(filter) ||
                            roleName.toLowerCase().includes(filter);
                 });
+            },
+
+            canAddRoleAssignment() {
+                // Add safety checks to prevent undefined access
+                if (!this.newRoleAssignment) {
+                    return false;
+                }
+                const hasUser = !!this.newRoleAssignment.selectedUser;
+                const hasRole = !!this.newRoleAssignment.selectedRole;
+                return hasUser && hasRole;
             }
         },
 
@@ -590,6 +726,7 @@ export default defineComponent({
         this.displayNameDebouncedCheck = debounce(this.checkDisplayName, 500);
         this.fetchAIModels();
         this.loadAvailableAgents();
+        this.loadAvailableRoles(); // Load available roles on mount
         
         // Check if we're in edit mode
         this.checkEditMode();
@@ -1177,7 +1314,7 @@ export default defineComponent({
             this.roleAssignmentsLoading = true;
 
             try {
-                const scope = `providers/FoundationaLLM.Agent/agents/${this.selectedAgentName}`;
+                const scope = api.getAgentScopeIdentifier(this.selectedAgentName);
                 const assignments = await api.getRoleAssignments(scope);
                 
                 if (!Array.isArray(assignments) || assignments.length === 0) {
@@ -1228,6 +1365,111 @@ export default defineComponent({
             }
         },
 
+        async loadAvailableRoles() {
+            this.rolesLoading = true;
+            try {
+                const roles = await api.getRoleDefinitions();
+                this.availableRoles = Array.isArray(roles) ? roles : [];
+            } catch (e) {
+                this.availableRoles = [];
+            } finally {
+                this.rolesLoading = false;
+            }
+        },
+
+        async onUserSearchInput() {
+            if (!this.newRoleAssignment?.userSearch?.trim()) {
+                this.userSearchResults = [];
+                return;
+            }
+
+            this.userSearchLoading = true;
+            try {
+                const results = await api.filterSecurityPrincipalsByName(this.newRoleAssignment.userSearch);
+                this.userSearchResults = Array.isArray(results) ? results : [];
+            } catch (e) {
+                this.userSearchResults = [];
+            } finally {
+                this.userSearchLoading = false;
+            }
+        },
+
+        selectUser(user: any) {
+            if (this.newRoleAssignment) {
+                this.newRoleAssignment.selectedUser = user;
+                this.newRoleAssignment.userSearch = '';
+                this.userSearchResults = [];
+            }
+        },
+
+        clearSelectedUser() {
+            if (this.newRoleAssignment) {
+                this.newRoleAssignment.selectedUser = null;
+            }
+        },
+
+        async addRoleAssignment() {
+            if (!this.canAddRoleAssignment || !this.selectedAgentName) return;
+
+            this.addingRoleAssignment = true;
+            try {
+                // Generate a new GUID for the role assignment name
+                const roleAssignmentId = this.generateGuid();
+                
+                // Get the agent scope dynamically from the API
+                const scope = api.getAgentScope(this.selectedAgentName);
+                
+                // Use exact payload format as specified in requirements
+                const payload = {
+                    name: roleAssignmentId,
+                    description: "",
+                    principal_id: this.newRoleAssignment.selectedUser.id,
+                    role_definition_id: this.newRoleAssignment.selectedRole,
+                    type: api.getRoleAssignmentType(),
+                    principal_type: api.getPrincipalType(this.newRoleAssignment.selectedUser),
+                    scope: scope
+                };
+                
+                await api.createRoleAssignment(payload);
+                this.$toast.add({ 
+                    severity: 'success', 
+                    summary: 'Role Assignment Added', 
+                    detail: `Role assignment for ${this.newRoleAssignment.selectedUser.display_name || this.newRoleAssignment.selectedUser.name} added successfully.`, 
+                    life: 3000 
+                });
+                
+                // Refresh the list and reset form
+                await this.loadRoleAssignments();
+                this.newRoleAssignment.selectedUser = null;
+                this.newRoleAssignment.selectedRole = null;
+            } catch (e: any) {
+                let errorMessage = 'Failed to add role assignment';
+                
+                if (e.message?.includes('Access is not authorized') || e.message?.includes('403')) {
+                    errorMessage = 'You do not have permission to create role assignments. Please contact your administrator or use the Management Portal.';
+                } else if (e.message) {
+                    errorMessage = e.message;
+                }
+                
+                this.$toast.add({ 
+                    severity: 'error', 
+                    summary: 'Authorization Required', 
+                    detail: errorMessage, 
+                    life: 8000 
+                });
+            } finally {
+                this.addingRoleAssignment = false;
+            }
+        },
+
+        generateGuid(): string {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        },
+
         getPrincipalDisplayName(assignment: any): string {
             if (!assignment) return '-';
             return assignment.resource?.principal_details?.name || 
@@ -1238,6 +1480,13 @@ export default defineComponent({
             if (!assignment) return '-';
             return assignment.resource?.role_definition?.display_name || 
                    assignment.resource?.role_definition_id || 'Unknown Role';
+        },
+        openAddRoleAssignmentModal() {
+            this.showAddRoleAssignmentModal = true;
+        },
+        
+        closeAddModal() {
+            this.showAddRoleAssignmentModal = false;
         },
     },
 });
@@ -1340,6 +1589,11 @@ export default defineComponent({
                 }
             }
         }
+    }
+}
+.csm-roleDialog-modal-1{
+    .p-dialog-content{
+        overflow-y: unset;
     }
 }
 </style>
