@@ -1,29 +1,29 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Gatekeeper.Core.Models.ContentSafety
+namespace FoundationaLLM.Common.Models.ContentSafety
 {
     /// <summary>
     /// Prompt shield result.
     /// </summary>
-    public class PromptShieldResult
+    public class ShieldPromptResult
     {
         /// <summary>
         /// Contains analysis results for the user prompt.	
         /// </summary>
         [JsonPropertyName("userPromptAnalysis")]
-        public required PromptShieldDetails UserPromptAnalysis { get; set; }
+        public required ShieldPromptDetails UserPromptAnalysis { get; set; }
 
         /// <summary>
         /// Contains a list of analysis results for each document provided.
         /// </summary>
         [JsonPropertyName("documentsAnalysis")]
-        public required List<PromptShieldDetails> DocumentsAnalysis { get; set; }
+        public required List<ShieldPromptDetails> DocumentsAnalysis { get; set; }
     }
 
     /// <summary>
     /// Contains analysis results for the user prompt.
     /// </summary>
-    public class PromptShieldDetails
+    public class ShieldPromptDetails
     {
         /// <summary>
         /// Indicates whether a User Prompt attack (for example, malicious input, security threat) has been detected in the user prompt.

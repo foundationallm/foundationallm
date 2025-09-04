@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Gatekeeper.Core.Models.ContentSafety
+namespace FoundationaLLM.Common.Models.ContentSafety
 {
     /// <summary>
     /// Text analysis results.
