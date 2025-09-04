@@ -67,8 +67,8 @@
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <Checkbox v-model="useVectorStoreMetadataFilter" binary size="large" />
-                        <h4 class="page-header" style="margin: 0;">Vector store metadata filter</h4>
+                        <Checkbox v-model="useKnowledgeUnitVectorStoreFilters" binary size="large" />
+                        <h4 class="page-header" style="margin: 0;">Knowledge units metadata filters</h4>
                     </div>
                 </div>
 
@@ -94,9 +94,9 @@
                 </div>
                 <div v-else/>
                 <div style="grid-row: span 4;">
-                    <div v-if="useVectorStoreMetadataFilter" id="metadata-filter">
-                        <InputTextArea v-model="vector_store_metadata_filter"
-                            placeholder="Enter the metadata filter in JSON format..." style="width: 90%; height: 100%; resize: none;" />
+                    <div v-if="useKnowledgeUnitVectorStoreFilters" id="metadata-filter">
+                        <InputTextArea v-model="knowledge_unit_vector_store_filters"
+                            placeholder="Enter the knowledge units metadata filters in JSON format..." style="width: 90%; height: 100%; resize: none;" />
                     </div>
                 </div>
 
@@ -230,7 +230,7 @@ export default {
             useVectorStoreQuery: true as boolean,
             useKnowledgeGraphQuery: true as boolean,
             useKnowledgeGraphVectorStoreQuery: true as boolean,
-            useVectorStoreMetadataFilter: false as boolean,
+            useKnowledgeUnitVectorStoreFilters: false as boolean,
             queryResult: null,
             sigmaInstance: null as Sigma | null,
             fullGraphOnDisplay: false as boolean,
@@ -243,7 +243,7 @@ export default {
                 user_prompt: null as string | null,
                 vector_store_query: null as any,
                 knowledge_graph_query: null as any,
-                vector_store_metadata_filter: null as any
+                knowledge_unit_vector_store_filters: null as any
             },
             vector_store_query: {
                 text_chunks_max_count: 20 as number,
@@ -264,7 +264,7 @@ export default {
                 use_semantic_ranking: false as boolean,
                 use_hybrid_search: false as boolean
             } as any,
-            vector_store_metadata_filter: null as string | null,
+            knowledge_unit_vector_store_filters: null as string | null,
         };
     },
 
@@ -371,9 +371,9 @@ export default {
             this.queryRequest.knowledge_graph_query = this.useKnowledgeGraphQuery ? this.knowledge_graph_query : null;
 
             // Parse metadata filter string to JSON if enabled
-            if (this.useVectorStoreMetadataFilter && this.vector_store_metadata_filter) {
+            if (this.useKnowledgeUnitVectorStoreFilters && this.knowledge_unit_vector_store_filters) {
                 try {
-                    this.queryRequest.vector_store_metadata_filter = JSON.parse(this.vector_store_metadata_filter);
+                    this.queryRequest.knowledge_unit_vector_store_filters = JSON.parse(this.knowledge_unit_vector_store_filters);
                 } catch (e) {
                     this.$toast?.add?.({
                         severity: 'error',
@@ -383,7 +383,7 @@ export default {
                     return;
                 }
             } else {
-                this.queryRequest.vector_store_metadata_filter = null;
+                this.queryRequest.knowledge_unit_vector_store_filters = null;
             }
 
             this.loadingStatusText = `Querying knowledge source: ${this.selectedKnowledgeSource.resource.name}...`;

@@ -70,6 +70,7 @@ namespace FoundationaLLM.Context.Services
                 if (string.IsNullOrWhiteSpace(vectorStoreId))
                     return new ContextKnowledgeSourceQueryResponse
                     {
+                        Source = _knowledgeUnit.Name,
                         Success = false,
                         ErrorMessage = $"The knowledge unit {_knowledgeUnit.Name} does not have a vector store identifier specified and none was provided in the query request."
                     };
@@ -83,6 +84,7 @@ namespace FoundationaLLM.Context.Services
 
                 var queryResponse = new ContextKnowledgeSourceQueryResponse
                 {
+                    Source = _knowledgeUnit.Name,
                     Success = true
                 };
 
@@ -95,6 +97,13 @@ namespace FoundationaLLM.Context.Services
                         vectorStoreId,
                         [],
                         vectorStoreFilter?.VectorStoreMetadataFilter);
+
+                    _logger.LogInformation(
+                        "Vector store query - filter for vector store {VectorDatabase}/{VectorStore} in knowledge unit {KnowledgeUnit}: {Filter}",
+                        _vectorDatabase.DatabaseName,
+                        vectorStoreId,
+                        _knowledgeUnit.Name,
+                        matchingDocumentsFilter);
 
                     var matchingDocuments = await _cachedKnowledgeUnit.SearchService.SearchDocuments(
                         _vectorDatabase.DatabaseName,
@@ -112,6 +121,13 @@ namespace FoundationaLLM.Context.Services
                         queryRequest.VectorStoreQuery.TextChunksSimilarityThreshold,
                         queryRequest.VectorStoreQuery.TextChunksMaxCount,
                         queryRequest.VectorStoreQuery.UseSemanticRanking);
+
+                    _logger.LogInformation(
+                        "Vector store query - found {MatchingDocumentsCount} matching documents for vector store {VectorDatabase}/{VectorStore} in knowledge unit {KnowledgeUnit}",
+                        matchingDocuments.Count(),
+                        _vectorDatabase.DatabaseName,
+                        vectorStoreId,
+                        _knowledgeUnit.Name);
 
                     queryResponse.VectorStoreResponse = new ContextVectorStoreResponse
                     {
@@ -133,6 +149,7 @@ namespace FoundationaLLM.Context.Services
                     if (_knowledgeGraphVectorDatabase is null)
                         return new ContextKnowledgeSourceQueryResponse
                         {
+                            Source = _knowledgeUnit.Name,
                             Success = false,
                             ErrorMessage = $"The knowledge unit {_knowledgeUnit.Name} does not have a knowledge graph vector database."
                         };
@@ -193,6 +210,13 @@ namespace FoundationaLLM.Context.Services
                             [.. matchingEntities.Entities.SelectMany(e => e.ChunkIds).Distinct()],
                             vectorStoreFilter?.VectorStoreMetadataFilter);
 
+                        _logger.LogInformation(
+                            "Vector store query (via KG) - filter for vector store {VectorDatabase}/{VectorStore} in knowledge unit {KnowledgeUnit}: {Filter}",
+                            _vectorDatabase.DatabaseName,
+                            vectorStoreId,
+                            _knowledgeUnit.Name,
+                            matchingDocumentsFilter);
+
                         var matchingDocuments = await _cachedKnowledgeUnit.SearchService.SearchDocuments(
                             _vectorDatabase.DatabaseName,
                             [
@@ -209,6 +233,13 @@ namespace FoundationaLLM.Context.Services
                             queryRequest.KnowledgeGraphQuery.VectorStoreQuery.TextChunksSimilarityThreshold,
                             queryRequest.KnowledgeGraphQuery.VectorStoreQuery.TextChunksMaxCount,
                             queryRequest.KnowledgeGraphQuery.VectorStoreQuery.UseSemanticRanking);
+
+                        _logger.LogInformation(
+                            "Vector store query (via KG) - found {MatchingDocumentsCount} matching documents for vector store {VectorDatabase}/{VectorStore} in knowledge unit {KnowledgeUnit}",
+                            matchingDocuments.Count(),
+                            _vectorDatabase.DatabaseName,
+                            vectorStoreId,
+                            _knowledgeUnit.Name);
 
                         queryResponse.KnowledgeGraphResponse.TextChunks = [.. matchingDocuments
                             .Select(md => new ContextTextChunk
@@ -229,6 +260,7 @@ namespace FoundationaLLM.Context.Services
                     _knowledgeUnit.Name);
                 return new ContextKnowledgeSourceQueryResponse
                 {
+                    Source = _knowledgeUnit.Name,
                     Success = false,
                     ErrorMessage = $"Invalid query request: {ex.Message}"
                 };
@@ -239,6 +271,7 @@ namespace FoundationaLLM.Context.Services
                     _knowledgeUnit.Name);
                 return new ContextKnowledgeSourceQueryResponse
                 {
+                    Source = _knowledgeUnit.Name,
                     Success = false,
                     ErrorMessage = $"An error occurred while querying the knowledge source {_knowledgeUnit.Name}."
                 };
@@ -273,7 +306,14 @@ namespace FoundationaLLM.Context.Services
                         _vectorDatabase,
                         vectorStoreId,
                         [],
-                        vectorStoreFilter?.VectorStoreMetadataFilter);
+                        null);
+
+            _logger.LogInformation(
+                "Match knowledge graph items - filter for vector store {VectorDatabase}/{VectorStore} in knowledge unit {KnowledgeUnit}: {Filter}",
+                vectorDatabase.DatabaseName,
+                vectorStoreId,
+                _knowledgeUnit.Name,
+                matchingDocumentsFilter);
 
             var matchingDocuments = await cachedKnowledgeUnit.KnowledgeGraphSearchService!.SearchDocuments(
                 vectorDatabase.DatabaseName,
@@ -290,7 +330,14 @@ namespace FoundationaLLM.Context.Services
                 matchedEntitiesMaxCount,
                 false);
 
-            List<ContextTextChunk> matchingTextChunks = [.. matchingDocuments
+            _logger.LogInformation(
+                "Match knowledge graph items - found {MatchingDocumentsCount} matching documents for vector store {VectorDatabase}/{VectorStore} in knowledge unit {KnowledgeUnit}",
+                matchingDocuments.Count(),
+                vectorDatabase.DatabaseName,
+                vectorStoreId,
+                _knowledgeUnit.Name);
+
+            List <ContextTextChunk> matchingTextChunks = [.. matchingDocuments
                 .Select(md => new ContextTextChunk
                 {
                     Score = md.GetDouble("Score"),

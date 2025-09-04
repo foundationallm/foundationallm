@@ -87,6 +87,17 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             if (!rawContentResult.Success)
                 return new PluginResult(false, false, rawContentResult.ErrorMessage);
 
+            // Merge metadata associated with raw content with metadata associated with the content item.
+            // Metadata associated with raw content has priority (i.e., when keys are in conflict,
+            // the metadata value associated with raw content wins.
+            var metadata = rawContentResult.Value?.Metadata ?? [];
+            if (contentItem.Metadata is not null)
+                foreach (var contentItemMetadataItem in contentItem.Metadata)
+                    if (!metadata.ContainsKey(contentItemMetadataItem.Key))
+                        metadata.Add(
+                            contentItemMetadataItem.Key,
+                            contentItemMetadataItem.Value);
+
             if (!ContentTypeMappings.Map.TryGetValue(
                 rawContentResult.Value!.ContentType,
                 out var contentType))
@@ -196,7 +207,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     {
                         FileName =  DataPipelineStateFileNames.Metadata,
                         ContentType = "application/json",
-                        Content = BinaryData.FromString(JsonSerializer.Serialize(rawContentResult.Value.Metadata))
+                        Content = BinaryData.FromString(JsonSerializer.Serialize(metadata))
                     }
                 ]);
 

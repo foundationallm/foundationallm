@@ -276,6 +276,7 @@ namespace FoundationaLLM.Context.Services
                     .ToList();
 
                 var queryEngine = new KnowledgeSourceQueryEngine(
+                    knowledgeSourceId,
                     knowledgeUnitQueryEngines,
                     _loggerFactory.CreateLogger<KnowledgeSourceQueryEngine>());
 
@@ -290,6 +291,7 @@ namespace FoundationaLLM.Context.Services
                     knowledgeSourceId, instanceId);
                 return new ContextKnowledgeSourceQueryResponse
                 {
+                    Source = knowledgeSourceId,
                     Success = false,
                     ErrorMessage = $"An error occurred while querying the knowledge source {knowledgeSourceId} from instance {instanceId}."
                 };
