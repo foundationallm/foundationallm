@@ -23,6 +23,21 @@ namespace FoundationaLLM.Common.Constants
         public const string APIKey = "APIKey";
 
         /// <summary>
+        /// The dictionary key identifying the optional API key prefix.
+        /// </summary>
+        public const string APIKeyPrefix = "APIKeyPrefix";
+
+        /// <summary>
+        /// The dictionary key identifying the name of the header that contains the API key.
+        /// </summary>
+        public const string APIKeyHeaderName = "APIKeyHeaderName";
+
+        /// <summary>
+        /// The dictionary key identifying the API version.
+        /// </summary>
+        public const string APIVersion = "APIVersion";
+
+        /// <summary>
         /// The dictionary key identifying the timeout in seconds associated with an HTTP client.
         /// </summary>
         public const string TimeoutSeconds = "TimeoutSeconds";

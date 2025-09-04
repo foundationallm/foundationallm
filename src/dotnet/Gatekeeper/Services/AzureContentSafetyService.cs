@@ -1,11 +1,14 @@
 ﻿using Azure;
+using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.ContentSafety;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using FoundationaLLM.Gatekeeper.Core.Models.ContentSafety;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.ClientModel;
 using System.Text;
 using System.Text.Json;
 
@@ -44,27 +47,25 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <inheritdoc/>
         public async Task<AnalyzeTextFilterResult> AnalyzeText(string content)
         {
-            var client = await _httpClientFactoryService.CreateClient(
+            var client = await _httpClientFactoryService.CreateClient<IAzureAIContentSafetyClient>(
                 _callContext.InstanceId!,
                 HttpClientNames.AzureContentSafety,
-                _callContext.CurrentUserIdentity!);
+                _callContext.CurrentUserIdentity!,
+                AzureAIContentSafetyClient.BuildClient);
 
             AnalyzeTextResult? results = null;
             try
             {
-                var response = await client.PostAsync("/contentsafety/text:analyze?api-version=2023-10-01",
-                new StringContent(JsonSerializer.Serialize(new { text = content }),
-                Encoding.UTF8, "application/json"));
-
-                if (response.IsSuccessStatusCode)
+                var clientResult = await client.AnalyzeText(new AnalyzeTextRequest
                 {
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    results = JsonSerializer.Deserialize<AnalyzeTextResult>(responseContent);
-                }
+                    Text = content
+                });
+                results = clientResult.Value;
             }
-            catch (RequestFailedException ex)
+            catch (ClientResultException ex)
             {
-                _logger.LogError(ex, $"Analyze prompt text failed with status code: {ex.Status}, error code: {ex.ErrorCode}, message: {ex.Message}");
+                _logger.LogError(ex, "Azure AI Content Safety Analyze Text failed with status code: {StatusCode}, message: {Message}",
+                    ex.Status, ex.Message);
                 results = null;
             }
 
@@ -108,28 +109,30 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <inheritdoc/>
         public async Task<string?> DetectPromptInjection(string content)
         {
-            var client = await _httpClientFactoryService.CreateClient(
+            var client = await _httpClientFactoryService.CreateClient<IAzureAIContentSafetyClient>(
                 _callContext.InstanceId!,
                 HttpClientNames.AzureContentSafety,
-                _callContext.CurrentUserIdentity!);
+                _callContext.CurrentUserIdentity!,
+                AzureAIContentSafetyClient.BuildClient);
 
-            var response = await client.PostAsync("/contentsafety/text:shieldPrompt?api-version=2024-02-15-preview",
-                new StringContent(JsonSerializer.Serialize(new
-                {
-                    userPrompt = content,
-                    documents = new List<string>()
-                }),
-                Encoding.UTF8, "application/json"));
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var results = JsonSerializer.Deserialize<PromptShieldResult>(responseContent);
+                var clientResult = await client.ShieldPrompt(new ShieldPromptRequest
+                {
+                    UserPrompt = content,
+                    Documents = []
+                });
 
-                if (results!.UserPromptAnalysis.AttackDetected)
+                if (clientResult.Value.UserPromptAnalysis.AttackDetected)
                 {
                     return "The prompt text did not pass the safety filter. Reason: Prompt injection or jailbreak detected.";
                 }
+            }
+            catch (ClientResultException ex)
+            {
+                _logger.LogError(ex, "Azure AI Content Safety Shield Prompt failed with status code: {StatusCode}, message: {Message}",
+                    ex.Status, ex.Message);
+                return null;
             }
 
             return null;
