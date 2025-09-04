@@ -281,7 +281,12 @@
 										</div>
 									</td>
 									<td>
-										<Button link class="csm-table-edit-btn-1" @click="editAgent(getAgents)">
+										<Button 
+											link 
+											class="csm-table-edit-btn-1"
+											:class="{'csm-table-edit-btn-strong': getAgents.enabled, 'csm-table-edit-btn-faded': !getAgents.enabled}"
+											@click="editAgent(getAgents)"
+										>
 											<i class="pi pi-pencil"></i>
 										</Button>
 									</td>
@@ -351,10 +356,10 @@
 </template>
 
 <script lang="ts">
-	import { hideAllPoppers } from 'floating-vue';
 	import eventBus from '@/js/eventBus';
-	import { isAgentExpired } from '@/js/helpers';
-	import type { Session, AgentOption } from '@/js/types';
+import { isAgentExpired } from '@/js/helpers';
+import type { AgentOption, Session } from '@/js/types';
+import { hideAllPoppers } from 'floating-vue';
 	declare const process: any;
 
 	import api from '@/js/api';
@@ -1067,7 +1072,32 @@
 	}
 	.csm-table-edit-btn-1.p-button:not(.p-button-text){
 		background-color: transparent !important;
-    	color: #6c6c6c !important;
+		color: #b0b0b0 !important;
+		transition: color 0.2s, box-shadow 0.2s;
+	}
+
+	.csm-table-edit-btn-strong.p-button:not(.p-button-text) {
+		color: #2d5be3 !important;
+		font-weight: 700;
+		filter: drop-shadow(0 0 2px #2d5be3aa);
+	}
+
+	.csm-table-edit-btn-faded.p-button:not(.p-button-text) {
+		color: #b0b0b0 !important;
+		opacity: 0.5;
+	}
+
+	.csm-table-edit-btn-1.p-button:not(.p-button-text):hover,
+	.csm-table-edit-btn-strong.p-button:not(.p-button-text):hover {
+		color: #1746a2 !important;
+		opacity: 1;
+		filter: drop-shadow(0 0 4px #1746a2aa);
+	}
+
+	.csm-table-edit-btn-1.p-button:not(.p-button-text):active,
+	.csm-table-edit-btn-strong.p-button:not(.p-button-text):active {
+		color: #0d2c6c !important;
+		filter: drop-shadow(0 0 6px #0d2c6c88);
 	}
 	
 	/* Custom checkbox styling */
