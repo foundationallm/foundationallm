@@ -695,7 +695,9 @@ export default defineComponent({
             }
 
             try {
-                const res = await api.checkAgentNameAvailability(name);
+                // Check the availability of the generated agent name, not the display name
+                const generatedAgentName = this.generateAgentName(name);
+                const res = await api.checkAgentNameAvailability(generatedAgentName);
                 this.displayNameStatus = (res.status === 'Allowed' && !res.exists && !res.deleted) ? 'success' : 'error';
             } catch (e) {
                 this.displayNameStatus = 'error';
@@ -726,6 +728,52 @@ export default defineComponent({
             }
 
             return true;
+        },
+
+        async validateAgentNameAvailability(): Promise<boolean> {
+            const displayName = this.agentDisplayName || '';
+            if (!displayName.trim()) {
+                this.$toast.add({ 
+                    severity: 'error', 
+                    summary: 'Validation Error', 
+                    detail: 'Display name is required.', 
+                    life: 5000 
+                });
+                return false;
+            }
+
+            if (!this.isValidDisplayName(displayName)) {
+                this.$toast.add({ 
+                    severity: 'error', 
+                    summary: 'Validation Error', 
+                    detail: 'Display name format is invalid.', 
+                    life: 5000 
+                });
+                return false;
+            }
+
+            const agentName = this.generateAgentName(displayName);
+            try {
+                const nameCheck = await api.checkAgentNameAvailability(agentName);
+                if (nameCheck.status !== 'Allowed' || nameCheck.exists || nameCheck.deleted) {
+                    this.$toast.add({ 
+                        severity: 'error', 
+                        summary: 'Name Not Available', 
+                        detail: `Agent name "${agentName}" is not available. Please choose a different display name.`, 
+                        life: 5000 
+                    });
+                    return false;
+                }
+                return true;
+            } catch (err: any) {
+                this.$toast.add({ 
+                    severity: 'error', 
+                    summary: 'Error', 
+                    detail: 'Failed to check agent name availability. Please try again.', 
+                    life: 5000 
+                });
+                return false;
+            }
         },
 
         async fetchAIModels() {
@@ -848,6 +896,12 @@ export default defineComponent({
             const welcomeMessage = this.welcomeMessage || '';
             // AGENT_NAME: Create a proper slug from display name
             const agentName = this.generateAgentName(displayName);
+            
+            // Check if the generated agent name is available before creating
+            if (!(await this.validateAgentNameAvailability())) {
+                return;
+            }
+            
             // Format date to yyyy-MM-ddT00:00:00+00:00
             let formattedDate = '';
             if (this.agentExpirationDate) {
@@ -893,6 +947,17 @@ export default defineComponent({
             if (this.agentExpirationDate) {
                 const d = new Date(this.agentExpirationDate);
                 formattedDate = d.toISOString().split('T')[0] + 'T00:00:00+00:00';
+            }
+
+            // Check if the new display name would generate a different agent name
+            const newAgentName = this.generateAgentName(displayName);
+            const currentAgentName = this.createdAgent.name;
+            
+            // If the agent name would change, check if the new name is available
+            if (newAgentName !== currentAgentName) {
+                if (!(await this.validateAgentNameAvailability())) {
+                    return;
+                }
             }
 
             // Set values on the agent model
