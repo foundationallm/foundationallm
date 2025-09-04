@@ -132,6 +132,9 @@
 									? 'none'
 									: 'auto',
 							}"
+							@click="guardEvent($event, data.actions.includes('FoundationaLLM.Configuration/apiEndpointConfigurations/write'))"
+							@keydown.enter="guardEvent($event, data.actions.includes('FoundationaLLM.Configuration/apiEndpointConfigurations/write'))"
+							@keydown.space="guardEvent($event, data.actions.includes('FoundationaLLM.Configuration/apiEndpointConfigurations/write'))"
 							class="table__button"
 						>
 							<Button
@@ -170,7 +173,7 @@
 									'FoundationaLLM.Configuration/apiEndpointConfigurations/delete',
 								)
 							"
-							@click="data.actions.includes('FoundationaLLM.Configuration/apiEndpointConfigurations/delete') && (itemToDelete = data.resource)"
+							@click="guardEventWith($event, data.actions.includes('FoundationaLLM.Configuration/apiEndpointConfigurations/delete'), () => (itemToDelete = data.resource))"
 						>
 							<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
 						</Button>
@@ -192,6 +195,7 @@
 
 <script lang="ts">
 import api from '@/js/api';
+import { guardAction } from '@/js/helpers';
 import type { APIEndpointConfiguration } from '@/js/types';
 
 export default {
@@ -219,6 +223,13 @@ export default {
 	},
 
 	methods: {
+		guardEvent(e: Event, allowed: boolean): void {
+			guardAction(e, allowed);
+		},
+
+		guardEventWith(e: Event, allowed: boolean, fn: () => void): void {
+			guardAction(e, allowed, fn);
+		},
 		async getEndpoints() {
 			this.loading = true;
 			try {

@@ -124,6 +124,9 @@
 									? 'none'
 									: 'auto',
 							}"
+							@click="guardEvent($event, data.actions.includes('FoundationaLLM.Prompt/prompts/write'))"
+							@keydown.enter="guardEvent($event, data.actions.includes('FoundationaLLM.Prompt/prompts/write'))"
+							@keydown.space="guardEvent($event, data.actions.includes('FoundationaLLM.Prompt/prompts/write'))"
 						>
 							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
 								<Button
@@ -153,6 +156,7 @@
 
 <script lang="ts">
 import api from '@/js/api';
+import { guardAction } from '@/js/helpers';
 import type { Prompt, ResourceProviderGetResult } from '@/js/types';
 
 export default {
@@ -184,6 +188,9 @@ export default {
 	},
 
 	methods: {
+		guardEvent(e: Event, allowed: boolean): void {
+			guardAction(e, allowed);
+		},
 		async getPrompts() {
 			this.loading = true;
 			try {

@@ -157,6 +157,9 @@
 									? 'none'
 									: 'auto',
 							}"
+							@click="guardEvent($event, data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write'))"
+							@keydown.enter="guardEvent($event, data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write'))"
+							@keydown.space="guardEvent($event, data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write'))"
 							class="table__button"
 						>
 							<Button
@@ -190,7 +193,7 @@
 								!data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write')
 							"
 							:aria-label="`Run ${data.resource.name}`"
-							@click="data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write') && openTriggerPipeline(data.resource)"
+							@click="guardEventWith($event, data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write'), () => openTriggerPipeline(data.resource))"
 						>
 							<i class="pi pi-play-circle" style="font-size: 1.2rem" aria-hidden="true"></i>
 						</Button>
@@ -331,6 +334,7 @@
 
 <script lang="ts">
 import api from '@/js/api';
+import { guardAction } from '@/js/helpers';
 import type { ResourceProviderGetResult } from '@/js/types';
 
 export default {
@@ -365,6 +369,13 @@ export default {
 	},
 
 	methods: {
+		guardEvent(e: Event, allowed: boolean): void {
+			guardAction(e, allowed);
+		},
+
+		guardEventWith(e: Event, allowed: boolean, fn: () => void): void {
+			guardAction(e, allowed, fn);
+		},
 		async getPipelines() {
 			this.loading = true;
 			try {

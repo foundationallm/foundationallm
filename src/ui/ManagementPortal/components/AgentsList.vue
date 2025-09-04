@@ -122,6 +122,9 @@
 								? 'none'
 								: 'auto',
 						}"
+						@click="guardEvent($event, data.actions.includes('FoundationaLLM.Agent/agents/write'))"
+						@keydown.enter="guardEvent($event, data.actions.includes('FoundationaLLM.Agent/agents/write'))"
+						@keydown.space="guardEvent($event, data.actions.includes('FoundationaLLM.Agent/agents/write'))"
 					>
 						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
 							<Button
@@ -159,7 +162,7 @@
 							link
 							:disabled="!data.actions.includes('FoundationaLLM.Agent/agents/delete')"
 							:aria-label="`Delete ${data.resource.name}`"
-							@click="data.actions.includes('FoundationaLLM.Agent/agents/delete') && (agentToDelete = data.resource)"
+							@click="guardEventWith($event, data.actions.includes('FoundationaLLM.Agent/agents/delete'), () => (agentToDelete = data.resource))"
 						>
 							<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
 						</Button>
@@ -190,7 +193,7 @@
 							link
 							:disabled="!data.roles.includes('User Access Administrator')"
 							:aria-label="`Set ${data.resource.name} as default`"
-							@click="data.roles.includes('User Access Administrator') && (agentToSetAsDefault = data.resource)"
+							@click="guardEventWith($event, data.roles.includes('User Access Administrator'), () => (agentToSetAsDefault = data.resource))"
 						>
 							<i class="pi pi-star" style="font-size: 1.2rem" aria-hidden="true"></i>
 						</Button>
@@ -241,6 +244,7 @@
 
 <script lang="ts">
 import api from '@/js/api';
+import { guardAction } from '@/js/helpers';
 import type { Agent, ResourceProviderGetResult, ResourceProviderActionResult } from '@/js/types';
 
 export default {
@@ -285,6 +289,13 @@ export default {
 	},
 
 	methods: {
+		guardEvent(e: Event, allowed: boolean): void {
+			guardAction(e, allowed);
+		},
+
+		guardEventWith(e: Event, allowed: boolean, fn: () => void): void {
+			guardAction(e, allowed, fn);
+		},
 		async handleDeleteAgent() {
 			try {
 				await api.deleteAgent(this.agentToDelete!.name);

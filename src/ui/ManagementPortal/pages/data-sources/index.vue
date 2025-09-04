@@ -110,6 +110,9 @@
 									? 'none'
 									: 'auto',
 							}"
+							@click="guardEvent($event, data.actions.includes('FoundationaLLM.DataSource/dataSources/write'))"
+							@keydown.enter="guardEvent($event, data.actions.includes('FoundationaLLM.DataSource/dataSources/write'))"
+							@keydown.space="guardEvent($event, data.actions.includes('FoundationaLLM.DataSource/dataSources/write'))"
 						>
 							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
 								<Button
@@ -145,7 +148,7 @@
 								link
 								:aria-label="`Delete ${data.resource.name}`"
 								:disabled="!data.actions.includes('FoundationaLLM.DataSource/dataSources/delete')"
-								@click="data.actions.includes('FoundationaLLM.DataSource/dataSources/delete') && (dataSourceToDelete = data.resource)"
+								@click="guardEventWith($event, data.actions.includes('FoundationaLLM.DataSource/dataSources/delete'), () => (dataSourceToDelete = data.resource))"
 							>
 								<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
 							</Button>
@@ -177,6 +180,7 @@
 
 <script lang="ts">
 import api from '@/js/api';
+import { guardAction } from '@/js/helpers';
 import type { DataSource, ResourceProviderGetResult } from '@/js/types';
 
 export default {
@@ -204,6 +208,13 @@ export default {
 	},
 
 	methods: {
+		guardEvent(e: Event, allowed: boolean): void {
+			guardAction(e, allowed);
+		},
+
+		guardEventWith(e: Event, allowed: boolean, fn: () => void): void {
+			guardAction(e, allowed, fn);
+		},
 		async getAgentDataSources() {
 			this.loading = true;
 			try {
