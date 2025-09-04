@@ -1552,6 +1552,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Clients.AzureAIContentSafetyClient",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.yml\" sourcestartlinenumber=\"1\">Provides methods for interacting with Azure AI Content Safety services.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Clients.ContextServiceClient.yml",
       "output": {
         ".html": {
@@ -1577,6 +1591,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Clients.GatewayServiceClient",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Clients.GatewayServiceClient.yml\" sourcestartlinenumber=\"1\">Provides methods to call the Gateway API service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions.yml\" sourcestartlinenumber=\"1\">Exposes client options for FoundationaLLM API endpoints.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4366,6 +4394,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.yml\" sourcestartlinenumber=\"1\">Represents a client for interacting with Azure AI Content Safety services.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IAzureAISearchService.yml",
       "output": {
         ".html": {
@@ -6392,6 +6434,118 @@
       "Uid": null,
       "IsMRef": true,
       "Title": null,
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to analyze text with Azure AI Content Safety.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult.yml\" sourcestartlinenumber=\"1\">Text analysis results.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ShieldPromptDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ShieldPromptDetails.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ContentSafety.ShieldPromptDetails",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ShieldPromptDetails.yml\" sourcestartlinenumber=\"1\">Contains analysis results for the user prompt.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to shield a prompt with Azure AI Content Safety.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult.yml\" sourcestartlinenumber=\"1\">Prompt shield result.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.TextCategory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.TextCategory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ContentSafety.TextCategory",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ContentSafety.TextCategory.yml\" sourcestartlinenumber=\"1\">Text category constants.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.TextCategoryResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.TextCategoryResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ContentSafety.TextCategoryResult",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ContentSafety.TextCategoryResult.yml\" sourcestartlinenumber=\"1\">Text category results.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ContentSafety",
       "Summary": null
     },
     {
@@ -14737,76 +14891,6 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.AnalyzeTextFilterResult",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.AnalyzeTextFilterResult.yml\" sourcestartlinenumber=\"1\">Content filter text analysis restult.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.AnalyzeTextResult.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.AnalyzeTextResult.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.AnalyzeTextResult",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.AnalyzeTextResult.yml\" sourcestartlinenumber=\"1\">Text analysis results.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.PromptShieldDetails.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.PromptShieldDetails.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.PromptShieldDetails",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.PromptShieldDetails.yml\" sourcestartlinenumber=\"1\">Contains analysis results for the user prompt.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.PromptShieldResult.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.PromptShieldResult.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.PromptShieldResult",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.PromptShieldResult.yml\" sourcestartlinenumber=\"1\">Prompt shield result.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.TextCategory.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.TextCategory.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.TextCategory",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.TextCategory.yml\" sourcestartlinenumber=\"1\">Text category constants.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.TextCategoryResult.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.TextCategoryResult.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.TextCategoryResult",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.TextCategoryResult.yml\" sourcestartlinenumber=\"1\">Text category results.</p>\n"
     },
     {
       "type": "ManagedReference",
