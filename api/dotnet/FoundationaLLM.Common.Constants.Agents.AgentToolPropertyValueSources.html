@@ -154,17 +154,50 @@ Class AgentToolPropertyValueSources  <a class="header-action link-secondary" tit
 
 
 
-  <h3 id="FoundationaLLM_Common_Constants_Agents_AgentToolPropertyValueSources_CompletionRequestMetadata" data-uid="FoundationaLLM.Common.Constants.Agents.AgentToolPropertyValueSources.CompletionRequestMetadata">
-  CompletionRequestMetadata
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Constants/Agents/AgentToolPropertyValueSources.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Constants_Agents_AgentToolPropertyValueSources_CompletionRequestMetadata_Optional" data-uid="FoundationaLLM.Common.Constants.Agents.AgentToolPropertyValueSources.CompletionRequestMetadata_Optional">
+  CompletionRequestMetadata_Optional
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Constants/Agents/AgentToolPropertyValueSources.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>The value should be sourced from the completion request's metadata property.</p>
+  <div class="markdown level1 summary"><p>The value may be sourced from the completion request's metadata property.
+If not present, the metadata property will be ignored.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string CompletionRequestMetadata = &quot;__COMPLETION_REQUEST_METADATA__&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">public const string CompletionRequestMetadata_Optional = &quot;__COMPLETION_REQUEST_METADATA__&quot;</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="FoundationaLLM_Common_Constants_Agents_AgentToolPropertyValueSources_CompletionRequestMetadata_Required" data-uid="FoundationaLLM.Common.Constants.Agents.AgentToolPropertyValueSources.CompletionRequestMetadata_Required">
+  CompletionRequestMetadata_Required
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Constants/Agents/AgentToolPropertyValueSources.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The value must be sourced from the completion request's metadata property.
+If not present an error will be thrown.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const string CompletionRequestMetadata_Required = &quot;__COMPLETION_REQUEST_METADATA_!__&quot;</code></pre>
   </div>
 
 
