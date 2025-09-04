@@ -6,8 +6,15 @@
     public static class AgentToolPropertyValueSources
     {
         /// <summary>
-        /// The value should be sourced from the completion request's metadata property.
+        /// The value must be sourced from the completion request's metadata property.
+        /// If not present an error will be thrown.
         /// </summary>
-        public const string CompletionRequestMetadata = "__COMPLETION_REQUEST_METADATA__";
+        public const string CompletionRequestMetadata_Required = "__COMPLETION_REQUEST_METADATA_!__";
+
+        /// <summary>
+        /// The value may be sourced from the completion request's metadata property.
+        /// If not present, the metadata property will be ignored.
+        /// </summary>
+        public const string CompletionRequestMetadata_Optional = "__COMPLETION_REQUEST_METADATA__";
     }
 }
