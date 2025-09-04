@@ -896,7 +896,7 @@ export default defineComponent({
                     this.$toast.add({ 
                         severity: 'error', 
                         summary: 'Name Not Available', 
-                        detail: `Agent name "${agentName}" is not available. Please choose a different display name.`, 
+                        detail: `Please choose a different name.`, 
                         life: 5000 
                     });
                     return false;
