@@ -253,7 +253,7 @@
 						</nuxt-link>
 					</div>
 					
-					<div class="csm-table-container-1">
+					<div class="csm-table-container-1 mb-4">
 						<table class="csm-table-1">
 							<thead>
 								<tr>
@@ -304,6 +304,12 @@
 							{{ agentError2 }}
 						</div>
 					</div>
+
+					<nuxt-link 
+						to="/manage-agents"
+						class="p-component csm-only-text-btn-1">
+						Manage Agents <i class="pi pi-external-link ml-1"></i>
+					</nuxt-link>
 
 				</TabPanel>
 
@@ -1102,5 +1108,11 @@ import { hideAllPoppers } from 'floating-vue';
 		color: white;
 		font-size: 12px;
 		font-weight: bold;
+	}
+	.csm-only-text-btn-1{
+		text-decoration: none;
+		padding: 0px;
+		color: #5472d4;
+		font-weight: 500;
 	}
 </style>
