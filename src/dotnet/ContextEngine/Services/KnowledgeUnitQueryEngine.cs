@@ -523,7 +523,7 @@ namespace FoundationaLLM.Context.Services
             {
                 var valuesList = string.Join(',',
                     jsonValue.EnumerateArray()
-                        .Select(v => v.GetString()!.Replace("'", "''")));
+                        .Select(v => GetJsonValueAsString(v)));
                 if (string.IsNullOrWhiteSpace(valuesList))
                     throw new InvalidOperationException("The metadata filter array cannot be empty.");
                 return $"search.in({metadataPropertyName}/{propertyName},'{valuesList}')";
@@ -540,5 +540,16 @@ namespace FoundationaLLM.Context.Services
 
             return $"{metadataPropertyName}/{propertyName} eq {filter}";
         }
+
+        private string GetJsonValueAsString(
+            JsonElement jsonValue) =>
+            jsonValue.ValueKind switch
+            {
+                JsonValueKind.String => jsonValue.GetString()!.Replace("'", "''"),
+                JsonValueKind.Number => jsonValue.GetRawText(),
+                JsonValueKind.True => "true",
+                JsonValueKind.False => "false",
+                _ => throw new InvalidOperationException($"Unsupported JSON value kind: {jsonValue.ValueKind}")
+            };
     }
 }
