@@ -131,6 +131,7 @@ import { defineComponent, ref, computed, onMounted } from 'vue';
 import NavBarSettings from '~/components/NavBarSettings.vue';
 import type { ResourceProviderGetResult, AgentBase } from '@/js/types';
 import api from '@/js/api';
+import '@/styles/agents.scss';
 
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
@@ -221,56 +222,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.csm-backto-chats-1 {
-    margin-bottom: 30px;
-
-    a {
-        color: var(--primary-button-bg);
-        text-decoration: none;
-    }
-}
-
-.csm-dataTable-1 {
-    border: 1px solid #d1d5db;
-    
-    table {
-        thead {
-            tr {
-                th {
-                    background-color: #eeeeee;
-                    padding: 15px 10px;
-                    border-right: 2px solid #ffffff;
-                    font-weight: 500;
-                    border-bottom: 0px;
-                    
-                    &:last-child {
-                        border-right: 0px;
-                    }
-                    
-                    .p-column-title {
-                        width: 100%;
-                    }
-                }
-            }
-        }
-        
-        tbody {
-            tr {
-                td {
-                    padding: 15px 10px;
-                    border-bottom: 2px solid #dedede;
-                }
-
-                &:last-child {
-                    td {
-                        border-bottom: 0px;
-                    }
-                }
-            }
-        }
-    }
-}
-
 // Loading, Error, and Empty States
 .loading-container,
 .error-message,
@@ -302,10 +253,5 @@ export default defineComponent({
         color: #e74c3c;
         font-weight: 500;
     }
-}
-
-.create-agent-button {
-    text-decoration: none;
-    font-weight: 600;
 }
 </style>

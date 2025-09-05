@@ -609,6 +609,7 @@ import type { AgentCreationFromTemplateRequest, ResourceBase } from '@/js/types/
 import mime from 'mime';
 import { defineComponent } from 'vue';
 import NavBarSettings from '~/components/NavBarSettings.vue';
+import '@/styles/agents.scss';
 
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
@@ -1505,15 +1506,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.csm-backto-chats-1 {
-    margin-bottom: 30px;
-
-    a {
-        color: var(--primary-button-bg);
-        text-decoration: none;
-    }
-}
-
 .csm-input-switch-1 {
     &.p-inputswitch {
         .p-inputswitch-slider {
@@ -1564,44 +1556,6 @@ export default defineComponent({
 
 .mnt-b-bottom {
     border-bottom: 1px solid #94a3b8;
-}
-.csm-dataTable-1{
-    border: 1px solid #d1d5db;
-    table {
-        thead {
-            tr {
-                th {
-                    background-color: #eeeeee;
-                    padding: 15px 10px;
-                    border-right: 2px solid #ffffff;
-                    font-weight: 500;
-                    border-bottom: 0px;
-                    
-                    &:last-child {
-                        border-right: 0px;
-                    }
-                    
-                    .p-column-title{
-                        width: 100%;
-                    }
-                }
-            }
-        }
-        tbody {
-            tr {
-                td {
-                    padding: 15px 10px;
-                    border-bottom: 2px solid #dedede;
-                }
-
-                &:last-child {
-                    td{
-                        border-bottom: 0px;
-                    }
-                }
-            }
-        }
-    }
 }
 .csm-roleDialog-modal-1{
     .p-dialog-content{
