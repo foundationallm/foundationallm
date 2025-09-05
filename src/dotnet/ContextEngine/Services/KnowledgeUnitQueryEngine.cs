@@ -521,12 +521,26 @@ namespace FoundationaLLM.Context.Services
 
             if (jsonValue.ValueKind == JsonValueKind.Array)
             {
-                var valuesList = string.Join(',',
-                    jsonValue.EnumerateArray()
-                        .Select(v => GetJsonValueAsString(v)));
-                if (string.IsNullOrWhiteSpace(valuesList))
-                    throw new InvalidOperationException("The metadata filter array cannot be empty.");
-                return $"search.in({metadataPropertyName}/{propertyName},'{valuesList}')";
+                var arrayItems = jsonValue.EnumerateArray();
+                if (!arrayItems.Any())
+                    throw new InvalidOperationException("Empty array values are not supported in metadata filters.");
+
+                var firstItemKind = arrayItems.First().ValueKind;
+                switch (firstItemKind)
+                {
+                    case JsonValueKind.String:
+                        var valuesList = string.Join(',',
+                            jsonValue.EnumerateArray()
+                                .Select(v => v.GetString()!.Replace("'", "''")));
+                        return $"search.in({metadataPropertyName}/{propertyName},'{valuesList}', ',')";
+                    case JsonValueKind.Number:
+                        var valuesFilter = string.Join(" or ",
+                            jsonValue.EnumerateArray()
+                                .Select(v => $"{metadataPropertyName}/{propertyName} eq {v.GetRawText()}"));
+                        return $"({valuesFilter})";
+                    default:
+                        throw new InvalidOperationException($"The JSON value kind {firstItemKind} is not supported in metadata filter arrays.");
+                }                
             }
 
             var filter = jsonValue.ValueKind switch
@@ -540,16 +554,5 @@ namespace FoundationaLLM.Context.Services
 
             return $"{metadataPropertyName}/{propertyName} eq {filter}";
         }
-
-        private string GetJsonValueAsString(
-            JsonElement jsonValue) =>
-            jsonValue.ValueKind switch
-            {
-                JsonValueKind.String => jsonValue.GetString()!.Replace("'", "''"),
-                JsonValueKind.Number => jsonValue.GetRawText(),
-                JsonValueKind.True => "true",
-                JsonValueKind.False => "false",
-                _ => throw new InvalidOperationException($"Unsupported JSON value kind: {jsonValue.ValueKind}")
-            };
     }
 }
