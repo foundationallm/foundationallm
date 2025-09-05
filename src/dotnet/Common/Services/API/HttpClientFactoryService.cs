@@ -1,4 +1,6 @@
-﻿using FoundationaLLM.Common.Authentication;
+﻿using Azure.Core;
+using Azure.Core.Pipeline;
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -64,8 +66,7 @@ namespace FoundationaLLM.Common.Services.API
         {
             var endpointConfiguration = await GetEndpoint(instanceId,clientName, userIdentity);
 
-            if (clientBuilderParameters == null)
-                clientBuilderParameters = [];
+            clientBuilderParameters ??= [];
 
             clientBuilderParameters[HttpClientFactoryServiceKeyNames.Endpoint] =
                 GetUrlExceptionForUserIdentity(endpointConfiguration, userIdentity)?.Url                
@@ -75,12 +76,24 @@ namespace FoundationaLLM.Common.Services.API
             if (endpointConfiguration.AuthenticationType == AuthenticationTypes.APIKey)
             {
                 if (!endpointConfiguration.AuthenticationParameters.TryGetValue(
+                    AuthenticationParametersKeys.APIKeyHeaderName, out var apiKeyHeaderNameObj))
+                    clientBuilderParameters[HttpClientFactoryServiceKeyNames.APIKeyHeaderName] =
+                        apiKeyHeaderNameObj!.ToString()!;
+
+                if (!endpointConfiguration.AuthenticationParameters.TryGetValue(
                         AuthenticationParametersKeys.APIKeyConfigurationName, out var apiKeyConfigurationNameObj))
                     throw new Exception($"The {AuthenticationParametersKeys.APIKeyConfigurationName} key is missing from the endpoint's authentication parameters dictionary.");
 
                 var apiKey = _configuration.GetValue<string>(apiKeyConfigurationNameObj.ToString()!);
                 clientBuilderParameters[HttpClientFactoryServiceKeyNames.APIKey] = apiKey!;
+
+                if (endpointConfiguration.AuthenticationParameters.TryGetValue(
+                    AuthenticationParametersKeys.APIKeyPrefix, out var apiKeyPrefixObj))
+                    clientBuilderParameters[HttpClientFactoryServiceKeyNames.APIKeyHeaderName] =
+                        apiKeyPrefixObj.ToString()!;
             }
+            if (!string.IsNullOrWhiteSpace(endpointConfiguration.APIVersion))
+                clientBuilderParameters[HttpClientFactoryServiceKeyNames.APIVersion] = endpointConfiguration.APIVersion;
 
             var client = clientBuilder(clientBuilderParameters);
             return client;

@@ -497,7 +497,9 @@ export const useAppStore = defineStore('app', {
 					metadataObj
 				);
 
-				if (message.status === 'Completed') {
+				if (message.status === 'Completed'
+					|| message.status === 'Failed'
+				) {
 					// The endpoint likely returned the final message, so we can update the last message in the list.
 					const completedMessage = message.result as Message;
 					// Replace the last message with the completed message.
@@ -520,9 +522,6 @@ export const useAppStore = defineStore('app', {
 
 				// If the session has changed before above completes we need to prevent polling
 				if (initialSession !== this.currentSession?.sessionId) return waitForPolling;
-
-				// If the operation failed to start prevent polling
-				if (message.status === 'Failed') return waitForPolling;
 
 				waitForPolling = true;
 

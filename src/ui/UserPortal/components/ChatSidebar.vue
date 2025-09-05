@@ -253,7 +253,7 @@
 						</nuxt-link>
 					</div>
 					
-					<div class="csm-table-container-1">
+					<div class="csm-table-container-1 mb-4">
 						<table class="csm-table-1">
 							<thead>
 								<tr>
@@ -310,6 +310,12 @@
 						</div>
 					</div>
 
+					<nuxt-link 
+						to="/manage-agents"
+						class="p-component csm-only-text-btn-1">
+						Manage Agents <i class="pi pi-external-link ml-1"></i>
+					</nuxt-link>
+
 				</TabPanel>
 
 				<TabPanel header="Accessibility">
@@ -359,7 +365,6 @@
 	import eventBus from '@/js/eventBus';
 import { isAgentExpired } from '@/js/helpers';
 import type { AgentOption, Session } from '@/js/types';
-import { hideAllPoppers } from 'floating-vue';
 	declare const process: any;
 
 	import api from '@/js/api';
@@ -572,8 +577,9 @@ import { hideAllPoppers } from 'floating-vue';
 				this.loadingAgents2 = true;
 				this.agentError2 = '';
 				
+				 
 				try {
-					const response = await api.getAgents();
+					const response = await api.getAllowedAgents();
 
 					const agentsArray = Array.isArray(response) ? response : [];
 					
@@ -591,7 +597,8 @@ import { hideAllPoppers } from 'floating-vue';
 							value: agent.object_id,
 							type: agent.type,
 							description: agent.description,
-							enabled: isAgentSelected
+							enabled: isAgentSelected,
+							isReadonly: isAgentReadonly(ResourceProviderGetResult.roles || []),
 						};
 					});
 				} catch (error) {
@@ -1130,5 +1137,11 @@ import { hideAllPoppers } from 'floating-vue';
 		color: white;
 		font-size: 12px;
 		font-weight: bold;
+	}
+	.csm-only-text-btn-1{
+		text-decoration: none;
+		padding: 0px;
+		color: #5472d4;
+		font-weight: 500;
 	}
 </style>

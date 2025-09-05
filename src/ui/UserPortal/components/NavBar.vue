@@ -244,7 +244,7 @@
 					return (!isExpiredOrDisabled && !isNotInUserProfile) || isCurrentAgent(agent);
 				});
 
-				this.agentOptions = filteredAgents.map((agent) => ({
+				this.agentOptions = filteredAgents.filter(agent => enabledAgentIds.includes(agent?.resource?.object_id)).map((agent) => ({
 					label: agent.resource.display_name ? agent.resource.display_name : agent.resource.name,
 					type: agent.resource.type,
 					object_id: agent.resource.object_id,
@@ -259,52 +259,25 @@
 
 				const publicAgentOptions = this.agentOptions.filter((agent) => !agent.my_agent);
 				const privateAgentOptions = this.agentOptions.filter((agent) => agent.my_agent);
-				const noAgentOptions = [
-					{
-						label: 'None',
-						value: null,
-						disabled: true,
-						type: '',
-						object_id: '',
-						description: '',
-					},
-				];
+
 				this.virtualUser = await this.$appStore.getVirtualUser();
 
 				this.agentOptionsGroup = [];
+				
+			
+				if(privateAgentOptions.length > 0)
 				this.agentOptionsGroup.push({
-					label: '',
-					items: [
-						{
-							label: '--select--',
-							value: null,
-							type: '',
-							object_id: '',
-							description: '',
-						},
-					],
-				});
-
-				if (this.agentOptions.length === 0) {
-					// Append noAgentOptions to the last entry in the agentOptionsGroup
-					this.agentOptionsGroup[this.agentOptionsGroup.length - 1].items.push(...noAgentOptions);
-					return;
-				}
-
-				if (privateAgentOptions.length > 0) {
-					this.agentOptionsGroup.push({
 						label: 'My Agents',
 						items: privateAgentOptions,
 					});
+					
+					
+					if(publicAgentOptions.length > 0)
 					this.agentOptionsGroup.push({
 						label: 'Other Agents',
-						items: publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions,
+						items: publicAgentOptions,
 					});
-				} else {
-					this.agentOptionsGroup[this.agentOptionsGroup.length - 1].items.push(
-						...(publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions),
-					);
-				}
+				
 
 				// Update agent selection after options are set
 				this.updateAgentSelection();
