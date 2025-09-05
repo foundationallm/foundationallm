@@ -614,6 +614,9 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import Dropdown from 'primevue/dropdown';
 
+// Constants for allowed roles
+const ALLOWED_ROLE_NAMES = ['Reader', 'Contributor', 'Owner'];
+
 export default defineComponent({
     name: 'CreateAgent',
 
@@ -1375,7 +1378,12 @@ export default defineComponent({
             this.rolesLoading = true;
             try {
                 const roles = await api.getRoleDefinitions();
-                this.availableRoles = Array.isArray(roles) ? roles : [];
+                const allRoles = Array.isArray(roles) ? roles : [];
+                
+                // Filter roles to only include the three allowed roles: Reader, Contributor, Owner
+                this.availableRoles = allRoles.filter(role => 
+                    role.display_name && ALLOWED_ROLE_NAMES.includes(role.display_name)
+                );
             } catch (e) {
                 this.availableRoles = [];
             } finally {
