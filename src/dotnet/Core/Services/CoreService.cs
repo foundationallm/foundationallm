@@ -239,9 +239,9 @@ public partial class CoreService(
             await _cosmosDBService.UpsertLongRunningOperationContextAsync(operationContext);
 
             // Start the completion operation.
-            var result = await GetDownstreamAPIService(agentOption).StartCompletionOperation(instanceId, completionRequest);
+            var operation = await GetDownstreamAPIService(agentOption).StartCompletionOperation(instanceId, completionRequest);
 
-            switch (result.Status)
+            switch (operation.Status)
             {
                 case OperationStatus.Failed:
                     {
@@ -263,7 +263,7 @@ public partial class CoreService(
                                 PropertyValues = new Dictionary<string, object?>
                                 {
                                     { "/status", OperationStatus.Failed },
-                                    { "/text", result.StatusMessage }
+                                    { "/text", operation.StatusMessage }
                                 }
                             }
                         };
@@ -273,20 +273,29 @@ public partial class CoreService(
                             patchOperations
                         );
 
+                        operation.Result = new Message
+                        {
+                            OperationId = operation.OperationId,
+                            Status = operation.Status,
+                            Text = operation.StatusMessage!,
+                            TimeStamp = DateTime.UtcNow,
+                            SenderDisplayName = operationContext.AgentName
+                        };
+
                         break;
                     }
                 case OperationStatus.Completed:
                     {
                         // If the completion operation completes immediately, we need to process the completion response and update the user and agent messages accordingly.
 
-                        var processedOperation = await ProcessLongRunningOperation(operationContext, result);
+                        var processedOperation = await ProcessLongRunningOperation(operationContext, operation);
                         return processedOperation;
                     }
                 default:
                     break;
             }
 
-            return result;
+            return operation;
         }
         catch (ResourceProviderException rpex)
         {
