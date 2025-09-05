@@ -75,7 +75,7 @@ namespace FoundationaLLM.Common.Services.API
             clientBuilderParameters[HttpClientFactoryServiceKeyNames.AuthenticationType] = endpointConfiguration.AuthenticationType;
             if (endpointConfiguration.AuthenticationType == AuthenticationTypes.APIKey)
             {
-                if (!endpointConfiguration.AuthenticationParameters.TryGetValue(
+                if (endpointConfiguration.AuthenticationParameters.TryGetValue(
                     AuthenticationParametersKeys.APIKeyHeaderName, out var apiKeyHeaderNameObj))
                     clientBuilderParameters[HttpClientFactoryServiceKeyNames.APIKeyHeaderName] =
                         apiKeyHeaderNameObj!.ToString()!;
