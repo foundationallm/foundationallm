@@ -284,6 +284,7 @@
 										<Button 
 											link 
 											class="csm-table-edit-btn-1"
+											:disabled="getAgents.isReadonly"
 											:class="{'csm-table-edit-btn-strong': getAgents.enabled, 'csm-table-edit-btn-faded': !getAgents.enabled}"
 											@click="editAgent(getAgents)"
 										>
@@ -363,7 +364,7 @@
 
 <script lang="ts">
 	import eventBus from '@/js/eventBus';
-import { isAgentExpired } from '@/js/helpers';
+import { isAgentExpired, isAgentReadonly } from '@/js/helpers';
 import type { AgentOption, Session } from '@/js/types';
 	declare const process: any;
 
