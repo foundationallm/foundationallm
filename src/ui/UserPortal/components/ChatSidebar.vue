@@ -245,12 +245,24 @@
 		>
 			<TabView>
 				<TabPanel header="Agents">
-					<div class="mb-5">
-						<nuxt-link 
-							to="/create-agent"
-							class="p-button p-component create-agent-button">
-							New Agent <i class="pi pi-plus ml-3"></i>
-						</nuxt-link>
+					<div class="flex flex-wrap items-center -mx-4 mb-5">
+						<div class="w-full max-w-[50%] px-4 mb-5 text-center md:text-left">
+							<nuxt-link 
+								to="/create-agent"
+								class="p-button p-component create-agent-button">
+								New Agent <i class="pi pi-plus ml-3"></i>
+							</nuxt-link>
+						</div>
+
+						<div class="w-full max-w-[50%] px-4 mb-5 text-center md:text-left">
+							<!-- Search input for filtering agents -->
+							<InputText
+								v-model="agentSearchTerm"
+								placeholder="Search agents by name..."
+								class="w-full"
+								aria-label="Search agents by name"
+							/>
+						</div>
 					</div>
 					
 					<div class="csm-table-container-1 mb-4">
@@ -263,7 +275,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="getAgents in agentOptions2" :key="getAgents.object_id">
+								<tr v-for="getAgents in filteredAgents" :key="getAgents.object_id">
 									<td>{{ getAgents.display_name || getAgents.name }}</td>
 									<td>
 										<div 
@@ -295,8 +307,8 @@
 						</div>
 						
 						<!-- Empty Message -->
-						<div v-if="agentOptions2.length === 0 && !loadingAgents2">
-							{{ emptyAgentsMessage2 || 'No agents available.' }}
+						<div v-if="filteredAgents.length === 0 && !loadingAgents2">
+							{{ agentSearchTerm.trim() ? 'No agents found matching your search.' : (emptyAgentsMessage2 || 'No agents available.') }}
 						</div>
 						
 						<!-- Error Message -->
@@ -388,6 +400,7 @@ import { hideAllPoppers } from 'floating-vue';
 				agentError2: '',
 				emptyAgentsMessage2: 'No agents available.',
 				userProfile: null as any,
+				agentSearchTerm: '',
 			};
 		},
 
@@ -398,6 +411,18 @@ import { hideAllPoppers } from 'floating-vue';
 
 			currentSession(): Session | null {
 				return (this.$appStore as any).currentSession;
+			},
+
+			filteredAgents(): AgentOption[] {
+				if (!this.agentSearchTerm.trim()) {
+					return this.agentOptions2;
+				}
+				
+				const searchTerm = this.agentSearchTerm.toLowerCase().trim();
+				return this.agentOptions2.filter((agent: AgentOption) => {
+					const name = (agent.display_name || agent.name || '').toLowerCase();
+					return name.includes(searchTerm);
+				});
 			},
 		},
 
