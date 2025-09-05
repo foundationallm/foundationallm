@@ -76,11 +76,9 @@ namespace FoundationaLLM.Common.Services.API
             if (endpointConfiguration.AuthenticationType == AuthenticationTypes.APIKey)
             {
                 if (!endpointConfiguration.AuthenticationParameters.TryGetValue(
-                        AuthenticationParametersKeys.APIKeyHeaderName, out var apiKeyHeaderNameObj))
-                    throw new Exception($"The {AuthenticationParametersKeys.APIKeyHeaderName} key is missing from the enpoint's authentication parameters dictionary.");
-
-                clientBuilderParameters[HttpClientFactoryServiceKeyNames.APIKeyHeaderName] =
-                    apiKeyHeaderNameObj.ToString()!;
+                    AuthenticationParametersKeys.APIKeyHeaderName, out var apiKeyHeaderNameObj))
+                    clientBuilderParameters[HttpClientFactoryServiceKeyNames.APIKeyHeaderName] =
+                        apiKeyHeaderNameObj!.ToString()!;
 
                 if (!endpointConfiguration.AuthenticationParameters.TryGetValue(
                         AuthenticationParametersKeys.APIKeyConfigurationName, out var apiKeyConfigurationNameObj))
@@ -90,7 +88,7 @@ namespace FoundationaLLM.Common.Services.API
                 clientBuilderParameters[HttpClientFactoryServiceKeyNames.APIKey] = apiKey!;
 
                 if (endpointConfiguration.AuthenticationParameters.TryGetValue(
-                        AuthenticationParametersKeys.APIKeyPrefix, out var apiKeyPrefixObj))
+                    AuthenticationParametersKeys.APIKeyPrefix, out var apiKeyPrefixObj))
                     clientBuilderParameters[HttpClientFactoryServiceKeyNames.APIKeyHeaderName] =
                         apiKeyPrefixObj.ToString()!;
             }
