@@ -818,6 +818,11 @@ export default defineComponent({
         },
 
         async onDisplayNameInput() {
+            // Do not derive name and do not check name for an existing agent (edit mode)
+            if (this.isEditMode) {
+                this.displayNameStatus = '';
+                return;
+            }
             this.displayNameStatus = this.agentDisplayName ? 'loading' : '';
             if (this.displayNameDebouncedCheck) {
                 this.displayNameDebouncedCheck(this.agentDisplayName);
@@ -1096,16 +1101,8 @@ export default defineComponent({
                 formattedDate = d.toISOString().split('T')[0] + 'T00:00:00+00:00';
             }
 
-            // Check if the new display name would generate a different agent name
-            const newAgentName = this.generateAgentName(displayName);
-            const currentAgentName = this.createdAgent.name;
-            
-            // If the agent name would change, check if the new name is available
-            if (newAgentName !== currentAgentName) {
-                if (!(await this.validateAgentNameAvailability())) {
-                    return;
-                }
-            }
+            // Do not generate or check agent name on update (edit mode)
+            // Only create agent name on creation, not on update
 
             // Set values on the agent model
             this.createdAgent.display_name = displayName;
