@@ -1,5 +1,6 @@
 # pylint: disable=W0221
 
+import copy
 import json
 from typing import List, Optional, Tuple, Type
 
@@ -98,16 +99,16 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                 'user_prompt': original_prompt,
                 'vector_store_query': self.vector_store_query,
                 'knowledge_graph_query': self.knowledge_graph_query,
-                'knowledge_unit_vector_store_filters': self.knowledge_unit_vector_store_filters,
+                'knowledge_unit_vector_store_filters': copy.deepcopy(self.knowledge_unit_vector_store_filters), # Use a copy to avoid mutating the original
                 "format_response": True
             }
         
-        if self.knowledge_unit_vector_store_filters:
+        if query_request['knowledge_unit_vector_store_filters']:
 
             # Get the tool's runtime properties, if any.
             tool_runtime_properties = runnable_config['configurable'][self.name] if self.name in runnable_config['configurable'] else {}
 
-            for vector_store_filter in self.knowledge_unit_vector_store_filters:
+            for vector_store_filter in query_request['knowledge_unit_vector_store_filters']:
                 if not vector_store_filter['vector_store_metadata_filter']:
                     vector_store_filter['vector_store_metadata_filter'] = {}
 
@@ -116,15 +117,21 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                     vector_store_filter['vector_store_metadata_filter']['FileName'] = file_name
 
                 # Parse all metadata filters and replace placeholders with runtime properties
+                keys_to_remove = []
                 for key, value in vector_store_filter['vector_store_metadata_filter'].items():
                     if isinstance(value, str):
                         request_metadata_required = value.startswith('__COMPLETION_REQUEST_METADATA_!__')
                         request_metadata_optional = value.startswith('__COMPLETION_REQUEST_METADATA__')
                         if request_metadata_required or request_metadata_optional:
                             request_value = tool_runtime_properties.get(value, None)
-                            if (request_value is None) and request_metadata_required:
-                                raise ValueError(f"Metadata key {key} is required and is missing from the tool runtime properties.")
-                            vector_store_filter['vector_store_metadata_filter'][key] = request_value
+                            if (request_value is None):
+                                if request_metadata_required:
+                                    raise ValueError(f"Metadata key {key} is required and is missing from the tool runtime properties.")
+                                keys_to_remove.append(key)
+                            else:
+                                vector_store_filter['vector_store_metadata_filter'][key] = request_value
+                for key in keys_to_remove:
+                    del vector_store_filter['vector_store_metadata_filter'][key]
 
                 # Handle the well-known knowledge unit named Conversations
                 if vector_store_filter['knowledge_unit_id'] == 'Conversations':
