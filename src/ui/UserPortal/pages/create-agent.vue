@@ -757,7 +757,10 @@ export default defineComponent({
 
                 
                 if (agentResult?.resource) {
-                    this.createdAgent = agentResult.resource;
+                    this.createdAgent = {
+                        ...agentResult.resource,
+                        isReadonly: isAgentReadonly(agentResult?.roles || []),
+                    };
                     
                     // Populate form fields
                     this.agentDisplayName = this.createdAgent.display_name || '';
@@ -1085,8 +1088,9 @@ export default defineComponent({
                 this.$toast.add({ severity: 'error', summary: 'Error', detail: 'No agent to update.', life: 5000 });
                 return;
             }
+            
             // Permission check
-            if (isAgentReadonly(this.createdAgent?.roles || [])) {
+            if (this.createdAgent?.isReadonly) {
                 this.$toast.add({ severity: 'error', summary: 'Permission Denied', detail: 'You have read-only access to this agent.', life: 5000 });
                 return;
             }
@@ -1124,7 +1128,7 @@ export default defineComponent({
                 }
                 
                 const modelIdToUpdate = this.selectedAIModel || currentMainModelId;
-                if (modelIdToUpdate && modelIdToUpdate !== currentMainModelId) {
+                if (modelIdToUpdate) {
                     const updatedAgent = await api.updateAgentMainModel(this.createdAgent, modelIdToUpdate);
                     this.createdAgent.object_id = updatedAgent.object_id;
                 }
