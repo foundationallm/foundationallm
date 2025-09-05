@@ -57,7 +57,7 @@ namespace FoundationaLLM.Core.API.Controllers
                         new ResourceProviderGetOptions
                         {
                             IncludeActions = false,
-                            IncludeRoles = false
+                            IncludeRoles = true
                         },
                         resourcePathAvailabilityChecker: _managementCapabilitiesService.IsResourcePathAvailable);
                     return new OkObjectResult(result);
