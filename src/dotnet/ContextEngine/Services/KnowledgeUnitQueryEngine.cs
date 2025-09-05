@@ -504,16 +504,32 @@ namespace FoundationaLLM.Context.Services
             if (metadataFilter is not null
                 && metadataFilter.Count > 0)
                 filter += " and " + string.Join(" and ", metadataFilter
-                        .Select(kvp => $"{vectorDatabase.MetadataPropertyName}/{kvp.Key} eq {GetFilterValue(kvp.Value)}"));
+                        .Select(kvp => GetFilterValue(
+                            vectorDatabase.MetadataPropertyName,
+                            kvp.Key,
+                            kvp.Value)));
 
             return filter;
         }
 
-        private string GetFilterValue(object value)
+        private string GetFilterValue(
+            string metadataPropertyName,
+            string propertyName,
+            object value)
         {
             var jsonValue = (JsonElement)value;
 
-            return jsonValue.ValueKind switch
+            if (jsonValue.ValueKind == JsonValueKind.Array)
+            {
+                var valuesList = string.Join(',',
+                    jsonValue.EnumerateArray()
+                        .Select(v => v.GetString()!.Replace("'", "''")));
+                if (string.IsNullOrWhiteSpace(valuesList))
+                    throw new InvalidOperationException("The metadata filter array cannot be empty.");
+                return $"search.in({metadataPropertyName}/{propertyName},'{valuesList}')";
+            }
+
+            var filter = jsonValue.ValueKind switch
             {
                 JsonValueKind.String => $"'{jsonValue.GetString()!.Replace("'", "''")}'",
                 JsonValueKind.Number => jsonValue.GetRawText(),
@@ -521,6 +537,8 @@ namespace FoundationaLLM.Context.Services
                 JsonValueKind.False => "false",
                 _ => throw new InvalidOperationException($"Unsupported JSON value kind: {jsonValue.ValueKind}")
             };
+
+            return $"{metadataPropertyName}/{propertyName} eq {filter}";
         }
     }
 }
