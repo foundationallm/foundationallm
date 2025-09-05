@@ -10,6 +10,7 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
         /// <summary>
         /// Gets or sets the source of the response..
         /// </summary>
+        [JsonPropertyName("source")]
         public required string Source { get; set; }
 
         /// <summary>
