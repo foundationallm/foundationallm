@@ -1062,6 +1062,7 @@ export default defineComponent({
                 this.activeTabIndex = 1;
                 this.agentsLoaded = false;
                 this.loadAvailableAgents();
+                this.loadCurrentAIModel();
                 const prompt = await api.getAgentMainPrompt(res.resource);
                 this.systemPrompt = prompt || '';
             } catch (err: any) {
