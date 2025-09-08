@@ -144,31 +144,18 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink
-							:to="'/pipelines/edit/' + data.resource.name"
-							:aria-disabled="
-								!data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write')
-							"
-							:tabindex="!data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write') ? -1 : 0"
-							:style="{
-								pointerEvents: !data.actions.includes(
-									'FoundationaLLM.DataPipeline/dataPipelines/write',
-								)
-									? 'none'
-									: 'auto',
-							}"
-							class="table__button"
-						>
-							<Button
-								link
-								:disabled="
-									!data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write')
-								"
-								:aria-label="`Edit ${data.resource.name}`"
-							>
+						<template v-if="data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write')">
+							<NuxtLink :to="'/pipelines/edit/' + data.resource.name" class="table__button">
+								<Button link :aria-label="`Edit ${data.resource.name}`">
+									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
+								</Button>
+							</NuxtLink>
+						</template>
+						<template v-else>
+							<span aria-disabled="true" class="table__button" style="opacity:.6; cursor: default;">
 								<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
-							</Button>
-						</NuxtLink>
+							</span>
+						</template>
 					</template>
 				</Column>
 
@@ -185,15 +172,16 @@
 					}"
 				>
 					<template #body="{ data }">
-						<Button
-							:disabled="
-								!data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write')
-							"
-							:aria-label="`Run ${data.resource.name}`"
-							@click="data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write') && openTriggerPipeline(data.resource)"
-						>
-							<i class="pi pi-play-circle" style="font-size: 1.2rem" aria-hidden="true"></i>
-						</Button>
+						<template v-if="data.actions.includes('FoundationaLLM.DataPipeline/dataPipelines/write')">
+							<Button :aria-label="`Run ${data.resource.name}`" @click="openTriggerPipeline(data.resource)">
+								<i class="pi pi-play-circle" style="font-size: 1.2rem" aria-hidden="true"></i>
+							</Button>
+						</template>
+						<template v-else>
+							<span aria-disabled="true" style="opacity:.6; cursor: default;">
+								<i class="pi pi-play-circle" style="font-size: 1.2rem" aria-hidden="true"></i>
+							</span>
+						</template>
 					</template>
 				</Column>
 

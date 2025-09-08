@@ -117,35 +117,18 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink
-							:to="'/api-endpoints/edit/' + data.resource.name"
-							:aria-disabled="
-								!data.actions.includes(
-									'FoundationaLLM.Configuration/apiEndpointConfigurations/write',
-								)
-							"
-							:tabindex="!data.actions.includes('FoundationaLLM.Configuration/apiEndpointConfigurations/write') ? -1 : 0"
-							:style="{
-								pointerEvents: !data.actions.includes(
-									'FoundationaLLM.Configuration/apiEndpointConfigurations/write',
-								)
-									? 'none'
-									: 'auto',
-							}"
-							class="table__button"
-						>
-							<Button
-								link
-								:disabled="
-									!data.actions.includes(
-										'FoundationaLLM.Configuration/apiEndpointConfigurations/write',
-									)
-								"
-								:aria-label="`Edit ${data.resource.name}`"
-							>
+						<template v-if="data.actions.includes('FoundationaLLM.Configuration/apiEndpointConfigurations/write')">
+							<NuxtLink :to="'/api-endpoints/edit/' + data.resource.name" class="table__button">
+								<Button link :aria-label="`Edit ${data.resource.name}`">
+									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
+								</Button>
+							</NuxtLink>
+						</template>
+						<template v-else>
+							<span aria-disabled="true" class="table__button" style="opacity:.6; cursor: default;">
 								<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
-							</Button>
-						</NuxtLink>
+							</span>
+						</template>
 					</template>
 				</Column>
 
@@ -162,18 +145,16 @@
 					}"
 				>
 					<template #body="{ data }">
-						<Button
-							link
-							:aria-label="`Delete ${data.resource.name}`"
-							:disabled="
-								!data.actions.includes(
-									'FoundationaLLM.Configuration/apiEndpointConfigurations/delete',
-								)
-							"
-							@click="data.actions.includes('FoundationaLLM.Configuration/apiEndpointConfigurations/delete') && (itemToDelete = data.resource)"
-						>
-							<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
-						</Button>
+						<template v-if="data.actions.includes('FoundationaLLM.Configuration/apiEndpointConfigurations/delete')">
+							<Button link :aria-label="`Delete ${data.resource.name}`" @click="itemToDelete = data.resource">
+								<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
+							</Button>
+						</template>
+						<template v-else>
+							<span aria-disabled="true" style="opacity:.6; cursor: default;">
+								<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
+							</span>
+						</template>
 					</template>
 				</Column>
 			</DataTable>

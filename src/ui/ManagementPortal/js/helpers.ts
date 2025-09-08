@@ -34,3 +34,13 @@ export function renameObjectKey(
 	// Convert the array back to an object
 	return Object.fromEntries(updatedKeyValuePairs);
 }
+
+export function guardAction(e: Event | undefined, allowed: boolean, fn?: () => void) {
+	if (!allowed) {
+		try { e?.preventDefault?.(); } catch {}
+		try { e?.stopPropagation?.(); } catch {}
+		// try { (e as any)?.stopImmediatePropagation?.(); } catch {}
+		return;
+	}
+	fn?.();
+}
