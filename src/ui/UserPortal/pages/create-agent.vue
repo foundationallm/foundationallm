@@ -482,7 +482,7 @@
                                                         <template #body="slotProps">
                                                             <div style="position: relative; display: flex; justify-content: center; align-items: center;">
                                                                 <Button icon="pi pi-ellipsis-h" class="p-button-text p-button-rounded" @click="toggleActions(slotProps)" aria-label="Actions" />
-                                                                <div v-if="slotProps.data.showActions" ref="popoverRef" class="csm-popover-actions" style="position: absolute; top: 30px; right: 0; z-index: 10; background: #fff; border: 1px solid #eee; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 120px; padding: 8px;">
+                                                                <div v-if="slotProps.data.showActions" ref="popoverRef" class="csm-popover-actions">
                                                                     <Button label="Edit" icon="pi pi-pencil" class="p-button-text w-full" @click="editRoleAssignment(slotProps.data)" />
                                                                 </div>
                                                             </div>
@@ -1607,5 +1607,18 @@ export default defineComponent({
     .p-dialog-content{
         overflow-y: unset;
     }
+}
+
+.csm-popover-actions {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    z-index: 10;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    min-width: 120px;
+    padding: 8px;
 }
 </style>
