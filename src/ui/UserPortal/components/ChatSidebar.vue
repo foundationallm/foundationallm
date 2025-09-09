@@ -322,13 +322,6 @@
 							{{ agentError2 }}
 						</div>
 					</div>
-
-					<nuxt-link 
-						to="/manage-agents"
-						class="p-component csm-only-text-btn-1">
-						Manage Agents <i class="pi pi-external-link ml-1"></i>
-					</nuxt-link>
-
 				</TabPanel>
 
 				<TabPanel header="Accessibility">
@@ -363,12 +356,20 @@
 			</TabView>
 
 			<template #footer>
-				<Button
-					class="sidebar-dialog__button"
-					label="Close"
-					text
-					@click="settingsModalVisible = false"
-				/>
+				<div class="flex w-full justify-between items-center px-4">
+					<nuxt-link 
+						to="/manage-agents"
+						class="p-component csm-only-text-btn-1">
+						Manage Agents <i class="pi pi-external-link ml-1"></i>
+					</nuxt-link>
+					
+					<Button
+						class="sidebar-dialog__button"
+						label="Close"
+						text
+						@click="settingsModalVisible = false"
+					/>
+				</div>
 			</template>
 		</Dialog>
 	</div>
