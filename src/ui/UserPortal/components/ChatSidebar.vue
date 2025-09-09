@@ -309,17 +309,20 @@
 						
 						<!-- Loading state -->
 						<div v-if="loadingAgents2" class="loading-container">
-							Loading agents...
+							<i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+							<p>Loading agents...</p>
 						</div>
 						
 						<!-- Empty Message -->
-						<div v-if="filteredAgents.length === 0 && !loadingAgents2">
-							{{ agentSearchTerm.trim() ? 'No agents found matching your search.' : (emptyAgentsMessage2 || 'No agents available.') }}
+						<div v-else-if="filteredAgents.length === 0 && !loadingAgents2" class="empty-state">
+							<i class="pi pi-info-circle" style="font-size: 2rem; color: #6c757d;"></i>
+							<p>{{ agentSearchTerm.trim() ? 'No agents found matching your search.' : (emptyAgentsMessage2 || 'No agents available.') }}</p>
 						</div>
 						
 						<!-- Error Message -->
-						<div v-if="agentError2" class="error-message">
-							{{ agentError2 }}
+						<div v-else-if="agentError2" class="error-message">
+							<i class="pi pi-exclamation-triangle" style="font-size: 2rem; color: #e74c3c;"></i>
+							<p>{{ agentError2 }}</p>
 						</div>
 					</div>
 				</TabPanel>
@@ -385,6 +388,7 @@
 import { isAgentExpired, isAgentReadonly } from '@/js/helpers';
 import type { AgentOption, Session } from '@/js/types';
 	declare const process: any;
+	import '@/styles/loading.scss';
 
 	import api from '@/js/api';
 
