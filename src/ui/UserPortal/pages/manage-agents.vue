@@ -26,6 +26,35 @@
                         New Agent <i class="pi pi-plus ml-3"></i>
                     </nuxt-link>
                 </div>
+
+                <div class="w-full max-w-full md:max-w-[50%] px-4 mb-5">
+                    <div class="flex items-center relative">
+                        <InputText 
+                            type="text" 
+                            class="w-full" 
+                            name="searchTabelInput1" 
+                            id="searchTabelInput1" 
+                            placeholder="Search by name"
+                            v-model="searchByName"
+                        />
+
+                        <Button 
+                            aria-label="Clear Search" 
+                            severity="primary" 
+                            icon="pi pi-times" 
+                            class="min-h-[40px] min-w-[40px] w-auto absolute top-0 right-0 z-[2]"
+                            @click="clearSearch"
+                            v-if="searchByName"
+                        />
+                        <Button 
+                            aria-label="Search Users" 
+                            severity="primary" 
+                            icon="pi pi-search" 
+                            class="min-h-[40px] min-w-[40px] w-auto absolute top-0 right-0 z-[2]"
+                            v-else
+                        />
+                    </div>
+                </div>
             </div>
             
             <div class="csm-table-area-1">
@@ -157,12 +186,24 @@ export default defineComponent({
         const agents = ref<ResourceProviderGetResult<AgentBase>[]>([]);
         const loading = ref(false);
         const error = ref<string | null>(null);
+        const searchByName = ref('');
 
         // Computed property
         const filteredAgents = computed(() => {
-            return agents.value.filter(agent => 
+            let filtered = agents.value.filter(agent => 
                 agent.roles.includes('Owner') || agent.roles.includes('Contributor')
             );
+
+            // Filter by name if search query is provided
+            if (searchByName.value.trim()) {
+                const query = searchByName.value.toLowerCase().trim();
+                filtered = filtered.filter(agent => {
+                    const displayName = agent.resource.display_name || agent.resource.name || '';
+                    return displayName.toLowerCase().includes(query);
+                });
+            }
+
+            return filtered;
         });
 
         // Methods
@@ -202,6 +243,10 @@ export default defineComponent({
             }
         };
 
+        const clearSearch = () => {
+            searchByName.value = '';
+        };
+
         // Lifecycle
         onMounted(() => {
             loadAgents();
@@ -211,10 +256,12 @@ export default defineComponent({
             agents,
             loading,
             error,
+            searchByName,
             filteredAgents,
             loadAgents,
             getPrimaryRole,
             formatExpirationDate,
+            clearSearch,
             SCROLL_HEIGHT
         };
     },
