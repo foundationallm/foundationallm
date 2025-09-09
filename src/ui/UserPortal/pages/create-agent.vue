@@ -478,16 +478,6 @@
                                                         {{ slotProps.data.resource.scope_name || 'Direct Assignment' }}
                                                     </template>
                                                 </Column>
-                                                    <Column header="Actions" style="min-width: 80px">
-                                                        <template #body="slotProps">
-                                                            <div style="position: relative; display: flex; justify-content: center; align-items: center;">
-                                                                <Button icon="pi pi-ellipsis-h" class="p-button-text p-button-rounded" @click="toggleActions(slotProps)" aria-label="Actions" />
-                                                                <div v-if="slotProps.data.showActions" ref="popoverRef" class="csm-popover-actions">
-                                                                    <Button label="Edit" icon="pi pi-pencil" class="p-button-text w-full" @click="editRoleAssignment(slotProps.data)" />
-                                                                </div>
-                                                            </div>
-                                                        </template>
-                                                    </Column>
                                             </DataTable>
                                         </div>
                                     </div>
@@ -503,7 +493,7 @@
             v-model:visible="showAddRoleAssignmentModal" 
             modal 
             class="csm-roleDialog-modal-1"
-            :header="isEditingRoleAssignment ? 'Edit Role Assignment' : 'Add New Role Assignment'"
+            header="Add New Role Assignment" 
             :style="{ width: '30rem' }" 
             :breakpoints="{ '1199px': '50vw', '575px': '90vw' }"
         >
@@ -585,7 +575,7 @@
             
             <template #footer>
                 <div class="flex justify-between items-center w-full">
-                    <div class="w-full max-w-[40%]">
+                    <div class="w-full max-w-[50%]">
                         <Button 
                             label="Cancel" 
                             class="w-full" 
@@ -594,9 +584,9 @@
                         />
                     </div>
 
-                    <div class="w-full max-w-[60%]">
+                    <div class="w-full max-w-[50%]">
                         <Button 
-                            :label="isEditingRoleAssignment ? 'Update Role Assignment' : 'Add Role Assignment'"
+                            label="Add Role Assignment"
                             severity="primary w-full"
                             @click="addRoleAssignment"
                             :disabled="!canAddRoleAssignment || addingRoleAssignment"
@@ -616,10 +606,10 @@ import api from '@/js/api';
 import { debounce, isAgentReadonly } from '@/js/helpers';
 import type { AgentBase } from '@/js/types';
 import type { AgentCreationFromTemplateRequest, ResourceBase } from '@/js/types/index';
-import '@/styles/agents.scss';
 import mime from 'mime';
 import { defineComponent } from 'vue';
 import NavBarSettings from '~/components/NavBarSettings.vue';
+import '@/styles/agents.scss';
 
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
@@ -690,10 +680,6 @@ export default defineComponent({
                 availableRoles: [] as any[],
                 addingRoleAssignment: false as boolean,
                 showAddRoleAssignmentModal: false as boolean,
-
-                // Edit mode state for role assignment modal
-                isEditingRoleAssignment: false,
-                editingRoleAssignmentId: null,
             };
         },
 
@@ -1441,50 +1427,53 @@ export default defineComponent({
 
         async addRoleAssignment() {
             if (!this.canAddRoleAssignment || !this.selectedAgentName) return;
+
             this.addingRoleAssignment = true;
             try {
-                let payload;
-                if (this.isEditingRoleAssignment && this.editingRoleAssignmentId) {
-                    // Edit mode: update existing assignment
-                    payload = {
-                        name: this.editingRoleAssignmentId,
-                        description: '',
-                        principal_id: this.newRoleAssignment.selectedUser.id,
-                        role_definition_id: this.newRoleAssignment.selectedRole,
-                        type: api.getRoleAssignmentType(),
-                        principal_type: api.getPrincipalType(this.newRoleAssignment.selectedUser),
-                        scope: api.getAgentScope(this.selectedAgentName)
-                    };
-                    await api.createRoleAssignment(payload); // update API endpoint if you have a specific update endpoint
-                    this.$toast.add({ severity: 'success', summary: 'Role Assignment Updated', detail: `Role assignment updated successfully.`, life: 3000 });
-                } else {
-                    // Add mode: create new assignment
-                    const roleAssignmentId = this.generateGuid();
-                    payload = {
-                        name: roleAssignmentId,
-                        description: '',
-                        principal_id: this.newRoleAssignment.selectedUser.id,
-                        role_definition_id: this.newRoleAssignment.selectedRole,
-                        type: api.getRoleAssignmentType(),
-                        principal_type: api.getPrincipalType(this.newRoleAssignment.selectedUser),
-                        scope: api.getAgentScope(this.selectedAgentName)
-                    };
-                    await api.createRoleAssignment(payload);
-                    this.$toast.add({ severity: 'success', summary: 'Role Assignment Added', detail: `Role assignment for ${this.newRoleAssignment.selectedUser.display_name || this.newRoleAssignment.selectedUser.name} added successfully.`, life: 3000 });
-                }
+                // Generate a new GUID for the role assignment name
+                const roleAssignmentId = this.generateGuid();
+                
+                // Get the agent scope dynamically from the API
+                const scope = api.getAgentScope(this.selectedAgentName);
+                
+                // Use exact payload format as specified in requirements
+                const payload = {
+                    name: roleAssignmentId,
+                    description: "",
+                    principal_id: this.newRoleAssignment.selectedUser.id,
+                    role_definition_id: this.newRoleAssignment.selectedRole,
+                    type: api.getRoleAssignmentType(),
+                    principal_type: api.getPrincipalType(this.newRoleAssignment.selectedUser),
+                    scope: scope
+                };
+                
+                await api.createRoleAssignment(payload);
+                this.$toast.add({ 
+                    severity: 'success', 
+                    summary: 'Role Assignment Added', 
+                    detail: `Role assignment for ${this.newRoleAssignment.selectedUser.display_name || this.newRoleAssignment.selectedUser.name} added successfully.`, 
+                    life: 3000 
+                });
+                
+                // Refresh the list and reset form
                 await this.loadRoleAssignments();
                 this.newRoleAssignment.selectedUser = null;
                 this.newRoleAssignment.selectedRole = null;
-                this.isEditingRoleAssignment = false;
-                this.editingRoleAssignmentId = null;
             } catch (e: any) {
-                let errorMessage = 'Failed to add/update role assignment';
+                let errorMessage = 'Failed to add role assignment';
+                
                 if (e.message?.includes('Access is not authorized') || e.message?.includes('403')) {
                     errorMessage = 'You do not have permission to create role assignments. Please contact your administrator or use the Management Portal.';
                 } else if (e.message) {
                     errorMessage = e.message;
                 }
-                this.$toast.add({ severity: 'error', summary: 'Authorization Required', detail: errorMessage, life: 8000 });
+                
+                this.$toast.add({ 
+                    severity: 'error', 
+                    summary: 'Authorization Required', 
+                    detail: errorMessage, 
+                    life: 8000 
+                });
             } finally {
                 this.addingRoleAssignment = false;
             }
@@ -1511,41 +1500,10 @@ export default defineComponent({
         },
         openAddRoleAssignmentModal() {
             this.showAddRoleAssignmentModal = true;
-            this.isEditingRoleAssignment = false;
-            this.editingRoleAssignmentId = null;
-            this.newRoleAssignment.selectedUser = null;
-            this.newRoleAssignment.selectedRole = null;
-            this.newRoleAssignment.userSearch = '';
-            this.userSearchResults = [];
         },
         
         closeAddModal() {
             this.showAddRoleAssignmentModal = false;
-        },
-
-        editRoleAssignment(assignment) {
-            this.showAddRoleAssignmentModal = true;
-            this.isEditingRoleAssignment = true;
-            this.editingRoleAssignmentId = assignment.resource.name || assignment.resource.id || null;
-            this.newRoleAssignment.selectedUser = assignment.resource.principal_details || null;
-            this.newRoleAssignment.selectedRole = assignment.resource.role_definition?.object_id || assignment.resource.role_definition_id || null;
-            this.newRoleAssignment.userSearch = '';
-            this.userSearchResults = [];
-        },
-
-        toggleActions(slotProps) {
-            slotProps.data.showActions = !slotProps.data.showActions;
-            if (slotProps.data.showActions) {
-                // Kapatıcı fonksiyon
-                const closePopover = () => {
-                    slotProps.data.showActions = false;
-                    window.removeEventListener('click', closePopover);
-                };
-                // Bir sonraki tick'te ekle ki butona tıklama popover'ı kapatmasın
-                setTimeout(() => {
-                    window.addEventListener('click', closePopover);
-                }, 0);
-            }
         },
     },
 });
@@ -1607,18 +1565,5 @@ export default defineComponent({
     .p-dialog-content{
         overflow-y: unset;
     }
-}
-
-.csm-popover-actions {
-    position: absolute;
-    top: 30px;
-    right: 0;
-    z-index: 10;
-    background: #fff;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    min-width: 120px;
-    padding: 8px;
 }
 </style>
