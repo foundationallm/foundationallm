@@ -21,7 +21,21 @@
 
             </div>
 
-            <div class="mb-4">
+            <!-- Loading State for Edit Mode -->
+            <div v-if="isEditMode && loadingAgentData" class="loading-container">
+                <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+                <p>Loading agent data...</p>
+            </div>
+
+            <!-- Error State for Edit Mode -->
+            <div v-else-if="isEditMode && agentLoadError" class="error-message">
+                <i class="pi pi-exclamation-triangle" style="font-size: 2rem; color: #e74c3c;"></i>
+                <p>{{ agentLoadError }}</p>
+                <Button label="Retry" @click="loadAgentForEditing" />
+            </div>
+
+            <!-- Main Content -->
+            <div v-else class="mb-4">
                 <TabView :activeIndex="activeTabIndex" @tab-change="onTabChange">
                     <TabPanel header="General">
                         <div class="px-4 py-8 mt-8 border border-solid border-gray-300">
@@ -327,13 +341,20 @@
                                         </div>
                                     </div>
 
-                                    <div v-if="filesLoading" class="text-sm text-[#64748b] mt-10">Loading files...</div>
-                                    <div v-else-if="filesError" class="text-sm text-red-600 mt-10">{{ filesError }}
+                                    <div v-if="filesLoading" class="loading-container">
+                                        <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+                                        <p>Loading files...</p>
+                                    </div>
+                                    <div v-else-if="filesError" class="error-message">
+                                        <i class="pi pi-exclamation-triangle" style="font-size: 2rem; color: #e74c3c;"></i>
+                                        <p>{{ filesError }}</p>
+                                        <Button label="Retry" @click="loadAgentFiles" />
                                     </div>
                                     <div v-else>
-                                        <div v-if="agentFiles.length === 0" class="text-sm text-[#94a3b8] italic mt-10">
-                                            No files found for
-                                            the selected agent.</div>
+                                        <div v-if="agentFiles.length === 0" class="empty-state">
+                                            <i class="pi pi-info-circle" style="font-size: 2rem; color: #6c757d;"></i>
+                                            <p>No files found for the selected agent.</p>
+                                        </div>
                                         <table v-else class="w-full text-left border-collapse">
                                             <thead>
                                                 <tr>
@@ -406,11 +427,19 @@
                                 </div>
 
                                 <div class="mb-6">
-                                    <div v-if="roleAssignmentsLoading" class="text-sm text-[#64748b] mt-10">Loading role assignments...</div>
-                                    <div v-else-if="roleAssignmentsError" class="text-sm text-red-600 mt-10">{{ roleAssignmentsError }}</div>
+                                    <div v-if="roleAssignmentsLoading" class="loading-container">
+                                        <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+                                        <p>Loading role assignments...</p>
+                                    </div>
+                                    <div v-else-if="roleAssignmentsError" class="error-message">
+                                        <i class="pi pi-exclamation-triangle" style="font-size: 2rem; color: #e74c3c;"></i>
+                                        <p>{{ roleAssignmentsError }}</p>
+                                        <Button label="Retry" @click="loadRoleAssignments" />
+                                    </div>
                                     <div v-else>
-                                        <div v-if="roleAssignments.length === 0" class="text-sm text-[#94a3b8] italic mt-10">
-                                            No role assignments found for this agent.
+                                        <div v-if="roleAssignments.length === 0" class="empty-state">
+                                            <i class="pi pi-info-circle" style="font-size: 2rem; color: #6c757d;"></i>
+                                            <p>No role assignments found for this agent.</p>
                                         </div>
 
                                         <div class="csm-table-area-1" v-else>
@@ -682,6 +711,10 @@ export default defineComponent({
                 availableRoles: [] as any[],
                 addingRoleAssignment: false as boolean,
                 showAddRoleAssignmentModal: false as boolean,
+                
+                // Loading states for edit mode
+                loadingAgentData: false as boolean,
+                agentLoadError: '' as string,
             };
         },
 
@@ -764,6 +797,9 @@ export default defineComponent({
         async loadAgentForEditing() {
             if (!this.selectedAgentName) return;
             
+            this.loadingAgentData = true;
+            this.agentLoadError = '';
+            
             try {
                 // Get the specific agent directly by name
                 const agentResult = await api.getAgent(this.selectedAgentName);
@@ -810,14 +846,15 @@ export default defineComponent({
                     throw new Error('Agent not found');
                 }
             } catch (error: any) {
+                this.agentLoadError = error.message || 'Failed to load agent for editing';
                 this.$toast.add({ 
                     severity: 'error', 
                     summary: 'Error', 
-                    detail: error.message || 'Failed to load agent for editing', 
+                    detail: this.agentLoadError, 
                     life: 5000 
                 });
-                // Redirect back if agent loading fails
-                this.$router.push('/');
+            } finally {
+                this.loadingAgentData = false;
             }
         },
 
@@ -1579,6 +1616,50 @@ export default defineComponent({
 .csm-roleDialog-modal-1{
     .p-dialog-content{
         overflow-y: unset;
+    }
+}
+
+// Loading, Error, and Empty States
+.loading-container,
+.error-message,
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    min-height: 200px;
+    
+    i {
+        margin-bottom: 16px;
+    }
+    
+    p {
+        margin: 8px 0;
+        color: #6c757d;
+    }
+}
+
+.error-message {
+    i {
+        color: #e74c3c;
+    }
+    
+    p {
+        color: #e74c3c;
+        font-weight: 500;
+    }
+}
+
+.empty-state {
+    i {
+        color: #6c757d;
+    }
+    
+    p {
+        color: #6c757d;
+        font-style: italic;
     }
 }
 </style>
