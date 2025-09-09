@@ -9,7 +9,7 @@
         <div class="w-full max-w-[1430px] mx-auto px-4 py-7">
             <div class="csm-backto-chats-1">
                 <nuxt-link to="/" class="backto-chats">
-                    <i class="pi pi-angle-left relative top-[2px]"></i> {{ isEditMode ? 'Return to Chats' : 'Return to Chats' }}
+                    <i class="pi pi-angle-left relative top-[2px]"></i> {{ isEditMode ? 'Return to conversations' : 'Return to conversations' }}
                 </nuxt-link>
             </div>
 
