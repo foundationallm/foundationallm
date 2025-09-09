@@ -232,15 +232,14 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                 && !requestPayloadValidator(queryParameters))
                 throw new ResourceProviderException("The request payload is invalid.",
                     StatusCodes.Status400BadRequest);
-
-            if (queryParameters.SecurityPrincipalIds is not null
-                && queryParameters.SecurityPrincipalIds.Count == 1
-                && queryParameters.SecurityPrincipalIds[0] == SecurityPrincipalVariableNames.CurrentUserIds)
-                queryParameters.SecurityPrincipalIds =
-                    [userIdentity.UserId!, .. userIdentity.GroupIds];
-
             else
             {
+                if (queryParameters.SecurityPrincipalIds is not null
+                    && queryParameters.SecurityPrincipalIds.Count == 1
+                    && queryParameters.SecurityPrincipalIds[0] == SecurityPrincipalVariableNames.CurrentUserIds)
+                        queryParameters.SecurityPrincipalIds =
+                            [userIdentity.UserId!, .. userIdentity.GroupIds];
+
                 var roleAssignments = (await _authorizationServiceClient.GetRoleAssignments(
                     _instanceSettings.Id, queryParameters, userIdentity))
                     .Where(ra => !ra.Deleted)
