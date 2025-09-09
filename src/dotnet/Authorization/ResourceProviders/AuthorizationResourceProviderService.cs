@@ -225,12 +225,6 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             Func<object, bool>? requestPayloadValidator = null)
         {
             var queryParameters = JsonSerializer.Deserialize<RoleAssignmentQueryParameters>(serializedAction)!;
-            if (queryParameters.SecurityPrincipalIds is not null
-                && queryParameters.SecurityPrincipalIds.Count == 1
-                && queryParameters.SecurityPrincipalIds[0] == SecurityPrincipalVariableNames.CurrentUserIds)
-                queryParameters.SecurityPrincipalIds =
-                    [userIdentity.UserId!, .. userIdentity.GroupIds];
-
 
             if (string.IsNullOrWhiteSpace(queryParameters.Scope))
                 throw new ResourceProviderException("Invalid scope. Unable to retrieve role assignments.");
@@ -238,6 +232,13 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                 && !requestPayloadValidator(queryParameters))
                 throw new ResourceProviderException("The request payload is invalid.",
                     StatusCodes.Status400BadRequest);
+
+            if (queryParameters.SecurityPrincipalIds is not null
+                && queryParameters.SecurityPrincipalIds.Count == 1
+                && queryParameters.SecurityPrincipalIds[0] == SecurityPrincipalVariableNames.CurrentUserIds)
+                queryParameters.SecurityPrincipalIds =
+                    [userIdentity.UserId!, .. userIdentity.GroupIds];
+
             else
             {
                 var roleAssignments = (await _authorizationServiceClient.GetRoleAssignments(
