@@ -225,25 +225,28 @@ namespace FoundationaLLM.Core.Services
             {
                 var resourcePath = ResourcePath.GetResourcePath(queryParameters.Scope!);
 
-                if (resourcePath.IsInstancePath
-                    && (
-                        queryParameters.SecurityPrincipalIds is null
+                if (resourcePath.IsInstancePath)
+                {
+                    if (queryParameters.SecurityPrincipalIds is null
                         || queryParameters.SecurityPrincipalIds.Count != 1
-                        || queryParameters.SecurityPrincipalIds[0] != SecurityPrincipalVariableNames.CurrentUserIds))
-                {
-                    _logger.LogWarning("The RoleAssignmentQueryParameters.Scope value is invalid: {Scope}. " +
-                        "The instance scope is allowed only when the security principal ids are set to retrieved using the CURRENT_USER_IDS variable.",
-                        queryParameters.Scope);
-                    return false;
+                        || queryParameters.SecurityPrincipalIds[0] != SecurityPrincipalVariableNames.CurrentUserIds)
+                    {
+                        _logger.LogWarning("The RoleAssignmentQueryParameters.Scope value is invalid: {Scope}. " +
+                            "The instance scope is allowed only when the security principal ids are set to retrieved using the CURRENT_USER_IDS variable.",
+                            queryParameters.Scope);
+                        return false;
+                    }
                 }
-
-                if (resourcePath.ResourceProvider != ResourceProviderNames.FoundationaLLM_Agent
-                    || resourcePath.MainResourceTypeName != AgentResourceTypeNames.Agents
-                    || resourcePath.ResourceTypeInstances.Count != 1)
+                else
                 {
-                    _logger.LogWarning("The RoleAssignmentQueryParameters.Scope value is invalid: {Scope}. Only individual agent resources are allowed.",
-                        queryParameters.Scope);
-                    return false;
+                    if (resourcePath.ResourceProvider != ResourceProviderNames.FoundationaLLM_Agent
+                        || resourcePath.MainResourceTypeName != AgentResourceTypeNames.Agents
+                        || resourcePath.ResourceTypeInstances.Count != 1)
+                    {
+                        _logger.LogWarning("The RoleAssignmentQueryParameters.Scope value is invalid: {Scope}. Only individual agent resources are allowed.",
+                            queryParameters.Scope);
+                        return false;
+                    }
                 }
 
                 return true;
