@@ -142,6 +142,20 @@
                         </template>
                     </Column>
 
+                    <Column 
+                        header="Actions" 
+                        style="min-width: 80px"
+                    >
+                        <template #body="slotProps">
+                            <div style="position: relative; display: flex; justify-content: center; align-items: center;">
+                                <Button icon="pi pi-ellipsis-h" class="p-button-text p-button-rounded" @click="toggleActions(slotProps)" aria-label="Actions" />
+                                <div v-if="slotProps.data.showActions" class="csm-popover-actions">
+                                    <Button label="Edit" icon="pi pi-pencil" class="p-button-text w-full" @click="onEditAgent(slotProps.data)" />
+                                </div>
+                            </div>
+                        </template>
+                    </Column>
+
                 </DataTable>
 
                 <!-- Empty State -->
@@ -156,15 +170,16 @@
 
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from 'vue';
-import NavBarSettings from '~/components/NavBarSettings.vue';
-import type { ResourceProviderGetResult, AgentBase } from '@/js/types';
 import api from '@/js/api';
+import type { AgentBase, ResourceProviderGetResult } from '@/js/types';
 import '@/styles/agents.scss';
+import { computed, defineComponent, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import NavBarSettings from '~/components/NavBarSettings.vue';
 
+import Button from 'primevue/button';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
-import Button from 'primevue/button';
 
 // Constants
 const SCROLL_HEIGHT = '500px';
@@ -187,6 +202,7 @@ export default defineComponent({
         const loading = ref(false);
         const error = ref<string | null>(null);
         const searchByName = ref('');
+        const router = useRouter();
 
         // Computed property
         const filteredAgents = computed(() => {
@@ -247,6 +263,25 @@ export default defineComponent({
             searchByName.value = '';
         };
 
+        // Actions popover logic
+        const toggleActions = (slotProps: any) => {
+            slotProps.data.showActions = !slotProps.data.showActions;
+            if (slotProps.data.showActions) {
+                const closePopover = () => {
+                    slotProps.data.showActions = false;
+                    window.removeEventListener('click', closePopover);
+                };
+                setTimeout(() => {
+                    window.addEventListener('click', closePopover);
+                }, 0);
+            }
+        };
+        const onEditAgent = (rowData: any) => {
+            // Edit agent: navigate to create-agent with query params
+            const agentName = rowData.resource.name;
+            router.push({ path: '/create-agent', query: { edit: 'true', agentName } });
+        };
+
         // Lifecycle
         onMounted(() => {
             loadAgents();
@@ -262,6 +297,8 @@ export default defineComponent({
             getPrimaryRole,
             formatExpirationDate,
             clearSearch,
+            toggleActions,
+            onEditAgent,
             SCROLL_HEIGHT
         };
     },
@@ -300,5 +337,18 @@ export default defineComponent({
         color: #e74c3c;
         font-weight: 500;
     }
+}
+
+.csm-popover-actions {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    z-index: 10;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    min-width: 120px;
+    padding: 8px;
 }
 </style>
