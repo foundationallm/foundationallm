@@ -2056,6 +2056,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authorization.SecurityPrincipalVariableNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authorization.SecurityPrincipalVariableNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Authorization.SecurityPrincipalVariableNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Authorization.SecurityPrincipalVariableNames.yml\" sourcestartlinenumber=\"1\">Provides names for common security principal variables.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authorization.UserIdentityPropertyNames.yml",
       "output": {
         ".html": {
