@@ -1,9 +1,12 @@
 .csm-backto-chats-1 {
     margin-bottom: 30px;
 
-    a {
+    a, button {
         color: var(--primary-button-bg);
         text-decoration: none;
+        padding: 0;
+        background-color: transparent;
+        border: 0;
     }
 }
 

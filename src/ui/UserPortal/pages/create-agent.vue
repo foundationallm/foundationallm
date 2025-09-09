@@ -8,9 +8,9 @@
 
         <div class="w-full max-w-[1430px] mx-auto px-4 py-7">
             <div class="csm-backto-chats-1">
-                <nuxt-link to="/" class="backto-chats">
-                    <i class="pi pi-angle-left relative top-[2px]"></i> {{ isEditMode ? 'Return to Chats' : 'Return to Chats' }}
-                </nuxt-link>
+                <Button @click="onReturnToConversations" class="backto-chats" text>
+                    <i class="pi pi-angle-left relative mr-1"></i> {{ isEditMode ? 'Return to Chats' : 'Return to Chats' }}
+                </Button>
             </div>
 
             <div class="flex flex-wrap items-center -mx-4">
@@ -661,6 +661,8 @@ export default defineComponent({
                 imageGenerationEnabled: false as boolean,
                 userPortalFileUploadEnabled: false as boolean,
 
+                // Track if page was opened from Settings -> Agents
+                openedFromSettings: false as boolean,
 
                 roleAssignments: [] as any[],
                 roleAssignmentsLoading: false as boolean,
@@ -722,6 +724,12 @@ export default defineComponent({
                 const hasUser = !!this.newRoleAssignment.selectedUser;
                 const hasRole = !!this.newRoleAssignment.selectedRole;
                 return hasUser && hasRole;
+            },
+
+            returnToConversationsUrl() {
+                // If opened from Settings -> Agents, return to main page (Settings modal will remain open)
+                // Otherwise, return to main page
+                return '/';
             }
         },
 
@@ -743,6 +751,10 @@ export default defineComponent({
             if (query.edit === 'true' && query.agentName) {
                 this.isEditMode = true;
                 this.selectedAgentName = query.agentName as string;
+                
+                // Check if page was opened from Settings -> Agents
+                // This is indicated by the presence of agentId parameter (which is set in ChatSidebar.vue)
+                this.openedFromSettings = !!query.agentId;
                 
                 // Load the agent data
                 await this.loadAgentForEditing();
@@ -1158,15 +1170,18 @@ export default defineComponent({
             }
         },
 
+        onReturnToConversations() {
+            // If opened from Settings -> Agents, ensure modal stays open
+            if (this.openedFromSettings) {
+                (this.$appStore as any).settingsModalVisible = true;
+            }
+            this.$router.push(this.returnToConversationsUrl);
+        },
+
         onCancel() {
             // Cancel logic (redirect or reset form)
-            if (this.isEditMode) {
-                // If editing, go back to previous page or reset form
-                this.$router.push('/');
-            } else {
-                // If creating, just go back
-                this.$router.push('/');
-            }
+            // Use the same logic as Return to Chats button
+            this.onReturnToConversations();
         },
 
         // ...existing file upload and utility methods...

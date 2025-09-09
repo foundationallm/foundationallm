@@ -45,6 +45,7 @@ export const useAppStore = defineStore('app', {
 		textSize: JSON.parse(sessionStorage.getItem('textSize') || '1') as number,
 		highContrastMode: JSON.parse(sessionStorage.getItem('highContrastMode') || 'false') as boolean,
 		sessionMessagePending: false,
+		settingsModalVisible: false,
 	}),
 
 	getters: {
