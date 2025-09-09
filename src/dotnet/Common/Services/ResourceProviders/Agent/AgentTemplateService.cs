@@ -7,17 +7,19 @@ using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
-using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
 
 namespace FoundationaLLM.Common.Services.ResourceProviders.Agent
 {
     /// <summary>
     /// Provides functionality for interacting with agent templates.
     /// </summary>
-    public class AgentTemplateService : IAgentTemplateService
+    public partial class AgentTemplateService : IAgentTemplateService
     {
         private readonly ILogger<AgentTemplateService> _logger;
 
@@ -80,6 +82,16 @@ namespace FoundationaLLM.Common.Services.ResourceProviders.Agent
             ValidateAndMergeParameterValues(
                 createAgentRequest.TemplateParameters,
                 finalParameterValues!);
+
+            var (Exists, _) = await _agentResourceProviderService.ResourceExistsAsync<AgentBase>(
+                instanceId,
+                finalParameterValues![AgentTemplateParameterNames.AgentName],
+                userIdentity);
+
+            if (Exists)
+                throw new ResourceProviderException(
+                    $"An agent with name {finalParameterValues[AgentTemplateParameterNames.AgentName]} already exists in the instance {instanceId}.",
+                    StatusCodes.Status400BadRequest);
 
             var promptObjectIds = await CreatePrompts(
                 instanceId,
@@ -154,7 +166,6 @@ namespace FoundationaLLM.Common.Services.ResourceProviders.Agent
                     {
                         AgentTemplateParameterNames.AgentName
                         or AgentTemplateParameterNames.AgentDisplayName
-                        or AgentTemplateParameterNames.AgentExpirationDate
                         or AgentTemplateParameterNames.AgentTools =>
                             throw new ResourceProviderException(
                                 $"The parameter {parameterName} is required and cannot be empty."),
@@ -478,11 +489,24 @@ namespace FoundationaLLM.Common.Services.ResourceProviders.Agent
             if (string.IsNullOrWhiteSpace(value))
                 return value;
 
+            // Try to match the entire value first for efficiency.
+            var matches = VariableRegex().Matches(value);
+            if (matches.Count == 1 && matches[0].Groups.Count == 2)
+            {
+                var parameterName = matches[0].Groups[1].Value;
+                if (parameterValues.TryGetValue(parameterName, out var parameterValue))
+                    return parameterValue;
+            }
+
+            // The parameter might be part of a larger string, so replace all occurrences.
             foreach (var parameter in parameterValues)
             {
                 value = value.Replace("{{" + parameter.Key + "}}", parameter.Value);
             }
             return value;
         }
+
+        [GeneratedRegex(@"^\{\{([^}]+)\}\}$")]
+        private static partial Regex VariableRegex();
     }
 }
