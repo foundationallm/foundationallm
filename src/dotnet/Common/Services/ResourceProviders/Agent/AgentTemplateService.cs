@@ -148,8 +148,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders.Agent
         {
             var invalidParameterNames = inputParameterValues.Keys
                 .Where(name =>
-                    !finalParameterValues.ContainsKey(name)
-                    || string.IsNullOrEmpty(inputParameterValues[name]))
+                    !finalParameterValues.ContainsKey(name))
                 .ToList();
             if (invalidParameterNames.Count > 0)
                 throw new ResourceProviderException(
@@ -168,7 +167,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders.Agent
                         or AgentTemplateParameterNames.AgentDisplayName
                         or AgentTemplateParameterNames.AgentTools =>
                             throw new ResourceProviderException(
-                                $"The parameter {parameterName} is required and cannot be empty."),
+                                $"The parameter {parameterName} is required and cannot be empty.",
+                                StatusCodes.Status400BadRequest),
                         AgentTemplateParameterNames.VirtualSecurityGroupId =>
                             Guid.NewGuid().ToString().ToLower(),
                         _ => null!
