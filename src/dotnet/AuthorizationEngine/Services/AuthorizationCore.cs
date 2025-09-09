@@ -614,9 +614,22 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 queryParameters.Scope,
                 _settings.InstanceIds);
 
-            return _roleAssignmentStores[instanceId].RoleAssignments
-                .Where(ra => resourcePath.IncludesResourcePath(ra.ScopeResourcePath!))
-                .ToList();
+            if (queryParameters.SecurityPrincipalIds is null)
+                return [..
+                    _roleAssignmentStores[instanceId].RoleAssignments
+                        .Where(ra => resourcePath.IncludesResourcePath(ra.ScopeResourcePath!))
+                ];
+            else
+            {
+                var ids = queryParameters.SecurityPrincipalIds.ToHashSet();
+
+                return [..
+                    _roleAssignmentStores[instanceId].RoleAssignments
+                        .Where(ra =>
+                            ids.Contains(ra.PrincipalId)
+                            && resourcePath.IncludesResourcePath(ra.ScopeResourcePath!))
+                ];
+            }
         }
 
         #endregion
