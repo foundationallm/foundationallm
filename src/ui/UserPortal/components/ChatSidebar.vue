@@ -146,8 +146,8 @@
 							size="small"
 							aria-label="Settings"
 							aria-controls="settings-modal"
-							:aria-expanded="settingsModalVisible"
-							@click="settingsModalVisible = true"
+							:aria-expanded="$appStore.settingsModalVisible"
+							@click="$appStore.settingsModalVisible = true"
 						/>
 						<template #popper><div role="tooltip">Settings</div></template>
 					</VTooltip>
@@ -236,12 +236,12 @@
 
 		<Dialog
 			id="settings-modal"
-			v-model:visible="settingsModalVisible"
+			v-model:visible="$appStore.settingsModalVisible"
 			v-focustrap
 			modal
 			class="sidebar-dialog csm-profile-setting-modal-1 w-full"
 			header="Settings"
-			@keydown.esc="settingsModalVisible = false"
+			@keydown.esc="$appStore.settingsModalVisible = false"
 		>
 			<TabView>
 				<TabPanel header="Agents">
@@ -396,7 +396,6 @@ import type { AgentOption, Session } from '@/js/types';
 				isMobile: window.screen.width < 950,
 				createProcessing: false,
 				debounceTimeout: null as ReturnType<typeof setTimeout> | null,
-				settingsModalVisible: false,
 
 				agentOptions: [],
 				emptyAgentsMessage: null,
