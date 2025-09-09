@@ -243,7 +243,7 @@
 			header="Settings"
 			@keydown.esc="$appStore.settingsModalVisible = false"
 		>
-			<TabView>
+			<TabView :activeIndex="activeTabIndex" @tab-change="onTabChange">
 				<TabPanel header="Agents">
 					<div class="flex flex-wrap items-center -mx-4 mb-5">
 						<div class="w-full max-w-[50%] px-4 mb-5 text-center md:text-left">
@@ -356,19 +356,24 @@
 			</TabView>
 
 			<template #footer>
-				<div class="flex w-full justify-between items-center px-4">
-					<nuxt-link 
-						to="/manage-agents"
-						class="p-component csm-only-text-btn-1">
-						Manage Agents <i class="pi pi-external-link ml-1"></i>
-					</nuxt-link>
-					
-					<Button
-						class="sidebar-dialog__button"
-						label="Close"
-						text
-						@click="settingsModalVisible = false"
-					/>
+				<div class="flex w-full justify-between items-center px-2">
+					<div class="w-full max-w-[50%] px-2">
+						<nuxt-link 
+							v-if="activeTabIndex !== 1"
+							to="/manage-agents"
+							class="p-component csm-only-text-btn-1">
+							Manage Agents <i class="pi pi-external-link ml-1"></i>
+						</nuxt-link>
+					</div>
+
+					<div class="w-full max-w-[50%] px-2 text-right">
+						<Button
+							class="sidebar-dialog__button"
+							label="Close"
+							text
+							@click="settingsModalVisible = false"
+						/>
+					</div>
 				</div>
 			</template>
 		</Dialog>
@@ -406,6 +411,7 @@ import type { AgentOption, Session } from '@/js/types';
 				emptyAgentsMessage2: 'No agents available.',
 				userProfile: null as any,
 				agentSearchTerm: '',
+				activeTabIndex: 0,
 			};
 		},
 
@@ -714,6 +720,10 @@ import type { AgentOption, Session } from '@/js/types';
 
 			hideAllPoppers() {
 				hideAllPoppers();
+			},
+
+			onTabChange(e: { index: number }) {
+				this.activeTabIndex = e.index;
 			},
 		},
 	};
