@@ -34,6 +34,12 @@
                 <Button label="Retry" @click="loadAgentForEditing" />
             </div>
 
+            <!-- Loading State for Create Mode -->
+            <div v-else-if="!isEditMode && isCreating" class="loading-container">
+                <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+                <p>Creating agent...</p>
+            </div>
+
             <!-- Main Content -->
             <div v-else class="mb-4">
                 <TabView :activeIndex="activeTabIndex" @tab-change="onTabChange">
