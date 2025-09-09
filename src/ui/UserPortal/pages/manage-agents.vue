@@ -113,7 +113,7 @@
                     >
                         <template #body="slotProps">
                             <div class="agent-owner">
-                                {{ slotProps.data.resource.created_by || 'Unknown' }}
+                                {{ slotProps.data.resource.created_by || '' }}
                             </div>
                         </template>
                     </Column>
@@ -244,7 +244,7 @@ export default defineComponent({
             for (const role of SUPPORTED_ROLES) {
                 if (roles.includes(role)) return role;
             }
-            return roles[0] || 'Unknown';
+            return roles[0] || '';
         };
 
         const formatExpirationDate = (expirationDate: string | null): string => {
