@@ -371,7 +371,7 @@
 							class="sidebar-dialog__button"
 							label="Close"
 							text
-							@click="settingsModalVisible = false"
+							@click="$appStore.settingsModalVisible = false"
 						/>
 					</div>
 				</div>
