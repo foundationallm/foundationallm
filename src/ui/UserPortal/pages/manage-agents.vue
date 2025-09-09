@@ -176,6 +176,7 @@ import '@/styles/agents.scss';
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import NavBarSettings from '~/components/NavBarSettings.vue';
+import '@/styles/loading.scss';
 
 import Button from 'primevue/button';
 import Column from 'primevue/column';
@@ -304,51 +305,3 @@ export default defineComponent({
     },
 });
 </script>
-
-<style lang="scss">
-// Loading, Error, and Empty States
-.loading-container,
-.error-message,
-.empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
-    text-align: center;
-    min-height: 200px;
-    
-    i {
-        margin-bottom: 16px;
-    }
-    
-    p {
-        margin: 8px 0;
-        color: #6c757d;
-    }
-}
-
-.error-message {
-    i {
-        color: #e74c3c;
-    }
-    
-    p {
-        color: #e74c3c;
-        font-weight: 500;
-    }
-}
-
-.csm-popover-actions {
-    position: absolute;
-    top: 30px;
-    right: 0;
-    z-index: 10;
-    background: #fff;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    min-width: 120px;
-    padding: 8px;
-}
-</style>

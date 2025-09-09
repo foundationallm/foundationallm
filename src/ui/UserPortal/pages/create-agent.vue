@@ -645,6 +645,7 @@ import mime from 'mime';
 import { defineComponent } from 'vue';
 import NavBarSettings from '~/components/NavBarSettings.vue';
 import '@/styles/agents.scss';
+import '@/styles/loading.scss';
 
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
@@ -1622,50 +1623,6 @@ export default defineComponent({
 .csm-roleDialog-modal-1{
     .p-dialog-content{
         overflow-y: unset;
-    }
-}
-
-// Loading, Error, and Empty States
-.loading-container,
-.error-message,
-.empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
-    text-align: center;
-    min-height: 200px;
-    
-    i {
-        margin-bottom: 16px;
-    }
-    
-    p {
-        margin: 8px 0;
-        color: #6c757d;
-    }
-}
-
-.error-message {
-    i {
-        color: #e74c3c;
-    }
-    
-    p {
-        color: #e74c3c;
-        font-weight: 500;
-    }
-}
-
-.empty-state {
-    i {
-        color: #6c757d;
-    }
-    
-    p {
-        color: #6c757d;
-        font-style: italic;
     }
 }
 </style>
