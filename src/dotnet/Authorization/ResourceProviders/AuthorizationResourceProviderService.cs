@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FoundationaLLM.Common.Constants.Authentication;
+using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
@@ -13,7 +14,6 @@ using FoundationaLLM.Common.Services.ResourceProviders;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Graph;
 using System.Text.Json;
 
 namespace FoundationaLLM.Authorization.ResourceProviders
@@ -225,6 +225,12 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             Func<object, bool>? requestPayloadValidator = null)
         {
             var queryParameters = JsonSerializer.Deserialize<RoleAssignmentQueryParameters>(serializedAction)!;
+            if (queryParameters.SecurityPrincipalIds is not null
+                && queryParameters.SecurityPrincipalIds.Count == 1
+                && queryParameters.SecurityPrincipalIds[0] == SecurityPrincipalVariableNames.CurrentUserIds)
+                queryParameters.SecurityPrincipalIds =
+                    [userIdentity.UserId!, .. userIdentity.GroupIds];
+
 
             if (string.IsNullOrWhiteSpace(queryParameters.Scope))
                 throw new ResourceProviderException("Invalid scope. Unable to retrieve role assignments.");
