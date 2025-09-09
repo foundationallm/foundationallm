@@ -63,7 +63,7 @@
                                                         expiration on this agent?</div>
                                                 </template>
                                             </VTooltip>
-                                            Expiration Date <span class="text-[#ff0000]">*</span>
+                                            Expiration Date
                                         </label>
                                         <Calendar show-icon show-button-bar class="w-full" name="agentExpirationDate"
                                             id="agentExpirationDate" required="true" v-model="agentExpirationDate"
