@@ -18,6 +18,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// Gets the resource path associated with the resource's object identifier.
         /// </summary>
         [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public ResourcePath ResourcePath =>
             ResourcePath.GetResourcePath(ObjectId ?? "/");
 
