@@ -484,10 +484,21 @@
                                                     field="resource.principal_details.email" 
                                                     header="Principal Email" 
                                                     :sortable="false" 
-                                                    style="min-width: 200px"
+                                                    style="min-width: 150px"
                                                 >
                                                     <template #body="slotProps">
                                                         {{ slotProps.data.resource.principal_details?.email || '-' }}
+                                                    </template>
+                                                </Column>
+
+                                                <Column 
+                                                    field="resource.principal_details.onPremisesAccountName" 
+                                                    header="On-premises account" 
+                                                    :sortable="false" 
+                                                    style="min-width: 150px"
+                                                >
+                                                    <template #body="slotProps">
+                                                        {{ slotProps.data.resource.principal_details?.onPremisesAccountName || '-' }}
                                                     </template>
                                                 </Column>
 
