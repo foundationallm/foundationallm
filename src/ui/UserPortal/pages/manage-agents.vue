@@ -101,7 +101,7 @@
                     >
                         <template #body="slotProps">
                             <div class="agent-description">
-                                {{ slotProps.data.resource.description || 'No description' }}
+                                {{ slotProps.data.resource.description || '' }}
                             </div>
                         </template>
                     </Column>
