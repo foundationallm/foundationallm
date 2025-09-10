@@ -284,7 +284,8 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                         Id = io.Id!,
                         Type = io.ObjectType,
                         Name = io.DisplayName!,
-                        Email = io.Email
+                        Email = io.Email,
+                        OnPremisesAccountName = io.OnPremisesAccountName
                     },
                     Roles = [],
                     Actions = []
@@ -324,7 +325,8 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                         Id = io.Id!,
                         Type = io.ObjectType,
                         Name = io.DisplayName!,
-                        Email = io.Email
+                        Email = io.Email,
+                        OnPremisesAccountName = io.OnPremisesAccountName
                     },
                     Roles = [],
                     Actions = []

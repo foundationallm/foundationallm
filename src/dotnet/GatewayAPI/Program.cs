@@ -75,7 +75,7 @@ builder.AddGatewayCore();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
 // Authorization
-builder.AddGroupMembership();
+builder.AddIdentitiyManagement();
 builder.AddAuthorizationServiceClient();
 
 //----------------------------

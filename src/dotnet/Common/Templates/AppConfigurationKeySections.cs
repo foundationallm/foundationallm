@@ -491,5 +491,11 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Events_Profiles_DataPipelineBackendWorker =
             "FoundationaLLM:Events:Profiles:DataPipelineBackendWorker";
+        
+        /// <summary>
+        /// Configuration section used to identify the settings for the Microsoft Graph API.
+        /// </summary>
+        public const string FoundationaLLM_IdentityManagement_MicrosoftGraph =
+            "FoundationaLLM:IdentityManagement:MicrosoftGraph";
     }
 }
