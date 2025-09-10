@@ -11,7 +11,7 @@ The following App Configuration value have been added:
 
 |Name | Default value | Description |
 |--- | --- | --- |
-| `FoundationaLLM:IdentityManagement:MicrosoftGraph` | `false` | Indicates whether on-premises account names are retrieved by the Microsoft Graph API. |
+| `FoundationaLLM:IdentityManagement:MicrosoftGraph:RetrieveOnPremisesAccountName` | `false` | Indicates whether on-premises account names are retrieved by the Microsoft Graph API. |
 
 ## Starting from 0.9.7 (up to rc364)
 
