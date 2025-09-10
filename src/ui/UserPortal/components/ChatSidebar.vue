@@ -265,6 +265,18 @@
 						</div>
 					</div>
 					
+					<!-- Show enabled only checkbox -->
+					<div class="flex items-center mb-4 csm-sEnabled-checkbox-1">
+						<Checkbox
+							v-model="showEnabledOnly"
+							inputId="show-enabled-only"
+							:binary="true"
+						/>
+						<label for="show-enabled-only" class="ml-2 text-sm font-medium">
+							Show enabled only
+						</label>
+					</div>
+					
 					<div class="csm-table-container-1 mb-4">
 						<table class="csm-table-1">
 							<thead>
@@ -316,7 +328,7 @@
 						<!-- Empty Message -->
 						<div v-else-if="filteredAgents.length === 0 && !loadingAgents2" class="empty-state">
 							<i class="pi pi-info-circle" style="font-size: 2rem; color: #6c757d;"></i>
-							<p>{{ agentSearchTerm.trim() ? 'No agents found matching your search.' : (emptyAgentsMessage2 || 'No agents available.') }}</p>
+							<p>{{ getEmptyMessage() }}</p>
 						</div>
 						
 						<!-- Error Message -->
@@ -387,6 +399,8 @@
 	import eventBus from '@/js/eventBus';
 import { isAgentExpired, isAgentReadonly } from '@/js/helpers';
 import type { AgentOption, Session } from '@/js/types';
+import { hideAllPoppers } from 'floating-vue';
+import Checkbox from 'primevue/checkbox';
 	declare const process: any;
 	import '@/styles/loading.scss';
 
@@ -394,6 +408,10 @@ import type { AgentOption, Session } from '@/js/types';
 
 	export default {
 		name: 'ChatSidebar',
+
+		components: {
+			Checkbox,
+		},
 
 		data() {
 			return {
@@ -415,6 +433,7 @@ import type { AgentOption, Session } from '@/js/types';
 				emptyAgentsMessage2: 'No agents available.',
 				userProfile: null as any,
 				agentSearchTerm: '',
+				showEnabledOnly: false,
 				activeTabIndex: 0,
 			};
 		},
@@ -429,15 +448,23 @@ import type { AgentOption, Session } from '@/js/types';
 			},
 
 			filteredAgents(): AgentOption[] {
-				if (!this.agentSearchTerm.trim()) {
-					return this.agentOptions2;
+				let filtered = this.agentOptions2;
+				
+				// Filter by enabled status if checkbox is checked
+				if (this.showEnabledOnly) {
+					filtered = filtered.filter((agent: AgentOption) => agent.enabled);
 				}
 				
-				const searchTerm = this.agentSearchTerm.toLowerCase().trim();
-				return this.agentOptions2.filter((agent: AgentOption) => {
-					const name = (agent.display_name || agent.name || '').toLowerCase();
-					return name.includes(searchTerm);
-				});
+				// Filter by search term if provided
+				if (this.agentSearchTerm.trim()) {
+					const searchTerm = this.agentSearchTerm.toLowerCase().trim();
+					filtered = filtered.filter((agent: AgentOption) => {
+						const name = (agent.display_name || agent.name || '').toLowerCase();
+						return name.includes(searchTerm);
+					});
+				}
+				
+				return filtered;
 			},
 		},
 
@@ -722,12 +749,20 @@ import type { AgentOption, Session } from '@/js/types';
 				});
 			},
 
-			hideAllPoppers() {
-				hideAllPoppers();
-			},
+			hideAllPoppers,
 
 			onTabChange(e: { index: number }) {
 				this.activeTabIndex = e.index;
+			},
+
+			getEmptyMessage(): string {
+				if (this.agentSearchTerm.trim()) {
+					return 'No agents found matching your search.';
+				}
+				if (this.showEnabledOnly) {
+					return 'No enabled agents available.';
+				}
+				return this.emptyAgentsMessage2 || 'No agents available.';
 			},
 		},
 	};
@@ -1183,5 +1218,8 @@ import type { AgentOption, Session } from '@/js/types';
 		padding: 0px;
 		color: #5472d4;
 		font-weight: 500;
+	}
+	.csm-sEnabled-checkbox-1 label{
+		cursor: pointer;
 	}
 </style>
