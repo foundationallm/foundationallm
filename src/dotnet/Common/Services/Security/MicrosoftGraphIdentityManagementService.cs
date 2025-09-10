@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Collections;
+using FoundationaLLM.Common.Models.Configuration.Security;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
@@ -17,12 +18,16 @@ namespace FoundationaLLM.Common.Services.Security
     /// <remarks>
     /// Initializes a new instance of the <see cref="MicrosoftGraphIdentityManagementService"/> class.
     /// </remarks>
+    /// <param name="settings">The settings for the Microsoft Graph Identity Management Service.</param>
     /// <param name="graphServiceClient">The GraphServiceClient to be used for API interactions.</param>
     /// <param name="logger">The logger used for logging.</param>
     public class MicrosoftGraphIdentityManagementService(
+        MicrosoftGraphIdentityManagementServiceSettings settings,
         GraphServiceClient graphServiceClient,
         ILogger<MicrosoftGraphIdentityManagementService> logger) : IIdentityManagementService
     {
+        private readonly MicrosoftGraphIdentityManagementServiceSettings _settings = settings;
+        private readonly GraphServiceClient _graphServiceClient = graphServiceClient;   
         private readonly ILogger<MicrosoftGraphIdentityManagementService> _logger = logger;
         private readonly IMemoryCache _groupMembershipCache = new MemoryCache(new MemoryCacheOptions
         {
@@ -68,8 +73,6 @@ namespace FoundationaLLM.Common.Services.Security
             {
                 _cacheLock.Release();
             }
-
-            return [];
         }
 
         /// <inheritdoc/>
@@ -80,7 +83,7 @@ namespace FoundationaLLM.Common.Services.Security
 
             var requestBody = new GetByIdsPostRequestBody
             {
-                Ids = new List<string>(parameters.Ids),
+                Ids = [.. parameters.Ids],
                 Types =
                 [
                     "user",
@@ -89,33 +92,47 @@ namespace FoundationaLLM.Common.Services.Security
                 ],
             };
 
-            // The maximum number of IDs that can be passed in a single request is 1000.
-            var objects =
-                await graphServiceClient.DirectoryObjects.GetByIds.PostAsGetByIdsPostResponseAsync(requestBody);
+            GetByIdsPostResponse? response = null;
 
-            if (objects?.Value == null || objects.Value.Count == 0)
+            if (_settings.RetrieveOnPremisesAccountName)
+            {
+                var requestInfo = _graphServiceClient.DirectoryObjects.GetByIds.ToPostRequestInformation(requestBody);
+                requestInfo.QueryParameters["%24select"] = new[] { "id", "displayName", "mail", "onPremisesSamAccountName" };
+                requestInfo.UrlTemplate += "{?%24select}";
+
+                response = await _graphServiceClient.RequestAdapter.SendAsync<GetByIdsPostResponse>(
+                    requestInfo,
+                    GetByIdsPostResponse.CreateFromDiscriminatorValue);
+            }
+            else
+                response = await _graphServiceClient.DirectoryObjects.GetByIds.PostAsGetByIdsPostResponseAsync(requestBody);
+
+            if (response?.Value == null || response.Value.Count == 0)
             {
                 return [];
             }
 
             var results = new List<ObjectQueryResult>();
 
-            foreach (var directoryObject in objects.Value)
+            foreach (var directoryObject in response.Value)
             {
                 string? email = null;
                 string? displayName = null;
+                string? onPremisesAccountName = null;
                 var objectType = SecurityPrincipalTypes.Other;
 
                 if (directoryObject is User user)
                 {
                     email = user.Mail;
                     displayName = user.DisplayName;
+                    onPremisesAccountName = user.OnPremisesSamAccountName;
                     objectType = SecurityPrincipalTypes.User;
                 }
                 else if (directoryObject is Group group)
                 {
                     email = group.Mail;
                     displayName = group.DisplayName;
+                    onPremisesAccountName = group.OnPremisesSamAccountName;
                     objectType = SecurityPrincipalTypes.Group;
                 }
                 else if (directoryObject is ServicePrincipal servicePrincipal)
@@ -129,6 +146,7 @@ namespace FoundationaLLM.Common.Services.Security
                     Id = directoryObject.Id,
                     Email = email,
                     DisplayName = displayName,
+                    OnPremisesAccountName = onPremisesAccountName,
                     ObjectType = objectType
                 });
             }
@@ -153,13 +171,14 @@ namespace FoundationaLLM.Common.Services.Security
         /// <inheritdoc/>
         public async Task<ObjectQueryResult> GetUserGroupById(string groupId)
         {
-            var group = await graphServiceClient.Groups[groupId].GetAsync();
+            var group = await _graphServiceClient.Groups[groupId].GetAsync();
 
             return new ObjectQueryResult
             {
                 Id = group?.Id,
                 Email = group?.Mail,
                 DisplayName = group?.DisplayName,
+                OnPremisesAccountName = group?.OnPremisesSamAccountName,
                 ObjectType = SecurityPrincipalTypes.Group,
             };
         }
@@ -170,13 +189,13 @@ namespace FoundationaLLM.Common.Services.Security
             var pageSize = queryParams.PageSize ?? 100;
             var userGroups = new List<ObjectQueryResult>();
 
-            var currentPage = 1;
+            //var currentPage = 1;
 
             // Retrieve group accounts with filtering and paging options.
-            var groupsPage = await graphServiceClient.Groups
+            var groupsResponse = await _graphServiceClient.Groups
                 .GetAsync(requestConfiguration =>
                 {
-                    requestConfiguration.QueryParameters.Select = ["id", "displayName", "mail"];
+                    requestConfiguration.QueryParameters.Select = ["id", "displayName", "mail", "onPremisesSamAccountName"];
                     requestConfiguration.QueryParameters.Filter = "securityEnabled eq true";
                     if (!string.IsNullOrEmpty(queryParams.Name))
                     {
@@ -189,44 +208,76 @@ namespace FoundationaLLM.Common.Services.Security
                 });
 
             // Skip pages until we reach the desired page.
-            while (groupsPage?.OdataNextLink != null && currentPage < queryParams.PageNumber)
-            {
-                groupsPage = await graphServiceClient.Groups
-                    .WithUrl(groupsPage.OdataNextLink)
-                    .GetAsync();
-                currentPage++;
-            }
+            //while (groupsResponse?.OdataNextLink != null && currentPage < queryParams.PageNumber)
+            //{
+            //    groupsResponse = await _graphServiceClient.Groups
+            //        .WithUrl(groupsResponse.OdataNextLink)
+            //        .GetAsync();
+            //    currentPage++;
+            //}
 
             // Process the desired page.
-            if (groupsPage?.Value != null)
+            if (groupsResponse?.Value != null)
             {
-                userGroups.AddRange(groupsPage.Value.Select(x => new ObjectQueryResult
+                userGroups.AddRange(groupsResponse.Value.Select(x => new ObjectQueryResult
                 {
                     Id = x?.Id,
                     Email = x?.Mail,
                     DisplayName = x?.DisplayName,
+                    OnPremisesAccountName = x?.OnPremisesSamAccountName,
                     ObjectType = SecurityPrincipalTypes.Group,
                 }));
+            }
+
+            if (_settings.RetrieveOnPremisesAccountName
+                && !string.IsNullOrWhiteSpace(queryParams.Name))
+            {
+                var groupsResponse2 = await _graphServiceClient.Groups
+                    .GetAsync(requestConfiguration =>
+                    {
+                        requestConfiguration.QueryParameters.Select = ["id", "displayName", "mail", "onPremisesSamAccountName"];
+                        requestConfiguration.QueryParameters.Filter = $"startsWith(onPremisesSamAccountName, '{queryParams.Name}') and (securityEnabled eq true)";
+                        requestConfiguration.QueryParameters.Orderby = ["displayName"];
+                        requestConfiguration.QueryParameters.Top = pageSize;
+                        requestConfiguration.QueryParameters.Count = true;
+                        requestConfiguration.Headers.Add("ConsistencyLevel", "eventual");
+                    });
+
+                if (groupsResponse2?.Value != null)
+                {
+                    var existingGroupIds = userGroups.Select(u => u.Id).ToHashSet();
+                    userGroups.AddRange(groupsResponse2.Value
+                        .Where(x => x?.Id != null && !existingGroupIds.Contains(x.Id))
+                        .Select(x => new ObjectQueryResult
+                            {
+                                Id = x?.Id,
+                                Email = x?.Mail,
+                                DisplayName = x?.DisplayName,
+                                OnPremisesAccountName = x?.OnPremisesSamAccountName,
+                                ObjectType = SecurityPrincipalTypes.Group,
+                            }));
+                }
             }
 
             return new PagedResponse<ObjectQueryResult>
             {
                 Items = userGroups,
-                TotalItems = groupsPage?.OdataCount,
-                HasNextPage = groupsPage?.OdataNextLink != null
+                TotalItems = userGroups.Count,
+                HasNextPage = false
             };
         }
 
         /// <inheritdoc/>
         public async Task<ObjectQueryResult> GetUserById(string userId)
         {
-            var user = await graphServiceClient.Users[userId].GetAsync();
+            var user = await _graphServiceClient.Users[userId].GetAsync();
 
             return new ObjectQueryResult
             {
                 Id = user?.Id,
                 Email = user?.Mail,
                 DisplayName = user?.DisplayName,
+                OnPremisesAccountName = user?.OnPremisesSamAccountName,
                 ObjectType = SecurityPrincipalTypes.User,
             };
         }
@@ -237,13 +288,13 @@ namespace FoundationaLLM.Common.Services.Security
             var pageSize = queryParams.PageSize ?? 100;
             var users = new List<ObjectQueryResult>();
 
-            var currentPage = 1;
+            //var currentPage = 1;
 
             // Retrieve users with filtering and paging options.
-            var usersPage = await graphServiceClient.Users
+            var usersResponse = await _graphServiceClient.Users
                 .GetAsync(requestConfiguration =>
                 {
-                    requestConfiguration.QueryParameters.Select = ["id", "displayName", "mail"];
+                    requestConfiguration.QueryParameters.Select = ["id", "displayName", "mail", "onPremisesSamAccountName"];
                     requestConfiguration.QueryParameters.Filter = "accountEnabled eq true";
                     if (!string.IsNullOrEmpty(queryParams.Name))
                     {
@@ -256,38 +307,75 @@ namespace FoundationaLLM.Common.Services.Security
                 });
 
             // Skip pages until we reach the desired page.
-            while (usersPage?.OdataNextLink != null && currentPage < queryParams.PageNumber)
-            {
-                usersPage = await graphServiceClient.Users
-                    .WithUrl(usersPage.OdataNextLink)
-                    .GetAsync();
-                currentPage++;
-            }
+            //while (usersPage?.OdataNextLink != null && currentPage < queryParams.PageNumber)
+            //{
+            //    usersPage = await _graphServiceClient.Users
+            //        .WithUrl(usersPage.OdataNextLink)
+            //        .GetAsync();
+            //    currentPage++;
+            //}
 
             // Process the desired page.
-            if (usersPage?.Value != null)
+            if (usersResponse?.Value != null)
             {
-                users.AddRange(usersPage.Value.Select(x => new ObjectQueryResult
+                users.AddRange(usersResponse.Value.Select(x => new ObjectQueryResult
                 {
                     Id = x?.Id,
                     Email = x?.Mail,
                     DisplayName = x?.DisplayName,
+                    OnPremisesAccountName = x?.OnPremisesSamAccountName,
                     ObjectType = SecurityPrincipalTypes.User,
                 }));
+            }
+
+            if (_settings.RetrieveOnPremisesAccountName
+                && !string.IsNullOrWhiteSpace(queryParams.Name))
+            {
+                var usersResponse2 = await _graphServiceClient.Users
+                    .GetAsync(requestConfiguration =>
+                    {
+                        requestConfiguration.QueryParameters.Select = ["id", "displayName", "mail", "onPremisesSamAccountName"];
+                        requestConfiguration.QueryParameters.Filter = $"startsWith(onPremisesSamAccountName, '{queryParams.Name}') and (accountEnabled eq true)";
+                        requestConfiguration.QueryParameters.Orderby = ["displayName"];
+                        requestConfiguration.QueryParameters.Top = pageSize;
+                        requestConfiguration.QueryParameters.Count = true;
+                        requestConfiguration.Headers.Add("ConsistencyLevel", "eventual");
+                    });
+
+                if (usersResponse2?.Value != null)
+                {
+                    // Ensure no duplicates are added.
+                    var existingUserIds = users.Select(u => u.Id).ToHashSet();
+                    users.AddRange(usersResponse2.Value
+                        .Where(x => x?.Id != null && !existingUserIds.Contains(x.Id))
+                        .Select(x => new ObjectQueryResult
+                            {
+                                Id = x?.Id,
+                                Email = x?.Mail,
+                                DisplayName = x?.DisplayName,
+                                OnPremisesAccountName = x?.OnPremisesSamAccountName,
+                                ObjectType = SecurityPrincipalTypes.User,
+                            }));
+
+                    users = [.. users
+                        .OrderBy(x => x.DisplayName)
+                        .Take(pageSize)
+                    ];
+                }
             }
 
             return new PagedResponse<ObjectQueryResult>
             {
                 Items = users,
-                TotalItems = usersPage?.OdataCount,
-                HasNextPage = usersPage?.OdataNextLink != null
+                TotalItems = users.Count,
+                HasNextPage = false
             };
         }
 
         /// <inheritdoc/>
         public async Task<ObjectQueryResult> GetServicePrincipalById(string servicePrincipalId)
         {
-            var servicePrincipal = await graphServiceClient.ServicePrincipals[servicePrincipalId].GetAsync();
+            var servicePrincipal = await _graphServiceClient.ServicePrincipals[servicePrincipalId].GetAsync();
 
             return new ObjectQueryResult
             {
@@ -304,10 +392,10 @@ namespace FoundationaLLM.Common.Services.Security
             var pageSize = queryParams.PageSize ?? 100;
             var servicePrincipals = new List<ObjectQueryResult>();
 
-            var currentPage = 1;
+            //var currentPage = 1;
 
             // Retrieve users with filtering and paging options.
-            var servicePrincipalsPage = await graphServiceClient.ServicePrincipals
+            var servicePrincipalsResponse = await _graphServiceClient.ServicePrincipals
                 .GetAsync(requestConfiguration =>
                 {
                     requestConfiguration.QueryParameters.Select = ["id", "displayName"];
@@ -323,18 +411,18 @@ namespace FoundationaLLM.Common.Services.Security
                 });
 
             // Skip pages until we reach the desired page.
-            while (servicePrincipalsPage?.OdataNextLink != null && currentPage < queryParams.PageNumber)
-            {
-                servicePrincipalsPage = await graphServiceClient.ServicePrincipals
-                    .WithUrl(servicePrincipalsPage.OdataNextLink)
-                    .GetAsync();
-                currentPage++;
-            }
+            //while (servicePrincipalsPage?.OdataNextLink != null && currentPage < queryParams.PageNumber)
+            //{
+            //    servicePrincipalsPage = await _graphServiceClient.ServicePrincipals
+            //        .WithUrl(servicePrincipalsPage.OdataNextLink)
+            //        .GetAsync();
+            //    currentPage++;
+            //}
 
             // Process the desired page.
-            if (servicePrincipalsPage?.Value != null)
+            if (servicePrincipalsResponse?.Value != null)
             {
-                servicePrincipals.AddRange(servicePrincipalsPage.Value.Select(x => new ObjectQueryResult
+                servicePrincipals.AddRange(servicePrincipalsResponse.Value.Select(x => new ObjectQueryResult
                 {
                     Id = x?.Id,
                     Email = null,
@@ -346,8 +434,8 @@ namespace FoundationaLLM.Common.Services.Security
             return new PagedResponse<ObjectQueryResult>
             {
                 Items = servicePrincipals,
-                TotalItems = servicePrincipalsPage?.OdataCount,
-                HasNextPage = servicePrincipalsPage?.OdataNextLink != null
+                TotalItems = servicePrincipals.Count,
+                HasNextPage = servicePrincipalsResponse?.OdataNextLink != null
             };
         }
 
@@ -355,7 +443,7 @@ namespace FoundationaLLM.Common.Services.Security
         {
             try
             {
-                var groups = await graphServiceClient.Users[userIdentifier].TransitiveMemberOf.GraphGroup.GetAsync(requestConfiguration =>
+                var groups = await _graphServiceClient.Users[userIdentifier].TransitiveMemberOf.GraphGroup.GetAsync(requestConfiguration =>
                 {
                     requestConfiguration.QueryParameters.Top = 500;
                 }).ConfigureAwait(false);
@@ -369,7 +457,7 @@ namespace FoundationaLLM.Common.Services.Security
                     // Invoke paging if required.
                     if (!string.IsNullOrEmpty(groups.OdataNextLink))
                     {
-                        groups = await graphServiceClient.Users[userIdentifier].TransitiveMemberOf.GraphGroup
+                        groups = await _graphServiceClient.Users[userIdentifier].TransitiveMemberOf.GraphGroup
                             .WithUrl(groups.OdataNextLink)
                             .GetAsync();
                     }

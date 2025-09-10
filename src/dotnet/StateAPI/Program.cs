@@ -94,7 +94,7 @@ builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
 });
 
 // Add authorization services.
-builder.AddGroupMembership();
+builder.AddIdentitiyManagement();
 
 // Add services to the container.
 builder.Services.AddAuthorization();

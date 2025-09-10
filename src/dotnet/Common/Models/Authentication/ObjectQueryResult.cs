@@ -26,6 +26,12 @@ namespace FoundationaLLM.Common.Models.Authentication
         public string? DisplayName { get; set; }
 
         /// <summary>
+        /// Gets or sets the name of the on-premises account associated with the security principal.
+        /// </summary>
+        [JsonPropertyName("onpremises_account_name")]
+        public string? OnPremisesAccountName { get; set; }
+
+        /// <summary>
         /// The type of the object.
         /// </summary>
         [JsonPropertyName("object_type")]

@@ -54,7 +54,7 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
 if (builder.Environment.IsDevelopment())
     builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 
-builder.AddGroupMembership();
+builder.AddIdentitiyManagement();
 builder.AddAuthorizationServiceClient();
 
 // Add OpenTelemetry.
