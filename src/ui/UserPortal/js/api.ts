@@ -818,6 +818,64 @@ export default {
 	},
 
 	/**
+	 * Checks if the current user has Agents Contributor role at the instance level.
+	 * @returns Promise resolving to boolean indicating if user has the role.
+	 */
+	async hasAgentsContributorRole(): Promise<boolean> {
+		try {
+			const assignments = await this.fetch<ResourceProviderGetResult<RoleAssignment>[]>(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/filter`,
+				{
+					method: 'POST',
+					body: {
+						scope: `/instances/${this.instanceId}`,
+						security_principal_ids: ["CURRENT_USER_IDS"]
+					},
+				}
+			);
+
+			// Check if any assignment has the Agents Contributor role definition ID
+			const agentsContributorRoleId = '3f28aa77-a854-4aa7-ae11-ffda238275c9';
+			return assignments.some(assignment => 
+				assignment.resource.role_definition_id === agentsContributorRoleId
+			);
+		} catch (error) {
+			console.error('Error checking Agents Contributor role:', error);
+			// Return false on error to be safe (don't show the button if we can't verify)
+			return false;
+		}
+	},
+
+	/**
+	 * Checks if the current user has Prompts Contributor role at the instance level.
+	 * @returns Promise resolving to boolean indicating if user has the role.
+	 */
+	async hasPromptsContributorRole(): Promise<boolean> {
+		try {
+			const assignments = await this.fetch<ResourceProviderGetResult<RoleAssignment>[]>(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/filter`,
+				{
+					method: 'POST',
+					body: {
+						scope: `/instances/${this.instanceId}`,
+						security_principal_ids: ["CURRENT_USER_IDS"]
+					},
+				}
+			);
+
+			// Check if any assignment has the Prompts Contributor role definition ID
+			const promptsContributorRoleId = '479e7b36-5965-4a7f-baf7-84e57be854aa';
+			return assignments.some(assignment => 
+				assignment.resource.role_definition_id === promptsContributorRoleId
+			);
+		} catch (error) {
+			console.error('Error checking Prompts Contributor role:', error);
+			// Return false on error to be safe (don't show the button if we can't verify)
+			return false;
+		}
+	},
+
+	/**
 	 * Retrieves security principals (users/groups) by their IDs.
 	 * @param ids - Array of principal IDs to retrieve.
 	 * @returns Promise resolving to an array of security principals.

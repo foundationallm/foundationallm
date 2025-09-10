@@ -21,6 +21,7 @@
             <div class="flex flex-wrap items-center -mx-4 mb-5">
                 <div class="w-full max-w-full md:max-w-[50%] px-4 mb-5 text-center md:text-left">
                     <nuxt-link 
+                        v-if="hasAgentsContributorRole && hasPromptsContributorRole"
                         to="/create-agent"
                         class="p-button p-component create-agent-button">
                         New Agent <i class="pi pi-plus ml-3"></i>
@@ -203,6 +204,8 @@ export default defineComponent({
         const loading = ref(false);
         const error = ref<string | null>(null);
         const searchByName = ref('');
+        const hasAgentsContributorRole = ref(false);
+        const hasPromptsContributorRole = ref(false);
         const router = useRouter();
 
         // Computed property
@@ -238,6 +241,24 @@ export default defineComponent({
                 error.value = errorMessage;
             } finally {
                 loading.value = false;
+            }
+        };
+
+        const checkAgentsContributorRole = async () => {
+            try {
+                hasAgentsContributorRole.value = await api.hasAgentsContributorRole();
+            } catch (err) {
+                console.error('Failed to check Agents Contributor role:', err);
+                hasAgentsContributorRole.value = false;
+            }
+        };
+
+        const checkPromptsContributorRole = async () => {
+            try {
+                hasPromptsContributorRole.value = await api.hasPromptsContributorRole();
+            } catch (err) {
+                console.error('Failed to check Prompts Contributor role:', err);
+                hasPromptsContributorRole.value = false;
             }
         };
 
@@ -286,6 +307,8 @@ export default defineComponent({
         // Lifecycle
         onMounted(() => {
             loadAgents();
+            checkAgentsContributorRole();
+            checkPromptsContributorRole();
         });
 
         return {
@@ -293,6 +316,8 @@ export default defineComponent({
             loading,
             error,
             searchByName,
+            hasAgentsContributorRole,
+            hasPromptsContributorRole,
             filteredAgents,
             loadAgents,
             getPrimaryRole,
