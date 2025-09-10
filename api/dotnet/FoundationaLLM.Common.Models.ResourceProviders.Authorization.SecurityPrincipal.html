@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Models_ResourceProviders_Authorization_SecurityPrincipal" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Authorization.SecurityPrincipal" class="text-break">
-Class SecurityPrincipal  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Authorization/SecurityPrincipal.cs/#L7"><i class="bi bi-code-slash"></i></a>
+Class SecurityPrincipal  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Authorization/SecurityPrincipal.cs/#L9"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -212,7 +212,7 @@ rights.</p>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Authorization_SecurityPrincipal_Email" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Authorization.SecurityPrincipal.Email">
   Email
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Authorization/SecurityPrincipal.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Authorization/SecurityPrincipal.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the email address associated with the security principal.</p>
@@ -220,7 +220,8 @@ rights.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string? Email { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;email&quot;)]
+public string? Email { get; set; }</code></pre>
   </div>
 
 
@@ -244,7 +245,7 @@ rights.</p>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Authorization_SecurityPrincipal_Id" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Authorization.SecurityPrincipal.Id">
   Id
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Authorization/SecurityPrincipal.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Authorization/SecurityPrincipal.cs/#L14"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the unique identifier of the security principal.</p>
@@ -252,7 +253,41 @@ rights.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public required string Id { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;id&quot;)]
+public required string Id { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_Authorization_SecurityPrincipal_OnPremisesAccountName_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Authorization.SecurityPrincipal.OnPremisesAccountName*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Authorization_SecurityPrincipal_OnPremisesAccountName" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Authorization.SecurityPrincipal.OnPremisesAccountName">
+  OnPremisesAccountName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Authorization/SecurityPrincipal.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the name of the on-premises account associated with the security principal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;onpremises_account_name&quot;)]
+public string? OnPremisesAccountName { get; set; }</code></pre>
   </div>
 
 
@@ -276,7 +311,7 @@ rights.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Authorization/SecurityPrincipal.cs/#L7" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Authorization/SecurityPrincipal.cs/#L9" class="edit-link">Edit this page</a>
         </div>
 
 

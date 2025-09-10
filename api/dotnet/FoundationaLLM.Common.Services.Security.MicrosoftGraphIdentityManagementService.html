@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService" data-uid="FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService" class="text-break">
-Class MicrosoftGraphIdentityManagementService  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L22"><i class="bi bi-code-slash"></i></a>
+Class MicrosoftGraphIdentityManagementService  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -171,9 +171,9 @@ Class MicrosoftGraphIdentityManagementService  <a class="header-action link-seco
 
   <a id="FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService__ctor_" data-uid="FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService__ctor_Microsoft_Graph_GraphServiceClient_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService__" data-uid="FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService.#ctor(Microsoft.Graph.GraphServiceClient,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService})">
-  MicrosoftGraphIdentityManagementService(GraphServiceClient, ILogger&lt;MicrosoftGraphIdentityManagementService&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService__ctor_FoundationaLLM_Common_Models_Configuration_Security_MicrosoftGraphIdentityManagementServiceSettings_Microsoft_Graph_GraphServiceClient_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService__" data-uid="FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService.#ctor(FoundationaLLM.Common.Models.Configuration.Security.MicrosoftGraphIdentityManagementServiceSettings,Microsoft.Graph.GraphServiceClient,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService})">
+  MicrosoftGraphIdentityManagementService(MicrosoftGraphIdentityManagementServiceSettings, GraphServiceClient, ILogger&lt;MicrosoftGraphIdentityManagementService&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Implements group membership services using the Microsoft Graph API.</p>
@@ -181,11 +181,14 @@ Class MicrosoftGraphIdentityManagementService  <a class="header-action link-seco
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MicrosoftGraphIdentityManagementService(GraphServiceClient graphServiceClient, ILogger&lt;MicrosoftGraphIdentityManagementService&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public MicrosoftGraphIdentityManagementService(MicrosoftGraphIdentityManagementServiceSettings settings, GraphServiceClient graphServiceClient, ILogger&lt;MicrosoftGraphIdentityManagementService&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
+    <dt><code>settings</code> <a class="xref" href="FoundationaLLM.Common.Models.Configuration.Security.MicrosoftGraphIdentityManagementServiceSettings.html">MicrosoftGraphIdentityManagementServiceSettings</a></dt>
+    <dd><p>The settings for the Microsoft Graph Identity Management Service.</p>
+</dd>
     <dt><code>graphServiceClient</code> <span class="xref">GraphServiceClient</span></dt>
     <dd><p>The GraphServiceClient to be used for API interactions.</p>
 </dd>
@@ -201,7 +204,7 @@ Class MicrosoftGraphIdentityManagementService  <a class="header-action link-seco
 
 
 
-  <h4 class="section" id="FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService__ctor_Microsoft_Graph_GraphServiceClient_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService___remarks">Remarks</h4>
+  <h4 class="section" id="FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService__ctor_FoundationaLLM_Common_Models_Configuration_Security_MicrosoftGraphIdentityManagementServiceSettings_Microsoft_Graph_GraphServiceClient_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService___remarks">Remarks</h4>
   <div class="markdown level1 remarks"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService.html">MicrosoftGraphIdentityManagementService</a> class.</p>
 </div>
 
@@ -216,7 +219,7 @@ Class MicrosoftGraphIdentityManagementService  <a class="header-action link-seco
 
   <h3 id="FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService_GetGroupsForPrincipal_System_String_" data-uid="FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService.GetGroupsForPrincipal(System.String)">
   GetGroupsForPrincipal(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L45"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves the group identifiers list of the groups where the specified user principal is a member.</p>
@@ -254,7 +257,7 @@ Class MicrosoftGraphIdentityManagementService  <a class="header-action link-seco
 
   <h3 id="FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService_GetObjectsByIds_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_" data-uid="FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService.GetObjectsByIds(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)">
   GetObjectsByIds(ObjectQueryParameters)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L79"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves user and group objects by the passed in list of IDs.</p>
@@ -291,7 +294,7 @@ Class MicrosoftGraphIdentityManagementService  <a class="header-action link-seco
 
   <h3 id="FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService_GetServicePrincipalById_System_String_" data-uid="FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService.GetServicePrincipalById(System.String)">
   GetServicePrincipalById(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L288"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L376"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a security principal by its identifier.</p>
@@ -329,7 +332,7 @@ Class MicrosoftGraphIdentityManagementService  <a class="header-action link-seco
 
   <h3 id="FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService_GetServicePrincipals_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_" data-uid="FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService.GetServicePrincipals(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)">
   GetServicePrincipals(ObjectQueryParameters)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L302"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L390"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a list of service principals with filtering and paging options.</p>
@@ -367,7 +370,7 @@ Class MicrosoftGraphIdentityManagementService  <a class="header-action link-seco
 
   <h3 id="FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService_GetUserById_System_String_" data-uid="FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService.GetUserById(System.String)">
   GetUserById(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L221"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L271"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a user account by its identifier.</p>
@@ -405,7 +408,7 @@ Class MicrosoftGraphIdentityManagementService  <a class="header-action link-seco
 
   <h3 id="FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService_GetUserGroupById_System_String_" data-uid="FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService.GetUserGroupById(System.String)">
   GetUserGroupById(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L172"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a group account by its identifier.</p>
@@ -443,7 +446,7 @@ Class MicrosoftGraphIdentityManagementService  <a class="header-action link-seco
 
   <h3 id="FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService_GetUserGroups_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_" data-uid="FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService.GetUserGroups(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)">
   GetUserGroups(ObjectQueryParameters)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L168"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L187"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a list of group accounts with filtering and paging options.</p>
@@ -481,7 +484,7 @@ Class MicrosoftGraphIdentityManagementService  <a class="header-action link-seco
 
   <h3 id="FoundationaLLM_Common_Services_Security_MicrosoftGraphIdentityManagementService_GetUsers_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_" data-uid="FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService.GetUsers(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)">
   GetUsers(ObjectQueryParameters)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L235"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L286"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a list of user accounts with filtering and paging options.</p>
@@ -519,7 +522,7 @@ Class MicrosoftGraphIdentityManagementService  <a class="header-action link-seco
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L22" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs/#L24" class="edit-link">Edit this page</a>
         </div>
 
 

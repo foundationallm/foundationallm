@@ -2841,39 +2841,6 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
 
 
-  <a id="FoundationaLLM_DependencyInjection_AddGroupMembership_" data-uid="FoundationaLLM.DependencyInjection.AddGroupMembership*"></a>
-
-  <h3 id="FoundationaLLM_DependencyInjection_AddGroupMembership_Microsoft_Extensions_Hosting_IHostApplicationBuilder_" data-uid="FoundationaLLM.DependencyInjection.AddGroupMembership(Microsoft.Extensions.Hosting.IHostApplicationBuilder)">
-  AddGroupMembership(IHostApplicationBuilder)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/DependencyInjection.cs/#L19"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Add group membership services to dependency injection container.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void AddGroupMembership(this IHostApplicationBuilder builder)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>builder</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a></dt>
-    <dd><p>The host application builder.</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
   <a id="FoundationaLLM_DependencyInjection_AddHttpClientFactoryService_" data-uid="FoundationaLLM.DependencyInjection.AddHttpClientFactoryService*"></a>
 
   <h3 id="FoundationaLLM_DependencyInjection_AddHttpClientFactoryService_Microsoft_Extensions_DependencyInjection_IServiceCollection_" data-uid="FoundationaLLM.DependencyInjection.AddHttpClientFactoryService(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
@@ -2926,6 +2893,78 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
   <dl class="parameters">
     <dt><code>builder</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a></dt>
     <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a> application builder managing the dependency injection container.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_DependencyInjection_AddIdentitiyManagement_" data-uid="FoundationaLLM.DependencyInjection.AddIdentitiyManagement*"></a>
+
+  <h3 id="FoundationaLLM_DependencyInjection_AddIdentitiyManagement_Microsoft_Extensions_DependencyInjection_IServiceCollection_Microsoft_Extensions_Configuration_IConfiguration_" data-uid="FoundationaLLM.DependencyInjection.AddIdentitiyManagement(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+  AddIdentitiyManagement(IServiceCollection, IConfiguration)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/DependencyInjection.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Registers the FoundationaLLM.Conversation resource provider as a singleton service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddIdentitiyManagement(this IServiceCollection services, IConfiguration configuration)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>services</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a> dependency injection container service collection.</p>
+</dd>
+    <dt><code>configuration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a> configuration provider.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_DependencyInjection_AddIdentitiyManagement_Microsoft_Extensions_DependencyInjection_IServiceCollection_Microsoft_Extensions_Configuration_IConfiguration__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Requires an <a class="xref" href="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html">IAzureCosmosDBService</a> service to be also registered with the dependency injection container.</p>
+</div>
+
+
+
+
+  <a id="FoundationaLLM_DependencyInjection_AddIdentitiyManagement_" data-uid="FoundationaLLM.DependencyInjection.AddIdentitiyManagement*"></a>
+
+  <h3 id="FoundationaLLM_DependencyInjection_AddIdentitiyManagement_Microsoft_Extensions_Hosting_IHostApplicationBuilder_" data-uid="FoundationaLLM.DependencyInjection.AddIdentitiyManagement(Microsoft.Extensions.Hosting.IHostApplicationBuilder)">
+  AddIdentitiyManagement(IHostApplicationBuilder)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/DependencyInjection.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Add group membership services to dependency injection container.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddIdentitiyManagement(this IHostApplicationBuilder builder)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>builder</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostapplicationbuilder">IHostApplicationBuilder</a></dt>
+    <dd><p>The host application builder.</p>
 </dd>
   </dl>
 
