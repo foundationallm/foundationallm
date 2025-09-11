@@ -248,6 +248,7 @@
 					<div class="flex flex-wrap items-center -mx-4 mb-5">
 						<div class="w-full max-w-[50%] px-4 mb-5 text-center md:text-left">
 							<nuxt-link 
+								v-if="hasAgentsContributorRole && hasPromptsContributorRole"
 								to="/create-agent"
 								class="p-button p-component create-agent-button">
 								New Agent <i class="pi pi-plus ml-3"></i>
@@ -435,6 +436,8 @@ import Checkbox from 'primevue/checkbox';
 				agentSearchTerm: '',
 				showEnabledOnly: false,
 				activeTabIndex: 0,
+				hasAgentsContributorRole: false,
+				hasPromptsContributorRole: false,
 			};
 		},
 
@@ -500,6 +503,7 @@ import Checkbox from 'primevue/checkbox';
 			await this.setAgentOptions();
 			await this.loadUserProfile();
 			await this.loadgetAgents();
+			await this.checkContributorRoles();
 		},
 
 		methods: {
@@ -676,6 +680,18 @@ import Checkbox from 'primevue/checkbox';
 			async refreshAgents() {
 				await this.loadUserProfile();
 				await this.loadgetAgents();
+			},
+
+			async checkContributorRoles() {
+				try {
+					const roles = await api.checkContributorRoles();
+					this.hasAgentsContributorRole = roles.hasAgentsContributorRole;
+					this.hasPromptsContributorRole = roles.hasPromptsContributorRole;
+				} catch (error) {
+					console.error('Failed to check contributor roles:', error);
+					this.hasAgentsContributorRole = false;
+					this.hasPromptsContributorRole = false;
+				}
 			},
 
 			selectAgent(getAgents: AgentOption) {
