@@ -818,6 +818,80 @@ export default {
 	},
 
 	/**
+	 * Checks if the current user has both Agents and Prompts Contributor roles at the instance level.
+	 * This method makes a single API call to fetch all role assignments and checks for both roles.
+	 * @returns Promise resolving to an object with both role check results.
+	 */
+	async checkContributorRoles(): Promise<{ hasAgentsContributorRole: boolean; hasPromptsContributorRole: boolean }> {
+		try {
+			const assignments = await this.fetch<ResourceProviderGetResult<RoleAssignment>[]>(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/filter`,
+				{
+					method: 'POST',
+					body: {
+						scope: `/instances/${this.instanceId}`,
+						security_principal_ids: ["CURRENT_USER_IDS"]
+					},
+				}
+			);
+
+			// Role definition IDs
+			const agentsContributorRoleId = '3f28aa77-a854-4aa7-ae11-ffda238275c9';
+			const promptsContributorRoleId = '479e7b36-5965-4a7f-baf7-84e57be854aa';
+
+			// Check for both roles in a single pass
+			let hasAgentsContributorRole = false;
+			let hasPromptsContributorRole = false;
+
+			for (const assignment of assignments) {
+				const roleId = assignment.resource.role_definition_id;
+				if (roleId === agentsContributorRoleId) {
+					hasAgentsContributorRole = true;
+				}
+				if (roleId === promptsContributorRoleId) {
+					hasPromptsContributorRole = true;
+				}
+				// Early exit if we found both roles
+				if (hasAgentsContributorRole && hasPromptsContributorRole) {
+					break;
+				}
+			}
+
+			return {
+				hasAgentsContributorRole,
+				hasPromptsContributorRole
+			};
+		} catch (error) {
+			console.error('Error checking contributor roles:', error);
+			// Return false for both roles on error to be safe
+			return {
+				hasAgentsContributorRole: false,
+				hasPromptsContributorRole: false
+			};
+		}
+	},
+
+	/**
+	 * Checks if the current user has Agents Contributor role at the instance level.
+	 * @deprecated Use checkContributorRoles() instead for better performance.
+	 * @returns Promise resolving to boolean indicating if user has the role.
+	 */
+	async hasAgentsContributorRole(): Promise<boolean> {
+		const result = await this.checkContributorRoles();
+		return result.hasAgentsContributorRole;
+	},
+
+	/**
+	 * Checks if the current user has Prompts Contributor role at the instance level.
+	 * @deprecated Use checkContributorRoles() instead for better performance.
+	 * @returns Promise resolving to boolean indicating if user has the role.
+	 */
+	async hasPromptsContributorRole(): Promise<boolean> {
+		const result = await this.checkContributorRoles();
+		return result.hasPromptsContributorRole;
+	},
+
+	/**
 	 * Retrieves security principals (users/groups) by their IDs.
 	 * @param ids - Array of principal IDs to retrieve.
 	 * @returns Promise resolving to an array of security principals.
