@@ -503,8 +503,7 @@ import Checkbox from 'primevue/checkbox';
 			await this.setAgentOptions();
 			await this.loadUserProfile();
 			await this.loadgetAgents();
-			await this.checkAgentsContributorRole();
-			await this.checkPromptsContributorRole();
+			await this.checkContributorRoles();
 		},
 
 		methods: {
@@ -683,20 +682,14 @@ import Checkbox from 'primevue/checkbox';
 				await this.loadgetAgents();
 			},
 
-			async checkAgentsContributorRole() {
+			async checkContributorRoles() {
 				try {
-					this.hasAgentsContributorRole = await api.hasAgentsContributorRole();
+					const roles = await api.checkContributorRoles();
+					this.hasAgentsContributorRole = roles.hasAgentsContributorRole;
+					this.hasPromptsContributorRole = roles.hasPromptsContributorRole;
 				} catch (error) {
-					console.error('Failed to check Agents Contributor role:', error);
+					console.error('Failed to check contributor roles:', error);
 					this.hasAgentsContributorRole = false;
-				}
-			},
-
-			async checkPromptsContributorRole() {
-				try {
-					this.hasPromptsContributorRole = await api.hasPromptsContributorRole();
-				} catch (error) {
-					console.error('Failed to check Prompts Contributor role:', error);
 					this.hasPromptsContributorRole = false;
 				}
 			},
