@@ -426,7 +426,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 {
                     _logger.LogWarning("The action {ActionName} is not allowed on the resource {ResourcePath} for the principal {PrincipalId}.",
                         authorizationRequest.Action,
-                        resourcePath,
+                        resourcePath.RawResourcePath,
                         authorizationRequest.UserContext.SecurityPrincipalId);
                 }
 

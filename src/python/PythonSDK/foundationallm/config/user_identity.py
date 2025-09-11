@@ -9,6 +9,7 @@ class UserIdentity(BaseModel):
     user_name: str = None
     upn: str = None
     user_id: str = None
+    group_ids: list[str] = None
 
     @staticmethod
     def from_json(json_dict):
@@ -19,5 +20,6 @@ class UserIdentity(BaseModel):
                 name=json_dict['name'],
                 user_name=json_dict['user_name'],
                 upn=json_dict['upn'],
-                user_id=json_dict['user_id']
+                user_id=json_dict['user_id'],
+                group_ids=json_dict['group_ids']
             )
