@@ -244,20 +244,14 @@ export default defineComponent({
             }
         };
 
-        const checkAgentsContributorRole = async () => {
+        const checkContributorRoles = async () => {
             try {
-                hasAgentsContributorRole.value = await api.hasAgentsContributorRole();
+                const result = await api.checkContributorRoles();
+                hasAgentsContributorRole.value = result.hasAgentsContributorRole;
+                hasPromptsContributorRole.value = result.hasPromptsContributorRole;
             } catch (err) {
-                console.error('Failed to check Agents Contributor role:', err);
+                console.error('Failed to check contributor roles:', err);
                 hasAgentsContributorRole.value = false;
-            }
-        };
-
-        const checkPromptsContributorRole = async () => {
-            try {
-                hasPromptsContributorRole.value = await api.hasPromptsContributorRole();
-            } catch (err) {
-                console.error('Failed to check Prompts Contributor role:', err);
                 hasPromptsContributorRole.value = false;
             }
         };
@@ -307,8 +301,7 @@ export default defineComponent({
         // Lifecycle
         onMounted(() => {
             loadAgents();
-            checkAgentsContributorRole();
-            checkPromptsContributorRole();
+            checkContributorRoles();
         });
 
         return {
