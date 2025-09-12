@@ -835,9 +835,9 @@ export default {
 				}
 			);
 
-			// Role definition IDs
-			const agentsContributorRoleId = '3f28aa77-a854-4aa7-ae11-ffda238275c9';
-			const promptsContributorRoleId = '479e7b36-5965-4a7f-baf7-84e57be854aa';
+			// Role definition IDs - using the correct format with full path
+			const agentsContributorRoleId = '/providers/FoundationaLLM.Authorization/roleDefinitions/3f28aa77-a854-4aa7-ae11-ffda238275c9';
+			const promptsContributorRoleId = '/providers/FoundationaLLM.Authorization/roleDefinitions/479e7b36-5965-4a7f-baf7-84e57be854aa';
 
 			// Check for both roles in a single pass
 			let hasAgentsContributorRole = false;
