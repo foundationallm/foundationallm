@@ -75,6 +75,10 @@ namespace FoundationaLLM.Core.Services
                                 [AgentResourceTypeNames.AgentFiles] = new ResourceTypeAvailability
                                 {
                                     IsResourceTypeAvailable = true
+                                },
+                                [AgentResourceTypeNames.AgentFileToolAssociations] = new ResourceTypeAvailability
+                                {
+                                    IsResourceTypeAvailable = true
                                 }
                             }
                         },
