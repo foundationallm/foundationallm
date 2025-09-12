@@ -1298,6 +1298,7 @@ export default defineComponent({
 
             let filesUploaded = 0;
             let filesFailed = 0;
+            let associationsFailed = 0;
 
             for (const file of this.uploadedFiles) {
                 try {
@@ -1310,7 +1311,31 @@ export default defineComponent({
                     const formData = new FormData();
                     formData.append('file', uploadFile);
 
-                    await api.uploadAgentFile(this.selectedAgentName, file.name, formData);
+                    // Upload the file
+                    const uploadResult = await api.uploadAgentFile(this.selectedAgentName, file.name, formData);
+                    
+                    // Extract file ID from upload result
+                    let fileId = null;
+                    if (uploadResult?.resource?.name) {
+                        fileId = uploadResult.resource.name;
+                    } else if (uploadResult?.name) {
+                        fileId = uploadResult.name;
+                    } else {
+                        // If we can't get the file ID from the response, try to extract it from the file name
+                        // This is a fallback - ideally the API should return the file ID
+                        fileId = file.name;
+                    }
+
+                    // Associate the file with Knowledge tool
+                    if (fileId) {
+                        try {
+                            await api.associateFileWithKnowledgeTool(this.selectedAgentName, fileId);
+                        } catch (associationError: any) {
+                            console.error('File association error:', associationError);
+                            associationsFailed++;
+                            // Continue with the upload process even if association fails
+                        }
+                    }
 
                     filesUploaded++;
 
@@ -1323,6 +1348,32 @@ export default defineComponent({
             if (filesUploaded > 0) {
                 this.uploadedFiles = [];
                 await this.loadAgentFiles();
+                
+                // Show appropriate success/error messages
+                if (associationsFailed > 0) {
+                    this.$toast.add({ 
+                        severity: 'warn', 
+                        summary: 'Files Uploaded', 
+                        detail: `${filesUploaded} file(s) uploaded successfully, but ${associationsFailed} file(s) could not be associated with Knowledge tool.`, 
+                        life: 5000 
+                    });
+                } else {
+                    this.$toast.add({ 
+                        severity: 'success', 
+                        summary: 'Files Uploaded', 
+                        detail: `${filesUploaded} file(s) uploaded and associated with Knowledge tool successfully.`, 
+                        life: 3000 
+                    });
+                }
+            }
+
+            if (filesFailed > 0) {
+                this.$toast.add({ 
+                    severity: 'error', 
+                    summary: 'Upload Failed', 
+                    detail: `${filesFailed} file(s) failed to upload.`, 
+                    life: 5000 
+                });
             }
         },
 

@@ -609,6 +609,40 @@ export default {
 	},
 
 	/**
+	 * Associates a file with the Knowledge tool for an agent.
+	 * @param agentName - The name of the agent.
+	 * @param fileId - The unique identifier of the file to associate.
+	 * @returns A promise that resolves to the association result.
+	 */
+	async associateFileWithKnowledgeTool(agentName: string, fileId: string): Promise<any> {
+		try {
+			const payload = {
+				agent_file_tool_associations: {
+					[`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFiles/${fileId}`]: {
+						[`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/tools/Code`]: false,
+						[`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/tools/Knowledge`]: true
+					}
+				}
+			};
+
+			const result = await this.fetch(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFileToolAssociations/${fileId}`,
+				{
+					method: 'POST',
+					body: JSON.stringify(payload),
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+			);
+			return result;
+		} catch (error) {
+			console.error('Error associating file with Knowledge tool:', error);
+			throw error;
+		}
+	},
+
+	/**
 	 * Retrieves the list of AI models from the management endpoint.
 	 * Returns an array of ResourceBase (see aiModel.ts) as required.
 	 */
