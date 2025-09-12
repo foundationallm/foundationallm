@@ -5,9 +5,11 @@
     /// </summary>
     /// <param name="ResourceTypeName">The name of the resource type.</param>
     /// <param name="ResourceType">The object type of the resource type.</param>
+    /// <param name="ResourceTypePath">The path of the resource type.</param>
     public record ResourceTypeInstance(
         string ResourceTypeName,
-        Type ResourceType)
+        Type ResourceType,
+        string ResourceTypePath)
     {
         /// <summary>
         /// An optional resource type instance unique identifier.
@@ -18,6 +20,18 @@
         /// An optional action to be executed on the resource instance.
         /// </summary>
         public string? Action;
+
+        /// <summary>
+        /// The object identifier of the resource type instance.
+        /// </summary>
+        public string ObjectId =>
+            ResourceId is null
+                ? Action is null
+                    ? ResourceTypePath
+                    : $"{ResourceTypePath}/{Action}"
+                : Action is null
+                    ? $"{ResourceTypePath}/{ResourceId}"
+                    : $"{ResourceTypePath}/{ResourceId}/{Action}";
 
         /// <summary>
         /// Checks whether the current instance includes another <see cref="ResourceTypeInstance"/> instance.

@@ -1,0 +1,12 @@
+# dotnet/.dockerignore
+.git
+.vs
+**/bin
+**/obj
+**/*.user
+**/*.suo
+**/node_modules
+**/tests
+**/*.pyc
+*.log
+.DS_Store
