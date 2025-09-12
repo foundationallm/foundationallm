@@ -1354,7 +1354,7 @@ export default defineComponent({
                     this.$toast.add({ 
                         severity: 'warn', 
                         summary: 'Files Uploaded', 
-                        detail: `${filesUploaded} file(s) uploaded successfully, but ${associationsFailed} file(s) could not be associated with Knowledge tool.`, 
+                        detail: `${filesUploaded} file(s) uploaded successfully, however ${associationsFailed} file(s) could not be associated with Knowledge tool.`, 
                         life: 5000 
                     });
                 } else {
