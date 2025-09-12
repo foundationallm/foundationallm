@@ -1145,7 +1145,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             if (resourcePath.ResourceId != WellKnownResourceIdentifiers.AllResources
                 && (
                     agentFileToolAssociationRequest.AgentFileToolAssociations.Count != 1
-                    || !agentFileToolAssociationRequest.AgentFileToolAssociations.ContainsKey($"/{agentFilesResourcePath!.RawResourcePath}/{resourcePath.ResourceId}")
+                    || !agentFileToolAssociationRequest.AgentFileToolAssociations.ContainsKey($"{agentFilesResourcePath!.RawResourcePath}/{resourcePath.ResourceId}")
                 ))
                 throw new ResourceProviderException("The update agent file tool association request is invalid.",
                     StatusCodes.Status400BadRequest);
