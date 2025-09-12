@@ -35,6 +35,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Graph.Models;
 using System.Data;
 using System.Text;
 using System.Text.Json;
@@ -1132,14 +1133,21 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 AgentResourceProviderMetadata.AllowedResourceTypes,
                 false,
                 out var agentFilesResourcePath))
-                throw new ResourceProviderException("The object definition is invalid.",
+                throw new ResourceProviderException("The agent files resource path cannot be derived from the request.",
                     StatusCodes.Status400BadRequest);
 
             var agentFileResources = await LoadAgentFiles(agentFilesResourcePath!, userIdentity, new ResourceProviderGetOptions() { LoadContent = false });
             var agentFiles = agentFileResources.Select(x => x.Resource).ToList();
 
             var agentFileToolAssociationRequest = JsonSerializer.Deserialize<AgentFileToolAssociationRequest>(serializedResource)
-                ?? throw new ResourceProviderException("The object definition is invalid.",
+                ?? throw new ResourceProviderException("The update agent file tool association request is invalid.",
+                    StatusCodes.Status400BadRequest);
+            if (resourcePath.ResourceId != WellKnownResourceIdentifiers.AllResources
+                && (
+                    agentFileToolAssociationRequest.AgentFileToolAssociations.Count != 1
+                    || !agentFileToolAssociationRequest.AgentFileToolAssociations.ContainsKey($"/{agentFilesResourcePath!.RawResourcePath}/{resourcePath.ResourceId}")
+                ))
+                throw new ResourceProviderException("The update agent file tool association request is invalid.",
                     StatusCodes.Status400BadRequest);
 
             var filePath = $"/{_name}/{_instanceSettings.Id}/{resourcePath.MainResourceId!}/Associations.json";
