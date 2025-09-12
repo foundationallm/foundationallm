@@ -1234,41 +1234,45 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 }
             }
 
-            // Ensure file associations that are no longer present in the request are removed.
-            var associationNamesToRemove = new List<string>();
-            foreach (var existingAssociation in existingAssociations.Where(ea =>
-                !agentFileToolAssociationRequest.AgentFileToolAssociations.ContainsKey(ea.FileObjectId)))
+            if (resourcePath.ResourceId == WellKnownResourceIdentifiers.AllResources)
             {
-                foreach (var toolObjectId in existingAssociation.AssociatedResourceObjectIds!.Keys)
+                // The request refers to all the file associations of the agent, so we need to
+                // ensure that file associations that are not present in the request are removed.
+                var associationNamesToRemove = new List<string>();
+                foreach (var existingAssociation in existingAssociations.Where(ea =>
+                    !agentFileToolAssociationRequest.AgentFileToolAssociations.ContainsKey(ea.FileObjectId)))
                 {
-                    try
+                    foreach (var toolObjectId in existingAssociation.AssociatedResourceObjectIds!.Keys)
                     {
-                        await RemoveFileToolAssociation(
-                            existingAssociation.FileObjectId,
-                            toolObjectId,
-                            existingAssociation,
-                            resourcePath,
-                            userIdentity);
-                        // Only remove associations that were successfully processed for deletion.
-                        // If an error occurs, the association will not be removed and will be retried next time.
-                        associationNamesToRemove.Add(existingAssociation.Name);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex,
-                            "Error when removing the association between the {File} file and the {Tool} tool.",
-                            existingAssociation.FileObjectId, toolObjectId);
-
-                        errors.Add(new AgentFileToolAssociationError()
+                        try
                         {
-                            FileObjectId = existingAssociation.FileObjectId,
-                            ToolObjectId = toolObjectId,
-                            ErrorMessage = $"Error when removing the association between the {existingAssociation.FileObjectId} file and the {toolObjectId} tool."
-                        });
+                            await RemoveFileToolAssociation(
+                                existingAssociation.FileObjectId,
+                                toolObjectId,
+                                existingAssociation,
+                                resourcePath,
+                                userIdentity);
+                            // Only remove associations that were successfully processed for deletion.
+                            // If an error occurs, the association will not be removed and will be retried next time.
+                            associationNamesToRemove.Add(existingAssociation.Name);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex,
+                                "Error when removing the association between the {File} file and the {Tool} tool.",
+                                existingAssociation.FileObjectId, toolObjectId);
+
+                            errors.Add(new AgentFileToolAssociationError()
+                            {
+                                FileObjectId = existingAssociation.FileObjectId,
+                                ToolObjectId = toolObjectId,
+                                ErrorMessage = $"Error when removing the association between the {existingAssociation.FileObjectId} file and the {toolObjectId} tool."
+                            });
+                        }
                     }
                 }
+                existingAssociations.RemoveAll(x => associationNamesToRemove.Contains(x.Name));
             }
-            existingAssociations.RemoveAll(x => associationNamesToRemove.Contains(x.Name));
 
             await _storageService.WriteFileAsync(
                 _storageContainerName,
