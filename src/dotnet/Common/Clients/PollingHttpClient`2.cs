@@ -195,6 +195,21 @@ namespace FoundationaLLM.Common.Clients
                             }
                             
                             break;
+                        case OperationStatus.Failed:
+                            if (operationStatus is null)
+                                _logger.LogError("The operation with id {OperationId} returned a Failed status without a Result.", runningOperation.OperationId);
+                            else if (operationStatus.Result is JsonElement jsonElementFailed)
+                            {
+                                // For JsonElement show the raw JSON. If it's a string value, present the string value.
+                                string operationResultString = jsonElementFailed.ValueKind == JsonValueKind.String
+                                    ? jsonElementFailed.GetString() ?? string.Empty
+                                    : jsonElementFailed.GetRawText();
+
+                                _logger.LogError("The operation with id {OperationId} returned a Failed status with the following Result: {OperationResult}",
+                                    runningOperation.OperationId,
+                                    operationResultString);
+                            }
+                            return default;
                         default:
                             _logger.LogError("The operation status {OperationStatus} is not supported.", operationStatus.Status);
                             return default;
