@@ -83,7 +83,7 @@ namespace FoundationaLLM.Core.Services
             client.Timeout = TimeSpan.FromSeconds(30);
             client.BaseAddress = new Uri("https://graph.microsoft.com/v1.0/");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", oneDriveItem.AccessToken);
-;
+
             var item = await client.GetAsync($"drives/{oneDriveItem.DriveId}/items/{oneDriveItem.Id}");
 
             if (!item.IsSuccessStatusCode)
@@ -103,7 +103,7 @@ namespace FoundationaLLM.Core.Services
 
             var fileName = itemObj?.Name ?? Guid.NewGuid().ToString();
             var name = $"a-{Guid.NewGuid()}-{DateTime.UtcNow.Ticks}";
-            var contentType = itemObj?.MimeType ?? "application/octet-stream";
+            var contentType = itemObj?.File?.MimeType ?? "application/octet-stream";
 
             var result = await _coreService.UploadAttachment(
                     instanceId,
@@ -123,7 +123,7 @@ namespace FoundationaLLM.Core.Services
                 Id = oneDriveItem.Id,
                 ObjectId = result.ObjectId,
                 Name = fileName,
-                MimeType = contentType
+                File = itemObj!.File,
             };
         }
     }
