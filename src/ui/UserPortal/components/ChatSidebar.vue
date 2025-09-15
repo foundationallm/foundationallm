@@ -247,12 +247,17 @@
 				<TabPanel header="Agents">
 					<div class="flex flex-wrap items-center -mx-4 mb-5">
 						<div class="w-full max-w-[50%] px-4 mb-5 text-center md:text-left">
-							<nuxt-link 
-								v-if="hasAgentsContributorRole && hasPromptsContributorRole"
-								to="/create-agent"
-								class="p-button p-component create-agent-button">
-								New Agent <i class="pi pi-plus ml-3"></i>
-							</nuxt-link>
+							<!-- Show enabled agents only checkbox -->
+							<div class="flex items-center csm-sEnabled-checkbox-1">
+								<Checkbox
+									v-model="showEnabledOnly"
+									inputId="show-enabled-only"
+									:binary="true"
+								/>
+								<label for="show-enabled-only" class="ml-2 text-sm font-medium">
+									Show enabled agents only
+								</label>
+							</div>
 						</div>
 
 						<div class="w-full max-w-[50%] px-4 mb-5 text-center md:text-left">
@@ -264,18 +269,6 @@
 								aria-label="Search agents by name"
 							/>
 						</div>
-					</div>
-					
-					<!-- Show enabled only checkbox -->
-					<div class="flex items-center mb-4 csm-sEnabled-checkbox-1">
-						<Checkbox
-							v-model="showEnabledOnly"
-							inputId="show-enabled-only"
-							:binary="true"
-						/>
-						<label for="show-enabled-only" class="ml-2 text-sm font-medium">
-							Show enabled only
-						</label>
 					</div>
 					
 					<div class="csm-table-container-1 mb-4">
@@ -436,8 +429,6 @@ import Checkbox from 'primevue/checkbox';
 				agentSearchTerm: '',
 				showEnabledOnly: false,
 				activeTabIndex: 0,
-				hasAgentsContributorRole: false,
-				hasPromptsContributorRole: false,
 			};
 		},
 
@@ -503,7 +494,6 @@ import Checkbox from 'primevue/checkbox';
 			await this.setAgentOptions();
 			await this.loadUserProfile();
 			await this.loadgetAgents();
-			await this.checkContributorRoles();
 		},
 
 		methods: {
@@ -682,17 +672,6 @@ import Checkbox from 'primevue/checkbox';
 				await this.loadgetAgents();
 			},
 
-			async checkContributorRoles() {
-				try {
-					const roles = await api.checkContributorRoles();
-					this.hasAgentsContributorRole = roles.hasAgentsContributorRole;
-					this.hasPromptsContributorRole = roles.hasPromptsContributorRole;
-				} catch (error) {
-					console.error('Failed to check contributor roles:', error);
-					this.hasAgentsContributorRole = false;
-					this.hasPromptsContributorRole = false;
-				}
-			},
 
 			selectAgent(getAgents: AgentOption) {
 				this.$emit('agent-selected', getAgents);
@@ -1163,10 +1142,6 @@ import Checkbox from 'primevue/checkbox';
 	}
 	.csm-table-1 thead tr th:last-child, .csm-table-1 tbody tr td:last-child{
 		text-align: center;
-	}
-	.create-agent-button{
-		text-decoration: none;
-		font-weight: 600;
 	}
 	.csm-table-edit-btn-1.p-button:not(.p-button-text){
 		background-color: transparent !important;
