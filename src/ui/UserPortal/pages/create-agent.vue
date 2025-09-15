@@ -340,11 +340,6 @@
                                 <div class="mt-10">
                                     <div class="flex justify-between items-center mb-3">
                                         <p class="block text-base text-[#898989]">Existing File(s)</p>
-                                        <div class="flex items-center gap-2">
-                                            <Button label="Load Files" severity="secondary" @click="loadAgentFiles"
-                                                :loading="filesLoading" :disabled="filesLoading || !selectedAgentName"
-                                                class="min-h-[35px] min-w-[100px]" />
-                                        </div>
                                     </div>
 
                                     <div v-if="filesLoading" class="loading-container">
@@ -365,7 +360,6 @@
                                             <thead>
                                                 <tr>
                                                     <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white">Filename</th>
-                                                    <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white">File ID</th>
                                                     <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white text-center">Actions</th>
                                                 </tr>
                                             </thead>
@@ -374,7 +368,6 @@
                                                     <td class="mnt-b-bottom p-3">{{ f.resource?.display_name ||
                                                         f.resource?.filename || '-'
                                                     }}</td>
-                                                    <td class="mnt-b-bottom p-3">{{ f.resource?.name }}</td>
                                                     <td class="mnt-b-bottom p-3 text-center">
                                                         <Button
                                                             label="Delete"
