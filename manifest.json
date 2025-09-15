@@ -13550,6 +13550,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Core.Models.Configuration.OneDriveWorkSchoolFile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Core.Models.Configuration.OneDriveWorkSchoolFile.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Core.Models.Configuration.OneDriveWorkSchoolFile",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Core.Models.Configuration.OneDriveWorkSchoolFile.yml\" sourcestartlinenumber=\"1\">Provides OneDrive for Work or School file properties.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Core.Models.Configuration.yml",
       "output": {
         ".html": {
