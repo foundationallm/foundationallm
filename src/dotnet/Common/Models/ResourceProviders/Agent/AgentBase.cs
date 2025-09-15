@@ -96,6 +96,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public bool? ShowFileUpload { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets the user identifier of the agent owner.
+        /// </summary>
+        [JsonPropertyName("owner_user_id")]
+        public string? OwnerUserId { get; set; }
+
+        /// <summary>
         /// The object type of the agent.
         /// </summary>
         [JsonIgnore]

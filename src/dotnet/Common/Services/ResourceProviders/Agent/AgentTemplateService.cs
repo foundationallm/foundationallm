@@ -255,6 +255,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders.Agent
                 var agent = JsonSerializer.Deserialize<KnowledgeManagementAgent>(
                     agentObject.ToJsonString());
 
+                agent!.OwnerUserId = userIdentity.UserId;
+
                 var agentCreationResult = await _agentResourceProviderService.UpsertResourceAsync<AgentBase, ResourceProviderUpsertResult<AgentBase>>(
                     instanceId,
                     (agent as AgentBase)!,
