@@ -147,7 +147,7 @@
 			},
 
 			showNoAgentsMessage() {
-				return this.agentOptions.length === 0 && this.emptyAgentsMessage !== null;
+				return this.$appStore.isInitialized && this.agentOptions.length === 0 && this.emptyAgentsMessage !== null;
 			},
 		},
 

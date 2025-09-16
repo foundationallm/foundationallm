@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { watch, reactive } from 'vue';
 import type { ToastMessageOptions } from 'primevue/toast';
 import { useAppConfigStore } from './appConfigStore';
 import { useAuthStore } from './authStore';
@@ -46,6 +47,7 @@ export const useAppStore = defineStore('app', {
 		highContrastMode: JSON.parse(sessionStorage.getItem('highContrastMode') || 'false') as boolean,
 		sessionMessagePending: false,
 		settingsModalVisible: false,
+		isInitialized: false, // Track if the app initialization is complete
 	}),
 
 	getters: {
@@ -123,6 +125,9 @@ export const useAppStore = defineStore('app', {
 			}
 
 			await this.getUserProfiles();
+			
+			// Mark initialization as complete
+			this.isInitialized = true;
 		},
 
 		addTemporarySession() {
