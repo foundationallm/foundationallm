@@ -12,6 +12,12 @@ The following App Configuration value have been added:
 |Name | Default value | Description |
 |--- | --- | --- |
 | `FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl` | N/A | The URL to request agent management permissions. |
+| `FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames` | N/A | The comma-separated list of featured agent names. |
+
+All User Portal users must have read permission on the `/instances/<instance_id_>/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal` scope.
+
+
+All Management Portal users must have read permissions on the `/instances/<instance_id_>/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal` scope.
 
 ## Starting from 0.9.7-rc365
 

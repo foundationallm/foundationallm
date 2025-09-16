@@ -36,7 +36,8 @@
                     AppConfigurationKeys.FoundationaLLM_Branding_DefaultAgentWelcomeMessage,
                     AppConfigurationKeys.FoundationaLLM_Branding_AgentIconUrl,
                     // User portal configuration
-                    AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_AgentManagementPermissionRequestUrl
+                    AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_AgentManagementPermissionRequestUrl,
+                    AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_FeaturedAgentNames
                 ],
                 // Integer values
                 [
