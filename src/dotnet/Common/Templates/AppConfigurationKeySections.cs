@@ -403,6 +403,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:Branding";
         
         /// <summary>
+        /// Configuration section used to identify the configuration for the User Portal.
+        /// </summary>
+        public const string FoundationaLLM_UserPortal_Configuration =
+            "FoundationaLLM:UserPortal:Configuration";
+        
+        /// <summary>
         /// Configuration section used to identify the settings for vectorization steps.
         /// </summary>
         public const string FoundationaLLM_Vectorization_Steps =

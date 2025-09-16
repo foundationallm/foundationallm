@@ -2240,7 +2240,9 @@
 	{
 		"namespace": "UserPortal:Configuration",
 		"dependency_injection_key": null,
-		"configuration_section": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the configuration for the User Portal."
+		},
 		"configuration_keys": [
 			{
 				"name": "ShowLastConversationOnStartup",

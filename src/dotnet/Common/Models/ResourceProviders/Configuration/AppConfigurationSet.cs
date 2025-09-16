@@ -11,6 +11,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Configuration
         /// Gets or sets the configuration values in the set.
         /// </summary>
         [JsonPropertyName("configuration_values")]
-        public Dictionary<string, object> ConfigurationValues { get; set; } = [];
+        public Dictionary<string, object?> ConfigurationValues { get; set; } = [];
     }
 }
