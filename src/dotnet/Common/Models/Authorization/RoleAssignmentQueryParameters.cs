@@ -12,5 +12,11 @@ namespace FoundationaLLM.Common.Models.Authorization
         /// </summary>
         [JsonPropertyName("scope")]
         public string? Scope {  get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of security principal identifiers for which to filter role assignments.
+        /// </summary>
+        [JsonPropertyName("security_principal_ids")]
+        public List<string>? SecurityPrincipalIds { get; set; }
     }
 }

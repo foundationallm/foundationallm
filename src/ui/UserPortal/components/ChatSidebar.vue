@@ -247,11 +247,17 @@
 				<TabPanel header="Agents">
 					<div class="flex flex-wrap items-center -mx-4 mb-5">
 						<div class="w-full max-w-[50%] px-4 mb-5 text-center md:text-left">
-							<nuxt-link 
-								to="/create-agent"
-								class="p-button p-component create-agent-button">
-								New Agent <i class="pi pi-plus ml-3"></i>
-							</nuxt-link>
+							<!-- Show enabled agents only checkbox -->
+							<div class="flex items-center csm-sEnabled-checkbox-1">
+								<Checkbox
+									v-model="showEnabledOnly"
+									inputId="show-enabled-only"
+									:binary="true"
+								/>
+								<label for="show-enabled-only" class="ml-2 text-sm font-medium">
+									Show enabled agents only
+								</label>
+							</div>
 						</div>
 
 						<div class="w-full max-w-[50%] px-4 mb-5 text-center md:text-left">
@@ -309,17 +315,20 @@
 						
 						<!-- Loading state -->
 						<div v-if="loadingAgents2" class="loading-container">
-							Loading agents...
+							<i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+							<p>Loading agents...</p>
 						</div>
 						
 						<!-- Empty Message -->
-						<div v-if="filteredAgents.length === 0 && !loadingAgents2">
-							{{ agentSearchTerm.trim() ? 'No agents found matching your search.' : (emptyAgentsMessage2 || 'No agents available.') }}
+						<div v-else-if="filteredAgents.length === 0 && !loadingAgents2" class="empty-state">
+							<i class="pi pi-info-circle" style="font-size: 2rem; color: #6c757d;"></i>
+							<p>{{ getEmptyMessage() }}</p>
 						</div>
 						
 						<!-- Error Message -->
-						<div v-if="agentError2" class="error-message">
-							{{ agentError2 }}
+						<div v-else-if="agentError2" class="error-message">
+							<i class="pi pi-exclamation-triangle" style="font-size: 2rem; color: #e74c3c;"></i>
+							<p>{{ agentError2 }}</p>
 						</div>
 					</div>
 				</TabPanel>
@@ -384,12 +393,19 @@
 	import eventBus from '@/js/eventBus';
 import { isAgentExpired, isAgentReadonly } from '@/js/helpers';
 import type { AgentOption, Session } from '@/js/types';
+import { hideAllPoppers } from 'floating-vue';
+import Checkbox from 'primevue/checkbox';
 	declare const process: any;
+	import '@/styles/loading.scss';
 
 	import api from '@/js/api';
 
 	export default {
 		name: 'ChatSidebar',
+
+		components: {
+			Checkbox,
+		},
 
 		data() {
 			return {
@@ -411,6 +427,7 @@ import type { AgentOption, Session } from '@/js/types';
 				emptyAgentsMessage2: 'No agents available.',
 				userProfile: null as any,
 				agentSearchTerm: '',
+				showEnabledOnly: false,
 				activeTabIndex: 0,
 			};
 		},
@@ -425,15 +442,23 @@ import type { AgentOption, Session } from '@/js/types';
 			},
 
 			filteredAgents(): AgentOption[] {
-				if (!this.agentSearchTerm.trim()) {
-					return this.agentOptions2;
+				let filtered = this.agentOptions2;
+				
+				// Filter by enabled status if checkbox is checked
+				if (this.showEnabledOnly) {
+					filtered = filtered.filter((agent: AgentOption) => agent.enabled);
 				}
 				
-				const searchTerm = this.agentSearchTerm.toLowerCase().trim();
-				return this.agentOptions2.filter((agent: AgentOption) => {
-					const name = (agent.display_name || agent.name || '').toLowerCase();
-					return name.includes(searchTerm);
-				});
+				// Filter by search term if provided
+				if (this.agentSearchTerm.trim()) {
+					const searchTerm = this.agentSearchTerm.toLowerCase().trim();
+					filtered = filtered.filter((agent: AgentOption) => {
+						const name = (agent.display_name || agent.name || '').toLowerCase();
+						return name.includes(searchTerm);
+					});
+				}
+				
+				return filtered;
 			},
 		},
 
@@ -647,6 +672,7 @@ import type { AgentOption, Session } from '@/js/types';
 				await this.loadgetAgents();
 			},
 
+
 			selectAgent(getAgents: AgentOption) {
 				this.$emit('agent-selected', getAgents);
 			},
@@ -718,12 +744,20 @@ import type { AgentOption, Session } from '@/js/types';
 				});
 			},
 
-			hideAllPoppers() {
-				hideAllPoppers();
-			},
+			hideAllPoppers,
 
 			onTabChange(e: { index: number }) {
 				this.activeTabIndex = e.index;
+			},
+
+			getEmptyMessage(): string {
+				if (this.agentSearchTerm.trim()) {
+					return 'No agents found matching your search.';
+				}
+				if (this.showEnabledOnly) {
+					return 'No enabled agents available.';
+				}
+				return this.emptyAgentsMessage2 || 'No agents available.';
 			},
 		},
 	};
@@ -1109,10 +1143,6 @@ import type { AgentOption, Session } from '@/js/types';
 	.csm-table-1 thead tr th:last-child, .csm-table-1 tbody tr td:last-child{
 		text-align: center;
 	}
-	.create-agent-button{
-		text-decoration: none;
-		font-weight: 600;
-	}
 	.csm-table-edit-btn-1.p-button:not(.p-button-text){
 		background-color: transparent !important;
 		color: #b0b0b0 !important;
@@ -1179,5 +1209,8 @@ import type { AgentOption, Session } from '@/js/types';
 		padding: 0px;
 		color: #5472d4;
 		font-weight: 500;
+	}
+	.csm-sEnabled-checkbox-1 label{
+		cursor: pointer;
 	}
 </style>

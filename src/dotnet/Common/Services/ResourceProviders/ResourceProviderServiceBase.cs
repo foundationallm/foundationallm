@@ -21,7 +21,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Collections.Immutable;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Text.Json;
 
@@ -1740,6 +1739,49 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
                 await SendResourceProviderEvent(
                     EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
+            }
+            finally
+            {
+                _lock.Release();
+            }
+        }
+
+        /// <summary>
+        /// Saves a resource.
+        /// </summary>
+        /// <typeparam name="T">The type of resource to save.</typeparam>
+        /// <param name="resource">The resource to be saved.</param>
+        /// <returns></returns>
+        protected async Task SaveResource<T>(
+            T resource) where T : ResourceBase
+        {
+            try
+            {
+                await _lock.WaitAsync();
+
+                var result = await _resourceReferenceStore!.TryGetResourceReference(resource.Name);
+
+                if (result.Success
+                    && !result.Deleted)
+                {
+                    await _storageService.WriteFileAsync(
+                       _storageContainerName,
+                       result.ResourceReference!.Filename,
+                       JsonSerializer.Serialize<T>(resource, _serializerSettings),
+                       default,
+                       default);
+
+                    // Update resource to cache if caching is enabled.
+                    _resourceCache?.SetValue<T>(result.ResourceReference!, resource);
+
+                    await SendResourceProviderEvent(
+                        EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
+                }
+                else
+                {
+                    throw new ResourceProviderException($"The resource {resource.Name} was not found.",
+                        StatusCodes.Status404NotFound);
+                }
             }
             finally
             {

@@ -3,7 +3,17 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
-## Starting from 0.9.7
+## Starting from 0.9.7-rc365
+
+### Configuration changes
+
+The following App Configuration value have been added:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+| `FoundationaLLM:IdentityManagement:MicrosoftGraph:RetrieveOnPremisesAccountName` | `false` | Indicates whether on-premises account names are retrieved by the Microsoft Graph API. |
+
+## Starting from 0.9.7 (up to rc364)
 
 ### Configuration changes
 

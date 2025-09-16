@@ -187,6 +187,11 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     ResourceProviderActions.CheckName => await CheckAgentName(authorizationResult, serializedAction),
                     ResourceProviderActions.Purge => await PurgeResource<AgentBase>(resourcePath),
                     ResourceProviderActions.SetDefault => await SetDefaultResource<AgentBase>(resourcePath),
+                    ResourceProviderActions.SetOwner => await SetAgentOwnerUser(
+                        resourcePath,
+                        authorizationResult,
+                        serializedAction,
+                        userIdentity),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
@@ -702,6 +707,51 @@ namespace FoundationaLLM.Agent.ResourceProviders
             return upsertResult;
         }
 
+        private async Task<ResourceProviderActionResult> SetAgentOwnerUser(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity)
+        {
+            var agentOwnerUpdateRequest = JsonSerializer.Deserialize<AgentOwnerUpdateRequest>(serializedAction)
+                ?? throw new ResourceProviderException("The agent owner update request is invalid.",
+                    StatusCodes.Status400BadRequest);
+            if (string.IsNullOrWhiteSpace(agentOwnerUpdateRequest.OwnerUserId))
+                throw new ResourceProviderException("The agent owner update request is invalid.",
+                    StatusCodes.Status400BadRequest);
+
+            var agent = await LoadResource<AgentBase>(resourcePath.MainResourceId!)
+                ?? throw new ResourceProviderException($"The resource {resourcePath.MainResourceId!} of type {resourcePath.MainResourceTypeName} was not found.",
+                    StatusCodes.Status404NotFound);
+
+            if (agent.OwnerUserId is null
+                || agent.OwnerUserId != agentOwnerUpdateRequest.OwnerUserId)
+            {
+                // Set or replace owner user only if different from the current one.
+
+                var roleAssignments = await _authorizationServiceClient.GetRoleAssignments(
+                resourcePath.InstanceId!,
+                new RoleAssignmentQueryParameters
+                {
+                    Scope = agent.ObjectId,
+                    SecurityPrincipalIds = [userIdentity.UserId!, .. userIdentity.GroupIds]
+                },
+                userIdentity);
+
+                if (!roleAssignments.Any(ra =>
+                    ra.RoleDefinitionId == RoleDefinitionIds.Owner))
+                    throw new ResourceProviderException("The specified owner user does not have the Owner role assigned on the agent.",
+                        StatusCodes.Status400BadRequest);
+
+                agent.OwnerUserId = agentOwnerUpdateRequest.OwnerUserId;
+                await SaveResource<AgentBase>(agent);
+            }
+
+            return new ResourceProviderActionResult(
+                agent.ObjectId!,
+                true);
+        }
+
         private async Task<List<ResourceProviderGetResult<AgentAccessToken>>> LoadAgentAccessTokens(
             ResourcePath resourcePath)
         {
@@ -1132,14 +1182,21 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 AgentResourceProviderMetadata.AllowedResourceTypes,
                 false,
                 out var agentFilesResourcePath))
-                throw new ResourceProviderException("The object definition is invalid.",
+                throw new ResourceProviderException("The agent files resource path cannot be derived from the request.",
                     StatusCodes.Status400BadRequest);
 
             var agentFileResources = await LoadAgentFiles(agentFilesResourcePath!, userIdentity, new ResourceProviderGetOptions() { LoadContent = false });
             var agentFiles = agentFileResources.Select(x => x.Resource).ToList();
 
             var agentFileToolAssociationRequest = JsonSerializer.Deserialize<AgentFileToolAssociationRequest>(serializedResource)
-                ?? throw new ResourceProviderException("The object definition is invalid.",
+                ?? throw new ResourceProviderException("The update agent file tool association request is invalid.",
+                    StatusCodes.Status400BadRequest);
+            if (resourcePath.ResourceId != WellKnownResourceIdentifiers.AllResources
+                && (
+                    agentFileToolAssociationRequest.AgentFileToolAssociations.Count != 1
+                    || !agentFileToolAssociationRequest.AgentFileToolAssociations.ContainsKey($"{agentFilesResourcePath!.RawResourcePath}/{resourcePath.ResourceId}")
+                ))
+                throw new ResourceProviderException("The update agent file tool association request is invalid.",
                     StatusCodes.Status400BadRequest);
 
             var filePath = $"/{_name}/{_instanceSettings.Id}/{resourcePath.MainResourceId!}/Associations.json";
@@ -1234,41 +1291,45 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 }
             }
 
-            // Ensure file associations that are no longer present in the request are removed.
-            var associationNamesToRemove = new List<string>();
-            foreach (var existingAssociation in existingAssociations.Where(ea =>
-                !agentFileToolAssociationRequest.AgentFileToolAssociations.ContainsKey(ea.FileObjectId)))
+            if (resourcePath.ResourceId == WellKnownResourceIdentifiers.AllResources)
             {
-                foreach (var toolObjectId in existingAssociation.AssociatedResourceObjectIds!.Keys)
+                // The request refers to all the file associations of the agent, so we need to
+                // ensure that file associations that are not present in the request are removed.
+                var associationNamesToRemove = new List<string>();
+                foreach (var existingAssociation in existingAssociations.Where(ea =>
+                    !agentFileToolAssociationRequest.AgentFileToolAssociations.ContainsKey(ea.FileObjectId)))
                 {
-                    try
+                    foreach (var toolObjectId in existingAssociation.AssociatedResourceObjectIds!.Keys)
                     {
-                        await RemoveFileToolAssociation(
-                            existingAssociation.FileObjectId,
-                            toolObjectId,
-                            existingAssociation,
-                            resourcePath,
-                            userIdentity);
-                        // Only remove associations that were successfully processed for deletion.
-                        // If an error occurs, the association will not be removed and will be retried next time.
-                        associationNamesToRemove.Add(existingAssociation.Name);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex,
-                            "Error when removing the association between the {File} file and the {Tool} tool.",
-                            existingAssociation.FileObjectId, toolObjectId);
-
-                        errors.Add(new AgentFileToolAssociationError()
+                        try
                         {
-                            FileObjectId = existingAssociation.FileObjectId,
-                            ToolObjectId = toolObjectId,
-                            ErrorMessage = $"Error when removing the association between the {existingAssociation.FileObjectId} file and the {toolObjectId} tool."
-                        });
+                            await RemoveFileToolAssociation(
+                                existingAssociation.FileObjectId,
+                                toolObjectId,
+                                existingAssociation,
+                                resourcePath,
+                                userIdentity);
+                            // Only remove associations that were successfully processed for deletion.
+                            // If an error occurs, the association will not be removed and will be retried next time.
+                            associationNamesToRemove.Add(existingAssociation.Name);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex,
+                                "Error when removing the association between the {File} file and the {Tool} tool.",
+                                existingAssociation.FileObjectId, toolObjectId);
+
+                            errors.Add(new AgentFileToolAssociationError()
+                            {
+                                FileObjectId = existingAssociation.FileObjectId,
+                                ToolObjectId = toolObjectId,
+                                ErrorMessage = $"Error when removing the association between the {existingAssociation.FileObjectId} file and the {toolObjectId} tool."
+                            });
+                        }
                     }
                 }
+                existingAssociations.RemoveAll(x => associationNamesToRemove.Contains(x.Name));
             }
-            existingAssociations.RemoveAll(x => associationNamesToRemove.Contains(x.Name));
 
             await _storageService.WriteFileAsync(
                 _storageContainerName,

@@ -70,7 +70,7 @@
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
     <PackageReference Include="Microsoft.DeepDev.TokenizerLib" Version="1.3.3" />
     <PackageReference Include="Microsoft.Extensions.Azure" Version="1.11.0" />
-    <PackageReference Include="Microsoft.Graph" Version="5.76.0" />
+    <PackageReference Include="Microsoft.Graph" Version="5.91.0" />
     <PackageReference Include="Microsoft.Identity.Web" Version="3.8.3" />
     <PackageReference Include="Microsoft.ML.Tokenizers" Version="2.0.0-preview.1.25127.4" />
     <PackageReference Include="Microsoft.ML.Tokenizers.Data.Cl100kBase" Version="2.0.0-preview.1.25127.4" />
@@ -93,6 +93,10 @@
   <ItemGroup>
     <None Update="Templates\AuthorizableActionNames.tt">
       <LastGenOutput>AuthorizableActionNames.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Templates\RoleDefinitionIds.tt">
+      <LastGenOutput>RoleDefinitionIds.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
     <None Update="Templates\TelemetryActivityNames.tt">
@@ -185,6 +189,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AuthorizableActionNames.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\RoleDefinitionIds.cs">
+      <DependentUpon>RoleDefinitionIds.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\TelemetryActivityNames.cs">
       <DependentUpon>TelemetryActivityNames.tt</DependentUpon>

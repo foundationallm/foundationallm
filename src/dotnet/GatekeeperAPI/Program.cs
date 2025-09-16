@@ -68,7 +68,7 @@ namespace FoundationaLLM.Gatekeeper.API
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 
             // Add authorization services.
-            builder.AddGroupMembership();
+            builder.AddIdentitiyManagement();
             builder.AddAuthorizationServiceClient();
 
             // Add OpenTelemetry.

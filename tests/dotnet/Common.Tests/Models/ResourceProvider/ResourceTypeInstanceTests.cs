@@ -11,7 +11,7 @@ namespace FoundationaLLM.Common.Tests.Models.ResourceProvider
             string expectedResourceType = "ResourceType";
 
             // Act
-            var instance = new ResourceTypeInstance(expectedResourceType, typeof(object));
+            var instance = new ResourceTypeInstance(expectedResourceType, typeof(object), null);
 
             // Assert
             Assert.Equal(expectedResourceType, instance.ResourceTypeName);

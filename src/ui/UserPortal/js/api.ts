@@ -609,6 +609,40 @@ export default {
 	},
 
 	/**
+	 * Associates a file with the Knowledge tool for an agent.
+	 * @param agentName - The name of the agent.
+	 * @param fileId - The unique identifier of the file to associate.
+	 * @returns A promise that resolves to the association result.
+	 */
+	async associateFileWithKnowledgeTool(agentName: string, fileId: string): Promise<any> {
+		try {
+			const payload = {
+				agent_file_tool_associations: {
+					[`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFiles/${fileId}`]: {
+						[`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/tools/Code`]: false,
+						[`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/tools/Knowledge`]: true
+					}
+				}
+			};
+
+			const result = await this.fetch(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFileToolAssociations/${fileId}`,
+				{
+					method: 'POST',
+					body: JSON.stringify(payload),
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+			);
+			return result;
+		} catch (error) {
+			console.error('Error associating file with Knowledge tool:', error);
+			throw error;
+		}
+	},
+
+	/**
 	 * Retrieves the list of AI models from the management endpoint.
 	 * Returns an array of ResourceBase (see aiModel.ts) as required.
 	 */
@@ -815,6 +849,80 @@ export default {
 			console.error('Error fetching role assignments:', error);
 			throw error;
 		}
+	},
+
+	/**
+	 * Checks if the current user has both Agents and Prompts Contributor roles at the instance level.
+	 * This method makes a single API call to fetch all role assignments and checks for both roles.
+	 * @returns Promise resolving to an object with both role check results.
+	 */
+	async checkContributorRoles(): Promise<{ hasAgentsContributorRole: boolean; hasPromptsContributorRole: boolean }> {
+		try {
+			const assignments = await this.fetch<ResourceProviderGetResult<RoleAssignment>[]>(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/filter`,
+				{
+					method: 'POST',
+					body: {
+						scope: `/instances/${this.instanceId}`,
+						security_principal_ids: ["CURRENT_USER_IDS"]
+					},
+				}
+			);
+
+			// Role definition IDs - using the correct format with full path
+			const agentsContributorRoleId = '/providers/FoundationaLLM.Authorization/roleDefinitions/3f28aa77-a854-4aa7-ae11-ffda238275c9';
+			const promptsContributorRoleId = '/providers/FoundationaLLM.Authorization/roleDefinitions/479e7b36-5965-4a7f-baf7-84e57be854aa';
+
+			// Check for both roles in a single pass
+			let hasAgentsContributorRole = false;
+			let hasPromptsContributorRole = false;
+
+			for (const assignment of assignments) {
+				const roleId = assignment.resource.role_definition_id;
+				if (roleId === agentsContributorRoleId) {
+					hasAgentsContributorRole = true;
+				}
+				if (roleId === promptsContributorRoleId) {
+					hasPromptsContributorRole = true;
+				}
+				// Early exit if we found both roles
+				if (hasAgentsContributorRole && hasPromptsContributorRole) {
+					break;
+				}
+			}
+
+			return {
+				hasAgentsContributorRole,
+				hasPromptsContributorRole
+			};
+		} catch (error) {
+			console.error('Error checking contributor roles:', error);
+			// Return false for both roles on error to be safe
+			return {
+				hasAgentsContributorRole: false,
+				hasPromptsContributorRole: false
+			};
+		}
+	},
+
+	/**
+	 * Checks if the current user has Agents Contributor role at the instance level.
+	 * @deprecated Use checkContributorRoles() instead for better performance.
+	 * @returns Promise resolving to boolean indicating if user has the role.
+	 */
+	async hasAgentsContributorRole(): Promise<boolean> {
+		const result = await this.checkContributorRoles();
+		return result.hasAgentsContributorRole;
+	},
+
+	/**
+	 * Checks if the current user has Prompts Contributor role at the instance level.
+	 * @deprecated Use checkContributorRoles() instead for better performance.
+	 * @returns Promise resolving to boolean indicating if user has the role.
+	 */
+	async hasPromptsContributorRole(): Promise<boolean> {
+		const result = await this.checkContributorRoles();
+		return result.hasPromptsContributorRole;
 	},
 
 	/**

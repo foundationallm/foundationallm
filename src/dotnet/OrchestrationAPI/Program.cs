@@ -129,7 +129,7 @@ namespace FoundationaLLM.Orchestration.API
             builder.AddResourceValidatorFactory();
 
             // Add authorization services.
-            builder.AddGroupMembership();
+            builder.AddIdentitiyManagement();
             builder.AddAuthorizationServiceClient();
 
             // Add the templating engine.

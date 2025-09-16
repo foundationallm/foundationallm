@@ -950,7 +950,7 @@ export default {
 		payload: UpdateAgentFileToolAssociationRequest,
 	): Promise<any> {
 		return await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFileToolAssociations/1234abcd?api-version=${this.apiVersion}`,
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/agentFileToolAssociations/__all__?api-version=${this.apiVersion}`,
 			{
 				method: 'POST',
 				body: JSON.stringify(payload),

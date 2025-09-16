@@ -340,11 +340,6 @@
                                 <div class="mt-10">
                                     <div class="flex justify-between items-center mb-3">
                                         <p class="block text-base text-[#898989]">Existing File(s)</p>
-                                        <div class="flex items-center gap-2">
-                                            <Button label="Load Files" severity="secondary" @click="loadAgentFiles"
-                                                :loading="filesLoading" :disabled="filesLoading || !selectedAgentName"
-                                                class="min-h-[35px] min-w-[100px]" />
-                                        </div>
                                     </div>
 
                                     <div v-if="filesLoading" class="loading-container">
@@ -365,7 +360,6 @@
                                             <thead>
                                                 <tr>
                                                     <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white">Filename</th>
-                                                    <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white">File ID</th>
                                                     <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white text-center">Actions</th>
                                                 </tr>
                                             </thead>
@@ -374,7 +368,6 @@
                                                     <td class="mnt-b-bottom p-3">{{ f.resource?.display_name ||
                                                         f.resource?.filename || '-'
                                                     }}</td>
-                                                    <td class="mnt-b-bottom p-3">{{ f.resource?.name }}</td>
                                                     <td class="mnt-b-bottom p-3 text-center">
                                                         <Button
                                                             label="Delete"
@@ -484,10 +477,21 @@
                                                     field="resource.principal_details.email" 
                                                     header="Principal Email" 
                                                     :sortable="false" 
-                                                    style="min-width: 200px"
+                                                    style="min-width: 150px"
                                                 >
                                                     <template #body="slotProps">
                                                         {{ slotProps.data.resource.principal_details?.email || '-' }}
+                                                    </template>
+                                                </Column>
+
+                                                <Column 
+                                                    field="resource.principal_details.onPremisesAccountName" 
+                                                    header="On-premises account" 
+                                                    :sortable="false" 
+                                                    style="min-width: 150px"
+                                                >
+                                                    <template #body="slotProps">
+                                                        {{ slotProps.data.resource.principal_details?.onPremisesAccountName || '-' }}
                                                     </template>
                                                 </Column>
 
@@ -645,6 +649,7 @@ import mime from 'mime';
 import { defineComponent } from 'vue';
 import NavBarSettings from '~/components/NavBarSettings.vue';
 import '@/styles/agents.scss';
+import '@/styles/loading.scss';
 
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
@@ -1286,6 +1291,7 @@ export default defineComponent({
 
             let filesUploaded = 0;
             let filesFailed = 0;
+            let associationsFailed = 0;
 
             for (const file of this.uploadedFiles) {
                 try {
@@ -1298,7 +1304,31 @@ export default defineComponent({
                     const formData = new FormData();
                     formData.append('file', uploadFile);
 
-                    await api.uploadAgentFile(this.selectedAgentName, file.name, formData);
+                    // Upload the file
+                    const uploadResult = await api.uploadAgentFile(this.selectedAgentName, file.name, formData);
+                    
+                    // Extract file ID from upload result
+                    let fileId = null;
+                    if (uploadResult?.resource?.name) {
+                        fileId = uploadResult.resource.name;
+                    } else if (uploadResult?.name) {
+                        fileId = uploadResult.name;
+                    } else {
+                        // If we can't get the file ID from the response, try to extract it from the file name
+                        // This is a fallback - ideally the API should return the file ID
+                        fileId = file.name;
+                    }
+
+                    // Associate the file with Knowledge tool
+                    if (fileId) {
+                        try {
+                            await api.associateFileWithKnowledgeTool(this.selectedAgentName, fileId);
+                        } catch (associationError: any) {
+                            console.error('File association error:', associationError);
+                            associationsFailed++;
+                            // Continue with the upload process even if association fails
+                        }
+                    }
 
                     filesUploaded++;
 
@@ -1311,6 +1341,32 @@ export default defineComponent({
             if (filesUploaded > 0) {
                 this.uploadedFiles = [];
                 await this.loadAgentFiles();
+                
+                // Show appropriate success/error messages
+                if (associationsFailed > 0) {
+                    this.$toast.add({ 
+                        severity: 'warn', 
+                        summary: 'Files Uploaded', 
+                        detail: `${filesUploaded} file(s) uploaded successfully, however ${associationsFailed} file(s) could not be associated with Knowledge tool.`, 
+                        life: 5000 
+                    });
+                } else {
+                    this.$toast.add({ 
+                        severity: 'success', 
+                        summary: 'Files Uploaded', 
+                        detail: `${filesUploaded} file(s) uploaded and associated with Knowledge tool successfully.`, 
+                        life: 3000 
+                    });
+                }
+            }
+
+            if (filesFailed > 0) {
+                this.$toast.add({ 
+                    severity: 'error', 
+                    summary: 'Upload Failed', 
+                    detail: `${filesFailed} file(s) failed to upload.`, 
+                    life: 5000 
+                });
             }
         },
 
@@ -1622,50 +1678,6 @@ export default defineComponent({
 .csm-roleDialog-modal-1{
     .p-dialog-content{
         overflow-y: unset;
-    }
-}
-
-// Loading, Error, and Empty States
-.loading-container,
-.error-message,
-.empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
-    text-align: center;
-    min-height: 200px;
-    
-    i {
-        margin-bottom: 16px;
-    }
-    
-    p {
-        margin: 8px 0;
-        color: #6c757d;
-    }
-}
-
-.error-message {
-    i {
-        color: #e74c3c;
-    }
-    
-    p {
-        color: #e74c3c;
-        font-weight: 500;
-    }
-}
-
-.empty-state {
-    i {
-        color: #6c757d;
-    }
-    
-    p {
-        color: #6c757d;
-        font-style: italic;
     }
 }
 </style>

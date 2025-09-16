@@ -2,7 +2,6 @@
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
-using FoundationaLLM.Common.Models.ResourceProviders.Global;
 
 namespace FoundationaLLM.Common.Constants.ResourceProviders
 {

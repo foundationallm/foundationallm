@@ -264,7 +264,7 @@ namespace FoundationaLLM.Context.Services
                     instanceId,
                     ResourceProviderNames.FoundationaLLM_DataPipeline,
                     DataPipelineResourceTypeNames.DataPipelines,
-                    "new");
+                    WellKnownResourceIdentifiers.NewResource);
 
                 var authorizationResult = await _authorizationServiceClient
                     .ProcessAuthorizationRequest(

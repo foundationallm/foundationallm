@@ -214,12 +214,10 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// Gets the parent object identifier of the resource path.
         /// </summary>
         public string? ParentObjectId =>
-            string.IsNullOrWhiteSpace(_instanceId)
-            || string.IsNullOrWhiteSpace(_rawResourcePath)
-            || _resourceTypeInstances is null
+             _resourceTypeInstances is null
             || _resourceTypeInstances.Count <= 1
             ? null
-            : string.Join('/', _rawResourcePath.Split('/')[..^2]);
+            : _resourceTypeInstances[^2].ObjectId;
 
         /// <summary>
         /// Creates a new resource identifier from a resource path optionally allowing an action.
@@ -615,7 +613,8 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
 
                     var resourceTypeInstance = new ResourceTypeInstance(
                         tokens[currentIndex],
-                        currentResourceType!.ResourceType);
+                        currentResourceType!.ResourceType,
+                        string.Join('/', [string.Empty, ..tokens.Take(currentIndex + 1)]));
                     resourceTypeInstances.Add(resourceTypeInstance);
 
                     if (currentIndex + 1 == tokens.Length)

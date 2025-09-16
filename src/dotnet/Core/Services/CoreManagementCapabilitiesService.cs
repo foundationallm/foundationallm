@@ -1,10 +1,10 @@
-﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
 
 namespace FoundationaLLM.Core.Services
 {
@@ -68,11 +68,16 @@ namespace FoundationaLLM.Core.Services
                             IsResourceTypeAvailable = true,
                             AvailableActions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                             {
-                                ResourceProviderActions.CheckName
+                                ResourceProviderActions.CheckName,
+                                ResourceProviderActions.SetOwner
                             },
                             AvailableSubordinateResourceTypes = new Dictionary<string, ResourceTypeAvailability>(StringComparer.OrdinalIgnoreCase)
                             {
                                 [AgentResourceTypeNames.AgentFiles] = new ResourceTypeAvailability
+                                {
+                                    IsResourceTypeAvailable = true
+                                },
+                                [AgentResourceTypeNames.AgentFileToolAssociations] = new ResourceTypeAvailability
                                 {
                                     IsResourceTypeAvailable = true
                                 }
@@ -224,13 +229,28 @@ namespace FoundationaLLM.Core.Services
             {
                 var resourcePath = ResourcePath.GetResourcePath(queryParameters.Scope!);
 
-                if (resourcePath.ResourceProvider != ResourceProviderNames.FoundationaLLM_Agent
-                    || resourcePath.MainResourceTypeName != AgentResourceTypeNames.Agents
-                    || resourcePath.ResourceTypeInstances.Count != 1)
+                if (resourcePath.IsInstancePath)
                 {
-                    _logger.LogWarning("The RoleAssignmentQueryParameters.Scope value is invalid: {Scope}",
-                        queryParameters.Scope);
-                    return false;
+                    if (queryParameters.SecurityPrincipalIds is null
+                        || queryParameters.SecurityPrincipalIds.Count != 1
+                        || queryParameters.SecurityPrincipalIds[0] != SecurityPrincipalVariableNames.CurrentUserIds)
+                    {
+                        _logger.LogWarning("The RoleAssignmentQueryParameters.Scope value is invalid: {Scope}. " +
+                            "The instance scope is allowed only when the security principal ids are set to retrieved using the CURRENT_USER_IDS variable.",
+                            queryParameters.Scope);
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (resourcePath.ResourceProvider != ResourceProviderNames.FoundationaLLM_Agent
+                        || resourcePath.MainResourceTypeName != AgentResourceTypeNames.Agents
+                        || resourcePath.ResourceTypeInstances.Count != 1)
+                    {
+                        _logger.LogWarning("The RoleAssignmentQueryParameters.Scope value is invalid: {Scope}. Only individual agent resources are allowed.",
+                            queryParameters.Scope);
+                        return false;
+                    }
                 }
 
                 return true;

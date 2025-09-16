@@ -48,7 +48,12 @@ from foundationallm.models.constants import (
 # user_prompt = "Describe the main project goals"
 # user_prompt = "What are the latest project health ratings?"
 
-user_identity_json = {"name": "Experimental Test", "user_name":"ciprian@foundationaLLM.ai","upn":"ciprian@foundationaLLM.ai", "user_id": "949195b1-f432-4da3-8f7d-5298e3fda432"}
+user_identity_json = {
+    "name": "Experimental Test",
+    "user_name":"ciprian@foundationaLLM.ai",
+    "upn":"ciprian@foundationaLLM.ai",
+    "user_id": "949195b1-f432-4da3-8f7d-5298e3fda432",
+    "group_ids": ["c54871ba-1fa1-439a-9e86-30d74dfe4a4a"]}
 full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
 
 user_identity = UserIdentity.from_json(user_identity_json)

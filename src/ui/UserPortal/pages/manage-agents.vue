@@ -21,6 +21,7 @@
             <div class="flex flex-wrap items-center -mx-4 mb-5">
                 <div class="w-full max-w-full md:max-w-[50%] px-4 mb-5 text-center md:text-left">
                     <nuxt-link 
+                        v-if="hasAgentsContributorRole && hasPromptsContributorRole"
                         to="/create-agent"
                         class="p-button p-component create-agent-button">
                         New Agent <i class="pi pi-plus ml-3"></i>
@@ -101,7 +102,7 @@
                     >
                         <template #body="slotProps">
                             <div class="agent-description">
-                                {{ slotProps.data.resource.description || 'No description' }}
+                                {{ slotProps.data.resource.description || '' }}
                             </div>
                         </template>
                     </Column>
@@ -176,6 +177,7 @@ import '@/styles/agents.scss';
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import NavBarSettings from '~/components/NavBarSettings.vue';
+import '@/styles/loading.scss';
 
 import Button from 'primevue/button';
 import Column from 'primevue/column';
@@ -202,6 +204,8 @@ export default defineComponent({
         const loading = ref(false);
         const error = ref<string | null>(null);
         const searchByName = ref('');
+        const hasAgentsContributorRole = ref(false);
+        const hasPromptsContributorRole = ref(false);
         const router = useRouter();
 
         // Computed property
@@ -237,6 +241,18 @@ export default defineComponent({
                 error.value = errorMessage;
             } finally {
                 loading.value = false;
+            }
+        };
+
+        const checkContributorRoles = async () => {
+            try {
+                const result = await api.checkContributorRoles();
+                hasAgentsContributorRole.value = result.hasAgentsContributorRole;
+                hasPromptsContributorRole.value = result.hasPromptsContributorRole;
+            } catch (err) {
+                console.error('Failed to check contributor roles:', err);
+                hasAgentsContributorRole.value = false;
+                hasPromptsContributorRole.value = false;
             }
         };
 
@@ -285,6 +301,7 @@ export default defineComponent({
         // Lifecycle
         onMounted(() => {
             loadAgents();
+            checkContributorRoles();
         });
 
         return {
@@ -292,6 +309,8 @@ export default defineComponent({
             loading,
             error,
             searchByName,
+            hasAgentsContributorRole,
+            hasPromptsContributorRole,
             filteredAgents,
             loadAgents,
             getPrimaryRole,
@@ -304,51 +323,3 @@ export default defineComponent({
     },
 });
 </script>
-
-<style lang="scss">
-// Loading, Error, and Empty States
-.loading-container,
-.error-message,
-.empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
-    text-align: center;
-    min-height: 200px;
-    
-    i {
-        margin-bottom: 16px;
-    }
-    
-    p {
-        margin: 8px 0;
-        color: #6c757d;
-    }
-}
-
-.error-message {
-    i {
-        color: #e74c3c;
-    }
-    
-    p {
-        color: #e74c3c;
-        font-weight: 500;
-    }
-}
-
-.csm-popover-actions {
-    position: absolute;
-    top: 30px;
-    right: 0;
-    z-index: 10;
-    background: #fff;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    min-width: 120px;
-    padding: 8px;
-}
-</style>

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using FoundationaLLM.Core.Models.Configuration;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Core.Models
 {
@@ -31,10 +32,10 @@ namespace FoundationaLLM.Core.Models
         public string? Name { get; set; }
 
         /// <summary>
-        /// The OneDrive file mime type.
+        /// The OneDrive file.
         /// </summary>
-        [JsonPropertyName("mimeType")]
-        public string? MimeType { get; set; }
+        [JsonPropertyName("file")]
+        public OneDriveWorkSchoolFile? File { get; set; }
 
         /// <summary>
         /// The access token required to fetch the item contents.

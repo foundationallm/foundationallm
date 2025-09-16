@@ -1944,5 +1944,16 @@ namespace FoundationaLLM.Common.Constants.Configuration
         #region FoundationaLLM:Events:Profiles:DataPipelineBackendWorker
 
         #endregion
+
+        #region FoundationaLLM:IdentityManagement:MicrosoftGraph
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:IdentityManagement:MicrosoftGraph:RetrieveOnPremisesAccountName setting.
+        /// <para>Value description:<br/>Indicates whether on-premises account names must be retrieved by the Microsoft Graph API.</para>
+        /// </summary>
+        public const string FoundationaLLM_IdentityManagement_MicrosoftGraph_RetrieveOnPremisesAccountName =
+            "FoundationaLLM:IdentityManagement:MicrosoftGraph:RetrieveOnPremisesAccountName";
+
+        #endregion
     }
 }

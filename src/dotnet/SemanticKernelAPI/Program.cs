@@ -75,7 +75,7 @@ namespace FoundationaLLM.SemanticKernel.API
             builder.AddSemanticKernelService();
 
             // Add authorization services.
-            builder.AddGroupMembership();
+            builder.AddIdentitiyManagement();
             builder.Services.AddSingleton<IAuthorizationServiceClient, NullAuthorizationServiceClient>();
 
             // Resource validation
