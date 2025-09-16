@@ -61,6 +61,11 @@
         public const string SetDefault = "set-default";
 
         /// <summary>
+        /// Set the resource owner.
+        /// </summary>
+        public const string SetOwner = "set-owner";
+
+        /// <summary>
         /// Load a plugin package.
         /// </summary>
         public const string LoadPluginPackage = "load-plugin-package";

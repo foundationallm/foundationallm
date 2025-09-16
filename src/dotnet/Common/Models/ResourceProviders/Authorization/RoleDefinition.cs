@@ -1,5 +1,4 @@
-﻿using FoundationaLLM.Common.Models.ResourceProviders;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.ResourceProviders.Authorization
 {
@@ -26,6 +25,9 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Authorization
         [JsonPropertyOrder(2)]
         public List<RoleDefinitionPermissions> Permissions { get; set; } = [];
 
+        /// <summary>
+        /// Retrieves a list of unique actions that are allowed for the role definition.
+        /// </summary>
         public List<string> GetAllowedActions() =>
             [.. Permissions.SelectMany(p => p.GetAllowedActions()).Distinct()];
     }
