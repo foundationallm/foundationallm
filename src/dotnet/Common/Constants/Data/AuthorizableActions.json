@@ -218,6 +218,11 @@
 				"field_name": "FoundationaLLM_Configuration_AppConfigurations_Delete"
 			},
 			{
+				"name": "FoundationaLLM.Configuration/appConfigurationSets/read",
+				"description": "Read app configuration sets.",
+				"field_name": "FoundationaLLM_Configuration_AppConfigurationSets_Read"
+			},
+			{
 				"name": "FoundationaLLM.Configuration/keyVaultSecrets/read",
 				"description": "Read key vault secrets.",
 				"field_name": "FoundationaLLM_Configuration_KeyVaultSecrets_Read"
