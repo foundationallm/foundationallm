@@ -349,20 +349,32 @@ namespace FoundationaLLM.Configuration.Services
         private ResourceProviderGetResult<AppConfigurationSet> LoadAppConfigurationSet(string setName)
         {
             var (StringTypes, IntTypes, BoolTypes) = WellKnownAppConfigurationSets.All[setName];
-            Dictionary<string, object> configurationValues = [];
+            Dictionary<string, object?> configurationValues = [];
 
             configurationValues.AddRange(
                 StringTypes.ToDictionary(
                     key => key,
-                    key => (object)_configuration[key]!));
+                    key => (object?)_configuration[key]));
             configurationValues.AddRange(
-                IntTypes.ToDictionary(
-                    key => key,
-                    key => (object)int.Parse(_configuration[key]!)));
+                IntTypes
+                    .Select(key => new
+                        {
+                            Key = key,
+                            Value = _configuration[key]
+                        })
+                    .ToDictionary(
+                        x => x.Key,
+                        x => x.Value is null ? null : (object)int.Parse(x.Value)));
             configurationValues.AddRange(
-                BoolTypes.ToDictionary(
-                    key => key,
-                    key => (object)bool.Parse(_configuration[key]!)));
+                BoolTypes
+                    .Select(key => new
+                    {
+                        Key = key,
+                        Value = _configuration[key]
+                    })
+                    .ToDictionary(
+                        x => x.Key,
+                        x => x.Value is null ? null : (object)bool.Parse(x.Value)));
 
             var appConfigurationSet = new AppConfigurationSet
             {

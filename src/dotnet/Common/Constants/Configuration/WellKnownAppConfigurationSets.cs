@@ -36,25 +36,21 @@
                     AppConfigurationKeys.FoundationaLLM_Branding_DefaultAgentWelcomeMessage,
                     AppConfigurationKeys.FoundationaLLM_Branding_AgentIconUrl,
                     // User portal configuration
+                    AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_AgentManagementPermissionRequestUrl
+                ],
+                // Integer values
+                [
+                ],
+                // Boolean values
+                [
+                    // Branding
+                    AppConfigurationKeys.FoundationaLLM_Branding_KioskMode,
+                    // User portal configuration
                     AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_ShowMessageRating,
                     AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_ShowLastConversationOnStartup,
                     AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_ShowMessageTokens,
                     AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_ShowViewPrompt,
-                    AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_ShowFileUpload,
-                    AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_AgentManagementPermissionRequestUrl,
-                    AppConfigurationKeys.FoundationaLLM_UserPortal_Authentication_Entra_ClientId,
-                    AppConfigurationKeys.FoundationaLLM_UserPortal_Authentication_Entra_Instance,
-                    AppConfigurationKeys.FoundationaLLM_UserPortal_Authentication_Entra_TenantId,
-                    AppConfigurationKeys.FoundationaLLM_UserPortal_Authentication_Entra_Scopes,
-                    AppConfigurationKeys.FoundationaLLM_UserPortal_Authentication_Entra_CallbackPath
-                ],
-                // Integer values
-                [
-                    AppConfigurationKeys.FoundationaLLM_UserPortal_Authentication_Entra_TimeoutInMinutes
-                ],
-                // Boolean values
-                [
-                    AppConfigurationKeys.FoundationaLLM_Branding_KioskMode
+                    AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_ShowFileUpload
                 ]
             );
 
