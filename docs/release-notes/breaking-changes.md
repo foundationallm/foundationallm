@@ -3,6 +3,16 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-rc376
+
+### Configuration changes
+
+The following App Configuration value have been added:
+
+|Name | Default value | Description |
+|--- | --- | --- |
+| `FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl` | N/A | The URL to request agent management permissions. |
+
 ## Starting from 0.9.7-rc365
 
 ### Configuration changes

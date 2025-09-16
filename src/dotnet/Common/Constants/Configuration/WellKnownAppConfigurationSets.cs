@@ -41,6 +41,7 @@
                     AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_ShowMessageTokens,
                     AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_ShowViewPrompt,
                     AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_ShowFileUpload,
+                    AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_AgentManagementPermissionRequestUrl,
                     AppConfigurationKeys.FoundationaLLM_UserPortal_Authentication_Entra_ClientId,
                     AppConfigurationKeys.FoundationaLLM_UserPortal_Authentication_Entra_Instance,
                     AppConfigurationKeys.FoundationaLLM_UserPortal_Authentication_Entra_TenantId,
