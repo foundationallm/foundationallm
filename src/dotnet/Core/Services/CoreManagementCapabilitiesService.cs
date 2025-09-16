@@ -57,6 +57,13 @@ namespace FoundationaLLM.Core.Services
                         {
                             IsResourceTypeAvailable = true
                         }
+                    },
+                    [ResourceProviderNames.FoundationaLLM_Configuration] = new Dictionary<string, ResourceTypeAvailability>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        [ConfigurationResourceTypeNames.AppConfigurationSets] = new ResourceTypeAvailability
+                        {
+                            IsResourceTypeAvailable = true
+                        }
                     }
                 },
                 [HttpMethod.Post] = new Dictionary<string, Dictionary<string, ResourceTypeAvailability>>(StringComparer.OrdinalIgnoreCase)

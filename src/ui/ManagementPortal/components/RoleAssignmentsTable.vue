@@ -218,6 +218,13 @@ export default {
 			try {
 				const roleAssignments = await api.getRoleAssignments(this.scope);
 
+				// Return early if there are no role assignments
+                if (!roleAssignments || roleAssignments.length === 0) {
+                    this.roleAssignments = [];
+                    this.loading = false;
+                    return;
+                }
+
 				const principalIds = [];
 				for (const assignmentForPrincipalId of roleAssignments) {
 					principalIds.push(assignmentForPrincipalId.resource.principal_id);

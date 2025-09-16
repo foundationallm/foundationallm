@@ -11,6 +11,11 @@
         public const string AppConfigurations = "appConfigurations";
 
         /// <summary>
+        /// Sets of application configuration values.
+        /// </summary>
+        public const string AppConfigurationSets = "appConfigurationSets";
+
+        /// <summary>
         /// API Endpoint key values.
         /// </summary>
         public const string APIEndpointConfigurations = "apiEndpointConfigurations";

@@ -153,6 +153,7 @@
 				</h3>
 				<ul>
 					<li><NuxtLink to="/branding" class="sidebar__item">Branding</NuxtLink></li>
+					<li><NuxtLink to="/configuration" class="sidebar__item">Configuration</NuxtLink></li>
 					<li><NuxtLink to="/info" class="sidebar__item">Deployment Information</NuxtLink></li>
 				</ul>
 			</div>
