@@ -219,6 +219,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         public const string FoundationaLLM_Configuration_AppConfigurations_Delete = "FoundationaLLM.Configuration/appConfigurations/delete";
 
         /// <summary>
+        /// Read app configuration sets.
+        /// </summary>
+        public const string FoundationaLLM_Configuration_AppConfigurationSets_Read = "FoundationaLLM.Configuration/appConfigurationSets/read";
+
+        /// <summary>
         /// Read key vault secrets.
         /// </summary>
         public const string FoundationaLLM_Configuration_KeyVaultSecrets_Read = "FoundationaLLM.Configuration/keyVaultSecrets/read";
