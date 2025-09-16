@@ -225,6 +225,12 @@ export default {
 			required: false,
 			default: null,
 		},
+
+		allowedRoleDefinitionNames: {
+			type: Array as PropType<string[]>,
+			required: false,
+			default: null,
+		},
 	},
 
 	expose: ['createRoleAssignment'],
@@ -281,7 +287,15 @@ export default {
 		this.loading = true;
 
 		this.loadingStatusText = `Retrieving roles...`;
+
 		this.roleOptions = await api.getRoleDefinitions();
+
+		// If allowedRoleDefinitionNames is provided, filter roleOptions to only include those display names
+        if (this.allowedRoleDefinitionNames && Array.isArray(this.allowedRoleDefinitionNames) && this.allowedRoleDefinitionNames.length > 0) {
+            const allowed = new Set(this.allowedRoleDefinitionNames);
+            this.roleOptions = this.roleOptions.filter((r) => allowed.has(r.display_name));
+        }
+
 		this.roleOptions.sort((r1, r2) => r1.display_name.localeCompare(r2.display_name));
 
 		if (this.editId) {

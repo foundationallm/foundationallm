@@ -20,6 +20,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NuGet.Packaging;
 using System.Text.Json;
 
 namespace FoundationaLLM.Configuration.Services
@@ -96,6 +97,7 @@ namespace FoundationaLLM.Configuration.Services
             resourcePath.MainResourceTypeName switch
             {
                 ConfigurationResourceTypeNames.AppConfigurations => await LoadAppConfigurationKeys(resourcePath.ResourceTypeInstances[0]),
+                ConfigurationResourceTypeNames.AppConfigurationSets => LoadAppConfigurationSets(resourcePath, authorizationResult),
                 ConfigurationResourceTypeNames.APIEndpointConfigurations => await LoadResources<APIEndpointConfiguration>(
                     resourcePath.ResourceTypeInstances[0],
                     authorizationResult,
@@ -311,6 +313,69 @@ namespace FoundationaLLM.Configuration.Services
             }
 
             return result;
+        }
+
+        private List<ResourceProviderGetResult<AppConfigurationSet>> LoadAppConfigurationSets(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult)
+        {
+            var setsToLoad = new List<string>();
+            if (resourcePath.HasResourceId)
+            {
+                if (!WellKnownAppConfigurationSetNames.All.Contains(resourcePath.ResourceId!))
+                    throw new ResourceProviderException($"The app configuration set {resourcePath.ResourceId!} was not found.",
+                        StatusCodes.Status400BadRequest);
+                setsToLoad = [resourcePath.ResourceId!];
+            }
+            else
+            {
+                if (authorizationResult.Authorized)
+                    setsToLoad = [.. WellKnownAppConfigurationSetNames.All];
+                else
+                    setsToLoad = [.. WellKnownAppConfigurationSetNames.All
+                        .Where(setName =>
+                            authorizationResult.SubordinateResourcePathsAuthorizationResults.TryGetValue(setName, out var subordinateAuthorizationResult)
+                            && subordinateAuthorizationResult.Authorized)
+                    ];
+            }
+
+            var result = setsToLoad
+                .Select(LoadAppConfigurationSet)
+                .ToList();
+
+            return result;
+        }
+
+        private ResourceProviderGetResult<AppConfigurationSet> LoadAppConfigurationSet(string setName)
+        {
+            var (StringTypes, IntTypes, BoolTypes) = WellKnownAppConfigurationSets.All[setName];
+            Dictionary<string, object> configurationValues = [];
+
+            configurationValues.AddRange(
+                StringTypes.ToDictionary(
+                    key => key,
+                    key => (object)_configuration[key]!));
+            configurationValues.AddRange(
+                IntTypes.ToDictionary(
+                    key => key,
+                    key => (object)int.Parse(_configuration[key]!)));
+            configurationValues.AddRange(
+                BoolTypes.ToDictionary(
+                    key => key,
+                    key => (object)bool.Parse(_configuration[key]!)));
+
+            var appConfigurationSet = new AppConfigurationSet
+            {
+                Name = setName,
+                ConfigurationValues = configurationValues
+            };
+
+            return new ResourceProviderGetResult<AppConfigurationSet>
+            {
+                Resource = appConfigurationSet,
+                Roles = [],
+                Actions = []
+            };
         }
 
         private async Task<ResourceProviderUpsertResult> UpdateAppConfigurationKey(ResourcePath resourcePath, string serializedAppConfig)

@@ -30,7 +30,10 @@
 
 		<!-- Create step -->
 		<template v-if="currentStep === STEPS.CREATE_STEP">
-			<CreateRoleAssignment ref="createForm" headless :scope="currentScope.value" />
+			<CreateRoleAssignment ref="createForm" headless 
+				:scope="currentScope.value"
+				:allowedRoleDefinitionNames="currentScope.allowedRoleDefinitionNames"
+			/>
 		</template>
 
 		<!-- Footer -->
@@ -42,7 +45,7 @@
 
 					<Button v-if="currentStep === STEPS.TABLE_STEP" @click="currentStep = STEPS.CREATE_STEP">
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
-						Add role assignment for this {{ currentScope.label }}
+						{{ scopeLabel }}
 					</Button>
 				</template>
 
@@ -94,6 +97,11 @@ export default {
 		currentScope() {
 			return this.scopes[this.currentScopeIndex];
 		},
+		// Return labelOverride when present, otherwise fall back to label
+        scopeLabel(): string {
+            const s = this.currentScope || {};
+            return s.labelOverride ?? (s.label ? `Add role assignment for this ${s.label}` : '');
+        },
 	},
 
 	methods: {
