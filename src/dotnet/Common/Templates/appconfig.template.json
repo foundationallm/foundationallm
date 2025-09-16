@@ -1380,6 +1380,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl",
+            "value": "true",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:Instance",
             "value": "https://login.microsoftonline.com/",
             "label": null,

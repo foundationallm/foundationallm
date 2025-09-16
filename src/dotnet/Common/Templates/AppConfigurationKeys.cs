@@ -1705,6 +1705,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_UserPortal_Configuration_ShowFileUpload =
             "FoundationaLLM:UserPortal:Configuration:ShowFileUpload";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl setting.
+        /// <para>Value description:<br/>The URL to request agent management permissions.</para>
+        /// </summary>
+        public const string FoundationaLLM_UserPortal_Configuration_AgentManagementPermissionRequestUrl =
+            "FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl";
 
         #endregion
 
