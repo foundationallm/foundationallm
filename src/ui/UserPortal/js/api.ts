@@ -1028,6 +1028,33 @@ export default {
 			throw error;
 		}
 	},
+
+	/**
+	 * Sets the primary owner for an agent.
+	 * @param instanceId - The FoundationaLLM instance identifier.
+	 * @param agentName - The name of the agent.
+	 * @param payload - The AgentOwnerUpdateRequest payload.
+	 * @returns Promise resolving to the ResourceProviderActionResult.
+	 */
+	async setAgentPrimaryOwner(instanceId: string, agentName: string, payload: { owner_user_id: string }): Promise<any> {
+		try {
+			// HTTP POST /management/instances/{{instanceId}}/providers/FoundationaLLM.Agent/agents/{{agentName}}/set-owner
+			const result = await this.fetch(
+				`/management/instances/${instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/set-owner`,
+				{
+					method: 'POST',
+					body: payload,
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+			);
+			return result;
+		} catch (error) {
+			console.error('Error setting agent primary owner:', error);
+			throw error;
+		}
+	},
 };
 
 function formatError(error: any): string {

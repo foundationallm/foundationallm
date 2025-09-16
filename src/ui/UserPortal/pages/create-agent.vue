@@ -240,7 +240,7 @@
                                             </div>
 
                                             <div class="w-full max-w-[50px]">
-                                                <InputSwitch v-model="$appStore.autoHideToasts"
+                                                <InputSwitch v-model="(($appStore as any).autoHideToasts)"
                                                     class="csm-input-switch-1" />
                                             </div>
                                         </div>
@@ -263,7 +263,7 @@
                                             </div>
 
                                             <div class="w-full max-w-[50px]">
-                                                <InputSwitch v-model="$appStore.showToastLogs"
+                                                <InputSwitch v-model="(($appStore as any).showToastLogs)"
                                                     class="csm-input-switch-1" />
                                             </div>
                                         </div>
@@ -593,6 +593,21 @@
                             :loading="rolesLoading"
                         />
                     </div>
+
+                    <!-- Set Primary Owner Checkbox (only shown when Owner role is selected) -->
+                    <div v-if="isOwnerRoleSelected" class="relative mb-5">
+                        <div class="flex items-center">
+                            <Checkbox 
+                                v-model="newRoleAssignment.setAsPrimaryOwner"
+                                :binary="true"
+                                inputId="setPrimaryOwner"
+                                class="mr-2"
+                            />
+                            <label for="setPrimaryOwner" class="text-sm font-medium text-[#898989] cursor-pointer">
+                                Primary Owner and Contact
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Selected User Display -->
@@ -660,6 +675,7 @@ import '@/styles/loading.scss';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import Dropdown from 'primevue/dropdown';
+import Checkbox from 'primevue/checkbox';
 
 // Constants for allowed roles
 const ALLOWED_ROLE_NAMES = ['Reader', 'Contributor', 'Owner'];
@@ -672,6 +688,7 @@ export default defineComponent({
         DataTable,
         Column,
         Dropdown,
+        Checkbox,
     },
 
 
@@ -721,6 +738,7 @@ export default defineComponent({
                     userSearch: '',
                     selectedRole: null as string | null,
                     selectedUser: null as any,
+                    setAsPrimaryOwner: false as boolean,
                 },
                 userSearchLoading: false as boolean,
                 userSearchResults: [] as any[],
@@ -774,6 +792,16 @@ export default defineComponent({
                 const hasUser = !!this.newRoleAssignment.selectedUser;
                 const hasRole = !!this.newRoleAssignment.selectedRole;
                 return hasUser && hasRole;
+            },
+
+            isOwnerRoleSelected() {
+                if (!this.newRoleAssignment?.selectedRole || !this.availableRoles.length) {
+                    return false;
+                }
+                
+                // Find the selected role in available roles
+                const selectedRole = this.availableRoles.find(role => role.object_id === this.newRoleAssignment.selectedRole);
+                return selectedRole?.display_name === 'Owner';
             },
 
             returnToConversationsUrl() {
@@ -1568,6 +1596,24 @@ export default defineComponent({
                 };
                 
                 await api.createRoleAssignment(payload);
+                
+                // If Owner role is selected and setAsPrimaryOwner is checked, make the set-owner API call
+                if (this.isOwnerRoleSelected && this.newRoleAssignment.setAsPrimaryOwner) {
+                    try {
+                        await this.setAgentPrimaryOwner();
+                    } catch (ownerError: any) {
+                        // Log the error but don't fail the entire operation
+                        console.error('Failed to set primary owner:', ownerError);
+                        this.$toast.add({ 
+                            severity: 'warn', 
+                            summary: 'Role Assignment Added', 
+                            detail: `Role assignment added successfully, but failed to set as primary owner: ${ownerError.message || 'Unknown error'}`, 
+                            life: 5000 
+                        });
+                        return; // Exit early to avoid showing success message
+                    }
+                }
+                
                 this.$toast.add({ 
                     severity: 'success', 
                     summary: 'Role Assignment Added', 
@@ -1579,6 +1625,7 @@ export default defineComponent({
                 await this.loadRoleAssignments();
                 this.newRoleAssignment.selectedUser = null;
                 this.newRoleAssignment.selectedRole = null;
+                this.newRoleAssignment.setAsPrimaryOwner = false;
             } catch (e: any) {
                 let errorMessage = 'Failed to add role assignment';
                 
@@ -1605,6 +1652,30 @@ export default defineComponent({
                 const v = c === 'x' ? r : (r & 0x3 | 0x8);
                 return v.toString(16);
             });
+        },
+
+        async setAgentPrimaryOwner() {
+            if (!this.selectedAgentName || !this.newRoleAssignment.selectedUser) {
+                throw new Error('Agent name and selected user are required');
+            }
+
+            // Get instance ID from the app store or API
+            const instanceId = (this.$appStore as any)?.instanceId || api.instanceId || 'default-instance';
+            
+            // Prepare the AgentOwnerUpdateRequest payload
+            const payload = {
+                owner_user_id: this.newRoleAssignment.selectedUser.id
+            };
+
+            // Make the API call to set the primary owner
+            const response = await api.setAgentPrimaryOwner(instanceId, this.selectedAgentName, payload);
+            
+            // Check if the operation was successful
+            if (!response?.IsSuccess) {
+                throw new Error('Failed to set primary owner: API returned unsuccessful result');
+            }
+
+            return response;
         },
 
         getPrincipalDisplayName(assignment: any): string {
