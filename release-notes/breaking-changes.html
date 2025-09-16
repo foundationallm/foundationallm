@@ -77,8 +77,27 @@
 <h5>Note</h5>
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
-<h2 id="starting-from-097-rc365">Starting from 0.9.7-rc365</h2>
+<h2 id="starting-from-097-rc376">Starting from 0.9.7-rc376</h2>
 <h3 id="configuration-changes">Configuration changes</h3>
+<p>The following App Configuration value have been added:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl</code></td>
+<td>N/A</td>
+<td>The URL to request agent management permissions.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="starting-from-097-rc365">Starting from 0.9.7-rc365</h2>
+<h3 id="configuration-changes-1">Configuration changes</h3>
 <p>The following App Configuration value have been added:</p>
 <table>
 <thead>
@@ -97,7 +116,7 @@
 </tbody>
 </table>
 <h2 id="starting-from-097-up-to-rc364">Starting from 0.9.7 (up to rc364)</h2>
-<h3 id="configuration-changes-1">Configuration changes</h3>
+<h3 id="configuration-changes-2">Configuration changes</h3>
 <p>The value of the <code>FoundationaLLM:Events:Profiles:DataPipelineAPI</code> configuration entry is changed to:</p>
 <pre><code class="lang-json">{
 	&quot;EventProcessingCycleSeconds&quot;: 5,
@@ -779,7 +798,7 @@ A new folder named <code>FoundationaLLM.Plugin</code> must be created in the Fou
 }
 </code></pre>
 <h2 id="starting-from-097-beta139">Starting from 0.9.7-beta139</h2>
-<h3 id="configuration-changes-2">Configuration changes</h3>
+<h3 id="configuration-changes-3">Configuration changes</h3>
 <p>The following App Configuration value have been added:</p>
 <table>
 <thead>
@@ -825,7 +844,7 @@ A new folder named <code>FoundationaLLM.Plugin</code> must be created in the Fou
 }
 </code></pre>
 <h2 id="starting-from-097-beta138">Starting from 0.9.7-beta138</h2>
-<h3 id="configuration-changes-3">Configuration changes</h3>
+<h3 id="configuration-changes-4">Configuration changes</h3>
 <p>The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</code> configuration setting has been replaced by the following configuration settings:</p>
 <table>
 <thead>
@@ -864,10 +883,10 @@ A new folder named <code>FoundationaLLM.Plugin</code> must be created in the Fou
 <li><code>code_session_id</code> (instead of the previous <code>foundationallm_aca_code_execution_session_id</code>)</li>
 </ul>
 <h2 id="starting-from-097-beta128">Starting from 0.9.7-beta128</h2>
-<h3 id="configuration-changes-4">Configuration changes</h3>
+<h3 id="configuration-changes-5">Configuration changes</h3>
 <p>Agent Workflow configuration now has a <code>class_name</code> field. This is the underlying implementation class of the workflow. This is not a breaking change, as in previous versions the <code>name</code> field contained the class name and if the <code>class_name</code> field is empty, it will default to the <code>name</code> field. However, it is recommended to set the <code>class_name</code> field to the implementation class name.</p>
 <h2 id="starting-from-097-beta112">Starting from 0.9.7-beta112</h2>
-<h3 id="configuration-changes-5">Configuration changes</h3>
+<h3 id="configuration-changes-6">Configuration changes</h3>
 <p>Added the following App Configuration value:</p>
 <table>
 <thead>
@@ -1039,7 +1058,7 @@ The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</c
 <h2 id="starting-from-097-beta106">Starting from 0.9.7-beta106</h2>
 <p>For External Agent Workflows, the invocation of the workflow now sends the completion request MessageHistoryItem list vs the translated LangChain BaseMessage construct. This way workflows have more control on how to handle the message history of a conversation.</p>
 <h2 id="starting-from-097-beta105">Starting from 0.9.7-beta105</h2>
-<h3 id="configuration-changes-6">Configuration changes</h3>
+<h3 id="configuration-changes-7">Configuration changes</h3>
 <p>The <code>FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool</code> definition now contains a <code>ClassName</code> property. This should be set to the implementation class name of the tool. The <code>Name</code> property of the tool is what will be used for uniqueness in the case multipe tools of the same type/class are used in the same agent.</p>
 <blockquote>
 <p><strong>Note</strong>: This is not a breaking change as if the <code>ClassName</code> property is not set, the <code>Name</code> property will be used as the class name which is the existing pattern. However, it is recommended to set the <code>ClassName</code> property to adhere to the new pattern.</p>
@@ -1081,7 +1100,7 @@ The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</c
     }
 </code></pre>
 <h2 id="starting-from-097-beta103">Starting from 0.9.7-beta103</h2>
-<h3 id="configuration-changes-7">Configuration changes</h3>
+<h3 id="configuration-changes-8">Configuration changes</h3>
 <p>Added the following App Configuration value:</p>
 <table>
 <thead>
@@ -1176,7 +1195,7 @@ The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</c
 </tbody>
 </table>
 <h2 id="starting-from-097-beta101">Starting from 0.9.7-beta101</h2>
-<h3 id="configuration-changes-8">Configuration changes</h3>
+<h3 id="configuration-changes-9">Configuration changes</h3>
 <p>Added the following App Configuration value:</p>
 <table>
 <thead>
@@ -1217,7 +1236,7 @@ The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</c
 <li><code>resource</code> (of type text) - the serialized plugin package FoundationaLLM resource.</li>
 </ul>
 <h2 id="starting-with-097-beta100">Starting with 0.9.7-beta100</h2>
-<h3 id="configuration-changes-9">Configuration changes</h3>
+<h3 id="configuration-changes-10">Configuration changes</h3>
 <h2 id="app-configuration-settings">App configuration settings</h2>
 <p>The value of the <code>FoundationaLLM:Events:Profiles:CoreAPI</code> must be updated to include the <code>api-statistics</code> topic. The updated value is as follows:</p>
 <pre><code class="lang-json">{
@@ -1235,7 +1254,7 @@ The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</c
 }
 </code></pre>
 <h2 id="starting-with-094-rc100">Starting with 0.9.4-rc100</h2>
-<h3 id="configuration-changes-10">Configuration changes</h3>
+<h3 id="configuration-changes-11">Configuration changes</h3>
 <h2 id="app-configuration-settings-1">App configuration settings</h2>
 <div class="IMPORTANT">
 <h5>Important</h5>
@@ -1876,7 +1895,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 <p>Note: The event grid system topics need to be removed.</p>
 </blockquote>
 <p>The following topic needs to be created in the event grid namespace, must have a <code>resource-providers</code> topic with a publisher type of <code>Custom</code> and an input schema of <code>Cloud Events v1.0</code>.</p>
-<h3 id="configuration-changes-11">Configuration changes</h3>
+<h3 id="configuration-changes-12">Configuration changes</h3>
 <p>Added the following App Configuration value:</p>
 <table>
 <thead>
@@ -1938,7 +1957,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 </ul>
 <p>After the container is created, set the <code>Time to Live</code> property on the container to 300 seconds.</p>
 <h2 id="starting-with-091-rc105">Starting with 0.9.1-rc105</h2>
-<h3 id="configuration-changes-12">Configuration changes</h3>
+<h3 id="configuration-changes-13">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -1987,7 +2006,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 }
 </code></pre>
 <h2 id="starting-with-091-rc102">Starting with 0.9.1-rc102</h2>
-<h3 id="configuration-changes-13">Configuration changes</h3>
+<h3 id="configuration-changes-14">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -2024,7 +2043,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
     },
 </code></pre>
 <h2 id="starting-with-091-rc101">Starting with 0.9.1-rc101</h2>
-<h3 id="configuration-changes-14">Configuration changes</h3>
+<h3 id="configuration-changes-15">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -2068,7 +2087,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 </tbody>
 </table>
 <h2 id="starting-with-090">Starting with 0.9.0</h2>
-<h3 id="configuration-changes-15">Configuration changes</h3>
+<h3 id="configuration-changes-16">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -2190,7 +2209,7 @@ Here are the configuration parameters for the required Cosmos DB container:</p>
 <p>Please note that both properties are nullable. Set them to null to clear out the rating and comments.</p>
 </div>
 <h2 id="starting-with-084">Starting with 0.8.4</h2>
-<h3 id="configuration-changes-16">Configuration changes</h3>
+<h3 id="configuration-changes-17">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -2381,7 +2400,7 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 <li><code>FoundationaLLM.AzureOpenAI/assistantUserContexts</code></li>
 <li><code>FoundationaLLM.Conversation/conversations</code></li>
 </ul>
-<h3 id="configuration-changes-17">Configuration changes</h3>
+<h3 id="configuration-changes-18">Configuration changes</h3>
 <h4 id="resource-provider-templates">Resource provider templates</h4>
 <p>The <code>AzureOpenAI.template.json</code> files within <code>deploy/quick-start/data/resource-provider/FoundationaLLM.Configuration</code> and <code>deploy/standard/data/resource-provider/FoundationaLLM.Configuration</code> have been updated to set the <code>category</code> field to the value <code>LLM</code>. This discriminator allows the Management Portal to filter the list of API endpoints by category and provide options to add AI Models to endpoints with the <code>LLM</code> category.</p>
 <p>The existing <code>category</code> property needs to be set to <code>LLM</code> on existing API endpoint configurations in the <code>FoundationaLLM.Configuration</code> resource provider that fit this description, including the <code>AzureOpenAI</code> endpoint configuration.</p>
@@ -2433,7 +2452,7 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 }
 </code></pre>
 <h2 id="starting-with-082">Starting with 0.8.2</h2>
-<h3 id="configuration-changes-18">Configuration changes</h3>
+<h3 id="configuration-changes-19">Configuration changes</h3>
 <p>The following settings are required:</p>
 <table>
 <thead>
