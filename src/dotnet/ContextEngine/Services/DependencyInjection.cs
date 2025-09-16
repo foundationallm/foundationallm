@@ -169,5 +169,23 @@ namespace FoundationaLLM
 
             services.ActivateSingleton<ICodeSessionProviderService>();
         }
+
+        /// <summary>
+        /// Registers the <see cref="IMCPClientService"/> implementations with the dependency injection container.
+        /// </summary>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder.</param>
+        public static void AddMCPClientService(this IHostApplicationBuilder builder) =>
+            builder.Services.AddMCPClientService(builder.Configuration);
+
+        /// <summary>
+        /// Registers the <see cref="IMCPClientService"/> implementations with the dependency injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddMCPClientService(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSingleton<IMCPClientService, MCPClientService>();
+            services.ActivateSingleton<IMCPClientService>();
+        }
     }
 }

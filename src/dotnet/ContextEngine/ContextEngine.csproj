@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Azure.AI.OpenAI" Version="2.2.0-beta.4" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+    <PackageReference Include="ModelContextProtocol.Core" Version="0.3.0-preview.4" />
     <PackageReference Include="Parquet.Net" Version="5.1.1" />
     <PackageReference Include="UTF.Unknown" Version="2.6.0" />
   </ItemGroup>
