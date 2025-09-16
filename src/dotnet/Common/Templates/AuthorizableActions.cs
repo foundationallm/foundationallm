@@ -286,6 +286,13 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Configuration")
                 },
                 {
+                    AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurationSets_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurationSets_Read,
+                        "Read app configuration sets.",
+                        "Configuration")
+                },
+                {
                     AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Read,
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Read,
