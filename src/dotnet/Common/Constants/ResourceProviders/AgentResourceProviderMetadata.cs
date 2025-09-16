@@ -37,6 +37,9 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         ]),
                         new ResourceTypeAction(ResourceProviderActions.SetDefault, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderActionResult)])
+                        ]),
+                        new ResourceTypeAction(ResourceProviderActions.SetOwner, true, false, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AgentOwnerUpdateRequest)], [typeof(ResourceProviderActionResult)])
                         ])
                     ],
                     SubTypes = new()

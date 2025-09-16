@@ -187,6 +187,11 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     ResourceProviderActions.CheckName => await CheckAgentName(authorizationResult, serializedAction),
                     ResourceProviderActions.Purge => await PurgeResource<AgentBase>(resourcePath),
                     ResourceProviderActions.SetDefault => await SetDefaultResource<AgentBase>(resourcePath),
+                    ResourceProviderActions.SetOwner => await SetAgentOwnerUser(
+                        resourcePath,
+                        authorizationResult,
+                        serializedAction,
+                        userIdentity),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
@@ -700,6 +705,51 @@ namespace FoundationaLLM.Agent.ResourceProviders
             }
 
             return upsertResult;
+        }
+
+        private async Task<ResourceProviderActionResult> SetAgentOwnerUser(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity)
+        {
+            var agentOwnerUpdateRequest = JsonSerializer.Deserialize<AgentOwnerUpdateRequest>(serializedAction)
+                ?? throw new ResourceProviderException("The agent owner update request is invalid.",
+                    StatusCodes.Status400BadRequest);
+            if (string.IsNullOrWhiteSpace(agentOwnerUpdateRequest.OwnerUserId))
+                throw new ResourceProviderException("The agent owner update request is invalid.",
+                    StatusCodes.Status400BadRequest);
+
+            var agent = await LoadResource<AgentBase>(resourcePath.MainResourceId!)
+                ?? throw new ResourceProviderException($"The resource {resourcePath.MainResourceId!} of type {resourcePath.MainResourceTypeName} was not found.",
+                    StatusCodes.Status404NotFound);
+
+            if (agent.OwnerUserId is null
+                || agent.OwnerUserId != agentOwnerUpdateRequest.OwnerUserId)
+            {
+                // Set or replace owner user only if different from the current one.
+
+                var roleAssignments = await _authorizationServiceClient.GetRoleAssignments(
+                resourcePath.InstanceId!,
+                new RoleAssignmentQueryParameters
+                {
+                    Scope = agent.ObjectId,
+                    SecurityPrincipalIds = [userIdentity.UserId!, .. userIdentity.GroupIds]
+                },
+                userIdentity);
+
+                if (!roleAssignments.Any(ra =>
+                    ra.RoleDefinitionId == RoleDefinitionIds.Owner))
+                    throw new ResourceProviderException("The specified owner user does not have the Owner role assigned on the agent.",
+                        StatusCodes.Status400BadRequest);
+
+                agent.OwnerUserId = agentOwnerUpdateRequest.OwnerUserId;
+                await SaveResource<AgentBase>(agent);
+            }
+
+            return new ResourceProviderActionResult(
+                agent.ObjectId!,
+                true);
         }
 
         private async Task<List<ResourceProviderGetResult<AgentAccessToken>>> LoadAgentAccessTokens(

@@ -95,6 +95,10 @@
       <LastGenOutput>AuthorizableActionNames.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
+    <None Update="Templates\RoleDefinitionIds.tt">
+      <LastGenOutput>RoleDefinitionIds.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
     <None Update="Templates\TelemetryActivityNames.tt">
       <LastGenOutput>TelemetryActivityNames.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -185,6 +189,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AuthorizableActionNames.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\RoleDefinitionIds.cs">
+      <DependentUpon>RoleDefinitionIds.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\TelemetryActivityNames.cs">
       <DependentUpon>TelemetryActivityNames.tt</DependentUpon>

@@ -68,7 +68,8 @@ namespace FoundationaLLM.Core.Services
                             IsResourceTypeAvailable = true,
                             AvailableActions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                             {
-                                ResourceProviderActions.CheckName
+                                ResourceProviderActions.CheckName,
+                                ResourceProviderActions.SetOwner
                             },
                             AvailableSubordinateResourceTypes = new Dictionary<string, ResourceTypeAvailability>(StringComparer.OrdinalIgnoreCase)
                             {
