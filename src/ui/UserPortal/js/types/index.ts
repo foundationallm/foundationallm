@@ -325,6 +325,11 @@ export interface AgentBase extends ResourceBase {
 	show_view_prompt: boolean;
 	show_file_upload: boolean;
 	isReadonly: boolean;
+	/**
+	 * The primary owner's security principal identifier for this agent.
+	 * May be null/undefined if not set.
+	 */
+	owner_user_id?: string | null;
 }
 
 
