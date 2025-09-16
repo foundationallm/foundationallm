@@ -94,8 +94,15 @@
 <td>N/A</td>
 <td>The URL to request agent management permissions.</td>
 </tr>
+<tr>
+<td><code>FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames</code></td>
+<td>N/A</td>
+<td>The comma-separated list of featured agent names.</td>
+</tr>
 </tbody>
 </table>
+<p>All User Portal users must have read permission on the <code>/instances/&lt;instance_id_&gt;/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal</code> scope.</p>
+<p>All Management Portal users must have read permissions on the <code>/instances/&lt;instance_id_&gt;/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal</code> scope.</p>
 <h2 id="starting-from-097-rc365">Starting from 0.9.7-rc365</h2>
 <h3 id="configuration-changes-1">Configuration changes</h3>
 <p>The following App Configuration value have been added:</p>
