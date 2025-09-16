@@ -2042,6 +2042,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authorization.RoleDefinitionIds.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authorization.RoleDefinitionIds.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.Authorization.RoleDefinitionIds",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.Authorization.RoleDefinitionIds.yml\" sourcestartlinenumber=\"1\">Provides the identifiers of the role definitions managed by the FoundationaLLM.Authorization provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authorization.RoleDefinitionNames.yml",
       "output": {
         ".html": {
@@ -8829,6 +8843,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOrchestrationSettings",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOrchestrationSettings.yml\" sourcestartlinenumber=\"1\">Provides agent-related orchestration settings.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOwnerUpdateRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOwnerUpdateRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOwnerUpdateRequest",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOwnerUpdateRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to update the owner of an agent.</p>\n"
     },
     {
       "type": "ManagedReference",
