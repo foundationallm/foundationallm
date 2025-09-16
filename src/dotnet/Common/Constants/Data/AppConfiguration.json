@@ -2291,6 +2291,14 @@
 				"value": "true",
 				"content_type": "",
 				"first_version": "0.9.7"
+			},
+			{
+				"name": "FeaturedAgentNames",
+				"description": "The comma-separated list of featured agent names.",
+				"secret": "",
+				"value": "true",
+				"content_type": "",
+				"first_version": "0.9.7"
 			}
 		]
 	},

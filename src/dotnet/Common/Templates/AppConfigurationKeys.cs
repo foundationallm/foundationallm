@@ -1712,6 +1712,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_UserPortal_Configuration_AgentManagementPermissionRequestUrl =
             "FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames setting.
+        /// <para>Value description:<br/>The comma-separate list of featured agent names.</para>
+        /// </summary>
+        public const string FoundationaLLM_UserPortal_Configuration_FeaturedAgentNames =
+            "FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames";
 
         #endregion
 
