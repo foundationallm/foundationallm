@@ -18,7 +18,13 @@
                     <h2 class="page-header text-3xl text-[#334581]">{{ isEditMode ? 'Edit Agent' : 'Create Agent' }}</h2>
                 </div>
 
-
+                <!-- Guidance shown until an agent is created -->
+                <div
+                    v-if="!isEditMode"
+                    class="w-full max-w-[1000px] mx-auto px-4 mb-10 text-center text-base text-black"
+                >
+                    Please add the general information for your custom agent to create it. Upon creation you will be able to set the AI configuration, add data sources, and share your agent with others.
+                </div>
             </div>
 
             <!-- Loading State for Edit Mode -->
@@ -41,7 +47,7 @@
             </div>
 
             <!-- Main Content -->
-            <div v-else class="mb-4">
+            <div v-else class="mb-4 cms-create-agent-tab-1">
                 <TabView :activeIndex="activeTabIndex" @tab-change="onTabChange">
                     <TabPanel header="General">
                         <div class="px-4 py-8 mt-8 border border-solid border-gray-300">
@@ -1678,6 +1684,14 @@ export default defineComponent({
 .csm-roleDialog-modal-1{
     .p-dialog-content{
         overflow-y: unset;
+    }
+}
+
+.cms-create-agent-tab-1{
+    .p-tabview-header{
+        &.p-disabled{
+            opacity: 0;
+        }
     }
 }
 </style>
