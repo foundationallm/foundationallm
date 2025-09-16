@@ -114,7 +114,7 @@
                     >
                         <template #body="slotProps">
                             <div class="agent-owner">
-                                {{ slotProps.data.resource.created_by || 'Unknown' }}
+                                {{ getOwnerDisplay(slotProps.data.resource) }}
                             </div>
                         </template>
                     </Column>
@@ -207,6 +207,8 @@ export default defineComponent({
         const hasAgentsContributorRole = ref(false);
         const hasPromptsContributorRole = ref(false);
         const router = useRouter();
+        // Cache resolved owner emails by principal id
+        const ownerEmailById = ref<Record<string, string>>({});
 
         // Computed property
         const filteredAgents = computed(() => {
@@ -233,6 +235,53 @@ export default defineComponent({
             
             try {
                 agents.value = await api.getAllowedAgents();
+
+                // Try to resolve owner ids present in payload
+                let ids = Array.from(new Set(
+                    agents.value
+                        .map(a => a.resource.owner_user_id)
+                        .filter((id): id is string => !!id && typeof id === 'string')
+                ));
+
+                // Fallback: if none present, enrich from management endpoint by name
+                if (ids.length === 0) {
+                    try {
+                        const managementAgents = await api.getAgents();
+                        const ownerByName = new Map<string, string | null | undefined>();
+                        for (const m of managementAgents) {
+                            ownerByName.set(m.resource.name, (m.resource as AgentBase).owner_user_id);
+                        }
+                        let updated = false;
+                        for (const a of agents.value) {
+                            if (!a.resource.owner_user_id && ownerByName.has(a.resource.name)) {
+                                a.resource.owner_user_id = ownerByName.get(a.resource.name) ?? null;
+                                updated = true;
+                            }
+                        }
+                        if (updated) {
+                            ids = Array.from(new Set(
+                                agents.value
+                                    .map(a => a.resource.owner_user_id)
+                                    .filter((id): id is string => !!id && typeof id === 'string')
+                            ));
+                        }
+                    } catch (enrichErr) {
+                        // no-op
+                    }
+                }
+
+                if (ids.length > 0) {
+                    try {
+                        const principals = await api.getSecurityPrincipals(ids);
+                        for (const p of principals) {
+                            ownerEmailById.value[p.id] = p.email ?? p.name ?? 'N/A';
+                        }
+                    } catch (resolveErr) {
+                        // no-op
+                    }
+                } else {
+                    // no owner ids present
+                }
             } catch (err) {
                 console.error('Failed to load agents:', err);
                 const errorMessage = err instanceof Error 
@@ -260,7 +309,7 @@ export default defineComponent({
             for (const role of SUPPORTED_ROLES) {
                 if (roles.includes(role)) return role;
             }
-            return roles[0] || 'Unknown';
+            return roles[0] || '';
         };
 
         const formatExpirationDate = (expirationDate: string | null): string => {
@@ -298,6 +347,18 @@ export default defineComponent({
             router.push({ path: '/create-agent', query: { edit: 'true', agentName } });
         };
 
+        const getOwnerEmail = (ownerUserId?: string | null): string => {
+            if (!ownerUserId) return '';
+            return ownerEmailById.value[ownerUserId] || '';
+        };
+
+        const getOwnerDisplay = (resource: AgentBase): string => {
+            const email = getOwnerEmail(resource.owner_user_id);
+            if (email) return email;
+            if (resource.created_by) return resource.created_by;
+            return 'N/A';
+        };
+
         // Lifecycle
         onMounted(() => {
             loadAgents();
@@ -318,6 +379,8 @@ export default defineComponent({
             clearSearch,
             toggleActions,
             onEditAgent,
+            getOwnerEmail,
+            getOwnerDisplay,
             SCROLL_HEIGHT
         };
     },
