@@ -190,6 +190,12 @@ export default {
 			type: String,
 			default: null,
 		},
+
+		allowedRoleDefinitionNames: {
+			type: Array as PropType<string[]>,
+			required: false,
+			default: null,
+		},
 	},
 
 	data() {
@@ -216,7 +222,7 @@ export default {
 		async getRoleAssignments() {
 			this.loading = true;
 			try {
-				const roleAssignments = await api.getRoleAssignments(this.scope);
+				let roleAssignments = await api.getRoleAssignments(this.scope);
 
 				// Return early if there are no role assignments
                 if (!roleAssignments || roleAssignments.length === 0) {
@@ -224,6 +230,17 @@ export default {
                     this.loading = false;
                     return;
                 }
+
+				const roleDefinitions = await api.getRoleDefinitions();
+
+				// If allowedRoleDefinitionNames is provided, filter roleOptions to only include those display names
+				if (this.allowedRoleDefinitionNames && Array.isArray(this.allowedRoleDefinitionNames) && this.allowedRoleDefinitionNames.length > 0) {
+					const allowed = new Set(this.allowedRoleDefinitionNames);
+					roleAssignments = roleAssignments.filter((r) => allowed.has(
+						roleDefinitions.find(
+							(role) => role.object_id === r.resource.role_definition_id,
+						).display_name));
+				}
 
 				const principalIds = [];
 				for (const assignmentForPrincipalId of roleAssignments) {
@@ -233,8 +250,6 @@ export default {
 				const principals = await api.getObjects({
 					ids: principalIds,
 				});
-
-				const roleDefinitions = await api.getRoleDefinitions();
 
 				// Expand all role groups in table
 				for (const roleDefinition of roleDefinitions) {

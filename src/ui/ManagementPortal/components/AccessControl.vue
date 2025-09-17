@@ -20,7 +20,10 @@
 			<!-- Multiple scopes -->
 			<TabView v-if="scopes.length > 1" v-model:activeIndex="currentScopeIndex" lazy>
 				<TabPanel v-for="scope in scopes" :key="scope.value" :header="scope.label">
-					<RoleAssignmentsTable :scope="currentScope.value" />
+					<RoleAssignmentsTable
+						:scope="currentScope.value"
+						:allowedRoleDefinitionNames="currentScope.allowedRoleDefinitionNames"
+					/>
 				</TabPanel>
 			</TabView>
 
