@@ -101,6 +101,12 @@
 </tr>
 </tbody>
 </table>
+<p>The following configuration values are obsolete and must be removed:</p>
+<ul>
+<li><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules</code></li>
+<li><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer</code></li>
+</ul>
+<h3 id="permissions-changes">Permissions changes</h3>
 <p>All User Portal users must have read permission on the <code>/instances/&lt;instance_id_&gt;/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal</code> scope.</p>
 <p>All Management Portal users must have read permissions on the <code>/instances/&lt;instance_id_&gt;/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal</code> scope.</p>
 <h2 id="starting-from-097-rc365">Starting from 0.9.7-rc365</h2>
