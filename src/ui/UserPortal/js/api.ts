@@ -82,6 +82,16 @@ export default {
 	},
 
 	/**
+	 * Retrieves the UserPortal app configuration set from the management endpoint.
+	 * @returns A promise that resolves to the UserPortal app configuration set.
+	 */
+	async getUserPortalAppConfigurationSet() {
+		return await this.fetch<ResourceProviderGetResult<any>[]>(
+			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal`
+		);
+	},
+
+	/**
 	 * Fetches data from the specified URL using the provided options.
 	 * @param url The URL to fetch data from.
 	 * @param opts The options for the fetch request.
@@ -190,7 +200,14 @@ export default {
 	 * @returns {Promise<Array<Session>>} A promise that resolves to an array of sessions.
 	 */
 	async getSessions(): Promise<Session[]> {
-		return await this.fetch<Session[]>(`/instances/${this.instanceId}/sessions`);
+		const sessions = await this.fetch<Session[]>(`/instances/${this.instanceId}/sessions`);
+		
+		// Check if sessions is actually an array
+		if (!Array.isArray(sessions)) {
+			return [];
+		}
+		
+		return sessions;
 	},
 
 	/**
@@ -311,6 +328,12 @@ export default {
 		const agents = (await this.fetch(
 			`/instances/${this.instanceId}/completions/agents`,
 		)) as ResourceProviderGetResult<AgentBase>[];
+		
+		// Check if agents is actually an array
+		if (!Array.isArray(agents)) {
+			return [];
+		}
+		
 		agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
 		return agents;
 	},
@@ -320,6 +343,11 @@ export default {
 			const agents = await this.fetch(
 				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents`
 			) as ResourceProviderGetResult<AgentBase>[];
+
+			// Check if agents is actually an array
+			if (!Array.isArray(agents)) {
+				return [];
+			}
 
 			agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
 

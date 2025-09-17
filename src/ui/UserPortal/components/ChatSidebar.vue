@@ -1,13 +1,14 @@
 <template>
 	<div class="chat-sidebar">
 		<!-- Sidebar section header -->
-		<div class="chat-sidebar__section-header--mobile">
-			<img
-				v-if="$appConfigStore.logoUrl !== ''"
-				:src="$filters.enforceLeadingSlash($appConfigStore.logoUrl)"
-				:alt="$appConfigStore.logoText"
-			/>
-			<span v-else>{{ $appConfigStore.logoText }}</span>
+			<div class="chat-sidebar__section-header--mobile" :key="`header-${configLoadedTrigger}`">
+				<img
+					v-if="$appConfigStore.logoUrl && $appConfigStore.logoUrl !== ''"
+					:src="$filters.enforceLeadingSlash($appConfigStore.logoUrl)"
+					:alt="$appConfigStore.logoText || 'FoundationaLLM'"
+				/>
+				<span v-else-if="$appConfigStore.logoText">{{ $appConfigStore.logoText }}</span>
+				<span v-else>FoundationaLLM</span>
 			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					class="chat-sidebar__button"
@@ -114,7 +115,7 @@
 		</div>
 
 		<!-- Logged in user -->
-		<div v-if="$authStore.currentAccount?.name" class="chat-sidebar__account">
+		<div v-if="$authStore.currentAccount?.name" class="chat-sidebar__account" :key="`account-${authStateTrigger}`">
 			<UserAvatar size="large" class="chat-sidebar__avatar" />
 
 			<div>
@@ -429,6 +430,9 @@ import Checkbox from 'primevue/checkbox';
 				agentSearchTerm: '',
 				showEnabledOnly: false,
 				activeTabIndex: 0,
+				configLoadedTrigger: 0,
+				authStateTrigger: 0,
+				authPollingInterval: null as ReturnType<typeof setInterval> | null,
 			};
 		},
 
@@ -475,6 +479,24 @@ import Checkbox from 'primevue/checkbox';
 				},
 				deep: true,
 			},
+			'$appConfigStore.isConfigurationLoaded': {
+				handler(newVal) {
+					if (newVal) {
+						// Trigger reactivity by updating a local data property
+						this.configLoadedTrigger = Date.now();
+					}
+				},
+				immediate: true,
+			},
+			'$authStore.isAuthenticated': {
+				handler(newVal) {
+					if (newVal) {
+						// Trigger reactivity by updating a local data property
+						this.authStateTrigger = Date.now();
+					}
+				},
+				immediate: true,
+			},
 		},
 
 		async created() {
@@ -488,15 +510,97 @@ import Checkbox from 'primevue/checkbox';
 
 			// Listen for the agent change event.
 			eventBus.on('agentChanged', this.handleAddSession);
+			
 		},
 
 		async mounted() {
+			// Add event listeners in mounted to ensure DOM is ready
+			if (process.client && window) {
+				window.addEventListener('config-loaded', this.handleConfigLoaded);
+				window.addEventListener('auth-updated', this.handleAuthUpdated);
+				
+				// Check if configuration is already loaded and trigger update
+				if (this.$appConfigStore.logoUrl) {
+					this.handleConfigLoaded({ detail: { 
+						logoUrl: this.$appConfigStore.logoUrl, 
+						logoText: this.$appConfigStore.logoText 
+					}} as CustomEvent);
+				}
+				
+				// Check if authentication is already available and trigger update
+				if (this.$authStore.currentAccount) {
+					this.handleAuthUpdated({ detail: { 
+						isAuthenticated: this.$authStore.isAuthenticated,
+						currentAccount: this.$authStore.currentAccount 
+					}} as CustomEvent);
+				}
+				
+				// Start polling for authentication changes (fallback if events don't work)
+				this.startAuthPolling();
+			}
+			
 			await this.setAgentOptions();
 			await this.loadUserProfile();
 			await this.loadgetAgents();
 		},
 
+		unmounted() {
+			// Remove the agent change event listener.
+			eventBus.off('agentChanged', this.handleAddSession);
+			
+			// Remove config loaded event listener
+			if (process.client && window) {
+				window.removeEventListener('config-loaded', this.handleConfigLoaded);
+				window.removeEventListener('auth-updated', this.handleAuthUpdated);
+			}
+			
+			// Clear auth polling interval
+			if (this.authPollingInterval) {
+				clearInterval(this.authPollingInterval);
+				this.authPollingInterval = null;
+			}
+		},
+
 		methods: {
+			handleConfigLoaded(event: CustomEvent) {
+				this.configLoadedTrigger = Date.now();
+			},
+			
+			handleAuthUpdated(event: CustomEvent) {
+				this.authStateTrigger = Date.now();
+				
+				// If we have authentication, stop polling
+				if (this.$authStore.currentAccount && this.authPollingInterval) {
+					clearInterval(this.authPollingInterval);
+					this.authPollingInterval = null;
+				}
+			},
+			
+			startAuthPolling() {
+				let pollCount = 0;
+				const maxPolls = 30; // 15 seconds with 500ms intervals
+				
+				this.authPollingInterval = setInterval(() => {
+					pollCount++;
+					
+					// Check if we have authentication now
+					if (this.$authStore.currentAccount) {
+						this.handleAuthUpdated({ detail: { 
+							isAuthenticated: this.$authStore.isAuthenticated,
+							currentAccount: this.$authStore.currentAccount 
+						}} as CustomEvent);
+						return; // handleAuthUpdated will clear the interval
+					}
+					
+					// Stop polling after max attempts
+					if (pollCount >= maxPolls) {
+						if (this.authPollingInterval) {
+							clearInterval(this.authPollingInterval);
+							this.authPollingInterval = null;
+						}
+					}
+				}, 500);
+			},
 			openUpdateModal(session: Session) {
 				this.conversationToUpdate = session;
 				this.newConversationName = session.display_name;
@@ -932,6 +1036,15 @@ import Checkbox from 'primevue/checkbox';
 		// added extra padding to the right to account for resize handle width
 		padding: 12px 29px 12px 24px;
 		text-transform: inherit;
+	}
+
+	.config-loading {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 12px;
+		color: var(--text-color-secondary);
+		font-size: 14px;
 		align-items: center;
 	}
 
