@@ -25,11 +25,26 @@ print('Current working directory:', os.getcwd())
 print('Version:', args.version)
 print('Configuration:', args.config)
 
+manifest_path = Path('package/foundationallm_manifest.json')
+manifest_text = manifest_path.read_text(encoding='utf-8')
+updated_manifest = manifest_text.replace('__VERSION__', args.version)
+
+package_manifest_path = Path(f'src/{package_name}/foundationallm_manifest.json')
+package_manifest_path.write_text(updated_manifest, encoding='utf-8')
+print(f'Package manifest: {package_manifest_path}')
+
+package_root = Path(f'src/{package_name}')
+
 if args.config == 'Debug':
     with zipfile.ZipFile(f'{package_name}_debug-{args.version}.zip', mode='w') as zip_pkg:
-        for f in Path(f'src/{package_name}').rglob('*.py'):
+        for f in package_root.rglob('*.py'):
             print(f'Adding {f} to the package...')
             zip_pkg.write(f, f.relative_to('src'))
+        zip_pkg.write(package_manifest_path, package_manifest_path.relative_to('src'))
 else:
     with zipfile.PyZipFile(f'{package_name}-{args.version}.zip', mode='w') as zip_pkg:
-        zip_pkg.writepy(f'src/{package_name}')
+        zip_pkg.writepy(str(package_root))
+        zip_pkg.write(package_manifest_path, package_manifest_path.relative_to('src'))
+
+package_manifest_path.unlink()
+print('Package manifest removed.')
