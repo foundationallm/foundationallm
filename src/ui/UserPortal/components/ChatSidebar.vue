@@ -56,15 +56,17 @@
 					>
 						<div
 							class="chat"
+							tabindex="0"
 							:class="{
 								'chat--selected': currentSession?.sessionId === session.sessionId,
 								'chat--editing': session?.sessionId === conversationToUpdate?.sessionId,
 								'chat--deleting': session?.sessionId === conversationToDelete?.sessionId,
 							}"
+							@keydown="handleChatKeydown($event, session)"
 						>
-							<!-- Chat name -->
+							<!-- Chat name -->	
 							<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-								<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{
+								<span class="chat__name" tabindex="-1" @keydown.esc="hideAllPoppers">{{
 									session.display_name
 								}}</span>
 								<template #popper>
@@ -394,10 +396,10 @@
 	import eventBus from '@/js/eventBus';
 import { isAgentExpired, isAgentReadonly } from '@/js/helpers';
 import type { AgentOption, Session } from '@/js/types';
+import '@/styles/loading.scss';
 import { hideAllPoppers } from 'floating-vue';
 import Checkbox from 'primevue/checkbox';
 	declare const process: any;
-	import '@/styles/loading.scss';
 
 	import api from '@/js/api';
 
@@ -701,6 +703,14 @@ import Checkbox from 'primevue/checkbox';
 				}
 			},
 
+			handleChatKeydown(event: KeyboardEvent, session: Session) {
+				// MacOS'ta "Delete" tuşu aslında "Backspace" olarak algılanır.
+				if (event.key === 'Delete' || event.key === 'Backspace') {
+					this.conversationToDelete = session;
+					event.preventDefault();
+				}
+			},
+
 			async setAgentOptions() {
 				const isCurrentAgent = (agent: any): boolean => {
 					return (
@@ -964,6 +974,13 @@ import Checkbox from 'primevue/checkbox';
 		flex-shrink: 0;
 		margin-left: 12px;
 		transition: all 0.1s ease-in-out;
+	}
+
+	.chat:focus-within .chat__icons,
+	.chat:focus .chat__icons,
+	.chat--selected .chat__icons {
+		display: flex;
+		opacity: 1;
 	}
 
 	.chat:hover {
