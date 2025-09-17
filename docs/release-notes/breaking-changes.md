@@ -3,6 +3,12 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-rc382
+
+Python packages must be built using the build version.
+
+Python packages must be deployed via the FoundationaLLM.Core PowerShell module.
+
 ## Starting from 0.9.7-rc376
 
 ### Configuration changes
