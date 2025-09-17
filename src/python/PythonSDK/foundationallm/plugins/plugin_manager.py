@@ -2,6 +2,7 @@
 Manages the plugins in the system.'''
 from importlib import import_module, reload
 from logging import Logger
+import json
 import os
 import sys
 
@@ -54,7 +55,6 @@ class PluginManager():
         try:
             storage_account_name = config.get_value(PLUGIN_MANAGER_STORAGE_ACCOUNT_NAME)
             storage_authentication_type = config.get_value(PLUGIN_MANAGER_STORAGE_AUTHENTICATION_TYPE)
-            storage_container_name = config.get_value(PLUGIN_MANAGER_STORAGE_CONTAINER)
             valid_configuration = True
         except Exception:
             self.logger.exception('The plugin manager configuration is not set up correctly. No plugins will be loaded.')
@@ -65,8 +65,8 @@ class PluginManager():
                 'Initializing plugin manager with the following configuration:\n',
                 f'Storage account name:: {storage_account_name}\n',
                 f'Storage authentication type: {storage_authentication_type}\n',
-                f'Storage container name: {storage_container_name}\n',
-                f'Modules list: {modules_list}\n',
+                f'Storage container name: {PLUGIN_MANAGER_STORAGE_CONTAINER}\n',
+                f'Storage root path: {PLUGIN_MANAGER_STORAGE_ROOT_PATH}\n',
                 f'Modules local path: {self.modules_local_path}\n'
             ))
 
@@ -74,19 +74,25 @@ class PluginManager():
 
                 self.storage_manager = BlobStorageManager(
                     account_name=storage_account_name,
-                    container_name=storage_container_name,
+                    container_name=PLUGIN_MANAGER_STORAGE_CONTAINER,
                     authentication_type=storage_authentication_type
                 )
 
-                if modules_list is not None and modules_list.strip() != '':
-                    for module_configuration in [x.split('|') for x in modules_list.split(',')]:
-                        module_file = module_configuration[0]
-                        module_name = module_configuration[1]
-                        plugin_manager_type = module_configuration[2]
-                        plugin_manager_class_name = module_configuration[3]
+                plugin_blobs = self.storage_manager.list_blobs(
+                    f'{PLUGIN_MANAGER_STORAGE_ROOT_PATH}/Python-')
+                plugin_blob_names = [blob.name for blob in plugin_blobs]
 
-                        if (plugin_manager_type != PluginManagerTypes.TOOLS and plugin_manager_type != PluginManagerTypes.WORKFLOWS):
-                            raise ValueError(f'The plugin manager type {plugin_manager_type} is not recognized.')
+                for plugin_blob_name in plugin_blob_names:
+                    self.logger.info(f'Loading plugin package from: {plugin_blob_name}')
+
+                    plugin_package_content = self.storage_manager.read_file_content(plugin_blob_name)
+                    plugin_package = json.loads(plugin_package_content)
+
+                    module_file = plugin_package['package_file_path']
+                    module_name = plugin_package['properties']['module_name']
+                    plugin_manager_class_names = plugin_package['properties']['plugin_managers']
+
+                    for plugin_manager_class_name in plugin_manager_class_names.split(','):
 
                         if module_name in self.external_modules:
                             self.external_modules[module_name].plugin_manager_class_names.append(plugin_manager_class_name)
@@ -96,11 +102,13 @@ class PluginManager():
                                 module_name=module_name,
                                 plugin_manager_class_names=[plugin_manager_class_name]
                             )
+
                 self.initialized = True
                 self.logger.info('The plugin manager initialized successfully.')
 
-            except Exception:
+            except Exception as e:
                 self.logger.exception('An error occurred while initializing the plugin manager storage manager. No plugins will be loaded.')
+                self.logger.error(f'Exception details: {e}')
 
     def load_external_modules(self, reload_modules:bool=False):
         """
@@ -116,7 +124,7 @@ class PluginManager():
 
             external_module = self.external_modules[module_name]
             module_file_name = external_module.module_file
-            local_module_file_name = f'{self.modules_local_path}/{module_file_name}'
+            local_module_file_name = f'{self.modules_local_path}/{os.path.basename(module_file_name)}'
             self.logger.info(f'Loading module from {module_file_name}')
 
             try:
