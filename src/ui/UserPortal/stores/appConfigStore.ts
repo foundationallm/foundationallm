@@ -256,17 +256,11 @@ export const useAppConfigStore = defineStore('appConfig', {
 
 		/**
 		 * Loads the full configuration after authentication is complete.
-		 * This replaces the individual API calls for most configuration values.
+		 * Uses app configuration sets as the only method to load configuration.
 		 */
 		async loadFullConfiguration() {
-			try {
-				// Load the app configuration set (new approach)
-				await this.loadAppConfigurationSet();
-			} catch (error) {
-				console.error('Failed to load app configuration set, falling back to individual API calls:', error);
-				// Fallback to individual API calls if the app configuration set fails
-				await this.loadFallbackConfiguration();
-			}
+			// Load the app configuration set (this is the only supported approach)
+			await this.loadAppConfigurationSet();
 		},
 
 		/**
@@ -284,110 +278,5 @@ export const useAppConfigStore = defineStore('appConfig', {
 			}
 		},
 
-		/**
-		 * Fallback method that loads configuration using individual API calls.
-		 * This is used if the app configuration set loading fails.
-		 */
-		async loadFallbackConfiguration() {
-			const [
-				apiUrl,
-				isKioskMode,
-				pageTitle,
-				favIconUrl,
-				logoUrl,
-				logoText,
-				primaryBg,
-				primaryColor,
-				secondaryColor,
-				accentColor,
-				primaryText,
-				secondaryText,
-				accentText,
-				primaryButtonBg,
-				primaryButtonText,
-				secondaryButtonBg,
-				secondaryButtonText,
-				footerText,
-				noAgentsMessage,
-				defaultAgentWelcomeMessage,
-				instanceId,
-				agentIconUrl,
-				allowedUploadFileExtensions,
-				showMessageRating,
-				showLastConversionOnStartup,
-				showMessageTokens,
-				showViewPrompt,
-				showFileUpload,
-			] = await Promise.all([
-				api.getConfigValue('FoundationaLLM:APIEndpoints:CoreAPI:Essentials:APIUrl'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:KioskMode'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:PageTitle'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:FavIconUrl'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:LogoUrl', 'foundationallm-logo-white.svg'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:LogoText', ''),
-				this.getConfigValueSafe('FoundationaLLM:Branding:BackgroundColor', '#fff'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:PrimaryColor', '#131833'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:SecondaryColor', '#334581'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:AccentColor', '#fff'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:PrimaryTextColor', '#fff'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:SecondaryTextColor', '#fff'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:AccentTextColor', '#131833'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:PrimaryButtonBackgroundColor', '#5472d4'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:PrimaryButtonTextColor', '#fff'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:SecondaryButtonBackgroundColor', '#70829a'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:SecondaryButtonTextColor', '#fff'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:FooterText'),
-				this.getConfigValueSafe(
-					'FoundationaLLM:Branding:NoAgentsMessage',
-					'No agents available. Please check with your system administrator for assistance.',
-				),
-				this.getConfigValueSafe(
-					'FoundationaLLM:Branding:DefaultAgentWelcomeMessage',
-					'Start the conversation using the text box below.',
-				),
-				this.getConfigValueSafe('FoundationaLLM:Instance:Id', '00000000-0000-0000-0000-000000000000'),
-				this.getConfigValueSafe('FoundationaLLM:Branding:AgentIconUrl', '~/assets/FLLM-Agent-Light.svg'),
-				this.getConfigValueSafe(
-					'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
-				),
-				this.getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowMessageRating', 'false'),
-				this.getConfigValueSafe(
-					'FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup',
-					'true',
-				),
-				this.getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowMessageTokens', 'true'),
-				this.getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowViewPrompt', 'true'),
-				this.getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowFileUpload', 'true'),
-			]);
-
-			this.apiUrl = apiUrl || null;
-			this.isKioskMode = isKioskMode ? JSON.parse(isKioskMode.toLowerCase()) : false;
-			this.pageTitle = pageTitle;
-			this.favIconUrl = favIconUrl;
-			this.logoUrl = logoUrl;
-			this.logoText = logoText;
-			this.primaryBg = primaryBg;
-			this.primaryColor = primaryColor;
-			this.secondaryColor = secondaryColor;
-			this.accentColor = accentColor;
-			this.primaryText = primaryText;
-			this.secondaryText = secondaryText;
-			this.accentText = accentText;
-			this.primaryButtonBg = primaryButtonBg;
-			this.primaryButtonText = primaryButtonText;
-			this.secondaryButtonBg = secondaryButtonBg;
-			this.secondaryButtonText = secondaryButtonText;
-			this.footerText = footerText;
-			this.noAgentsMessage = noAgentsMessage;
-			this.defaultAgentWelcomeMessage = defaultAgentWelcomeMessage;
-			this.instanceId = instanceId;
-			this.agentIconUrl = agentIconUrl;
-			this.allowedUploadFileExtensions = allowedUploadFileExtensions;
-			this.showMessageRating = showMessageRating ? JSON.parse(showMessageRating.toLowerCase()) : false;
-			this.showLastConversionOnStartup = showLastConversionOnStartup ? JSON.parse(showLastConversionOnStartup.toLowerCase()) : true;
-			this.showMessageTokens = showMessageTokens ? JSON.parse(showMessageTokens.toLowerCase()) : true;
-			this.showViewPrompt = showViewPrompt ? JSON.parse(showViewPrompt.toLowerCase()) : true;
-			this.showFileUpload = showFileUpload ? JSON.parse(showFileUpload.toLowerCase()) : true;
-		},
 	},
 });
