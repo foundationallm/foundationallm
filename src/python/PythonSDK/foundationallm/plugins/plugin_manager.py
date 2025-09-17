@@ -1,20 +1,28 @@
+'''
+Manages the plugins in the system.'''
 from importlib import import_module, reload
 from logging import Logger
 import os
 import sys
 
-from .external_module import ExternalModule
-from .plugin_manager_types import PluginManagerTypes
-
 from foundationallm.config import Configuration
 from foundationallm.storage import BlobStorageManager
 
-PLUGIN_MANAGER_CONFIGURATION_NAMESPACE = 'FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules'
-PLUGIN_MANAGER_STORAGE_ACCOUNT_NAME = f'{PLUGIN_MANAGER_CONFIGURATION_NAMESPACE}:Storage:AccountName'
-PLUGIN_MANAGER_STORAGE_AUTHENTICATION_TYPE = f'{PLUGIN_MANAGER_CONFIGURATION_NAMESPACE}:Storage:AuthenticationType'
-PLUGIN_MANAGER_STORAGE_CONTAINER = f'{PLUGIN_MANAGER_CONFIGURATION_NAMESPACE}:RootStorageContainer'
-PLUGIN_MANAGER_MODULES = f'{PLUGIN_MANAGER_CONFIGURATION_NAMESPACE}:Modules'
-PLUGIN_MANAGER_LOCAL_STORAGE_FOLDER_NAME = 'foundationallm_external_modules'
+from .external_module import ExternalModule
+from .plugin_manager_types import PluginManagerTypes
+
+PLUGIN_MANAGER_CONFIGURATION_NAMESPACE = \
+    'FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules'
+PLUGIN_MANAGER_STORAGE_ACCOUNT_NAME = \
+    f'{PLUGIN_MANAGER_CONFIGURATION_NAMESPACE}:Storage:AccountName'
+PLUGIN_MANAGER_STORAGE_AUTHENTICATION_TYPE = \
+    f'{PLUGIN_MANAGER_CONFIGURATION_NAMESPACE}:Storage:AuthenticationType'
+PLUGIN_MANAGER_STORAGE_CONTAINER = \
+    f'{PLUGIN_MANAGER_CONFIGURATION_NAMESPACE}:RootStorageContainer'
+PLUGIN_MANAGER_MODULES = \
+    f'{PLUGIN_MANAGER_CONFIGURATION_NAMESPACE}:Modules'
+PLUGIN_MANAGER_LOCAL_STORAGE_FOLDER_NAME = \
+    'foundationallm_external_modules'
 
 class PluginManager():
     """
@@ -51,13 +59,13 @@ class PluginManager():
             storage_container_name = config.get_value(PLUGIN_MANAGER_STORAGE_CONTAINER)
             modules_list = config.get_value(PLUGIN_MANAGER_MODULES)
             valid_configuration = True
-        except:
+        except Exception:
             self.logger.exception('The plugin manager configuration is not set up correctly. No plugins will be loaded.')
 
         if valid_configuration:
 
             self.logger.info((
-                f'Initializing plugin manager with the following configuration:\n',
+                'Initializing plugin manager with the following configuration:\n',
                 f'Storage account name:: {storage_account_name}\n',
                 f'Storage authentication type: {storage_authentication_type}\n',
                 f'Storage container name: {storage_container_name}\n',
@@ -94,7 +102,7 @@ class PluginManager():
                 self.initialized = True
                 self.logger.info('The plugin manager initialized successfully.')
 
-            except Exception as e:
+            except Exception:
                 self.logger.exception('An error occurred while initializing the plugin manager storage manager. No plugins will be loaded.')
 
     def load_external_modules(self, reload_modules:bool=False):
