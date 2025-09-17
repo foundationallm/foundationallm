@@ -42,27 +42,27 @@ export default {
 		style() {
 			return {
 				// Primary theme variables
-				'--primary-bg': this.$appConfigStore.primaryBg,
-				'--primary-color': this.$appConfigStore.primaryColor,
-				'--secondary-color': this.$appConfigStore.secondaryColor,
-				'--accent-color': this.$appConfigStore.accentColor,
-				'--primary-text': this.$appConfigStore.primaryText,
-				'--secondary-text': this.$appConfigStore.secondaryText,
-				'--accent-text': this.$appConfigStore.accentText,
-				'--primary-button-bg': this.$appConfigStore.primaryButtonBg,
-				'--primary-button-text': this.$appConfigStore.primaryButtonText,
-				'--secondary-button-bg': this.$appConfigStore.secondaryButtonBg,
-				'--secondary-button-text': this.$appConfigStore.secondaryButtonText,
+				'--primary-bg': this.$appConfigStore.primaryBg || '#fff',
+				'--primary-color': this.$appConfigStore.primaryColor || '#131833',
+				'--secondary-color': this.$appConfigStore.secondaryColor || '#334581',
+				'--accent-color': this.$appConfigStore.accentColor || '#fff',
+				'--primary-text': this.$appConfigStore.primaryText || '#fff',
+				'--secondary-text': this.$appConfigStore.secondaryText || '#fff',
+				'--accent-text': this.$appConfigStore.accentText || '#131833',
+				'--primary-button-bg': this.$appConfigStore.primaryButtonBg || '#5472d4',
+				'--primary-button-text': this.$appConfigStore.primaryButtonText || '#fff',
+				'--secondary-button-bg': this.$appConfigStore.secondaryButtonBg || '#70829a',
+				'--secondary-button-text': this.$appConfigStore.secondaryButtonText || '#fff',
 				'--app-text-size': `${this.$appStore.textSize}rem`,
 				'--app-contrast': this.$appStore.highContrastMode ? '2' : '1',
 
 				// Sidebar theming
-				'--sidebar-scrollbar-default': Color(this.$appConfigStore.secondaryButtonBg).alpha(0.6),
-				'--sidebar-scrollbar-focused': this.$appConfigStore.secondaryButtonBg,
+				'--sidebar-scrollbar-default': Color(this.$appConfigStore.secondaryButtonBg || '#70829a').alpha(0.6),
+				'--sidebar-scrollbar-focused': this.$appConfigStore.secondaryButtonBg || '#70829a',
 
 				// Chat thread theming
-				'--thread-scrollbar-default': Color(this.$appConfigStore.secondaryButtonBg).alpha(0.6),
-				'--thread-scrollbar-focused': this.$appConfigStore.secondaryButtonBg,
+				'--thread-scrollbar-default': Color(this.$appConfigStore.secondaryButtonBg || '#70829a').alpha(0.6),
+				'--thread-scrollbar-focused': this.$appConfigStore.secondaryButtonBg || '#70829a',
 			};
 		},
 	},
