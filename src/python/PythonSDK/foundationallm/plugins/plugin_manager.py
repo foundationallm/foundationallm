@@ -17,10 +17,8 @@ PLUGIN_MANAGER_STORAGE_ACCOUNT_NAME = \
     f'{PLUGIN_MANAGER_CONFIGURATION_NAMESPACE}:Storage:AccountName'
 PLUGIN_MANAGER_STORAGE_AUTHENTICATION_TYPE = \
     f'{PLUGIN_MANAGER_CONFIGURATION_NAMESPACE}:Storage:AuthenticationType'
-PLUGIN_MANAGER_STORAGE_CONTAINER = \
-    f'{PLUGIN_MANAGER_CONFIGURATION_NAMESPACE}:RootStorageContainer'
-PLUGIN_MANAGER_MODULES = \
-    f'{PLUGIN_MANAGER_CONFIGURATION_NAMESPACE}:Modules'
+PLUGIN_MANAGER_STORAGE_CONTAINER = 'resource-provider'
+PLUGIN_MANAGER_STORAGE_ROOT_PATH = 'FoundationaLLM.Plugin'
 PLUGIN_MANAGER_LOCAL_STORAGE_FOLDER_NAME = \
     'foundationallm_external_modules'
 
@@ -57,7 +55,6 @@ class PluginManager():
             storage_account_name = config.get_value(PLUGIN_MANAGER_STORAGE_ACCOUNT_NAME)
             storage_authentication_type = config.get_value(PLUGIN_MANAGER_STORAGE_AUTHENTICATION_TYPE)
             storage_container_name = config.get_value(PLUGIN_MANAGER_STORAGE_CONTAINER)
-            modules_list = config.get_value(PLUGIN_MANAGER_MODULES)
             valid_configuration = True
         except Exception:
             self.logger.exception('The plugin manager configuration is not set up correctly. No plugins will be loaded.')
