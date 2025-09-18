@@ -42,12 +42,13 @@ const allowedKeys = [
 	'FoundationaLLM:UserPortal:Configuration:ShowMessageTokens',
 	'FoundationaLLM:UserPortal:Configuration:ShowFileUpload',
 	'FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames',
+	'FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl',
 	'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
 ];
 
 export default defineEventHandler(async (event) => {
 	const query = getQuery(event);
-	const key = query.key;
+	const key = query.key as string;
 
 	// Respond with a 400 (Bad Request) if the key to access was not provided.
 	if (!key) {
@@ -77,7 +78,7 @@ export default defineEventHandler(async (event) => {
 	const appConfigClient = new AppConfigurationClient(config.APP_CONFIG_ENDPOINT);
 
 	try {
-		const setting = await appConfigClient.getConfigurationSetting({ key });
+		const setting = await appConfigClient.getConfigurationSetting({ key: key as string });
 		return setting.value;
 	} catch (error) {
 		// Respond with a 404 (Not Found) if the key does not exist in the Azure config service.

@@ -42,6 +42,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 		showViewPrompt: null as boolean | null,
 		showFileUpload: null as boolean | null,
 		featuredAgentNames: null as string | null,
+		agentManagementPermissionRequestUrl: null as string | null,
 
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
@@ -177,6 +178,9 @@ export const useAppConfigStore = defineStore('appConfig', {
 						}
 						if (configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames']) {
 							this.featuredAgentNames = configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames'] as string;
+						}
+						if (configValues['FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl']) {
+							this.agentManagementPermissionRequestUrl = configValues['FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl'] as string;
 						}
 					}
 				}
