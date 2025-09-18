@@ -334,6 +334,19 @@
 							<p>{{ agentError2 }}</p>
 						</div>
 					</div>
+
+					<!-- Permission Request Link -->
+					<div v-if="!hasAgentsContributorRole || !hasPromptsContributorRole">
+						<nuxt-link 
+							v-if="$appConfigStore.agentManagementPermissionRequestUrl" 
+							:to="$appConfigStore.agentManagementPermissionRequestUrl" 
+							external
+							class="p-component csm-only-text-btn-1"
+						>
+							Request permission to create agents
+							<i class="pi pi-external-link ml-1"></i>
+						</nuxt-link>
+					</div>
 				</TabPanel>
 
 				<TabPanel header="Accessibility">
@@ -435,6 +448,8 @@ import Checkbox from 'primevue/checkbox';
 				configLoadedTrigger: 0,
 				authStateTrigger: 0,
 				authPollingInterval: null as ReturnType<typeof setInterval> | null,
+				hasAgentsContributorRole: false,
+				hasPromptsContributorRole: false,
 			};
 		},
 
@@ -544,6 +559,7 @@ import Checkbox from 'primevue/checkbox';
 			await this.setAgentOptions();
 			await this.loadUserProfile();
 			await this.loadgetAgents();
+			await this.checkContributorRoles();
 		},
 
 		unmounted() {
@@ -872,6 +888,18 @@ import Checkbox from 'primevue/checkbox';
 					return 'No enabled agents available.';
 				}
 				return this.emptyAgentsMessage2 || 'No agents available.';
+			},
+
+			async checkContributorRoles() {
+				try {
+					const result = await api.checkContributorRoles();
+					this.hasAgentsContributorRole = result.hasAgentsContributorRole;
+					this.hasPromptsContributorRole = result.hasPromptsContributorRole;
+				} catch (error) {
+					console.error('Failed to check contributor roles:', error);
+					this.hasAgentsContributorRole = false;
+					this.hasPromptsContributorRole = false;
+				}
 			},
 		},
 	};
@@ -1342,5 +1370,35 @@ import Checkbox from 'primevue/checkbox';
 	}
 	.csm-sEnabled-checkbox-1 label{
 		cursor: pointer;
+	}
+	
+	/* Permission request container styling */
+	.permission-request-container {
+		padding: 16px;
+		margin-top: 16px;
+		background-color: #f8f9fa;
+		border: 1px solid #e9ecef;
+		border-radius: 8px;
+	}
+	
+	.permission-request-message {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 8px;
+		font-size: 14px;
+		color: #6c757d;
+	}
+	
+	.permission-request-link {
+		color: #5472d4;
+		text-decoration: none;
+		font-weight: 500;
+		transition: color 0.2s ease;
+	}
+	
+	.permission-request-link:hover {
+		color: #1746a2;
+		text-decoration: underline;
 	}
 </style>
