@@ -41,6 +41,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 		showMessageTokens: null as boolean | null,
 		showViewPrompt: null as boolean | null,
 		showFileUpload: null as boolean | null,
+		featuredAgentNames: null as string | null,
 		agentManagementPermissionRequestUrl: null as string | null,
 
 		// Auth: These settings configure the MSAL authentication.
@@ -174,6 +175,9 @@ export const useAppConfigStore = defineStore('appConfig', {
 							this.showFileUpload = typeof configValues['FoundationaLLM:UserPortal:Configuration:ShowFileUpload'] === 'boolean'
 								? configValues['FoundationaLLM:UserPortal:Configuration:ShowFileUpload'] as boolean
 								: JSON.parse((configValues['FoundationaLLM:UserPortal:Configuration:ShowFileUpload'] as string).toLowerCase());
+						}
+						if (configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames']) {
+							this.featuredAgentNames = configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames'] as string;
 						}
 						if (configValues['FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl']) {
 							this.agentManagementPermissionRequestUrl = configValues['FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl'] as string;
