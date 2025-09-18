@@ -343,7 +343,7 @@
 							external
 							class="p-component csm-only-text-btn-1"
 						>
-							Request permission to create agents
+							Request permission to manege agents
 							<i class="pi pi-external-link ml-1"></i>
 						</nuxt-link>
 					</div>
