@@ -41,6 +41,7 @@ const allowedKeys = [
 	'FoundationaLLM:UserPortal:Configuration:ShowViewPrompt',
 	'FoundationaLLM:UserPortal:Configuration:ShowMessageTokens',
 	'FoundationaLLM:UserPortal:Configuration:ShowFileUpload',
+	'FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames',
 	'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
 ];
 

@@ -289,14 +289,17 @@
 									<td>
 										<div 
 											class="custom-checkbox"
-											:class="{ 'checked': getAgents.enabled }"
-											@click="toggleAgentStatus(getAgents)"
-											:aria-label="`Toggle agent status - ${getAgents.enabled ? 'enabled' : 'disabled'}`"
+											:class="{ 
+												'checked': getAgents.enabled,
+												'disabled': getAgents.isFeatured
+											}"
+											@click="getAgents.isFeatured ? null : toggleAgentStatus(getAgents)"
+											:aria-label="`Toggle agent status - ${getAgents.enabled ? 'enabled' : 'disabled'}${getAgents.isFeatured ? ' (featured agent)' : ''}`"
 											role="checkbox"
 											:aria-checked="getAgents.enabled"
-											tabindex="0"
-											@keydown.enter="toggleAgentStatus(getAgents)"
-											@keydown.space.prevent="toggleAgentStatus(getAgents)"
+											:tabindex="getAgents.isFeatured ? -1 : 0"
+											@keydown.enter="getAgents.isFeatured ? null : toggleAgentStatus(getAgents)"
+											@keydown.space.prevent="getAgents.isFeatured ? null : toggleAgentStatus(getAgents)"
 										>
 											<i v-if="getAgents.enabled" class="pi pi-check"></i>
 										</div>
@@ -445,6 +448,12 @@ import Checkbox from 'primevue/checkbox';
 
 			currentSession(): Session | null {
 				return (this.$appStore as any).currentSession;
+			},
+
+			featuredAgentNames(): string[] {
+				const featuredNamesString = (this.$appConfigStore as any).featuredAgentNames;
+				if (!featuredNamesString) return [];
+				return featuredNamesString.split(',').map((name: string) => name.trim()).filter((name: string) => name.length > 0);
 			},
 
 			filteredAgents(): AgentOption[] {
@@ -760,6 +769,9 @@ import Checkbox from 'primevue/checkbox';
 						// Check if this agent is in the user's selected agents list
 						const isAgentSelected = this.userProfile?.agents?.includes(agent.object_id) || false;
 						
+						// Check if this agent is a featured agent (by name, as per memory: resource names are reliable identifiers)
+						const isFeaturedAgent = this.featuredAgentNames.includes(agent.name);
+						
 						return {
 							object_id: agent.object_id,
 							name: agent.name || 'Unknown Agent',
@@ -768,8 +780,9 @@ import Checkbox from 'primevue/checkbox';
 							value: agent.object_id,
 							type: agent.type,
 							description: agent.description,
-							enabled: isAgentSelected,
+							enabled: isFeaturedAgent ? true : isAgentSelected, // Featured agents are always enabled
 							isReadonly: isAgentReadonly(ResourceProviderGetResult.roles || []),
+							isFeatured: isFeaturedAgent, // Add featured flag for UI logic
 						};
 					});
 				} catch (error) {
@@ -792,6 +805,11 @@ import Checkbox from 'primevue/checkbox';
 			},
 
 			async toggleAgentStatus(agent: AgentOption) {
+				// Prevent toggling featured agents
+				if (agent.isFeatured) {
+					return;
+				}
+				
 				const originalStatus = agent.enabled;
 				
 				try {
@@ -1333,6 +1351,23 @@ import Checkbox from 'primevue/checkbox';
 		color: white;
 		font-size: 12px;
 		font-weight: bold;
+	}
+	
+	.custom-checkbox.disabled {
+		cursor: not-allowed;
+		opacity: 0.6;
+		background-color: #e9ecef !important;
+		border-color: #adb5bd !important;
+	}
+	
+	.custom-checkbox.disabled:hover {
+		background-color: #e9ecef !important;
+		border-color: #adb5bd !important;
+	}
+	
+	.custom-checkbox.disabled.checked {
+		background-color: #6c757d !important;
+		border-color: #6c757d !important;
 	}
 	.csm-only-text-btn-1{
 		text-decoration: none;
