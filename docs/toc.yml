@@ -64,6 +64,14 @@ items:
       href: development/contributing/git-workflow.md
     - name: Style guide
       href: development/contributing/style-guide.md
+- name: How-to guides
+  items:
+  - name: Create custom tools
+    href: how-to-guides/create-custom-tools.md
+  - name: Create model-agnostic agent (Claude)
+    href: how-to-guides/create-model-agnostic-agent-claude.md
+  - name: Create model-agnostic agent (GPT-4o)
+    href: how-to-guides/create-model-agnostic-agent-gpt4o.md
 - name: Setup guides
   href: setup-guides/index.md
   items:
