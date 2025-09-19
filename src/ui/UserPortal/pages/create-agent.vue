@@ -333,9 +333,11 @@
                                                     <td class="mnt-b-bottom p-3 text-center">{{
                                                         formatFileSize(file.size) }}</td>
                                                     <td class="mnt-b-bottom p-3 text-center">
-                                                        <Button label="Remove" severity="secondary"
+                                                        <Button icon="pi pi-times" severity="secondary"
+                                                            text rounded
                                                             @click="removeFile(idx)"
-                                                            class="min-h-[45px] min-w-[125px]" />
+                                                            class="min-h-[35px] min-w-[35px]"
+                                                            aria-label="Remove file" />
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -376,10 +378,13 @@
                                                     }}</td>
                                                     <td class="mnt-b-bottom p-3 text-center">
                                                         <Button
-                                                            label="Delete"
+                                                            icon="pi pi-trash"
                                                             severity="danger"
+                                                            text
+                                                            rounded
                                                             @click="deleteFile(f.resource?.name)"
-                                                            class="min-h-[35px] min-w-[80px]"
+                                                            class="min-h-[35px] min-w-[35px]"
+                                                            aria-label="Delete file"
                                                         />
                                                     </td>
                                                 </tr>
