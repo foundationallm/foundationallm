@@ -76,7 +76,10 @@
 						❌
 					</span>
 				</div>
+				<div v-if="showValidationErrors && formErrors.agentName" class="error-message">{{ formErrors.agentName }}</div>
+				<div v-if="showValidationErrors && formErrors.nameValidation" class="error-message">{{ formErrors.nameValidation }}</div>
 			</div>
+
 			<div class="col-span-2">
 				<div class="step-header !mb-2">Agent Display Name:</div>
 				<div class="mb-2">
@@ -85,9 +88,10 @@
 				<InputText
 					v-model="agentDisplayName"
 					type="text"
-					class="w-full"
+					:class="['w-full', { 'input-error': formErrors.agentDisplayName }]"
 					placeholder="Enter agent display name"
 				/>
+				<div v-if="formErrors.agentDisplayName" class="error-message">{{ formErrors.agentDisplayName }}</div>
 			</div>
 			<div class="col-span-2">
 				<div class="step-header !mb-2">Description:</div>
@@ -424,6 +428,7 @@
 								placeholder="--Select--"
 								aria-labelledby="aria-user-prompt-rewrite-model"
 							/>
+							<div v-if="showValidationErrors && formErrors.userPromptRewriteAIModel" class="error-message">{{ formErrors.userPromptRewriteAIModel }}</div>
 						</div>
 
 						<!-- User prompt rewrite prompt -->
@@ -441,6 +446,7 @@
 								placeholder="--Select--"
 								aria-labelledby="aria-user-prompt-rewrite-prompt"
 							/>
+							<div v-if="showValidationErrors && formErrors.userPromptRewritePrompt" class="error-message">{{ formErrors.userPromptRewritePrompt }}</div>
 						</div>
 
 						<!-- User prompt rewrite window size -->
@@ -456,6 +462,7 @@
 								placeholder="Window size"
 								aria-labelledby="aria-user-prompt-rewrite-window-size"
 							/>
+							<div v-if="showValidationErrors && formErrors.userPromptRewriteWindowSize" class="error-message">{{ formErrors.userPromptRewriteWindowSize }}</div>
 						</div>
 					</template>
 				</CreateAgentStepItem>
@@ -532,6 +539,7 @@
 								placeholder="--Select--"
 								aria-labelledby="aria-semantic-cache-model"
 							/>
+							<div v-if="showValidationErrors && formErrors.semanticCacheAIModel" class="error-message">{{ formErrors.semanticCacheAIModel }}</div>
 						</div>
 
 						<!-- Semantic cache embedding dimensions -->
@@ -547,6 +555,7 @@
 								placeholder="Embedding dimensions size"
 								aria-labelledby="aria-semantic-cache-embedding-dimensions"
 							/>
+							<div v-if="showValidationErrors && formErrors.semanticCacheEmbeddingDimensions" class="error-message">{{ formErrors.semanticCacheEmbeddingDimensions }}</div>
 						</div>
 
 						<!-- Semantic cache minimum similarity threshold -->
@@ -562,6 +571,7 @@
 								placeholder="Minimum Similarity Threshold"
 								aria-labelledby="aria-semantic-cache-minimum-similarity"
 							/>
+							<div v-if="showValidationErrors && formErrors.semanticCacheMinimumSimilarityThreshold" class="error-message">{{ formErrors.semanticCacheMinimumSimilarityThreshold }}</div>
 						</div>
 					</template>
 				</CreateAgentStepItem>
@@ -842,10 +852,14 @@
 					</template>
 
 					<!-- Text embedding profiles -->
+					<div>
 					<CreateAgentStepItem
 						v-model="editTextEmbeddingProfile"
 						focus-query=".step-container__edit__option"
 					>
+						<template #edit>
+							<div v-if="showValidationErrors && formErrors.selectedTextEmbeddingProfile" class="error-message">{{ formErrors.selectedTextEmbeddingProfile }}</div>
+						</template>
 						<template v-if="selectedTextEmbeddingProfile">
 							<div v-if="selectedTextEmbeddingProfile.object_id !== ''">
 								<div class="step-container__header">{{ selectedTextEmbeddingProfile.name }}</div>
@@ -874,7 +888,7 @@
 						</template>
 						<template v-else>Please select text embedding profile.</template>
 
-						<template #edit>
+						<template #edit2>
 							<div class="step-container__edit__header">Please select text embedding profile.</div>
 							<div
 								v-for="textEmbeddingProfile in textEmbeddingProfileSources"
@@ -912,7 +926,11 @@
 								</div>
 							</div>
 						</template>
+
 					</CreateAgentStepItem>
+						<div v-if="formErrors.selectedTextEmbeddingProfile" class="error-message">{{ formErrors.selectedTextEmbeddingProfile }}</div>
+					 </div>
+					
 					<div></div>
 
 					<template v-if="dedicated_pipeline">
@@ -1038,10 +1056,11 @@
 					:disabled="!selectedWorkflow?.type"
 					@click="showWorkflowConfiguration = !showWorkflowConfiguration"
 				/>
+				<div v-if="showValidationErrors && formErrors.selectedWorkflow" class="error-message">{{ formErrors.selectedWorkflow }}</div>
 			</div>
 
 			<!-- Workflow configuration -->
-			<div v-if="showWorkflowConfiguration" class="col-span-2">
+					<div v-if="showWorkflowConfiguration" class="col-span-2">
 				<!-- Workflow name -->
 				<div class="mb-6">
 					<div id="aria-workflow-name" class="step-header !mb-3">Workflow name:</div>
@@ -1052,6 +1071,7 @@
 						placeholder="Enter workflow name"
 						aria-labelledby="aria-workflow-name"
 					/>
+						<div v-if="showValidationErrors && formErrors.workflowName" class="error-message">{{ formErrors.workflowName }}</div>
 				</div>
 
 				<!-- Workflow package name -->
@@ -1066,6 +1086,7 @@
 						placeholder="Enter workflow package name"
 						aria-labelledby="aria-workflow-package-name"
 					/>
+						<div v-if="showValidationErrors && formErrors.workflowPackageName" class="error-message">{{ formErrors.workflowPackageName }}</div>
 				</div>
 
 				<!-- Workflow class name -->
@@ -1093,6 +1114,7 @@
 							placeholder="--Select--"
 							aria-labelledby="aria-workflow-host"
 						/>
+						<div v-if="showValidationErrors && formErrors.workflowHost" class="error-message">{{ formErrors.workflowHost }}</div>
 					</div>
 				</div>
 
@@ -1113,6 +1135,7 @@
 							)
 						"
 					/>
+						<div v-if="showValidationErrors && formErrors.workflowMainAIModel" class="error-message">{{ formErrors.workflowMainAIModel }}</div>
 				</div>
 
 				<!-- Workflow main model parameters -->
@@ -1134,6 +1157,7 @@
 							placeholder="You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional."
 							aria-labelledby="aria-persona"
 						/>
+						<div v-if="showValidationErrors && formErrors.systemPrompt" class="error-message">{{ formErrors.systemPrompt }}</div>
 					</div>
 				</div>
 
@@ -1334,31 +1358,30 @@
 				<Button label="Cancel" severity="secondary" @click="handleCancel" />
 			</div>
 		</div>
+		
 	</main>
 </template>
 
 <script lang="ts">
-import '@vue-js-cron/light/dist/light.css';
-import type { PropType } from 'vue';
-import { ref } from 'vue';
-import { debounce, clone } from 'lodash';
-import { CronLight } from '@vue-js-cron/light';
 import api from '@/js/api';
 import type {
 	Agent,
-	AgentIndex,
 	AgentDataSource,
+	AgentIndex,
 	AgentTool,
 	AIModel,
-	DataSource,
 	CreateAgentRequest,
+	DataSource,
 	ExternalOrchestrationService,
-	TextEmbeddingProfile,
 	Prompt,
-	Workflow,
-	// AgentCheckNameResponse,
+	TextEmbeddingProfile,
+	Workflow
 } from '@/js/types';
-
+import { CronLight } from '@vue-js-cron/light';
+import '@vue-js-cron/light/dist/light.css';
+import { clone, debounce } from 'lodash';
+import type { PropType } from 'vue';
+import { ref } from 'vue';
 const defaultSystemPrompt: string = '';
 
 const getDefaultFormValues = () => {
@@ -1464,10 +1487,10 @@ export default {
 	data() {
 		return {
 			...getDefaultFormValues(),
-
+			formErrors: {} as Record<string, string>,
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
-
+			showValidationErrors: false as boolean,
 			editable: false as boolean,
 			hasAgentPrivateStorage: false as boolean,
 			isOpenAIAssistantWorkflow: false as boolean,
@@ -1587,6 +1610,19 @@ export default {
 	},
 
 	watch: {
+		  $data: {
+			handler(newVal) {
+			Object.keys(this.formErrors).forEach((field) => {
+				if (newVal[field] !== undefined && this.formErrors[field]) {
+				// Değer değiştiyse ve hata varsa temizle
+				if (newVal[field] !== '' && newVal[field] !== null) {
+					this.formErrors[field] = '';
+				}
+				}
+			});
+			},
+			deep: true
+		},
 		selectedWorkflow() {
 			this.workflowName = this.workflowName || this.selectedWorkflow?.name;
 			this.workflowHost = this.selectedWorkflow?.workflow_host ?? this.workflowHost;
@@ -1691,7 +1727,8 @@ export default {
 			this.$toast.add({
 				severity: 'error',
 				detail: error?.response?._data || error,
-				life: 5000,
+				life: undefined,
+				closable: true,
 			});
 		}
 
@@ -1990,7 +2027,8 @@ export default {
 				this.$toast.add({
 					severity: 'success',
 					detail: 'Virtual Security Group ID copied to clipboard!',
-					life: 5000,
+					life: undefined,
+					closable: true,
 				});
 			}
 		},
@@ -2017,99 +2055,139 @@ export default {
 			this.agentTools.splice(index, 1);
 			this.toolToRemove = null;
 		},
+				// Scroll to the first field with an error
+		scrollToFirstError() {
+			this.$nextTick(() => {
+				const errorFields = Object.keys(this.formErrors).filter((key) => this.formErrors[key]);
+				if (errorFields.length > 0) {
+					const field = errorFields[0];
+					// Try to find by ref (Vue way)
+					const refEl = this.$refs[field];
+					if (refEl && typeof refEl.focus === 'function') {
+						refEl.focus();
+						if (typeof refEl.scrollIntoView === 'function') {
+							refEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+						}
+						return;
+					}
+					// Try to find by id
+					const idEl = document.getElementById(field);
+					if (idEl) {
+						if (typeof idEl.focus === 'function') idEl.focus();
+						idEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+						return;
+					}
+					// Fallback: try to find the error message div
+					let el = Array.from(document.querySelectorAll('.error-message')).find((div) =>
+						div.textContent?.includes(this.formErrors[field])
+					);
+					if (el && typeof el.scrollIntoView === 'function') {
+						el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+					}
+				}
+			});
+		},
+	async handleCreateAgent() {
+				this.showValidationErrors = true;
+				// errors object, keys are field names, values are error messages
+				const errors: Record<string, string> = {
+					agentName: '',
+					nameValidation: '',
+					selectedTextEmbeddingProfile: '',
+					selectedWorkflow: '',
+					workflowName: '',
+					workflowPackageName: '',
+					workflowHost: '',
+					workflowMainAIModel: '',
+					systemPrompt: '',
+					userPromptRewriteAIModel: '',
+					userPromptRewritePrompt: '',
+					userPromptRewriteWindowSize: '',
+					semanticCacheAIModel: '',
+					semanticCacheEmbeddingDimensions: '',
+					semanticCacheMinimumSimilarityThreshold: '',
+				};
 
-		async handleCreateAgent() {
-			const errors = [];
-			if (!this.agentName) {
-				errors.push('Please give the agent a name.');
-			}
-			if (this.nameValidationStatus === 'invalid') {
-				errors.push(this.validationMessage);
-			}
-
-			if (!this.inline_context && !this.selectedTextEmbeddingProfile) {
-				errors.push('Please select a text embedding profile.');
-			} else {
-				this.text_embedding_profile_object_id = this.selectedTextEmbeddingProfile?.object_id ?? '';
-			}
-
-			// if (!this.orchestration_settings.orchestrator) {
-			// 	errors.push('Please select an orchestrator / workflow host.');
-			// }
-
-			// if (!this.selectedAIModel) {
-			// 	errors.push('Please select an AI model for the orchestrator.');
-			// }
-
-			if (!this.selectedWorkflow) {
-				errors.push('Please select a workflow.');
-			}
-
-			if (!this.workflowName) {
-				errors.push('Please provide a workflow name.');
-			}
-
-			if (!this.workflowPackageName) {
-				errors.push('Please provide a workflow package name.');
-			}
-
-			if (!this.workflowHost) {
-				errors.push('Please select a workflow host.');
-			}
-
-			if (!this.workflowMainAIModel) {
-				errors.push('Please select an AI model for the workflow.');
-			}
-
-			if (this.systemPrompt === '') {
-				errors.push('Please provide a system prompt.');
-			}
-
-			if (this.userPromptRewriteEnabled) {
-				if (!this.userPromptRewriteAIModel) {
-					errors.push('Please select a model for the user prompt rewrite.');
+				if (!this.agentName) {
+					errors.agentName = 'Please give the agent a name.';
+				}
+				if (this.nameValidationStatus === 'invalid') {
+					errors.nameValidation = this.validationMessage;
 				}
 
-				if (!this.userPromptRewritePrompt) {
-					errors.push('Please select a prompt for the user prompt rewrite.');
+				if (!this.inline_context && !this.selectedTextEmbeddingProfile) {
+					errors.selectedTextEmbeddingProfile = 'Please select a text embedding profile.';
+				} else {
+					this.text_embedding_profile_object_id = this.selectedTextEmbeddingProfile?.object_id ?? '';
 				}
 
-				if (this.userPromptRewriteWindowSize === null) {
-					errors.push('Please input a window size for the user prompt rewrite');
-				}
-			}
-
-			if (this.semanticCacheEnabled) {
-				if (!this.semanticCacheAIModel) {
-					errors.push('Please select a model for the semantic cache.');
+				if (!this.selectedWorkflow) {
+					errors.selectedWorkflow = 'Please select a workflow.';
 				}
 
-				if (!this.semanticCacheEmbeddingDimensions === null) {
-					errors.push('Please input the embedding dimensions for the semantic cache.');
+				if (!this.workflowName) {
+					errors.workflowName = 'Please provide a workflow name.';
 				}
 
-				if (this.semanticCacheMinimumSimilarityThreshold === null) {
-					errors.push('Please input the minimum similarity threshold for the semantic cache.');
+				if (!this.workflowPackageName) {
+					errors.workflowPackageName = 'Please provide a workflow package name.';
 				}
-			}
 
-			// if (!this.selectedDataSource) {
-			// 	errors.push('Please select a data source.');
-			// }
+				if (!this.workflowHost) {
+					errors.workflowHost = 'Please select a workflow host.';
+				}
 
-			// if (!this.selectedIndexSource) {
-			// 	errors.push('Please select an index source.');
-			// }
+				if (!this.workflowMainAIModel) {
+					errors.workflowMainAIModel = 'Please select an AI model for the workflow.';
+				}
 
-			if (errors.length > 0) {
-				this.$toast.add({
-					severity: 'error',
-					detail: errors.join('\n'),
-					life: 5000,
-				});
+				if (this.systemPrompt === '') {
+					errors.systemPrompt = 'Please provide a system prompt.';
+				}
 
-				return;
-			}
+				if (this.userPromptRewriteEnabled) {
+					if (!this.userPromptRewriteAIModel) {
+						errors.userPromptRewriteAIModel = 'Please select a model for the user prompt rewrite.';
+					}
+
+					if (!this.userPromptRewritePrompt) {
+						errors.userPromptRewritePrompt = 'Please select a prompt for the user prompt rewrite.';
+					}
+
+					if (this.userPromptRewriteWindowSize === null) {
+						errors.userPromptRewriteWindowSize = 'Please input a window size for the user prompt rewrite';
+					}
+				}
+
+				if (this.semanticCacheEnabled) {
+					if (!this.semanticCacheAIModel) {
+						errors.semanticCacheAIModel = 'Please select a model for the semantic cache.';
+					}
+
+					if (!this.semanticCacheEmbeddingDimensions === null) {
+						errors.semanticCacheEmbeddingDimensions = 'Please input the embedding dimensions for the semantic cache.';
+					}
+
+					if (this.semanticCacheMinimumSimilarityThreshold === null) {
+						errors.semanticCacheMinimumSimilarityThreshold = 'Please input the minimum similarity threshold for the semantic cache.';
+					}
+				}
+
+				// Remove empty error fields
+				const filteredErrors = Object.fromEntries(Object.entries(errors).filter(([_, v]) => v));
+				this.formErrors = { ...errors }; // Save all errors for per-input display
+
+				if (Object.keys(filteredErrors).length > 0) {
+					// Optionally, show a toast with the first error or all errors joined
+					//this.$toast.add({
+					//	severity: 'error',
+					//	detail: 'Please fix the validation errors before submitting the form.',
+					//	life: 5000,
+					//	closable: true,
+					//});
+					this.scrollToFirstError();
+					return;
+				}
 
 			this.loading = true;
 			this.loadingStatusText = 'Saving agent...';
@@ -2325,15 +2403,17 @@ export default {
 				this.loading = false;
 				return this.$toast.add({
 					severity: 'error',
-					detail: error?.response?._data || error,
-					life: 5000,
+					detail: error && error.response && error.response._data ? error.response._data : error,
+					life: undefined,
+					closable: true,
 				});
 			}
 
 			this.$toast.add({
 				severity: 'success',
 				detail: successMessage,
-				life: 5000,
+				life: undefined,
+				closable: true,
 			});
 
 			this.loading = false;
@@ -2556,5 +2636,14 @@ input {
 .virtual-security-group-id {
 	margin: 0 1rem 0 0;
 	width: auto;
+}
+.input-error {
+	border: 1.5px solid #e53935 !important;
+	background: #fff0f0;
+}
+.error-message {
+	color: #e53935;
+	font-size: 0.95em;
+	margin-top: 2px;
 }
 </style>
