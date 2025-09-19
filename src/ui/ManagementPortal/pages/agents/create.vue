@@ -1614,7 +1614,7 @@ export default {
 			handler(newVal) {
 			Object.keys(this.formErrors).forEach((field) => {
 				if (newVal[field] !== undefined && this.formErrors[field]) {
-				// Değer değiştiyse ve hata varsa temizle
+				//  Change detected in the field with an error
 				if (newVal[field] !== '' && newVal[field] !== null) {
 					this.formErrors[field] = '';
 				}
