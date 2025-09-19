@@ -11,19 +11,40 @@ export const useAuthStore = defineStore('auth', {
 		tokenExpirationTimerId: null as number | null,
 		isExpired: false,
 		apiToken: null,
+		// Reactive trigger to force updates when account changes
+		accountUpdateTrigger: 0,
 	}),
 
 	getters: {
 		accounts(): AccountInfo[] {
-			return this.msalInstance.getAllAccounts();
+			if (!this.msalInstance) return [];
+			try {
+				return this.msalInstance.getAllAccounts();
+			} catch (error) {
+				console.error('Error getting accounts from MSAL:', error);
+				return [];
+			}
 		},
 
 		currentAccount(): AccountInfo | null {
-			return this.accounts[0] || null;
+			// Force reactivity by accessing trigger
+			this.accountUpdateTrigger;
+			const accountsArray = this.accounts;
+			
+			if (this.msalInstance) {
+				const activeAccount = this.msalInstance.getActiveAccount();
+				if (activeAccount) {
+					return activeAccount;
+				}
+			}
+			
+			return accountsArray[0] || null;
 		},
 
 		isAuthenticated(): boolean {
-			return !!this.currentAccount && !this.isExpired;
+			const hasAccount = !!this.currentAccount && !this.isExpired;
+			this.accounts.length; // Force reactivity
+			return hasAccount;
 		},
 
 		authConfig() {
@@ -38,7 +59,7 @@ export const useAuthStore = defineStore('auth', {
 		},
 
 		apiScopes() {
-			return [this.authConfig.scopes];
+			return this.authConfig?.scopes || [];
 		},
 	},
 
@@ -60,6 +81,12 @@ export const useAuthStore = defineStore('auth', {
 
 			await msalInstance.initialize();
 			this.msalInstance = msalInstance;
+
+			// Set active account if we have accounts
+			const accounts = msalInstance.getAllAccounts();
+			if (accounts.length > 0) {
+				msalInstance.setActiveAccount(accounts[0]);
+			}
 
 			return this;
 		},
@@ -191,6 +218,10 @@ export const useAuthStore = defineStore('auth', {
 			});
 
 			useNuxtApp().$router.push({ name: 'auth/login' });
+		},
+
+		forceAccountUpdate() {
+			this.accountUpdateTrigger = Date.now();
 		},
 	},
 });

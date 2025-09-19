@@ -1,13 +1,14 @@
 <template>
 	<div class="chat-sidebar">
 		<!-- Sidebar section header -->
-		<div class="chat-sidebar__section-header--mobile">
-			<img
-				v-if="$appConfigStore.logoUrl !== ''"
-				:src="$filters.enforceLeadingSlash($appConfigStore.logoUrl)"
-				:alt="$appConfigStore.logoText"
-			/>
-			<span v-else>{{ $appConfigStore.logoText }}</span>
+			<div class="chat-sidebar__section-header--mobile" :key="`header-${configLoadedTrigger}`">
+				<img
+					v-if="$appConfigStore.logoUrl && $appConfigStore.logoUrl !== ''"
+					:src="$filters.enforceLeadingSlash($appConfigStore.logoUrl)"
+					:alt="$appConfigStore.logoText || 'FoundationaLLM'"
+				/>
+				<span v-else-if="$appConfigStore.logoText">{{ $appConfigStore.logoText }}</span>
+				<span v-else>FoundationaLLM</span>
 			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					class="chat-sidebar__button"
@@ -55,15 +56,17 @@
 					>
 						<div
 							class="chat"
+							tabindex="0"
 							:class="{
 								'chat--selected': currentSession?.sessionId === session.sessionId,
 								'chat--editing': session?.sessionId === conversationToUpdate?.sessionId,
 								'chat--deleting': session?.sessionId === conversationToDelete?.sessionId,
 							}"
+							@keydown="handleChatKeydown($event, session)"
 						>
-							<!-- Chat name -->
+							<!-- Chat name -->	
 							<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-								<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{
+								<span class="chat__name" tabindex="-1" @keydown.esc="hideAllPoppers">{{
 									session.display_name
 								}}</span>
 								<template #popper>
@@ -114,7 +117,7 @@
 		</div>
 
 		<!-- Logged in user -->
-		<div v-if="$authStore.currentAccount?.name" class="chat-sidebar__account">
+		<div v-if="$authStore.currentAccount?.name" class="chat-sidebar__account" :key="`account-${authStateTrigger}`">
 			<UserAvatar size="large" class="chat-sidebar__avatar" />
 
 			<div>
@@ -286,14 +289,17 @@
 									<td>
 										<div 
 											class="custom-checkbox"
-											:class="{ 'checked': getAgents.enabled }"
-											@click="toggleAgentStatus(getAgents)"
-											:aria-label="`Toggle agent status - ${getAgents.enabled ? 'enabled' : 'disabled'}`"
+											:class="{ 
+												'checked': getAgents.enabled,
+												'disabled': getAgents.isFeatured
+											}"
+											@click="getAgents.isFeatured ? null : toggleAgentStatus(getAgents)"
+											:aria-label="`Toggle agent status - ${getAgents.enabled ? 'enabled' : 'disabled'}${getAgents.isFeatured ? ' (featured agent)' : ''}`"
 											role="checkbox"
 											:aria-checked="getAgents.enabled"
-											tabindex="0"
-											@keydown.enter="toggleAgentStatus(getAgents)"
-											@keydown.space.prevent="toggleAgentStatus(getAgents)"
+											:tabindex="getAgents.isFeatured ? -1 : 0"
+											@keydown.enter="getAgents.isFeatured ? null : toggleAgentStatus(getAgents)"
+											@keydown.space.prevent="getAgents.isFeatured ? null : toggleAgentStatus(getAgents)"
 										>
 											<i v-if="getAgents.enabled" class="pi pi-check"></i>
 										</div>
@@ -330,6 +336,19 @@
 							<i class="pi pi-exclamation-triangle" style="font-size: 2rem; color: #e74c3c;"></i>
 							<p>{{ agentError2 }}</p>
 						</div>
+					</div>
+
+					<!-- Permission Request Link -->
+					<div v-if="!hasAgentsContributorRole || !hasPromptsContributorRole">
+						<nuxt-link 
+							v-if="$appConfigStore.agentManagementPermissionRequestUrl" 
+							:to="$appConfigStore.agentManagementPermissionRequestUrl" 
+							external
+							class="p-component csm-only-text-btn-1"
+						>
+							Request permission to manege agents
+							<i class="pi pi-external-link ml-1"></i>
+						</nuxt-link>
 					</div>
 				</TabPanel>
 
@@ -393,10 +412,10 @@
 	import eventBus from '@/js/eventBus';
 import { isAgentExpired, isAgentReadonly } from '@/js/helpers';
 import type { AgentOption, Session } from '@/js/types';
+import '@/styles/loading.scss';
 import { hideAllPoppers } from 'floating-vue';
 import Checkbox from 'primevue/checkbox';
 	declare const process: any;
-	import '@/styles/loading.scss';
 
 	import api from '@/js/api';
 
@@ -429,6 +448,11 @@ import Checkbox from 'primevue/checkbox';
 				agentSearchTerm: '',
 				showEnabledOnly: false,
 				activeTabIndex: 0,
+				configLoadedTrigger: 0,
+				authStateTrigger: 0,
+				authPollingInterval: null as ReturnType<typeof setInterval> | null,
+				hasAgentsContributorRole: false,
+				hasPromptsContributorRole: false,
 			};
 		},
 
@@ -439,6 +463,12 @@ import Checkbox from 'primevue/checkbox';
 
 			currentSession(): Session | null {
 				return (this.$appStore as any).currentSession;
+			},
+
+			featuredAgentNames(): string[] {
+				const featuredNamesString = (this.$appConfigStore as any).featuredAgentNames;
+				if (!featuredNamesString) return [];
+				return featuredNamesString.split(',').map((name: string) => name.trim()).filter((name: string) => name.length > 0);
 			},
 
 			filteredAgents(): AgentOption[] {
@@ -475,6 +505,24 @@ import Checkbox from 'primevue/checkbox';
 				},
 				deep: true,
 			},
+			'$appConfigStore.isConfigurationLoaded': {
+				handler(newVal) {
+					if (newVal) {
+						// Trigger reactivity by updating a local data property
+						this.configLoadedTrigger = Date.now();
+					}
+				},
+				immediate: true,
+			},
+			'$authStore.isAuthenticated': {
+				handler(newVal) {
+					if (newVal) {
+						// Trigger reactivity by updating a local data property
+						this.authStateTrigger = Date.now();
+					}
+				},
+				immediate: true,
+			},
 		},
 
 		async created() {
@@ -488,15 +536,98 @@ import Checkbox from 'primevue/checkbox';
 
 			// Listen for the agent change event.
 			eventBus.on('agentChanged', this.handleAddSession);
+			
 		},
 
 		async mounted() {
+			// Add event listeners in mounted to ensure DOM is ready
+			if (process.client && window) {
+				window.addEventListener('config-loaded', this.handleConfigLoaded);
+				window.addEventListener('auth-updated', this.handleAuthUpdated);
+				
+				// Check if configuration is already loaded and trigger update
+				if (this.$appConfigStore.logoUrl) {
+					this.handleConfigLoaded({ detail: { 
+						logoUrl: this.$appConfigStore.logoUrl, 
+						logoText: this.$appConfigStore.logoText 
+					}} as CustomEvent);
+				}
+				
+				// Check if authentication is already available and trigger update
+				if (this.$authStore.currentAccount) {
+					this.handleAuthUpdated({ detail: { 
+						isAuthenticated: this.$authStore.isAuthenticated,
+						currentAccount: this.$authStore.currentAccount 
+					}} as CustomEvent);
+				}
+				
+				// Start polling for authentication changes (fallback if events don't work)
+				this.startAuthPolling();
+			}
+			
 			await this.setAgentOptions();
 			await this.loadUserProfile();
 			await this.loadgetAgents();
+			await this.checkContributorRoles();
+		},
+
+		unmounted() {
+			// Remove the agent change event listener.
+			eventBus.off('agentChanged', this.handleAddSession);
+			
+			// Remove config loaded event listener
+			if (process.client && window) {
+				window.removeEventListener('config-loaded', this.handleConfigLoaded);
+				window.removeEventListener('auth-updated', this.handleAuthUpdated);
+			}
+			
+			// Clear auth polling interval
+			if (this.authPollingInterval) {
+				clearInterval(this.authPollingInterval);
+				this.authPollingInterval = null;
+			}
 		},
 
 		methods: {
+			handleConfigLoaded(event: CustomEvent) {
+				this.configLoadedTrigger = Date.now();
+			},
+			
+			handleAuthUpdated(event: CustomEvent) {
+				this.authStateTrigger = Date.now();
+				
+				// If we have authentication, stop polling
+				if (this.$authStore.currentAccount && this.authPollingInterval) {
+					clearInterval(this.authPollingInterval);
+					this.authPollingInterval = null;
+				}
+			},
+			
+			startAuthPolling() {
+				let pollCount = 0;
+				const maxPolls = 30; // 15 seconds with 500ms intervals
+				
+				this.authPollingInterval = setInterval(() => {
+					pollCount++;
+					
+					// Check if we have authentication now
+					if (this.$authStore.currentAccount) {
+						this.handleAuthUpdated({ detail: { 
+							isAuthenticated: this.$authStore.isAuthenticated,
+							currentAccount: this.$authStore.currentAccount 
+						}} as CustomEvent);
+						return; // handleAuthUpdated will clear the interval
+					}
+					
+					// Stop polling after max attempts
+					if (pollCount >= maxPolls) {
+						if (this.authPollingInterval) {
+							clearInterval(this.authPollingInterval);
+							this.authPollingInterval = null;
+						}
+					}
+				}, 500);
+			},
 			openUpdateModal(session: Session) {
 				this.conversationToUpdate = session;
 				this.newConversationName = session.display_name;
@@ -597,6 +728,14 @@ import Checkbox from 'primevue/checkbox';
 				}
 			},
 
+			handleChatKeydown(event: KeyboardEvent, session: Session) {
+				// MacOS'ta "Delete" tuşu aslında "Backspace" olarak algılanır.
+				if (event.key === 'Delete' || event.key === 'Backspace') {
+					this.conversationToDelete = session;
+					event.preventDefault();
+				}
+			},
+
 			async setAgentOptions() {
 				const isCurrentAgent = (agent: any): boolean => {
 					return (
@@ -646,6 +785,9 @@ import Checkbox from 'primevue/checkbox';
 						// Check if this agent is in the user's selected agents list
 						const isAgentSelected = this.userProfile?.agents?.includes(agent.object_id) || false;
 						
+						// Check if this agent is a featured agent (by name, as per memory: resource names are reliable identifiers)
+						const isFeaturedAgent = this.featuredAgentNames.includes(agent.name);
+						
 						return {
 							object_id: agent.object_id,
 							name: agent.name || 'Unknown Agent',
@@ -654,8 +796,9 @@ import Checkbox from 'primevue/checkbox';
 							value: agent.object_id,
 							type: agent.type,
 							description: agent.description,
-							enabled: isAgentSelected,
+							enabled: isFeaturedAgent ? true : isAgentSelected, // Featured agents are always enabled
 							isReadonly: isAgentReadonly(ResourceProviderGetResult.roles || []),
+							isFeatured: isFeaturedAgent, // Add featured flag for UI logic
 						};
 					});
 				} catch (error) {
@@ -678,6 +821,11 @@ import Checkbox from 'primevue/checkbox';
 			},
 
 			async toggleAgentStatus(agent: AgentOption) {
+				// Prevent toggling featured agents
+				if (agent.isFeatured) {
+					return;
+				}
+				
 				const originalStatus = agent.enabled;
 				
 				try {
@@ -758,6 +906,18 @@ import Checkbox from 'primevue/checkbox';
 					return 'No enabled agents available.';
 				}
 				return this.emptyAgentsMessage2 || 'No agents available.';
+			},
+
+			async checkContributorRoles() {
+				try {
+					const result = await api.checkContributorRoles();
+					this.hasAgentsContributorRole = result.hasAgentsContributorRole;
+					this.hasPromptsContributorRole = result.hasPromptsContributorRole;
+				} catch (error) {
+					console.error('Failed to check contributor roles:', error);
+					this.hasAgentsContributorRole = false;
+					this.hasPromptsContributorRole = false;
+				}
 			},
 		},
 	};
@@ -862,6 +1022,13 @@ import Checkbox from 'primevue/checkbox';
 		transition: all 0.1s ease-in-out;
 	}
 
+	.chat:focus-within .chat__icons,
+	.chat:focus .chat__icons,
+	.chat--selected .chat__icons {
+		display: flex;
+		opacity: 1;
+	}
+
 	.chat:hover {
 		background-color: rgba(217, 217, 217, 0.05);
 	}
@@ -932,6 +1099,15 @@ import Checkbox from 'primevue/checkbox';
 		// added extra padding to the right to account for resize handle width
 		padding: 12px 29px 12px 24px;
 		text-transform: inherit;
+	}
+
+	.config-loading {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 12px;
+		color: var(--text-color-secondary);
+		font-size: 14px;
 		align-items: center;
 	}
 
@@ -1204,6 +1380,23 @@ import Checkbox from 'primevue/checkbox';
 		font-size: 12px;
 		font-weight: bold;
 	}
+	
+	.custom-checkbox.disabled {
+		cursor: not-allowed;
+		opacity: 0.6;
+		background-color: #e9ecef !important;
+		border-color: #adb5bd !important;
+	}
+	
+	.custom-checkbox.disabled:hover {
+		background-color: #e9ecef !important;
+		border-color: #adb5bd !important;
+	}
+	
+	.custom-checkbox.disabled.checked {
+		background-color: #6c757d !important;
+		border-color: #6c757d !important;
+	}
 	.csm-only-text-btn-1{
 		text-decoration: none;
 		padding: 0px;
@@ -1212,5 +1405,35 @@ import Checkbox from 'primevue/checkbox';
 	}
 	.csm-sEnabled-checkbox-1 label{
 		cursor: pointer;
+	}
+	
+	/* Permission request container styling */
+	.permission-request-container {
+		padding: 16px;
+		margin-top: 16px;
+		background-color: #f8f9fa;
+		border: 1px solid #e9ecef;
+		border-radius: 8px;
+	}
+	
+	.permission-request-message {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 8px;
+		font-size: 14px;
+		color: #6c757d;
+	}
+	
+	.permission-request-link {
+		color: #5472d4;
+		text-decoration: none;
+		font-weight: 500;
+		transition: color 0.2s ease;
+	}
+	
+	.permission-request-link:hover {
+		color: #1746a2;
+		text-decoration: underline;
 	}
 </style>

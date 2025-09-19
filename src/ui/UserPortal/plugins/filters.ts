@@ -8,7 +8,10 @@ const filters = {
 		return timeAgo.format(date);
 	},
 
-	enforceLeadingSlash(path: string) {
+	enforceLeadingSlash(path: string | null | undefined) {
+		if (!path) {
+			return '/';
+		}
 		if (!path.startsWith('/') && !path.startsWith('http') && !path.startsWith('data:')) {
 			return '/' + path;
 		} else {

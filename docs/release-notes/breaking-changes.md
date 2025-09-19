@@ -3,6 +3,12 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-rc382
+
+Python packages must be built using the build version.
+
+Python packages must be deployed via the FoundationaLLM.Core PowerShell module.
+
 ## Starting from 0.9.7-rc376
 
 ### Configuration changes
@@ -14,12 +20,20 @@ The following App Configuration value have been added:
 | `FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl` | N/A | The URL to request agent management permissions. |
 | `FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames` | N/A | The comma-separated list of featured agent names. |
 
+The following configuration values are obsolete and must be removed:
+
+- `FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules`
+- `FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer`
+
+### Permissions changes
+
 All User Portal users must have read permission on the `/instances/<instance_id_>/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal` scope.
 
-
-All Management Portal users must have read permissions on the `/instances/<instance_id_>/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal` scope.
+All Management Portal users must have read permissions on the `/instances/<instance_id_>/providers/FoundationaLLM.Configuration/appConfigurationSets/ManagementPortal` scope.
 
 ## Starting from 0.9.7-rc365
+
+
 
 ### Configuration changes
 

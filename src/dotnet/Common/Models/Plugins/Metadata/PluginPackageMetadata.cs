@@ -37,5 +37,11 @@ namespace FoundationaLLM.Common.Models.Plugins.Metadata
         /// </summary>
         [JsonPropertyName("plugin_metadata")]
         public List<PluginMetadata> Plugins { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the property bag containing additional properties for the plugin package.
+        /// </summary>
+        [JsonPropertyName("properties")]
+        public Dictionary<string, string>? Properties { get; set; }
     }
 }

@@ -816,20 +816,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_LangChainAPI_Configuration_ExternalModules_Storage_AuthenticationType =
             "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer setting.
-        /// <para>Value description:<br/>The name of the root container in the Azure Storage account.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_LangChainAPI_Configuration_ExternalModules_RootStorageContainer =
-            "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules setting.
-        /// <para>Value description:<br/>Modules configured for external use in the LangChainAPI. The content should have the following pattern: module_name|module_tool_manager,module_name|module_tool_manager...</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_LangChainAPI_Configuration_ExternalModules_Modules =
-            "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules";
 
         #endregion
 
@@ -1715,7 +1701,7 @@ namespace FoundationaLLM.Common.Constants.Configuration
         
         /// <summary>
         /// The app configuration key for the FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames setting.
-        /// <para>Value description:<br/>The comma-separate list of featured agent names.</para>
+        /// <para>Value description:<br/>The comma-separated list of featured agent names.</para>
         /// </summary>
         public const string FoundationaLLM_UserPortal_Configuration_FeaturedAgentNames =
             "FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames";

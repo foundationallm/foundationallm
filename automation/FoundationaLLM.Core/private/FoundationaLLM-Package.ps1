@@ -153,6 +153,15 @@ function Deploy-FoundationaLLMPackage {
                 -PackagePath $plugin[3]
             Write-Host "Plugin updated: $($pluginResult)" -ForegroundColor Green
         }
+
+        foreach ($plugin in $plugins.python) {
+
+            Write-Host "Updating plugin package: $($plugin[0])"
+            $pluginResult = Merge-PluginPackage `
+                -PackageName $plugin[0] `
+                -PackagePath $plugin[1]
+            Write-Host "Plugin updated: $($pluginResult)" -ForegroundColor Green
+        }
     }
 
     if (Test-Path -Path "$($PackageRoot)/artifacts/vectorDatabases.json") {

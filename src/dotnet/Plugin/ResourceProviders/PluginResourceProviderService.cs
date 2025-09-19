@@ -21,8 +21,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NuGet.Packaging;
 using NuGet.Versioning;
+using System.IO.Compression;
 using System.Reflection;
 using System.Runtime.Loader;
+using System.Text;
 using System.Text.Json;
 
 namespace FoundationaLLM.Plugin.ResourceProviders
@@ -264,13 +266,18 @@ namespace FoundationaLLM.Plugin.ResourceProviders
 
                 if (packagePlatform == PluginPackagePlatform.Dotnet)
                 {
-                    var packageManagerInstance = await LoadPackage(
+                    var packageManagerInstance = await LoadDotnetPackage(
                         resourcePath.ResourceId!,
                         new MemoryStream(formFile.BinaryContent.ToArray()));
                     packageVersion = packageManagerInstance.PackageVersion;
                     packageMetadata = packageManagerInstance.Instance.GetMetadata(resourcePath.InstanceId!);
 
                     packageManagerInstance.AssemblyLoadContext.Unload();
+                } else if (packagePlatform == PluginPackagePlatform.Python)
+                {
+                    (packageVersion, packageMetadata) = await LoadPythonPackage(
+                        resourcePath.ResourceId!,
+                        new MemoryStream(formFile.BinaryContent.ToArray()));
                 }
 
                 if (packageMetadata is null)
@@ -329,7 +336,8 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                     PackagePlatform = packagePlatform,
                     PackageVersion = packageVersion,
                     PackageFilePath = $"/{_name}/{resourcePath.InstanceId!}/{pluginPackageBase.Name}/{formFile.FileName}",
-                    PackageFileSize = formFile.BinaryContent.Length
+                    PackageFileSize = formFile.BinaryContent.Length,
+                    Properties = packageMetadata.Properties
                 };
             }
             catch (Exception ex)
@@ -440,7 +448,7 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                 pluginPackageDefinition!.PackageFilePath,
                 default);
 
-            var packageManagerInstance = await LoadPackage(
+            var packageManagerInstance = await LoadDotnetPackage(
                 pluginPackageName,
                 new MemoryStream(pluginPackageBinaryContent.ToArray()));
 
@@ -450,7 +458,7 @@ namespace FoundationaLLM.Plugin.ResourceProviders
             return packageManagerInstance;
         }
 
-        private async Task<PluginPackageManagerInstance> LoadPackage(
+        private async Task<PluginPackageManagerInstance> LoadDotnetPackage(
             string packageName,
             MemoryStream packageBinaryContent)
         {
@@ -501,7 +509,85 @@ namespace FoundationaLLM.Plugin.ResourceProviders
 
             throw new ResourceProviderException("The plugin package does not have a valid package manager that can be instantiated.",
                 StatusCodes.Status400BadRequest);
-        }        
+        }
+
+        private async Task<(SemanticVersion Vestion, PluginPackageMetadata Metadata)> LoadPythonPackage(
+            string packageName,
+            MemoryStream packageBinaryContent)
+        {
+            using var archive = new ZipArchive(packageBinaryContent, ZipArchiveMode.Read, leaveOpen: true);
+
+            // Find candidate entries with the manifest filename, prefer entries with smallest path depth (topmost).
+            var candidates = archive.Entries
+                .Select(e => new
+                {
+                    Entry = e,
+                    Depth = e.FullName.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries).Length
+                })
+                .Where(x => string.Equals(Path.GetFileName(x.Entry.FullName), "foundationallm_manifest.json", StringComparison.OrdinalIgnoreCase))
+                .OrderBy(x => x.Depth)
+                .ToArray();
+
+            if (candidates.Length == 0)
+                throw new ResourceProviderException("The python package does not contain 'foundationallm_manifest.json' in the topmost folder.",
+                    StatusCodes.Status400BadRequest);
+
+            var manifestEntry = candidates.First().Entry;
+
+            using var entryStream = manifestEntry.Open();
+            using var ms = new MemoryStream();
+            await entryStream.CopyToAsync(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+
+            var jsonText = Encoding.UTF8.GetString(ms.ToArray());
+            using var doc = JsonDocument.Parse(jsonText);
+
+            if (!doc.RootElement.TryGetProperty("version", out var versionProperty)
+                || versionProperty.ValueKind != JsonValueKind.String)
+                throw new ResourceProviderException("The python package manifest does not contain a valid 'version' property.",
+                    StatusCodes.Status400BadRequest);
+
+            if (!doc.RootElement.TryGetProperty("module_name", out var moduleNameProperty)
+                || moduleNameProperty.ValueKind != JsonValueKind.String)
+                throw new ResourceProviderException("The python package manifest does not contain a valid 'module_name' property.",
+                    StatusCodes.Status400BadRequest);
+
+            if (!doc.RootElement.TryGetProperty("display_name", out var displayNameProperty)
+                || displayNameProperty.ValueKind != JsonValueKind.String)
+                throw new ResourceProviderException("The python package manifest does not contain a valid 'display_name' property.",
+                    StatusCodes.Status400BadRequest);
+
+            if (!doc.RootElement.TryGetProperty("description", out var descriptionPropery)
+                || versionProperty.ValueKind != JsonValueKind.String)
+                throw new ResourceProviderException("The python package manifest does not contain a valid 'description' property.",
+                    StatusCodes.Status400BadRequest);
+
+            if (!doc.RootElement.TryGetProperty("plugin_managers", out var pluginManagersProperty)
+                || pluginManagersProperty.ValueKind != JsonValueKind.Array)
+                throw new ResourceProviderException("The python package manifest does not contain a valid 'plugin_managers' property.",
+                    StatusCodes.Status400BadRequest);
+
+            var version = SemanticVersion.Parse(versionProperty.ToString());
+            var pluginManagers = pluginManagersProperty.EnumerateArray()
+                .Select(pm => pm.GetString())
+                .ToList();
+
+            var packageMetadata = new PluginPackageMetadata
+            {
+                Name = packageName,
+                DisplayName = displayNameProperty.ToString(),
+                Description = descriptionPropery.ToString(),
+                Platform = PluginPackagePlatform.Python,
+                Plugins = [],
+                Properties = new Dictionary<string, string>
+                {
+                    { "module_name", moduleNameProperty.ToString() },
+                    { "plugin_managers", string.Join(",", pluginManagers) }
+                }
+            };
+
+            return (version, packageMetadata);
+        }
 
         #endregion
 

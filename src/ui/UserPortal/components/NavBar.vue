@@ -218,7 +218,7 @@
 			},
 
 			async setAgentOptions() {
-				const isCurrentAgent = (agent): boolean => {
+				const isCurrentAgent = (agent: any): boolean => {
 					return (
 						agent.resource.name ===
 						this.$appStore.getSessionAgent(this.currentSession)?.resource?.name
@@ -231,11 +231,11 @@
 
 				// Filter out expired agents, disabled agents, and agents not enabled in user profile
 				// but keep the currently selected agent even if it doesn't meet these criteria
-				const filteredAgents = this.$appStore.agents.filter((agent) => {
+				const filteredAgents = this.$appStore.agents.filter((agent: any) => {
 					const isExpiredOrDisabled = isAgentExpired(agent) || agent.enabled === false;
 					
 					// Check if agent is in user profile by exact matching object_id
-					const foundAgent = enabledAgentIds.find(agentId => 
+					const foundAgent = enabledAgentIds.find((agentId: any) => 
 						agentId == agent.resource.object_id
 					);
 					const isNotInUserProfile = enabledAgentIds.length > 0 && !foundAgent;
@@ -244,7 +244,7 @@
 					return (!isExpiredOrDisabled && !isNotInUserProfile) || isCurrentAgent(agent);
 				});
 
-				this.agentOptions = filteredAgents.filter(agent => enabledAgentIds.includes(agent?.resource?.object_id)).map((agent) => ({
+				this.agentOptions = filteredAgents.filter((agent: any) => enabledAgentIds.includes(agent?.resource?.object_id)).map((agent: any) => ({
 					label: agent.resource.display_name ? agent.resource.display_name : agent.resource.name,
 					type: agent.resource.type,
 					object_id: agent.resource.object_id,
@@ -257,27 +257,51 @@
 					this.emptyAgentsMessage = this.$appConfigStore.noAgentsMessage ?? null;
 				}
 
-				const publicAgentOptions = this.agentOptions.filter((agent) => !agent.my_agent);
-				const privateAgentOptions = this.agentOptions.filter((agent) => agent.my_agent);
+				// Get featured agent names from config
+				const featuredAgentNames = this.$appConfigStore.featuredAgentNames;
+				const featuredAgentNamesList = featuredAgentNames 
+					? featuredAgentNames.split(',').map((name: string) => name.trim())
+					: [];
+
+				// Separate agents into featured and non-featured
+				const featuredAgents: AgentDropdownOption[] = [];
+				const nonFeaturedAgents: AgentDropdownOption[] = [];
+
+				// First, add featured agents in the order specified in config
+				featuredAgentNamesList.forEach((featuredName: string) => {
+					const agent = this.agentOptions.find(option => option.value.resource.name === featuredName);
+					if (agent) {
+						featuredAgents.push(agent);
+					}
+				});
+
+				// Add remaining agents to non-featured list
+				this.agentOptions.forEach((agent: AgentDropdownOption) => {
+					const isFeatured = featuredAgentNamesList.includes(agent.value.resource.name);
+					if (!isFeatured) {
+						nonFeaturedAgents.push(agent);
+					}
+				});
 
 				this.virtualUser = await this.$appStore.getVirtualUser();
 
 				this.agentOptionsGroup = [];
 				
-			
-				if(privateAgentOptions.length > 0)
-				this.agentOptionsGroup.push({
-						label: 'My Agents',
-						items: privateAgentOptions,
-					});
-					
-					
-					if(publicAgentOptions.length > 0)
+				// Add Featured group if there are featured agents
+				if (featuredAgents.length > 0) {
 					this.agentOptionsGroup.push({
-						label: 'Other Agents',
-						items: publicAgentOptions,
+						label: '-- Featured --',
+						items: featuredAgents,
 					});
-				
+				}
+					
+				// Add Other Agents group if there are non-featured agents
+				if (nonFeaturedAgents.length > 0) {
+					this.agentOptionsGroup.push({
+						label: featuredAgents.length > 0 ? '-- Other --' : 'Other Agents',
+						items: nonFeaturedAgents,
+					});
+				}
 
 				// Update agent selection after options are set
 				this.updateAgentSelection();

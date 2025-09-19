@@ -631,20 +631,6 @@
             "tags": {}
         },
         {
-            "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer",
-            "value": "external-modules-python",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
-            "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules",
-            "value": "",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
             "key": "FoundationaLLM:APIEndpoints:SemanticKernelAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-semantickernelapi-apikey\"}",
             "label": null,

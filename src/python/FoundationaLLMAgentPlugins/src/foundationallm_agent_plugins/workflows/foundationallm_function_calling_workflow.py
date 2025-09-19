@@ -230,8 +230,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                     with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
 
                         final_llm_response = await self.workflow_llm.ainvoke(
-                            messages[:-1] + [final_message], # Exclude the last message which is replaced by final_message.
-                            tools=None)
+                            messages[:-1] + [final_message]) # Exclude the last message which is replaced by final_message.
                         input_tokens += final_llm_response.usage_metadata['input_tokens']
                         output_tokens += final_llm_response.usage_metadata['output_tokens']
                         final_response = final_llm_response.content

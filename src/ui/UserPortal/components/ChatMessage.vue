@@ -883,34 +883,57 @@ export default {
 			return `${date}\n(${processingTimeSeconds.toFixed(2)} seconds)`;
 		},
 
-		handleCopyMessageContent() {
-			let contentToCopy = '';
+		async handleCopyMessageContent() {
+			let markdownContent = '';
+			let htmlContent = '';
+			
 			if (this.messageContent && this.messageContent?.length > 0) {
 				this.messageContent.forEach((contentBlock) => {
 					switch (contentBlock.type) {
 						case 'text':
-							contentToCopy += contentBlock.value;
+							markdownContent += contentBlock.value;
 							break;
 						// default:
-						// 	contentToCopy += `![${contentBlock.fileName || 'image'}](${contentBlock.value})`;
+						// 	markdownContent += `![${contentBlock.fileName || 'image'}](${contentBlock.value})`;
 						// 	break;
 					}
 				});
 			} else {
-				contentToCopy = this.message.text;
+				markdownContent = this.message.text;
 			}
 
-			const textarea = document.createElement('textarea');
-			textarea.value = contentToCopy;
-			document.body.appendChild(textarea);
-			textarea.select();
-			document.execCommand('copy');
-			document.body.removeChild(textarea);
+			// Process markdown to HTML using the same method as display
+			htmlContent = this.processContentBlock(markdownContent);
 
-			this.$appStore.addToast({
-				severity: 'success',
-				detail: 'Message copied to clipboard!',
-			});
+			try {
+				// Use modern clipboard API to copy both formats
+				await navigator.clipboard.write([
+					new ClipboardItem({
+						"text/html": new Blob([htmlContent], { type: "text/html" }),
+						"text/plain": new Blob([markdownContent], { type: "text/plain" })
+					})
+				]);
+
+				this.$appStore.addToast({
+					severity: 'success',
+					detail: 'Message copied to clipboard with formatting!',
+				});
+			} catch (error) {
+				// Fallback to old method if modern clipboard API fails
+				console.warn('Modern clipboard API failed, falling back to legacy method:', error);
+				
+				const textarea = document.createElement('textarea');
+				textarea.value = markdownContent;
+				document.body.appendChild(textarea);
+				textarea.select();
+				document.execCommand('copy');
+				document.body.removeChild(textarea);
+
+				this.$appStore.addToast({
+					severity: 'success',
+					detail: 'Message copied to clipboard!',
+				});
+			}
 		},
 
 		handleRate(message: Message, isLiked: boolean) {

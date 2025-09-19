@@ -1118,22 +1118,6 @@
 				"value": "AzureIdentity",
 				"content_type": "",
 				"first_version": "0.9.0"
-			},
-			{
-				"name": "RootStorageContainer",
-				"description": "The name of the root container in the Azure Storage account.",
-				"secret": "",
-				"value": "external-modules-python",
-				"content_type": "",
-				"first_version": "0.9.0"
-			},
-			{
-				"name": "Modules",
-				"description": "Modules configured for external use in the LangChainAPI. The content should have the following pattern: module_name|module_tool_manager,module_name|module_tool_manager...",
-				"secret": "",
-				"value": "",
-				"content_type": "",
-				"first_version": "0.9.0"
 			}
 		]
 	},
