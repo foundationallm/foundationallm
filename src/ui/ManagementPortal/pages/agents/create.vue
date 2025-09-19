@@ -2179,12 +2179,6 @@ export default {
 
 				if (Object.keys(filteredErrors).length > 0) {
 					// Optionally, show a toast with the first error or all errors joined
-					//this.$toast.add({
-					//	severity: 'error',
-					//	detail: 'Please fix the validation errors before submitting the form.',
-					//	life: 5000,
-					//	closable: true,
-					//});
 					this.scrollToFirstError();
 					return;
 				}
@@ -2636,14 +2630,5 @@ input {
 .virtual-security-group-id {
 	margin: 0 1rem 0 0;
 	width: auto;
-}
-.input-error {
-	border: 1.5px solid #e53935 !important;
-	background: #fff0f0;
-}
-.error-message {
-	color: #e53935;
-	font-size: 0.95em;
-	margin-top: 2px;
 }
 </style>
