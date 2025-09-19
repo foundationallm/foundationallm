@@ -1,15 +1,6 @@
 <template>
-	<div class="chat-input p-inputgroup" role="group" aria-label="Chat input group">
+	<div class="chat-input p-inputgroup csm-mnt-txta-all-1" role="group" aria-label="Chat input group">
 		<div class="input-wrapper">
-			<div class="tooltip-component">
-				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-					<i class="pi pi-info-circle" tabindex="0" aria-hidden @keydown.esc="hideAllPoppers"></i>
-					<template #popper>
-						<div role="tooltip">Use Shift+Enter to add a new line</div>
-					</template>
-				</VTooltip>
-			</div>
-
 			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					v-if="$appConfigStore.showFileUpload && $appStore.agentShowFileUpload"
@@ -273,7 +264,7 @@
 				id="chat-input"
 				ref="inputRef"
 				v-model="text"
-				class="input"
+				class="input csm-mnt-txta-1"
 				aria-describedby="chat-input-label"
 				autofocus
 				:disabled="disabled || isCurrentAgentExpired"
@@ -285,15 +276,24 @@
 				"
 				@keydown="handleKeydown"
 			/>
+
+			<Button
+				:disabled="disabled || isCurrentAgentExpired || isUploading"
+				class="submit"
+				icon="pi pi-send"
+				label=""
+				@click="handleSend"
+			/>
 		</div>
 
-		<Button
-			:disabled="disabled || isCurrentAgentExpired || isUploading"
-			class="submit"
-			icon="pi pi-send"
-			label="Send"
-			@click="handleSend"
-		/>
+		<div class="tooltip-component">
+			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+				<i class="pi pi-info-circle" tabindex="0" aria-hidden @keydown.esc="hideAllPoppers"></i>
+				<template #popper>
+					<div role="tooltip">Use Shift+Enter to add a new line</div>
+				</template>
+			</VTooltip>
+		</div>
 	</div>
 </template>
 
@@ -1018,9 +1018,9 @@ export default {
 
 .tooltip-component {
 	height: 100%;
-	margin-right: 0.5rem;
+	margin-left: 0.5rem;
 	display: flex;
-	align-items: center;
+	color: var(--primary-button-bg);
 }
 
 .mentionable {
@@ -1076,19 +1076,30 @@ export default {
 	bottom: 100%;
 }
 
-.submit {
+.p-button:not(.p-button-text).submit {
 	flex: 0 0 10%;
 	text-align: left;
 	flex-basis: auto;
+	width: 63px;
+	background-color: #4a4a4a !important;
+	border: 0;
+	border-radius: 5px;
+	margin-left: -2px;
 }
 
-.submit:focus {
-	box-shadow: 0 0 0 0.1rem #000;
-}
+// .submit:focus {
+// 	box-shadow: 0 0 0 0.1rem #000;
+// }
 
 .file-upload-button {
+	position: relative;
 	height: 100%;
 	z-index: 1;
+	width: 63px;
+	background-color: #003965 !important;
+	border: 0;
+	border-radius: 5px;
+	margin-right: -2px;
 }
 
 .file-upload-button:focus {
@@ -1304,5 +1315,46 @@ export default {
 
 .labelPadding {
 	padding-left: 10px;
+}
+
+.csm-mnt-txta-all-1 .submit .p-button-icon{
+	font-size: 22px;
+    transform: rotate(40deg);
+    margin-left: -5px;
+}
+
+.csm-mnt-txta-all-1 .file-upload-button .p-badge{
+	margin: 0px;
+	border-radius: 50%;
+	color: #fff;
+	background-color: #216ece;
+	font-weight: 400;
+	position: absolute;
+	right: 10px;
+    bottom: 10px;
+    z-index: 1;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.csm-mnt-txta-all-1 .file-upload-button .p-button-label{
+	display: none;
+}
+
+.csm-mnt-txta-all-1 .file-upload-button .p-button-icon{
+	font-size: 24px;
+}
+.csm-mnt-txta-1{
+	font-family: "Poppins", sans-serif !important;
+	color: var(--secondary-color) !important;
+	border-right: 0px !important;
+	border-left: 0px !important;
+	height: 63px !important;
+}
+.csm-mnt-txta-1::placeholder{
+	color: var(--secondary-color);
 }
 </style>
