@@ -1,58 +1,76 @@
 <template>
 	<div class="chat-app">
-		<Button
-			class="sr-only skip-to-input-button"
-			role="link"
-			label="Skip to input"
-			aria-label="Skip to input"
-			@click="focusInput"
-		/>
-		<header role="banner">
-			<NavBar />
-		</header>
-		<div class="chat-content">
-			<aside
-				v-show="!$appStore.isSidebarClosed"
-				ref="sidebar"
-				class="chat-sidebar-wrapper"
-				role="navigation"
-			>
-				<ChatSidebar
-					class="chat-sidebar"
-					:style="{ width: sidebarWidth + 'px' }"
-					style="padding-right: 5px"
-				/>
-				<VTooltip
-					:auto-hide="isMobile"
-					:popper-triggers="isMobile ? [] : ['hover']"
-					:skidding="skidding"
-				>
-					<div
-						class="resize-handle"
-						tabindex="0"
-						aria-label="Resize sidebar"
-						@mousedown="startResizing"
-						@keydown.left.prevent="resizeSidebarWithKeyboard(-10)"
-						@keydown.right.prevent="resizeSidebarWithKeyboard(10)"
-					/>
-					<template #popper>
-						<div role="tooltip">Resize sidebar (Use left and right arrow keys)</div>
-					</template>
-				</VTooltip>
-			</aside>
-			<div
-				v-show="!$appStore.isSidebarClosed"
-				class="sidebar-blur"
-				@click="$appStore.toggleSidebar"
+		<!-- Access Denied Message for 403 Errors -->
+		<div v-if="$appConfigStore.hasConfigurationAccessError" class="access-denied-overlay">
+			<div class="access-denied-container">
+				<div class="access-denied-icon">
+					<i class="pi pi-ban" style="font-size: 4rem; color: #e74c3c;"></i>
+				</div>
+				<h2 class="access-denied-title">Access Denied</h2>
+				<p class="access-denied-message">
+					{{ $appConfigStore.configurationAccessErrorMessage }}
+				</p>
+			</div>
+		</div>
+
+		<!-- Normal App Content (hidden when access denied) -->
+		<div v-else class="normal-app-content h-full">
+			<Button
+				class="sr-only skip-to-input-button"
+				role="link"
+				label="Skip to input"
+				aria-label="Skip to input"
+				@click="focusInput"
 			/>
-			<main role="main" class="chat-main">
-				<ChatThread ref="thread" :is-dragging="isDragging" />
-			</main>
+			<header role="banner">
+				<NavBar />
+			</header>
+			<div class="chat-content">
+				<aside
+					v-show="!$appStore.isSidebarClosed"
+					ref="sidebar"
+					class="chat-sidebar-wrapper"
+					role="navigation"
+				>
+					<ChatSidebar
+						class="chat-sidebar"
+						:style="{ width: sidebarWidth + 'px' }"
+						style="padding-right: 5px"
+					/>
+					<VTooltip
+						:auto-hide="isMobile"
+						:popper-triggers="isMobile ? [] : ['hover']"
+						:skidding="skidding"
+					>
+						<div
+							class="resize-handle"
+							tabindex="0"
+							aria-label="Resize sidebar"
+							@mousedown="startResizing"
+							@keydown.left.prevent="resizeSidebarWithKeyboard(-10)"
+							@keydown.right.prevent="resizeSidebarWithKeyboard(10)"
+						/>
+						<template #popper>
+							<div role="tooltip">Resize sidebar (Use left and right arrow keys)</div>
+						</template>
+					</VTooltip>
+				</aside>
+				<div
+					v-show="!$appStore.isSidebarClosed"
+					class="sidebar-blur"
+					@click="$appStore.toggleSidebar"
+				/>
+				<main role="main" class="chat-main">
+					<ChatThread ref="thread" :is-dragging="isDragging" />
+				</main>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
+import '@/styles/access-denied.scss';
+
 export default {
 	name: 'Index',
 
