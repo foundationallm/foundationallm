@@ -5,6 +5,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 	state: () => ({
 		// Loading states
 		isConfigurationLoaded: false,
+		hasConfigurationAccessError: false,
+		configurationAccessErrorMessage: null as string | null,
 
 		// API: Defines API-specific settings such as the base URL for application requests.
 		apiUrl: null as string | null,
@@ -62,6 +64,10 @@ export const useAppConfigStore = defineStore('appConfig', {
 		 */
 		async loadAppConfigurationSet() {
 			try {
+				// Reset error state before attempting to load
+				this.hasConfigurationAccessError = false;
+				this.configurationAccessErrorMessage = null;
+				
 				const appConfigSetResults = await api.getUserPortalAppConfigurationSet();
 				
 				if (appConfigSetResults && appConfigSetResults.length > 0) {
@@ -184,8 +190,18 @@ export const useAppConfigStore = defineStore('appConfig', {
 						}
 					}
 				}
-			} catch (error) {
+			} catch (error: any) {
 				console.error('Failed to load app configuration set:', error);
+				
+				// Check if this is a 403 Forbidden error
+				if (error?.status === 403 || error?.statusCode === 403 || 
+					(error?.message && error.message.includes('403')) ||
+					(error?.response?.status === 403)) {
+					this.hasConfigurationAccessError = true;
+					this.configurationAccessErrorMessage = 'Please contact your system administrator to request access.';
+					console.error('Access to UserPortal app configuration set is forbidden (403)');
+				}
+				
 				throw error;
 			}
 		},
@@ -279,10 +295,17 @@ export const useAppConfigStore = defineStore('appConfig', {
 			try {
 				await this.loadFullConfiguration();
 				this.isConfigurationLoaded = true;
-			} catch (error) {
+			} catch (error: any) {
 				console.error('Failed to load configuration after authentication:', error);
-				// Still mark as loaded so UI doesn't stay in loading state
-				this.isConfigurationLoaded = true;
+				
+				// If it's a 403 error, we still mark as loaded but keep the error state
+				// This allows the UI to render the access denied message
+				if (this.hasConfigurationAccessError) {
+					this.isConfigurationLoaded = true;
+				} else {
+					// For other errors, still mark as loaded so UI doesn't stay in loading state
+					this.isConfigurationLoaded = true;
+				}
 			}
 		},
 
