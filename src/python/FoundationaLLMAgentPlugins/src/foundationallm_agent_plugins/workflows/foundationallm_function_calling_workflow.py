@@ -131,6 +131,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             objects = {}
 
         workflow_main_prompt = self.__create_workflow_main_prompt()
+        workflow_router_prompt = self.__create_workflow_router_prompt()
         workflow_files_prompt = self.__create_workflow_files_prompt()
         workflow_final_prompt = self.__create_workflow_final_prompt()
 
@@ -149,6 +150,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         messages = await self.__get_message_list(
             llm_prompt,
             workflow_main_prompt,
+            workflow_router_prompt,
             workflow_files_prompt,
             message_history,
             objects,
@@ -230,7 +232,9 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                     with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
 
                         final_llm_response = await self.workflow_llm.ainvoke(
-                            messages[:-1] + [final_message]) # Exclude the last message which is replaced by final_message.
+                            [SystemMessage(content=workflow_main_prompt)]
+                            + messages[1:-1] # Exclude the original system prompt (first message) and context message (last message)
+                            + [final_message])
                         input_tokens += final_llm_response.usage_metadata['input_tokens']
                         output_tokens += final_llm_response.usage_metadata['output_tokens']
                         final_response = final_llm_response.content
@@ -315,6 +319,24 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             return main_prompt_properties['prefix']
         else:
             error_message = 'No main prompt found in workflow configuration'
+            self.logger.error(error_message)
+            raise ValueError(error_message)
+        
+    def __create_workflow_router_prompt(self) -> str:
+        """ Creates the workflow router prompt. """
+        prompt_object_id = self.workflow_config.get_resource_object_id_properties(
+            ResourceProviderNames.FOUNDATIONALLM_PROMPT,
+            PromptResourceTypeNames.PROMPTS,
+            ResourceObjectIdPropertyNames.OBJECT_ROLE,
+            'router_prompt'
+            # ResourceObjectIdPropertyValues.ROUTER_PROMPT
+        )
+        if prompt_object_id:
+            router_prompt_object_id = prompt_object_id.object_id
+            router_prompt_properties = self.objects[router_prompt_object_id]
+            return router_prompt_properties['prefix']
+        else:
+            error_message = 'No router prompt found in workflow configuration'
             self.logger.error(error_message)
             raise ValueError(error_message)
 
@@ -434,6 +456,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         self,
         llm_prompt: str,
         workflow_main_prompt: str,
+        workflow_router_prompt: str,
         workflow_files_prompt: str,
         message_history: List[MessageHistoryItem],
         objects: dict,
@@ -506,17 +529,18 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         files_prompt = workflow_files_prompt \
             .replace(f'{{{{{TemplateVariables.CONVERSATION_FILES}}}}}', '\n'.join(conversation_files)) \
             .replace(f'{{{{{TemplateVariables.ATTACHED_FILES}}}}}', '\n'.join(attached_files)) \
-            .replace(f'{{{{{TemplateVariables.CONTEXT_FILES}}}}}', '') \
             if workflow_files_prompt else ''
 
-        main_prompt = workflow_main_prompt \
-            .replace(f'{{{{{TemplateVariables.FILES_PROMPT}}}}}', files_prompt)
+        system_prompt = '/n'.join([
+            workflow_main_prompt,
+            workflow_router_prompt,
+            files_prompt
+        ])
 
-        self.logger.debug('Workflow prompt: %s', main_prompt)
-        print(f'Workflow prompt console: {main_prompt}')
+        self.logger.debug('Workflow prompt: %s', system_prompt)
 
         return [
-            SystemMessage(content=main_prompt),
+            SystemMessage(content=system_prompt),
             *messages,
             context_message
         ]

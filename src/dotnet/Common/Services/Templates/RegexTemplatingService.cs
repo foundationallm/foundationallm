@@ -110,7 +110,7 @@ namespace FoundationaLLM.Common.Services.Templates
                     hasMoreTokens = VariableRegex().IsMatch(transformedString);
                     iterationsCount++;
 
-                } while (hasMoreTokens || iterationsCount > 10);
+                } while (hasMoreTokens && iterationsCount <= 10);
 
                 if (hasMoreTokens && iterationsCount > 10)
                     _logger.LogWarning("Exceeded maximum iterations while transforming the string. Some tokens may not have been replaced.");
