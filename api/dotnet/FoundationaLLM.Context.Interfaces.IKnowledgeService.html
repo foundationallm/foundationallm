@@ -130,9 +130,9 @@ Interface IKnowledgeService  <a class="header-action link-secondary" title="View
 
   <a id="FoundationaLLM_Context_Interfaces_IKnowledgeService_GetKnowledgeSource_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeService.GetKnowledgeSource*"></a>
 
-  <h3 id="FoundationaLLM_Context_Interfaces_IKnowledgeService_GetKnowledgeSource_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeService.GetKnowledgeSource(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
-  GetKnowledgeSource(string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Context_Interfaces_IKnowledgeService_GetKnowledgeSource_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeService.GetKnowledgeSource(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  GetKnowledgeSource(string, string, string?, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a specified knowledge source.</p>
@@ -140,7 +140,7 @@ Interface IKnowledgeService  <a class="header-action link-secondary" title="View
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;ContextServiceResponse&lt;ResourceProviderGetResult&lt;KnowledgeSource&gt;&gt;&gt; GetKnowledgeSource(string instanceId, string knowledgeSourceId, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;ContextServiceResponse&lt;ResourceProviderGetResult&lt;KnowledgeSource&gt;&gt;&gt; GetKnowledgeSource(string instanceId, string knowledgeSourceId, string? agentName, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -150,6 +150,9 @@ Interface IKnowledgeService  <a class="header-action link-secondary" title="View
 </dd>
     <dt><code>knowledgeSourceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The knowledge source identifier.</p>
+</dd>
+    <dt><code>agentName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The agent name if the request is being made on behalf of an agent.</p>
 </dd>
     <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
     <dd><p>The identity of the security principal submitting the request.</p>
@@ -176,7 +179,7 @@ Interface IKnowledgeService  <a class="header-action link-secondary" title="View
 
   <h3 id="FoundationaLLM_Context_Interfaces_IKnowledgeService_GetKnowledgeSources_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeResourceListRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeService.GetKnowledgeSources(System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeResourceListRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetKnowledgeSources(string, ContextKnowledgeResourceListRequest, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L61"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves the list of knowledge sources.</p>
@@ -218,9 +221,9 @@ Interface IKnowledgeService  <a class="header-action link-secondary" title="View
 
   <a id="FoundationaLLM_Context_Interfaces_IKnowledgeService_GetKnowledgeUnit_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeService.GetKnowledgeUnit*"></a>
 
-  <h3 id="FoundationaLLM_Context_Interfaces_IKnowledgeService_GetKnowledgeUnit_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeService.GetKnowledgeUnit(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
-  GetKnowledgeUnit(string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Context_Interfaces_IKnowledgeService_GetKnowledgeUnit_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeService.GetKnowledgeUnit(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  GetKnowledgeUnit(string, string, string?, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a specified knowledge unit.</p>
@@ -228,7 +231,7 @@ Interface IKnowledgeService  <a class="header-action link-secondary" title="View
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;ContextServiceResponse&lt;ResourceProviderGetResult&lt;KnowledgeUnit&gt;&gt;&gt; GetKnowledgeUnit(string instanceId, string knowledgeUnitId, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;ContextServiceResponse&lt;ResourceProviderGetResult&lt;KnowledgeUnit&gt;&gt;&gt; GetKnowledgeUnit(string instanceId, string knowledgeUnitId, string? agentName, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -238,6 +241,9 @@ Interface IKnowledgeService  <a class="header-action link-secondary" title="View
 </dd>
     <dt><code>knowledgeUnitId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The knowledge unit identifier.</p>
+</dd>
+    <dt><code>agentName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The agent name if the request is being made on behalf of an agent.</p>
 </dd>
     <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
     <dd><p>The identity of the security principal submitting the request.</p>
@@ -264,7 +270,7 @@ Interface IKnowledgeService  <a class="header-action link-secondary" title="View
 
   <h3 id="FoundationaLLM_Context_Interfaces_IKnowledgeService_GetKnowledgeUnits_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeResourceListRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeService.GetKnowledgeUnits(System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeResourceListRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetKnowledgeUnits(string, ContextKnowledgeResourceListRequest, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L49"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves the list of knowledge units.</p>
@@ -308,7 +314,7 @@ Interface IKnowledgeService  <a class="header-action link-secondary" title="View
 
   <h3 id="FoundationaLLM_Context_Interfaces_IKnowledgeService_QueryKnowledgeSource_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeService.QueryKnowledgeSource(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   QueryKnowledgeSource(string, string, ContextKnowledgeSourceQueryRequest, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L126"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Queries a knowledge source.</p>
@@ -355,7 +361,7 @@ Interface IKnowledgeService  <a class="header-action link-secondary" title="View
 
   <h3 id="FoundationaLLM_Context_Interfaces_IKnowledgeService_RenderKnowledgeUnitGraph_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeService.RenderKnowledgeUnitGraph(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   RenderKnowledgeUnitGraph(string, string, ContextKnowledgeSourceQueryRequest?, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L112"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves the knowledge unit's knowledge graph in a format suitable for visualization or further processing.</p>
@@ -402,7 +408,7 @@ Interface IKnowledgeService  <a class="header-action link-secondary" title="View
 
   <h3 id="FoundationaLLM_Context_Interfaces_IKnowledgeService_SetKnowledgeUnitGraph_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeUnitSetGraphRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeService.SetKnowledgeUnitGraph(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitSetGraphRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   SetKnowledgeUnitGraph(string, string, ContextKnowledgeUnitSetGraphRequest, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L98"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the knowledge graph associated with a knowledge unit.</p>
@@ -449,7 +455,7 @@ Interface IKnowledgeService  <a class="header-action link-secondary" title="View
 
   <h3 id="FoundationaLLM_Context_Interfaces_IKnowledgeService_UpsertKnowledgeSource_System_String_FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeSource_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeService.UpsertKnowledgeSource(System.String,FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   UpsertKnowledgeSource(string, KnowledgeSource, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L85"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates or updates a knowledge source in the context service.</p>
@@ -493,7 +499,7 @@ Interface IKnowledgeService  <a class="header-action link-secondary" title="View
 
   <h3 id="FoundationaLLM_Context_Interfaces_IKnowledgeService_UpsertKnowledgeUnit_System_String_FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeUnit_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IKnowledgeService.UpsertKnowledgeUnit(System.String,FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   UpsertKnowledgeUnit(string, KnowledgeUnit, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IKnowledgeService.cs/#L73"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates or updates a knowledge unit in the context service.</p>

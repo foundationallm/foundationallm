@@ -557,8 +557,8 @@ of the authorization result should be returned (if any).</li></ol>
 
   <a id="FoundationaLLM_Prompt_ResourceProviders_PromptResourceProviderService_GetResourceAsyncInternal_" data-uid="FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.GetResourceAsyncInternal*"></a>
 
-  <h3 id="FoundationaLLM_Prompt_ResourceProviders_PromptResourceProviderService_GetResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_" data-uid="FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.GetResourceAsyncInternal``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions)">
-  GetResourceAsyncInternal&lt;T&gt;(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity, ResourceProviderGetOptions?)
+  <h3 id="FoundationaLLM_Prompt_ResourceProviders_PromptResourceProviderService_GetResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_" data-uid="FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.GetResourceAsyncInternal``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions,FoundationaLLM.Common.Models.ResourceProviders.ResourceBase)">
+  GetResourceAsyncInternal&lt;T&gt;(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity, ResourceProviderGetOptions?, ResourceBase?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Prompt/ResourceProviders/PromptResourceProviderService.cs/#L159"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -567,7 +567,7 @@ of the authorization result should be returned (if any).</li></ol>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Task&lt;T&gt; GetResourceAsyncInternal&lt;T&gt;(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) where T : ResourceBase</code></pre>
+    <pre><code class="lang-csharp hljs">protected override Task&lt;T&gt; GetResourceAsyncInternal&lt;T&gt;(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null, ResourceBase? parentResourceInstance = null) where T : ResourceBase</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -583,6 +583,9 @@ of the authorization result should be returned (if any).</li></ol>
 </dd>
     <dt><code>options</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions.html">ResourceProviderGetOptions</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions.html">ResourceProviderGetOptions</a> which provides operation parameters.</p>
+</dd>
+    <dt><code>parentResourceInstance</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html">ResourceBase</a></dt>
+    <dd><p>The optional parent resource of the resource identified by <code class="paramref">resourcePath</code>.</p>
 </dd>
   </dl>
 
@@ -603,6 +606,10 @@ of the authorization result should be returned (if any).</li></ol>
 
 
 
+  <h4 class="section" id="FoundationaLLM_Prompt_ResourceProviders_PromptResourceProviderService_GetResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_FoundationaLLM_Common_Models_ResourceProviders_ResourceBase__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>When the parent resource instance is provided, and it specifies inheritable authorizable actions,
+the parent resource instance is used to authorize the request for any of those actions.</p>
+</div>
 
 
 
@@ -786,7 +793,7 @@ resource after deserialization.</p>
 
   <h3 id="FoundationaLLM_Prompt_ResourceProviders_PromptResourceProviderService_UpsertResourceAsyncInternal__2_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult___0_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderUpsertOptions_" data-uid="FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.UpsertResourceAsyncInternal``2(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,``0,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertOptions)">
   UpsertResourceAsyncInternal&lt;T, TResult&gt;(ResourcePath, ResourcePathAuthorizationResult, T, UnifiedUserIdentity, ResourceProviderUpsertOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Prompt/ResourceProviders/PromptResourceProviderService.cs/#L163"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Prompt/ResourceProviders/PromptResourceProviderService.cs/#L168"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of UpsertResourceAsync. Must be overridden in derived classes.</p>

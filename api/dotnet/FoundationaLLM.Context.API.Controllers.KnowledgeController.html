@@ -730,9 +730,9 @@ public class KnowledgeController : ControllerBase</code></pre>
 
   <a id="FoundationaLLM_Context_API_Controllers_KnowledgeController_GetKnowledgeSource_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.GetKnowledgeSource*"></a>
 
-  <h3 id="FoundationaLLM_Context_API_Controllers_KnowledgeController_GetKnowledgeSource_System_String_System_String_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.GetKnowledgeSource(System.String,System.String)">
-  GetKnowledgeSource(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Context_API_Controllers_KnowledgeController_GetKnowledgeSource_System_String_System_String_System_String_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.GetKnowledgeSource(System.String,System.String,System.String)">
+  GetKnowledgeSource(string, string, string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a specified knowledge source.</p>
@@ -741,7 +741,7 @@ public class KnowledgeController : ControllerBase</code></pre>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[HttpGet(&quot;knowledgeSources/{knowledgeSourceId}&quot;)]
-public Task&lt;IActionResult&gt; GetKnowledgeSource(string instanceId, string knowledgeSourceId)</code></pre>
+public Task&lt;IActionResult&gt; GetKnowledgeSource(string instanceId, string knowledgeSourceId, string? agentName)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -751,6 +751,9 @@ public Task&lt;IActionResult&gt; GetKnowledgeSource(string instanceId, string kn
 </dd>
     <dt><code>knowledgeSourceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The knowledge source identifier.</p>
+</dd>
+    <dt><code>agentName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The agent name if the request is being made on behalf of an agent.</p>
 </dd>
   </dl>
 
@@ -774,7 +777,7 @@ public Task&lt;IActionResult&gt; GetKnowledgeSource(string instanceId, string kn
 
   <h3 id="FoundationaLLM_Context_API_Controllers_KnowledgeController_GetKnowledgeSources_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeResourceListRequest_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.GetKnowledgeSources(System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeResourceListRequest)">
   GetKnowledgeSources(string, ContextKnowledgeResourceListRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L94"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves the list of knowledge sources.</p>
@@ -814,9 +817,9 @@ public Task&lt;IActionResult&gt; GetKnowledgeSources(string instanceId, ContextK
 
   <a id="FoundationaLLM_Context_API_Controllers_KnowledgeController_GetKnowledgeUnit_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.GetKnowledgeUnit*"></a>
 
-  <h3 id="FoundationaLLM_Context_API_Controllers_KnowledgeController_GetKnowledgeUnit_System_String_System_String_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.GetKnowledgeUnit(System.String,System.String)">
-  GetKnowledgeUnit(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Context_API_Controllers_KnowledgeController_GetKnowledgeUnit_System_String_System_String_System_String_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.GetKnowledgeUnit(System.String,System.String,System.String)">
+  GetKnowledgeUnit(string, string, string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a specified knowledge unit.</p>
@@ -825,7 +828,7 @@ public Task&lt;IActionResult&gt; GetKnowledgeSources(string instanceId, ContextK
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[HttpGet(&quot;knowledgeUnits/{knowledgeUnitId}&quot;)]
-public Task&lt;IActionResult&gt; GetKnowledgeUnit(string instanceId, string knowledgeUnitId)</code></pre>
+public Task&lt;IActionResult&gt; GetKnowledgeUnit(string instanceId, string knowledgeUnitId, string? agentName)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -835,6 +838,9 @@ public Task&lt;IActionResult&gt; GetKnowledgeUnit(string instanceId, string know
 </dd>
     <dt><code>knowledgeUnitId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The knowledge unit identifier.</p>
+</dd>
+    <dt><code>agentName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The agent name if the request is being made on behalf of an agent.</p>
 </dd>
   </dl>
 
@@ -858,7 +864,7 @@ public Task&lt;IActionResult&gt; GetKnowledgeUnit(string instanceId, string know
 
   <h3 id="FoundationaLLM_Context_API_Controllers_KnowledgeController_GetKnowledgeUnits_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeResourceListRequest_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.GetKnowledgeUnits(System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeResourceListRequest)">
   GetKnowledgeUnits(string, ContextKnowledgeResourceListRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L76"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves the list of knowledge units.</p>
@@ -900,7 +906,7 @@ public Task&lt;IActionResult&gt; GetKnowledgeUnits(string instanceId, ContextKno
 
   <h3 id="FoundationaLLM_Context_API_Controllers_KnowledgeController_QueryKnowledgeSource_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.QueryKnowledgeSource(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)">
   QueryKnowledgeSource(string, string, ContextKnowledgeSourceQueryRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L186"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L192"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Queries a knowledge graph.</p>
@@ -943,7 +949,7 @@ public Task&lt;IActionResult&gt; QueryKnowledgeSource(string instanceId, string 
 
   <h3 id="FoundationaLLM_Context_API_Controllers_KnowledgeController_RenderKnowledgeUnitGraph_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.RenderKnowledgeUnitGraph(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)">
   RenderKnowledgeUnitGraph(string, string, ContextKnowledgeSourceQueryRequest?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L171"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves the knowledge graph in a format suitable for rendering.</p>
@@ -986,7 +992,7 @@ public Task&lt;IActionResult&gt; RenderKnowledgeUnitGraph(string instanceId, str
 
   <h3 id="FoundationaLLM_Context_API_Controllers_KnowledgeController_SetKnowledgeUnitGraph_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeUnitSetGraphRequest_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.SetKnowledgeUnitGraph(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitSetGraphRequest)">
   SetKnowledgeUnitGraph(string, string, ContextKnowledgeUnitSetGraphRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L143"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L149"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the knowledge graph for a knowledge unit.</p>
@@ -1031,7 +1037,7 @@ public Task&lt;IActionResult&gt; SetKnowledgeUnitGraph(string instanceId, string
 
   <h3 id="FoundationaLLM_Context_API_Controllers_KnowledgeController_UpsertKnowledgeSource_System_String_FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeSource_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.UpsertKnowledgeSource(System.String,FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource)">
   UpsertKnowledgeSource(string, KnowledgeSource)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L124"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L130"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates or updates a knowledge source.</p>
@@ -1073,7 +1079,7 @@ public Task&lt;IActionResult&gt; UpsertKnowledgeSource(string instanceId, Knowle
 
   <h3 id="FoundationaLLM_Context_API_Controllers_KnowledgeController_UpsertKnowledgeUnit_System_String_FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeUnit_" data-uid="FoundationaLLM.Context.API.Controllers.KnowledgeController.UpsertKnowledgeUnit(System.String,FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit)">
   UpsertKnowledgeUnit(string, KnowledgeUnit)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/KnowledgeController.cs/#L112"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates or updates a knowledge unit.</p>

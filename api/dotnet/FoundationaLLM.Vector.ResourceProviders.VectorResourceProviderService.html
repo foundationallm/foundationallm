@@ -503,8 +503,8 @@ Class VectorResourceProviderService  <a class="header-action link-secondary" tit
 
   <a id="FoundationaLLM_Vector_ResourceProviders_VectorResourceProviderService_GetResourceAsyncInternal_" data-uid="FoundationaLLM.Vector.ResourceProviders.VectorResourceProviderService.GetResourceAsyncInternal*"></a>
 
-  <h3 id="FoundationaLLM_Vector_ResourceProviders_VectorResourceProviderService_GetResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_" data-uid="FoundationaLLM.Vector.ResourceProviders.VectorResourceProviderService.GetResourceAsyncInternal``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions)">
-  GetResourceAsyncInternal&lt;T&gt;(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity, ResourceProviderGetOptions?)
+  <h3 id="FoundationaLLM_Vector_ResourceProviders_VectorResourceProviderService_GetResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_" data-uid="FoundationaLLM.Vector.ResourceProviders.VectorResourceProviderService.GetResourceAsyncInternal``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions,FoundationaLLM.Common.Models.ResourceProviders.ResourceBase)">
+  GetResourceAsyncInternal&lt;T&gt;(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity, ResourceProviderGetOptions?, ResourceBase?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Vector/ResourceProviders/VectorResourceProviderService.cs/#L132"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -513,7 +513,7 @@ Class VectorResourceProviderService  <a class="header-action link-secondary" tit
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Task&lt;T&gt; GetResourceAsyncInternal&lt;T&gt;(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) where T : ResourceBase</code></pre>
+    <pre><code class="lang-csharp hljs">protected override Task&lt;T&gt; GetResourceAsyncInternal&lt;T&gt;(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null, ResourceBase? parentResourceInstance = null) where T : ResourceBase</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -529,6 +529,9 @@ Class VectorResourceProviderService  <a class="header-action link-secondary" tit
 </dd>
     <dt><code>options</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions.html">ResourceProviderGetOptions</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions.html">ResourceProviderGetOptions</a> which provides operation parameters.</p>
+</dd>
+    <dt><code>parentResourceInstance</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html">ResourceBase</a></dt>
+    <dd><p>The optional parent resource of the resource identified by <code class="paramref">resourcePath</code>.</p>
 </dd>
   </dl>
 
@@ -549,6 +552,10 @@ Class VectorResourceProviderService  <a class="header-action link-secondary" tit
 
 
 
+  <h4 class="section" id="FoundationaLLM_Vector_ResourceProviders_VectorResourceProviderService_GetResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_FoundationaLLM_Common_Models_ResourceProviders_ResourceBase__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>When the parent resource instance is provided, and it specifies inheritable authorizable actions,
+the parent resource instance is used to authorize the request for any of those actions.</p>
+</div>
 
 
 
