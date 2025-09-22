@@ -1,16 +1,33 @@
 function Merge-PluginPackage {
     param (
+        [string]$Platform,
         [string]$PackageName,
-        [string]$NuGetPackageName,
-        [string]$NuGetPackageVersion,
+        [string]$PublishedPackageName,
+        [string]$PublishedPackageVersion,
         [string]$PackagePath
     )
 
     if (-not $PackagePath) {
-        $nugetUrl = "https://api.nuget.org/v3-flatcontainer/$NuGetPackageName/$NuGetPackageVersion/$NuGetPackageName.$NuGetPackageVersion.nupkg"
-        $PackagePath = Join-Path "$([System.IO.Path]::GetTempPath())" "$NuGetPackageName.$NuGetPackageVersion.nupkg"
 
-        Invoke-RestMethod -Uri $nugetUrl -OutFile $PackagePath
+        if ($Platform -eq "python") {
+            
+            $packageMetadata = Invoke-RestMethod -Uri "https://pypi.org/pypi/$PublishedPackageName/$PublishedPackageVersion/json"
+            $wheelEntry = $packageMetadata.urls |
+                Where-Object { $_.packagetype -eq 'bdist_wheel' } |
+                Select-Object -First 1
+
+            $PackagePath = Join-Path ([System.IO.Path]::GetTempPath()) (Split-Path $wheelEntry.url -Leaf)
+            Invoke-RestMethod -Uri $wheelEntry.url -OutFile $PackagePath
+
+        } elseif ($Platform -eq "dotnet") {
+            $nugetUrl = "https://api.nuget.org/v3-flatcontainer/$PublishedPackageName/$PublishedPackageVersion/$PublishedPackageName.$PublishedPackageVersion.nupkg"
+            $PackagePath = Join-Path "$([System.IO.Path]::GetTempPath())" "$PublishedPackageName.$PublishedPackageVersion.nupkg"
+
+            Invoke-RestMethod -Uri $nugetUrl -OutFile $PackagePath
+
+        } else {
+            throw "Unsupported platform: $Platform"
+        }
     }
 
     $form = @{
