@@ -14,7 +14,6 @@
 				<div :id="toolbarId">
 					<select class="ql-header" aria-label="Heading" title="Heading">
 						<option value="" selected>Normal</option>
-						<option value="1">Heading 1</option>
 						<option value="2">Heading 2</option>
 						<option value="3">Heading 3</option>
 						<option value="4">Heading 4</option>
