@@ -68,6 +68,8 @@ items:
   items:
   - name: Create custom tools
     href: how-to-guides/create-custom-tools.md
+  - name: Create an API endpoint
+    href: how-to-guides/create-api-endpoint.md
   - name: Create model-agnostic agent (Claude)
     href: how-to-guides/create-model-agnostic-agent-claude.md
   - name: Create model-agnostic agent (GPT-4o)
