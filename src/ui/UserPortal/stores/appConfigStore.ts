@@ -59,6 +59,42 @@ export const useAppConfigStore = defineStore('appConfig', {
 	getters: {},
 	actions: {
 		/**
+		 * Loads basic branding configuration values that are required before authentication.
+		 * This method loads only the essential branding values needed for the signin page.
+		 */
+		async loadBasicBrandingConfiguration() {
+			try {
+				const getConfigValueSafe = async (key: string, defaultValue: any = null) => {
+					try {
+						return await api.getConfigValue(key);
+					} catch (error) {
+						console.error(`Failed to get config value for key ${key}:`, error);
+						return defaultValue;
+					}
+				};
+
+				// Load only the essential branding values needed for signin page
+				const [logoUrl, logoText] = await Promise.all([
+					getConfigValueSafe('FoundationaLLM:Branding:LogoUrl'),
+					getConfigValueSafe('FoundationaLLM:Branding:LogoText'),
+				]);
+
+				// Set the branding values
+				if (logoUrl) {
+					this.logoUrl = logoUrl as string;
+				}
+				if (logoText) {
+					this.logoText = logoText as string;
+				}
+
+				// console.log('Basic branding configuration loaded successfully');
+			} catch (error: any) {
+				console.error('Failed to load basic branding configuration:', error);
+				// Don't throw error as this is not critical for app functionality
+			}
+		},
+
+		/**
 		 * Loads configuration values from the UserPortal app configuration set.
 		 * This is the new approach that replaces individual API calls for marked configuration values.
 		 */
